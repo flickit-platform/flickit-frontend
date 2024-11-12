@@ -2,20 +2,15 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { styles } from "@styles";
 import { KitDesignListItems, TId } from "@types";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
-import languageDetector from "@utils/languageDetector";
-import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
-import QueryData from "@common/QueryData";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -24,26 +19,30 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
-import { alpha, Button, CircularProgress } from "@mui/material";
+import { alpha, Button } from "@mui/material";
 import { debounce } from "lodash";
-import EmptyStateQuestion from "@components/kit-designer/questionnaires/questions/EmptyStateQuestion";
 import { Add } from "@mui/icons-material";
-import QuestionForm from "./questions/QuestionForm";
+import EmptyStateOptions from "@components/kit-designer/answerRange/options/emptyStateOptions";
+import Divider from "@mui/material/Divider";
+import OptionContain from "@components/kit-designer/answerRange/options/optionsContain";
+import Chip from "@mui/material/Chip";
+import {t} from "i18next";
+import OptionForm from "@components/kit-designer/answerRange/options/optionForm";
 
 interface ListOfItemsProps {
-  items: Array<KitDesignListItems>;
+  // items: Array<KitDesignListItems>;
+  items: any;
   onEdit: (id: any) => void;
-  onReorder: (reorderedItems: KitDesignListItems[]) => void;
+  onDelete: (id: any) => void;
+  // onReorder: (reorderedItems: KitDesignListItems[]) => void;
+  onReorder: any;
   deleteBtn: boolean;
   name: string;
   fetchQuery?: any;
-  setOpenDeleteDialog: any;
+  setChangeData: any
 }
 interface ITempValues {
   title: string;
-  description: string;
-  weight: number | undefined;
-  question: number | undefined;
 }
 interface IQuestion {
   advisable: boolean;
@@ -58,17 +57,18 @@ const ListOfItems = ({
   items,
   fetchQuery,
   onEdit,
+  onDelete,
   onReorder,
   deleteBtn,
+  setChangeData,
   name,
-  setOpenDeleteDialog
 }: ListOfItemsProps) => {
-  const fetchQuestionListKit = useQuery({
-    service: (args, config) => service.fetchQuestionListKit(args, config),
-    runOnMount: false,
-  });
-  const postQuestionsKit = useQuery({
-    service: (args, config) => service.postQuestionsKit(args, config),
+  // const fetchOptionListKit = useQuery({
+  //   service: (args, config) => service.fetchOptionListKit(args, config),
+  //   runOnMount: false,
+  // });
+  const postOptionsKit = useQuery({
+    service: (args, config) => service.postOptionsKit(args, config),
     runOnMount: false,
   });
 
@@ -81,16 +81,19 @@ const ListOfItems = ({
     service: (args, config) => service.updateKitQuestionnaires(args, config),
     runOnMount: false,
   });
-  const [showNewQuestionForm, setShowNewQuestionForm] = useState<{
+  const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] = useState<{
     [key: string]: boolean;
   }>({});
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",
-    description: "",
-    weight: 0,
-    question: 0,
+  });
+  const [newOptions, setNewOptions] = useState({
+    title: "",
+    index: 1,
+    value: 1,
+    id: null,
   });
   const [expanded, setExpanded] = useState(false);
   const [questionnaireId, setQuestionnaireId] = useState(null);
@@ -107,14 +110,11 @@ const ListOfItems = ({
     setReorderedItems(newReorderedItems);
     onReorder(newReorderedItems);
   };
-  const handleEditClick = (e: any, item: KitDesignListItems) => {
+  const handleEditClick = (e: any, item: any) => {
     e.stopPropagation();
     setEditMode(Number(item.id));
     setTempValues({
       title: item.title,
-      description: item.description,
-      weight: item.weight,
-      question: item.questionsCount,
     });
   };
 
@@ -123,8 +123,6 @@ const ListOfItems = ({
     onEdit({
       ...item,
       title: tempValues.title,
-      description: tempValues.description,
-      weight: tempValues?.weight,
     });
     setEditMode(null);
   };
@@ -132,7 +130,7 @@ const ListOfItems = ({
   const handleCancelClick = (e: any) => {
     e.stopPropagation();
     setEditMode(null);
-    setTempValues({ title: "", description: "", weight: 0, question: 0 });
+    setTempValues({ title: ""});
   };
 
   const handelChange = (e: any) => {
@@ -150,17 +148,17 @@ const ListOfItems = ({
       setQuestionnaireId(id as any);
       try {
         if (isExpanded) {
-          const data = await fetchQuestionListKit.query({
-            kitVersionId,
-            questionnaireId: id,
-          });
-          setNewQuestion({
+          // const data = await fetchOptionListKit.query({
+          //   kitVersionId,
+          //   questionId: id,
+          // });
+          setNewOptions({
             title: "",
-            index: data?.items.length + 1 || 1,
-            value: data?.items.length + 1 || 1,
+            index: items.find((item : any) => item.id === id).answerOptions.length + 1,
+            value: 1,
             id: null,
           });
-          setQuestionData(data?.items);
+          // setQuestionData(data?.items);
         } else {
           handleCancel(id);
         }
@@ -177,10 +175,10 @@ const ListOfItems = ({
         index: idx + 1,
       }));
 
-      await service.changeQuestionsOrder(
-        { kitVersionId },
-        { questionOrders: orders, questionnaireId: questionnaireId },
-      );
+      // await service.changeQuestionsOrder(
+      //   { kitVersionId },
+      //   { questionOrders: orders, questionnaireId: questionnaireId },
+      // );
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -204,24 +202,25 @@ const ListOfItems = ({
     setQuestionData(reorderedQuestions);
   };
 
-  const handleAddNewQuestionClick = (id: any) => {
-    setShowNewQuestionForm((prev) => ({
+  const handleAddNewOptionClick = (id: any) => {
+    setShowNewAnswerRangeForm((prev) => ({
       ...prev,
       [id]: true,
     }));
+    setNewOptions({
+      title: "",
+      index: items.find((item : any) => item.id === id).answerOptions.length + 1,
+      value: 1,
+      id: null,
+    });
   };
 
-  const [newQuestion, setNewQuestion] = useState({
-    title: "",
-    index: 1,
-    value: 1,
-    id: null,
-  });
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewQuestion((prev) => ({
+    const parsedValue = name === "value"  ? parseInt(value) || 1 : value;
+    setNewOptions((prev) => ({
       ...prev,
       [name]: parsedValue,
     }));
@@ -231,17 +230,16 @@ const ListOfItems = ({
     try {
       const data = {
         kitVersionId,
-        index: newQuestion.index,
-        value: newQuestion.value,
-        title: newQuestion.title,
-        advisable: false,
-        mayNotBeApplicable: false,
-        questionnaireId: id,
+        index: newOptions.index,
+        value: newOptions.value,
+        title: newOptions.title,
+        answerRangeId: id,
       };
       handleCancel(id);
 
-      await postQuestionsKit.query({ kitVersionId, data }).then(() => {
-        fetchQuery.query();
+      await postOptionsKit.query({ kitVersionId, data }).then(() => {
+        // fetchQuery.query();
+        setChangeData((prev : any) => !prev)
       });
     } catch (e) {
       const err = e as ICustomError;
@@ -250,35 +248,22 @@ const ListOfItems = ({
   };
 
   const handleCancel = (id: TId) => {
-    setShowNewQuestionForm((prev) => ({
+    setShowNewAnswerRangeForm((prev) => ({
       ...prev,
       [id]: false,
     }));
-    setNewQuestion({
+    setNewOptions({
       title: "",
-      index: fetchQuestionListKit.data?.items.length + 1 || 1,
-      value: fetchQuestionListKit.data?.items.length + 1 || 1,
+      index:  1,
+      value:  1,
       id: null,
     });
   };
-
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="subjects">
-        {(provided: any) => (
-          <Box {...provided.droppableProps} ref={provided.innerRef}>
-            {reorderedItems?.map((item, index) => (
-              <Draggable
-                key={item.id}
-                draggableId={item.id.toString()}
-                index={index}
-                isDragDisabled={expanded}
-              >
-                {(provided: any) => (
+
+          <Box>
+            {items?.map((item : any, index : any) => (
                   <Box
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
                     mt={1.5}
                     sx={{
                       backgroundColor:
@@ -340,46 +325,14 @@ const ListOfItems = ({
                         >
                           <Box
                             sx={{
-                              ...styles.centerVH,
-                              background:
-                                item.questionsCount == 0
-                                  ? alpha(theme.palette.error.main, 0.12)
-                                  : "#F3F5F6",
-                              width: { xs: "50px", md: "64px" },
-                              justifyContent: "space-around",
-                            }}
-                            borderRadius="0.5rem"
-                            mr={2}
-                            px={1.5}
-                          >
-                            <Typography variant="semiBoldLarge">
-                              {index + 1}
-                            </Typography>
-
-                            <IconButton
-                              disableRipple
-                              disableFocusRipple
-                              sx={{
-                                "&:hover": {
-                                  backgroundColor: "transparent",
-                                  color: "inherit",
-                                },
-                              }}
-                              size="small"
-                            >
-                              <SwapVertRoundedIcon fontSize="small" />
-                            </IconButton>
-                          </Box>
-                          <Box
-                            sx={{
-                              flexGrow: 1,
+                              // flexGrow: 1,
                               display: "flex",
-                              flexDirection: "column",
-                              gap: "5px",
+                              justifyContent: "space-between",
+                              width: "100%",
                             }}
                           >
                             {/* Title and icons in the same row */}
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Box sx={{ display: "flex", alignItems: "center",justifyContent:"space-between",width:"100%" }}>
                               {editMode === item.id ? (
                                 <TextField
                                   onClick={(e) => e.stopPropagation()}
@@ -402,7 +355,7 @@ const ListOfItems = ({
                                     "& .MuiFormLabel-root": {
                                       fontSize: 14,
                                     },
-                                    width: { sx: "100%", md: "60%" },
+                                    width: { sx: "100%", md: "40%" },
                                     background: "#fff",
                                     borderRadius: "8px",
                                   }}
@@ -412,15 +365,23 @@ const ListOfItems = ({
                               ) : (
                                 <Typography
                                   variant="h6"
-                                  sx={{ flexGrow: 1, width: "80%" }}
+                                  sx={{ flexGrow: 1, width: "40%" }}
                                 >
                                   {item.title}
                                 </Typography>
                               )}
+                              <Box sx={{ width: "60%",px:3}}>
+                                <Chip
+                                    label={t("options") + " " + item.answerOptions.length}
+                                    size="small"
+                                    sx={{backgroundColor: "#EAF2FB", fontSize:14,py: 1.4 }}
+                                />
+                              </Box>
                               {/* Icons (Edit/Delete or Check/Close) */}
                               {editMode === item.id ? (
                                 <Box
                                   sx={{
+                                    display:"flex",
                                     mr:
                                       theme.direction == "rtl"
                                         ? "auto"
@@ -467,7 +428,7 @@ const ListOfItems = ({
                                   {deleteBtn && (
                                     <IconButton
                                       size="small"
-                                      onClick={() =>setOpenDeleteDialog({status: true,id:item.id})}
+                                      onClick={() => onDelete(item.id)}
                                       sx={{ mx: 1 }}
                                       color="secondary"
                                       data-testid="items-delete-icon"
@@ -477,107 +438,6 @@ const ListOfItems = ({
                                   )}
                                 </>
                               )}
-                            </Box>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              {editMode === item.id ? (
-                                <TextField
-                                  required
-                                  value={tempValues.description}
-                                  onClick={(e) => e.stopPropagation()}
-                                  onChange={(e) => handelChange(e)}
-                                  name="description"
-                                  inputProps={{
-                                    "data-testid": "items-description",
-                                  }}
-                                  variant="outlined"
-                                  fullWidth
-                                  size="small"
-                                  label={<Trans i18nKey="description" />}
-                                  margin="normal"
-                                  multiline
-                                  minRows={2}
-                                  maxRows={3}
-                                  sx={{
-                                    mb: 1,
-                                    mt: 1,
-                                    fontSize: 14,
-                                    "& .MuiInputBase-root": {
-                                      fontSize: 14,
-                                      overflow: "auto",
-                                    },
-                                    "& .MuiFormLabel-root": {
-                                      fontSize: 14,
-                                    },
-                                    background: "#fff",
-                                    borderRadius: "8px",
-                                    width: { xs: "100%", md: "85%" },
-                                  }}
-                                />
-                              ) : (
-                                <Typography
-                                  sx={{
-                                    wordBreak: "break-word",
-                                    textAlign: languageDetector(
-                                      item.description,
-                                    )
-                                      ? "right"
-                                      : "left",
-                                    width: "80%",
-                                  }}
-                                  variant="body2"
-                                  mt={1}
-                                >
-                                  {item.description}
-                                </Typography>
-                              )}
-                              <Box
-                                sx={{
-                                  width: "fit-content",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "flex-end",
-                                  flexDirection: "column",
-                                  gap: "0.5rem",
-                                  textAlign: editMode ? "end" : "center",
-                                }}
-                              >
-                                <Typography
-                                  sx={{
-                                    ...theme.typography.labelCondensed,
-                                    color: "#6C8093",
-                                    width: "100%",
-                                  }}
-                                >
-                                  <Trans i18nKey={"questions"} />
-                                </Typography>
-                                <Box
-                                  aria-label="questionnaires"
-                                  style={{
-                                    width: "3.75rem",
-                                    height: "3.75rem",
-                                    borderRadius: "50%", // برای دایره‌ای کردن دکمه
-                                    backgroundColor:
-                                      item.questionsCount == 0
-                                        ? theme.palette.error.main
-                                        : "#E2E5E9", // رنگ پس‌زمینه
-                                    color:
-                                      item.questionsCount == 0
-                                        ? "#FAD1D8"
-                                        : "#2B333B",
-                                    display: "flex",
-                                    alignItems: " center",
-                                    justifyContent: "center",
-                                  }}
-                                >
-                                  {item.questionsCount}
-                                </Box>
-                              </Box>
                             </Box>
                           </Box>
                         </Box>
@@ -589,20 +449,45 @@ const ListOfItems = ({
                           py: questionData.length != 0 ? "20px" : "unset",
                         }}
                       >
-                        {fetchQuestionListKit.loading ? (
-                          <Box
+                          {item?.answerOptions?.length >= 1 &&
+                              <Box sx={{
+                                width:"100%",
+                                height:36,
+                                display: "flex",
+                                alignItems:"center",
+                                justifyContent:"flex-start",
+                                px: "1rem",
+                                color: "#6C8093",
+                                ...theme.typography.semiBoldMedium
+                              }}>
+                              <Box
+                                  sx={{
+                                    width: { xs: "65px", md: "95px" },
+                                    textAlign:"center"
+                                  }}
+                                  mr={2}
+                                  px={0.2}
+                              >
+                                <Trans i18nKey={"index"} />
+                              </Box>
+                            <Box
+                            sx={{ width: { xs: "50%", md: "60%" } }}
+                            >
+                            <Trans i18nKey={"title"} />
+                            </Box>
+                            <Box
                             sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              py: 2,
-                            }}
-                          >
-                            <CircularProgress />
-                          </Box>
-                        ) : (
+                            width: { xs: "20%", md: "10%" },
+                            textAlign:"center"
+                          }}
+                            >
+                            <Trans i18nKey={"value"} />
+                            </Box>
+                            </Box>
+                          }
+                        <Divider />
                           <>
-                            {questionData.length >= 1 ? (
+                            {item?.answerOptions?.length >= 1 ? (
                               <>
                                 <DragDropContext
                                   onDragEnd={handleQuestionDragEnd}
@@ -615,12 +500,13 @@ const ListOfItems = ({
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}
                                       >
-                                        {questionData?.map(
-                                          (question: any, index: number) => (
+                                        {item.answerOptions?.map(
+                                          (answerOption: any, index: number) => (
                                             <Draggable
-                                              key={question.id}
-                                              draggableId={question.id.toString()}
+                                              key={answerOption.id}
+                                              draggableId={answerOption.id.toString()}
                                               index={index}
+                                              isDragDisabled={true}
                                             >
                                               {(provided) => (
                                                 <Box
@@ -629,10 +515,11 @@ const ListOfItems = ({
                                                   {...provided.dragHandleProps}
                                                   sx={{ marginBottom: 1 }}
                                                 >
-                                                  <QuestionContainer
+                                                  <OptionContain
                                                     fetchQuery={fetchQuery}
-                                                    key={question.id}
-                                                    question={question}
+                                                    key={answerOption.id}
+                                                    answerOption={answerOption}
+                                                    setChangeData={setChangeData}
                                                   />
                                                 </Box>
                                               )}
@@ -644,7 +531,7 @@ const ListOfItems = ({
                                     )}
                                   </Droppable>
                                 </DragDropContext>
-                                {!showNewQuestionForm[item.id] && (
+                                {!showNewAnswerRangeForm[item.id] && (
                                   <Box
                                     sx={{
                                       display: "flex",
@@ -657,35 +544,34 @@ const ListOfItems = ({
                                       variant="outlined"
                                       color="primary"
                                       onClick={() =>
-                                        handleAddNewQuestionClick(item.id)
+                                          handleAddNewOptionClick(item.id)
                                       }
                                     >
                                       <Add fontSize="small" />
-                                      <Trans i18nKey="newQuestion" />
+                                      <Trans i18nKey="newOption" />
                                     </Button>
                                   </Box>
                                 )}
                               </>
                             ) : (
                               <>
-                                {!showNewQuestionForm[item.id] && (
-                                  <EmptyStateQuestion
-                                    btnTitle={"addFirstQuestion"}
-                                    title={"noQuestionHere"}
-                                    SubTitle={"noQuestionAtTheMoment"}
+                                {!showNewAnswerRangeForm[item.id] && (
+                                  <EmptyStateOptions
+                                    btnTitle={"addFirstOption"}
+                                    title={"noOptionHere"}
+                                    SubTitle={"noOptionAtTheMoment"}
                                     onAddNewRow={() =>
-                                      handleAddNewQuestionClick(item.id)
+                                        handleAddNewOptionClick(item.id)
                                     }
                                   />
                                 )}
                               </>
                             )}
                           </>
-                        )}
-                        {showNewQuestionForm[item.id] && (
-                          <Box sx={{ mt: 2 }}>
-                            <QuestionForm
-                              newItem={newQuestion}
+                        {showNewAnswerRangeForm[item.id] && (
+                          <Box >
+                            <OptionForm
+                              newItem={newOptions}
                               handleInputChange={handleInputChange}
                               handleSave={() => handleSave(item.id)}
                               handleCancel={() => handleCancel(item.id)}
@@ -695,14 +581,8 @@ const ListOfItems = ({
                       </AccordionDetails>
                     </Accordion>
                   </Box>
-                )}
-              </Draggable>
             ))}
-            {provided.placeholder}
           </Box>
-        )}
-      </Droppable>
-    </DragDropContext>
   );
 };
 
