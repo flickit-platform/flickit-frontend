@@ -1,0 +1,114 @@
+name: CI/CD Backend
+
+on:
+  push:
+    branches:
+      - '*'
+    paths-ignore:
+      - frontend/**
+    tags:
+      - '*'
+
+  pull_request:
+    branches:
+      - '*'
+    paths-ignore:
+      - frontend/**
+
+
+jobs:
+  Build_Backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        run: docker build -t backend ./backend
+
+
+  Sonar:
+   needs: Build_Backend
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v2
+     - name: SonarCloud Scan
+       uses: SonarSource/sonarcloud-github-action@master
+       env:
+         GITHUB_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  Backend_Push_Latest_Image:
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+    needs: Sonar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create image from repository
+        run: docker build -t ghcr.io/flickit-platform/flickit-platform:"${GITHUB_SHA:0:7}" ./backend
+      - name: login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: flickit-platform
+          password: ${{ secrets.GH_PACKAGES_TOKEN }}
+      - name: push image to GitHub Container Registry
+        run: docker push ghcr.io/flickit-platform/flickit-platform:"${GITHUB_SHA:0:7}"
+
+  Backend_Deploy_Latest:
+    needs: Backend_Push_Latest_Image
+    container:
+      image: registry.hectora.cloud/hectora-public/darkube-cli:v1.1
+      env:
+        CONSOLE_API_BASE_URL: "https://api.hectora.cloud"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        run: darkube deploy --ref main --token ${DEPLOY_TOKEN} --app-id ${APP_ID}  --image-tag "${GITHUB_SHA:0:7}" --job-id "$GITHUB_RUN_ID" --stateless-app true
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN_BACKEND_STAGE }}
+          APP_ID: ${{ secrets.APP_ID_BACKEND_STAGE }}
+
+
+
+  Backend_Push_Image:
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    needs: Sonar
+    runs-on: ubuntu-latest
+    outputs:
+      TAG: ${{ steps.TAG.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set output
+        id: TAG
+        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.TAG.outputs.tag }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.TAG.outputs.tag }}
+      - name: login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: flickit-platform
+          password: ${{ secrets.GH_PACKAGES_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: create image from repository
+        run: docker build -t ghcr.io/flickit-platform/flickit-platform:${{ steps.TAG.outputs.tag }} ./backend
+      - name: push image to GitHub Container Registry
+        run: docker push ghcr.io/flickit-platform/flickit-platform:${{ steps.TAG.outputs.tag }}
+
+  Backend_Deploy:
+    needs: Backend_Push_Image
+    container:
+      image: registry.hectora.cloud/hectora-public/darkube-cli:v1.1
+      env:
+        CONSOLE_API_BASE_URL: "https://api.hectora.cloud"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        run: darkube deploy --ref main --token ${DEPLOY_TOKEN} --app-id ${APP_ID}  --image-tag "${TAG}" --job-id "$GITHUB_RUN_ID" --stateless-app true
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN_BACKEND_PRODUCTION }}
+          APP_ID: ${{ secrets.APP_ID_BACKEND_PRODUCTION  }}
+          TAG: ${{needs.Backend_Push_Image.outputs.TAG}}
