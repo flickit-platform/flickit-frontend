@@ -158,17 +158,11 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         index: newOption.index,
         value: newOption.value,
         title: newOption.title,
+        questionId: question.id,
       };
-      // if (NewOption.id) {
-      //   await service.updateQue({
-      //     kitVersionId,
-      //     questionnaireId: NewOption.id,
-      //     data,
-      //   });
-      // } else {
-      //   await fetchOptions.query({ kitVersionId, data });
-      // }
-
+      await postAnswerOptionsKit.query({ kitVersionId, data }).then(() => {
+        fetchOptions.query();
+      });
       // await fetchOptions.query();
 
       setShowNewOptionForm(false);
@@ -273,7 +267,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 
   const [selectedAnswerRange, setSelectedAnswerRange] = useState<
     number | undefined
-  >(question.answerRangeId);
+  >(question?.answerRangeId);
 
   const handleAnswerRangeChange = async (event: any) => {
     const requestData = {
