@@ -1,0 +1,95 @@
+{
+  "hash": "9583ca97",
+  "browserHash": "12689e28",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "ae5b4fbf",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "eb5204da",
+      "needsInterop": false
+    },
+    "react-toastify": {
+      "src": "../../node_modules/react-toastify/dist/react-toastify.esm.mjs",
+      "file": "react-toastify.js",
+      "fileHash": "279a8603",
+      "needsInterop": false
+    },
+    "@mui/material": {
+      "src": "../../node_modules/@mui/material/index.js",
+      "file": "@mui_material.js",
+      "fileHash": "aa16664b",
+      "needsInterop": false
+    },
+    "@mui/material/CssBaseline": {
+      "src": "../../node_modules/@mui/material/CssBaseline/index.js",
+      "file": "@mui_material_CssBaseline.js",
+      "fileHash": "fff77b5d",
+      "needsInterop": false
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "8b9a6814",
+      "needsInterop": true
+    },
+    "@sentry/react": {
+      "src": "../../node_modules/@sentry/react/esm/index.js",
+      "file": "@sentry_react.js",
+      "fileHash": "111473d2",
+      "needsInterop": false
+    },
+    "@novu/notification-center": {
+      "src": "../../node_modules/@novu/notification-center/dist/esm/index.js",
+      "file": "@novu_notification-center.js",
+      "fileHash": "54c3cfe4",
+      "needsInterop": false
+    },
+    "@mui/material/Box": {
+      "src": "../../node_modules/@mui/material/Box/index.js",
+      "file": "@mui_material_Box.js",
+      "fileHash": "847b545b",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "0e66f8ae",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-QIDC6JOB": {
+      "file": "chunk-QIDC6JOB.js"
+    },
+    "chunk-P27NEGY7": {
+      "file": "chunk-P27NEGY7.js"
+    },
+    "chunk-75BOF2GH": {
+      "file": "chunk-75BOF2GH.js"
+    },
+    "chunk-4N56JLVL": {
+      "file": "chunk-4N56JLVL.js"
+    },
+    "chunk-3RD27TMB": {
+      "file": "chunk-3RD27TMB.js"
+    },
+    "chunk-2MRMY2VI": {
+      "file": "chunk-2MRMY2VI.js"
+    },
+    "chunk-6Z2RPAQ4": {
+      "file": "chunk-6Z2RPAQ4.js"
+    },
+    "chunk-6DDWND5A": {
+      "file": "chunk-6DDWND5A.js"
+    },
+    "chunk-4EOJPDL2": {
+      "file": "chunk-4EOJPDL2.js"
+    }
+  }
+}
