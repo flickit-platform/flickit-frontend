@@ -50,6 +50,8 @@ export const AssessmentSummary = (props: IAssessmentSummaryProps) => {
           fontSize={calculateFontSize(assessmentKit?.title.length)}
           sx={{
             textDecoration: "none",
+            overflowWrap: "break-word",
+            wordBreak: "break-word",
           }}
           color="primary"
           fontWeight={800}
