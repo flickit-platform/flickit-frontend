@@ -470,7 +470,7 @@ const Actions = (props: any) => {
   const inviteMember = async () => {
     try {
       await inviteMemberQueryData.query();
-      toast.success("Invitation has been send successfully.");
+      toast.success("The invitation has been sent successfully");
       fetchSpaceMembers();
     } catch (e) {
       toastError(e as ICustomError);
@@ -532,7 +532,7 @@ const InviteSpaceMemberDialog = (
   const onInvite = async () => {
     try {
       await inviteMemberQuery();
-      toast.success("Invitation has been send successfully.");
+      toast.success("The invitation has been sent successfully");
       resetForm();
       rest.onClose();
       spaceMembersQueryData.query();
