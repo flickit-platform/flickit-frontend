@@ -61,7 +61,7 @@ const ListOfItems = ({
   onReorder,
   deleteBtn,
   name,
-  setOpenDeleteDialog
+  setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
     service: (args, config) => service.fetchQuestionListKit(args, config),
@@ -240,8 +240,19 @@ const ListOfItems = ({
       };
       handleCancel(id);
 
-      await postQuestionsKit.query({ kitVersionId, data }).then(() => {
-        fetchQuery.query();
+      await postQuestionsKit.query({ kitVersionId, data }).then((response) => {
+        if (response?.questionId) {
+          const newQuestionData: IQuestion = {
+            advisable: data.advisable,
+            hint: null,
+            id: response.questionId,
+            index: data.index,
+            mayNotBeApplicable: data.mayNotBeApplicable,
+            title: data.title,
+          };
+
+          setQuestionData((prev) => [...prev, newQuestionData]);
+        }
       });
     } catch (e) {
       const err = e as ICustomError;
@@ -467,7 +478,12 @@ const ListOfItems = ({
                                   {deleteBtn && (
                                     <IconButton
                                       size="small"
-                                      onClick={() =>setOpenDeleteDialog({status: true,id:item.id})}
+                                      onClick={() =>
+                                        setOpenDeleteDialog({
+                                          status: true,
+                                          id: item.id,
+                                        })
+                                      }
                                       sx={{ mx: 1 }}
                                       color="secondary"
                                       data-testid="items-delete-icon"
