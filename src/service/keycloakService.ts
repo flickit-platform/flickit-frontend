@@ -20,15 +20,44 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
     .then((authenticated) => {
       if (!authenticated) {
         doLogin();
+        return;
       }
-      onAuthenticatedCallback();
+
+      const previousUser = localStorage.getItem("previousUser");
+      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
+      const currentUser =
+        _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
+
+      const hasRedirected = localStorage.getItem("hasRedirected");
+      if (!hasRedirected) {
+        localStorage.setItem("hasRedirected", "true");
+        if (previousUser && previousUser !== currentUser) {
+          window.location.href = "/spaces/1";
+          return;
+        } else if (lastVisitedPage) {
+          localStorage.removeItem("lastVisitedPage");
+          window.location.href = lastVisitedPage;
+          return;
+        }
+      } else {
+        onAuthenticatedCallback();
+      }
     })
     .catch(console.error);
 };
+
+const doLogout = async () => {
+  const currentUser =
+    _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
+
+  localStorage.setItem("previousUser", currentUser || "");
+  localStorage.setItem("lastVisitedPage", window.location.pathname);
+  localStorage.removeItem("hasRedirected");
+
+  await _kc.logout();
+};
 const isTokenExpired = _kc.isTokenExpired;
 const doLogin = _kc.login;
-
-const doLogout = _kc.logout;
 
 const getToken = (): string => _kc?.token ?? "";
 
