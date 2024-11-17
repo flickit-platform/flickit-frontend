@@ -250,7 +250,12 @@ const ListOfItems = ({
             mayNotBeApplicable: data.mayNotBeApplicable,
             title: data.title,
           };
-
+          setNewQuestion({
+            title: "",
+            index: newQuestion.index + 1 || 1,
+            value: newQuestion.index + 1 || 1,
+            id: null,
+          });
           setQuestionData((prev) => [...prev, newQuestionData]);
         }
       });
@@ -266,9 +271,8 @@ const ListOfItems = ({
       [id]: false,
     }));
     setNewQuestion({
+      ...newQuestion,
       title: "",
-      index: fetchQuestionListKit.data?.items.length + 1 || 1,
-      value: fetchQuestionListKit.data?.items.length + 1 || 1,
       id: null,
     });
   };
