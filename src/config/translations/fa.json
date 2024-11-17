@@ -465,7 +465,6 @@
     "release": "انتشار",
     "releaseNote": "توجه: تمام تغییرات اعمال شده در پیش‌نویس ذخیره شده‌است.",
     "remove": "حذف",
-    "removeMemberExpertGroup": "آیا مطمئن هستید که می خواهید این کاربر را حذف کنید؟",
     "report": "گزارش {{title}}",
     "requiredFieldError": "این فیلد الزامی است.",
     "resendAndInvitation": "ارسال مجدد دعوت‌نامه",
