@@ -11,7 +11,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { theme } from "@config/theme";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
 import { Link, useParams } from "react-router-dom";
@@ -34,6 +34,11 @@ import EditRounded from "@mui/icons-material/EditRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { IPermissions } from "@/types";
 import AIGenerated from "../common/tags/AIGenerated";
+import RichEditorField from "@common/fields/RichEditorField";
+import FormProviderWithForm from "@common/FormProviderWithForm";
+import {useForm} from "react-hook-form";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -1077,9 +1082,9 @@ const OnHoverInput = (props: any) => {
     runOnMount: false,
     // toastError: true,
   });
-  const updateAssessmentKit = async () => {
+  const updateAssessmentKit = async (data: any, event: any, shouldView?: boolean) => {
     try {
-      const res = await infoQuery(attributeId, assessmentId, inputData);
+      const res = await infoQuery(attributeId, assessmentId, data.title);
       res?.message && toast.success(res?.message);
       setShow(false);
     } catch (e) {
@@ -1096,6 +1101,7 @@ const OnHoverInput = (props: any) => {
       setHasError(true);
     }
   };
+    const formMethods = useForm({ shouldUnregister: true });
 
   return (
     <Box
@@ -1110,62 +1116,63 @@ const OnHoverInput = (props: any) => {
     >
       {editable && show ? (
         <Box sx={{ display: "flex", flexDirection: "column", width: "100% " }}>
-          <OutlinedInput
-            error={hasError}
-            fullWidth
-            name={title}
-            defaultValue={data || ""}
-            onChange={(e) => setInputData(e.target.value)}
-            value={inputData}
-            required={true}
-            multiline={true}
-            inputProps={{style:{
-                textAlign: languageDetector(inputData) ? "right" : "left" ,
-                unicodeBidi: "plaintext"
-                }}}
-            sx={{
-              minHeight: "38px",
-              borderRadius: "4px",
-              paddingRight: "12px;",
-              fontWeight: "700",
-              fontSize: "0.875rem",
-            }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  title="Submit Edit"
-                  edge="end"
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "3px",
-                    height: "36px",
-                    margin: "3px",
-                  }}
-                  onClick={updateAssessmentKit}
+            <FormProviderWithForm formMethods={formMethods}>
+                <Box
+                    sx={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
                 >
-                  <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
-                </IconButton>
-                <IconButton
-                  title="Cancel Edit"
-                  edge="end"
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "4px",
-                    height: "36px",
-                  }}
-                  onClick={handleCancel}
+                <RichEditorField
+                name={"title"}
+                label={<Trans i18nKey="about" />}
+                required={true}
+                defaultValue={data || ""}
+            />
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100%",
+                    }}
                 >
-                  <CancelRounded sx={{ color: "#fff" }} />
-                </IconButton>
-              </InputAdornment>
-            }
-          />
+                    <IconButton
+                        edge="end"
+                        sx={{
+                            background: theme.palette.primary.main,
+                            "&:hover": {
+                                background: theme.palette.primary.dark,
+                            },
+                            borderRadius: "3px",
+                            height: "36px",
+                            marginBottom: "2px",
+                        }}
+                        onClick={formMethods.handleSubmit(updateAssessmentKit)}
+                    >
+                        <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                    </IconButton>
+                    <IconButton
+                        edge="end"
+                        sx={{
+                            background: theme.palette.primary.main,
+                            "&:hover": {
+                                background: theme.palette.primary.dark,
+                            },
+                            borderRadius: "4px",
+                            height: "36px",
+                            marginBottom: "2px",
+                        }}
+                        onClick={handleCancel}
+                    >
+                        <CancelRoundedIcon sx={{ color: "#fff" }} />
+                    </IconButton>
+                </Box>
+                </Box>
+            </FormProviderWithForm>
           {hasError && (
             <Typography color="#ba000d" variant="caption">
               {error?.data?.[type]}
@@ -1194,11 +1201,23 @@ const OnHoverInput = (props: any) => {
           onMouseOut={handleMouseOut}
         >
           <Typography sx={{
-              textAlign: languageDetector(data) ? "right" : "left",
-              unicodeBidi: "plaintext",
               width:"100%"
-          }} variant="titleMedium" fontWeight="400">
-            {data?.replace(/<\/?p>/g, "")}
+          }}>
+          <Typography  dangerouslySetInnerHTML={{
+              __html: data ?? "",
+          }} style={{
+              whiteSpace:"pre-wrap",
+              ...theme.typography.titleMedium,
+              fontWeight:"400",
+              unicodeBidi:"plaintext",
+          }}
+          sx={{
+              "& > p":{
+                  unicodeBidi:"plaintext",
+                  textAlign:"initial"
+              }
+          }}
+          ></Typography>
           </Typography>
           {isHovering && (
             <IconButton

@@ -141,9 +141,11 @@ const RichEditor = (props: IRichEditorProps) => {
                   ? {
                       marginBlockStart: 0,
                       marginBlockEnd: 0,
+                      textAlign:"initial"
                     }
                   : {
-                      unicodeBidi: "plaintext"
+                      unicodeBidi: "plaintext",
+                      textAlign:"initial"
                     },
               },
             }
