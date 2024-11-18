@@ -1283,7 +1283,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                     )}
                     <Grid container spacing={2}>
                       {users.map((member: any) => {
-                        const { displayName, id, pictureLink, linkedin, bio } =
+                        const { displayName, id, pictureLink, linkedin, bio, deletable } =
                           member;
 
                         return (
@@ -1303,22 +1303,23 @@ const ExpertGroupMembersDetail = (props: any) => {
                                 position: "relative",
                               }}
                             >
-                              <Tooltip title={<Trans i18nKey={"remove"} />}>
-                                <IconButton
-                                  onClick={() =>
-                                    setRemoveMemberDialog({ status: true, id })
-                                  }
-                                  sx={{
-                                    position: "absolute",
-                                    right: 0,
-                                    top: 0,
-                                  }}
-                                  size="small"
-                                  color="secondary"
-                                >
-                                  <DeleteRoundedIcon fontSize="small" />
-                                </IconButton>
-                              </Tooltip>
+                                { deletable && <Tooltip title={<Trans i18nKey={"remove"} />}>
+                                    <IconButton
+                                        onClick={() =>
+                                            setRemoveMemberDialog({ status: true, id })
+                                        }
+                                        sx={{
+                                            position: "absolute",
+                                            right: 0,
+                                            top: 0,
+                                        }}
+                                        size="small"
+                                        color="secondary"
+                                    >
+                                        <DeleteRoundedIcon fontSize="small" />
+                                    </IconButton>
+                                </Tooltip>
+                                }
                               <Box
                                 sx={{
                                   mt: "28px",
