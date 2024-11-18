@@ -99,7 +99,9 @@ const AssessmentKit = (props: any) => {
   });
 
   return (
-    <Box>
+    <Box
+      sx={{ position: "relative", width: "100%", height: "calc(100vh - 48px)" }}
+    >
       <Box
         sx={{
           position: "absolute",
@@ -124,6 +126,7 @@ const AssessmentKit = (props: any) => {
           zIndex: 3,
           maxHeight: "260px",
           overflow: "hidden",
+          p: { xs: 1, sm: 1, md: 4 },
         }}
       >
         <Box sx={{ color: "white" }}>
@@ -269,7 +272,7 @@ const AssessmentKit = (props: any) => {
           </Box>
         </Box>
       </Box>
-      <Box mt={15}>
+      <Box mt={15} sx={{ p: { xs: 1, sm: 1, md: 4 } }}>
         {!published && (
           <Box my={5}>
             <AlertBox severity="warning">

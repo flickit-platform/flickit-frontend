@@ -6,18 +6,19 @@ import { styles } from "@styles";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
   const { children } = props;
+  console.log();
   return (
     <Box sx={{ overflowX: "clip", minHeight: "100vh" }}>
       <Navbar />
       <Box
         sx={{
-          p: !location.pathname.endsWith("/html-document/")
-            ? { xs: 1, sm: 1, md: 4 }
-            : "0",
-          pt: {
-            xs: "84px !important",
-            minHeight: "100%",
-          },
+          maxHeight: "calc(100vh - 48px)",
+          overflow: "auto",
+          p:
+            !location.pathname.endsWith("/html-document/") &&
+            !location.pathname.startsWith("/assessment-kits/")
+              ? { xs: 1, sm: 1, md: 4 }
+              : "0",
         }}
         m="auto"
       >

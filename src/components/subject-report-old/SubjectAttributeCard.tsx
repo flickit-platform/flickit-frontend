@@ -190,10 +190,7 @@ const SUbjectAttributeCard = (props: any) => {
                   >
                     {Math.ceil(confidenceValue)}%
                   </Typography>
-                  <Trans
-                    i18nKey={"wasEstimate"}
-                    values={{ title }}
-                  />
+                  <Trans i18nKey={"wasEstimate"} values={{ title }} />
                   <Typography
                     component="span"
                     color="#6035A1"
@@ -281,7 +278,7 @@ const SUbjectAttributeCard = (props: any) => {
                           textDecoration: "none",
                         }}
                       >
-                        the assessment question
+                        <Trans i18nKey={"assessmentQuestion"} />
                       </Typography>
                       <Typography variant="titleMedium" fontWeight={400}>
                         <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />
@@ -1119,10 +1116,12 @@ const OnHoverInput = (props: any) => {
             value={inputData}
             required={true}
             multiline={true}
-            inputProps={{style:{
-                textAlign: languageDetector(inputData) ? "right" : "left" ,
-                unicodeBidi: "plaintext"
-                }}}
+            inputProps={{
+              style: {
+                textAlign: languageDetector(inputData) ? "right" : "left",
+                unicodeBidi: "plaintext",
+              },
+            }}
             sx={{
               minHeight: "38px",
               borderRadius: "4px",
@@ -1193,11 +1192,15 @@ const OnHoverInput = (props: any) => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          <Typography sx={{
+          <Typography
+            sx={{
               textAlign: languageDetector(data) ? "right" : "left",
               unicodeBidi: "plaintext",
-              width:"100%"
-          }} variant="titleMedium" fontWeight="400">
+              width: "100%",
+            }}
+            variant="titleMedium"
+            fontWeight="400"
+          >
             {data?.replace(/<\/?p>/g, "")}
           </Typography>
           {isHovering && (
