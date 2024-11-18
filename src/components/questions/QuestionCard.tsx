@@ -1151,15 +1151,6 @@ const Evidence = (props: any) => {
                           }}
                         >
                           <Trans i18nKey="comment" />
-                          {value == null && (
-                            <InfoOutlinedIcon
-                              style={{ color: evidenceBG.borderColor }}
-                              sx={{
-                                  ml: theme.direction == "ltr" ? 1 : 0,
-                                  mr: theme.direction == "rtl" ? 1 : 0,
-                              }}
-                            />
-                          )}
                         </Box>
                       }
                       sx={{
@@ -1263,38 +1254,6 @@ const Evidence = (props: any) => {
                   >
                     {valueCount.length || 0} / {LIMITED}
                   </Typography>
-                  {value == null && valueCount.length == 0 && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        bottom: "8px",
-                        right: theme.direction == "rtl" ? "unset" : "80px",
-                        left: theme.direction == "ltr" ? "unset" : "80px",
-                        display: "flex",
-                        alignItems: "center",
-                        border: "1px solid #9DA7B3",
-                        px: "6px",
-                        py: "2px",
-                        borderRadius: "12px 0 12px 12px",
-                      }}
-                    >
-                      <InfoOutlinedIcon
-                        style={{ color: "#0A2342" }}
-                        sx={{
-                          marginRight: theme.direction === "ltr" ? 1 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: ".875rem",
-                          fontWeight: 300,
-                        }}
-                      >
-                        <Trans i18nKey="commentsWillNotBeShown" />
-                      </Typography>
-                    </Box>
-                  )}
                   <Grid
                     item
                     xs={12}
@@ -1743,38 +1702,6 @@ const EvidenceDetail = (props: any) => {
                     >
                       {valueCount.length || 0} / {LIMITED}
                     </Typography>
-                    {value == null && valueCount.length == 0 && (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          bottom: "8px",
-                          right: "80px",
-                          display: "flex",
-                          alignItems: "center",
-                          border: "1px solid #9DA7B3",
-                          px: "6px",
-                          py: "2px",
-                          borderRadius: "12px 0 12px 12px",
-                        }}
-                      >
-                        <InfoOutlinedIcon
-                          style={{ color: "#0A2342" }}
-                          sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 1 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                          }}
-                        />
-                        <Typography
-                          sx={{
-                            fontSize: ".875rem",
-                            fontWeight: 300,
-                          }}
-                        >
-                          <Trans i18nKey="commentsWillNotBeShown" />
-                        </Typography>
-                      </Box>
-                    )}
                     <Grid
                       item
                       xs={12}
