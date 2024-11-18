@@ -1479,7 +1479,7 @@ const AssessmentExportContainer = () => {
                                             }}
                                           >
                                             <Typography variant="titleMedium">
-                                              the assessment question
+                                              <Trans i18nKey={"assessmentQuestion"}/>
                                             </Typography>
                                           </Box>{" "}
                                           <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />

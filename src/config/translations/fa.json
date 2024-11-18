@@ -154,7 +154,7 @@
     "createAssessmentKit": "ایجاد کیت ارزیابی",
     "created": "ساخته‌شده",
     "createDraft": "ایجاد پیش‌نویس",
-    "createEvidence": "ساخت شاهد",
+    "createEvidence": "ایجاد شاهد",
     "createExpertGroup": "ایجاد گروه خبرگی",
     "createQuestion": "ایجاد سوال",
     "createSpace": "ایجاد فضای کاری",
@@ -453,7 +453,7 @@
     "questionPlaceholder": "در این قسمت سوال را وارد نمایید.",
     "questions": "پرسش‌ها",
     "questionsArentCompleteSoAICantBeGeneratedFirstSection": "تا زمانی که تمام",
-    "questionsArentCompleteSoAICantBeGeneratedSecondSection": "سوالات پاسخ داده نشود، بینش‌های مبتنی بر AI ارائه نمی‌شود.",
+    "questionsArentCompleteSoAICantBeGeneratedSecondSection": " پاسخ داده نشود، بینش‌های مبتنی بر AI ارائه نمی‌شود.",
     "questionsCount": "تعداد پرسش‌ها",
     "readAbout": "درباره",
     "recentSpaces": "فضاهای کاری اخیر",
@@ -465,7 +465,6 @@
     "release": "انتشار",
     "releaseNote": "توجه: تمام تغییرات اعمال شده در پیش‌نویس ذخیره شده‌است.",
     "remove": "حذف",
-    "removeMemberExpertGroup": "آیا مطمئن هستید که می خواهید این کاربر را حذف کنید؟",
     "report": "گزارش {{title}}",
     "requiredFieldError": "این فیلد الزامی است.",
     "resendAndInvitation": "ارسال مجدد دعوت‌نامه",
@@ -710,5 +709,8 @@
     "noOptionHere": "هیچ گزینه‌ای اینجا نیست!",
     "noOptionAtTheMoment": "در حال حاضر گزینه‌ای برای پاسخ وجود ندارد.",
     "addFirstOption": "اضافه کردن اولین گزینه",
-    "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید"
+    "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید",
+    "invitationSentSuccessfully": "دعوتنامه با موفقیت ارسال شد",
+    "invite": "دعوت کردن",
+    "assessmentQuestion":"سوالات ارزیابی"
 }
