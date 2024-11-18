@@ -101,6 +101,7 @@ const RichEditor = (props: IRichEditorProps) => {
               ...(boxProps.sx || {}),
               direction: `${isFarsi ? "rtl" : "ltr"}`,
               textAlign: `${isFarsi ? "right" : "left"}`,
+              cursor: "text",
               fontFamily: `${isFarsi ? "VazirMatn" : primaryFontFamily}`,
               position: "relative",
               marginTop: "0px !important",
