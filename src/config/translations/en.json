@@ -711,5 +711,6 @@
   "noOptionAtTheMoment": "No options for answer at the moment.",
   "addFirstOption": "Add First option",
   "invitationSentSuccessfully": "The invitation has been sent successfully",
-  "invite": "INVITE"
+  "invite": "INVITE",
+  "assessmentQuestion":"the assessment question"
 }

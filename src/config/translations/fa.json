@@ -453,7 +453,7 @@
     "questionPlaceholder": "در این قسمت سوال را وارد نمایید.",
     "questions": "پرسش‌ها",
     "questionsArentCompleteSoAICantBeGeneratedFirstSection": "تا زمانی که تمام",
-    "questionsArentCompleteSoAICantBeGeneratedSecondSection": "سوالات پاسخ داده نشود، بینش‌های مبتنی بر AI ارائه نمی‌شود.",
+    "questionsArentCompleteSoAICantBeGeneratedSecondSection": " پاسخ داده نشود، بینش‌های مبتنی بر AI ارائه نمی‌شود.",
     "questionsCount": "تعداد پرسش‌ها",
     "readAbout": "درباره",
     "recentSpaces": "فضاهای کاری اخیر",
@@ -712,5 +712,6 @@
     "addFirstOption": "اضافه کردن اولین گزینه",
     "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید",
     "invitationSentSuccessfully": "دعوتنامه با موفقیت ارسال شد",
-    "invite": "دعوت کردن"
+    "invite": "دعوت کردن",
+    "assessmentQuestion":"سوالات ارزیابی"
 }
