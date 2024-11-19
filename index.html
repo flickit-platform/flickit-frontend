@@ -39,47 +39,6 @@
         y.parentNode.insertBefore(t, y);
 
         window.clarity("consent");
-
-        function generateClaritySessionId() {
-          return (
-            "session-" +
-            Math.random().toString(36).substring(2) +
-            "-" +
-            Date.now()
-          );
-        }
-
-        const loggedInUserId = sessionStorage.getItem("loggedInUserId");
-        let clarityUserId;
-
-        if (loggedInUserId) {
-          clarityUserId = loggedInUserId;
-        } else {
-          clarityUserId = sessionStorage.getItem("clarityUserId");
-        }
-
-        const claritySessionId =
-          sessionStorage.getItem("claritySessionId") ||
-          generateClaritySessionId();
-        sessionStorage.setItem("claritySessionId", claritySessionId);
-
-        const clarityPageId = window.location.pathname;
-        const friendlyName = sessionStorage.getItem("username");
-
-        window.clarity(
-          "identify",
-          clarityUserId,
-          claritySessionId,
-          clarityPageId,
-          friendlyName,
-        );
-        c.clarity(
-          "identify",
-          clarityUserId,
-          claritySessionId,
-          clarityPageId,
-          friendlyName,
-        );
       })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
     </script>
   </body>

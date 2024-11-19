@@ -28,6 +28,8 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       const currentUser =
         _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
 
+      localStorage.setItem("currentUser", currentUser || "");
+
       const hasRedirected = localStorage.getItem("hasRedirected");
       if (!hasRedirected) {
         localStorage.setItem("hasRedirected", "true");
