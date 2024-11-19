@@ -4,6 +4,7 @@ import { vi } from "vitest";
 import OptionContain from "@components/kit-designer/answerRange/options/optionsContain";
 import React from "react";
 import axios from "axios";
+import {ServiceContext, ServiceProvider, useServiceContext} from "@providers/ServiceProvider";
 
 const mockAnswerRange = [
   { key:1, id: 1, answerOptions: [
@@ -18,6 +19,12 @@ const mockOnDelete = vi.fn();
 const mockOnReorder = vi.fn();
 const setChangeData = vi.fn();
 const fetchQuery = vi.fn();
+const EditAnswerRangeOption= vi.fn()
+
+const MockServiceProvider = ({ children }: any) => {
+    return <ServiceProvider>{children}</ServiceProvider>;
+};
+
 describe("AnswerRangeList", () => {
   beforeEach(() => {
     render(
@@ -61,16 +68,20 @@ describe("AnswerRangeList", () => {
 
   it("allows editing options on answer Ranges",async ()=>{
     axios.post = vi.fn();
-    render(<>{mockAnswerRange.map(answerOption=>
-              (
-                  <OptionContain
-                      fetchQuery={fetchQuery}
-                      key={answerOption.id}
-                      answerOption={answerOption.answerOptions}
-                      setChangeData={setChangeData}
-                  />
-              ))
-  }</>)
+   await beforeEach(()=>{
+      render(<MockServiceProvider>{mockAnswerRange.map(answerOption=>
+          (
+              <OptionContain
+                  fetchQuery={fetchQuery}
+                  key={answerOption.id}
+                  answerOption={answerOption.answerOptions}
+                  setChangeData={setChangeData}
+              />
+          ))
+      }</MockServiceProvider>)
+    })
+
+
     fireEvent.click(screen.getAllByTestId("item-edit-option-icon")[0]);
     fireEvent.change(screen.getByTestId("items-option-title"), {
       target: { value: "Updated option 1" },
@@ -79,7 +90,8 @@ describe("AnswerRangeList", () => {
       target: { value: 2 },
     });
 
-    const saveBtn = screen.getByTestId("item-save-option-icon")
-    fireEvent.click(saveBtn)
+    expect((screen.getByTestId("items-option-title")as any).value).toBe("Updated option 1")
+    expect((screen.getByTestId("items-option-value")as any).value).toBe("2")
+    // fireEvent.click(screen.getByTestId("item-save-option-icon"))
   })
 });

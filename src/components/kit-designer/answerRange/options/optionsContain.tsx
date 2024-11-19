@@ -55,8 +55,6 @@ const OptionContain = (props: any) => {
             value: tempValues.value,
         }
         let answerOptionId = item.id
-        console.log(data,"test data")
-        console.log(item,"test item")
        await EditAnswerRangeOption.query({
             kitVersionId,answerOptionId ,data
         }).then(()=>{
