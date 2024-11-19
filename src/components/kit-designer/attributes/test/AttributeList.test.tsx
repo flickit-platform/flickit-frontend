@@ -66,5 +66,6 @@ describe("MaturityLevelList", () => {
         expect(description).toBeInTheDocument();
         expect(screen.getByTestId("display-attribute-title")).toHaveTextContent("attribute 1")
         expect(screen.getByTestId("display-attribute-description")).toHaveTextContent("description 1")
+        expect(screen.getByTestId("display-attribute-weight")).toHaveTextContent("1")
     });
 });
