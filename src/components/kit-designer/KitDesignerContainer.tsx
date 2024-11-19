@@ -35,28 +35,20 @@ const KitDesignerContainer = () => {
             window.location.hash = "Maturity-Levels"
             setSelectedTab(0)
         }
-        switch (currentHash){
-            case "Maturity-Levels":
-                setSelectedTab(0)
-                break;
-            case "Subjects":
-                setSelectedTab(1)
-                break;
-            case "Attributes":
-                setSelectedTab(2)
-                break;
-            case "Answer-Ranges":
-                setSelectedTab(3)
-                break;
-            case "Questionnaires":
-                setSelectedTab(4)
-                break;
-            case "Release":
-                setSelectedTab(5)
-                break;
-            default:
-                setSelectedTab(0)
-        }
+
+        const tabEl = [
+            {title: "Maturity-Levels",index:0},
+            {title: "Subjects",index:1},
+            {title: "Attributes",index:2},
+            {title: "Answer-Ranges",index:3},
+            {title: "Questionnaires",index:4},
+            {title: "Release",index:5}
+        ]
+        tabEl.forEach(item =>{
+            if(item.title === currentHash){
+                setSelectedTab(item.index)
+            }
+        })
     }, []);
 
   const kitVersionQuery = useQuery<IKitVersion>({
