@@ -33,7 +33,7 @@ describe("answer range test form",()=>{
     it("renders with initial values",()=>{
         renderForm();
 
-        const titleInput = screen.getByTestId("AnswerRange-title");
+        const titleInput: any = screen.getByTestId("AnswerRange-title");
         expect(titleInput).toBeInTheDocument();
         expect(titleInput.value).toBe("title 1")
     })
