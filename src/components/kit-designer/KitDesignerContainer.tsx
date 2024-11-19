@@ -23,9 +23,33 @@ const KitDesignerContainer = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
-  const handleTabChange = (event: any, newValue: any) => {
-    setSelectedTab(newValue);
-  };
+    const handleTabChange = (event: any, newValue: any) => {
+        setSelectedTab(newValue);
+        window.location.hash = event.target.textContent.replace(" ","-");
+    };
+
+    useEffect(() => {
+        let currentHash = window.location.hash.replace("#","");
+        const regex = /^new/;
+        if (!currentHash || regex.test(currentHash)){
+            window.location.hash = "Maturity-Levels"
+            setSelectedTab(0)
+        }
+
+        const tabEl = [
+            {title: "Maturity-Levels",index:0},
+            {title: "Subjects",index:1},
+            {title: "Attributes",index:2},
+            {title: "Answer-Ranges",index:3},
+            {title: "Questionnaires",index:4},
+            {title: "Release",index:5}
+        ]
+        tabEl.forEach(item =>{
+            if(item.title === currentHash){
+                setSelectedTab(item.index)
+            }
+        })
+    }, []);
 
   const kitVersionQuery = useQuery<IKitVersion>({
     service: (args = { kitVersionId }, config) =>
