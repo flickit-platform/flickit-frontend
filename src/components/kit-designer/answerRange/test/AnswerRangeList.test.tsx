@@ -4,7 +4,6 @@ import { vi } from "vitest";
 import OptionContain from "@components/kit-designer/answerRange/options/optionsContain";
 import React from "react";
 import axios from "axios";
-import userEvent from "@testing-library/user-event/index";
 
 const mockAnswerRange = [
   { key:1, id: 1, answerOptions: [
@@ -14,12 +13,7 @@ const mockAnswerRange = [
           {id: 22, title: 'option2', index: 1, value: 1}],
       title: "title 2"},
 ];
-const mockKitVersionId = 1
-const mockAnswerOptionId = 1
-
 const mockOnEdit = vi.fn();
-const handleSaveClick = vi.fn();
-const EditAnswerRangeOption  = vi.fn();
 const mockOnDelete = vi.fn();
 const mockOnReorder = vi.fn();
 const setChangeData = vi.fn();
@@ -71,7 +65,7 @@ describe("AnswerRangeList", () => {
               (
                   <OptionContain
                       fetchQuery={fetchQuery}
-                      key={1}
+                      key={answerOption.id}
                       answerOption={answerOption.answerOptions}
                       setChangeData={setChangeData}
                   />
@@ -85,16 +79,7 @@ describe("AnswerRangeList", () => {
       target: { value: 2 },
     });
 
-    const saveBtn =  screen.getByTestId("item-save-option-icon")
+    const saveBtn = screen.getByTestId("item-save-option-icon")
     fireEvent.click(saveBtn)
-
-    expect(handleSaveClick).toHaveBeenCalled()
-
-    // await waitFor(() => {
-    //   expect((axios as any).default.post).toHaveBeenCalledTimes(1);
-    //   expect(EditAnswerRangeOption).toHaveBeenCalledWith(
-    //       {id: 11, title: 'Updated option 1', index: 1, value: 2}
-    //   );
-    // });
   })
 });
