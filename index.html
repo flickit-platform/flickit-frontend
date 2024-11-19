@@ -39,7 +39,10 @@
         y.parentNode.insertBefore(t, y);
 
         window.clarity("consent");
-
+      })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
+    </script>
+    <script type="text/javascript">
+      (function () {
         function generateClaritySessionId() {
           return (
             "session-" +
@@ -47,18 +50,6 @@
             "-" +
             Date.now()
           );
-        }
-
-        async function setUserIdTagBasedOnIP() {
-          try {
-            const response = await fetch("https://api.ipify.org?format=json");
-            const data = await response.json();
-            const userId = `ip-${data.ip}`;
-            sessionStorage.setItem("clarityUserId", userId);
-            c.clarity("set", "userId", userId);
-          } catch (error) {
-            console.error("Failed to fetch IP:", error);
-          }
         }
 
         const loggedInUserId = sessionStorage.getItem("loggedInUserId");
@@ -81,21 +72,22 @@
         const clarityPageId = window.location.pathname;
         const friendlyName = sessionStorage.getItem("username");
 
-        window.clarity(
-          "identify",
-          clarityUserId,
-          claritySessionId,
-          clarityPageId,
+        window.clarity("identify", {
+          userId: clarityUserId,
+          sessionId: claritySessionId,
+          pageId: clarityPageId,
           friendlyName,
-        );
-        c.clarity(
-          "identify",
-          clarityUserId,
-          claritySessionId,
-          clarityPageId,
-          friendlyName,
-        );
-      })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
+        });
+
+        const fixedTags = {
+          appVersion: "1.0.0",
+          environment: "production",
+        };
+
+        Object.entries(fixedTags).forEach(([key, value]) => {
+          window.clarity("set", key, value);
+        });
+      })();
     </script>
   </body>
 </html>
