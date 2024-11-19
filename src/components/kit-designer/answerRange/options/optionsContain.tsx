@@ -55,6 +55,8 @@ const OptionContain = (props: any) => {
             value: tempValues.value,
         }
         let answerOptionId = item.id
+        console.log(data,"test data")
+        console.log(item,"test item")
        await EditAnswerRangeOption.query({
             kitVersionId,answerOptionId ,data
         }).then(()=>{
@@ -174,6 +176,7 @@ const OptionContain = (props: any) => {
                         <>
                             <IconButton
                                 size="small"
+                                data-testid = "item-save-option-icon"
                                 onClick={() => handleSaveClick(answerOption)}
                                 sx={{ ml: 1 }}
                                 color="success"
@@ -193,6 +196,7 @@ const OptionContain = (props: any) => {
                         <>
                             <IconButton
                                 size="small"
+                                data-testid = "item-edit-option-icon"
                                 onClick={()=>handleEditClick(answerOption)}
                                 sx={{ ml: 1 }}
                             >
