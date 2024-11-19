@@ -42,6 +42,10 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
           return;
         }
       } else {
+        const currentUser =
+          _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
+
+        localStorage.setItem("currentUser", currentUser || "");
         onAuthenticatedCallback();
       }
     })
@@ -55,6 +59,7 @@ const doLogout = async () => {
   localStorage.setItem("previousUser", currentUser || "");
   localStorage.setItem("lastVisitedPage", window.location.pathname);
   localStorage.removeItem("hasRedirected");
+  sessionStorage.clear();
 
   await _kc.logout();
 };
