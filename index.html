@@ -39,10 +39,7 @@
         y.parentNode.insertBefore(t, y);
 
         window.clarity("consent");
-      })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
-    </script>
-    <script type="text/javascript">
-      (function () {
+
         function generateClaritySessionId() {
           return (
             "session-" +
@@ -59,9 +56,6 @@
           clarityUserId = loggedInUserId;
         } else {
           clarityUserId = sessionStorage.getItem("clarityUserId");
-          if (!clarityUserId) {
-            setUserIdTagBasedOnIP();
-          }
         }
 
         const claritySessionId =
@@ -79,16 +73,14 @@
           clarityPageId,
           friendlyName,
         );
-
-        const fixedTags = {
-          appVersion: "1.0.0",
-          environment: "production",
-        };
-
-        Object.entries(fixedTags).forEach(([key, value]) => {
-          window.clarity("set", key, value);
-        });
-      })();
+        c.clarity(
+          "identify",
+          clarityUserId,
+          claritySessionId,
+          clarityPageId,
+          friendlyName,
+        );
+      })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
     </script>
   </body>
 </html>
