@@ -72,12 +72,13 @@
         const clarityPageId = window.location.pathname;
         const friendlyName = sessionStorage.getItem("username");
 
-        window.clarity("identify", {
-          userId: clarityUserId,
-          sessionId: claritySessionId,
-          pageId: clarityPageId,
+        window.clarity(
+          "identify",
+          clarityUserId,
+          claritySessionId,
+          clarityPageId,
           friendlyName,
-        });
+        );
 
         const fixedTags = {
           appVersion: "1.0.0",
