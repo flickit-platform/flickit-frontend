@@ -285,7 +285,7 @@ const ListOfItems = ({
             {reorderedItems?.map((item, index) => (
               <Draggable
                 key={item.id}
-                draggableId={item.id.toString()}
+                draggableId={item?.id?.toString()}
                 index={index}
                 isDragDisabled={expanded}
               >
@@ -639,7 +639,7 @@ const ListOfItems = ({
                                           (question: any, index: number) => (
                                             <Draggable
                                               key={question.id}
-                                              draggableId={question.id.toString()}
+                                              draggableId={question?.id?.toString()}
                                               index={index}
                                             >
                                               {(provided) => (

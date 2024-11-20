@@ -314,6 +314,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       open={open}
       onClose={onClose}
       title={<Trans i18nKey="editQuestion" />}
+      data-testid={"question-dialog"}
     >
       <FormProviderWithForm
         formMethods={formMethods}
@@ -338,7 +339,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               {...formMethods.register("title", { required: true })}
               fullWidth
               label="Question"
-              placeholder={t("questionPlaceholder").toString()}
+              placeholder={t("questionPlaceholder")?.toString()}
               required
               multiline
             />
@@ -348,7 +349,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               {...formMethods.register("hint")}
               fullWidth
               label="Hint"
-              placeholder={t("hintPlaceholder").toString()}
+              placeholder={t("hintPlaceholder")?.toString()}
               multiline
             />
           </Grid>

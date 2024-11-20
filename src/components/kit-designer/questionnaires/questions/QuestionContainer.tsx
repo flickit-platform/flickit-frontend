@@ -35,9 +35,9 @@ const QuestionContain = (props: any) => {
           mr={2}
           px={0.2}
         >
-          <Typography variant="semiBoldLarge">{`Q. ${question?.index}`}</Typography>
+          <Typography data-testid="question-index" variant="semiBoldLarge">{`Q. ${question?.index}`}</Typography>
         </Box>
-        <Box sx={{ width: { xs: "80%", md: "90%" } }}>{question?.title}</Box>
+        <Box data-testid="question-title" sx={{ width: { xs: "80%", md: "90%" } }}>{question?.title}</Box>
         <Box
           sx={{
             width: { xs: "20%", md: "10%" },
@@ -45,7 +45,7 @@ const QuestionContain = (props: any) => {
             justifyContent: "center",
           }}
         >
-          <IconButton onClick={handleEditClick}>
+          <IconButton data-testid="question-handel-edit" onClick={handleEditClick}>
             <ModeEditOutlineOutlinedIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -53,13 +53,14 @@ const QuestionContain = (props: any) => {
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
-      <QuestionDialog
-        open={isDialogOpen}
-        question={question}
-        kitVersionId={kitVersionId}
-        onClose={handleCloseDialog}
-        fetchQuery={fetchQuery}
-      />
+        {isDialogOpen && <QuestionDialog
+            open={isDialogOpen}
+            question={question}
+            kitVersionId={kitVersionId}
+            onClose={handleCloseDialog}
+            fetchQuery={fetchQuery}
+        /> }
+
     </>
   );
 };
