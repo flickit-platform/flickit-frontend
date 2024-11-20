@@ -158,7 +158,7 @@ export const useQuestions = () => {
             permissions: permissions,
           }),
         );
-        console.log("More questions loaded:", items);
+        // console.log("More questions loaded:", items);
       }
     } catch (e) {
       console.error("Failed to load more questions", e);

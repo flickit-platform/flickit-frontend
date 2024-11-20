@@ -9,7 +9,7 @@ interface ImportMetaEnv {
   VITE_CLARITY_KEY: string;
   VITE_NOVU_SOCKET_URL: string;
   VITE_NOVU_APPLICATION_IDENTIFIER: string;
-  VITE_MULTILINGUALITY: string
+  VITE_MULTILINGUALITY: string;
 }
 interface ImportMeta {
   readonly env: ImportMetaEnv;

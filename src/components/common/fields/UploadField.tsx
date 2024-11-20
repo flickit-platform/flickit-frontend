@@ -259,7 +259,7 @@ const Uploader = (props: IUploadProps) => {
             }) as string,
           };
         } else if(rejectedFiles.length == 1 && error[0]?.message){
-          toastError(error.pop()?.message as string);
+          toastError((error as any)?.pop()?.message as string);
         } else {
           toastError(t("oneFileOnly") as string);
         }
