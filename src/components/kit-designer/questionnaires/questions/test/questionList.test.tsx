@@ -45,17 +45,7 @@ describe("test for questions",()=>{
     it('check for open question modal', ()=> {
         const handelEditBtn = screen.getAllByTestId("question-handel-edit")[0]
         fireEvent.click(handelEditBtn)
-
         expect(screen.getByTestId("question-dialog")).toBeInTheDocument()
-
     });
-
-    // it("check for display question list",()=>{
-    //     const index = screen.getByTestId("question-index")
-    //     const title = screen.getByTestId("question-title")
-    //
-    //     expect(index).toBeInTheDocument()
-    //     expect(title).toBeInTheDocument()
-    // })
 
 })
