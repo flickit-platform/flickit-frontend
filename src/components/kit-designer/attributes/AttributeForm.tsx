@@ -45,6 +45,9 @@ const AttributeForm = ({
         name="title"
         value={newAttribute.title}
         onChange={handleInputChange}
+        inputProps={{
+            "data-testid": "attribute-from-title",
+        }}
         fullWidth
         margin="normal"
         sx={{
@@ -67,6 +70,9 @@ const AttributeForm = ({
         label={<Trans i18nKey="description" />}
         name="description"
         value={newAttribute.description}
+        inputProps={{
+            "data-testid": "attribute-from-description",
+        }}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -91,6 +97,9 @@ const AttributeForm = ({
         name="weight"
         type="number"
         value={newAttribute.weight}
+        inputProps={{
+            "data-testid": "attribute-from-weight",
+        }}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -119,10 +128,10 @@ const AttributeForm = ({
           alignItems: "center",
         }}
       >
-        <IconButton color="primary" onClick={handleSave}>
+        <IconButton color="primary" data-testid={"attribute-save-icon"} onClick={handleSave}>
           <CheckIcon />
         </IconButton>
-        <IconButton color="secondary" onClick={handleCancel}>
+        <IconButton color="secondary" data-testid={"attribute-close-icon"} onClick={handleCancel}>
           <CloseIcon />
         </IconButton>
       </Link>

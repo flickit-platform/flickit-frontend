@@ -271,6 +271,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             flexGrow: 1,
                                             mt: 0.5,
                                           }}
+                                          data-testid = "display-attribute-title"
                                         >
                                           {attribute.title}
                                         </TableCell>
@@ -280,10 +281,13 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             flexGrow: 1,
                                             mt: 0.5,
                                           }}
+                                          data-testid = "display-attribute-description"
                                         >
                                           {attribute.description}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell
+                                            data-testid = "display-attribute-weight"
+                                        >
                                           {attribute.weight}
                                         </TableCell>
                                         <TableCell
