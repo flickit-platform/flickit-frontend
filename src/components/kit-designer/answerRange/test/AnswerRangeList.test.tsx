@@ -1,10 +1,9 @@
-import {render, fireEvent, screen, waitFor} from "@testing-library/react";
+import {render, fireEvent, screen } from "@testing-library/react";
 import ListOfItems from "../AnswerRangeList";
 import { vi } from "vitest";
 import OptionContain from "@components/kit-designer/answerRange/options/optionsContain";
-import React from "react";
 import axios from "axios";
-import {ServiceContext, ServiceProvider, useServiceContext} from "@providers/ServiceProvider";
+import { ServiceProvider } from "@providers/ServiceProvider";
 
 const mockAnswerRange = [
   { key:1, id: 1, answerOptions: [
@@ -19,7 +18,6 @@ const mockOnDelete = vi.fn();
 const mockOnReorder = vi.fn();
 const setChangeData = vi.fn();
 const fetchQuery = vi.fn();
-const EditAnswerRangeOption= vi.fn()
 
 const MockServiceProvider = ({ children }: any) => {
     return <ServiceProvider>{children}</ServiceProvider>;

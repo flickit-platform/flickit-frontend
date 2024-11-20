@@ -1,7 +1,6 @@
 import { describe, it, vi, expect } from "vitest";
 import AnswerRangeForm from "@components/kit-designer/answerRange/AnswerRangeForm";
-import React from "react";
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
