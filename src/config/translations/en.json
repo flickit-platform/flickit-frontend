@@ -711,5 +711,9 @@
   "addFirstOption": "Add First option",
   "invitationSentSuccessfully": "The invitation has been sent successfully",
   "invite": "INVITE",
-  "assessmentQuestion":"the assessment question"
+  "assessmentQuestion":"the assessment question",
+  "kitAnalyzer": "Kit Analyzer",
+  "validateReleaseTooltip": "Your kit cannot be released until all errors are resolved.",
+  "kitValidated": "The kit is validated successfully.",
+  "kitErrorsTitle": "Errors in this Kit:"
 }

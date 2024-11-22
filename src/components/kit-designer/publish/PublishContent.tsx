@@ -3,16 +3,19 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import PermissionControl from "../../common/PermissionControl";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { IKitVersion } from "@/types";
-import { InfoOutlined } from "@mui/icons-material";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
 import { Tooltip } from "@mui/material";
+import { useQuery } from "@/utils/useQuery";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { service } = useServiceContext();
@@ -22,15 +25,18 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const handlePublish = async () => {
     try {
-      const data = {
-        kitVersionId,
-      };
+      const data = { kitVersionId };
       await service.activateKit({ kitVersionId }, data, undefined);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
     }
   };
+
+  const validateKitVersion = useQuery({
+    service: (args = { kitVersionId }, config) =>
+      service.validateKitVersion(args, config),
+  });
 
   const handleDeleteDraft = async () => {
     try {
@@ -53,12 +59,84 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         <Typography variant="bodyMedium">
           <Trans i18nKey="publishDescription" />
         </Typography>
-        <Divider sx={{ my: 1 }} />
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          mt={8}
+          mt={4}
+        >
+          <Typography variant="headlineSmall" fontWeight="bold">
+            <Trans i18nKey="kitAnalyzer" />
+          </Typography>
+        </Box>
+        <Divider sx={{ my: 1 }} />
+        <Box
+          mt={2}
+          p={2}
+          bgcolor={
+            validateKitVersion.loading
+              ? "grey.200"
+              : validateKitVersion?.data?.isValid
+                ? "success.light"
+                : "error.light"
+          }
+          borderRadius={1}
+          border="1px solid"
+          borderColor={
+            validateKitVersion.loading
+              ? "grey.400"
+              : validateKitVersion?.data?.isValid
+                ? "success.main"
+                : "error.main"
+          }
+          color={validateKitVersion.loading ? "text.primary" : "white"}
+          maxHeight={500}
+          overflow="auto"
+        >
+          {validateKitVersion.loading ? (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap={1}
+            >
+              <CircularProgress size={24} />
+              <Typography variant="bodyMedium">
+                <Trans i18nKey="loading" />
+              </Typography>
+            </Box>
+          ) : validateKitVersion?.data?.isValid ? (
+            <Box display="flex" alignItems="center" gap={1} color="white">
+              <CheckCircleIcon color="inherit" />
+              <Typography variant="bodyMedium">
+                <Trans i18nKey="kitValidated" />{" "}
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <Box display="flex" alignItems="center" gap={1} color="white">
+                <ErrorIcon color="inherit" />
+                <Typography variant="bodyMedium" fontWeight="bold">
+                  <Trans i18nKey="kitErrorsTitle" />{" "}
+                </Typography>
+              </Box>
+              <ul>
+                {validateKitVersion?.data?.errors.map(
+                  (error: string, index: number) => (
+                    <li key={index}>
+                      <Typography variant="bodyMedium">{error}</Typography>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </>
+          )}
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mt={2}
         >
           <Box display="flex" gap={2}>
             <Button
@@ -78,14 +156,22 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               </Button>
             </Tooltip>
           </Box>
-          <Button
-            variant="contained"
-            onClick={handlePublish}
-            component={Link}
-            to={`/user/expert-groups/${expertGroupId}/assessment-kits/${kitVersion.assessmentKit.id}`}
+          <Tooltip
+            disableHoverListener={validateKitVersion?.data?.isValid}
+            title={<Trans i18nKey="validateReleaseTooltip" />}
           >
-            <Trans i18nKey="release" />
-          </Button>
+            <div>
+              <Button
+                disabled={!validateKitVersion?.data?.isValid}
+                variant="contained"
+                onClick={handlePublish}
+                component={Link}
+                to={`/user/expert-groups/${expertGroupId}/assessment-kits/${kitVersion.assessmentKit.id}`}
+              >
+                <Trans i18nKey="release" />
+              </Button>
+            </div>
+          </Tooltip>
         </Box>
         <DeleteConfirmationDialog
           open={deleteDialogOpen}

@@ -712,5 +712,9 @@
     "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید",
     "invitationSentSuccessfully": "دعوتنامه با موفقیت ارسال شد",
     "invite": "دعوت کردن",
-    "assessmentQuestion":"سوالات ارزیابی"
+    "assessmentQuestion":"سوالات ارزیابی",
+    "kitAnalyzer": "ارزیابی کیت",
+    "validateReleaseTooltip": "تا زمانی که ارورهای گفته‌شده را برطرف ننمایید نمی‌توانید این کیت را منتشر نمایید.",
+    "kitValidated": "خوشبختانه ارور موجود نیست و می‌توانید به راحتی کیت را منتشر نمایید.",
+    "kitErrorsTitle": "ارورهای موجود در این کیت به شرح زیر است:"
 }
