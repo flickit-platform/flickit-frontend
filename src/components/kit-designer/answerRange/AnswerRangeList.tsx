@@ -215,8 +215,6 @@ const ListOfItems = ({
     });
   };
 
-
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const parsedValue = name === "value"  ? parseInt(value) || 1 : value;

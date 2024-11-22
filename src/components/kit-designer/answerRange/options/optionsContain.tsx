@@ -30,6 +30,7 @@ const OptionContain = (props: any) => {
     const EditAnswerRangeOption = useQuery({
         service: (args, config) =>
             service.EditAnswerRangeOption(args, config),
+        runOnMount: false
     });
     const handleEditClick = (answerOption: KitDesignListItems) => {
         const {id,title,value} = answerOption
@@ -98,7 +99,7 @@ const OptionContain = (props: any) => {
                                 })
                         }
                             inputProps={{
-                                "data-testid": "items-title",
+                                "data-testid": "items-option-title",
                             }}
                             variant="outlined"
                             fullWidth
@@ -135,7 +136,7 @@ const OptionContain = (props: any) => {
                             })
                         }
                         inputProps={{
-                            "data-testid": "items-title",
+                            "data-testid": "items-option-value",
                         }}
                         variant="outlined"
                         fullWidth
@@ -173,6 +174,7 @@ const OptionContain = (props: any) => {
                         <>
                             <IconButton
                                 size="small"
+                                data-testid = "item-save-option-icon"
                                 onClick={() => handleSaveClick(answerOption)}
                                 sx={{ ml: 1 }}
                                 color="success"
@@ -192,6 +194,7 @@ const OptionContain = (props: any) => {
                         <>
                             <IconButton
                                 size="small"
+                                data-testid = "item-edit-option-icon"
                                 onClick={()=>handleEditClick(answerOption)}
                                 sx={{ ml: 1 }}
                             >
