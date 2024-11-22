@@ -93,21 +93,26 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   const { service } = useServiceContext();
 
   useEffect(() => {
-    if (open && question.id) {
-      fetchImpacts.query();
-      fetchAttributeKit.query();
-      fetchMaturityLevels.query();
-      fetchOptions.query();
-      fetchAnswerRanges.query();
-      formMethods.reset({
-        title: question?.title || "",
-        hint: question?.hint || "",
-        options: question?.options || [{ text: "" }],
-        mayNotBeApplicable: question?.mayNotBeApplicable || false,
-        advisable: question?.advisable || false,
-      });
-      setSelectedAnswerRange(question?.answerRangeId);
-    }
+    (async ()=>{
+      if (open && question.id) {
+      Promise.all([
+        fetchImpacts.query(),
+        fetchAttributeKit.query(),
+        fetchMaturityLevels.query(),
+        fetchOptions.query(),
+        fetchAnswerRanges.query(),
+        ]).then().catch()
+        formMethods.reset({
+          title: question?.title || "",
+          hint: question?.hint || "",
+          options: question?.options || [{ text: "" }],
+          mayNotBeApplicable: question?.mayNotBeApplicable || false,
+          advisable: question?.advisable || false,
+        });
+        setSelectedAnswerRange(question?.answerRangeId);
+      }
+    })()
+
   }, [open, question, formMethods]);
 
   const onSubmit = async (data: any) => {
@@ -314,6 +319,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       open={open}
       onClose={onClose}
       title={<Trans i18nKey="editQuestion" />}
+      data-testid={"question-dialog"}
     >
       <FormProviderWithForm
         formMethods={formMethods}
@@ -338,7 +344,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               {...formMethods.register("title", { required: true })}
               fullWidth
               label="Question"
-              placeholder={t("questionPlaceholder").toString()}
+              placeholder={t("questionPlaceholder")?.toString()}
               required
               multiline
             />
@@ -348,7 +354,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               {...formMethods.register("hint")}
               fullWidth
               label="Hint"
-              placeholder={t("hintPlaceholder").toString()}
+              placeholder={t("hintPlaceholder")?.toString()}
               multiline
             />
           </Grid>
