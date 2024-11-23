@@ -101,6 +101,7 @@ const RichEditor = (props: IRichEditorProps) => {
               ...(boxProps.sx || {}),
               direction: `${isFarsi ? "rtl" : "ltr"}`,
               textAlign: `${isFarsi ? "right" : "left"}`,
+              cursor: "text",
               fontFamily: `${isFarsi ? "VazirMatn" : primaryFontFamily}`,
               position: "relative",
               marginTop: "0px !important",
@@ -141,9 +142,11 @@ const RichEditor = (props: IRichEditorProps) => {
                   ? {
                       marginBlockStart: 0,
                       marginBlockEnd: 0,
+                      textAlign:"initial"
                     }
                   : {
-                      unicodeBidi: "plaintext"
+                      unicodeBidi: "plaintext",
+                      textAlign:"initial"
                     },
               },
             }
