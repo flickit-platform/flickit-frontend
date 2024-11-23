@@ -191,10 +191,7 @@ const SUbjectAttributeCard = (props: any) => {
                   >
                     {Math.ceil(confidenceValue)}%
                   </Typography>
-                  <Trans
-                    i18nKey={"wasEstimate"}
-                    values={{ title }}
-                  />
+                  <Trans i18nKey={"wasEstimate"} values={{ title }} />
                   <Typography
                     component="span"
                     color="#6035A1"
@@ -282,7 +279,7 @@ const SUbjectAttributeCard = (props: any) => {
                           textDecoration: "none",
                         }}
                       >
-                        the assessment question
+                        <Trans i18nKey={"assessmentQuestion"} />
                       </Typography>
                       <Typography variant="titleMedium" fontWeight={400}>
                         <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />

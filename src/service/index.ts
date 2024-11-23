@@ -36,7 +36,6 @@ export const createService = (
         localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
       } catch (error) {
         console.error("Failed to update token:", error);
-        keycloakService.doLogin();
       }
     }
     if (!hasTenantInUrl && !req.headers?.["Authorization"] && accessToken) {
@@ -478,7 +477,12 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/kit-versions/${kitVersionId}/`, config);
     },
-
+    validateKitVersion(
+      { kitVersionId }: { kitVersionId: TId },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.get(`/api/v1/kit-versions/${kitVersionId}/validate/`, config);
+    },
     deleteMaturityLevel(
       {
         kitVersionId,
@@ -722,7 +726,10 @@ export const createService = (
       );
     },
     deleteQuestionnairesKit(
-      { kitVersionId, questionnaireId }: { kitVersionId: TId; questionnaireId: TId },
+      {
+        kitVersionId,
+        questionnaireId,
+      }: { kitVersionId: TId; questionnaireId: TId },
       config?: AxiosRequestConfig<any>,
     ) {
       return axios.delete(
@@ -754,7 +761,7 @@ export const createService = (
         config,
       );
     },
-      fetchQuestionListKit(
+    fetchQuestionListKit(
       {
         kitVersionId,
         questionnaireId,
@@ -762,7 +769,7 @@ export const createService = (
       config?: AxiosRequestConfig<any>,
     ) {
       return axios.get(
-          `/api/v1/kit-versions/${kitVersionId}/questionnaires/${questionnaireId}/questions/`,
+        `/api/v1/kit-versions/${kitVersionId}/questionnaires/${questionnaireId}/questions/`,
         {
           ...(config ?? {}),
           params: {
@@ -930,55 +937,63 @@ export const createService = (
         config,
       );
     },
-      fetchAnswerRangeKit(
-      { kitVersionId }: { kitVersionId: TId},
+    fetchAnswerRangeKit(
+      { kitVersionId }: { kitVersionId: TId },
       config?: AxiosRequestConfig<any>,
-      ){
-        return axios.get(
-              `/api/v1/kit-versions/${kitVersionId}/answer-ranges/`,
-            config,
-        );
-      },
-      updateKitAnswerRange(
-          { kitVersionId,answerRangeId,data } : { kitVersionId: TId,answerRangeId: TId, data: any},
-          config?: AxiosRequestConfig<any>,
-      ){
-          return axios.put(
-              `/api/v1/kit-versions/${kitVersionId}/answer-ranges/${answerRangeId}/`,
-              data,
-              config,
-          )
-      },
-      postKitAnswerRange(
-          { kitVersionId, data }: { kitVersionId: TId; data: any },
-          config?: AxiosRequestConfig<any>,
-      ) {
-          return axios.post(
-              `/api/v1/kit-versions/${kitVersionId}/answer-ranges/`,
-              data,
-              config,
-          );
-      },
-      postOptionsKit(
-          { kitVersionId, data }: { kitVersionId: TId; data: any },
-          config?: AxiosRequestConfig<any>,
-      ) {
-          return axios.post(
-              `/api/v1/kit-versions/${kitVersionId}/answer-range-options/`,
-              data,
-              config,
-          );
-      },
-      EditAnswerRangeOption(
-          { kitVersionId,answerOptionId, data }: { kitVersionId: TId;answerOptionId:TId ; data: any },
-          config?: AxiosRequestConfig<any>,
-      ){
-          return axios.put(
-              `/api/v1/kit-versions/${kitVersionId}/answer-options/${answerOptionId}/`,
-              data,
-              config,
-          );
-      },
+    ) {
+      return axios.get(
+        `/api/v1/kit-versions/${kitVersionId}/answer-ranges/`,
+        config,
+      );
+    },
+    updateKitAnswerRange(
+      {
+        kitVersionId,
+        answerRangeId,
+        data,
+      }: { kitVersionId: TId; answerRangeId: TId; data: any },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+        `/api/v1/kit-versions/${kitVersionId}/answer-ranges/${answerRangeId}/`,
+        data,
+        config,
+      );
+    },
+    postKitAnswerRange(
+      { kitVersionId, data }: { kitVersionId: TId; data: any },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.post(
+        `/api/v1/kit-versions/${kitVersionId}/answer-ranges/`,
+        data,
+        config,
+      );
+    },
+    postOptionsKit(
+      { kitVersionId, data }: { kitVersionId: TId; data: any },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.post(
+        `/api/v1/kit-versions/${kitVersionId}/answer-range-options/`,
+        data,
+        config,
+      );
+    },
+    EditAnswerRangeOption(
+      {
+        kitVersionId,
+        answerOptionId,
+        data,
+      }: { kitVersionId: TId; answerOptionId: TId; data: any },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+        `/api/v1/kit-versions/${kitVersionId}/answer-options/${answerOptionId}/`,
+        data,
+        config,
+      );
+    },
     createAdvice(
       {
         assessmentId,

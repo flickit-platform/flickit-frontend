@@ -61,7 +61,7 @@ const ListOfItems = ({
   onReorder,
   deleteBtn,
   name,
-  setOpenDeleteDialog
+  setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
     service: (args, config) => service.fetchQuestionListKit(args, config),
@@ -240,8 +240,24 @@ const ListOfItems = ({
       };
       handleCancel(id);
 
-      await postQuestionsKit.query({ kitVersionId, data }).then(() => {
-        fetchQuery.query();
+      await postQuestionsKit.query({ kitVersionId, data }).then((response) => {
+        if (response?.questionId) {
+          const newQuestionData: IQuestion = {
+            advisable: data.advisable,
+            hint: null,
+            id: response.questionId,
+            index: data.index,
+            mayNotBeApplicable: data.mayNotBeApplicable,
+            title: data.title,
+          };
+          setNewQuestion({
+            title: "",
+            index: newQuestion.index + 1 || 1,
+            value: newQuestion.index + 1 || 1,
+            id: null,
+          });
+          setQuestionData((prev) => [...prev, newQuestionData]);
+        }
       });
     } catch (e) {
       const err = e as ICustomError;
@@ -255,9 +271,8 @@ const ListOfItems = ({
       [id]: false,
     }));
     setNewQuestion({
+      ...newQuestion,
       title: "",
-      index: fetchQuestionListKit.data?.items.length + 1 || 1,
-      value: fetchQuestionListKit.data?.items.length + 1 || 1,
       id: null,
     });
   };
@@ -270,7 +285,7 @@ const ListOfItems = ({
             {reorderedItems?.map((item, index) => (
               <Draggable
                 key={item.id}
-                draggableId={item.id.toString()}
+                draggableId={item?.id?.toString()}
                 index={index}
                 isDragDisabled={expanded}
               >
@@ -467,7 +482,12 @@ const ListOfItems = ({
                                   {deleteBtn && (
                                     <IconButton
                                       size="small"
-                                      onClick={() =>setOpenDeleteDialog({status: true,id:item.id})}
+                                      onClick={() =>
+                                        setOpenDeleteDialog({
+                                          status: true,
+                                          id: item.id,
+                                        })
+                                      }
                                       sx={{ mx: 1 }}
                                       color="secondary"
                                       data-testid="items-delete-icon"
@@ -619,7 +639,7 @@ const ListOfItems = ({
                                           (question: any, index: number) => (
                                             <Draggable
                                               key={question.id}
-                                              draggableId={question.id.toString()}
+                                              draggableId={question?.id?.toString()}
                                               index={index}
                                             >
                                               {(provided) => (

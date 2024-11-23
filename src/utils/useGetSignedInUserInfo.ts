@@ -49,7 +49,7 @@ const useGetSignedInUserInfo = (
             : axios.defaults.headers,
         })
         .then((res) => {
-          sessionStorage.setItem("username", data.displayName);
+          sessionStorage.setItem("displayName", data.displayName);
           localStorage.setItem("loggedInUserId", data.id);
           dispatch(
             authActions.setUserInfo({

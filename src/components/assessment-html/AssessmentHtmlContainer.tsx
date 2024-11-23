@@ -11,13 +11,28 @@ import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
+  const [content, setContent] = useState("");
   const [errorObject, setErrorObject] = useState<any>(undefined);
   const { service } = useServiceContext();
 
   const iframeUrl =
-    "https://app.flickit.org/static-stage/report/" +
+    "https://flickit-cdn.hectora.app/static-stage/report/" +
     assessmentId +
     "/index.html";
+
+  useEffect(() => {
+    const fetchSiteContent = async () => {
+      try {
+        const response = await fetch(iframeUrl);
+        const html = await response.text();
+        setContent(html);
+      } catch (error) {
+        console.error("Error fetching site content:", error);
+      }
+    };
+
+    fetchSiteContent();
+  }, []);
 
   useEffect(() => {
     const checkIframeUrl = async () => {
@@ -52,18 +67,15 @@ const AssessmentExportContainer = () => {
               <Box
                 m="auto"
                 pb={3}
+                mt="40px"
                 sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}
               >
                 <AssessmentHtmlTitle pathInfo={pathInfo} />
               </Box>
-              <Box height="calc(100vh - 150px)">
-                <iframe
-                  src={iframeUrl}
-                  width="100%"
-                  height="100%"
-                  style={{ border: "none" }}
-                />
-              </Box>
+              <div
+                dangerouslySetInnerHTML={{ __html: content }}
+                style={{ width: "100%", height: "100%" }}
+              />
             </>
           );
         }}

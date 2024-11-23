@@ -26,6 +26,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       onClose={closeDialog}
       fullWidth
       maxWidth="md"
+      data-testid="delete-confirmation-modal"
       fullScreen={fullScreen}
       {...rest}
     >

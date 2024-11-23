@@ -76,10 +76,10 @@ const AnswerRangeForm = ({
         }}
       >
         {" "}
-        <IconButton size="small" color="primary" data-testid="questionnaires-check-icon" onClick={handleSave}>
+        <IconButton size="small" color="primary" data-testid="answerRange-check-icon" onClick={handleSave}>
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="questionnaires-close-icon" onClick={handleCancel}>
+        <IconButton size="small" color="secondary" data-testid="answerRange-close-icon" onClick={handleCancel}>
           <CloseIcon />
         </IconButton>
       </Link>

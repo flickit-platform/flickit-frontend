@@ -381,6 +381,28 @@ export const theme = createTheme({
           background: #B8144B;
           width: 20px
         }
+        ::-webkit-scrollbar {
+          width: 12px;
+          height: 12px; 
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #f0f0f0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background-color: #888; 
+          border-radius: 6px; 
+          border: 3px solid #f0f0f0;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background-color: #555;
+        }
+
+        scrollbar-width: thin; 
+        scrollbar-color: #888 #f0f0f0;
+
       `,
     },
     MuiDialogTitle: {

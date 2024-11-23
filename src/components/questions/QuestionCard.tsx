@@ -945,8 +945,6 @@ const Evidence = (props: any) => {
   const [expandedAttachmentsDialogs, setExpandedAttachmentsDialogs] =
     useState<any>({ expended: false, count: 0 });
   const [attachmentData, setAttachmentData] = useState<boolean>(false);
-  const [dropZoneData, setDropZone] = useState<any>(null);
-  const [description, setDescription] = useState("");
   const is_farsi = firstCharDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
@@ -985,7 +983,6 @@ const Evidence = (props: any) => {
 
   const [value, setValue] = React.useState("POSITIVE");
   const [createAttachment, setCreateAttachment] = useState(false);
-  const [changeInput, setChangeInput] = useState(false);
   const [loadingEvidence, setLoadingEvidence] = useState(false);
   const [evidenceJustCreatedId, setEvidenceJustCreatedId] =
     useState<string>("");
@@ -1033,14 +1030,14 @@ const Evidence = (props: any) => {
           assessmentId,
           type: value,
         });
-        if (createAttachment) {
-          setChangeInput(true);
+        if(createAttachment){
+            setExpandedAttachmentsDialogs({count:0, expended: true})
+         }
+          setCreateAttachment(false)
           setEvidenceJustCreatedId(id);
-        } else {
           const { items } = await evidencesQueryData.query();
           setEvidencesData(items);
-        }
-        setValueCount("");
+          setValueCount("");
       }
     } catch (e) {
       const err = e as ICustomError;
@@ -1095,14 +1092,6 @@ const Evidence = (props: any) => {
     return fetchEvidenceAttachments.query({ ...args });
   };
 
-  const handelFinish = async () => {
-    const { items } = await evidencesQueryData.query();
-    setEvidencesData(items);
-    setChangeInput(false);
-    setDropZone(null);
-    setDescription("");
-    setCreateAttachment(false);
-  };
   const rtl = localStorage.getItem("lang") === "fa"
   return (
     <Box
@@ -1123,29 +1112,6 @@ const Evidence = (props: any) => {
               justifyContent={"end"}
               sx={styles.formGrid}
             >
-              {changeInput ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                    paddingBottom: "12px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      ...theme.typography.headlineSmall,
-                      color: evidenceBG.borderColor,
-                      fontSize: { xs: "1.2rem", sm: "1.5rem" },
-                    }}
-                  >
-                    {`${t("evidenceAttachmentType", {
-                      value: value ? t(value.toLowerCase())  : t("comment")  ,
-                    })}`}
-                  </Typography>
-                </Box>
-              ) : (
                 <TabContext value={value}>
                   <TabList
                     onChange={handleChange}
@@ -1185,15 +1151,6 @@ const Evidence = (props: any) => {
                           }}
                         >
                           <Trans i18nKey="comment" />
-                          {value == null && (
-                            <InfoOutlinedIcon
-                              style={{ color: evidenceBG.borderColor }}
-                              sx={{
-                                  ml: theme.direction == "ltr" ? 1 : 0,
-                                  mr: theme.direction == "rtl" ? 1 : 0,
-                              }}
-                            />
-                          )}
                         </Box>
                       }
                       sx={{
@@ -1222,28 +1179,6 @@ const Evidence = (props: any) => {
                     />
                   </TabList>
                 </TabContext>
-              )}
-              {changeInput ? (
-                <Grid item xs={12} position={"relative"}>
-                  <CreateEvidenceAttachment
-                    setEvidenceId={setEvidenceId}
-                    setExpandedDeleteAttachmentDialog={
-                      setExpandedDeleteAttachmentDialog
-                    }
-                    attachmentData={attachmentData}
-                    description={description}
-                    dropZoneData={dropZoneData}
-                    setDropZone={setDropZone}
-                    setDescription={setDescription}
-                    fetchAttachments={fetchAttachments}
-                    setAttachmentData={setAttachmentData}
-                    evidencesQueryData={evidencesQueryData}
-                    evidenceJustCreatedId={evidenceJustCreatedId}
-                    pallet={evidenceBG}
-                    rtl={rtl}
-                  />
-                </Grid>
-              ) : (
                 <Grid item xs={12} position={"relative"}>
                   <InputFieldUC
                     multiline
@@ -1286,7 +1221,7 @@ const Evidence = (props: any) => {
                       <Checkbox
                         disabled={!permissions.addEvidenceAttachment}
                         checked={createAttachment}
-                        onChange={() => setCreateAttachment((prev) => !prev)}
+                        onChange={() => setCreateAttachment( prev => !prev)}
                         sx={{
                           color: evidenceBG.borderColor,
                           "&.Mui-checked": {
@@ -1319,38 +1254,6 @@ const Evidence = (props: any) => {
                   >
                     {valueCount.length || 0} / {LIMITED}
                   </Typography>
-                  {value == null && valueCount.length == 0 && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        bottom: "8px",
-                        right: theme.direction == "rtl" ? "unset" : "80px",
-                        left: theme.direction == "ltr" ? "unset" : "80px",
-                        display: "flex",
-                        alignItems: "center",
-                        border: "1px solid #9DA7B3",
-                        px: "6px",
-                        py: "2px",
-                        borderRadius: "12px 0 12px 12px",
-                      }}
-                    >
-                      <InfoOutlinedIcon
-                        style={{ color: "#0A2342" }}
-                        sx={{
-                          marginRight: theme.direction === "ltr" ? 1 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: ".875rem",
-                          fontWeight: 300,
-                        }}
-                      >
-                        <Trans i18nKey="commentsWillNotBeShown" />
-                      </Typography>
-                    </Box>
-                  )}
                   <Grid
                     item
                     xs={12}
@@ -1365,33 +1268,6 @@ const Evidence = (props: any) => {
                     }
                   ></Grid>
                 </Grid>
-              )}
-              {changeInput ? (
-                <Box sx={{ display: "flex", gap: "10px" }}>
-                  <Box display={"flex"} justifyContent={"end"} mt={2}>
-                    <LoadingButton
-                      sx={{
-                        maxHeight: "40px",
-                        borderRadius: "4px",
-                        p: 2,
-                        whiteSpace: "nowrap",
-                        width: { xs: "56px", sm: "160px" },
-                        background: evidenceBG.borderColor,
-                        "&:hover": {
-                          background: evidenceBG.borderColor,
-                        },
-                        ...theme.typography.titleMedium,
-                      }}
-                      // type="submit"
-                      onClick={handelFinish}
-                      variant="contained"
-                      loading={evidencesQueryData.loading}
-                    >
-                      <Trans i18nKey={"finish"} />
-                    </LoadingButton>
-                  </Box>
-                </Box>
-              ) : (
                 <Box display={"flex"} justifyContent={"end"} mt={2}>
                   <LoadingButton
                     sx={{
@@ -1415,7 +1291,6 @@ const Evidence = (props: any) => {
                     <Trans i18nKey={"createEvidence"} />
                   </LoadingButton>
                 </Box>
-              )}
             </Grid>
           </form>
         </FormProvider>
@@ -1436,7 +1311,6 @@ const Evidence = (props: any) => {
               setValue={setValue}
               item={item}
               setLoadingEvidence={setLoadingEvidence}
-              changeInput={changeInput}
               evidencesData={evidencesData}
               setEvidencesData={setEvidencesData}
               setExpandedDeleteDialog={setExpandedDeleteDialog}
@@ -1500,381 +1374,6 @@ const Evidence = (props: any) => {
         />
       </Box>
     </Box>
-  );
-};
-
-const CreateEvidenceAttachment = (props: any) => {
-  const {
-    pallet,
-    evidenceJustCreatedId,
-    setEvidenceId,
-    setExpandedDeleteAttachmentDialog,
-    setAttachmentData,
-    fetchAttachments,
-    setDescription,
-    setDropZone,
-    description,
-    dropZoneData,
-    attachmentData,
-    rtl
-  } = props;
-  const { service } = useServiceContext();
-  const [attachments, setAttachments] = useState([]);
-  const [error, setError] = useState(false);
-  const [loadingFile, setLoadingFile] = useState<boolean>(false);
-
-  const abortController = useMemo(
-    () => new AbortController(),
-    [evidenceJustCreatedId],
-  );
-
-  const MAX_SIZE = 2097152;
-  const skeleton = Array.from(Array(4).keys());
-
-  const addEvidenceAttachments = useQuery({
-    service: (args, config) =>
-      service.addEvidenceAttachments(args, { signal: abortController.signal }),
-    runOnMount: false,
-  });
-
-  const DiscardBtn = () => {
-    setDropZone(null);
-    setDescription("");
-  };
-  useEffect(() => {
-    (async () => {
-      const { attachments } = await fetchAttachments({
-        evidence_id: evidenceJustCreatedId,
-      });
-      setLoadingFile(false);
-      setAttachments(attachments);
-    })();
-  }, [attachmentData]);
-
-  const UploadAttachment = async () => {
-    if (description.length >= 1 && description.length < 3) {
-      return toast(t("atLeastCharacter"), { type: "error" });
-    }
-    if (!dropZoneData) {
-      return toast(t("attachmentRequired"), { type: "error" });
-    }
-    if (error && description.length >= 100) {
-      return toast(t("max100characters"), { type: "error" });
-    }
-
-    if (dropZoneData[0].size > MAX_SIZE) {
-      return toast(t("uploadAcceptableSize"), { type: "error" });
-    }
-    if (attachments.length >= 5) {
-      return toast("Each evidence can have up to 5 attachments.", {
-        type: "error",
-      });
-    }
-    try {
-      if (dropZoneData && !error) {
-        setLoadingFile(true);
-        const data = {
-          id: evidenceJustCreatedId,
-          attachment: dropZoneData[0],
-          description: description,
-        };
-        await addEvidenceAttachments.query({
-          evidenceId: evidenceJustCreatedId,
-          data,
-        });
-        const { attachments } = await fetchAttachments({
-          evidence_id: evidenceJustCreatedId,
-        });
-        setLoadingFile(false);
-        setAttachments(attachments);
-        setAttachmentData(true);
-        setDropZone(null);
-        setDescription("");
-      }
-    } catch (e: any) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  return (
-    <Box
-      sx={{
-        borderRadius: "12px",
-        width: "100%",
-        height: "auto",
-        background: pallet?.background,
-        border: `1px solid ${pallet?.borderColor}`,
-      }}
-      style={attachments.length >= 1 ? { minHeight: "232px" } : {}}
-    >
-      <Grid
-        direction={"row"}
-        container
-        sx={{
-          height: "50%",
-          width: "100%",
-          py: "20px !important",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: { xs: "15px", sm: "unset" },
-          padding: { xs: "20px 40px 40px", sm: "unset" },
-        }}
-      >
-        <Grid
-          item
-          xs={12}
-          sm={4}
-          sx={{
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CreateDropZone
-            pallet={pallet}
-            setDropZone={setDropZone}
-            dropZoneData={dropZoneData}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <DescriptionBox
-            setDescription={setDescription}
-            description={description}
-            setError={setError}
-            error={error}
-            rtl={rtl}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <ControlBtn
-            addEvidenceAttachments={addEvidenceAttachments}
-            DiscardBtn={DiscardBtn}
-            UploadAttachment={UploadAttachment}
-            pallet={pallet}
-          />
-        </Grid>
-      </Grid>
-      {attachments.length >= 1 && (
-        <Box sx={{ height: "50%", width: "100%" }}>
-          <Grid
-            container
-            sx={{
-              transition: "all .2s ease",
-              display: "flex",
-              gap: ".5rem",
-              flexDirection: "column",
-            }}
-          >
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              sx={{
-                display: "flex",
-                gap: ".5rem",
-                flexWrap: "wrap",
-                px: "40px",
-              }}
-            >
-              {!attachments.length && (
-                <Typography
-                  sx={{
-                    ...theme.typography?.titleMedium,
-                    fontSize: { xs: "10px", sm: "unset" },
-                  }}
-                >
-                  <Trans i18nKey={"addAttachment"} />
-                </Typography>
-              )}
-              {attachments.length >= 1 && (
-                <Typography
-                  sx={{
-                    ...theme.typography?.titleMedium,
-                    display: "flex",
-                    gap: "5px",
-                  }}
-                >
-                  {t("attachmentCount", {
-                    attachmentsCount: attachments.length,
-                  })}
-                </Typography>
-              )}
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              sx={{
-                display: "flex",
-                gap: ".5rem",
-                flexWrap: "nowrap",
-                px: "40px",
-              }}
-            >
-              {loadingFile ? skeleton.map((item, index) => {
-                    return (
-                      <Skeleton
-                        key={item}
-                        animation="wave"
-                        variant="rounded"
-                        width={40}
-                        height={40}
-                      />
-                    );
-                  })
-                : attachments.map((item, index) => {
-                    return (
-                      <FileIcon
-                        key={index}
-                        setEvidenceId={setEvidenceId}
-                        setExpandedDeleteAttachmentDialog={
-                          setExpandedDeleteAttachmentDialog
-                        }
-                        downloadFile={downloadFile}
-                        evidenceId={evidenceJustCreatedId}
-                        item={item}
-                        evidenceBG={pallet}
-                      />
-                    );
-                  })}
-            </Grid>
-            {attachments.length == 5 && (
-              <Box>
-                <Typography
-                  sx={{
-                    fontSize: "11px",
-                    color: "#821237",
-                    display: "flex",
-                    alignItems: "start",
-                    justifyContent: "center",
-                    textAlign: "justify",
-                    width: { xs: "90%", sm: "450px" },
-                    padding: "0px 40px 20px",
-                    ...theme.typography.labelSmall,
-                  }}
-                >
-                  <InfoOutlinedIcon
-                    sx={{
-                      marginRight: theme.direction === "ltr" ? 1 : "unset",
-                      marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                      width: "15px",
-                      height: "15px",
-                    }}
-                  />
-                  <Trans i18nKey={"evidenceIsLimited"} />
-                </Typography>
-              </Box>
-            )}
-          </Grid>
-        </Box>
-      )}
-    </Box>
-  );
-};
-
-const ControlBtn = (props: any) => {
-  const { pallet, DiscardBtn, UploadAttachment, addEvidenceAttachments } =
-    props;
-
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: { xs: "row", sm: "column" },
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "12px",
-      }}
-    >
-      <LoadingButton
-        sx={{
-          maxHeight: "28px",
-          borderRadius: "4px",
-          p: 2,
-          minWidth: "56px",
-          background: pallet.borderColor,
-          whiteSpace: "nowrap",
-          "&:hover": {
-            background: pallet.borderColor,
-          },
-          ...theme.typography.titleSmall,
-        }}
-        onClick={UploadAttachment}
-        variant="contained"
-        loading={addEvidenceAttachments.loading}
-      >
-        <Trans i18nKey={"uploadAttachment"} />
-      </LoadingButton>
-      <Button onClick={DiscardBtn}>
-        <Typography
-          sx={{
-            ...theme.typography.titleSmall,
-            color: `${pallet.borderColor}`,
-          }}
-        >
-          <Trans i18nKey={"discard"} />
-        </Typography>
-      </Button>
-    </Box>
-  );
-};
-
-const DescriptionBox = (props: any) => {
-  const { setDescription, description, setError, error, rtl } = props;
-
-  const MAX_DESC_TEXT = 100;
-  let [isFarsi, setIsFarsi] = useState(false);
-  const handelDescription = (e: any) => {
-    if (e.target.value.length < MAX_DESC_TEXT) {
-      setDescription(e.target.value);
-      setIsFarsi(languageDetector(e.target.value))
-      setError(false);
-    } else {
-      setError(true);
-    }
-  };
-
-  return (
-    <TextField
-      sx={{
-        overflow: "auto",
-        background: "transparent",
-      }}
-      rows={3}
-      id="outlined-multiline-static"
-      multiline
-      fullWidth
-      value={description}
-      onChange={(e) => handelDescription(e)}
-      variant="standard"
-      inputProps={{
-        sx: {
-          fontSize: "13px",
-          marginTop: "4px",
-          background: "#fff",
-          padding: "5px",
-          "&::placeholder": {
-            ...theme.typography.bodySmall,
-            color: "#000",
-          },
-        },
-      }}
-      dir={rtl  && description.length == 0 ? "rtl" : !rtl && description.length == 0 ? "ltr" : rtl && isFarsi ? "rtl" : !rtl && isFarsi ? "rtl" : "ltr"}
-      placeholder={
-          t(`addDescriptionToAttachment`) as string
-      }
-      error={error}
-      helperText={
-        description.length >= 1 && error && description.length <= 3
-          ? "Please enter at least 3 characters"
-          : description.length >= 1 && error && "maximum 100 characters"
-      }
-    />
   );
 };
 
@@ -1966,272 +1465,7 @@ const checkTypeUpload = (
     }
   }
 };
-const CreateDropZone = (props: any) => {
-  const { setDropZone, dropZoneData, pallet } = props;
-  const [dispalyFile, setDisplayFile] = useState<any>(null);
-  const [typeFile, setTypeFile] = useState<any>(null);
-  const MAX_SIZE = 2097152;
 
-  useEffect(() => {
-    checkTypeUpload(dropZoneData, setDisplayFile, setTypeFile);
-  }, [dropZoneData]);
-  const theme = useTheme();
-  return (
-    <DropZoneArea setDropZone={setDropZone} MAX_SIZE={MAX_SIZE}>
-      {({ getRootProps, getInputProps }: any) =>
-        dropZoneData ? (
-          <Box
-            sx={{
-              height: "68px",
-              maxWidth: "198px",
-              mx: "auto",
-              width: "100%",
-              border: "0.5px solid #C4C7C9",
-              borderRadius: "16px",
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              gap: "5px",
-            }}
-          >
-            <Button
-              sx={{
-                position: "absolute",
-                top: "3px",
-                right: "3px",
-                cursor: "pointer",
-                fontSize: "10px",
-              }}
-              onClick={() => setDropZone(null)}
-            >
-             <Trans i18nKey={"remove"} />
-            </Button>
-            {typeFile == "gif" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${gif}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "png" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${png}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "bpm" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${bpm}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {(typeFile == "jpeg" || typeFile == "jpg") && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${jpeg}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "pdf" && (
-              <section
-                style={{
-                  width: "40%",
-                  height: "60%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Box sx={{ width: "36px", height: "57px" }}>
-                  <FileType name={"pdf"} />
-                </Box>
-              </section>
-            )}
-            {typeFile == "zip" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${zip}` : "#"}
-                alt="zip file"
-              />
-            )}
-            {typeFile == "plain" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${txt}` : "#"}
-                alt="txt file"
-              />
-            )}
-            {typeFile == "docx" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${docx}` : "#"}
-                alt="docx file"
-              />
-            )}
-            {typeFile == "doc" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${doc}` : "#"}
-                alt="doc file"
-              />
-            )}
-            {typeFile == "xrar" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${rar}` : "#"}
-                alt="rar file"
-              />
-            )}
-            {(typeFile == "xlsx" || typeFile == "ods") && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${xls}` : "#"}
-                alt="xls file"
-              />
-            )}
-            {typeFile == "xtar" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${xtar}` : "#"}
-                alt="xtar file"
-              />
-            )}
-            <Typography sx={{ ...theme.typography.titleSmall }}>
-              {dropZoneData[0]?.name?.length > 14
-                ? dropZoneData[0]?.name?.substring(0, 10) +
-                  "..." +
-                  dropZoneData[0]?.name?.substring(
-                    dropZoneData[0]?.name.lastIndexOf("."),
-                  )
-                : dropZoneData[0]?.name}
-            </Typography>
-          </Box>
-        ) : (
-          <section
-            style={{
-              cursor: "pointer",
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-
-            }}
-          >
-            <Box
-              sx={{
-                height: "68px",
-                maxWidth: "198px",
-                mx: "auto",
-                width: "100%",
-                border: `.5px dashed ${pallet.borderColor}`,
-                borderRadius: "12px",
-                  position: "relative",
-              }}
-            >
-              <div
-                {...getRootProps()}
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "20px 10px",
-                  gap: "10px",
-                  textAlign: "center",
-                }}
-              >
-                <input {...getInputProps()} />
-                <img
-                  src={UploadIcon}
-                  style={{ width: "36px", height: "36px" }}
-                  alt={"upload icon"}
-                />
-                <Typography
-                  sx={{
-                    ...theme.typography.labelSmall,
-                    color: "#243342",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Trans i18nKey={"dragYourFile"} />
-                  <Typography
-                    sx={{
-                      ...theme.typography.labelSmall,
-                      color: "#2D80D2",
-                      display: "contents",
-                    }}
-                  >
-                    <Trans i18nKey={"locateIt"} />
-                  </Typography>
-                </Typography>
-                  <Tooltip
-                      slotProps={{
-                          tooltip: {
-                              sx: {
-                                  color: "#6C8093",
-                                  backgroundColor: "#E2E5E9",
-                                  borderRadius: "8px",
-                              },
-                          },
-                      }}
-                      title={
-                          <Box
-                              sx={{
-                                  width: "auto",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  gap: "5px",
-                              }}
-                          >
-                              <Box sx={{ display: "flex", gap: "5px" }}>
-                                  <InfoOutlinedIcon
-                                      style={{
-                                          color: "#C7CCD1",
-                                          width: "15px",
-                                          height: "15px",
-                                      }}
-                                  />
-                                  <Trans i18nKey={"uploadAcceptableSize"} />
-                              </Box>
-                              <Box sx={{ display: "flex", gap: "5px" }}>
-                                  <InfoOutlinedIcon
-                                      style={{
-                                          color: "#C7CCD1",
-                                          width: "15px",
-                                          height: "15px",
-                                      }}
-                                  />
-                                  <Trans i18nKey={"uploadAcceptable"} />
-                              </Box>
-                          </Box>
-                      }
-                  >
-                      <InfoOutlinedIcon
-                          style={{ color: "#0A2342", width: "15px", height: "15px" }}
-                          sx={{
-                              marginRight: theme.direction === "ltr" ? 1 : "unset",
-                              marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                              position: "absolute",
-                              top: { xs: "65%", sm: "50%" },
-                              right: theme.direction === "ltr" ? "15px" : "unset",
-                              left: theme.direction === "rtl" ? "15px" : "unset",
-                          }}
-                      />
-                  </Tooltip>
-              </div>
-            </Box>
-          </section>
-        )
-      }
-    </DropZoneArea>
-  );
-};
 
 const EvidenceDetail = (props: any) => {
   const {
@@ -2249,7 +1483,6 @@ const EvidenceDetail = (props: any) => {
     setAttachmentData,
     setExpandedDeleteAttachmentDialog,
     evidenceId,
-    changeInput,
     evidencesData,
     setLoadingEvidence,
   } = props;
@@ -2265,10 +1498,10 @@ const EvidenceDetail = (props: any) => {
   });
 
   useEffect(() => {
-    if (id === evidencesData[0].id && !changeInput) {
+    if (id === evidencesData[0].id) {
       setExpandedEvidenceBox(false);
     }
-  }, [evidencesData.length, changeInput]);
+  }, [evidencesData.length]);
 
   const {
     description,
@@ -2305,9 +1538,7 @@ const EvidenceDetail = (props: any) => {
         });
         const { items } = await evidencesQueryData.query();
         setEvidencesData(items);
-        if (!changeInput) {
-          setExpandedEvidenceBox(false);
-        }
+        setExpandedEvidenceBox(false);
         setIsEditing(false);
         setValueCount("");
       }
@@ -2471,38 +1702,6 @@ const EvidenceDetail = (props: any) => {
                     >
                       {valueCount.length || 0} / {LIMITED}
                     </Typography>
-                    {value == null && valueCount.length == 0 && (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          bottom: "8px",
-                          right: "80px",
-                          display: "flex",
-                          alignItems: "center",
-                          border: "1px solid #9DA7B3",
-                          px: "6px",
-                          py: "2px",
-                          borderRadius: "12px 0 12px 12px",
-                        }}
-                      >
-                        <InfoOutlinedIcon
-                          style={{ color: "#0A2342" }}
-                          sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 1 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                          }}
-                        />
-                        <Typography
-                          sx={{
-                            fontSize: ".875rem",
-                            fontWeight: 300,
-                          }}
-                        >
-                          <Trans i18nKey="commentsWillNotBeShown" />
-                        </Typography>
-                      </Box>
-                    )}
                     <Grid
                       item
                       xs={12}
@@ -3114,7 +2313,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
       service.addEvidenceAttachments(args, { signal: abortController.signal }),
     runOnMount: false,
   });
-
   useEffect(() => {
     if (dropZoneData) {
       if (dropZoneData[0]?.size && dropZoneData[0]?.size > 2097152) {

@@ -6,9 +6,11 @@ interface ImportMetaEnv {
   VITE_SENTRY_DSN: string;
   VITE_SENTRY_ENVIRONMENT: string;
   VITE_NOVU_BACKEND_URL: string;
+  VITE_CLARITY_KEY: string;
   VITE_NOVU_SOCKET_URL: string;
   VITE_NOVU_APPLICATION_IDENTIFIER: string;
-  VITE_MULTILINGUALITY: string
+  VITE_MULTILINGUALITY: string;
+  VITE_STATIC_HTML: string
 }
 interface ImportMeta {
   readonly env: ImportMetaEnv;

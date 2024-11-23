@@ -465,7 +465,7 @@
   "release": "Release",
   "releaseNote": "Note: All changes you made are saved automatically in draft.",
   "remove": "Remove",
-  "removeMemberExpertGroup": "Are you sure you want to delete this member?",
+  "removeMemberExpertGroup": "Are you sure you want to remove this member?",
   "report": "{{title}} Report",
   "requiredFieldError": "This field is required",
   "resendAndInvitation": "Resend and invitation",
@@ -675,7 +675,6 @@
   "saveInDraft": "Save In Drafts",
   "deleteDraftConfirmation": "Delete Draft",
   "deleteDraftConfirmationMessage": "Are you sure you want to delete this draft?<br/> This action cannot be undone. All unsaved changes will be lost.",
-  "removeMemberExpertGroup": "Are you sure you want to delete this member?",
   "noQuestionHere": "No question here!",
   "addFirstQuestion": "Add First question",
   "noQuestionAtTheMoment": "No question in this questionnaire at the moment. ",
@@ -709,5 +708,12 @@
   "addOption": "ADD OPTION",
   "noOptionHere": "No option here!",
   "noOptionAtTheMoment": "No options for answer at the moment.",
-  "addFirstOption": "Add First option"
+  "addFirstOption": "Add First option",
+  "invitationSentSuccessfully": "The invitation has been sent successfully",
+  "invite": "INVITE",
+  "assessmentQuestion":"the assessment question",
+  "kitAnalyzer": "Kit Analyzer",
+  "validateReleaseTooltip": "Your kit cannot be released until all errors are resolved.",
+  "kitValidated": "This kit is validated successfully.",
+  "kitErrorsTitle": "Errors in this Kit:"
 }
