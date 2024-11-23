@@ -140,7 +140,6 @@ export const AssessmentSettingGeneralBox = (props: {
             </Box>
           </Grid>
         </Grid>
-        {
           <Grid sx={{ display: "flex", justifyContent: "center" }}>
             <Grid
               item
@@ -190,7 +189,6 @@ export const AssessmentSettingGeneralBox = (props: {
               </Box>
             </Grid>
           </Grid>
-        }
         <Grid sx={{ display: "flex", justifyContent: "center" }}>
           <Grid
             item
@@ -230,28 +228,23 @@ export const AssessmentSettingGeneralBox = (props: {
             width: "100%",
             display: "flex",
             // flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "space-between",
-            gap: "32px",
+            justifyContent: "space-between",
+            // alignItems: "space-between",
+            // gap: "32px",
           }}
         >
           {title &&
             title.map((itemList: string, index: number) => {
               return (
-                <Grid
-                  item
-                  sx={{ display: "flex", justifyContent: "center" }}
-                  key={itemList}
-                >
                   <Grid
                     item
                     xs={12}
-                    // sm={12}
-                    // md={8}
+                    sm={5}
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
+                        mb:"10px"
                     }}
                   >
                     <Typography
@@ -277,6 +270,7 @@ export const AssessmentSettingGeneralBox = (props: {
                         justifyContent: "center",
                         fontSize: { xs: "1rem", md: "1.375rem" },
                         width: { md: "350px" },
+                        textAlign:"center"
                       }}
                       lineHeight={"normal"}
                     >
@@ -293,7 +287,6 @@ export const AssessmentSettingGeneralBox = (props: {
                       )}
                     </Typography>
                   </Grid>
-                </Grid>
               );
             })}
         </Grid>
@@ -443,17 +436,17 @@ export const AssessmentSettingMemberBox = (props: {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            width: "90%",
-            ml: theme.direction === "rtl" ? "unset" : "10%",
-            mr: theme.direction !== "rtl" ? "unset" : "10%",
+            width: "100%",
+            // ml: theme.direction === "rtl" ? "unset" : "10%",
+            // mr: theme.direction !== "rtl" ? "unset" : "10%",
           }}
         >
           <Typography
-            sx={{
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
-            }}
-            color="#9DA7B3"
+            // sx={{
+            //   ml: theme.direction === "rtl" ? "unset" : "auto",
+            //   mr: theme.direction !== "rtl" ? "unset" : "auto",
+            // }}
+            color="#000"
             variant="headlineMedium"
           >
             <Trans i18nKey={"grantedRoles"} />
