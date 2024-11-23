@@ -715,5 +715,8 @@
   "kitAnalyzer": "Kit Analyzer",
   "validateReleaseTooltip": "Your kit cannot be released until all errors are resolved.",
   "kitValidated": "This kit is validated successfully.",
-  "kitErrorsTitle": "Errors in this Kit:"
+  "kitErrorsTitle": "Errors in this Kit:",
+  "kitCustomization": "Kit Customization",
+  "customizingSubjectAndAttributes": "Customizing Subjects and Attributes",
+  "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment."
 }
