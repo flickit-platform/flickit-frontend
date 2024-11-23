@@ -19,6 +19,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import {useForm} from "react-hook-form";
 import {theme} from "@config/theme";
+import QueryBatchData from "@common/QueryBatchData";
+import {LoadingSkeletonKitCard} from "@common/loadings/LoadingSkeletonKitCard";
+import KitCustomizationTable from "@components/assessment-setting/kitCustomizationTable";
 
 const KitCustomization = () => {
 
@@ -112,6 +115,30 @@ const KitCustomization = () => {
                     sx={{...theme.typography.bodyMedium,color:"#2B333B"}}
                     ><Trans i18nKey={"viewTheWeightAndSubject"} /></Typography>
                 </Box>
+                {/*<QueryBatchData*/}
+                {/*    queryBatchData={[fetchAttributeKit]}*/}
+                {/*    renderLoading={() => <LoadingSkeletonKitCard />}*/}
+                {/*    render={([AttributeData]) => (*/}
+                {/*        <>*/}
+                {/*                <Box>*/}
+                {/*                    <KitCustomizationTable*/}
+                {/*                        subjects={subjects}*/}
+                {/*                        initialAttributes={AttributeData?.items}*/}
+                {/*                        onAddAttribute={handleAddNewRow}*/}
+                {/*                        onReorder={handleReorder}*/}
+                {/*                        showNewAttributeForm={showNewAttributeForm}*/}
+                {/*                        handleCancel={handleCancel}*/}
+                {/*                        handleSave={handleSave}*/}
+                {/*                        newAttribute={newAttribute}*/}
+                {/*                        setNewAttribute={setNewAttribute}*/}
+                {/*                        handleEdit={handleEdit}*/}
+                {/*                        setOpenDeleteDialog={setOpenDeleteDialog}*/}
+                {/*                    />*/}
+                {/*                </Box>*/}
+                {/*            )}*/}
+                {/*        </>*/}
+                {/*    )}*/}
+                {/*/>*/}
             </Box>
         </Box>
     );
