@@ -19,7 +19,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import emptyState from "@assets/svg/emptyState.svg";
-import RelatedEvidencesContainer, { evidenceType } from "./SubjectEvidences";
 import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
@@ -56,14 +55,6 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
-  const [emptyPositiveEvidence, setEmptyPositiveEvidence] =
-    useState<boolean>(false);
-  const [emptyNegativeEvidence, setEmptyNegativeEvidence] =
-    useState<boolean>(false);
-  const [positiveEvidenceLoading, setPositiveEvidenceLoading] =
-    useState<boolean>(false);
-  const [negativeEvidenceLoading, setNegativeEvidenceLoading] =
-    useState<boolean>(false);
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
