@@ -66,7 +66,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           mt={4}
         >
           <Typography variant="headlineSmall" fontWeight="bold">
-            <Trans i18nKey="kitAnalyzer" />
+            <Trans i18nKey="validation" />
           </Typography>
         </Box>
         <Divider sx={{ my: 1 }} />
@@ -77,19 +77,17 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             validateKitVersion.loading
               ? "grey.200"
               : validateKitVersion?.data?.isValid
-                ? "success.light"
-                : "error.light"
+                ? "color(srgb 0.9502 0.995 0.9804)"
+                : "color(srgb 0.9959 0.9514 0.9609)"
           }
           borderRadius={1}
-          border="1px solid"
-          borderColor={
+          color={
             validateKitVersion.loading
-              ? "grey.400"
+              ? "text.primary"
               : validateKitVersion?.data?.isValid
-                ? "success.main"
-                : "error.main"
+                ? "color(srgb 0.4176 0.72 0.6025)"
+                : "color(srgb 0.7198 0.4168 0.4683)"
           }
-          color={validateKitVersion.loading ? "text.primary" : "white"}
           maxHeight={500}
           overflow="auto"
         >
@@ -106,7 +104,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               </Typography>
             </Box>
           ) : validateKitVersion?.data?.isValid ? (
-            <Box display="flex" alignItems="center" gap={1} color="white">
+            <Box display="flex" alignItems="center" gap={1} color="color(srgb 0.4176 0.72 0.6025)">
               <CheckCircleIcon color="inherit" />
               <Typography variant="bodyMedium">
                 <Trans i18nKey="kitValidated" />{" "}
@@ -114,7 +112,12 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             </Box>
           ) : (
             <>
-              <Box display="flex" alignItems="center" gap={1} color="white">
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={1}
+                color="color(srgb 0.7198 0.4168 0.4683)"
+              >
                 <ErrorIcon color="inherit" />
                 <Typography variant="bodyMedium" fontWeight="bold">
                   <Trans i18nKey="kitErrorsTitle" />{" "}

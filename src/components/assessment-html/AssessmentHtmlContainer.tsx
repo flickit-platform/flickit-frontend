@@ -16,9 +16,7 @@ const AssessmentExportContainer = () => {
   const { service } = useServiceContext();
 
   const iframeUrl =
-    "https://flickit-cdn.hectora.app/static-stage/report/" +
-    assessmentId +
-    "/index.html";
+    import.meta.env.VITE_STATIC_HTML + assessmentId + "/index.html";
 
   useEffect(() => {
     const fetchSiteContent = async () => {
