@@ -8,11 +8,14 @@ import {
     TableRow,
     IconButton,
     Box,
-    Typography,
+    Typography, Link,
 } from "@mui/material";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditIcon from "@mui/icons-material/Edit";
 import { Trans } from "react-i18next";
+import TextField from "@mui/material/TextField";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface Attribute {
     id: string | number;
@@ -82,9 +85,9 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         }));
     };
 
-    const handleEditAttribute = (attribute: Attribute) => {
-        setEditAttributeId(String(attribute.id));
-        setNewAttribute(attribute);
+    const handleEditAttribute = (item: Attribute) => {
+        setEditAttributeId(String(item.id));
+        setNewAttribute(item);
     };
 
     const handleSaveEdit = () => {
@@ -128,15 +131,67 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                     </TableCell>
                                     <TableCell>{subject.title}</TableCell>
                                     {/*<TableCell></TableCell>*/}
-                                    <TableCell>
-                                        <Box sx={{display:"flex", gap:1}}>
-                                            <Typography>
-                                                <Trans i18nKey={"weight"} />:
-                                            </Typography>
-                                            {subject.weight.customValue || subject.weight.defaultValue}
-                                            {!subject.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
-                                        </Box>
+                                    {editAttributeId == subject.id ?
+                                        <TableCell sx={{ width: "20%" }}>
+                                            <TextField
+                                                required
+                                                label={<Trans i18nKey="weight" />}
+                                                name="weight"
+                                                type="number"
+                                                value={"10"}
+                                                inputProps={{
+                                                    "data-testid": "attribute-from-weight",
+                                                }}
+                                                // onChange={handleInputChange}
+                                                fullWidth
+                                                margin="normal"
+                                                sx={{
+                                                    mt: 1,
+                                                    fontSize: 14,
+                                                    "& .MuiInputBase-root": {
+                                                        height: 40,
+                                                        fontSize: 14,
+                                                    },
+                                                    "& .MuiFormLabel-root": {
+                                                        fontSize: 14,
+                                                        py:"0px"
+                                                    },
+                                                    background: "#fff",
+                                                }}
+                                            />
+                                        </TableCell>
+                                        :
+                                        <TableCell>
+                                            <Box sx={{display:"flex", gap:1}}>
+                                                <Typography>
+                                                    <Trans i18nKey={"weight"} />:
+                                                </Typography>
+                                                {subject.weight.customValue || subject.weight.defaultValue}
+                                                {!subject.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
+                                            </Box>
+                                        </TableCell>
+                                    }
+                                    {editAttributeId == subject.id ?
+                                    <TableCell sx={{ display: "flex", mt: "16px" }}>
+                                        <Link
+                                            href="#"
+                                            sx={{
+                                                textDecoration: "none",
+                                                opacity: 0.9,
+                                                fontWeight: "bold",
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <IconButton color="primary" data-testid={"attribute-save-icon"} onClick={handleSave}>
+                                                <CheckIcon />
+                                            </IconButton>
+                                            <IconButton color="secondary" data-testid={"attribute-close-icon"} onClick={handleCancelEdit}>
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </Link>
                                     </TableCell>
+                                        :
                                     <TableCell
                                         sx={{
                                             display: "flex",
@@ -144,9 +199,9 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                         }}
                                     >
                                         <IconButton
-                                            // onClick={() =>
-                                            //     handleEditAttribute(attribute)
-                                            // }
+                                            onClick={() =>
+                                                handleEditAttribute(subject)
+                                            }
                                             size="small"
                                             color="success"
                                         >
@@ -160,9 +215,10 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                             <DeleteIcon fontSize="small" />
                                           </IconButton> */}
                                     </TableCell>
+                                    }
                                 </TableRow>
                                         <TableRow >
-                                            <TableCell sx={{pb:"0px", borderBottom:"none"}} colSpan={4}>
+                                            <TableCell sx={{p:"0px", borderBottom:"none"}} colSpan={4}>
                                                 <Box>
                                                     {subject.attributes
                                                         // .filter((attr) => attr.subject.id === subject.id)
@@ -219,41 +275,98 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                 {/*>*/}
                                                                                 {/*    /!*{attribute.description}*!/*/}
                                                                                 {/*</TableCell>*/}
-                                                                                <TableCell
-                                                                                    style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
-                                                                                >
-                                                                                    <Box sx={{display:"flex", gap:1}}>
-                                                                                        <Typography>
-                                                                                            <Trans i18nKey={"weight"} />:
-                                                                                        </Typography>
-                                                                                        {attribute.weight.customValue || attribute.weight.defaultValue}
-                                                                                        {!attribute.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
-                                                                                    </Box>
-                                                                                </TableCell>
-                                                                                <TableCell
+                                                                        {editAttributeId == attribute.id
+                                                                            ?
+                                                                            <TableCell sx={{ width: "20%"}}>
+                                                                                <TextField
+                                                                                    required
+                                                                                    label={<Trans i18nKey="weight" />}
+                                                                                    name="weight"
+                                                                                    type="number"
+                                                                                    value={"1"}
+                                                                                    // onChange={handleInputChange}
+                                                                                    fullWidth
+                                                                                    margin="normal"
                                                                                     sx={{
-                                                                                        display: "flex",
-                                                                                        alignItems: "flex-start",
+                                                                                        mt: 1,
+                                                                                        p:0,
+                                                                                        fontSize: 14,
+                                                                                        "& .MuiInputBase-root": {
+                                                                                            height: 40,
+                                                                                            fontSize: 14,
+                                                                                        },
+                                                                                        "& .MuiFormLabel-root": {
+                                                                                            fontSize: 14,
+                                                                                            py:"0px"
+                                                                                        },
+                                                                                        background: "#fff",
                                                                                     }}
-                                                                                    style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
-                                                                                >
-                                                                                    <IconButton
-                                                                                        onClick={() =>
-                                                                                            handleEditAttribute(attribute)
-                                                                                        }
-                                                                                        size="small"
-                                                                                        color="success"
-                                                                                    >
-                                                                                        <EditIcon fontSize="small" />
-                                                                                    </IconButton>
-                                                                                    {/* <IconButton
+                                                                                />
+                                                                            </TableCell>
+                                                                            :
+                                                                            <TableCell
+                                                                                style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
+                                                                            >
+                                                                                <Box sx={{display:"flex", gap:1}}>
+                                                                                    <Typography>
+                                                                                        <Trans i18nKey={"weight"} />:
+                                                                                    </Typography>
+                                                                                    {attribute.weight.customValue || attribute.weight.defaultValue}
+                                                                                    {!attribute.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                        }
+                                                                         {editAttributeId == attribute.id
+
+                                                                             ?
+                                                                             <TableCell sx={{ display: "flex",
+                                                                                 // mt: "16px"
+                                                                                 // borderBottom: "none"
+                                                                             }}>
+                                                                                 <Link
+                                                                                     href="#"
+                                                                                     sx={{
+                                                                                         textDecoration: "none",
+                                                                                         opacity: 0.9,
+                                                                                         fontWeight: "bold",
+                                                                                         display: "flex",
+                                                                                         alignItems: "center",
+                                                                                     }}
+                                                                                 >
+                                                                                     <IconButton color="primary" data-testid={"attribute-save-icon"} onClick={handleSave}>
+                                                                                         <CheckIcon />
+                                                                                     </IconButton>
+                                                                                     <IconButton color="secondary" data-testid={"attribute-close-icon"} onClick={handleCancelEdit}>
+                                                                                         <CloseIcon />
+                                                                                     </IconButton>
+                                                                                 </Link>
+                                                                             </TableCell>
+                                                                             :
+                                                                             <TableCell
+                                                                                 sx={{
+                                                                                     display: "flex",
+                                                                                     alignItems: "flex-start",
+                                                                                 }}
+                                                                                 style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
+                                                                             >
+                                                                                 <IconButton
+                                                                                     onClick={() =>
+                                                                                         handleEditAttribute(attribute)
+                                                                                     }
+                                                                                     size="small"
+                                                                                     color="success"
+                                                                                 >
+                                                                                     <EditIcon fontSize="small" />
+                                                                                 </IconButton>
+                                                                                 {/* <IconButton
                                             onClick={() => setOpenDeleteDialog({status:true,id:attribute.id})}
                                             size="small"
                                             color="secondary"
                                           >
                                             <DeleteIcon fontSize="small" />
                                           </IconButton> */}
-                                                                                </TableCell>
+                                                                             </TableCell>
+                                                                         }
                                                                     </TableRow>
                                                         ))}
                                                 </Box>
