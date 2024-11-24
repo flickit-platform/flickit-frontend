@@ -44,7 +44,7 @@ const KitCustomization = (props:any) => {
             setKitData(items)
         })()
 
-    },[kitInfo?.id])
+    },[kitInfo?.kit?.id])
     // useEffect(()=>{
     //     (async () => {
     //         if(kitInfo?.id){

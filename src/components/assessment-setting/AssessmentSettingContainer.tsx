@@ -32,7 +32,7 @@ const AssessmentSettingContainer = () => {
   }>({ display: false, name: "", id: "", invited: false });
   const [listOfUser, setListOfUser] = useState([]);
   const [changeData, setChangeData] = useState(false);
-  const [kitInfo, setKitInfo] = useState<null | {id:number, title: string}>(null);
+  const [kitInfo, setKitInfo] = useState<null | {kit: { id: number, title: string },kitCustomId: null | number}>(null);
 
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
@@ -67,14 +67,13 @@ const AssessmentSettingContainer = () => {
 
   useEffect(() => {
     (async () => {
-      const { manageable,kit } = await AssessmentInfo.query();
-      setKitInfo(kit)
+      const { manageable,kit,kitCustomId } = await AssessmentInfo.query();
+      setKitInfo({kit,kitCustomId})
       if (!manageable) {
         return navigate("*");
       }
     })();
   }, [assessmentId]);
-
   useEffect(() => {
     (async () => {
       const { items } = await fetchAssessmentsUserListRoles.query();
@@ -105,7 +104,6 @@ const AssessmentSettingContainer = () => {
       invited: false,
     });
   };
-
 
   return (
     <QueryBatchData

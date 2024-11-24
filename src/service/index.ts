@@ -156,7 +156,7 @@ export const createService = (
           {kitInfo }: { kitInfo: any },
           config: AxiosRequestConfig<any> | undefined,
       ){
-          const {id} = kitInfo
+          const {kit:{id}} = kitInfo
           return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, config);
       },
     RemoveAssessmentMembersInvitees(
