@@ -718,5 +718,6 @@
   "kitErrorsTitle": "Errors in this Kit:",
   "kitCustomization": "Kit Customization",
   "customizingSubjectAndAttributes": "Customizing Subjects and Attributes",
-  "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment."
+  "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment.",
+  "kitCustomTitle": "Kit custom title"
 }

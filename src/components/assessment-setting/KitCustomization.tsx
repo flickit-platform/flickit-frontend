@@ -108,7 +108,7 @@ const KitCustomization = (props:any) => {
                             }}
                             lineHeight={"normal"}
                         >
-                            <Trans i18nKey="assessmentTitle" />:
+                            <Trans i18nKey="kitCustomTitle" />:
                         </Typography>
 
                         <Box
@@ -140,10 +140,10 @@ const KitCustomization = (props:any) => {
                 />
                 <Box sx={{mb:2}}>
                     <Typography
-                    sx={{...theme.typography.headlineSmall,color:"#000",mb:1}}
+                        sx={{...theme.typography.headlineSmall,color:"#000",mb:1}}
                     ><Trans i18nKey={"customizingSubjectAndAttributes"} /></Typography>
                     <Typography
-                    sx={{...theme.typography.bodyMedium,color:"#2B333B"}}
+                        sx={{...theme.typography.bodyMedium,color:"#2B333B"}}
                     ><Trans i18nKey={"viewTheWeightAndSubject"} /></Typography>
                 </Box>
                 {/*<QueryBatchData*/}

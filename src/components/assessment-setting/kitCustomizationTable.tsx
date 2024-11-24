@@ -105,7 +105,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                             <TableCell sx={{ width: "10%" }}>
                                 <Trans i18nKey="index" />
                             </TableCell>
-                            <TableCell sx={{ width:"100%"}}>
+                            <TableCell sx={{ width:"80%"}}>
                                 <Trans i18nKey="title" />
                             </TableCell>
                             {/*<TableCell sx={{ width: "50%" }}>*/}
@@ -128,8 +128,38 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                     </TableCell>
                                     <TableCell>{subject.title}</TableCell>
                                     <TableCell></TableCell>
-                                    <TableCell>{subject.weight.defaultValue}</TableCell>
-                                    <TableCell />
+                                    <TableCell>
+                                        <Box sx={{display:"flex", gap:1}}>
+                                            <Typography>
+                                                <Trans i18nKey={"weight"} />:
+                                            </Typography>
+                                            {subject.weight.customValue || subject.weight.defaultValue}
+                                            {!subject.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "flex-start",
+                                        }}
+                                    >
+                                        <IconButton
+                                            // onClick={() =>
+                                            //     handleEditAttribute(attribute)
+                                            // }
+                                            size="small"
+                                            color="success"
+                                        >
+                                            <EditIcon fontSize="small" />
+                                        </IconButton>
+                                        {/* <IconButton
+                                            onClick={() => setOpenDeleteDialog({status:true,id:attribute.id})}
+                                            size="small"
+                                            color="secondary"
+                                          >
+                                            <DeleteIcon fontSize="small" />
+                                          </IconButton> */}
+                                    </TableCell>
                                 </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={5}>
@@ -193,7 +223,13 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                 <TableCell
                                                                                     data-testid = "display-attribute-weight"
                                                                                 >
-                                                                                    {attribute.weight.customValue}
+                                                                                    <Box sx={{display:"flex", gap:1}}>
+                                                                                        <Typography>
+                                                                                            <Trans i18nKey={"weight"} />:
+                                                                                        </Typography>
+                                                                                        {attribute.weight.customValue || attribute.weight.defaultValue}
+                                                                                        {!attribute.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
+                                                                                    </Box>
                                                                                 </TableCell>
                                                                                 <TableCell
                                                                                     sx={{
