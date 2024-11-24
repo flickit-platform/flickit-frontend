@@ -102,16 +102,16 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: "10%" }}>
+                            <TableCell sx={{width:"10%"}} >
                                 <Trans i18nKey="index" />
                             </TableCell>
-                            <TableCell sx={{ width:"80%"}}>
+                            <TableCell sx={{width:"75%"}} >
                                 <Trans i18nKey="title" />
                             </TableCell>
                             {/*<TableCell sx={{ width: "50%" }}>*/}
                                 {/*<Trans i18nKey="description" />*/}
                             {/*</TableCell>*/}
-                            <TableCell sx={{ width: "10%" }}>
+                            <TableCell sx={{width:"15%", textAlign:"center"}} >
                                 <Trans i18nKey="weight" />
                             </TableCell>
                             {/*<TableCell sx={{ width: "10%" }}></TableCell>*/}
@@ -127,7 +127,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                         <Typography variant="semiBoldLarge">{index + 1}</Typography>
                                     </TableCell>
                                     <TableCell>{subject.title}</TableCell>
-                                    <TableCell></TableCell>
+                                    {/*<TableCell></TableCell>*/}
                                     <TableCell>
                                         <Box sx={{display:"flex", gap:1}}>
                                             <Typography>
@@ -162,7 +162,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                     </TableCell>
                                 </TableRow>
                                         <TableRow>
-                                            <TableCell colSpan={5}>
+                                            <TableCell colSpan={4}>
                                                 <Box>
                                                     {subject.attributes
                                                         // .filter((attr) => attr.subject.id === subject.id)
@@ -176,7 +176,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                         }}
                                                                     >
                                                                         {/* Conditionally render editable fields */}
-                                                                                <TableCell>
+                                                                                <TableCell sx={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}} >
                                                                                     <Box
                                                                                         sx={{
                                                                                             display: "flex",
@@ -206,19 +206,21 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                         flexGrow: 1,
                                                                                         mt: 0.5,
                                                                                     }}
+                                                                                    style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
                                                                                 >
                                                                                     {attribute.title}
                                                                                 </TableCell>
+                                                                                {/*<TableCell*/}
+                                                                                {/*    sx={{*/}
+                                                                                {/*        width: "100%",*/}
+                                                                                {/*        flexGrow: 1,*/}
+                                                                                {/*        mt: 0.5,*/}
+                                                                                {/*    }}*/}
+                                                                                {/*>*/}
+                                                                                {/*    /!*{attribute.description}*!/*/}
+                                                                                {/*</TableCell>*/}
                                                                                 <TableCell
-                                                                                    sx={{
-                                                                                        width: "100%",
-                                                                                        flexGrow: 1,
-                                                                                        mt: 0.5,
-                                                                                    }}
-                                                                                >
-                                                                                    {/*{attribute.description}*/}
-                                                                                </TableCell>
-                                                                                <TableCell
+                                                                                    style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
                                                                                 >
                                                                                     <Box sx={{display:"flex", gap:1}}>
                                                                                         <Typography>
@@ -233,6 +235,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                         display: "flex",
                                                                                         alignItems: "flex-start",
                                                                                     }}
+                                                                                    style={subject?.attributes?.length == attrIndex + 1 ? {borderBottom: "none"}:{}}
                                                                                 >
                                                                                     <IconButton
                                                                                         onClick={() =>
