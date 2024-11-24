@@ -153,10 +153,11 @@ export const createService = (
       return axios.get(`/api/v1/assessments/${assessmentId}/invitees/`, config);
     },
       fetchKitCustomization(
-          { assessmentKitId }: { assessmentKitId: TId },
+          {kitInfo }: { kitInfo: any },
           config: AxiosRequestConfig<any> | undefined,
       ){
-          return axios.get(`/api/v1/assessment-kits/${assessmentKitId}/custom-subjects/`, config);
+          const {id} = kitInfo
+          return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, config);
       },
     RemoveAssessmentMembersInvitees(
       args: { invitedId: string },

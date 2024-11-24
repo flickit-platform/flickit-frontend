@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {Trans} from "react-i18next";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import {useParams} from "react-router";
@@ -25,9 +25,36 @@ import KitCustomizationTable from "@components/assessment-setting/kitCustomizati
 
 const KitCustomization = (props:any) => {
 
-    const formMethods = useForm({ shouldUnregister: true });
-    const {kitData} = props
+    const [kitData, setKitData] = useState<any>([]);
 
+    const formMethods = useForm({ shouldUnregister: true });
+    const {kitInfo} = props
+    // const { id } = kitInfo
+    const { service } = useServiceContext();
+
+    const fetchKitCustomization = useQuery({
+        service:(args= {kitInfo},config)=>
+            service.fetchKitCustomization(args,config),
+        // runOnMount: false,
+    })
+
+    useEffect(()=>{
+        (async ()=>{
+            const {items} = await fetchKitCustomization.query()
+            setKitData(items)
+        })()
+
+    },[kitInfo?.id])
+    // useEffect(()=>{
+    //     (async () => {
+    //         if(kitInfo?.id){
+    //             const assessmentKitId = kitInfo.id
+    //             const { items } = await fetchKitCustomization.query({assessmentKitId});
+    //             setKitData(items)
+    //         }
+    //
+    //     })();
+    // },[kitInfo?.id])
 
 
 
@@ -120,28 +147,28 @@ const KitCustomization = (props:any) => {
                     ><Trans i18nKey={"viewTheWeightAndSubject"} /></Typography>
                 </Box>
                 {/*<QueryBatchData*/}
-                {/*    queryBatchData={[fetchAttributeKit]}*/}
+                {/*    queryBatchData={[fetchKitCustomization]}*/}
                 {/*    renderLoading={() => <LoadingSkeletonKitCard />}*/}
-                {/*    render={([AttributeData]) => (*/}
-                {/*        <>*/}
-                                <Box>
-                                    <KitCustomizationTable
-                                        subjects={kitData}
-                                        // initialAttributes={AttributeData?.items}
-                                        // onAddAttribute={handleAddNewRow}
-                                        // onReorder={handleReorder}
-                                        // showNewAttributeForm={showNewAttributeForm}
-                                        // handleCancel={handleCancel}
-                                        // handleSave={handleSave}
-                                        // newAttribute={newAttribute}
-                                        // setNewAttribute={setNewAttribute}
-                                        // handleEdit={handleEdit}
-                                        // setOpenDeleteDialog={setOpenDeleteDialog}
-                                    />
-                                </Box>
-                {/*            )}*/}
-                {/*        </>*/}
-                {/*    )}*/}
+                {/*    render={([kitCustomizationData]) => {*/}
+                {/*        return (*/}
+                            <Box>
+                                <KitCustomizationTable
+                                    subjects={kitData}
+                                    // initialAttributes={AttributeData?.items}
+                                    // onAddAttribute={handleAddNewRow}
+                                    // onReorder={handleReorder}
+                                    // showNewAttributeForm={showNewAttributeForm}
+                                    // handleCancel={handleCancel}
+                                    // handleSave={handleSave}
+                                    // newAttribute={newAttribute}
+                                    // setNewAttribute={setNewAttribute}
+                                    // handleEdit={handleEdit}
+                                    // setOpenDeleteDialog={setOpenDeleteDialog}
+                                />
+                            </Box>
+                {/*        )*/}
+                {/*    }}*/}
+
                 {/*/>*/}
             </Box>
         </Box>
