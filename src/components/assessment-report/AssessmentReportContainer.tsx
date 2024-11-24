@@ -61,7 +61,7 @@ const AssessmentReportContainer = (props: any) => {
     } catch (e) {}
   };
   const iframeUrl =
-    "https://flickit-cdn.hectora.app/static-stage/report/" +
+    import.meta.env.VITE_STATIC_HTML +
     assessmentId +
     "/index.html";
   useEffect(() => {
