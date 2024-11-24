@@ -17,40 +17,41 @@ import { Trans } from "react-i18next";
 interface Attribute {
     id: string | number;
     title: string;
-    description: string;
-    subject: {
-        id: number;
-        title: string;
-    };
-    weight: number;
     index: number;
-    isEditing?: boolean;
+    weight: {
+        defaultValue: number;
+        customValue: any;
+    };
 }
 
 interface Subject {
     id: string | number;
     title: string;
-    description: string;
-    weight: number;
+    index: number;
+    weight: {
+        defaultValue: number,
+        customValue: any
+    }
+    attributes : Attribute[]
 }
 
 interface SubjectTableProps {
     subjects: Subject[];
-    initialAttributes: Attribute[];
-    onAddAttribute: any;
-    onReorder: (newOrder: Attribute[], subjectId: number) => void;
-    handleCancel: any;
-    handleSave: any;
-    setNewAttribute: any;
-    newAttribute: any;
-    showNewAttributeForm: boolean;
-    handleEdit: any;
-    setOpenDeleteDialog: any;
+    // initialAttributes: Attribute[];
+    onAddAttribute?: any;
+    onReorder?: (newOrder: Attribute[], subjectId: number) => void;
+    handleCancel?: any;
+    handleSave?: any;
+    setNewAttribute?: any;
+    newAttribute?: any;
+    showNewAttributeForm?: boolean;
+    handleEdit?: any;
+    setOpenDeleteDialog?: any;
 }
 
 const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                        subjects,
-                                                       initialAttributes,
+                                                       // initialAttributes,
                                                        onReorder,
                                                        handleCancel,
                                                        handleSave,
@@ -60,13 +61,13 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                        handleEdit,
                                                        setOpenDeleteDialog
                                                    }) => {
-    const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
+    // const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
     const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
     const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
 
-    useEffect(() => {
-        setAttributes(initialAttributes);
-    }, [initialAttributes]);
+    // useEffect(() => {
+    //     setAttributes(initialAttributes);
+    // }, [initialAttributes]);
 
     useEffect(() => {
         setTargetSubjectId(Number(subjects[subjects?.length - 1]?.id));
@@ -102,18 +103,18 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ width: "10%" }}>
-                                <Trans i18nKey="order" />
+                                <Trans i18nKey="index" />
                             </TableCell>
-                            <TableCell sx={{ width: "30%" }}>
+                            <TableCell sx={{ width:"100%"}}>
                                 <Trans i18nKey="title" />
                             </TableCell>
-                            <TableCell sx={{ width: "50%" }}>
-                                <Trans i18nKey="description" />
-                            </TableCell>
+                            {/*<TableCell sx={{ width: "50%" }}>*/}
+                                {/*<Trans i18nKey="description" />*/}
+                            {/*</TableCell>*/}
                             <TableCell sx={{ width: "10%" }}>
                                 <Trans i18nKey="weight" />
                             </TableCell>
-                            <TableCell sx={{ width: "10%" }}></TableCell>
+                            {/*<TableCell sx={{ width: "10%" }}></TableCell>*/}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -126,15 +127,15 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                         <Typography variant="semiBoldLarge">{index + 1}</Typography>
                                     </TableCell>
                                     <TableCell>{subject.title}</TableCell>
-                                    <TableCell>{subject.description}</TableCell>
-                                    <TableCell>{subject.weight}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>{subject.weight.defaultValue}</TableCell>
                                     <TableCell />
                                 </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={5}>
                                                 <Box>
-                                                    {attributes
-                                                        .filter((attr) => attr.subject.id === subject.id)
+                                                    {subject.attributes
+                                                        // .filter((attr) => attr.subject.id === subject.id)
                                                         .map((attribute, attrIndex) => (
 
                                                                     <TableRow
@@ -152,7 +153,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                             alignItems: "center",
                                                                                             background: "#F3F5F6",
                                                                                             borderRadius: "0.5rem",
-                                                                                            width: { xs: "50px", md: "64px" },
+                                                                                            width: { xs: "35px", md: "45px" },
                                                                                             justifyContent: "space-around",
                                                                                             px: 1.5,
                                                                                         }}
@@ -160,13 +161,13 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                         <Typography variant="semiBoldLarge">
                                                                                             {attrIndex + 1}
                                                                                         </Typography>
-                                                                                        <IconButton
-                                                                                            disableRipple
-                                                                                            disableFocusRipple
-                                                                                            size="small"
-                                                                                        >
-                                                                                            <SwapVertRoundedIcon fontSize="small" />
-                                                                                        </IconButton>
+                                                                                        {/*<IconButton*/}
+                                                                                        {/*    disableRipple*/}
+                                                                                        {/*    disableFocusRipple*/}
+                                                                                        {/*    size="small"*/}
+                                                                                        {/*>*/}
+                                                                                        {/*    <SwapVertRoundedIcon fontSize="small" />*/}
+                                                                                        {/*</IconButton>*/}
                                                                                     </Box>
                                                                                 </TableCell>
                                                                                 <TableCell
@@ -187,12 +188,12 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                     }}
                                                                                     data-testid = "display-attribute-description"
                                                                                 >
-                                                                                    {attribute.description}
+                                                                                    {/*{attribute.description}*/}
                                                                                 </TableCell>
                                                                                 <TableCell
                                                                                     data-testid = "display-attribute-weight"
                                                                                 >
-                                                                                    {attribute.weight}
+                                                                                    {attribute.weight.customValue}
                                                                                 </TableCell>
                                                                                 <TableCell
                                                                                     sx={{

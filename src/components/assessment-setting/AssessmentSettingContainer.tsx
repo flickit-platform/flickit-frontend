@@ -32,6 +32,8 @@ const AssessmentSettingContainer = () => {
   }>({ display: false, name: "", id: "", invited: false });
   const [listOfUser, setListOfUser] = useState([]);
   const [changeData, setChangeData] = useState(false);
+  const [kitInfo, setKitInfo] = useState<null | {id:number, title: string}>(null);
+  const [kitData, setKitData] = useState<any>([]);
 
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
@@ -63,9 +65,16 @@ const AssessmentSettingContainer = () => {
       service.fetchAssessmentMembersInvitees({ assessmentId }, config),
     runOnMount: false,
   });
+  const fetchKitCustomization = useQuery({
+    service:(args,config)=>
+        service.fetchKitCustomization(args,config),
+    runOnMount: false,
+  })
+
   useEffect(() => {
     (async () => {
-      const { manageable } = await AssessmentInfo.query();
+      const { manageable,kit } = await AssessmentInfo.query();
+      setKitInfo(kit)
       if (!manageable) {
         return navigate("*");
       }
@@ -78,6 +87,17 @@ const AssessmentSettingContainer = () => {
       setListOfUser(items);
     })();
   }, [changeData]);
+
+  useEffect(()=>{
+    (async () => {
+      if(kitInfo?.id){
+        const assessmentKitId = kitInfo.id
+        const { items } = await fetchKitCustomization.query({assessmentKitId});
+        setKitData(items)
+      }
+
+    })();
+  },[kitInfo?.id])
 
   const handleClickOpen = () => {
     setExpanded(true);
@@ -103,6 +123,7 @@ const AssessmentSettingContainer = () => {
     });
   };
 
+
   return (
     <QueryBatchData
       queryBatchData={[fetchPathInfo, fetchAssessmentsRoles, AssessmentInfo]}
@@ -113,7 +134,6 @@ const AssessmentSettingContainer = () => {
           assessment: { title },
         } = pathInfo;
         const { items: listOfRoles } = roles;
-
         return (
           <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
             <AssessmentSettingTitle pathInfo={pathInfo} />
@@ -160,7 +180,7 @@ const AssessmentSettingContainer = () => {
             </Grid>
             <Grid container columns={12}>
               <Grid item sm={12} xs={12}>
-                <KitCustomization/>
+                <KitCustomization kitData={kitData}/>
               </Grid>
             </Grid>
             <AddMemberDialog

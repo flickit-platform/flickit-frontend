@@ -23,9 +23,13 @@ import QueryBatchData from "@common/QueryBatchData";
 import {LoadingSkeletonKitCard} from "@common/loadings/LoadingSkeletonKitCard";
 import KitCustomizationTable from "@components/assessment-setting/kitCustomizationTable";
 
-const KitCustomization = () => {
+const KitCustomization = (props:any) => {
 
     const formMethods = useForm({ shouldUnregister: true });
+    const {kitData} = props
+
+
+
 
     return (
         <Box
@@ -107,9 +111,9 @@ const KitCustomization = () => {
                         marginBottom: "10px !important",
                     }}
                 />
-                <Box>
+                <Box sx={{mb:2}}>
                     <Typography
-                    sx={{...theme.typography.headlineSmall,color:"#000"}}
+                    sx={{...theme.typography.headlineSmall,color:"#000",mb:1}}
                     ><Trans i18nKey={"customizingSubjectAndAttributes"} /></Typography>
                     <Typography
                     sx={{...theme.typography.bodyMedium,color:"#2B333B"}}
@@ -120,21 +124,21 @@ const KitCustomization = () => {
                 {/*    renderLoading={() => <LoadingSkeletonKitCard />}*/}
                 {/*    render={([AttributeData]) => (*/}
                 {/*        <>*/}
-                {/*                <Box>*/}
-                {/*                    <KitCustomizationTable*/}
-                {/*                        subjects={subjects}*/}
-                {/*                        initialAttributes={AttributeData?.items}*/}
-                {/*                        onAddAttribute={handleAddNewRow}*/}
-                {/*                        onReorder={handleReorder}*/}
-                {/*                        showNewAttributeForm={showNewAttributeForm}*/}
-                {/*                        handleCancel={handleCancel}*/}
-                {/*                        handleSave={handleSave}*/}
-                {/*                        newAttribute={newAttribute}*/}
-                {/*                        setNewAttribute={setNewAttribute}*/}
-                {/*                        handleEdit={handleEdit}*/}
-                {/*                        setOpenDeleteDialog={setOpenDeleteDialog}*/}
-                {/*                    />*/}
-                {/*                </Box>*/}
+                                <Box>
+                                    <KitCustomizationTable
+                                        subjects={kitData}
+                                        // initialAttributes={AttributeData?.items}
+                                        // onAddAttribute={handleAddNewRow}
+                                        // onReorder={handleReorder}
+                                        // showNewAttributeForm={showNewAttributeForm}
+                                        // handleCancel={handleCancel}
+                                        // handleSave={handleSave}
+                                        // newAttribute={newAttribute}
+                                        // setNewAttribute={setNewAttribute}
+                                        // handleEdit={handleEdit}
+                                        // setOpenDeleteDialog={setOpenDeleteDialog}
+                                    />
+                                </Box>
                 {/*            )}*/}
                 {/*        </>*/}
                 {/*    )}*/}
