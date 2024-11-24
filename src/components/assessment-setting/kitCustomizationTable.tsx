@@ -161,8 +161,8 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                           </IconButton> */}
                                     </TableCell>
                                 </TableRow>
-                                        <TableRow>
-                                            <TableCell colSpan={4}>
+                                        <TableRow >
+                                            <TableCell sx={{pb:"0px", borderBottom:"none"}} colSpan={4}>
                                                 <Box>
                                                     {subject.attributes
                                                         // .filter((attr) => attr.subject.id === subject.id)

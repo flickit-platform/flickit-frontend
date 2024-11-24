@@ -22,6 +22,7 @@ import {theme} from "@config/theme";
 import QueryBatchData from "@common/QueryBatchData";
 import {LoadingSkeletonKitCard} from "@common/loadings/LoadingSkeletonKitCard";
 import KitCustomizationTable from "@components/assessment-setting/kitCustomizationTable";
+import Button from "@mui/material/Button";
 
 const KitCustomization = (props:any) => {
 
@@ -56,7 +57,12 @@ const KitCustomization = (props:any) => {
     //     })();
     // },[kitInfo?.id])
 
+const onClose = () =>{
 
+}
+const onSave = () =>{
+
+}
 
     return (
         <Box
@@ -170,6 +176,21 @@ const KitCustomization = (props:any) => {
                 {/*    }}*/}
 
                 {/*/>*/}
+                <Grid mt={2} container spacing={2} justifyContent="flex-end">
+                    <Grid item>
+                        <Button onClick={onClose} data-cy="cancel" data-testid="cancel">
+                            <Trans i18nKey={"cancel"} />
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button data-cy="back" variant="contained" onClick={onSave}>
+                            <Trans i18nKey="saveChanges" />
+                        </Button>
+                    </Grid>
+                 </Grid>
+
+
+
             </Box>
         </Box>
     );
