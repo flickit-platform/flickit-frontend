@@ -159,6 +159,15 @@ export const createService = (
           const {kit:{id}} = kitInfo
           return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, config);
       },
+      sendKitCustomization(
+          {assessmentId, data }: {assessmentId:TId, data: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          return axios.post(`/api/v1/assessments/${assessmentId}/assign-kit-custom/`,
+              data,
+              config
+          );
+      },
     RemoveAssessmentMembersInvitees(
       args: { invitedId: string },
       config: AxiosRequestConfig<any> | undefined,

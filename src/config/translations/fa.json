@@ -720,5 +720,7 @@
     "kitCustomization": "سفارشی سازی کیت",
     "customizingSubjectAndAttributes": "سفارشی کردن موضوعات و ویژگی ها",
     "viewTheWeightAndSubject": "در اینجا می توانید وزن موضوعات یا ویژگی های مختلف را مشاهده کرده و آنها را به دلخواه برای این ارزیابی خاص تنظیم کنید.",
-    "kitCustomTitle": "عنوان کیت سفارشی"
+    "kitCustomTitle": "عنوان کیت سفارشی",
+    "kitCustomTitleEmpty": "عنوان کیت سفارشی نمی تواند خالی باشد"
+
 }

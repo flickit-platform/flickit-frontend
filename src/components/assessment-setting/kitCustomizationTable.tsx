@@ -50,6 +50,9 @@ interface SubjectTableProps {
     showNewAttributeForm?: boolean;
     handleEdit?: any;
     setOpenDeleteDialog?: any;
+    handleInputChange:any,
+    setData:any,
+    data:any
 }
 
 const KitCustomizationTable: React.FC<SubjectTableProps> = ({
@@ -62,7 +65,10 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                        newAttribute,
                                                        showNewAttributeForm,
                                                        handleEdit,
-                                                       setOpenDeleteDialog
+                                                       setOpenDeleteDialog,
+                                                       handleInputChange,
+                                                       setData,
+                                                       data
                                                    }) => {
     // const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
     const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
@@ -76,113 +82,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         setTargetSubjectId(Number(subjects[subjects?.length - 1]?.id));
     }, [subjects]);
 
-    const [data, setData] = useState<any>({
-        customData: {
-            subjects: [{id: 0, weight: 0}],
-            attributes: [{id: 0, weight: 0}],
-        },
-    });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>,subjectId: any) => {
-        const { name, value } = e.target;
-        const parsedValue =  parseInt(value);
-
-        setData((prevData: any)=>{
-            let updatedType = prevData.customData[name]
-            // console.log(updatedType,"updatedType")
-             let test =  updatedType.map((item: any) => {
-                  if(item.id == subjectId){
-
-                      item.weight = parsedValue
-                      return item
-                  }else{
-                      let copy = [...updatedType]
-                          copy.push({id:subjectId, weight: parsedValue})
-                          return copy
-                  }
-                })
-
-                return {
-                    ...prevData,
-                    customData: {
-                        ...prevData.customData,
-                        [name]: [...test]
-                    },
-                };
-        })
-
-
-
-        // setData((prevData: any)=>{
-        //     let updatedType = prevData.customData[name]
-        //     console.log(updatedType,"oooo")
-        //   let test =  updatedType.map((item: any) => {
-        //       return   item.id == subjectId ? {...item,weight:parsedValue} : {id:subjectId, weight: parsedValue}
-        //     })
-        //     console.log(test,"ttttt")
-        //     return {
-        //         ...prevData,
-        //         customData: {
-        //             ...prevData.customData,
-        //             [name]: [...prevData.customData[name],test],
-        //         },
-        //     };
-        // })
-
-
-
-        // setData((prevData: any) => {
-        //    let updatedType = prevData.customData[name]
-        //    let o  = updatedType.map((item : any) => item.id == subjectId ?
-        //         {...item, weight : parsedValue}
-        //         : {id:subjectId , weight: parsedValue}
-        //     )
-        //     console.log(o,"uuuuu")
-        //     // if(updatedType.length == 0){
-        //     //     updatedType.push({
-        //     //         weight: parsedValue,
-        //     //         id: subjectId
-        //     //     })
-        //     // }else{
-        //     //   updatedType =  updatedType.map((item : any) => {
-        //     //         item.id === subjectId ? {...item,parsedValue} : item
-        //     //     })
-        //     // }
-        //     console.log(updatedType,"oooo")
-        //     return {
-        //         ...prevData,
-        //         customData: {
-        //             ...prevData.customData,
-        //             [name]: updatedType,
-        //         },
-        //     };
-        // });
-
-
-
-        const object =
-            {
-                "title": "test kit custom",
-                "customData": {
-                    "subjects": [
-                        {
-                            "id": 1000,
-                            "weight": 1
-                        }
-                    ],
-                    "attributes": [
-                        {
-                            "id": 200,
-                            "weight": 2
-                        }
-                    ]
-                }
-            }
-        // setNewAttribute((prev: any) => ({
-        //     ...prev,
-        //     [name]: parsedValue,
-        // }));
-    };
 
     const handleEditAttribute = (item: Attribute) => {
         setEditAttributeId(String(item.id));

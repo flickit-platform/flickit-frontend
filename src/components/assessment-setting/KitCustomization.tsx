@@ -23,6 +23,7 @@ import QueryBatchData from "@common/QueryBatchData";
 import {LoadingSkeletonKitCard} from "@common/loadings/LoadingSkeletonKitCard";
 import KitCustomizationTable from "@components/assessment-setting/kitCustomizationTable";
 import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 
 const KitCustomization = (props:any) => {
 
@@ -38,6 +39,19 @@ const KitCustomization = (props:any) => {
             service.fetchKitCustomization(args,config),
         // runOnMount: false,
     })
+    const sendKitCustomization = useQuery({
+        service:(args= {kitInfo},config)=>
+            service.sendKitCustomization(args,config),
+        // runOnMount: false,
+    })
+
+    const [data, setData] = useState<any>({
+        title: "",
+        customData: {
+            subjects: [{id: 0, weight: 0}],
+            attributes: [{id: 0, weight: 0}],
+        },
+    });
 
     useEffect(()=>{
         (async ()=>{
@@ -46,6 +60,86 @@ const KitCustomization = (props:any) => {
         })()
 
     },[kitInfo?.kit?.id])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>,subjectId: any) => {
+        const { name, value } = e.target;
+        const parsedValue =  parseInt(value);
+
+        setData((prevData: any)=>{
+            let updatedType = prevData.customData[name]
+            // console.log(updatedType,"updatedType")
+            let test =  updatedType.map((item: any) => {
+                if(item.id == subjectId){
+
+                    item.weight = parsedValue
+                    return item
+                }else{
+                    let copy = [...updatedType]
+                    copy.push({id:subjectId, weight: parsedValue})
+                    return copy
+                }
+            })
+
+            return {
+                ...prevData,
+                customData: {
+                    ...prevData.customData,
+                    [name]: [...test]
+                },
+            };
+        })
+
+        // setData((prevData: any)=>{
+        //     let updatedType = prevData.customData[name]
+        //     console.log(updatedType,"oooo")
+        //   let test =  updatedType.map((item: any) => {
+        //       return   item.id == subjectId ? {...item,weight:parsedValue} : {id:subjectId, weight: parsedValue}
+        //     })
+        //     console.log(test,"ttttt")
+        //     return {
+        //         ...prevData,
+        //         customData: {
+        //             ...prevData.customData,
+        //             [name]: [...prevData.customData[name],test],
+        //         },
+        //     };
+        // })
+
+
+
+        // setData((prevData: any) => {
+        //    let updatedType = prevData.customData[name]
+        //    let o  = updatedType.map((item : any) => item.id == subjectId ?
+        //         {...item, weight : parsedValue}
+        //         : {id:subjectId , weight: parsedValue}
+        //     )
+        //     console.log(o,"uuuuu")
+        //     // if(updatedType.length == 0){
+        //     //     updatedType.push({
+        //     //         weight: parsedValue,
+        //     //         id: subjectId
+        //     //     })
+        //     // }else{
+        //     //   updatedType =  updatedType.map((item : any) => {
+        //     //         item.id === subjectId ? {...item,parsedValue} : item
+        //     //     })
+        //     // }
+        //     console.log(updatedType,"oooo")
+        //     return {
+        //         ...prevData,
+        //         customData: {
+        //             ...prevData.customData,
+        //             [name]: updatedType,
+        //         },
+        //     };
+        // });
+
+        // setNewAttribute((prev: any) => ({
+        //     ...prev,
+        //     [name]: parsedValue,
+        // }));
+    };
+
     // useEffect(()=>{
     //     (async () => {
     //         if(kitInfo?.id){
@@ -57,12 +151,33 @@ const KitCustomization = (props:any) => {
     //     })();
     // },[kitInfo?.id])
 
-const onClose = () =>{
+    const onClose = () =>{
+        (async ()=>{
+            const {items} = await fetchKitCustomization.query()
+            setKitData(items)
+            setData({
+                title: "",
+                customData: {
+                    subjects: [{id: 0, weight: 0}],
+                    attributes: [{id: 0, weight: 0}],
+                },
+            })
+        })()
+    }
+    const onSave = () =>{
 
-}
-const onSave = () =>{
+        (async ()=>{
+            try {
+              if(kitInfo.kitCustomId){
 
-}
+              }else {
+                  await sendKitCustomization.query()
+              }
+            }catch (e){
+
+            }
+        })()
+    }
 
     return (
         <Box
@@ -170,6 +285,9 @@ const onSave = () =>{
                                     // setNewAttribute={setNewAttribute}
                                     // handleEdit={handleEdit}
                                     // setOpenDeleteDialog={setOpenDeleteDialog}
+                                    handleInputChange={handleInputChange}
+                                    data={data}
+                                    setData={setData}
                                 />
                             </Box>
                 {/*        )*/}
@@ -183,9 +301,13 @@ const onSave = () =>{
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button data-cy="back" variant="contained" onClick={onSave}>
-                            <Trans i18nKey="saveChanges" />
-                        </Button>
+                        <Tooltip title={<Trans i18nKey={"kitCustomTitleEmpty"}/> }>
+                            <Box>
+                                <Button data-cy="back" variant="contained" disabled={!data.title} onClick={onSave}>
+                                    <Trans i18nKey="saveChanges" />
+                                </Button>
+                            </Box>
+                        </Tooltip>
                     </Grid>
                  </Grid>
 

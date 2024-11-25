@@ -719,5 +719,6 @@
   "kitCustomization": "Kit Customization",
   "customizingSubjectAndAttributes": "Customizing Subjects and Attributes",
   "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment.",
-  "kitCustomTitle": "Kit custom title"
+  "kitCustomTitle": "Kit custom title",
+  "kitCustomTitleEmpty": "Kit custom title can not be empty"
 }
