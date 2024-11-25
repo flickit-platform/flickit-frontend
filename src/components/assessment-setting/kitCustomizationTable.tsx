@@ -76,13 +76,112 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         setTargetSubjectId(Number(subjects[subjects?.length - 1]?.id));
     }, [subjects]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [data, setData] = useState<any>({
+        customData: {
+            subjects: [{id: 0, weight: 0}],
+            attributes: [{id: 0, weight: 0}],
+        },
+    });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>,subjectId: any) => {
         const { name, value } = e.target;
-        const parsedValue = name === "weight" ? parseInt(value) || 1 : value;
-        setNewAttribute((prev: any) => ({
-            ...prev,
-            [name]: parsedValue,
-        }));
+        const parsedValue =  parseInt(value);
+
+        setData((prevData: any)=>{
+            let updatedType = prevData.customData[name]
+            // console.log(updatedType,"updatedType")
+             let test =  updatedType.map((item: any) => {
+                  if(item.id == subjectId){
+
+                      item.weight = parsedValue
+                      return item
+                  }else{
+                      let copy = [...updatedType]
+                          copy.push({id:subjectId, weight: parsedValue})
+                          return copy
+                  }
+                })
+
+                return {
+                    ...prevData,
+                    customData: {
+                        ...prevData.customData,
+                        [name]: [...test]
+                    },
+                };
+        })
+
+
+
+        // setData((prevData: any)=>{
+        //     let updatedType = prevData.customData[name]
+        //     console.log(updatedType,"oooo")
+        //   let test =  updatedType.map((item: any) => {
+        //       return   item.id == subjectId ? {...item,weight:parsedValue} : {id:subjectId, weight: parsedValue}
+        //     })
+        //     console.log(test,"ttttt")
+        //     return {
+        //         ...prevData,
+        //         customData: {
+        //             ...prevData.customData,
+        //             [name]: [...prevData.customData[name],test],
+        //         },
+        //     };
+        // })
+
+
+
+        // setData((prevData: any) => {
+        //    let updatedType = prevData.customData[name]
+        //    let o  = updatedType.map((item : any) => item.id == subjectId ?
+        //         {...item, weight : parsedValue}
+        //         : {id:subjectId , weight: parsedValue}
+        //     )
+        //     console.log(o,"uuuuu")
+        //     // if(updatedType.length == 0){
+        //     //     updatedType.push({
+        //     //         weight: parsedValue,
+        //     //         id: subjectId
+        //     //     })
+        //     // }else{
+        //     //   updatedType =  updatedType.map((item : any) => {
+        //     //         item.id === subjectId ? {...item,parsedValue} : item
+        //     //     })
+        //     // }
+        //     console.log(updatedType,"oooo")
+        //     return {
+        //         ...prevData,
+        //         customData: {
+        //             ...prevData.customData,
+        //             [name]: updatedType,
+        //         },
+        //     };
+        // });
+
+
+
+        const object =
+            {
+                "title": "test kit custom",
+                "customData": {
+                    "subjects": [
+                        {
+                            "id": 1000,
+                            "weight": 1
+                        }
+                    ],
+                    "attributes": [
+                        {
+                            "id": 200,
+                            "weight": 2
+                        }
+                    ]
+                }
+            }
+        // setNewAttribute((prev: any) => ({
+        //     ...prev,
+        //     [name]: parsedValue,
+        // }));
     };
 
     const handleEditAttribute = (item: Attribute) => {
@@ -98,7 +197,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
     const handleCancelEdit = () => {
         setEditAttributeId(null);
     };
-
+    console.log(data,"iiiii")
 
     return (
         <TableContainer sx={{ tableLayout: "fixed", width: "100%" }}>
@@ -136,13 +235,20 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                             <TextField
                                                 required
                                                 label={<Trans i18nKey="weight" />}
-                                                name="weight"
+                                                name="subjects"
                                                 type="number"
-                                                value={"10"}
-                                                inputProps={{
-                                                    "data-testid": "attribute-from-weight",
-                                                }}
-                                                // onChange={handleInputChange}
+                                                value={data?.customData?.subjects[index]?.weight}
+                                                onChange={(e:any)=> handleInputChange(e,subject.id)}
+                                                // onChange={(e:any)=> {
+                                                //     const {name,value} = e.target
+                                                //     setData((prevData: any) => ({
+                                                //         ...prevData,
+                                                //        customData:{
+                                                //            ...prevData.customData,
+                                                //            subjects:[...prevData.customData.subjects,{id: subject?.id,weight: value}]
+                                                //        }
+                                                //     }))}
+                                                // }
                                                 fullWidth
                                                 margin="normal"
                                                 sx={{
@@ -281,10 +387,10 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                 <TextField
                                                                                     required
                                                                                     label={<Trans i18nKey="weight" />}
-                                                                                    name="weight"
+                                                                                    name="attributes"
                                                                                     type="number"
-                                                                                    value={"1"}
-                                                                                    // onChange={handleInputChange}
+                                                                                    value={data?.customData?.attributes[index]?.weight}
+                                                                                    onChange={(e:any)=>handleInputChange(e,attribute.id)}
                                                                                     fullWidth
                                                                                     margin="normal"
                                                                                     sx={{
