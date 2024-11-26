@@ -171,7 +171,8 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                 <Typography>
                                                     <Trans i18nKey={"weight"} />:
                                                 </Typography>
-                                                {...(inputData.customData.subjects.map((i : any) =>(i.id == subject.id && Boolean(i.weight) ? i.weight: (subject.weight.customValue || subject.weight.defaultValue) ))) }
+                                                {/*{...(inputData.customData.subjects.map((i : any) =>(i.id == subject.id && Boolean(i.weight) ? i.weight: (subject.weight.customValue || subject.weight.defaultValue) ))) }*/}
+                                                {subject.weight.customValue || subject.weight.defaultValue}
                                                 {!subject.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
                                             </Box>
                                         </TableCell>
@@ -316,7 +317,8 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                     <Typography>
                                                                                         <Trans i18nKey={"weight"} />:
                                                                                     </Typography>
-                                                                                    {...(inputData.customData.attributes.map((i : any) =>(i.id == subject.id && Boolean(i.weight) ? i.weight: (attribute.weight.customValue || attribute.weight.defaultValue) ))) }
+                                                                                    {/*{...(inputData.customData.attributes.map((i : any) =>(i.id == subject.id && Boolean(i.weight) ? i.weight: (attribute.weight.customValue || attribute.weight.defaultValue) ))) }*/}
+                                                                                    {attribute.weight.customValue || attribute.weight.defaultValue}
                                                                                     {!attribute.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
                                                                                 </Box>
                                                                             </TableCell>

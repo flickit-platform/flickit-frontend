@@ -60,8 +60,8 @@ const KitCustomization = (props:any) => {
     const [inputData, setInputData] = useState<any>({
         title: "",
         customData: {
-            subjects: [{id:0,weight:""}],
-            attributes: [{id:0,weight:""}],
+            subjects: [],
+            attributes: [],
         },
     });
 
@@ -107,65 +107,9 @@ const KitCustomization = (props:any) => {
             };
         })
 
-        // setData((prevData: any)=>{
-        //     let updatedType = prevData.customData[name]
-        //   let test =  updatedType.map((item: any) => {
-        //       return   item.id == subjectId ? {...item,weight:parsedValue} : {id:subjectId, weight: parsedValue}
-        //     })
-        //     return {
-        //         ...prevData,
-        //         customData: {
-        //             ...prevData.customData,
-        //             [name]: [...prevData.customData[name],test],
-        //         },
-        //     };
-        // })
 
-
-
-        // setData((prevData: any) => {
-        //    let updatedType = prevData.customData[name]
-        //    let o  = updatedType.map((item : any) => item.id == subjectId ?
-        //         {...item, weight : parsedValue}
-        //         : {id:subjectId , weight: parsedValue}
-        //     )
-        //     // if(updatedType.length == 0){
-        //     //     updatedType.push({
-        //     //         weight: parsedValue,
-        //     //         id: subjectId
-        //     //     })
-        //     // }else{
-        //     //   updatedType =  updatedType.map((item : any) => {
-        //     //         item.id === subjectId ? {...item,parsedValue} : item
-        //     //     })
-        //     // }
-        //     console.log(updatedType,"oooo")
-        //     return {
-        //         ...prevData,
-        //         customData: {
-        //             ...prevData.customData,
-        //             [name]: updatedType,
-        //         },
-        //     };
-        // });
-
-        // setNewAttribute((prev: any) => ({
-        //     ...prev,
-        //     [name]: parsedValue,
-        // }));
     };
 
-    // useEffect(()=>{
-    //     (async () => {
-    //         if(kitInfo?.id){
-    //             const assessmentKitId = kitInfo.id
-    //             const { items } = await fetchKitCustomization.query({assessmentKitId});
-    //             setKitData(items)
-    //         }
-    //
-    //     })();
-    // },[kitInfo?.id])
-    console.log(inputData,"inputData")
     const onClose = () =>{
         (async ()=>{
             const {items} = await fetchKitCustomization.query({kitInfo})
@@ -173,8 +117,8 @@ const KitCustomization = (props:any) => {
             setInputData({
                 title: "",
                 customData: {
-                    subjects: [{id: 0, weight: 0}],
-                    attributes: [{id: 0, weight: 0}],
+                    subjects: [],
+                    attributes: [],
                 },
             })
         })()
