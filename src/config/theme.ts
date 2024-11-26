@@ -382,7 +382,7 @@ export const theme = createTheme({
           width: 20px
         }
         ::-webkit-scrollbar {
-          width: 12px;
+          width: 15px;
           height: 12px; 
         }
 
@@ -391,9 +391,10 @@ export const theme = createTheme({
         }
 
         ::-webkit-scrollbar-thumb {
-          background-color: #888; 
+          background-color: rgba(136, 136, 136, 0.58); 
           border-radius: 6px; 
           border: 3px solid #f0f0f0;
+          min-height: 100px
         }
 
         ::-webkit-scrollbar-thumb:hover {
