@@ -428,7 +428,7 @@
   "progressBarTitle": "{{numaratur}} of {{denominator}}",
   "providedBy": "Provided by",
   "public": "Public",
-  "publishDescription": "In this section, the final tasks related to the release and usage of the kit are performed. If any parts of the kit have issues, they will be reported here. Additionally, the settings for kit accessibility are also located in this section. If you need to save or use different versions of your kit, you can utilize the version control section as well.",
+  "publishDescription": "In this section, the content of the kit is automatically reviewed and validated. If no errors are found, you can release the kit and make it available. If there are any errors, you need to resolve them before the kit can be released.",
   "published": "Published",
   "publishedAssessmentKits": "Published assessment kits",
   "question": "Question",
@@ -712,13 +712,14 @@
   "invitationSentSuccessfully": "The invitation has been sent successfully",
   "invite": "INVITE",
   "assessmentQuestion":"the assessment question",
-  "kitAnalyzer": "Kit Analyzer",
+  "validation": "Validation",
   "validateReleaseTooltip": "Your kit cannot be released until all errors are resolved.",
-  "kitValidated": "This kit is validated successfully.",
   "kitErrorsTitle": "Errors in this Kit:",
   "kitCustomization": "Kit Customization",
   "customizingSubjectAndAttributes": "Customizing Subjects and Attributes",
   "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment.",
   "kitCustomTitle": "Kit custom title",
-  "kitCustomTitleEmpty": "Kit custom title can not be empty"
+  "kitCustomTitleEmpty": "Kit custom title can not be empty",
+  "kitValidated": "All good! The kit has been successfully validated and is ready to be released.",
+  "kitErrorsTitle": "Issues have been found in the kit and it cannot be released. Please resolve the issues and try again."
 }
