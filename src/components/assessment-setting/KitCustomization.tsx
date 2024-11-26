@@ -92,19 +92,19 @@ const KitCustomization = (props:any) => {
                     item.weight = parsedValue
                     return item
                 }else{
-                    let copy = [...updatedType]
-                    copy.push({id:subjectId, weight: parsedValue})
-                    return copy
+                    // let copy = [...updatedType]
+                    // copy.push({id:subjectId, weight: parsedValue})
+                    return {id:subjectId, weight: parsedValue}
                 }
             })
 
-            // return {
-            //     ...prevData,
-            //     customData: {
-            //         ...prevData.customData,
-            //         [name]: [...test]
-            //     },
-            // };
+            return {
+                ...prevData,
+                customData: {
+                    ...prevData.customData,
+                    [name]: [...test]
+                },
+            };
         })
 
         // setData((prevData: any)=>{
@@ -165,7 +165,7 @@ const KitCustomization = (props:any) => {
     //
     //     })();
     // },[kitInfo?.id])
-
+    console.log(inputData,"inputData")
     const onClose = () =>{
         (async ()=>{
             const {items} = await fetchKitCustomization.query({kitInfo})
@@ -182,33 +182,21 @@ const KitCustomization = (props:any) => {
 
 
     const onSave = () =>{
-
         (async ()=>{
             try {
               if(kitInfo.kitCustomId || edit.allow){
                   const {kit:{id},kitCustomId} = kitInfo
                   const customData = {
                       kitId: id,
-                      title: inputData.title,
-                      customData: {
-                          subjects: [{id: 623, weight: 10}],
-                          attributes: [{id: 2307, weight: 2}],
-                      },
+                      ...inputData
                   }
 
                   let UpdateId = kitCustomId ?  {kitCustomId : kitCustomId} : edit.idC
                   await updateKitCustomization.query({UpdateId , customData})
                   const {items} = await fetchKitCustomization.query({kitInfo, customId : UpdateId})
-
                   setKitData(items)
               }else {
-                  const customData = {
-                      title : inputData.title,
-                      customData: {
-                          subjects: [{id: 623, weight: 40}],
-                          attributes: [{id: 2307, weight: 22}],
-                      },
-                  }
+                  const customData = inputData
                   const kitCustomId = await sendKitCustomization.query({assessmentId, customData})
                   const {items} = await fetchKitCustomization.query({kitInfo,customId :kitCustomId})
                   setKitData(items)

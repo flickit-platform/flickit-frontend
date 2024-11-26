@@ -90,7 +90,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
     };
 
     const handleSaveEdit = () => {
-        handleEdit(newAttribute);
+        // handleEdit(newAttribute);
         setEditAttributeId(null);
     };
 
@@ -171,7 +171,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                 <Typography>
                                                     <Trans i18nKey={"weight"} />:
                                                 </Typography>
-                                                {subject.weight.customValue || subject.weight.defaultValue}
+                                                {...(inputData.customData.subjects.map((i : any) =>(i.id == subject.id && Boolean(i.weight) ? i.weight: (subject.weight.customValue || subject.weight.defaultValue) ))) }
                                                 {!subject.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
                                             </Box>
                                         </TableCell>
@@ -188,10 +188,10 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                 alignItems: "center",
                                             }}
                                         >
-                                            <IconButton color="primary" data-testid={"attribute-save-icon"} onClick={handleSave}>
+                                            <IconButton color="primary" data-testid={"kitCustom-save-icon"} onClick={handleSaveEdit}>
                                                 <CheckIcon />
                                             </IconButton>
-                                            <IconButton color="secondary" data-testid={"attribute-close-icon"} onClick={handleCancelEdit}>
+                                            <IconButton color="secondary" data-testid={"kitCustom-close-icon"} onClick={handleCancelEdit}>
                                                 <CloseIcon />
                                             </IconButton>
                                         </Link>
@@ -316,7 +316,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                     <Typography>
                                                                                         <Trans i18nKey={"weight"} />:
                                                                                     </Typography>
-                                                                                    {attribute.weight.customValue || attribute.weight.defaultValue}
+                                                                                    {...(inputData.customData.attributes.map((i : any) =>(i.id == subject.id && Boolean(i.weight) ? i.weight: (attribute.weight.customValue || attribute.weight.defaultValue) ))) }
                                                                                     {!attribute.weight.customValue && <Box>(<Trans i18nKey={"default"} />)</Box>}
                                                                                 </Box>
                                                                             </TableCell>
