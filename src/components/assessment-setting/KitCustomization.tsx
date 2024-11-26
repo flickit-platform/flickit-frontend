@@ -26,16 +26,18 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 
 const KitCustomization = (props:any) => {
-
+    const {kitInfo} = props
     const [kitData, setKitData] = useState<any>([]);
+    const [edit, setEdit] = useState<any>({allow: false,idC: {}});
 
     const formMethods = useForm({ shouldUnregister: true });
-    const {kitInfo} = props
+
     // const { id } = kitInfo
     const { service } = useServiceContext();
     const { assessmentId = "" } = useParams();
+
     const fetchKitCustomization = useQuery({
-        service:(args= {kitInfo},config)=>
+        service:(args,config)=>
             service.fetchKitCustomization(args,config),
         runOnMount: false,
     })
@@ -58,14 +60,14 @@ const KitCustomization = (props:any) => {
     const [inputData, setInputData] = useState<any>({
         title: "",
         customData: {
-            subjects: [{id: 0, weight: 0}],
-            attributes: [{id: 0, weight: 0}],
+            subjects: [{id:0,weight:""}],
+            attributes: [{id:0,weight:""}],
         },
     });
 
     useEffect(()=>{
         (async ()=>{
-            const {items} = await fetchKitCustomization.query()
+            const {items} = await fetchKitCustomization.query({kitInfo})
             setKitData(items)
             if (kitInfo?.kitCustomId){
              let {title} =   await fetchKitCustomTitle.query()
@@ -87,7 +89,6 @@ const KitCustomization = (props:any) => {
             // console.log(updatedType,"updatedType")
             let test =  updatedType.map((item: any) => {
                 if(item.id == subjectId){
-
                     item.weight = parsedValue
                     return item
                 }else{
@@ -108,11 +109,9 @@ const KitCustomization = (props:any) => {
 
         // setData((prevData: any)=>{
         //     let updatedType = prevData.customData[name]
-        //     console.log(updatedType,"oooo")
         //   let test =  updatedType.map((item: any) => {
         //       return   item.id == subjectId ? {...item,weight:parsedValue} : {id:subjectId, weight: parsedValue}
         //     })
-        //     console.log(test,"ttttt")
         //     return {
         //         ...prevData,
         //         customData: {
@@ -130,7 +129,6 @@ const KitCustomization = (props:any) => {
         //         {...item, weight : parsedValue}
         //         : {id:subjectId , weight: parsedValue}
         //     )
-        //     console.log(o,"uuuuu")
         //     // if(updatedType.length == 0){
         //     //     updatedType.push({
         //     //         weight: parsedValue,
@@ -170,7 +168,7 @@ const KitCustomization = (props:any) => {
 
     const onClose = () =>{
         (async ()=>{
-            const {items} = await fetchKitCustomization.query()
+            const {items} = await fetchKitCustomization.query({kitInfo})
             setKitData(items)
             setInputData({
                 title: "",
@@ -187,27 +185,34 @@ const KitCustomization = (props:any) => {
 
         (async ()=>{
             try {
-              if(kitInfo.kitCustomId){
+              if(kitInfo.kitCustomId || edit.allow){
+                  const {kit:{id},kitCustomId} = kitInfo
                   const customData = {
+                      kitId: id,
                       title: inputData.title,
                       customData: {
-                          subjects: [{id: 846, weight: 9}],
-                          attributes: [{id: 3074, weight: 10}],
+                          subjects: [{id: 623, weight: 10}],
+                          attributes: [{id: 2307, weight: 2}],
                       },
                   }
-                  const {kitCustomId} = kitInfo
-                  await updateKitCustomization.query({kitCustomId, customData})
+
+                  let UpdateId = kitCustomId ?  {kitCustomId : kitCustomId} : edit.idC
+                  await updateKitCustomization.query({UpdateId , customData})
+                  const {items} = await fetchKitCustomization.query({kitInfo, customId : UpdateId})
+
+                  setKitData(items)
               }else {
                   const customData = {
                       title : inputData.title,
                       customData: {
-                          subjects: [{id: 667, weight: 10}],
-                          attributes: [{id: 2496, weight: 11}],
+                          subjects: [{id: 623, weight: 40}],
+                          attributes: [{id: 2307, weight: 22}],
                       },
                   }
-                  await sendKitCustomization.query({assessmentId, customData})
-                  const {items} = await fetchKitCustomization.query()
+                  const kitCustomId = await sendKitCustomization.query({assessmentId, customData})
+                  const {items} = await fetchKitCustomization.query({kitInfo,customId :kitCustomId})
                   setKitData(items)
+                  setEdit({allow:true,idC: kitCustomId})
               }
             }catch (e){
 
