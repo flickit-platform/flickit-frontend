@@ -714,6 +714,12 @@
   "assessmentQuestion":"the assessment question",
   "validation": "Validation",
   "validateReleaseTooltip": "Your kit cannot be released until all errors are resolved.",
+  "kitErrorsTitle": "Errors in this Kit:",
+  "kitCustomization": "Kit Customization",
+  "customizingSubjectAndAttributes": "Customizing Subjects and Attributes",
+  "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment.",
+  "kitCustomTitle": "Kit custom title",
+  "kitCustomTitleEmpty": "Kit custom title can not be empty",
   "kitValidated": "All good! The kit has been successfully validated and is ready to be released.",
   "kitErrorsTitle": "Issues have been found in the kit and it cannot be released. Please resolve the issues and try again."
 }

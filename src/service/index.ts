@@ -152,6 +152,45 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/assessments/${assessmentId}/invitees/`, config);
     },
+      fetchKitCustomization(
+          {kitInfo,customId }: { kitInfo: any, customId: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          const {kit:{id},kitCustomId} = kitInfo
+          return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, {
+              ...(config || {}),
+              params:{
+                  ...(customId || {kitCustomId} || {})
+              }
+              },
+          )
+      },
+      fetchKitCustomTitle(
+          {kitInfo }: { kitInfo: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          const {kitCustomId} = kitInfo
+          return axios.get(`/api/v1/kit-customs/${kitCustomId}/`, config);
+      },
+      sendKitCustomization(
+          {assessmentId, customData }: {assessmentId:TId, customData: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          return axios.post(`/api/v1/assessments/${assessmentId}/assign-kit-custom/`,
+              customData,
+              config
+          );
+      },
+      updateKitCustomization(
+          {UpdateId, customData }: {UpdateId:any, customData: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          const {kitCustomId} = UpdateId
+          return axios.put(`/api/v1/kit-customs/${kitCustomId}/`,
+              customData,
+              config
+          );
+      },
     RemoveAssessmentMembersInvitees(
       args: { invitedId: string },
       config: AxiosRequestConfig<any> | undefined,

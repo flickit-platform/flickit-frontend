@@ -17,6 +17,7 @@ import Box from "@mui/material/Box";
 import AddMemberDialog from "@components/assessment-setting/addMemberDialog";
 import ConfirmRemoveMemberDialog from "@components/assessment-setting/confirmRemoveMemberDialog";
 import AssessmentSettingTitle from "@components/assessment-setting/AssessmentSettingTitle";
+import KitCustomization from "@components/assessment-setting/KitCustomization";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -31,6 +32,7 @@ const AssessmentSettingContainer = () => {
   }>({ display: false, name: "", id: "", invited: false });
   const [listOfUser, setListOfUser] = useState([]);
   const [changeData, setChangeData] = useState(false);
+  const [kitInfo, setKitInfo] = useState<null | {kit: { id: number, title: string },kitCustomId: null | number}>(null);
 
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
@@ -62,15 +64,16 @@ const AssessmentSettingContainer = () => {
       service.fetchAssessmentMembersInvitees({ assessmentId }, config),
     runOnMount: false,
   });
+
   useEffect(() => {
     (async () => {
-      const { manageable } = await AssessmentInfo.query();
+      const { manageable,kit,kitCustomId } = await AssessmentInfo.query();
+      setKitInfo({kit,kitCustomId})
       if (!manageable) {
         return navigate("*");
       }
     })();
   }, [assessmentId]);
-
   useEffect(() => {
     (async () => {
       const { items } = await fetchAssessmentsUserListRoles.query();
@@ -112,7 +115,6 @@ const AssessmentSettingContainer = () => {
           assessment: { title },
         } = pathInfo;
         const { items: listOfRoles } = roles;
-
         return (
           <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
             <AssessmentSettingTitle pathInfo={pathInfo} />
@@ -144,7 +146,7 @@ const AssessmentSettingContainer = () => {
                 />
               </Grid>
             </Grid>
-            <Grid container columns={12}>
+            <Grid container columns={12} mb={"32px"}>
               <Grid item sm={12} xs={12}>
                 <AssessmentSettingMemberBox
                   listOfRoles={listOfRoles}
@@ -155,6 +157,11 @@ const AssessmentSettingContainer = () => {
                   setChangeData={setChangeData}
                   changeData={changeData}
                 />
+              </Grid>
+            </Grid>
+            <Grid container columns={12}>
+              <Grid item sm={12} xs={12}>
+                <KitCustomization kitInfo={kitInfo}/>
               </Grid>
             </Grid>
             <AddMemberDialog

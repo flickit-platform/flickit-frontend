@@ -75,16 +75,16 @@ export const AssessmentSettingGeneralBox = (props: {
         px: { xs: "15px", sm: "51px" },
       }}
       gap={2}
-      textAlign="center"
+      textAlign="left"
       height={"auto"}
       // minHeight={"415px"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"40.53px"}
+      borderRadius={"8px"}
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
-        <Typography color="#9DA7B3" variant="headlineMedium">
+        <Typography color="#000" variant="headlineMedium">
           <Trans i18nKey={`${"general"}`} />
         </Typography>
 
@@ -99,8 +99,8 @@ export const AssessmentSettingGeneralBox = (props: {
           <Grid
             item
             xs={12}
-            sm={12}
-            md={8}
+            // sm={12}
+            // md={8}
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -140,13 +140,12 @@ export const AssessmentSettingGeneralBox = (props: {
             </Box>
           </Grid>
         </Grid>
-        {
           <Grid sx={{ display: "flex", justifyContent: "center" }}>
             <Grid
               item
               xs={12}
-              sm={12}
-              md={8}
+              // sm={12}
+              // md={8}
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -190,13 +189,12 @@ export const AssessmentSettingGeneralBox = (props: {
               </Box>
             </Grid>
           </Grid>
-        }
         <Grid sx={{ display: "flex", justifyContent: "center" }}>
           <Grid
             item
             xs={12}
-            sm={12}
-            md={8}
+            // sm={12}
+            // md={8}
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -206,7 +204,7 @@ export const AssessmentSettingGeneralBox = (props: {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignItems: "center",
                 gap: "5px",
                 color: "#9DA7B3",
@@ -229,29 +227,24 @@ export const AssessmentSettingGeneralBox = (props: {
             height: "100%",
             width: "100%",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "space-between",
-            gap: "32px",
+            // flexDirection: "column",
+            justifyContent: "space-between",
+            // alignItems: "space-between",
+            // gap: "32px",
           }}
         >
           {title &&
             title.map((itemList: string, index: number) => {
               return (
-                <Grid
-                  item
-                  sx={{ display: "flex", justifyContent: "center" }}
-                  key={itemList}
-                >
                   <Grid
                     item
                     xs={12}
-                    sm={12}
-                    md={8}
+                    sm={5}
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
+                        mb:"10px"
                     }}
                   >
                     <Typography
@@ -259,8 +252,9 @@ export const AssessmentSettingGeneralBox = (props: {
                       fontWeight={500}
                       whiteSpace={"nowrap"}
                       sx={{
+                        width:"100%",
                         display: "flex",
-                        justifyContent: "center",
+                        justifyContent: "flex-start",
                         fontSize: { xs: "1rem", md: "1.375rem" },
                       }}
                       lineHeight={"normal"}
@@ -276,6 +270,7 @@ export const AssessmentSettingGeneralBox = (props: {
                         justifyContent: "center",
                         fontSize: { xs: "1rem", md: "1.375rem" },
                         width: { md: "350px" },
+                        textAlign:"center"
                       }}
                       lineHeight={"normal"}
                     >
@@ -292,7 +287,6 @@ export const AssessmentSettingGeneralBox = (props: {
                       )}
                     </Typography>
                   </Grid>
-                </Grid>
               );
             })}
         </Grid>
@@ -432,7 +426,7 @@ export const AssessmentSettingMemberBox = (props: {
       minHeight={"350px"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"40.53px"}
+      borderRadius={"8px"}
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
@@ -442,17 +436,17 @@ export const AssessmentSettingMemberBox = (props: {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            width: "90%",
-            ml: theme.direction === "rtl" ? "unset" : "10%",
-            mr: theme.direction !== "rtl" ? "unset" : "10%",
+            width: "100%",
+            // ml: theme.direction === "rtl" ? "unset" : "10%",
+            // mr: theme.direction !== "rtl" ? "unset" : "10%",
           }}
         >
           <Typography
-            sx={{
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
-            }}
-            color="#9DA7B3"
+            // sx={{
+            //   ml: theme.direction === "rtl" ? "unset" : "auto",
+            //   mr: theme.direction !== "rtl" ? "unset" : "auto",
+            // }}
+            color="#000"
             variant="headlineMedium"
           >
             <Trans i18nKey={"grantedRoles"} />
