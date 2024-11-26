@@ -159,12 +159,28 @@ export const createService = (
           const {kit:{id}} = kitInfo
           return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, config);
       },
+      fetchKitCustomTitle(
+          {kitInfo }: { kitInfo: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          const {kitCustomId} = kitInfo
+          return axios.get(`/api/v1/kit-customs/${kitCustomId}/`, config);
+      },
       sendKitCustomization(
-          {assessmentId, data }: {assessmentId:TId, data: any },
+          {assessmentId, customData }: {assessmentId:TId, customData: any },
           config: AxiosRequestConfig<any> | undefined,
       ){
           return axios.post(`/api/v1/assessments/${assessmentId}/assign-kit-custom/`,
-              data,
+              customData,
+              config
+          );
+      },
+      updateKitCustomization(
+          {kitCustomId, customData }: {kitCustomId:TId, customData: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          return axios.put(`/api/v1/kit-customs/${kitCustomId}/`,
+              customData,
               config
           );
       },

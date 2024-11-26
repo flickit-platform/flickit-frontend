@@ -51,8 +51,8 @@ interface SubjectTableProps {
     handleEdit?: any;
     setOpenDeleteDialog?: any;
     handleInputChange:any,
-    setData:any,
-    data:any
+    setInputData:any,
+    inputData:any
 }
 
 const KitCustomizationTable: React.FC<SubjectTableProps> = ({
@@ -67,8 +67,8 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                        handleEdit,
                                                        setOpenDeleteDialog,
                                                        handleInputChange,
-                                                       setData,
-                                                       data
+                                                       setInputData,
+                                                       inputData
                                                    }) => {
     // const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
     const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
@@ -97,7 +97,6 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
     const handleCancelEdit = () => {
         setEditAttributeId(null);
     };
-    console.log(data,"iiiii")
 
     return (
         <TableContainer sx={{ tableLayout: "fixed", width: "100%" }}>
@@ -137,7 +136,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                 label={<Trans i18nKey="weight" />}
                                                 name="subjects"
                                                 type="number"
-                                                value={data?.customData?.subjects[index]?.weight}
+                                                value={inputData?.customData?.subjects[index]?.weight}
                                                 onChange={(e:any)=> handleInputChange(e,subject.id)}
                                                 // onChange={(e:any)=> {
                                                 //     const {name,value} = e.target
@@ -289,7 +288,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                     label={<Trans i18nKey="weight" />}
                                                                                     name="attributes"
                                                                                     type="number"
-                                                                                    value={data?.customData?.attributes[index]?.weight}
+                                                                                    value={inputData?.customData?.attributes[index]?.weight}
                                                                                     onChange={(e:any)=>handleInputChange(e,attribute.id)}
                                                                                     fullWidth
                                                                                     margin="normal"

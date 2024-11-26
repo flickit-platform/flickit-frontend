@@ -33,19 +33,29 @@ const KitCustomization = (props:any) => {
     const {kitInfo} = props
     // const { id } = kitInfo
     const { service } = useServiceContext();
-
+    const { assessmentId = "" } = useParams();
     const fetchKitCustomization = useQuery({
         service:(args= {kitInfo},config)=>
             service.fetchKitCustomization(args,config),
-        // runOnMount: false,
+        runOnMount: false,
+    })
+    const fetchKitCustomTitle = useQuery({
+        service:(args= {kitInfo},config)=>
+            service.fetchKitCustomTitle(args,config),
+        runOnMount: false,
     })
     const sendKitCustomization = useQuery({
-        service:(args= {kitInfo},config)=>
+        service:(args,config)=>
             service.sendKitCustomization(args,config),
-        // runOnMount: false,
+        runOnMount: false,
+    })
+    const updateKitCustomization = useQuery({
+        service:(args,config)=>
+            service.updateKitCustomization(args,config),
+        runOnMount: false,
     })
 
-    const [data, setData] = useState<any>({
+    const [inputData, setInputData] = useState<any>({
         title: "",
         customData: {
             subjects: [{id: 0, weight: 0}],
@@ -57,6 +67,13 @@ const KitCustomization = (props:any) => {
         (async ()=>{
             const {items} = await fetchKitCustomization.query()
             setKitData(items)
+            if (kitInfo?.kitCustomId){
+             let {title} =   await fetchKitCustomTitle.query()
+                setInputData((prev:any)=>({
+                   ...prev,
+                   title
+               }))
+            }
         })()
 
     },[kitInfo?.kit?.id])
@@ -65,7 +82,7 @@ const KitCustomization = (props:any) => {
         const { name, value } = e.target;
         const parsedValue =  parseInt(value);
 
-        setData((prevData: any)=>{
+        setInputData((prevData: any)=>{
             let updatedType = prevData.customData[name]
             // console.log(updatedType,"updatedType")
             let test =  updatedType.map((item: any) => {
@@ -80,13 +97,13 @@ const KitCustomization = (props:any) => {
                 }
             })
 
-            return {
-                ...prevData,
-                customData: {
-                    ...prevData.customData,
-                    [name]: [...test]
-                },
-            };
+            // return {
+            //     ...prevData,
+            //     customData: {
+            //         ...prevData.customData,
+            //         [name]: [...test]
+            //     },
+            // };
         })
 
         // setData((prevData: any)=>{
@@ -155,7 +172,7 @@ const KitCustomization = (props:any) => {
         (async ()=>{
             const {items} = await fetchKitCustomization.query()
             setKitData(items)
-            setData({
+            setInputData({
                 title: "",
                 customData: {
                     subjects: [{id: 0, weight: 0}],
@@ -164,14 +181,33 @@ const KitCustomization = (props:any) => {
             })
         })()
     }
+
+
     const onSave = () =>{
 
         (async ()=>{
             try {
               if(kitInfo.kitCustomId){
-
+                  const customData = {
+                      title: inputData.title,
+                      customData: {
+                          subjects: [{id: 846, weight: 9}],
+                          attributes: [{id: 3074, weight: 10}],
+                      },
+                  }
+                  const {kitCustomId} = kitInfo
+                  await updateKitCustomization.query({kitCustomId, customData})
               }else {
-                  await sendKitCustomization.query()
+                  const customData = {
+                      title : inputData.title,
+                      customData: {
+                          subjects: [{id: 667, weight: 10}],
+                          attributes: [{id: 2496, weight: 11}],
+                      },
+                  }
+                  await sendKitCustomization.query({assessmentId, customData})
+                  const {items} = await fetchKitCustomization.query()
+                  setKitData(items)
               }
             }catch (e){
 
@@ -240,14 +276,15 @@ const KitCustomization = (props:any) => {
                                 width: { md: "350px" },
                             }}
                         >
-                            <OnHoverInputTitleSetting
+                            <OnHoverInputCustomTitle
                                 formMethods={formMethods}
-                                data={"AssessmentTitle"}
+                                inputData={inputData}
+                                setInputData={setInputData}
                                 // infoQuery={fetchPathInfo}
                                 // AssessmentInfoQuery={AssessmentInfoQuery}
                                 editable={true}
                                 // color={color}
-                                type={"title"}
+                                type={"customTitle"}
                             />
                         </Box>
                     </Grid>
@@ -286,8 +323,8 @@ const KitCustomization = (props:any) => {
                                     // handleEdit={handleEdit}
                                     // setOpenDeleteDialog={setOpenDeleteDialog}
                                     handleInputChange={handleInputChange}
-                                    data={data}
-                                    setData={setData}
+                                    inputData={inputData}
+                                    setInputData={setInputData}
                                 />
                             </Box>
                 {/*        )*/}
@@ -303,7 +340,7 @@ const KitCustomization = (props:any) => {
                     <Grid item>
                         <Tooltip title={<Trans i18nKey={"kitCustomTitleEmpty"}/> }>
                             <Box>
-                                <Button data-cy="back" variant="contained" disabled={!data.title} onClick={onSave}>
+                                <Button data-cy="back" variant="contained" disabled={!inputData.title} onClick={onSave}>
                                     <Trans i18nKey="saveChanges" />
                                 </Button>
                             </Box>
@@ -318,7 +355,7 @@ const KitCustomization = (props:any) => {
     );
 };
 
-const OnHoverInputTitleSetting = (props: any) => {
+const OnHoverInputCustomTitle = (props: any) => {
     const [show, setShow] = useState<boolean>(false);
     const [isHovering, setIsHovering] = useState(false);
     const handleMouseOver = () => {
@@ -329,7 +366,8 @@ const OnHoverInputTitleSetting = (props: any) => {
         setIsHovering(false);
     };
     const {
-        data,
+        inputData,
+        setInputData,
         shortTitle,
         type,
         editable,
@@ -339,55 +377,59 @@ const OnHoverInputTitleSetting = (props: any) => {
         displayEdit,
     } = props;
     const [hasError, setHasError] = useState<boolean>(false);
-    const [inputData, setInputData] = useState<string>(data);
+    // const [inputData, setInputData] = useState<string>(data);
     const [inputDataShortTitle, setInputDataShortTitle] =
         useState<string>(shortTitle);
     const handleCancel = () => {
         setShow(false);
-        setInputData(data);
+        // setData(data);
+        setInputData((prev:any)=> ({
+            title : inputData.title,
+            ...prev
+        }))
         setHasError(false);
     };
     const { assessmentId } = useParams();
     const { service } = useServiceContext();
-    const updateAssessmentQuery = useQuery({
-        service: (
-            args = {
-                id: assessmentId,
-                data: {
-                    title: inputData,
-                    shortTitle: inputDataShortTitle === "" ? null : inputDataShortTitle,
-                    colorId: color?.id || 6,
-                },
-            },
-            config,
-        ) => service.updateAssessment(args, config),
-        runOnMount: false,
-        // toastError: true,
-    });
-    const updateAssessmentTitle = async () => {
-        try {
-            const res = await updateAssessmentQuery.query();
-            res.message && toast.success(res.message);
-            await infoQuery();
-            await AssessmentInfoQuery();
-        } catch (e) {
-            const err = e as ICustomError;
-            setHasError(true);
-            if (Array.isArray(err.response?.data?.message)) {
-                toastError(err.response?.data?.message[0]);
-            } else if (
-                err.response?.data &&
-                err.response?.data.hasOwnProperty("message")
-            ) {
-                toastError(err.response?.data?.message);
-            }
-        }
-    };
+    // const updateAssessmentQuery = useQuery({
+    //     service: (
+    //         args = {
+    //             id: assessmentId,
+    //             data: {
+    //                 title: data.title,
+    //                 shortTitle: inputDataShortTitle === "" ? null : inputDataShortTitle,
+    //                 colorId: color?.id || 6,
+    //             },
+    //         },
+    //         config,
+    //     ) => service.updateAssessment(args, config),
+    //     runOnMount: false,
+    //     // toastError: true,
+    // });
+    // const updateAssessmentTitle = async () => {
+    //     try {
+    //         const res = await updateAssessmentQuery.query();
+    //         res.message && toast.success(res.message);
+    //         await infoQuery();
+    //         await AssessmentInfoQuery();
+    //     } catch (e) {
+    //         const err = e as ICustomError;
+    //         setHasError(true);
+    //         if (Array.isArray(err.response?.data?.message)) {
+    //             toastError(err.response?.data?.message[0]);
+    //         } else if (
+    //             err.response?.data &&
+    //             err.response?.data.hasOwnProperty("message")
+    //         ) {
+    //             toastError(err.response?.data?.message);
+    //         }
+    //     }
+    // };
     const inputProps: React.HTMLProps<HTMLInputElement> = {
         style: {
             textAlign:
                 type == "title"
-                    ? firstCharDetector(inputData)
+                    ? firstCharDetector(inputData.title)
                         ? "right"
                         : "left"
                     : type == "shortTitle"
@@ -421,14 +463,14 @@ const OnHoverInputTitleSetting = (props: any) => {
                             fullWidth
                             // name={title}
                             defaultValue={
-                                type == "title" ? inputData : inputDataShortTitle || ""
+                             inputData.title
                             }
-                            onChange={(e) =>
-                                type == "title"
-                                    ? setInputData(e.target.value)
-                                    : setInputDataShortTitle(e.target.value)
+                            onChange={(e) =>{
+                                setInputData((prev:any)=>({...prev,title:e.target.value}))
                             }
-                            value={type == "title" ? inputData : inputDataShortTitle}
+
+                            }
+                            value={inputData.title}
                             required={true}
                             multiline={true}
                             sx={{
@@ -464,7 +506,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                                             width: { xs: "26px", sm: "36px" },
                                             margin: "3px",
                                         }}
-                                        onClick={updateAssessmentTitle}
+                                        onClick={handleCancel}
                                     >
                                         <DoneIcon sx={{ color: "#fff" }} />
                                     </IconButton>
@@ -511,13 +553,12 @@ const OnHoverInputTitleSetting = (props: any) => {
                         <Typography
                             color="#004F83"
                             fontWeight={500}
-                            sx={{ fontSize: { xs: "1rem", sm: "1.375rem" } }}
+                            sx={{ fontSize: { xs: "1rem", sm: "1.375rem" },mr:1 }}
                             lineHeight={"normal"}
                         >
-                            {type == "title" && data?.replace(/<\/?p>/g, "")}
-                            {type == "shortTitle" && shortTitle?.replace(/<\/?p>/g, "")}
+                            {inputData.title}
                         </Typography>
-                        {(isHovering || displayEdit) && (
+                        { !displayEdit && (
                             <EditRoundedIcon
                                 sx={{ color: "#9DA7B3", position: "absolute", right: -10 }}
                                 fontSize="small"
