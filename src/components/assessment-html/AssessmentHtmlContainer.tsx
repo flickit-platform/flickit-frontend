@@ -55,6 +55,7 @@ const AssessmentExportContainer = () => {
   });
 
   return (
+    <Box height={errorObject&&"calc(100vh - 56px)"}>
     <PermissionControl error={[errorObject]}>
       <QueryBatchData
         queryBatchData={[fetchPathInfo]}
@@ -79,6 +80,7 @@ const AssessmentExportContainer = () => {
         }}
       />
     </PermissionControl>
+    </Box>
   );
 };
 
