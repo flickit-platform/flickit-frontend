@@ -340,10 +340,10 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                                                                                          alignItems: "center",
                                                                                      }}
                                                                                  >
-                                                                                     <IconButton color="primary" data-testid={"attribute-save-icon"} onClick={handleSave}>
+                                                                                     <IconButton color="primary" data-testid={"kitCustom-save-icon"} onClick={handleSave}>
                                                                                          <CheckIcon />
                                                                                      </IconButton>
-                                                                                     <IconButton color="secondary" data-testid={"attribute-close-icon"} onClick={handleCancelEdit}>
+                                                                                     <IconButton color="secondary" data-testid={"KitCustom-close-icon"} onClick={handleCancelEdit}>
                                                                                          <CloseIcon />
                                                                                      </IconButton>
                                                                                  </Link>
