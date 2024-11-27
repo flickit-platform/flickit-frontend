@@ -65,21 +65,21 @@ const AssessmentKitPermisson = (props: any) => {
         {
             id: "displayName",
             label: "name",
-            minWidth: "20vw",
+            minWidth: "29%",
             position: "left"
         },
         {
             id: "email",
             label: "email",
             display: "none",
-            minWidth: "20vw",
+            minWidth: "30%",
             position: "center",
         },
         {
             id: "remove",
             label: "remove",
             align: "right",
-            minWidth: "20vw",
+            minWidth: "30%",
             position: "center",
         },
     ];
@@ -118,14 +118,16 @@ const AssessmentKitPermisson = (props: any) => {
                     values={{assessmentKit: title}}
                 />
             </Title>
-            <MemberList
-                title={"members"}
-                hasBtn={true}
-                btnLabel={"addMember"}
-                listOfUser={items}
-                query={query}
-                columns={columns}
-            />
+            <Box mt={2}>
+                <MemberList
+                    title={"members"}
+                    hasBtn={true}
+                    btnLabel={"addMember"}
+                    listOfUser={items}
+                    query={query}
+                    columns={columns}
+                />
+            </Box>
         </Box>
     );
 };
