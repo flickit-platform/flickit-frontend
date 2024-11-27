@@ -147,11 +147,6 @@ export default function MemberList(props: any) {
                         sm: "16rem",
                         md: column.minWidth,
                       },
-                      // maxWidth: {
-                      //   xs: "10rem",
-                      //   sm: "14rem",
-                      //   md: column.minWidth,
-                      // },
                       textAlign: { xs: column.position, lg: "center" },
                       display: {
                         xs: column.display,
