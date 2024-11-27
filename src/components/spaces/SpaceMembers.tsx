@@ -186,7 +186,7 @@ export const SpaceMembers = (props: any) => {
             return (
               <Box>
                 {items.map((member: any) => {
-                  const { displayName, id, pictureLink, isOwner } = member;
+                  const { displayName, id, pictureLink, isOwner, email } = member;
                   return (
                     displayName && (
                       <Box
@@ -200,7 +200,7 @@ export const SpaceMembers = (props: any) => {
                           px: 1.5,
                         }}
                       >
-                        <Box sx={{ ...styles.centerV }}>
+                        <Box sx={{ ...styles.centerV,width:"85%" }}>
                           <Box>
                             <Avatar
                               {...stringAvatar(displayName.toUpperCase())}
@@ -214,9 +214,25 @@ export const SpaceMembers = (props: any) => {
                                 theme.direction == "rtl" ? "1rem" : "unset",
                               marginLeft:
                                 theme.direction == "rtl" ? "unset" : "1rem",
+                              width:"35%",
+                              overflow:"hidden",
+                              textOverflow:"ellipsis"
                             }}
                           >
                             {displayName}
+                          </Box>
+                          <Box
+                              style={{
+                                marginRight:
+                                    theme.direction == "rtl" ? "1rem" : "unset",
+                                marginLeft:
+                                    theme.direction == "rtl" ? "unset" : "1rem",
+                                width:"45%",
+                                overflow:"hidden",
+                                textOverflow:"ellipsis"
+                              }}
+                          >
+                            {email}
                           </Box>
                         </Box>
                         <Box
