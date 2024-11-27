@@ -55,7 +55,7 @@ export default function MemberList(props: any) {
       minHeight={"350px"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"8px"}
+      borderRadius={2}
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
