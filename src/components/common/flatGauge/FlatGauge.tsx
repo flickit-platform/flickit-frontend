@@ -35,7 +35,7 @@ const FlatGauge = (props:IGaugeProps) => {
 
     const textMaturityLevel = TextMaturityLevel(maturity_level_number,level_value)
     const colorPallet = MaturityLevelColors(maturity_level_number)
-    const colorCode = colorPallet[level_value - 1];
+    const colorCode = colorPallet[level_value - 1] || colorPallet[0];
     const count = Array.from(Array(maturity_level_number).keys())
     const emptyCell =  level_value - 1
 
