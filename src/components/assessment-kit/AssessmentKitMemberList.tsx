@@ -55,7 +55,7 @@ export default function MemberList(props: any) {
       minHeight={"350px"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"40.53px"}
+      borderRadius={2}
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
@@ -143,13 +143,8 @@ export default function MemberList(props: any) {
                     align={column.align}
                     sx={{
                       minWidth: {
-                        xs: "10rem",
-                        sm: "14rem",
-                        md: column.minWidth,
-                      },
-                      maxWidth: {
-                        xs: "10rem",
-                        sm: "14rem",
+                        xs: "12rem",
+                        sm: "16rem",
                         md: column.minWidth,
                       },
                       textAlign: { xs: column.position, lg: "center" },
