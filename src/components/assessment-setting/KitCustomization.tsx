@@ -168,6 +168,12 @@ const KitCustomization = (props: any) => {
           setKitData(items);
           setEdit({ allow: true, idC: kitCustomId });
           setHasChanges(false);
+          toast.success(
+            <Trans
+              i18nKey="spaceCreatedSuccessMessage"
+              values={{ title: inputData.title }}
+            />,
+          );
         }
       } catch (e) {
         const err = e as ICustomError;
