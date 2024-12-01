@@ -22,6 +22,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { LoadingButton } from "@mui/lab";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
+import { toast } from "react-toastify";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -148,6 +149,12 @@ const KitCustomization = (props: any) => {
           });
           setKitData(items);
           setHasChanges(false);
+          toast.success(
+            <Trans
+              i18nKey="spaceUpdatedSuccessMessage"
+              values={{ title: inputData.title }}
+            />,
+          );
         } else {
           const customData = inputData;
           const kitCustomId = await sendKitCustomization.query({
@@ -304,8 +311,7 @@ const OnHoverInputCustomTitle = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { inputData, setInputData, type, editable, displayEdit } =
-    props;
+  const { inputData, setInputData, type, editable, displayEdit } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const handleCancel = () => {
     setShow(false);
