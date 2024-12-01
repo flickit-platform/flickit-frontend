@@ -72,33 +72,33 @@ const AssessmentExportContainer = () => {
   });
 
   const progressInfo = useQuery<IAssessmentResponse>({
-    service: ({ assessmentId, ...args }, config) =>
+    service: (args = { assessmentId }, config) =>
       service.fetchAssessmentTotalProgress(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
 
   const AssessmentReport = useQuery({
-    service: ({ assessmentId, ...args }, config) =>
+    service: (args = { assessmentId }, config) =>
       service.fetchAssessment(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
 
   const calculateMaturityLevelQuery = useQuery({
-    service: ({ assessmentId, ...args }, config) =>
+    service: (args = { assessmentId }, config) =>
       service.calculateMaturityLevel(args, config),
     runOnMount: false,
   });
 
   const calculateConfidenceLevelQuery = useQuery({
-    service: ({ assessmentId, ...args }, config) =>
+    service: (args = { assessmentId }, config) =>
       service.calculateConfidenceLevel(args, config),
     runOnMount: false,
   });
 
   const fetchAdviceNarration = useQuery<any>({
-    service: ({ assessmentId, ...args }, config) =>
+    service: (args = { assessmentId }, config) =>
       service.fetchAdviceNarration(args, config),
     toastError: false,
   });
@@ -1479,9 +1479,7 @@ const AssessmentExportContainer = () => {
                                             }}
                                           >
                                             <Typography variant="titleMedium">
-                                              <Trans
-                                                i18nKey={"assessmentQuestion"}
-                                              />
+                                              <Trans i18nKey={"assessmentQuestion"}/>
                                             </Typography>
                                           </Box>{" "}
                                           <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />

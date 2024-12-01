@@ -10,7 +10,7 @@ import useDialog from "@utils/useDialog";
 import CompareItemCEFormDialog from "./CompareItemCEFormDialog";
 import Title from "@common/Title";
 import { Gauge } from "@common/charts/Gauge";
-import { TId, TQueryFunction } from "@types";
+import { TId } from "@types";
 import IconButton from "@mui/material/IconButton";
 import {
   compareActions,

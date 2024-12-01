@@ -50,12 +50,12 @@ const AssessmentKitSectionGeneralInfo = (
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
   const fetchAssessmentKitInfoQuery = useQuery({
-    service: ({ assessmentKitId, ...args }, config) =>
+    service: (args = { assessmentKitId }, config) =>
       service.fetchAssessmentKitInfo(args, config),
     runOnMount: true,
   });
   const fetchAssessmentKitStatsQuery = useQuery({
-    service: ({ assessmentKitId, ...args }, config) =>
+    service: (args = { assessmentKitId }, config) =>
       service.fetchAssessmentKitStats(args, config),
     runOnMount: true,
   });
