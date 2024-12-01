@@ -3,7 +3,7 @@ import { t } from "i18next";
 import { TId } from "@types";
 import { BASE_URL } from "@constants";
 import keycloakService from "@/service//keycloakService";
-import { data } from "cypress/types/jquery";
+
 declare module "axios" {
   interface AxiosRequestConfig {
     isRefreshTokenReq?: boolean;
@@ -74,7 +74,7 @@ export const createService = (
       return axios.get(`/api/v1/user-profile/`, config);
     },
     updateUserInfo(args: any, config: AxiosRequestConfig<any> | undefined) {
-      const { data, id } = args ?? {};
+      const { data } = args ?? {};
       return axios.put(`/api/v1/user-profile/`, data, {
         ...config,
         headers: {

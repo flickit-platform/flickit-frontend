@@ -72,15 +72,6 @@ const ListOfItems = ({
     runOnMount: false,
   });
 
-  const deleteQuestionnairesKit = useQuery({
-    service: (args, config) => service.deleteQuestionnairesKit(args, config),
-    runOnMount: false,
-  });
-
-  const updateKitQuestionnaires = useQuery({
-    service: (args, config) => service.updateKitQuestionnaires(args, config),
-    runOnMount: false,
-  });
   const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] = useState<{
     [key: string]: boolean;
   }>({});
@@ -95,21 +86,10 @@ const ListOfItems = ({
     value: 1,
     id: null,
   });
-  const [expanded, setExpanded] = useState(false);
-  const [questionnaireId, setQuestionnaireId] = useState(null);
   const [questionData, setQuestionData] = useState<IQuestion[]>([]);
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-  const handleDragEnd = (result: any) => {
-    if (!result.destination) return;
 
-    const newReorderedItems = Array.from(reorderedItems);
-    const [movedItem] = newReorderedItems.splice(result.source.index, 1);
-    newReorderedItems.splice(result.destination.index, 0, movedItem);
-
-    setReorderedItems(newReorderedItems);
-    onReorder(newReorderedItems);
-  };
   const handleEditClick = (e: any, item: any) => {
     e.stopPropagation();
     setEditMode(Number(item.id));
@@ -144,8 +124,6 @@ const ListOfItems = ({
   const handelChangeAccordion =
     ({ id }: { id: TId }) =>
     async (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded);
-      setQuestionnaireId(id as any);
       try {
         if (isExpanded) {
           // const data = await fetchOptionListKit.query({
@@ -170,10 +148,10 @@ const ListOfItems = ({
 
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
-      const orders = newOrder.map((item, idx) => ({
-        questionId: item.id,
-        index: idx + 1,
-      }));
+      // const orders = newOrder.map((item, idx) => ({
+      //   questionId: item.id,
+      //   index: idx + 1,
+      // }));
 
       // await service.changeQuestionsOrder(
       //   { kitVersionId },

@@ -118,7 +118,7 @@ const DeleteAssessmentIconBtn = (props: {
   index: number;
   fetchAssessmentsInfo: TQueryFunction;
 }) => {
-  const { id, index, fetchAssessmentsInfo } = props;
+  const { id, index } = props;
   const { assessmentIds, assessment_kit } = useCompareContext();
   const dispatch = useCompareDispatch();
   const filteredData = assessment_kit.filter((item) => item.id !== id);

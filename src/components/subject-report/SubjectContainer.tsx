@@ -50,9 +50,6 @@ const SubjectContainer = () => {
         const {
           attributes,
           subject,
-          topStrengths,
-          topWeaknesses,
-          maturityLevelsCount,
         } = data;
         const { isConfidenceValid, isCalculateValid, title } = subject;
         const { question_count, answers_count } = subjectProgress;
@@ -250,7 +247,7 @@ const SubjectTitle = (props: {
   loading: boolean;
   pathInfo: any;
 }) => {
-  const { data, loading, pathInfo } = props;
+  const { data, pathInfo } = props;
   const { subject } = data || {};
   const { title } = subject;
   const { spaceId, assessmentId, page } = useParams();

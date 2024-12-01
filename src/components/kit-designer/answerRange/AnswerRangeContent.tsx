@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PermissionControl from "../../common/PermissionControl";
-import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import ListOfItems from "./AnswerRangeList";
@@ -11,16 +10,14 @@ import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { debounce } from "lodash";
-import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDHeader from "@components/kit-designer/common/KitHeader";
 import AnswerRangeForm from "./AnswerRangeForm";
-import {CircularProgress} from "@mui/material";
 
 const AnaweRangeContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-  const [data,setData] = useState<any>([])
-  const [changeData,setChangeData] = useState(false)
+  const [data, setData] = useState<any>([]);
+  const [changeData, setChangeData] = useState(false);
   const fetchAnswerRangeKit = useQuery({
     service: (args = { kitVersionId }, config) =>
       service.fetchAnswerRangeKit(args, config),
@@ -41,8 +38,7 @@ const AnaweRangeContent = () => {
     runOnMount: false,
   });
 
-  const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] =
-    useState(false);
+  const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] = useState(false);
   const [newAnswerRange, setNewAnswerRange] = useState({
     title: "",
     index: 1,
@@ -100,7 +96,7 @@ const AnaweRangeContent = () => {
         index: fetchAnswerRangeKit.data?.items.length + 1 || 1,
         id: null,
       });
-      setChangeData(prev => !prev)
+      setChangeData((prev) => !prev);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -122,7 +118,7 @@ const AnaweRangeContent = () => {
         kitVersionId,
         index: AnswerRangeItem.index,
         title: AnswerRangeItem.title,
-        reusable:true,
+        reusable: true,
       };
       await updateKitAnswerRange.query({
         kitVersionId,
@@ -139,7 +135,7 @@ const AnaweRangeContent = () => {
         index: fetchAnswerRangeKit.data?.items.length + 1 || 1,
         id: null,
       });
-      setChangeData(prev => !prev)
+      setChangeData((prev) => !prev);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -177,22 +173,22 @@ const AnaweRangeContent = () => {
     debouncedHandleReorder(newOrder);
   };
 
-  useEffect(()=>{
-    (async ()=>{
-       await fetchAnswerRangeKit.query().then((res)=>{
-         const {items} = res
-          setData(items)
-        })
-       })()
-  },[changeData])
+  useEffect(() => {
+    (async () => {
+      await fetchAnswerRangeKit.query().then((res) => {
+        const { items } = res;
+        setData(items);
+      });
+    })();
+  }, [changeData]);
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
         <KitDHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={
-              fetchAnswerRangeKit.loaded &&
-              fetchAnswerRangeKit.data.items.length !== 0
+            fetchAnswerRangeKit.loaded &&
+            fetchAnswerRangeKit.data.items.length !== 0
           }
           btnTitle={"newAnswerRange"}
           mainTitle={"answerRanges"}
@@ -218,38 +214,40 @@ const AnaweRangeContent = () => {
         {/*      <CircularProgress />*/}
         {/*    </Box>*/}
         {/*) : (*/}
-              <>
-                {data?.length !== 0 ? (
-                  <Box maxHeight={500} overflow="auto">
-                    <ListOfItems
-                      items={data}
-                      fetchQuery={fetchAnswerRangeKit}
-                      onEdit={handleEdit}
-                      onDelete={handleDelete}
-                      deleteBtn={false}
-                      onReorder={handleReorder}
-                      setChangeData={setChangeData}
-                      name={"answerRange"}
-                    />
-                  </Box>
-                ) : (
-                    data?.length == 0 && <EmptyState
-                    btnTitle={"newAnswerRange"}
-                    title={"answerRangeListEmptyState"}
-                    SubTitle={"answerRangeEmptyStateDetailed"}
-                    onAddNewRow={handleAddNewRow}
-                  />
-                )}
+        <>
+          {data?.length !== 0 ? (
+            <Box maxHeight={500} overflow="auto">
+              <ListOfItems
+                items={data}
+                fetchQuery={fetchAnswerRangeKit}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                deleteBtn={false}
+                onReorder={handleReorder}
+                setChangeData={setChangeData}
+                name={"answerRange"}
+              />
+            </Box>
+          ) : (
+            data?.length == 0 && (
+              <EmptyState
+                btnTitle={"newAnswerRange"}
+                title={"answerRangeListEmptyState"}
+                SubTitle={"answerRangeEmptyStateDetailed"}
+                onAddNewRow={handleAddNewRow}
+              />
+            )
+          )}
 
-                {showNewAnswerRangeForm && (
-                  <AnswerRangeForm
-                    newItem={newAnswerRange}
-                    handleInputChange={handleInputChange}
-                    handleSave={handleSave}
-                    handleCancel={handleCancel}
-                  />
-                )}
-              </>
+          {showNewAnswerRangeForm && (
+            <AnswerRangeForm
+              newItem={newAnswerRange}
+              handleInputChange={handleInputChange}
+              handleSave={handleSave}
+              handleCancel={handleCancel}
+            />
+          )}
+        </>
         {/*)}*/}
       </Box>
     </PermissionControl>

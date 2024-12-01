@@ -6,8 +6,6 @@ import {
   Switch,
   Box,
   Divider,
-  FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Tooltip,
@@ -85,7 +83,6 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     maturityLevelId: undefined,
     weight: 1,
   });
-  const [questionData, setQuestionData] = useState<any>(null);
   const [showNewOptionForm, setShowNewOptionForm] = useState(false);
   const [showNewImpactForm, setShowNewImpactForm] = useState(false);
   const formMethods = useForm({ shouldUnregister: true });

@@ -60,10 +60,6 @@ const AssessmentAdviceContainer = (props: any) => {
     setExpanded(false);
   };
   // { subjectId: string; assessmentId: string }
-  const subjectQueryData = useQuery<ISubjectReportModel>({
-    service: (args, config) => service.fetchSubject(args, config),
-    runOnMount: false,
-  });
   const createAdviceQueryData = useQuery<ISubjectReportModel>({
     service: (args, config) => service.createAdvice(args, config),
     runOnMount: false,
@@ -97,7 +93,7 @@ const AssessmentAdviceContainer = (props: any) => {
   const generateAdviceViaAI = async () => {
     try {
       if (target) {
-        const data = await createAINarrationQueryData.query({
+        await createAINarrationQueryData.query({
           assessmentId: assessmentId,
           attributeLevelTargets: target,
           adviceListItems: adviceResult,

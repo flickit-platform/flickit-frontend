@@ -111,24 +111,36 @@ export const AssessmentReportNarrator = ({
           />
           {aboutSection?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
-              {theme.direction == "rtl" ? formatDate(
-                  format(
+              {theme.direction == "rtl"
+                ? formatDate(
+                    format(
                       new Date(
-                          new Date(aboutSection?.creationTime).getTime() -
-                          new Date(aboutSection?.creationTime).getTimezoneOffset() *
-                          60000,
+                        new Date(aboutSection?.creationTime).getTime() -
+                          new Date(
+                            aboutSection?.creationTime,
+                          ).getTimezoneOffset() *
+                            60000,
                       ),
                       "yyyy/MM/dd HH:mm",
-                  ), "Shamsi") : formatDate(format(
+                    ),
+                    "Shamsi",
+                  )
+                : formatDate(
+                    format(
                       new Date(
-                          new Date(aboutSection?.creationTime).getTime() -
-                          new Date(aboutSection?.creationTime).getTimezoneOffset() *
-                          60000,
+                        new Date(aboutSection?.creationTime).getTime() -
+                          new Date(
+                            aboutSection?.creationTime,
+                          ).getTimezoneOffset() *
+                            60000,
                       ),
                       "yyyy/MM/dd HH:mm",
-                  )+ " (" +
-                  t(convertToRelativeTime(aboutSection?.creationTime)) +
-                  ")", "Miladi")}
+                    ) +
+                      " (" +
+                      t(convertToRelativeTime(aboutSection?.creationTime)) +
+                      ")",
+                    "Miladi",
+                  )}
             </Typography>
           )}
         </>
@@ -149,7 +161,7 @@ const OnHoverRichEditor = (props: any) => {
   } = props;
   const abortController = useRef(new AbortController());
   const [isHovering, setIsHovering] = useState(false);
-  const [langDir,setLangDir] = useState(languageDetector(data));
+  const [langDir, setLangDir] = useState(languageDetector(data));
   const [show, setShow] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState<any>({});
@@ -175,7 +187,7 @@ const OnHoverRichEditor = (props: any) => {
   const onSubmit = async (payload: any, event: any) => {
     event.preventDefault();
     try {
-      const { data: res } = await service.updateAdviceNarration(
+      await service.updateAdviceNarration(
         { assessmentId, data: { assessorNarration: payload.narration } },
         { signal: abortController.current.signal },
       );
@@ -198,8 +210,8 @@ const OnHoverRichEditor = (props: any) => {
       sx={{
         display: "flex",
         alignItems: "center",
-        width:"100%",
-        direction: langDir ? "rtl" : "ltr"
+        width: "100%",
+        direction: langDir ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (

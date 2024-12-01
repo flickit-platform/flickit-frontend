@@ -14,8 +14,6 @@ import { ICustomError } from "@utils/CustomError";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import toastError from "@utils/toastError";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
-import { ECustomErrorType } from "@types";
-import { ErrorNotFoundOrAccessDenied } from "@common/errors/ErrorNotFoundOrAccessDenied";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
@@ -35,10 +33,13 @@ const AssessmentContainer = () => {
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
   const { fetchAssessments, ...rest } = useFetchAssessments();
-  const { data, error, errorObject, size, total, loading } = rest;
+  const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    if (Math.ceil(total / size) > Number(page) || Math.ceil(total / size) == Number(page)) {
+    if (
+      Math.ceil(total / size) > Number(page) ||
+      Math.ceil(total / size) == Number(page)
+    ) {
       navigate(`/${spaceId}/assessments/${value}`);
     }
   };
@@ -46,182 +47,184 @@ const AssessmentContainer = () => {
   if (Math.ceil(total / size) < Number(page) && pageCount) {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
-  return <PermissionControl error={[errorObject?.response]}>
-    <Box display="flex" flexDirection="column" m="auto">
-      <AssessmentTitle data={currentSpace} />
-      <Title
-        size="large"
-        toolbar={
-          <IconButton
-            size="small"
-            component={Link}
-            to={`/${spaceId}/setting`}
-            sx={{ ml: 2 }}
-          >
-            <SettingsRoundedIcon />
-          </IconButton>
-        }
-      >
-        <Box>
-          {/* <DescriptionRoundedIcon sx={{ mr: 1 }} /> */}
-          <Trans i18nKey="assessments" />
-        </Box>
-      </Title>
-      {!isEmpty && (
-        <Box
-          sx={{
-            background: "white",
-            py: 1,
-            px: 2,
-            ...styles.centerV,
-            borderRadius: 1,
-            my: 3,
-          }}
+  return (
+    <PermissionControl error={[errorObject?.response]}>
+      <Box display="flex" flexDirection="column" m="auto">
+        <AssessmentTitle data={currentSpace} />
+        <Title
+          size="large"
+          toolbar={
+            <IconButton
+              size="small"
+              component={Link}
+              to={`/${spaceId}/setting`}
+              sx={{ ml: 2 }}
+            >
+              <SettingsRoundedIcon />
+            </IconButton>
+          }
         >
+          <Box>
+            {/* <DescriptionRoundedIcon sx={{ mr: 1 }} /> */}
+            <Trans i18nKey="assessments" />
+          </Box>
+        </Title>
+        {!isEmpty && (
           <Box
             sx={{
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
+              background: "white",
+              py: 1,
+              px: 2,
+              ...styles.centerV,
+              borderRadius: 1,
+              my: 3,
             }}
           >
-            <ToolbarCreateItemBtn
-              data-cy="create-assessment-btn"
-              onClick={() =>
-                dialogProps.openDialog({
-                  type: "create",
-                  data: {
-                    space: { id: spaceId, title: currentSpace?.title },
-                  },
-                })
-              }
-              icon={<NoteAddRoundedIcon />}
-              shouldAnimate={isEmpty}
-              minWidth="195px"
-              text="createAssessment"
-              disabled={rest.loading}
-            />
-          </Box>
-        </Box>
-      )}
-      {isEmpty && !loading && (
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-            mt: 6,
-            gap: 4,
-          }}
-        >
-          <img
-            src={AssessmentEmptyState}
-            alt={"No assesment here!"}
-            width="240px"
-          />
-          <Typography
-            textAlign="center"
-            variant="h3"
-            sx={{
-              color: "#9DA7B3",
-              fontSize: "3rem",
-              fontWeight: "900",
-              width: "60%",
-            }}
-          >
-            <Trans i18nKey="noAssesmentHere" />
-          </Typography>
-          <Typography
-            textAlign="center"
-            variant="h1"
-            sx={{
-              color: "#9DA7B3",
-              fontSize: "1rem",
-              fontWeight: "500",
-              width: "60%",
-            }}
-          >
-            <Trans i18nKey="createAnAssessmentWith" />
-          </Typography>
-          <Box>
-            <Button
-              startIcon={<AddRoundedIcon />}
-              variant="contained"
+            <Box
               sx={{
-                animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
-                "&:hover": {
-                  animation: `${animations.noPomp}`,
-                },
+                ml: theme.direction === "rtl" ? "unset" : "auto",
+                mr: theme.direction !== "rtl" ? "unset" : "auto",
               }}
-              onClick={() =>
-                dialogProps.openDialog({
-                  type: "create",
-                  data: {
-                    space: { id: spaceId, title: currentSpace?.title },
-                  },
-                })
-              }
             >
-              <Typography sx={{ fontSize: "1.25rem" }} variant="button">
-                <Trans i18nKey="newAssessment" />
-              </Typography>
-            </Button>
-          </Box>
-        </Box>
-      )}
-
-      <QueryData
-        {...rest}
-        // renderLoading={() => <LoadingSkeletonOfAssessments />}
-        emptyDataComponent={
-          <ErrorEmptyData
-            emptyMessage={<Trans i18nKey="nothingToSeeHere" />}
-            suggests={
-              <Typography variant="subtitle1" textAlign="center">
-                <Trans i18nKey="tryCreatingNewAssessment" />
-              </Typography>
-            }
-          />
-        }
-        render={(data) => {
-          return (
-            <>
-              <AssessmentsList
-                {...rest}
-                data={data}
-                space={{ id: spaceId, title: currentSpace?.title }}
-                dialogProps={dialogProps}
+              <ToolbarCreateItemBtn
+                data-cy="create-assessment-btn"
+                onClick={() =>
+                  dialogProps.openDialog({
+                    type: "create",
+                    data: {
+                      space: { id: spaceId, title: currentSpace?.title },
+                    },
+                  })
+                }
+                icon={<NoteAddRoundedIcon />}
+                shouldAnimate={isEmpty}
+                minWidth="195px"
+                text="createAssessment"
+                disabled={rest.loading}
               />
-              {pageCount > 1 && !isEmpty && (
-                <Stack
-                  spacing={2}
-                  sx={{
-                    mt: 3,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Pagination
-                    variant="outlined"
-                    color="primary"
-                    count={pageCount}
-                    page={Number(page)}
-                    onChange={handleChange}
-                  />
-                </Stack>
-              )}
-            </>
-          );
-        }}
-      />
-      <AssessmentCEFromDialog
-        {...dialogProps}
-        onSubmitForm={fetchAssessments}
-      />
-    </Box>
-  </PermissionControl>;
+            </Box>
+          </Box>
+        )}
+        {isEmpty && !loading && (
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              mt: 6,
+              gap: 4,
+            }}
+          >
+            <img
+              src={AssessmentEmptyState}
+              alt={"No assesment here!"}
+              width="240px"
+            />
+            <Typography
+              textAlign="center"
+              variant="h3"
+              sx={{
+                color: "#9DA7B3",
+                fontSize: "3rem",
+                fontWeight: "900",
+                width: "60%",
+              }}
+            >
+              <Trans i18nKey="noAssesmentHere" />
+            </Typography>
+            <Typography
+              textAlign="center"
+              variant="h1"
+              sx={{
+                color: "#9DA7B3",
+                fontSize: "1rem",
+                fontWeight: "500",
+                width: "60%",
+              }}
+            >
+              <Trans i18nKey="createAnAssessmentWith" />
+            </Typography>
+            <Box>
+              <Button
+                startIcon={<AddRoundedIcon />}
+                variant="contained"
+                sx={{
+                  animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
+                  "&:hover": {
+                    animation: `${animations.noPomp}`,
+                  },
+                }}
+                onClick={() =>
+                  dialogProps.openDialog({
+                    type: "create",
+                    data: {
+                      space: { id: spaceId, title: currentSpace?.title },
+                    },
+                  })
+                }
+              >
+                <Typography sx={{ fontSize: "1.25rem" }} variant="button">
+                  <Trans i18nKey="newAssessment" />
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+        )}
+
+        <QueryData
+          {...rest}
+          // renderLoading={() => <LoadingSkeletonOfAssessments />}
+          emptyDataComponent={
+            <ErrorEmptyData
+              emptyMessage={<Trans i18nKey="nothingToSeeHere" />}
+              suggests={
+                <Typography variant="subtitle1" textAlign="center">
+                  <Trans i18nKey="tryCreatingNewAssessment" />
+                </Typography>
+              }
+            />
+          }
+          render={(data) => {
+            return (
+              <>
+                <AssessmentsList
+                  {...rest}
+                  data={data}
+                  space={{ id: spaceId, title: currentSpace?.title }}
+                  dialogProps={dialogProps}
+                />
+                {pageCount > 1 && !isEmpty && (
+                  <Stack
+                    spacing={2}
+                    sx={{
+                      mt: 3,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Pagination
+                      variant="outlined"
+                      color="primary"
+                      count={pageCount}
+                      page={Number(page)}
+                      onChange={handleChange}
+                    />
+                  </Stack>
+                )}
+              </>
+            );
+          }}
+        />
+        <AssessmentCEFromDialog
+          {...dialogProps}
+          onSubmitForm={fetchAssessments}
+        />
+      </Box>
+    </PermissionControl>
+  );
 };
 
 const useFetchAssessments = () => {
@@ -231,7 +234,6 @@ const useFetchAssessments = () => {
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const navigate = useNavigate();
   const { spaceId, page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
@@ -248,7 +250,6 @@ const useFetchAssessments = () => {
         { signal: abortController.current.signal },
       );
       if (res) {
-        const { size, total } = res;
         // if (
         //   Math.ceil(total / size) < parseInt(page ?? "1", 10) ||
         //   isNaN(page as any)
@@ -278,7 +279,7 @@ const useFetchAssessments = () => {
   const deleteAssessment = async (id: any) => {
     setLoading(true);
     try {
-      const { data: res } = await service.deleteAssessment(
+      await service.deleteAssessment(
         { id },
         { signal: abortController.current.signal },
       );

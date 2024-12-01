@@ -4,7 +4,6 @@ import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { useParams } from "react-router-dom";
 import { IKitVersion } from "@/types";
 
 const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {

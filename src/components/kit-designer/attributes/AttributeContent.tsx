@@ -6,7 +6,6 @@ import PermissionControl from "../../common/PermissionControl";
 import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import ListOfItems from "../questionnaires/QuestionnaireList";
 import EmptyState from "../common/EmptyState";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -15,19 +14,16 @@ import { ICustomError } from "@/utils/CustomError";
 import { debounce } from "lodash";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDHeader from "@/components/kit-designer/common/KitHeader";
-import AttributeForm from "./AttributeForm";
 import SubjectTable from "./SubjectTable";
 import {DeleteConfirmationDialog} from "@common/dialogs/DeleteConfirmationDialog";
 
 const AttributesContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-  const [subjectListOpen, setSubjectListOpen] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState(null);
+
   const [openDeleteDialog,setOpenDeleteDialog] = useState<{status:boolean,id:string}>({status:false,id:""})
 
   const [subjects, setSubjects] = useState([]);
-  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
 
   const fetchSubjectKit = useQuery({
     service: (args = { kitVersionId }, config) =>
@@ -86,19 +82,9 @@ const AttributesContent = () => {
     }
   }, [fetchSubjectKit.data]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewAttribute((prev) => ({
-      ...prev,
-      [name]: parsedValue,
-    }));
-  };
-
   const handleAddNewRow = () => {
     handleCancel();
     setShowNewAttributeForm(true);
-    setSubjectListOpen(true);
   };
 
   const handleSave = async (subjectId: number) => {
@@ -137,15 +123,6 @@ const AttributesContent = () => {
       const err = e as ICustomError;
       toastError(err);
     }
-  };
-
-  const handleSubjectSelect = (subject: any) => {
-    setSelectedSubject(subject);
-    setNewAttribute((prev) => ({
-      ...prev,
-      subjectId: subject?.id,
-    }));
-    setShowNewAttributeForm(true);
   };
 
   const handleCancel = () => {

@@ -88,26 +88,36 @@ export const AssessmentInsight = () => {
           />
           {aboutSection?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
-              {theme.direction == "rtl" ? formatDate(
-                format(
-                new Date(
-                  new Date(aboutSection?.creationTime).getTime() -
-                    new Date(aboutSection?.creationTime).getTimezoneOffset() *
-                      60000,
-                ),
-                "yyyy/MM/dd HH:mm",
-              ), "Shamsi")  + " (" +
+              {theme.direction == "rtl"
+                ? formatDate(
+                    format(
+                      new Date(
+                        new Date(aboutSection?.creationTime).getTime() -
+                          new Date(
+                            aboutSection?.creationTime,
+                          ).getTimezoneOffset() *
+                            60000,
+                      ),
+                      "yyyy/MM/dd HH:mm",
+                    ),
+                    "Shamsi",
+                  ) +
+                  " (" +
                   t(convertToRelativeTime(aboutSection?.creationTime)) +
-                  ")"   :   format(
-                  new Date(
+                  ")"
+                : format(
+                    new Date(
                       new Date(aboutSection?.creationTime).getTime() -
-                      new Date(aboutSection?.creationTime).getTimezoneOffset() *
-                      60000,
-                  ),
-                  "yyyy/MM/dd HH:mm",
-              ) + " (" +
-                t(convertToRelativeTime(aboutSection?.creationTime)) +
-                ")"  }
+                        new Date(
+                          aboutSection?.creationTime,
+                        ).getTimezoneOffset() *
+                          60000,
+                    ),
+                    "yyyy/MM/dd HH:mm",
+                  ) +
+                  " (" +
+                  t(convertToRelativeTime(aboutSection?.creationTime)) +
+                  ")"}
             </Typography>
           )}
           {(aboutSection.hasOwnProperty("isValid") || editable) &&
@@ -211,7 +221,7 @@ const OnHoverRichEditor = (props: any) => {
   const onSubmit = async (data: any, event: any) => {
     event.preventDefault();
     try {
-      const { data: res } = await service.updateAssessmentInsight(
+      await service.updateAssessmentInsight(
         { assessmentId, data: { insight: data.insight } },
         { signal: abortController.current.signal },
       );
@@ -314,7 +324,15 @@ const OnHoverRichEditor = (props: any) => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          <Typography sx={{textAlign: firstCharDetector(data.replace(/<[^>]*>/g, '')) ? "right": "left",width:"100%"}} dangerouslySetInnerHTML={{ __html: data }} />
+          <Typography
+            sx={{
+              textAlign: firstCharDetector(data.replace(/<[^>]*>/g, ""))
+                ? "right"
+                : "left",
+              width: "100%",
+            }}
+            dangerouslySetInnerHTML={{ __html: data }}
+          />
           {isHovering && editable && (
             <IconButton
               title="Edit"

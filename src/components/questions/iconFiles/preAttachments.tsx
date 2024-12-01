@@ -1,6 +1,5 @@
 export default function PreAttachment({
   mainColor,
-  backgroundColor,
 }: {
   mainColor: string;
   backgroundColor: string;

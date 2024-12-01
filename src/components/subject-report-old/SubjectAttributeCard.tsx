@@ -18,7 +18,6 @@ import { Link, useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
-import emptyState from "@assets/svg/emptyState.svg";
 import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
@@ -31,7 +30,7 @@ import { IPermissions } from "@/types";
 import AIGenerated from "../common/tags/AIGenerated";
 import RichEditorField from "@common/fields/RichEditorField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 
@@ -475,7 +474,7 @@ export const AttributeStatusBarContainer = (props: any) => {
 };
 
 export const AttributeStatusBar = (props: any) => {
-  const { ml, cl, isMl, isBasic, mn } = props;
+  const { ml, cl, isMl, mn } = props;
   const width = isMl
     ? ml
       ? `${(ml / mn) * 100}%`
@@ -1039,7 +1038,7 @@ const OnHoverInput = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { data, title, editable, type, attributeId, infoQuery } = props;
+  const { data, editable, type, attributeId, infoQuery } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
   const [inputData, setInputData] = useState<string>("");
@@ -1052,21 +1051,13 @@ const OnHoverInput = (props: any) => {
   useEffect(() => {
     setInputData(data);
   }, [data]);
-  const { assessmentKitId, assessmentId = "" } = useParams();
-  const { service } = useServiceContext();
-  const updateAssessmentKitQuery = useQuery({
-    service: (
-      args = {
-        attributeId: attributeId,
-        assessmentId: assessmentId,
-        data: { assessorInsight: inputData },
-      },
-      config,
-    ) => service.updateAIReport(args, config),
-    runOnMount: false,
-    // toastError: true,
-  });
-  const updateAssessmentKit = async (data: any, event: any, shouldView?: boolean) => {
+  const { assessmentId = "" } = useParams();
+
+  const updateAssessmentKit = async (
+    data: any,
+    event: any,
+    shouldView?: boolean,
+  ) => {
     try {
       const res = await infoQuery(attributeId, assessmentId, data.title);
       res?.message && toast.success(res?.message);
@@ -1085,7 +1076,7 @@ const OnHoverInput = (props: any) => {
       setHasError(true);
     }
   };
-    const formMethods = useForm({ shouldUnregister: true });
+  const formMethods = useForm({ shouldUnregister: true });
 
   return (
     <Box
@@ -1100,63 +1091,63 @@ const OnHoverInput = (props: any) => {
     >
       {editable && show ? (
         <Box sx={{ display: "flex", flexDirection: "column", width: "100% " }}>
-            <FormProviderWithForm formMethods={formMethods}>
-                <Box
-                    sx={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                <RichEditorField
+          <FormProviderWithForm formMethods={formMethods}>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <RichEditorField
                 name={"title"}
                 label={<Trans i18nKey="about" />}
                 required={true}
                 defaultValue={data || ""}
-            />
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "100%",
-                    }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <IconButton
+                  edge="end"
+                  sx={{
+                    background: theme.palette.primary.main,
+                    "&:hover": {
+                      background: theme.palette.primary.dark,
+                    },
+                    borderRadius: "3px",
+                    height: "36px",
+                    marginBottom: "2px",
+                  }}
+                  onClick={formMethods.handleSubmit(updateAssessmentKit)}
                 >
-                    <IconButton
-                        edge="end"
-                        sx={{
-                            background: theme.palette.primary.main,
-                            "&:hover": {
-                                background: theme.palette.primary.dark,
-                            },
-                            borderRadius: "3px",
-                            height: "36px",
-                            marginBottom: "2px",
-                        }}
-                        onClick={formMethods.handleSubmit(updateAssessmentKit)}
-                    >
-                        <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
-                    </IconButton>
-                    <IconButton
-                        edge="end"
-                        sx={{
-                            background: theme.palette.primary.main,
-                            "&:hover": {
-                                background: theme.palette.primary.dark,
-                            },
-                            borderRadius: "4px",
-                            height: "36px",
-                            marginBottom: "2px",
-                        }}
-                        onClick={handleCancel}
-                    >
-                        <CancelRoundedIcon sx={{ color: "#fff" }} />
-                    </IconButton>
-                </Box>
-                </Box>
-            </FormProviderWithForm>
+                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  sx={{
+                    background: theme.palette.primary.main,
+                    "&:hover": {
+                      background: theme.palette.primary.dark,
+                    },
+                    borderRadius: "4px",
+                    height: "36px",
+                    marginBottom: "2px",
+                  }}
+                  onClick={handleCancel}
+                >
+                  <CancelRoundedIcon sx={{ color: "#fff" }} />
+                </IconButton>
+              </Box>
+            </Box>
+          </FormProviderWithForm>
           {hasError && (
             <Typography color="#ba000d" variant="caption">
               {error?.data?.[type]}
@@ -1184,24 +1175,28 @@ const OnHoverInput = (props: any) => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          <Typography sx={{
-              width:"100%"
-          }}>
-          <Typography  dangerouslySetInnerHTML={{
-              __html: data ?? "",
-          }} style={{
-              whiteSpace:"pre-wrap",
-              ...theme.typography.titleMedium,
-              fontWeight:"400",
-              unicodeBidi:"plaintext",
-          }}
-          sx={{
-              "& > p":{
-                  unicodeBidi:"plaintext",
-                  textAlign:"initial"
-              }
-          }}
-          ></Typography>
+          <Typography
+            sx={{
+              width: "100%",
+            }}
+          >
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: data ?? "",
+              }}
+              style={{
+                whiteSpace: "pre-wrap",
+                ...theme.typography.titleMedium,
+                fontWeight: "400",
+                unicodeBidi: "plaintext",
+              }}
+              sx={{
+                "& > p": {
+                  unicodeBidi: "plaintext",
+                  textAlign: "initial",
+                },
+              }}
+            ></Typography>
           </Typography>
           {isHovering && (
             <IconButton

@@ -303,14 +303,10 @@ const KitCustomization = (props: any) => {
 
 const OnHoverInputCustomTitle = (props: any) => {
   const [show, setShow] = useState<boolean>(false);
-  const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {
-    editable && setIsHovering(true);
+    editable;
   };
 
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
   const { inputData, setInputData, type, editable, displayEdit } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const handleCancel = () => {
@@ -433,7 +429,6 @@ const OnHoverInputCustomTitle = (props: any) => {
             }}
             onClick={() => setShow(!show)}
             onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
           >
             <Typography
               color="#004F83"

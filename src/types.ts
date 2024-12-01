@@ -1,5 +1,5 @@
 import { DialogProps } from "@mui/material/Dialog";
-import { AxiosPromise, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { ToastOptions } from "react-toastify";
 import { ICustomError } from "./utils/CustomError";
 
