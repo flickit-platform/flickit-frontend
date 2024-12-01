@@ -42,7 +42,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { theme } from "@config/theme";
-import FlatGauge from "@common/flatGauge/FlatGauge";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;

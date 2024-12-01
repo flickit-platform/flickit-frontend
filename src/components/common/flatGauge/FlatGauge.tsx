@@ -8,8 +8,8 @@ import {getMaturityLevelColors} from "@styles";
 type TPosition = "top" |"left"
 
 interface IGaugeProps extends BoxProps {
-    maturity_level_number: number;
-    level_value: number;
+    maturityLevelNumber: number;
+    levelValue: number;
     text: string;
     textPosition: TPosition;
     confidenceLevelNum: number
@@ -31,14 +31,14 @@ const confidencePallet : any = {
 
 const FlatGauge = (props:IGaugeProps) => {
     const {
-        maturity_level_number = 5,
-        level_value = 3,
+        maturityLevelNumber = 5,
+        levelValue = 3,
         text = "template text",
         textPosition= "top",
         confidenceLevelNum = 70
     } = props;
 
-    if (maturity_level_number < level_value) return null
+    if (maturityLevelNumber < levelValue) return null
 
   const checkColor = (num : number) : string =>{
         if (num == 100){
@@ -53,10 +53,10 @@ const FlatGauge = (props:IGaugeProps) => {
         }
     }
 
-    const colorPallet = getMaturityLevelColors(maturity_level_number)
-    const colorCode = colorPallet[level_value - 1] || colorPallet[0];
-    const count = Array.from(Array(maturity_level_number).keys())
-    const emptyCell =  level_value - 1
+    const colorPallet = getMaturityLevelColors(maturityLevelNumber)
+    const colorCode = colorPallet[levelValue - 1] || colorPallet[0];
+    const count = Array.from(Array(maturityLevelNumber).keys())
+    const emptyCell =  levelValue - 1
 
     return (
         <Box sx={{display:"flex", flexDirection:`${textPosition == "top" ? "column" : "row" }`, textAlign: "center", width:"fit-content", gap:"1rem"}}>
