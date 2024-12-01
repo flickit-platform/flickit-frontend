@@ -372,12 +372,11 @@ const OnHoverInputCustomTitle = (props: any) => {
     setHasError(false);
   };
 
-  const textAlign =
-    type === "title"
-      ? firstCharDetector(localInputData.title)
-        ? "right"
-        : "left"
-      : "left";
+  let textAlign: "left" | "right" = "left";
+
+  if (type === "title") {
+    textAlign = firstCharDetector(localInputData.title) ? "right" : "left";
+  }
 
   const inputProps: React.HTMLProps<HTMLInputElement> = {
     style: {
