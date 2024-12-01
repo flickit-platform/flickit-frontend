@@ -18,6 +18,7 @@ import AddMemberDialog from "@components/assessment-setting/addMemberDialog";
 import ConfirmRemoveMemberDialog from "@components/assessment-setting/confirmRemoveMemberDialog";
 import AssessmentSettingTitle from "@components/assessment-setting/AssessmentSettingTitle";
 import KitCustomization from "@components/assessment-setting/KitCustomization";
+import PermissionControl from "../common/PermissionControl";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -32,7 +33,10 @@ const AssessmentSettingContainer = () => {
   }>({ display: false, name: "", id: "", invited: false });
   const [listOfUser, setListOfUser] = useState([]);
   const [changeData, setChangeData] = useState(false);
-  const [kitInfo, setKitInfo] = useState<null | {kit: { id: number, title: string },kitCustomId: null | number}>(null);
+  const [kitInfo, setKitInfo] = useState<null | {
+    kit: { id: number; title: string };
+    kitCustomId: null | number;
+  }>(null);
 
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
@@ -67,8 +71,8 @@ const AssessmentSettingContainer = () => {
 
   useEffect(() => {
     (async () => {
-      const { manageable,kit,kitCustomId } = await AssessmentInfo.query();
-      setKitInfo({kit,kitCustomId})
+      const { manageable, kit, kitCustomId } = await AssessmentInfo.query();
+      setKitInfo({ kit, kitCustomId });
       if (!manageable) {
         return navigate("*");
       }
@@ -106,90 +110,99 @@ const AssessmentSettingContainer = () => {
   };
 
   return (
-    <QueryBatchData
-      queryBatchData={[fetchPathInfo, fetchAssessmentsRoles, AssessmentInfo]}
-      renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
-      render={([pathInfo = {}, roles = {}, assessmentInfo = {}]) => {
-        const {
-          space,
-          assessment: { title },
-        } = pathInfo;
-        const { items: listOfRoles } = roles;
-        return (
-          <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-            <AssessmentSettingTitle pathInfo={pathInfo} />
-            <Grid container columns={12} mb={5}>
-              <Grid item sm={12} xs={12}>
-                <Box
-                  sx={{ ...styles.centerV }}
-                  gap={2}
-                  justifyContent="flex-start"
-                >
-                  <Typography
-                    color="primary"
-                    textAlign="left"
-                    variant="headlineLarge"
+    <PermissionControl
+      error={[
+        fetchPathInfo.errorObject?.response,
+        fetchAssessmentsRoles.errorObject?.response,
+        AssessmentInfo.errorObject?.response,
+        fetchAssessmentsUserListRoles.errorObject?.response,
+      ]}
+    >
+      <QueryBatchData
+        queryBatchData={[fetchPathInfo, fetchAssessmentsRoles, AssessmentInfo]}
+        renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
+        render={([pathInfo = {}, roles = {}, assessmentInfo = {}]) => {
+          const {
+            space,
+            assessment: { title },
+          } = pathInfo;
+          const { items: listOfRoles } = roles;
+          return (
+            <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
+              <AssessmentSettingTitle pathInfo={pathInfo} />
+              <Grid container columns={12} mb={5}>
+                <Grid item sm={12} xs={12}>
+                  <Box
+                    sx={{ ...styles.centerV }}
+                    gap={2}
+                    justifyContent="flex-start"
                   >
-                    <Trans i18nKey="assessmentSettings" />
-                  </Typography>
-                </Box>
+                    <Typography
+                      color="primary"
+                      textAlign="left"
+                      variant="headlineLarge"
+                    >
+                      <Trans i18nKey="assessmentSettings" />
+                    </Typography>
+                  </Box>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container columns={12} mb={"32px"}>
-              <Grid item sm={12} xs={12}>
-                <AssessmentSettingGeneralBox
-                  AssessmentInfoQuery={AssessmentInfo.query}
-                  AssessmentInfo={assessmentInfo}
-                  AssessmentTitle={title}
-                  fetchPathInfo={fetchPathInfo.query}
-                  color={state}
-                />
+              <Grid container columns={12} mb={"32px"}>
+                <Grid item sm={12} xs={12}>
+                  <AssessmentSettingGeneralBox
+                    AssessmentInfoQuery={AssessmentInfo.query}
+                    AssessmentInfo={assessmentInfo}
+                    AssessmentTitle={title}
+                    fetchPathInfo={fetchPathInfo.query}
+                    color={state}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container columns={12} mb={"32px"}>
-              <Grid item sm={12} xs={12}>
-                <AssessmentSettingMemberBox
-                  listOfRoles={listOfRoles}
-                  listOfUser={listOfUser}
-                  inviteesMemberList={inviteesMemberList}
-                  openModal={handleClickOpen}
-                  openRemoveModal={handleOpenRemoveModal}
-                  setChangeData={setChangeData}
-                  changeData={changeData}
-                />
+              <Grid container columns={12} mb={"32px"}>
+                <Grid item sm={12} xs={12}>
+                  <AssessmentSettingMemberBox
+                    listOfRoles={listOfRoles}
+                    listOfUser={listOfUser}
+                    inviteesMemberList={inviteesMemberList}
+                    openModal={handleClickOpen}
+                    openRemoveModal={handleOpenRemoveModal}
+                    setChangeData={setChangeData}
+                    changeData={changeData}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container columns={12}>
-              <Grid item sm={12} xs={12}>
-                <KitCustomization kitInfo={kitInfo}/>
+              <Grid container columns={12}>
+                <Grid item sm={12} xs={12}>
+                  <KitCustomization kitInfo={kitInfo} />
+                </Grid>
               </Grid>
-            </Grid>
-            <AddMemberDialog
-              expanded={expanded}
-              onClose={handleClose}
-              listOfRoles={listOfRoles}
-              listOfUser={listOfUser}
-              assessmentId={assessmentId}
-              title={<Trans i18nKey={"assignRole"} />}
-              cancelText={<Trans i18nKey={"cancel"} />}
-              confirmText={<Trans i18nKey={"addToThisAssessment"} />}
-              setChangeData={setChangeData}
-            />
-            <ConfirmRemoveMemberDialog
-              expandedRemoveDialog={expandedRemoveModal}
-              onCloseRemoveDialog={handleCloseRemoveModal}
-              assessmentId={assessmentId}
-              fetchAssessmentsUserListRoles={
-                fetchAssessmentsUserListRoles.query
-              }
-              inviteesMemberList={inviteesMemberList}
-              assessmentName={title}
-              setChangeData={setChangeData}
-            />
-          </Box>
-        );
-      }}
-    />
+              <AddMemberDialog
+                expanded={expanded}
+                onClose={handleClose}
+                listOfRoles={listOfRoles}
+                listOfUser={listOfUser}
+                assessmentId={assessmentId}
+                title={<Trans i18nKey={"assignRole"} />}
+                cancelText={<Trans i18nKey={"cancel"} />}
+                confirmText={<Trans i18nKey={"addToThisAssessment"} />}
+                setChangeData={setChangeData}
+              />
+              <ConfirmRemoveMemberDialog
+                expandedRemoveDialog={expandedRemoveModal}
+                onCloseRemoveDialog={handleCloseRemoveModal}
+                assessmentId={assessmentId}
+                fetchAssessmentsUserListRoles={
+                  fetchAssessmentsUserListRoles.query
+                }
+                inviteesMemberList={inviteesMemberList}
+                assessmentName={title}
+                setChangeData={setChangeData}
+              />
+            </Box>
+          );
+        }}
+      />
+    </PermissionControl>
   );
 };
 
