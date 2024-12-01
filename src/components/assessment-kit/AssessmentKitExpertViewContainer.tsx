@@ -1737,7 +1737,7 @@ const useAssessmentKit = () => {
   //   runOnMount: true,
   // });
   const fetchAssessmentKitDetailsQuery = useQuery({
-    service: (args = { assessmentKitId }, config) =>
+    service: ({ assessmentKitId, ...args }, config) =>
       service.fetchAssessmentKitDetails(args, config),
     runOnMount: false,
   });
@@ -1767,7 +1767,7 @@ const useAssessmentKit = () => {
     runOnMount: false,
   });
   const fetchAssessmentKitDownloadUrlQuery = useQuery({
-    service: (args = { assessmentKitId }, config) =>
+    service: ({ assessmentKitId, ...args }, config) =>
       service.fetchAssessmentKitDownloadUrl(args, config),
     runOnMount: false,
   });
