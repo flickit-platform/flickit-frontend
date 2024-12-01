@@ -7,7 +7,7 @@ export const ErrorNotFoundOrAccessDenied = () => {
     <Box
       sx={{ ...styles.centerCVH }}
       textAlign="center"
-      height="calc(100vh - 264px)"
+      height="calc(100vh - 118px)"
       pt="74px"
     >
       <Box sx={{ width: { xs: "100vw", md: "70vw", lg: "60vw" } }}>
