@@ -10,7 +10,7 @@ interface IAssessmentSubjectListProps {
 }
 
 export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
-  const { subjects = [], colorCode, maturityLevelCount } = props;
+  const { subjects = [], maturityLevelCount } = props;
   const isEmpty = subjects.length === 0;
 
   return (
