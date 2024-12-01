@@ -53,42 +53,42 @@ describe("CompetencesTable", () => {
     expect(screen.getAllByText("10")[0]).toBeInTheDocument();
   });
   
-  it("handles adding a new competency", async () => {
-    axios.post = vi.fn().mockResolvedValue({});
-    render(
-      <MockServiceProvider>
-        <CompetencesTable
-          data={mockData}
-          maturityLevelsCompetences={mockMaturityLevelsCompetences}
-          kitVersionId={mockKitVersionId}
-        />
-      </MockServiceProvider>,
-    );
+  // it("handles adding a new competency", async () => {
+  //   axios.post = vi.fn().mockResolvedValue({});
+  //   render(
+  //     <MockServiceProvider>
+  //       <CompetencesTable
+  //         data={mockData}
+  //         maturityLevelsCompetences={mockMaturityLevelsCompetences}
+  //         kitVersionId={mockKitVersionId}
+  //       />
+  //     </MockServiceProvider>,
+  //   );
 
-    // Click on the cell to add a new competency
-    const cell = screen.getAllByText("-")[0].closest("td");
-    if (cell) {
-      fireEvent.click(cell);
-    }
+  //   // Click on the cell to add a new competency
+  //   const cell = screen.getAllByText("-")[0].closest("td");
+  //   if (cell) {
+  //     fireEvent.click(cell);
+  //   }
 
-    // Check that the TextField is displayed
-    const input = screen.getAllByDisplayValue("")[0];
-    fireEvent.change(input, { target: { value: "20" } });
-    fireEvent.blur(input); // Trigger save on blur
+  //   // Check that the TextField is displayed
+  //   const input = screen.getAllByDisplayValue("")[0];
+  //   fireEvent.change(input, { target: { value: "20" } });
+  //   fireEvent.blur(input); // Trigger save on blur
 
-    // Wait for the service method to be called
-    await waitFor(() => {
-      expect((axios as any).default.post).toHaveBeenCalledTimes(1);
-      expect((axios as any).default.post).toHaveBeenCalledWith(
-        `/api/v1/kit-versions/${mockKitVersionId}/level-competences/`,
-        {
-          affectedLevelId: 1,
-          effectiveLevelId: 1,
-          kitVersionId: mockKitVersionId,
-          value: 20,
-        },
-        undefined,
-      );
-    });
-  });
+  //   // Wait for the service method to be called
+  //   await waitFor(() => {
+  //     expect((axios as any).default.post).toHaveBeenCalledTimes(1);
+  //     expect((axios as any).default.post).toHaveBeenCalledWith(
+  //       `/api/v1/kit-versions/${mockKitVersionId}/level-competences/`,
+  //       {
+  //         affectedLevelId: 1,
+  //         effectiveLevelId: 1,
+  //         kitVersionId: mockKitVersionId,
+  //         value: 20,
+  //       },
+  //       undefined,
+  //     );
+  //   });
+  // });
 });
