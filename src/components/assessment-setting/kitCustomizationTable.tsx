@@ -9,10 +9,8 @@ import {
   IconButton,
   Box,
   Typography,
-  Link,
   TextField,
 } from "@mui/material";
-import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -41,15 +39,6 @@ interface Subject {
 
 interface SubjectTableProps {
   subjects: Subject[];
-  onAddAttribute?: any;
-  handleCancel?: any;
-  handleSave?: any;
-  setNewAttribute?: any;
-  newAttribute?: any;
-  showNewAttributeForm?: boolean;
-  handleEdit?: any;
-  setOpenDeleteDialog?: any;
-  // handleInputChange: any;
   setInputData: any;
   inputData: any;
 }

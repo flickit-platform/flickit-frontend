@@ -68,6 +68,18 @@ const KitCustomization = (props: any) => {
     },
   });
 
+  const [tooltipTitle, setTooltipTitle] = useState<string | JSX.Element>("");
+
+  useEffect(() => {
+    if (!inputData.title) {
+      setTooltipTitle(<Trans i18nKey={"kitCustomTitleEmpty"} />);
+    } else if (!hasChanges) {
+      setTooltipTitle(<Trans i18nKey={"kitCustomDefaultDataChanged"} />);
+    } else {
+      setTooltipTitle("");
+    }
+  }, [inputData.title, hasChanges]);
+
   useEffect(() => {
     const hasChanges =
       JSON.stringify(inputData) !== JSON.stringify(initialData);
@@ -78,19 +90,19 @@ const KitCustomization = (props: any) => {
     (async () => {
       const { items } = await fetchKitCustomization.query({ kitInfo });
       setKitData(items);
+
       if (kitInfo?.kitCustomId) {
         let { title, customData } = await fetchKitCustomTitle.query();
-        setInitialData(initialData);
-        setInputData((prev: any) => ({
-          ...prev,
+
+        setInputData({
           title,
           customData,
-        }));
-        setInitialData((prev: any) => ({
-          ...prev,
+        });
+
+        setInitialData({
           title,
           customData,
-        }));
+        });
       }
     })();
   }, [kitInfo?.kit?.id]);
@@ -259,17 +271,7 @@ const KitCustomization = (props: any) => {
             </Button>
           </Grid>
           <Grid item>
-            <Tooltip
-              title={
-                !inputData.title ? (
-                  <Trans i18nKey={"kitCustomTitleEmpty"} />
-                ) : !hasChanges ? (
-                  <Trans i18nKey={"kitCustomDefaultDataChanged"} />
-                ) : (
-                  ""
-                )
-              }
-            >
+            <Tooltip title={tooltipTitle}>
               <Box>
                 <LoadingButton
                   data-cy="back"
@@ -302,7 +304,7 @@ const OnHoverInputCustomTitle = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { inputData, setInputData, shortTitle, type, editable, displayEdit } =
+  const { inputData, setInputData, type, editable, displayEdit } =
     props;
   const [hasError, setHasError] = useState<boolean>(false);
   const handleCancel = () => {
