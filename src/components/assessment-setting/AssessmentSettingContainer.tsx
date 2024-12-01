@@ -38,11 +38,6 @@ const AssessmentSettingContainer = () => {
     kitCustomId: null | number;
   }>(null);
 
-  const fetchKitCustomization = useQuery({
-    service: (args, config) => service.fetchKitCustomization(args, config),
-    runOnMount: true,
-  });
-
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) => service.fetchAssessmentsRoles(args, config),

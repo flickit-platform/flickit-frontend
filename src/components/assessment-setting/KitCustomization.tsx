@@ -23,7 +23,6 @@ import { LoadingButton } from "@mui/lab";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";
-import PermissionControl from "../common/PermissionControl";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -373,14 +372,16 @@ const OnHoverInputCustomTitle = (props: any) => {
     setHasError(false);
   };
 
+  const textAlign =
+    type === "title"
+      ? firstCharDetector(localInputData.title)
+        ? "right"
+        : "left"
+      : "left";
+
   const inputProps: React.HTMLProps<HTMLInputElement> = {
     style: {
-      textAlign:
-        type === "title"
-          ? firstCharDetector(localInputData.title)
-            ? "right"
-            : "left"
-          : "left",
+      textAlign,
     },
   };
 
