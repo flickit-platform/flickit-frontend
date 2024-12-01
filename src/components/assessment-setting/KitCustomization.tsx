@@ -135,6 +135,7 @@ const KitCustomization = (props: any) => {
             customId: UpdateId,
           });
           setKitData(items);
+          setHasChanges(false);
         } else {
           const customData = inputData;
           const kitCustomId = await sendKitCustomization.query({
@@ -147,6 +148,7 @@ const KitCustomization = (props: any) => {
           });
           setKitData(items);
           setEdit({ allow: true, idC: kitCustomId });
+          setHasChanges(false);
         }
       } catch (e) {
         const err = e as ICustomError;
