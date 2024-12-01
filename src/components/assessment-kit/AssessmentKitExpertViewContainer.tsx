@@ -48,7 +48,7 @@ const AssessmentKitExpertViewContainer = () => {
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
-  const [loaded, setLoaded] = React.useState<boolean | false>(false);
+  const [loaded, setLoaded] = React.useState<boolean>(false);
 
   const AssessmentKitDetails = async () => {
     const data: AssessmentKitDetailsType = hasActiveVersion

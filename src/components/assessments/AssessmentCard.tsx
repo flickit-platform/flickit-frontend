@@ -49,7 +49,7 @@ import { theme } from "@config/theme";
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
   const [calculatePercentage, setCalculatePercentage] = useState<any>();
-  const [show, setShow] = useState<boolean | false>();
+  const [show, setShow] = useState<boolean>();
   const { item } = props;
   const abortController = useRef(new AbortController());
 

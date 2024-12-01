@@ -152,45 +152,49 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/assessments/${assessmentId}/invitees/`, config);
     },
-      fetchKitCustomization(
-          {kitInfo,customId }: { kitInfo: any, customId: any },
-          config: AxiosRequestConfig<any> | undefined,
-      ){
-          const {kit:{id},kitCustomId} = kitInfo
-          return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, {
-              ...(config || {}),
-              params:{
-                  ...(customId || {kitCustomId} || {})
-              }
-              },
-          )
-      },
-      fetchKitCustomTitle(
-          {kitInfo }: { kitInfo: any },
-          config: AxiosRequestConfig<any> | undefined,
-      ){
-          const {kitCustomId} = kitInfo
-          return axios.get(`/api/v1/kit-customs/${kitCustomId}/`, config);
-      },
-      sendKitCustomization(
-          {assessmentId, customData }: {assessmentId:TId, customData: any },
-          config: AxiosRequestConfig<any> | undefined,
-      ){
-          return axios.post(`/api/v1/assessments/${assessmentId}/assign-kit-custom/`,
-              customData,
-              config
-          );
-      },
-      updateKitCustomization(
-          {UpdateId, customData }: {UpdateId:any, customData: any },
-          config: AxiosRequestConfig<any> | undefined,
-      ){
-          const {kitCustomId} = UpdateId
-          return axios.put(`/api/v1/kit-customs/${kitCustomId}/`,
-              customData,
-              config
-          );
-      },
+    fetchKitCustomization(
+      { kitInfo, customId }: { kitInfo: any; customId: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const {
+        kit: { id },
+        kitCustomId,
+      } = kitInfo;
+      return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, {
+        ...(config || {}),
+        params: {
+          ...(customId || { kitCustomId } || {}),
+        },
+      });
+    },
+    fetchKitCustomTitle(
+      { kitInfo }: { kitInfo: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { kitCustomId } = kitInfo;
+      return axios.get(`/api/v1/kit-customs/${kitCustomId}/`, config);
+    },
+    sendKitCustomization(
+      { assessmentId, customData }: { assessmentId: TId; customData: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/assign-kit-custom/`,
+        customData,
+        config,
+      );
+    },
+    updateKitCustomization(
+      { UpdateId, customData }: { UpdateId: any; customData: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { kitCustomId } = UpdateId;
+      return axios.put(
+        `/api/v1/kit-customs/${kitCustomId}/`,
+        customData,
+        config,
+      );
+    },
     RemoveAssessmentMembersInvitees(
       args: { invitedId: string },
       config: AxiosRequestConfig<any> | undefined,
@@ -319,10 +323,7 @@ export const createService = (
       );
     },
     deleteUserRole(
-      {
-        assessmentId,
-        args: userId,
-      }: { assessmentId: string; args: string } | any,
+      { assessmentId, args: userId }: any,
       config: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.delete(
@@ -331,10 +332,7 @@ export const createService = (
         config,
       );
     },
-    editUserRole(
-      args: { assessmentId: string; userId: string; roleId: number } | any,
-      config: AxiosRequestConfig<any> | undefined,
-    ) {
+    editUserRole(args: any, config: AxiosRequestConfig<any> | undefined) {
       const { assessmentId, userId } = args;
       return axios.put(
         `/api/v1/assessments/${assessmentId}/assessment-user-roles/${userId}/`,
@@ -520,7 +518,10 @@ export const createService = (
       { kitVersionId }: { kitVersionId: TId },
       config?: AxiosRequestConfig<any>,
     ) {
-      return axios.get(`/api/v1/kit-versions/${kitVersionId}/validate/`, config);
+      return axios.get(
+        `/api/v1/kit-versions/${kitVersionId}/validate/`,
+        config,
+      );
     },
     deleteMaturityLevel(
       {
@@ -1247,10 +1248,7 @@ export const createService = (
         },
       });
     },
-    fetchCompare(
-      args: any | undefined,
-      config: AxiosRequestConfig<any> | undefined,
-    ) {
+    fetchCompare(args: any, config: AxiosRequestConfig<any> | undefined) {
       return axios.get(`/assessment/loadcompare/`, {
         ...config,
         withCredentials: true,
@@ -1299,7 +1297,7 @@ export const createService = (
       });
     },
     fetchCompareItemAssessments(
-      args: any | undefined,
+      args: any,
       config: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.get(`/assessment/currentuserprojects/`, config);
@@ -1379,7 +1377,7 @@ export const createService = (
       );
     },
     fetchExcelToDSLSampleFile(
-      args: any | undefined,
+      args: any,
       config: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.get(`/api/v1/assessment-kits/excel-to-dsl/sample/`, {
