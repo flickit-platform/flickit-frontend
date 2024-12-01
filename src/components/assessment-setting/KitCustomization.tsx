@@ -303,9 +303,6 @@ const KitCustomization = (props: any) => {
 
 const OnHoverInputCustomTitle = (props: any) => {
   const [show, setShow] = useState<boolean>(false);
-  const handleMouseOver = () => {
-    editable;
-  };
 
   const { inputData, setInputData, type, editable, displayEdit } = props;
   const [hasError, setHasError] = useState<boolean>(false);
@@ -428,7 +425,6 @@ const OnHoverInputCustomTitle = (props: any) => {
               wordBreak: "break-word",
             }}
             onClick={() => setShow(!show)}
-            onMouseOver={handleMouseOver}
           >
             <Typography
               color="#004F83"

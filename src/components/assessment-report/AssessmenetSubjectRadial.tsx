@@ -18,7 +18,7 @@ interface AssessmentSubjectRadialChartProps {
 
 const AssessmentSubjectRadialChart: React.FC<
   AssessmentSubjectRadialChartProps
-> = ({ loading, data, maturityLevelsCount }) => {
+> = ({ loading, data }) => {
   return loading ? (
     <Skeleton
       height={"620px"}
@@ -27,13 +27,12 @@ const AssessmentSubjectRadialChart: React.FC<
       sx={{ margin: "auto" }}
     />
   ) : (
-    <SubjectRadial data={data} maturityLevelsCount={maturityLevelsCount} />
+    <SubjectRadial data={data} />
   );
 };
 
 interface SubjectRadialProps {
   data: any[];
-  maturityLevelsCount: number;
 }
 
 const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {

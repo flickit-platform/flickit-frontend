@@ -4,7 +4,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import StarterKit from "@tiptap/starter-kit";
 import RichEditorMenuBar from "./RichEditorMenuBar";
 import Link from "@tiptap/extension-link";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
 import { primaryFontFamily } from "@/config/theme";

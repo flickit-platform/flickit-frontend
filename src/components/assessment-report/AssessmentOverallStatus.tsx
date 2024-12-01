@@ -5,7 +5,6 @@ import { getNumberBaseOnScreen } from "@/utils/returnBasedOnScreen";
 import { t } from "i18next";
 
 interface IAssessmentOverallStatusProps {
-  status?: TStatus;
   maturity_level: IMaturityLevel;
   maturity_level_count: number;
   confidence_value?: number;

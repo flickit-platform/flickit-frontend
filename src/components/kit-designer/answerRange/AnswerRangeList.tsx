@@ -75,7 +75,6 @@ const ListOfItems = ({
   const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] = useState<{
     [key: string]: boolean;
   }>({});
-  const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",

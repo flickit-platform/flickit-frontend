@@ -1041,16 +1041,12 @@ const OnHoverInput = (props: any) => {
   const { data, editable, type, attributeId, infoQuery } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
-  const [inputData, setInputData] = useState<string>("");
   const handleCancel = () => {
     setShow(false);
-    setInputData(data);
     setError({});
     setHasError(false);
   };
-  useEffect(() => {
-    setInputData(data);
-  }, [data]);
+
   const { assessmentId = "" } = useParams();
 
   const updateAssessmentKit = async (

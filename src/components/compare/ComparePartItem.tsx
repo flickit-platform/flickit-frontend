@@ -113,11 +113,7 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
 
 const numberMap = ["first", "second", "third", "fourth"];
 
-const DeleteAssessmentIconBtn = (props: {
-  id: TId;
-  index: number;
-  fetchAssessmentsInfo: TQueryFunction;
-}) => {
+const DeleteAssessmentIconBtn = (props: { id: TId; index: number }) => {
   const { id, index } = props;
   const { assessmentIds, assessment_kit } = useCompareContext();
   const dispatch = useCompareDispatch();

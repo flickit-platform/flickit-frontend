@@ -717,7 +717,6 @@ const AnswerDetails = ({
 }) => {
   const [page, setPage] = useState(0);
   const [data, setData] = useState<IAnswerHistory[]>([]);
-  const [expanded, setExpanded] = useState(true); // Track the expanded state
   const dialogProps = useDialog();
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -1028,7 +1027,7 @@ const Evidence = (props: any) => {
   const onSubmit = async (data: any) => {
     try {
       if (data.evidence.length <= LIMITED) {
-        const { id } = await addEvidence.query({
+        await addEvidence.query({
           description: data.evidence,
           questionId: questionInfo.id,
           assessmentId,
@@ -1929,7 +1928,6 @@ const EvidenceDetail = (props: any) => {
                               >
                                 <PreAttachment
                                   mainColor={evidenceBG?.borderColor}
-                                  backgroundColor={evidenceBG?.background}
                                 />
                               </Grid>
                             </>

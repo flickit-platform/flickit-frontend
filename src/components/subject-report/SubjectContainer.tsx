@@ -47,10 +47,7 @@ const SubjectContainer = () => {
       loading={loading}
       loaded={loaded}
       render={([data = {}, subjectProgress = {}, pathInfo = {}]) => {
-        const {
-          attributes,
-          subject,
-        } = data;
+        const { attributes, subject } = data;
         const { isConfidenceValid, isCalculateValid, title } = subject;
         const { question_count, answers_count } = subjectProgress;
         const isComplete = question_count === answers_count;
@@ -68,11 +65,7 @@ const SubjectContainer = () => {
             }}
             gap="1.5rem"
           >
-            <SubjectTitle
-              {...subjectQueryData}
-              loading={loading}
-              pathInfo={pathInfo}
-            />
+            <SubjectTitle {...subjectQueryData} pathInfo={pathInfo} />
             <Box sx={{ ...styles.centerCVH }} gap={2} textAlign="center">
               <Typography color="#004F83" fontSize="3.5rem" fontWeight={700}>
                 <Trans i18nKey="report" values={{ title: title }} />
@@ -242,11 +235,7 @@ const useSubject = () => {
   };
 };
 
-const SubjectTitle = (props: {
-  data: ISubjectReportModel;
-  loading: boolean;
-  pathInfo: any;
-}) => {
+const SubjectTitle = (props: { data: ISubjectReportModel; pathInfo: any }) => {
   const { data, pathInfo } = props;
   const { subject } = data || {};
   const { title } = subject;
