@@ -49,7 +49,7 @@ const SpaceSettingContainer = () => {
         toolbar={editable ? <EditSpaceButton fetchSpace={query} /> : <div />}
         backLink={"/"}
       >
-        <Box sx={{ ...styles.centerV, opacity: 0.9, unicodeBidi:"plaintext" }}>
+        <Box sx={{ ...styles.centerV, opacity: 0.9, unicodeBidi: "plaintext" }}>
           {loading ? (
             <Skeleton
               variant="rounded"
@@ -111,7 +111,7 @@ function SpaceSettings(props: { editable: boolean }) {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const is_farsi = localStorage.getItem("lang") === "fa" ? true : false;
+  const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>

@@ -366,7 +366,7 @@ const SubjectStatus = (
   >,
 ) => {
   const { maturity_level, maturityLevelCount } = props;
-  const hasStats = maturity_level?.index ? true : false;
+  const hasStats = Boolean(maturity_level?.index);
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );

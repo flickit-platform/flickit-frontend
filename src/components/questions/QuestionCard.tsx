@@ -727,7 +727,7 @@ const AnswerDetails = ({
       config,
     ) => service.fetchAnswersHistory(args, config),
     toastError: true,
-    runOnMount: type === "history" ? true : false,
+    runOnMount: Boolean(type === "history"),
   });
 
   useEffect(() => {
