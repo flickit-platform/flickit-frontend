@@ -29,6 +29,7 @@ const KitCustomization = (props: any) => {
   const [kitData, setKitData] = useState<any>([]);
   const [edit, setEdit] = useState<any>({ allow: false, idC: {} });
   const [hasChanges, setHasChanges] = useState<boolean>(false);
+  const [requiredTitle, setRequiredTitle] = useState<boolean>(false);
 
   const formMethods = useForm({ shouldUnregister: true });
   // const { id } = kitInfo
@@ -72,9 +73,7 @@ const KitCustomization = (props: any) => {
   const [tooltipTitle, setTooltipTitle] = useState<string | JSX.Element>("");
 
   useEffect(() => {
-    if (!inputData.title) {
-      setTooltipTitle(<Trans i18nKey={"kitCustomTitleEmpty"} />);
-    } else if (!hasChanges) {
+    if (!hasChanges) {
       setTooltipTitle(<Trans i18nKey={"kitCustomDefaultDataChanged"} />);
     } else {
       setTooltipTitle("");
@@ -130,6 +129,9 @@ const KitCustomization = (props: any) => {
 
   const onSave = () => {
     (async () => {
+      if (!inputData.title) {
+        setRequiredTitle(true);
+      }
       try {
         if (kitInfo.kitCustomId || edit.allow) {
           const {
@@ -168,6 +170,12 @@ const KitCustomization = (props: any) => {
           setKitData(items);
           setEdit({ allow: true, idC: kitCustomId });
           setHasChanges(false);
+          toast.success(
+            <Trans
+              i18nKey="spaceCreatedSuccessMessage"
+              values={{ title: inputData.title }}
+            />,
+          );
         }
       } catch (e) {
         const err = e as ICustomError;
@@ -176,152 +184,196 @@ const KitCustomization = (props: any) => {
     })();
   };
 
+  console.log(fetchKitCustomization.errorObject?.response);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        px: { xs: "15px", sm: "51px" },
-        textAlign: "left",
-      }}
-      gap={2}
-      textAlign="center"
-      height={"auto"}
-      minHeight={"350px"}
-      width={"100%"}
-      bgcolor={"#FFF"}
-      borderRadius={"8px"}
-      py={"32px"}
-    >
-      <Box height={"100%"} width={"100%"}>
-        <Typography color="#000" variant="headlineMedium">
-          <Trans i18nKey={`${"kitCustomization"}`} />
-        </Typography>
-        <Divider
+    <>
+      {!fetchKitCustomization.errorObject?.response && (
+        <Box
           sx={{
-            width: "100%",
-            marginTop: "24px",
-            marginBottom: "10px !important",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            px: { xs: "15px", sm: "51px" },
+            textAlign: "left",
           }}
-        />
-        <Grid sx={{ display: "flex", justifyContent: "center" }}>
-          <Grid
-            item
-            xs={12}
-            // sm={12}
-            // md={8}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              color="#9DA7B3"
-              fontWeight={500}
-              sx={{
-                fontSize: { xs: "1rem", sm: "1.375rem" },
-                whiteSpace: { xs: "wrap", sm: "nowrap" },
-              }}
-              lineHeight={"normal"}
-            >
-              <Trans i18nKey="kitCustomTitle" />:
+          gap={2}
+          textAlign="center"
+          height={"auto"}
+          minHeight={"350px"}
+          width={"100%"}
+          bgcolor={"#FFF"}
+          borderRadius={"8px"}
+          py={"32px"}
+        >
+          <Box height={"100%"} width={"100%"}>
+            <Typography color="#000" variant="headlineMedium">
+              <Trans i18nKey={`${"kitCustomization"}`} />
             </Typography>
-
-            <Box
+            <Divider
               sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: { md: "350px" },
+                width: "100%",
+                marginTop: "24px",
+                marginBottom: "10px !important",
               }}
-            >
-              <OnHoverInputCustomTitle
-                formMethods={formMethods}
+            />
+            <Grid sx={{ display: "flex", justifyContent: "center" }}>
+              <Grid
+                item
+                xs={12}
+                // sm={12}
+                // md={8}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  color="#9DA7B3"
+                  fontWeight={500}
+                  sx={{
+                    fontSize: { xs: "1rem", sm: "1.375rem" },
+                    whiteSpace: { xs: "wrap", sm: "nowrap" },
+                  }}
+                  lineHeight={"normal"}
+                >
+                  <Trans i18nKey="kitCustomTitle" />:
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: { md: "350px" },
+                  }}
+                >
+                  <OnHoverInputCustomTitle
+                    formMethods={formMethods}
+                    inputData={inputData}
+                    setInputData={setInputData}
+                    editable={true}
+                    requiredTitle={requiredTitle}
+                    type={"customTitle"}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+            <Divider
+              sx={{
+                width: "100%",
+                marginTop: "24px",
+                marginBottom: "10px !important",
+              }}
+            />
+            <Box sx={{ mb: 2 }}>
+              <Typography
+                sx={{ ...theme.typography.headlineSmall, color: "#000", mb: 1 }}
+              >
+                <Trans i18nKey={"customizingSubjectAndAttributes"} />
+              </Typography>
+              <Typography
+                sx={{ ...theme.typography.bodyMedium, color: "#2B333B" }}
+              >
+                <Trans i18nKey={"viewTheWeightAndSubject"} />
+              </Typography>
+            </Box>
+            <Box>
+              <KitCustomizationTable
+                subjects={kitData}
                 inputData={inputData}
                 setInputData={setInputData}
-                editable={true}
-                type={"customTitle"}
               />
             </Box>
-          </Grid>
-        </Grid>
-        <Divider
-          sx={{
-            width: "100%",
-            marginTop: "24px",
-            marginBottom: "10px !important",
-          }}
-        />
-        <Box sx={{ mb: 2 }}>
-          <Typography
-            sx={{ ...theme.typography.headlineSmall, color: "#000", mb: 1 }}
-          >
-            <Trans i18nKey={"customizingSubjectAndAttributes"} />
-          </Typography>
-          <Typography sx={{ ...theme.typography.bodyMedium, color: "#2B333B" }}>
-            <Trans i18nKey={"viewTheWeightAndSubject"} />
-          </Typography>
+            <Grid mt={2} container spacing={2} justifyContent="flex-end">
+              <Grid item>
+                <Button onClick={onClose} data-cy="cancel" data-testid="cancel">
+                  <Trans i18nKey={"cancel"} />
+                </Button>
+              </Grid>
+              <Grid item>
+                <Tooltip title={tooltipTitle}>
+                  <Box>
+                    <LoadingButton
+                      data-cy="back"
+                      variant="contained"
+                      disabled={!hasChanges}
+                      onClick={onSave}
+                      loading={
+                        updateKitCustomization.loading ||
+                        sendKitCustomization.loading
+                      }
+                    >
+                      <Trans i18nKey="saveChanges" />
+                    </LoadingButton>
+                  </Box>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          </Box>
         </Box>
-        <Box>
-          <KitCustomizationTable
-            subjects={kitData}
-            inputData={inputData}
-            setInputData={setInputData}
-          />
-        </Box>
-        <Grid mt={2} container spacing={2} justifyContent="flex-end">
-          <Grid item>
-            <Button onClick={onClose} data-cy="cancel" data-testid="cancel">
-              <Trans i18nKey={"cancel"} />
-            </Button>
-          </Grid>
-          <Grid item>
-            <Tooltip title={tooltipTitle}>
-              <Box>
-                <LoadingButton
-                  data-cy="back"
-                  variant="contained"
-                  disabled={!hasChanges || !inputData.title}
-                  onClick={onSave}
-                  loading={
-                    updateKitCustomization.loading ||
-                    sendKitCustomization.loading
-                  }
-                >
-                  <Trans i18nKey="saveChanges" />
-                </LoadingButton>
-              </Box>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </Box>
-    </Box>
+      )}
+    </>
   );
 };
 
 const OnHoverInputCustomTitle = (props: any) => {
-  const [show, setShow] = useState<boolean>(false);
-
-  const { inputData, setInputData, type, editable, displayEdit } = props;
+  const [show, setShow] = useState<boolean>(true);
+  const [localInputData, setLocalInputData] = useState(() =>
+    JSON.parse(JSON.stringify(props.inputData)),
+  );
+  const {
+    inputData,
+    setInputData,
+    type,
+    editable,
+    displayEdit,
+    requiredTitle,
+  } = props;
   const [hasError, setHasError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLocalInputData(JSON.parse(JSON.stringify(inputData)));
+    if (!inputData.title) {
+      setShow(true);
+      if (requiredTitle) {
+        setHasError(true);
+      }
+    } else {
+      setShow(false);
+      setHasError(false);
+    }
+  }, [inputData, requiredTitle]);
+
+
   const handleCancel = () => {
     setShow(false);
-    setInputData((prev: any) => ({
-      title: inputData.title,
-      ...prev,
-    }));
+    setLocalInputData(JSON.parse(JSON.stringify(inputData)));
     setHasError(false);
   };
+
+  const handleSave = () => {
+    if (!localInputData.title.trim()) {
+      setHasError(true);
+      return;
+    }
+    setInputData((prev: any) => ({
+      ...prev,
+      title: localInputData.title,
+    }));
+    setShow(false);
+    setHasError(false);
+  };
+
+  let textAlign: "left" | "right" = "left";
+
+  if (type === "title") {
+    textAlign = firstCharDetector(localInputData.title) ? "right" : "left";
+  }
+
   const inputProps: React.HTMLProps<HTMLInputElement> = {
     style: {
-      textAlign:
-        type == "title"
-          ? firstCharDetector(inputData.title)
-            ? "right"
-            : "left"
-          : "left",
+      textAlign,
     },
   };
 
@@ -346,15 +398,14 @@ const OnHoverInputCustomTitle = (props: any) => {
               inputProps={inputProps}
               error={hasError}
               fullWidth
-              // name={title}
-              defaultValue={inputData.title}
+              value={localInputData.title}
               onChange={(e) => {
-                setInputData((prev: any) => ({
+                setLocalInputData((prev: any) => ({
                   ...prev,
                   title: e.target.value,
                 }));
+                setHasError(false);
               }}
-              value={inputData.title}
               required={true}
               multiline={true}
               sx={{
@@ -372,10 +423,6 @@ const OnHoverInputCustomTitle = (props: any) => {
                   border: 0,
                   outline: "none",
                 },
-                "&.MuiOutlinedInput-root.Mui-selected": {
-                  border: 0,
-                  outline: "none",
-                },
                 "&:hover": { border: "1px solid #79747E" },
               }}
               endAdornment={
@@ -390,7 +437,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                       width: { xs: "26px", sm: "36px" },
                       margin: "3px",
                     }}
-                    onClick={handleCancel}
+                    onClick={handleSave}
                   >
                     <DoneIcon sx={{ color: "#fff" }} />
                   </IconButton>
@@ -410,6 +457,14 @@ const OnHoverInputCustomTitle = (props: any) => {
                 </InputAdornment>
               }
             />
+            {hasError && (
+              <Typography
+                color="error"
+                sx={{ fontSize: "0.75rem", marginTop: "4px" }}
+              >
+                <Trans i18nKey="requiredFieldError" />
+              </Typography>
+            )}
           </Box>
         ) : (
           <Box
