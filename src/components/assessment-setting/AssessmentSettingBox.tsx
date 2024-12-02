@@ -65,7 +65,7 @@ export const AssessmentSettingGeneralBox = (props: {
     shortTitle,
   } = AssessmentInfo;
 
-  const title = ["creator", "created", "lastModified", "assessmentKit"];
+  const title = ["creator","assessmentKit", "created", "lastModified"];
   const formMethods = useForm({ shouldUnregister: true });
 
   return (
@@ -84,7 +84,7 @@ export const AssessmentSettingGeneralBox = (props: {
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
-        <Typography color="#000" variant="headlineMedium">
+        <Typography sx={{textAlign:theme.direction == "rtl"? "right": "left",width:"100%",display:"inline-block"}} color="#000" variant="headlineMedium">
           <Trans i18nKey={`${"general"}`} />
         </Typography>
 
@@ -95,128 +95,123 @@ export const AssessmentSettingGeneralBox = (props: {
             marginBottom: "10px !important",
           }}
         />
-        <Grid sx={{ display: "flex", justifyContent: "center" }}>
-          <Grid
-            item
-            xs={12}
-            // sm={12}
-            // md={8}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              color="#9DA7B3"
-              fontWeight={500}
-              sx={{
-                fontSize: { xs: "1rem", sm: "1.375rem" },
-                whiteSpace: { xs: "wrap", sm: "nowrap" },
-              }}
-              lineHeight={"normal"}
-            >
-              <Trans i18nKey="assessmentTitle" />:
-            </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: { md: "350px" },
-              }}
-            >
-              <OnHoverInputTitleSetting
-                formMethods={formMethods}
-                data={AssessmentTitle}
-                shortTitle={shortTitle}
-                infoQuery={fetchPathInfo}
-                AssessmentInfoQuery={AssessmentInfoQuery}
-                editable={true}
-                color={color}
-                type={"title"}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-          <Grid sx={{ display: "flex", justifyContent: "center" }}>
-            <Grid
-              item
-              xs={12}
-              // sm={12}
-              // md={8}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                color="#9DA7B3"
-                fontWeight={500}
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: "6px",
-                  fontSize: { xs: "1rem", sm: "1.375rem" },
-                  whiteSpace: { xs: "wrap", sm: "nowrap" },
-                }}
-                lineHeight={"normal"}
+          <Grid container spacing={2} sx={{display:"flex",justifyContent:"center"}}>
+              <Grid
+                  item
+                  xs={12} md={6}
+                  // sm={12}
+                  // md={8}
+                  sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                  }}
               >
-                <Trans i18nKey="shortTitle" />:
-              </Typography>
+                  <Typography
+                      color="#9DA7B3"
+                      fontWeight={500}
+                      sx={{
+                          fontSize: { xs: "1rem", sm: "1.375rem" },
+                          whiteSpace: { xs: "wrap", sm: "nowrap" },
+                      }}
+                      lineHeight={"normal"}
+                  >
+                      <Trans i18nKey="assessmentTitle" />:
+                  </Typography>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: { md: "350px" },
-                }}
-              >
-                <OnHoverInputTitleSetting
-                  formMethods={formMethods}
-                  data={AssessmentTitle}
-                  shortTitle={shortTitle}
-                  infoQuery={fetchPathInfo}
-                  AssessmentInfoQuery={AssessmentInfoQuery}
-                  editable={true}
-                  color={color}
-                  type={"shortTitle"}
-                  displayEdit={shortTitle === "" || shortTitle === null}
-                />
-              </Box>
-            </Grid>
+                  <Box
+                      sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: { md: "350px" },
+                      }}
+                  >
+                      <OnHoverInputTitleSetting
+                          formMethods={formMethods}
+                          data={AssessmentTitle}
+                          shortTitle={shortTitle}
+                          infoQuery={fetchPathInfo}
+                          AssessmentInfoQuery={AssessmentInfoQuery}
+                          editable={true}
+                          color={color}
+                          type={"title"}
+                      />
+                  </Box>
+              </Grid>
+              <Grid  item xs={12} md={6}>
+                  <Grid
+                      // sm={12}
+                      // md={8}
+                      sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                      }}
+                  >
+                      <Typography
+                          color="#9DA7B3"
+                          fontWeight={500}
+                          sx={{
+                              display: "flex",
+                              alignItems: "flex-end",
+                              gap: "6px",
+                              fontSize: { xs: "1rem", sm: "1.375rem" },
+                              whiteSpace: { xs: "wrap", sm: "nowrap" },
+                          }}
+                          lineHeight={"normal"}
+                      >
+                          <Trans i18nKey="shortTitle" />:
+                      </Typography>
+                      <Box
+                          sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: { md: "350px" },
+                              flexDirection:"column"
+                          }}
+                      >
+                          <OnHoverInputTitleSetting
+                              formMethods={formMethods}
+                              data={AssessmentTitle}
+                              shortTitle={shortTitle}
+                              infoQuery={fetchPathInfo}
+                              AssessmentInfoQuery={AssessmentInfoQuery}
+                              editable={true}
+                              color={color}
+                              type={"shortTitle"}
+                              displayEdit={shortTitle === "" || shortTitle === null}
+                          />
+                      </Box>
+                  </Grid>
+                  <Grid
+                      item
+                      xs={12}
+                      // sm={12}
+                      // md={8}
+                      sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                      }}
+                  >
+                      <Box
+                          sx={{
+                              display: "flex",
+                              justifyContent: "flex-start",
+                              alignItems: "center",
+                              gap: "5px",
+                              color: "#9DA7B3",
+                              ...theme.typography.labelSmall,
+                          }}
+                      >
+                          <InfoOutlined sx={{ width: "17px" }} />
+                          <Trans i18nKey={"shortTitleInfo"} />
+                      </Box>
+                  </Grid>
+              </Grid>
           </Grid>
-        <Grid sx={{ display: "flex", justifyContent: "center" }}>
-          <Grid
-            item
-            xs={12}
-            // sm={12}
-            // md={8}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                gap: "5px",
-                color: "#9DA7B3",
-                ...theme.typography.labelSmall,
-              }}
-            >
-              <InfoOutlined sx={{ width: "17px" }} />
-              <Trans i18nKey={"shortTitleInfo"} />
-            </Box>
-          </Grid>
-        </Grid>
-
         <Divider
           sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
         />
@@ -275,16 +270,17 @@ export const AssessmentSettingGeneralBox = (props: {
                       lineHeight={"normal"}
                     >
                       {index == 0 && displayName}
-                      {index == 1 && (theme.direction == "rtl" ? formatDate(creationTime, "Shamsi") : formatDate(creationTime, "Miladi"))}
-                      {index == 2 && (theme.direction == "rtl" ? formatDate(lastModificationTime, "Shamsi") : formatDate(lastModificationTime, "Miladi"))}
-                      {index == 3 && (
-                        <Link
-                          style={{ textDecoration: "none", color: "inherit" }}
-                          to={`/assessment-kits/${kit.id}`}
-                        >
-                          {kit.title}
-                        </Link>
-                      )}
+                      {index == 1 && (
+                            <Link
+                                style={{ textDecoration: "none", color: "inherit" }}
+                                to={`/assessment-kits/${kit.id}`}
+                            >
+                                {kit.title}
+                            </Link>
+                        )}
+                      {index == 2 && (theme.direction == "rtl" ? formatDate(creationTime, "Shamsi") : formatDate(creationTime, "Miladi"))}
+                      {index == 3 && (theme.direction == "rtl" ? formatDate(lastModificationTime, "Shamsi") : formatDate(lastModificationTime, "Miladi"))}
+
                     </Typography>
                   </Grid>
               );
