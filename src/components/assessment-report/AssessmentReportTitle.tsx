@@ -8,7 +8,6 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 
 interface IAssessmentReportTitle {
   data: any;
-  colorCode: string;
 }
 
 const AssessmentReportTitle = (props: IAssessmentReportTitle) => {

@@ -32,10 +32,10 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
     >
       <Hidden
         smDown
-        mdDown={questions.length > 20 ? true : false}
-        lgDown={questions.length > 23 ? true : false}
-        xlDown={questions.length > 32 ? true : false}
-        xlUp={questions.length > 40 ? true : false}
+        mdDown={questions.length > 20}
+        lgDown={questions.length > 23}
+        xlDown={questions.length > 32}
+        xlUp={questions.length > 40}
       >
         <Box
           position={"absolute"}

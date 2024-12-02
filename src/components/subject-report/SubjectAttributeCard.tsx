@@ -39,14 +39,7 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
-  const [emptyPositiveEvidence, setEmptyPositiveEvidence] =
-    useState<boolean>(false);
-  const [emptyNegativeEvidence, setEmptyNegativeEvidence] =
-    useState<boolean>(false);
-  const [positiveEvidenceLoading, setPositiveEvidenceLoading] =
-    useState<boolean>(false);
-  const [negativeEvidenceLoading, setNegativeEvidenceLoading] =
-    useState<boolean>(false);
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
@@ -873,7 +866,7 @@ const MaturityLevelDetailsContainer = (props: any) => {
   );
 };
 export const MaturityLevelDetailsBar = (props: any) => {
-  const { score, is_passed, text, highestIndex } = props;
+  const { score, is_passed, text } = props;
   const width = `${score != null ? score : 100}%`;
   const bg_color = is_passed ? "#1769aa" : "#545252";
   const color = is_passed ? "#d1e6f8" : "#808080";

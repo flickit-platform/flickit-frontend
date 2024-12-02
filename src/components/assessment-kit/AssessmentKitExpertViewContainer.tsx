@@ -48,7 +48,7 @@ const AssessmentKitExpertViewContainer = () => {
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
-  const [loaded, setLoaded] = React.useState<boolean | false>(false);
+  const [loaded, setLoaded] = React.useState<boolean>(false);
 
   const AssessmentKitDetails = async () => {
     const data: AssessmentKitDetailsType = hasActiveVersion
@@ -165,7 +165,6 @@ const AssessmentKitSectionsTabs = (props: {
   details: any;
   update: boolean;
 }) => {
-  const { fetchAssessmentKitDetailsQuery } = useAssessmentKit();
   const [value, setValue] = useState("maturityLevels");
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -907,7 +906,6 @@ const UpdateAssessmentKitDialog = (props: any) => {
   const [syntaxErrorObject, setSyntaxErrorObject] = useState<any>();
   const [updateErrorObject, setUpdateErrorObject] = useState<any>();
   const { assessmentKitId } = useParams();
-  const [isValid, setIsValid] = useState<boolean>(false);
   const { expertGroupId } = useParams();
   const close = () => {
     setSyntaxErrorObject(null);
@@ -930,7 +928,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
     };
     setLoaded(true);
     try {
-      const { data: res } = await service.updateAssessmentKitDSL(
+      await service.updateAssessmentKitDSL(
         { data: formattedData, assessmentKitId: assessmentKitId },
         { signal: abortController.signal },
       );
@@ -995,7 +993,6 @@ const UpdateAssessmentKitDialog = (props: any) => {
             deleteService={(args: any, config: any) =>
               service.deleteAssessmentKitDSL(args, config)
             }
-            setIsValid={setIsValid}
             param={expertGroupId}
             name="dsl_id"
             required={true}

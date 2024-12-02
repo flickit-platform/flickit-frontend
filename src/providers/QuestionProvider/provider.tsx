@@ -3,8 +3,6 @@ import React, {
   FC,
   useContext,
   useEffect,
-  useCallback,
-  useMemo,
 } from "react";
 import { useParams } from "react-router-dom";
 import { TQuestionsInfo } from "@types";

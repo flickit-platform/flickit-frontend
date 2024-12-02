@@ -91,7 +91,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
     },
   };
 
-  const { closeDialog, context, open, index } = props;
+  const { closeDialog, context, index } = props;
   const { type, data } = context || {};
   const defaultValues = type === "update" ? data || {} : {};
   const formMethods = useForm({ shouldUnregister: true });
@@ -121,11 +121,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
             assessmentId: data?.assessment?.id,
           });
         }
-        const newAssessmentIds = addToAssessmentIds(
-          data.assessmentIds?.id,
-          assessmentIds,
-          index,
-        );
+        addToAssessmentIds(data.assessmentIds?.id, assessmentIds, index);
         dispatch(
           compareActions.setAssessmentKit([
             ...assessment_kit,
@@ -184,10 +180,12 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                         {option.title}
                       </Title>
                       <Box
-                           sx={{ ...styles.centerV,
-                           ml: theme.direction == "rtl" ?  "unset" : "auto",
-                           mr: theme.direction == "rtl" ?  "auto" : "unset"
-                           }}>
+                        sx={{
+                          ...styles.centerV,
+                          ml: theme.direction == "rtl" ? "unset" : "auto",
+                          mr: theme.direction == "rtl" ? "auto" : "unset",
+                        }}
+                      >
                         <Chip label={option?.kit?.title} size="small" />
                       </Box>
                     </>

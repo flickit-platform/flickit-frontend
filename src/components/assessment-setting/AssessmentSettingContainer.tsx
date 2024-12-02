@@ -182,7 +182,6 @@ const AssessmentSettingContainer = () => {
                 listOfRoles={listOfRoles}
                 listOfUser={listOfUser}
                 assessmentId={assessmentId}
-                title={<Trans i18nKey={"assignRole"} />}
                 cancelText={<Trans i18nKey={"cancel"} />}
                 confirmText={<Trans i18nKey={"addToThisAssessment"} />}
                 setChangeData={setChangeData}

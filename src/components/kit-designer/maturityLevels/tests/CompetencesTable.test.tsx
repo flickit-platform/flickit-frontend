@@ -1,8 +1,7 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CompetencesTable from "../CompetencesTable"; // Adjust the import based on your file structure
 import { vi } from "vitest";
 import { ServiceProvider } from "@/providers/ServiceProvider"; // Import your ServiceProvider
-import axios from "axios";
 
 // Mock data for testing
 const mockData = [

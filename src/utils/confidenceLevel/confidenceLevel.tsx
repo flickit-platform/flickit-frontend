@@ -3,7 +3,7 @@ import { colorPallet } from "./style";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-interface confidenceLevelType {
+interface IconfidenceLevelType {
   inputNumber: number | null | undefined;
   displayNumber?: boolean;
   variant?: any;
@@ -13,7 +13,7 @@ const ConfidenceLevel = ({
   inputNumber = 0,
   displayNumber = false,
   variant = "titleLarge",
-}: confidenceLevelType) => {
+}: IconfidenceLevelType) => {
   const { id, colorText, number } = calculate(inputNumber);
 
   const ImgRate = lazy(() => import(`./confLevel${id}.tsx`));

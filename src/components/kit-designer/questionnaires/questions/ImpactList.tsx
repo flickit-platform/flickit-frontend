@@ -13,13 +13,9 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
-import ImpactForm from "./ImpactForm";
-import { IAttribute, IMaturityLevel, IOption, TId } from "@/types";
+import { IAttribute, IMaturityLevel, TId } from "@/types";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { useQuery } from "@/utils/useQuery";
-import { useParams } from "react-router-dom";
 
 interface OptionValue {
   optionId: number;
@@ -63,8 +59,6 @@ const AttributeImpactList = ({
   handleDeleteImpact,
   handleEditImpact,
 }: AttributeImpactListProps) => {
-  const { service } = useServiceContext();
-  const { kitVersionId = "" } = useParams();
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState({
     questionId,

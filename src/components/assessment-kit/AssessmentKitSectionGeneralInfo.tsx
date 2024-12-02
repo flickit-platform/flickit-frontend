@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import { toast } from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -77,7 +77,7 @@ const AssessmentKitSectionGeneralInfo = (
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     event.preventDefault();
     try {
-      const { data: res } = await service.updateAssessmentKitStats(
+      await service.updateAssessmentKitStats(
         {
           assessmentKitId: assessmentKitId || "",
           data: { tags: data?.tags?.map((t: any) => t.id) },
@@ -130,7 +130,7 @@ const AssessmentKitSectionGeneralInfo = (
         } = stats as AssessmentKitStatsType;
         setAssessmentKitTitle(title);
         setHasActiveVersion(hasActiveVersion);
-        setExpertGroup(expertGroup)
+        setExpertGroup(expertGroup);
         return (
           <Grid container spacing={4}>
             <Grid item xs={12} md={7}>
@@ -473,7 +473,7 @@ const OnHoverInput = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { data, title, editable, infoQuery, type, formMethods } = props;
+  const { data, title, editable, infoQuery, type } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
   const [inputData, setInputData] = useState<string>(data);
@@ -908,7 +908,7 @@ const OnHoverRichEditor = (props: any) => {
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     event.preventDefault();
     try {
-      const { data: res } = await service.updateAssessmentKitStats(
+      await service.updateAssessmentKitStats(
         { assessmentKitId: assessmentKitId || "", data: { about: data.about } },
         { signal: abortController.current.signal },
       );

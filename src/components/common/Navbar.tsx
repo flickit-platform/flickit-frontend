@@ -165,11 +165,9 @@ const NotificationItem = ({
 
 const NotificationCenterComponent = ({ setNotificationCount }: any) => {
   const [selectedMessage, setSelectedMessage] = useState<IMessage | null>(null);
-  const [notificationCount, setNotificationsCount] = useState(0);
 
   const handleUnseenCountChanged = (unseenCount: number) => {
     setNotificationCount(unseenCount);
-    setNotificationsCount(unseenCount);
   };
 
   const handleNotificationClick = (

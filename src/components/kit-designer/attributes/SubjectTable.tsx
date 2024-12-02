@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";

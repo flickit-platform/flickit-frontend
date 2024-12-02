@@ -34,8 +34,16 @@ const RichEditorField = (props: any) => {
 };
 
 const RichEditorFieldBase = (props: any) => {
-  const { defaultValue, name, field, required, label, disable_label, setLangDir } = props;
-  const [shrink, setShrink] = useState(() => (defaultValue ? true : false));
+  const {
+    defaultValue,
+    name,
+    field,
+    required,
+    label,
+    disable_label,
+    setLangDir,
+  } = props;
+  const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
 
   const {
@@ -88,7 +96,7 @@ const RichEditorFieldBase = (props: any) => {
         }
         defaultValue={defaultValue}
         field={field}
-        checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ''))}
+        checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
         setLangDir={setLangDir}
       />
       <FormHelperText>{errorMessage as string}</FormHelperText>

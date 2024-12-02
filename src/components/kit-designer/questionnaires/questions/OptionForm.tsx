@@ -5,8 +5,6 @@ import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import { styles } from "@/config/styles";
-import { SwapVertRounded } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { t } from "i18next";
 

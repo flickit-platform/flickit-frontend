@@ -41,7 +41,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
     nextQuestion,
   } = data || {};
   const isSmallScreen = useScreenResize("sm");
-  const is_farsi = localStorage.getItem("lang") === "fa" ? true : false;
+  const is_farsi =  Boolean(localStorage.getItem("lang") === "fa") ;
   const [collapse, setCollapse] = useState<boolean>(false);
 
   return (

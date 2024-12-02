@@ -319,7 +319,6 @@ const KitCustomization = (props: any) => {
 
 const OnHoverInputCustomTitle = (props: any) => {
   const [show, setShow] = useState<boolean>(true);
-  const [isHovering, setIsHovering] = useState(false);
   const [localInputData, setLocalInputData] = useState(() =>
     JSON.parse(JSON.stringify(props.inputData)),
   );
@@ -345,13 +344,7 @@ const OnHoverInputCustomTitle = (props: any) => {
       setHasError(false);
     }
   }, [inputData, requiredTitle]);
-  const handleMouseOver = () => {
-    editable && setIsHovering(true);
-  };
 
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
 
   const handleCancel = () => {
     setShow(false);
@@ -487,8 +480,6 @@ const OnHoverInputCustomTitle = (props: any) => {
               wordBreak: "break-word",
             }}
             onClick={() => setShow(!show)}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
           >
             <Typography
               color="#004F83"

@@ -30,7 +30,7 @@ export const handleCopyAsImage = async (
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${title ? title : "chart"}.png`;
+    link.download = `${title || "chart"}.png`;
     link.click();
     URL.revokeObjectURL(url);
   } finally {

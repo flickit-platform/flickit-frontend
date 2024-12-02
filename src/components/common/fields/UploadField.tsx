@@ -2,7 +2,7 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Accept, DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import Box from "@mui/material/Box";
@@ -32,23 +32,23 @@ import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { theme } from "@/config/theme";
 
-interface IUploadFieldProps {
-  name: string;
-  label: string | JSX.Element;
-  required?: boolean;
-  defaultValue?: any;
-  accept?: Accept;
-  maxSize?: number;
-  uploadService?: TQueryServiceFunction<any, any>;
-  deleteService?: TQueryServiceFunction<any, any>;
-  hideDropText?: boolean;
-  shouldFetchFileInfo?: boolean;
-  defaultValueType?: string;
-  param?: string;
-  setSyntaxErrorObject?: any;
-  setShowErrorLog?: any;
-  setIsValid?: any;
-}
+// interface IUploadFieldProps {
+//   name: string;
+//   label: string | JSX.Element;
+//   required?: boolean;
+//   defaultValue?: any;
+//   accept?: Accept;
+//   maxSize?: number;
+//   uploadService?: TQueryServiceFunction<any, any>;
+//   deleteService?: TQueryServiceFunction<any, any>;
+//   hideDropText?: boolean;
+//   shouldFetchFileInfo?: boolean;
+//   defaultValueType?: string;
+//   param?: string;
+//   setSyntaxErrorObject?: any;
+//   setShowErrorLog?: any;
+//   setIsValid?: any;
+// }
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
@@ -258,7 +258,7 @@ const Uploader = (props: IUploadProps) => {
               maxSize: maxSize ? formatBytes(maxSize) : "2 MB",
             }) as string,
           };
-        } else if(rejectedFiles.length == 1 && error[0]?.message){
+        } else if (rejectedFiles.length == 1 && error[0]?.message) {
           toastError((error as any)?.pop()?.message as string);
         } else {
           toastError(t("oneFileOnly") as string);
@@ -326,7 +326,6 @@ const Uploader = (props: IUploadProps) => {
                           setButtonStep(0);
                           setZippedData(null);
                           setConvertData(null);
-                          return;
                           // }
                           // if (uploadQueryProps.error) {
                           //   setMyFiles([]);
@@ -362,7 +361,7 @@ const Uploader = (props: IUploadProps) => {
                     maxWidth: "40px",
                     maxHeight: "40px",
                     overflow: "hidden",
-                    mx: 1.5 ,
+                    mx: 1.5,
                     display: { xs: "none", sm: "inline-flex" },
                   }}
                 >

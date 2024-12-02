@@ -12,7 +12,6 @@ function App() {
   const { error, loading } = useGetSignedInUserInfo(); // Checks if the user is signed in
   useEffect(() => {
     const customId = sessionStorage.getItem("currentUser");
-    const friendlyName = localStorage.getItem("displayName");
     // @ts-ignore
     if (customId && window.clarity) {
       const script = document.createElement("script");

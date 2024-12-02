@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
@@ -31,9 +31,6 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
-import Select from "@mui/material/Select";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MenuItem from "@mui/material/MenuItem";
 import { theme } from "@config/theme";
 
 export default function MemberList(props: any) {

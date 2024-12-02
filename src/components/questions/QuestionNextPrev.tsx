@@ -62,7 +62,7 @@ const QuestionNextPrev = (props: IQuestionNextPrevProps) => {
         height="100%"
         sx={{ ...styles.centerV }}
         component={Link}
-        replace={isNext ? true : true}
+        replace={true}
         color="#ffffff96"
         onClick={() => {
           if (!isSubmitting && isNext && !hasNextQuestion) {
