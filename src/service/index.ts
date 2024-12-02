@@ -1806,6 +1806,12 @@ export const createService = (
         },
       );
     },
+    declineInvitationQueryData(
+        {expertGroupId}: { expertGroupId: TId },
+        config: AxiosRequestConfig<any> | undefined,
+      ){
+    return axios.delete(`/api/v1/expert-groups/${expertGroupId}/leave/`, config)
+    },
     likeAssessmentKit(
       args: { id: TId },
       config: AxiosRequestConfig<any> | undefined,
