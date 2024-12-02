@@ -722,5 +722,8 @@
   "kitCustomTitleEmpty": "Kit custom title can not be empty",
   "kitValidated": "All good! The kit has been successfully validated and is ready to be released.",
   "kitErrorsTitle": "Issues have been found in the kit and it cannot be released. Please resolve the issues and try again.",
-  "kitCustomDefaultDataChanged": "Default data hasn't been changed since last update."
+  "kitCustomDefaultDataChanged": "Default data hasn't been changed since last update.",
+  "newAdviceItem": "new advice item",
+  "NoAdviceSoFar": "Ops! No Advice So Far",
+  "CreateFirstAdvice": "Create your first advice here"
 }
