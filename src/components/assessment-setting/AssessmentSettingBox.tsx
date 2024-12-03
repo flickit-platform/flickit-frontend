@@ -77,7 +77,6 @@ export const AssessmentSettingGeneralBox = (props: {
       gap={2}
       textAlign="left"
       height={"auto"}
-      // minHeight={"415px"}
       width={"100%"}
       bgcolor={"#FFF"}
       borderRadius={"8px"}
@@ -95,12 +94,10 @@ export const AssessmentSettingGeneralBox = (props: {
             marginBottom: "10px !important",
           }}
         />
-          <Grid container spacing={2} sx={{display:"flex",justifyContent:"center"}}>
+          <Grid container spacing={2} sx={{...styles.centerH}}>
               <Grid
                   item
                   xs={12} md={6}
-                  // sm={12}
-                  // md={8}
                   sx={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -108,22 +105,18 @@ export const AssessmentSettingGeneralBox = (props: {
                   }}
               >
                   <Typography
-                      color="#9DA7B3"
-                      fontWeight={500}
-                      sx={{
+                          sx={{...theme.typography.titleLarge,
                           fontSize: { xs: "1rem", sm: "1.375rem" },
                           whiteSpace: { xs: "wrap", sm: "nowrap" },
+                          color:"#9DA7B3"
                       }}
-                      lineHeight={"normal"}
                   >
                       <Trans i18nKey="assessmentTitle" />:
                   </Typography>
 
                   <Box
                       sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          ...styles.centerVH,
                           width: { md: "350px" },
                       }}
                   >
@@ -141,8 +134,6 @@ export const AssessmentSettingGeneralBox = (props: {
               </Grid>
               <Grid  item xs={12} md={6}>
                   <Grid
-                      // sm={12}
-                      // md={8}
                       sx={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -181,15 +172,13 @@ export const AssessmentSettingGeneralBox = (props: {
                               editable={true}
                               color={color}
                               type={"shortTitle"}
-                              displayEdit={shortTitle === "" || shortTitle === null}
+                              displayEdit={!shortTitle}
                           />
                       </Box>
                   </Grid>
                   <Grid
                       item
                       xs={12}
-                      // sm={12}
-                      // md={8}
                       sx={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -222,10 +211,7 @@ export const AssessmentSettingGeneralBox = (props: {
             height: "100%",
             width: "100%",
             display: "flex",
-            // flexDirection: "column",
             justifyContent: "space-between",
-            // alignItems: "space-between",
-            // gap: "32px",
           }}
         >
           {title &&
@@ -316,8 +302,6 @@ export const AssessmentSettingMemberBox = (props: {
     inviteesMemberList.query();
   }, [changeData]);
 
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   interface Column {
     id: "displayName" | "email" | "role";
@@ -381,7 +365,6 @@ export const AssessmentSettingMemberBox = (props: {
       const { id: userId } = name;
       await editUserRole.query({ userId, roleId });
       setChangeData((prev: boolean) => !prev);
-      // await fetchAssessmentsUserListRoles()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -396,7 +379,6 @@ export const AssessmentSettingMemberBox = (props: {
       const { id } = name;
       await editUserRoleInvited.query({ id, roleId });
       setChangeData((prev: boolean) => !prev);
-      // await fetchAssessmentsUserListRoles()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -433,15 +415,9 @@ export const AssessmentSettingMemberBox = (props: {
             alignItems: "center",
             position: "relative",
             width: "100%",
-            // ml: theme.direction === "rtl" ? "unset" : "10%",
-            // mr: theme.direction !== "rtl" ? "unset" : "10%",
           }}
         >
           <Typography
-            // sx={{
-            //   ml: theme.direction === "rtl" ? "unset" : "auto",
-            //   mr: theme.direction !== "rtl" ? "unset" : "auto",
-            // }}
             color="#000"
             variant="headlineMedium"
           >
@@ -749,7 +725,6 @@ export const AssessmentSettingMemberBox = (props: {
                 </TableHead>
                 <TableBody>
                   {inviteesMemberList?.data?.items
-                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row: any) => {
                       return (
                         <TableRow tabIndex={-1} key={row.id}>
@@ -854,7 +829,6 @@ export const AssessmentSettingMemberBox = (props: {
                                     inputProps={{
                                       renderValue: () => row?.role?.title,
                                     }}
-                                    // disabled={!row.editable}
                                   >
                                     <Box
                                       sx={{
@@ -953,7 +927,6 @@ export const AssessmentSettingMemberBox = (props: {
                                 </Grid>
                               </FormControl>
                               <Box
-                                // width="30%"
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
@@ -961,7 +934,6 @@ export const AssessmentSettingMemberBox = (props: {
                                 <IconButton
                                   sx={{ "&:hover": { color: "#d32f2f" } }}
                                   size="small"
-                                  // disabled={!row.editable}
                                   onClick={() =>
                                     openRemoveModal(row.email, row.id, true)
                                   }
@@ -997,7 +969,6 @@ const SelectionRole = (props: any) => {
       const { id: userId } = name;
       await editUserRole.query({ userId, roleId });
       setChangeData((prev: boolean) => !prev);
-      // await fetchAssessmentsUserListRoles()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -1201,7 +1172,6 @@ const OnHoverInputTitleSetting = (props: any) => {
       config,
     ) => service.updateAssessment(args, config),
     runOnMount: false,
-    // toastError: true,
   });
   const updateAssessmentTitle = async () => {
     try {
@@ -1258,7 +1228,6 @@ const OnHoverInputTitleSetting = (props: any) => {
               inputProps={inputProps}
               error={hasError}
               fullWidth
-              // name={title}
               defaultValue={
                 type == "title" ? inputData : inputDataShortTitle || ""
               }
@@ -1341,7 +1310,6 @@ const OnHoverInputTitleSetting = (props: any) => {
               justifyContent: "space-between",
               alignItems: "center",
               wordBreak: "break-word",
-              // "&:hover": {border: "1px solid #79747E"},
             }}
             onClick={() => setShow(!show)}
             onMouseOver={handleMouseOver}
