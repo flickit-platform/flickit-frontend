@@ -307,7 +307,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                   overflow: "hidden",
                   mb: 2,
                   borderRadius: "8px",
-                  direction: `${theme.direction == "rtl" ? "rtl" : "ltr"}`,
+                  direction: `${is_farsi ? "rtl" : "ltr"}`,
                 }}
                 elevation={3}
               >
