@@ -338,7 +338,7 @@ const AssessmentReportContainer = (props: any) => {
                         display="flex"
                         alignItems="center"
                     >
-                      <Trans i18nKey="advicesList" />
+                      <Trans i18nKey="adviceItems" />
                       <Box
                           sx={{
                             ml: theme.direction == "ltr" ? 1 : "unset",
