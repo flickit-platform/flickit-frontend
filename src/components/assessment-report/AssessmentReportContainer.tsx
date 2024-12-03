@@ -21,6 +21,8 @@ import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
+import EmptyAdviceList from "@components/assessment-report/emptyAdviceListItem";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -326,6 +328,36 @@ const AssessmentReportContainer = (props: any) => {
                     subjects={subjects}
                     assessment={assessment}
                     permissions={permissions}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
+                    <Typography
+                        color="#73808C"
+                        variant="h5"
+                        display="flex"
+                        alignItems="center"
+                    >
+                      <Trans i18nKey="advicesList" />
+                      <Box
+                          sx={{
+                            ml: theme.direction == "ltr" ? 1 : "unset",
+                            mr: theme.direction == "rtl" ? 1 : "unset",
+                            mt: 1,
+                          }}
+                      >
+                        <InfoOutlined  fontSize="small"  />
+                      </Box>
+                    </Typography>
+                    <Divider sx={{ width: "100%" }} />
+                  </Box>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12} id="advices-empty" mt={2}>
+                  <EmptyAdviceList
+                      onAddNewRow={()=>{}}
+                      btnTitle="newAdviceItem"
+                      title={"NoAdviceSoFar"}
+                      SubTitle={"CreateFirstAdvice"}
                   />
                 </Grid>
               </Grid>
