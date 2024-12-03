@@ -82,7 +82,7 @@ const FlatGauge = (props:IGaugeProps) => {
                     color: colorCode
                 }}><Trans i18nKey={`${text}`} /></Box> }
             </Box>
-            {confidenceLevelNum && textPosition == "top" &&
+            {Boolean(confidenceLevelNum) && textPosition == "top" &&
                 <Typography sx={{display:"flex", gap:"5px"}}>
                     <Trans style={{color: "#9DA7B3", ...theme.typography.labelSmall }} i18nKey={"confidenceLevel"} />: <Typography sx={{color: checkColor(confidenceLevelNum)}} > {confidenceLevelNum}% </Typography>
                 </Typography>
