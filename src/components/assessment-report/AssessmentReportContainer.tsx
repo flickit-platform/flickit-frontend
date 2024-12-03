@@ -61,9 +61,7 @@ const AssessmentReportContainer = (props: any) => {
     } catch (e) {}
   };
   const iframeUrl =
-    import.meta.env.VITE_STATIC_HTML +
-    assessmentId +
-    "/index.html";
+    import.meta.env.VITE_STATIC_HTML + assessmentId + "/index.html";
   useEffect(() => {
     const checkIframeUrl = async () => {
       try {
@@ -112,7 +110,6 @@ const AssessmentReportContainer = (props: any) => {
         renderLoading={() => <LoadingSkeletonOfAssessmentReport />}
         render={([data = {}, progress, roles]) => {
           const {
-            status,
             assessment,
             subjects,
             assessmentPermissions: { manageable, exportable },
@@ -135,7 +132,7 @@ const AssessmentReportContainer = (props: any) => {
 
           return (
             <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-              <AssessmentReportTitle data={data} colorCode={colorCode} />
+              <AssessmentReportTitle data={data} />
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
                   <Box display="flex" justifyContent="space-between">
@@ -230,7 +227,6 @@ const AssessmentReportContainer = (props: any) => {
                           <Trans i18nKey="overallStatus" />
                         </Typography>
                         <AssessmentOverallStatus
-                          status={status}
                           maturity_level={maturityLevel}
                           maturity_level_count={
                             assessmentKit?.maturityLevelCount

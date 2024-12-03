@@ -57,7 +57,7 @@ export const QuestionsContainerC = (
   props: PropsWithChildren<{ isReview?: boolean }>,
 ) => {
   const { children, isReview = false } = props;
-  const { questions, questionsResultQueryData, fetchPathInfo } = useQuestions();
+  const { questionsResultQueryData, fetchPathInfo } = useQuestions();
 
   return (
     <QueryBatchData<IQuestionsModel | IQuestionnaireModel>

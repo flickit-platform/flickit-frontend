@@ -5,12 +5,11 @@ import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import { styles } from "@/config/styles";
 
 interface QuestionnairesFormProps {
-    newItem: {
+  newItem: {
     title: string;
-    id: any
+    id: any;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
@@ -44,11 +43,11 @@ const AnswerRangeForm = ({
         onChange={handleInputChange}
         fullWidth
         inputProps={{
-            "data-testid": "AnswerRange-title",
+          "data-testid": "AnswerRange-title",
         }}
         margin="normal"
         sx={{
-          mt: .3,
+          mt: 0.3,
           fontSize: 14,
           "& .MuiInputBase-root": {
             height: 36,
@@ -57,13 +56,18 @@ const AnswerRangeForm = ({
           "& .MuiFormLabel-root": {
             fontSize: 14,
           },
-            background:"#fff",
+          background: "#fff",
         }}
       />
     </Box>
 
     {/* Check and Close Buttons */}
-    <Box display="flex" alignItems="center" flexDirection={"column"} gap={"20px"}>
+    <Box
+      display="flex"
+      alignItems="center"
+      flexDirection={"column"}
+      gap={"20px"}
+    >
       <Link
         href="#subject-header"
         sx={{
@@ -72,14 +76,24 @@ const AnswerRangeForm = ({
           fontWeight: "bold",
           display: "flex",
           alignItems: "center",
-          gap:"20px"
+          gap: "20px",
         }}
       >
         {" "}
-        <IconButton size="small" color="primary" data-testid="answerRange-check-icon" onClick={handleSave}>
+        <IconButton
+          size="small"
+          color="primary"
+          data-testid="answerRange-check-icon"
+          onClick={handleSave}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="answerRange-close-icon" onClick={handleCancel}>
+        <IconButton
+          size="small"
+          color="secondary"
+          data-testid="answerRange-close-icon"
+          onClick={handleCancel}
+        >
           <CloseIcon />
         </IconButton>
       </Link>

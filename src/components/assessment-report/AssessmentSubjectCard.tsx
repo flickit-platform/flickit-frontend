@@ -26,7 +26,6 @@ import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
 import { t } from "i18next";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
-  colorCode: string;
   maturity_level?: IMaturityLevel;
   confidenceValue?: number;
   attributes?: any;
@@ -277,10 +276,10 @@ export const AssessmentSubjectAccordion = (
                 marginBottom="10px"
               >
                 <Typography variant="titleMedium" color="#73808C">
-                 <Trans i18nKey={"attribute"}/>
+                  <Trans i18nKey={"attribute"} />
                 </Typography>
                 <Typography variant="titleMedium" color="#73808C">
-                 <Trans i18nKey={"status"}/>
+                  <Trans i18nKey={"status"} />
                 </Typography>
               </Box>
               <Divider sx={{ width: "100%" }} />
@@ -316,7 +315,7 @@ export const AssessmentSubjectAccordion = (
                           }}
                           variant="titleMedium"
                         >
-                       <Trans i18nKey={`${element.maturityLevel.title}`} />
+                          <Trans i18nKey={`${element.maturityLevel.title}`} />
                         </Typography>
                         <ConfidenceLevel
                           inputNumber={element.confidenceValue}
@@ -367,7 +366,7 @@ const SubjectStatus = (
   >,
 ) => {
   const { maturity_level, maturityLevelCount } = props;
-  const hasStats = maturity_level?.index ? true : false;
+  const hasStats = Boolean(maturity_level?.index);
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );

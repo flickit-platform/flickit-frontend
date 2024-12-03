@@ -43,7 +43,6 @@ const AddMemberDialog = (props: {
   onClose: () => void;
   listOfUser: any;
   setChangeData?: any;
-  title: any;
   cancelText: any;
   confirmText: any;
   listOfRoles: any[];

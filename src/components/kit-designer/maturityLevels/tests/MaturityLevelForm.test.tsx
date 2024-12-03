@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import MaturityLevelForm from "../MaturityLevelForm";
 import { describe, it, vi, expect } from "vitest";
 import { I18nextProvider } from "react-i18next";

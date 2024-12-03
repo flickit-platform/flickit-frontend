@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAuthContext } from "@providers/AuthProvider";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
@@ -16,8 +15,6 @@ import { theme } from "@/config/theme";
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
   const { expertGroupId, token } = useParams();
-  const { userInfo } = useAuthContext();
-  const { id } = userInfo;
   const navigate = useNavigate();
   const expertGroupQueryData = useQuery({
     service: (args = { id: expertGroupId }, config) =>

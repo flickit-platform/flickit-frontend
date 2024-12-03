@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
@@ -31,9 +31,6 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
-import Select from "@mui/material/Select";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MenuItem from "@mui/material/MenuItem";
 import { theme } from "@config/theme";
 
 export default function MemberList(props: any) {
@@ -55,7 +52,7 @@ export default function MemberList(props: any) {
       minHeight={"350px"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"40.53px"}
+      borderRadius={2}
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
@@ -143,13 +140,8 @@ export default function MemberList(props: any) {
                     align={column.align}
                     sx={{
                       minWidth: {
-                        xs: "10rem",
-                        sm: "14rem",
-                        md: column.minWidth,
-                      },
-                      maxWidth: {
-                        xs: "10rem",
-                        sm: "14rem",
+                        xs: "12rem",
+                        sm: "16rem",
                         md: column.minWidth,
                       },
                       textAlign: { xs: column.position, lg: "center" },

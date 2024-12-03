@@ -11,7 +11,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import MLink from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
@@ -470,7 +470,7 @@ const useFetchAssessmentKit = () => {
 };
 
 const AvatarComponent = (props: any) => {
-  const { title, picture, queryData, editable } = props;
+  const { title, picture } = props;
   const [hover, setHover] = useState(false);
   const [profilePicture, setProfilePicture] = useState(picture);
   const [isLoading, setIsLoading] = useState(false);
@@ -1283,8 +1283,14 @@ const ExpertGroupMembersDetail = (props: any) => {
                     )}
                     <Grid container spacing={2}>
                       {users.map((member: any) => {
-                        const { displayName, id, pictureLink, linkedin, bio, deletable } =
-                          member;
+                        const {
+                          displayName,
+                          id,
+                          pictureLink,
+                          linkedin,
+                          bio,
+                          deletable,
+                        } = member;
 
                         return (
                           <Grid item xs={12} sm={6} md={4} key={id}>
@@ -1303,23 +1309,27 @@ const ExpertGroupMembersDetail = (props: any) => {
                                 position: "relative",
                               }}
                             >
-                                { deletable && <Tooltip title={<Trans i18nKey={"remove"} />}>
-                                    <IconButton
-                                        onClick={() =>
-                                            setRemoveMemberDialog({ status: true, id })
-                                        }
-                                        sx={{
-                                            position: "absolute",
-                                            right: 0,
-                                            top: 0,
-                                        }}
-                                        size="small"
-                                        color="secondary"
-                                    >
-                                        <DeleteRoundedIcon fontSize="small" />
-                                    </IconButton>
+                              {deletable && (
+                                <Tooltip title={<Trans i18nKey={"remove"} />}>
+                                  <IconButton
+                                    onClick={() =>
+                                      setRemoveMemberDialog({
+                                        status: true,
+                                        id,
+                                      })
+                                    }
+                                    sx={{
+                                      position: "absolute",
+                                      right: 0,
+                                      top: 0,
+                                    }}
+                                    size="small"
+                                    color="secondary"
+                                  >
+                                    <DeleteRoundedIcon fontSize="small" />
+                                  </IconButton>
                                 </Tooltip>
-                                }
+                              )}
                               <Box
                                 sx={{
                                   mt: "28px",

@@ -19,7 +19,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { primaryFontFamily, theme } from "@/config/theme";
 import { useQuestionnaire } from "../questionnaires/QuestionnaireContainer";
-import {toCamelCase} from "@common/makeCamelcaseString";
+import { toCamelCase } from "@common/makeCamelcaseString";
 
 const QuestionsReview = () => {
   const { questionsInfo } = useQuestionContext();
@@ -46,8 +46,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
   }, [AssessmentInfo]);
 
   const navigate = useNavigate();
-  const { questionIndex, questionsInfo, assessmentStatus } =
-    useQuestionContext();
+  const { questionsInfo } = useQuestionContext();
   const [answeredQuestions, setAnsweredQuestions] = useState<number>();
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   useEffect(() => {
@@ -308,7 +307,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                   overflow: "hidden",
                   mb: 2,
                   borderRadius: "8px",
-                  direction: `${theme.direction == "rtl" ? "rtl" : "ltr"}`,
+                  direction: `${is_farsi ? "rtl" : "ltr"}`,
                 }}
                 elevation={3}
               >
@@ -388,7 +387,11 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                         >
                           <Typography sx={{ display: "flex" }}>
                             <Typography variant="h6" fontWeight="bold">
-                              <Trans i18nKey={toCamelCase(`${question.answer.confidenceLevel.title}`)} />
+                              <Trans
+                                i18nKey={toCamelCase(
+                                  `${question.answer.confidenceLevel.title}`,
+                                )}
+                              />
                             </Typography>
                           </Typography>
                         </Box>

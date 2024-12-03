@@ -1,7 +1,6 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { describe, it, vi, expect } from "vitest";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
-import React from "react";
 import {ServiceProvider} from "@providers/ServiceProvider";
 
 const mockQuestionListData = [

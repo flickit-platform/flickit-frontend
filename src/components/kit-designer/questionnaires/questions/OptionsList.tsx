@@ -6,8 +6,6 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
@@ -32,7 +30,6 @@ interface OptionListProps {
 const OptionList = ({
   Options,
   onEdit,
-  onDelete,
   onReorder,
   onAdd,
   isAddingNew,
@@ -57,14 +54,6 @@ const OptionList = ({
     onReorder(newReorderedItems);
   };
 
-  const handleEditClick = (item: IOption) => {
-    setEditMode(Number(item.id));
-    setTempValues({
-      title: item.title,
-      value: item.value,
-      index: reorderedItems.length + 1,
-    });
-  };
 
   const handleSaveClick = (item: IOption) => {
     onEdit({

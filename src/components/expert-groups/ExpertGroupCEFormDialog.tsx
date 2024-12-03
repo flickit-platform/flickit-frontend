@@ -72,10 +72,6 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
       title: title,
     };
 
-    const pictureData = {
-      pictureFile: picture,
-    };
-
     setLoading(true);
     try {
       const { data } =

@@ -10,7 +10,7 @@ import useDialog from "@utils/useDialog";
 import CompareItemCEFormDialog from "./CompareItemCEFormDialog";
 import Title from "@common/Title";
 import { Gauge } from "@common/charts/Gauge";
-import { TId, TQueryFunction } from "@types";
+import { TId } from "@types";
 import IconButton from "@mui/material/IconButton";
 import {
   compareActions,
@@ -113,12 +113,8 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
 
 const numberMap = ["first", "second", "third", "fourth"];
 
-const DeleteAssessmentIconBtn = (props: {
-  id: TId;
-  index: number;
-  fetchAssessmentsInfo: TQueryFunction;
-}) => {
-  const { id, index, fetchAssessmentsInfo } = props;
+const DeleteAssessmentIconBtn = (props: { id: TId; index: number }) => {
+  const { id, index } = props;
   const { assessmentIds, assessment_kit } = useCompareContext();
   const dispatch = useCompareDispatch();
   const filteredData = assessment_kit.filter((item) => item.id !== id);

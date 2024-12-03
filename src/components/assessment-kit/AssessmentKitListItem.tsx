@@ -1,8 +1,6 @@
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { useState } from "react";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -163,7 +161,6 @@ const Actions = (props: any) => {
   const { assessment_kit, fetchAssessmentKits, hasAccess } = props;
   const { id } = assessment_kit;
   const { service } = useServiceContext();
-  const [editLoading, setEditLoading] = useState(false);
   const deleteAssessmentKitQuery = useQuery({
     service: (args, config) => service.deleteAssessmentKit({ id }, config),
     runOnMount: false,
@@ -239,12 +236,7 @@ const Actions = (props: any) => {
   return hasAccess ? (
     <MoreActions
       {...useMenu()}
-      loading={
-        deleteAssessmentKitQuery.loading ||
-        // publishAssessmentKitQuery.loading ||
-        // unPublishAssessmentKitQuery.loading ||
-        editLoading
-      }
+      loading={deleteAssessmentKitQuery.loading}
       items={[
         // is_active
         //   ? {

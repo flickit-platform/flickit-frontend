@@ -194,7 +194,7 @@ const OnHoverRichEditor = (props: any) => {
   const onSubmit = async (data: any, event: any) => {
     event.preventDefault();
     try {
-      const { data: res } = await service.updateSubjectInsight(
+      await service.updateSubjectInsight(
         { assessmentId, data: { insight: data.insight }, subjectId },
         { signal: abortController.current.signal },
       );

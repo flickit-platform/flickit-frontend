@@ -82,7 +82,7 @@ export const SpaceMembers = (props: any) => {
       controller?.abort();
     };
   }, [data]);
-  const is_farsi = localStorage.getItem("lang") === "fa" ? true : false;
+  const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
     <Box mt={1} p={3} sx={{ borderRadius: 1, background: "white" }}>
       <Box>
@@ -186,7 +186,8 @@ export const SpaceMembers = (props: any) => {
             return (
               <Box>
                 {items.map((member: any) => {
-                  const { displayName, id, pictureLink, isOwner } = member;
+                  const { displayName, id, pictureLink, isOwner, email } =
+                    member;
                   return (
                     displayName && (
                       <Box
@@ -200,7 +201,7 @@ export const SpaceMembers = (props: any) => {
                           px: 1.5,
                         }}
                       >
-                        <Box sx={{ ...styles.centerV }}>
+                        <Box sx={{ ...styles.centerV, width: "85%" }}>
                           <Box>
                             <Avatar
                               {...stringAvatar(displayName.toUpperCase())}
@@ -214,9 +215,25 @@ export const SpaceMembers = (props: any) => {
                                 theme.direction == "rtl" ? "1rem" : "unset",
                               marginLeft:
                                 theme.direction == "rtl" ? "unset" : "1rem",
+                              width: "35%",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
                             }}
                           >
                             {displayName}
+                          </Box>
+                          <Box
+                            style={{
+                              marginRight:
+                                theme.direction == "rtl" ? "1rem" : "unset",
+                              marginLeft:
+                                theme.direction == "rtl" ? "unset" : "1rem",
+                              width: "45%",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {email}
                           </Box>
                         </Box>
                         <Box
@@ -470,7 +487,7 @@ const Actions = (props: any) => {
   const inviteMember = async () => {
     try {
       await inviteMemberQueryData.query();
-      toast.success( t("invitationSentSuccessfully"));
+      toast.success(t("invitationSentSuccessfully"));
       fetchSpaceMembers();
     } catch (e) {
       toastError(e as ICustomError);

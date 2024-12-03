@@ -15,7 +15,6 @@ import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
-import QueryData from "@common/QueryData";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -72,15 +71,6 @@ const ListOfItems = ({
     runOnMount: false,
   });
 
-  const deleteQuestionnairesKit = useQuery({
-    service: (args, config) => service.deleteQuestionnairesKit(args, config),
-    runOnMount: false,
-  });
-
-  const updateKitQuestionnaires = useQuery({
-    service: (args, config) => service.updateKitQuestionnaires(args, config),
-    runOnMount: false,
-  });
   const [showNewQuestionForm, setShowNewQuestionForm] = useState<{
     [key: string]: boolean;
   }>({});

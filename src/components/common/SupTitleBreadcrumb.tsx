@@ -31,7 +31,7 @@ const SupTitleBreadcrumb = (
   return (
     <Breadcrumbs {...rest}>
       {routes.map((route, index) => {
-        const { to, title, sup, icon } = route;
+        const { to, title, icon } = route;
         const disabled =
           (routes.length - 1 === index || !to) &&
           (!route.hasOwnProperty("disabled") || route.disabled);

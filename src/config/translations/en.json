@@ -722,9 +722,5 @@
   "kitCustomTitleEmpty": "Kit custom title can not be empty",
   "kitValidated": "All good! The kit has been successfully validated and is ready to be released.",
   "kitErrorsTitle": "Issues have been found in the kit and it cannot be released. Please resolve the issues and try again.",
-  "unDeveloped": "Un developed",
-  "unprepared": "Un prepared",
-  "prepared": "Prepared",
-  "wellEquipped": "Well Equipped",
-  "stateOfArt": "State of the art"
+  "kitCustomDefaultDataChanged": "Default data hasn't been changed since last update."
 }

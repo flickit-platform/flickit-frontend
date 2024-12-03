@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, Suspense } from "react";
+import { PropsWithChildren, Suspense } from "react";
 import Box from "@mui/material/Box";
 import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoading";
 import Navbar from "@common/Navbar";

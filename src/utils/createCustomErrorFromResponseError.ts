@@ -12,7 +12,7 @@ const createCustomErrorFromResponseError = (err: any) => {
 
   const errorType = getCustomErrorType(err);
   const errorMessage = getCustomErrorMessage(err);
-  const Error = CustomError({
+  const ErrorObject = CustomError({
     code: errorType,
     status: response.status,
     message: errorMessage,
@@ -23,7 +23,7 @@ const createCustomErrorFromResponseError = (err: any) => {
     toJSON,
   });
 
-  return Error;
+  return ErrorObject;
 };
 
 const getCustomErrorType = (err: any) => {

@@ -587,7 +587,7 @@ const LikeAssessmentKit = ({ likes }: any) => {
   });
 
   const like = async () => {
-    const res = await likeQueryData.query();
+    await likeQueryData.query();
   };
 
   return (
