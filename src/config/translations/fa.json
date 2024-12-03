@@ -37,6 +37,7 @@
     "advancedSettings": "تنظیمات پیشرفته",
     "advancedSettingsDescription": "در این بخش می توانید در مورد برخی تنظیمات جانبی این سوال تصمیم گیری کنید.",
     "advice": "توصیه",
+    "advicesList": "لیست توصیه‌ها",
     "adviceAssistant": "دستیار ایجاد توصیه",
     "adviceGenerator": "سازنده توصیه",
     "advices": "توصیه‌ها",
@@ -723,5 +724,8 @@
     "kitCustomTitleEmpty": "عنوان کیت سفارشی نمی تواند خالی باشد",
     "kitValidated":"همه‌چیز خوب است! کیت با موفقیت اعتبارسنجی شده و آماده ترخیص است.",
     "kitErrorsTitle": "مشکلاتی در کیت شناسایی شده‌است و ترخیص آن ممکن نیست. لطفا مشکلات را برطرف کرده و دوباره امتحان کنید.",
-    "kitCustomDefaultDataChanged": "هیچ تغییری برای ذخیره‌سازی وجود ندارد."
+    "kitCustomDefaultDataChanged": "هیچ تغییری برای ذخیره‌سازی وجود ندارد.",
+    "newAdviceItem": "ایجاد توصیه جدید",
+    "NoAdviceSoFar": "هیچ توصیه‌ای تاکنون ثبت نشده است.",
+    "CreateFirstAdvice": "اولین توصیه خود را در اینجا ایجاد کنید"
 }
