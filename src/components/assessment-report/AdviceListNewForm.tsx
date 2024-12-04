@@ -16,8 +16,6 @@ import Grid from "@mui/material/Grid";
 import RichEditorField from "@common/fields/RichEditorField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import {useForm} from "react-hook-form";
-import {toast} from "react-toastify";
-import InputLabel from "@mui/material/InputLabel";
 import {theme} from "@config/theme";
 
 interface IAdviceListProps {
