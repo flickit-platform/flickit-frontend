@@ -727,5 +727,9 @@
     "kitCustomDefaultDataChanged": "هیچ تغییری برای ذخیره‌سازی وجود ندارد.",
     "newAdviceItem": "ایجاد توصیه جدید",
     "NoAdviceSoFar": "هیچ توصیه‌ای تاکنون ثبت نشده است.",
-    "CreateFirstAdvice": "اولین توصیه خود را در اینجا ایجاد کنید"
+    "CreateFirstAdvice": "اولین توصیه خود را در اینجا ایجاد کنید",
+    "low": "کم",
+    "medium": "متوسط",
+    "high": "زیاد",
+    "priority": "اولویت"
 }

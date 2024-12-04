@@ -416,6 +416,18 @@ export const createService = (
         ...(config ?? {}),
       });
     },
+    sendNewAdvice(
+        {assessmentId,data}: {assessmentId:TId,data:any},
+        config: AxiosRequestConfig<any> | undefined,
+    ){
+        return axios.post(
+            `/api/v1/advice-items/`,
+            data,
+            {
+                ...(config ?? {}),
+            },
+        );
+    },
     fetchAdviceNarration(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,

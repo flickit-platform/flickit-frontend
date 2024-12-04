@@ -17,8 +17,10 @@ interface IRichEditorProps {
   field?: ControllerRenderProps<FieldValues, any>;
   content?: string;
   boxProps?: BoxProps;
-  checkLang?: boolean,
-  setLangDir?: any,
+  checkLang?: boolean;
+  setLangDir?: any;
+  setNewAdvice?: any;
+  removeDescriptionAdvice?: any;
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -31,7 +33,9 @@ const RichEditor = (props: IRichEditorProps) => {
     field,
     boxProps = {},
     checkLang,
-    setLangDir
+    setLangDir,
+    setNewAdvice,
+    removeDescriptionAdvice
   } = props;
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
   const editor = useEditor({
@@ -47,6 +51,10 @@ const RichEditor = (props: IRichEditorProps) => {
       if (!field) {
         return;
       }
+        setNewAdvice((prev: any) =>({
+            ...prev,
+            description: props.editor.getHTML()
+        }))
       if (props.editor.getText()) {
         field.onChange(props.editor.getHTML());
 
@@ -91,6 +99,10 @@ const RichEditor = (props: IRichEditorProps) => {
   //     ? "VazirMatn"
   //     : primaryFontFamily;
   // };
+if (removeDescriptionAdvice.current){
+    editor?.commands.clearContent(true)
+    removeDescriptionAdvice.current = false
+}
   return (
     <Box
       {...boxProps}
@@ -133,9 +145,10 @@ const RichEditor = (props: IRichEditorProps) => {
               },
               "& .ProseMirror": {
                 outline: "none",
-                minHeight: "40px",
+                minHeight: "80px",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
                 borderRadius: 1,
+                background:"#fff",
                 px: 1.5,
                 py: 1,
                 "& > p": editor?.isEmpty

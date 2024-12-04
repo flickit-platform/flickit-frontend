@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
@@ -23,11 +23,24 @@ import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
 import EmptyAdviceList from "@components/assessment-report/emptyAdviceListItem";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
+import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
+import {ICustomError} from "@utils/CustomError";
+import toastError from "@utils/toastError";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
+  const [showNewAdviceListForm,setShowNewAdviceListForm] = useState(false)
+  const removeDescriptionAdvice = useRef(false)
+  const [newAdvice,setNewAdvice]= useState({
+    assessmentId: assessmentId,
+    title: "",
+    description:"",
+    priority:"",
+    cost:"",
+    impact:""
+  })
   const queryData = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
       service.fetchAssessment({ assessmentId }, config),
@@ -101,6 +114,56 @@ const AssessmentReportContainer = (props: any) => {
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
+  const sendNewAdvice = useQuery({
+    service: (args={assessmentId,data:newAdvice},config) => service.sendNewAdvice(args,config),
+    runOnMount: false
+  })
+
+
+  const handleCancel = () => {
+    setShowNewAdviceListForm(false);
+    removeDescriptionAdvice.current = true
+    setNewAdvice({
+      ...newAdvice,
+      title: "",
+      description: "",
+      priority: "",
+      cost: "",
+      impact: ""
+    });
+  };
+
+  const handleAddNewRow = () => {
+    handleCancel();
+    setShowNewAdviceListForm(true);
+    removeDescriptionAdvice.current = true
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAdvice((prev:any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave =async () =>{
+    try {
+      await sendNewAdvice.query()
+      removeDescriptionAdvice.current = true
+      setNewAdvice({
+       ...newAdvice,
+        title: "",
+        description: "",
+        priority: "",
+        cost: "",
+        impact: ""
+      });
+    }catch (e){
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  }
+
   return (
     <PermissionControl error={[queryData.errorObject?.response]}>
       <QueryBatchData
@@ -354,11 +417,22 @@ const AssessmentReportContainer = (props: any) => {
                 </Grid>
                 <Grid item lg={12} md={12} sm={12} xs={12} id="advices-empty" mt={2}>
                   <EmptyAdviceList
-                      onAddNewRow={()=>{}}
+                      onAddNewRow={handleAddNewRow}
                       btnTitle="newAdviceItem"
                       title={"NoAdviceSoFar"}
                       SubTitle={"CreateFirstAdvice"}
                   />
+                  {
+                    showNewAdviceListForm &&
+                      <AdviceListNewForm
+                          newAdvice={newAdvice}
+                          handleInputChange={handleInputChange}
+                          handleSave={handleSave}
+                          handleCancel={handleCancel}
+                          setNewAdvice={setNewAdvice}
+                          removeDescriptionAdvice = {removeDescriptionAdvice}
+                      />
+                  }
                 </Grid>
               </Grid>
             </Box>
