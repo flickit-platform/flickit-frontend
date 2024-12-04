@@ -1153,7 +1153,7 @@ const SubjectQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? "Vazirmatn" : primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? "VazirMatn" : primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",
@@ -1381,7 +1381,7 @@ const QuestionnairesQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? "Vazirmatn" : primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? "VazirMatn" : primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",

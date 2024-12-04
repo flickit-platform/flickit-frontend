@@ -141,7 +141,6 @@ const SpaceCard = (props: ISpaceCardProps) => {
             data-cy="space-card-link"
             onClick={changeCurrentSpaceAndNavigateToAssessments}
             sx={{
-              fontFamily: secondaryFontFamily,
               fontSize: "1.2rem",
               fontWeight: "bold",
               textDecoration: "none",
