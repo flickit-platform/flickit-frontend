@@ -123,7 +123,7 @@ return  <Box
                                id="cost-select"
                                value={newAdvice.cost}
                                IconComponent={KeyboardArrowDownIcon}
-                               startAdornment={!newAdvice.cost && <InputAdornment position="start"><img style={{marginRight:"2px"}}  src={dollarSign}/>
+                               startAdornment={!newAdvice.cost && <InputAdornment position="start"><img style={{marginRight:"2px"}}  src={dollarSign} alt={"dollarSign"}/>
                                <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"price"} /></Typography>
                                </InputAdornment>}
                                displayEmpty
@@ -149,7 +149,7 @@ return  <Box
                                id="impact-select"
                                value={newAdvice.impact}
                                IconComponent={KeyboardArrowDownIcon}
-                               startAdornment={!newAdvice.impact && <InputAdornment position="start"><img style={{marginRight:"4px"}} src={Impact}/>
+                               startAdornment={!newAdvice.impact && <InputAdornment position="start"><img style={{marginRight:"4px"}} src={Impact} alt={"impactIcon"}/>
                                        <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"impact"} /></Typography>
                                </InputAdornment>}
                                label="impact"
