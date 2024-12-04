@@ -89,7 +89,6 @@ import FileType from "@components/questions/iconFiles/fileType";
 import {
   farsiFontFamily,
   primaryFontFamily,
-  secondaryFontFamily,
   theme,
 } from "@config/theme";
 import { AcceptFile } from "@utils/acceptFile";

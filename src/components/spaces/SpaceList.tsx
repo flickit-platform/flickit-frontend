@@ -22,7 +22,7 @@ import { TDialogProps } from "@utils/useDialog";
 import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { secondaryFontFamily, theme } from "@/config/theme";
+import { theme } from "@/config/theme";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
