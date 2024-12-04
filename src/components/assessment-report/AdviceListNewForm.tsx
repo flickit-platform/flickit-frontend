@@ -6,17 +6,19 @@ import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import {MenuItem, Select} from "@mui/material";
+import {MenuItem, Select, Typography} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InputAdornment from "@mui/material/InputAdornment";
 import Impact from "@assets/svg/Impact.svg"
+import dollarSign from "@assets/svg/Dollarsign.svg"
 import Grid from "@mui/material/Grid";
 import RichEditorField from "@common/fields/RichEditorField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import {useForm} from "react-hook-form";
 import {toast} from "react-toastify";
 import InputLabel from "@mui/material/InputLabel";
+import {theme} from "@config/theme";
 
 interface IAdviceListProps {
     newAdvice: {
@@ -91,17 +93,16 @@ return  <Box
 
                    >
                        <FormControl sx={{width:"30%"}}>
-                           <InputLabel sx={{
-                                 // "&":{
-                                     // transform: 'translate(8px, 5px) scale(1) !important',
-                                 // },
-                           }} id="priority-select-label"><Trans i18nKey={"priority"} /></InputLabel>
                            <Select
                                labelId="priority-select-label"
                                id="priority-select"
                                value={newAdvice.priority}
                                IconComponent={KeyboardArrowDownIcon}
                                name= "priority"
+                               startAdornment={!newAdvice.priority && <InputAdornment position="start">
+                                   <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"priority"} /></Typography>
+                               </InputAdornment>}
+
                                label="priority"
                                onChange={(e)=>handleInputChange(e)}
                                sx={{
@@ -119,19 +120,16 @@ return  <Box
                            </Select>
                        </FormControl>
                        <FormControl sx={{width:"30%"}}>
-                           <InputLabel sx={{'& .MuiInputLabel-root .MuiInputLabel': {
-                                   transform: 'translate(0, 5px) scale(1)',
-                               }
-                           }} id="cost-select-label"><Trans i18nKey={"price"} /></InputLabel>
                            <Select
                                labelId="cost-select-label"
                                id="cost-select"
                                value={newAdvice.cost}
                                IconComponent={KeyboardArrowDownIcon}
-                               startAdornment={!newAdvice.cost && <InputAdornment position="start">$</InputAdornment>}
+                               startAdornment={!newAdvice.cost && <InputAdornment position="start"><img style={{marginRight:"2px"}}  src={dollarSign}/>
+                               <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"price"} /></Typography>
+                               </InputAdornment>}
                                displayEmpty
                                name= "cost"
-                               label="price"
                                onChange={(e)=>handleInputChange(e)}
                                sx={{
                                    height: "32px",
@@ -148,16 +146,14 @@ return  <Box
                            </Select>
                        </FormControl>
                        <FormControl sx={{width:"30%"}}>
-                           <InputLabel sx={{'& .MuiInputLabel-root .MuiInputLabel': {
-                                   transform: 'translate(0, 5px) scale(1)',
-                               }
-                           }} id="impact-select-label"><Trans i18nKey={"impact"} /></InputLabel>
                            <Select
                                labelId="impact-select-label"
                                id="impact-select"
                                value={newAdvice.impact}
                                IconComponent={KeyboardArrowDownIcon}
-                               startAdornment={!newAdvice.impact && <InputAdornment position="start"><img src={Impact}/></InputAdornment>}
+                               startAdornment={!newAdvice.impact && <InputAdornment position="start"><img style={{marginRight:"4px"}} src={Impact}/>
+                                       <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"impact"} /></Typography>
+                               </InputAdornment>}
                                label="impact"
                                displayEmpty
                                name= "impact"
