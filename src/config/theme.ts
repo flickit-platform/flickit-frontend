@@ -518,6 +518,10 @@ export const theme = createTheme({
             marginLeft: is_farsi ? "4px" : "-4px",
             marginRight: is_farsi ? "-4px" : "4px",
           },
+          ".MuiChip-icon": {
+            marginLeft: is_farsi ? "-10px" : "0",
+            marginRight: is_farsi ? "0" : "-10px",
+          },
         },
       },
     },
