@@ -711,3 +711,7 @@ export interface IOption {
   value: number;
   questionId?: TId;
 }
+export interface IFlatGauge {
+  colorCode :string;
+  value: number
+}
