@@ -21,7 +21,7 @@ const AdviceItems = () => {
 
   const queryData = useQuery<any>({
     service: (args, config) =>
-      service.fetchAdviceItems({ assessmentId, page, size: 7 }, config),
+      service.fetchAdviceItems({ assessmentId, page, size: 15 }, config),
     toastError: false,
   });
 
