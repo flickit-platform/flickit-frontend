@@ -8,6 +8,7 @@ import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeleton
 import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
+import { CDN_DIRECTORY } from "@/config/constants";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
@@ -16,7 +17,11 @@ const AssessmentExportContainer = () => {
   const { service } = useServiceContext();
 
   const iframeUrl =
+<<<<<<< Updated upstream
     import.meta.env.VITE_STATIC_HTML + assessmentId + "/index.html";
+=======
+    CDN_DIRECTORY + "static-stage/report/" + assessmentId + "/index.html";
+>>>>>>> Stashed changes
 
   useEffect(() => {
     const fetchSiteContent = async () => {
@@ -72,7 +77,11 @@ const AssessmentExportContainer = () => {
               </Box>
               <div
                 dangerouslySetInnerHTML={{ __html: content }}
+<<<<<<< Updated upstream
                 style={{ width: "100%", height: "100%", overflowX: "hidden" }}
+=======
+                style={{ width: "100%", height: "100%" }}
+>>>>>>> Stashed changes
               />
             </>
           );
