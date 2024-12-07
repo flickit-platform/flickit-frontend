@@ -19,8 +19,6 @@ interface IRichEditorProps {
   boxProps?: BoxProps;
   checkLang?: boolean;
   setLangDir?: any;
-  setNewAdvice?: any;
-  removeDescriptionAdvice?: any;
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -34,8 +32,6 @@ const RichEditor = (props: IRichEditorProps) => {
     boxProps = {},
     checkLang,
     setLangDir,
-    setNewAdvice,
-    removeDescriptionAdvice
   } = props;
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
   const editor = useEditor({
@@ -51,10 +47,7 @@ const RichEditor = (props: IRichEditorProps) => {
       if (!field) {
         return;
       }
-        setNewAdvice((prev: any) =>({
-            ...prev,
-            description: props.editor.getHTML()
-        }))
+
       if (props.editor.getText()) {
         field.onChange(props.editor.getHTML());
 
@@ -99,10 +92,7 @@ const RichEditor = (props: IRichEditorProps) => {
   //     ? "VazirMatn"
   //     : primaryFontFamily;
   // };
-if (removeDescriptionAdvice.current){
-    editor?.commands.clearContent(true)
-    removeDescriptionAdvice.current = false
-}
+
   return (
     <Box
       {...boxProps}

@@ -13,7 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Impact from "@assets/svg/Impact.svg"
 import dollarSign from "@assets/svg/Dollarsign.svg"
 import Grid from "@mui/material/Grid";
-import RichEditorField from "@common/fields/RichEditorField";
+import RichEditorFieldAssessment from "./RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import {useForm} from "react-hook-form";
 import {theme} from "@config/theme";
@@ -181,7 +181,7 @@ return  <Box
                             alignItems: "center",
                         }}
                     >
-                        <RichEditorField
+                        <RichEditorFieldAssessment
                             name="advice-description"
                             label={<Trans i18nKey="description"/>}
                             disable_label={false}
