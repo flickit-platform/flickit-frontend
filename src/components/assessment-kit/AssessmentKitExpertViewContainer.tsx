@@ -907,6 +907,9 @@ const UpdateAssessmentKitDialog = (props: any) => {
   const [updateErrorObject, setUpdateErrorObject] = useState<any>();
   const { assessmentKitId } = useParams();
   const { expertGroupId } = useParams();
+  const setIsValid = () => {
+    return false;
+  };
   const close = () => {
     setSyntaxErrorObject(null);
     setUpdateErrorObject(null);
@@ -993,6 +996,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
             deleteService={(args: any, config: any) =>
               service.deleteAssessmentKitDSL(args, config)
             }
+            setIsValid={setIsValid}
             param={expertGroupId}
             name="dsl_id"
             required={true}
@@ -1153,7 +1157,7 @@ const SubjectQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? "Vazirmatn" : primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? "VazirMatn" : primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",
@@ -1381,7 +1385,7 @@ const QuestionnairesQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? "Vazirmatn" : primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? "VazirMatn" : primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",

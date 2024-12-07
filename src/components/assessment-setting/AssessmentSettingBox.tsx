@@ -65,7 +65,7 @@ export const AssessmentSettingGeneralBox = (props: {
     shortTitle,
   } = AssessmentInfo;
 
-  const title = ["creator", "created", "lastModified", "assessmentKit"];
+  const title = ["creator","assessmentKit", "created", "lastModified"];
   const formMethods = useForm({ shouldUnregister: true });
 
   return (
@@ -77,14 +77,13 @@ export const AssessmentSettingGeneralBox = (props: {
       gap={2}
       textAlign="left"
       height={"auto"}
-      // minHeight={"415px"}
       width={"100%"}
       bgcolor={"#FFF"}
       borderRadius={"8px"}
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
-        <Typography color="#000" variant="headlineMedium">
+        <Typography sx={{textAlign:theme.direction == "rtl"? "right": "left",width:"100%",display:"inline-block"}} color="#000" variant="headlineMedium">
           <Trans i18nKey={`${"general"}`} />
         </Typography>
 
@@ -95,128 +94,113 @@ export const AssessmentSettingGeneralBox = (props: {
             marginBottom: "10px !important",
           }}
         />
-        <Grid sx={{ display: "flex", justifyContent: "center" }}>
-          <Grid
-            item
-            xs={12}
-            // sm={12}
-            // md={8}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              color="#9DA7B3"
-              fontWeight={500}
-              sx={{
-                fontSize: { xs: "1rem", sm: "1.375rem" },
-                whiteSpace: { xs: "wrap", sm: "nowrap" },
-              }}
-              lineHeight={"normal"}
-            >
-              <Trans i18nKey="assessmentTitle" />:
-            </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: { md: "350px" },
-              }}
-            >
-              <OnHoverInputTitleSetting
-                formMethods={formMethods}
-                data={AssessmentTitle}
-                shortTitle={shortTitle}
-                infoQuery={fetchPathInfo}
-                AssessmentInfoQuery={AssessmentInfoQuery}
-                editable={true}
-                color={color}
-                type={"title"}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-          <Grid sx={{ display: "flex", justifyContent: "center" }}>
-            <Grid
-              item
-              xs={12}
-              // sm={12}
-              // md={8}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                color="#9DA7B3"
-                fontWeight={500}
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: "6px",
-                  fontSize: { xs: "1rem", sm: "1.375rem" },
-                  whiteSpace: { xs: "wrap", sm: "nowrap" },
-                }}
-                lineHeight={"normal"}
+          <Grid container spacing={2} sx={{...styles.centerH}}>
+              <Grid
+                  item
+                  xs={12} md={6}
+                  sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                  }}
               >
-                <Trans i18nKey="shortTitle" />:
-              </Typography>
+                  <Typography
+                          sx={{...theme.typography.titleLarge,
+                          fontSize: { xs: "1rem", sm: "1.375rem" },
+                          whiteSpace: { xs: "wrap", sm: "nowrap" },
+                          color:"#9DA7B3"
+                      }}
+                  >
+                      <Trans i18nKey="assessmentTitle" />:
+                  </Typography>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: { md: "350px" },
-                }}
-              >
-                <OnHoverInputTitleSetting
-                  formMethods={formMethods}
-                  data={AssessmentTitle}
-                  shortTitle={shortTitle}
-                  infoQuery={fetchPathInfo}
-                  AssessmentInfoQuery={AssessmentInfoQuery}
-                  editable={true}
-                  color={color}
-                  type={"shortTitle"}
-                  displayEdit={shortTitle === "" || shortTitle === null}
-                />
-              </Box>
-            </Grid>
+                  <Box
+                      sx={{
+                          ...styles.centerVH,
+                          width: { md: "350px" },
+                      }}
+                  >
+                      <OnHoverInputTitleSetting
+                          formMethods={formMethods}
+                          data={AssessmentTitle}
+                          shortTitle={shortTitle}
+                          infoQuery={fetchPathInfo}
+                          AssessmentInfoQuery={AssessmentInfoQuery}
+                          editable={true}
+                          color={color}
+                          type={"title"}
+                      />
+                  </Box>
+              </Grid>
+              <Grid  item xs={12} md={6}>
+                  <Grid
+                      sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                      }}
+                  >
+                      <Typography
+                          color="#9DA7B3"
+                          fontWeight={500}
+                          sx={{
+                              display: "flex",
+                              alignItems: "flex-end",
+                              gap: "6px",
+                              fontSize: { xs: "1rem", sm: "1.375rem" },
+                              whiteSpace: { xs: "wrap", sm: "nowrap" },
+                          }}
+                          lineHeight={"normal"}
+                      >
+                          <Trans i18nKey="shortTitle" />:
+                      </Typography>
+                      <Box
+                          sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: { md: "350px" },
+                              flexDirection:"column"
+                          }}
+                      >
+                          <OnHoverInputTitleSetting
+                              formMethods={formMethods}
+                              data={AssessmentTitle}
+                              shortTitle={shortTitle}
+                              infoQuery={fetchPathInfo}
+                              AssessmentInfoQuery={AssessmentInfoQuery}
+                              editable={true}
+                              color={color}
+                              type={"shortTitle"}
+                              displayEdit={!shortTitle}
+                          />
+                      </Box>
+                  </Grid>
+                  <Grid
+                      item
+                      xs={12}
+                      sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                      }}
+                  >
+                      <Box
+                          sx={{
+                              display: "flex",
+                              justifyContent: "flex-start",
+                              alignItems: "center",
+                              gap: "5px",
+                              color: "#9DA7B3",
+                              ...theme.typography.labelSmall,
+                          }}
+                      >
+                          <InfoOutlined sx={{ width: "17px" }} />
+                          <Trans i18nKey={"shortTitleInfo"} />
+                      </Box>
+                  </Grid>
+              </Grid>
           </Grid>
-        <Grid sx={{ display: "flex", justifyContent: "center" }}>
-          <Grid
-            item
-            xs={12}
-            // sm={12}
-            // md={8}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                gap: "5px",
-                color: "#9DA7B3",
-                ...theme.typography.labelSmall,
-              }}
-            >
-              <InfoOutlined sx={{ width: "17px" }} />
-              <Trans i18nKey={"shortTitleInfo"} />
-            </Box>
-          </Grid>
-        </Grid>
-
         <Divider
           sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
         />
@@ -227,10 +211,7 @@ export const AssessmentSettingGeneralBox = (props: {
             height: "100%",
             width: "100%",
             display: "flex",
-            // flexDirection: "column",
             justifyContent: "space-between",
-            // alignItems: "space-between",
-            // gap: "32px",
           }}
         >
           {title &&
@@ -275,16 +256,17 @@ export const AssessmentSettingGeneralBox = (props: {
                       lineHeight={"normal"}
                     >
                       {index == 0 && displayName}
-                      {index == 1 && (theme.direction == "rtl" ? formatDate(creationTime, "Shamsi") : formatDate(creationTime, "Miladi"))}
-                      {index == 2 && (theme.direction == "rtl" ? formatDate(lastModificationTime, "Shamsi") : formatDate(lastModificationTime, "Miladi"))}
-                      {index == 3 && (
-                        <Link
-                          style={{ textDecoration: "none", color: "inherit" }}
-                          to={`/assessment-kits/${kit.id}`}
-                        >
-                          {kit.title}
-                        </Link>
-                      )}
+                      {index == 1 && (
+                            <Link
+                                style={{ textDecoration: "none", color: "inherit" }}
+                                to={`/assessment-kits/${kit.id}`}
+                            >
+                                {kit.title}
+                            </Link>
+                        )}
+                      {index == 2 && (theme.direction == "rtl" ? formatDate(creationTime, "Shamsi") : formatDate(creationTime, "Miladi"))}
+                      {index == 3 && (theme.direction == "rtl" ? formatDate(lastModificationTime, "Shamsi") : formatDate(lastModificationTime, "Miladi"))}
+
                     </Typography>
                   </Grid>
               );
@@ -320,8 +302,6 @@ export const AssessmentSettingMemberBox = (props: {
     inviteesMemberList.query();
   }, [changeData]);
 
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   interface Column {
     id: "displayName" | "email" | "role";
@@ -385,7 +365,6 @@ export const AssessmentSettingMemberBox = (props: {
       const { id: userId } = name;
       await editUserRole.query({ userId, roleId });
       setChangeData((prev: boolean) => !prev);
-      // await fetchAssessmentsUserListRoles()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -400,7 +379,6 @@ export const AssessmentSettingMemberBox = (props: {
       const { id } = name;
       await editUserRoleInvited.query({ id, roleId });
       setChangeData((prev: boolean) => !prev);
-      // await fetchAssessmentsUserListRoles()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -437,15 +415,9 @@ export const AssessmentSettingMemberBox = (props: {
             alignItems: "center",
             position: "relative",
             width: "100%",
-            // ml: theme.direction === "rtl" ? "unset" : "10%",
-            // mr: theme.direction !== "rtl" ? "unset" : "10%",
           }}
         >
           <Typography
-            // sx={{
-            //   ml: theme.direction === "rtl" ? "unset" : "auto",
-            //   mr: theme.direction !== "rtl" ? "unset" : "auto",
-            // }}
             color="#000"
             variant="headlineMedium"
           >
@@ -753,7 +725,6 @@ export const AssessmentSettingMemberBox = (props: {
                 </TableHead>
                 <TableBody>
                   {inviteesMemberList?.data?.items
-                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row: any) => {
                       return (
                         <TableRow tabIndex={-1} key={row.id}>
@@ -858,7 +829,6 @@ export const AssessmentSettingMemberBox = (props: {
                                     inputProps={{
                                       renderValue: () => row?.role?.title,
                                     }}
-                                    // disabled={!row.editable}
                                   >
                                     <Box
                                       sx={{
@@ -957,7 +927,6 @@ export const AssessmentSettingMemberBox = (props: {
                                 </Grid>
                               </FormControl>
                               <Box
-                                // width="30%"
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
@@ -965,7 +934,6 @@ export const AssessmentSettingMemberBox = (props: {
                                 <IconButton
                                   sx={{ "&:hover": { color: "#d32f2f" } }}
                                   size="small"
-                                  // disabled={!row.editable}
                                   onClick={() =>
                                     openRemoveModal(row.email, row.id, true)
                                   }
@@ -1001,7 +969,6 @@ const SelectionRole = (props: any) => {
       const { id: userId } = name;
       await editUserRole.query({ userId, roleId });
       setChangeData((prev: boolean) => !prev);
-      // await fetchAssessmentsUserListRoles()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -1205,7 +1172,6 @@ const OnHoverInputTitleSetting = (props: any) => {
       config,
     ) => service.updateAssessment(args, config),
     runOnMount: false,
-    // toastError: true,
   });
   const updateAssessmentTitle = async () => {
     try {
@@ -1262,7 +1228,6 @@ const OnHoverInputTitleSetting = (props: any) => {
               inputProps={inputProps}
               error={hasError}
               fullWidth
-              // name={title}
               defaultValue={
                 type == "title" ? inputData : inputDataShortTitle || ""
               }
@@ -1345,7 +1310,6 @@ const OnHoverInputTitleSetting = (props: any) => {
               justifyContent: "space-between",
               alignItems: "center",
               wordBreak: "break-word",
-              // "&:hover": {border: "1px solid #79747E"},
             }}
             onClick={() => setShow(!show)}
             onMouseOver={handleMouseOver}

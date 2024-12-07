@@ -206,7 +206,7 @@ const KitCustomization = (props: any) => {
           py={"32px"}
         >
           <Box height={"100%"} width={"100%"}>
-            <Typography color="#000" variant="headlineMedium">
+            <Typography sx={{textAlign:theme.direction == "rtl"? "right": "left",width:"100%",display:"inline-block"}} color="#000" variant="headlineMedium">
               <Trans i18nKey={`${"kitCustomization"}`} />
             </Typography>
             <Divider
