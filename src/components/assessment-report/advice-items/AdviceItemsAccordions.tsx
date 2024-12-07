@@ -14,75 +14,54 @@ import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBottomOutlined";
 import { AdviceItem } from "@/types";
+import i18next, { t } from "i18next";
 
 interface AdviceItemsAccordionProps {
   items: AdviceItem[];
 }
 
-type ChipStyle = {
-  backgroundColor: string;
-  color: string;
-  label: string;
-  iconColor: string;
+interface color {
+  background: string;
+  text: string;
+  icon: string;
+}
+
+const colors = {
+  primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
+  secondary: { background: "#F9F3EB", text: "#995700", icon: "#995700" },
+  error: { background: "#FFEBEE", text: "#B86A77", icon: "#B86A77" },
+  border: "#E0E0E0",
+  unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
 };
 
-const getChipStyle = (type: "impact" | "cost", level: string): ChipStyle => {
-  const styles: Record<
-    "high" | "medium" | "low",
-    { impact: ChipStyle; cost: ChipStyle }
-  > = {
-    high: {
-      impact: {
-        backgroundColor: "#E8F5E9",
-        color: "#388E3C",
-        iconColor: "#388E3C",
-        label: "High Impact",
-      },
-      cost: {
-        backgroundColor: "#FFEBEE",
-        color: "#D32F2F",
-        iconColor: "#D32F2F",
-        label: "High Price",
-      },
-    },
-    medium: {
-      impact: {
-        backgroundColor: "#FFF8E1",
-        color: "#F57C00",
-        iconColor: "#F57C00",
-        label: "Medium Impact",
-      },
-      cost: {
-        backgroundColor: "#FFF8E1",
-        color: "#F57C00",
-        iconColor: "#F57C00",
-        label: "Medium Price",
-      },
-    },
-    low: {
-      impact: {
-        backgroundColor: "#FFEBEE",
-        color: "#D32F2F",
-        iconColor: "#D32F2F",
-        label: "Low Impact",
-      },
-      cost: {
-        backgroundColor: "#E8F5E9",
-        color: "#388E3C",
-        iconColor: "#388E3C",
-        label: "Low Price",
-      },
-    },
+const getColorForPriority = (priority: string): keyof typeof colors => {
+  const priorityMap: Record<string, keyof typeof colors> = {
+    high: "error",
+    medium: "secondary",
+    low: "primary",
   };
+  return priorityMap[priority.toLowerCase()] || "unknown";
+};
 
-  return (
-    styles[level.toLowerCase() as "high" | "medium" | "low"]?.[type] || {
-      backgroundColor: "#E0E0E0",
-      color: "#000",
-      iconColor: "#000",
-      label: `Unknown ${type.charAt(0).toUpperCase() + type.slice(1)}`,
-    }
-  );
+const getChipStyle = (type: "impact" | "cost", level: string) => {
+  const colorKey = getColorForPriority(level);
+  const { background, text, icon } = colors[colorKey] as color;
+
+  const translatedLevel = t(level.toLowerCase());
+  const translatedType = type === "impact" ? t("impact") : t("price");
+
+  const isFarsi = i18next.language === "fa";
+
+  const label = isFarsi
+    ? `${translatedType} ${translatedLevel}`
+    : `${translatedLevel} ${translatedType}`;
+
+  return {
+    backgroundColor: background,
+    color: text,
+    iconColor: icon,
+    label,
+  };
 };
 
 const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
@@ -90,7 +69,6 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
   level,
 }) => {
   const style = getChipStyle(type, level);
-
   const Icon =
     type === "impact"
       ? VerticalAlignBottomOutlinedIcon
@@ -103,39 +81,24 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
       icon={
         <IconButton
           size="small"
-          sx={{
-            color: `${style.iconColor} !important`,
-            padding: 1,
-          }}
+          sx={{ color: `${style.iconColor} !important` }}
         >
           <Icon fontSize="small" />
         </IconButton>
       }
-      sx={{
-        backgroundColor: style.backgroundColor,
-        color: style.color,
-      }}
+      sx={{ backgroundColor: style.backgroundColor, color: style.color }}
     />
   );
 };
 
+// Individual Accordion Item Component
 const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
-  const getPriorityColor = (priority: string) => {
-    switch (priority.toLowerCase()) {
-      case "high":
-        return "error";
-      case "medium":
-        return "primary";
-      default:
-        return "grey.500";
-    }
-  };
+  const priorityColor = colors[getColorForPriority(item.priority)];
 
   return (
     <Accordion
-      key={item.id}
       sx={{
-        border: "1px solid #E0E0E0",
+        border: `1px solid ${colors.border}`,
         borderRadius: "8px",
         mb: 1,
         boxShadow: "none",
@@ -161,21 +124,31 @@ const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
           }}
         >
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography sx={{ fontWeight: "bold" }}>{item.title}</Typography>
+            <Typography variant="h6">{item.title}</Typography>
             <Typography
-              color={getPriorityColor(item.priority)}
-              sx={{ fontWeight: "bold" }}
+              variant="subtitle1"
+              sx={{ color: (priorityColor as color).text }}
             >
-              ({item.priority})
+              ({t(item.priority.toLowerCase())})
             </Typography>
           </Box>
+
+          {/* Chips and Action Buttons */}
           <Box display="flex" gap={1} alignItems="center">
             <CustomChip type="impact" level={item.impact} />
             <CustomChip type="cost" level={item.cost} />
-            <IconButton size="small" color="primary">
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={(e) => e.stopPropagation()}
+            >
               <EditRounded fontSize="small" />
             </IconButton>
-            <IconButton size="small" color="primary">
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={(e) => e.stopPropagation()}
+            >
               <DeleteRounded fontSize="small" />
             </IconButton>
           </Box>
@@ -192,6 +165,7 @@ const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
   );
 };
 
+// Main Component
 const AdviceItemsAccordion: React.FC<AdviceItemsAccordionProps> = ({
   items,
 }) => (
