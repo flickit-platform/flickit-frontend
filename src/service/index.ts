@@ -440,6 +440,27 @@ export const createService = (
         },
       );
     },
+    fetchAdviceItems(
+      args: { assessmentId: string; page: number; size: number },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { assessmentId, page, size } = args ?? {};
+      return axios.get(`/api/v1/advice-items/`, {
+        ...(config ?? {}),
+        params: {
+          assessmentId: assessmentId,
+          page,
+          size,
+        },
+      });
+    },
+    deleteAdviceItem(
+      { adviceItemId }: { adviceItemId: string },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.delete(`/api/v1/advice-items/${adviceItemId}`, config);
+    },
+
     fetchExportReport(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },
       config: AxiosRequestConfig<any> | undefined,
