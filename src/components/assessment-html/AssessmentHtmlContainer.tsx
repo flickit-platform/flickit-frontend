@@ -17,7 +17,7 @@ const AssessmentExportContainer = () => {
   const { service } = useServiceContext();
 
   const iframeUrl =
-    import.meta.env.VITE_STATIC_HTML + assessmentId + "/index.html";
+    CDN_DIRECTORY + "static-stage/report/" + assessmentId + "/index.html";
 
   useEffect(() => {
     const fetchSiteContent = async () => {
