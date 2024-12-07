@@ -47,14 +47,17 @@ const AdviceListNewForm = ({newAdvice, handleInputChange, handleSave, handleCanc
     const fetchAdviceImpactList = useQuery<any>({
         service: (args, config) =>
             service.fetchAdviceImpactList(args, config),
+        runOnMount: false
     });
     const fetchAdvicePriorityList = useQuery<any>({
         service: (args, config) =>
             service.fetchAdvicePriorityList(args, config),
+        runOnMount: false
     });
     const fetchCostList = useQuery<any>({
         service: (args, config) =>
             service.fetchCostList(args, config),
+        runOnMount: false
     });
 
     useEffect(()=>{
@@ -124,7 +127,7 @@ const AdviceListNewForm = ({newAdvice, handleInputChange, handleSave, handleCanc
                    >
                        {selectAdvice.map((item:any,index) =>{
                            return (
-                               <FormControl sx={{width:"30%"}}>
+                               <FormControl key={index} sx={{width:"30%"}}>
                                    <Select
                                        labelId={`${item}-select-label`}
                                        id={`${item}-select`}
@@ -155,7 +158,7 @@ const AdviceListNewForm = ({newAdvice, handleInputChange, handleSave, handleCanc
                                            </MenuItem>
                                        }
                                        {adviceOption[item].map((option:any,index:number) => (
-                                           <MenuItem key={index} value={option.code}>
+                                           <MenuItem key={option.code} value={option.code}>
                                                <Trans i18nKey={option.title} />
                                            </MenuItem>
                                        ))}
