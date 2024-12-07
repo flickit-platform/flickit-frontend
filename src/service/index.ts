@@ -440,6 +440,24 @@ export const createService = (
         },
       );
     },
+    fetchAdviceImpactList(
+        args: any,
+        config: AxiosRequestConfig<any> | undefined,
+    ){
+        return axios.get(`/api/v1/advice-item-impact-levels/`)
+    },
+    fetchAdvicePriorityList(
+        args: any,
+        config: AxiosRequestConfig<any> | undefined,
+    ){
+        return axios.get(`/api/v1/advice-item-priority-levels/`)
+    },
+    fetchCostList(
+          args: any,
+          config: AxiosRequestConfig<any> | undefined,
+      ){
+          return axios.get(`/api/v1/advice-item-cost-levels/`)
+      },
     updateAdviceNarration(
       { assessmentId, data }: { assessmentId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,

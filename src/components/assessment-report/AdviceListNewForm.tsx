@@ -17,6 +17,11 @@ import RichEditorFieldAssessment from "./RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import {useForm} from "react-hook-form";
 import {theme} from "@config/theme";
+import {useQuery} from "@utils/useQuery";
+import {useServiceContext} from "@providers/ServiceProvider";
+import {useEffect, useState} from "react";
+import {ICustomError} from "@utils/CustomError";
+import toastError from "@utils/toastError";
 
 interface IAdviceListProps {
     newAdvice: {
@@ -26,18 +31,47 @@ interface IAdviceListProps {
         priority: string;
         cost: string;
         impact: string;
-    }
+    } | any;
     handleInputChange: (e: any) => void;
     handleSave: () => void;
     handleCancel: () => void;
     setNewAdvice: any;
     removeDescriptionAdvice: any;
 }
-const options = [{index:0,value:"low"},{index:1,value:"medium"},{index:2,value:"high"}]
-
 const AdviceListNewForm = ({newAdvice, handleInputChange, handleSave, handleCancel, setNewAdvice,removeDescriptionAdvice}: IAdviceListProps) => {
-const formMethods = useForm({ shouldUnregister: true });
-return  <Box
+    const formMethods = useForm({ shouldUnregister: true });
+    const selectAdvice = ["priority","cost","impact"]
+    const { service } = useServiceContext();
+    const [adviceOption,setAdviceOption] = useState<any>({impact:[],priority:[],cost:[]})
+
+    const fetchAdviceImpactList = useQuery<any>({
+        service: (args, config) =>
+            service.fetchAdviceImpactList(args, config),
+    });
+    const fetchAdvicePriorityList = useQuery<any>({
+        service: (args, config) =>
+            service.fetchAdvicePriorityList(args, config),
+    });
+    const fetchCostList = useQuery<any>({
+        service: (args, config) =>
+            service.fetchCostList(args, config),
+    });
+
+    useEffect(()=>{
+        (async ()=>{
+            try {
+                const {levels: impactLevels} =  await fetchAdviceImpactList.query()
+                const {levels: priorityLevels} =  await fetchAdvicePriorityList.query()
+                const {levels: costLevels} =  await fetchCostList.query()
+                setAdviceOption({impact:impactLevels,cost:costLevels,priority: priorityLevels})
+            }catch (e){
+                const err = e as ICustomError;
+                toastError(err);
+            }
+        })()
+    },[])
+
+    return  <Box
         mt={1.5}
         p={1.5}
         sx={{
@@ -52,7 +86,7 @@ return  <Box
     >
         <Box
             sx={{...styles.centerVH,justifyContent:"space-evenly", background: "#F3F5F6",width:"100%"}}
-            borderRadius="0.5rem"
+            borderRadius={2}
             mr={2}
             p={0.25}
         >
@@ -78,7 +112,6 @@ return  <Box
                                     fontSize: 14,
                                 },
                                 background: "#fff",
-                                // width: {xs: "60%", md: "40%"},
                             }}
                         />
                     </Grid>
@@ -88,88 +121,48 @@ return  <Box
                              paddingTop: "0px"
                          }
                          }}
-
                    >
-                       <FormControl sx={{width:"30%"}}>
-                           <Select
-                               labelId="priority-select-label"
-                               id="priority-select"
-                               value={newAdvice.priority}
-                               IconComponent={KeyboardArrowDownIcon}
-                               name= "priority"
-                               startAdornment={!newAdvice.priority && <InputAdornment position="start">
-                                   <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"priority"} /></Typography>
-                               </InputAdornment>}
-
-                               label="priority"
-                               onChange={(e)=>handleInputChange(e)}
-                               sx={{
-                                   height: "32px",
-                                   fontSize: "14px",
-                                   background: "#fff",
-                                   px:"0px"
-                               }}
-                           >
-                               {options.map((option) => (
-                                   <MenuItem key={option.index} value={option.value.toUpperCase()}>
-                                       <Trans i18nKey={option.value} />
-                                   </MenuItem>
-                               ))}
-                           </Select>
-                       </FormControl>
-                       <FormControl sx={{width:"30%"}}>
-                           <Select
-                               labelId="cost-select-label"
-                               id="cost-select"
-                               value={newAdvice.cost}
-                               IconComponent={KeyboardArrowDownIcon}
-                               startAdornment={!newAdvice.cost && <InputAdornment position="start"><img style={{marginRight:"2px"}}  src={dollarSign} alt={"dollarSign"}/>
-                               <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"price"} /></Typography>
-                               </InputAdornment>}
-                               displayEmpty
-                               name= "cost"
-                               onChange={(e)=>handleInputChange(e)}
-                               sx={{
-                                   height: "32px",
-                                   fontSize: "14px",
-                                   background: "#fff",
-                                   px:"0px"
-                               }}
-                           >
-                               {options.map((option) => (
-                                   <MenuItem key={option.index} value={option.value.toUpperCase()}>
-                                       <Trans i18nKey={option.value} />
-                                   </MenuItem>
-                               ))}
-                           </Select>
-                       </FormControl>
-                       <FormControl sx={{width:"30%"}}>
-                           <Select
-                               labelId="impact-select-label"
-                               id="impact-select"
-                               value={newAdvice.impact}
-                               IconComponent={KeyboardArrowDownIcon}
-                               startAdornment={!newAdvice.impact && <InputAdornment position="start"><img style={{marginRight:"4px"}} src={Impact} alt={"impactIcon"}/>
-                                       <Typography sx={{...theme.typography.labelMedium,color:"2466A8"}}><Trans i18nKey={"impact"} /></Typography>
-                               </InputAdornment>}
-                               label="impact"
-                               displayEmpty
-                               name= "impact"
-                               onChange={(e)=>handleInputChange(e)}
-                               sx={{
-                                   height: "32px",
-                                   fontSize: "14px",
-                                   background: "#fff",
-                                   px:"0px"
-                               }}
-                           >
-                               {options.map((option) => (
-                                   <MenuItem key={option.index} value={option.value.toUpperCase()}>
-                                       <Trans i18nKey={option.value} />
-                                   </MenuItem>
-                               ))}
-                           </Select>
-                       </FormControl>
+                       {selectAdvice.map((item:any,index) =>{
+                           return (
+                               <FormControl sx={{width:"30%"}}>
+                                   <Select
+                                       labelId={`${item}-select-label`}
+                                       id={`${item}-select`}
+                                       value={newAdvice[item]}
+                                       IconComponent={KeyboardArrowDownIcon}
+                                       name={item}
+                                       displayEmpty
+                                       startAdornment={!newAdvice[item] && item != "priority" && <InputAdornment position="start">
+                                           <Typography sx={{...theme.typography.labelMedium,color:"#2466A8",display:"flex" ,alignItems:"center"}}>
+                                               { item == "cost" &&  <img style={{marginRight:"2px"}}  src={dollarSign} alt={"dollarSign"}/> }
+                                               { item == "impact" &&  <img style={{marginRight:"2px"}}  src={Impact} alt={"impactIcon"}/> }
+                                               <Trans i18nKey={item} />
+                                           </Typography>
+                                       </InputAdornment>}
+                                       onChange={(e)=>handleInputChange(e)}
+                                       sx={{
+                                           height: "32px",
+                                           fontSize: "14px",
+                                           background: "#fff",
+                                           px:"0px"
+                                       }}
+                                   >
+                                       {item === "priority" &&
+                                           <MenuItem disabled value="">
+                                                    <Typography sx={{...theme.typography.labelMedium,color:"#2466A8",display:"flex" ,alignItems:"center"}}>
+                                                        <Trans i18nKey={item} />
+                                                    </Typography>
+                                           </MenuItem>
+                                       }
+                                       {adviceOption[item].map((option:any,index:number) => (
+                                           <MenuItem key={index} value={option.code}>
+                                               <Trans i18nKey={option.title} />
+                                           </MenuItem>
+                                       ))}
+                                   </Select>
+                               </FormControl>
+                           )
+                       })}
                    </Grid>
                 </Grid>
                 <FormProviderWithForm formMethods={formMethods}>
@@ -195,7 +188,7 @@ return  <Box
             </Box>
 
             {/* Check and Close Buttons */}
-            <Box display="flex" alignSelf={"flex-start"} flexDirection={"column"} gap={"20px"}>
+            <Box display="flex" alignSelf="flex-start" flexDirection="column" gap={"20px"}>
                 <Link
                     href="#"
                     sx={{
