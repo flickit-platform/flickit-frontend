@@ -7,7 +7,7 @@ import EmptyAdviceList from "@/components/assessment-report/advice-items/EmptyAd
 import QueryData from "@/components/common/QueryData";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import AdviceItemsAccordion from "./AdviceItemsAccordions";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
