@@ -21,8 +21,6 @@ import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
-import EmptyAdviceList from "@/components/assessment-report/advice-items/EmptyAdviceItems";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import AdviceItems from "./advice-items/AdviceItems";
 
 const AssessmentReportContainer = (props: any) => {

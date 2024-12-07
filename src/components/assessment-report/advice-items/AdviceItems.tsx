@@ -1,11 +1,8 @@
-import { Box, Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { IAssessmentReportModel } from "@types";
-import { Trans } from "react-i18next";
-import { styles } from "@styles";
 import EmptyAdviceList from "@/components/assessment-report/advice-items/EmptyAdviceItems";
 import QueryData from "@/components/common/QueryData";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
@@ -45,7 +42,7 @@ const AdviceItems = (props: any) => {
                     onAddNewRow={() => {}}
                     btnTitle="newAdviceItem"
                     title={"NoAdviceSoFar"}
-                    SubTitle={"CreateFirstAdvice"}
+                    subTitle={"CreateFirstAdvice"}
                   />
                 )}
               </Grid>
