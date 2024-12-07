@@ -15,7 +15,6 @@ const AdviceItems = () => {
 
   const [page, setPage] = useState(0);
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
-  const [loadingMore, setLoadingMore] = useState(false);
 
   const queryData = useQuery<any>({
     service: (args, config) =>
@@ -29,7 +28,6 @@ const AdviceItems = () => {
   useEffect(() => {
     if (data?.items?.length) {
       setDisplayedItems((prevItems) => [...prevItems, ...data.items]);
-      setLoadingMore(false);
     }
   }, [data]);
 
@@ -38,15 +36,14 @@ const AdviceItems = () => {
     const atBottom =
       container.scrollHeight === container.scrollTop + container.clientHeight;
 
-    if (atBottom && !loadingMore && displayedItems.length < totalItems) {
-      setLoadingMore(true);
+    if (atBottom && displayedItems.length < totalItems) {
       setPage((prevPage) => prevPage + 1);
     }
   };
 
   useEffect(() => {
     if (page > 0) {
-      queryData.query(); // Manually trigger the query
+      queryData.query();
     }
   }, [page]);
 
@@ -65,19 +62,6 @@ const AdviceItems = () => {
                 sx={{ position: "relative" }}
               >
                 <AdviceItemsAccordion items={displayedItems} />
-                {loadingMore && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      marginBottom: 2,
-                    }}
-                  >
-                    <CircularProgress size={24} />
-                  </Box>
-                )}
               </Box>
             ) : (
               <EmptyAdviceList
