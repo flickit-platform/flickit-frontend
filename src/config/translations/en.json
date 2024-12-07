@@ -726,5 +726,8 @@
   "kitCustomDefaultDataChanged": "Default data hasn't been changed since last update.",
   "newAdviceItem": "new advice item",
   "NoAdviceSoFar": "Ops! No Advice So Far",
-  "CreateFirstAdvice": "Create your first advice here"
+  "CreateFirstAdvice": "Create your first advice here",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High"
 }
