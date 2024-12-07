@@ -16,17 +16,7 @@ import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBo
 import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 
-interface AdviceItemsAccordionProps {
-  items: AdviceItem[];
-}
-
-interface color {
-  background: string;
-  text: string;
-  icon: string;
-}
-
-const colors = {
+const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
   secondary: { background: "#F9F3EB", text: "#995700", icon: "#995700" },
   error: { background: "#FFEBEE", text: "#B86A77", icon: "#B86A77" },
@@ -34,41 +24,41 @@ const colors = {
   unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
 };
 
-const getColorForPriority = (priority: string): keyof typeof colors => {
-  const priorityMap: Record<string, keyof typeof colors> = {
-    high: "error",
-    medium: "secondary",
-    low: "primary",
-  };
-  return priorityMap[priority.toLowerCase()] || "unknown";
+const PRIORITY_MAP: Record<string, keyof typeof COLORS> = {
+  high: "error",
+  medium: "secondary",
+  low: "primary",
 };
 
-const getChipStyle = (type: "impact" | "cost", level: string) => {
-  const colorKey = getColorForPriority(level);
-  const { background, text, icon } = colors[colorKey] as color;
+const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
 
+const getPriorityColor = (priority: string) =>
+  COLORS[PRIORITY_MAP[priority.toLowerCase()] || "unknown"];
+
+const truncateText = (text: string, maxLength: number): string =>
+  text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+
+const getChipData = (type: "impact" | "price", level: string) => {
+  const priorityColor: any = getPriorityColor(level);
   const translatedLevel = t(level.toLowerCase());
-  const translatedType = type === "impact" ? t("impact") : t("price");
-
+  const translatedType = t(type);
   const isFarsi = i18next.language === "fa";
 
-  const label = isFarsi
-    ? `${translatedType} ${translatedLevel}`
-    : `${translatedLevel} ${translatedType}`;
-
   return {
-    backgroundColor: background,
-    color: text,
-    iconColor: icon,
-    label,
+    backgroundColor: priorityColor.background,
+    color: priorityColor.text,
+    iconColor: priorityColor.icon,
+    label: isFarsi
+      ? `${translatedType} ${translatedLevel}`
+      : `${translatedLevel} ${translatedType}`,
   };
 };
 
-const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
+const CustomChip: React.FC<{ type: "impact" | "price"; level: string }> = ({
   type,
   level,
 }) => {
-  const style = getChipStyle(type, level);
+  const { backgroundColor, color, iconColor, label } = getChipData(type, level);
   const Icon =
     type === "impact"
       ? VerticalAlignBottomOutlinedIcon
@@ -77,35 +67,29 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
   return (
     <Chip
       size="small"
-      label={style.label}
+      label={label}
       icon={
-        <IconButton
-          size="small"
-          sx={{ color: `${style.iconColor} !important` }}
-        >
+        <IconButton size="small" sx={{ color: iconColor + " !important" }}>
           <Icon fontSize="small" />
         </IconButton>
       }
-      sx={{ backgroundColor: style.backgroundColor, color: style.color }}
+      sx={{ backgroundColor, color }}
     />
   );
 };
 
-// Individual Accordion Item Component
 const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
-  const priorityColor = colors[getColorForPriority(item.priority)];
+  const priorityColor = getPriorityColor(item.priority);
+  const truncatedTitle = truncateText(item.title, MAX_TITLE_LENGTH);
 
   return (
     <Accordion
       sx={{
-        border: `1px solid ${colors.border}`,
+        border: `1px solid ${COLORS.border}`,
         borderRadius: "8px",
         mb: 1,
         boxShadow: "none",
-        "&:before": {
-          backgroundColor: "transparent",
-          content: "none",
-        },
+        "&:before": { content: "none" },
       }}
     >
       <AccordionSummary
@@ -124,19 +108,30 @@ const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
           }}
         >
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography variant="h6">{item.title}</Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                maxWidth: "250px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              title={item.title}
+            >
+              {truncatedTitle}
+            </Typography>
             <Typography
               variant="subtitle1"
-              sx={{ color: (priorityColor as color).text }}
+              sx={{ color: (priorityColor as any).text }}
             >
               ({t(item.priority.toLowerCase())})
             </Typography>
           </Box>
 
-          {/* Chips and Action Buttons */}
           <Box display="flex" gap={1} alignItems="center">
             <CustomChip type="impact" level={item.impact} />
-            <CustomChip type="cost" level={item.cost} />
+            <CustomChip type="price" level={item.cost} />
             <IconButton
               size="small"
               color="primary"
@@ -165,10 +160,7 @@ const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
   );
 };
 
-// Main Component
-const AdviceItemsAccordion: React.FC<AdviceItemsAccordionProps> = ({
-  items,
-}) => (
+const AdviceItemsAccordion: React.FC<{ items: AdviceItem[] }> = ({ items }) => (
   <Box>
     {items.map((item) => (
       <AdviceItemAccordion key={item.id} item={item} />
