@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -15,6 +15,7 @@ import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBottomOutlined";
 import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
+import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -78,92 +79,121 @@ const CustomChip: React.FC<{ type: "impact" | "price"; level: string }> = ({
   );
 };
 
-const AdviceItemAccordion: React.FC<{ item: AdviceItem }> = ({ item }) => {
-  const priorityColor = getPriorityColor(item.priority);
-  const truncatedTitle = truncateText(item.title, MAX_TITLE_LENGTH);
+const AdviceItemAccordion: React.FC<{
+  item: AdviceItem;
+  onDelete: (adviceItemId: string) => void;
+}> = ({ item, onDelete }) => {
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    onDelete(item.id);
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDialogClose = () => {
+    setDeleteDialogOpen(false);
+  };
 
   return (
-    <Accordion
-      sx={{
-        border: `1px solid ${COLORS.border}`,
-        borderRadius: "8px",
-        mb: 1,
-        boxShadow: "none",
-        "&:before": { content: "none" },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon fontSize="small" />}
+    <>
+      <Accordion
         sx={{
-          "& .MuiAccordionSummary-content": { alignItems: "center" },
-          padding: "0 16px",
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: "8px",
+          mb: 1,
+          boxShadow: "none",
+          "&:before": { content: "none" },
         }}
       >
-        <Box
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon fontSize="small" />}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
+            "& .MuiAccordionSummary-content": { alignItems: "center" },
+            padding: "0 16px",
           }}
         >
-          <Box display="flex" alignItems="center" gap={1}>
-            <Typography
-              variant="h6"
-              noWrap
-              sx={{
-                maxWidth: "250px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-              title={item.title}
-            >
-              {truncatedTitle}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              sx={{ color: (priorityColor as any).text }}
-            >
-              ({t(item.priority.toLowerCase())})
-            </Typography>
-          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box display="flex" alignItems="center" gap={1}>
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{
+                  maxWidth: "250px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+                title={item.title}
+              >
+                {truncateText(item.title, MAX_TITLE_LENGTH)}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{ color: (getPriorityColor(item.priority) as any).text }}
+              >
+                ({t(item.priority.toLowerCase())})
+              </Typography>
+            </Box>
 
-          <Box display="flex" gap={1} alignItems="center">
-            <CustomChip type="impact" level={item.impact} />
-            <CustomChip type="price" level={item.cost} />
-            <IconButton
-              size="small"
-              color="primary"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <EditRounded fontSize="small" />
-            </IconButton>
-            <IconButton
-              size="small"
-              color="primary"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <DeleteRounded fontSize="small" />
-            </IconButton>
+            <Box display="flex" gap={1} alignItems="center">
+              <CustomChip type="impact" level={item.impact} />
+              <CustomChip type="price" level={item.cost} />
+              <IconButton
+                size="small"
+                color="primary"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <EditRounded fontSize="small" />
+              </IconButton>
+              <IconButton
+                size="small"
+                color="primary"
+                onClick={handleDeleteClick}
+              >
+                <DeleteRounded fontSize="small" />
+              </IconButton>
+            </Box>
           </Box>
-        </Box>
-      </AccordionSummary>
-      <AccordionDetails sx={{ padding: "8px 16px" }}>
-        <Divider sx={{ marginBottom: "8px" }} />
-        <Typography
-          component="div"
-          dangerouslySetInnerHTML={{ __html: item.description }}
-        />
-      </AccordionDetails>
-    </Accordion>
+        </AccordionSummary>
+        <AccordionDetails sx={{ padding: "8px 16px" }}>
+          <Divider sx={{ marginBottom: "8px" }} />
+          <Typography
+            component="div"
+            dangerouslySetInnerHTML={{ __html: item.description }}
+          />
+        </AccordionDetails>
+      </Accordion>
+
+      <DeleteConfirmationDialog
+        open={isDeleteDialogOpen}
+        onClose={handleDialogClose}
+        onConfirm={handleDeleteConfirm}
+        title={t("deleteItem")}
+        content={t("deleteItemConfirmation", { title: item.title })}
+      />
+    </>
   );
 };
 
-const AdviceItemsAccordion: React.FC<{ items: AdviceItem[] }> = ({ items }) => (
+const AdviceItemsAccordion: React.FC<{
+  items: AdviceItem[];
+  onDelete: (adviceItemId: string) => void;
+}> = ({ items, onDelete }) => (
   <Box>
     {items.map((item) => (
-      <AdviceItemAccordion key={item.id} item={item} />
+      <AdviceItemAccordion key={item.id} item={item} onDelete={onDelete} />
     ))}
   </Box>
 );

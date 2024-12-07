@@ -454,6 +454,13 @@ export const createService = (
         },
       });
     },
+    deleteAdviceItem(
+      { adviceItemId }: { adviceItemId: string },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.delete(`/api/v1/advice-items/${adviceItemId}`, config);
+    },
+
     fetchExportReport(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },
       config: AxiosRequestConfig<any> | undefined,

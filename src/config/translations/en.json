@@ -729,5 +729,6 @@
   "CreateFirstAdvice": "Create your first advice here",
   "low": "Low",
   "medium": "Medium",
-  "high": "High"
+  "high": "High",
+  "deleteItemConfirmation": "Are you sure you want remove <title>{{title}}</title> from advice items?"
 }

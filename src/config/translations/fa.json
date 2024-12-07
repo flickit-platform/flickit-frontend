@@ -731,5 +731,6 @@
   "low": "کم",
   "medium": "متوسط",
   "high": "زیاد",
-  "adviceItems": "لیست توصیه‌ها"
+  "adviceItems": "لیست توصیه‌ها",
+  "deleteItemConfirmation": "آیا مطمئنید که میخواهید <strong>{{title}}</strong> را از توصیه‌ها حذف کنید؟"
 }

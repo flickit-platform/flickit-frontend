@@ -8,6 +8,8 @@ import QueryData from "@/components/common/QueryData";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import AdviceItemsAccordion from "./AdviceItemsAccordions";
 import { Box } from "@mui/material";
+import { ICustomError } from "@/utils/CustomError";
+import toastError from "@/utils/toastError";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
@@ -15,6 +17,7 @@ const AdviceItems = () => {
 
   const [page, setPage] = useState(0);
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false); // Add a flag for refreshing
 
   const queryData = useQuery<any>({
     service: (args, config) =>
@@ -22,14 +25,27 @@ const AdviceItems = () => {
     toastError: false,
   });
 
+  const deleteAdviceItem = useQuery<any>({
+    service: (args, config) => service.deleteAdviceItem(args, config),
+    toastError: false,
+  });
+
   const { data } = queryData;
   const totalItems = data?.total || 0;
 
   useEffect(() => {
-    if (data?.items?.length) {
+    if (data?.items?.length && !isRefreshing) {
       setDisplayedItems((prevItems) => [...prevItems, ...data.items]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (isRefreshing) {
+      setDisplayedItems([]); 
+      setPage(0); 
+      queryData.query().finally(() => setIsRefreshing(false)); 
+    }
+  }, [isRefreshing]);
 
   const handleScroll = (event: React.UIEvent) => {
     const container = event.currentTarget;
@@ -47,6 +63,17 @@ const AdviceItems = () => {
     }
   }, [page]);
 
+  const handleDeleteAdviceItem = async (adviceItemId: any) => {
+    try {
+      await deleteAdviceItem.query({ adviceItemId });
+      setIsRefreshing(true); 
+      setPage(0)
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
   return (
     <QueryData
       {...queryData}
@@ -61,7 +88,10 @@ const AdviceItems = () => {
                 onScroll={handleScroll}
                 sx={{ position: "relative" }}
               >
-                <AdviceItemsAccordion items={displayedItems} />
+                <AdviceItemsAccordion
+                  items={displayedItems}
+                  onDelete={handleDeleteAdviceItem}
+                />
               </Box>
             ) : (
               <EmptyAdviceList
