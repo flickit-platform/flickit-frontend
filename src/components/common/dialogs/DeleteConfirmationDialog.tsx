@@ -33,8 +33,17 @@ export const DeleteConfirmationDialog = ({
       maxWidth="sm"
     >
       <Typography sx={{ color: "#0A2342" }}>
-        <Trans i18nKey={content} />
+        <Trans
+          i18nKey={content}
+          values={{ title }}
+          components={{
+            title: (
+              <span style={{ fontWeight: "bold", color: "#B86A77" }} />
+            ),
+          }}
+        />
       </Typography>
+
       <CEDialogActions
         type="delete"
         loading={false}

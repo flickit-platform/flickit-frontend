@@ -8,6 +8,7 @@ import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeleton
 import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
+import { CDN_DIRECTORY } from "@/config/constants";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
@@ -16,7 +17,7 @@ const AssessmentExportContainer = () => {
   const { service } = useServiceContext();
 
   const iframeUrl =
-    import.meta.env.VITE_STATIC_HTML + assessmentId + "/index.html";
+    CDN_DIRECTORY + "static-stage/report/" + assessmentId + "/index.html";
 
   useEffect(() => {
     const fetchSiteContent = async () => {

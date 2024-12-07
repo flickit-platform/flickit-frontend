@@ -1,0 +1,111 @@
+import React, { useState, useEffect } from "react";
+import Grid from "@mui/material/Grid";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
+import EmptyAdviceList from "@/components/assessment-report/advice-items/EmptyAdviceItems";
+import QueryData from "@/components/common/QueryData";
+import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
+import AdviceItemsAccordion from "./AdviceItemsAccordions";
+import { Box } from "@mui/material";
+import { ICustomError } from "@/utils/CustomError";
+import toastError from "@/utils/toastError";
+
+const AdviceItems = () => {
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
+
+  const [page, setPage] = useState(0);
+  const [displayedItems, setDisplayedItems] = useState<any[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false); // Add a flag for refreshing
+
+  const queryData = useQuery<any>({
+    service: (args, config) =>
+      service.fetchAdviceItems({ assessmentId, page, size: 15 }, config),
+    toastError: false,
+  });
+
+  const deleteAdviceItem = useQuery<any>({
+    service: (args, config) => service.deleteAdviceItem(args, config),
+    toastError: false,
+  });
+
+  const { data } = queryData;
+  const totalItems = data?.total || 0;
+
+  useEffect(() => {
+    if (data?.items?.length && !isRefreshing) {
+      setDisplayedItems((prevItems) => [...prevItems, ...data.items]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isRefreshing) {
+      setDisplayedItems([]); 
+      setPage(0); 
+      queryData.query().finally(() => setIsRefreshing(false)); 
+    }
+  }, [isRefreshing]);
+
+  const handleScroll = (event: React.UIEvent) => {
+    const container = event.currentTarget;
+    const atBottom =
+      container.scrollHeight === container.scrollTop + container.clientHeight;
+
+    if (atBottom && displayedItems.length < totalItems) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (page > 0) {
+      queryData.query();
+    }
+  }, [page]);
+
+  const handleDeleteAdviceItem = async (adviceItemId: any) => {
+    try {
+      await deleteAdviceItem.query({ adviceItemId });
+      setIsRefreshing(true); 
+      setPage(0)
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
+  return (
+    <QueryData
+      {...queryData}
+      renderLoading={() => <LoadingSkeletonKitCard />}
+      render={() => (
+        <Grid container>
+          <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
+            {displayedItems.length ? (
+              <Box
+                maxHeight={400}
+                overflow="auto"
+                onScroll={handleScroll}
+                sx={{ position: "relative" }}
+              >
+                <AdviceItemsAccordion
+                  items={displayedItems}
+                  onDelete={handleDeleteAdviceItem}
+                />
+              </Box>
+            ) : (
+              <EmptyAdviceList
+                onAddNewRow={() => {}}
+                btnTitle="newAdviceItem"
+                title="NoAdviceSoFar"
+                subTitle="CreateFirstAdvice"
+              />
+            )}
+          </Grid>
+        </Grid>
+      )}
+    />
+  );
+};
+
+export default AdviceItems;
