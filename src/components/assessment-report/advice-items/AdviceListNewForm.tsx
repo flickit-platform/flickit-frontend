@@ -22,7 +22,7 @@ import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBottomOutlined";
-import Impact from "@/components/common/icons/impact";
+import Impact from "@/components/common/icons/Impact";
 
 interface IAdviceListProps {
   newAdvice:
