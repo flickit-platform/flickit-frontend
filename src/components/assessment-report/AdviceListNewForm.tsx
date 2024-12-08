@@ -171,7 +171,7 @@ const AdviceListNewForm = ({
                         fontSize: "14px",
                         background: "#fff",
                         px: "0px",
-                        height:"36px"
+                        height: "36px",
                       }}
                     >
                       <MenuItem disabled value="">
@@ -192,12 +192,12 @@ const AdviceListNewForm = ({
                             <></>
                           )}
 
-                          <Trans i18nKey={item} />
+                          <Trans i18nKey={item.toLowerCase()} />
                         </Typography>
                       </MenuItem>
                       {adviceOption[item].map((option: any, index: number) => (
                         <MenuItem key={option.code} value={option.code}>
-                          <Trans i18nKey={option.title} />
+                          <Trans i18nKey={option.title.toLowerCase()} />
                         </MenuItem>
                       ))}
                     </Select>
