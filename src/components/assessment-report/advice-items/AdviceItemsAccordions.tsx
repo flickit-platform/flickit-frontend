@@ -39,7 +39,7 @@ const getPriorityColor = (priority: string) =>
 const truncateText = (text: string, maxLength: number): string =>
   text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
-const getChipData = (type: "impact" | "price", level: string) => {
+const getChipData = (type: "impact" | "cost", level: string) => {
   const priorityColor: any = getPriorityColor(level);
   const translatedLevel = t(level.toLowerCase());
   const translatedType = t(type);
@@ -55,7 +55,7 @@ const getChipData = (type: "impact" | "price", level: string) => {
   };
 };
 
-const CustomChip: React.FC<{ type: "impact" | "price"; level: string }> = ({
+const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
   type,
   level,
 }) => {
@@ -149,7 +149,7 @@ const AdviceItemAccordion: React.FC<{
 
             <Box display="flex" gap={1} alignItems="center">
               <CustomChip type="impact" level={item.impact} />
-              <CustomChip type="price" level={item.cost} />
+              <CustomChip type="cost" level={item.cost} />
               <IconButton
                 size="small"
                 color="primary"

@@ -1,8 +1,16 @@
-import { useEffect, useState } from "react";
-import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Link,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -21,12 +29,17 @@ import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
+import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
+import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
+import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
 import AdviceItems from "./advice-items/AdviceItems";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
+
   const queryData = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
       service.fetchAssessment({ assessmentId }, config),
@@ -100,6 +113,8 @@ const AssessmentReportContainer = (props: any) => {
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
+
+
   return (
     <PermissionControl error={[queryData.errorObject?.response]}>
       <QueryBatchData
@@ -150,7 +165,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={disableHtmlDocument}
-                            component={exportable ? Link : "div"}
+                            component={exportable ? RouterLink : "div"}
                             to={`/${spaceId}/assessments/1/${assessmentId}/html-document/`}
                           >
                             <Assessment
@@ -164,7 +179,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={!exportable}
-                            component={exportable ? Link : "div"}
+                            component={exportable ? RouterLink : "div"}
                             to={`/${spaceId}/assessments/1/${assessmentId}/assessment-document/`}
                           >
                             <ArticleRounded
@@ -178,7 +193,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={!manageable}
-                            component={manageable ? Link : "div"}
+                            component={manageable ? RouterLink : "div"}
                             to={`/${spaceId}/assessments/1/${assessmentId}/assessment-settings/`}
                           >
                             <SettingsIcon
@@ -329,21 +344,18 @@ const AssessmentReportContainer = (props: any) => {
                     permissions={permissions}
                   />
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
-                    <Typography
-                      color="#73808C"
-                      variant="h5"
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Trans i18nKey="adviceItems" />
-                    </Typography>
-                    <Divider sx={{ width: "100%" }} />
-                  </Box>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <AdviceItems />
+                <Grid
+                  item
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  id="advices-empty"
+                  mt={2}
+                >
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <AdviceItems />
+                  </Grid>
                 </Grid>
               </Grid>
             </Box>

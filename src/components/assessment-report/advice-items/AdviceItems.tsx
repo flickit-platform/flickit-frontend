@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
@@ -7,9 +7,12 @@ import EmptyAdviceList from "@/components/assessment-report/advice-items/EmptyAd
 import QueryData from "@/components/common/QueryData";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import AdviceItemsAccordion from "./AdviceItemsAccordions";
-import { Box } from "@mui/material";
+import { Box, Button, Divider, Link, Typography } from "@mui/material";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
+import { styles } from "@styles";
+import { Trans } from "react-i18next";
+import AdviceListNewForm from "../AdviceListNewForm";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
@@ -41,9 +44,9 @@ const AdviceItems = () => {
 
   useEffect(() => {
     if (isRefreshing) {
-      setDisplayedItems([]); 
-      setPage(0); 
-      queryData.query().finally(() => setIsRefreshing(false)); 
+      setDisplayedItems([]);
+      setPage(0);
+      queryData.query().finally(() => setIsRefreshing(false));
     }
   }, [isRefreshing]);
 
@@ -66,20 +69,124 @@ const AdviceItems = () => {
   const handleDeleteAdviceItem = async (adviceItemId: any) => {
     try {
       await deleteAdviceItem.query({ adviceItemId });
-      setIsRefreshing(true); 
-      setPage(0)
+      setIsRefreshing(true);
+      setPage(0);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
     }
   };
 
+  const postAdviceItem = useQuery({
+    service: (args = { assessmentId, data: newAdvice }, config) =>
+      service.postAdviceItem(args, config),
+    runOnMount: false,
+  });
+
+  const [showNewAdviceListForm, setShowNewAdviceListForm] = useState(false);
+  const removeDescriptionAdvice = useRef(false);
+  const [newAdvice, setNewAdvice] = useState({
+    assessmentId: assessmentId,
+    title: "",
+    description: "",
+    priority: "",
+    cost: "",
+    impact: "",
+  });
+
+  const handleCancel = () => {
+    setShowNewAdviceListForm(false);
+    removeDescriptionAdvice.current = true;
+    setNewAdvice({
+      ...newAdvice,
+      title: "",
+      description: "",
+      priority: "",
+      cost: "",
+      impact: "",
+    });
+  };
+
+  const handleAddNewRow = () => {
+    handleCancel();
+    setShowNewAdviceListForm(true);
+    removeDescriptionAdvice.current = true;
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAdvice((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      await postAdviceItem.query();
+      removeDescriptionAdvice.current = true;
+      setNewAdvice({
+        ...newAdvice,
+        title: "",
+        description: "",
+        priority: "",
+        cost: "",
+        impact: "",
+      });
+      setPage(0);
+      setDisplayedItems([]);
+      setShowNewAdviceListForm(false);
+      queryData.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
   return (
     <QueryData
       {...queryData}
       renderLoading={() => <LoadingSkeletonKitCard />}
       render={() => (
         <Grid container>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={4}
+              >
+                <Typography
+                  color="#73808C"
+                  variant="h5"
+                  display="flex"
+                  alignItems="center"
+                >
+                  <Trans i18nKey="adviceItems" />
+                </Typography>
+                {displayedItems.length !== 0 && (
+                  <Link
+                    href="#new-advice-item"
+                    sx={{
+                      textDecoration: "none",
+                      opacity: 0.9,
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleAddNewRow}
+                      data-test-id="newAdvice"
+                    >
+                      <Trans i18nKey="newAdviceItem" />
+                    </Button>
+                  </Link>
+                )}
+              </Box>{" "}
+              <Divider sx={{ width: "100%" }} />
+            </Box>
+          </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
             {displayedItems.length ? (
               <Box
@@ -94,11 +201,24 @@ const AdviceItems = () => {
                 />
               </Box>
             ) : (
-              <EmptyAdviceList
-                onAddNewRow={() => {}}
-                btnTitle="newAdviceItem"
-                title="NoAdviceSoFar"
-                subTitle="CreateFirstAdvice"
+              !showNewAdviceListForm && (
+                <EmptyAdviceList
+                  onAddNewRow={handleAddNewRow}
+                  btnTitle="newAdviceItem"
+                  title="NoAdviceSoFar"
+                  subTitle="CreateFirstAdvice"
+                />
+              )
+            )}
+            {showNewAdviceListForm && (
+              <AdviceListNewForm
+                newAdvice={newAdvice}
+                handleInputChange={handleInputChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                setNewAdvice={setNewAdvice}
+                removeDescriptionAdvice={removeDescriptionAdvice}
+                postAdviceItem={postAdviceItem}
               />
             )}
           </Grid>

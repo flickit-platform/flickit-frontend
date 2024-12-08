@@ -730,5 +730,7 @@
   "low": "Low",
   "medium": "Medium",
   "high": "High",
-  "deleteItemConfirmation": "Are you sure you want remove <title>{{title}}</title> from advice items?"
+  "priority": "Priority",
+  "deleteItemConfirmation": "Are you sure you want remove <title>{{title}}</title> from advice items?",
+  "cost": "Cost"
 }

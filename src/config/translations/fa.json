@@ -731,6 +731,8 @@
   "low": "کم",
   "medium": "متوسط",
   "high": "زیاد",
+  "priority": "اولویت",
   "adviceItems": "لیست توصیه‌ها",
-  "deleteItemConfirmation": "آیا مطمئنید که میخواهید <strong>{{title}}</strong> را از توصیه‌ها حذف کنید؟"
+  "deleteItemConfirmation": "آیا مطمئنید که میخواهید <strong>{{title}}</strong> را از توصیه‌ها حذف کنید؟",
+  "cost": "قیمت"
 }
