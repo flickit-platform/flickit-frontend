@@ -38,7 +38,7 @@ const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
 };
 
 const getPriorityColor = (priority: string) => {
-  let color = "primary";
+  let color;
   if (priority.toLowerCase() === "high") {
     color = "#E72943";
   } else if (priority.toLowerCase() === "low") {
@@ -46,7 +46,7 @@ const getPriorityColor = (priority: string) => {
   } else {
     color = "primary";
   }
-  return color
+  return color;
 };
 
 const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles

@@ -83,7 +83,7 @@ const AdviceListNewForm = ({
     fetchAdviceOptions();
   }, []);
   const getIcon = (type: string) => {
-    let element = undefined;
+    let element;
     if (type === "cost") {
       element = <AttachMoneyOutlinedIcon fontSize="small" />;
     } else if (type === "impact") {
