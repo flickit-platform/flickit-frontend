@@ -236,7 +236,7 @@
   "free": "FREE",
   "from": "from",
   "gainedScore": "Gained score",
-  "gaugeConfidence": "Confidence: {{percent}}%s",
+  "gaugeConfidence": "Confidence: {{percent}}%",
   "general": "General",
   "generalSpecification": "General specification",
   "generateAdviceViaAI": "Generate Advice Via AI",
