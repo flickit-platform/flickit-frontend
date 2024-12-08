@@ -163,12 +163,12 @@ const AdviceListNewForm = ({
             >
               {selectAdvice.map((item: any, index) => {
                 return (
-                  <FormControl key={`form-${index}`} sx={{ width: "30%" }}>
+                  <FormControl key={index} sx={{ width: "30%" }}>
                     <Select
                       size="small"
                       labelId={`${item}-select-label`}
                       id={`${item}-select`}
-                      value={newAdvice[item].toUpperCase()}
+                      value={newAdvice[item].toUpperCase() }
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
@@ -196,7 +196,7 @@ const AdviceListNewForm = ({
                         </Typography>
                       </MenuItem>
                       {adviceOption[item].map((option: any, index: number) => (
-                        <MenuItem key={`option-${index}`} value={option.code}>
+                        <MenuItem key={index} value={option.code}>
                           <Trans i18nKey={option.title.toLowerCase()} />
                         </MenuItem>
                       ))}
