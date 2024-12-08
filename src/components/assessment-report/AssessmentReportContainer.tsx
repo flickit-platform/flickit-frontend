@@ -22,7 +22,6 @@ import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
 import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
 import {ICustomError} from "@utils/CustomError";
 import toastError from "@utils/toastError";
