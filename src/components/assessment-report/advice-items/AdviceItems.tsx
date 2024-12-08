@@ -197,6 +197,7 @@ const AdviceItems = () => {
                 <AdviceItemsAccordion
                   items={displayedItems}
                   onDelete={handleDeleteAdviceItem}
+                  queryData={queryData}
                 />
               </Box>
             ) : (

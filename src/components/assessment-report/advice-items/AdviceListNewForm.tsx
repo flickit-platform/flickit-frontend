@@ -99,6 +99,10 @@ const AdviceListNewForm = ({
     return element;
   };
 
+  const getValueFromAdviceOption = (adviceOption: any[], value: string) => {
+    return adviceOption.find((option) => option.code === value);
+  };
+
   return (
     <Box
       mt={1.5}
@@ -168,7 +172,7 @@ const AdviceListNewForm = ({
                       size="small"
                       labelId={`${item}-select-label`}
                       id={`${item}-select`}
-                      value={newAdvice[item]}
+                      value={newAdvice[item].toUpperCase() }
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
@@ -221,7 +225,7 @@ const AdviceListNewForm = ({
                 label={<Trans i18nKey="description" />}
                 disable_label={false}
                 required={true}
-                defaultValue={""}
+                defaultValue={newAdvice.description}
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
               />

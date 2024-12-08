@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -16,6 +16,12 @@ import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import Impact from "@/components/common/icons/Impact";
+import AdviceListNewForm from "./AdviceListNewForm";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/ServiceProvider";
+import toastError from "@/utils/toastError";
+import { ICustomError } from "@/utils/CustomError";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -107,23 +113,88 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
 const AdviceItemAccordion: React.FC<{
   item: AdviceItem;
   onDelete: (adviceItemId: string) => void;
-}> = ({ item, onDelete }) => {
+  onEdit: (adviceItemId: string) => void;
+  isEditing: boolean;
+  setEditingItemId: any;
+  queryData: any;
+}> = ({ item, onDelete, onEdit, isEditing, setEditingItemId, queryData }) => {
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const isFarsi = i18next.language === "fa";
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDeleteDialogOpen(true);
+  const [newAdvice, setNewAdvice] = useState({
+    title: "",
+    description: "",
+    priority: "",
+    cost: "",
+    impact: "",
+  });
+
+  const updateAdviceItem = useQuery({
+    service: (args = { adviceItemId: item.id, data: newAdvice }, config) =>
+      service.updateAdviceItem(args, config),
+    runOnMount: false,
+  });
+
+  const removeDescriptionAdvice = useRef(false);
+
+  useEffect(() => {
+    if (isEditing) {
+      setNewAdvice({
+        title: item.title,
+        description: item.description,
+        priority: item.priority.toUpperCase(),
+        cost: item.cost.toUpperCase(),
+        impact: item.impact.toUpperCase(),
+      });
+    }
+  }, [isEditing, item, assessmentId]);
+
+  const handleCancel = () => {
+    setNewAdvice({
+      title: item.title,
+      description: item.description,
+      priority: item.priority.toUpperCase(),
+      cost: item.cost.toUpperCase(),
+      impact: item.impact.toUpperCase(),
+    });
+    setEditingItemId(null);
   };
 
-  const handleDeleteConfirm = () => {
-    onDelete(item.id);
-    setDeleteDialogOpen(false);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAdvice((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleDialogClose = () => {
-    setDeleteDialogOpen(false);
+  const handleSave = async () => {
+    try {
+      await updateAdviceItem.query();
+      removeDescriptionAdvice.current = true;
+      queryData.query();
+      setEditingItemId(null);
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
+
+  if (isEditing) {
+    return (
+      <AdviceListNewForm
+        newAdvice={newAdvice}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
+        setNewAdvice={setNewAdvice}
+        removeDescriptionAdvice={removeDescriptionAdvice}
+        postAdviceItem={updateAdviceItem}
+      />
+    );
+  }
 
   return (
     <>
@@ -183,14 +254,20 @@ const AdviceItemAccordion: React.FC<{
               <IconButton
                 size="small"
                 color="primary"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(item.id);
+                }}
               >
                 <EditRounded fontSize="small" />
               </IconButton>
               <IconButton
                 size="small"
                 color="primary"
-                onClick={handleDeleteClick}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDeleteDialogOpen(true);
+                }}
               >
                 <DeleteRounded fontSize="small" />
               </IconButton>
@@ -208,8 +285,8 @@ const AdviceItemAccordion: React.FC<{
 
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
-        onClose={handleDialogClose}
-        onConfirm={handleDeleteConfirm}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={() => onDelete(item.id)}
         title={t("deleteItem")}
         content={t("deleteItemConfirmation", { title: item.title })}
       />
@@ -220,12 +297,29 @@ const AdviceItemAccordion: React.FC<{
 const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];
   onDelete: (adviceItemId: string) => void;
-}> = ({ items, onDelete }) => (
-  <Box>
-    {items.map((item) => (
-      <AdviceItemAccordion key={item.id} item={item} onDelete={onDelete} />
-    ))}
-  </Box>
-);
+  queryData: any;
+}> = ({ items, onDelete, queryData }) => {
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+
+  const handleEdit = (id: string) => {
+    setEditingItemId((prev) => (prev === id ? null : id));
+  };
+
+  return (
+    <Box>
+      {items.map((item) => (
+        <AdviceItemAccordion
+          key={item.id}
+          item={item}
+          onDelete={onDelete}
+          onEdit={handleEdit}
+          isEditing={editingItemId === item.id}
+          setEditingItemId={setEditingItemId}
+          queryData={queryData}
+        />
+      ))}
+    </Box>
+  );
+};
 
 export default AdviceItemsAccordion;
