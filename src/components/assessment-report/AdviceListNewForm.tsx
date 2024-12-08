@@ -11,7 +11,6 @@ import FormControl from "@mui/material/FormControl";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InputAdornment from "@mui/material/InputAdornment";
 import Impact from "@assets/svg/Impact.svg"
-import dollarSign from "@assets/svg/Dollarsign.svg"
 import Grid from "@mui/material/Grid";
 import RichEditorFieldAssessment from "./RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
@@ -22,6 +21,7 @@ import {useServiceContext} from "@providers/ServiceProvider";
 import {useEffect, useState} from "react";
 import {ICustomError} from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 
 interface IAdviceListProps {
     newAdvice: {
@@ -61,17 +61,20 @@ const AdviceListNewForm = ({newAdvice, handleInputChange, handleSave, handleCanc
     });
 
     useEffect(()=>{
-        (async ()=>{
+       const fetchAdviceOptions = async () =>{
             try {
-                const {levels: impactLevels} =  await fetchAdviceImpactList.query()
-                const {levels: priorityLevels} =  await fetchAdvicePriorityList.query()
-                const {levels: costLevels} =  await fetchCostList.query()
-                setAdviceOption({impact:impactLevels,cost:costLevels,priority: priorityLevels})
+                const [impactRes, priorityRes, costRes] = await Promise.all([
+                    fetchAdviceImpactList.query(),
+                    fetchAdvicePriorityList.query(),
+                    fetchCostList.query(),
+                ]);
+                setAdviceOption({impact:impactRes.levels,cost:costRes.levels,priority: priorityRes.levels})
             }catch (e){
                 const err = e as ICustomError;
                 toastError(err);
             }
-        })()
+        }
+        fetchAdviceOptions();
     },[])
 
     return  <Box
@@ -137,7 +140,7 @@ const AdviceListNewForm = ({newAdvice, handleInputChange, handleSave, handleCanc
                                        displayEmpty
                                        startAdornment={!newAdvice[item] && item != "priority" && <InputAdornment position="start">
                                            <Typography sx={{...theme.typography.labelMedium,color:"#2466A8",display:"flex" ,alignItems:"center"}}>
-                                               { item == "cost" &&  <img style={{marginRight:"2px"}}  src={dollarSign} alt={"dollarSign"}/> }
+                                               { item == "cost" &&  <AttachMoneyOutlinedIcon fontSize={"small"} />}
                                                { item == "impact" &&  <img style={{marginRight:"2px"}}  src={Impact} alt={"impactIcon"}/> }
                                                <Trans i18nKey={item} />
                                            </Typography>
