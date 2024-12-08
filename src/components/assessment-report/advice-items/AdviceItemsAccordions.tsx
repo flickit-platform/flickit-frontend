@@ -22,6 +22,8 @@ import { useQuery } from "@/utils/useQuery";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -247,6 +249,11 @@ const AdviceItemAccordion: React.FC<{
                   whiteSpace: "nowrap",
                 }}
                 title={item.title}
+                fontFamily={
+                  languageDetector(item.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+                }
               >
                 {truncateText(item.title, MAX_TITLE_LENGTH)}
               </Typography>
@@ -293,6 +300,12 @@ const AdviceItemAccordion: React.FC<{
           <Typography
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
+            dir={languageDetector(item.description) ? "rtl" : "ltr"}
+            fontFamily={
+              languageDetector(item.description)
+                ? farsiFontFamily
+                : primaryFontFamily
+            }
           />
         </AccordionDetails>
       </Accordion>

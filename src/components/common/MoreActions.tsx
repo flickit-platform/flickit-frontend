@@ -86,7 +86,7 @@ const MoreActions = (props: IMoreActionsProps) => {
           } = item || {};
           return (
             <MenuItem
-              key={index}
+              key={item.text.key}
               {...menuItemProps}
               onClick={(e: any) => {
                 closeMenu(e);
