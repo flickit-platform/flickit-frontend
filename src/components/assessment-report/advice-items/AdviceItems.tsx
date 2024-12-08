@@ -12,7 +12,7 @@ import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
-import AdviceListNewForm from "../AdviceListNewForm";
+import AdviceListNewForm from "./AdviceListNewForm";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();

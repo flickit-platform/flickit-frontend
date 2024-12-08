@@ -83,11 +83,11 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
       label={label}
       icon={
         <IconButton size="small" sx={{ color: iconColor + " !important" }}>
-          {type === "cost" ? (
-            <Impact colorCode={iconColor} />
+          {type === "impact" ? (
+            <Impact styles={{ color: iconColor, px: 2, width: "20px" }} />
           ) : (
-            Icon && <Icon fontSize="small" />
-          )}{" "}
+            Icon && <Icon sx={{ fontSize: "14px" }} />
+          )}
         </IconButton>
       }
       sx={{ backgroundColor, color }}
