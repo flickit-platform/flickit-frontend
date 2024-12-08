@@ -20,7 +20,6 @@ const AdviceItems = () => {
 
   const [page, setPage] = useState(0);
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
-  // const [isRefreshing, setIsRefreshing] = useState(false); // Add a flag for refreshing
 
   const queryData = useQuery<any>({
     service: (args, config) =>
