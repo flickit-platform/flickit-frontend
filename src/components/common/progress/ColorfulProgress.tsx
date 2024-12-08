@@ -70,8 +70,7 @@ const ColorfulProgress = (props: ISubjectProgressProps) => {
             component="span"
             color={percentColor}
             mx={1}
-            fontWeight={800}
-            fontSize="1.25rem"
+            variant="titleMedium"
           >
             <Trans
               i18nKey="progressBarTitle"

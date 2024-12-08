@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -16,6 +16,14 @@ import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import Impact from "@/components/common/icons/Impact";
+import AdviceListNewForm from "./AdviceListNewForm";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/ServiceProvider";
+import toastError from "@/utils/toastError";
+import { ICustomError } from "@/utils/CustomError";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -49,15 +57,10 @@ const getPriorityColor = (priority: string) => {
   return color;
 };
 
-const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
-
 const getIconColors = (
   icon: string,
   colors: Record<string, keyof typeof COLORS>,
 ) => COLORS[colors[icon.toLowerCase()] || "unknown"];
-
-const truncateText = (text: string, maxLength: number): string =>
-  text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
 const getChipData = (type: "impact" | "cost", level: string) => {
   const priorityColor: any = getIconColors(
@@ -107,23 +110,102 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
 const AdviceItemAccordion: React.FC<{
   item: AdviceItem;
   onDelete: (adviceItemId: string) => void;
-}> = ({ item, onDelete }) => {
+  onEdit: (adviceItemId: string) => void;
+  isEditing: boolean;
+  setEditingItemId: any;
+  items: any;
+  setDisplayedItems: any;
+}> = ({
+  item,
+  onDelete,
+  onEdit,
+  isEditing,
+  setEditingItemId,
+  items,
+  setDisplayedItems,
+}) => {
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const isFarsi = i18next.language === "fa";
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDeleteDialogOpen(true);
+  const [newAdvice, setNewAdvice] = useState({
+    title: "",
+    description: "",
+    priority: "",
+    cost: "",
+    impact: "",
+  });
+
+  const updateAdviceItem = useQuery({
+    service: (args = { adviceItemId: item.id, data: newAdvice }, config) =>
+      service.updateAdviceItem(args, config),
+    runOnMount: false,
+  });
+
+  const removeDescriptionAdvice = useRef(false);
+
+  useEffect(() => {
+    if (isEditing) {
+      setNewAdvice({
+        title: item.title,
+        description: item.description,
+        priority: item.priority.toUpperCase(),
+        cost: item.cost.toUpperCase(),
+        impact: item.impact.toUpperCase(),
+      });
+    }
+  }, [isEditing, item, assessmentId]);
+
+  const handleCancel = () => {
+    setNewAdvice({
+      title: item.title,
+      description: item.description,
+      priority: item.priority.toUpperCase(),
+      cost: item.cost.toUpperCase(),
+      impact: item.impact.toUpperCase(),
+    });
+    setEditingItemId(null);
   };
 
-  const handleDeleteConfirm = () => {
-    onDelete(item.id);
-    setDeleteDialogOpen(false);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAdvice((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleDialogClose = () => {
-    setDeleteDialogOpen(false);
+  const handleSave = async () => {
+    try {
+      await updateAdviceItem.query();
+      removeDescriptionAdvice.current = true;
+      const updatedItems = items.map((currentItem: any) =>
+        currentItem.id === item.id
+          ? { ...currentItem, ...newAdvice }
+          : currentItem,
+      );
+      setDisplayedItems(updatedItems);
+      setEditingItemId(null);
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
+
+  if (isEditing) {
+    return (
+      <AdviceListNewForm
+        newAdvice={newAdvice}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
+        setNewAdvice={setNewAdvice}
+        removeDescriptionAdvice={removeDescriptionAdvice}
+        postAdviceItem={updateAdviceItem}
+      />
+    );
+  }
 
   return (
     <>
@@ -156,14 +238,20 @@ const AdviceItemAccordion: React.FC<{
                 variant="h6"
                 noWrap
                 sx={{
-                  maxWidth: "250px",
+                  maxWidth: "50vw",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
+                  wordBreak: "break-all",
                 }}
                 title={item.title}
+                fontFamily={
+                  languageDetector(item.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+                }
               >
-                {truncateText(item.title, MAX_TITLE_LENGTH)}
+                {item.title}
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -183,14 +271,20 @@ const AdviceItemAccordion: React.FC<{
               <IconButton
                 size="small"
                 color="primary"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(item.id);
+                }}
               >
                 <EditRounded fontSize="small" />
               </IconButton>
               <IconButton
                 size="small"
                 color="primary"
-                onClick={handleDeleteClick}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDeleteDialogOpen(true);
+                }}
               >
                 <DeleteRounded fontSize="small" />
               </IconButton>
@@ -202,14 +296,26 @@ const AdviceItemAccordion: React.FC<{
           <Typography
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
+            dir={languageDetector(item.description) ? "rtl" : "ltr"}
+            fontFamily={
+              languageDetector(item.description)
+                ? farsiFontFamily
+                : primaryFontFamily
+            }
           />
         </AccordionDetails>
       </Accordion>
 
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
-        onClose={handleDialogClose}
-        onConfirm={handleDeleteConfirm}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={() => {
+          onDelete(item.id);
+          const updatedItems = items.filter(
+            (currentItem: any) => currentItem.id !== item.id,
+          );
+          setDisplayedItems(updatedItems);
+        }}
         title={t("deleteItem")}
         content={t("deleteItemConfirmation", { title: item.title })}
       />
@@ -220,12 +326,30 @@ const AdviceItemAccordion: React.FC<{
 const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];
   onDelete: (adviceItemId: string) => void;
-}> = ({ items, onDelete }) => (
-  <Box>
-    {items.map((item) => (
-      <AdviceItemAccordion key={item.id} item={item} onDelete={onDelete} />
-    ))}
-  </Box>
-);
+  setDisplayedItems: any;
+}> = ({ items, onDelete, setDisplayedItems }) => {
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+
+  const handleEdit = (id: string) => {
+    setEditingItemId((prev) => (prev === id ? null : id));
+  };
+
+  return (
+    <Box>
+      {items.map((item) => (
+        <AdviceItemAccordion
+          key={item.id}
+          item={item}
+          onDelete={onDelete}
+          onEdit={handleEdit}
+          isEditing={editingItemId === item.id}
+          setEditingItemId={setEditingItemId}
+          items={items}
+          setDisplayedItems={setDisplayedItems}
+        />
+      ))}
+    </Box>
+  );
+};
 
 export default AdviceItemsAccordion;

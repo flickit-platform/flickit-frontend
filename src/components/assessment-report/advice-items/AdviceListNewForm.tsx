@@ -168,7 +168,7 @@ const AdviceListNewForm = ({
                       size="small"
                       labelId={`${item}-select-label`}
                       id={`${item}-select`}
-                      value={newAdvice[item]}
+                      value={newAdvice[item].toUpperCase() }
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
@@ -196,7 +196,7 @@ const AdviceListNewForm = ({
                         </Typography>
                       </MenuItem>
                       {adviceOption[item].map((option: any, index: number) => (
-                        <MenuItem key={option.code} value={option.code}>
+                        <MenuItem key={option} value={option.code}>
                           <Trans i18nKey={option.title.toLowerCase()} />
                         </MenuItem>
                       ))}
@@ -221,7 +221,7 @@ const AdviceListNewForm = ({
                 label={<Trans i18nKey="description" />}
                 disable_label={false}
                 required={true}
-                defaultValue={""}
+                defaultValue={newAdvice.description}
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
               />
