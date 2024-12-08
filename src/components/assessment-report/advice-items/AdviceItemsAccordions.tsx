@@ -38,6 +38,13 @@ const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
   low: "error",
 };
 
+const getPriorityColor = (priority: string) =>
+  priority.toLowerCase() === "high"
+    ? "#E72943"
+    : priority.toLowerCase() === "low"
+      ? "#3D4D5C80"
+      : "primary";
+
 const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
 
 const getIconColors = (
@@ -73,9 +80,11 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
 }) => {
   const { backgroundColor, color, iconColor, label } = getChipData(type, level);
   const Icon =
-    type === "impact"
-      ? VerticalAlignBottomOutlinedIcon
-      : AttachMoneyOutlinedIcon;
+    type === "impact" ? (
+      <Impact styles={{ color: iconColor, px: 2, width: "20px" }} />
+    ) : (
+      <AttachMoneyOutlinedIcon sx={{ fontSize: "14px" }} />
+    );
 
   return (
     <Chip
@@ -83,11 +92,7 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
       label={label}
       icon={
         <IconButton size="small" sx={{ color: iconColor + " !important" }}>
-          {type === "impact" ? (
-            <Impact styles={{ color: iconColor, px: 2, width: "20px" }} />
-          ) : (
-            Icon && <Icon sx={{ fontSize: "14px" }} />
-          )}
+          {Icon}
         </IconButton>
       }
       sx={{ backgroundColor, color }}
@@ -158,13 +163,7 @@ const AdviceItemAccordion: React.FC<{
               </Typography>
               <Typography
                 variant="subtitle1"
-                color={
-                  item.priority.toLowerCase() === "high"
-                    ? "#E72943"
-                    : item.priority.toLowerCase() === "low"
-                      ? "#3D4D5C80"
-                      : "primary"
-                }
+                color={getPriorityColor(item.priority.toLowerCase())}
               >
                 (
                 {!isFarsi
