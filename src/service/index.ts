@@ -416,7 +416,7 @@ export const createService = (
         ...(config ?? {}),
       });
     },
-    sendNewAdvice(
+    postAdviceItem(
         {assessmentId,data}: {assessmentId:TId,data:any},
         config: AxiosRequestConfig<any> | undefined,
     ){

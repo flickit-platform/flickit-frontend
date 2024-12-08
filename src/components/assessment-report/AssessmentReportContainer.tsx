@@ -1,8 +1,16 @@
-import {useEffect, useRef, useState} from "react";
-import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Link,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -23,7 +31,7 @@ import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
 import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
 import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
-import {ICustomError} from "@utils/CustomError";
+import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AdviceItems from "./advice-items/AdviceItems";
 
@@ -31,16 +39,7 @@ const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
-  const [showNewAdviceListForm,setShowNewAdviceListForm] = useState(false)
-  const removeDescriptionAdvice = useRef(false)
-  const [newAdvice,setNewAdvice]= useState({
-    assessmentId: assessmentId,
-    title: "",
-    description:"",
-    priority:"",
-    cost:"",
-    impact:""
-  })
+
   const queryData = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
       service.fetchAssessment({ assessmentId }, config),
@@ -114,55 +113,7 @@ const AssessmentReportContainer = (props: any) => {
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
-  const sendNewAdvice = useQuery({
-    service: (args={assessmentId,data:newAdvice},config) => service.sendNewAdvice(args,config),
-    runOnMount: false
-  })
 
-
-  const handleCancel = () => {
-    setShowNewAdviceListForm(false);
-    removeDescriptionAdvice.current = true
-    setNewAdvice({
-      ...newAdvice,
-      title: "",
-      description: "",
-      priority: "",
-      cost: "",
-      impact: ""
-    });
-  };
-
-  const handleAddNewRow = () => {
-    handleCancel();
-    setShowNewAdviceListForm(true);
-    removeDescriptionAdvice.current = true
-  };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewAdvice((prev:any) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSave =async () =>{
-    try {
-      await sendNewAdvice.query()
-      removeDescriptionAdvice.current = true
-      setNewAdvice({
-       ...newAdvice,
-        title: "",
-        description: "",
-        priority: "",
-        cost: "",
-        impact: ""
-      });
-    }catch (e){
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  }
 
   return (
     <PermissionControl error={[queryData.errorObject?.response]}>
@@ -214,7 +165,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={disableHtmlDocument}
-                            component={exportable ? Link : "div"}
+                            component={exportable ? RouterLink : "div"}
                             to={`/${spaceId}/assessments/1/${assessmentId}/html-document/`}
                           >
                             <Assessment
@@ -228,7 +179,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={!exportable}
-                            component={exportable ? Link : "div"}
+                            component={exportable ? RouterLink : "div"}
                             to={`/${spaceId}/assessments/1/${assessmentId}/assessment-document/`}
                           >
                             <ArticleRounded
@@ -242,7 +193,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={!manageable}
-                            component={manageable ? Link : "div"}
+                            component={manageable ? RouterLink : "div"}
                             to={`/${spaceId}/assessments/1/${assessmentId}/assessment-settings/`}
                           >
                             <SettingsIcon
@@ -393,41 +344,19 @@ const AssessmentReportContainer = (props: any) => {
                     permissions={permissions}
                   />
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
-                    <Typography
-                      color="#73808C"
-                      variant="h5"
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Trans i18nKey="adviceItems" />
-                    </Typography>
-                    <Divider sx={{ width: "100%" }} />
-                  </Box>
+                <Grid
+                  item
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  id="advices-empty"
+                  mt={2}
+                >
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <AdviceItems />
+                  </Grid>
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12} id="advices-empty" mt={2}>
-                  <EmptyAdviceList
-                      onAddNewRow={handleAddNewRow}
-                      btnTitle="newAdviceItem"
-                      title={"NoAdviceSoFar"}
-                      subTitle={"CreateFirstAdvice"}
-                  />
-                  {
-                    showNewAdviceListForm &&
-                      <AdviceListNewForm
-                          newAdvice={newAdvice}
-                          handleInputChange={handleInputChange}
-                          handleSave={handleSave}
-                          handleCancel={handleCancel}
-                          setNewAdvice={setNewAdvice}
-                          removeDescriptionAdvice = {removeDescriptionAdvice}
-                      />
-                  }
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <AdviceItems />
-                </Grid>
-              </Grid>
               </Grid>
             </Box>
           );
