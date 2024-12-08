@@ -16,7 +16,7 @@ import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBo
 import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
-import Impact from "@/components/common/icons/impact";
+import Impact from "@/components/common/icons/Impact";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
