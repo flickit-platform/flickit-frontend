@@ -89,7 +89,6 @@ import FileType from "@components/questions/iconFiles/fileType";
 import {
   farsiFontFamily,
   primaryFontFamily,
-  secondaryFontFamily,
   theme,
 } from "@config/theme";
 import { AcceptFile } from "@utils/acceptFile";
@@ -1663,7 +1662,6 @@ const EvidenceDetail = (props: any) => {
                         right: theme.direction === "rtl" ? 15 : "unset",
                         zIndex: 1,
                         color: evidenceBG.borderColor,
-                        fontFamily: primaryFontFamily,
                       }}
                     >
                       <Trans i18nKey="editing" />
@@ -1969,7 +1967,10 @@ const EvidenceDetail = (props: any) => {
                   sx={{
                     whiteSpace: "nowrap",
                     lineHeight: "12px",
-                    fontFamily: primaryFontFamily,
+                    fontFamily:
+                      theme.direction == "rtl"
+                        ? farsiFontFamily
+                        : primaryFontFamily,
                   }}
                 >
                   {theme.direction == "rtl"
@@ -2053,7 +2054,6 @@ const FileIcon = (props: any): any => {
         <>
           <Typography
             sx={{
-              fontFamily: secondaryFontFamily,
               fontSize: "11px",
               lineHeight: "12px",
               letterSpacing: "0.5px",
@@ -2063,7 +2063,6 @@ const FileIcon = (props: any): any => {
           </Typography>
           <Typography
             sx={{
-              fontFamily: secondaryFontFamily,
               fontSize: "11px",
               lineHeight: "12px",
               letterSpacing: "0.5px",
@@ -2462,7 +2461,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
                     marginLeft: theme.direction === "rtl" ? 1 : "unset",
                     width: "12px",
                     height: "12px",
-                    fontFamily: secondaryFontFamily,
                     fontSize: "11px",
                     lineHeight: "12px",
                     letterSpacing: "0.5px",
@@ -2470,7 +2468,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
                 />
                 <Typography
                   sx={{
-                    fontFamily: secondaryFontFamily,
                     fontSize: "11px",
                     lineHeight: "12px",
                     letterSpacing: "0.5px",
@@ -2502,7 +2499,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
                 />
                 <Typography
                   sx={{
-                    fontFamily: secondaryFontFamily,
                     fontSize: "11px",
                     lineHeight: "12px",
                     letterSpacing: "0.5px",

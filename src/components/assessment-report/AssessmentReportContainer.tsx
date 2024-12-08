@@ -26,6 +26,7 @@ import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
 import {ICustomError} from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import AdviceItems from "./advice-items/AdviceItems";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -396,21 +397,12 @@ const AssessmentReportContainer = (props: any) => {
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
                     <Typography
-                        color="#73808C"
-                        variant="h5"
-                        display="flex"
-                        alignItems="center"
+                      color="#73808C"
+                      variant="h5"
+                      display="flex"
+                      alignItems="center"
                     >
                       <Trans i18nKey="adviceItems" />
-                      <Box
-                          sx={{
-                            ml: theme.direction == "ltr" ? 1 : "unset",
-                            mr: theme.direction == "rtl" ? 1 : "unset",
-                            mt: 1,
-                          }}
-                      >
-                        <InfoOutlined  fontSize="small"  />
-                      </Box>
                     </Typography>
                     <Divider sx={{ width: "100%" }} />
                   </Box>
@@ -433,6 +425,8 @@ const AssessmentReportContainer = (props: any) => {
                           removeDescriptionAdvice = {removeDescriptionAdvice}
                       />
                   }
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <AdviceItems />
                 </Grid>
               </Grid>
             </Box>

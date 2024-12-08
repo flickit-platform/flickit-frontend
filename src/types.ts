@@ -711,3 +711,12 @@ export interface IOption {
   value: number;
   questionId?: TId;
 }
+
+export interface AdviceItem {
+  id: string;
+  title: string;
+  description: string;
+  cost: string;
+  priority: string;
+  impact: string;
+}
