@@ -37,7 +37,7 @@ const AdviceItems = () => {
   const totalItems = data?.total || 0;
 
   useEffect(() => {
-    if (data?.items?.length && !isRefreshing) {
+    if (data?.items?.length) {
       setDisplayedItems((prevItems) => [...prevItems, ...data.items]);
     }
   }, [data]);
