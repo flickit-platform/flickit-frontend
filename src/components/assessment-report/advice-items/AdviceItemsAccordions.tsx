@@ -8,6 +8,7 @@ import {
   Box,
   IconButton,
   Divider,
+  Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
@@ -225,72 +226,95 @@ const AdviceItemAccordion: React.FC<{
             padding: "0 16px",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+            spacing={1}
           >
-            <Box display="flex" alignItems="center" gap={1}>
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{
-                  maxWidth: "50vw",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  wordBreak: "break-all",
-                }}
-                title={item.title}
-                fontFamily={
-                  languageDetector(item.title)
-                    ? farsiFontFamily
-                    : primaryFontFamily
-                }
-              >
-                {item.title}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color={getPriorityColor(item.priority.toLowerCase())}
-              >
-                (
-                {!isFarsi
-                  ? t(item.priority.toLowerCase()) + " " + t("priority")
-                  : t("priority") + " " + t(item.priority.toLowerCase())}
-                )
-              </Typography>
-            </Box>
+            {/* Left side: Title and Priority */}
+            <Grid item xs={12} sm={8} md={8.3}>
+              <Grid container alignItems="center" spacing={1}>
+                <Grid item xs={12} alignItems="center" display="flex">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      display: "inline-block",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      wordBreak: "break-word",
+                      marginRight: "8px", // Adding space between title and priority
+                    }}
+                    title={item.title}
+                    fontFamily={
+                      languageDetector(item.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                    }
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color={getPriorityColor(item.priority.toLowerCase())}
+                    sx={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    (
+                    {!isFarsi
+                      ? t(item.priority.toLowerCase()) + " " + t("priority")
+                      : t("priority") + " " + t(item.priority.toLowerCase())}
+                    )
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
 
-            <Box display="flex" gap={1} alignItems="center">
-              <CustomChip type="impact" level={item.impact} />
-              <CustomChip type="cost" level={item.cost} />
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(item.id);
-                }}
+            {/* Right side: Impact, Cost, and Icons */}
+            <Grid item xs={12} sm={4} md={3.7}>
+              <Grid
+                container
+                justifyContent="flex-start"
+                alignItems="center"
               >
-                <EditRounded fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDeleteDialogOpen(true);
-                }}
-              >
-                <DeleteRounded fontSize="small" />
-              </IconButton>
-            </Box>
-          </Box>
+                <Grid item xs={4.8} >
+                  <CustomChip type="impact" level={item.impact} />
+                </Grid>
+                <Grid item xs={4.8} >
+                  <CustomChip type="cost" level={item.cost} />
+                </Grid>
+                <Grid item xs={0.2} alignItems="center" display="flex">
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(item.id);
+                    }}
+                  >
+                    <EditRounded fontSize="small" />
+                  </IconButton>
+
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteDialogOpen(true);
+                    }}
+                  >
+                    <DeleteRounded fontSize="small" />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </AccordionSummary>
+
         <AccordionDetails sx={{ padding: "8px 16px" }}>
           <Divider sx={{ marginBottom: "8px" }} />
           <Typography
