@@ -9,9 +9,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress, MenuItem, Select, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import InputAdornment from "@mui/material/InputAdornment";
 import Grid from "@mui/material/Grid";
-import RichEditorFieldAssessment from "./RichEditorFieldAssessment";
+import RichEditorFieldAssessment from "../RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import { theme } from "@config/theme";
@@ -21,19 +20,10 @@ import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBottomOutlined";
+import Impact from "@/components/common/icons/Impact";
 
 interface IAdviceListProps {
-  newAdvice:
-    | {
-        assessmentId: string;
-        title: string;
-        description: string;
-        priority: string;
-        cost: string;
-        impact: string;
-      }
-    | any;
+  newAdvice: any;
   handleInputChange: (e: any) => void;
   handleSave: () => void;
   handleCancel: () => void;
@@ -92,6 +82,22 @@ const AdviceListNewForm = ({
     };
     fetchAdviceOptions();
   }, []);
+  const getIcon = (type: string) => {
+    let element;
+    if (type === "cost") {
+      element = <AttachMoneyOutlinedIcon fontSize="small" />;
+    } else if (type === "impact") {
+      element = (
+        <Impact
+          styles={{
+            color: theme.palette.primary.dark,
+            width: "20px",
+          }}
+        />
+      );
+    }
+    return element;
+  };
 
   return (
     <Box
@@ -157,7 +163,7 @@ const AdviceListNewForm = ({
             >
               {selectAdvice.map((item: any, index) => {
                 return (
-                  <FormControl key={index} sx={{ width: "30%" }}>
+                  <FormControl key={item} sx={{ width: "30%" }}>
                     <Select
                       size="small"
                       labelId={`${item}-select-label`}
@@ -184,13 +190,7 @@ const AdviceListNewForm = ({
                             height: "24px",
                           }}
                         >
-                          {item == "cost" ? (
-                            <AttachMoneyOutlinedIcon fontSize="small" />
-                          ) : item == "impact" ? (
-                            <VerticalAlignBottomOutlinedIcon fontSize="small" />
-                          ) : (
-                            <></>
-                          )}
+                          {getIcon(item)}
 
                           <Trans i18nKey={item.toLowerCase()} />
                         </Typography>
