@@ -57,15 +57,11 @@ const getPriorityColor = (priority: string) => {
   return color;
 };
 
-const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
 
 const getIconColors = (
   icon: string,
   colors: Record<string, keyof typeof COLORS>,
 ) => COLORS[colors[icon.toLowerCase()] || "unknown"];
-
-const truncateText = (text: string, maxLength: number): string =>
-  text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
 const getChipData = (type: "impact" | "cost", level: string) => {
   const priorityColor: any = getIconColors(
@@ -243,10 +239,11 @@ const AdviceItemAccordion: React.FC<{
                 variant="h6"
                 noWrap
                 sx={{
-                  maxWidth: "250px",
+                  maxWidth: "50vw",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
+                  wordBreak: "break-all",
                 }}
                 title={item.title}
                 fontFamily={
@@ -255,7 +252,7 @@ const AdviceItemAccordion: React.FC<{
                     : primaryFontFamily
                 }
               >
-                {truncateText(item.title, MAX_TITLE_LENGTH)}
+                {item.title}
               </Typography>
               <Typography
                 variant="subtitle1"
