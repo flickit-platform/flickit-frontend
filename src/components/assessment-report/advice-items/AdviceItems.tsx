@@ -148,12 +148,11 @@ const AdviceItems = () => {
       render={() => (
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
+            <Box sx={{ ...styles.centerCV }} marginTop={4} gap={2}>
               <Box
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                mt={4}
               >
                 <Typography
                   color="#73808C"
@@ -190,7 +189,7 @@ const AdviceItems = () => {
           <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
             {displayedItems.length ? (
               <Box
-                maxHeight={400}
+                maxHeight={900}
                 overflow="auto"
                 onScroll={handleScroll}
                 sx={{ position: "relative" }}

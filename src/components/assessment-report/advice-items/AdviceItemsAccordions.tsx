@@ -16,6 +16,7 @@ import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBo
 import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
+import Impact from "@/components/common/icons/impact";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -25,22 +26,33 @@ const COLORS = {
   unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
 };
 
-const PRIORITY_MAP: Record<string, keyof typeof COLORS> = {
+const ICON_COLORS: Record<string, keyof typeof COLORS> = {
   high: "error",
   medium: "secondary",
   low: "primary",
 };
 
+const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
+  high: "primary",
+  medium: "secondary",
+  low: "error",
+};
+
 const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
 
-const getPriorityColor = (priority: string) =>
-  COLORS[PRIORITY_MAP[priority.toLowerCase()] || "unknown"];
+const getIconColors = (
+  icon: string,
+  colors: Record<string, keyof typeof COLORS>,
+) => COLORS[colors[icon.toLowerCase()] || "unknown"];
 
 const truncateText = (text: string, maxLength: number): string =>
   text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
 const getChipData = (type: "impact" | "cost", level: string) => {
-  const priorityColor: any = getPriorityColor(level);
+  const priorityColor: any = getIconColors(
+    level,
+    type === "cost" ? ICON_COLORS : INVERSE_ICON_COLORS,
+  );
   const translatedLevel = t(level.toLowerCase());
   const translatedType = t(type);
   const isFarsi = i18next.language === "fa";
@@ -71,7 +83,11 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
       label={label}
       icon={
         <IconButton size="small" sx={{ color: iconColor + " !important" }}>
-          <Icon fontSize="small" />
+          {type === "cost" ? (
+            <Impact colorCode={iconColor} />
+          ) : (
+            Icon && <Icon fontSize="small" />
+          )}{" "}
         </IconButton>
       }
       sx={{ backgroundColor, color }}
@@ -84,6 +100,7 @@ const AdviceItemAccordion: React.FC<{
   onDelete: (adviceItemId: string) => void;
 }> = ({ item, onDelete }) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const isFarsi = i18next.language === "fa";
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -141,9 +158,19 @@ const AdviceItemAccordion: React.FC<{
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ color: (getPriorityColor(item.priority) as any).text }}
+                color={
+                  item.priority.toLowerCase() === "high"
+                    ? "#E72943"
+                    : item.priority.toLowerCase() === "low"
+                      ? "#3D4D5C80"
+                      : "primary"
+                }
               >
-                ({t(item.priority.toLowerCase())})
+                (
+                {!isFarsi
+                  ? t(item.priority.toLowerCase()) + " " + t("priority")
+                  : t("priority") + " " + t(item.priority.toLowerCase())}
+                )
               </Typography>
             </Box>
 
