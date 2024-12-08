@@ -44,7 +44,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
     >
       {menuItems.map((menuItem, index) => (
         <Box
-          key={menuItem?.type}
+          key={`divider-${index}`}
           sx={{ display: "flex", flexWrap: "wrap" }}
           onFocus={(e) => e.preventDefault()}
           onClick={(e) => {

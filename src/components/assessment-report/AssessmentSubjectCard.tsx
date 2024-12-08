@@ -293,14 +293,14 @@ export const AssessmentSubjectAccordion = (
                 paddingRight={2}
                 justifyContent="flex-start"
               >
-                {subjectAttributes.map((element: any) => {
+                {subjectAttributes.map((element: any, index: number) => {
                   return (
                     <Box
                       display="flex"
                       alignItems="center"
                       justifyContent="space-between"
                       gap={1}
-                      key={element.id}
+                      key={`attr-${index}`}
                     >
                       <Typography variant="titleMedium" color="#243342">
                         {element.title}

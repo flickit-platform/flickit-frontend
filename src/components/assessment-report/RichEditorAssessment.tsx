@@ -39,8 +39,8 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
   } = props;
   useEffect(() => {
     if (editor) {
-      editor.commands.setContent(defaultValue); 
-      editor.commands.focus()
+      editor.commands.setContent(defaultValue);
+      editor.commands.focus();
     }
   }, [defaultValue]);
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
@@ -65,7 +65,9 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
         field.onChange(props.editor.getHTML());
 
         setIsFarsi(firstCharDetector(props.editor.getText()));
-        setLangDir(firstCharDetector(props.editor.getText()));
+        if (setLangDir) {
+          setLangDir(firstCharDetector(props.editor.getText()));
+        }
       }
     },
     onCreate(props) {

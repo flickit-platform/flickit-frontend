@@ -24,7 +24,7 @@ const AdviceItems = () => {
 
   const queryData = useQuery<any>({
     service: (args, config) =>
-      service.fetchAdviceItems({ assessmentId, page, size: 15 }, config),
+      service.fetchAdviceItems({ assessmentId, page, size: 50 }, config),
     toastError: false,
   });
 
@@ -46,7 +46,7 @@ const AdviceItems = () => {
     if (isRefreshing) {
       setDisplayedItems([]);
       setPage(0);
-      queryData.query().finally(() => setIsRefreshing(false));
+      // queryData.query().finally(() => setIsRefreshing(false));
     }
   }, [isRefreshing]);
 
@@ -69,8 +69,6 @@ const AdviceItems = () => {
   const handleDeleteAdviceItem = async (adviceItemId: any) => {
     try {
       await deleteAdviceItem.query({ adviceItemId });
-      setIsRefreshing(true);
-      setPage(0);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -132,10 +130,9 @@ const AdviceItems = () => {
         cost: "",
         impact: "",
       });
-      setPage(0);
-      setDisplayedItems([]);
       setShowNewAdviceListForm(false);
-      queryData.query();
+      const updatedItems = [...displayedItems, newAdvice];
+      setDisplayedItems(updatedItems);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -197,7 +194,7 @@ const AdviceItems = () => {
                 <AdviceItemsAccordion
                   items={displayedItems}
                   onDelete={handleDeleteAdviceItem}
-                  queryData={queryData}
+                  setDisplayedItems={setDisplayedItems}
                 />
               </Box>
             ) : (

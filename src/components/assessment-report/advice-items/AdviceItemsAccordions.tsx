@@ -116,8 +116,17 @@ const AdviceItemAccordion: React.FC<{
   onEdit: (adviceItemId: string) => void;
   isEditing: boolean;
   setEditingItemId: any;
-  queryData: any;
-}> = ({ item, onDelete, onEdit, isEditing, setEditingItemId, queryData }) => {
+  items: any;
+  setDisplayedItems: any;
+}> = ({
+  item,
+  onDelete,
+  onEdit,
+  isEditing,
+  setEditingItemId,
+  items,
+  setDisplayedItems,
+}) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -174,7 +183,12 @@ const AdviceItemAccordion: React.FC<{
     try {
       await updateAdviceItem.query();
       removeDescriptionAdvice.current = true;
-      queryData.query();
+      const updatedItems = items.map((currentItem: any) =>
+        currentItem.id === item.id
+          ? { ...currentItem, ...newAdvice }
+          : currentItem,
+      );
+      setDisplayedItems(updatedItems);
       setEditingItemId(null);
     } catch (e) {
       const err = e as ICustomError;
@@ -286,7 +300,13 @@ const AdviceItemAccordion: React.FC<{
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
-        onConfirm={() => onDelete(item.id)}
+        onConfirm={() => {
+          onDelete(item.id);
+          const updatedItems = items.filter(
+            (currentItem: any) => currentItem.id !== item.id,
+          );
+          setDisplayedItems(updatedItems);
+        }}
         title={t("deleteItem")}
         content={t("deleteItemConfirmation", { title: item.title })}
       />
@@ -297,8 +317,8 @@ const AdviceItemAccordion: React.FC<{
 const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];
   onDelete: (adviceItemId: string) => void;
-  queryData: any;
-}> = ({ items, onDelete, queryData }) => {
+  setDisplayedItems: any;
+}> = ({ items, onDelete, setDisplayedItems }) => {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {
@@ -315,7 +335,8 @@ const AdviceItemsAccordion: React.FC<{
           onEdit={handleEdit}
           isEditing={editingItemId === item.id}
           setEditingItemId={setEditingItemId}
-          queryData={queryData}
+          items={items}
+          setDisplayedItems={setDisplayedItems}
         />
       ))}
     </Box>

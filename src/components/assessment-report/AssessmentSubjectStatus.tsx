@@ -44,9 +44,9 @@ export const AssessmentSubjectStatus = (props: IAssessmentSubjectStatus) => {
         overflow="auto"
         paddingX={2}
       >
-        {subjects.map((element: any) => {
+        {subjects.map((element: any, index) => {
           return (
-            <div key={element.id}>
+            <div key={`subject-${index}`}>
               <Box
                 display="flex"
                 justifyContent="space-between"

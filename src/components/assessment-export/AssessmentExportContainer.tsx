@@ -681,9 +681,9 @@ const AssessmentExportContainer = () => {
                           <Trans i18nKey="overallStatusReport" />
                         </Typography>
                       </Link>
-                      {subjects?.map((subject) => (
+                      {subjects?.map((subject, index) => (
                         <Link
-                          key={subject?.id}
+                          key={`subject-${index}`}
                           href={`#subject-${subject?.id}`}
                           sx={{
                             textDecoration: "none",
@@ -1479,7 +1479,9 @@ const AssessmentExportContainer = () => {
                                             }}
                                           >
                                             <Typography variant="titleMedium">
-                                              <Trans i18nKey={"assessmentQuestion"}/>
+                                              <Trans
+                                                i18nKey={"assessmentQuestion"}
+                                              />
                                             </Typography>
                                           </Box>{" "}
                                           <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />
