@@ -21,7 +21,7 @@ import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
-import EmptyAdviceList from "@components/assessment-report/emptyAdviceListItem";
+import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
 import {ICustomError} from "@utils/CustomError";
@@ -412,7 +412,7 @@ const AssessmentReportContainer = (props: any) => {
                       onAddNewRow={handleAddNewRow}
                       btnTitle="newAdviceItem"
                       title={"NoAdviceSoFar"}
-                      SubTitle={"CreateFirstAdvice"}
+                      subTitle={"CreateFirstAdvice"}
                   />
                   {
                     showNewAdviceListForm &&
@@ -428,6 +428,7 @@ const AssessmentReportContainer = (props: any) => {
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <AdviceItems />
                 </Grid>
+              </Grid>
               </Grid>
             </Box>
           );
