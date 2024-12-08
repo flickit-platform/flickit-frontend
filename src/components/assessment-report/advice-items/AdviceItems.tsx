@@ -20,7 +20,7 @@ const AdviceItems = () => {
 
   const [page, setPage] = useState(0);
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
-  const [isRefreshing, setIsRefreshing] = useState(false); // Add a flag for refreshing
+  // const [isRefreshing, setIsRefreshing] = useState(false); // Add a flag for refreshing
 
   const queryData = useQuery<any>({
     service: (args, config) =>
@@ -41,14 +41,6 @@ const AdviceItems = () => {
       setDisplayedItems((prevItems) => [...prevItems, ...data.items]);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (isRefreshing) {
-      setDisplayedItems([]);
-      setPage(0);
-      // queryData.query().finally(() => setIsRefreshing(false));
-    }
-  }, [isRefreshing]);
 
   const handleScroll = (event: React.UIEvent) => {
     const container = event.currentTarget;

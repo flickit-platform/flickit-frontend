@@ -57,7 +57,6 @@ const getPriorityColor = (priority: string) => {
   return color;
 };
 
-
 const getIconColors = (
   icon: string,
   colors: Record<string, keyof typeof COLORS>,
