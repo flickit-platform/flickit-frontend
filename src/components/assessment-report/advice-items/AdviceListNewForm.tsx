@@ -82,19 +82,22 @@ const AdviceListNewForm = ({
     };
     fetchAdviceOptions();
   }, []);
-  const getIcon = (type: string) =>
-    type == "cost" ? (
-      <AttachMoneyOutlinedIcon fontSize="small" />
-    ) : type == "impact" ? (
-      <Impact
-        styles={{
-          color: theme.palette.primary.dark,
-          width: "20px",
-        }}
-      />
-    ) : (
-      <></>
-    );
+  const getIcon = (type: string) => {
+    let element = undefined;
+    if (type === "cost") {
+      element = <AttachMoneyOutlinedIcon fontSize="small" />;
+    } else if (type === "impact") {
+      element = (
+        <Impact
+          styles={{
+            color: theme.palette.primary.dark,
+            width: "20px",
+          }}
+        />
+      );
+    }
+    return element;
+  };
 
   return (
     <Box

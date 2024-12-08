@@ -12,7 +12,6 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBottomOutlined";
 import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
@@ -38,12 +37,17 @@ const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
   low: "error",
 };
 
-const getPriorityColor = (priority: string) =>
-  priority.toLowerCase() === "high"
-    ? "#E72943"
-    : priority.toLowerCase() === "low"
-      ? "#3D4D5C80"
-      : "primary";
+const getPriorityColor = (priority: string) => {
+  let color = "primary";
+  if (priority.toLowerCase() === "high") {
+    color = "#E72943";
+  } else if (priority.toLowerCase() === "low") {
+    color = "#3D4D5C80";
+  } else {
+    color = "primary";
+  }
+  return color
+};
 
 const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
 
