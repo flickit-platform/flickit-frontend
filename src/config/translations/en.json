@@ -731,6 +731,12 @@
   "medium": "Medium",
   "high": "High",
   "priority": "Priority",
+<<<<<<< HEAD
   "deleteItemConfirmation": "Are you sure you want to remove <title>{{title}}</title> from advice items?",
   "cost": "Cost"
+=======
+  "deleteItemConfirmation": "Are you sure you want remove <title>{{title}}</title> from advice items?",
+  "cost": "Cost",
+  "AccuracyOfSystem": "Accuracy and robustness of system function even in exceptional conditions"
+>>>>>>> 0243626d (FRO-27: card of attribute)
 }
