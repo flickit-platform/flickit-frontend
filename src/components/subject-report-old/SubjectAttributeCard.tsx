@@ -94,11 +94,11 @@ const SUbjectAttributeCard = (props: any) => {
             <Grid container sx={{ width:"100%", direction: theme.direction}}>
                 <Grid item xs={9} sx={{px:"32px",py:"40px"}}>
                               <Title>
-                                <Typography sx={{...theme.typography.headlineSmall, color:"#2B333B"}} >
+                                <Typography sx={{...theme.typography.headlineSmall, color:"#2B333B", mb: 2}} >
                                   {title}
                                 </Typography>
                               </Title>
-                            <Typography sx={{...theme.typography.bodyMedium, color:"#6C8093"}}>
+                            <Typography sx={{...theme.typography.bodyMedium, color:"#6C8093",mb:2}}>
                                 <Trans i18nKey={"AccuracyOfSystem"} />
                             </Typography>
                         <Box sx={{display: "flex", justifyContent:"space-between"}}>
@@ -122,7 +122,7 @@ const SUbjectAttributeCard = (props: any) => {
                         <FlatGauge
                             confidenceLevelNum={50}
                             textPosition={"top"}
-                            sx={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%",height:"100%",background:"blue",
+                            sx={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%",height:"100%",
                                 borderRadius:  expandedAttribute == id ? "0 16px 0 0" : "0 16px 16px 0" }} />
                     </Box>
                 </Grid>
