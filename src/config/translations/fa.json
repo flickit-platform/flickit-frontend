@@ -734,6 +734,5 @@
   "priority": "فوریت",
   "adviceItems": "لیست توصیه‌ها",
   "deleteItemConfirmation": "آیا مطمئنید که میخواهید <strong>{{title}}</strong> را از توصیه‌ها حذف کنید؟",
-  "cost": "قیمت",
-  "AccuracyOfSystem": "دقت و استحکام عملکرد سیستم حتی در شرایط استثنایی"
+  "cost": "قیمت"
 }
