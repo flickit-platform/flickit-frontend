@@ -63,14 +63,16 @@ const SUbjectAttributeCard = (props: any) => {
         py: { xs: 3, sm: 4 },
         // pr: { xs: 1.5, sm: 3, md: 4 },
         mb: 5,
-          padding: "0px !important"
+        padding: "0px !important",
       }}
     >
       <Accordion
-            sx={{ boxShadow: "none !important",borderRadius: "16px !important",
-            "& .MuiAccordionSummary-content":{
-                margin: "0px !important"
-            }
+        sx={{
+          boxShadow: "none !important",
+          borderRadius: "16px !important",
+          "& .MuiAccordionSummary-content": {
+            margin: "0px !important",
+          },
         }}
         expanded={expandedAttribute === id}
         onChange={handleChange(id)}
@@ -86,47 +88,63 @@ const SUbjectAttributeCard = (props: any) => {
               background: "#fff",
             },
             "& .MuiAccordionSummary-content .Mui-expanded": {
-               margin: "0px !important",
-               padding: "0px !important",
-           },
+              margin: "0px !important",
+              padding: "0px !important",
+            },
           }}
-          onClick={(event) => event.stopPropagation()}>
-            <Grid container sx={{ width:"100%", direction: theme.direction}}>
-                <Grid item xs={9} sx={{px:"32px",py:"40px"}}>
-                              <Title>
-                                <Typography sx={{...theme.typography.headlineSmall, color:"#2B333B", mb: 2}} >
-                                  {title}
-                                </Typography>
-                              </Title>
-                            <Typography sx={{...theme.typography.bodyMedium, color:"#6C8093",mb:2}}>
-                                <Trans i18nKey={"AccuracyOfSystem"} />
-                            </Typography>
-                        <Box sx={{display: "flex", justifyContent:"space-between"}}>
-                            <Typography
-                                color="#2466A8"
-                                variant="titleSmall"
-                            >
-                                <Trans i18nKey="insight" />
-                            </Typography>
-                            <AIGenerated />
-                        </Box>
-                </Grid>
-                <Grid sx={{width:"100%", height:"100%"}} item xs={3}>
-                    <Box sx={{
-                        width:"100%",
-                        height:"100%",
-                        display:"flex",
-                        justifyContent:"center",
-                        alignItems:"center"
-                    }}>
-                        <FlatGauge
-                            confidenceLevelNum={50}
-                            textPosition={"top"}
-                            sx={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%",height:"100%",
-                                borderRadius:  expandedAttribute == id ? "0 16px 0 0" : "0 16px 16px 0" }} />
-                    </Box>
-                </Grid>
+          onClick={(event) => event.stopPropagation()}
+        >
+          <Grid container sx={{ width: "100%", direction: theme.direction }}>
+            <Grid item xs={9} sx={{ px: "32px", py: "40px" }}>
+              <Title>
+                <Typography
+                  sx={{
+                    ...theme.typography.headlineSmall,
+                    color: "#2B333B",
+                    mb: 2,
+                  }}
+                >
+                  {title}
+                </Typography>
+              </Title>
+              <Typography
+                sx={{ ...theme.typography.bodyMedium, color: "#6C8093", mb: 2 }}
+              >
+                <Trans i18nKey={"AccuracyOfSystem"} />
+              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography color="#2466A8" variant="titleSmall">
+                  <Trans i18nKey="insight" />
+                </Typography>
+                <AIGenerated />
+              </Box>
             </Grid>
+            <Grid sx={{ width: "100%", height: "100%" }} item xs={3}>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <FlatGauge
+                  confidenceLevelNum={50}
+                  textPosition={"top"}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius:
+                      expandedAttribute == id ? "0 16px 0 0" : "0 16px 16px 0",
+                  }}
+                />
+              </Box>
+            </Grid>
+          </Grid>
 
           {/*<Grid container spacing={2}>*/}
           {/*  <Grid item md={12} xs={12}>*/}
@@ -419,8 +437,6 @@ const SUbjectAttributeCard = (props: any) => {
           {/*    </Box>*/}
           {/*  </Grid>*/}
           {/*</Grid>*/}
-
-
         </AccordionSummary>
         <Divider sx={{ mx: 2 }} />
         <AccordionDetails sx={{ padding: "0 !important" }}>
