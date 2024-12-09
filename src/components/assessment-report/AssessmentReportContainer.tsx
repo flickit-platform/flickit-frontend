@@ -30,7 +30,7 @@ import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
 import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
-import AdviceListNewForm from "@components/assessment-report/AdviceListNewForm";
+import AdviceListNewForm from "@/components/assessment-report/advice-items/AdviceListNewForm";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AdviceItems from "./advice-items/AdviceItems";

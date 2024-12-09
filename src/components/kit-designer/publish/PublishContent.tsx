@@ -126,7 +126,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               <ul>
                 {validateKitVersion?.data?.errors.map(
                   (error: string, index: number) => (
-                    <li key={index}>
+                    <li key={error}>
                       <Typography variant="bodyMedium">{error}</Typography>
                     </li>
                   ),

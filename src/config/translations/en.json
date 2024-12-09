@@ -70,7 +70,7 @@
   "anyChangesInTheNumberOfOptionsForAPreExistingQuestion": "Any changes in the number of options for a pre-existing question",
   "areYouSureYouWantDeleteThisAttachment": "Are you sure you want delete this attachment?",
   "areYouSureYouWantDeleteThisEvidence": "Are you sure you want delete this evidence?",
-  "areYouSureYouWantDeleteThisMember": "Are you sure you want remove {{name}} from {{assessment}}?",
+  "areYouSureYouWantDeleteThisMember": "Are you sure you want to remove {{name}} from {{assessment}}?",
   "areYouSureYouWantDeleteThisMemberInvited": "Are you sure about canceling the invitation sent to {{name}} for a role in this assessment?",
   "as": "as",
   "assessment": "Assessment",
@@ -731,7 +731,6 @@
   "medium": "Medium",
   "high": "High",
   "priority": "Priority",
-  "deleteItemConfirmation": "Are you sure you want remove <title>{{title}}</title> from advice items?",
-  "cost": "Cost",
-  "AccuracyOfSystem": "Accuracy and robustness of system function even in exceptional conditions"
+  "deleteItemConfirmation": "Are you sure you want to remove <title>{{title}}</title> from advice items?",
+  "cost": "Cost"
 }

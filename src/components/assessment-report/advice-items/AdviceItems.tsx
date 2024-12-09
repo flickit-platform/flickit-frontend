@@ -12,7 +12,7 @@ import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
-import AdviceListNewForm from "../AdviceListNewForm";
+import AdviceListNewForm from "./AdviceListNewForm";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
@@ -20,11 +20,10 @@ const AdviceItems = () => {
 
   const [page, setPage] = useState(0);
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
-  const [isRefreshing, setIsRefreshing] = useState(false); // Add a flag for refreshing
 
   const queryData = useQuery<any>({
     service: (args, config) =>
-      service.fetchAdviceItems({ assessmentId, page, size: 15 }, config),
+      service.fetchAdviceItems({ assessmentId, page, size: 50 }, config),
     toastError: false,
   });
 
@@ -37,18 +36,10 @@ const AdviceItems = () => {
   const totalItems = data?.total || 0;
 
   useEffect(() => {
-    if (data?.items?.length && !isRefreshing) {
+    if (data?.items?.length) {
       setDisplayedItems((prevItems) => [...prevItems, ...data.items]);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (isRefreshing) {
-      setDisplayedItems([]);
-      setPage(0);
-      queryData.query().finally(() => setIsRefreshing(false));
-    }
-  }, [isRefreshing]);
 
   const handleScroll = (event: React.UIEvent) => {
     const container = event.currentTarget;
@@ -69,8 +60,6 @@ const AdviceItems = () => {
   const handleDeleteAdviceItem = async (adviceItemId: any) => {
     try {
       await deleteAdviceItem.query({ adviceItemId });
-      setIsRefreshing(true);
-      setPage(0);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -132,10 +121,9 @@ const AdviceItems = () => {
         cost: "",
         impact: "",
       });
-      setPage(0);
-      setDisplayedItems([]);
       setShowNewAdviceListForm(false);
-      queryData.query();
+      const updatedItems = [...displayedItems, newAdvice];
+      setDisplayedItems(updatedItems);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -148,12 +136,11 @@ const AdviceItems = () => {
       render={() => (
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
+            <Box sx={{ ...styles.centerCV }} marginTop={4} gap={2}>
               <Box
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                mt={4}
               >
                 <Typography
                   color="#73808C"
@@ -190,7 +177,7 @@ const AdviceItems = () => {
           <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
             {displayedItems.length ? (
               <Box
-                maxHeight={400}
+                maxHeight={900}
                 overflow="auto"
                 onScroll={handleScroll}
                 sx={{ position: "relative" }}
@@ -198,6 +185,7 @@ const AdviceItems = () => {
                 <AdviceItemsAccordion
                   items={displayedItems}
                   onDelete={handleDeleteAdviceItem}
+                  setDisplayedItems={setDisplayedItems}
                 />
               </Box>
             ) : (

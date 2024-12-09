@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -8,14 +8,23 @@ import {
   Box,
   IconButton,
   Divider,
+  Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import VerticalAlignBottomOutlinedIcon from "@mui/icons-material/VerticalAlignBottomOutlined";
 import { AdviceItem } from "@/types";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
+import Impact from "@/components/common/icons/Impact";
+import AdviceListNewForm from "./AdviceListNewForm";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@/utils/useQuery";
+import { useServiceContext } from "@/providers/ServiceProvider";
+import toastError from "@/utils/toastError";
+import { ICustomError } from "@/utils/CustomError";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -25,22 +34,40 @@ const COLORS = {
   unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
 };
 
-const PRIORITY_MAP: Record<string, keyof typeof COLORS> = {
+const ICON_COLORS: Record<string, keyof typeof COLORS> = {
   high: "error",
   medium: "secondary",
   low: "primary",
 };
 
-const MAX_TITLE_LENGTH = 50; // Adjustable max length for titles
+const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
+  high: "primary",
+  medium: "secondary",
+  low: "error",
+};
 
-const getPriorityColor = (priority: string) =>
-  COLORS[PRIORITY_MAP[priority.toLowerCase()] || "unknown"];
+const getPriorityColor = (priority: string) => {
+  let color;
+  if (priority.toLowerCase() === "high") {
+    color = "#E72943";
+  } else if (priority.toLowerCase() === "low") {
+    color = "#3D4D5C80";
+  } else {
+    color = "primary";
+  }
+  return color;
+};
 
-const truncateText = (text: string, maxLength: number): string =>
-  text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+const getIconColors = (
+  icon: string,
+  colors: Record<string, keyof typeof COLORS>,
+) => COLORS[colors[icon.toLowerCase()] || "unknown"];
 
 const getChipData = (type: "impact" | "cost", level: string) => {
-  const priorityColor: any = getPriorityColor(level);
+  const priorityColor: any = getIconColors(
+    level,
+    type === "cost" ? ICON_COLORS : INVERSE_ICON_COLORS,
+  );
   const translatedLevel = t(level.toLowerCase());
   const translatedType = t(type);
   const isFarsi = i18next.language === "fa";
@@ -61,9 +88,11 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
 }) => {
   const { backgroundColor, color, iconColor, label } = getChipData(type, level);
   const Icon =
-    type === "impact"
-      ? VerticalAlignBottomOutlinedIcon
-      : AttachMoneyOutlinedIcon;
+    type === "impact" ? (
+      <Impact styles={{ color: iconColor, px: 2, width: "20px" }} />
+    ) : (
+      <AttachMoneyOutlinedIcon sx={{ fontSize: "14px" }} />
+    );
 
   return (
     <Chip
@@ -71,7 +100,7 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
       label={label}
       icon={
         <IconButton size="small" sx={{ color: iconColor + " !important" }}>
-          <Icon fontSize="small" />
+          {Icon}
         </IconButton>
       }
       sx={{ backgroundColor, color }}
@@ -82,22 +111,102 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
 const AdviceItemAccordion: React.FC<{
   item: AdviceItem;
   onDelete: (adviceItemId: string) => void;
-}> = ({ item, onDelete }) => {
+  onEdit: (adviceItemId: string) => void;
+  isEditing: boolean;
+  setEditingItemId: any;
+  items: any;
+  setDisplayedItems: any;
+}> = ({
+  item,
+  onDelete,
+  onEdit,
+  isEditing,
+  setEditingItemId,
+  items,
+  setDisplayedItems,
+}) => {
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const isFarsi = i18next.language === "fa";
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setDeleteDialogOpen(true);
+  const [newAdvice, setNewAdvice] = useState({
+    title: "",
+    description: "",
+    priority: "",
+    cost: "",
+    impact: "",
+  });
+
+  const updateAdviceItem = useQuery({
+    service: (args = { adviceItemId: item.id, data: newAdvice }, config) =>
+      service.updateAdviceItem(args, config),
+    runOnMount: false,
+  });
+
+  const removeDescriptionAdvice = useRef(false);
+
+  useEffect(() => {
+    if (isEditing) {
+      setNewAdvice({
+        title: item.title,
+        description: item.description,
+        priority: item.priority.toUpperCase(),
+        cost: item.cost.toUpperCase(),
+        impact: item.impact.toUpperCase(),
+      });
+    }
+  }, [isEditing, item, assessmentId]);
+
+  const handleCancel = () => {
+    setNewAdvice({
+      title: item.title,
+      description: item.description,
+      priority: item.priority.toUpperCase(),
+      cost: item.cost.toUpperCase(),
+      impact: item.impact.toUpperCase(),
+    });
+    setEditingItemId(null);
   };
 
-  const handleDeleteConfirm = () => {
-    onDelete(item.id);
-    setDeleteDialogOpen(false);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAdvice((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleDialogClose = () => {
-    setDeleteDialogOpen(false);
+  const handleSave = async () => {
+    try {
+      await updateAdviceItem.query();
+      removeDescriptionAdvice.current = true;
+      const updatedItems = items.map((currentItem: any) =>
+        currentItem.id === item.id
+          ? { ...currentItem, ...newAdvice }
+          : currentItem,
+      );
+      setDisplayedItems(updatedItems);
+      setEditingItemId(null);
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
+
+  if (isEditing) {
+    return (
+      <AdviceListNewForm
+        newAdvice={newAdvice}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
+        setNewAdvice={setNewAdvice}
+        removeDescriptionAdvice={removeDescriptionAdvice}
+        postAdviceItem={updateAdviceItem}
+      />
+    );
+  }
 
   return (
     <>
@@ -117,69 +226,120 @@ const AdviceItemAccordion: React.FC<{
             padding: "0 16px",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+            spacing={1}
           >
-            <Box display="flex" alignItems="center" gap={1}>
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{
-                  maxWidth: "250px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-                title={item.title}
-              >
-                {truncateText(item.title, MAX_TITLE_LENGTH)}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{ color: (getPriorityColor(item.priority) as any).text }}
-              >
-                ({t(item.priority.toLowerCase())})
-              </Typography>
-            </Box>
+            {/* Left side: Title and Priority */}
+            <Grid item xs={12} sm={8} md={8.3}>
+              <Grid container alignItems="center" spacing={1}>
+                <Grid item xs={12} alignItems="center" display="flex">
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      display: "inline-block",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      wordBreak: "break-word",
+                      marginRight: "8px", // Adding space between title and priority
+                    }}
+                    title={item.title}
+                    fontFamily={
+                      languageDetector(item.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                    }
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color={getPriorityColor(item.priority.toLowerCase())}
+                    sx={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    (
+                    {!isFarsi
+                      ? t(item.priority.toLowerCase()) + " " + t("priority")
+                      : t("priority") + " " + t(item.priority.toLowerCase())}
+                    )
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
 
-            <Box display="flex" gap={1} alignItems="center">
-              <CustomChip type="impact" level={item.impact} />
-              <CustomChip type="cost" level={item.cost} />
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={(e) => e.stopPropagation()}
+            {/* Right side: Impact, Cost, and Icons */}
+            <Grid item xs={12} sm={4} md={3.7}>
+              <Grid
+                container
+                justifyContent="flex-start"
+                alignItems="center"
               >
-                <EditRounded fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                color="primary"
-                onClick={handleDeleteClick}
-              >
-                <DeleteRounded fontSize="small" />
-              </IconButton>
-            </Box>
-          </Box>
+                <Grid item xs={4.8} >
+                  <CustomChip type="impact" level={item.impact} />
+                </Grid>
+                <Grid item xs={4.8} >
+                  <CustomChip type="cost" level={item.cost} />
+                </Grid>
+                <Grid item xs={0.2} alignItems="center" display="flex">
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(item.id);
+                    }}
+                  >
+                    <EditRounded fontSize="small" />
+                  </IconButton>
+
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteDialogOpen(true);
+                    }}
+                  >
+                    <DeleteRounded fontSize="small" />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </AccordionSummary>
+
         <AccordionDetails sx={{ padding: "8px 16px" }}>
           <Divider sx={{ marginBottom: "8px" }} />
           <Typography
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
+            dir={languageDetector(item.description) ? "rtl" : "ltr"}
+            fontFamily={
+              languageDetector(item.description)
+                ? farsiFontFamily
+                : primaryFontFamily
+            }
           />
         </AccordionDetails>
       </Accordion>
 
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
-        onClose={handleDialogClose}
-        onConfirm={handleDeleteConfirm}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={() => {
+          onDelete(item.id);
+          const updatedItems = items.filter(
+            (currentItem: any) => currentItem.id !== item.id,
+          );
+          setDisplayedItems(updatedItems);
+        }}
         title={t("deleteItem")}
         content={t("deleteItemConfirmation", { title: item.title })}
       />
@@ -190,12 +350,30 @@ const AdviceItemAccordion: React.FC<{
 const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];
   onDelete: (adviceItemId: string) => void;
-}> = ({ items, onDelete }) => (
-  <Box>
-    {items.map((item) => (
-      <AdviceItemAccordion key={item.id} item={item} onDelete={onDelete} />
-    ))}
-  </Box>
-);
+  setDisplayedItems: any;
+}> = ({ items, onDelete, setDisplayedItems }) => {
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+
+  const handleEdit = (id: string) => {
+    setEditingItemId((prev) => (prev === id ? null : id));
+  };
+
+  return (
+    <Box>
+      {items.map((item) => (
+        <AdviceItemAccordion
+          key={item.id}
+          item={item}
+          onDelete={onDelete}
+          onEdit={handleEdit}
+          isEditing={editingItemId === item.id}
+          setEditingItemId={setEditingItemId}
+          items={items}
+          setDisplayedItems={setDisplayedItems}
+        />
+      ))}
+    </Box>
+  );
+};
 
 export default AdviceItemsAccordion;

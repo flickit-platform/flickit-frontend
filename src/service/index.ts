@@ -417,16 +417,20 @@ export const createService = (
       });
     },
     postAdviceItem(
-        {assessmentId,data}: {assessmentId:TId,data:any},
-        config: AxiosRequestConfig<any> | undefined,
-    ){
-        return axios.post(
-            `/api/v1/advice-items/`,
-            data,
-            {
-                ...(config ?? {}),
-            },
-        );
+      { data }: { data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.post(`/api/v1/advice-items/`, data, {
+        ...(config ?? {}),
+      });
+    },
+    updateAdviceItem(
+      { adviceItemId, data }: { adviceItemId: TId; data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(`/api/v1/advice-items/${adviceItemId}/`, data, {
+        ...(config ?? {}),
+      });
     },
     fetchAdviceNarration(
       { assessmentId }: { assessmentId: string },
@@ -441,23 +445,20 @@ export const createService = (
       );
     },
     fetchAdviceImpactList(
-        args: any,
-        config: AxiosRequestConfig<any> | undefined,
-    ){
-        return axios.get(`/api/v1/advice-item-impact-levels/`)
+      args: any,
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/advice-item-impact-levels/`);
     },
     fetchAdvicePriorityList(
-        args: any,
-        config: AxiosRequestConfig<any> | undefined,
-    ){
-        return axios.get(`/api/v1/advice-item-priority-levels/`)
+      args: any,
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/advice-item-priority-levels/`);
     },
-    fetchCostList(
-          args: any,
-          config: AxiosRequestConfig<any> | undefined,
-      ){
-          return axios.get(`/api/v1/advice-item-cost-levels/`)
-      },
+    fetchCostList(args: any, config: AxiosRequestConfig<any> | undefined) {
+      return axios.get(`/api/v1/advice-item-cost-levels/`);
+    },
     updateAdviceNarration(
       { assessmentId, data }: { assessmentId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,

@@ -35,8 +35,7 @@ const FlatGauge = (props:IGaugeProps) => {
         levelValue = 10,
         text = "template text",
         textPosition= "top",
-        confidenceLevelNum = 0,
-        ...rest
+        confidenceLevelNum = 0
     } = props;
 
     if (maturityLevelNumber < levelValue) return null
@@ -64,26 +63,24 @@ const FlatGauge = (props:IGaugeProps) => {
     return (
         <Suspense
             fallback={<Box>fallback</Box>}>
-            <Box sx={{width:"100%", height:"100%"}} {...rest}>
-                <Box sx={{display:"flex", flexDirection:`${textPosition == "top" ? "column" : "row" }`, textAlign: "center", width:"fit-content", gap:"1rem",justifyContent:"center", alignItems:"center"}}>
-                    {textPosition == "top" && <Typography sx={{ ...theme.typography.semiBoldLarge, color: colorCode, fontSize:"1.25rem", fontWeight:"bold"}} >{text}</Typography>}
-                    <Box style={{direction: theme.direction , display:"flex",alignItems:"center" ,gap:"3px",width:"fit-content"}}>
-                        <FlatGaugeComponent
-                            colorCode={colorCode}
-                            value={levelValue}
-                        />
-                        {textPosition == "left" && <Box sx={{
-                            mr : theme.direction == "rtl" ? "1.3rem" : "",
-                            ml : theme.direction != "rtl" ? "1.3rem" : "",
-                            color: colorCode
-                        }}><Trans i18nKey={`${text}`} /></Box> }
-                    </Box>
-                    {Boolean(confidenceLevelNum) && textPosition == "top" &&
-                        <Typography sx={{display:"flex", gap:"5px"}}>
-                            <Trans style={{color: "#9DA7B3", ...theme.typography.labelSmall }} i18nKey={"confidenceLevel"} />: <Typography sx={{color: checkColor(confidenceLevelNum)}} > {confidenceLevelNum}% </Typography>
-                        </Typography>
-                    }
+            <Box sx={{display:"flex", flexDirection:`${textPosition == "top" ? "column" : "row" }`, textAlign: "center", width:"fit-content", gap:"1rem",justifyContent:"center", alignItems:"center"}}>
+                {textPosition == "top" && <Typography sx={{ ...theme.typography.semiBoldLarge, color: colorCode, fontSize:"1.25rem", fontWeight:"bold"}} >{text}</Typography>}
+                <Box style={{direction: theme.direction , display:"flex",alignItems:"center" ,gap:"3px",width:"fit-content"}}>
+                    <FlatGaugeComponent
+                        colorCode={colorCode}
+                        value={levelValue}
+                    />
+                    {textPosition == "left" && <Box sx={{
+                        mr : theme.direction == "rtl" ? "1.3rem" : "",
+                        ml : theme.direction != "rtl" ? "1.3rem" : "",
+                        color: colorCode
+                    }}><Trans i18nKey={`${text}`} /></Box> }
                 </Box>
+                {Boolean(confidenceLevelNum) && textPosition == "top" &&
+                    <Typography sx={{display:"flex", gap:"5px"}}>
+                        <Trans style={{color: "#9DA7B3", ...theme.typography.labelSmall }} i18nKey={"confidenceLevel"} />: <Typography sx={{color: checkColor(confidenceLevelNum)}} > {confidenceLevelNum}% </Typography>
+                    </Typography>
+                }
             </Box>
         </Suspense>
     );
