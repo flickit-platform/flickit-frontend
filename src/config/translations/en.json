@@ -732,5 +732,6 @@
   "high": "High",
   "priority": "Priority",
   "deleteItemConfirmation": "Are you sure you want remove <title>{{title}}</title> from advice items?",
-  "cost": "Cost"
+  "cost": "Cost",
+  "AccuracyOfSystem": "Accuracy and robustness of system function even in exceptional conditions"
 }
