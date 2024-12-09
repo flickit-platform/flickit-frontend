@@ -1,4 +1,3 @@
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Title from "@common/Title";
 import Box from "@mui/material/Box";
@@ -14,7 +13,7 @@ import { theme } from "@config/theme";
 import React, { useEffect, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
@@ -22,10 +21,8 @@ import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { toast } from "react-toastify";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import EditRounded from "@mui/icons-material/EditRounded";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { IPermissions } from "@/types";
 import AIGenerated from "../common/tags/AIGenerated";
 import RichEditorField from "@common/fields/RichEditorField";
@@ -33,6 +30,7 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import FlatGauge from "@common/flatGauge/FlatGauge";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -59,326 +57,386 @@ const SUbjectAttributeCard = (props: any) => {
       setExpandedAttribute(isExpanded ? panel : false);
     };
   return (
-    <Paper
-      elevation={2}
+    <Box
       sx={{
-        borderRadius: 3,
+        borderRadius: "16px !important",
         py: { xs: 3, sm: 4 },
         // pr: { xs: 1.5, sm: 3, md: 4 },
         mb: 5,
+        padding: "0px !important",
       }}
     >
       <Accordion
-        sx={{ boxShadow: "none !important" }}
+        sx={{
+          boxShadow: "none !important",
+          borderRadius: "16px !important",
+          "& .MuiAccordionSummary-content": {
+            margin: "0px !important",
+          },
+        }}
         expanded={expandedAttribute === id}
         onChange={handleChange(id)}
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
           sx={{
+            margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
-            marginRight: theme.direction === "ltr" ? 2 : "unset",
-            marginLeft: theme.direction === "rtl" ? 2 : "unset",
             "&.Mui-focusVisible": {
               background: "#fff",
+            },
+            "& .MuiAccordionSummary-content .Mui-expanded": {
+              margin: "0px !important",
+              padding: "0px !important",
             },
           }}
           onClick={(event) => event.stopPropagation()}
         >
-          <Grid container spacing={2}>
-            <Grid item md={12} xs={12}>
-              <Box mb={1}>
-                <Title
-                  sx={{
-                    opacity: 0.95,
-                    ml:
-                      theme.direction == "ltr"
-                        ? { xs: 0.75, sm: 1.5, md: 2 }
-                        : "unset",
-                    mr:
-                      theme.direction == "rtl"
-                        ? { xs: 0.75, sm: 1.5, md: 2 }
-                        : "unset",
-                  }}
-                >
-                  <Typography variant="titleLarge" fontWeight={600}>
-                    {title}
-                  </Typography>
-                </Title>
-              </Box>
-
-              <Box
-                marginY={1}
-                sx={{
-                  ml:
-                    theme.direction == "ltr"
-                      ? { xs: 0.75, sm: 1.5, md: 2 }
-                      : "unset",
-                  mr:
-                    theme.direction == "rtl"
-                      ? { xs: 0.75, sm: 1.5, md: 2 }
-                      : "unset",
-                }}
-              >
+          <Grid container sx={{ width: "100%", direction: theme.direction }}>
+            <Grid item xs={9} sx={{ px: "32px", py: "40px" }}>
+              <Title>
                 <Typography
-                  variant="titleMedium"
-                  fontWeight={400}
                   sx={{
-                    ml:
-                      theme.direction == "ltr"
-                        ? { xs: 0.75, sm: 1.5, md: 2 }
-                        : "unset",
-                    mr:
-                      theme.direction == "rtl"
-                        ? { xs: 0.75, sm: 1.5, md: 2 }
-                        : "unset",
+                    ...theme.typography.headlineSmall,
+                    color: "#2B333B",
+                    mb: 2,
                   }}
                 >
-                  {description}
+                  {title}
                 </Typography>
+              </Title>
+              <Typography
+                sx={{ ...theme.typography.bodyMedium, color: "#6C8093", mb: 2 }}
+              >
+                <Trans i18nKey={"AccuracyOfSystem"} />
+              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography color="#2466A8" variant="titleSmall">
+                  <Trans i18nKey="insight" />
+                </Typography>
+                <AIGenerated />
               </Box>
-              <AttributeStatusBarContainer
-                status={maturityLevel?.title}
-                ml={maturityLevel?.index}
-                cl={Math.ceil(confidenceValue)}
-                mn={maturity_levels_count}
-              />
+            </Grid>
+            <Grid sx={{ width: "100%", height: "100%" }} item xs={3}>
               <Box
-                mt={1}
                 sx={{
-                  ml:
-                    theme.direction == "ltr"
-                      ? { xs: 0.75, sm: 1.5, md: 2 }
-                      : "unset",
-                  mr:
-                    theme.direction == "rtl"
-                      ? { xs: 0.75, sm: 1.5, md: 2 }
-                      : "unset",
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <Typography
-                  variant="titleMedium"
+                <FlatGauge
+                  confidenceLevelNum={50}
+                  textPosition={"top"}
                   sx={{
-                    ml:
-                      theme.direction == "ltr"
-                        ? { xs: 0.75, sm: 1.5, md: 2 }
-                        : "unset",
-                    mr:
-                      theme.direction == "rtl"
-                        ? { xs: 0.75, sm: 1.5, md: 2 }
-                        : "unset",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius:
+                      expandedAttribute == id ? "0 16px 0 0" : "0 16px 16px 0",
                   }}
-                >
-                  <Trans i18nKey={"withConfidenceSubject"} />
-                  <Typography
-                    component="span"
-                    variant="titleMedium"
-                    color="#3596A1"
-                    mx={1}
-                  >
-                    {Math.ceil(confidenceValue)}%
-                  </Typography>
-                  <Trans i18nKey={"wasEstimate"} values={{ title }} />
-                  <Typography
-                    component="span"
-                    color="#6035A1"
-                    variant="titleMedium"
-                  >
-                    {" "}
-                    <Trans
-                      i18nKey={"divider"}
-                      values={{
-                        cl: Math.ceil(maturityLevel.index),
-                        clDivider: Math.ceil(maturity_levels_count),
-                      }}
-                    />{" "}
-                  </Typography>
-                  <Trans i18nKey={"meaning"} />{" "}
-                  <Trans i18nKey={`${maturityLevel?.title}`} />
-                  <Trans i18nKey={"is"} />{" "}
-                </Typography>
-              </Box>
-              <Box
-                mt={1}
-                sx={{
-                  ml:
-                    theme.direction == "ltr"
-                      ? { xs: 0.75, sm: 1.5, md: 2 }
-                      : "unset",
-                  mr:
-                    theme.direction == "rtl"
-                      ? { xs: 0.75, sm: 1.5, md: 2 }
-                      : "unset",
-                }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
-              >
-                {attributesData[id?.toString()] ? (
-                  <Box display="flex" alignItems="center" gap="4px">
-                    <OnHoverInput
-                      attributeId={id}
-                      width={
-                        attributesDataPolicy[id?.toString()]?.aiInsight
-                          ? "90%"
-                          : "100%"
-                      }
-                      // formMethods={formMethods}
-                      data={attributesData[id?.toString()]}
-                      infoQuery={updateAttributeAndData}
-                      type="summary"
-                      editable={attributesDataPolicy[id?.toString()]?.editable}
-                    />
-                  </Box>
-                ) : (
-                  editable && (
-                    <Box sx={{ ...styles.centerV }} gap={0.5} my={1}>
-                      <Box
-                        sx={{
-                          zIndex: 1,
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          ml: { xs: 0.75, sm: 0.75, md: 1 },
-                        }}
-                      >
-                        <Typography
-                          variant="labelSmall"
-                          sx={{
-                            backgroundColor: "#d85e1e",
-                            color: "white",
-                            padding: "0.35rem 0.35rem",
-                            borderRadius: "4px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          <Trans i18nKey={"warning"} />
-                        </Typography>
-                      </Box>{" "}
-                      <Typography variant="titleMedium" fontWeight={400}>
-                        <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedFirstSection" />
-                      </Typography>
-                      <Typography
-                        component={Link}
-                        to={`./../../questionnaires?subject_pk=${id}`}
-                        color="#2D80D2"
-                        variant="titleMedium"
-                        sx={{
-                          textDecoration: "none",
-                        }}
-                      >
-                        <Trans i18nKey={"assessmentQuestion"} />
-                      </Typography>
-                      <Typography variant="titleMedium" fontWeight={400}>
-                        <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />
-                      </Typography>
-                    </Box>
-                  )
-                )}
-                {attributesDataPolicy[id?.toString()]?.aiInsight &&
-                  attributesDataPolicy[id?.toString()]?.aiInsight.isValid && (
-                    <Box sx={{ ...styles.centerV }} gap={2}>
-                      <AIGenerated />
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          backgroundColor: "rgba(255, 249, 196, 0.31)",
-                          padding: 1,
-                          borderRadius: 2,
-                          maxWidth: "80%",
-                        }}
-                      >
-                        <InfoOutlined
-                          color="primary"
-                          sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 1 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                          }}
-                        />
-                        <Typography
-                          variant="titleMedium"
-                          fontWeight={400}
-                          textAlign="left"
-                        >
-                          <Trans i18nKey="invalidAIInsight" />
-                        </Typography>
-                      </Box>
-                    </Box>
-                  )}
-
-                {((attributesDataPolicy[id?.toString()]?.assessorInsight &&
-                  !attributesDataPolicy[id?.toString()]?.assessorInsight
-                    ?.isValid) ||
-                  (attributesDataPolicy[id?.toString()]?.aiInsight &&
-                    !attributesDataPolicy[id?.toString()]?.aiInsight
-                      ?.isValid)) && (
-                  <Box sx={{ ...styles.centerV }} gap={2}>
-                    <Box
-                      sx={{
-                        zIndex: 1,
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        ml: { xs: 0.75, sm: 1.5, md: 2 },
-                      }}
-                    >
-                      <Typography
-                        variant="labelSmall"
-                        sx={{
-                          backgroundColor: "#d85e1e",
-                          color: "white",
-                          padding: "0.35rem 0.35rem",
-                          borderRadius: "4px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <Trans i18nKey="Outdated" />
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        backgroundColor: "rgba(255, 249, 196, 0.31)",
-                        padding: 1,
-                        borderRadius: 2,
-                        maxWidth: "80%",
-                      }}
-                    >
-                      <InfoOutlined
-                        color="primary"
-                        sx={{
-                          marginRight: theme.direction === "ltr" ? 1 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                        }}
-                      />
-                      <Typography
-                        variant="titleMedium"
-                        fontWeight={400}
-                        textAlign="left"
-                      >
-                        <Trans i18nKey="invalidInsight" />
-                      </Typography>
-                    </Box>
-                    {attributesDataPolicy[id?.toString()]?.editable && (
-                      <Button
-                        variant="contained"
-                        size="small"
-                        onClick={() =>
-                          updateAttributeAndData(id, assessmentId, "", true)
-                        }
-                      >
-                        <Trans i18nKey="regenerate" />
-                      </Button>
-                    )}
-                  </Box>
-                )}
+                />
               </Box>
             </Grid>
           </Grid>
+
+          {/*<Grid container spacing={2}>*/}
+          {/*  <Grid item md={12} xs={12}>*/}
+          {/*    <Box mb={1}>*/}
+          {/*      <Title*/}
+          {/*        sx={{*/}
+          {/*          opacity: 0.95,*/}
+          {/*          ml:*/}
+          {/*            theme.direction == "ltr"*/}
+          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*              : "unset",*/}
+          {/*          mr:*/}
+          {/*            theme.direction == "rtl"*/}
+          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*              : "unset",*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        <Typography variant="titleLarge" fontWeight={600}>*/}
+          {/*          {title}*/}
+          {/*        </Typography>*/}
+          {/*      </Title>*/}
+          {/*    </Box>*/}
+
+          {/*    <Box*/}
+          {/*      marginY={1}*/}
+          {/*      sx={{*/}
+          {/*        ml:*/}
+          {/*          theme.direction == "ltr"*/}
+          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*            : "unset",*/}
+          {/*        mr:*/}
+          {/*          theme.direction == "rtl"*/}
+          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*            : "unset",*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      <Typography*/}
+          {/*        variant="titleMedium"*/}
+          {/*        fontWeight={400}*/}
+          {/*        sx={{*/}
+          {/*          ml:*/}
+          {/*            theme.direction == "ltr"*/}
+          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*              : "unset",*/}
+          {/*          mr:*/}
+          {/*            theme.direction == "rtl"*/}
+          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*              : "unset",*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        {description}*/}
+          {/*      </Typography>*/}
+          {/*    </Box>*/}
+          {/*    <AttributeStatusBarContainer*/}
+          {/*      status={maturityLevel?.title}*/}
+          {/*      ml={maturityLevel?.index}*/}
+          {/*      cl={Math.ceil(confidenceValue)}*/}
+          {/*      mn={maturity_levels_count}*/}
+          {/*    />*/}
+          {/*    <Box*/}
+          {/*      mt={1}*/}
+          {/*      sx={{*/}
+          {/*        ml:*/}
+          {/*          theme.direction == "ltr"*/}
+          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*            : "unset",*/}
+          {/*        mr:*/}
+          {/*          theme.direction == "rtl"*/}
+          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*            : "unset",*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      <Typography*/}
+          {/*        variant="titleMedium"*/}
+          {/*        sx={{*/}
+          {/*          ml:*/}
+          {/*            theme.direction == "ltr"*/}
+          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*              : "unset",*/}
+          {/*          mr:*/}
+          {/*            theme.direction == "rtl"*/}
+          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*              : "unset",*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        <Trans i18nKey={"withConfidenceSubject"} />*/}
+          {/*        <Typography*/}
+          {/*          component="span"*/}
+          {/*          variant="titleMedium"*/}
+          {/*          color="#3596A1"*/}
+          {/*          mx={1}*/}
+          {/*        >*/}
+          {/*          {Math.ceil(confidenceValue)}%*/}
+          {/*        </Typography>*/}
+          {/*        <Trans i18nKey={"wasEstimate"} values={{ title }} />*/}
+          {/*        <Typography*/}
+          {/*          component="span"*/}
+          {/*          color="#6035A1"*/}
+          {/*          variant="titleMedium"*/}
+          {/*        >*/}
+          {/*          {" "}*/}
+          {/*          <Trans*/}
+          {/*            i18nKey={"divider"}*/}
+          {/*            values={{*/}
+          {/*              cl: Math.ceil(maturityLevel.index),*/}
+          {/*              clDivider: Math.ceil(maturity_levels_count),*/}
+          {/*            }}*/}
+          {/*          />{" "}*/}
+          {/*        </Typography>*/}
+          {/*        <Trans i18nKey={"meaning"} />{" "}*/}
+          {/*        <Trans i18nKey={`${maturityLevel?.title}`} />*/}
+          {/*        <Trans i18nKey={"is"} />{" "}*/}
+          {/*      </Typography>*/}
+          {/*    </Box>*/}
+          {/*    <Box*/}
+          {/*      mt={1}*/}
+          {/*      sx={{*/}
+          {/*        ml:*/}
+          {/*          theme.direction == "ltr"*/}
+          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*            : "unset",*/}
+          {/*        mr:*/}
+          {/*          theme.direction == "rtl"*/}
+          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
+          {/*            : "unset",*/}
+          {/*      }}*/}
+          {/*      onClick={(event) => {*/}
+          {/*        event.stopPropagation();*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      {attributesData[id?.toString()] ? (*/}
+          {/*        <Box display="flex" alignItems="center" gap="4px">*/}
+          {/*          <OnHoverInput*/}
+          {/*            attributeId={id}*/}
+          {/*            width={*/}
+          {/*              attributesDataPolicy[id?.toString()]?.aiInsight*/}
+          {/*                ? "90%"*/}
+          {/*                : "100%"*/}
+          {/*            }*/}
+          {/*            // formMethods={formMethods}*/}
+          {/*            data={attributesData[id?.toString()]}*/}
+          {/*            infoQuery={updateAttributeAndData}*/}
+          {/*            type="summary"*/}
+          {/*            editable={attributesDataPolicy[id?.toString()]?.editable}*/}
+          {/*          />*/}
+          {/*        </Box>*/}
+          {/*      ) : (*/}
+          {/*        editable && (*/}
+          {/*          <Box sx={{ ...styles.centerV }} gap={0.5} my={1}>*/}
+          {/*            <Box*/}
+          {/*              sx={{*/}
+          {/*                zIndex: 1,*/}
+          {/*                display: "flex",*/}
+          {/*                justifyContent: "flex-start",*/}
+          {/*                ml: { xs: 0.75, sm: 0.75, md: 1 },*/}
+          {/*              }}*/}
+          {/*            >*/}
+          {/*              <Typography*/}
+          {/*                variant="labelSmall"*/}
+          {/*                sx={{*/}
+          {/*                  backgroundColor: "#d85e1e",*/}
+          {/*                  color: "white",*/}
+          {/*                  padding: "0.35rem 0.35rem",*/}
+          {/*                  borderRadius: "4px",*/}
+          {/*                  fontWeight: "bold",*/}
+          {/*                }}*/}
+          {/*              >*/}
+          {/*                <Trans i18nKey={"warning"} />*/}
+          {/*              </Typography>*/}
+          {/*            </Box>{" "}*/}
+          {/*            <Typography variant="titleMedium" fontWeight={400}>*/}
+          {/*              <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedFirstSection" />*/}
+          {/*            </Typography>*/}
+          {/*            <Typography*/}
+          {/*              component={Link}*/}
+          {/*              to={`./../../questionnaires?subject_pk=${id}`}*/}
+          {/*              color="#2D80D2"*/}
+          {/*              variant="titleMedium"*/}
+          {/*              sx={{*/}
+          {/*                textDecoration: "none",*/}
+          {/*              }}*/}
+          {/*            >*/}
+          {/*              <Trans i18nKey={"assessmentQuestion"} />*/}
+          {/*            </Typography>*/}
+          {/*            <Typography variant="titleMedium" fontWeight={400}>*/}
+          {/*              <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />*/}
+          {/*            </Typography>*/}
+          {/*          </Box>*/}
+          {/*        )*/}
+          {/*      )}*/}
+          {/*      {attributesDataPolicy[id?.toString()]?.aiInsight &&*/}
+          {/*        attributesDataPolicy[id?.toString()]?.aiInsight.isValid && (*/}
+          {/*          <Box sx={{ ...styles.centerV }} gap={2}>*/}
+          {/*            <AIGenerated />*/}
+          {/*            <Box*/}
+          {/*              sx={{*/}
+          {/*                display: "flex",*/}
+          {/*                alignItems: "flex-start",*/}
+          {/*                backgroundColor: "rgba(255, 249, 196, 0.31)",*/}
+          {/*                padding: 1,*/}
+          {/*                borderRadius: 2,*/}
+          {/*                maxWidth: "80%",*/}
+          {/*              }}*/}
+          {/*            >*/}
+          {/*              <InfoOutlined*/}
+          {/*                color="primary"*/}
+          {/*                sx={{*/}
+          {/*                  marginRight:*/}
+          {/*                    theme.direction === "ltr" ? 1 : "unset",*/}
+          {/*                  marginLeft: theme.direction === "rtl" ? 1 : "unset",*/}
+          {/*                }}*/}
+          {/*              />*/}
+          {/*              <Typography*/}
+          {/*                variant="titleMedium"*/}
+          {/*                fontWeight={400}*/}
+          {/*                textAlign="left"*/}
+          {/*              >*/}
+          {/*                <Trans i18nKey="invalidAIInsight" />*/}
+          {/*              </Typography>*/}
+          {/*            </Box>*/}
+          {/*          </Box>*/}
+          {/*        )}*/}
+
+          {/*      {((attributesDataPolicy[id?.toString()]?.assessorInsight &&*/}
+          {/*        !attributesDataPolicy[id?.toString()]?.assessorInsight*/}
+          {/*          ?.isValid) ||*/}
+          {/*        (attributesDataPolicy[id?.toString()]?.aiInsight &&*/}
+          {/*          !attributesDataPolicy[id?.toString()]?.aiInsight*/}
+          {/*            ?.isValid)) && (*/}
+          {/*        <Box sx={{ ...styles.centerV }} gap={2}>*/}
+          {/*          <Box*/}
+          {/*            sx={{*/}
+          {/*              zIndex: 1,*/}
+          {/*              display: "flex",*/}
+          {/*              justifyContent: "flex-start",*/}
+          {/*              ml: { xs: 0.75, sm: 1.5, md: 2 },*/}
+          {/*            }}*/}
+          {/*          >*/}
+          {/*            <Typography*/}
+          {/*              variant="labelSmall"*/}
+          {/*              sx={{*/}
+          {/*                backgroundColor: "#d85e1e",*/}
+          {/*                color: "white",*/}
+          {/*                padding: "0.35rem 0.35rem",*/}
+          {/*                borderRadius: "4px",*/}
+          {/*                fontWeight: "bold",*/}
+          {/*              }}*/}
+          {/*            >*/}
+          {/*              <Trans i18nKey="Outdated" />*/}
+          {/*            </Typography>*/}
+          {/*          </Box>*/}
+          {/*          <Box*/}
+          {/*            sx={{*/}
+          {/*              display: "flex",*/}
+          {/*              alignItems: "flex-start",*/}
+          {/*              backgroundColor: "rgba(255, 249, 196, 0.31)",*/}
+          {/*              padding: 1,*/}
+          {/*              borderRadius: 2,*/}
+          {/*              maxWidth: "80%",*/}
+          {/*            }}*/}
+          {/*          >*/}
+          {/*            <InfoOutlined*/}
+          {/*              color="primary"*/}
+          {/*              sx={{*/}
+          {/*                marginRight: theme.direction === "ltr" ? 1 : "unset",*/}
+          {/*                marginLeft: theme.direction === "rtl" ? 1 : "unset",*/}
+          {/*              }}*/}
+          {/*            />*/}
+          {/*            <Typography*/}
+          {/*              variant="titleMedium"*/}
+          {/*              fontWeight={400}*/}
+          {/*              textAlign="left"*/}
+          {/*            >*/}
+          {/*              <Trans i18nKey="invalidInsight" />*/}
+          {/*            </Typography>*/}
+          {/*          </Box>*/}
+          {/*          {attributesDataPolicy[id?.toString()]?.editable && (*/}
+          {/*            <Button*/}
+          {/*              variant="contained"*/}
+          {/*              size="small"*/}
+          {/*              onClick={() =>*/}
+          {/*                updateAttributeAndData(id, assessmentId, "", true)*/}
+          {/*              }*/}
+          {/*            >*/}
+          {/*              <Trans i18nKey="regenerate" />*/}
+          {/*            </Button>*/}
+          {/*          )}*/}
+          {/*        </Box>*/}
+          {/*      )}*/}
+          {/*    </Box>*/}
+          {/*  </Grid>*/}
+          {/*</Grid>*/}
         </AccordionSummary>
         <Divider sx={{ mx: 2 }} />
         <AccordionDetails sx={{ padding: "0 !important" }}>
@@ -425,7 +483,7 @@ const SUbjectAttributeCard = (props: any) => {
           </Box>
         </AccordionDetails>
       </Accordion>
-    </Paper>
+    </Box>
   );
 };
 
