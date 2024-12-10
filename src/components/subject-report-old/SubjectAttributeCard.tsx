@@ -245,14 +245,21 @@ const NewMaturityLevel = (props: any) =>{
     const { maturityLevel, score } = maturity_score
     const { title } = maturityLevel
 
-    const selectedStyle = {
+    const selectedStyle = selectMaturityBtn == maturityLevel.index ? {
         boxShadow:"0 1px 4px rgba(0,0,0,25%)",
-        color: theme.palette.primary.main,
-        background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
+        color: maturityLevel?.value > totalMl ?  "#6C8093" : theme.palette.primary.main,
+        background: "#fff",
         "&:hover": {
-          background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
+          background:"#fff",
         },
+    } : {
+        background: "transparent",
+        "&:hover": {
+            background: "transparent",
+        },
+        color: maturityLevel?.value > totalMl ?  "#6C8093" : "#2B333B",
     }
+
     return (
         <Button
             onClick={()=>handelClick(maturityLevel.index)}
@@ -260,16 +267,12 @@ const NewMaturityLevel = (props: any) =>{
             ...theme.typography.semiBoldLarge,
             width: "200px",
             height: "48px",
-            color:maturityLevel?.value > totalMl ?  "#6C8093" : selectMaturityBtn == maturityLevel.index ? theme.palette.primary.main : "#2B333B",
-            background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
-            "&:hover": {
-              background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
-            },
-            boxShadow:selectMaturityBtn == maturityLevel.index  ? "0 1px 4px rgba(0,0,0,25%)" : "",
             whiteSpace: "nowrap",
             minWidth:"fit-content",
-            mr: "10px"
-        }}>
+            mr: "10px",
+            ...selectedStyle
+        }}
+        >
             {maturityLevel?.value == totalMl &&  <WorkspacePremiumIcon fontSize={"small"} />}
             {maturityLevel?.value < totalMl &&  <DoneIcon fontSize={"small"} />}
             {title}
