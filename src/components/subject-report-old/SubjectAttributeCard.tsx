@@ -13,7 +13,7 @@ import { theme } from "@config/theme";
 import React, { useEffect, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
@@ -36,6 +36,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import tinycolor from "tinycolor2";
+import { InfoOutlined } from "@mui/icons-material";
+import { Button } from "@mui/material";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -45,7 +47,12 @@ const SUbjectAttributeCard = (props: any) => {
     maturityScores,
     confidenceValue,
     id,
+    attributesData,
+    updateAttributeAndData,
+    attributesDataPolicy,
+    editable,
   } = props;
+  const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
@@ -60,6 +67,15 @@ const SUbjectAttributeCard = (props: any) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
+  const backgroundColor = tinycolor(
+    colorPallet[maturityLevel.value - 1],
+  ).isLight()
+    ? tinycolor(colorPallet[maturityLevel.value - 1])
+        .lighten(30)
+        .toRgbString()
+    : tinycolor(colorPallet[maturityLevel.value - 1])
+        .lighten(60)
+        .toRgbString();
   return (
     <Box
       sx={{
@@ -88,9 +104,14 @@ const SUbjectAttributeCard = (props: any) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
           sx={{
+            borderRadius: "8px",
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
+            "&.Mui-expanded": {
+              backgroundColor: "#F9FAFB",
+            },
             "&.Mui-focusVisible": {
               background: "#fff",
             },
@@ -122,8 +143,84 @@ const SUbjectAttributeCard = (props: any) => {
                 <Typography color="#2466A8" variant="titleSmall">
                   <Trans i18nKey="insight" />
                 </Typography>
-                <AIGenerated />
+                {attributesDataPolicy[id?.toString()]?.aiInsight &&
+                attributesDataPolicy[id?.toString()]?.aiInsight.isValid ? (
+                  <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
+                    <div>
+                      <AIGenerated />
+                    </div>
+                  </Tooltip>
+                ) : (attributesDataPolicy[id?.toString()]?.assessorInsight &&
+                    !attributesDataPolicy[id?.toString()]?.assessorInsight
+                      ?.isValid) ||
+                  (attributesDataPolicy[id?.toString()]?.aiInsight &&
+                    !attributesDataPolicy[id?.toString()]?.aiInsight
+                      ?.isValid) ? (
+                  <Tooltip title={<Trans i18nKey="invalidInsight" />}>
+                    <div>
+                      <AIGenerated
+                        title="Outdated"
+                        type="warning"
+                        icon={<></>}
+                      />
+                      {attributesDataPolicy[id?.toString()]?.editable && (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          onClick={() =>
+                            updateAttributeAndData(id, assessmentId, "", true)
+                          }
+                        >
+                          <Trans i18nKey="regenerate" />
+                        </Button>
+                      )}
+                    </div>
+                  </Tooltip>
+                ) : !attributesData[id?.toString()] && editable ? (
+                  <AIGenerated title="warning" type="warning" icon={<></>} />
+                ) : (
+                  <></>
+                )}{" "}
               </Box>
+
+              {attributesData[id?.toString()] ? (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <OnHoverInput
+                    attributeId={id}
+                    // formMethods={formMethods}
+                    data={attributesData[id?.toString()]}
+                    infoQuery={updateAttributeAndData}
+                    type="summary"
+                    editable={attributesDataPolicy[id?.toString()]?.editable}
+                  />
+                </Box>
+              ) : (
+                editable && (
+                  <Box sx={{ ...styles.centerV }} gap={0.5} my={1}>
+                    <Typography variant="titleMedium" fontWeight={400}>
+                      <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedFirstSection" />
+                    </Typography>
+                    <Typography
+                      component={Link}
+                      to={`./../../questionnaires?subject_pk=${id}`}
+                      color="#2D80D2"
+                      variant="titleMedium"
+                      sx={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      <Trans i18nKey={"assessmentQuestion"} />
+                    </Typography>
+                    <Typography variant="titleMedium" fontWeight={400}>
+                      <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />
+                    </Typography>
+                  </Box>
+                )
+              )}
             </Grid>
             <Grid sx={{ width: "100%", height: "100%" }} item xs={3}>
               <Box
@@ -133,9 +230,8 @@ const SUbjectAttributeCard = (props: any) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  background: tinycolor(colorPallet[maturityLevel.value - 1])
-                    .brighten(80)
-                    .toRgbString(),
+                  background: backgroundColor,
+                  borderRadius: "8px",
                 }}
               >
                 <FlatGauge
@@ -168,6 +264,7 @@ const SUbjectAttributeCard = (props: any) => {
             }}
           >
             <Box
+              width="100%"
               sx={{
                 background: "#E2E5E9",
                 borderRadius: 4,
@@ -896,14 +993,11 @@ const OnHoverInput = (props: any) => {
 
   return (
     <Box
-      my={1.5}
       sx={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        ml: { xs: 0.5, sm: 0.75, md: 1 },
       }}
-      width={props.width ? props.width : "100%"}
     >
       {editable && show ? (
         <Box sx={{ display: "flex", flexDirection: "column", width: "100% " }}>
@@ -975,8 +1069,6 @@ const OnHoverInput = (props: any) => {
           sx={{
             minHeight: "38px",
             borderRadius: "4px",
-            paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-            paddingRight: theme.direction === "rtl" ? "12px" : "8px",
             width: "100%",
             display: "flex",
             justifyContent: "space-between",

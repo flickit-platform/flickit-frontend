@@ -109,7 +109,7 @@ const FlatGauge = (props: IGaugeProps) => {
               </Box>
             )}
           </Box>
-          {Boolean(confidenceLevelNum) && textPosition == "top" && (
+          {textPosition == "top" && (
             <Typography
               sx={{
                 display: "flex",
