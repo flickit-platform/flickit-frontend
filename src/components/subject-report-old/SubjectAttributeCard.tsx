@@ -196,13 +196,14 @@ const SUbjectAttributeCard = (props: any) => {
                             display: "none",
                         },
                         boxShadow: "0 4px 4px rgba(0,0,0,25%)",
+                        mb:2
                     }}
                     ref={scrollContainerRef}
                 >
                     {maturityScores
                         .map((item: any, index: number) => {
                             return (
-                                <NewMaturityLevel key={index}
+                                <MaturityLevelTopNavbar key={index}
                                                     maturity_score={item}
                                                     totalMl={maturityLevel?.value}
                                                     mn={maturity_levels_count}
@@ -227,7 +228,7 @@ const SUbjectAttributeCard = (props: any) => {
   );
 };
 
-const NewMaturityLevel = (props: any) =>{
+const MaturityLevelTopNavbar = (props: any) =>{
     const { maturity_score, totalMl, mn, expanded, setExpanded, attributeId, handelClick,selectMaturityBtn } =
         props;
     const { maturityLevel, score } = maturity_score
