@@ -62,13 +62,13 @@ const SUbjectAttributeCard = (props: any) => {
 
     const scrollLeft = () => {
         if (scrollContainerRef?.current) {
-            scrollContainerRef.current.scrollLeft -= 100;
+            scrollContainerRef.current.scrollLeft -= 150;
         }
     };
 
     const scrollRight = () => {
         if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollLeft += 100; // Adjust the scroll distance as needed
+            scrollContainerRef.current.scrollLeft += 150; // Adjust the scroll distance as needed
         }
     };
 
@@ -179,23 +179,23 @@ const SUbjectAttributeCard = (props: any) => {
                 justifyContent: "center",
                 justifyItems: "center"
             }}>
-                <Box sx={{display: "flex", justifyContent:"center", alignItems:"center",cursor:"pointer"}} onClick={scrollLeft}>
-                    <ArrowBackIosIcon/>
-                </Box>
+                {/*<Box sx={{display: "flex", justifyContent:"center", alignItems:"center",cursor:"pointer", mr:2}} onClick={scrollLeft}>*/}
+                {/*    <ArrowBackIosIcon/>*/}
+                {/*</Box>*/}
                 <Box
                     sx={{
                         background:"#E2E5E9",
                         borderRadius: 4,
-                        width: "90%",
+                        width: "fit-content",
                         height:"80px",
                         display: "flex",
-                        justifyContent: "center",
                         alignItems: "center",
-                        px:"20px",
+                        px:2,
                         overflow:"auto",
                         "&::-webkit-scrollbar": {
                             display: "none",
                         },
+                        boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                     }}
                     ref={scrollContainerRef}
                 >
@@ -217,22 +217,10 @@ const SUbjectAttributeCard = (props: any) => {
                         })
                         }
                 </Box>
-                <Box sx={{display:"flex", justifyContent:"center", alignItems:"center",cursor:"pointer"}} onClick={scrollRight}>
-                    <ArrowForwardIosIcon/>
-                </Box>
+                {/*<Box sx={{display:"flex", justifyContent:"center", alignItems:"center",cursor:"pointer",ml:2}} onClick={scrollRight}>*/}
+                {/*    <ArrowForwardIosIcon/>*/}
+                {/*</Box>*/}
             </Box>
-                    {/*<MaturityLevelDetailsContainer*/}
-                    {/*  maturity_score={item}*/}
-                    {/*  totalml={maturityLevel?.index}*/}
-                    {/*  mn={maturity_levels_count}*/}
-                    {/*  expanded={expanded}*/}
-                    {/*  setExpanded={setExpanded}*/}
-                    {/*  attributeId={id}*/}
-                    {/*  permissions={permissions}*/}
-                    {/*/>*/}
-              {/*  );*/}
-              {/*})*/}
-              {/*.reverse()}*/}
         </AccordionDetails>
       </Accordion>
     </Box>
@@ -269,7 +257,7 @@ const NewMaturityLevel = (props: any) =>{
             height: "48px",
             whiteSpace: "nowrap",
             minWidth:"fit-content",
-            mr: "10px",
+            mr: {xs:"5px",md:"10px" },
             ...selectedStyle
         }}
         >
