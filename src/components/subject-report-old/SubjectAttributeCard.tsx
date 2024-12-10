@@ -10,7 +10,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { theme } from "@config/theme";
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
@@ -31,30 +31,22 @@ import { useForm } from "react-hook-form";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import FlatGauge from "@common/flatGauge/FlatGauge";
-import Button from "@mui/material/Button";
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import DoneIcon from '@mui/icons-material/Done';
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import tinycolor from "tinycolor2";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
     title,
-    description,
     maturityLevel,
     maturity_levels_count,
     maturityScores,
     confidenceValue,
     id,
-    attributesData,
-    updateAttributeAndData,
-    attributesDataPolicy,
-    editable,
   } = props;
-  const { permissions }: { permissions: IPermissions } = props;
-  const { assessmentId } = useParams();
-  const [expanded, setExpanded] = useState<string | false>(false);
-    const [TopNavValue, setTopNavValue] = React.useState<number>(0);
+  const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
@@ -63,9 +55,11 @@ const SUbjectAttributeCard = (props: any) => {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
     };
-    const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
-        setTopNavValue(newValue);
-    };
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    setTopNavValue(newValue);
+  };
+
+  const colorPallet = getMaturityLevelColors(maturity_levels_count);
   return (
     <Box
       sx={{
@@ -84,8 +78,8 @@ const SUbjectAttributeCard = (props: any) => {
             margin: "0px !important",
           },
           "& .MuiDivider-root": {
-             display: "none"
-           }
+            display: "none",
+          },
         }}
         expanded={expandedAttribute === id}
         onChange={handleChange(id)}
@@ -108,13 +102,12 @@ const SUbjectAttributeCard = (props: any) => {
           onClick={(event) => event.stopPropagation()}
         >
           <Grid container sx={{ width: "100%", direction: theme.direction }}>
-            <Grid item xs={9} sx={{ px: "32px", py: "40px" }}>
+            <Grid item xs={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
                   sx={{
                     ...theme.typography.headlineSmall,
-                    color: "#2B333B",
-                    mb: 2,
+                    textTransform: "none",
                   }}
                 >
                   {title}
@@ -140,11 +133,17 @@ const SUbjectAttributeCard = (props: any) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  background: tinycolor(colorPallet[maturityLevel.value - 1])
+                    .brighten(80)
+                    .toRgbString(),
                 }}
               >
                 <FlatGauge
-                  confidenceLevelNum={50}
-                  textPosition={"top"}
+                  maturityLevelNumber={maturity_levels_count}
+                  levelValue={maturityLevel.value}
+                  text={maturityLevel.title}
+                  confidenceLevelNum={Math.floor(confidenceValue)}
+                  textPosition="top"
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -161,73 +160,89 @@ const SUbjectAttributeCard = (props: any) => {
         </AccordionSummary>
         <Divider sx={{ mx: 2 }} />
         <AccordionDetails sx={{ padding: "0 !important" }}>
-            <Box sx={{
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              justifyItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                background: "#E2E5E9",
+                borderRadius: 4,
+                height: "80px",
                 display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
-                justifyItems: "center"
-            }}>
-                <Box
-                    sx={{
-                        background:"#E2E5E9",
-                        borderRadius:4,
-                        width: "90%",
-                        height:"80px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent:"center",
-                        boxShadow: "0 4px 4px rgba(0,0,0,25%)",
-                        mb:2
-                    }}
-                >
-                    <Tabs
-                        value={TopNavValue}
-                        onChange={handleChangeTab}
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        aria-label="scrollable auto tabs example"
-                        sx={{
+                boxShadow: "0 4px 4px rgba(0,0,0,25%)",
+                m: 2,
+              }}
+            >
+              <Tabs
+                value={TopNavValue}
+                onChange={handleChangeTab}
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+                sx={{
+                  border: "none",
+                  "& .MuiTabs-indicator": {
+                    display: "none",
+                  },
+                }}
+              >
+                {maturityScores.map((item: any) => {
+                  const { maturityLevel: maturityLevelOfScores, score } = item;
+                  return (
+                    <Tab
+                      key={maturityLevel.index}
+                      sx={{
+                        ...theme.typography.semiBoldLarge,
+                        height: "48px",
+                        mr: 1,
+                        border: "none",
+                        textTransform: "none",
+                        color:
+                          maturityLevelOfScores?.value > maturityLevel?.value
+                            ? "#6C8093"
+                            : "#2B333B",
+                        "&.Mui-selected": {
+                          boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
+                          borderRadius: 1,
+                          color: theme.palette.primary.main,
+                          background: "#fff",
+                          "&:hover": {
+                            background: "#fff",
                             border: "none",
-                            "& .MuiTabs-indicator": {
-                                display: "none"
-                            },
-                        }}
-                    >
-                        {maturityScores
-                            .map((item: any) => {
-                                const { maturityLevel : maturityLevelOfScores , score } = item
-                                return (
-                                    <Tab
-                                        key={maturityLevel.index}
-                                        sx={{
-                                            ...theme.typography.semiBoldLarge,
-                                            height: "48px",
-                                            mr:1,
-                                            border: "none",
-                                            color: maturityLevelOfScores?.value > maturityLevel?.value ?  "#6C8093" : "#2B333B",
-                                            "&.Mui-selected" : {
-                                                    boxShadow:"0 1px 4px rgba(0,0,0,25%) !important",
-                                                    borderRadius: 1,
-                                                    color: theme.palette.primary.main,
-                                                    background: "#fff",
-                                                    "&:hover": {
-                                                      background:"#fff",
-                                                        border: "none",
-                                            }
-                                            }
-                                        }}
-                                        label={<Box sx={{display: "flex", alignItems:"center", justifyContent: "center"}}>
-                                            {maturityLevelOfScores?.value == maturityLevel?.value &&  <WorkspacePremiumIcon fontSize={"small"} />}
-                                            {maturityLevelOfScores?.value <  maturityLevel?.value &&  <DoneIcon fontSize={"small"} />}
-                                            {title}
-                                            {" "} ({Math.ceil(score)}%)
-                                        </Box>}
-                                    />
-                                );
-                            })
-                        }
-                    </Tabs>
-                </Box>
+                          },
+                        },
+                      }}
+                      label={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {maturityLevelOfScores?.value ==
+                            maturityLevel?.value && (
+                            <WorkspacePremiumIcon fontSize={"small"} />
+                          )}
+                          {maturityLevelOfScores?.value <
+                            maturityLevel?.value && (
+                            <DoneIcon fontSize={"small"} />
+                          )}
+                          {title} ({Math.ceil(score)}%)
+                        </Box>
+                      }
+                    />
+                  );
+                })}
+              </Tabs>
             </Box>
+          </Box>
         </AccordionDetails>
       </Accordion>
     </Box>
