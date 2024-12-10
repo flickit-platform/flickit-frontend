@@ -67,6 +67,15 @@ const SUbjectAttributeCard = (props: any) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
+  const backgroundColor = tinycolor(
+    colorPallet[maturityLevel.value - 1],
+  ).isLight()
+    ? tinycolor(colorPallet[maturityLevel.value - 1])
+        .lighten(30)
+        .toRgbString()
+    : tinycolor(colorPallet[maturityLevel.value - 1])
+        .lighten(60)
+        .toRgbString();
   return (
     <Box
       sx={{
@@ -95,9 +104,14 @@ const SUbjectAttributeCard = (props: any) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
           sx={{
+            borderRadius: "8px",
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
+            "&.Mui-expanded": {
+              backgroundColor: "#F9FAFB",
+            },
             "&.Mui-focusVisible": {
               background: "#fff",
             },
@@ -216,9 +230,8 @@ const SUbjectAttributeCard = (props: any) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  background: tinycolor(colorPallet[maturityLevel.value - 1])
-                    .brighten(75)
-                    .toRgbString(),
+                  background: backgroundColor,
+                  borderRadius: "8px",
                 }}
               >
                 <FlatGauge
