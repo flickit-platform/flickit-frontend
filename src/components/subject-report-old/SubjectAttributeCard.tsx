@@ -34,8 +34,8 @@ import FlatGauge from "@common/flatGauge/FlatGauge";
 import Button from "@mui/material/Button";
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import DoneIcon from '@mui/icons-material/Done';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -54,31 +54,18 @@ const SUbjectAttributeCard = (props: any) => {
   const { permissions }: { permissions: IPermissions } = props;
   const { assessmentId } = useParams();
   const [expanded, setExpanded] = useState<string | false>(false);
+    const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
-  const [selectMaturityBtn, setSelectMaturityBtn] = useState("")
-    const scrollContainerRef = useRef<any>(null);
-
-    const scrollLeft = () => {
-        if (scrollContainerRef?.current) {
-            scrollContainerRef.current.scrollLeft -= 150;
-        }
-    };
-
-    const scrollRight = () => {
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollLeft += 150; // Adjust the scroll distance as needed
-        }
-    };
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
     };
-    const handelClick = (IndexId: any) => {
-        setSelectMaturityBtn(IndexId)
-    }
+    const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+        setTopNavValue(newValue);
+    };
   return (
     <Box
       sx={{
@@ -179,96 +166,73 @@ const SUbjectAttributeCard = (props: any) => {
                 justifyContent: "center",
                 justifyItems: "center"
             }}>
-                {/*<Box sx={{display: "flex", justifyContent:"center", alignItems:"center",cursor:"pointer", mr:2}} onClick={scrollLeft}>*/}
-                {/*    <ArrowBackIosIcon/>*/}
-                {/*</Box>*/}
                 <Box
                     sx={{
                         background:"#E2E5E9",
-                        borderRadius: 4,
-                        width: "fit-content",
+                        borderRadius:4,
+                        width: "90%",
                         height:"80px",
                         display: "flex",
                         alignItems: "center",
-                        px:2,
-                        overflow:"auto",
-                        "&::-webkit-scrollbar": {
-                            display: "none",
-                        },
+                        justifyContent:"center",
                         boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                         mb:2
                     }}
-                    ref={scrollContainerRef}
                 >
-                    {maturityScores
-                        .map((item: any, index: number) => {
-                            return (
-                                <MaturityLevelTopNavbar key={index}
-                                                    maturity_score={item}
-                                                    totalMl={maturityLevel?.value}
-                                                    mn={maturity_levels_count}
-                                                    expanded={expanded}
-                                                    setExpanded={setExpanded}
-                                                    attributeId={id}
-                                                    permissions={permissions}
-                                                    handelClick={handelClick}
-                                                    selectMaturityBtn={selectMaturityBtn}
-                                />
-                            );
-                        })
+                    <Tabs
+                        value={TopNavValue}
+                        onChange={handleChangeTab}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        aria-label="scrollable auto tabs example"
+                        sx={{
+                            border: "none",
+                            "& .MuiTabs-indicator": {
+                                display: "none"
+                            },
+                        }}
+                    >
+                        {maturityScores
+                            .map((item: any) => {
+                                const { maturityLevel : maturityLevelOfScores , score } = item
+                                return (
+                                    <Tab
+                                        key={maturityLevel.index}
+                                        sx={{
+                                            ...theme.typography.semiBoldLarge,
+                                            height: "48px",
+                                            mr:1,
+                                            border: "none",
+                                            color: maturityLevelOfScores?.value > maturityLevel?.value ?  "#6C8093" : "#2B333B",
+                                            "&.Mui-selected" : {
+                                                    boxShadow:"0 1px 4px rgba(0,0,0,25%) !important",
+                                                    borderRadius: 1,
+                                                    color: theme.palette.primary.main,
+                                                    background: "#fff",
+                                                    "&:hover": {
+                                                      background:"#fff",
+                                                        border: "none",
+                                            }
+                                            }
+                                        }}
+                                        label={<Box sx={{display: "flex", alignItems:"center", justifyContent: "center"}}>
+                                            {maturityLevelOfScores?.value == maturityLevel?.value &&  <WorkspacePremiumIcon fontSize={"small"} />}
+                                            {maturityLevelOfScores?.value <  maturityLevel?.value &&  <DoneIcon fontSize={"small"} />}
+                                            {title}
+                                            {" "} ({Math.ceil(score)}%)
+                                        </Box>}
+                                    />
+                                );
+                            })
                         }
+                    </Tabs>
                 </Box>
-                {/*<Box sx={{display:"flex", justifyContent:"center", alignItems:"center",cursor:"pointer",ml:2}} onClick={scrollRight}>*/}
-                {/*    <ArrowForwardIosIcon/>*/}
-                {/*</Box>*/}
             </Box>
         </AccordionDetails>
       </Accordion>
     </Box>
   );
 };
-
-const MaturityLevelTopNavbar = (props: any) =>{
-    const { maturity_score, totalMl, mn, expanded, setExpanded, attributeId, handelClick,selectMaturityBtn } =
-        props;
-    const { maturityLevel, score } = maturity_score
-    const { title } = maturityLevel
-
-    const selectedStyle = selectMaturityBtn == maturityLevel.index ? {
-        boxShadow:"0 1px 4px rgba(0,0,0,25%)",
-        color: maturityLevel?.value > totalMl ?  "#6C8093" : theme.palette.primary.main,
-        background: "#fff",
-        "&:hover": {
-          background:"#fff",
-        },
-    } : {
-        background: "transparent",
-        "&:hover": {
-            background: "transparent",
-        },
-        color: maturityLevel?.value > totalMl ?  "#6C8093" : "#2B333B",
-    }
-
-    return (
-        <Button
-            onClick={()=>handelClick(maturityLevel.index)}
-            sx={{
-            ...theme.typography.semiBoldLarge,
-            width: "200px",
-            height: "48px",
-            whiteSpace: "nowrap",
-            minWidth:"fit-content",
-            mr: {xs:"5px",md:"10px" },
-            ...selectedStyle
-        }}
-        >
-            {maturityLevel?.value == totalMl &&  <WorkspacePremiumIcon fontSize={"small"} />}
-            {maturityLevel?.value < totalMl &&  <DoneIcon fontSize={"small"} />}
-            {title}
-            {" "} ({Math.ceil(score)}%)
-        </Button>
-    )
-}
 
 export const AttributeStatusBarContainer = (props: any) => {
   const { status, ml, cl, mn, document } = props;
