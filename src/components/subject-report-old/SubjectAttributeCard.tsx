@@ -10,7 +10,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { theme } from "@config/theme";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
@@ -31,6 +31,11 @@ import { useForm } from "react-hook-form";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import FlatGauge from "@common/flatGauge/FlatGauge";
+import Button from "@mui/material/Button";
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import DoneIcon from '@mui/icons-material/Done';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -52,10 +57,28 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
+  const [selectMaturityBtn, setSelectMaturityBtn] = useState("")
+    const scrollContainerRef = useRef<any>(null);
+
+    const scrollLeft = () => {
+        if (scrollContainerRef?.current) {
+            scrollContainerRef.current.scrollLeft -= 100;
+        }
+    };
+
+    const scrollRight = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollLeft += 100; // Adjust the scroll distance as needed
+        }
+    };
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
     };
+    const handelClick = (IndexId: any) => {
+        setSelectMaturityBtn(IndexId)
+    }
   return (
     <Box
       sx={{
@@ -73,6 +96,9 @@ const SUbjectAttributeCard = (props: any) => {
           "& .MuiAccordionSummary-content": {
             margin: "0px !important",
           },
+          "& .MuiDivider-root": {
+             display: "none"
+           }
         }}
         expanded={expandedAttribute === id}
         onChange={handleChange(id)}
@@ -145,347 +171,112 @@ const SUbjectAttributeCard = (props: any) => {
               </Box>
             </Grid>
           </Grid>
-
-          {/*<Grid container spacing={2}>*/}
-          {/*  <Grid item md={12} xs={12}>*/}
-          {/*    <Box mb={1}>*/}
-          {/*      <Title*/}
-          {/*        sx={{*/}
-          {/*          opacity: 0.95,*/}
-          {/*          ml:*/}
-          {/*            theme.direction == "ltr"*/}
-          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*              : "unset",*/}
-          {/*          mr:*/}
-          {/*            theme.direction == "rtl"*/}
-          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*              : "unset",*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        <Typography variant="titleLarge" fontWeight={600}>*/}
-          {/*          {title}*/}
-          {/*        </Typography>*/}
-          {/*      </Title>*/}
-          {/*    </Box>*/}
-
-          {/*    <Box*/}
-          {/*      marginY={1}*/}
-          {/*      sx={{*/}
-          {/*        ml:*/}
-          {/*          theme.direction == "ltr"*/}
-          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*            : "unset",*/}
-          {/*        mr:*/}
-          {/*          theme.direction == "rtl"*/}
-          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*            : "unset",*/}
-          {/*      }}*/}
-          {/*    >*/}
-          {/*      <Typography*/}
-          {/*        variant="titleMedium"*/}
-          {/*        fontWeight={400}*/}
-          {/*        sx={{*/}
-          {/*          ml:*/}
-          {/*            theme.direction == "ltr"*/}
-          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*              : "unset",*/}
-          {/*          mr:*/}
-          {/*            theme.direction == "rtl"*/}
-          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*              : "unset",*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        {description}*/}
-          {/*      </Typography>*/}
-          {/*    </Box>*/}
-          {/*    <AttributeStatusBarContainer*/}
-          {/*      status={maturityLevel?.title}*/}
-          {/*      ml={maturityLevel?.index}*/}
-          {/*      cl={Math.ceil(confidenceValue)}*/}
-          {/*      mn={maturity_levels_count}*/}
-          {/*    />*/}
-          {/*    <Box*/}
-          {/*      mt={1}*/}
-          {/*      sx={{*/}
-          {/*        ml:*/}
-          {/*          theme.direction == "ltr"*/}
-          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*            : "unset",*/}
-          {/*        mr:*/}
-          {/*          theme.direction == "rtl"*/}
-          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*            : "unset",*/}
-          {/*      }}*/}
-          {/*    >*/}
-          {/*      <Typography*/}
-          {/*        variant="titleMedium"*/}
-          {/*        sx={{*/}
-          {/*          ml:*/}
-          {/*            theme.direction == "ltr"*/}
-          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*              : "unset",*/}
-          {/*          mr:*/}
-          {/*            theme.direction == "rtl"*/}
-          {/*              ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*              : "unset",*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        <Trans i18nKey={"withConfidenceSubject"} />*/}
-          {/*        <Typography*/}
-          {/*          component="span"*/}
-          {/*          variant="titleMedium"*/}
-          {/*          color="#3596A1"*/}
-          {/*          mx={1}*/}
-          {/*        >*/}
-          {/*          {Math.ceil(confidenceValue)}%*/}
-          {/*        </Typography>*/}
-          {/*        <Trans i18nKey={"wasEstimate"} values={{ title }} />*/}
-          {/*        <Typography*/}
-          {/*          component="span"*/}
-          {/*          color="#6035A1"*/}
-          {/*          variant="titleMedium"*/}
-          {/*        >*/}
-          {/*          {" "}*/}
-          {/*          <Trans*/}
-          {/*            i18nKey={"divider"}*/}
-          {/*            values={{*/}
-          {/*              cl: Math.ceil(maturityLevel.index),*/}
-          {/*              clDivider: Math.ceil(maturity_levels_count),*/}
-          {/*            }}*/}
-          {/*          />{" "}*/}
-          {/*        </Typography>*/}
-          {/*        <Trans i18nKey={"meaning"} />{" "}*/}
-          {/*        <Trans i18nKey={`${maturityLevel?.title}`} />*/}
-          {/*        <Trans i18nKey={"is"} />{" "}*/}
-          {/*      </Typography>*/}
-          {/*    </Box>*/}
-          {/*    <Box*/}
-          {/*      mt={1}*/}
-          {/*      sx={{*/}
-          {/*        ml:*/}
-          {/*          theme.direction == "ltr"*/}
-          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*            : "unset",*/}
-          {/*        mr:*/}
-          {/*          theme.direction == "rtl"*/}
-          {/*            ? { xs: 0.75, sm: 1.5, md: 2 }*/}
-          {/*            : "unset",*/}
-          {/*      }}*/}
-          {/*      onClick={(event) => {*/}
-          {/*        event.stopPropagation();*/}
-          {/*      }}*/}
-          {/*    >*/}
-          {/*      {attributesData[id?.toString()] ? (*/}
-          {/*        <Box display="flex" alignItems="center" gap="4px">*/}
-          {/*          <OnHoverInput*/}
-          {/*            attributeId={id}*/}
-          {/*            width={*/}
-          {/*              attributesDataPolicy[id?.toString()]?.aiInsight*/}
-          {/*                ? "90%"*/}
-          {/*                : "100%"*/}
-          {/*            }*/}
-          {/*            // formMethods={formMethods}*/}
-          {/*            data={attributesData[id?.toString()]}*/}
-          {/*            infoQuery={updateAttributeAndData}*/}
-          {/*            type="summary"*/}
-          {/*            editable={attributesDataPolicy[id?.toString()]?.editable}*/}
-          {/*          />*/}
-          {/*        </Box>*/}
-          {/*      ) : (*/}
-          {/*        editable && (*/}
-          {/*          <Box sx={{ ...styles.centerV }} gap={0.5} my={1}>*/}
-          {/*            <Box*/}
-          {/*              sx={{*/}
-          {/*                zIndex: 1,*/}
-          {/*                display: "flex",*/}
-          {/*                justifyContent: "flex-start",*/}
-          {/*                ml: { xs: 0.75, sm: 0.75, md: 1 },*/}
-          {/*              }}*/}
-          {/*            >*/}
-          {/*              <Typography*/}
-          {/*                variant="labelSmall"*/}
-          {/*                sx={{*/}
-          {/*                  backgroundColor: "#d85e1e",*/}
-          {/*                  color: "white",*/}
-          {/*                  padding: "0.35rem 0.35rem",*/}
-          {/*                  borderRadius: "4px",*/}
-          {/*                  fontWeight: "bold",*/}
-          {/*                }}*/}
-          {/*              >*/}
-          {/*                <Trans i18nKey={"warning"} />*/}
-          {/*              </Typography>*/}
-          {/*            </Box>{" "}*/}
-          {/*            <Typography variant="titleMedium" fontWeight={400}>*/}
-          {/*              <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedFirstSection" />*/}
-          {/*            </Typography>*/}
-          {/*            <Typography*/}
-          {/*              component={Link}*/}
-          {/*              to={`./../../questionnaires?subject_pk=${id}`}*/}
-          {/*              color="#2D80D2"*/}
-          {/*              variant="titleMedium"*/}
-          {/*              sx={{*/}
-          {/*                textDecoration: "none",*/}
-          {/*              }}*/}
-          {/*            >*/}
-          {/*              <Trans i18nKey={"assessmentQuestion"} />*/}
-          {/*            </Typography>*/}
-          {/*            <Typography variant="titleMedium" fontWeight={400}>*/}
-          {/*              <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />*/}
-          {/*            </Typography>*/}
-          {/*          </Box>*/}
-          {/*        )*/}
-          {/*      )}*/}
-          {/*      {attributesDataPolicy[id?.toString()]?.aiInsight &&*/}
-          {/*        attributesDataPolicy[id?.toString()]?.aiInsight.isValid && (*/}
-          {/*          <Box sx={{ ...styles.centerV }} gap={2}>*/}
-          {/*            <AIGenerated />*/}
-          {/*            <Box*/}
-          {/*              sx={{*/}
-          {/*                display: "flex",*/}
-          {/*                alignItems: "flex-start",*/}
-          {/*                backgroundColor: "rgba(255, 249, 196, 0.31)",*/}
-          {/*                padding: 1,*/}
-          {/*                borderRadius: 2,*/}
-          {/*                maxWidth: "80%",*/}
-          {/*              }}*/}
-          {/*            >*/}
-          {/*              <InfoOutlined*/}
-          {/*                color="primary"*/}
-          {/*                sx={{*/}
-          {/*                  marginRight:*/}
-          {/*                    theme.direction === "ltr" ? 1 : "unset",*/}
-          {/*                  marginLeft: theme.direction === "rtl" ? 1 : "unset",*/}
-          {/*                }}*/}
-          {/*              />*/}
-          {/*              <Typography*/}
-          {/*                variant="titleMedium"*/}
-          {/*                fontWeight={400}*/}
-          {/*                textAlign="left"*/}
-          {/*              >*/}
-          {/*                <Trans i18nKey="invalidAIInsight" />*/}
-          {/*              </Typography>*/}
-          {/*            </Box>*/}
-          {/*          </Box>*/}
-          {/*        )}*/}
-
-          {/*      {((attributesDataPolicy[id?.toString()]?.assessorInsight &&*/}
-          {/*        !attributesDataPolicy[id?.toString()]?.assessorInsight*/}
-          {/*          ?.isValid) ||*/}
-          {/*        (attributesDataPolicy[id?.toString()]?.aiInsight &&*/}
-          {/*          !attributesDataPolicy[id?.toString()]?.aiInsight*/}
-          {/*            ?.isValid)) && (*/}
-          {/*        <Box sx={{ ...styles.centerV }} gap={2}>*/}
-          {/*          <Box*/}
-          {/*            sx={{*/}
-          {/*              zIndex: 1,*/}
-          {/*              display: "flex",*/}
-          {/*              justifyContent: "flex-start",*/}
-          {/*              ml: { xs: 0.75, sm: 1.5, md: 2 },*/}
-          {/*            }}*/}
-          {/*          >*/}
-          {/*            <Typography*/}
-          {/*              variant="labelSmall"*/}
-          {/*              sx={{*/}
-          {/*                backgroundColor: "#d85e1e",*/}
-          {/*                color: "white",*/}
-          {/*                padding: "0.35rem 0.35rem",*/}
-          {/*                borderRadius: "4px",*/}
-          {/*                fontWeight: "bold",*/}
-          {/*              }}*/}
-          {/*            >*/}
-          {/*              <Trans i18nKey="Outdated" />*/}
-          {/*            </Typography>*/}
-          {/*          </Box>*/}
-          {/*          <Box*/}
-          {/*            sx={{*/}
-          {/*              display: "flex",*/}
-          {/*              alignItems: "flex-start",*/}
-          {/*              backgroundColor: "rgba(255, 249, 196, 0.31)",*/}
-          {/*              padding: 1,*/}
-          {/*              borderRadius: 2,*/}
-          {/*              maxWidth: "80%",*/}
-          {/*            }}*/}
-          {/*          >*/}
-          {/*            <InfoOutlined*/}
-          {/*              color="primary"*/}
-          {/*              sx={{*/}
-          {/*                marginRight: theme.direction === "ltr" ? 1 : "unset",*/}
-          {/*                marginLeft: theme.direction === "rtl" ? 1 : "unset",*/}
-          {/*              }}*/}
-          {/*            />*/}
-          {/*            <Typography*/}
-          {/*              variant="titleMedium"*/}
-          {/*              fontWeight={400}*/}
-          {/*              textAlign="left"*/}
-          {/*            >*/}
-          {/*              <Trans i18nKey="invalidInsight" />*/}
-          {/*            </Typography>*/}
-          {/*          </Box>*/}
-          {/*          {attributesDataPolicy[id?.toString()]?.editable && (*/}
-          {/*            <Button*/}
-          {/*              variant="contained"*/}
-          {/*              size="small"*/}
-          {/*              onClick={() =>*/}
-          {/*                updateAttributeAndData(id, assessmentId, "", true)*/}
-          {/*              }*/}
-          {/*            >*/}
-          {/*              <Trans i18nKey="regenerate" />*/}
-          {/*            </Button>*/}
-          {/*          )}*/}
-          {/*        </Box>*/}
-          {/*      )}*/}
-          {/*    </Box>*/}
-          {/*  </Grid>*/}
-          {/*</Grid>*/}
         </AccordionSummary>
         <Divider sx={{ mx: 2 }} />
         <AccordionDetails sx={{ padding: "0 !important" }}>
-          <Typography
-            variant="h6"
-            mt={4}
-            mb={2}
-            sx={{
-              ml:
-                theme.direction == "ltr"
-                  ? { xs: 0.75, sm: 1.5, md: 2 }
-                  : "unset",
-              mr:
-                theme.direction == "rtl"
-                  ? { xs: 0.75, sm: 1.5, md: 2 }
-                  : "unset",
-            }}
-          >
-            <Trans i18nKey={"theAchivedScores"} />
-          </Typography>
-          <Box
-            sx={{
-              pr: theme.direction == "rtl" ? "unset" : { xs: 2, sm: 6 },
-              pl: theme.direction == "ltr" ? "unset" : { xs: 2, sm: 6 },
-            }}
-          >
-            {maturityScores
-              .map((item: any, index: number) => {
-                return (
-                  <div key={item?.id}>
-                    <MaturityLevelDetailsContainer
-                      maturity_score={item}
-                      totalml={maturityLevel?.index}
-                      mn={maturity_levels_count}
-                      expanded={expanded}
-                      setExpanded={setExpanded}
-                      attributeId={id}
-                      permissions={permissions}
-                    />
-                  </div>
-                );
-              })
-              .reverse()}
-          </Box>
+            <Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                justifyItems: "center"
+            }}>
+                <Box sx={{display: "flex", justifyContent:"center", alignItems:"center",cursor:"pointer"}} onClick={scrollLeft}>
+                    <ArrowBackIosIcon/>
+                </Box>
+                <Box
+                    sx={{
+                        background:"#E2E5E9",
+                        borderRadius: 4,
+                        width: "90%",
+                        height:"80px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        px:"20px",
+                        overflow:"auto",
+                        "&::-webkit-scrollbar": {
+                            display: "none",
+                        },
+                    }}
+                    ref={scrollContainerRef}
+                >
+                    {maturityScores
+                        .map((item: any, index: number) => {
+                            return (
+                                <NewMaturityLevel key={index}
+                                                    maturity_score={item}
+                                                    totalMl={maturityLevel?.value}
+                                                    mn={maturity_levels_count}
+                                                    expanded={expanded}
+                                                    setExpanded={setExpanded}
+                                                    attributeId={id}
+                                                    permissions={permissions}
+                                                    handelClick={handelClick}
+                                                    selectMaturityBtn={selectMaturityBtn}
+                                />
+                            );
+                        })
+                        }
+                </Box>
+                <Box sx={{display:"flex", justifyContent:"center", alignItems:"center",cursor:"pointer"}} onClick={scrollRight}>
+                    <ArrowForwardIosIcon/>
+                </Box>
+            </Box>
+                    {/*<MaturityLevelDetailsContainer*/}
+                    {/*  maturity_score={item}*/}
+                    {/*  totalml={maturityLevel?.index}*/}
+                    {/*  mn={maturity_levels_count}*/}
+                    {/*  expanded={expanded}*/}
+                    {/*  setExpanded={setExpanded}*/}
+                    {/*  attributeId={id}*/}
+                    {/*  permissions={permissions}*/}
+                    {/*/>*/}
+              {/*  );*/}
+              {/*})*/}
+              {/*.reverse()}*/}
         </AccordionDetails>
       </Accordion>
     </Box>
   );
 };
+
+const NewMaturityLevel = (props: any) =>{
+    const { maturity_score, totalMl, mn, expanded, setExpanded, attributeId, handelClick,selectMaturityBtn } =
+        props;
+    const { maturityLevel, score } = maturity_score
+    const { title } = maturityLevel
+
+    const selectedStyle = {
+        boxShadow:"0 1px 4px rgba(0,0,0,25%)",
+        color: theme.palette.primary.main,
+        background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
+        "&:hover": {
+          background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
+        },
+    }
+    return (
+        <Button
+            onClick={()=>handelClick(maturityLevel.index)}
+            sx={{
+            ...theme.typography.semiBoldLarge,
+            width: "200px",
+            height: "48px",
+            color:maturityLevel?.value > totalMl ?  "#6C8093" : selectMaturityBtn == maturityLevel.index ? theme.palette.primary.main : "#2B333B",
+            background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
+            "&:hover": {
+              background: selectMaturityBtn == maturityLevel.index ? "#fff" : "transparent",
+            },
+            boxShadow:selectMaturityBtn == maturityLevel.index  ? "0 1px 4px rgba(0,0,0,25%)" : "",
+            whiteSpace: "nowrap",
+            minWidth:"fit-content",
+            mr: "10px"
+        }}>
+            {maturityLevel?.value == totalMl &&  <WorkspacePremiumIcon fontSize={"small"} />}
+            {maturityLevel?.value < totalMl &&  <DoneIcon fontSize={"small"} />}
+            {title}
+            {" "} ({Math.ceil(score)}%)
+        </Button>
+    )
+}
 
 export const AttributeStatusBarContainer = (props: any) => {
   const { status, ml, cl, mn, document } = props;
