@@ -38,6 +38,7 @@ import Tab from "@mui/material/Tab";
 import tinycolor from "tinycolor2";
 import { InfoOutlined } from "@mui/icons-material";
 import { Button } from "@mui/material";
+import MaturityLevelTable from "./MaturityLevelTable";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -74,12 +75,12 @@ const SUbjectAttributeCard = (props: any) => {
         .lighten(30)
         .toRgbString()
     : tinycolor(colorPallet[maturityLevel.value - 1])
-        .lighten(60)
+        .lighten(55)
         .toRgbString();
   return (
     <Box
       sx={{
-        borderRadius: "16px !important",
+        borderRadius: 1,
         py: { xs: 3, sm: 4 },
         // pr: { xs: 1.5, sm: 3, md: 4 },
         mb: 5,
@@ -89,7 +90,7 @@ const SUbjectAttributeCard = (props: any) => {
       <Accordion
         sx={{
           boxShadow: "none !important",
-          borderRadius: "16px !important",
+          borderRadius: 1,
           "& .MuiAccordionSummary-content": {
             margin: "0px !important",
           },
@@ -104,13 +105,13 @@ const SUbjectAttributeCard = (props: any) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
           sx={{
-            borderRadius: "8px",
+            borderRadius: 1,
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
             "&.Mui-expanded": {
-              backgroundColor: "#F9FAFB",
+              backgroundColor: "#EDF0F3",
             },
             "&.Mui-focusVisible": {
               background: "#fff",
@@ -231,7 +232,7 @@ const SUbjectAttributeCard = (props: any) => {
                   justifyContent: "center",
                   alignItems: "center",
                   background: backgroundColor,
-                  borderRadius: "8px",
+                  borderRadius: 1,
                 }}
               >
                 <FlatGauge
@@ -247,7 +248,7 @@ const SUbjectAttributeCard = (props: any) => {
                     width: "100%",
                     height: "100%",
                     borderRadius:
-                      expandedAttribute == id ? "0 16px 0 0" : "0 16px 16px 0",
+                      expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
               </Box>
@@ -255,25 +256,31 @@ const SUbjectAttributeCard = (props: any) => {
           </Grid>
         </AccordionSummary>
         <Divider sx={{ mx: 2 }} />
-        <AccordionDetails sx={{ padding: "0 !important" }}>
+        <AccordionDetails
+          sx={{
+            padding: "0 !important",
+            backgroundColor: "#F9FAFB",
+            borderRadius: "8px",
+          }}
+        >
           <Box
             sx={{
-              display: "flex",
+              width: "98%",
               justifyContent: "center",
               justifyItems: "center",
+              padding: 2,
             }}
           >
             <Box
               width="100%"
               sx={{
                 background: "#E2E5E9",
-                borderRadius: 4,
+                borderRadius: 1,
                 height: "80px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 4px 4px rgba(0,0,0,25%)",
-                m: 2,
+                mb:2
               }}
             >
               <Tabs
@@ -296,7 +303,7 @@ const SUbjectAttributeCard = (props: any) => {
                       key={maturityLevel.index}
                       sx={{
                         ...theme.typography.semiBoldLarge,
-                        height: "48px",
+                        height: "40px",
                         mr: 1,
                         border: "none",
                         textTransform: "none",
@@ -339,6 +346,7 @@ const SUbjectAttributeCard = (props: any) => {
                 })}
               </Tabs>
             </Box>
+            {TopNavValue === 0 && <MaturityLevelTable />}
           </Box>
         </AccordionDetails>
       </Accordion>
