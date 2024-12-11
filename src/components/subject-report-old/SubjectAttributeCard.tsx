@@ -53,7 +53,6 @@ const SUbjectAttributeCard = (props: any) => {
     editable,
   } = props;
   const { permissions }: { permissions: IPermissions } = props;
-  const { assessmentId } = useParams();
   const [expanded, setExpanded] = useState<string | false>(false);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
