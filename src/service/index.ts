@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { TId } from "@types";
 import { BASE_URL } from "@constants";
 import keycloakService from "@/service//keycloakService";
@@ -9,6 +9,8 @@ declare module "axios" {
     isRefreshTokenReq?: boolean;
   }
 }
+
+const getCurrentLocale = () => i18next.language || navigator.language || "en-US";
 
 export const createService = (
   signOut: () => void,
@@ -23,6 +25,9 @@ export const createService = (
     const accessToken = keycloakService.getToken();
     const hasTenantInUrl = req.url.includes("tenant");
 
+    const currentLocale = getCurrentLocale();
+    req.headers["Accept-Language"] = currentLocale;
+    document.cookie = `locale=${currentLocale}; path=/; SameSite=Strict`;
     if (!hasTenantInUrl) {
       (req as any).headers["Authorization"] = `Bearer ${accessToken}`;
     }
