@@ -54,6 +54,7 @@ interface TableColumn {
 
 interface ItemServerFieldsColumnMapping {
   questionnaire: string;
+  question: string;
   weight: number;
   score: number;
   weighted_score: number;
@@ -63,6 +64,7 @@ interface ItemServerFieldsColumnMapping {
 
 interface ItemColumnMapping {
   questionnaire: string;
+  question: string;
   weight: number;
   score: number;
   weightedScore: number;
@@ -74,41 +76,47 @@ const columns: TableColumn[] = [
   {
     field: "questionnaire",
     serverKey: "questionnaire",
-    label: "Questionnaire",
+    label: "questionnaire",
     sortable: true,
+  },
+  {
+    field: "question",
+    serverKey: "question",
+    label: "question",
+    sortable: false,
   },
   {
     field: "weight",
     serverKey: "weight",
-    label: "Weight",
+    label: "weight",
     sortable: true,
     align: "center",
   },
   {
     field: "score",
     serverKey: "score",
-    label: "Score",
+    label: "score",
     sortable: true,
     align: "center",
   },
   {
     field: "weightedScore",
     serverKey: "weighted_score",
-    label: "Weighted Score",
+    label: "weightedScore",
     sortable: true,
     align: "center",
   },
   {
     field: "confidence",
     serverKey: "confidence",
-    label: "Confidence",
+    label: "confidence",
     sortable: true,
     align: "center",
   },
   {
     field: "evidenceCount",
     serverKey: "evidence_count",
-    label: "Evidence Count",
+    label: "evidenceCount",
     sortable: true,
     align: "center",
   },
@@ -144,6 +152,7 @@ const MaturityLevelTable = ({
 
   const mapItemToRow = (item: Item): ItemColumnMapping => ({
     questionnaire: item.questionnaire,
+    question: item.question.title,
     weight: item.question.weight,
     score: item.answer.score,
     weightedScore: item.answer.weightedScore,
@@ -175,7 +184,7 @@ const MaturityLevelTable = ({
                         )
                       }
                     >
-                      {column.label}
+                      <Trans i18nKey={column.label} />
                     </TableSortLabel>
                   ) : (
                     column.label
