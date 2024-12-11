@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,11 +7,11 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  Paper,
   Rating,
   styled,
+  Typography,
 } from "@mui/material";
-import { TablePagination } from "@mui/material";
+import { Trans } from "react-i18next";
 
 interface TableData {
   items: Item[];
@@ -49,6 +49,16 @@ interface TableColumn {
   label: string;
   sortable: boolean;
   align?: "left" | "right" | "center";
+  serverKey: keyof ItemServerFieldsColumnMapping;
+}
+
+interface ItemServerFieldsColumnMapping {
+  questionnaire: string;
+  weight: number;
+  score: number;
+  weighted_score: number;
+  confidence: number;
+  evidence_count: number;
 }
 
 interface ItemColumnMapping {
@@ -60,103 +70,65 @@ interface ItemColumnMapping {
   evidenceCount: number;
 }
 
-// Sample data
-const sampleData: TableData = {
-  items: [
-    {
-      questionnaire: "Software Quality Tunning",
-      question: {
-        index: 6,
-        title: "Is the use of a load balancer supported in the architecture?",
-        weight: 1,
-        evidenceCount: 2,
-      },
-      answer: {
-        index: 4,
-        title: "Good",
-        isNotApplicable: null,
-        score: 1.0,
-        weightedScore: 1.0,
-        confidenceLevel: 4,
-      },
-    },
-    {
-      questionnaire: "Log and Monitoring",
-      question: {
-        index: 1,
-        title:
-          "Is a suitable technology (e.g. Logback, etc.) being utilized for logging?",
-        weight: 1,
-        evidenceCount: 1,
-      },
-      answer: {
-        index: 1,
-        title: "No",
-        isNotApplicable: null,
-        score: 0.5,
-        weightedScore: 0.5,
-        confidenceLevel: 2,
-      },
-    },
-  ],
-  page: 0,
-  size: 4,
-  sort: "evidenceCount",
-  order: "desc",
-  total: 15,
-};
-
 const columns: TableColumn[] = [
-  { field: "questionnaire", label: "Questionnaire", sortable: true },
-  { field: "weight", label: "Weight", sortable: true, align: "center" },
-  { field: "score", label: "Score", sortable: true, align: "center" },
+  {
+    field: "questionnaire",
+    serverKey: "questionnaire",
+    label: "Questionnaire",
+    sortable: true,
+  },
+  {
+    field: "weight",
+    serverKey: "weight",
+    label: "Weight",
+    sortable: true,
+    align: "center",
+  },
+  {
+    field: "score",
+    serverKey: "score",
+    label: "Score",
+    sortable: true,
+    align: "center",
+  },
   {
     field: "weightedScore",
+    serverKey: "weighted_score",
     label: "Weighted Score",
     sortable: true,
     align: "center",
   },
   {
     field: "confidence",
+    serverKey: "confidence",
     label: "Confidence",
-    sortable: false,
+    sortable: true,
     align: "center",
   },
   {
     field: "evidenceCount",
+    serverKey: "evidence_count",
     label: "Evidence Count",
     sortable: true,
     align: "center",
   },
 ];
 
-const MaturityLevelTable: React.FC = () => {
-  const [data, setData] = useState<TableData>(sampleData);
-  const [order, setOrder] = useState<"asc" | "desc">("desc");
-  const [orderBy, setOrderBy] =
-    useState<keyof ItemColumnMapping>("evidenceCount");
+const MaturityLevelTable = ({
+  tempData,
+  updateSortOrder,
+}: {
+  tempData: any;
+  updateSortOrder: any;
+}) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
 
-  const handleSort = (field: keyof ItemColumnMapping) => {
-    const isAsc = orderBy === field && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(field);
-    // Add sorting logic for items
-    const sortedItems = [...data.items].sort((a, b) => {
-      const aValue =
-        field === "confidence"
-          ? a.answer.confidenceLevel
-          : a.question[field as keyof Question] ||
-            a.answer[field as keyof Answer];
-      const bValue =
-        field === "confidence"
-          ? b.answer.confidenceLevel
-          : b.question[field as keyof Question] ||
-            b.answer[field as keyof Answer];
-      return (Number(aValue) > Number(bValue) ? 1 : -1) * (isAsc ? 1 : -1);
-    });
-    setData({ ...data, items: sortedItems });
+  const handleSort = (
+    field: keyof ItemServerFieldsColumnMapping,
+    order?: string,
+  ) => {
+    updateSortOrder(field, order);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -189,9 +161,19 @@ const MaturityLevelTable: React.FC = () => {
                 <TableCell key={column.field} align={column.align || "left"}>
                   {column.sortable ? (
                     <TableSortLabel
-                      active={orderBy === column.field}
-                      direction={orderBy === column.field ? order : "asc"}
-                      onClick={() => handleSort(column.field)}
+                      active={tempData.sort === column.field}
+                      direction={
+                        tempData.sort === column.field ? tempData.order : "asc"
+                      }
+                      onClick={() =>
+                        handleSort(
+                          column.serverKey,
+                          tempData.order === "asc" &&
+                            tempData.sort === column.field
+                            ? "desc"
+                            : "asc",
+                        )
+                      }
                     >
                       {column.label}
                     </TableSortLabel>
@@ -203,27 +185,41 @@ const MaturityLevelTable: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((item, index) => {
-                const row = mapItemToRow(item);
-                return (
-                  <TableRow key={index}>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.field}
-                        align={column.align || "left"}
-                      >
-                        {column.field === "confidence" ? (
-                          <CircleRating value={row.confidence} />
-                        ) : (
-                          row[column.field]
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                );
-              })}
+            {tempData?.items.length > 0 ? (
+              <>
+                {tempData?.items
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((item: any, index: number) => {
+                    const row = mapItemToRow(item);
+                    return (
+                      <TableRow key={index}>
+                        {columns.map((column) => (
+                          <TableCell
+                            key={column.field}
+                            align={column.align || "left"}
+                          >
+                            {column.field === "confidence" ? (
+                              <CircleRating value={row.confidence} />
+                            ) : (
+                              row[column.field]
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
+              </>
+            ) : (
+              <TableCell
+                colSpan={columns.length}
+                align="center"
+                sx={{ textAlign: "center" }}
+              >
+                <Typography>
+                  <Trans i18nKey="noDataAvailable" />
+                </Typography>
+              </TableCell>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

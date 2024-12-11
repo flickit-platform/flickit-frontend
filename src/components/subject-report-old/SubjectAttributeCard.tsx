@@ -36,7 +36,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import tinycolor from "tinycolor2";
-import { InfoOutlined } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
 
@@ -55,9 +54,35 @@ const SUbjectAttributeCard = (props: any) => {
   } = props;
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
+  const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
+    maturityScores[0].maturityLevel.id,
+  );
+  const [sort, setSort] = useState<string>("questionnaire");
+  const [order, setOrder] = useState<string>("asc");
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
+  const { service } = useServiceContext();
+
+  const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        attributeId: expandedAttribute,
+        levelId: selectedMaturityLevel,
+        sort,
+        order,
+      },
+      config,
+    ) => service.fetchAffectedQuestionsOnAttribute(args, config),
+    runOnMount: false,
+  });
+
+  useEffect(() => {
+    if (expandedAttribute && selectedMaturityLevel) {
+      fetchAffectedQuestionsOnAttributeQueryData.query();
+    }
+  }, [expandedAttribute, selectedMaturityLevel]);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -67,16 +92,30 @@ const SUbjectAttributeCard = (props: any) => {
     setTopNavValue(newValue);
   };
 
+  const updateSortOrder = (newSort: string, newOrder: string) => {
+    fetchAffectedQuestionsOnAttributeQueryData.query({
+      assessmentId,
+      attributeId: expandedAttribute,
+      levelId: selectedMaturityLevel,
+      sort: newSort,
+      order: newOrder,
+    });
+  };
+
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
-  const backgroundColor = tinycolor(
-    colorPallet[maturityLevel.value - 1],
-  ).isLight()
-    ? tinycolor(colorPallet[maturityLevel.value - 1])
-        .lighten(30)
-        .toRgbString()
-    : tinycolor(colorPallet[maturityLevel.value - 1])
-        .lighten(55)
-        .toRgbString();
+
+  const backgroundColor =
+    tinycolor(colorPallet[maturityLevel.value - 1]).getBrightness() > 180
+      ? tinycolor(colorPallet[maturityLevel.value - 1])
+          .brighten(60)
+          .toRgbString()
+      : tinycolor(colorPallet[maturityLevel.value - 1]).getBrightness() > 100
+        ? tinycolor(colorPallet[maturityLevel.value - 1])
+            .lighten(50)
+            .toRgbString()
+        : tinycolor(colorPallet[maturityLevel.value - 1])
+            .lighten(60)
+            .toRgbString();
   return (
     <Box
       sx={{
@@ -265,7 +304,7 @@ const SUbjectAttributeCard = (props: any) => {
         >
           <Box
             sx={{
-              width: "98%",
+              width: "100%",
               justifyContent: "center",
               justifyItems: "center",
               padding: 2,
@@ -280,12 +319,12 @@ const SUbjectAttributeCard = (props: any) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                mb:2
+                mb: 2,
               }}
             >
               <Tabs
                 value={TopNavValue}
-                onChange={handleChangeTab}
+                onChange={(event, newValue) => handleChangeTab(event, newValue)}
                 variant="scrollable"
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
@@ -296,11 +335,14 @@ const SUbjectAttributeCard = (props: any) => {
                   },
                 }}
               >
-                {maturityScores.map((item: any) => {
+                {maturityScores.map((item: any, index: number) => {
                   const { maturityLevel: maturityLevelOfScores, score } = item;
                   return (
                     <Tab
-                      key={maturityLevel.index}
+                      onClick={(event) =>
+                        setSelectedMaturityLevel(maturityLevelOfScores?.id)
+                      }
+                      key={maturityLevel.id}
                       sx={{
                         ...theme.typography.semiBoldLarge,
                         height: "40px",
@@ -338,7 +380,7 @@ const SUbjectAttributeCard = (props: any) => {
                             maturityLevel?.value && (
                             <DoneIcon fontSize={"small"} />
                           )}
-                          {title} ({Math.ceil(score)}%)
+                          {maturityLevelOfScores.title} ({Math.ceil(score)}%)
                         </Box>
                       }
                     />
@@ -346,7 +388,18 @@ const SUbjectAttributeCard = (props: any) => {
                 })}
               </Tabs>
             </Box>
-            {TopNavValue === 0 && <MaturityLevelTable />}
+            <QueryData
+              {...fetchAffectedQuestionsOnAttributeQueryData}
+              render={(data) => {
+                return (
+                  <MaturityLevelTable
+                    tempData={data}
+                    updateSortOrder={updateSortOrder}
+                  />
+                );
+              }}
+            />
+            {/* {TopNavValue === 0 && <MaturityLevelTable />} */}
           </Box>
         </AccordionDetails>
       </Accordion>

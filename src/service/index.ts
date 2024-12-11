@@ -10,7 +10,8 @@ declare module "axios" {
   }
 }
 
-const getCurrentLocale = () => i18next.language || navigator.language || "en-US";
+const getCurrentLocale = () =>
+  i18next.language || navigator.language || "en-US";
 
 export const createService = (
   signOut: () => void,
@@ -1511,16 +1512,24 @@ export const createService = (
       return axios.get(`/api/v1/assessment-kits/${id}/`, config);
     },
     fetchAffectedQuestionsOnAttribute(
-      args: { assessmentId: TId; attributeId: TId; levelId: TId },
+      args: {
+        assessmentId: TId;
+        attributeId: TId;
+        levelId: TId;
+        sort: any;
+        order: any;
+      },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      const { assessmentId, attributeId, levelId } = args ?? {};
+      const { assessmentId, attributeId, levelId, sort, order } = args ?? {};
       return axios.get(
         `/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/`,
         {
           ...(config ?? {}),
           params: {
             maturityLevelId: levelId,
+            sort: sort,
+            order: order,
           },
         },
       );
