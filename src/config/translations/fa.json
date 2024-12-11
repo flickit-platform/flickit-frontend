@@ -687,5 +687,6 @@
   "yourConfidence": "سطح اطمینان شما",
   "YourStatusIs": "وضعیت {{title}} شما",
   "youSelected": "شما انتخاب کردید ",
-  "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید"
+  "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید",
+  "gainedScorePercentage": "درصد امتیاز به دست آورد"
 }

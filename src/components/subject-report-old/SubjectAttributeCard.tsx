@@ -54,11 +54,16 @@ const SUbjectAttributeCard = (props: any) => {
   const { permissions }: { permissions: IPermissions } = props;
   const { assessmentId } = useParams();
   const [expanded, setExpanded] = useState<string | false>(false);
-    const [TopNavValue, setTopNavValue] = React.useState<number>(0);
+  const { service } = useServiceContext();
+  const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
 
+  const fetchScoreState = useQuery({
+      service: (args = { assessmentId,attributeId:id,maturityLevelId: maturityLevel.id }, config) =>
+          service.fetchScoreState(args, config),
+  })
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
@@ -105,7 +110,6 @@ const SUbjectAttributeCard = (props: any) => {
               padding: "0px !important",
             },
           }}
-          onClick={(event) => event.stopPropagation()}
         >
           <Grid container sx={{ width: "100%", direction: theme.direction }}>
             <Grid item xs={9} sx={{ px: "32px", py: "40px" }}>
@@ -164,7 +168,8 @@ const SUbjectAttributeCard = (props: any) => {
             <Box sx={{
                 display: "flex",
                 justifyContent: "center",
-                justifyItems: "center"
+                justifyItems: "center",
+                flexDirection:"column",
             }}>
                 <Box
                     sx={{
@@ -175,6 +180,7 @@ const SUbjectAttributeCard = (props: any) => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent:"center",
+                        mx:"auto",
                         boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                         mb:2
                     }}
@@ -193,11 +199,11 @@ const SUbjectAttributeCard = (props: any) => {
                         }}
                     >
                         {maturityScores
-                            .map((item: any) => {
+                            .map((item: any, index: number) => {
                                 const { maturityLevel : maturityLevelOfScores , score } = item
                                 return (
                                     <Tab
-                                        key={maturityLevel.index}
+                                        key={index}
                                         sx={{
                                             ...theme.typography.semiBoldLarge,
                                             height: "48px",
@@ -227,6 +233,24 @@ const SUbjectAttributeCard = (props: any) => {
                         }
                     </Tabs>
                 </Box>
+                <QueryData
+                    {...fetchScoreState}
+                    render={(data)=>{
+                        const {
+                                gainedScore,
+                                gainedScorePercentage,
+                                maxPossibleScore,
+                                questionsCount
+                            } = data
+                    return (
+                        <Grid container sx={{direction: theme.direction ,mb:2, whiteSpace:"nowrap",display:"flex", justifyContent:"center",px:1}}>
+                           <Grid item xs={6} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"maxPossibleScore"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{maxPossibleScore}</Typography></Grid>
+                           <Grid item xs={6} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"gainedScore"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{gainedScore}</Typography></Grid>
+                           <Grid item xs={6} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"questionsCount"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{questionsCount}</Typography></Grid>
+                           <Grid item xs={6} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"gainedScorePercentage"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{gainedScorePercentage}</Typography></Grid>
+                        </Grid>
+                    )}
+                    }/>
             </Box>
         </AccordionDetails>
       </Accordion>

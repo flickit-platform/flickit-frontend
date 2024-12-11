@@ -521,6 +521,17 @@ export const createService = (
         config,
       );
     },
+    fetchScoreState(
+    { assessmentId, attributeId, maturityLevelId }: { assessmentId: string; attributeId: TId, maturityLevelId: TId },
+    config?: AxiosRequestConfig<any> | undefined,
+     ){
+      return axios.get(`/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/stats/`,{
+          ...(config ?? {}),
+          params: {
+              maturityLevelId: maturityLevelId
+          },
+      })
+    },
     updateAIReport(
       {
         data,
