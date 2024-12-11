@@ -110,6 +110,7 @@ const SUbjectAttributeCard = (props: any) => {
 
   const maturityHandelClick =(id: number)=>{
       setMaturityLId(id)
+      setSelectedMaturityLevel(id)
   }
 
   useEffect(()=>{
@@ -413,6 +414,7 @@ const SUbjectAttributeCard = (props: any) => {
             </Box>
               <QueryData
                   {...fetchScoreState}
+                  loading={false}
                   render={(data)=>{
                       const {
                           gainedScore,
