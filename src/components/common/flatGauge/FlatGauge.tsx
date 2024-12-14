@@ -16,7 +16,7 @@ interface IGaugeProps extends BoxProps {
   confidenceLevelNum?: number;
 }
 
-const confidencePallet: any = {
+export const confidencePallet: any = {
   10: "#A50026",
   20: "#D73027",
   30: "#F46D43",

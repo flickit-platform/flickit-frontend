@@ -688,5 +688,6 @@
   "YourStatusIs": "Your {{title}} status is",
   "youSelected": "You've selected",
   "youveGotSyntaxErrorsInYourDslFile": "You've got syntax errors in your dsl file",
-  "noDataAvailable": "No data available"
+  "noDataAvailable": "No data available",
+  "analysisResults": "AnalysisResults"
 }
