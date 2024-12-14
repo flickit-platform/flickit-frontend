@@ -38,6 +38,7 @@ import Tab from "@mui/material/Tab";
 import tinycolor from "tinycolor2";
 import { Button } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
+import TableSkeleton from "../common/loadings/TableSkeleton";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -62,7 +63,7 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
-  const [maturityLId,setMaturityLId] = useState(maturityLevel.id)
+  const [maturityLId, setMaturityLId] = useState(maturityLevel.id);
   const { service } = useServiceContext();
 
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
@@ -85,11 +86,13 @@ const SUbjectAttributeCard = (props: any) => {
     }
   }, [expandedAttribute, selectedMaturityLevel]);
 
-    const fetchScoreState = useQuery({
-        service: (args = { assessmentId,attributeId:id,maturityLevelId: maturityLId }, config) =>
-            service.fetchScoreState(args, config),
-        runOnMount: false
-    })
+  const fetchScoreState = useQuery({
+    service: (
+      args = { assessmentId, attributeId: id, maturityLevelId: maturityLId },
+      config,
+    ) => service.fetchScoreState(args, config),
+    runOnMount: false,
+  });
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
@@ -108,22 +111,22 @@ const SUbjectAttributeCard = (props: any) => {
     });
   };
 
-  const maturityHandelClick =(id: number)=>{
-      setMaturityLId(id)
-      setSelectedMaturityLevel(id)
-  }
+  const maturityHandelClick = (id: number) => {
+    setMaturityLId(id);
+    setSelectedMaturityLevel(id);
+  };
 
-  useEffect(()=>{
-      fetchScoreState.query()
-  },[maturityLId])
+  useEffect(() => {
+    fetchScoreState.query();
+  }, [maturityLId]);
 
-    const formatMaturityNumber =(num: any)=>{
-      if(num.toString().includes(".")){
-          return parseFloat(num).toFixed(1);
-      }else {
-          return num
-      }
+  const formatMaturityNumber = (num: any) => {
+    if (num.toString().includes(".")) {
+      return parseFloat(num).toFixed(1);
+    } else {
+      return num;
     }
+  };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
 
@@ -167,13 +170,14 @@ const SUbjectAttributeCard = (props: any) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
           sx={{
-            borderRadius: 1,
-            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            borderRadius: "16px",
+            boxShadow: "inset 0 0 0 1px #C7CCD1",
             margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
             "&.Mui-expanded": {
               backgroundColor: "#EDF0F3",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             },
             "&.Mui-focusVisible": {
               background: "#fff",
@@ -185,7 +189,15 @@ const SUbjectAttributeCard = (props: any) => {
           }}
           onClick={(event) => event.stopPropagation()}
         >
-          <Grid container sx={{ width: "100%", direction: theme.direction }}>
+          <Grid
+            container
+            sx={{
+              width: "100%",
+              direction: theme.direction,
+              boxShadow: "inset 0 0 0 1px #C7CCD1",
+              borderRadius: "16px",
+            }}
+          >
             <Grid item xs={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
@@ -294,7 +306,9 @@ const SUbjectAttributeCard = (props: any) => {
                   justifyContent: "center",
                   alignItems: "center",
                   background: backgroundColor,
-                  borderRadius: 1,
+                  borderEndEndRadius: "16px",
+                  borderStartEndRadius: "16px",
+                  boxShadow: "inset 0 0 0 1px #C7CCD1",
                 }}
               >
                 <FlatGauge
@@ -330,7 +344,7 @@ const SUbjectAttributeCard = (props: any) => {
               display: "flex",
               justifyContent: "center",
               justifyItems: "center",
-              flexDirection:"column",
+              flexDirection: "column",
               padding: 2,
             }}
           >
@@ -343,7 +357,7 @@ const SUbjectAttributeCard = (props: any) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                mx:"auto",
+                mx: "auto",
                 boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                 my: 2,
               }}
@@ -365,7 +379,9 @@ const SUbjectAttributeCard = (props: any) => {
                   const { maturityLevel: maturityLevelOfScores, score } = item;
                   return (
                     <Tab
-                      onClick={()=>maturityHandelClick(maturityLevelOfScores.id)}
+                      onClick={() =>
+                        maturityHandelClick(maturityLevelOfScores.id)
+                      }
                       key={index}
                       sx={{
                         ...theme.typography.semiBoldLarge,
@@ -412,25 +428,105 @@ const SUbjectAttributeCard = (props: any) => {
                 })}
               </Tabs>
             </Box>
-              <QueryData
-                  {...fetchScoreState}
-                  loading={false}
-                  render={(data)=>{
-                      const {
-                          gainedScore,
-                          maxPossibleScore,
-                          questionsCount
-                      } = data
-                      return (
-                          <Grid container sx={{direction: theme.direction ,mb:2, whiteSpace:"nowrap",display:"flex", justifyContent:"center",px:1}}>
-                              <Grid item xs={12} sm={4} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"maxPossibleScore"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{formatMaturityNumber(maxPossibleScore)}</Typography></Grid>
-                              <Grid item xs={12} sm={4} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"gainedScore"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{formatMaturityNumber(gainedScore)}</Typography></Grid>
-                              <Grid item xs={12} sm={4} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"questionsCount"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{formatMaturityNumber(questionsCount)}</Typography></Grid>
-                          </Grid>
-                      )}
-                  }/>
+            <QueryData
+              {...fetchScoreState}
+              loading={false}
+              render={(data) => {
+                const { gainedScore, maxPossibleScore, questionsCount } = data;
+                return (
+                  <Grid
+                    container
+                    sx={{
+                      direction: theme.direction,
+                      mb: 2,
+                      whiteSpace: "nowrap",
+                      display: "flex",
+                      justifyContent: "center",
+                      px: 1,
+                    }}
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={2}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          ...theme.typography.bodyMedium,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Trans i18nKey={"maxPossibleScore"} />
+                      </Typography>
+                      :{" "}
+                      <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+                        {formatMaturityNumber(maxPossibleScore)}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={2}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          ...theme.typography.bodyMedium,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Trans i18nKey={"gainedScore"} />
+                      </Typography>
+                      :{" "}
+                      <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+                        {formatMaturityNumber(gainedScore)}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={2}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          ...theme.typography.bodyMedium,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Trans i18nKey={"questionsCount"} />
+                      </Typography>
+                      :{" "}
+                      <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+                        {formatMaturityNumber(questionsCount)}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                );
+              }}
+            />
             <QueryData
               {...fetchAffectedQuestionsOnAttributeQueryData}
+              loadingComponent={<TableSkeleton/>}
               render={(data) => {
                 return (
                   <MaturityLevelTable
