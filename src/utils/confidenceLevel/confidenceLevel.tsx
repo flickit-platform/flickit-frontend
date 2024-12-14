@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { colorPallet } from "./style";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -16,8 +16,10 @@ const ConfidenceLevel = ({
 }: IconfidenceLevelType) => {
   const { id, colorText, number } = calculate(inputNumber);
 
-  const ImgRate = lazy(() => import(`./confLevel${id}.tsx`));
-
+  const ImgRate = useMemo(
+    () => lazy(() => import(`./confLevel${id}.tsx`)),
+    [id],
+  );
   return (
     <Suspense fallback={<Box>fallback</Box>}>
       <Box

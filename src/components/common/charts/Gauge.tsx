@@ -1,6 +1,6 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { Trans } from "react-i18next";
 import { styles, getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
@@ -37,9 +37,11 @@ const Gauge = (props: IGaugeProps) => {
   } = props;
   const colorPallet = getMaturityLevelColors(maturity_level_number);
   const colorCode = colorPallet[level_value - 1];
-  const GaugeComponent = lazy(
-    () => import(`./GaugeComponent${maturity_level_number}.tsx`),
+  const GaugeComponent = useMemo(
+    () => lazy(() => import(`./GaugeComponent${maturity_level_number}.tsx`)),
+    [maturity_level_number],
   );
+
   const confidenceValue = confidence_value ? confidence_value : 0;
   const calculateFontSize = (length: number): string => {
     const maxLength = 14; // Example threshold for maximum length
@@ -144,7 +146,7 @@ const Gauge = (props: IGaugeProps) => {
             mt={maturity_status_guide ? "0.5rem" : 0}
             mb={maturity_status_guide ? "-0.5rem" : 0}
           >
-           <Trans i18nKey={`${maturity_level_status}`} />
+            <Trans i18nKey={`${maturity_level_status}`} />
           </Typography>
           {!hideGuidance && (
             <Typography
