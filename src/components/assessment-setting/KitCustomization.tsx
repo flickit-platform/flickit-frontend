@@ -184,7 +184,6 @@ const KitCustomization = (props: any) => {
     })();
   };
 
-  console.log(fetchKitCustomization.errorObject?.response);
   return (
     <>
       {!fetchKitCustomization.errorObject?.response && (
