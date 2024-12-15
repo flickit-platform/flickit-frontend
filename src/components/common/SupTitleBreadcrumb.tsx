@@ -8,6 +8,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { Chip } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { uniqueId } from "lodash";
 
 interface ISupTitleBreadcrumbProps {
   routes: {
@@ -37,7 +38,7 @@ const SupTitleBreadcrumb = (
           (!route.hasOwnProperty("disabled") || route.disabled);
         const isActive = routes.length - 1 === index;
         return (
-          <Box display="flex" flexDirection={"column"} key={route?.sup}>
+          <Box display="flex" flexDirection={"column"} key={uniqueId()}>
             <MuiLink
               component={disabled ? "div" : Link}
               underline={disabled ? "none" : "hover"}

@@ -30,6 +30,7 @@ const AdviceItems = () => {
   const deleteAdviceItem = useQuery<any>({
     service: (args, config) => service.deleteAdviceItem(args, config),
     toastError: false,
+    runOnMount: false
   });
 
   const { data } = queryData;

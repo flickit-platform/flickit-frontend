@@ -13,7 +13,8 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import { Trans } from "react-i18next";
-import {theme} from "@config/theme";
+import { theme } from "@config/theme";
+import { uniqueId } from "lodash";
 const AssessmentKitsListContainer = () => {
   const { service } = useServiceContext();
   const [value, setValue] = useState("public");
@@ -36,7 +37,10 @@ const AssessmentKitsListContainer = () => {
             <Tab
               label={
                 <Box sx={{ ...styles.centerV }}>
-                  <Trans style={{...theme.typography.titleSmall}} i18nKey="public" />
+                  <Trans
+                    style={{ ...theme.typography.titleSmall }}
+                    i18nKey="public"
+                  />
                 </Box>
               }
               value="public"
@@ -44,7 +48,10 @@ const AssessmentKitsListContainer = () => {
             <Tab
               label={
                 <Box sx={{ ...styles.centerV }}>
-                  <Trans style={{...theme.typography.titleSmall}} i18nKey="private" />
+                  <Trans
+                    style={{ ...theme.typography.titleSmall }}
+                    i18nKey="private"
+                  />
                 </Box>
               }
               value="private"
@@ -59,9 +66,9 @@ const AssessmentKitsListContainer = () => {
                 <Box mt={`2`}>
                   <Grid container spacing={2}>
                     {forLoopComponent(5, (index) => (
-                      <Grid item xs={12} md={6} lg={4} key={index}>
+                      <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
                         <LoadingSkeleton
-                          key={index}
+                          key={uniqueId()}
                           sx={{ height: "340px", mb: 1 }}
                         />
                       </Grid>
@@ -99,10 +106,10 @@ const AssessmentKitsListContainer = () => {
               <>
                 <Box mt={`2`}>
                   <Grid container spacing={2}>
-                    {forLoopComponent(5, (index) => (
-                      <Grid item xs={12} md={6} lg={4} key={index}>
+                    {forLoopComponent(5, () => (
+                      <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
                         <LoadingSkeleton
-                          key={index}
+                          key={uniqueId()}
                           sx={{ height: "340px", mb: 1 }}
                         />
                       </Grid>

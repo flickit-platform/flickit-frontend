@@ -13,7 +13,8 @@ import { styles } from "@styles";
 import AlertBox from "@common/AlertBox";
 import forLoopComponent from "@utils/forLoopComponent";
 import Skeleton from "@mui/material/Skeleton";
-import {theme} from "@config/theme";
+import { theme } from "@config/theme";
+import { uniqueId } from "lodash";
 
 const CompareParts = () => {
   const { assessmentIds, assessment_kit, loading } = useCompareContext();
@@ -36,7 +37,7 @@ const CompareParts = () => {
             <Grid container spacing={3}>
               {forLoopComponent(4, (index) => {
                 return (
-                  <Grid item xs={12} md={6} key={index}>
+                  <Grid item xs={12} md={6} key={uniqueId()}>
                     <ComparePartItem
                       data={assessment_kit && assessment_kit[index]}
                       index={index}
@@ -79,7 +80,7 @@ const CompareButton = (props: { disabled?: boolean }) => {
         size="large"
         disabled={disabled}
         sx={{ ...styles.compareButton }}
-        style={{...theme.typography.labelLarge}}
+        style={{ ...theme.typography.labelLarge }}
         onClick={handleClick}
       >
         <Trans i18nKey="compare" />
