@@ -3,7 +3,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
 import { Typography } from "@mui/material";
-import { getMaturityLevelColors } from "@styles";
+import {getMaturityLevelColors, styles} from "@styles";
 
 interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;
@@ -11,7 +11,7 @@ interface IGaugeProps extends BoxProps {
   text: string;
 }
 
-const CircleGauge = (props: IGaugeProps) => {
+const DonutChart = (props: IGaugeProps) => {
   const { maturityLevelNumber, levelValue, text, ...rest } = props;
 
   if (maturityLevelNumber < levelValue) return null;
@@ -25,22 +25,18 @@ const CircleGauge = (props: IGaugeProps) => {
   const colorCode = colorPallet[levelValue - 1];
 
   return (
-    <Suspense fallback={<Box>fallback</Box>}>
+    <Suspense fallback={<Trans i18nKey={"loading"} />}>
       <Box sx={{ width: "100%", height: "100%" }} {...rest}>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
+            ...styles.centerCVH,
             textAlign: "center",
             width: "fit-content",
             gap: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
           }}
         >
           <Box
             style={{
-              direction: theme.direction,
               display: "flex",
               alignItems: "center",
               gap: "3px",
@@ -67,4 +63,4 @@ const CircleGauge = (props: IGaugeProps) => {
   );
 };
 
-export default CircleGauge;
+export default DonutChart;

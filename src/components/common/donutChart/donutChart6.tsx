@@ -1,7 +1,7 @@
 import {IFlatGauge} from "@types";
 
 
-const CircleGauge6 =(props:IFlatGauge)=>{
+const DonutChart6 =(props:IFlatGauge)=>{
     const { colorCode, value } = props;
     return (
         <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,4 +34,4 @@ const CircleGauge6 =(props:IFlatGauge)=>{
         </svg>
     )
 }
-export default CircleGauge6
+export default DonutChart6
