@@ -28,7 +28,7 @@ export const createService = (
 
     const currentLocale = getCurrentLocale();
     req.headers["Accept-Language"] = currentLocale;
-    document.cookie = `locale=${currentLocale}; path=/; SameSite=Strict`;
+    document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
     if (!hasTenantInUrl) {
       (req as any).headers["Authorization"] = `Bearer ${accessToken}`;
     }
@@ -528,15 +528,22 @@ export const createService = (
       );
     },
     fetchScoreState(
-          { assessmentId, attributeId, maturityLevelId }: { assessmentId: string; attributeId: TId, maturityLevelId: TId },
-          config?: AxiosRequestConfig<any> | undefined,
-      ){
-          return axios.get(`/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/stats/`,{
-              ...(config ?? {}),
-              params: {
-                  maturityLevelId: maturityLevelId
-              },
-          })
+      {
+        assessmentId,
+        attributeId,
+        maturityLevelId,
+      }: { assessmentId: string; attributeId: TId; maturityLevelId: TId },
+      config?: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/stats/`,
+        {
+          ...(config ?? {}),
+          params: {
+            maturityLevelId: maturityLevelId,
+          },
+        },
+      );
     },
     updateAIReport(
       {
@@ -1884,10 +1891,13 @@ export const createService = (
       );
     },
     declineInvitationQueryData(
-        {expertGroupId}: { expertGroupId: TId },
-        config: AxiosRequestConfig<any> | undefined,
-      ){
-    return axios.delete(`/api/v1/expert-groups/${expertGroupId}/leave/`, config)
+      { expertGroupId }: { expertGroupId: TId },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.delete(
+        `/api/v1/expert-groups/${expertGroupId}/leave/`,
+        config,
+      );
     },
     likeAssessmentKit(
       args: { id: TId },
