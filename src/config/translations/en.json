@@ -225,7 +225,7 @@
   "errorAtLine": "{{message}} at {{fileName}} in line: {{line}} column: {{column}}",
   "errorLine": "Error line: {{errorLine}}",
   "evaluatedAs": "evaluated as",
-  "evidence": "evidence",
+  "evidence": "Evidence",
   "evidenceCount": "Evidence Count",
   "evidenceAttachmentType": "New {{value}} Evidence (Attachments)",
   "evidenceDetails": "Evidence Details",
