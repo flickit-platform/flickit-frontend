@@ -6,7 +6,6 @@ import { styles } from "@styles";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
   const { children } = props;
-  console.log();
   return (
     <Box sx={{ overflowX: "clip", minHeight: "100vh" }}>
       <Navbar />

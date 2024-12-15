@@ -111,7 +111,10 @@ const AdviceItems = () => {
 
   const handleSave = async () => {
     try {
-      await postAdviceItem.query();
+      await postAdviceItem.query().then((res) => {
+        const updatedItems = [...displayedItems, { ...newAdvice, id: res.id }];
+        setDisplayedItems(updatedItems);
+      });
       removeDescriptionAdvice.current = true;
       setNewAdvice({
         ...newAdvice,
@@ -122,8 +125,6 @@ const AdviceItems = () => {
         impact: "",
       });
       setShowNewAdviceListForm(false);
-      const updatedItems = [...displayedItems, newAdvice];
-      setDisplayedItems(updatedItems);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
