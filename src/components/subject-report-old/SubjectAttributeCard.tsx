@@ -262,6 +262,7 @@ const SUbjectAttributeCard = (props: any) => {
                   display="flex"
                   alignItems="center"
                   onClick={(event) => event.stopPropagation()}
+                  mt={2}
                 >
                   <OnHoverInput
                     attributeId={id}
@@ -330,7 +331,8 @@ const SUbjectAttributeCard = (props: any) => {
                   sx={{
                     position: "absolute",
                     bottom: "16px",
-                    right: "16px",
+                    right: theme.direction === "rtl" ? "unset" : "16px",
+                    left: theme.direction === "rtl" ? "16px" : "unset",
                     transform: expandedAttribute === id ? "scaleY(-1)" : "none",
                   }}
                 />

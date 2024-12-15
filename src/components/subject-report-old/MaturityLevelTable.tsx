@@ -193,8 +193,12 @@ const MaturityLevelTable = ({
           style={{ backgroundColor: color.backgroundColor, color: color.color }}
         />
       ),
-      question: item.question.title,
-      answer: item.answer.title,
+      question: item.question.index
+        ? item.question.index + ". " + item.question.title
+        : "-",
+      answer: item.answer.index
+        ? item.answer.index + ". " + item.answer.title
+        : "-",
       weight: item.question.weight,
       score: item.answer.score,
       weightedScore: item.answer.weightedScore,
@@ -300,6 +304,7 @@ const MaturityLevelTable = ({
                             textOverflow: "ellipsis",
                             whiteSpace: "nowrap",
                             maxWidth: column.width || "100%",
+                            textAlign: column.align
                           }}
                         >
                           {column.field === "confidence" ? (
