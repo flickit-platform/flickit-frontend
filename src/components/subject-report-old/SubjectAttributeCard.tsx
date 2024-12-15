@@ -129,19 +129,16 @@ const SUbjectAttributeCard = (props: any) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
+  const maturityLevelColor = colorPallet[maturityLevel.value - 1];
 
   const backgroundColor =
-    tinycolor(colorPallet[maturityLevel.value - 1]).getBrightness() > 180
-      ? tinycolor(colorPallet[maturityLevel.value - 1])
-          .brighten(60)
-          .toRgbString()
-      : tinycolor(colorPallet[maturityLevel.value - 1]).getBrightness() > 100
-        ? tinycolor(colorPallet[maturityLevel.value - 1])
-            .lighten(50)
-            .toRgbString()
-        : tinycolor(colorPallet[maturityLevel.value - 1])
-            .lighten(60)
-            .toRgbString();
+    tinycolor(maturityLevelColor).getBrightness() > 180
+      ? tinycolor(maturityLevelColor).brighten(60).toRgbString()
+      : tinycolor(maturityLevelColor).getBrightness() > 160
+        ? tinycolor(maturityLevelColor).lighten(40).toRgbString()
+        : tinycolor(maturityLevelColor).getBrightness() > 80
+          ? tinycolor(maturityLevelColor).lighten(50).toRgbString()
+          : tinycolor(maturityLevelColor).lighten(60).toRgbString();
   return (
     <Box
       sx={{
@@ -336,7 +333,7 @@ const SUbjectAttributeCard = (props: any) => {
           sx={{
             padding: "0 !important",
             backgroundColor: "#F9FAFB",
-            borderRadius: "8px",
+            borderRadius: "16px",
           }}
         >
           <Box
@@ -351,15 +348,14 @@ const SUbjectAttributeCard = (props: any) => {
             <Box
               sx={{
                 background: "#E2E5E9",
-                width: "90%",
-                borderRadius: 1,
-                height: "80px",
+                width: "100%",
+                borderRadius: "16px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                mx: "auto",
                 boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                 my: 2,
+                paddingBlock: 2
               }}
             >
               <Tabs
@@ -385,10 +381,10 @@ const SUbjectAttributeCard = (props: any) => {
                       key={index}
                       sx={{
                         ...theme.typography.semiBoldLarge,
-                        height: "40px",
                         mr: 1,
                         border: "none",
                         textTransform: "none",
+                        paddingY: 1.5,
                         color:
                           maturityLevelOfScores?.value > maturityLevel?.value
                             ? "#6C8093"
@@ -410,6 +406,7 @@ const SUbjectAttributeCard = (props: any) => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
+                            gap: 1,
                           }}
                         >
                           {maturityLevelOfScores?.value ==
@@ -463,9 +460,8 @@ const SUbjectAttributeCard = (props: any) => {
                           textAlign: "center",
                         }}
                       >
-                        <Trans i18nKey={"maxPossibleScore"} />
-                      </Typography>
-                      :{" "}
+                        <Trans i18nKey={"maxPossibleScore"} />:
+                      </Typography>{" "}
                       <Typography sx={{ ...theme.typography.semiBoldMedium }}>
                         {formatMaturityNumber(maxPossibleScore)}
                       </Typography>
@@ -488,9 +484,8 @@ const SUbjectAttributeCard = (props: any) => {
                           textAlign: "center",
                         }}
                       >
-                        <Trans i18nKey={"gainedScore"} />
-                      </Typography>
-                      :{" "}
+                        <Trans i18nKey={"gainedScore"} />:
+                      </Typography>{" "}
                       <Typography sx={{ ...theme.typography.semiBoldMedium }}>
                         {formatMaturityNumber(gainedScore)}
                       </Typography>
@@ -513,9 +508,8 @@ const SUbjectAttributeCard = (props: any) => {
                           textAlign: "center",
                         }}
                       >
-                        <Trans i18nKey={"questionsCount"} />
-                      </Typography>
-                      :{" "}
+                        <Trans i18nKey={"questionsCount"} />:
+                      </Typography>{" "}
                       <Typography sx={{ ...theme.typography.semiBoldMedium }}>
                         {formatMaturityNumber(questionsCount)}
                       </Typography>
@@ -526,7 +520,7 @@ const SUbjectAttributeCard = (props: any) => {
             />
             <QueryData
               {...fetchAffectedQuestionsOnAttributeQueryData}
-              loadingComponent={<TableSkeleton/>}
+              loadingComponent={<TableSkeleton />}
               render={(data) => {
                 return (
                   <MaturityLevelTable

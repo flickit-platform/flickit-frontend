@@ -12,7 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Trans } from "react-i18next";
-
+import { theme } from "@/config/theme";
+import FilterListIcon from "@mui/icons-material/FilterList";
 interface TableData {
   items: Item[];
   page: number;
@@ -55,6 +56,7 @@ interface TableColumn {
 interface ItemServerFieldsColumnMapping {
   questionnaire: string;
   question: string;
+  answer: string;
   weight: number;
   score: number;
   weighted_score: number;
@@ -65,6 +67,7 @@ interface ItemServerFieldsColumnMapping {
 interface ItemColumnMapping {
   questionnaire: string;
   question: string;
+  answer: string;
   weight: number;
   score: number;
   weightedScore: number;
@@ -83,6 +86,12 @@ const columns: TableColumn[] = [
     field: "question",
     serverKey: "question",
     label: "question",
+    sortable: false,
+  },
+  {
+    field: "answer",
+    serverKey: "answer",
+    label: "answer",
     sortable: false,
   },
   {
@@ -153,6 +162,7 @@ const MaturityLevelTable = ({
   const mapItemToRow = (item: Item): ItemColumnMapping => ({
     questionnaire: item.questionnaire,
     question: item.question.title,
+    answer: item.answer.title,
     weight: item.question.weight,
     score: item.answer.score,
     weightedScore: item.answer.weightedScore,
@@ -177,17 +187,32 @@ const MaturityLevelTable = ({
                       onClick={() =>
                         handleSort(
                           column.serverKey,
-                          tempData.order === "asc" &&
-                            tempData.sort === column.field
+                          tempData.sort === column.field &&
+                            tempData.order === "asc"
                             ? "desc"
                             : "asc",
                         )
                       }
+                      sx={{
+                        "& .MuiTableSortLabel-icon": {
+                          opacity: 1,
+                          color:
+                            tempData.sort === column.field
+                              ? theme.palette.primary.main + " !important"
+                              : "inherit",
+                          transform:
+                            tempData.sort === column.field &&
+                            tempData.order === "asc"
+                              ? "scaleY(-1)"
+                              : "none",
+                        },
+                      }}
+                      IconComponent={FilterListIcon}
                     >
                       <Trans i18nKey={column.label} />
                     </TableSortLabel>
                   ) : (
-                    column.label
+                    <Trans i18nKey={column.label} />
                   )}
                 </TableCell>
               ))}
@@ -239,7 +264,7 @@ const MaturityLevelTable = ({
 const CircleIcon = styled("span")(({ theme }) => ({
   width: 16,
   height: 16,
-  borderRadius: "50%",
+  borderRadius: "100%",
   backgroundColor: theme.palette.grey[200],
 }));
 
