@@ -24,6 +24,5 @@ i18n.use(initReactI18next).init({
 });
 i18n.on("languageChanged", (lng) => {
   localStorage.setItem("lang", lng);
-  document.cookie = `locale=${lng}; path=/; SameSite=Strict`;
-
+  document.cookie = `NEXT_LOCALE=${lng}; max-age=31536000; path=/`
 });
