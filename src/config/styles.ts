@@ -212,6 +212,62 @@ export const getMaturityLevelColors = (maturity_level_number: number) => {
       return maturityLevelColorMap.ML10;
   }
 };
+
+export const chipColorPalette: any = {
+  chip1: {
+    backgroundColor: "rgba(25, 229, 220, 0.1)",
+    color: "rgba(0, 153, 145, 1)",
+  },
+  chip2: {
+    backgroundColor: "rgba(0, 153, 0, 0.1)",
+    color: "rgba(0, 153, 0, 1)",
+  },
+  chip3: {
+    backgroundColor: "rgba(0, 102, 42, 0.1)",
+    color: "rgba(0, 102, 43, 1)",
+  },
+  chip4: {
+    backgroundColor: "rgba(0, 26, 51, 0.1)",
+    color: "rgba(0, 26, 51, 1)",
+  },
+  chip5: {
+    backgroundColor: "rgba(204, 0, 68, 0.1)",
+    color: "rgba(204, 0, 68, 1)",
+  },
+  chip6: {
+    backgroundColor: "rgba(255, 157, 0, 0.1)",
+    color: "rgba(255, 157, 0, 1)",
+  },
+  chip7: {
+    backgroundColor: "rgba(0, 102, 204, 0.1)",
+    color: "rgba(0, 102, 204, 1)",
+  },
+  chip8: {
+    backgroundColor: "rgba(167, 204, 0, 0.1)",
+    color: "rgba(112, 153, 0, 1)",
+  },
+  chip9: {
+    backgroundColor: "rgba(136, 0, 204, 0.1)",
+    color: "rgba(102, 0, 153, 1)",
+  },
+  chip10: {
+    backgroundColor: "rgba(0, 102, 153, 0.1)",
+    color: "rgba(0, 102, 153, 1)",
+  },
+  chip11: {
+    backgroundColor: "rgba(184, 20, 167, 0.1)",
+    color: "rgba(184, 20, 167, 1)",
+  },
+  chip12: {
+    backgroundColor: "rgba(20, 184, 129, 0.1)",
+    color: "rgba(20, 184, 129, 1)",
+  },
+  chip13: {
+    backgroundColor: "rgba(153, 94, 0, 0.1)",
+    color: "rgba(153, 94, 0, 1)",
+  },
+};
+
 export const getColorOfStatus = (
   status: TStatus,
   fallBackColor: string = "#b7b7b7",

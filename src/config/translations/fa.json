@@ -226,6 +226,7 @@
   "errorLine": "خطای خط: {{errorLine}}",
   "evaluatedAs": "ارزیابی‌شده به عنوان",
   "evidence": "شاهد",
+  "evidenceCount": "تعداد شواهد",
   "evidenceAttachmentType": "شاهد {{value}} جدید(پیوست)",
   "evidenceDetails": "جزئیات شواهد",
   "evidenceIsLimited": "هر شاهد به پنج پیوست محدود شده است. اگر نیاز به اضافه کردن موارد بیشتری دارید، به سادگی یک شاهد جدید ایجاد کنید و ادامه را به آنجا اضافه کنید.",

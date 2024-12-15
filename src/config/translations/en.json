@@ -226,6 +226,7 @@
   "errorLine": "Error line: {{errorLine}}",
   "evaluatedAs": "evaluated as",
   "evidence": "evidence",
+  "evidenceCount": "Evidence Count",
   "evidenceAttachmentType": "New {{value}} Evidence (Attachments)",
   "evidenceDetails": "Evidence Details",
   "evidenceIsLimited": "Each evidence is limited to five attachments. If you need to add more, simply create a new evidence and add continue from there.",

@@ -10,10 +10,14 @@ import {
   Rating,
   styled,
   Typography,
+  Box,
+  Chip,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { chipColorPalette } from "@/config/styles";
+
 interface TableData {
   items: Item[];
   page: number;
@@ -51,6 +55,7 @@ interface TableColumn {
   sortable: boolean;
   align?: "left" | "right" | "center";
   serverKey: keyof ItemServerFieldsColumnMapping;
+  width?: string;
 }
 
 interface ItemServerFieldsColumnMapping {
@@ -65,7 +70,7 @@ interface ItemServerFieldsColumnMapping {
 }
 
 interface ItemColumnMapping {
-  questionnaire: string;
+  questionnaire: JSX.Element;
   question: string;
   answer: string;
   weight: number;
@@ -81,18 +86,21 @@ const columns: TableColumn[] = [
     serverKey: "questionnaire",
     label: "questionnaire",
     sortable: true,
+    width: "20px",
   },
   {
     field: "question",
     serverKey: "question",
     label: "question",
     sortable: false,
+    width: "260px",
   },
   {
     field: "answer",
     serverKey: "answer",
     label: "answer",
     sortable: false,
+    width: "200px",
   },
   {
     field: "weight",
@@ -100,6 +108,7 @@ const columns: TableColumn[] = [
     label: "weight",
     sortable: true,
     align: "center",
+    width: "60px",
   },
   {
     field: "score",
@@ -107,6 +116,7 @@ const columns: TableColumn[] = [
     label: "score",
     sortable: true,
     align: "center",
+    width: "60px",
   },
   {
     field: "weightedScore",
@@ -114,6 +124,7 @@ const columns: TableColumn[] = [
     label: "weightedScore",
     sortable: true,
     align: "center",
+    width: "60px",
   },
   {
     field: "confidence",
@@ -121,13 +132,15 @@ const columns: TableColumn[] = [
     label: "confidence",
     sortable: true,
     align: "center",
+    width: "60px",
   },
   {
     field: "evidenceCount",
     serverKey: "evidence_count",
-    label: "evidenceCount",
+    label: "evidence",
     sortable: true,
     align: "center",
+    width: "60px",
   },
 ];
 
@@ -159,105 +172,161 @@ const MaturityLevelTable = ({
     setPage(0);
   };
 
-  const mapItemToRow = (item: Item): ItemColumnMapping => ({
-    questionnaire: item.questionnaire,
-    question: item.question.title,
-    answer: item.answer.title,
-    weight: item.question.weight,
-    score: item.answer.score,
-    weightedScore: item.answer.weightedScore,
-    confidence: item.answer.confidenceLevel,
-    evidenceCount: item.question.evidenceCount,
-  });
+  const generateColorFromString = (str: string) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
+    }
+    // Select a chip based on hash
+    const chipIndex =
+      (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
+    return chipColorPalette[`chip${chipIndex}`];
+  };
 
+  const mapItemToRow = (item: Item): ItemColumnMapping => {
+    const color = generateColorFromString(item.questionnaire);
+
+    return {
+      questionnaire: (
+        <Chip
+          label={item.questionnaire}
+          style={{ backgroundColor: color.backgroundColor, color: color.color }}
+        />
+      ),
+      question: item.question.title,
+      answer: item.answer.title,
+      weight: item.question.weight,
+      score: item.answer.score,
+      weightedScore: item.answer.weightedScore,
+      confidence: item.answer.confidenceLevel,
+      evidenceCount: item.question.evidenceCount,
+    };
+  };
   return (
-    <div>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell key={column.field} align={column.align || "left"}>
-                  {column.sortable ? (
-                    <TableSortLabel
-                      active={tempData.sort === column.field}
-                      direction={
-                        tempData.sort === column.field ? tempData.order : "asc"
-                      }
-                      onClick={() =>
-                        handleSort(
-                          column.serverKey,
-                          tempData.sort === column.field &&
-                            tempData.order === "asc"
-                            ? "desc"
-                            : "asc",
-                        )
-                      }
-                      sx={{
-                        "& .MuiTableSortLabel-icon": {
-                          opacity: 1,
-                          color:
-                            tempData.sort === column.field
-                              ? theme.palette.primary.main + " !important"
-                              : "inherit",
-                          transform:
-                            tempData.sort === column.field &&
-                            tempData.order === "asc"
-                              ? "scaleY(-1)"
-                              : "none",
-                        },
-                      }}
-                      IconComponent={FilterListIcon}
-                    >
-                      <Trans i18nKey={column.label} />
-                    </TableSortLabel>
-                  ) : (
-                    <Trans i18nKey={column.label} />
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tempData?.items.length > 0 ? (
-              <>
-                {tempData?.items
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item: any, index: number) => {
-                    const row = mapItemToRow(item);
-                    return (
-                      <TableRow key={index}>
-                        {columns.map((column) => (
-                          <TableCell
-                            key={column.field}
-                            align={column.align || "left"}
-                          >
-                            {column.field === "confidence" ? (
-                              <CircleRating value={row.confidence} />
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    );
-                  })}
-              </>
-            ) : (
+    <TableContainer>
+      <Table>
+        <TableHead
+          sx={{
+            ...theme.typography.semiBoldMedium,
+            backgroundColor: theme.palette.grey[100],
+
+            width: "100%",
+          }}
+        >
+          {" "}
+          <TableRow>
+            {columns.map((column) => (
               <TableCell
-                colSpan={columns.length}
-                align="center"
-                sx={{ textAlign: "center" }}
+                key={column.field}
+                align={column.align || "left"}
+                sx={{
+                  color:
+                    tempData.sort === column.field
+                      ? theme.palette.primary.main + " !important"
+                      : "#939393 !important",
+                  width: column.width || "auto",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  boxShadow:
+                    "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1", // Set boxShadow for top and bottom only
+                  "&:first-child": {
+                    borderRadius: "16px 0px 0px 16px !important",
+                  },
+                  "&:last-child": {
+                    borderRadius: "0px 16px 16px 0px !important",
+                  },
+                }}
               >
-                <Typography>
-                  <Trans i18nKey="noDataAvailable" />
-                </Typography>
+                {column.sortable ? (
+                  <TableSortLabel
+                    active={tempData.sort === column.field}
+                    direction={
+                      tempData.sort === column.field ? tempData.order : "asc"
+                    }
+                    onClick={() =>
+                      handleSort(
+                        column.serverKey,
+                        tempData.sort === column.field &&
+                          tempData.order === "asc"
+                          ? "desc"
+                          : "asc",
+                      )
+                    }
+                    sx={{
+                      color:
+                        tempData.sort === column.field
+                          ? theme.palette.primary.main + " !important"
+                          : "#939393 !important",
+                      "& .MuiTableSortLabel-icon": {
+                        opacity: 1,
+                        color:
+                          tempData.sort === column.field
+                            ? theme.palette.primary.main + " !important"
+                            : "#939393 !important",
+                        transform:
+                          tempData.sort === column.field &&
+                          tempData.order === "asc"
+                            ? "scaleY(-1)"
+                            : "none",
+                      },
+                    }}
+                    IconComponent={FilterListIcon}
+                  >
+                    <Trans i18nKey={column.label} />
+                  </TableSortLabel>
+                ) : (
+                  <Trans i18nKey={column.label} />
+                )}
               </TableCell>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tempData?.items.length > 0 ? (
+            <>
+              {tempData?.items
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((item: any, index: number) => {
+                  const row = mapItemToRow(item);
+                  return (
+                    <TableRow key={index}>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.field}
+                          align={column.align || "left"}
+                          sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            maxWidth: column.width || "100%",
+                          }}
+                        >
+                          {column.field === "confidence" ? (
+                            <CircleRating value={row.confidence} />
+                          ) : (
+                            row[column.field]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
+            </>
+          ) : (
+            <TableCell
+              colSpan={columns.length}
+              align="center"
+              sx={{ textAlign: "center" }}
+            >
+              <Typography>
+                <Trans i18nKey="noDataAvailable" />
+              </Typography>
+            </TableCell>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
@@ -265,7 +334,7 @@ const CircleIcon = styled("span")(({ theme }) => ({
   width: 16,
   height: 16,
   borderRadius: "100%",
-  backgroundColor: theme.palette.grey[200],
+  backgroundColor: "rgba(194, 204, 214, 0.5)",
 }));
 
 const ActiveCircleIcon = styled(CircleIcon)(({ theme }) => ({
@@ -291,4 +360,5 @@ const CircleRating = (props: any) => {
     />
   );
 };
+
 export default MaturityLevelTable;
