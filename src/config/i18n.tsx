@@ -24,4 +24,6 @@ i18n.use(initReactI18next).init({
 });
 i18n.on("languageChanged", (lng) => {
   localStorage.setItem("lang", lng);
+  document.cookie = `locale=${lng}; path=/; SameSite=Strict`;
+
 });
