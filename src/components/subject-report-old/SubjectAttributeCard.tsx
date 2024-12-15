@@ -38,6 +38,7 @@ import Tab from "@mui/material/Tab";
 import tinycolor from "tinycolor2";
 import { Button } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
+import TableSkeleton from "../common/loadings/TableSkeleton";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -62,7 +63,7 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
-  const [maturityLId,setMaturityLId] = useState(maturityLevel.id)
+  const [maturityLId, setMaturityLId] = useState(maturityLevel.id);
   const { service } = useServiceContext();
 
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
@@ -85,11 +86,13 @@ const SUbjectAttributeCard = (props: any) => {
     }
   }, [expandedAttribute, selectedMaturityLevel]);
 
-    const fetchScoreState = useQuery({
-        service: (args = { assessmentId,attributeId:id,maturityLevelId: maturityLId }, config) =>
-            service.fetchScoreState(args, config),
-        runOnMount: false
-    })
+  const fetchScoreState = useQuery({
+    service: (
+      args = { assessmentId, attributeId: id, maturityLevelId: maturityLId },
+      config,
+    ) => service.fetchScoreState(args, config),
+    runOnMount: false,
+  });
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
@@ -108,37 +111,34 @@ const SUbjectAttributeCard = (props: any) => {
     });
   };
 
-  const maturityHandelClick =(id: number)=>{
-      setMaturityLId(id)
-      setSelectedMaturityLevel(id)
-  }
+  const maturityHandelClick = (id: number) => {
+    setMaturityLId(id);
+    setSelectedMaturityLevel(id);
+  };
 
-  useEffect(()=>{
-      fetchScoreState.query()
-  },[maturityLId])
+  useEffect(() => {
+    fetchScoreState.query();
+  }, [maturityLId]);
 
-    const formatMaturityNumber =(num: any)=>{
-      if(num.toString().includes(".")){
-          return parseFloat(num).toFixed(1);
-      }else {
-          return num
-      }
+  const formatMaturityNumber = (num: any) => {
+    if (num.toString().includes(".")) {
+      return parseFloat(num).toFixed(1);
+    } else {
+      return num;
     }
+  };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
+  const maturityLevelColor = colorPallet[maturityLevel.value - 1];
 
   const backgroundColor =
-    tinycolor(colorPallet[maturityLevel.value - 1]).getBrightness() > 180
-      ? tinycolor(colorPallet[maturityLevel.value - 1])
-          .brighten(60)
-          .toRgbString()
-      : tinycolor(colorPallet[maturityLevel.value - 1]).getBrightness() > 100
-        ? tinycolor(colorPallet[maturityLevel.value - 1])
-            .lighten(50)
-            .toRgbString()
-        : tinycolor(colorPallet[maturityLevel.value - 1])
-            .lighten(60)
-            .toRgbString();
+    tinycolor(maturityLevelColor).getBrightness() > 180
+      ? tinycolor(maturityLevelColor).brighten(60).toRgbString()
+      : tinycolor(maturityLevelColor).getBrightness() > 160
+        ? tinycolor(maturityLevelColor).lighten(40).toRgbString()
+        : tinycolor(maturityLevelColor).getBrightness() > 80
+          ? tinycolor(maturityLevelColor).lighten(50).toRgbString()
+          : tinycolor(maturityLevelColor).lighten(60).toRgbString();
   return (
     <Box
       sx={{
@@ -167,13 +167,14 @@ const SUbjectAttributeCard = (props: any) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
           sx={{
-            borderRadius: 1,
-            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            borderRadius: "16px",
+            boxShadow: "inset 0 0 0 1px #C7CCD1",
             margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
             "&.Mui-expanded": {
               backgroundColor: "#EDF0F3",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             },
             "&.Mui-focusVisible": {
               background: "#fff",
@@ -185,7 +186,15 @@ const SUbjectAttributeCard = (props: any) => {
           }}
           onClick={(event) => event.stopPropagation()}
         >
-          <Grid container sx={{ width: "100%", direction: theme.direction }}>
+          <Grid
+            container
+            sx={{
+              width: "100%",
+              direction: theme.direction,
+              boxShadow: "inset 0 0 0 1px #C7CCD1",
+              borderRadius: "16px",
+            }}
+          >
             <Grid item xs={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
@@ -230,9 +239,11 @@ const SUbjectAttributeCard = (props: any) => {
                         <Button
                           variant="contained"
                           size="small"
-                          onClick={() =>
-                            updateAttributeAndData(id, assessmentId, "", true)
-                          }
+                          onClick={(event) => {
+                            updateAttributeAndData(id, assessmentId, "", true);
+                            event.stopPropagation();
+                          }}
+                          sx={{ mx: 2 }}
                         >
                           <Trans i18nKey="regenerate" />
                         </Button>
@@ -294,7 +305,9 @@ const SUbjectAttributeCard = (props: any) => {
                   justifyContent: "center",
                   alignItems: "center",
                   background: backgroundColor,
-                  borderRadius: 1,
+                  borderEndEndRadius: "16px",
+                  borderStartEndRadius: "16px",
+                  boxShadow: "inset 0 0 0 1px #C7CCD1",
                 }}
               >
                 <FlatGauge
@@ -313,6 +326,14 @@ const SUbjectAttributeCard = (props: any) => {
                       expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
+                <ExpandMoreIcon
+                  sx={{
+                    position: "absolute",
+                    bottom: "16px",
+                    right: "16px",
+                    transform: expandedAttribute === id ? "scaleY(-1)" : "none",
+                  }}
+                />
               </Box>
             </Grid>
           </Grid>
@@ -322,7 +343,7 @@ const SUbjectAttributeCard = (props: any) => {
           sx={{
             padding: "0 !important",
             backgroundColor: "#F9FAFB",
-            borderRadius: "8px",
+            borderRadius: "16px",
           }}
         >
           <Box
@@ -330,22 +351,21 @@ const SUbjectAttributeCard = (props: any) => {
               display: "flex",
               justifyContent: "center",
               justifyItems: "center",
-              flexDirection:"column",
+              flexDirection: "column",
               padding: 2,
             }}
           >
             <Box
               sx={{
                 background: "#E2E5E9",
-                width: "90%",
-                borderRadius: 1,
-                height: "80px",
+                width: "100%",
+                borderRadius: "16px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                mx:"auto",
                 boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                 my: 2,
+                paddingBlock: 2,
               }}
             >
               <Tabs
@@ -365,14 +385,16 @@ const SUbjectAttributeCard = (props: any) => {
                   const { maturityLevel: maturityLevelOfScores, score } = item;
                   return (
                     <Tab
-                      onClick={()=>maturityHandelClick(maturityLevelOfScores.id)}
+                      onClick={() =>
+                        maturityHandelClick(maturityLevelOfScores.id)
+                      }
                       key={index}
                       sx={{
                         ...theme.typography.semiBoldLarge,
-                        height: "40px",
                         mr: 1,
                         border: "none",
                         textTransform: "none",
+                        paddingY: 1.5,
                         color:
                           maturityLevelOfScores?.value > maturityLevel?.value
                             ? "#6C8093"
@@ -394,6 +416,7 @@ const SUbjectAttributeCard = (props: any) => {
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
+                            gap: 1,
                           }}
                         >
                           {maturityLevelOfScores?.value ==
@@ -412,25 +435,102 @@ const SUbjectAttributeCard = (props: any) => {
                 })}
               </Tabs>
             </Box>
-              <QueryData
-                  {...fetchScoreState}
-                  loading={false}
-                  render={(data)=>{
-                      const {
-                          gainedScore,
-                          maxPossibleScore,
-                          questionsCount
-                      } = data
-                      return (
-                          <Grid container sx={{direction: theme.direction ,mb:2, whiteSpace:"nowrap",display:"flex", justifyContent:"center",px:1}}>
-                              <Grid item xs={12} sm={4} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"maxPossibleScore"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{formatMaturityNumber(maxPossibleScore)}</Typography></Grid>
-                              <Grid item xs={12} sm={4} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"gainedScore"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{formatMaturityNumber(gainedScore)}</Typography></Grid>
-                              <Grid item xs={12} sm={4} md={2} sx={{display:"flex", justifyContent:"center", alignItems:"center", gap:1}}><Typography sx={{...theme.typography.bodyMedium,textAlign:"center"}}><Trans i18nKey={"questionsCount"}/></Typography>:{" "}<Typography sx={{...theme.typography.semiBoldMedium}}>{formatMaturityNumber(questionsCount)}</Typography></Grid>
-                          </Grid>
-                      )}
-                  }/>
+            <QueryData
+              {...fetchScoreState}
+              loading={false}
+              render={(data) => {
+                const { gainedScore, maxPossibleScore, questionsCount } = data;
+                return (
+                  <Grid
+                    container
+                    sx={{
+                      direction: theme.direction,
+                      mb: 2,
+                      whiteSpace: "nowrap",
+                      display: "flex",
+                      justifyContent: "center",
+                      px: 1,
+                    }}
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={2}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          ...theme.typography.bodyMedium,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Trans i18nKey={"maxPossibleScore"} />:
+                      </Typography>{" "}
+                      <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+                        {formatMaturityNumber(maxPossibleScore)}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={2}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          ...theme.typography.bodyMedium,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Trans i18nKey={"gainedScore"} />:
+                      </Typography>{" "}
+                      <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+                        {formatMaturityNumber(gainedScore)}
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={2}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          ...theme.typography.bodyMedium,
+                          textAlign: "center",
+                        }}
+                      >
+                        <Trans i18nKey={"questionsCount"} />:
+                      </Typography>{" "}
+                      <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+                        {formatMaturityNumber(questionsCount)}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                );
+              }}
+            />
             <QueryData
               {...fetchAffectedQuestionsOnAttributeQueryData}
+              loadingComponent={<TableSkeleton />}
               render={(data) => {
                 return (
                   <MaturityLevelTable

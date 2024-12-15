@@ -226,6 +226,7 @@
   "errorLine": "Error line: {{errorLine}}",
   "evaluatedAs": "evaluated as",
   "evidence": "evidence",
+  "evidenceCount": "Evidence Count",
   "evidenceAttachmentType": "New {{value}} Evidence (Attachments)",
   "evidenceDetails": "Evidence Details",
   "evidenceIsLimited": "Each evidence is limited to five attachments. If you need to add more, simply create a new evidence and add continue from there.",
@@ -655,7 +656,7 @@
   "website": "Website",
   "weHighlyRecommendAnsweringMoreQuestions": "We highly recommend answering more questions for more accurate and comprehensive insights.",
   "weight": "Weight",
-  "weightedScore": "Weighted score",
+  "weightedScore": "Weighted Score",
   "weightValue": " W:{{weight}}",
   "weSentYouAVerificationLink": "A verification link has been sent to your email account.",
   "whatIsNow": "What is now",
@@ -688,6 +689,6 @@
   "YourStatusIs": "Your {{title}} status is",
   "youSelected": "You've selected",
   "youveGotSyntaxErrorsInYourDslFile": "You've got syntax errors in your dsl file",
-  "noDataAvailable": "No data available",
+  "noQuestionAvailableForThisMaturity": "There's no question defined for this maturity level for this attribute.",
   "analysisResults": "AnalysisResults"
 }

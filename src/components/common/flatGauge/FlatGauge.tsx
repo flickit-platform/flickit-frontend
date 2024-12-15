@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
@@ -41,8 +41,9 @@ const FlatGauge = (props: IGaugeProps) => {
 
   if (maturityLevelNumber < levelValue) return null;
 
-  const FlatGaugeComponent = lazy(
-    () => import(`./flatGauge${maturityLevelNumber}.tsx`),
+  const FlatGaugeComponent = useMemo(
+    () => lazy(() => import(`./flatGauge${maturityLevelNumber}.tsx`)),
+    [maturityLevelNumber],
   );
 
   const checkColor = (num: number): string => {
