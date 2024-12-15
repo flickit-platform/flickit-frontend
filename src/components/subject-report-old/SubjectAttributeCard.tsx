@@ -239,9 +239,11 @@ const SUbjectAttributeCard = (props: any) => {
                         <Button
                           variant="contained"
                           size="small"
-                          onClick={() =>
-                            updateAttributeAndData(id, assessmentId, "", true)
-                          }
+                          onClick={(event) => {
+                            updateAttributeAndData(id, assessmentId, "", true);
+                            event.stopPropagation();
+                          }}
+                          sx={{ mx: 2 }}
                         >
                           <Trans i18nKey="regenerate" />
                         </Button>
@@ -324,6 +326,14 @@ const SUbjectAttributeCard = (props: any) => {
                       expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
+                <ExpandMoreIcon
+                  sx={{
+                    position: "absolute",
+                    bottom: "16px",
+                    right: "16px",
+                    transform: expandedAttribute === id ? "scaleY(-1)" : "none",
+                  }}
+                />
               </Box>
             </Grid>
           </Grid>
@@ -355,7 +365,7 @@ const SUbjectAttributeCard = (props: any) => {
                 justifyContent: "center",
                 boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                 my: 2,
-                paddingBlock: 2
+                paddingBlock: 2,
               }}
             >
               <Tabs

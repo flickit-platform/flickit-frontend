@@ -689,6 +689,6 @@
   "YourStatusIs": "Your {{title}} status is",
   "youSelected": "You've selected",
   "youveGotSyntaxErrorsInYourDslFile": "You've got syntax errors in your dsl file",
-  "noDataAvailable": "No data available",
+  "noQuestionAvailableForThisMaturity": "There's no question defined for this maturity level for this attribute.",
   "analysisResults": "AnalysisResults"
 }

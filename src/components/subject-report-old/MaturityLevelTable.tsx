@@ -320,7 +320,7 @@ const MaturityLevelTable = ({
               sx={{ textAlign: "center" }}
             >
               <Typography>
-                <Trans i18nKey="noDataAvailable" />
+                <Trans i18nKey="noQuestionAvailableForThisMaturity" />
               </Typography>
             </TableCell>
           )}

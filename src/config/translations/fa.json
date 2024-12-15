@@ -689,6 +689,6 @@
   "YourStatusIs": "وضعیت {{title}} شما",
   "youSelected": "شما انتخاب کردید ",
   "youveGotSyntaxErrorsInYourDslFile": "خطاهای نحوی در فایل DSL خود دارید",
-  "noDataAvailable": "داده‌ای موجود نیست",
+  "noQuestionAvailableForThisMaturity": "برای این سطح بلوغ برای این ویژگی، هیچ سوالی تعریف نشده است.",
   "analysisResults": "نتایج تحلیل"
 }
