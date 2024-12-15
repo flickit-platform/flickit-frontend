@@ -26,6 +26,12 @@ const ExpertGroupConfirmInvitationContainer = () => {
     runOnMount: false,
   });
 
+  const declineInvitationQueryData = useQuery({
+    service: (args = { expertGroupId }, config) =>
+        service.declineInvitationQueryData(args, config),
+    runOnMount: false,
+  });
+
   const confirmInvitation = async () => {
     try {
       await confirmInvitationQueryData.query();
@@ -45,8 +51,14 @@ const ExpertGroupConfirmInvitationContainer = () => {
     }
   };
 
-  const decline = () => {
-    navigate("/spaces/1", { replace: true });
+  const decline = async () => {
+    try {
+      await declineInvitationQueryData.query()
+      navigate("/spaces/1", { replace: true });
+    }catch (e){
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
 
   return (
