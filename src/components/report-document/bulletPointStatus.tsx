@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Typography } from "@mui/material";
 import FlatGauge from "@common/flatGauge/FlatGauge";
+import {getMaturityLevelColors, styles} from "@styles";
 
 interface IBulletPointStatus {
   titleFa: string;
-  titleEn: string;
   maturityLevel: {
     value: number;
     title: string;
@@ -16,26 +16,26 @@ interface IBulletPointStatus {
   };
 }
 const BulletPointStatus = (props: IBulletPointStatus) => {
-  const { titleFa, titleEn, maturityLevel, assessmentKit } = props;
+  const { titleFa, maturityLevel, assessmentKit } = props;
   const { value, title } = maturityLevel;
   const { maturityLevelCount } = assessmentKit;
+  const colorPallet = getMaturityLevelColors(maturityLevelCount);
+  const colorCode = colorPallet[value - 1];
   return (
     <Box
       sx={{
+        ...styles.centerVH,
         width:"100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
         gap: 2,
       }}
     >
-      <ArrowLeftIcon sx={{ color: "red" }} fontSize={"medium"} />
+      <ArrowLeftIcon sx={{ color: colorCode }} fontSize="medium" />
       <Typography>{titleFa}</Typography>
       <FlatGauge
-        maturityLevelNumber={5}
-        levelValue={4}
+        maturityLevelNumber={maturityLevelCount}
+        levelValue={value}
         text={title}
-        textPosition={"left"}
+        textPosition="left"
       />
     </Box>
   );
