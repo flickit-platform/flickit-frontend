@@ -300,6 +300,11 @@ const MaturityLevelTable = ({
                         <TableCell
                           key={column.field}
                           align={column.align || "left"}
+                          title={
+                            column.field === "questionnaire"
+                              ? item.questionnaire
+                              : row[column.field]?.toString()
+                          }
                           sx={{
                             overflow: "hidden",
                             textOverflow: "ellipsis",
