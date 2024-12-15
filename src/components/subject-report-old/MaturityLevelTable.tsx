@@ -18,6 +18,7 @@ import { theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { chipColorPalette } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
+import { uniqueId } from "lodash";
 
 interface TableData {
   items: Item[];
@@ -292,10 +293,10 @@ const MaturityLevelTable = ({
             <>
               {tempData?.items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((item: any, index: number) => {
+                .map((item: any) => {
                   const row = mapItemToRow(item);
                   return (
-                    <TableRow key={index}>
+                    <TableRow key={uniqueId()}>
                       {columns.map((column) => (
                         <TableCell
                           key={column.field}

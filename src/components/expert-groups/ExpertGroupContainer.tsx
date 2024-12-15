@@ -62,6 +62,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import { uniqueId } from "lodash";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -1168,7 +1169,7 @@ const AssessmentKitsList = (props: any) => {
           renderLoading={() => (
             <>
               {forLoopComponent(5, (index) => (
-                <LoadingSkeleton key={index} sx={{ height: "60px", mb: 1 }} />
+                <LoadingSkeleton key={uniqueId()} sx={{ height: "60px", mb: 1 }} />
               ))}
             </>
           )}

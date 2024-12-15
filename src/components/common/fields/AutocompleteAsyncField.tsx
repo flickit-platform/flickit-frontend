@@ -17,7 +17,8 @@ import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
 import { TQueryProps } from "@types";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {theme} from "@config/theme";
+import { theme } from "@config/theme";
+import { uniqueId } from "lodash";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -111,8 +112,10 @@ const AutocompleteBaseField = (
     helperText,
     label,
     getOptionLabel = (option) => {
-      if (option){
-        return typeof option === "string" ? option : option?.[filterFields[0]] || option.inputValue
+      if (option) {
+        return typeof option === "string"
+          ? option
+          : option?.[filterFields[0]] || option.inputValue;
       }
     },
     filterSelectedOption = (options: readonly any[], value: any): any[] =>
@@ -352,10 +355,10 @@ const AutocompleteBaseField = (
             helperText
           }
           sx={{
-            '& .MuiOutlinedInput-root': {
-              '& .MuiAutocomplete-endAdornment': {
+            "& .MuiOutlinedInput-root": {
+              "& .MuiAutocomplete-endAdornment": {
                 left: theme.direction == "rtl" ? "9px" : "unset",
-                right: theme.direction == "ltr" ? "9px" : "unset"
+                right: theme.direction == "ltr" ? "9px" : "unset",
               },
             },
           }}
@@ -396,12 +399,12 @@ const AutocompleteBaseField = (
 const LoadingComponent = ({ options }: { options: readonly any[] }) => {
   return (
     <Box display="flex" flexDirection="column" m={-1}>
-      {forLoopComponent(options.length, (index) => (
+      {forLoopComponent(options.length, () => (
         <LoadingSkeleton
           width="100%"
           height="36px"
           sx={{ my: 0.3, borderRadius: 1 }}
-          key={index}
+          key={uniqueId()}
         />
       ))}
     </Box>

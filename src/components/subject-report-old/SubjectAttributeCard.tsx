@@ -39,6 +39,7 @@ import tinycolor from "tinycolor2";
 import { Button } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
+import { uniqueId } from "lodash";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -383,14 +384,14 @@ const SUbjectAttributeCard = (props: any) => {
                   },
                 }}
               >
-                {maturityScores.map((item: any, index: number) => {
+                {maturityScores.map((item: any) => {
                   const { maturityLevel: maturityLevelOfScores, score } = item;
                   return (
                     <Tab
                       onClick={() =>
                         maturityHandelClick(maturityLevelOfScores.id)
                       }
-                      key={index}
+                      key={uniqueId()}
                       sx={{
                         ...theme.typography.semiBoldLarge,
                         mr: 1,

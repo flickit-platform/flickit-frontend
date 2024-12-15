@@ -14,6 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Trans } from "react-i18next";
 import { useEffect } from "react";
 import { theme } from "@/config/theme";
+import { uniqueId } from "lodash";
 
 const selectField = () => {
   return <div>selectField</div>;
@@ -178,9 +179,9 @@ const defaultRenderOption = (option: any) => {
 };
 
 const defaultRenderLoading = () => {
-  return [1, 2, 3, 4].map((index) => {
+  return [1, 2, 3, 4].map(() => {
     return (
-      <Box m={0.5} key={index}>
+      <Box m={0.5} key={uniqueId()}>
         <LoadingSkeleton sx={{ borderRadius: 1 }} height="36px" width="100%" />
       </Box>
     );
