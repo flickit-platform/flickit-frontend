@@ -17,6 +17,7 @@ import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { chipColorPalette } from "@/config/styles";
+import languageDetector from "@/utils/languageDetector";
 
 interface TableData {
   items: Item[];
@@ -304,7 +305,20 @@ const MaturityLevelTable = ({
                             textOverflow: "ellipsis",
                             whiteSpace: "nowrap",
                             maxWidth: column.width || "100%",
-                            textAlign: column.align
+                            textAlign:
+                              column.serverKey === "question" ||
+                              column.serverKey === "answer"
+                                ? languageDetector(row[column.field].toString())
+                                  ? "right"
+                                  : "left"
+                                : column.align,
+                            direction:
+                              column.serverKey === "question" ||
+                              column.serverKey === "answer"
+                                ? languageDetector(row[column.field].toString())
+                                  ? "rtl"
+                                  : "ltr"
+                                : "unset",
                           }}
                         >
                           {column.field === "confidence" ? (
