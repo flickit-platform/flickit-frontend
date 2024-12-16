@@ -17,7 +17,7 @@ const DonutChart = (props: IGaugeProps) => {
   if (maturityLevelNumber < levelValue) return null;
 
   const CircleGaugeComponent = useMemo(
-    () => lazy(() => import(`./circleGauge${maturityLevelNumber}.tsx`)),
+    () => lazy(() => import(`./donutChart${maturityLevelNumber}.tsx`)),
     [maturityLevelNumber],
   );
 
