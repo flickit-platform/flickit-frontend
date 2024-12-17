@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
 import {Trans} from "react-i18next";
-import FlatGauge, {confidencePallet} from "@common/flatGauge/FlatGauge"
+import FlatGauge, {confidencePallet} from "@/components/common/charts/flatGauge/FlatGauge"
 import {theme} from "@config/theme";
 import Grid from "@mui/material/Grid";
 import lens from "@assets/svg/lens.svg";

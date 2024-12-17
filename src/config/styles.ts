@@ -291,6 +291,7 @@ export const chipColorPalette: any = {
   },
 };
 
+
 export const getColorOfStatus = (
   status: TStatus,
   fallBackColor: string = "#b7b7b7",
