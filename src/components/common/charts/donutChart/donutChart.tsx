@@ -26,7 +26,7 @@ const DonutChart = (props: IGaugeProps) => {
 
   return (
     <Suspense fallback={<Trans i18nKey={"loading"} />}>
-      <Box sx={{ width: "100%", height: "100%" }} {...rest}>
+      <Box sx={{ width: "100%", height: "100%", ...styles.centerVH }} {...rest}>
         <Box
           sx={{
             ...styles.centerCVH,

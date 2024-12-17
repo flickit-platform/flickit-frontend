@@ -56,7 +56,7 @@ const BoxReportLayout = (props: IBoxReport) => {
     },[confidenceValue])
 
     return (
-        <Box sx={{display:"flex", flexDirection:"column", width:"fit-content", height:"fit-content", background:"#F9FAFB", borderRadius:"32px",p:"32px",gap:"32px", border:`1px solid ${colorRef.current}` }}>
+        <Box sx={{display:"flex", flexDirection:"column", width:"fit-content", height:"fit-content", background:"#F9FAFB", borderRadius:"32px",p:"32px",gap:"32px", border:`1px solid ${colorRef.current}`,mb:4 }}>
             <TopBox ConfidenceColor={colorRef.current} confidenceValue={confidenceValue} {...rest}/>
             <BottomBox analyzation={analyzation}/>
         </Box>

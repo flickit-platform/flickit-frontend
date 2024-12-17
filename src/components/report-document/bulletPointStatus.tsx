@@ -11,14 +11,11 @@ interface IBulletPointStatus {
     value: number;
     title: string;
   };
-  assessmentKit: {
-    maturityLevelCount: number;
-  };
+  maturityLevelCount: number;
 }
 const BulletPointStatus = (props: IBulletPointStatus) => {
-  const { titleFa, maturityLevel, assessmentKit } = props;
+  const { titleFa, maturityLevel, maturityLevelCount } = props;
   const { value, title } = maturityLevel;
-  const { maturityLevelCount } = assessmentKit;
   const colorPallet = getMaturityLevelColors(maturityLevelCount);
   const colorCode = colorPallet[value - 1];
   return (
