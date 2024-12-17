@@ -17,11 +17,7 @@ import {
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
-<<<<<<< Updated upstream
-import { chipColorPalette } from "@/config/styles";
-=======
 import { generateColorFromString } from "@/config/styles";
->>>>>>> Stashed changes
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
 
