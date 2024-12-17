@@ -30,7 +30,7 @@ const AdviceItems = () => {
   const deleteAdviceItem = useQuery<any>({
     service: (args, config) => service.deleteAdviceItem(args, config),
     toastError: false,
-    runOnMount: false
+    runOnMount: false,
   });
 
   const { data } = queryData;
@@ -177,6 +177,17 @@ const AdviceItems = () => {
             </Box>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
+            {showNewAdviceListForm && (
+              <AdviceListNewForm
+                newAdvice={newAdvice}
+                handleInputChange={handleInputChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                setNewAdvice={setNewAdvice}
+                removeDescriptionAdvice={removeDescriptionAdvice}
+                postAdviceItem={postAdviceItem}
+              />
+            )}
             {displayedItems.length ? (
               <Box
                 maxHeight={900}
@@ -199,17 +210,6 @@ const AdviceItems = () => {
                   subTitle="CreateFirstAdvice"
                 />
               )
-            )}
-            {showNewAdviceListForm && (
-              <AdviceListNewForm
-                newAdvice={newAdvice}
-                handleInputChange={handleInputChange}
-                handleSave={handleSave}
-                handleCancel={handleCancel}
-                setNewAdvice={setNewAdvice}
-                removeDescriptionAdvice={removeDescriptionAdvice}
-                postAdviceItem={postAdviceItem}
-              />
             )}
           </Grid>
         </Grid>

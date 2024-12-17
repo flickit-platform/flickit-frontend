@@ -245,11 +245,12 @@ const AdviceItemAccordion: React.FC<{
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                       wordBreak: "break-word",
-                      marginRight: "8px", // Adding space between title and priority
+                      marginRight: "8px",
                     }}
                     title={item.title}
+                    dir={languageDetector(item.description) ? "rtl" : "ltr"}
                     fontFamily={
-                      languageDetector(item.title)
+                      languageDetector(item.description)
                         ? farsiFontFamily
                         : primaryFontFamily
                     }
@@ -276,15 +277,11 @@ const AdviceItemAccordion: React.FC<{
 
             {/* Right side: Impact, Cost, and Icons */}
             <Grid item xs={12} sm={4} md={3.7}>
-              <Grid
-                container
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                <Grid item xs={4.8} >
+              <Grid container justifyContent="flex-start" alignItems="center">
+                <Grid item xs={4.8}>
                   <CustomChip type="impact" level={item.impact} />
                 </Grid>
-                <Grid item xs={4.8} >
+                <Grid item xs={4.8}>
                   <CustomChip type="cost" level={item.cost} />
                 </Grid>
                 <Grid item xs={0.2} alignItems="center" display="flex">

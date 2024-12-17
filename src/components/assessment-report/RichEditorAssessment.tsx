@@ -21,6 +21,7 @@ interface IRichEditorProps {
   setLangDir?: any;
   setNewAdvice?: any;
   removeDescriptionAdvice?: any;
+  fieldLabel?: string;
 }
 
 const RichEditorAssessment = (props: IRichEditorProps) => {
@@ -36,6 +37,7 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
     setLangDir,
     setNewAdvice,
     removeDescriptionAdvice,
+    fieldLabel,
   } = props;
   useEffect(() => {
     if (editor) {
@@ -103,6 +105,7 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
     editor?.commands.clearContent(true);
     removeDescriptionAdvice.current = false;
   }
+  console.log(fieldLabel);
   return (
     <Box
       {...boxProps}
@@ -122,6 +125,24 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
               "&.Mui-focused .ProseMirror": {
                 borderColor: "#1976d2",
                 borderWidth: "2px",
+                position: "relative",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  top: "-2px",
+                  left: "6px",
+                  width: `${fieldLabel ? fieldLabel.length * 8 : 5 * 8}px`,
+                  height: "2px",
+                  backgroundColor: "#fff",
+                },
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: "-2px",
+                  left: "-2px",
+                  width: "-2px",
+                  backgroundColor: "#fff",
+                },
               },
               "&.Mui-focused:hover .ProseMirror": {
                 borderColor: "#1976d2",
