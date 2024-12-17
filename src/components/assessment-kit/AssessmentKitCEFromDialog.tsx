@@ -78,6 +78,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     abortController.abort();
     closeDialog();
     setZippedData(null);
+    setDropNewFile(null);
     setConvertData(null);
     setIsValid(false);
   };
@@ -148,10 +149,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     }
   };
   const handleDownloadDsl = () => {
-    if (zippedData && buttonStep == 1) {
+    if (zippedData.file && buttonStep == 1) {
       const link = document.createElement("a");
-      link.href = URL.createObjectURL(zippedData);
-      link.download = "kit";
+      link.href = URL.createObjectURL(zippedData.file);
+      link.download = zippedData.name;
       link.click();
       close();
     }
@@ -169,7 +170,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         type: "application/zip",
         lastModified: new Date().getTime(),
       });
-      setZippedData(zipfile);
+      setZippedData({file:zipfile, name:fileName});
       setButtonStep(1);
       setDropNewFile([file]);
     });
