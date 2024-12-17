@@ -5,16 +5,15 @@ import { getMaturityLevelColors, styles } from "@styles";
 
 interface IGaugeProps extends BoxProps {
   title: string;
-  subjectCount: string;
+  subjectCount: number;
   maturityLevel: {title: string, value: number};
   maturityLevelNumber: number;
-  levelValue: number;
 }
 
 const DonutChartV2 = (props: IGaugeProps) => {
   const {title: mainTitle, subjectCount, maturityLevel, maturityLevelNumber } = props;
   const {title:maturityLevelTitle,value:maturityLevelValue} = maturityLevel
-  if (maturityLevelNumber < maturityLevelValue) return null;
+  if (maturityLevelNumber < maturityLevelValue || subjectCount > 5) return null;
 
   const DonutChartV2Component = useMemo(
     () => lazy(() => import(`./donutChartV2${subjectCount}.tsx`)),
