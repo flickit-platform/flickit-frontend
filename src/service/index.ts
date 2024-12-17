@@ -527,24 +527,27 @@ export const createService = (
         config,
       );
     },
+
     fetchScoreState(
-      {
-        assessmentId,
-        attributeId,
-        maturityLevelId,
-      }: { assessmentId: string; attributeId: TId; maturityLevelId: TId },
-      config?: AxiosRequestConfig<any> | undefined,
+      args: {
+        assessmentId: TId;
+        attributeId: TId;
+        levelId: TId;
+      },
+      config: AxiosRequestConfig<any> | undefined,
     ) {
+      const { assessmentId, attributeId, levelId } = args ?? {};
       return axios.get(
         `/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/stats/`,
         {
           ...(config ?? {}),
           params: {
-            maturityLevelId: maturityLevelId,
+            maturityLevelId: levelId,
           },
         },
       );
     },
+
     updateAIReport(
       {
         data,
