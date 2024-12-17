@@ -58,7 +58,7 @@ const SubjectReport = () => {
                   {item.attributes.map((attribute: any) => {
                     return (
                       <BulletPointStatus
-                        titleFa={attribute.titleFa}
+                        title={attribute.title}
                         maturityLevel={attribute.maturityLevel}
                         maturityLevelCount={maturityLevelCount}
                       />
