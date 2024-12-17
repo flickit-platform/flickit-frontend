@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Typography } from "@mui/material";
-import FlatGauge from "@common/flatGauge/FlatGauge";
+import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import {getMaturityLevelColors, styles} from "@styles";
 
 interface IBulletPointStatus {

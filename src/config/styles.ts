@@ -268,6 +268,18 @@ export const chipColorPalette: any = {
   },
 };
 
+export const generateColorFromString = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
+  }
+  // Select a chip based on hash
+  const chipIndex =
+    (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
+  return chipColorPalette[`chip${chipIndex}`];
+};
+
+
 export const getColorOfStatus = (
   status: TStatus,
   fallBackColor: string = "#b7b7b7",

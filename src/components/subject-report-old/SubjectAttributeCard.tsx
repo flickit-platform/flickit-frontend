@@ -30,7 +30,7 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
-import FlatGauge from "@common/flatGauge/FlatGauge";
+import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";

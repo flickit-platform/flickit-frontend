@@ -16,7 +16,7 @@ import {
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { chipColorPalette } from "@/config/styles";
+import { chipColorPalette, generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
 
@@ -172,17 +172,6 @@ const MaturityLevelTable = ({
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const generateColorFromString = (str: string) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
-    }
-    // Select a chip based on hash
-    const chipIndex =
-      (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
-    return chipColorPalette[`chip${chipIndex}`];
   };
 
   const mapItemToRow = (item: Item): ItemColumnMapping => {
