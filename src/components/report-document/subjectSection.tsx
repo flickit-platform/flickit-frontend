@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Typography from "@mui/material/Typography";
 import data from "./greport.json";
 import { primaryFontFamily, theme } from "@config/theme";
@@ -12,7 +12,7 @@ import BoxReportLayout from "@components/report-document/layout/BoxReportLayout"
 import AssessmentSubjectRadialChart from "@components/assessment-report/AssessmenetSubjectRadial";
 
 const SubjectReport = () => {
-  const { maturityLevelCount } = data?.assessment?.assessmentKit;
+  const [maturityLevelCount,] = useState<number>(data?.assessment?.assessmentKit?.maturityLevelCount)
   const { subjects } = data
   return (
     <GeneralLayout>
@@ -24,7 +24,7 @@ const SubjectReport = () => {
             <Grid
               container
               spacing={2}
-              key={index}
+              key={item.index}
               sx={{
                 direction: theme.direction,
                 fontFamily: is_farsi ? "Vazirmatn" : primaryFontFamily,
@@ -58,6 +58,7 @@ const SubjectReport = () => {
                   {item.attributes.map((attribute: any) => {
                     return (
                       <BulletPointStatus
+                        key={attribute.index}
                         title={attribute.title}
                         maturityLevel={attribute.maturityLevel}
                         maturityLevelCount={maturityLevelCount}
