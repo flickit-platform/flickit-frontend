@@ -1,6 +1,7 @@
 import { keyframes, SxProps, Theme } from "@mui/material";
 import { TStatus } from "@types";
 import hasStatus from "@utils/hasStatus";
+import tinycolor from "tinycolor2";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
@@ -213,6 +214,28 @@ export const getMaturityLevelColors = (maturity_level_number: number) => {
   }
 };
 
+export const generateColorFromString = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
+  }
+  // Select a chip based on hash
+  const chipIndex = (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
+  return chipColorPalette[`chip${chipIndex}`];
+};
+
+export const getTransparentColor = (color: string) => {
+  const transparentColor =
+    tinycolor(color).getBrightness() > 180
+      ? tinycolor(color).brighten(60).toRgbString()
+      : tinycolor(color).getBrightness() > 160
+        ? tinycolor(color).lighten(40).toRgbString()
+        : tinycolor(color).getBrightness() > 80
+          ? tinycolor(color).lighten(50).toRgbString()
+          : tinycolor(color).lighten(60).toRgbString();
+  return transparentColor;
+};
+
 export const chipColorPalette: any = {
   chip1: {
     backgroundColor: "rgba(25, 229, 220, 0.1)",
@@ -266,17 +289,6 @@ export const chipColorPalette: any = {
     backgroundColor: "rgba(153, 94, 0, 0.1)",
     color: "rgba(153, 94, 0, 1)",
   },
-};
-
-export const generateColorFromString = (str: string) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
-  }
-  // Select a chip based on hash
-  const chipIndex =
-    (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
-  return chipColorPalette[`chip${chipIndex}`];
 };
 
 
