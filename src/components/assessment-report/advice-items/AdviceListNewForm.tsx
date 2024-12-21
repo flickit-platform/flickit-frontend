@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import Impact from "@/components/common/icons/Impact";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
@@ -77,12 +78,14 @@ const AdviceListNewForm = ({
           cost: costRes.levels,
           priority: priorityRes.levels,
         });
-        setNewAdvice({
-          ...newAdvice,
-          impact: impactRes.levels[1].title,
-          cost: costRes.levels[1].title,
-          priority: priorityRes.levels[1].title,
-        });
+        if (newAdvice?.assessmentId) {
+          setNewAdvice((prevState: any) => ({
+            ...prevState,
+            impact: impactRes.levels[1]?.code,
+            priority: priorityRes.levels[1]?.code,
+            cost: costRes.levels[1]?.code,
+          }));
+        }
       } catch (e) {
         const err = e as ICustomError;
         toastError(err);
@@ -93,16 +96,19 @@ const AdviceListNewForm = ({
   const getIcon = (type: string) => {
     let element;
     if (type === "cost") {
-      element = <AttachMoneyOutlinedIcon fontSize="small" />;
+      element = <AttachMoneyOutlinedIcon fontSize="small" color="primary" />;
     } else if (type === "impact") {
       element = (
         <Impact
           styles={{
             color: theme.palette.primary.dark,
-            width: "20px",
+            width: "16px",
+            px: 4,
           }}
         />
       );
+    } else {
+      element = <PriorityHighIcon fontSize="small" color="primary" />;
     }
     return element;
   };
@@ -192,6 +198,10 @@ const AdviceListNewForm = ({
                         background: "#fff",
                         px: "0px",
                         height: "36px",
+                        "& .MuiSelect-select": {
+                          display: "flex",
+                          alignItems: "center",
+                        },
                       }}
                     >
                       <MenuItem disabled value="">
@@ -211,6 +221,7 @@ const AdviceListNewForm = ({
                       </MenuItem>
                       {adviceOption[item]?.map((option: any, index: number) => (
                         <MenuItem key={option} value={option.code}>
+                          {getIcon(item)}
                           <Trans i18nKey={option.title.toLowerCase()} />
                         </MenuItem>
                       ))}
@@ -227,7 +238,7 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt: 1,
+                mt: 6,
               }}
             >
               <RichEditorFieldAssessment

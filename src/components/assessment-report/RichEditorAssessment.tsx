@@ -154,12 +154,10 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
                 borderColor: "#d32f2f",
               },
               "&:hover .ProseMirror": { borderColor: "rgba(0, 0, 0, 0.87)" },
-              "& .rich-editor--menu": editor?.isFocused
-                ? {
-                    opacity: 1,
-                    zIndex: 10,
-                  }
-                : {},
+              "& .rich-editor--menu": {
+                opacity: 1,
+                zIndex: 10,
+              },
               "&:hover .rich-editor--menu": {
                 opacity: 1,
                 zIndex: 10,

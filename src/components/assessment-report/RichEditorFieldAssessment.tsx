@@ -53,7 +53,7 @@ const RichEditorFieldBase = (props: any) => {
   } = useFormContext();
   const { hasError, errorMessage } = getFieldError(errors, name);
   const show_label = disable_label ? false : true;
-
+  
   return (
     <FormControl
       fullWidth

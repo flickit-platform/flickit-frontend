@@ -116,6 +116,7 @@ const AdviceItemAccordion: React.FC<{
   setEditingItemId: any;
   items: any;
   setDisplayedItems: any;
+  query: any;
 }> = ({
   item,
   onDelete,
@@ -124,6 +125,7 @@ const AdviceItemAccordion: React.FC<{
   setEditingItemId,
   items,
   setDisplayedItems,
+  query,
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -181,12 +183,9 @@ const AdviceItemAccordion: React.FC<{
     try {
       await updateAdviceItem.query();
       removeDescriptionAdvice.current = true;
-      const updatedItems = items.map((currentItem: any) =>
-        currentItem.id === item.id
-          ? { ...currentItem, ...newAdvice }
-          : currentItem,
-      );
-      setDisplayedItems(updatedItems);
+      query.query();
+
+      setDisplayedItems([]);
       setEditingItemId(null);
     } catch (e) {
       const err = e as ICustomError;
@@ -348,7 +347,8 @@ const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];
   onDelete: (adviceItemId: string) => void;
   setDisplayedItems: any;
-}> = ({ items, onDelete, setDisplayedItems }) => {
+  query: any;
+}> = ({ items, onDelete, setDisplayedItems, query }) => {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {
@@ -367,6 +367,7 @@ const AdviceItemsAccordion: React.FC<{
           setEditingItemId={setEditingItemId}
           items={items}
           setDisplayedItems={setDisplayedItems}
+          query={query}
         />
       ))}
     </Box>

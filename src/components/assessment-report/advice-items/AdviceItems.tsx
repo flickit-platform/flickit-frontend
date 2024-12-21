@@ -60,7 +60,7 @@ const AdviceItems = () => {
 
   const handleDeleteAdviceItem = async (adviceItemId: any) => {
     try {
-      await deleteAdviceItem.query({ adviceItemId });
+      await deleteAdviceItem.query({ adviceItemId })
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -113,8 +113,8 @@ const AdviceItems = () => {
   const handleSave = async () => {
     try {
       await postAdviceItem.query().then((res) => {
-        const updatedItems = [...displayedItems, { ...newAdvice, id: res.id }];
-        setDisplayedItems(updatedItems);
+        queryData.query();
+        setDisplayedItems([]);
       });
       removeDescriptionAdvice.current = true;
       setNewAdvice({
@@ -199,6 +199,7 @@ const AdviceItems = () => {
                   items={displayedItems}
                   onDelete={handleDeleteAdviceItem}
                   setDisplayedItems={setDisplayedItems}
+                  query={queryData}
                 />
               </Box>
             ) : (
