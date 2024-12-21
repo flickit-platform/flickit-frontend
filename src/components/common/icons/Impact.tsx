@@ -2,12 +2,12 @@ const Impact = (props: any) => {
   const { color, px, ...rest } = props.styles;
   return (
     <svg
-      width="12"
-      height="12"
+      width="16"
+      height="16"
       viewBox="0 0 12 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ paddingInline: px, ...rest }}
+      style={{ paddingInlineEnd: px, ...rest }}
     >
       <g clipPath="url(#clip0_8390_7316)">
         <path

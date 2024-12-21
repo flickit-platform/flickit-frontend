@@ -30,7 +30,7 @@ const AdviceItems = () => {
   const deleteAdviceItem = useQuery<any>({
     service: (args, config) => service.deleteAdviceItem(args, config),
     toastError: false,
-    runOnMount: false
+    runOnMount: false,
   });
 
   const { data } = queryData;
@@ -60,7 +60,7 @@ const AdviceItems = () => {
 
   const handleDeleteAdviceItem = async (adviceItemId: any) => {
     try {
-      await deleteAdviceItem.query({ adviceItemId });
+      await deleteAdviceItem.query({ adviceItemId })
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -113,8 +113,8 @@ const AdviceItems = () => {
   const handleSave = async () => {
     try {
       await postAdviceItem.query().then((res) => {
-        const updatedItems = [...displayedItems, { ...newAdvice, id: res.id }];
-        setDisplayedItems(updatedItems);
+        queryData.query();
+        setDisplayedItems([]);
       });
       removeDescriptionAdvice.current = true;
       setNewAdvice({
@@ -177,6 +177,17 @@ const AdviceItems = () => {
             </Box>
           </Grid>
           <Grid item lg={12} md={12} sm={12} xs={12} mt={2}>
+            {showNewAdviceListForm && (
+              <AdviceListNewForm
+                newAdvice={newAdvice}
+                handleInputChange={handleInputChange}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+                setNewAdvice={setNewAdvice}
+                removeDescriptionAdvice={removeDescriptionAdvice}
+                postAdviceItem={postAdviceItem}
+              />
+            )}
             {displayedItems.length ? (
               <Box
                 maxHeight={900}
@@ -188,6 +199,7 @@ const AdviceItems = () => {
                   items={displayedItems}
                   onDelete={handleDeleteAdviceItem}
                   setDisplayedItems={setDisplayedItems}
+                  query={queryData}
                 />
               </Box>
             ) : (
@@ -199,17 +211,6 @@ const AdviceItems = () => {
                   subTitle="CreateFirstAdvice"
                 />
               )
-            )}
-            {showNewAdviceListForm && (
-              <AdviceListNewForm
-                newAdvice={newAdvice}
-                handleInputChange={handleInputChange}
-                handleSave={handleSave}
-                handleCancel={handleCancel}
-                setNewAdvice={setNewAdvice}
-                removeDescriptionAdvice={removeDescriptionAdvice}
-                postAdviceItem={postAdviceItem}
-              />
             )}
           </Grid>
         </Grid>

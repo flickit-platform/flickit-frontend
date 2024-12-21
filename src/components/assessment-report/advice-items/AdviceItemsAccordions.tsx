@@ -116,6 +116,7 @@ const AdviceItemAccordion: React.FC<{
   setEditingItemId: any;
   items: any;
   setDisplayedItems: any;
+  query: any;
 }> = ({
   item,
   onDelete,
@@ -124,6 +125,7 @@ const AdviceItemAccordion: React.FC<{
   setEditingItemId,
   items,
   setDisplayedItems,
+  query,
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -181,12 +183,9 @@ const AdviceItemAccordion: React.FC<{
     try {
       await updateAdviceItem.query();
       removeDescriptionAdvice.current = true;
-      const updatedItems = items.map((currentItem: any) =>
-        currentItem.id === item.id
-          ? { ...currentItem, ...newAdvice }
-          : currentItem,
-      );
-      setDisplayedItems(updatedItems);
+      query.query();
+
+      setDisplayedItems([]);
       setEditingItemId(null);
     } catch (e) {
       const err = e as ICustomError;
@@ -245,11 +244,12 @@ const AdviceItemAccordion: React.FC<{
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                       wordBreak: "break-word",
-                      marginRight: "8px", // Adding space between title and priority
+                      marginRight: "8px",
                     }}
                     title={item.title}
+                    dir={languageDetector(item.description) ? "rtl" : "ltr"}
                     fontFamily={
-                      languageDetector(item.title)
+                      languageDetector(item.description)
                         ? farsiFontFamily
                         : primaryFontFamily
                     }
@@ -276,15 +276,11 @@ const AdviceItemAccordion: React.FC<{
 
             {/* Right side: Impact, Cost, and Icons */}
             <Grid item xs={12} sm={4} md={3.7}>
-              <Grid
-                container
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                <Grid item xs={4.8} >
+              <Grid container justifyContent="flex-start" alignItems="center">
+                <Grid item xs={4.8}>
                   <CustomChip type="impact" level={item.impact} />
                 </Grid>
-                <Grid item xs={4.8} >
+                <Grid item xs={4.8}>
                   <CustomChip type="cost" level={item.cost} />
                 </Grid>
                 <Grid item xs={0.2} alignItems="center" display="flex">
@@ -351,7 +347,8 @@ const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];
   onDelete: (adviceItemId: string) => void;
   setDisplayedItems: any;
-}> = ({ items, onDelete, setDisplayedItems }) => {
+  query: any;
+}> = ({ items, onDelete, setDisplayedItems, query }) => {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {
@@ -370,6 +367,7 @@ const AdviceItemsAccordion: React.FC<{
           setEditingItemId={setEditingItemId}
           items={items}
           setDisplayedItems={setDisplayedItems}
+          query={query}
         />
       ))}
     </Box>
