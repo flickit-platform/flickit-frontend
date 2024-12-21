@@ -10,6 +10,23 @@ import BulletPointStatus from "@components/report-document/bulletPointStatus";
 import AssessmentSubjectRadarChart from "@components/assessment-report/AssessmenetSubjectRadarChart";
 import BoxReportLayout from "@components/report-document/layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@components/assessment-report/AssessmenetSubjectRadial";
+import {styles} from "@styles";
+
+interface IAttribute {
+  id:number;
+  description: string;
+  index:string;
+  title: string;
+  confidenceValue?: number | any;
+  analyzation?:string | any;
+  maturityLevel: {
+    id: number;
+    title: string;
+    index: number;
+    value: number
+    description: string
+  };
+}
 
 const SubjectReport = () => {
   const [maturityLevelCount,] = useState<number>(data?.assessment?.assessmentKit?.maturityLevelCount)
@@ -35,13 +52,13 @@ const SubjectReport = () => {
                 <Typography
                   sx={{
                     color: theme.palette.primary.main,
-                    fontSize: "2rem",
+                    ...theme.typography.headlineSmall,
                     fontWeight: "bold",
                   }}
                 >
                   {index + 1}) {title}
                 </Typography>
-                <Typography sx={{ fontSize: "0.87rem", fontWeight: "light" }}>
+                <Typography sx={{ ...theme.typography.titleSmall , fontWeight: "light" }}>
                   {description}
                 </Typography>
               </Grid>
@@ -54,8 +71,8 @@ const SubjectReport = () => {
               </Grid>
             </Grid>
             <Grid container>
-              <Grid item xs={12} md={6} spacing={2} sx={{display:"flex", flexDirection:"column",justifyContent:"center", alignItems: "center",gap:2}}>
-                  {item.attributes.map((attribute: any) => {
+              <Grid item xs={12} md={6} spacing={2} sx={{...styles.centerCVH, gap:2}}>
+                  {item?.attributes?.map((attribute: IAttribute) => {
                     return (
                       <BulletPointStatus
                         key={attribute.index}
@@ -67,7 +84,7 @@ const SubjectReport = () => {
                   })}
               </Grid>
               <Grid item xs={12} sm={6} spacing={2} m={"auto"} sx={{height:"250px"}}>
-                {subjects.length <= 2
+                {subjects?.length <= 2
                     ?
                     <AssessmentSubjectRadialChart
                         data={item.attributes}
@@ -83,7 +100,7 @@ const SubjectReport = () => {
                 }
               </Grid>
             </Grid>
-            {item.attributes.map((attribute: any) => {
+            {item?.attributes?.map((attribute: IAttribute) => {
               return (
                   <BoxReportLayout
                       confidenceValue={attribute.confidenceValue}

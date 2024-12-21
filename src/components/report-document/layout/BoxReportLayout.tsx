@@ -72,7 +72,6 @@ const TopBox = (props: ITopBoxReport) =>{
                 sx={{...styles.centerCVH, gap:"1rem"}}
                 item>
                 <Typography sx={{...theme.typography.titleLarge, color:`${ConfidenceColor}`}}><Trans i18nKey={title} /></Typography>
-                {/*<Typography sx={{...theme.typography.bodySmall}}><Trans i18nKey={titleEn} /></Typography>*/}
             </Grid>
             <Grid xs={12}  sm={4} item >
                 <Typography sx={{...theme.typography.labelLarge, textAlign:"center",width:{xs:"70%",sm:"100%"},m:"0 auto"}} ><Trans i18nKey={description} /></Typography>
