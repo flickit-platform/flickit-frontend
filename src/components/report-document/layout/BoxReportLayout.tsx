@@ -9,8 +9,7 @@ import lens from "@assets/svg/lens.svg";
 import {styles} from "@styles";
 
 interface IBoxReport {
-    titleFa: string;
-    titleEn: string;
+    title: string;
     description: string;
     analyzation: string;
     confidenceValue: number;
@@ -26,8 +25,7 @@ interface IBoxReport {
 
 interface ITopBoxReport {
     ConfidenceColor: string;
-    titleFa: string;
-    titleEn: string;
+    title: string;
     description: string;
     maturityLevel: {
         title: string;
@@ -56,7 +54,7 @@ const BoxReportLayout = (props: IBoxReport) => {
     },[confidenceValue])
 
     return (
-        <Box sx={{display:"flex", flexDirection:"column", width:"fit-content", height:"fit-content", background:"#F9FAFB", borderRadius:"32px",p:"32px",gap:"32px", border:`1px solid ${colorRef.current}` }}>
+        <Box sx={{display:"flex", flexDirection:"column", width:"fit-content", height:"fit-content", background:"#F9FAFB", borderRadius:"32px",p:"32px",gap:"32px", border:`1px solid ${colorRef.current}`,mb:4 }}>
             <TopBox ConfidenceColor={colorRef.current} confidenceValue={confidenceValue} {...rest}/>
             <BottomBox analyzation={analyzation}/>
         </Box>
@@ -65,7 +63,7 @@ const BoxReportLayout = (props: IBoxReport) => {
 
 
 const TopBox = (props: ITopBoxReport) =>{
-    const {ConfidenceColor, titleFa, titleEn, description, maturityLevel, confidenceValue, maturityLevelCount} = props
+    const {ConfidenceColor, title, description, maturityLevel, confidenceValue, maturityLevelCount} = props
     return (
         <Grid spacing={2} container sx={{display:"flex", justifyContent:"space-evenly"}}>
             <Grid
@@ -73,8 +71,7 @@ const TopBox = (props: ITopBoxReport) =>{
                 sm={4}
                 sx={{...styles.centerCVH, gap:"1rem"}}
                 item>
-                <Typography sx={{...theme.typography.titleLarge, color:`${ConfidenceColor}`}}><Trans i18nKey={titleFa} /></Typography>
-                <Typography sx={{...theme.typography.bodySmall}}><Trans i18nKey={titleEn} /></Typography>
+                <Typography sx={{...theme.typography.titleLarge, color:`${ConfidenceColor}`}}><Trans i18nKey={title} /></Typography>
             </Grid>
             <Grid xs={12}  sm={4} item >
                 <Typography sx={{...theme.typography.labelLarge, textAlign:"center",width:{xs:"70%",sm:"100%"},m:"0 auto"}} ><Trans i18nKey={description} /></Typography>

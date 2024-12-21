@@ -74,6 +74,7 @@ const FlatGauge = (props: IGaugeProps) => {
             gap: "1rem",
             justifyContent: "center",
             alignItems: "center",
+              mx:"auto"
           }}
         >
           {textPosition == "top" && (
