@@ -690,5 +690,8 @@
   "youSelected": "You've selected",
   "youveGotSyntaxErrorsInYourDslFile": "You've got syntax errors in your dsl file",
   "noQuestionAvailableForThisMaturity": "There's no question defined for this maturity level for this attribute.",
-  "analysisResults": "AnalysisResults"
+  "analysisResults": "AnalysisResults",
+  "dashboard": "Dashboard",
+  "reports": "Reports",
+  "assessmentSteps": "Assessment Steps"
 }
