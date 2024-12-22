@@ -693,5 +693,9 @@
   "analysisResults": "نتایج تحلیل",
   "dashboard": "پیشخوان",
   "reports": "گزارش‌ها",
-  "assessmentSteps": "مراحل ارزیابی"
+  "assessmentSteps": "مراحل ارزیابی",
+  "submittedInsights": "گزارش‌های ارسال ‌شده",
+  "suggestedAdvices": "توصیه های پیشنهادی",
+  "issues": "مشکل",
+  "currentStep": "مرحله فعلی"
 }

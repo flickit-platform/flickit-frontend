@@ -693,5 +693,9 @@
   "analysisResults": "AnalysisResults",
   "dashboard": "Dashboard",
   "reports": "Reports",
-  "assessmentSteps": "Assessment Steps"
+  "assessmentSteps": "Assessment Steps",
+  "submittedInsights": "Submitted Insights",
+  "suggestedAdvices": "Suggested Advices",
+  "issues": "Issues",
+  "currentStep": "Current step"
 }
