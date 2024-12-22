@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Step, StepLabel, Stepper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
@@ -9,7 +9,6 @@ import data from "../data";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
-import { merge } from "lodash";
 
 const StepperSection = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -147,15 +146,15 @@ const StepBox = (props: any) => {
     const hasIssues =
       hasLowConfidence || hasNoEvidence || hasUnresolvedComments || unanswered;
     const completed = !hasIssues && answered == total;
-    if (completed) {
-      setActiveStep(1);
+    if (completed && activeStep == 0) {
+      setActiveStep((prev: number) => prev + 1);
     }
     content = (
       <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
         <Typography sx={{ ...theme.typography.headlineLarge }}>
           {`${answered} / ${total} `}
         </Typography>
-          <Box sx={{ ...styles.centerCH, gap: 1 }}>
+          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {answered == total ? completedTag : currentTag}
             {hasIssues && !completed ? issuesTag : null}
           </Box>
@@ -169,8 +168,8 @@ const StepBox = (props: any) => {
     const result = total - (notGenerated + unapproved + expired);
     const completed = !hasIssues && total == result;
 
-    if (completed) {
-      setActiveStep(2);
+    if (completed && activeStep == 1) {
+      setActiveStep((prev: number) => prev + 1);
     }
 
     content = (
@@ -178,8 +177,8 @@ const StepBox = (props: any) => {
         <Typography sx={{ ...theme.typography.headlineLarge }}>
           {`${result} / ${total}`}
         </Typography>
-        <Box sx={{ ...styles.centerCH, gap: 1 }}>
-          {completed && activeStep >= 2 && completedTag}
+        <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+          {completed && completedTag}
           {!completed && activeStep == 1 && currentTag}
           {hasIssues && !completed ? issuesTag : null}
         </Box>
@@ -192,8 +191,8 @@ const StepBox = (props: any) => {
     const completed = total != 0;
     const hasIssues = total == 0;
 
-      if (completed) {
-          setActiveStep(3);
+      if (completed && activeStep == 2) {
+          setActiveStep((prev: number) => prev + 1);
       }
 
     content = (
@@ -201,8 +200,8 @@ const StepBox = (props: any) => {
         <Typography sx={{ ...theme.typography.headlineLarge }}>
           {total}
         </Typography>
-          <Box sx={{ ...styles.centerCH, gap: 1 }}>
-            {completed && activeStep >= Finish && completedTag}
+          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+            {completed && completedTag}
             {!completed && activeStep == 2 && currentTag}
             {hasIssues && !completed ? issuesTag : null}
           </Box>
