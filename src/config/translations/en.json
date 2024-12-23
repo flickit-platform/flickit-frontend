@@ -704,5 +704,11 @@
   "whatToDoNow": "What to do now",
   "whatToDoNext": "What to do next",
   "questionsIssues": "Questions issues",
-  "goToQuestions": "Go to questions"
+  "goToQuestions": "Go to questions",
+  "insightsIssues": "Insights issues",
+  "advicesIssues": "Advices issues",
+  "waitingForAnswers": "Question are waiting for answers!",
+  "waitingForEvidences": "Questions are answered without any evidences!",
+  "waitingVeryLowConfidence": "Questions has very low confidence!",
+  "waitingUnresolvedComments": "Questions have unresolved comments!"
 }

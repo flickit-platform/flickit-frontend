@@ -704,5 +704,11 @@
   "whatToDoNow": "موارد نیازمند رسیدگی",
   "whatToDoNext": "موارد نیازمند رسیدگی(در آینده)",
   "questionsIssues": "موارد سوالات",
-  "goToQuestions": "نمایش سوالات"
+  "goToQuestions": "نمایش سوالات",
+  "insightsIssues": "موارد گزارش‌ها",
+  "advicesIssues": "موارد پیشنهاد‌ها",
+  "waitingForAnswers": "Question are waiting for answers!",
+  "waitingForEvidences": "Questions are answered without any evidences!",
+  "waitingVeryLowConfidence": "Questions has very low confidence!",
+  "waitingUnresolvedComments": "Questions have unresolved comments!"
 }

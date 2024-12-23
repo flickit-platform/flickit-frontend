@@ -9,7 +9,7 @@ import TodoBox from "@components/dashboard/dashboard_Tab/todoBox";
 import { useEffect, useState } from "react";
 const DashboardTab = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [todoBoxData,setTodoBoxData] = useState([])
+  const [todoBoxData,setTodoBoxData] = useState({now: [], next: []})
   const mappedData = [
     { category: "questions", metrics: data.questions },
     { category: "insights", metrics: data.insights },
@@ -32,21 +32,26 @@ const DashboardTab = () => {
           ),
         };
       });
-     updatedData.map((item) => {
+     updatedData.map((item : any) => {
          if(Object.keys(item.metrics).length > 0){
              if (activeStep == 0) {
                  if (item.category == "questions" && item.metrics.unanswered) {
+                     item.metrics.name = item.category
                      todoData.now.push(item.metrics);
                  } else {
+                     item.metrics.name  = item.category
                      todoData.next.push(item.metrics);
                  }
              } else if (activeStep == 1) {
                  if (item.category == "insights" && item.metrics.notGenerated || item.category == "questions") {
+                     item.metrics.name = item.category
                      todoData.now.push(item.metrics);
                  } else {
+                     item.metrics.name = item.category
                      todoData.next.push(item.metrics);
                  }
              }else {
+                     item.metrics.name = item.category
                      todoData.now.push(item.metrics);
              }
          }

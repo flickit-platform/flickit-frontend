@@ -9,11 +9,11 @@ export default {
     },
     "insights": {
         "total": 14,
-        "notGenerated": 0,
+        "notGenerated": 3,
         "unapproved": 4,
         "expired": 2
     },
     "advices": {
-        "total":5
+        "total":0
     }
 }
