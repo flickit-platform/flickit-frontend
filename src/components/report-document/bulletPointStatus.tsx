@@ -6,19 +6,16 @@ import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import {getMaturityLevelColors, styles} from "@styles";
 
 interface IBulletPointStatus {
-  titleFa: string;
+  title: string;
   maturityLevel: {
     value: number;
     title: string;
   };
-  assessmentKit: {
-    maturityLevelCount: number;
-  };
+  maturityLevelCount: number;
 }
 const BulletPointStatus = (props: IBulletPointStatus) => {
-  const { titleFa, maturityLevel, assessmentKit } = props;
+  const { title : titleSub, maturityLevel, maturityLevelCount } = props;
   const { value, title } = maturityLevel;
-  const { maturityLevelCount } = assessmentKit;
   const colorPallet = getMaturityLevelColors(maturityLevelCount);
   const colorCode = colorPallet[value - 1];
   return (
@@ -30,7 +27,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
       }}
     >
       <ArrowLeftIcon sx={{ color: colorCode }} fontSize="medium" />
-      <Typography>{titleFa}</Typography>
+      <Typography>{titleSub}</Typography>
       <FlatGauge
         maturityLevelNumber={maturityLevelCount}
         levelValue={value}
