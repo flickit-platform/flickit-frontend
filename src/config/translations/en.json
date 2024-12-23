@@ -710,5 +710,9 @@
   "waitingForAnswers": "Question are waiting for answers!",
   "waitingForEvidences": "Questions are answered without any evidences!",
   "waitingVeryLowConfidence": "Questions has very low confidence!",
-  "waitingUnresolvedComments": "Questions have unresolved comments!"
+  "waitingUnresolvedComments": "Questions have unresolved comments!",
+  "subjectsNeedInsights": "subjects and 3 attributes need insights!",
+  "insightsNeedApprovement": "AI-generated insights need approvement!",
+  "expiredDueToNewAnswers": "insights are expired due to new answers!",
+  "suggestAnyAdvicesSoFar": "You didn’t suggest any advices so far!"
 }

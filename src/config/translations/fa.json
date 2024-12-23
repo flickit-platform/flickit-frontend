@@ -707,8 +707,8 @@
   "goToQuestions": "نمایش سوالات",
   "insightsIssues": "موارد گزارش‌ها",
   "advicesIssues": "موارد پیشنهاد‌ها",
-  "waitingForAnswers": "Question are waiting for answers!",
-  "waitingForEvidences": "Questions are answered without any evidences!",
-  "waitingVeryLowConfidence": "Questions has very low confidence!",
-  "waitingUnresolvedComments": "Questions have unresolved comments!"
+  "waitingForAnswers": "سوال منتظر پاسخ است",
+  "waitingForEvidences": "بدون هیچ شاهدی به سوالات پاسخ داده می شود!",
+  "waitingVeryLowConfidence": "سوال اطمینان بسیار پایینی دارند!",
+  "waitingUnresolvedComments": "سوال دارای نظرات پاسخ داده نشده هستند!"
 }
