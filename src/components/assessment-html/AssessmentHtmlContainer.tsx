@@ -9,6 +9,9 @@ import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
 import { CDN_DIRECTORY } from "@/config/constants";
+import { Trans } from "react-i18next";
+import { Grid, Paper, Typography } from "@mui/material";
+import { AssessmentTOC } from "./TopOfContents";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
@@ -66,15 +69,75 @@ const AssessmentExportContainer = () => {
               <Box
                 m="auto"
                 pb={3}
-                mt="40px"
                 sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}
               >
                 <AssessmentHtmlTitle pathInfo={pathInfo} />
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  my={2}
+                >
+                  <Typography
+                    color="primary"
+                    textAlign="left"
+                    variant="headlineLarge"
+                  >
+                    <Trans i18nKey="assessmentDocument" />
+                  </Typography>
+                </Box>
+                <Grid container spacing={2}>
+                  <Grid item lg={3} md={4} sm={12} xs={12}>
+                    <AssessmentTOC />
+                  </Grid>
+
+                  <Grid item lg={9} md={8} sm={12} xs={12}>
+                    <Paper
+                      elevation={3}
+                      sx={{
+                        position: "relative",
+                        p: 8,
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        justifyContent: "center",
+                        borderRadius: 4,
+                        boxShadow: "none",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          left: "40px",
+                          top: "60px",
+                          bottom: 0,
+                          width: "8px",
+                          backgroundColor: "#D5E5F6",
+                        }}
+                      />
+
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          right: "40px",
+                          top: "60px",
+                          bottom: 0,
+                          width: "8px",
+                          backgroundColor: "#D5E5F6",
+                        }}
+                      />
+
+                      <div
+                        dangerouslySetInnerHTML={{ __html: content }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          overflowX: "hidden",
+                        }}
+                      />
+                    </Paper>
+                  </Grid>
+                </Grid>
               </Box>
-              <div
-                dangerouslySetInnerHTML={{ __html: content }}
-                style={{ width: "100%", height: "100%", overflowX: "hidden" }}
-              />
             </>
           );
         }}
