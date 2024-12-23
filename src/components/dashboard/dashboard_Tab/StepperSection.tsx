@@ -5,18 +5,13 @@ import { useState } from "react";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
-import data from "../data";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
 
-const StepperSection = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const mappedData = [
-    { category: "questions", metrics: data.questions },
-    { category: "insights", metrics: data.insights },
-    { category: "advices", metrics: data.advices },
-  ];
+const StepperSection = (props: any) => {
+  const { setActiveStep, activeStep, mappedData } = props;
+
   return (
     <Box
       sx={{
@@ -32,7 +27,7 @@ const StepperSection = () => {
         sx={{ width: "70%", mx: "auto", mb: "30px" }}
         activeStep={activeStep}
       >
-        {mappedData.map((label, index) => {
+        {mappedData.map((label : any, index : number) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;
@@ -64,7 +59,7 @@ const StepperSection = () => {
         })}
       </Stepper>
       <Grid container columns={12}>
-        {mappedData.map((item, index) => {
+        {mappedData.map((item : any, index: number) => {
           return (
             <StepBox
               key={index}
@@ -294,7 +289,9 @@ const StepBox = (props: any) => {
         <Typography
           sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
         >
-          {t("suggestingAnyAdvices").toUpperCase()}
+          {activeStep == 0 || activeStep == 1
+            ? t("suggestingAnyAdvices").toUpperCase()
+            : null}
         </Typography>
       </Box>
     );

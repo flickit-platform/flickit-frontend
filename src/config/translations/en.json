@@ -700,5 +700,9 @@
   "currentStep": "Current step",
   "totalQuestionsCount": "of total questions ({{countQuestion}} Questions)",
   "totalInsightsCount": " of total Insights ({{countInsights}} insights)",
-  "suggestingAnyAdvices": "No need to worry! you should answer more questions before suggesting any advices!"
+  "suggestingAnyAdvices": "No need to worry! you should answer more questions before suggesting any advices!",
+  "whatToDoNow": "What to do now",
+  "whatToDoNext": "What to do next",
+  "questionsIssues": "Questions issues",
+  "goToQuestions": "Go to questions"
 }

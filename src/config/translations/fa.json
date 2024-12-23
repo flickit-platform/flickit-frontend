@@ -700,5 +700,9 @@
   "currentStep": "مرحله فعلی",
   "totalQuestionsCount": " از کل سوالات ({{countQuestion}} سوال)",
   "totalInsightsCount": " از کل گزارش‌ها ({{countInsights}} گزارش)",
-  "suggestingAnyAdvices": "نیازی به نگرانی نیست! شما باید قبل از ارائه هر توصیه ای به سوالات بیشتری پاسخ دهید!"
+  "suggestingAnyAdvices": "نیازی به نگرانی نیست! شما باید قبل از ارائه هر توصیه ای به سوالات بیشتری پاسخ دهید!",
+  "whatToDoNow": "موارد نیازمند رسیدگی",
+  "whatToDoNext": "موارد نیازمند رسیدگی(در آینده)",
+  "questionsIssues": "موارد سوالات",
+  "goToQuestions": "نمایش سوالات"
 }
