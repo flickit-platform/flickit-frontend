@@ -100,7 +100,7 @@ const SubjectReport = () => {
                 m={"auto"}
                 sx={{ height: "250px" }}
               >
-                {subjects?.length <= 2 ? (
+                {item?.attributes?.length <= 2 ? (
                   <AssessmentSubjectRadialChart
                     data={item.attributes}
                     maturityLevelsCount={maturityLevelCount ?? 5}

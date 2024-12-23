@@ -335,6 +335,18 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          paperContainer: {
+            backgroundColor: "#fff",
+            borderRadius: "8px",
+            padding: "16px",
+          },
+        },
+      },
+    },
+
     MuiCssBaseline: {
       styleOverrides: `
         .top-nav-bar-ZwZd20 {
@@ -599,6 +611,11 @@ export const theme = createTheme({
           padding: "4px 2px",
         },
       },
+    },
+  },
+  customStyles: {
+    borderLine: {
+      border: "1px solid #D5E5F6",
     },
   },
 });

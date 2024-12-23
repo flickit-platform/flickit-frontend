@@ -117,6 +117,7 @@ const AdviceItemAccordion: React.FC<{
   items: any;
   setDisplayedItems: any;
   query: any;
+  readOnly: boolean;
 }> = ({
   item,
   onDelete,
@@ -126,6 +127,7 @@ const AdviceItemAccordion: React.FC<{
   items,
   setDisplayedItems,
   query,
+  readOnly,
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -211,7 +213,9 @@ const AdviceItemAccordion: React.FC<{
     <>
       <Accordion
         sx={{
-          border: `1px solid ${COLORS.border}`,
+          borderBottom: `1px solid ${COLORS.border}`,
+          borderInlineStart: readOnly ? "4px solid #6C8093" : "",
+          border: readOnly ? "" : `1px solid ${COLORS.border}`,
           borderRadius: "8px",
           mb: 1,
           boxShadow: "none",
@@ -219,7 +223,7 @@ const AdviceItemAccordion: React.FC<{
         }}
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon fontSize="small" />}
+          expandIcon={readOnly ? null : <ExpandMoreIcon fontSize="small" />}
           sx={{
             "& .MuiAccordionSummary-content": { alignItems: "center" },
             padding: "0 16px",
@@ -232,8 +236,7 @@ const AdviceItemAccordion: React.FC<{
             width="100%"
             spacing={1}
           >
-            {/* Left side: Title and Priority */}
-            <Grid item xs={12} sm={8} md={8.3}>
+            <Grid item xs={12} sm={8} md={readOnly ? 7 : 8.3}>
               <Grid container alignItems="center" spacing={1}>
                 <Grid item xs={12} alignItems="center" display="flex">
                   <Typography
@@ -274,16 +277,20 @@ const AdviceItemAccordion: React.FC<{
               </Grid>
             </Grid>
 
-            {/* Right side: Impact, Cost, and Icons */}
-            <Grid item xs={12} sm={4} md={3.7}>
+            <Grid item xs={12} sm={4} md={readOnly ? 4 : 3.7}>
               <Grid container justifyContent="flex-start" alignItems="center">
-                <Grid item xs={4.8}>
+                <Grid item xs={readOnly ? 6 : 4.8}>
                   <CustomChip type="impact" level={item.impact} />
                 </Grid>
-                <Grid item xs={4.8}>
+                <Grid item xs={readOnly ? 6 : 4.8}>
                   <CustomChip type="cost" level={item.cost} />
                 </Grid>
-                <Grid item xs={0.2} alignItems="center" display="flex">
+                <Grid
+                  item
+                  xs={0.2}
+                  alignItems="center"
+                  display={readOnly ? "none" : "flex"}
+                >
                   <IconButton
                     size="small"
                     color="primary"
@@ -348,7 +355,8 @@ const AdviceItemsAccordion: React.FC<{
   onDelete: (adviceItemId: string) => void;
   setDisplayedItems: any;
   query: any;
-}> = ({ items, onDelete, setDisplayedItems, query }) => {
+  readOnly: boolean;
+}> = ({ items, onDelete, setDisplayedItems, query, readOnly }) => {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {
@@ -368,6 +376,7 @@ const AdviceItemsAccordion: React.FC<{
           items={items}
           setDisplayedItems={setDisplayedItems}
           query={query}
+          readOnly={readOnly}
         />
       ))}
     </Box>

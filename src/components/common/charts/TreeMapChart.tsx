@@ -14,16 +14,18 @@ interface TreeMapNode {
 
 interface TreeMapProps {
   data: TreeMapNode[];
+  levels: number
 }
 
-const TreeMapChart: React.FC<TreeMapProps> = ({ data }) => {
+const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
+  const colorPallet = getMaturityLevelColors(levels);
   const treeMapData = data.map((node) => ({
     ...node,
-    color: getMaturityLevelColors(node.count),
+    color: colorPallet[node.count - 1],
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={300}>
       <Treemap
         data={treeMapData}
         dataKey="count"
@@ -59,7 +61,7 @@ const CustomNode: React.FC<RectangleProps> = (props) => {
             fill="#fff"
             fontSize="12"
           >
-            {`Count: ${count}`}
+            {` ${count}`}
           </text>
         </>
       )}

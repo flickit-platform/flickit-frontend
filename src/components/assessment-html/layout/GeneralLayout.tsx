@@ -8,7 +8,6 @@ const GeneralLayout = ({ children }: any) => {
         height: "auto",
         borderRadius: "48px",
         background: "#fff",
-        p: { xs: "20px", sm: "60px" },
       }}
     >
       {children}
