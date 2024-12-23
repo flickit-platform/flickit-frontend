@@ -12,6 +12,7 @@ import { CDN_DIRECTORY } from "@/config/constants";
 import { Trans } from "react-i18next";
 import { Grid, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
+import SubjectReport from "./SubjectSection";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
@@ -96,12 +97,13 @@ const AssessmentExportContainer = () => {
                       elevation={3}
                       sx={{
                         position: "relative",
-                        p: 8,
+                        p: 3,
                         backgroundColor: "#ffffff",
                         display: "flex",
                         justifyContent: "center",
                         borderRadius: 4,
                         boxShadow: "none",
+                        width: "100%",
                       }}
                     >
                       <Box
@@ -125,15 +127,7 @@ const AssessmentExportContainer = () => {
                           backgroundColor: "#D5E5F6",
                         }}
                       />
-
-                      <div
-                        dangerouslySetInnerHTML={{ __html: content }}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          overflowX: "hidden",
-                        }}
-                      />
+                      <SubjectReport />
                     </Paper>
                   </Grid>
                 </Grid>

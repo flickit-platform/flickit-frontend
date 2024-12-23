@@ -288,9 +288,9 @@ export const theme = createTheme({
     semiBoldSmall: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "500",
-      fontSize: "0.75rem !important",
-      lineHeight: "0.75rem !important",
-      letterSpacing: "0.5px",
+      fontSize: "0.75rem",
+      lineHeight: "0.75rem",
+      letterSpacing: is_farsi ? "0px" : "0.5px",
     },
     semiBoldLarge: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,

@@ -1,36 +1,38 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import data from "./greport.json";
 import { primaryFontFamily, theme } from "@config/theme";
-import GeneralLayout from "@components/report-document/layout/generalLayout";
+import GeneralLayout from "./layout/GeneralLayout";
 import languageDetector from "@utils/languageDetector";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
-import BulletPointStatus from "@components/report-document/bulletPointStatus";
+import BulletPointStatus from "./BulletPointStatus";
 import AssessmentSubjectRadarChart from "@components/assessment-report/AssessmenetSubjectRadarChart";
-import BoxReportLayout from "@components/report-document/layout/BoxReportLayout";
+import BoxReportLayout from "./layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@components/assessment-report/AssessmenetSubjectRadial";
-import {styles} from "@styles";
+import { styles } from "@styles";
 
 interface IAttribute {
-  id:number;
+  id: number;
   description: string;
-  index:string;
+  index: string;
   title: string;
   confidenceValue?: number | any;
-  analyzation?:string | any;
+  analyzation?: string | any;
   maturityLevel: {
     id: number;
     title: string;
     index: number;
-    value: number
-    description: string
+    value: number;
+    description: string;
   };
 }
 
 const SubjectReport = () => {
-  const [maturityLevelCount,] = useState<number>(data?.assessment?.assessmentKit?.maturityLevelCount)
-  const { subjects } = data
+  const [maturityLevelCount] = useState<number>(
+    data?.assessment?.assessmentKit?.maturityLevelCount,
+  );
+  const { subjects } = data;
   return (
     <GeneralLayout>
       {subjects?.map((item: any, index: number) => {
@@ -40,7 +42,6 @@ const SubjectReport = () => {
           <>
             <Grid
               container
-              spacing={2}
               key={item.index}
               sx={{
                 direction: theme.direction,
@@ -58,7 +59,9 @@ const SubjectReport = () => {
                 >
                   {index + 1}) {title}
                 </Typography>
-                <Typography sx={{ ...theme.typography.titleSmall , fontWeight: "light" }}>
+                <Typography
+                  sx={{ ...theme.typography.titleSmall, fontWeight: "light" }}
+                >
                   {description}
                 </Typography>
               </Grid>
@@ -71,43 +74,55 @@ const SubjectReport = () => {
               </Grid>
             </Grid>
             <Grid container>
-              <Grid item xs={12} md={6} spacing={2} sx={{...styles.centerCVH, gap:2}}>
-                  {item?.attributes?.map((attribute: IAttribute) => {
-                    return (
-                      <BulletPointStatus
-                        key={attribute.index}
-                        title={attribute.title}
-                        maturityLevel={attribute.maturityLevel}
-                        maturityLevelCount={maturityLevelCount}
-                      />
-                    );
-                  })}
-              </Grid>
-              <Grid item xs={12} sm={6} spacing={2} m={"auto"} sx={{height:"250px"}}>
-                {subjects?.length <= 2
-                    ?
-                    <AssessmentSubjectRadialChart
-                        data={item.attributes}
-                        maturityLevelsCount={maturityLevelCount ?? 5}
-                        loading={false}
+              <Grid
+                item
+                xs={12}
+                md={6}
+                spacing={2}
+                sx={{ ...styles.centerCVH, gap: 2 }}
+              >
+                {item?.attributes?.map((attribute: IAttribute) => {
+                  return (
+                    <BulletPointStatus
+                      key={attribute.index}
+                      title={attribute.title}
+                      maturityLevel={attribute.maturityLevel}
+                      maturityLevelCount={maturityLevelCount}
                     />
-                :
-                      <AssessmentSubjectRadarChart
-                          data={item.attributes}
-                          maturityLevelsCount={maturityLevelCount ?? 5}
-                          loading={false}
-                      />
-                }
+                  );
+                })}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                spacing={2}
+                m={"auto"}
+                sx={{ height: "250px" }}
+              >
+                {subjects?.length <= 2 ? (
+                  <AssessmentSubjectRadialChart
+                    data={item.attributes}
+                    maturityLevelsCount={maturityLevelCount ?? 5}
+                    loading={false}
+                  />
+                ) : (
+                  <AssessmentSubjectRadarChart
+                    data={item.attributes}
+                    maturityLevelsCount={maturityLevelCount ?? 5}
+                    loading={false}
+                  />
+                )}
               </Grid>
             </Grid>
             {item?.attributes?.map((attribute: IAttribute) => {
               return (
-                  <BoxReportLayout
-                      confidenceValue={attribute.confidenceValue}
-                      analyzation={attribute.analyzation}
-                      maturityLevelCount={maturityLevelCount}
-                      {...attribute}
-                  />
+                <BoxReportLayout
+                  confidenceValue={attribute.confidenceValue}
+                  analyzation={attribute.analyzation}
+                  maturityLevelCount={maturityLevelCount}
+                  {...attribute}
+                />
               );
             })}
           </>
