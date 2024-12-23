@@ -23,7 +23,7 @@ const StepperSection = () => {
         background: "#fff",
         borderRadius: "1rem",
         width: "100%",
-        p: 3,
+        py: 4,
         backgroundColor: "#fff",
         boxShadow: "0 0 8px 0 #0A234240",
       }}
@@ -40,6 +40,7 @@ const StepperSection = () => {
           return (
             <Step key={label.category} {...stepProps}>
               <StepLabel
+                StepIconProps={{ style: { fontSize: "2rem" } }}
                 sx={{
                   color: "red",
                   ".MuiSvgIcon-root.Mui-active": {
@@ -70,7 +71,6 @@ const StepperSection = () => {
               {...item}
               activeStep={activeStep}
               setActiveStep={setActiveStep}
-              Finish={mappedData.length - 1}
             />
           );
         })}
@@ -80,7 +80,7 @@ const StepperSection = () => {
 };
 
 const StepBox = (props: any) => {
-  const { category, metrics, setActiveStep, activeStep, Finish } = props;
+  const { category, metrics, setActiveStep, activeStep } = props;
 
   const questions = category == "questions";
   const insights = category == "insights";
@@ -89,12 +89,14 @@ const StepBox = (props: any) => {
   const calcOfIssues = () => {
     if (questions) {
       return Object.keys(metrics).filter(
-        (item) => item != "total" && item != "answered",
+        (item) => item != "total" && item != "answered" && metrics[item] != 0,
       ).length;
     } else if (insights) {
-      return Object.keys(metrics).filter((item) => item != "total").length;
-    }else if (advices) {
-        return Object.keys(metrics).filter((item) => item ).length;
+      return Object.keys(metrics).filter(
+        (item) => item != "total" && metrics[item] != 0,
+      ).length;
+    } else if (advices) {
+      return Object.keys(metrics).filter((item) => item).length;
     }
   };
 
@@ -150,14 +152,57 @@ const StepBox = (props: any) => {
       setActiveStep((prev: number) => prev + 1);
     }
     content = (
-      <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-        <Typography sx={{ ...theme.typography.headlineLarge }}>
-          {`${answered} / ${total} `}
-        </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: "calc(100% - 60px)",
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Typography sx={{ ...theme.typography.headlineLarge }}>
+            {`${answered} / ${total} `}
+          </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {answered == total ? completedTag : currentTag}
             {hasIssues && !completed ? issuesTag : null}
           </Box>
+        </Box>
+        <Typography
+          sx={{
+            ...theme.typography.semiBoldMedium,
+            color: "#6C8093",
+          }}
+        >
+          <Trans i18nKey={"confidence"} />: {`${hasLowConfidence}`}%
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1px",
+          }}
+        >
+          <Typography
+            sx={{ ...theme.typography.labelMedium, color: "#2D80D2" }}
+          >
+            {Math.floor((100 * answered) / total)}%
+          </Typography>
+          <Typography
+            sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
+          >
+            {t("totalQuestionsCount", { countQuestion: total })}
+          </Typography>
+        </Box>
       </Box>
     );
   }
@@ -173,14 +218,43 @@ const StepBox = (props: any) => {
     }
 
     content = (
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-        <Typography sx={{ ...theme.typography.headlineLarge }}>
-          {`${result} / ${total}`}
-        </Typography>
-        <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-          {completed && completedTag}
-          {!completed && activeStep == 1 && currentTag}
-          {hasIssues && !completed ? issuesTag : null}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          width: "100%",
+          height: "calc(100% - 60px)",
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+          <Typography sx={{ ...theme.typography.headlineLarge }}>
+            {`${result} / ${total}`}
+          </Typography>
+          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+            {completed && completedTag}
+            {!completed && activeStep == 1 && currentTag}
+            {hasIssues && !completed ? issuesTag : null}
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1px",
+          }}
+        >
+          <Typography
+            sx={{ ...theme.typography.labelMedium, color: "#2D80D2" }}
+          >
+            {Math.floor((100 * result) / total)}%
+          </Typography>
+          <Typography
+            sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
+          >
+            {t("totalInsightsCount", { countInsights: total })}
+          </Typography>
         </Box>
       </Box>
     );
@@ -191,20 +265,35 @@ const StepBox = (props: any) => {
     const completed = total != 0;
     const hasIssues = total == 0;
 
-      if (completed && activeStep == 2) {
-          setActiveStep((prev: number) => prev + 1);
-      }
+    if (completed && activeStep == 2) {
+      setActiveStep((prev: number) => prev + 1);
+    }
 
     content = (
-      <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-        <Typography sx={{ ...theme.typography.headlineLarge }}>
-          {total}
-        </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          width: "100%",
+          height: "calc(100% - 60px)",
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Typography sx={{ ...theme.typography.headlineLarge }}>
+            {total}
+          </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && activeStep == 2 && currentTag}
             {hasIssues && !completed ? issuesTag : null}
           </Box>
+        </Box>
+        <Typography
+          sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
+        >
+          {t("suggestingAnyAdvices").toUpperCase()}
+        </Typography>
       </Box>
     );
   }
@@ -217,8 +306,10 @@ const StepBox = (props: any) => {
         px: "20px",
         py: "10px",
         height: "240px",
-        borderRight: insights ? "1px solid #C7CCD1" : "",
-        borderLeft: insights ? "1px solid #C7CCD1" : "",
+        borderRight: { md: insights ? "1px solid #C7CCD1" : "" },
+        borderLeft: { md: insights ? "1px solid #C7CCD1" : "" },
+        borderTop: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
+        borderBottom: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
         width: "100%",
         textAlign: "center",
       }}

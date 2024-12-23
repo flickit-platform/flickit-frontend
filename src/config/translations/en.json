@@ -697,5 +697,8 @@
   "submittedInsights": "Submitted Insights",
   "suggestedAdvices": "Suggested Advices",
   "issues": "Issues",
-  "currentStep": "Current step"
+  "currentStep": "Current step",
+  "totalQuestionsCount": "of total questions ({{countQuestion}} Questions)",
+  "totalInsightsCount": " of total Insights ({{countInsights}} insights)",
+  "suggestingAnyAdvices": "No need to worry! you should answer more questions before suggesting any advices!"
 }
