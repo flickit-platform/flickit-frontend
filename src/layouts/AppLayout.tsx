@@ -13,11 +13,9 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         sx={{
           maxHeight: "calc(100vh - 48px)",
           overflow: "auto",
-          p:
-            !location.pathname.endsWith("/html-document/") &&
-            !location.pathname.startsWith("/assessment-kits/")
-              ? { xs: 1, sm: 1, md: 4 }
-              : "0",
+          p: !location.pathname.startsWith("/assessment-kits/")
+            ? { xs: 1, sm: 1, md: 4 }
+            : "0",
         }}
         m="auto"
       >
