@@ -147,7 +147,7 @@ const StepBox = (props: any) => {
     } = metrics;
     const hasIssues =
       hasLowConfidence || hasNoEvidence || hasUnresolvedComments || unanswered;
-    const completed = !hasIssues && answered == total;
+    const completed = answered == total;
     if (completed && activeStep == 0) {
       setActiveStep((prev: number) => prev + 1);
     }
@@ -173,7 +173,7 @@ const StepBox = (props: any) => {
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {answered == total ? completedTag : currentTag}
-            {hasIssues && !completed ? issuesTag : null}
+            {hasIssues ? issuesTag : null}
           </Box>
         </Box>
         <Typography
@@ -210,8 +210,8 @@ const StepBox = (props: any) => {
   if (insights) {
     const { unapproved, expired, notGenerated, total } = metrics;
     const hasIssues = unapproved || expired || notGenerated;
-    const result = total - (notGenerated + unapproved + expired);
-    const completed = !hasIssues && total == result;
+    const result = total - notGenerated;
+    const completed = activeStep >= 1 && total == result;
 
     if (completed && activeStep == 1) {
       setActiveStep((prev: number) => prev + 1);
@@ -262,7 +262,7 @@ const StepBox = (props: any) => {
 
   if (advices) {
     const { total } = metrics;
-    const completed = total != 0;
+    const completed = activeStep >= 2 && total != 0;
     const hasIssues = total == 0;
 
     if (completed && activeStep == 2) {
@@ -283,11 +283,13 @@ const StepBox = (props: any) => {
           <Typography sx={{ ...theme.typography.headlineLarge }}>
             {total}
           </Typography>
-          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && completedTag}
-            {!completed && activeStep == 2 && currentTag}
-            {hasIssues && !completed ? issuesTag : null}
-          </Box>
+          {((completed && activeStep >= 2) || hasIssues) && (
+            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+              {completed && activeStep >= 2 && completedTag}
+              {!completed && activeStep == 2 && currentTag}
+              {hasIssues && !completed ? issuesTag : null}
+            </Box>
+          )}
         </Box>
         <Typography
           sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
