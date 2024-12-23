@@ -288,9 +288,9 @@ export const theme = createTheme({
     semiBoldSmall: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "500",
-      fontSize: "0.75rem !important",
-      lineHeight: "0.75rem !important",
-      letterSpacing: "0.5px",
+      fontSize: "0.75rem",
+      lineHeight: "0.75rem",
+      letterSpacing: is_farsi ? "0px" : "0.5px",
     },
     semiBoldLarge: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
@@ -335,6 +335,18 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          paperContainer: {
+            backgroundColor: "#fff",
+            borderRadius: "8px",
+            padding: "16px",
+          },
+        },
+      },
+    },
+
     MuiCssBaseline: {
       styleOverrides: `
         .top-nav-bar-ZwZd20 {
@@ -599,6 +611,11 @@ export const theme = createTheme({
           padding: "4px 2px",
         },
       },
+    },
+  },
+  customStyles: {
+    borderLine: {
+      border: "1px solid #D5E5F6",
     },
   },
 });

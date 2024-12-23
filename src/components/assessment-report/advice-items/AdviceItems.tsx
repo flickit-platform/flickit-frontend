@@ -60,7 +60,7 @@ const AdviceItems = () => {
 
   const handleDeleteAdviceItem = async (adviceItemId: any) => {
     try {
-      await deleteAdviceItem.query({ adviceItemId })
+      await deleteAdviceItem.query({ adviceItemId });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -200,6 +200,7 @@ const AdviceItems = () => {
                   onDelete={handleDeleteAdviceItem}
                   setDisplayedItems={setDisplayedItems}
                   query={queryData}
+                  readOnly={false}
                 />
               </Box>
             ) : (

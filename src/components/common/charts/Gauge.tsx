@@ -18,6 +18,7 @@ interface IGaugeProps extends BoxProps {
   isMobileScreen?: boolean;
   maturity_status_guide?: string | null;
   maturity_status_guide_variant?: any;
+  status_font_variant?: any;
 }
 
 const Gauge = (props: IGaugeProps) => {
@@ -33,6 +34,7 @@ const Gauge = (props: IGaugeProps) => {
     confidence_text,
     maturity_status_guide,
     maturity_status_guide_variant = "titleMedium",
+    status_font_variant,
     ...rest
   } = props;
   const colorPallet = getMaturityLevelColors(maturity_level_number);
@@ -107,6 +109,26 @@ const Gauge = (props: IGaugeProps) => {
               <Trans i18nKey="maturityGuidanceFirst" />
             </Typography>
           )}
+      
+          {maturity_status_guide && (
+            <Typography
+              mt="1rem"
+              variant={maturity_status_guide_variant}
+              color="#243342"
+            >
+              {maturity_status_guide}
+            </Typography>
+          )}
+          <Typography
+            sx={{ fontWeight: "bold" }}
+            variant={status_font_variant ? status_font_variant : "h6"}
+            color={colorCode}
+            fontSize={status_font_variant ? "2.5rem" : fontSize}
+            mt={maturity_status_guide ? "0.5rem" : "0px"}
+            mb={maturity_status_guide ? "-0.5rem" : 0}
+          >
+            <Trans i18nKey={`${maturity_level_status}`} />
+          </Typography>
           {confidence_text && (
             <Typography
               variant={
@@ -115,7 +137,7 @@ const Gauge = (props: IGaugeProps) => {
                   : "titleMedium"
               }
               color="#243342"
-              mt="0.5rem"
+              mt="1.5rem"
               justifyContent="center"
               alignItems="center"
               display="flex"
@@ -129,25 +151,6 @@ const Gauge = (props: IGaugeProps) => {
               ></ConfidenceLevel>
             </Typography>
           )}
-          {maturity_status_guide && (
-            <Typography
-              mt="1rem"
-              variant={maturity_status_guide_variant}
-              color="#243342"
-            >
-              {maturity_status_guide}
-            </Typography>
-          )}
-          <Typography
-            sx={{ fontWeight: "bold" }}
-            variant="h6"
-            color={colorCode}
-            fontSize={fontSize}
-            mt={maturity_status_guide ? "0.5rem" : 0}
-            mb={maturity_status_guide ? "-0.5rem" : 0}
-          >
-            <Trans i18nKey={`${maturity_level_status}`} />
-          </Typography>
           {!hideGuidance && (
             <Typography
               variant="subtitle2"

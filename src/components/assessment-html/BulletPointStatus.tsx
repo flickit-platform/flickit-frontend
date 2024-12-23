@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Typography } from "@mui/material";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
-import {getMaturityLevelColors, styles} from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 
 interface IBulletPointStatus {
   title: string;
@@ -14,7 +14,7 @@ interface IBulletPointStatus {
   maturityLevelCount: number;
 }
 const BulletPointStatus = (props: IBulletPointStatus) => {
-  const { title : titleSub, maturityLevel, maturityLevelCount } = props;
+  const { title: titleSub, maturityLevel, maturityLevelCount } = props;
   const { value, title } = maturityLevel;
   const colorPallet = getMaturityLevelColors(maturityLevelCount);
   const colorCode = colorPallet[value - 1];
@@ -22,7 +22,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
     <Box
       sx={{
         ...styles.centerVH,
-        width:"100%",
+        width: "100%",
         gap: 2,
       }}
     >
