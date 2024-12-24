@@ -33,7 +33,7 @@ const StepperSection = (props: any) => {
             optional?: React.ReactNode;
           } = {};
           return (
-            <Step key={label.category} {...stepProps}>
+            <Step key={index} {...stepProps}>
               <StepLabel
                 StepIconProps={{ style: { fontSize: "2rem" } }}
                 sx={{

@@ -62,7 +62,7 @@ const TodoBox = (props: any) => {
                     </Button>
                   )}
                 </Box>
-                <Grid container columns={12} spacing={2}>
+                <Grid container columns={12} spacing={2} mb={"40px"}>
                   {Object.entries(item)
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
