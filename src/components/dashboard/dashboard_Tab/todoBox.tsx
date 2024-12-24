@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 
 const TodoBox = (props: any) => {
-  const { activeStep, todoBoxData } = props;
+  const { todoBoxData } = props;
   const { now, next } = todoBoxData;
   return (
     <Box sx={{ mt: "90px" }}>

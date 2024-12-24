@@ -10,7 +10,7 @@ import { t } from "i18next";
 import { styles } from "@styles";
 
 const StepperSection = (props: any) => {
-  const { setActiveStep, activeStep, mappedData } = props;
+  const { setActiveStep, activeStep, stepData } = props;
 
   return (
     <Box
@@ -27,7 +27,7 @@ const StepperSection = (props: any) => {
         sx={{ width: "70%", mx: "auto", mb: "30px" }}
         activeStep={activeStep}
       >
-        {mappedData.map((label : any, index : number) => {
+        {stepData.map((label : any, index : number) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;
@@ -59,7 +59,7 @@ const StepperSection = (props: any) => {
         })}
       </Stepper>
       <Grid container columns={12}>
-        {mappedData.map((item : any, index: number) => {
+        {stepData.map((item : any, index: number) => {
           return (
             <StepBox
               key={index}
@@ -84,11 +84,11 @@ const StepBox = (props: any) => {
   const calcOfIssues = () => {
     if (questions) {
       return Object.keys(metrics).filter(
-        (item) => item != "total" && item != "answered" && metrics[item] != 0,
+        (item) => item != "total" && item != "answered" && metrics[item],
       ).length;
     } else if (insights) {
       return Object.keys(metrics).filter(
-        (item) => item != "total" && metrics[item] != 0,
+        (item) => item != "total" && metrics[item],
       ).length;
     } else if (advices) {
       return Object.keys(metrics).filter((item) => item).length;
@@ -171,14 +171,14 @@ const StepBox = (props: any) => {
             {hasIssues ? issuesTag : null}
           </Box>
         </Box>
-        <Typography
-          sx={{
-            ...theme.typography.semiBoldMedium,
-            color: "#6C8093",
-          }}
-        >
-          <Trans i18nKey={"confidence"} />: {`${hasLowConfidence}`}%
-        </Typography>
+        {/*<Typography*/}
+        {/*  sx={{*/}
+        {/*    ...theme.typography.semiBoldMedium,*/}
+        {/*    color: "#6C8093",*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <Trans i18nKey={"confidence"} />: {`${hasLowConfidence}`}%*/}
+        {/*</Typography>*/}
         <Box
           sx={{
             display: "flex",
