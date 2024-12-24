@@ -205,7 +205,7 @@ const StepBox = (props: any) => {
   if (insights) {
     const { unapproved, expired, notGenerated, total } = metrics;
     const hasIssues = unapproved || expired || notGenerated;
-    const result = total - notGenerated;
+    const result = (total - (notGenerated + expired));
     const completed = activeStep >= 1 && total == result;
 
     if (completed && activeStep == 1) {
@@ -229,7 +229,7 @@ const StepBox = (props: any) => {
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && activeStep == 1 && currentTag}
-            {hasIssues && !completed ? issuesTag : null}
+            {hasIssues  ? issuesTag : null}
           </Box>
         </Box>
         <Box

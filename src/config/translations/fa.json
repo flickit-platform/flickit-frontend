@@ -704,11 +704,14 @@
   "whatToDoNow": "موارد نیازمند رسیدگی",
   "whatToDoNext": "موارد نیازمند رسیدگی(در آینده)",
   "questionsIssues": "موارد سوالات",
-  "goToQuestions": "نمایش سوالات",
   "insightsIssues": "موارد گزارش‌ها",
   "advicesIssues": "موارد پیشنهاد‌ها",
   "waitingForAnswers": "سوال منتظر پاسخ است",
   "waitingForEvidences": "بدون هیچ شاهدی به سوالات پاسخ داده می شود!",
   "waitingVeryLowConfidence": "سوال اطمینان بسیار پایینی دارند!",
-  "waitingUnresolvedComments": "سوال دارای نظرات پاسخ داده نشده هستند!"
+  "waitingUnresolvedComments": "سوال دارای نظرات پاسخ داده نشده هستند!",
+  "insightsNeedToBeGenerated": "گزارش باید ایجاد شود.",
+  "insightsNeedApprovement": "گزارش های ایجاد شده توسط هوش مصنوعی نیاز به تایید دارند!",
+  "expiredDueToNewAnswers": "اطلاعات آماری به دلیل پاسخ های جدید منقضی شده است!",
+  "suggestAnyAdvicesSoFar": "شما تا الان هیچ توصیه ای نکردید!"
 }

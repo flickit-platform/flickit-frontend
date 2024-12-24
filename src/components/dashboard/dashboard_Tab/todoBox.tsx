@@ -48,19 +48,10 @@ const TodoBox = (props: any) => {
                     {item.name == "insights" && (
                       <Trans i18nKey={"insightsIssues"} />
                     )}
-                    {item.name == "advicesIssues" && (
-                      <Trans i18nKey={"questionsIssues"} />
+                    {item.name == "advices" && (
+                      <Trans i18nKey={"advicesIssues"} />
                     )}
                   </Typography>
-                  {item.name == "questions" && (
-                    <Button
-                      component={Link}
-                      to={"./../questionnaires"}
-                      variant="contained"
-                    >
-                      <Trans i18nKey={"goToQuestions"} />
-                    </Button>
-                  )}
                 </Box>
                 <Grid container columns={12} spacing={2} mb={"40px"}>
                   {Object.entries(item)
@@ -120,15 +111,6 @@ const TodoBox = (props: any) => {
                       <Trans i18nKey={"advicesIssues"} />
                     )}
                   </Typography>
-                  {item.name == "questions" && (
-                    <Button
-                      component={Link}
-                      to={"./../questionnaires"}
-                      variant="contained"
-                    >
-                      <Trans i18nKey={"goToQuestions"} />
-                    </Button>
-                  )}
                 </Box>
                 <Grid container columns={12} spacing={2} mb={"40px"}>
                   {Object.entries(item)
@@ -193,7 +175,7 @@ const IssuesItem = (props: any) => {
         {name == "hasUnresolvedComments" && (
           <Trans i18nKey={"waitingUnresolvedComments"} />
         )}
-        {name == "notGenerated" && <Trans i18nKey={"subjectsNeedInsights"} />}
+        {name == "notGenerated" && <Trans i18nKey={"insightsNeedToBeGenerated"} />}
         {name == "unapproved" && <Trans i18nKey={"insightsNeedApprovement"} />}
         {name == "expired" && <Trans i18nKey={"expiredDueToNewAnswers"} />}
         {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}

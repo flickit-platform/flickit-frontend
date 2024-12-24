@@ -704,15 +704,14 @@
   "whatToDoNow": "What to do now",
   "whatToDoNext": "What to do next",
   "questionsIssues": "Questions issues",
-  "goToQuestions": "Go to questions",
   "insightsIssues": "Insights issues",
   "advicesIssues": "Advices issues",
   "waitingForAnswers": "Question are waiting for answers!",
   "waitingForEvidences": "Questions are answered without any evidences!",
   "waitingVeryLowConfidence": "Questions has very low confidence!",
   "waitingUnresolvedComments": "Questions have unresolved comments!",
-  "subjectsNeedInsights": "subjects and 3 attributes need insights!",
+  "insightsNeedToBeGenerated": "Insights need to be generated.",
   "insightsNeedApprovement": "AI-generated insights need approvement!",
-  "expiredDueToNewAnswers": "insights are expired due to new answers!",
+  "expiredDueToNewAnswers": "Insights are expired due to new answers!",
   "suggestAnyAdvicesSoFar": "You didn’t suggest any advices so far!"
 }
