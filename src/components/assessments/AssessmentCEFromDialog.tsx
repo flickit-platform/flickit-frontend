@@ -133,7 +133,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             setIsFocused(true);
           }, 500);
           formMethods.handleSubmit((data) =>
-              onSubmit(formMethods.getValues(), e)
+            onSubmit(formMethods.getValues(), e),
           )();
         }
       };
@@ -146,7 +146,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       };
     }
   }, [openDialog, formMethods, abortController]);
-
 
   return (
     <CEDialog
@@ -276,7 +275,7 @@ const AssessmentKitField = ({
       required={true}
       defaultValue={staticData ?? defaultValue}
       disabled={!!staticData || !!defaultValue}
-      label={<Trans i18nKey="assessmentKit" />}
+      label={<Trans i18nKey="assessmentKit" values={{ title: "" }} />}
       data-cy="assessment_kit"
     />
   );

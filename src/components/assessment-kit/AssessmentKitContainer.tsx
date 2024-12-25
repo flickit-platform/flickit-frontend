@@ -49,7 +49,7 @@ const AssessmentKitContainer = () => {
       {...assessmentKitQueryData}
       render={(data) => {
         setDocumentTitle(
-          `${t("assessmentKit")}: ${data.title || ""}`,
+          `${t("assessmentKit", { title: "" })}: ${data.title || ""}`,
           config.appTitle,
         );
         return (

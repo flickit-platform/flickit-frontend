@@ -78,7 +78,7 @@ const AssessmentKitExpertViewContainer = () => {
   }, [loaded, update, hasActiveVersion]);
   useEffect(() => {
     setDocumentTitle(
-      `${t("assessmentKit")}: ${assessmentKitTitle || ""}`,
+      `${t("assessmentKit", { title: "" })}: ${assessmentKitTitle || ""}`,
       config.appTitle,
     );
   }, [assessmentKitTitle]);
