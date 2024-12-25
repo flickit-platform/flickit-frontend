@@ -10,18 +10,19 @@ import { getMaturityLevelColors } from "@styles";
 interface TreeMapNode {
   name: string;
   count: number;
+  label: string;
 }
 
 interface TreeMapProps {
   data: TreeMapNode[];
-  levels: number
+  levels: number;
 }
 
 const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
   const colorPallet = getMaturityLevelColors(levels);
   const treeMapData = data.map((node) => ({
     ...node,
-    color: colorPallet[node.count - 1],
+    color: colorPallet[Number(node.label) - 1],
   }));
 
   return (
@@ -38,7 +39,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 };
 
 const CustomNode: React.FC<RectangleProps> = (props) => {
-  const { x, y, width, height, name, count, color } = props as any;
+  const { x, y, width, height, name, count, color, label } = props as any;
 
   return (
     <g>
@@ -61,7 +62,7 @@ const CustomNode: React.FC<RectangleProps> = (props) => {
             fill="#fff"
             fontSize="12"
           >
-            {` ${count}`}
+            {` ${label}`}
           </text>
         </>
       )}

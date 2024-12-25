@@ -111,6 +111,7 @@ const SubjectReport = () => {
                     data={item.attributes}
                     maturityLevelsCount={maturityLevelCount ?? 5}
                     loading={false}
+                    chartHeight={300}
                   />
                 )}
               </Grid>

@@ -80,7 +80,8 @@ const AssessmentExportContainer = () => {
   const combinedAttributes = subjects.flatMap((subject) =>
     subject.attributes.map((attribute) => ({
       name: attribute.title,
-      count: attribute.maturityLevel.value,
+      count: 1,
+      label: attribute.maturityLevel.value.toString(),
     })),
   );
 

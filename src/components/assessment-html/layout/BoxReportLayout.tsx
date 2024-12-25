@@ -59,7 +59,6 @@ const BoxReportLayout = (props: IBoxReport) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "fit-content",
         height: "fit-content",
         background: "#F9FAFB",
         borderRadius: "32px",
@@ -67,6 +66,7 @@ const BoxReportLayout = (props: IBoxReport) => {
         gap: "32px",
         border: `1px solid ${colorRef.current}`,
         mb: 4,
+        width:"100%˝"
       }}
     >
       <TopBox
