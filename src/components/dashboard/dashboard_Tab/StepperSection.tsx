@@ -9,7 +9,20 @@ import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
 
-const StepperSection = (props: any) => {
+interface IStepperSection {
+    setActiveStep: any;
+    activeStep: number;
+    stepData: { category: string; metrics: { [p: string]: any }}[]
+}
+interface IStepBox {
+    category :string;
+    metrics : {[p:string] : any};
+    setActiveStep: any;
+    activeStep: number
+}
+
+
+const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
 
   return (
@@ -59,7 +72,7 @@ const StepperSection = (props: any) => {
         })}
       </Stepper>
       <Grid container columns={12}>
-        {stepData.map((item : any, index: number) => {
+        {stepData.map((item: {category: string, metrics: any} , index: number) => {
           return (
             <StepBox
               key={index}
@@ -74,7 +87,7 @@ const StepperSection = (props: any) => {
   );
 };
 
-const StepBox = (props: any) => {
+const StepBox = (props: IStepBox) => {
   const { category, metrics, setActiveStep, activeStep } = props;
 
   const questions = category == "questions";
@@ -171,14 +184,6 @@ const StepBox = (props: any) => {
             {hasIssues ? issuesTag : null}
           </Box>
         </Box>
-        {/*<Typography*/}
-        {/*  sx={{*/}
-        {/*    ...theme.typography.semiBoldMedium,*/}
-        {/*    color: "#6C8093",*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <Trans i18nKey={"confidence"} />: {`${hasLowConfidence}`}%*/}
-        {/*</Typography>*/}
         <Box
           sx={{
             display: "flex",
