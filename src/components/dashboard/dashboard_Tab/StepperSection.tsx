@@ -1,13 +1,12 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { Step, StepLabel, Stepper, Typography } from "@mui/material";
-import { useState } from "react";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
+import {uniqueId} from "lodash";
 
 interface IStepperSection {
     setActiveStep: any;
@@ -46,7 +45,7 @@ const StepperSection = (props: IStepperSection) => {
             optional?: React.ReactNode;
           } = {};
           return (
-            <Step key={index} {...stepProps}>
+            <Step key={uniqueId()} {...stepProps}>
               <StepLabel
                 StepIconProps={{ style: { fontSize: "2rem" } }}
                 sx={{
@@ -75,7 +74,7 @@ const StepperSection = (props: IStepperSection) => {
         {stepData.map((item: {category: string, metrics: any} , index: number) => {
           return (
             <StepBox
-              key={index}
+              key={uniqueId()}
               {...item}
               activeStep={activeStep}
               setActiveStep={setActiveStep}

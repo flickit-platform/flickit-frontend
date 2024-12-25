@@ -52,7 +52,7 @@ const DashboardTab = () => {
             ),
           };
         });
-        updatedData.map((item:{category: string, metrics: {[p:string]: any}} ) => {
+        updatedData.forEach((item:{category: string, metrics: {[p:string]: any}} ) => {
           if (Object.keys(item.metrics).length > 0) {
             if (activeStep == 0) {
               if (item.category == "questions" && item.metrics.unanswered) {

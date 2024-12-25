@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import DashboardTitle from "@components/dashboard/dashboardContainerTitle";
-import PermissionControl from "@common/PermissionControl";
 import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
-import AssessmentHtmlTitle from "@components/assessment-html/AssessmentHtmlTitle";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@types";
 import { useParams } from "react-router-dom";

@@ -4,7 +4,6 @@ import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { IKitVersion } from "@/types";
 import {useParams} from "react-router-dom";
 
 const DashboardTitle = (props: any) => {

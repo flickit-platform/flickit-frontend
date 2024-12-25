@@ -4,9 +4,8 @@ import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { Link } from "react-router-dom";
+import {uniqueId} from "lodash";
 
 const TodoBox = (props: any) => {
   const { todoBoxData } = props;
@@ -30,7 +29,7 @@ const TodoBox = (props: any) => {
           </Typography>
           {now.map((item: any) => {
             return (
-              <>
+              <React.Fragment key={uniqueId()}>
                 <Box
                   sx={{
                     display: "flex",
@@ -58,13 +57,13 @@ const TodoBox = (props: any) => {
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
                       return (
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={6} key={uniqueId()}>
                           <IssuesItem key={key} name={key} value={value} />
                         </Grid>
                       );
                     })}
                 </Grid>
-              </>
+              </React.Fragment>
             );
           })}
         </Box>
@@ -117,7 +116,7 @@ const TodoBox = (props: any) => {
                     .filter(([key]) => key !== "name")
                     .map(([key, value], index: number) => {
                       return (
-                        <Grid key={index} item xs={12} md={6}>
+                        <Grid key={uniqueId()} item xs={12} md={6}>
                           <IssuesItem
                             name={key}
                             value={value}
