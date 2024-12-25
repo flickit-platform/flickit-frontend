@@ -39,7 +39,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 };
 
 const CustomNode: React.FC<RectangleProps> = (props) => {
-  const { x, y, width, height, name, count, color, label } = props as any;
+  const { x, y, width, height, name, color, label } = props as any;
 
   return (
     <g>

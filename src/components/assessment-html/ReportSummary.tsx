@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Typography,
@@ -8,11 +7,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Grid,
 } from "@mui/material";
 import { theme } from "@/config/theme";
 import data from "./greport.json";
-import { getMaturityLevelColors, styles } from "@/config/styles";
+import { getMaturityLevelColors } from "@/config/styles";
 import { ISubject } from "@/types";
 import { Trans } from "react-i18next";
 import { t } from "i18next";

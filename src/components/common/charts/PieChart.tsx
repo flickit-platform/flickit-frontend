@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import React, { useState } from "react";
+import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 interface PieChartNode {
