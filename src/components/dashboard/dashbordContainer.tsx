@@ -71,6 +71,7 @@ const DashbordContainer = () => {
                   sx={{
                     height: "100%",
                     background: "#F9FAFB",
+                    border: "2px solid #C7CCD1",
                     borderRadius: "1rem",
                   }}
                 >
