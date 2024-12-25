@@ -1,15 +1,18 @@
-import React from "react";
 import {
   Box,
   Typography,
+  Divider,
+  TableContainer,
   Table,
   TableBody,
-  TableCell,
-  TableContainer,
   TableRow,
+  TableCell,
 } from "@mui/material";
 import { theme } from "@/config/theme";
-import data from "./greport.json";
+import { getMaturityLevelColors } from "@/config/styles";
+import { ISubject } from "@/types";
+import { Trans } from "react-i18next";
+import { t } from "i18next";
 
 const sectionStyle = {
   marginTop: "16px",
@@ -26,40 +29,6 @@ const sectionTitleStyle = {
   fontWeight: "bold",
   marginBottom: "12px",
 };
-
-const TitleBox = () => (
-  <Box
-    sx={{
-      position: "absolute",
-      top: "-24px",
-      left: "24px",
-      backgroundColor: theme.palette.primary.main,
-      color: "white",
-      padding: "16px 24px",
-      border: "1px solid #ddd",
-      borderRadius: 5,
-    }}
-  >
-    <Typography
-      variant="h5"
-      sx={{
-        fontWeight: "bold",
-        margin: 0,
-      }}
-    >
-      این گزارش چگونه ساخته شده است؟
-    </Typography>
-  </Box>
-);
-
-const Section = ({ title, children }: any) => (
-  <Box sx={sectionStyle}>
-    <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
-      {title}
-    </Typography>
-    <Typography sx={textStyle}>{children}</Typography>
-  </Box>
-);
 
 const StepsTable = ({ steps }: any) => (
   <TableContainer component={Box}>
@@ -81,7 +50,113 @@ const StepsTable = ({ steps }: any) => (
   </TableContainer>
 );
 
-const ReportCard = () => {
+const TitleBox = () => (
+  <Box
+    sx={{
+      position: "absolute",
+      top: "-24px",
+      left: "24px",
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
+      padding: "16px 24px",
+      border: "1px solid #ddd",
+      borderRadius: 5,
+    }}
+  >
+    <Typography
+      variant="h5"
+      sx={{
+        fontWeight: "bold",
+        margin: 0,
+      }}
+    >
+      <Trans i18nKey="how_was_this_report_built" />
+    </Typography>
+  </Box>
+);
+
+const Section = ({ title, children }: any) => (
+  <Box sx={sectionStyle}>
+    <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
+      {title}
+    </Typography>
+    <Typography sx={textStyle}>{children}</Typography>
+  </Box>
+);
+
+const TopicsList = ({ data }: any) => (
+  <Box>
+    {data?.subjects.map((subject: any, index: any) => (
+      <Box key={index} sx={{ marginBottom: "16px" }}>
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            color: "#2466A8",
+            marginBottom: "8px",
+          }}
+        >
+          {subject.title}
+        </Typography>
+        {subject.attributes.map((attribute: any, idx: any) => (
+          <Box
+            key={idx}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "8px",
+            }}
+          >
+            <Typography
+              variant="titleSmall"
+              sx={{
+                fontWeight: "bold",
+                width: "20%",
+                marginRight: "8px",
+              }}
+            >
+              {attribute.title}
+            </Typography>
+            <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+            <Typography sx={textStyle}>{attribute.description}</Typography>
+          </Box>
+        ))}
+      </Box>
+    ))}
+  </Box>
+);
+
+const QuestionnaireList = ({ data }: any) => (
+  <Box>
+    {data?.questionnaires.map((item: any, index: any) => (
+      <Box
+        key={index}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "8px",
+        }}
+      >
+        <Typography
+          variant="titleSmall"
+          sx={{
+            fontWeight: "bold",
+            width: "15%",
+          }}
+        >
+          {item.title}
+        </Typography>
+        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+        <Typography sx={{ ...textStyle, width: "70px" }}>
+          {item.questionCount} {t("question")}
+        </Typography>
+        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+        <Typography sx={textStyle}>{item.description}</Typography>
+      </Box>
+    ))}
+  </Box>
+);
+
+const ReportCard = ({ data }: any) => {
   return (
     <Box
       sx={{
@@ -96,40 +171,102 @@ const ReportCard = () => {
     >
       <TitleBox />
 
-      <Section title="شفاف‌سازی و سلب مسئولیت">
-        این گزارش با رویکرد ارزیابی مبتنی بر شواهد تولید شده و تا حدی به اطلاعات
-        ارائه‌شده توسط مصاحبه‌شوندگان اتکا دارد. یافته‌های این گزارش قطعیت صد در
-        صد نخواهد داشت. در صورت تایید مدیران، فرایند ارزیابی برای بررسی عمیق‌تر
-        شواهد و افزایش ضریب اطمینان ادامه خواهد یافت.
+      <Section title={t("disclaimer")}>{data?.assessment.intro}</Section>
+
+      <Section title={t("evaluationSteps")}>
+        <Trans i18nKey="stepsDescription" />
+        <StepsTable steps={data?.steps} />
       </Section>
 
-      <Section title="گام‌های ارزیابی">
-        گام‌های زیر روند انجام کار را توصیف می‌کند:
-        <StepsTable steps={data.steps} />
+      <Section title={t("assessmentKit", { title: "" })}>
+        <Trans
+          i18nKey="assessmentKitDescription"
+          values={{
+            title: data?.assessment.assessmentKit.title,
+            attributesCount: data?.assessment.assessmentKit.attributesCount,
+            subjectsLength: data?.subjects.length,
+            subjects: data?.subjects
+              ?.map((elem: ISubject, index: number) =>
+                index === data?.subjects?.length - 1 &&
+                data?.subjects?.length !== 1
+                  ? t("and") + elem?.title
+                  : index === 0
+                    ? elem?.title
+                    : ", " + elem?.title,
+              )
+              ?.join(""),
+            maturityLevelCount:
+              data?.assessment.assessmentKit.maturityLevelCount,
+            questionnairesCount:
+              data?.assessment.assessmentKit.questionnairesCount,
+          }}
+        />
       </Section>
 
-      <Section title="کیت ارزیابی">
-        برای ارزیابی وضعیت سامانه از کیت ارزیابی Internal Software Team Audit
-        استفاده شده است. این کیت ۱۱ شاخص اصلی را روی سه موضوع نرم‌افزار، تیم و
-        محیط عملیات اندازه‌گیری می‌نماید و امتیاز هر شاخص را در قالب ۵ سطح بلوغ
-        گزارش می‌نماید. این کیت مشتمل بر ۱۶ پرسشنامه است که در ادامه هر کدام از
-        این موارد به تفکیک بررسی می‌شوند.
+      <Section title={t("maturityLevels")}>
+        <Trans
+          i18nKey="maturityLevelsDescription"
+          values={{
+            maturityLevelCount:
+              data?.assessment.assessmentKit.maturityLevelCount,
+          }}
+        />
+        {data?.assessment.assessmentKit.maturityLevels.map(
+          (level: any, index: number) => (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: getMaturityLevelColors(
+                    data?.assessment.assessmentKit.maturityLevelCount,
+                  )[level.value - 1],
+                  height: "10px",
+                  width: "27px",
+                  borderRadius: "16px",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+              ></Box>
+
+              <Typography
+                component="span"
+                sx={{
+                  ...theme.typography.body2,
+                  color: getMaturityLevelColors(
+                    data?.assessment.assessmentKit.maturityLevelCount,
+                  )[level.value - 1],
+                  minWidth: "70px",
+                }}
+              >
+                {level.title}
+              </Typography>
+
+              <Typography
+                component="span"
+                sx={{
+                  ...theme.typography.body2,
+                }}
+              >
+                {level.description}
+              </Typography>
+            </Box>
+          ),
+        )}
       </Section>
 
-      <Section title="سطوح بلوغ">
-        در این کیت ارزیابی، ۵ سطح بلوغ مختلف وجود دارد که تعریف هر کدام در جدول
-        زیر نوشته شده است. در انتهای فرایند ارزیابی سطح بلوغ هر یک از شاخص‌ها
-        تعیین می‌گردد.
+      <Section title={t("topicsAndIndicators")}>
+        <Trans i18nKey="topicsTable" />
+        <TopicsList data={data} />
       </Section>
 
-      <Section title="موضوعات و شاخص‌های ارزیابی">
-        در این کیت ۱۱ شاخص تحت سه موضوع نرم‌افزار، تیم و محیط عملیات مورد
-        ارزیابی و امتیازدهی قرار می‌گیرد. جدول زیر به توضیح هر یک از موضوعات و
-        شاخص‌ها اختصاص دارد. حوزه نرم افزار روی بررسی ساختار و کیفیت کد و
-        فناوری‌ها مستقل از شرایط محیط عملیات تمرکز دارد. حوزه تیم بر نحوه‌ی کار
-        تیم، چابکی، ساختار تیم، نقش‌ها و ابزارها نظارت می‌کند. محیط عملیات نیز
-        مسائلی شرایط محیط عملیات شامل منابع، فرایندها و فناوری‌ها را ارزیابی
-        میکند.
+      <Section title={t("questionnaires")}>
+        <QuestionnaireList data={data} />
       </Section>
     </Box>
   );

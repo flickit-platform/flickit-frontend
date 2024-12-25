@@ -17,11 +17,12 @@ interface AssessmentSubjectRadarChartProps {
   loading: boolean;
   data: any[];
   maturityLevelsCount: number;
+  chartHeight?: number;
 }
 
 const AssessmentSubjectRadarChart: React.FC<
   AssessmentSubjectRadarChartProps
-> = ({ loading, data, maturityLevelsCount }) => {
+> = ({ loading, data, maturityLevelsCount, chartHeight }) => {
   return loading ? (
     <Skeleton
       height={"620px"}
@@ -30,13 +31,18 @@ const AssessmentSubjectRadarChart: React.FC<
       sx={{ margin: "auto" }}
     />
   ) : (
-    <SubjectRadar data={data} maturityLevelsCount={maturityLevelsCount} />
+    <SubjectRadar
+      data={data}
+      maturityLevelsCount={maturityLevelsCount}
+      chartHeight={chartHeight}
+    />
   );
 };
 
 interface SubjectRadarProps {
   data: any[];
   maturityLevelsCount: number;
+  chartHeight?: number;
 }
 
 const breakTextIntoLines = (text: string, maxLineLength: number) => {
@@ -59,13 +65,14 @@ const breakTextIntoLines = (text: string, maxLineLength: number) => {
 const SubjectRadar: React.FC<SubjectRadarProps> = ({
   data,
   maturityLevelsCount,
+  chartHeight,
 }) => {
   const theme = useTheme();
   const chartData = useMemo(() => convertToAssessmentChartData(data), [data]);
   const maxLineLength = 24;
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={chartHeight ? chartHeight : 400}>
       <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
         <PolarGrid />
         <PolarAngleAxis
@@ -78,7 +85,11 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
                   <text
                     key={line}
                     {...rest}
-                    y={y + (y - cy) / (theme.direction === "rtl" ? 7 : 15) + index * 12}
+                    y={
+                      y +
+                      (y - cy) / (theme.direction === "rtl" ? 7 : 15) +
+                      index * 12
+                    }
                     x={x + (x - cx) / (theme.direction === "rtl" ? 7 : 15)}
                     style={{ ...theme.typography.labelSmall }}
                   >
@@ -105,7 +116,7 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
           fillOpacity={0.5}
           isAnimationActive={true}
         />
-        <Legend wrapperStyle={{ paddingTop: 20 }} />
+        {!chartHeight && <Legend wrapperStyle={{ paddingTop: 20 }} />}
       </RadarChart>
     </ResponsiveContainer>
   );

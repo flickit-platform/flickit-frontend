@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import data from "./greport.json";
 import { primaryFontFamily, theme } from "@config/theme";
 import GeneralLayout from "./layout/GeneralLayout";
 import languageDetector from "@utils/languageDetector";
@@ -19,6 +18,7 @@ interface IAttribute {
   title: string;
   confidenceValue?: number | any;
   analyzation?: string | any;
+  translatedTitle: string;
   maturityLevel: {
     id: number;
     title: string;
@@ -28,7 +28,7 @@ interface IAttribute {
   };
 }
 
-const SubjectReport = () => {
+const SubjectReport = ({ data }: any) => {
   const [maturityLevelCount] = useState<number>(
     data?.assessment?.assessmentKit?.maturityLevelCount,
   );
@@ -111,6 +111,7 @@ const SubjectReport = () => {
                     data={item.attributes}
                     maturityLevelsCount={maturityLevelCount ?? 5}
                     loading={false}
+                    chartHeight={300}
                   />
                 )}
               </Grid>
