@@ -17,71 +17,53 @@ interface OpenItemsState {
   [key: string]: boolean;
 }
 
+import assessmentData from "./greport.json";
+
 export const AssessmentTOC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  // Track the open state of each item with explicit type
   const [openItems, setOpenItems] = React.useState<OpenItemsState>({});
 
   const handleToggle = (itemKey: string) => {
     setOpenItems((prevState) => ({
       ...prevState,
-      [itemKey]: !prevState[itemKey], // Toggle the state for the specific item
+      [itemKey]: !prevState[itemKey],
     }));
   };
 
-  // Define the items and their corresponding subitems
+  const subjects = assessmentData.subjects.map((subject: any) => ({
+    key: subject.title,
+    subItems: subject.attributes.map((attribute: any) => attribute.title),
+    id: subject.title,
+  }));
+
   const items = [
     {
       key: "introduction",
       subItems: [],
+      id: "introduction",
     },
     {
       key: "summary",
       subItems: [],
+      id: "summary",
     },
     {
       key: "strengths_and_weaknesses",
       subItems: [],
+      id: "strengthsAndWeaknesses",
     },
-    {
-      key: "software_status",
-      subItems: [
-        "software_maintainability",
-        "software_reliability",
-        "software_portability",
-        "software_scalability",
-        "software_efficiency",
-      ],
-    },
-    {
-      key: "team_status",
-      subItems: ["team_performance_stability", "team_agility"],
-    },
-    {
-      key: "operations_status",
-      subItems: [
-        "operations_reliability",
-        "operations_efficiency",
-        "operations_scalability",
-        "operations_agility",
-      ],
-    },
+    ...subjects,
     {
       key: "recommendations",
       subItems: [],
+      id: "recommendations",
     },
     {
       key: "evaluation_process",
-      subItems: [
-        "disclaimer",
-        "evaluation_steps",
-        "assessment_kit_info",
-        "maturity_levels",
-        "topics_and_indicators",
-        "questionnaires",
-      ],
+      subItems: [],
+      id: "evaluationProcess",
     },
   ];
 
@@ -124,6 +106,8 @@ export const AssessmentTOC = () => {
             <React.Fragment key={index}>
               <ListItem disablePadding>
                 <ListItemButton
+                  component="a"
+                  href={`#${item.id}`}
                   sx={{
                     backgroundColor: hasSubItems
                       ? "rgba(36, 102, 168, 0.08)"
@@ -161,19 +145,21 @@ export const AssessmentTOC = () => {
                       bgcolor: theme.palette.grey[100],
                     }}
                   >
-                    {item.subItems.map((subItem, subIndex) => (
+                    {item.subItems.map((subItem: any, subIndex: any) => (
                       <ListItem key={subIndex} disablePadding>
-                        <ListItemText
-                          primary={t(subItem)}
-                          sx={{
-                            ml: 2,
-                            marginBlock: 1,
-                            color: theme.palette.text.secondary,
-                            "& .MuiTypography-root": {
-                              ...theme.typography.semiBoldSmall,
-                            },
-                          }}
-                        />
+                        <ListItemButton component="a" href={`#${subItem}`}>
+                          <ListItemText
+                            primary={t(subItem, { title: "" })}
+                            sx={{
+                              ml: 2,
+                              marginBlock: 1,
+                              color: theme.palette.text.secondary,
+                              "& .MuiTypography-root": {
+                                ...theme.typography.semiBoldSmall,
+                              },
+                            }}
+                          />
+                        </ListItemButton>
                       </ListItem>
                     ))}
                   </List>

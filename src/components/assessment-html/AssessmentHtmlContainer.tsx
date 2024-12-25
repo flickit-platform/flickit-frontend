@@ -25,6 +25,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import formatDate from "@utils/formatDate";
 import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
+import PieChart from "../common/charts/PieChart";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
@@ -144,283 +145,322 @@ const AssessmentExportContainer = () => {
         queryBatchData={[fetchPathInfo]}
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
         render={([pathInfo]) => (
-          <Box m="auto" pb={3} sx={{ px: { xl: 20, lg: 6, xs: 2, sm: 3 } }}>
-            <AssessmentHtmlTitle pathInfo={pathInfo} />
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              my={2}
-            >
-              <Typography
-                color="primary"
-                textAlign="left"
-                variant="headlineLarge"
-              >
-                <Trans i18nKey="assessmentDocument" />
-              </Typography>
-            </Box>
-            <Grid container spacing={2}>
-              <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
-                <AssessmentTOC />
-              </Grid>
-              <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
-                <Paper
-                  elevation={3}
-                  sx={{
-                    position: "relative",
-                    backgroundColor: "#ffffff",
-                    display: "flex",
-                    justifyContent: "center",
-                    borderStartEndRadius: 16,
-                    borderStartStartRadius: 16,
-                    boxShadow: "none",
-                    width: "100%",
-                    padding: 6,
-                  }}
+          <>
+            {!content ? (
+              <>
+                {" "}
+                <Box
+                  m="auto"
+                  pb={3}
+                  mt="40px"
+                  sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}
                 >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      right: "40px",
-                      top: "60px",
-                      bottom: "40px",
-                      width: "8px",
-                      backgroundColor: "#D5E5F6",
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      left: "40px",
-                      top: "60px",
-                      bottom: "40px",
-                      width: "8px",
-                      backgroundColor: "#D5E5F6",
-                    }}
-                  />
-                  <Box padding={3} width="100%">
-                    <Grid container spacing={4} sx={{ mb: "40px" }}>
-                      <Grid item xs={12} sm={12}>
-                        {renderChips()}
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={8}>
-                        <Typography
-                          sx={{
-                            color: theme.palette.primary.main,
-                            ...theme.typography.headlineSmall,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {title}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            color: "#6C8093",
-                            mt: 2,
-                          }}
-                        >
-                          <Trans i18nKey="introduction" />
-                        </Typography>
-                        <Typography
-                          textAlign="justify"
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            fontWeight: "light",
-                            mt: 1,
-                          }}
-                        >
-                          {intro}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            color: "#6C8093",
-                            mt: 2,
-                          }}
-                        >
-                          <Trans i18nKey="summary" />
-                        </Typography>
-                        <Typography
-                          textAlign="justify"
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            fontWeight: "light",
-                            mt: 1,
-                          }}
-                        >
-                          {executiveSummary}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
-                        <Gauge
-                          level_value={maturityLevel?.value ?? 0}
-                          maturity_level_status={maturityLevel?.title}
-                          maturity_level_number={
-                            assessmentKit?.maturityLevelCount
-                          }
-                          confidence_value={confidenceValue}
-                          confidence_text={t("withPercentConfidence")}
-                          isMobileScreen={false}
-                          hideGuidance={true}
-                          status_font_variant="titleMedium"
-                          height={250}
-                        />
-                      </Grid>
-                    </Grid>
-                    <Typography
+                  <AssessmentHtmlTitle pathInfo={pathInfo} />
+                </Box>
+                <div
+                  dangerouslySetInnerHTML={{ __html: content }}
+                  style={{ width: "100%", height: "100%", overflowX: "hidden" }}
+                />
+              </>
+            ) : (
+              <Box m="auto" pb={3} sx={{ px: { xl: 20, lg: 6, xs: 2, sm: 3 } }}>
+                <AssessmentHtmlTitle pathInfo={pathInfo} />
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  my={2}
+                >
+                  <Typography
+                    color="primary"
+                    textAlign="left"
+                    variant="headlineLarge"
+                  >
+                    <Trans i18nKey="assessmentDocument" />
+                  </Typography>
+                </Box>
+                <Grid container spacing={2}>
+                  <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
+                    <AssessmentTOC />
+                  </Grid>
+                  <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
+                    <Paper
+                      elevation={3}
                       sx={{
-                        ...theme.typography.titleMedium,
-                        color: "#6C8093",
-                        my: 1,
+                        position: "relative",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        justifyContent: "center",
+                        borderStartEndRadius: 16,
+                        borderStartStartRadius: 16,
+                        boxShadow: "none",
+                        width: "100%",
+                        padding: 6,
                       }}
                     >
-                      <Trans i18nKey="prosAndCons" />
-                    </Typography>
-
-                    <TreeMapChart
-                      data={combinedAttributes}
-                      levels={assessment.assessmentKit.maturityLevelCount}
-                    />
-                    <Grid
-                      xs={12}
-                      md={12}
-                      bgcolor="#F3F5F6"
-                      borderRadius="8px"
-                      paddingX={2}
-                      my={2}
-                      container
-                      spacing={2}
-                    >
-                      {/* Pros and Cons Section */}
-                      <Grid item xs={10} md={10}>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          right: "40px",
+                          top: "60px",
+                          bottom: "40px",
+                          width: "8px",
+                          backgroundColor: "#D5E5F6",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          left: "40px",
+                          top: "60px",
+                          bottom: "40px",
+                          width: "8px",
+                          backgroundColor: "#D5E5F6",
+                        }}
+                      />
+                      <Box padding={3} width="100%">
+                        <Grid container spacing={4} sx={{ mb: "40px" }}>
+                          <Grid item xs={12} sm={12}>
+                            {renderChips()}
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={6} lg={8}>
+                            <Typography
+                              sx={{
+                                color: theme.palette.primary.main,
+                                ...theme.typography.headlineSmall,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {title}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              id="introduction"
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                color: "#6C8093",
+                                mt: 2,
+                              }}
+                            >
+                              <Trans i18nKey="introduction" />
+                            </Typography>
+                            <Typography
+                              textAlign="justify"
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                fontWeight: "light",
+                                mt: 1,
+                              }}
+                            >
+                              {intro}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              id="summary"
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                color: "#6C8093",
+                                mt: 2,
+                              }}
+                            >
+                              <Trans i18nKey="summary" />
+                            </Typography>
+                            <Typography
+                              textAlign="justify"
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                fontWeight: "light",
+                                mt: 1,
+                              }}
+                            >
+                              {executiveSummary}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
+                            <Gauge
+                              level_value={maturityLevel?.value ?? 0}
+                              maturity_level_status={maturityLevel?.title}
+                              maturity_level_number={
+                                assessmentKit?.maturityLevelCount
+                              }
+                              confidence_value={confidenceValue}
+                              confidence_text={t("withPercentConfidence")}
+                              isMobileScreen={false}
+                              hideGuidance={true}
+                              status_font_variant="titleMedium"
+                              height={250}
+                            />
+                          </Grid>
+                        </Grid>
+                        <PieChart
+                          data={subjects.map((subject) => ({
+                            name: subject.title,
+                            value: 1,
+                            label:
+                              subject.maturityLevel.title +
+                              "(" +
+                              subject.maturityLevel.value +
+                              "/" +
+                              assessment.assessmentKit.maturityLevelCount +
+                              ")",
+                          }))}
+                        />
                         <Typography
+                          component="div"
+                          id="strengthsAndWeaknesses"
                           sx={{
-                            ...theme.typography.titleSmall,
-                            color: "#2B333B",
+                            ...theme.typography.titleMedium,
+                            color: "#6C8093",
                             my: 1,
-                            ...styles.centerV,
                           }}
                         >
-                          <InfoOutlinedIcon fontSize="small" />
-                          <Trans i18nKey="treeMapChart" />
+                          <Trans i18nKey="prosAndCons" />
                         </Typography>
-                        <Typography
-                          textAlign="justify"
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            fontWeight: "light",
-                            mt: 1,
-                          }}
-                        >
-                          {assessment.assessmentKit.prosAndCons}
-                        </Typography>
-                      </Grid>
 
-                      {/* Maturity Levels Section */}
-                      <Grid item xs={2} md={2}>
-                        <Typography
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            color: "#2B333B",
-                            my: 1,
-                            ...styles.centerV,
-                          }}
+                        <TreeMapChart
+                          data={combinedAttributes}
+                          levels={assessment.assessmentKit.maturityLevelCount}
+                        />
+                        <Grid
+                          xs={12}
+                          md={12}
+                          bgcolor="#F3F5F6"
+                          borderRadius="8px"
+                          paddingX={2}
+                          paddingBottom={2}
+                          my={2}
+                          container
+                          spacing={2}
                         >
-                          <Trans i18nKey="maturityLevels" />
-                        </Typography>
-                        <Grid container spacing={1}>
-                          {assessment.assessmentKit.maturityLevels.map(
-                            (level, index) => (
-                              <Grid
-                                container
-                                sx={{ ...styles.centerVH }}
-                                spacing={1}
-                                mb={1}
-                              >
-                                <Grid item key={index} xs={3} sm={3}>
+                          <Grid item xs={10} md={10}>
+                            <Typography
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                color: "#2B333B",
+                                my: 1,
+                                ...styles.centerV,
+                              }}
+                            >
+                              <InfoOutlinedIcon fontSize="small" />
+                              <Trans i18nKey="treeMapChart" />
+                            </Typography>
+                            <Typography
+                              textAlign="justify"
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                fontWeight: "light",
+                                mt: 1,
+                              }}
+                            >
+                              {assessment.assessmentKit.prosAndCons}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={2} md={2}>
+                            <Typography
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                color: "#2B333B",
+                                my: 1,
+                                ...styles.centerV,
+                              }}
+                            >
+                              <Trans i18nKey="maturityLevels" />
+                            </Typography>
+                            <Grid container spacing={1}>
+                              {assessment.assessmentKit.maturityLevels.map(
+                                (level, index) => (
                                   <Box
+                                    key={index}
                                     sx={{
-                                      backgroundColor: getMaturityLevelColors(
-                                        assessment.assessmentKit
-                                          .maturityLevelCount,
-                                      )[level.value - 1],
-                                      height: "10px",
-                                      borderRadius: "16px",
                                       display: "flex",
                                       alignItems: "center",
-                                      justifyContent: "center",
-                                      color: "#fff",
-                                      fontWeight: "bold",
-                                    }}
-                                  ></Box>
-                                </Grid>
-                                <Grid item key={index} xs={8} sm={8}>
-                                  <Typography
-                                    sx={{
-                                      ...theme.typography.body2,
-                                      color: "#2B333B",
+                                      gap: 2,
                                     }}
                                   >
-                                    {level.title}
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            ),
-                          )}
+                                    <Box
+                                      sx={{
+                                        backgroundColor: getMaturityLevelColors(
+                                          data.assessment.assessmentKit
+                                            .maturityLevelCount,
+                                        )[level.value - 1],
+                                        height: "10px",
+                                        width: "27px",
+                                        borderRadius: "16px",
+                                        color: "#fff",
+                                        fontWeight: "bold",
+                                      }}
+                                    ></Box>
+
+                                    <Typography
+                                      component="span"
+                                      sx={{
+                                        ...theme.typography.body2,
+                                        color: "#2B333B",
+                                      }}
+                                    >
+                                      {level.title}
+                                    </Typography>
+                                  </Box>
+                                ),
+                              )}
+                            </Grid>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </Grid>
-                    <SubjectReport />
-                  </Box>
-                </Paper>
-                <Paper
-                  elevation={3}
-                  sx={{
-                    position: "relative",
-                    backgroundColor: "#ffffff",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    borderEndStartRadius: 16,
-                    borderEndEndRadius: 16,
-                    boxShadow: "none",
-                    width: "100%",
-                    padding: 6,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: theme.palette.primary.main,
-                      ...theme.typography.headlineSmall,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Trans i18nKey="recommendations" />
-                  </Typography>
-                  <Typography
-                    textAlign="justify"
-                    sx={{
-                      ...theme.typography.titleSmall,
-                      fontWeight: "light",
-                      my: 1,
-                    }}
-                  >
-                    {recommendationsSummary}
-                  </Typography>
-                  <AdviceItemsAccordion
-                    items={data.adviceItems}
-                    onDelete={() => {}}
-                    setDisplayedItems={() => {}}
-                    query={undefined}
-                    readOnly
-                  />
-                  <ReportCard />
-                </Paper>
-              </Grid>
-            </Grid>
-          </Box>
+                        <SubjectReport />
+                      </Box>
+                    </Paper>
+                    <Paper
+                      elevation={3}
+                      sx={{
+                        position: "relative",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        borderEndStartRadius: 16,
+                        borderEndEndRadius: 16,
+                        boxShadow: "none",
+                        width: "100%",
+                        padding: 6,
+                      }}
+                    >
+                      <Typography
+                        component="div"
+                        id="recommendations"
+                        sx={{
+                          color: theme.palette.primary.main,
+                          ...theme.typography.headlineSmall,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <Trans i18nKey="recommendations" />
+                      </Typography>
+                      <Typography
+                        textAlign="justify"
+                        sx={{
+                          ...theme.typography.titleSmall,
+                          fontWeight: "light",
+                          my: 1,
+                        }}
+                      >
+                        {recommendationsSummary}
+                      </Typography>
+                      <AdviceItemsAccordion
+                        items={data.adviceItems}
+                        onDelete={() => {}}
+                        setDisplayedItems={() => {}}
+                        query={undefined}
+                        readOnly
+                      />
+                      <div id="evaluationProcess">
+                        <ReportCard />
+                      </div>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </>
         )}
       />
     </PermissionControl>

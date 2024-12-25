@@ -716,8 +716,10 @@
   "operations_agility": "چابکی در عملیات",
   "evaluation_process": "فرآیند ارزیابی (این گزارش چگونه ساخته شد؟)",
   "disclaimer": "شفاف‌سازی و سلب مسئولیت",
-  "evaluation_steps": "گام‌های ارزیابی",
-  "assessment_kit_info": "اطلاعات کیت ارزیابی",
-  "maturity_levels": "سطوح بلوغ",
-  "topics_and_indicators": "موضوعات و شاخص‌ها"
+  "evaluationSteps": "گام‌های ارزیابی",
+  "topicsAndIndicators": "موضوعات و شاخص‌ها",
+  "stepsDescription": "گام‌های زیر روند انجام کار را توصیف می‌کند:",
+  "topicsTable": "جدول زیر به توضیح هر یک از موضوعات و شاخص‌ها اختصاص دارد.",
+  "maturityLevelsDescription": "در این کیت ارزیابی، {{maturityLevelCount}} سطح بلوغ مختلف وجود دارد که تعریف هر کدام در جدول زیر نوشته شده است. در انتهای فرایند ارزیابی سطح بلوغ هر یک از شاخص‌ها تعیین می‌گردد. ",
+  "assessmentKitDescription": "برای ارزیابی وضعیت سامانه از کیت ارزیابی {{title}} استفاده شده است. این کیت {{attributesCount}} شاخص اصلی را روی {{subjectsLength}} موضوع {{subjects}} اندازه‌گیری می‌نماید و امتیاز هر شاخص را در قالب {{maturityLevelCount}} سطح بلوغ گزارش می‌نماید. این کیت مشتمل بر {{questionnairesCount}} پرسشنامه است که در ادامه هر کدام از این موارد به تفکیک بررسی می‌شوند."
 }

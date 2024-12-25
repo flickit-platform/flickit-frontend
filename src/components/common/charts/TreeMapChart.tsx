@@ -30,6 +30,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
         data={treeMapData}
         dataKey="count"
         stroke="#fff"
+        fill="white"
         content={<CustomNode />}
       />
     </ResponsiveContainer>
@@ -50,7 +51,6 @@ const CustomNode: React.FC<RectangleProps> = (props) => {
             textAnchor="middle"
             fill="#fff"
             fontSize="14"
-            fontWeight="bold"
           >
             {name}
           </text>
