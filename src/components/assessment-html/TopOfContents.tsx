@@ -31,13 +31,15 @@ export const AssessmentTOC = ({ data }: any) => {
   };
 
   const subjects = useMemo(() => {
-    console.log(data)
-    return data?.subjects?.map((subject: any) => ({
-      key: subject.title,
-      subItems:
-        subject?.attributes?.map((attribute: any) => attribute.title) || [],
-      id: subject.title,
-    })) || [];
+    console.log(data);
+    return (
+      data?.subjects?.map((subject: any) => ({
+        key: subject.title,
+        subItems:
+          subject?.attributes?.map((attribute: any) => attribute.title) || [],
+        id: subject.title,
+      })) || []
+    );
   }, [data]);
 
   const items = [
@@ -143,8 +145,7 @@ export const AssessmentTOC = ({ data }: any) => {
                 <Collapse in={openItems[item.key]} timeout="auto" unmountOnExit>
                   <List
                     sx={{
-                      paddingInlineStart: theme.spacing(4),
-                      bgcolor: theme.palette.grey[100],
+                      bgcolor: "#F9FAFB",
                     }}
                   >
                     {item.subItems.map((subItem: any, subIndex: any) => (

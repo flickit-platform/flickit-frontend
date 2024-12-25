@@ -91,14 +91,24 @@ const TopBox = (props: ITopBoxReport) => {
       container
       sx={{ display: "flex", justifyContent: "space-evenly" }}
     >
-      <Grid xs={12} sm={4} sx={{ ...styles.centerCVH, gap: 1 }} item>
+      <Grid
+        xs={12}
+        sm={4}
+        sx={{ ...styles.centerCVH, gap: 1 }}
+        item
+        component="div"
+        id={title}
+      >
         <Typography
           sx={{ ...theme.typography.titleLarge, color: `${ConfidenceColor}` }}
         >
           {title}
         </Typography>
-                <Typography
-          sx={{ ...theme.typography.titleSmall, color: "rgba(61, 77, 92, 0.5)" }}
+        <Typography
+          sx={{
+            ...theme.typography.titleSmall,
+            color: "rgba(61, 77, 92, 0.5)",
+          }}
         >
           {translatedTitle}
         </Typography>

@@ -103,11 +103,10 @@ const AssessmentExportContainer = () => {
       try {
         const response = await fetch(jsonUrl);
         const data = await response.json();
-        setContent("")
+        setContent("");
         setJsonData(data);
       } catch (error) {
         console.error("Error fetching JSON data:", error);
-        
       }
     };
 
@@ -119,8 +118,11 @@ const AssessmentExportContainer = () => {
       const response = await fetch(iframeUrl);
       const html = await response.text();
       setContent(html);
+      if (response.status === 404) {
+        setContent("");
+      }
     } catch (error) {
-      setContent("")
+      setContent("");
       console.error("Error fetching site content:", error);
     }
   };

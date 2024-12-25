@@ -41,6 +41,8 @@ const SubjectReport = ({ data }: any) => {
         return (
           <>
             <Grid
+              component="div"
+              id={title}
               container
               key={item.index}
               sx={{
