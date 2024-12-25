@@ -19,6 +19,7 @@ const AdviceItems = () => {
   const { assessmentId = "" } = useParams();
 
   const [page, setPage] = useState(0);
+  const [errormessage, setErrorMessage] = useState({});
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
 
   const queryData = useQuery<any>({
@@ -112,20 +113,33 @@ const AdviceItems = () => {
 
   const handleSave = async () => {
     try {
-      await postAdviceItem.query().then((res) => {
-        queryData.query();
-        setDisplayedItems([]);
-      });
-      removeDescriptionAdvice.current = true;
-      setNewAdvice({
-        ...newAdvice,
-        title: "",
-        description: "",
-        priority: "",
-        cost: "",
-        impact: "",
-      });
-      setShowNewAdviceListForm(false);
+      if (!newAdvice.title) {
+        setErrorMessage((prevState: any) => ({
+          ...prevState,
+          title: "requiredFieldError",
+        }));
+      }
+      if (!newAdvice.description) {
+        setErrorMessage((prevState: any) => ({
+          ...prevState,
+          description: "requiredFieldError",
+        }));
+      } else {
+        await postAdviceItem.query().then((res) => {
+          queryData.query();
+          setDisplayedItems([]);
+        });
+        removeDescriptionAdvice.current = true;
+        setNewAdvice({
+          ...newAdvice,
+          title: "",
+          description: "",
+          priority: "",
+          cost: "",
+          impact: "",
+        });
+        setShowNewAdviceListForm(false);
+      }
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -186,6 +200,7 @@ const AdviceItems = () => {
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 postAdviceItem={postAdviceItem}
+                errormessage={errormessage}
               />
             )}
             {displayedItems.length ? (

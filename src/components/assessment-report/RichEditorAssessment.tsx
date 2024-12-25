@@ -7,7 +7,7 @@ import Link from "@tiptap/extension-link";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
-import { primaryFontFamily } from "@/config/theme";
+import { primaryFontFamily, theme } from "@/config/theme";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -130,7 +130,8 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
                   content: '""',
                   position: "absolute",
                   top: "-2px",
-                  left: "6px",
+                  left: theme.direction === "ltr" ? "6px" : "unset",
+                  right: theme.direction === "rtl" ? "6px" : "unset",
                   width: `${fieldLabel ? fieldLabel.length * 8 : 5 * 8}px`,
                   height: "2px",
                   backgroundColor: "#fff",
