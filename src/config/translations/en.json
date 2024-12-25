@@ -713,5 +713,6 @@
   "insightsNeedToBeGenerated": "Insights need to be generated.",
   "insightsNeedApprovement": "AI-generated insights need approvement!",
   "expiredDueToNewAnswers": "Insights are expired due to new answers!",
-  "suggestAnyAdvicesSoFar": "You didn’t suggest any advices so far!"
+  "suggestAnyAdvicesSoFar": "You didn’t suggest any advices so far!",
+  "reportTitle": "Report"
 }
