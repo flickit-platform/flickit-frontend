@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
-import { PathInfo } from "@/types";
+import { AdviceItem, PathInfo } from "@/types";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
 import QueryBatchData from "../common/QueryBatchData";
@@ -12,7 +12,7 @@ import { Trans } from "react-i18next";
 import { Chip, Grid, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
-import data from "./greport.json";
+// import data from "./greport.json";
 import { theme } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
@@ -27,22 +27,92 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 
+type MaturityLevel = {
+  value: number;
+  title: string;
+};
+
+type AssessmentKit = {
+  title: string;
+  questionsCount: number;
+  maturityLevelCount: number;
+  maturityLevels: MaturityLevel[];
+  prosAndCons: string;
+};
+
+type Subject = {
+  title: string;
+  maturityLevel: MaturityLevel;
+  attributes: Attribute[];
+};
+
+type Attribute = {
+  title: string;
+  maturityLevel: MaturityLevel;
+};
+
+type JsonData = {
+  assessment: {
+    title: string;
+    intro: string;
+    executiveSummary: string;
+    creationTime: string;
+    assessmentKit: AssessmentKit;
+    maturityLevel: MaturityLevel;
+    confidenceValue: number;
+  };
+  subjects: Subject[];
+  recommendationsSummary: string;
+  adviceItems: AdviceItem[];
+};
+
 const AssessmentExportContainer = () => {
   const { assessmentId = "" } = useParams();
   const [content, setContent] = useState("");
   const [errorObject, setErrorObject] = useState<any>(undefined);
   const { service } = useServiceContext();
-  const { subjects, assessment, recommendationsSummary } = data;
-  const {
-    maturityLevel,
-    assessmentKit,
-    confidenceValue,
-    intro,
-    title,
-    executiveSummary,
-  } = assessment;
+  const [jsonData, setJsonData] = useState<JsonData>({
+    assessment: {
+      title: "",
+      intro: "",
+      executiveSummary: "",
+      creationTime: "",
+      assessmentKit: {
+        title: "",
+        questionsCount: 0,
+        maturityLevelCount: 0,
+        maturityLevels: [],
+        prosAndCons: "",
+      },
+      maturityLevel: {
+        value: 0,
+        title: "",
+      },
+      confidenceValue: 0,
+    },
+    subjects: [],
+    recommendationsSummary: "",
+    adviceItems: [],
+  });
 
   const iframeUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/index.html`;
+  const jsonUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/greport.json`;
+
+  useEffect(() => {
+    const fetchJsonData = async () => {
+      try {
+        const response = await fetch(jsonUrl);
+        const data = await response.json();
+        setContent("")
+        setJsonData(data);
+      } catch (error) {
+        console.error("Error fetching JSON data:", error);
+        
+      }
+    };
+
+    fetchJsonData();
+  }, [jsonUrl]);
 
   const fetchContent = async () => {
     try {
@@ -50,6 +120,7 @@ const AssessmentExportContainer = () => {
       const html = await response.text();
       setContent(html);
     } catch (error) {
+      setContent("")
       console.error("Error fetching site content:", error);
     }
   };
@@ -57,12 +128,13 @@ const AssessmentExportContainer = () => {
   const checkIframeUrl = async () => {
     try {
       const response = await fetch(iframeUrl, { method: "HEAD" });
-      if (response.status === 404) {
+      const jsonResponse = await fetch(jsonUrl, { method: "HEAD" });
+      if (response.status === 404 && jsonResponse.status === 404) {
         setErrorObject(response);
       }
     } catch (error) {
       setErrorObject(error);
-      console.error("Error checking iframe URL:", error);
+      console.error("Error fetching iframe URL:", error);
     }
   };
 
@@ -77,7 +149,7 @@ const AssessmentExportContainer = () => {
     runOnMount: true,
   });
 
-  const combinedAttributes = subjects.flatMap((subject) =>
+  const combinedAttributes = jsonData?.subjects.flatMap((subject) =>
     subject.attributes.map((attribute) => ({
       name: attribute.title,
       count: 1,
@@ -93,7 +165,7 @@ const AssessmentExportContainer = () => {
             <DesignServicesIcon fontSize="small" color="primary" />
             <Trans
               i18nKey="assessmentKit"
-              values={{ title: assessment.assessmentKit.title }}
+              values={{ title: jsonData?.assessment.assessmentKit.title }}
             />
           </Box>
         }
@@ -110,7 +182,9 @@ const AssessmentExportContainer = () => {
             <EmojiObjectsIcon fontSize="small" color="primary" />
             <Trans
               i18nKey="questionsAndAnswer"
-              values={{ count: assessment.assessmentKit.questionsCount }}
+              values={{
+                count: jsonData?.assessment.assessmentKit.questionsCount,
+              }}
             />
           </Box>
         }
@@ -126,8 +200,8 @@ const AssessmentExportContainer = () => {
           <Box sx={{ ...styles.centerVH, gap: 0.5 }}>
             <CalendarMonthIcon fontSize="small" color="primary" />
             {theme.direction === "rtl"
-              ? formatDate(assessment.creationTime, "Shamsi")
-              : formatDate(assessment.creationTime, "Miladi")}
+              ? formatDate(jsonData?.assessment.creationTime, "Shamsi")
+              : formatDate(jsonData?.assessment.creationTime, "Miladi")}
           </Box>
         }
         size="small"
@@ -147,7 +221,7 @@ const AssessmentExportContainer = () => {
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
         render={([pathInfo]) => (
           <>
-            {!content ? (
+            {content ? (
               <>
                 {" "}
                 <Box
@@ -182,7 +256,7 @@ const AssessmentExportContainer = () => {
                 </Box>
                 <Grid container spacing={2}>
                   <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
-                    <AssessmentTOC />
+                    <AssessmentTOC data={jsonData} />
                   </Grid>
                   <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
                     <Paper
@@ -232,7 +306,7 @@ const AssessmentExportContainer = () => {
                                 fontWeight: "bold",
                               }}
                             >
-                              {title}
+                              {jsonData?.assessment.title}
                             </Typography>
                             <Typography
                               component="div"
@@ -253,7 +327,7 @@ const AssessmentExportContainer = () => {
                                 mt: 1,
                               }}
                             >
-                              {intro}
+                              {jsonData?.assessment.intro}
                             </Typography>
                             <Typography
                               component="div"
@@ -274,17 +348,24 @@ const AssessmentExportContainer = () => {
                                 mt: 1,
                               }}
                             >
-                              {executiveSummary}
+                              {jsonData?.assessment.executiveSummary}
                             </Typography>
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
                             <Gauge
-                              level_value={maturityLevel?.value ?? 0}
-                              maturity_level_status={maturityLevel?.title}
-                              maturity_level_number={
-                                assessmentKit?.maturityLevelCount
+                              level_value={
+                                jsonData?.assessment.maturityLevel?.value ?? 0
                               }
-                              confidence_value={confidenceValue}
+                              maturity_level_status={
+                                jsonData?.assessment.maturityLevel?.title
+                              }
+                              maturity_level_number={
+                                jsonData?.assessment.assessmentKit
+                                  ?.maturityLevelCount
+                              }
+                              confidence_value={
+                                jsonData?.assessment.confidenceValue
+                              }
                               confidence_text={t("withPercentConfidence")}
                               isMobileScreen={false}
                               hideGuidance={true}
@@ -294,7 +375,7 @@ const AssessmentExportContainer = () => {
                           </Grid>
                         </Grid>
                         <PieChart
-                          data={subjects.map((subject) => ({
+                          data={jsonData?.subjects.map((subject) => ({
                             name: subject.title,
                             value: 1,
                             label:
@@ -302,7 +383,8 @@ const AssessmentExportContainer = () => {
                               "(" +
                               subject.maturityLevel.value +
                               "/" +
-                              assessment.assessmentKit.maturityLevelCount +
+                              jsonData?.assessment.assessmentKit
+                                .maturityLevelCount +
                               ")",
                           }))}
                         />
@@ -320,7 +402,10 @@ const AssessmentExportContainer = () => {
 
                         <TreeMapChart
                           data={combinedAttributes}
-                          levels={assessment.assessmentKit.maturityLevelCount}
+                          levels={
+                            jsonData?.assessment.assessmentKit
+                              .maturityLevelCount
+                          }
                         />
                         <Grid
                           xs={12}
@@ -353,7 +438,7 @@ const AssessmentExportContainer = () => {
                                 mt: 1,
                               }}
                             >
-                              {assessment.assessmentKit.prosAndCons}
+                              {jsonData?.assessment.assessmentKit.prosAndCons}
                             </Typography>
                           </Grid>
                           <Grid item xs={12} md={2}>
@@ -368,7 +453,7 @@ const AssessmentExportContainer = () => {
                               <Trans i18nKey="maturityLevels" />
                             </Typography>
                             <Grid container spacing={1}>
-                              {assessment.assessmentKit.maturityLevels.map(
+                              {jsonData?.assessment.assessmentKit.maturityLevels.map(
                                 (level, index) => (
                                   <Box
                                     key={index}
@@ -381,7 +466,7 @@ const AssessmentExportContainer = () => {
                                     <Box
                                       sx={{
                                         backgroundColor: getMaturityLevelColors(
-                                          data.assessment.assessmentKit
+                                          jsonData?.assessment.assessmentKit
                                             .maturityLevelCount,
                                         )[level.value - 1],
                                         height: "10px",
@@ -407,7 +492,7 @@ const AssessmentExportContainer = () => {
                             </Grid>
                           </Grid>
                         </Grid>
-                        <SubjectReport />
+                        <SubjectReport data={jsonData} />
                       </Box>
                     </Paper>
                     <Paper
@@ -444,17 +529,17 @@ const AssessmentExportContainer = () => {
                           my: 1,
                         }}
                       >
-                        {recommendationsSummary}
+                        {jsonData?.recommendationsSummary}
                       </Typography>
                       <AdviceItemsAccordion
-                        items={data.adviceItems}
+                        items={jsonData.adviceItems}
                         onDelete={() => {}}
                         setDisplayedItems={() => {}}
                         query={undefined}
                         readOnly
                       />
                       <div id="evaluationProcess">
-                        <ReportCard />
+                        <ReportCard data={jsonData} />
                       </div>
                     </Paper>
                   </Grid>

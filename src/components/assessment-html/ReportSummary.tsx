@@ -9,7 +9,6 @@ import {
   TableCell,
 } from "@mui/material";
 import { theme } from "@/config/theme";
-import data from "./greport.json";
 import { getMaturityLevelColors } from "@/config/styles";
 import { ISubject } from "@/types";
 import { Trans } from "react-i18next";
@@ -85,9 +84,9 @@ const Section = ({ title, children }: any) => (
   </Box>
 );
 
-const TopicsList = () => (
+const TopicsList = ({ data }: any) => (
   <Box>
-    {data.subjects.map((subject: any, index: any) => (
+    {data?.subjects.map((subject: any, index: any) => (
       <Box key={index} sx={{ marginBottom: "16px" }}>
         <Typography
           sx={{
@@ -126,9 +125,9 @@ const TopicsList = () => (
   </Box>
 );
 
-const QuestionnaireList = () => (
+const QuestionnaireList = ({ data }: any) => (
   <Box>
-    {data.questionnaires.map((item: any, index: any) => (
+    {data?.questionnaires.map((item: any, index: any) => (
       <Box
         key={index}
         sx={{
@@ -157,7 +156,7 @@ const QuestionnaireList = () => (
   </Box>
 );
 
-const ReportCard = () => {
+const ReportCard = ({ data }: any) => {
   return (
     <Box
       sx={{
@@ -172,24 +171,24 @@ const ReportCard = () => {
     >
       <TitleBox />
 
-      <Section title={t("disclaimer")}>{data.assessment.intro}</Section>
+      <Section title={t("disclaimer")}>{data?.assessment.intro}</Section>
 
       <Section title={t("evaluationSteps")}>
         <Trans i18nKey="stepsDescription" />
-        <StepsTable steps={data.steps} />
+        <StepsTable steps={data?.steps} />
       </Section>
 
       <Section title={t("assessmentKit", { title: "" })}>
         <Trans
           i18nKey="assessmentKitDescription"
           values={{
-            title: data.assessment.assessmentKit.title,
-            attributesCount: data.assessment.assessmentKit.attributesCount,
-            subjectsLength: data.subjects.length,
-            subjects: data.subjects
+            title: data?.assessment.assessmentKit.title,
+            attributesCount: data?.assessment.assessmentKit.attributesCount,
+            subjectsLength: data?.subjects.length,
+            subjects: data?.subjects
               ?.map((elem: ISubject, index: number) =>
-                index === data.subjects?.length - 1 &&
-                data.subjects?.length !== 1
+                index === data?.subjects?.length - 1 &&
+                data?.subjects?.length !== 1
                   ? t("and") + elem?.title
                   : index === 0
                     ? elem?.title
@@ -197,9 +196,9 @@ const ReportCard = () => {
               )
               ?.join(""),
             maturityLevelCount:
-              data.assessment.assessmentKit.maturityLevelCount,
+              data?.assessment.assessmentKit.maturityLevelCount,
             questionnairesCount:
-              data.assessment.assessmentKit.questionnairesCount,
+              data?.assessment.assessmentKit.questionnairesCount,
           }}
         />
       </Section>
@@ -209,63 +208,65 @@ const ReportCard = () => {
           i18nKey="maturityLevelsDescription"
           values={{
             maturityLevelCount:
-              data.assessment.assessmentKit.maturityLevelCount,
+              data?.assessment.assessmentKit.maturityLevelCount,
           }}
         />
-        {data.assessment.assessmentKit.maturityLevels.map((level, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-            }}
-          >
+        {data?.assessment.assessmentKit.maturityLevels.map(
+          (level: any, index: number) => (
             <Box
+              key={index}
               sx={{
-                backgroundColor: getMaturityLevelColors(
-                  data.assessment.assessmentKit.maturityLevelCount,
-                )[level.value - 1],
-                height: "10px",
-                width: "27px",
-                borderRadius: "16px",
-                color: "#fff",
-                fontWeight: "bold",
-              }}
-            ></Box>
-
-            <Typography
-              component="span"
-              sx={{
-                ...theme.typography.body2,
-                color: getMaturityLevelColors(
-                  data.assessment.assessmentKit.maturityLevelCount,
-                )[level.value - 1],
-                minWidth: "70px",
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
               }}
             >
-              {level.title}
-            </Typography>
+              <Box
+                sx={{
+                  backgroundColor: getMaturityLevelColors(
+                    data?.assessment.assessmentKit.maturityLevelCount,
+                  )[level.value - 1],
+                  height: "10px",
+                  width: "27px",
+                  borderRadius: "16px",
+                  color: "#fff",
+                  fontWeight: "bold",
+                }}
+              ></Box>
 
-            <Typography
-              component="span"
-              sx={{
-                ...theme.typography.body2,
-              }}
-            >
-              {level.description}
-            </Typography>
-          </Box>
-        ))}
+              <Typography
+                component="span"
+                sx={{
+                  ...theme.typography.body2,
+                  color: getMaturityLevelColors(
+                    data?.assessment.assessmentKit.maturityLevelCount,
+                  )[level.value - 1],
+                  minWidth: "70px",
+                }}
+              >
+                {level.title}
+              </Typography>
+
+              <Typography
+                component="span"
+                sx={{
+                  ...theme.typography.body2,
+                }}
+              >
+                {level.description}
+              </Typography>
+            </Box>
+          ),
+        )}
       </Section>
 
       <Section title={t("topicsAndIndicators")}>
         <Trans i18nKey="topicsTable" />
-        <TopicsList />
+        <TopicsList data={data} />
       </Section>
 
       <Section title={t("questionnaires")}>
-        <QuestionnaireList />
+        <QuestionnaireList data={data} />
       </Section>
     </Box>
   );

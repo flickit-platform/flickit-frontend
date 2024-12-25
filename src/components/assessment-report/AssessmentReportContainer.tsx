@@ -74,13 +74,16 @@ const AssessmentReportContainer = (props: any) => {
       await queryData.query();
     } catch (e) {}
   };
-  const iframeUrl =
-    import.meta.env.VITE_STATIC_HTML + assessmentId + "/index.html";
+
+  const iframeUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/index.html`;
+  const jsonUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/greport.json`;
+
   useEffect(() => {
     const checkIframeUrl = async () => {
       try {
         const response = await fetch(iframeUrl, { method: "HEAD" });
-        if (response.status === 404) {
+        const jsonResponse = await fetch(jsonUrl, { method: "HEAD" });
+        if (response.status === 404 && jsonResponse.status === 404) {
           setDisableHtmlDodument(true);
         }
       } catch (error) {
@@ -113,7 +116,6 @@ const AssessmentReportContainer = (props: any) => {
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
-
 
   return (
     <PermissionControl error={[queryData.errorObject?.response]}>

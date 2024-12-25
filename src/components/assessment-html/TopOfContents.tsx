@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Box,
   Typography,
@@ -17,9 +17,7 @@ interface OpenItemsState {
   [key: string]: boolean;
 }
 
-import assessmentData from "./greport.json";
-
-export const AssessmentTOC = () => {
+export const AssessmentTOC = ({ data }: any) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -32,11 +30,15 @@ export const AssessmentTOC = () => {
     }));
   };
 
-  const subjects = assessmentData.subjects.map((subject: any) => ({
-    key: subject.title,
-    subItems: subject.attributes.map((attribute: any) => attribute.title),
-    id: subject.title,
-  }));
+  const subjects = useMemo(() => {
+    console.log(data)
+    return data?.subjects?.map((subject: any) => ({
+      key: subject.title,
+      subItems:
+        subject?.attributes?.map((attribute: any) => attribute.title) || [],
+      id: subject.title,
+    })) || [];
+  }, [data]);
 
   const items = [
     {

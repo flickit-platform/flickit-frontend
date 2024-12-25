@@ -207,7 +207,7 @@ const AssessmentExportContainer = () => {
   };
 
   const createAttributesPolicyPromises = (newIgnoreIds: any[]) =>
-    AssessmentReport?.data?.subjects.flatMap((subject: any) =>
+    AssessmentReport?.data?.subjects?.flatMap((subject: any) =>
       subject?.attributes.map((attribute: any) =>
         loadSingleAttributeData(attribute, newIgnoreIds),
       ),
