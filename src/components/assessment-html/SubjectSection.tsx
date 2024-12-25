@@ -19,6 +19,7 @@ interface IAttribute {
   title: string;
   confidenceValue?: number | any;
   analyzation?: string | any;
+  translatedTitle: string;
   maturityLevel: {
     id: number;
     title: string;

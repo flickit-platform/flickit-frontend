@@ -74,7 +74,7 @@ const FlatGauge = (props: IGaugeProps) => {
             gap: "1rem",
             justifyContent: "center",
             alignItems: "center",
-              mx:"auto"
+            mx: "auto",
           }}
         >
           {textPosition == "top" && (
@@ -116,11 +116,11 @@ const FlatGauge = (props: IGaugeProps) => {
               sx={{
                 display: "flex",
                 gap: "5px",
-                ...theme.typography.titleMedium,
+                ...theme.typography.titleSmall,
+                color: "#9DA7B3",
               }}
             >
-              <Trans style={{ color: "#9DA7B3" }} i18nKey={"confidenceLevel"} />
-              :{" "}
+              <Trans i18nKey={"confidenceLevel"} />:{" "}
               <Typography
                 sx={{
                   color: checkColor(confidenceLevelNum),
