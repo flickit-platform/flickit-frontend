@@ -11,6 +11,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import Tooltip from "@mui/material/Tooltip";
 
 const DashboardTab = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -103,7 +104,18 @@ const DashboardTab = () => {
         }}
       >
         <Trans i18nKey={"assessmentSteps"} />
-        <InfoIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+        <Tooltip
+            slotProps={{
+              tooltip: {
+                sx: {
+                  color: "#FFFFFF",
+                  backgroundColor: "#576675E6",
+                },
+              },
+            }}
+            title={<Trans i18nKey={"assessmentStepsTooltip"} />} >
+          <InfoIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+        </Tooltip>
       </Typography>
       <StepperSection
         setActiveStep={setActiveStep}

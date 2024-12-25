@@ -6,6 +6,7 @@ import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
 import {uniqueId} from "lodash";
+import Tooltip from "@mui/material/Tooltip";
 
 const TodoBox = (props: any) => {
   const { todoBoxData } = props;
@@ -25,7 +26,18 @@ const TodoBox = (props: any) => {
             }}
           >
             <Trans i18nKey={"whatToDoNow"} />
-            <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+              <Tooltip
+                  slotProps={{
+                      tooltip: {
+                          sx: {
+                              color: "#FFFFFF",
+                              backgroundColor: "#576675E6",
+                          },
+                      },
+                  }}
+                  title={<Trans i18nKey={"whatToDoNowTooltip"} />} >
+                  <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+              </Tooltip>
           </Typography>
           {now.map((item: any) => {
             return (
@@ -81,7 +93,18 @@ const TodoBox = (props: any) => {
             }}
           >
             <Trans i18nKey={"whatToDoNext"} />
-            <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+              <Tooltip
+                  slotProps={{
+                      tooltip: {
+                          sx: {
+                              color: "#FFFFFF",
+                              backgroundColor: "#576675E6",
+                          },
+                      },
+                  }}
+                  title={<Trans i18nKey={"whatToDoNextTooltip"} />} >
+                  <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+              </Tooltip>
           </Typography>
           {next.map((item: any, index: number) => {
             return (
