@@ -9,12 +9,15 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
-import {ICustomError} from "@utils/CustomError";
+import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
+
 const DashboardTab = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [todoBoxData, setTodoBoxData] = useState({ now: [], next: [] });
-  const [stepData, setStepData] = useState<{category: string,metrics: any }[]>([]);
+  const [stepData, setStepData] = useState<
+    { category: string; metrics: any }[]
+  >([]);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
 
@@ -77,10 +80,10 @@ const DashboardTab = () => {
           }
         });
         setTodoBoxData(todoData);
-        setStepData(mappedData)
+        setStepData(mappedData);
       } catch (e) {
-          const err = e as ICustomError;
-          toastError(err);
+        const err = e as ICustomError;
+        toastError(err);
       }
     };
     preparedData().then();
