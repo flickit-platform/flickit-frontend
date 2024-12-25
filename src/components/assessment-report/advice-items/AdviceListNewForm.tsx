@@ -6,7 +6,13 @@ import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { CircularProgress, MenuItem, Select, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  FormHelperText,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Grid from "@mui/material/Grid";
@@ -33,6 +39,7 @@ interface IAdviceListProps {
   setNewAdvice: any;
   removeDescriptionAdvice: any;
   postAdviceItem: any;
+  errormessage?: any;
 }
 const AdviceListNewForm = ({
   newAdvice,
@@ -42,6 +49,7 @@ const AdviceListNewForm = ({
   setNewAdvice,
   removeDescriptionAdvice,
   postAdviceItem,
+  errormessage,
 }: IAdviceListProps) => {
   const formMethods = useForm({ shouldUnregister: true });
   const selectAdvice = ["cost", "impact", "priority"];
@@ -141,6 +149,7 @@ const AdviceListNewForm = ({
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
+                error={errormessage.title}
                 id="new-advice-item"
                 required
                 label={<Trans i18nKey="title" />}
@@ -168,6 +177,9 @@ const AdviceListNewForm = ({
                   background: "#fff",
                 }}
               />
+              {errormessage.title && (
+                <FormHelperText error>{t(errormessage.title)}</FormHelperText>
+              )}
             </Grid>
             <Grid
               item
@@ -252,6 +264,9 @@ const AdviceListNewForm = ({
               />
             </Box>
           </FormProviderWithForm>
+          {errormessage.description && (
+            <FormHelperText error>{t(errormessage.description)}</FormHelperText>
+          )}
         </Box>
 
         {/* Check and Close Buttons */}
