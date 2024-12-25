@@ -13,14 +13,17 @@ import Grid from "@mui/material/Grid";
 import RichEditorFieldAssessment from "../RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import Impact from "@/components/common/icons/Impact";
+import languageDetector from "@/utils/languageDetector";
+import { t } from "i18next";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -41,7 +44,7 @@ const AdviceListNewForm = ({
   postAdviceItem,
 }: IAdviceListProps) => {
   const formMethods = useForm({ shouldUnregister: true });
-  const selectAdvice = ["priority", "cost", "impact"];
+  const selectAdvice = ["cost", "impact", "priority"];
   const { service } = useServiceContext();
   const [adviceOption, setAdviceOption] = useState<any>({
     impact: [],
@@ -75,6 +78,14 @@ const AdviceListNewForm = ({
           cost: costRes.levels,
           priority: priorityRes.levels,
         });
+        if (newAdvice?.assessmentId) {
+          setNewAdvice((prevState: any) => ({
+            ...prevState,
+            impact: impactRes.levels[1]?.code,
+            priority: priorityRes.levels[1]?.code,
+            cost: costRes.levels[1]?.code,
+          }));
+        }
       } catch (e) {
         const err = e as ICustomError;
         toastError(err);
@@ -85,16 +96,19 @@ const AdviceListNewForm = ({
   const getIcon = (type: string) => {
     let element;
     if (type === "cost") {
-      element = <AttachMoneyOutlinedIcon fontSize="small" />;
+      element = <AttachMoneyOutlinedIcon fontSize="small" color="primary" />;
     } else if (type === "impact") {
       element = (
         <Impact
           styles={{
             color: theme.palette.primary.dark,
-            width: "20px",
+            width: "16px",
+            px: 4,
           }}
         />
       );
+    } else {
+      element = <PriorityHighIcon fontSize="small" color="primary" />;
     }
     return element;
   };
@@ -141,6 +155,12 @@ const AdviceListNewForm = ({
                   fontSize: 14,
                   "& .MuiInputBase-root": {
                     fontSize: 14,
+                    fontFamily: languageDetector(newAdvice.title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                    direction: languageDetector(newAdvice.title)
+                      ? "rtl"
+                      : "ltr",
                   },
                   "& .MuiFormLabel-root": {
                     fontSize: 14,
@@ -161,14 +181,14 @@ const AdviceListNewForm = ({
                 },
               }}
             >
-              {selectAdvice.map((item: any, index) => {
+              {selectAdvice?.map((item: any, index) => {
                 return (
                   <FormControl key={item} sx={{ width: "30%" }}>
                     <Select
                       size="small"
                       labelId={`${item}-select-label`}
                       id={`${item}-select`}
-                      value={newAdvice[item].toUpperCase() }
+                      value={newAdvice[item]?.toUpperCase()}
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
@@ -178,6 +198,10 @@ const AdviceListNewForm = ({
                         background: "#fff",
                         px: "0px",
                         height: "36px",
+                        "& .MuiSelect-select": {
+                          display: "flex",
+                          alignItems: "center",
+                        },
                       }}
                     >
                       <MenuItem disabled value="">
@@ -195,8 +219,9 @@ const AdviceListNewForm = ({
                           <Trans i18nKey={item.toLowerCase()} />
                         </Typography>
                       </MenuItem>
-                      {adviceOption[item].map((option: any, index: number) => (
+                      {adviceOption[item]?.map((option: any, index: number) => (
                         <MenuItem key={option} value={option.code}>
+                          {getIcon(item)}
                           <Trans i18nKey={option.title.toLowerCase()} />
                         </MenuItem>
                       ))}
@@ -213,12 +238,12 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt: 1,
+                mt: 6,
               }}
             >
               <RichEditorFieldAssessment
                 name="advice-description"
-                label={<Trans i18nKey="description" />}
+                label={t("description")}
                 disable_label={false}
                 required={true}
                 defaultValue={newAdvice.description}

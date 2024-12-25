@@ -84,7 +84,7 @@ const RichEditorFieldBase = (props: any) => {
         <InputLabel
           className={focus ? "Mui-focused" : ""}
           shrink={shrink}
-          sx={{ background: "white", px: 0.2 }}
+          sx={{ px: 0.2 }}
           required={required}
         >
           {label}
@@ -103,6 +103,7 @@ const RichEditorFieldBase = (props: any) => {
         setLangDir={setLangDir}
         setNewAdvice={setNewAdvice}
         removeDescriptionAdvice={removeDescriptionAdvice}
+        fieldLabel={label}
       />
       <FormHelperText>{errorMessage as string}</FormHelperText>
     </FormControl>

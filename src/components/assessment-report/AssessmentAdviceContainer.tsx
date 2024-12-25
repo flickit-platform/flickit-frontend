@@ -402,7 +402,7 @@ const AssessmentAdviceContainer = (props: any) => {
                             question?.title.length > 100 ? question?.title : ""
                           }
                         >
-                          <Box>{question?.title}</Box>
+                          <Box sx={{textAlign: "center" ,unicodeBidi: "plaintext" }}>{question?.title}</Box>
                         </Tooltip>
                       </Grid>
                       <Grid

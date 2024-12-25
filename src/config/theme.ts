@@ -43,6 +43,7 @@ declare module "@mui/material/styles" {
     semiBoldXLarge: React.CSSProperties;
     semiBoldLarge: React.CSSProperties;
     semiBoldMedium: React.CSSProperties;
+    semiBoldSmall: React.CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -68,6 +69,7 @@ declare module "@mui/material/styles" {
     semiBoldXLarge?: React.CSSProperties;
     semiBoldLarge?: React.CSSProperties;
     semiBoldMedium?: React.CSSProperties;
+    semiBoldSmall?: React.CSSProperties;
   }
 
   interface Palette {
@@ -101,6 +103,7 @@ declare module "@mui/material/Typography" {
     semiBoldXLarge?: true;
     semiBoldLarge?: true;
     semiBoldMedium?: true;
+    semiBoldSmall?: true;
   }
 }
 
@@ -282,22 +285,29 @@ export const theme = createTheme({
       lineHeight: "0.75rem",
       letterSpacing: "0.5px",
     },
+    semiBoldSmall: {
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+      fontWeight: "500",
+      fontSize: "0.75rem",
+      lineHeight: "0.75rem",
+      letterSpacing: is_farsi ? "0px" : "0.5px",
+    },
     semiBoldLarge: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "500",
       fontSize: "1rem",
       lineHeight: "1.5rem",
       letterSpacing: is_farsi ? "0px" : "0.15px",
     },
     semiBoldMedium: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: "600",
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+      fontWeight: "500",
       fontSize: "0.875rem",
       lineHeight: "1.25rem",
       letterSpacing: is_farsi ? "0px" : "0.1px",
     },
     semiBoldXLarge: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "600",
       fontSize: "1.375rem",
       lineHeight: "1.75rem",
@@ -325,6 +335,18 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          paperContainer: {
+            backgroundColor: "#fff",
+            borderRadius: "8px",
+            padding: "16px",
+          },
+        },
+      },
+    },
+
     MuiCssBaseline: {
       styleOverrides: `
         .top-nav-bar-ZwZd20 {
@@ -575,6 +597,13 @@ export const theme = createTheme({
         },
       },
     },
+    MuiListItemText: {
+      styleOverrides: {
+        root: {
+          textAlign: is_farsi ? "right" : "left",
+        },
+      },
+    },
     //@ts-expect-error
     MuiTabPanel: {
       styleOverrides: {
@@ -582,6 +611,11 @@ export const theme = createTheme({
           padding: "4px 2px",
         },
       },
+    },
+  },
+  customStyles: {
+    borderLine: {
+      border: "1px solid #D5E5F6",
     },
   },
 });

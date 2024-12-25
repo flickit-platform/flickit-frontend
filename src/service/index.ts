@@ -1932,6 +1932,15 @@ export const createService = (
         responseType: "blob",
       });
     },
+    resolveComment(
+      args: {
+        id: TId;
+      },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { id } = args ?? {};
+      return axios.put(`/api/v1/evidences/${id}/resolve/`, config);
+    },
     addEvidence(
       args: {
         description: string;
