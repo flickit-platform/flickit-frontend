@@ -1347,6 +1347,15 @@ export const createService = (
         },
       );
     },
+    fetchDashboard(
+          { assessmentId }: { assessmentId: TId },
+          config?: AxiosRequestConfig<any>,
+     ) {
+          return axios.get(
+              `/api/v1/assessments/${assessmentId}/dashboard/`,
+              config,
+          );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,
