@@ -1347,6 +1347,15 @@ export const createService = (
         },
       );
     },
+    fetchDashboard(
+          { assessmentId }: { assessmentId: TId },
+          config?: AxiosRequestConfig<any>,
+     ) {
+          return axios.get(
+              `/api/v1/assessments/${assessmentId}/dashboard/`,
+              config,
+          );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,
@@ -1922,6 +1931,15 @@ export const createService = (
         ...(config ?? {}),
         responseType: "blob",
       });
+    },
+    resolveComment(
+      args: {
+        id: TId;
+      },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { id } = args ?? {};
+      return axios.put(`/api/v1/evidences/${id}/resolve/`, config);
     },
     addEvidence(
       args: {

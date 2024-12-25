@@ -24,7 +24,7 @@ import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { ArticleRounded, Assessment } from "@mui/icons-material";
+import {ArticleRounded, Assessment, Dashboard} from "@mui/icons-material";
 import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
@@ -162,6 +162,19 @@ const AssessmentReportContainer = (props: any) => {
                       <Trans i18nKey="assessmentInsights" />
                     </Typography>
                     <Box sx={{ py: "0.6rem", display: "flex" }}>
+                      <Tooltip title={<Trans i18nKey={"dashboard"} />}>
+                        <Box>
+                          <IconButton
+                              data-cy="more-action-btn"
+                              component={exportable ? RouterLink : "div"}
+                              to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/`}
+                          >
+                            <Dashboard
+                                sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
+                            />
+                          </IconButton>
+                        </Box>
+                      </Tooltip>
                       <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
                         <Box>
                           <IconButton

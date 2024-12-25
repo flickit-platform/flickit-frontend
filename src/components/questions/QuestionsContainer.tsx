@@ -66,7 +66,7 @@ export const QuestionsContainerC = (
       renderLoading={() => <LoadingSkeletonOfQuestions />}
       render={([questionnaireData, pathInfo = {}]) => {
         return (
-          <Box>
+          <Box sx={{ overflowX: "hidden" }}>
             <Box py={1}>
               <QuestionsTitle
                 data={questionnaireData as IQuestionnaireModel}

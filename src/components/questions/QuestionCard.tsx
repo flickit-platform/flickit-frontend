@@ -86,11 +86,7 @@ import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 import Skeleton from "@mui/material/Skeleton";
 import FileType from "@components/questions/iconFiles/fileType";
-import {
-  farsiFontFamily,
-  primaryFontFamily,
-  theme,
-} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { AcceptFile } from "@utils/acceptFile";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
@@ -98,6 +94,7 @@ import { evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
+import { CheckOutlined } from "@mui/icons-material";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -1494,6 +1491,11 @@ const EvidenceDetail = (props: any) => {
     runOnMount: false,
   });
 
+  const resolveComment = useQuery({
+    service: (args, config) => service.resolveComment(args, config),
+    runOnMount: false,
+  });
+
   useEffect(() => {
     if (id === evidencesData[0].id) {
       setExpandedEvidenceBox(false);
@@ -1509,6 +1511,7 @@ const EvidenceDetail = (props: any) => {
     attachmentsCount,
     editable,
     deletable,
+    resolvable,
   } = item;
   const { displayName, pictureLink } = createdBy;
   const is_farsi = firstCharDetector(description);
@@ -1560,6 +1563,25 @@ const EvidenceDetail = (props: any) => {
     }
     if (type === null) {
       setValue(null);
+    }
+  };
+
+  const onResolve = async (id: string) => {
+    try {
+      await resolveComment.query({
+        id: id,
+      });
+      const { items } = await evidencesQueryData.query();
+      setEvidencesData(items);
+      setExpandedEvidenceBox(false);
+      setIsEditing(false);
+      setValueCount("");
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err?.response?.data.description[0]);
+    } finally {
+      formMethods.reset();
+      setLoadingEvidence(false);
     }
   };
 
@@ -2022,6 +2044,19 @@ const EvidenceDetail = (props: any) => {
                       style={{ color: "#D81E5B" }}
                     />
                   </IconButton>
+                )}
+                {resolvable && (
+                  <Tooltip title={<Trans i18nKey={"resolve"} />}>
+                    <IconButton
+                      aria-label="resolve"
+                      size="small"
+                      sx={{ boxShadow: 2, p: 1 }}
+                      onClick={() => onResolve(id)}
+                      color="success"
+                    >
+                      <CheckOutlined fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
                 )}
               </Box>
             </Box>

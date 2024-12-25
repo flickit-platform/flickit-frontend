@@ -130,6 +130,7 @@ const OptionContain = (props: any) => {
         {isEditMode === answerOption.id ? (
           <TextField
             required
+            type={"number"}
             value={tempValues.value}
             onChange={(e) =>
               setTempValues({
