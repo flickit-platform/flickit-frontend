@@ -111,7 +111,7 @@ const StepBox = (props: IStepBox) => {
 
   const issuesTag = (
     <Chip
-      label={`  ${calcOfIssues()}  ` + t((!!calcOfIssues() && calcOfIssues() > 1) ? "issues" : "issue").toUpperCase()}
+      label={`  ${calcOfIssues()}  ` + t(( Boolean(calcOfIssues()) && calcOfIssues() > 1) ? "issues" : "issue").toUpperCase()}
       size="small"
       sx={{
         ...theme.typography.labelMedium,
