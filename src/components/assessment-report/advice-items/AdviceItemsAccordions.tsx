@@ -247,7 +247,7 @@ const AdviceItemAccordion: React.FC<{
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                       wordBreak: "break-word",
-                      marginInlineEnd: "8px",
+                      marginInline: "8px",
                     }}
                     title={item.title}
                     dir={languageDetector(item.title) ? "rtl" : "ltr"}
