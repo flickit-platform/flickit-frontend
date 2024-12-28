@@ -178,7 +178,7 @@ const ReportCard = ({ data }: any) => {
         <StepsTable steps={data?.steps} />
       </Section>
 
-      <Section title={t("assessmentKit", { title: "" })}>
+      <Section title={t("assessmentKit")}>
         <Trans
           i18nKey="assessmentKitDescription"
           values={{

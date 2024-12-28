@@ -149,7 +149,7 @@ const AdviceListNewForm = ({
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
-                error={errormessage.title}
+                error={errormessage?.title}
                 id="new-advice-item"
                 required
                 label={<Trans i18nKey="title" />}
@@ -177,8 +177,8 @@ const AdviceListNewForm = ({
                   background: "#fff",
                 }}
               />
-              {errormessage.title && (
-                <FormHelperText error>{t(errormessage.title)}</FormHelperText>
+              {errormessage?.title && (
+                <FormHelperText error>{t(errormessage?.title)}</FormHelperText>
               )}
             </Grid>
             <Grid
@@ -264,8 +264,8 @@ const AdviceListNewForm = ({
               />
             </Box>
           </FormProviderWithForm>
-          {errormessage.description && (
-            <FormHelperText error>{t(errormessage.description)}</FormHelperText>
+          {errormessage?.description && (
+            <FormHelperText error>{t(errormessage?.description)}</FormHelperText>
           )}
         </Box>
 

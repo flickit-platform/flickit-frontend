@@ -296,7 +296,7 @@ const AssessmentReportContainer = (props: any) => {
                       marginX={4}
                       variant="titleMedium"
                     >
-                      <Trans i18nKey="assessmentKit" values={{ title: "" }} />
+                      <Trans i18nKey="assessmentKit" />
                     </Typography>
                     <AssessmentReportKit assessmentKit={assessmentKit} />
                   </Box>
