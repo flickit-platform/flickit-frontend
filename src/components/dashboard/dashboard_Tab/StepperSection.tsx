@@ -189,13 +189,13 @@ const StepBox = (props: IStepBox) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "1px",
+            gap: "4px",
           }}
         >
           <Typography
             sx={{ ...theme.typography.labelMedium, color: "#2D80D2" }}
           >
-            {Math.floor((100 * answered) / total)}%
+            {Math.floor((100 * answered) / total)} %
           </Typography>
           <Typography
             sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
@@ -242,7 +242,7 @@ const StepBox = (props: IStepBox) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "1px",
+            gap: "4px",
           }}
         >
           <Typography
@@ -326,7 +326,7 @@ const StepBox = (props: IStepBox) => {
           mb: "36px",
         }}
       >
-        {questions && <Trans i18nKey={"answeredQuestions"} />}
+        {questions && <Trans i18nKey={"answeredQuestionsTitle"} />}
         {insights && <Trans i18nKey={"submittedInsights"} />}
         {advices && <Trans i18nKey={"suggestedAdvices"} />}
       </Typography>
