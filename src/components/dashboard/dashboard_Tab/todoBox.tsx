@@ -189,17 +189,23 @@ const IssuesItem = (props: any) => {
         }}
       >
         {value != 0 ? <Box>{value}</Box> : null}
-        {name == "unanswered" && <Trans i18nKey={"waitingForAnswers"} />}
+        {name == "unanswered" && (
+            value > 1 ? <Trans i18nKey={"needForAnswers"} />  :  <Trans i18nKey={"needsForAnswer"} />) }
         {name == "hasLowConfidence" && (
-          <Trans i18nKey={"waitingVeryLowConfidence"} />
+            value > 1  ?  <Trans i18nKey={"questionsConfidenceAnswers"} /> :  <Trans i18nKey={"questionConfidenceAnswer"} />
         )}
-        {name == "hasNoEvidence" && <Trans i18nKey={"waitingForEvidences"} />}
+        {name == "hasNoEvidence" && (
+            value > 1  ?  <Trans i18nKey={"lackForEvidences"} /> :  <Trans i18nKey={"lackForEvidence"} />
+        ) }
         {name == "hasUnresolvedComments" && (
-          <Trans i18nKey={"waitingUnresolvedComments"} />
+            value > 1  ?  <Trans i18nKey={"UnresolvedComments"} /> : <Trans i18nKey={"UnresolvedComment"} />
         )}
         {name == "notGenerated" && <Trans i18nKey={"insightsNeedToBeGenerated"} />}
-        {name == "unapproved" && <Trans i18nKey={"insightsNeedApprovement"} />}
-        {name == "expired" && <Trans i18nKey={"expiredDueToNewAnswers"} />}
+        {name == "unapproved" && (
+            value > 1  ? <Trans i18nKey={"insightsNeedApprovement"} />  :  <Trans i18nKey={"insightNeedApprovement"} />)}
+        {name == "expired" && (
+            value > 1  ? <Trans i18nKey={"expiredDueToNewAnswers"} /> :  <Trans i18nKey={"expiredDueToNewAnswer"} />
+        ) }
         {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}
       </Typography>
     </Box>
