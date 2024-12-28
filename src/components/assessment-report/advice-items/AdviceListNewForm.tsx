@@ -52,7 +52,7 @@ const AdviceListNewForm = ({
   errormessage,
 }: IAdviceListProps) => {
   const formMethods = useForm({ shouldUnregister: true });
-  const selectAdvice = ["cost", "impact", "priority"];
+  const selectAdvice = ["priority", "impact", "cost"];
   const { service } = useServiceContext();
   const [adviceOption, setAdviceOption] = useState<any>({
     impact: [],
@@ -261,11 +261,14 @@ const AdviceListNewForm = ({
                 defaultValue={newAdvice.description}
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
+                errorMessage={errormessage?.description}
               />
             </Box>
           </FormProviderWithForm>
           {errormessage?.description && (
-            <FormHelperText error>{t(errormessage?.description)}</FormHelperText>
+            <FormHelperText error>
+              {t(errormessage?.description)}
+            </FormHelperText>
           )}
         </Box>
 

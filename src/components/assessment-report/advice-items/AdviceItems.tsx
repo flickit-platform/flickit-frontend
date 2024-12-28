@@ -87,6 +87,8 @@ const AdviceItems = () => {
 
   const handleCancel = () => {
     setShowNewAdviceListForm(false);
+    setErrorMessage({});
+
     removeDescriptionAdvice.current = true;
     setNewAdvice({
       ...newAdvice,
