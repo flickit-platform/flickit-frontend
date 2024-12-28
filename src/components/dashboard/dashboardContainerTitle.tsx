@@ -37,7 +37,7 @@ const DashboardTitle = (props: any) => {
                             to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
                         },
                         {
-                            title: t("dashboard") as string,
+                            title: `${assessment?.title} ${t("dashboard")}`,
                         },
                     ]}
                     displayChip

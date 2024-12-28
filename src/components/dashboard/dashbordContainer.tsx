@@ -44,7 +44,7 @@ const DashbordContainer = () => {
                   textAlign="left"
                   variant="headlineLarge"
                 >
-                  <Trans i18nKey="dashboard" />
+                    {pathInfo?.assessment?.title}
                 </Typography>
               </Grid>
               <Grid container sm={12} xs={12}>
