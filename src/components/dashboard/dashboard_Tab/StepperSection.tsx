@@ -110,16 +110,20 @@ const StepBox = (props: IStepBox) => {
   let content;
 
   const issuesTag = (
-    <Chip
-      label={`  ${calcOfIssues()}  ` + t(( Boolean(calcOfIssues()) && calcOfIssues() > 1) ? "issues" : "issue").toUpperCase()}
-      size="small"
-      sx={{
-        ...theme.typography.labelMedium,
-        color: "#B8144B",
-        background: "#FCE8EF",
-        direction: theme.direction
-      }}
-    />
+      <>
+          {!!calcOfIssues() &&
+              <Chip
+                  label={`  ${calcOfIssues()}  ` + t(calcOfIssues() > 1 ? "issues" : "issue").toUpperCase()}
+                  size="small"
+                  sx={{
+                      ...theme.typography.labelMedium,
+                      color: "#B8144B",
+                      background: "#FCE8EF",
+                      direction: theme.direction
+                  }}
+              />
+          }
+      </>
   );
   const currentTag = (
     <Chip
