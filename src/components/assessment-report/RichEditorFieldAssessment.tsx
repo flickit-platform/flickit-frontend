@@ -44,6 +44,7 @@ const RichEditorFieldBase = (props: any) => {
     setLangDir,
     setNewAdvice,
     removeDescriptionAdvice,
+    errorMessage
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
@@ -51,7 +52,7 @@ const RichEditorFieldBase = (props: any) => {
   const {
     formState: { errors },
   } = useFormContext();
-  const { hasError, errorMessage } = getFieldError(errors, name);
+  const { hasError } = getFieldError(errors, name);
   const show_label = disable_label ? false : true;
   
   return (
@@ -78,7 +79,7 @@ const RichEditorFieldBase = (props: any) => {
           marginTop: shrink ? 0 : 0.8,
         },
       }}
-      error={hasError}
+      error={errorMessage}
     >
       {show_label && (
         <InputLabel
@@ -95,7 +96,7 @@ const RichEditorFieldBase = (props: any) => {
         className={
           "MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSizeSmall" +
           (focus ? " Mui-focused" : "") +
-          (hasError ? " Mui-error" : "")
+          (hasError || errorMessage ? " Mui-error" : "")
         }
         defaultValue={defaultValue}
         field={field}
@@ -105,7 +106,6 @@ const RichEditorFieldBase = (props: any) => {
         removeDescriptionAdvice={removeDescriptionAdvice}
         fieldLabel={label}
       />
-      <FormHelperText>{errorMessage as string}</FormHelperText>
     </FormControl>
   );
 };

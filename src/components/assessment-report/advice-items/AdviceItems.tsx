@@ -87,6 +87,8 @@ const AdviceItems = () => {
 
   const handleCancel = () => {
     setShowNewAdviceListForm(false);
+    setErrorMessage({});
+
     removeDescriptionAdvice.current = true;
     setNewAdvice({
       ...newAdvice,
@@ -100,7 +102,7 @@ const AdviceItems = () => {
 
   const handleAddNewRow = () => {
     handleCancel();
-    setShowNewAdviceListForm(true);
+    setShowNewAdviceListForm(!showNewAdviceListForm);
     removeDescriptionAdvice.current = true;
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

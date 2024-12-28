@@ -9,7 +9,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   CircularProgress,
   FormHelperText,
+  InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   Typography,
 } from "@mui/material";
@@ -52,7 +54,7 @@ const AdviceListNewForm = ({
   errormessage,
 }: IAdviceListProps) => {
   const formMethods = useForm({ shouldUnregister: true });
-  const selectAdvice = ["cost", "impact", "priority"];
+  const selectAdvice = ["priority", "impact", "cost"];
   const { service } = useServiceContext();
   const [adviceOption, setAdviceOption] = useState<any>({
     impact: [],
@@ -196,6 +198,10 @@ const AdviceListNewForm = ({
               {selectAdvice?.map((item: any, index) => {
                 return (
                   <FormControl key={item} sx={{ width: "30%" }}>
+                    <InputLabel id="demo-multiple-name-label">
+                      {" "}
+                      <Trans i18nKey={item} />
+                    </InputLabel>
                     <Select
                       size="small"
                       labelId={`${item}-select-label`}
@@ -204,6 +210,7 @@ const AdviceListNewForm = ({
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
+                      input={<OutlinedInput label="Name" />}
                       onChange={(e) => handleInputChange(e)}
                       sx={{
                         fontSize: "14px",
@@ -261,11 +268,14 @@ const AdviceListNewForm = ({
                 defaultValue={newAdvice.description}
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
+                errorMessage={errormessage?.description}
               />
             </Box>
           </FormProviderWithForm>
           {errormessage?.description && (
-            <FormHelperText error>{t(errormessage?.description)}</FormHelperText>
+            <FormHelperText error>
+              {t(errormessage?.description)}
+            </FormHelperText>
           )}
         </Box>
 
