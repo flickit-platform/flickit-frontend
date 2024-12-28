@@ -273,12 +273,12 @@ const AdviceItemAccordion: React.FC<{
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                       wordBreak: "break-word",
-                      marginRight: "8px",
+                      marginInline: "8px",
                     }}
                     title={item.title}
-                    dir={languageDetector(item.description) ? "rtl" : "ltr"}
+                    dir={languageDetector(item.title) ? "rtl" : "ltr"}
                     fontFamily={
-                      languageDetector(item.description)
+                      languageDetector(item.title)
                         ? farsiFontFamily
                         : primaryFontFamily
                     }
