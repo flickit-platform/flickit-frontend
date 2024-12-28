@@ -96,7 +96,6 @@ const OptionForm = ({
         <TextField
           required
           id="new-maturity"
-          type="number"
           name="value"
           value={newItem.value}
           onChange={handleInputChange}
