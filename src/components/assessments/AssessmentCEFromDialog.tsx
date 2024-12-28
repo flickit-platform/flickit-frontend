@@ -275,7 +275,7 @@ const AssessmentKitField = ({
       required={true}
       defaultValue={staticData ?? defaultValue}
       disabled={!!staticData || !!defaultValue}
-      label={<Trans i18nKey="assessmentKit" values={{ title: "" }} />}
+      label={<Trans i18nKey="assessmentKit" />}
       data-cy="assessment_kit"
     />
   );

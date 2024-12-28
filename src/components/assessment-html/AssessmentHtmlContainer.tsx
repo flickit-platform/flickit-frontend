@@ -166,7 +166,7 @@ const AssessmentExportContainer = () => {
           <Box sx={{ ...styles.centerVH, gap: 0.5 }}>
             <DesignServicesIcon fontSize="small" color="primary" />
             <Trans
-              i18nKey="assessmentKit"
+              i18nKey="assessmentKitWithTitle"
               values={{ title: jsonData?.assessment.assessmentKit.title }}
             />
           </Box>
