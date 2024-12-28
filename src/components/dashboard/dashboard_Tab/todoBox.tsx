@@ -191,13 +191,13 @@ const IssuesItem = (props: any) => {
         {value != 0 ? <Box>{value}</Box> : null}
         {name == "unanswered" && (
             value > 1 ? <Trans i18nKey={"needForAnswers"} />  :  <Trans i18nKey={"needsForAnswer"} />) }
-        {name == "hasLowConfidence" && (
+        {name == "answeredWithLowConfidence" && (
             value > 1  ?  <Trans i18nKey={"questionsConfidenceAnswers"} /> :  <Trans i18nKey={"questionConfidenceAnswer"} />
         )}
-        {name == "hasNoEvidence" && (
+        {name == "withoutEvidence" && (
             value > 1  ?  <Trans i18nKey={"lackForEvidences"} /> :  <Trans i18nKey={"lackForEvidence"} />
         ) }
-        {name == "hasUnresolvedComments" && (
+        {name == "unresolvedComments" && (
             value > 1  ?  <Trans i18nKey={"UnresolvedComments"} /> : <Trans i18nKey={"UnresolvedComment"} />
         )}
         {name == "notGenerated" && <Trans i18nKey={"insightsNeedToBeGenerated"} />}

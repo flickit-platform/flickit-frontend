@@ -45,7 +45,7 @@ const DashboardTab = () => {
             metrics: Object.fromEntries(
               Object.entries(item.metrics).filter(
                 ([key, value]) =>
-                  (key !== "total" && key !== "answered" && value) ||
+                  (key !== "total" && key !== "answered" &&  key !== "expected" && value  ) ||
                   (key === "total" &&
                     item.category === "advices" &&
                     value === 0),

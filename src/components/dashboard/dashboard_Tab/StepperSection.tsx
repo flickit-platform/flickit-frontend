@@ -100,7 +100,7 @@ const StepBox = (props: IStepBox) => {
       ).length;
     } else if (insights) {
       return Object.keys(metrics).filter(
-        (item) => item != "total" && metrics[item],
+        (item) => item != "expected" && metrics[item],
       ).length;
     } else if (advices) {
       return Object.keys(metrics).filter((item) => item).length;
@@ -147,14 +147,14 @@ const StepBox = (props: IStepBox) => {
   if (questions) {
     const {
       answered,
-      hasLowConfidence,
-      hasNoEvidence,
-      hasUnresolvedComments,
+      answeredWithLowConfidence,
+      withoutEvidence,
+      unresolvedComments,
       total,
       unanswered,
     } = metrics;
     const hasIssues =
-      hasLowConfidence || hasNoEvidence || hasUnresolvedComments || unanswered;
+      answeredWithLowConfidence || withoutEvidence || unresolvedComments || unanswered;
     const completed = answered == total;
     if (completed && activeStep == 0) {
       setActiveStep((prev: number) => prev + 1);
@@ -208,10 +208,10 @@ const StepBox = (props: IStepBox) => {
   }
 
   if (insights) {
-    const { unapproved, expired, notGenerated, total } = metrics;
+    const { unapproved, expired, notGenerated, expected } = metrics;
     const hasIssues = unapproved || expired || notGenerated;
-    const result = (total - (notGenerated + expired));
-    const completed = activeStep >= 1 && total == result;
+    const result = (expected - (notGenerated + expired));
+    const completed = activeStep >= 1 && expected == result;
 
     if (completed && activeStep == 1) {
       setActiveStep((prev: number) => prev + 1);
@@ -229,7 +229,7 @@ const StepBox = (props: IStepBox) => {
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
           <Typography sx={{ ...theme.typography.headlineLarge }}>
-            {`${result} / ${total}`}
+            {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
@@ -248,12 +248,12 @@ const StepBox = (props: IStepBox) => {
           <Typography
             sx={{ ...theme.typography.labelMedium, color: "#2D80D2" }}
           >
-            {Math.floor((100 * result) / total)}%
+            {Math.floor((100 * result) / expected)}%
           </Typography>
           <Typography
             sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
           >
-            {t("totalInsightsCount", { countInsights: total })}
+            {t("totalInsightsCount", { countInsights: expected })}
           </Typography>
         </Box>
       </Box>
