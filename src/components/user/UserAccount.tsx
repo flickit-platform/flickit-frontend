@@ -16,8 +16,19 @@ import IconButton from "@mui/material/IconButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { useEffect, useState } from "react";
 import { theme } from "@/config/theme";
+import CircularProgress from "@mui/material/CircularProgress";
+import Tooltip from "@mui/material/Tooltip";
+// import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import toastError from "@utils/toastError";
+import formatBytes from "@utils/formatBytes";
+import {ICustomError} from "@utils/CustomError";
 
 const UserAccount = () => {
+  const [hover, setHover] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [profilePicture, setProfilePicture] = useState("");
   const { dispatch } = useAuthContext();
   const { service } = useServiceContext();
   const userQueryData = useQuery({
@@ -33,8 +44,11 @@ const UserAccount = () => {
     bio: undefined,
   });
   useEffect(() => {
-    setUserInfo(userQueryData.data);
-  }, [userQueryData.loaded]);
+      setUserInfo(userQueryData.data);
+      if(userInfo?.pictureLink){
+          setProfilePicture(userInfo?.pictureLink)
+      }
+  }, [userQueryData.loaded,userInfo?.pictureLink]);
   const dialogProps = useDialog();
   useDocumentTitle(`${t("userProfileT")}: ${getUserName(userInfo)}`);
 
@@ -47,6 +61,32 @@ const UserAccount = () => {
     dialogProps.openDialog({ type: "update", data: userInfo });
   };
 
+    const handleFileChange = async (event: any) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            const maxSize = 2097152;
+            if (file.size > maxSize) {
+                toastError(`Maximum upload file size is ${formatBytes(maxSize)}.`);
+                return;
+            }
+            setHover(false);
+            setIsLoading(true);
+            try {
+                const pictureData = { pictureFile: file };
+                const res = await service.updateUserProfilePicture(
+                    { data: pictureData },
+                    undefined,
+                );
+                setProfilePicture(res.data.pictureLink);
+                setIsLoading(false);
+            } catch (e: any) {
+                setIsLoading(false);
+                toastError(e as ICustomError);
+            }
+        }
+    };
   return (
     <Box>
       <Box
@@ -57,17 +97,119 @@ const UserAccount = () => {
           background: "linear-gradient(145deg, #efaa9d, #ccf7f9)",
         }}
       >
-        <Box position={"relative"} top="168px" left="24px">
-          <Avatar
-            sx={{
-              width: "94px",
-              height: "94px",
-              border: "4px solid whitesmoke",
-            }}
-            alt={userInfo?.displayName}
-            src={userInfo?.pictureLink || "/"}
-          />
-        </Box>
+          <Box
+              position="relative"
+              display="inline-block"
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              sx={{
+                  marginRight: theme.direction === "ltr" ? 1 : "unset",
+                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  top:"168px",
+                  left:"24px",
+              }}
+          >
+              <Avatar
+                  sx={{
+                      bgcolor: (t) => t.palette.grey[800],
+                      textDecoration: "none",
+                      border: "4px solid whitesmoke",
+                      width: "94px",
+                      height: "94px",
+                      position: "relative",
+                  }}
+              alt={userInfo?.displayName}
+              src={profilePicture || "/"}
+              >
+                  {profilePicture && !hover && profilePicture?.[0]?.toUpperCase()}
+              </Avatar>
+              {isLoading && (
+                  <CircularProgress
+                      size={24}
+                      sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: theme.direction === "ltr" ? "50%" : "unset",
+                          right: theme.direction === "rtl" ? "50%" : "unset",
+                          marginTop: "-12px",
+                          marginLeft: theme.direction === "ltr" ? "-12px" : "unset",
+                          marginRight: theme.direction === "rtl" ? "-12px" : "unset",
+                      }}
+                  />
+              )}
+              {!isLoading && (
+                  <Box
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      borderRadius="50%"
+                  >
+                      {hover && (
+                          <Box
+                              position="absolute"
+                              top={0}
+                              left={0}
+                              width="100%"
+                              height="100%"
+                              bgcolor="rgba(0, 0, 0, 0.6)"
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              borderRadius="50%"
+                              sx={{ cursor: "pointer",   border: "4px solid whitesmoke", }}
+                          />
+                      )}
+                      {profilePicture ? (
+                          <>
+                              {/*<Tooltip title={"Delete Picture"}>*/}
+                              {/*    <IconButton*/}
+                              {/*        component="label"*/}
+                              {/*        sx={{ padding: 0, color: "whitesmoke" }}*/}
+                              {/*    >*/}
+                              {/*        {hover && (*/}
+                              {/*            <DeleteIcon*/}
+                              {/*                onClick={deletePicture}*/}
+                              {/*                sx={{ color: "whitesmoke" }}*/}
+                              {/*            />*/}
+                              {/*        )}*/}
+                              {/*    </IconButton>*/}
+                              {/*</Tooltip>*/}
+                              <Tooltip title={"Edit Picture"}>
+                                  <IconButton
+                                      component="label"
+                                      sx={{ padding: 0, color: "whitesmoke" }}
+                                  >
+                                      {hover && <EditIcon />}
+                                      <input
+                                          type="file"
+                                          accept="image/*"
+                                          onChange={handleFileChange}
+                                          hidden
+                                      />
+                                  </IconButton>
+                              </Tooltip>
+                          </>
+                      ) : (
+                          <Tooltip title={"Add Picture"}>
+                              <IconButton component="label" sx={{ color: "whitesmoke" }}>
+                                  {hover && <AddIcon />}
+                                  <input
+                                      type="file"
+                                      accept="image/*"
+                                      onChange={handleFileChange}
+                                      hidden
+                                  />
+                              </IconButton>
+                          </Tooltip>
+                      )}
+                  </Box>
+              )}
+          </Box>
       </Box>
       <Box
         ml={theme.direction === "ltr" ? "130px" : "unset"}
