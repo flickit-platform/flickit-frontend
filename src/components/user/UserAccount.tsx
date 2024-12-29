@@ -27,7 +27,6 @@ import {ICustomError} from "@utils/CustomError";
 const UserAccount = () => {
     const [hover, setHover] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [profilePicture, setProfilePicture] = useState("");
     const {dispatch} = useAuthContext();
     const {service} = useServiceContext();
     const userQueryData = useQuery({
@@ -44,10 +43,8 @@ const UserAccount = () => {
     });
     useEffect(() => {
         setUserInfo(userQueryData.data);
-        if (userInfo?.pictureLink) {
-            setProfilePicture(userInfo?.pictureLink)
-        }
-    }, [userQueryData.loaded, userInfo?.pictureLink]);
+    }, [userQueryData.loaded]);
+
     const dialogProps = useDialog();
     useDocumentTitle(`${t("userProfileT")}: ${getUserName(userInfo)}`);
 
@@ -74,12 +71,12 @@ const UserAccount = () => {
             setIsLoading(true);
             try {
                 const pictureData = {pictureFile: file};
-                const res = await service.updateUserProfilePicture(
+                await service.updateUserProfilePicture(
                     {data: pictureData},
                     undefined,
                 );
-                setProfilePicture(res.data.pictureLink);
                 setIsLoading(false);
+                onSubmit().then()
             } catch (e: any) {
                 setIsLoading(false);
                 toastError(e as ICustomError);
@@ -118,9 +115,9 @@ const UserAccount = () => {
                             position: "relative",
                         }}
                         alt={userInfo?.displayName}
-                        src={profilePicture || "/"}
+                        src={userInfo?.pictureLink || "/"}
                     >
-                        {profilePicture && !hover && profilePicture?.[0]?.toUpperCase()}
+
                     </Avatar>
                     {isLoading && (
                         <CircularProgress
@@ -163,7 +160,7 @@ const UserAccount = () => {
                                     sx={{cursor: "pointer", border: "4px solid whitesmoke",}}
                                 />
                             )}
-                            {profilePicture ? (
+                            {userInfo?.pictureLink ? (
                                 <Tooltip title={"Edit Picture"}>
                                     <IconButton
                                         component="label"
