@@ -120,7 +120,7 @@ const Routes = () => {
             element={<AssessmentHTMLDocumentScreen />}
           />
           <Route
-              path="/:spaceId/assessments/:page/:assessmentId/dashboard"
+              path="/:spaceId/assessments/:page/:assessmentId/assessment-dashboard"
               element={<AssessmentDashboardScreen />}
           />
           <Route

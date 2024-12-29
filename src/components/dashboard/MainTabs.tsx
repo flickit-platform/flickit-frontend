@@ -5,17 +5,18 @@ import { uniqueId } from "lodash";
 import { theme } from "@config/theme";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
+import {Link, useParams} from "react-router-dom";
 
 const MainTabs = (props: any) => {
   const { onTabChange, selectedTab } = props;
 
   const tabListTitle = [
-    "dashboard",
-    "questions",
-    "insights",
-    "reportTitle",
-    "advices",
-    "settings",
+    { label: "dashboard", address: "assessment-dashboard" },
+    { label: "questions", address: "assessment-questions" },
+    { label: "insights", address: "assessment-insights" },
+    { label: "reportTitle", address: "assessment-report" },
+    { label: "advices", address: "assessment-advices" },
+    { label: "settings", address: "assessment-settings" },
   ];
 
   return (
@@ -47,11 +48,11 @@ const MainTabs = (props: any) => {
           },
         }}
       >
-        {tabListTitle.map((title: any) => {
+        {tabListTitle.map((tab: any) => {
           return (
             <Tab
               key={uniqueId()}
-              disabled={title != "dashboard"}
+              disabled={!(tab.label == "dashboard" || tab.label == "settings")}
               sx={{
                 ...theme.typography.semiBoldLarge,
                 flexGrow: 1,
@@ -72,18 +73,20 @@ const MainTabs = (props: any) => {
                 },
               }}
               label={
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography variant="semiBoldLarge">
-                    <Trans i18nKey={title} />
-                  </Typography>
-                </Box>
+                <Link style={{ all: "unset" }} to={`./../${tab.address}/`}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <Typography variant="semiBoldLarge">
+                      <Trans i18nKey={tab.label} />
+                    </Typography>
+                  </Box>
+                </Link>
               }
             />
           );

@@ -11,6 +11,7 @@ import { PathInfo } from "@types";
 import { useParams } from "react-router-dom";
 import DashboardTab from "@components/dashboard/dashboard_Tab/dashboardTab";
 import MainTabs from "@/components/dashboard/MainTabs";
+import AssessmentSettingContainer from "@components/dashboard/settings_Tab/AssessmentSettingContainer";
 
 const DashbordContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -61,14 +62,9 @@ const DashbordContainer = () => {
                 <Grid
                   item
                   xs={12}
-                  sx={{
-                    height: "100%",
-                    background: "#F9FAFB",
-                    border: "2px solid #C7CCD1",
-                    borderRadius: "1rem",
-                  }}
                 >
                   {selectedTab === 0 && <DashboardTab />}
+                  {selectedTab === 5 && <AssessmentSettingContainer />}
                 </Grid>
               </Grid>
             </Grid>
