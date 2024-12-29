@@ -5,7 +5,7 @@ import { uniqueId } from "lodash";
 import { theme } from "@config/theme";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
-import {Link, useParams} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MainTabs = (props: any) => {
   const { onTabChange, selectedTab } = props;
@@ -52,6 +52,8 @@ const MainTabs = (props: any) => {
           return (
             <Tab
               key={uniqueId()}
+              to={`./${tab.address}/`}
+              component={Link}
               disabled={!(tab.label == "dashboard" || tab.label == "settings")}
               sx={{
                 ...theme.typography.semiBoldLarge,
@@ -73,20 +75,18 @@ const MainTabs = (props: any) => {
                 },
               }}
               label={
-                <Link style={{ all: "unset" }} to={`./../${tab.address}/`}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <Typography variant="semiBoldLarge">
-                      <Trans i18nKey={tab.label} />
-                    </Typography>
-                  </Box>
-                </Link>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Typography variant="semiBoldLarge">
+                    <Trans i18nKey={tab.label} />
+                  </Typography>
+                </Box>
               }
             />
           );

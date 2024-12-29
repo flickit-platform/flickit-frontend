@@ -8,15 +8,14 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@types";
-import { useParams } from "react-router-dom";
-import DashboardTab from "@components/dashboard/dashboard_Tab/dashboardTab";
+import {useOutlet, useParams} from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
-import AssessmentSettingContainer from "@components/dashboard/settings_Tab/AssessmentSettingContainer";
 
 const DashbordContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
+  const outlet = useOutlet()
 
   const handleTabChange = (event: any, newValue: any) => {
     setSelectedTab(newValue);
@@ -63,8 +62,7 @@ const DashbordContainer = () => {
                   item
                   xs={12}
                 >
-                  {selectedTab === 0 && <DashboardTab />}
-                  {selectedTab === 5 && <AssessmentSettingContainer />}
+                  {outlet}
                 </Grid>
               </Grid>
             </Grid>

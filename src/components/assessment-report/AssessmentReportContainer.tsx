@@ -167,7 +167,7 @@ const AssessmentReportContainer = (props: any) => {
                           <IconButton
                             data-cy="more-action-btn"
                             component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/assessment-dashboard`}
+                            to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/assessment-dashboard`}
                           >
                             <Dashboard
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
