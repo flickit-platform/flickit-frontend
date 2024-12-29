@@ -187,7 +187,7 @@ const AssessmentReportContainer = (props: any) => {
                             data-cy="more-action-btn"
                             disabled={!manageable}
                             component={manageable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/assessment-settings/`}
+                            to={`/${spaceId}/assessments/1/${assessmentId}/settings/`}
                           >
                             <SettingsIcon
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}

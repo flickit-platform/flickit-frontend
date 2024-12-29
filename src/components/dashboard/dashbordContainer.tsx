@@ -16,7 +16,7 @@ const DashbordContainer = () => {
   const pathSegments = location.pathname.split('/').filter(segment => segment);
   const lastPart = pathSegments[pathSegments.length - 1];
 
-  const [selectedTab, setSelectedTab] = useState(lastPart || "assessment-dashboard");
+  const [selectedTab, setSelectedTab] = useState(lastPart || "dashboard");
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const outlet = useOutlet()
