@@ -84,38 +84,43 @@ const QuestionsTitle = (props: {
             )}
           </Box>
         }
-        backLink={"/"}
-        sup={
-          <SupTitleBreadcrumb
-            routes={[
-              {
-                title: space?.title,
-                to: `/${spaceId}/assessments/${page}`,
-                // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
-              },
-              {
-                title: `${assessment?.title} ${t("questionnaires")}`,
-                to: `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires`,
-                // icon: (
-                //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-                // ),
-              },
-              {
-                title: questionnaire?.title,
-                to: `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires`,
-                // icon: <QuizRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
-              },
-            ]}
-          />
-        }
+        // backLink={"/"}
+        // sup={
+        //   <SupTitleBreadcrumb
+        //     routes={[
+        //       {
+        //         title: space?.title,
+        //         to: `/${spaceId}/assessments/${page}`,
+        //         // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
+        //       },
+        //       {
+        //         title: `${assessment?.title} ${t("questionnaires")}`,
+        //         to: `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires`,
+        //         // icon: (
+        //         //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
+        //         // ),
+        //       },
+        //       {
+        //         title: questionnaire?.title,
+        //         to: `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires`,
+        //         // icon: <QuizRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
+        //       },
+        //     ]}
+        //   />
+        // }
       >
         {isReview ? (
-          <div style={{display:"flex", flexDirection: theme.direction === "rtl" ? "row-reverse" : "row"}}>
-            {questionnaire?.title}
-            <div style={{ marginInline: 4 }}></div>
-            <Title size="large">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: theme.direction === "rtl" ? "row-reverse" : "row",
+            }}
+          >
+            {/* {questionnaire?.title}
+            <div style={{ marginInline: 4 }}></div> */}
+            {/* <Title size="large">
               <Trans i18nKey="review" />
-            </Title>
+            </Title> */}
           </div>
         ) : (
           <>
@@ -130,7 +135,7 @@ const QuestionsTitle = (props: {
               />
             )}
             <Box display="block">
-              {questionnaire?.title}{" "}
+              {/* {questionnaire?.title}{" "} */}
               {assessmentStatus === EAssessmentStatus.DONE ? (
                 <Typography
                   display="inline-flex"
@@ -149,8 +154,10 @@ const QuestionsTitle = (props: {
                   display="inline-block"
                   variant="h5"
                   fontWeight={"bold"}
-                  sx={{ opacity: 0.6, ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
-                  mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset"
+                  sx={{
+                    opacity: 0.6,
+                    ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
+                    mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
                   }}
                 >
                   {" "}

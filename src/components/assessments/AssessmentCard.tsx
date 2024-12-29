@@ -145,7 +145,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               component={Link}
               to={
                 isCalculateValid && viewable
-                  ? `${item.id}/dashboard/assessment-insights`
+                  ? `${item.id}/insights`
                   : `${item.id}/questionnaires`
               }
             >
@@ -208,7 +208,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             component={Link}
             to={
               hasML && viewable
-                ? `${item.id}/dashboard/assessment-insights`
+                ? `${item.id}/insights`
                 : `${item.id}/questionnaires`
             }
           >
@@ -301,7 +301,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 }
               }}
               component={Link}
-              to={hasML && viewable ? `${item.id}/dashboard/assessment-insights` : ""}
+              to={hasML && viewable ? `${item.id}/insights` : ""}
               sx={{
                 backgroundColor: "#2e7d72",
                 background: viewable ? `#01221e` : "rgba(0,59,100, 12%)",
@@ -351,7 +351,7 @@ const Actions = (props: {
   };
 
   const assessmentSetting = (e: any) => {
-    navigate(`${item.id}/dashboard/assessment-settings/`, {
+    navigate(`${item.id}/settings/`, {
       state: item?.color || { code: "#073B4C", id: 6 },
     });
   };

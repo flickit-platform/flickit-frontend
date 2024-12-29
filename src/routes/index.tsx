@@ -21,9 +21,7 @@ const AssessmentHTMLDocumentScreen = lazy(
 const AssessmentDashboardScreen = lazy(
   () => import("../screens/AssessmentDashboardScreen"),
 );
-const DashboardScreen = lazy(
-  () => import("../screens/DashboardScreen"),
-);
+const DashboardScreen = lazy(() => import("../screens/DashboardScreen"));
 const AssessmentDocumentScreen = lazy(
   () => import("../screens/AssessmentDocumentScreen"),
 );
@@ -120,50 +118,50 @@ const Routes = () => {
             element={<AssessmentHTMLDocumentScreen />}
           />
           <Route
-              path="/:spaceId/assessments/:page/:assessmentId/dashboard/"
-              element={<DashboardScreen />}
+            path="/:spaceId/assessments/:page/:assessmentId/"
+            element={<DashboardScreen />}
           >
             <Route
-                path="assessment-dashboard/"
-                element={<AssessmentDashboardScreen />}
+              path="dashboard/"
+              element={<AssessmentDashboardScreen />}
             />
             <Route
-                path="assessment-settings/"
-                element={<AssessmentSettingScreen />}
+              path="settings/"
+              element={<AssessmentSettingScreen />}
             />
             <Route
-                path="assessment-insights/"
-                element={<AssessmentReportScreen />}
+              path="insights/"
+              element={<AssessmentReportScreen />}
             />
+            <Route
+              path="insights/:subjectId"
+              element={<SubjectReportScreen />}
+            />
+            <Route
+              path="questionnaires/:questionIndex"
+              element={<QuestionnairesScreen />}
+            />
+            <Route
+              path="questionnaires/"
+              element={<QuestionnairesScreen />}
+            />
+            <Route
+              path="questionnaires/:questionnaireId/review"
+              element={<QuestionsReviewScreen />}
+            />
+            <Route
+              path="questionnaires/:questionnaireId"
+              element={<QuestionsScreen />}
+            >
+              <Route path="" element={<QuestionScreen />} />
+              <Route path=":questionIndex" element={<QuestionScreen />} />
+            </Route>
           </Route>
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/advice"
             element={<AssessmentAdviceScreen />}
           />
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/dashboard/assessment-insights/:subjectId"
-            element={<SubjectReportScreen />}
-          />
           {/* Questionnaires and questions related routes */}
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/questionnaires/:questionIndex"
-            element={<QuestionnairesScreen />}
-          />
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/questionnaires/"
-            element={<QuestionnairesScreen />}
-          />
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/questionnaires/:questionnaireId/review"
-            element={<QuestionsReviewScreen />}
-          />
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/questionnaires/:questionnaireId"
-            element={<QuestionsScreen />}
-          >
-            <Route path="" element={<QuestionScreen />} />
-            <Route path=":questionIndex" element={<QuestionScreen />} />
-          </Route>
 
           {/* Assessment kits related routes */}
           <Route path="/assessment-kits" element={<AssessmentKitsScreen />} />

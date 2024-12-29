@@ -11,12 +11,12 @@ const MainTabs = (props: any) => {
   const { onTabChange, selectedTab } = props;
 
   const tabListTitle = [
-    { label: "dashboard", address: "assessment-dashboard" },
-    { label: "questions", address: "assessment-questions" },
-    { label: "insights", address: "assessment-insights" },
-    { label: "reportTitle", address: "assessment-report" },
-    { label: "advices", address: "assessment-advices" },
-    { label: "settings", address: "assessment-settings" },
+    { label: "dashboard", address: "dashboard" },
+    { label: "questions", address: "questionnaires" },
+    { label: "insights", address: "insights" },
+    { label: "reportTitle", address: "report" },
+    { label: "advices", address: "advices" },
+    { label: "settings", address: "settings" },
   ];
 
   return (
@@ -52,9 +52,9 @@ const MainTabs = (props: any) => {
           return (
             <Tab
               key={uniqueId()}
+              disabled={tab.label === "reportTitle" || tab.label === "advices"}
               to={`./${tab.address}/`}
               component={Link}
-              disabled={!(tab.label == "dashboard" || tab.label == "settings"|| tab.label == "insights")}
               value={tab.address}
               sx={{
                 ...theme.typography.semiBoldLarge,
