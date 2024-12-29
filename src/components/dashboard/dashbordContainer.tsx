@@ -8,14 +8,18 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@types";
-import { useParams } from "react-router-dom";
-import DashboardTab from "@components/dashboard/dashboard_Tab/dashboardTab";
+import {useLocation, useOutlet, useParams} from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 
 const DashbordContainer = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(segment => segment);
+  const lastPart = pathSegments[pathSegments.length - 1];
+
+  const [selectedTab, setSelectedTab] = useState(lastPart || "assessment-dashboard");
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
+  const outlet = useOutlet()
 
   const handleTabChange = (event: any, newValue: any) => {
     setSelectedTab(newValue);
@@ -61,14 +65,8 @@ const DashbordContainer = () => {
                 <Grid
                   item
                   xs={12}
-                  sx={{
-                    height: "100%",
-                    background: "#F9FAFB",
-                    border: "2px solid #C7CCD1",
-                    borderRadius: "1rem",
-                  }}
                 >
-                  {selectedTab === 0 && <DashboardTab />}
+                  {outlet}
                 </Grid>
               </Grid>
             </Grid>

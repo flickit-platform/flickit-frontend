@@ -19,6 +19,9 @@ const AssessmentHTMLDocumentScreen = lazy(
   () => import("../screens/HtmlDocumentScreen"),
 );
 const AssessmentDashboardScreen = lazy(
+  () => import("../screens/AssessmentDashboardScreen"),
+);
+const DashboardScreen = lazy(
   () => import("../screens/DashboardScreen"),
 );
 const AssessmentDocumentScreen = lazy(
@@ -107,10 +110,7 @@ const Routes = () => {
             path="/:spaceId/assessments/:page"
             element={<AssessmentsScreen />}
           />
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/assessment-settings/"
-            element={<AssessmentSettingScreen />}
-          />
+
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/assessment-document/"
             element={<AssessmentDocumentScreen />}
@@ -120,9 +120,19 @@ const Routes = () => {
             element={<AssessmentHTMLDocumentScreen />}
           />
           <Route
-              path="/:spaceId/assessments/:page/:assessmentId/dashboard"
-              element={<AssessmentDashboardScreen />}
-          />
+              path="/:spaceId/assessments/:page/:assessmentId/dashboard/"
+              element={<DashboardScreen />}
+          >
+            <Route
+                path="assessment-dashboard/"
+                element={<AssessmentDashboardScreen />}
+            />
+            <Route
+                path="assessment-settings/"
+                element={<AssessmentSettingScreen />}
+            />
+
+          </Route>
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/insights"
             element={<AssessmentReportScreen />}

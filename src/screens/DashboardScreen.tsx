@@ -2,10 +2,10 @@ import { t } from "i18next";
 import useDocumentTitle from "@utils/useDocumentTitle";
 import DashbordContainer from "@components/dashboard/dashbordContainer";
 
-const AssessmentDashboardScreen = () => {
+const DashboardScreen = () => {
     useDocumentTitle(`${t("document", { title: "" })}`);
 
-    return <DashbordContainer />;
+    return <DashbordContainer/>;
 };
 
-export default AssessmentDashboardScreen;
+export default DashboardScreen;

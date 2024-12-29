@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
 import { theme } from "@config/theme";
-import KitCustomizationTable from "@components/assessment-setting/kitCustomizationTable";
+import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import { LoadingButton } from "@mui/lab";
