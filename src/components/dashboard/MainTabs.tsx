@@ -3,7 +3,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { uniqueId } from "lodash";
 import { theme } from "@config/theme";
-import React from "react";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 

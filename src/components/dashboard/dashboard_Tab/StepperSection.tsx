@@ -6,20 +6,19 @@ import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
-import {uniqueId} from "lodash";
+import { uniqueId } from "lodash";
 
 interface IStepperSection {
-    setActiveStep: any;
-    activeStep: number;
-    stepData: { category: string; metrics: { [p: string]: any }}[]
+  setActiveStep: any;
+  activeStep: number;
+  stepData: { category: string; metrics: { [p: string]: any } }[];
 }
 interface IStepBox {
-    category :string;
-    metrics : {[p:string] : any};
-    setActiveStep: any;
-    activeStep: number
+  category: string;
+  metrics: { [p: string]: any };
+  setActiveStep: any;
+  activeStep: number;
 }
-
 
 const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
@@ -39,7 +38,7 @@ const StepperSection = (props: IStepperSection) => {
         sx={{ width: "70%", mx: "auto", mb: "30px" }}
         activeStep={activeStep}
       >
-        {stepData.map((label : any, index : number) => {
+        {stepData.map((label: any, index: number) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;
@@ -71,16 +70,18 @@ const StepperSection = (props: IStepperSection) => {
         })}
       </Stepper>
       <Grid container columns={12}>
-        {stepData.map((item: {category: string, metrics: any} , index: number) => {
-          return (
-            <StepBox
-              key={uniqueId()}
-              {...item}
-              activeStep={activeStep}
-              setActiveStep={setActiveStep}
-            />
-          );
-        })}
+        {stepData.map(
+          (item: { category: string; metrics: any }, index: number) => {
+            return (
+              <StepBox
+                key={uniqueId()}
+                {...item}
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+              />
+            );
+          },
+        )}
       </Grid>
     </Box>
   );
@@ -111,13 +112,16 @@ const StepBox = (props: IStepBox) => {
 
   const issuesTag = (
     <Chip
-      label={`  ${calcOfIssues()}  ` + t( (calcOfIssues() || 0) > 1 ? "issues" : "issue").toUpperCase()}
+      label={
+        `  ${calcOfIssues()}  ` +
+        t((calcOfIssues() || 0) > 1 ? "issues" : "issue").toUpperCase()
+      }
       size="small"
       sx={{
         ...theme.typography.labelMedium,
         color: "#B8144B",
         background: "#FCE8EF",
-        direction: theme.direction
+        direction: theme.direction,
       }}
     />
   );
@@ -154,7 +158,10 @@ const StepBox = (props: IStepBox) => {
       unanswered,
     } = metrics;
     const hasIssues =
-      answeredWithLowConfidence || withoutEvidence || unresolvedComments || unanswered;
+      answeredWithLowConfidence ||
+      withoutEvidence ||
+      unresolvedComments ||
+      unanswered;
     const completed = answered == total;
     if (completed && activeStep == 0) {
       setActiveStep((prev: number) => prev + 1);
@@ -176,7 +183,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography sx={{ ...theme.typography.headlineLarge }}>
+          <Typography variant="headlineLarge">
             {`${answered} / ${total} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -192,15 +199,11 @@ const StepBox = (props: IStepBox) => {
             gap: "4px",
           }}
         >
-          <Typography
-            sx={{ ...theme.typography.labelMedium, color: "#2D80D2" }}
-          >
+          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
             {Math.floor((100 * answered) / total)} %
           </Typography>
-          <Typography
-            sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
-          >
-            {t("totalQuestionsCount", { countQuestion: total })}
+          <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
+            {t("fromTotalQuestionsCount")}
           </Typography>
         </Box>
       </Box>
@@ -210,7 +213,7 @@ const StepBox = (props: IStepBox) => {
   if (insights) {
     const { unapproved, expired, notGenerated, expected } = metrics;
     const hasIssues = unapproved || expired || notGenerated;
-    const result = (expected - (notGenerated + expired));
+    const result = expected - (notGenerated + expired);
     const completed = activeStep >= 1 && expected == result;
 
     if (completed && activeStep == 1) {
@@ -228,32 +231,26 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <Typography sx={{ ...theme.typography.headlineLarge }}>
+          <Typography variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && activeStep == 1 && currentTag}
-            {hasIssues  ? issuesTag : null}
+            {hasIssues ? issuesTag : null}
           </Box>
         </Box>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            ...styles.centerVH,
             gap: "4px",
           }}
         >
-          <Typography
-            sx={{ ...theme.typography.labelMedium, color: "#2D80D2" }}
-          >
+          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
             {Math.floor((100 * result) / expected)}%
           </Typography>
-          <Typography
-            sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
-          >
-            {t("totalInsightsCount", { countInsights: expected })}
+          <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
+            {t("totalInsightsCount")}
           </Typography>
         </Box>
       </Box>
@@ -291,13 +288,6 @@ const StepBox = (props: IStepBox) => {
             </Box>
           )}
         </Box>
-        <Typography
-          sx={{ ...theme.typography.labelMedium, color: "#3D4D5C80" }}
-        >
-          {activeStep == 0 || activeStep == 1
-            ? t("suggestingAnyAdvices").toUpperCase()
-            : null}
-        </Typography>
       </Box>
     );
   }

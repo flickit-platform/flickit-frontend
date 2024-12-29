@@ -91,7 +91,7 @@ const DashboardTab = () => {
   }, [activeStep]);
 
   return (
-    <Box sx={{ p: "80px 45px", height: "100%", width: "100%" }}>
+    <Box sx={{ p: "45px", height: "100%", width: "100%" }}>
       <Typography
         sx={{
           ...theme.typography.headlineSmall,

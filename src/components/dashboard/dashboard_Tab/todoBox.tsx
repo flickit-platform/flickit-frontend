@@ -12,7 +12,7 @@ const TodoBox = (props: any) => {
   const { todoBoxData } = props;
   const { now, next } = todoBoxData;
   return (
-    <Box sx={{ mt: "90px" }}>
+    <Box sx={{ mt: "50px" }}>
       {now?.length > 0 && (
         <Box sx={{ mb: "30px" }}>
           <Typography
