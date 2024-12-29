@@ -54,7 +54,7 @@ const MainTabs = (props: any) => {
               key={uniqueId()}
               to={`./${tab.address}/`}
               component={Link}
-              disabled={!(tab.label == "dashboard" || tab.label == "settings")}
+              disabled={!(tab.label == "dashboard" || tab.label == "settings"|| tab.label == "insights")}
               value={tab.address}
               sx={{
                 ...theme.typography.semiBoldLarge,

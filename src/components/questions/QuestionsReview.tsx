@@ -266,7 +266,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
               variant="outlined"
               size="large"
               component={Link}
-              to={"./../../../insights"}
+              to={"./../../../dashboard/assessment-insights/"}
               sx={{ fontSize: "1rem", display: isPermitted ? "" : "none" }}
               // sx={{borderRadius:"32px"}}
             >

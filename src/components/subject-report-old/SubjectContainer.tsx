@@ -471,13 +471,13 @@ const SubjectTitle = (props: {
               to: `/${spaceId}/assessments/${page}`,
               // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
-            {
-              title: `${assessment?.title} ${t("insights")}`,
-              to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
+            // {
+            //   title: `${assessment?.title} ${t("insights")}`,
+            //   to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
               // icon: (
               //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
               // ),
-            },
+            // },
             {
               title: <>{title || <Trans i18nKey="technicalDueDiligence" />}</>,
               // icon: (

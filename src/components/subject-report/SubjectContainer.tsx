@@ -262,10 +262,10 @@ const SubjectTitle = (props: { data: ISubjectReportModel; pathInfo: any }) => {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
             },
-            {
-              title: `${assessment?.title} ${t("insights")}`,
-              to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
-            },
+            // {
+            //   title: `${assessment?.title} ${t("insights")}`,
+            //   to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
+            // },
             {
               title: (
                 <>{<Trans i18nKey="report" values={{ title: title }} />}</>

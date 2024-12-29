@@ -149,19 +149,11 @@ const AssessmentReportContainer = (props: any) => {
           );
 
           return (
-            <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-              <AssessmentReportTitle data={data} />
+            <Box m="auto" pb={3}>
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography
-                      color="primary"
-                      textAlign="left"
-                      variant="headlineLarge"
-                    >
-                      <Trans i18nKey="assessmentInsights" />
-                    </Typography>
-                    <Box sx={{ py: "0.6rem", display: "flex" }}>
+                    <Box sx={{ py: "0.6rem", display: "flex",marginLeft: "auto" }}>
                       <Tooltip title={<Trans i18nKey={"dashboard"} />}>
                         <Box>
                           <IconButton
