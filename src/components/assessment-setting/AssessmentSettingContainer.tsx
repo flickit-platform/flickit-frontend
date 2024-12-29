@@ -130,18 +130,14 @@ const AssessmentSettingContainer = () => {
           return (
             <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
               <AssessmentSettingTitle pathInfo={pathInfo} />
-              <Grid container columns={12} mb={5}>
+              <Grid container columns={12} mb={5} mt={1}>
                 <Grid item sm={12} xs={12}>
                   <Box
                     sx={{ ...styles.centerV }}
                     gap={2}
                     justifyContent="flex-start"
                   >
-                    <Typography
-                      color="primary"
-                      textAlign="left"
-                      variant="headlineLarge"
-                    >
+                    <Typography color="primary" variant="headlineLarge">
                       <Trans i18nKey="assessmentSettings" />
                     </Typography>
                   </Box>

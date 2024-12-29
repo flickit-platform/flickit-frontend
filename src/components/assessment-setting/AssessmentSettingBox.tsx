@@ -65,7 +65,7 @@ export const AssessmentSettingGeneralBox = (props: {
     shortTitle,
   } = AssessmentInfo;
 
-  const title = ["creator","assessmentKit", "created", "lastModified"];
+  const title = ["creator", "assessmentKit", "created", "lastModified"];
   const formMethods = useForm({ shouldUnregister: true });
 
   return (
@@ -75,7 +75,6 @@ export const AssessmentSettingGeneralBox = (props: {
         px: { xs: "15px", sm: "51px" },
       }}
       gap={2}
-      textAlign="left"
       height={"auto"}
       width={"100%"}
       bgcolor={"#FFF"}
@@ -83,8 +82,15 @@ export const AssessmentSettingGeneralBox = (props: {
       py={"32px"}
     >
       <Box height={"100%"} width={"100%"}>
-        <Typography sx={{textAlign:theme.direction == "rtl"? "right": "left",width:"100%",display:"inline-block"}} color="#000" variant="headlineMedium">
-          <Trans i18nKey={`${"general"}`} />
+        <Typography
+          sx={{
+            width: "100%",
+            display: "inline-block",
+          }}
+          color="#2B333B"
+          variant="headlineMedium"
+        >
+          <Trans i18nKey="general" />
         </Typography>
 
         <Divider
@@ -94,113 +100,115 @@ export const AssessmentSettingGeneralBox = (props: {
             marginBottom: "10px !important",
           }}
         />
-          <Grid container spacing={2} sx={{...styles.centerH}}>
-              <Grid
-                  item
-                  xs={12} md={6}
-                  sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                  }}
-              >
-                  <Typography
-                          sx={{...theme.typography.titleLarge,
-                          fontSize: { xs: "1rem", sm: "1.375rem" },
-                          whiteSpace: { xs: "wrap", sm: "nowrap" },
-                          color:"#9DA7B3"
-                      }}
-                  >
-                      <Trans i18nKey="assessmentTitle" />:
-                  </Typography>
+        <Grid container spacing={2} sx={{ ...styles.centerH }}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                ...theme.typography.titleLarge,
+                fontSize: { xs: "1rem", sm: "1.375rem" },
+                whiteSpace: { xs: "wrap", sm: "nowrap" },
+                color: "#78818b",
+              }}
+            >
+              <Trans i18nKey="assessmentTitle" />:
+            </Typography>
 
-                  <Box
-                      sx={{
-                          ...styles.centerVH,
-                          width: { md: "350px" },
-                      }}
-                  >
-                      <OnHoverInputTitleSetting
-                          formMethods={formMethods}
-                          data={AssessmentTitle}
-                          shortTitle={shortTitle}
-                          infoQuery={fetchPathInfo}
-                          AssessmentInfoQuery={AssessmentInfoQuery}
-                          editable={true}
-                          color={color}
-                          type={"title"}
-                      />
-                  </Box>
-              </Grid>
-              <Grid  item xs={12} md={6}>
-                  <Grid
-                      sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                      }}
-                  >
-                      <Typography
-                          color="#9DA7B3"
-                          fontWeight={500}
-                          sx={{
-                              display: "flex",
-                              alignItems: "flex-end",
-                              gap: "6px",
-                              fontSize: { xs: "1rem", sm: "1.375rem" },
-                              whiteSpace: { xs: "wrap", sm: "nowrap" },
-                          }}
-                          lineHeight={"normal"}
-                      >
-                          <Trans i18nKey="shortTitle" />:
-                      </Typography>
-                      <Box
-                          sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              width: { md: "350px" },
-                              flexDirection:"column"
-                          }}
-                      >
-                          <OnHoverInputTitleSetting
-                              formMethods={formMethods}
-                              data={AssessmentTitle}
-                              shortTitle={shortTitle}
-                              infoQuery={fetchPathInfo}
-                              AssessmentInfoQuery={AssessmentInfoQuery}
-                              editable={true}
-                              color={color}
-                              type={"shortTitle"}
-                              displayEdit={!shortTitle}
-                          />
-                      </Box>
-                  </Grid>
-                  <Grid
-                      item
-                      xs={12}
-                      sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                      }}
-                  >
-                      <Box
-                          sx={{
-                              display: "flex",
-                              justifyContent: "flex-start",
-                              alignItems: "center",
-                              gap: "5px",
-                              color: "#9DA7B3",
-                              ...theme.typography.labelSmall,
-                          }}
-                      >
-                          <InfoOutlined sx={{ width: "17px" }} />
-                          <Trans i18nKey={"shortTitleInfo"} />
-                      </Box>
-                  </Grid>
-              </Grid>
+            <Box
+              sx={{
+                ...styles.centerVH,
+                width: { md: "350px" },
+              }}
+            >
+              <OnHoverInputTitleSetting
+                formMethods={formMethods}
+                data={AssessmentTitle}
+                shortTitle={shortTitle}
+                infoQuery={fetchPathInfo}
+                AssessmentInfoQuery={AssessmentInfoQuery}
+                editable={true}
+                color={color}
+                type={"title"}
+              />
+            </Box>
           </Grid>
+          <Grid item xs={12} md={6}>
+            <Grid
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                color="#78818b"
+                fontWeight={500}
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: "6px",
+                  fontSize: { xs: "1rem", sm: "1.375rem" },
+                  whiteSpace: { xs: "wrap", sm: "nowrap" },
+                }}
+                lineHeight={"normal"}
+              >
+                <Trans i18nKey="shortTitle" />:
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: { md: "350px" },
+                  flexDirection: "column",
+                }}
+              >
+                <OnHoverInputTitleSetting
+                  formMethods={formMethods}
+                  data={AssessmentTitle}
+                  shortTitle={shortTitle}
+                  infoQuery={fetchPathInfo}
+                  AssessmentInfoQuery={AssessmentInfoQuery}
+                  editable={true}
+                  color={color}
+                  type={"shortTitle"}
+                  displayEdit={!shortTitle}
+                />
+              </Box>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: "5px",
+                  color: "#78818b",
+                  ...theme.typography.labelMedium,
+                }}
+              >
+                <InfoOutlined fontSize="small" />
+                <Trans i18nKey={"shortTitleInfo"} />
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
         <Divider
           sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
         />
@@ -217,58 +225,63 @@ export const AssessmentSettingGeneralBox = (props: {
           {title &&
             title.map((itemList: string, index: number) => {
               return (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={5}
+                <Grid
+                  item
+                  xs={12}
+                  sm={5}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: "10px",
+                  }}
+                >
+                  <Typography
+                    color="#78818b"
+                    fontWeight={500}
+                    whiteSpace={"nowrap"}
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      fontSize: { xs: "1rem", md: "1.375rem" },
+                    }}
+                    lineHeight={"normal"}
+                  >
+                    <Trans i18nKey={`${itemList}`} />:
+                  </Typography>
+
+                  <Typography
+                    color="#0A2342"
+                    fontWeight={500}
                     sx={{
                       display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                        mb:"10px"
+                      justifyContent: "center",
+                      fontSize: { xs: "1rem", md: "1.375rem" },
+                      width: { md: "350px" },
+                      textAlign: "center",
                     }}
+                    lineHeight={"normal"}
                   >
-                    <Typography
-                      color="#9DA7B3"
-                      fontWeight={500}
-                      whiteSpace={"nowrap"}
-                      sx={{
-                        width:"100%",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        fontSize: { xs: "1rem", md: "1.375rem" },
-                      }}
-                      lineHeight={"normal"}
-                    >
-                      <Trans i18nKey={`${itemList}`} />:
-                    </Typography>
-
-                    <Typography
-                      color="#0A2342"
-                      fontWeight={500}
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        fontSize: { xs: "1rem", md: "1.375rem" },
-                        width: { md: "350px" },
-                        textAlign:"center"
-                      }}
-                      lineHeight={"normal"}
-                    >
-                      {index == 0 && displayName}
-                      {index == 1 && (
-                            <Link
-                                style={{ textDecoration: "none", color: "inherit" }}
-                                to={`/assessment-kits/${kit.id}`}
-                            >
-                                {kit.title}
-                            </Link>
-                        )}
-                      {index == 2 && (theme.direction == "rtl" ? formatDate(creationTime, "Shamsi") : formatDate(creationTime, "Miladi"))}
-                      {index == 3 && (theme.direction == "rtl" ? formatDate(lastModificationTime, "Shamsi") : formatDate(lastModificationTime, "Miladi"))}
-
-                    </Typography>
-                  </Grid>
+                    {index == 0 && displayName}
+                    {index == 1 && (
+                      <Link
+                        style={{ textDecoration: "none", color: "inherit" }}
+                        to={`/assessment-kits/${kit.id}`}
+                      >
+                        {kit.title}
+                      </Link>
+                    )}
+                    {index == 2 &&
+                      (theme.direction == "rtl"
+                        ? formatDate(creationTime, "Shamsi")
+                        : formatDate(creationTime, "Miladi"))}
+                    {index == 3 &&
+                      (theme.direction == "rtl"
+                        ? formatDate(lastModificationTime, "Shamsi")
+                        : formatDate(lastModificationTime, "Miladi"))}
+                  </Typography>
+                </Grid>
               );
             })}
         </Grid>
@@ -302,7 +315,6 @@ export const AssessmentSettingMemberBox = (props: {
     inviteesMemberList.query();
   }, [changeData]);
 
-
   interface Column {
     id: "displayName" | "email" | "role";
     label: string;
@@ -323,19 +335,18 @@ export const AssessmentSettingMemberBox = (props: {
   });
 
   const columns: readonly Column[] = [
-    { id: "displayName", label: "name", minWidth: "20vw", position: "left" },
+    { id: "displayName", label: "name", minWidth: "20vw", position: "center" },
     {
       id: "email",
       label: "email",
-      minWidth: "20vw",
+      minWidth: "33vw",
       display: "none",
       position: "center",
     },
     {
       id: "role",
       label: "role",
-      align: "right",
-      minWidth: "20vw",
+      minWidth: "10vw",
       position: "center",
     },
   ];
@@ -399,7 +410,6 @@ export const AssessmentSettingMemberBox = (props: {
         px: { xs: "15px", sm: "51px" },
       }}
       gap={2}
-      textAlign="center"
       height={"auto"}
       minHeight={"350px"}
       width={"100%"}
@@ -417,11 +427,8 @@ export const AssessmentSettingMemberBox = (props: {
             width: "100%",
           }}
         >
-          <Typography
-            color="#000"
-            variant="headlineMedium"
-          >
-            <Trans i18nKey={"grantedRoles"} />
+          <Typography color="#2B333B" variant="headlineMedium">
+            <Trans i18nKey="grantedRoles" />
           </Typography>
           <Button
             variant="contained"
@@ -478,17 +485,17 @@ export const AssessmentSettingMemberBox = (props: {
                         sm: "12rem",
                         md: column.minWidth,
                       },
-                      textAlign: { xs: column.position, lg: "center" },
+                      textAlign: { xs: column.position },
                       display: {
                         xs: column.display,
                         md: "inline-block",
-                        color: "#9DA7B3",
+                        color: "#78818b",
                         border: "none",
                         fontSize: "1rem",
                       },
                     }}
                   >
-                      <Trans i18nKey={`${column.label}`} />
+                    <Trans i18nKey={`${column.label}`} />
                   </TableCell>
                 ))}
               </TableRow>
@@ -520,7 +527,6 @@ export const AssessmentSettingMemberBox = (props: {
                             justifyContent: { xs: "flex-start" },
                             alignItems: "center",
                             gap: ".5rem",
-                            paddingLeft: { lg: "30%" },
                           }}
                         >
                           <Avatar
@@ -667,7 +673,7 @@ export const AssessmentSettingMemberBox = (props: {
                 gap: "10px",
               }}
             >
-              <Typography color="#9DA7B3" variant="headlineMedium">
+              <Typography color="#78818b" variant="headlineMedium">
                 <Trans i18nKey={`invitees`} />
               </Typography>
             </Box>
@@ -711,241 +717,237 @@ export const AssessmentSettingMemberBox = (props: {
                           display: {
                             xs: column.display,
                             md: "inline-block",
-                            color: "#9DA7B3",
+                            color: "#78818b",
                             border: "none",
                             fontSize: "1rem",
                           },
                         }}
                       >
-                       <Trans i18nKey={`${column.label}`} />
+                        <Trans i18nKey={`${column.label}`} />
                       </TableCell>
                     ))}
                   </TableRow>
                   <Divider sx={{ width: "100%" }} />
                 </TableHead>
                 <TableBody>
-                  {inviteesMemberList?.data?.items
-                    .map((row: any) => {
-                      return (
-                        <TableRow tabIndex={-1} key={row.id}>
-                          <TableCell
+                  {inviteesMemberList?.data?.items.map((row: any) => {
+                    return (
+                      <TableRow tabIndex={-1} key={row.id}>
+                        <TableCell
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            border: "none",
+                            gap: { xs: "0px", md: "1.3rem" },
+                            paddingX: { xs: "0px", md: "1rem" },
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              m: 1,
+                              textAlign: "center",
+                              display: "inline-flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              width: { xs: "10rem", md: "30vw" },
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                color: "#1B1B1E",
+                                fontSize: "0.875",
+                                wight: 300,
+                              }}
+                            >
+                              {row.email}
+                            </Typography>
+                          </Box>
+                          <Box
                             sx={{
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
-                              border: "none",
-                              gap: { xs: "0px", md: "1.3rem" },
-                              paddingX: { xs: "0px", md: "1rem" },
+                              gap: { xs: "0px", md: ".7rem" },
+                              width: { xs: "10rem", md: "28vw" },
                             }}
                           >
-                            <Box
+                            <FormControl
                               sx={{
                                 m: 1,
+                                width: "100%",
                                 textAlign: "center",
+                                padding: "6px, 12px, 6px, 12px",
                                 display: "inline-flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                width: { xs: "10rem", md: "30vw" },
                               }}
                             >
-                              <Typography
-                                sx={{
-                                  textOverflow: "ellipsis",
-                                  overflow: "hidden",
-                                  whiteSpace: "nowrap",
-                                  color: "#1B1B1E",
-                                  fontSize: "0.875",
-                                  wight: 300,
-                                }}
+                              {/*<Grid item lg={8} sx={{minWidth: {xs: "100%", md: "12vw", lg:"10vw", xl: "160px"}}} >*/}
+                              <Grid
+                                item
+                                lg={8}
+                                sx={{ minWidth: { xs: "100%", md: "160px" } }}
                               >
-                                {row.email}
-                              </Typography>
-                            </Box>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: { xs: "0px", md: ".7rem" },
-                                width: { xs: "10rem", md: "28vw" },
-                              }}
-                            >
-                              <FormControl
-                                sx={{
-                                  m: 1,
-                                  width: "100%",
-                                  textAlign: "center",
-                                  padding: "6px, 12px, 6px, 12px",
-                                  display: "inline-flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                }}
-                              >
-                                {/*<Grid item lg={8} sx={{minWidth: {xs: "100%", md: "12vw", lg:"10vw", xl: "160px"}}} >*/}
-                                <Grid
-                                  item
-                                  lg={8}
-                                  sx={{ minWidth: { xs: "100%", md: "160px" } }}
+                                <Select
+                                  labelId="demo-multiple-name-label"
+                                  id="demo-multiple-name"
+                                  value={row?.role?.title}
+                                  onChange={handleChangeInvitedUser}
+                                  name={row}
+                                  MenuProps={MenuProps}
+                                  sx={{
+                                    width: "100%",
+                                    boxShadow: "none",
+                                    ".MuiOutlinedInput-notchedOutline": {
+                                      border: 0,
+                                    },
+                                    border: row.editable
+                                      ? "1px solid #2974B4"
+                                      : "1px solid #2974b4",
+                                    fontSize: "0.875rem",
+                                    borderRadius: "0.5rem",
+                                    "&.MuiOutlinedInput-notchedOutline": {
+                                      border: 0,
+                                    },
+                                    "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                                      {
+                                        border: 0,
+                                      },
+                                    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                      {
+                                        border: 0,
+                                      },
+                                    ".MuiSvgIcon-root": {
+                                      fill: row.editable
+                                        ? "#2974B4 !important"
+                                        : "#2974b4 !important",
+                                    },
+                                    "& .MuiSelect-select": {
+                                      padding: "4px 5px",
+                                    },
+                                  }}
+                                  IconComponent={KeyboardArrowDownIcon}
+                                  inputProps={{
+                                    renderValue: () => row?.role?.title,
+                                  }}
                                 >
-                                  <Select
-                                    labelId="demo-multiple-name-label"
-                                    id="demo-multiple-name"
-                                    value={row?.role?.title}
-                                    onChange={handleChangeInvitedUser}
-                                    name={row}
-                                    MenuProps={MenuProps}
+                                  <Box
                                     sx={{
-                                      width: "100%",
-                                      boxShadow: "none",
-                                      ".MuiOutlinedInput-notchedOutline": {
-                                        border: 0,
-                                      },
-                                      border: row.editable
-                                        ? "1px solid #2974B4"
-                                        : "1px solid #2974b4",
-                                      fontSize: "0.875rem",
-                                      borderRadius: "0.5rem",
-                                      "&.MuiOutlinedInput-notchedOutline": {
-                                        border: 0,
-                                      },
-                                      "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                                        {
-                                          border: 0,
-                                        },
-                                      "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                        {
-                                          border: 0,
-                                        },
-                                      ".MuiSvgIcon-root": {
-                                        fill: row.editable
-                                          ? "#2974B4 !important"
-                                          : "#2974b4 !important",
-                                      },
-                                      "& .MuiSelect-select": {
-                                        padding: "4px 5px",
-                                      },
-                                    }}
-                                    IconComponent={KeyboardArrowDownIcon}
-                                    inputProps={{
-                                      renderValue: () => row?.role?.title,
+                                      paddingY: "16px",
+                                      color: "#78818b",
+                                      textAlign: "center",
+                                      borderBottom: "1px solid #78818b",
                                     }}
                                   >
-                                    <Box
-                                      sx={{
-                                        paddingY: "16px",
-                                        color: "#9DA7B3",
-                                        textAlign: "center",
-                                        borderBottom: "1px solid #9DA7B3",
-                                      }}
-                                    >
-                                      <Typography sx={{ fontSize: "0.875rem" }}>
-                                        <Trans i18nKey={"chooseARole"} />
-                                      </Typography>
-                                    </Box>
-                                    {listOfRoles &&
-                                      listOfRoles.map(
-                                        (role: any, index: number) => (
-                                          <MenuItem
-                                            style={{ display: "block" }}
-                                            key={role.title}
-                                            value={role}
+                                    <Typography sx={{ fontSize: "0.875rem" }}>
+                                      <Trans i18nKey={"chooseARole"} />
+                                    </Typography>
+                                  </Box>
+                                  {listOfRoles &&
+                                    listOfRoles.map(
+                                      (role: any, index: number) => (
+                                        <MenuItem
+                                          style={{ display: "block" }}
+                                          key={role.title}
+                                          value={role}
+                                          sx={{
+                                            paddingY: "0px",
+                                            maxHeight: "200px",
+                                            ...(role.id === row.role.id && {
+                                              backgroundColor: "#9CCAFF",
+                                            }),
+                                            "&.MuiMenuItem-root:hover": {
+                                              ...(role.id === row.role.id
+                                                ? {
+                                                    backgroundColor: "#9CCAFF",
+                                                    color: "#004F83",
+                                                  }
+                                                : {
+                                                    backgroundColor: "#EFEDF0",
+                                                    color: "#1B1B1E",
+                                                  }),
+                                            },
+                                          }}
+                                        >
+                                          <Box
                                             sx={{
-                                              paddingY: "0px",
-                                              maxHeight: "200px",
-                                              ...(role.id === row.role.id && {
-                                                backgroundColor: "#9CCAFF",
-                                              }),
-                                              "&.MuiMenuItem-root:hover": {
+                                              maxWidth: "240px",
+                                              color: "#2B333B",
+                                              fontSize: "0.875rem",
+                                              lineHeight: "21px",
+                                              fontWeight: 500,
+                                              paddingY: "1rem",
+                                            }}
+                                          >
+                                            <Typography
+                                              sx={{
+                                                fontSize: "0.875rem",
                                                 ...(role.id === row.role.id
                                                   ? {
-                                                      backgroundColor:
-                                                        "#9CCAFF",
                                                       color: "#004F83",
                                                     }
                                                   : {
-                                                      backgroundColor:
-                                                        "#EFEDF0",
                                                       color: "#1B1B1E",
                                                     }),
-                                              },
-                                            }}
-                                          >
-                                            <Box
-                                              sx={{
-                                                maxWidth: "240px",
-                                                color: "#000",
-                                                fontSize: "0.875rem",
-                                                lineHeight: "21px",
-                                                fontWeight: 500,
-                                                paddingY: "1rem",
                                               }}
                                             >
-                                              <Typography
-                                                sx={{
-                                                  fontSize: "0.875rem",
-                                                  ...(role.id === row.role.id
-                                                    ? {
-                                                        color: "#004F83",
-                                                      }
-                                                    : {
-                                                        color: "#1B1B1E",
-                                                      }),
-                                                }}
-                                              >
-                                                {role.title}
-                                              </Typography>
+                                              {role.title}
+                                            </Typography>
 
-                                              <div
-                                                style={{
-                                                  color: "#000",
-                                                  fontSize: "0.875rem",
-                                                  lineHeight: "21px",
-                                                  fontWeight: 300,
-                                                  whiteSpace: "break-spaces",
-                                                  paddingTop: "1rem",
+                                            <div
+                                              style={{
+                                                color: "#2B333B",
+                                                fontSize: "0.875rem",
+                                                lineHeight: "21px",
+                                                fontWeight: 300,
+                                                whiteSpace: "break-spaces",
+                                                paddingTop: "1rem",
+                                              }}
+                                            >
+                                              {role.description}
+                                            </div>
+                                          </Box>
+                                          {listOfRoles &&
+                                            listOfRoles.length > index + 1 && (
+                                              <Box
+                                                sx={{
+                                                  height: "0.5px",
+                                                  width: "80%",
+                                                  backgroundColor: "#78818b",
+                                                  mx: "auto",
                                                 }}
-                                              >
-                                                {role.description}
-                                              </div>
-                                            </Box>
-                                            {listOfRoles &&
-                                              listOfRoles.length >
-                                                index + 1 && (
-                                                <Box
-                                                  sx={{
-                                                    height: "0.5px",
-                                                    width: "80%",
-                                                    backgroundColor: "#9DA7B3",
-                                                    mx: "auto",
-                                                  }}
-                                                ></Box>
-                                              )}
-                                          </MenuItem>
-                                        ),
-                                      )}
-                                  </Select>
-                                </Grid>
-                              </FormControl>
-                              <Box
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
+                                              ></Box>
+                                            )}
+                                        </MenuItem>
+                                      ),
+                                    )}
+                                </Select>
+                              </Grid>
+                            </FormControl>
+                            <Box
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                            >
+                              <IconButton
+                                sx={{ "&:hover": { color: "#d32f2f" } }}
+                                size="small"
+                                onClick={() =>
+                                  openRemoveModal(row.email, row.id, true)
+                                }
                               >
-                                <IconButton
-                                  sx={{ "&:hover": { color: "#d32f2f" } }}
-                                  size="small"
-                                  onClick={() =>
-                                    openRemoveModal(row.email, row.id, true)
-                                  }
-                                >
-                                  <DeleteRoundedIcon />
-                                </IconButton>{" "}
-                              </Box>
+                                <DeleteRoundedIcon />
+                              </IconButton>{" "}
                             </Box>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -1040,9 +1042,9 @@ const SelectionRole = (props: any) => {
       <Box
         sx={{
           paddingY: "16px",
-          color: "#9DA7B3",
+          color: "#78818b",
           textAlign: "center",
-          borderBottom: "1px solid #9DA7B3",
+          borderBottom: "1px solid #78818b",
         }}
       >
         <Typography sx={{ fontSize: "0.875rem" }}>
@@ -1077,7 +1079,7 @@ const SelectionRole = (props: any) => {
             <Box
               sx={{
                 maxWidth: "240px",
-                color: "#000",
+                color: "#2B333B",
                 fontSize: "0.875rem",
                 lineHeight: "21px",
                 fontWeight: 500,
@@ -1101,7 +1103,7 @@ const SelectionRole = (props: any) => {
 
               <div
                 style={{
-                  color: "#000",
+                  color: "#2B333B",
                   fontSize: "0.875rem",
                   lineHeight: "21px",
                   fontWeight: 300,
@@ -1117,7 +1119,7 @@ const SelectionRole = (props: any) => {
                 sx={{
                   height: "0.5px",
                   width: "80%",
-                  backgroundColor: "#9DA7B3",
+                  backgroundColor: "#78818b",
                   mx: "auto",
                 }}
               ></Box>
@@ -1292,11 +1294,6 @@ const OnHoverInputTitleSetting = (props: any) => {
                 </InputAdornment>
               }
             />
-            {/*{hasError && (*/}
-            {/*    <Typography color="#ba000d" variant="caption">*/}
-            {/*        {error?.data}*/}
-            {/*    </Typography>*/}
-            {/*)}*/}
           </Box>
         ) : (
           <Box
@@ -1326,7 +1323,7 @@ const OnHoverInputTitleSetting = (props: any) => {
             </Typography>
             {(isHovering || displayEdit) && (
               <EditRoundedIcon
-                sx={{ color: "#9DA7B3", position: "absolute", right: -10 }}
+                sx={{ color: "#78818b", position: "absolute", right: -10 }}
                 fontSize="small"
                 width={"32px"}
                 height={"32px"}
