@@ -351,7 +351,7 @@ const Actions = (props: {
   };
 
   const assessmentSetting = (e: any) => {
-    navigate(`${item.id}/assessment-settings/`, {
+    navigate(`${item.id}/dashboard/assessment-settings/`, {
       state: item?.color || { code: "#073B4C", id: 6 },
     });
   };
@@ -386,11 +386,11 @@ const Actions = (props: {
               //   text: <Trans i18nKey="edit" />,
               //   onClick: openEditDialog,
               // },
-              // item?.manageable && {
-              //   icon: <SettingsIcon fontSize="small" />,
-              //   text: <Trans i18nKey="settings" />,
-              //   onClick: assessmentSetting,
-              // },
+              item?.manageable && {
+                icon: <SettingsIcon fontSize="small" />,
+                text: <Trans i18nKey="settings" />,
+                onClick: assessmentSetting,
+              },
               item?.manageable && {
                 icon: <DeleteRoundedIcon fontSize="small" />,
                 text: <Trans i18nKey="delete" />,

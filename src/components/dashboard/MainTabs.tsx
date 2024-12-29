@@ -55,6 +55,7 @@ const MainTabs = (props: any) => {
               to={`./${tab.address}/`}
               component={Link}
               disabled={!(tab.label == "dashboard" || tab.label == "settings")}
+              value={tab.address}
               sx={{
                 ...theme.typography.semiBoldLarge,
                 flexGrow: 1,

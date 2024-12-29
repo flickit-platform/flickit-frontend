@@ -8,11 +8,15 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@types";
-import {useOutlet, useParams} from "react-router-dom";
+import {useLocation, useOutlet, useParams} from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 
 const DashbordContainer = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  const location = useLocation();
+  const pathSegments = location.pathname.split('/').filter(segment => segment);
+  const lastPart = pathSegments[pathSegments.length - 1];
+
+  const [selectedTab, setSelectedTab] = useState(lastPart || "assessment-dashboard");
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const outlet = useOutlet()
