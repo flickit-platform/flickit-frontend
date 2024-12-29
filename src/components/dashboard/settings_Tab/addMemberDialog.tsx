@@ -299,8 +299,7 @@ const AddMemberDialog = (props: {
                   <Trans i18nKey={"chooseARole"} />
                 </Typography>
               </Box>
-              {listOfRoles &&
-                listOfRoles.map((role: any, index: number) => {
+              {listOfRoles?.map((role: any, index: number) => {
                   return (
                     <MenuItem
                       style={{ display: "block" }}

@@ -5,13 +5,11 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
-import { styles } from "@styles";
 import { RolesType } from "@types";
 import {
   AssessmentSettingGeneralBox,
   AssessmentSettingMemberBox,
 } from "./AssessmentSettingBox";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AddMemberDialog from "./addMemberDialog";
@@ -122,7 +120,6 @@ const AssessmentSettingContainer = () => {
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
         render={([pathInfo = {}, roles = {}, assessmentInfo = {}]) => {
           const {
-            space,
             assessment: { title },
           } = pathInfo;
           const { items: listOfRoles } = roles;
