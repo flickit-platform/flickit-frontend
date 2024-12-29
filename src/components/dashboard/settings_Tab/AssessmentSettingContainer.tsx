@@ -10,14 +10,13 @@ import { RolesType } from "@types";
 import {
   AssessmentSettingGeneralBox,
   AssessmentSettingMemberBox,
-} from "@components/assessment-setting/AssessmentSettingBox";
+} from "./AssessmentSettingBox";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import AddMemberDialog from "@components/assessment-setting/addMemberDialog";
-import ConfirmRemoveMemberDialog from "@components/assessment-setting/confirmRemoveMemberDialog";
-import AssessmentSettingTitle from "@components/assessment-setting/AssessmentSettingTitle";
-import KitCustomization from "@components/assessment-setting/KitCustomization";
+import AddMemberDialog from "./addMemberDialog";
+import ConfirmRemoveMemberDialog from "./confirmRemoveMemberDialog";
+import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
 
 const AssessmentSettingContainer = () => {
