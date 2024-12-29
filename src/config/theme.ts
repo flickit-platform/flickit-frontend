@@ -604,6 +604,14 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          color: "#FFFFFF",
+          backgroundColor: "#576675E6",
+        },
+      },
+    },
     //@ts-expect-error
     MuiTabPanel: {
       styleOverrides: {

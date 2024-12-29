@@ -2,7 +2,6 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import DashboardTitle from "@components/dashboard/dashboardContainerTitle";
 import QueryBatchData from "@common/QueryBatchData";
@@ -11,7 +10,7 @@ import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@types";
 import { useParams } from "react-router-dom";
 import DashboardTab from "@components/dashboard/dashboard_Tab/dashboardTab";
-import MainTabs from "@common/mainTabs/mainTabs";
+import MainTabs from "@/components/dashboard/MainTabs";
 
 const DashbordContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -44,13 +43,12 @@ const DashbordContainer = () => {
                   textAlign="left"
                   variant="headlineLarge"
                 >
-                  <Trans i18nKey="dashboard" />
+                    {pathInfo?.assessment?.title}
                 </Typography>
               </Grid>
               <Grid container sm={12} xs={12}>
                 <Grid
                   item
-                  // sm={3}
                   xs={12}
                   sx={{ display: "flex" }}
                 >
@@ -62,7 +60,6 @@ const DashbordContainer = () => {
 
                 <Grid
                   item
-                  // sm={9}
                   xs={12}
                   sx={{
                     height: "100%",

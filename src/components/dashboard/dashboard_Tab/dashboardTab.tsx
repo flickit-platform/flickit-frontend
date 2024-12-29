@@ -45,7 +45,10 @@ const DashboardTab = () => {
             metrics: Object.fromEntries(
               Object.entries(item.metrics).filter(
                 ([key, value]) =>
-                  (key !== "total" && key !== "answered" && value) ||
+                  (key !== "total" &&
+                    key !== "answered" &&
+                    key !== "expected" &&
+                    value) ||
                   (key === "total" &&
                     item.category === "advices" &&
                     value === 0),
@@ -53,33 +56,35 @@ const DashboardTab = () => {
             ),
           };
         });
-        updatedData.forEach((item:{category: string, metrics: {[p:string]: any}} ) => {
-          if (Object.keys(item.metrics).length > 0) {
-            if (activeStep == 0) {
-              if (item.category == "questions" && item.metrics.unanswered) {
-                item.metrics.name = item.category;
-                todoData.now.push(item.metrics);
+        updatedData.forEach(
+          (item: { category: string; metrics: { [p: string]: any } }) => {
+            if (Object.keys(item.metrics).length > 0) {
+              if (activeStep == 0) {
+                if (item.category == "questions" && item.metrics.unanswered) {
+                  item.metrics.name = item.category;
+                  todoData.now.push(item.metrics);
+                } else {
+                  item.metrics.name = item.category;
+                  todoData.next.push(item.metrics);
+                }
+              } else if (activeStep == 1) {
+                if (
+                  (item.category == "insights" && item.metrics.notGenerated) ||
+                  item.category == "questions"
+                ) {
+                  item.metrics.name = item.category;
+                  todoData.now.push(item.metrics);
+                } else {
+                  item.metrics.name = item.category;
+                  todoData.next.push(item.metrics);
+                }
               } else {
                 item.metrics.name = item.category;
-                todoData.next.push(item.metrics);
-              }
-            } else if (activeStep == 1) {
-              if (
-                (item.category == "insights" && item.metrics.notGenerated) ||
-                item.category == "questions"
-              ) {
-                item.metrics.name = item.category;
                 todoData.now.push(item.metrics);
-              } else {
-                item.metrics.name = item.category;
-                todoData.next.push(item.metrics);
               }
-            } else {
-              item.metrics.name = item.category;
-              todoData.now.push(item.metrics);
             }
-          }
-        });
+          },
+        );
         setTodoBoxData(todoData);
         setStepData(mappedData);
       } catch (e) {
@@ -91,7 +96,7 @@ const DashboardTab = () => {
   }, [activeStep]);
 
   return (
-    <Box sx={{ p: "80px 45px", height: "100%", width: "100%" }}>
+    <Box sx={{ p: "45px", height: "100%", width: "100%" }}>
       <Typography
         sx={{
           ...theme.typography.headlineSmall,
@@ -104,16 +109,7 @@ const DashboardTab = () => {
         }}
       >
         <Trans i18nKey={"assessmentSteps"} />
-        <Tooltip
-            slotProps={{
-              tooltip: {
-                sx: {
-                  color: "#FFFFFF",
-                  backgroundColor: "#576675E6",
-                },
-              },
-            }}
-            title={<Trans i18nKey={"assessmentStepsTooltip"} />} >
+        <Tooltip title={<Trans i18nKey={"assessmentStepsTooltip"} />}>
           <InfoIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
         </Tooltip>
       </Typography>
