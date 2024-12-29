@@ -239,8 +239,8 @@ const SubjectTitle = (props: { data: ISubjectReportModel; pathInfo: any }) => {
   const { data, pathInfo } = props;
   const { subject } = data || {};
   const { title } = subject;
-  const { spaceId, assessmentId, page } = useParams();
-  const { space, assessment } = pathInfo;
+  const { spaceId, page } = useParams();
+  const { space } = pathInfo;
   const { config } = useConfigContext();
 
   useEffect(() => {
@@ -262,10 +262,10 @@ const SubjectTitle = (props: { data: ISubjectReportModel; pathInfo: any }) => {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
             },
-            {
-              title: `${assessment?.title} ${t("insights")}`,
-              to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
-            },
+            // {
+            //   title: `${assessment?.title} ${t("insights")}`,
+            //   to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
+            // },
             {
               title: (
                 <>{<Trans i18nKey="report" values={{ title: title }} />}</>

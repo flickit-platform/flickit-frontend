@@ -131,18 +131,17 @@ const Routes = () => {
                 path="assessment-settings/"
                 element={<AssessmentSettingScreen />}
             />
-
+            <Route
+                path="assessment-insights/"
+                element={<AssessmentReportScreen />}
+            />
           </Route>
-          <Route
-            path="/:spaceId/assessments/:page/:assessmentId/insights"
-            element={<AssessmentReportScreen />}
-          />
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/advice"
             element={<AssessmentAdviceScreen />}
           />
           <Route
-            path="/:spaceId/assessments/:page/:assessmentId/insights/:subjectId"
+            path="/:spaceId/assessments/:page/:assessmentId/dashboard/assessment-insights/:subjectId"
             element={<SubjectReportScreen />}
           />
           {/* Questionnaires and questions related routes */}

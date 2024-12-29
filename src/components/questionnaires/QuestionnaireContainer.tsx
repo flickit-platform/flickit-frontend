@@ -138,7 +138,7 @@ const NotCompletedAlert = (props: {
               variant="contained"
               color="primary"
               component={Link}
-              to="./../insights"
+              to="./../dashboard/assessment-insights"
               startIcon={<AnalyticsRoundedIcon />}
               sx={{ display: isAccessDenied ? "none" : "" }}
             >

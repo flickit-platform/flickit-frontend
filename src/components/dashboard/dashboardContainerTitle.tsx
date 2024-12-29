@@ -32,10 +32,10 @@ const DashboardTitle = (props: any) => {
                             title: space?.title,
                             to: `/${spaceId}/assessments/${page}`,
                         },
-                        {
-                            title: `${assessment?.title} ${t("insights")}`,
-                            to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
-                        },
+                        // {
+                        //     title: `${assessment?.title} ${t("insights")}`,
+                        //     to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
+                        // },
                         {
                             title: `${assessment?.title} ${t("dashboard")}`,
                         },
