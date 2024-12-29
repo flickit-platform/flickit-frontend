@@ -154,19 +154,6 @@ const AssessmentReportContainer = (props: any) => {
                 <Grid item sm={12} xs={12}>
                   <Box display="flex" justifyContent="space-between">
                     <Box sx={{ py: "0.6rem", display: "flex",marginLeft: "auto" }}>
-                      <Tooltip title={<Trans i18nKey={"dashboard"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/assessment-dashboard`}
-                          >
-                            <Dashboard
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip>
                       <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
                         <Box>
                           <IconButton
@@ -201,7 +188,7 @@ const AssessmentReportContainer = (props: any) => {
                             data-cy="more-action-btn"
                             disabled={!manageable}
                             component={manageable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/assessment-settings/`}
+                            to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/assessment-settings/`}
                           >
                             <SettingsIcon
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
