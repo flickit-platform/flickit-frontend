@@ -326,7 +326,7 @@ const AddMemberDialog = (props: {
                       <Box
                         sx={{
                           maxWidth: "240px",
-                          color: "#000",
+                          color: "#2B333B",
                           fontSize: "0.875rem",
                           lineHeight: "21px",
                           fontWeight: 500,
@@ -336,7 +336,7 @@ const AddMemberDialog = (props: {
                         <Typography>{role.title}</Typography>
                         <div
                           style={{
-                            color: "#000",
+                            color: "#2B333B",
                             fontSize: "0.875rem",
                             lineHeight: "21px",
                             fontWeight: 300,
