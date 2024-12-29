@@ -239,8 +239,8 @@ const SubjectTitle = (props: { data: ISubjectReportModel; pathInfo: any }) => {
   const { data, pathInfo } = props;
   const { subject } = data || {};
   const { title } = subject;
-  const { spaceId, assessmentId, page } = useParams();
-  const { space, assessment } = pathInfo;
+  const { spaceId, page } = useParams();
+  const { space } = pathInfo;
   const { config } = useConfigContext();
 
   useEffect(() => {

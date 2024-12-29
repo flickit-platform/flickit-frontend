@@ -6,7 +6,7 @@ import { t } from "i18next";
 const AssessmentHtmlTitle = (props: any) => {
   const { pathInfo } = props;
   const { spaceId, page } = useParams();
-  const { space, assessment } = pathInfo;
+  const { space } = pathInfo;
 
   return (
     <Title

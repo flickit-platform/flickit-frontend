@@ -19,7 +19,7 @@ interface IAssessmentExportTitle {
 const AssessmentExportTitle = (props: IAssessmentExportTitle) => {
   const { pathInfo } = props;
   const { spaceId, page } = useParams();
-  const { space, assessment } = pathInfo;
+  const { space } = pathInfo;
 
   return (
     <Title
