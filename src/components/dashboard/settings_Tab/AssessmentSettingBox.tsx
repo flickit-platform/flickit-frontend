@@ -42,6 +42,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { theme } from "@config/theme";
+import {uniqueId} from "lodash";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -222,10 +223,10 @@ export const AssessmentSettingGeneralBox = (props: {
             justifyContent: "space-between",
           }}
         >
-          {title &&
-            title.map((itemList: string, index: number) => {
+          {title.map((itemList: string, index: number) => {
               return (
                 <Grid
+                  key={uniqueId()}
                   item
                   xs={12}
                   sm={5}
@@ -367,20 +368,6 @@ export const AssessmentSettingMemberBox = (props: {
     },
   ];
 
-  const handleChange = async (event: any) => {
-    try {
-      const {
-        target: { value, name },
-      } = event;
-      const { id: roleId } = value;
-      const { id: userId } = name;
-      await editUserRole.query({ userId, roleId });
-      setChangeData((prev: boolean) => !prev);
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
   const handleChangeInvitedUser = async (event: any) => {
     try {
       const {
@@ -847,8 +834,7 @@ export const AssessmentSettingMemberBox = (props: {
                                       <Trans i18nKey={"chooseARole"} />
                                     </Typography>
                                   </Box>
-                                  {listOfRoles &&
-                                    listOfRoles.map(
+                                  {listOfRoles?.map(
                                       (role: any, index: number) => (
                                         <MenuItem
                                           style={{ display: "block" }}
@@ -1051,8 +1037,7 @@ const SelectionRole = (props: any) => {
           <Trans i18nKey={"chooseARole"} />
         </Typography>
       </Box>
-      {listOfRoles &&
-        listOfRoles.map((role: any, index: number) => (
+      {listOfRoles?.map((role: any, index: number) => (
           <MenuItem
             style={{ display: "block" }}
             key={role.title}
