@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
-import {uniqueId} from "lodash";
+import { uniqueId } from "lodash";
 import Tooltip from "@mui/material/Tooltip";
 
 const TodoBox = (props: any) => {
@@ -26,18 +26,9 @@ const TodoBox = (props: any) => {
             }}
           >
             <Trans i18nKey={"whatToDoNow"} />
-              <Tooltip
-                  slotProps={{
-                      tooltip: {
-                          sx: {
-                              color: "#FFFFFF",
-                              backgroundColor: "#576675E6",
-                          },
-                      },
-                  }}
-                  title={<Trans i18nKey={"whatToDoNowTooltip"} />} >
-                  <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
-              </Tooltip>
+            <Tooltip title={<Trans i18nKey={"whatToDoNowTooltip"} />}>
+              <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+            </Tooltip>
           </Typography>
           {now.map((item: any) => {
             return (
@@ -93,18 +84,9 @@ const TodoBox = (props: any) => {
             }}
           >
             <Trans i18nKey={"whatToDoNext"} />
-              <Tooltip
-                  slotProps={{
-                      tooltip: {
-                          sx: {
-                              color: "#FFFFFF",
-                              backgroundColor: "#576675E6",
-                          },
-                      },
-                  }}
-                  title={<Trans i18nKey={"whatToDoNextTooltip"} />} >
-                  <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
-              </Tooltip>
+            <Tooltip title={<Trans i18nKey={"whatToDoNextTooltip"} />}>
+              <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+            </Tooltip>
           </Typography>
           {next.map((item: any, index: number) => {
             return (
@@ -189,23 +171,45 @@ const IssuesItem = (props: any) => {
         }}
       >
         {value != 0 ? <Box>{value}</Box> : null}
-        {name == "unanswered" && (
-            value > 1 ? <Trans i18nKey={"needForAnswers"} />  :  <Trans i18nKey={"needsForAnswer"} />) }
-        {name == "answeredWithLowConfidence" && (
-            value > 1  ?  <Trans i18nKey={"questionsConfidenceAnswers"} /> :  <Trans i18nKey={"questionConfidenceAnswer"} />
+        {name == "unanswered" &&
+          (value > 1 ? (
+            <Trans i18nKey={"needForAnswers"} />
+          ) : (
+            <Trans i18nKey={"needsForAnswer"} />
+          ))}
+        {name == "answeredWithLowConfidence" &&
+          (value > 1 ? (
+            <Trans i18nKey={"questionsConfidenceAnswers"} />
+          ) : (
+            <Trans i18nKey={"questionConfidenceAnswer"} />
+          ))}
+        {name == "withoutEvidence" &&
+          (value > 1 ? (
+            <Trans i18nKey={"lackForEvidences"} />
+          ) : (
+            <Trans i18nKey={"lackForEvidence"} />
+          ))}
+        {name == "unresolvedComments" &&
+          (value > 1 ? (
+            <Trans i18nKey={"UnresolvedComments"} />
+          ) : (
+            <Trans i18nKey={"UnresolvedComment"} />
+          ))}
+        {name == "notGenerated" && (
+          <Trans i18nKey={"insightsNeedToBeGenerated"} />
         )}
-        {name == "withoutEvidence" && (
-            value > 1  ?  <Trans i18nKey={"lackForEvidences"} /> :  <Trans i18nKey={"lackForEvidence"} />
-        ) }
-        {name == "unresolvedComments" && (
-            value > 1  ?  <Trans i18nKey={"UnresolvedComments"} /> : <Trans i18nKey={"UnresolvedComment"} />
-        )}
-        {name == "notGenerated" && <Trans i18nKey={"insightsNeedToBeGenerated"} />}
-        {name == "unapproved" && (
-            value > 1  ? <Trans i18nKey={"insightsNeedApprovement"} />  :  <Trans i18nKey={"insightNeedApprovement"} />)}
-        {name == "expired" && (
-            value > 1  ? <Trans i18nKey={"expiredDueToNewAnswers"} /> :  <Trans i18nKey={"expiredDueToNewAnswer"} />
-        ) }
+        {name == "unapproved" &&
+          (value > 1 ? (
+            <Trans i18nKey={"insightsNeedApprovement"} />
+          ) : (
+            <Trans i18nKey={"insightNeedApprovement"} />
+          ))}
+        {name == "expired" &&
+          (value > 1 ? (
+            <Trans i18nKey={"expiredDueToNewAnswers"} />
+          ) : (
+            <Trans i18nKey={"expiredDueToNewAnswer"} />
+          ))}
         {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}
       </Typography>
     </Box>

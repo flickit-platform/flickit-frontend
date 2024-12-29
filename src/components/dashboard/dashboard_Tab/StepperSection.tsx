@@ -299,7 +299,7 @@ const StepBox = (props: IStepBox) => {
       sx={{
         px: "20px",
         py: "10px",
-        height: "240px",
+        height: "190px",
         borderRight: { md: insights ? "1px solid #C7CCD1" : "" },
         borderLeft: { md: insights ? "1px solid #C7CCD1" : "" },
         borderTop: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
@@ -316,9 +316,21 @@ const StepBox = (props: IStepBox) => {
           mb: "36px",
         }}
       >
-        {questions && <Trans i18nKey={"answeredQuestionsTitle"} />}
-        {insights && <Trans i18nKey={"submittedInsights"} />}
-        {advices && <Trans i18nKey={"suggestedAdvices"} />}
+        {questions && (
+          <Typography variant="semiBoldXLarge">
+            <Trans i18nKey={"answeredQuestionsTitle"} />
+          </Typography>
+        )}
+        {insights && (
+          <Typography variant="semiBoldXLarge">
+            <Trans i18nKey={"submittedInsights"} />
+          </Typography>
+        )}
+        {advices && (
+          <Typography variant="semiBoldXLarge">
+            <Trans i18nKey={"suggestedAdvices"} />
+          </Typography>
+        )}
       </Typography>
       {content}
     </Grid>
