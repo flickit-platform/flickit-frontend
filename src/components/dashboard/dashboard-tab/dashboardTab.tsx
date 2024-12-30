@@ -88,10 +88,7 @@ const DashboardTab = () => {
         );
         setTodoBoxData(todoData);
         setStepData(mappedData);
-      } catch (e) {
-        const err = e as ICustomError;
-        toastError(err);
-      }
+      } catch (e) {}
     };
     preparedData().then();
   }, [activeStep]);
