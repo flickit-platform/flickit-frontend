@@ -134,10 +134,6 @@ const Routes = () => {
               element={<AssessmentReportScreen />}
             />
             <Route
-              path="insights/:subjectId"
-              element={<SubjectReportScreen />}
-            />
-            <Route
               path="questionnaires/:questionIndex"
               element={<QuestionnairesScreen />}
             />
@@ -157,6 +153,10 @@ const Routes = () => {
               <Route path=":questionIndex" element={<QuestionScreen />} />
             </Route>
           </Route>
+          <Route
+              path="/:spaceId/assessments/:page/:assessmentId/insights/:subjectId"
+              element={<SubjectReportScreen />}
+            />
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/advice"
             element={<AssessmentAdviceScreen />}
