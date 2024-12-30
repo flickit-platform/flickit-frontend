@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import Tooltip from "@mui/material/Tooltip";
+import PermissionControl from "@/components/common/PermissionControl";
 
 const DashboardTab = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -96,39 +97,41 @@ const DashboardTab = () => {
   }, [activeStep]);
 
   return (
-    <Box
-      sx={{
-        p: "45px",
-        height: "100%",
-        width: "100%",
-        background: "#F9FAFB",
-        border: "2px solid #C7CCD1",
-        borderRadius: "1rem",
-      }}
-    >
-      <Typography
+    <PermissionControl error={[fetchDashboard.errorObject?.response?.data]}>
+      <Box
         sx={{
-          ...theme.typography.headlineSmall,
-          display: "flex",
-          alignItems: "center",
-          textAlign: "center",
-          color: "#3D4D5C80",
-          gap: 2,
-          mb: 4,
+          p: "45px",
+          height: "100%",
+          width: "100%",
+          background: "#F9FAFB",
+          border: "2px solid #C7CCD1",
+          borderRadius: "1rem",
         }}
       >
-        <Trans i18nKey={"assessmentSteps"} />
-        <Tooltip title={<Trans i18nKey={"assessmentStepsTooltip"} />}>
-          <InfoIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
-        </Tooltip>
-      </Typography>
-      <StepperSection
-        setActiveStep={setActiveStep}
-        activeStep={activeStep}
-        stepData={stepData}
-      />
-      <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} />
-    </Box>
+        <Typography
+          sx={{
+            ...theme.typography.headlineSmall,
+            display: "flex",
+            alignItems: "center",
+            textAlign: "center",
+            color: "#3D4D5C80",
+            gap: 2,
+            mb: 4,
+          }}
+        >
+          <Trans i18nKey={"assessmentSteps"} />
+          <Tooltip title={<Trans i18nKey={"assessmentStepsTooltip"} />}>
+            <InfoIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+          </Tooltip>
+        </Typography>
+        <StepperSection
+          setActiveStep={setActiveStep}
+          activeStep={activeStep}
+          stepData={stepData}
+        />
+        <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} />
+      </Box>
+    </PermissionControl>
   );
 };
 

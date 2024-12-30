@@ -117,7 +117,7 @@ const AssessmentReportContainer = (props: any) => {
   });
 
   return (
-    <PermissionControl error={[queryData.errorObject?.response]}>
+    <PermissionControl error={[queryData.errorObject?.response?.data]}>
       <QueryBatchData
         queryBatchData={[
           queryData,
