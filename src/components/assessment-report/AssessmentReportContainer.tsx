@@ -117,7 +117,7 @@ const AssessmentReportContainer = (props: any) => {
   });
 
   return (
-    <PermissionControl error={[queryData.errorObject?.response]}>
+    <PermissionControl error={[queryData.errorObject?.response?.data]}>
       <QueryBatchData
         queryBatchData={[
           queryData,
@@ -181,7 +181,7 @@ const AssessmentReportContainer = (props: any) => {
                           </IconButton>
                         </Box>
                       </Tooltip>
-                      <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
+                      {/* <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
                         <Box>
                           <IconButton
                             data-cy="more-action-btn"
@@ -194,7 +194,7 @@ const AssessmentReportContainer = (props: any) => {
                             />
                           </IconButton>
                         </Box>
-                      </Tooltip>
+                      </Tooltip> */}
                     </Box>
                   </Box>
                   <Grid container alignItems="stretch" spacing={2} mt={1}>
