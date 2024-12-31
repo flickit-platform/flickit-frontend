@@ -205,7 +205,9 @@ const MaturityLevelTable = ({
         : "-",
       weight: item.question.weight,
       score: item.answer.score,
-      weightedScore: item.answer.weightedScore,
+      weightedScore: parseFloat(
+        parseFloat(item.answer.weightedScore.toString()).toFixed(2),
+      ),
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
     };
