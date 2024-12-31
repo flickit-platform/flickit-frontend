@@ -40,6 +40,7 @@ import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
+import { t } from "i18next";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -54,6 +55,7 @@ const SUbjectAttributeCard = (props: any) => {
     attributesDataPolicy,
     editable,
   } = props;
+  const { permissions }: { permissions: IPermissions } = props;
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
@@ -125,6 +127,13 @@ const SUbjectAttributeCard = (props: any) => {
   const maturityLevelColor = colorPallet[maturityLevel.value - 1];
 
   const backgroundColor = getTransparentColor(maturityLevelColor);
+  const attributeAccordionClick = (event:React.SyntheticEvent )=>{
+      event.stopPropagation()
+      if(!permissions.viewAttributeScoreDetail){
+          toast(t("permissionRequired"),{type: "error"})
+      }
+  }
+
   return (
     <Box
       sx={{
@@ -146,7 +155,7 @@ const SUbjectAttributeCard = (props: any) => {
             display: "none",
           },
         }}
-        expanded={expandedAttribute === id}
+        expanded={permissions.viewAttributeScoreDetail && expandedAttribute === id}
         onChange={handleChange(id)}
       >
         <AccordionSummary
@@ -170,7 +179,7 @@ const SUbjectAttributeCard = (props: any) => {
               padding: "0px !important",
             },
           }}
-          onClick={(event) => event.stopPropagation()}
+          onClick={(event) => attributeAccordionClick(event)}
         >
           <Grid
             container
