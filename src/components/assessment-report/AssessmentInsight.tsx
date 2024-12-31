@@ -144,7 +144,7 @@ export const AssessmentInsight = () => {
                     <Trans
                       i18nKey={
                         aboutSection.hasOwnProperty("isValid")
-                          ? "Outdated"
+                          ? "outdated"
                           : "note"
                       }
                     />

@@ -415,7 +415,7 @@
   "optionsValues": "مقادیر گزینه‌ها",
   "optionValue": "گزینه {{index}}",
   "order": "ترتیب",
-  "Outdated": "منسوخ‌شده",
+  "outdated": "منسوخ‌شده",
   "overalConfidence": "سطح اطمینان کلی",
   "overallInsight": "بینش کلی {{title}}",
   "overallInsights": "گزارش‌های کلی",
