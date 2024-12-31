@@ -2151,6 +2151,8 @@ export const createService = (
           return axios.get(
               `/api/v1/assessment-kits/${assessmentKitId}/export-dsl/`,
               {
+                  ...config,
+                  responseType: "blob",
                   headers: {
                       "Content-Type": "multipart/form-data",
                   },
