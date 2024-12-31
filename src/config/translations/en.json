@@ -693,7 +693,7 @@
   "YourStatusIs": "Your {{title}} status is",
   "youSelected": "You've selected",
   "youveGotSyntaxErrorsInYourDslFile": "You've got syntax errors in your dsl file",
-  "noQuestionAvailableForThisMaturity": "There's no question defined for this maturity level for this attribute.",
+  "noQuestionAvailableForThisMaturity": "No question impacts this level of the attribute.",
   "analysisResults": "AnalysisResults",
   "dashboard": "Dashboard",
   "reports": "Reports",
