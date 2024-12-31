@@ -117,7 +117,7 @@ export const SubjectInsight = () => {
                     <Trans
                       i18nKey={
                         aboutSection.hasOwnProperty("isValid")
-                          ? "Outdated"
+                          ? "outdated"
                           : "note"
                       }
                     />

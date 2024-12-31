@@ -217,7 +217,7 @@ const SUbjectAttributeCard = (props: any) => {
                   <Tooltip title={<Trans i18nKey="invalidInsight" />}>
                     <div>
                       <AIGenerated
-                        title="Outdated"
+                        title="outdated"
                         type="warning"
                         icon={<></>}
                       />

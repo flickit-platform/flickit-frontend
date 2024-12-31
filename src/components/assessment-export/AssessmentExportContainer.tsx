@@ -1563,7 +1563,7 @@ const AssessmentExportContainer = () => {
                                             fontWeight: "bold",
                                           }}
                                         >
-                                          <Trans i18nKey="Outdated" />
+                                          <Trans i18nKey="outdated" />
                                         </Typography>
                                       </Box>
                                       <Box
