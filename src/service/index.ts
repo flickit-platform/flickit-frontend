@@ -79,6 +79,19 @@ export const createService = (
     getUserProfile(arg: any, config: AxiosRequestConfig<any> | undefined) {
       return axios.get(`/api/v1/user-profile/`, config);
     },
+    updateUserProfilePicture(
+          args: { data: any },
+          config: AxiosRequestConfig<any> | undefined,
+      ) {
+          const { data = {} } = args ?? {};
+
+          return axios.put(`/api/v1/user-profile/picture/`, data, {
+              ...(config ?? {}),
+              headers: {
+                  "Content-Type": "multipart/form-data",
+              },
+          });
+    },
     updateUserInfo(args: any, config: AxiosRequestConfig<any> | undefined) {
       const { data } = args ?? {};
       return axios.put(`/api/v1/user-profile/`, data, {

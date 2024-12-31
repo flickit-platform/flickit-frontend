@@ -238,7 +238,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             <Link
               to={`/${
                 spaceId || data.space?.id
-              }/assessments/1/${createdKitId}/assessment-settings/`}
+              }/assessments/1/${createdKitId}/settings/`}
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained">

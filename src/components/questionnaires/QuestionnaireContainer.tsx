@@ -47,14 +47,6 @@ const QuestionnaireContainer = () => {
       error={[questionnaireQueryData.errorObject?.response?.data]}
     >
       <Box>
-        <QueryData
-          {...fetchPathInfo}
-          loading={false}
-          render={(pathInfo = {}) => {
-            return <QuestionnaireTitle pathInfo={pathInfo} />;
-          }}
-        />
-
         <NotCompletedAlert
           isCompleted={progress == 100}
           hasStatus={false}
@@ -138,7 +130,7 @@ const NotCompletedAlert = (props: {
               variant="contained"
               color="primary"
               component={Link}
-              to="./../dashboard/assessment-insights"
+              to="./../insights"
               startIcon={<AnalyticsRoundedIcon />}
               sx={{ display: isAccessDenied ? "none" : "" }}
             >

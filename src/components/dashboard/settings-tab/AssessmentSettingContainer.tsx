@@ -70,9 +70,9 @@ const AssessmentSettingContainer = () => {
     (async () => {
       const { manageable, kit, kitCustomId } = await AssessmentInfo.query();
       setKitInfo({ kit, kitCustomId });
-      if (!manageable) {
-        return navigate("*");
-      }
+      // if (!manageable) {
+      //   return navigate("*");
+      // }
     })();
   }, [assessmentId]);
   useEffect(() => {

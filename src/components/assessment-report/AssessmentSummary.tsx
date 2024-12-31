@@ -94,7 +94,7 @@ export const AssessmentSummary = (props: IAssessmentSummaryProps) => {
         }}
         size="large"
         component={Link}
-        to="./../../questionnaires"
+        to="./../questionnaires"
       >
         <Trans i18nKey="seeQuestionaires" />
       </Button>

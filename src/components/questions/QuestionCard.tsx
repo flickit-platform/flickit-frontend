@@ -169,7 +169,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           my: { xs: 2, md: 5 },
           mx: { xs: 2, sm: "auto" },
           mb: "0 !important",
-          maxWidth: "1376px",
           borderRadius: "8px 8px 0 0",
         }}
         elevation={3}

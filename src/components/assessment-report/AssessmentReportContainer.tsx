@@ -117,7 +117,7 @@ const AssessmentReportContainer = (props: any) => {
   });
 
   return (
-    <PermissionControl error={[queryData.errorObject?.response]}>
+    <PermissionControl error={[queryData.errorObject?.response?.data]}>
       <QueryBatchData
         queryBatchData={[
           queryData,
@@ -181,20 +181,20 @@ const AssessmentReportContainer = (props: any) => {
                           </IconButton>
                         </Box>
                       </Tooltip>
-                      <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
+                      {/* <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
                         <Box>
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={!manageable}
                             component={manageable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/assessment-settings/`}
+                            to={`/${spaceId}/assessments/1/${assessmentId}/settings/`}
                           >
                             <SettingsIcon
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
                             />
                           </IconButton>
                         </Box>
-                      </Tooltip>
+                      </Tooltip> */}
                     </Box>
                   </Box>
                   <Grid container alignItems="stretch" spacing={2} mt={1}>
