@@ -23,6 +23,7 @@ import AddIcon from "@mui/icons-material/Add";
 import toastError from "@utils/toastError";
 import formatBytes from "@utils/formatBytes";
 import {ICustomError} from "@utils/CustomError";
+import {styles} from "@styles";
 
 const UserAccount = () => {
     const [hover, setHover] = useState(false);
@@ -46,7 +47,7 @@ const UserAccount = () => {
     }, [userQueryData.loaded]);
 
     const dialogProps = useDialog();
-    useDocumentTitle(`${t("userProfileT")}: ${getUserName(userInfo)}`);
+    useDocumentTitle(`${t("userProfile")}: ${getUserName(userInfo)}`);
 
     const onSubmit = async () => {
         const res = await userQueryData.query();
@@ -99,8 +100,7 @@ const UserAccount = () => {
                     onMouseEnter={() => setHover(true)}
                     onMouseLeave={() => setHover(false)}
                     sx={{
-                        marginRight: theme.direction === "ltr" ? 1 : "unset",
-                        marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                        marginInlineStart: 1,
                         top: "168px",
                         left: "24px",
                     }}
@@ -128,22 +128,19 @@ const UserAccount = () => {
                                 left: theme.direction === "ltr" ? "50%" : "unset",
                                 right: theme.direction === "rtl" ? "50%" : "unset",
                                 marginTop: "-12px",
-                                marginLeft: theme.direction === "ltr" ? "-12px" : "unset",
-                                marginRight: theme.direction === "rtl" ? "-12px" : "unset",
+                                marginInlineStart: "-12px"
                             }}
                         />
                     )}
-                    {!isLoading && (
+                    {!isLoading ? (
                         <Box
                             position="absolute"
                             top={0}
                             left={0}
                             width="100%"
                             height="100%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
                             borderRadius="50%"
+                            sx={{...styles.centerVH}}
                         >
                             {hover && (
                                 <Box
@@ -189,12 +186,11 @@ const UserAccount = () => {
                                 </Tooltip>
                             )}
                         </Box>
-                    )}
+                    ) : null }
                 </Box>
             </Box>
             <Box
-                ml={theme.direction === "ltr" ? "130px" : "unset"}
-                mr={theme.direction === "rtl" ? "130px" : "unset"}
+                sx={{marginInlineStart: "130px"}}
                 mt={1}
             >
                 <Title
@@ -204,8 +200,7 @@ const UserAccount = () => {
                         <>
                             <IconButton
                                 sx={{
-                                    ml: theme.direction === "rtl" ? 1.5 : "auto",
-                                    mr: theme.direction !== "rtl" ? 1.5 : "auto",
+                                    marginInlineStart:1.5,
                                     mb: 1.2,
                                 }}
                                 onClick={openDialog}

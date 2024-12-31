@@ -641,7 +641,7 @@
   "userAssessmentKit": "User assessment kit",
   "userEmail": "User email address",
   "username": "Username",
-  "userProfileT": "User Profile",
+  "userProfile": "User Profile",
   "users": "Users",
   "validateReleaseTooltip": "Your kit cannot be released until all errors are resolved.",
   "validation": "Validation",
@@ -754,5 +754,7 @@
   "resolve":"Resolve",
   "assessmentStepsTooltip": "An assessment generally consists of three main steps: answering questions and completing questionnaires, submitting insights by analyzing the responses and results, and then suggesting advices based on the understanding of strengths and weaknesses.\nTo achieve the best results, it is recommended that one step should not begin until the previous step is completed.",
   "whatToDoNowTooltip": "In this section, the tasks to be done are listed according to the current step of the assessment.",
-  "whatToDoNextTooltip": "In this section, the issues that need to be addressed in the next steps of the assessment are highlighted."
+  "whatToDoNextTooltip": "In this section, the issues that need to be addressed in the next steps of the assessment are highlighted.",
+  "editPicture": "edit picture",
+  "addPicture ": "add picture "
 }
