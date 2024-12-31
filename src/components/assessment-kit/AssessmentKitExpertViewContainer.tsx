@@ -38,12 +38,15 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import { primaryFontFamily, theme } from "@/config/theme";
 
 const AssessmentKitExpertViewContainer = () => {
-  const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
-    useAssessmentKit();
+  const {
+    fetchAssessmentKitDetailsQuery,
+    fetchAssessmentKitDownloadUrlQuery,
+    fetchAssessmentKitExportUrlQuery,
+  } = useAssessmentKit();
   const dialogProps = useDialog();
   const { config } = useConfigContext();
   const [update, setForceUpdate] = useState<boolean>(false);
-  const { expertGroupId } = useParams();
+  const { expertGroupId, assessmentKitId } = useParams();
   const [details, setDetails] = useState<AssessmentKitDetailsType>();
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
@@ -63,6 +66,22 @@ const AssessmentKitExpertViewContainer = () => {
       const a = document.createElement("a");
       a.href = fileUrl;
       a.download = "file_name.zip";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+  const handleExport = async () => {
+    try {
+      const response = await fetchAssessmentKitExportUrlQuery.query();
+      const zipfile = new Blob([response], { type: "application/zip" });
+      const blobUrl = URL.createObjectURL(zipfile);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `export-${assessmentKitId}.zip`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -126,6 +145,17 @@ const AssessmentKitExpertViewContainer = () => {
                   <Trans i18nKey="updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
+              </Button>
+              <Button
+                variant="contained"
+                size="small"
+                sx={{ ml: 2 }}
+                onClick={handleExport}
+              >
+                <Typography mr={1} variant="button">
+                  <Trans i18nKey="exportDSL" />
+                </Typography>
+                <CloudDownloadRoundedIcon />
               </Button>
               <Button
                 variant="contained"
@@ -1775,6 +1805,11 @@ const useAssessmentKit = () => {
       service.fetchAssessmentKitDownloadUrl(args, config),
     runOnMount: false,
   });
+  const fetchAssessmentKitExportUrlQuery = useQuery({
+    service: (args = { assessmentKitId }, config) =>
+      service.fetchAssessmentKitExportUrl(args, config),
+    runOnMount: false,
+  });
 
   return {
     // assessmentKitQueryProps,
@@ -1787,6 +1822,7 @@ const useAssessmentKit = () => {
     fetchAssessmentKitQuestionnairesQuery,
     fetchAssessmentKitQuestionnairesQuestionsQuery,
     fetchAssessmentKitDownloadUrlQuery,
+    fetchAssessmentKitExportUrlQuery,
   };
 };
 export default AssessmentKitExpertViewContainer;

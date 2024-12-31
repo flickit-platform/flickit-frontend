@@ -761,5 +761,6 @@
   "whatToDoNowTooltip": "In this section, the tasks to be done are listed according to the current step of the assessment.",
   "whatToDoNextTooltip": "In this section, the issues that need to be addressed in the next steps of the assessment are highlighted.",
   "issue": "Issue",
-  "answeredQuestionsTitle": "Answered Questions"
+  "answeredQuestionsTitle": "Answered Questions",
+  "exportDSL": "Export DSL"
 }

@@ -2143,7 +2143,20 @@ export const createService = (
         },
       );
     },
-
+    fetchAssessmentKitExportUrl(
+          args: { assessmentKitId: TId },
+          config: AxiosRequestConfig<any> | undefined,
+      ) {
+          const { assessmentKitId } = args ?? {};
+          return axios.get(
+              `/api/v1/assessment-kits/${assessmentKitId}/export-dsl/`,
+              {
+                  headers: {
+                      "Content-Type": "multipart/form-data",
+                  },
+              },
+          );
+    },
     fetchMaturityLevelQuestions(
       args: { assessmentKitId: TId; attributeId: TId; maturityLevelId: TId },
       config: AxiosRequestConfig<any> | undefined,
