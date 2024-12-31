@@ -27,6 +27,7 @@ import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
+import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 
 const SubjectContainer = () => {
   const {
@@ -471,13 +472,13 @@ const SubjectTitle = (props: {
               to: `/${spaceId}/assessments/${page}`,
               // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
-            // {
-            //   title: `${assessment?.title} ${t("insights")}`,
-            //   to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
-              // icon: (
-              //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-              // ),
-            // },
+            {
+              title: `${assessment?.title} ${t("insights")}`,
+              to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
+              icon: (
+                <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
+              ),
+            },
             {
               title: <>{title || <Trans i18nKey="technicalDueDiligence" />}</>,
               // icon: (
