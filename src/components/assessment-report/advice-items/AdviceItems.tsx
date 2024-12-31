@@ -87,6 +87,8 @@ const AdviceItems = () => {
 
   const handleCancel = () => {
     setShowNewAdviceListForm(false);
+    setErrorMessage({});
+
     removeDescriptionAdvice.current = true;
     setNewAdvice({
       ...newAdvice,
@@ -100,7 +102,7 @@ const AdviceItems = () => {
 
   const handleAddNewRow = () => {
     handleCancel();
-    setShowNewAdviceListForm(true);
+    setShowNewAdviceListForm(!showNewAdviceListForm);
     removeDescriptionAdvice.current = true;
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,17 +115,28 @@ const AdviceItems = () => {
 
   const handleSave = async () => {
     try {
+      let errorOccurred = false;
+      const updatedErrorMessage: any = {};
+
       if (!newAdvice.title) {
-        setErrorMessage((prevState: any) => ({
-          ...prevState,
-          title: "requiredFieldError",
-        }));
+        updatedErrorMessage.title = "requiredFieldError";
+        errorOccurred = true;
+      } else {
+        updatedErrorMessage.title = null;
       }
-      if (!newAdvice.description) {
+
+      if (!newAdvice.description || newAdvice.description === "<p></p>") {
+        updatedErrorMessage.description = "requiredFieldError";
+        errorOccurred = true;
+      } else {
+        updatedErrorMessage.description = null;
+      }
+      if (errorOccurred) {
         setErrorMessage((prevState: any) => ({
           ...prevState,
-          description: "requiredFieldError",
+          ...updatedErrorMessage,
         }));
+        return;
       } else {
         await postAdviceItem.query().then((res) => {
           queryData.query();

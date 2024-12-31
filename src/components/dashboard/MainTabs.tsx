@@ -3,20 +3,20 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { uniqueId } from "lodash";
 import { theme } from "@config/theme";
-import React from "react";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const MainTabs = (props: any) => {
   const { onTabChange, selectedTab } = props;
 
   const tabListTitle = [
-    "dashboard",
-    "questions",
-    "insights",
-    "reportTitle",
-    "advices",
-    "settings",
+    { label: "dashboard", address: "dashboard" },
+    { label: "questions", address: "questionnaires" },
+    { label: "insights", address: "insights" },
+    { label: "reportTitle", address: "report" },
+    { label: "advices", address: "advices" },
+    { label: "settings", address: "settings" },
   ];
 
   return (
@@ -29,7 +29,7 @@ const MainTabs = (props: any) => {
         alignItems: "center",
         justifyContent: "center",
         // boxShadow: "0 4px 4px rgba(0,0,0,25%)",
-        my: "50px",
+        my: 3,
         paddingBlock: 1,
         paddingInline: "48px",
       }}
@@ -48,11 +48,14 @@ const MainTabs = (props: any) => {
           },
         }}
       >
-        {tabListTitle.map((title: any) => {
+        {tabListTitle.map((tab: any) => {
           return (
             <Tab
               key={uniqueId()}
-              disabled={title != "dashboard"}
+              disabled={tab.label === "reportTitle" || tab.label === "advices"}
+              to={`./${tab.address}/`}
+              component={Link}
+              value={tab.address}
               sx={{
                 ...theme.typography.semiBoldLarge,
                 flexGrow: 1,
@@ -63,7 +66,7 @@ const MainTabs = (props: any) => {
                 color: "#2B333B",
                 "&.Mui-selected": {
                   boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                  borderRadius: 2,
+                  borderRadius: 1,
                   color: theme.palette.primary.main,
                   background: "#fff",
                   "&:hover": {
@@ -82,7 +85,7 @@ const MainTabs = (props: any) => {
                   }}
                 >
                   <Typography variant="semiBoldLarge">
-                    <Trans i18nKey={title} />
+                    <Trans i18nKey={tab.label} />
                   </Typography>
                 </Box>
               }

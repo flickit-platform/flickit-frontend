@@ -18,10 +18,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
-import FormProviderWithForm from "../common/FormProviderWithForm";
+import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
-} from "../common/fields/AutocompleteAsyncField";
+} from "@common/fields/AutocompleteAsyncField";
 import { LoadingButton } from "@mui/lab";
 import useScreenResize from "@/utils/useScreenResize";
 import { styles } from "@styles";
@@ -299,8 +299,7 @@ const AddMemberDialog = (props: {
                   <Trans i18nKey={"chooseARole"} />
                 </Typography>
               </Box>
-              {listOfRoles &&
-                listOfRoles.map((role: any, index: number) => {
+              {listOfRoles?.map((role: any, index: number) => {
                   return (
                     <MenuItem
                       style={{ display: "block" }}
@@ -326,7 +325,7 @@ const AddMemberDialog = (props: {
                       <Box
                         sx={{
                           maxWidth: "240px",
-                          color: "#000",
+                          color: "#2B333B",
                           fontSize: "0.875rem",
                           lineHeight: "21px",
                           fontWeight: 500,
@@ -336,7 +335,7 @@ const AddMemberDialog = (props: {
                         <Typography>{role.title}</Typography>
                         <div
                           style={{
-                            color: "#000",
+                            color: "#2B333B",
                             fontSize: "0.875rem",
                             lineHeight: "21px",
                             fontWeight: 300,

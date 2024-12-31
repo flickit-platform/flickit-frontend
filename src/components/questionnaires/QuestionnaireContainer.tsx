@@ -47,14 +47,6 @@ const QuestionnaireContainer = () => {
       error={[questionnaireQueryData.errorObject?.response?.data]}
     >
       <Box>
-        <QueryData
-          {...fetchPathInfo}
-          loading={false}
-          render={(pathInfo = {}) => {
-            return <QuestionnaireTitle pathInfo={pathInfo} />;
-          }}
-        />
-
         <NotCompletedAlert
           isCompleted={progress == 100}
           hasStatus={false}

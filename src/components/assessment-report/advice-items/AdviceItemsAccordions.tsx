@@ -133,6 +133,7 @@ const AdviceItemAccordion: React.FC<{
   const { assessmentId = "" } = useParams();
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const isFarsi = i18next.language === "fa";
+  const [errormessage, setErrorMessage] = useState({});
 
   const [newAdvice, setNewAdvice] = useState({
     title: "",
@@ -183,12 +184,36 @@ const AdviceItemAccordion: React.FC<{
 
   const handleSave = async () => {
     try {
-      await updateAdviceItem.query();
-      removeDescriptionAdvice.current = true;
-      query.query();
+      let errorOccurred = false;
+      const updatedErrorMessage: any = {};
 
-      setDisplayedItems([]);
-      setEditingItemId(null);
+      if (!newAdvice.title) {
+        updatedErrorMessage.title = "requiredFieldError";
+        errorOccurred = true;
+      } else {
+        updatedErrorMessage.title = null;
+      }
+
+      if (!newAdvice.description || newAdvice.description === "<p></p>") {
+        updatedErrorMessage.description = "requiredFieldError";
+        errorOccurred = true;
+      } else {
+        updatedErrorMessage.description = null;
+      }
+      if (errorOccurred) {
+        setErrorMessage((prevState: any) => ({
+          ...prevState,
+          ...updatedErrorMessage,
+        }));
+        return;
+      } else {
+        await updateAdviceItem.query();
+        removeDescriptionAdvice.current = true;
+        query.query();
+
+        setDisplayedItems([]);
+        setEditingItemId(null);
+      }
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -205,6 +230,7 @@ const AdviceItemAccordion: React.FC<{
         setNewAdvice={setNewAdvice}
         removeDescriptionAdvice={removeDescriptionAdvice}
         postAdviceItem={updateAdviceItem}
+        errormessage={errormessage}
       />
     );
   }
@@ -247,12 +273,12 @@ const AdviceItemAccordion: React.FC<{
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
                       wordBreak: "break-word",
-                      marginRight: "8px",
+                      marginInline: "8px",
                     }}
                     title={item.title}
-                    dir={languageDetector(item.description) ? "rtl" : "ltr"}
+                    dir={languageDetector(item.title) ? "rtl" : "ltr"}
                     fontFamily={
-                      languageDetector(item.description)
+                      languageDetector(item.title)
                         ? farsiFontFamily
                         : primaryFontFamily
                     }

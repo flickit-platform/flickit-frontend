@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
 import { theme } from "@config/theme";
-import KitCustomizationTable from "@components/assessment-setting/kitCustomizationTable";
+import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import { LoadingButton } from "@mui/lab";
@@ -193,10 +193,8 @@ const KitCustomization = (props: any) => {
             justifyContent: "center",
             alignItems: "flex-start",
             px: { xs: "15px", sm: "51px" },
-            textAlign: "left",
           }}
           gap={2}
-          textAlign="center"
           height={"auto"}
           minHeight={"350px"}
           width={"100%"}
@@ -205,7 +203,14 @@ const KitCustomization = (props: any) => {
           py={"32px"}
         >
           <Box height={"100%"} width={"100%"}>
-            <Typography sx={{textAlign:theme.direction == "rtl"? "right": "left",width:"100%",display:"inline-block"}} color="#000" variant="headlineMedium">
+            <Typography
+              sx={{
+                width: "100%",
+                display: "inline-block",
+              }}
+              color="#2B333B"
+              variant="headlineMedium"
+            >
               <Trans i18nKey={`${"kitCustomization"}`} />
             </Typography>
             <Divider
@@ -267,12 +272,19 @@ const KitCustomization = (props: any) => {
             />
             <Box sx={{ mb: 2 }}>
               <Typography
-                sx={{ ...theme.typography.headlineSmall, color: "#000", mb: 1 }}
+                sx={{
+                  ...theme.typography.headlineSmall,
+                  color: "#2B333B",
+                  mb: 1,
+                }}
               >
                 <Trans i18nKey={"customizingSubjectAndAttributes"} />
               </Typography>
               <Typography
-                sx={{ ...theme.typography.bodyMedium, color: "#2B333B" }}
+                sx={{
+                  ...theme.typography.bodyMedium,
+                  color: "#2B333B",
+                }}
               >
                 <Trans i18nKey={"viewTheWeightAndSubject"} />
               </Typography>
@@ -343,7 +355,6 @@ const OnHoverInputCustomTitle = (props: any) => {
       setHasError(false);
     }
   }, [inputData, requiredTitle]);
-
 
   const handleCancel = () => {
     setShow(false);

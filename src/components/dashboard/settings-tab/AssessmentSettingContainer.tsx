@@ -5,20 +5,17 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
-import { styles } from "@styles";
 import { RolesType } from "@types";
 import {
   AssessmentSettingGeneralBox,
   AssessmentSettingMemberBox,
-} from "@components/assessment-setting/AssessmentSettingBox";
-import Typography from "@mui/material/Typography";
+} from "./AssessmentSettingBox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import AddMemberDialog from "@components/assessment-setting/addMemberDialog";
-import ConfirmRemoveMemberDialog from "@components/assessment-setting/confirmRemoveMemberDialog";
-import AssessmentSettingTitle from "@components/assessment-setting/AssessmentSettingTitle";
-import KitCustomization from "@components/assessment-setting/KitCustomization";
-import PermissionControl from "../common/PermissionControl";
+import AddMemberDialog from "./addMemberDialog";
+import ConfirmRemoveMemberDialog from "./confirmRemoveMemberDialog";
+import KitCustomization from "./KitCustomization";
+import PermissionControl from "@common/PermissionControl";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -73,9 +70,9 @@ const AssessmentSettingContainer = () => {
     (async () => {
       const { manageable, kit, kitCustomId } = await AssessmentInfo.query();
       setKitInfo({ kit, kitCustomId });
-      if (!manageable) {
-        return navigate("*");
-      }
+      // if (!manageable) {
+      //   return navigate("*");
+      // }
     })();
   }, [assessmentId]);
   useEffect(() => {
@@ -123,30 +120,11 @@ const AssessmentSettingContainer = () => {
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
         render={([pathInfo = {}, roles = {}, assessmentInfo = {}]) => {
           const {
-            space,
             assessment: { title },
           } = pathInfo;
           const { items: listOfRoles } = roles;
           return (
-            <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-              <AssessmentSettingTitle pathInfo={pathInfo} />
-              <Grid container columns={12} mb={5}>
-                <Grid item sm={12} xs={12}>
-                  <Box
-                    sx={{ ...styles.centerV }}
-                    gap={2}
-                    justifyContent="flex-start"
-                  >
-                    <Typography
-                      color="primary"
-                      textAlign="left"
-                      variant="headlineLarge"
-                    >
-                      <Trans i18nKey="assessmentSettings" />
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
+            <Box m="auto" pb={3}>
               <Grid container columns={12} mb={"32px"}>
                 <Grid item sm={12} xs={12}>
                   <AssessmentSettingGeneralBox

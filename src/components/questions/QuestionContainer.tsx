@@ -33,7 +33,7 @@ export const QuestionContainer = () => {
   } = useQuestion();
   return loaded ? (
     hasAnyQuestion ? (
-      <Box minWidth="100vw" overflow="hidden">
+      <Box overflow="hidden">
         {questionsInfo.questions?.[questionIndex - 1] && (
           <QuestionsProgress
             hasNextQuestion={hasNextQuestion}
@@ -43,10 +43,7 @@ export const QuestionContainer = () => {
         {assessmentStatus === EAssessmentStatus.DONE ? (
           <Review questions={questionsInfo.questions} />
         ) : (
-          <Box
-            position="relative"
-            sx={{ ...styles.centerVH, px: { xs: 0, sm: 5, md: 6 } }}
-          >
+          <Box position="relative" sx={{ ...styles.centerVH }}>
             {questionsInfo.questions?.[questionIndex - 1] ? (
               <Box>
                 <Box
@@ -56,7 +53,6 @@ export const QuestionContainer = () => {
                   py={2}
                   sx={{ pt: { xs: 0, sm: 2 } }}
                   ref={container}
-                  maxWidth={"1376px"}
                 >
                   <TransitionGroup>
                     <Collapse

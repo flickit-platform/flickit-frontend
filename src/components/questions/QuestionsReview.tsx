@@ -71,14 +71,11 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
     <Box
       maxWidth={"1440px"}
       sx={{
-        px: { xs: 1, sm: 2, md: 6 },
-        my: { xs: 1, md: 3 },
         mx: "auto",
       }}
     >
       <Box
         mb={6}
-        mt={6}
         sx={{
           background: "white",
           borderRadius: 2,
@@ -266,7 +263,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
               variant="outlined"
               size="large"
               component={Link}
-              to={"./../../../insights"}
+              to={"./../../../insights/"}
               sx={{ fontSize: "1rem", display: isPermitted ? "" : "none" }}
               // sx={{borderRadius:"32px"}}
             >

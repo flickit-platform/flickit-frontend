@@ -16,7 +16,6 @@ import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { AssessmentOverallStatus } from "./AssessmentOverallStatus";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import AssessmentReportTitle from "./AssessmentReportTitle";
 import { IAssessmentReportModel, RolesType } from "@types";
 import AssessmentAdviceContainer from "./AssessmentAdviceContainer";
 import { AssessmentSummary } from "./AssessmentSummary";
@@ -24,7 +23,7 @@ import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { ArticleRounded, Assessment, Dashboard } from "@mui/icons-material";
+import { ArticleRounded, Assessment } from "@mui/icons-material";
 import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
@@ -118,7 +117,7 @@ const AssessmentReportContainer = (props: any) => {
   });
 
   return (
-    <PermissionControl error={[queryData.errorObject?.response]}>
+    <PermissionControl error={[queryData.errorObject?.response?.data]}>
       <QueryBatchData
         queryBatchData={[
           queryData,
@@ -149,32 +148,11 @@ const AssessmentReportContainer = (props: any) => {
           );
 
           return (
-            <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-              <AssessmentReportTitle data={data} />
+            <Box m="auto" pb={3}>
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography
-                      color="primary"
-                      textAlign="left"
-                      variant="headlineLarge"
-                    >
-                      <Trans i18nKey="assessmentInsights" />
-                    </Typography>
-                    <Box sx={{ py: "0.6rem", display: "flex" }}>
-                      <Tooltip title={<Trans i18nKey={"dashboard"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/dashboard/`}
-                          >
-                            <Dashboard
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip>
+                    <Box sx={{ py: "0.6rem", display: "flex",marginLeft: "auto" }}>
                       <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
                         <Box>
                           <IconButton
@@ -203,20 +181,20 @@ const AssessmentReportContainer = (props: any) => {
                           </IconButton>
                         </Box>
                       </Tooltip>
-                      <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
+                      {/* <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
                         <Box>
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={!manageable}
                             component={manageable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/assessment-settings/`}
+                            to={`/${spaceId}/assessments/1/${assessmentId}/settings/`}
                           >
                             <SettingsIcon
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
                             />
                           </IconButton>
                         </Box>
-                      </Tooltip>
+                      </Tooltip> */}
                     </Box>
                   </Box>
                   <Grid container alignItems="stretch" spacing={2} mt={1}>
