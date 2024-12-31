@@ -23,10 +23,10 @@ const MainTabs = (props: any) => {
       address: "questionnaires",
       permission: "viewAssessmentQuestionnaireList",
     },
-    { label: "insights", address: "insights", permission: "viewSubjectReport" },
+    { label: "insights", address: "insights", permission: "viewAssessmentReport" },
     { label: "reportTitle", address: "report", permission: false },
     { label: "advices", address: "advices", permission: false },
-    { label: "settings", address: "settings", permission: "manageKitCustom" },
+    { label: "settings", address: "settings", permission: "grantUserAssessmentRole" },
   ];
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
 
