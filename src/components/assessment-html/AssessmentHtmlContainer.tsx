@@ -9,10 +9,9 @@ import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
 import { Trans } from "react-i18next";
-import { Chip, Grid, Paper, Typography } from "@mui/material";
+import { Button, Chip, Grid, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
-// import data from "./greport.json";
 import { theme } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
@@ -26,6 +25,11 @@ import formatDate from "@utils/formatDate";
 import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
+import { Share } from "@mui/icons-material";
+import useDialog from "@/utils/useDialog";
+import { LoadingButton } from "@mui/lab";
+import ExpertGroupCEFormDialog from "../expert-groups/ExpertGroupCEFormDialog";
+import { ShareDialog } from "./ShareDialog";
 
 type MaturityLevel = {
   value: number;
@@ -94,6 +98,7 @@ const AssessmentExportContainer = () => {
     recommendationsSummary: "",
     adviceItems: [],
   });
+  const dialogProps = useDialog();
 
   const iframeUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/index.html`;
   const jsonUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/greport.json`;
@@ -149,6 +154,12 @@ const AssessmentExportContainer = () => {
     service: (args, config) =>
       service.fetchPathInfo({ assessmentId, ...(args || {}) }, config),
     runOnMount: true,
+  });
+
+  const fetchAssessmentMembers = useQuery<PathInfo>({
+    service: (args, config) =>
+      service.fetchAssessmentMembers({ assessmentId, ...(args || {}) }, config),
+    runOnMount: false,
   });
 
   const combinedAttributes = jsonData?.subjects.flatMap((subject) =>
@@ -216,6 +227,25 @@ const AssessmentExportContainer = () => {
     </>
   );
 
+  const renderSharingSection = () => (
+    <>
+      <LoadingButton
+        variant="contained"
+        startIcon={<Share fontSize="small" />}
+        size="small"
+        onClick={() => dialogProps.openDialog({})}
+      >
+        <Trans i18nKey="shareReport" />
+      </LoadingButton>
+      <ShareDialog
+        {...dialogProps}
+        onClose={() => dialogProps.onClose()}
+        fetchData={fetchAssessmentMembers}
+        title={jsonData?.assessment.title}
+      />
+    </>
+  );
+
   return (
     <PermissionControl error={[errorObject]}>
       <QueryBatchData
@@ -233,6 +263,14 @@ const AssessmentExportContainer = () => {
                   sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}
                 >
                   <AssessmentHtmlTitle pathInfo={pathInfo} />
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    mt={-4}
+                  >
+                    {renderSharingSection()}
+                  </Box>
                 </Box>
                 <div
                   dangerouslySetInnerHTML={{ __html: content }}
@@ -255,6 +293,7 @@ const AssessmentExportContainer = () => {
                   >
                     <Trans i18nKey="assessmentDocument" />
                   </Typography>
+                  {renderSharingSection()}
                 </Box>
                 <Grid container spacing={2}>
                   <Grid item lg={2.5} md={2.5} sm={12} xs={12}>

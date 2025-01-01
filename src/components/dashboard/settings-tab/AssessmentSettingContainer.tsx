@@ -42,9 +42,9 @@ const AssessmentSettingContainer = () => {
     toastErrorOptions: { filterByStatus: [404] },
   });
 
-  const fetchAssessmentsUserListRoles = useQuery({
+  const fetchAssessmentMembers = useQuery({
     service: (args = { assessmentId }, config) =>
-      service.fetchAssessmentsUserListRoles(args, config),
+      service.fetchAssessmentMembers(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -77,7 +77,7 @@ const AssessmentSettingContainer = () => {
   }, [assessmentId]);
   useEffect(() => {
     (async () => {
-      const { items } = await fetchAssessmentsUserListRoles.query();
+      const { items } = await fetchAssessmentMembers.query();
       setListOfUser(items);
     })();
   }, [changeData]);
@@ -112,7 +112,7 @@ const AssessmentSettingContainer = () => {
         fetchPathInfo.errorObject?.response,
         fetchAssessmentsRoles.errorObject?.response,
         AssessmentInfo.errorObject?.response,
-        fetchAssessmentsUserListRoles.errorObject?.response,
+        fetchAssessmentMembers.errorObject?.response,
       ]}
     >
       <QueryBatchData
@@ -168,8 +168,8 @@ const AssessmentSettingContainer = () => {
                 expandedRemoveDialog={expandedRemoveModal}
                 onCloseRemoveDialog={handleCloseRemoveModal}
                 assessmentId={assessmentId}
-                fetchAssessmentsUserListRoles={
-                  fetchAssessmentsUserListRoles.query
+                fetchAssessmentMembers={
+                  fetchAssessmentMembers.query
                 }
                 inviteesMemberList={inviteesMemberList}
                 assessmentName={title}

@@ -135,7 +135,7 @@ const AddMemberDialog = (props: {
             roleId: roleSelected.id,
           })
         : await addRoleMemberQueryData.query();
-      // await fetchAssessmentsUserListRoles()
+      // await fetchAssessmentMembers()
       setChangeData((prev: boolean) => !prev);
       closeDialog();
     } catch (e) {
