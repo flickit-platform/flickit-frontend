@@ -96,13 +96,15 @@ const StepBox = (props: IStepBox) => {
 
   const calcOfIssues = () => {
     if (questions) {
-      return Object.keys(metrics).filter(
-        (item) => item != "total" && item != "answered" && metrics[item],
-      ).length;
+      return Object.entries(metrics)
+        .filter(
+          ([key]) => key !== "total" && key !== "answered" && metrics[key],
+        )
+        .reduce((acc, [_, value]) => acc + value, 0);
     } else if (insights) {
-      return Object.keys(metrics).filter(
-        (item) => item != "expected" && metrics[item],
-      ).length;
+      return Object.entries(metrics)
+        .filter(([key]) => key != "expected" && metrics[key])
+        .reduce((acc, [_, value]) => acc + value, 0);
     } else if (advices) {
       return Object.keys(metrics).filter((item) => item).length;
     }
@@ -113,8 +115,14 @@ const StepBox = (props: IStepBox) => {
   const issuesTag = (
     <Chip
       label={
-        `  ${calcOfIssues()}  ` +
-        t((calcOfIssues() || 0) > 1 ? "issues" : "issue").toUpperCase()
+        <Box sx={{ ...styles.centerVH, gap: 1 }}>
+          <Typography
+            sx={{ ...theme.typography.labelMedium }}
+          >{`  ${calcOfIssues()}  `}</Typography>
+          <Typography sx={{ ...theme.typography.labelSmall }}>
+            {t((calcOfIssues() || 0) > 1 ? "issues" : "issue").toUpperCase()}
+          </Typography>
+        </Box>
       }
       size="small"
       sx={{
@@ -200,7 +208,7 @@ const StepBox = (props: IStepBox) => {
           }}
         >
           <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
-            {Math.floor((100 * answered) / total)} %
+            {Math.floor((100 * answered) / total)}%
           </Typography>
           <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
             {t("fromTotalQuestionsCount")}
