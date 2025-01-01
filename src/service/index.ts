@@ -403,6 +403,15 @@ export const createService = (
         },
       );
     },
+    ApproveAISubject(
+      { assessmentId, subjectId }: { assessmentId: string; subjectId: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/approve-insight/`,
+        config
+      );
+    },
     updateSubjectInsight(
       {
         assessmentId,
