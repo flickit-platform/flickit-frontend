@@ -87,11 +87,11 @@ const AssessmentKitExpertViewContainer = () => {
           document.body.appendChild(a);
           a.click();
           a.remove();
-        });
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
+        }).catch(e =>{
+        const err = e as ICustomError;
+        toastError(err);
+      });
+    } catch (e) {}
   };
   useEffect(() => {
     if (!loaded) {
