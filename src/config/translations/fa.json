@@ -763,5 +763,6 @@
   "issue": "مشکل",
   "answeredQuestionsTitle": "سوالات پاسخ\u200Cداده\u200Cشده",
   "editPicture": "ویرایش تصویر",
-  "addPicture ": "افزودن تصویر"
+  "addPicture ": "افزودن تصویر",
+  "exportDSL": "دریافت DSL"
 }

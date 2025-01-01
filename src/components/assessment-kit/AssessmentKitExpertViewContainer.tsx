@@ -43,12 +43,14 @@ const AssessmentKitExpertViewContainer = () => {
   const dialogProps = useDialog();
   const { config } = useConfigContext();
   const [update, setForceUpdate] = useState<boolean>(false);
-  const { expertGroupId } = useParams();
+  const { expertGroupId, assessmentKitId = "" } = useParams();
   const [details, setDetails] = useState<AssessmentKitDetailsType>();
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
   const [loaded, setLoaded] = React.useState<boolean>(false);
+
+  const { service } = useServiceContext();
 
   const AssessmentKitDetails = async () => {
     const data: AssessmentKitDetailsType = hasActiveVersion
@@ -66,6 +68,26 @@ const AssessmentKitExpertViewContainer = () => {
       document.body.appendChild(a);
       a.click();
       a.remove();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+  const handleExport = async () => {
+    try {
+      service
+        .fetchAssessmentKitExportUrl({ assessmentKitId }, {})
+        .then((res) => {
+          const { data } = res;
+          const zipFile = new Blob([data], { type: "application/zip" });
+          const blobUrl = URL.createObjectURL(zipFile);
+          const a = document.createElement("a");
+          a.href = blobUrl;
+          a.download = `export-${assessmentKitId}.zip`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -126,6 +148,17 @@ const AssessmentKitExpertViewContainer = () => {
                   <Trans i18nKey="updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
+              </Button>
+              <Button
+                variant="contained"
+                size="small"
+                sx={{ ml: 2 }}
+                onClick={handleExport}
+              >
+                <Typography mr={1} variant="button">
+                  <Trans i18nKey="exportDSL" />
+                </Typography>
+                <CloudDownloadRoundedIcon />
               </Button>
               <Button
                 variant="contained"

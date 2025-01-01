@@ -763,5 +763,6 @@
   "issue": "Issue",
   "answeredQuestionsTitle": "Answered Questions",
   "editPicture": "edit picture",
-  "addPicture ": "add picture "
+  "addPicture ": "add picture ",
+  "exportDSL": "Export DSL"
 }
