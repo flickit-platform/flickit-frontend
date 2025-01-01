@@ -722,7 +722,7 @@
   "insightsNeedApprovement": "AI-generated insights need approvement.",
   "expiredDueToNewAnswers": "insights are expired due to new answers.",
   "expiredDueToNewAnswer": "insight is expired due to new answer.",
-  "suggestAnyAdvicesSoFar": "You didn’t suggest any advices so far!",
+  "suggestAnyAdvicesSoFar": "No advice has been suggested so far!",
   "reportTitle": "Report",
   "quick_access": "Quick Access",
   "team_status_report": "Team Status Report",
