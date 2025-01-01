@@ -20,6 +20,9 @@ import { styles } from "@styles";
 import { theme } from "@/config/theme";
 import { t } from "i18next";
 import languageDetector from "@utils/languageDetector";
+import { LoadingButton } from "@mui/lab";
+import {useQuery} from "@utils/useQuery";
+import toastError from "@utils/toastError";
 
 export const SubjectInsight = () => {
   const { service } = useServiceContext();
@@ -27,6 +30,7 @@ export const SubjectInsight = () => {
   const [aboutSection, setAboutSection] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isApproved, setIsApproved] = useState(false);
 
   const fetchAssessment = () => {
     service
@@ -35,6 +39,7 @@ export const SubjectInsight = () => {
         const data = res.data;
         const selectedInsight = data.assessorInsight || data.defaultInsight;
         if (selectedInsight) {
+          setIsApproved(data.approved);
           setAboutSection(selectedInsight);
           setEditable(data.editable ?? false);
         }
@@ -46,10 +51,33 @@ export const SubjectInsight = () => {
         setLoading(false);
       });
   };
+  const ApproveAISubject = useQuery({
+    service: (
+        args = {
+          assessmentId,
+          subjectId
+        },
+        config,
+    ) => service.ApproveAISubject(args, config),
+    runOnMount: false,
+  });
 
   useEffect(() => {
     fetchAssessment();
   }, [subjectId, service]);
+
+  const ApproveSubject = (event: React.SyntheticEvent) => {
+    try {
+      (async ()=>{
+        event.stopPropagation()
+        await ApproveAISubject.query()
+        fetchAssessment();
+      })()
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
 
   return (
     <Box
@@ -73,6 +101,17 @@ export const SubjectInsight = () => {
         </Box>
       ) : aboutSection ? (
         <>
+          {!isApproved &&  (
+            <Box sx={{ ml: "auto" }}>
+              <LoadingButton
+                variant={"contained"}
+                onClick={(event) => ApproveSubject(event)}
+                loading={ApproveAISubject.loading}
+              >
+               <Trans i18nKey={"approve"} />
+              </LoadingButton>
+            </Box>
+          )}
           <OnHoverRichEditor
             data={aboutSection.insight}
             editable={editable}
