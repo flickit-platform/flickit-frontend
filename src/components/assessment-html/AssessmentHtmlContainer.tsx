@@ -267,7 +267,7 @@ const AssessmentExportContainer = () => {
                     display="flex"
                     justifyContent="flex-end"
                     alignItems="center"
-                    mt={-4}
+                    // mt={-4}
                   >
                     {renderSharingSection()}
                   </Box>
