@@ -229,7 +229,7 @@ const AssessmentExportContainer = () => {
 
   const renderSharingSection = () => (
     <>
-      <LoadingButton
+      {/* <LoadingButton
         variant="contained"
         startIcon={<Share fontSize="small" />}
         size="small"
@@ -242,7 +242,7 @@ const AssessmentExportContainer = () => {
         onClose={() => dialogProps.onClose()}
         fetchData={fetchAssessmentMembers}
         title={jsonData?.assessment.title}
-      />
+      /> */}
     </>
   );
 
@@ -267,7 +267,7 @@ const AssessmentExportContainer = () => {
                     display="flex"
                     justifyContent="flex-end"
                     alignItems="center"
-                    mt={-4}
+                    // mt={-4}
                   >
                     {renderSharingSection()}
                   </Box>

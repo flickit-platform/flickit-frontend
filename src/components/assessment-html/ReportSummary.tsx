@@ -34,7 +34,7 @@ const StepsTable = ({ steps }: any) => (
   <TableContainer component={Box}>
     <Table sx={{ width: "100%" }}>
       <TableBody>
-        {steps.map((item: any, index: any) => (
+        {steps?.map((item: any, index: any) => (
           <TableRow key={index}>
             <TableCell sx={{ padding: "8px", width: "20%" }}>
               {item.index}
@@ -127,7 +127,7 @@ const TopicsList = ({ data }: any) => (
 
 const QuestionnaireList = ({ data }: any) => (
   <Box>
-    {data?.questionnaires.map((item: any, index: any) => (
+    {data?.questionnaires?.map((item: any, index: any) => (
       <Box
         key={index}
         sx={{
