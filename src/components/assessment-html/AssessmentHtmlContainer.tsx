@@ -227,6 +227,25 @@ const AssessmentExportContainer = () => {
     </>
   );
 
+  const renderSharingSection = () => (
+    <>
+      <LoadingButton
+        variant="contained"
+        startIcon={<Share fontSize="small" />}
+        size="small"
+        onClick={() => dialogProps.openDialog({})}
+      >
+        <Trans i18nKey="shareReport" />
+      </LoadingButton>
+      <ShareDialog
+        {...dialogProps}
+        onClose={() => dialogProps.onClose()}
+        fetchData={fetchAssessmentMembers}
+        title={jsonData?.assessment.title}
+      />
+    </>
+  );
+
   return (
     <PermissionControl error={[errorObject]}>
       <QueryBatchData
@@ -244,6 +263,14 @@ const AssessmentExportContainer = () => {
                   sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}
                 >
                   <AssessmentHtmlTitle pathInfo={pathInfo} />
+                  <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    mt={-4}
+                  >
+                    {renderSharingSection()}
+                  </Box>
                 </Box>
                 <div
                   dangerouslySetInnerHTML={{ __html: content }}
@@ -266,20 +293,7 @@ const AssessmentExportContainer = () => {
                   >
                     <Trans i18nKey="assessmentDocument" />
                   </Typography>
-                  <LoadingButton
-                    variant="contained"
-                    startIcon={<Share fontSize="small" />}
-                    size="small"
-                    onClick={() => dialogProps.openDialog({})}
-                  >
-                    <Trans i18nKey="shareReport" />
-                  </LoadingButton>
-                  <ShareDialog
-                    {...dialogProps}
-                    onClose={() => dialogProps.onClose()}
-                    fetchData={fetchAssessmentMembers}
-                    title={jsonData?.assessment.title}
-                  />
+                  {renderSharingSection()}
                 </Box>
                 <Grid container spacing={2}>
                   <Grid item lg={2.5} md={2.5} sm={12} xs={12}>

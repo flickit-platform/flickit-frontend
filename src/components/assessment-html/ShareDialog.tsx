@@ -150,7 +150,7 @@ export const ShareDialog = ({
                       <Avatar
                         {...stringAvatar(displayName.toUpperCase())}
                         src={pictureLink}
-                        sx={{ width: 24, height: 24 }}
+                        sx={{ width: 24, height: 24, fontSize: 12 }}
                       ></Avatar>
 
                       {email}
