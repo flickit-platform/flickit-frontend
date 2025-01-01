@@ -409,9 +409,7 @@ export const createService = (
     ) {
       return axios.put(
         `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/approve-insight/`,
-        {
-          ...(config ?? {}),
-        },
+        config
       );
     },
     updateSubjectInsight(
