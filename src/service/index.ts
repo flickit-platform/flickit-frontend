@@ -324,7 +324,7 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/assessment-user-roles/`, config);
     },
-    fetchAssessmentsUserListRoles(
+    fetchAssessmentMembers(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {

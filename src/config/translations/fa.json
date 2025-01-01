@@ -15,7 +15,7 @@
   "accountPicture": "تصویر حساب کاربری",
   "accountSetting": "تنظیمات حساب کاربری",
   "AccuracyOfSystem": "دقت و استحکام عملکرد سیستم حتی در شرایط استثنایی",
-  "add": "اضافه کردن",
+  "add": "افزودن",
   "addAnAttachment": "افزودن یک پیوست",
   "addAttachment": "اضافه کردن پیوست",
   "addDescriptionToAttachment": "افزودن توضیحات برای این پیوست تا 100 کاراکتر",
@@ -763,5 +763,10 @@
   "issue": "مشکل",
   "answeredQuestionsTitle": "سوالات پاسخ\u200Cداده\u200Cشده",
   "editPicture": "ویرایش تصویر",
-  "addPicture ": "افزودن تصویر"
+  "addPicture ": "افزودن تصویر",
+  "shareReport": "اشتراک‌‌گذاری",
+  "onlyThesePeopleHaveAccess": "این افراد می‌توانند گزارش را ببینند",
+  "shareReportViaEmail": "ایمیل فرد مورد نظر را وارد کنید",
+  "copyReportLink": "کپی کردن لینک گزارش",
+  "shareReportWithTitle": "اشتراک‌‌گذاری گزارش {{title}}"
 }
