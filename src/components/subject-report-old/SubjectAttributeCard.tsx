@@ -248,7 +248,7 @@ const SUbjectAttributeCard = (props: any) => {
                         variant={"contained"}
                         loading={ApprovedAIAttribute.loading}
                       >
-                        approve
+                     <Trans i18nKey={"approve"} />
                       </LoadingButton>
                     )}
                     <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
