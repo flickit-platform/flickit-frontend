@@ -44,6 +44,7 @@ import { t } from "i18next";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
+    description,
     title,
     maturityLevel,
     maturity_levels_count,
@@ -205,7 +206,7 @@ const SUbjectAttributeCard = (props: any) => {
               <Typography
                 sx={{ ...theme.typography.bodyMedium, color: "#6C8093", mb: 2 }}
               >
-                <Trans i18nKey={"AccuracyOfSystem"} />
+                {description}
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography color="#2466A8" variant="titleSmall">
