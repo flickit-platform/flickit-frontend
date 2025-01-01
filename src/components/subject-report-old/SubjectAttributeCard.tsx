@@ -40,6 +40,7 @@ import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
+import { t } from "i18next";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -54,6 +55,7 @@ const SUbjectAttributeCard = (props: any) => {
     attributesDataPolicy,
     editable,
   } = props;
+  const { permissions }: { permissions: IPermissions } = props;
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
@@ -125,6 +127,7 @@ const SUbjectAttributeCard = (props: any) => {
   const maturityLevelColor = colorPallet[maturityLevel.value - 1];
 
   const backgroundColor = getTransparentColor(maturityLevelColor);
+
   return (
     <Box
       sx={{
@@ -146,7 +149,9 @@ const SUbjectAttributeCard = (props: any) => {
             display: "none",
           },
         }}
-        expanded={expandedAttribute === id}
+        expanded={
+          permissions.viewAttributeScoreDetail && expandedAttribute === id
+        }
         onChange={handleChange(id)}
       >
         <AccordionSummary
@@ -168,6 +173,11 @@ const SUbjectAttributeCard = (props: any) => {
             "& .MuiAccordionSummary-content .Mui-expanded": {
               margin: "0px !important",
               padding: "0px !important",
+            },
+            "& :hover": {
+              cursor: permissions.viewAttributeScoreDetail
+                ? "pointer"
+                : "default",
             },
           }}
           onClick={(event) => event.stopPropagation()}
@@ -313,15 +323,18 @@ const SUbjectAttributeCard = (props: any) => {
                       expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
-                <ExpandMoreIcon
-                  sx={{
-                    position: "absolute",
-                    bottom: "16px",
-                    right: theme.direction === "rtl" ? "unset" : "16px",
-                    left: theme.direction === "rtl" ? "16px" : "unset",
-                    transform: expandedAttribute === id ? "scaleY(-1)" : "none",
-                  }}
-                />
+                {permissions.viewAttributeScoreDetail && (
+                  <ExpandMoreIcon
+                    sx={{
+                      position: "absolute",
+                      bottom: "16px",
+                      right: theme.direction === "rtl" ? "unset" : "16px",
+                      left: theme.direction === "rtl" ? "16px" : "unset",
+                      transform:
+                        expandedAttribute === id ? "scaleY(-1)" : "none",
+                    }}
+                  />
+                )}
               </Box>
             </Grid>
           </Grid>
