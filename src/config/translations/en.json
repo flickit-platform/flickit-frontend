@@ -768,5 +768,6 @@
   "onlyThesePeopleHaveAccess": "Only these people can view the report",
   "shareReportViaEmail": "Share the report with new people via email...",
   "copyReportLink": "Copy Report Link",
-  "shareReportWithTitle": "Share {{title}} Report"
+  "shareReportWithTitle": "Share {{title}} Report",
+  "linkCopied": "Link Copied"
 }

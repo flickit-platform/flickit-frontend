@@ -768,5 +768,6 @@
   "onlyThesePeopleHaveAccess": "این افراد می‌توانند گزارش را ببینند",
   "shareReportViaEmail": "ایمیل فرد مورد نظر را وارد کنید",
   "copyReportLink": "کپی کردن لینک گزارش",
-  "shareReportWithTitle": "اشتراک‌‌گذاری گزارش {{title}}"
+  "shareReportWithTitle": "اشتراک‌‌گذاری گزارش {{title}}",
+  "linkCopied": "لینک کپی شد"
 }
