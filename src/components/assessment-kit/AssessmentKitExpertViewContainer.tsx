@@ -36,6 +36,7 @@ import { AssessmentKitDetailsType } from "@types";
 import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { primaryFontFamily, theme } from "@/config/theme";
+import { LoadingButton } from "@mui/lab";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -49,6 +50,8 @@ const AssessmentKitExpertViewContainer = () => {
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
   const [loaded, setLoaded] = React.useState<boolean>(false);
+  const [loadingExportBtn, setLoadingExportBtn] =
+    React.useState<boolean>(false);
 
   const { service } = useServiceContext();
 
@@ -75,9 +78,11 @@ const AssessmentKitExpertViewContainer = () => {
   };
   const handleExport = async () => {
     try {
+      setLoadingExportBtn(true);
       service
         .fetchAssessmentKitExportUrl({ assessmentKitId }, {})
         .then((res) => {
+          setLoadingExportBtn(false);
           const { data } = res;
           const zipFile = new Blob([data], { type: "application/zip" });
           const blobUrl = URL.createObjectURL(zipFile);
@@ -87,10 +92,12 @@ const AssessmentKitExpertViewContainer = () => {
           document.body.appendChild(a);
           a.click();
           a.remove();
-        }).catch(e =>{
-        const err = e as ICustomError;
-        toastError(err);
-      });
+        })
+        .catch((e) => {
+          setLoadingExportBtn(false);
+          const err = e as ICustomError;
+          toastError(err);
+        });
     } catch (e) {}
   };
   useEffect(() => {
@@ -149,8 +156,9 @@ const AssessmentKitExpertViewContainer = () => {
                 </Typography>
                 <CloudUploadRoundedIcon />
               </Button>
-              <Button
+              <LoadingButton
                 variant="contained"
+                loading={loadingExportBtn}
                 size="small"
                 sx={{ ml: 2 }}
                 onClick={handleExport}
@@ -159,7 +167,7 @@ const AssessmentKitExpertViewContainer = () => {
                   <Trans i18nKey="exportDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
-              </Button>
+              </LoadingButton>
               <Button
                 variant="contained"
                 size="small"
