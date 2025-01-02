@@ -40,10 +40,7 @@ import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
-<<<<<<< Updated upstream
 import { t } from "i18next";
-=======
->>>>>>> Stashed changes
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -131,10 +128,6 @@ const SUbjectAttributeCard = (props: any) => {
   const maturityLevelColor = colorPallet[maturityLevel.value - 1];
 
   const backgroundColor = getTransparentColor(maturityLevelColor);
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
   return (
     <Box
       sx={{

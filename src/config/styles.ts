@@ -214,7 +214,6 @@ export const getMaturityLevelColors = (maturity_level_number: number) => {
   }
 };
 
-<<<<<<< Updated upstream
 export const generateColorFromString = (str: string) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -236,19 +235,6 @@ export const getTransparentColor = (color: string) => {
           : tinycolor(color).lighten(60).toRgbString();
   return transparentColor;
 };
-=======
-export const getTransparentColor = (color: string) =>{
-  const transparentColor =
-  tinycolor(color).getBrightness() > 180
-    ? tinycolor(color).brighten(60).toRgbString()
-    : tinycolor(color).getBrightness() > 160
-      ? tinycolor(color).lighten(40).toRgbString()
-      : tinycolor(color).getBrightness() > 80
-        ? tinycolor(color).lighten(50).toRgbString()
-        : tinycolor(color).lighten(60).toRgbString();
-    return transparentColor
-}
->>>>>>> Stashed changes
 
 export const chipColorPalette: any = {
   chip1: {

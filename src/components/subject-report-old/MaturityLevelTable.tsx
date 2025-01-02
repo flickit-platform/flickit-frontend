@@ -328,19 +328,12 @@ const MaturityLevelTable = ({
                     boxShadow:
                       "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1", // Set boxShadow for top and bottom only
                     "&:first-child": {
-<<<<<<< Updated upstream
                       borderEndStartRadius: "16px !important",
                       borderStartStartRadius: "16px !important",
                     },
                     "&:last-child": {
                       borderStartEndRadius: "16px !important",
                       borderEndEndRadius: "16px !important",
-=======
-                      borderRadius: "16px 0px 0px 16px !important",
-                    },
-                    "&:last-child": {
-                      borderRadius: "0px 16px 16px 0px !important",
->>>>>>> Stashed changes
                     },
                   }}
                 >
