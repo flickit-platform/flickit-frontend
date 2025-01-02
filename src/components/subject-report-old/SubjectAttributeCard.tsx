@@ -192,7 +192,7 @@ const SUbjectAttributeCard = (props: any) => {
               borderRadius: "16px",
             }}
           >
-            <Grid item xs={9} sx={{ p: 4 }}>
+            <Grid item xs={12} sm={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
                   sx={{
@@ -294,7 +294,7 @@ const SUbjectAttributeCard = (props: any) => {
                 )
               )}
             </Grid>
-            <Grid sx={{ width: "100%", height: "100%" }} item xs={3}>
+            <Grid item xs={12} sm={3}>
               <Box
                 sx={{
                   width: "100%",
@@ -304,7 +304,18 @@ const SUbjectAttributeCard = (props: any) => {
                   alignItems: "center",
                   background: backgroundColor,
                   borderEndEndRadius: "16px",
-                  borderStartEndRadius: "16px",
+                  borderStartEndRadius: {
+                    sm: "16px",
+                    xs: 0,
+                  },
+                  mt: {
+                    sm: 0,
+                    xs: 2,
+                  },
+                  borderEndStartRadius: {
+                    sm: 0,
+                    xs: "16px",
+                  },
                   boxShadow: "inset 0 0 0 1px #C7CCD1",
                 }}
               >
