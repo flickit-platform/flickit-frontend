@@ -20,6 +20,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
+import { t } from "i18next";
 
 interface TableData {
   items: Item[];
@@ -202,7 +203,9 @@ const MaturityLevelTable = ({
         : "-",
       answer: item.answer.index
         ? item.answer.index + ". " + item.answer.title
-        : "-",
+        : item.answer.isNotApplicable
+          ? t("notApplicable")
+          : "-",
       weight: item.question.weight,
       score: item.answer.score,
       weightedScore: item.answer.weightedScore?.toString()
