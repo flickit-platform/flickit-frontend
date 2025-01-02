@@ -78,7 +78,7 @@ interface ItemColumnMapping {
   answer: string;
   weight: number;
   score: number;
-  weightedScore: number;
+  weightedScore: string | number;
   confidence: number;
   evidenceCount: number;
 }
@@ -205,9 +205,11 @@ const MaturityLevelTable = ({
         : "-",
       weight: item.question.weight,
       score: item.answer.score,
-      weightedScore: parseFloat(
-        parseFloat(item.answer.weightedScore.toString()).toFixed(2),
-      ),
+      weightedScore: item.answer.weightedScore?.toString()
+        ? parseFloat(
+            parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2),
+          )
+        : "",
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
     };
