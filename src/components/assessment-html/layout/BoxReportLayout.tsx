@@ -2,10 +2,11 @@ import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import lens from "@assets/svg/lens.svg";
 import { getMaturityLevelColors, styles } from "@styles";
+import { t } from "i18next";
 
 interface IBoxReport {
   title: string;
@@ -100,7 +101,13 @@ const TopBox = (props: ITopBoxReport) => {
         id={title}
       >
         <Typography
-          sx={{ ...theme.typography.titleLarge, color: `${ConfidenceColor}` }}
+          sx={{
+            ...theme.typography.titleLarge,
+            color: `${ConfidenceColor}`,
+            direction: true ? "rtl" : "ltr",
+            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            textAlign: true ? "right" : "left",
+          }}
         >
           {title}
         </Typography>
@@ -108,6 +115,9 @@ const TopBox = (props: ITopBoxReport) => {
           sx={{
             ...theme.typography.titleSmall,
             color: "rgba(61, 77, 92, 0.5)",
+            direction: true ? "rtl" : "ltr",
+            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            textAlign: true ? "right" : "left",
           }}
         >
           {translatedTitle}
@@ -121,15 +131,19 @@ const TopBox = (props: ITopBoxReport) => {
           ...theme.typography.labelLarge,
           ...styles.centerVH,
           textAlign: "center",
+          direction: true ? "rtl" : "ltr",
+          fontFamily: true ? farsiFontFamily : primaryFontFamily,
         }}
       >
         <Typography
           sx={{
             ...theme.typography.body2,
             textAlign: "center",
+            direction: true ? "rtl" : "ltr",
+            fontFamily: true ? farsiFontFamily : primaryFontFamily,
           }}
         >
-          <Trans i18nKey={description} />
+          {t(description, { lng: "fa" })}
         </Typography>
       </Grid>
       <Grid display={"flex"} justifyContent={"center"} xs={12} sm={4} item>
@@ -176,9 +190,12 @@ const BottomBox = (props: any) => {
           ...theme.typography.labelMedium,
           color: "#2466A8",
           fontSize: "1rem",
+          direction: true ? "rtl" : "ltr",
+          fontFamily: true ? farsiFontFamily : primaryFontFamily,
+          textAlign: true ? "right" : "left",
         }}
       >
-        <Trans i18nKey={"analysisResults"} />
+        {t("analysisResults", { lng: "fa" })}
       </Typography>
       <Typography
         sx={{
@@ -186,6 +203,9 @@ const BottomBox = (props: any) => {
           fontWeight: "light",
           lineHeight: "1.5rem",
           color: "#2B333B",
+          direction: true ? "rtl" : "ltr",
+          fontFamily: true ? farsiFontFamily : primaryFontFamily,
+          textAlign: true ? "right" : "left",
         }}
       >
         {analyzation}

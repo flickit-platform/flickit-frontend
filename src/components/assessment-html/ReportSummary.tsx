@@ -8,8 +8,8 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { theme } from "@/config/theme";
-import { getMaturityLevelColors } from "@/config/styles";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { getMaturityLevelColors, styles } from "@/config/styles";
 import { ISubject } from "@/types";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
@@ -23,11 +23,13 @@ const textStyle = {
   fontSize: "14px",
   lineHeight: "1.8",
   color: "#424242",
+  ...styles.customizeFarsiFont,
 };
 
 const sectionTitleStyle = {
   fontWeight: "bold",
   marginBottom: "12px",
+  ...styles.customizeFarsiFont,
 };
 
 const StepsTable = ({ steps }: any) => (
@@ -36,13 +38,32 @@ const StepsTable = ({ steps }: any) => (
       <TableBody>
         {steps?.map((item: any, index: any) => (
           <TableRow key={index}>
-            <TableCell sx={{ padding: "8px", width: "20%" }}>
+            <TableCell
+              sx={{
+                padding: "8px",
+                width: "20%",
+                ...styles.customizeFarsiFont,
+              }}
+            >
               {item.index}
             </TableCell>
-            <TableCell sx={{ padding: "8px", width: "30%" }}>
+            <TableCell
+              sx={{
+                padding: "8px",
+                width: "30%",
+                ...styles.customizeFarsiFont,
+              }}
+            >
               {item.title}
             </TableCell>
-            <TableCell sx={{ padding: "8px" }}>{item.description}</TableCell>
+            <TableCell
+              sx={{
+                padding: "8px",
+                ...styles.customizeFarsiFont,
+              }}
+            >
+              {item.description}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -68,9 +89,12 @@ const TitleBox = () => (
       sx={{
         fontWeight: "bold",
         margin: 0,
+        ...styles.customizeFarsiFont,
       }}
     >
-      <Trans i18nKey="how_was_this_report_built" />
+      {t("how_was_this_report_built", {
+        lng: "fa",
+      })}
     </Typography>
   </Box>
 );
@@ -93,6 +117,7 @@ const TopicsList = ({ data }: any) => (
             fontWeight: "bold",
             color: "#2466A8",
             marginBottom: "8px",
+            ...styles.customizeFarsiFont,
           }}
         >
           {subject.title}
@@ -112,6 +137,7 @@ const TopicsList = ({ data }: any) => (
                 fontWeight: "bold",
                 width: "20%",
                 marginRight: "8px",
+                ...styles.customizeFarsiFont,
               }}
             >
               {attribute.title}
@@ -141,13 +167,21 @@ const QuestionnaireList = ({ data }: any) => (
           sx={{
             fontWeight: "bold",
             width: "15%",
+            ...styles.customizeFarsiFont,
           }}
         >
           {item.title}
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-        <Typography sx={{ ...textStyle, width: "70px" }}>
-          {item.questionCount} {t("question")}
+        <Typography
+          sx={{
+            ...textStyle,
+            width: "70px",
+            direction: true ? "rtl" : "ltr",
+            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+          }}
+        >
+          {item.questionCount} {t("question", { lng: "fa" })}
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
         <Typography sx={textStyle}>{item.description}</Typography>
@@ -171,39 +205,40 @@ const ReportCard = ({ data }: any) => {
     >
       <TitleBox />
 
-      <Section title={t("disclaimer")}>{data?.assessment.intro}</Section>
+      <Section title={t("disclaimer", { lng: "fa" })}>
+        {data?.assessment.intro}
+      </Section>
 
-      <Section title={t("evaluationSteps")}>
-        <Trans i18nKey="stepsDescription" />
+      <Section title={t("evaluationSteps", { lng: "fa" })}>
+        {t("stepsDescription", {
+          lng: "fa",
+        })}
         <StepsTable steps={data?.steps} />
       </Section>
 
-      <Section title={t("assessmentKit")}>
-        <Trans
-          i18nKey="assessmentKitDescription"
-          values={{
-            title: data?.assessment.assessmentKit.title,
-            attributesCount: data?.assessment.assessmentKit.attributesCount,
-            subjectsLength: data?.subjects.length,
-            subjects: data?.subjects
-              ?.map((elem: ISubject, index: number) =>
-                index === data?.subjects?.length - 1 &&
-                data?.subjects?.length !== 1
-                  ? t("and") + elem?.title
-                  : index === 0
-                    ? elem?.title
-                    : ", " + elem?.title,
-              )
-              ?.join(""),
-            maturityLevelCount:
-              data?.assessment.assessmentKit.maturityLevelCount,
-            questionnairesCount:
-              data?.assessment.assessmentKit.questionnairesCount,
-          }}
-        />
+      <Section title={t("assessmentKit", { lng: "fa" })}>
+        {t("assessmentKitDescription", {
+          lng: "fa",
+          title: data?.assessment.assessmentKit.title,
+          attributesCount: data?.assessment.assessmentKit.attributesCount,
+          subjectsLength: data?.subjects.length,
+          subjects: data?.subjects
+            ?.map((elem: ISubject, index: number) =>
+              index === data?.subjects?.length - 1 &&
+              data?.subjects?.length !== 1
+                ? t("and") + elem?.title
+                : index === 0
+                  ? elem?.title
+                  : ", " + elem?.title,
+            )
+            ?.join(""),
+          maturityLevelCount: data?.assessment.assessmentKit.maturityLevelCount,
+          questionnairesCount:
+            data?.assessment.assessmentKit.questionnairesCount,
+        })}
       </Section>
 
-      <Section title={t("maturityLevels")}>
+      <Section title={t("maturityLevels", { lng: "fa" })}>
         <Trans
           i18nKey="maturityLevelsDescription"
           values={{
@@ -211,6 +246,10 @@ const ReportCard = ({ data }: any) => {
               data?.assessment.assessmentKit.maturityLevelCount,
           }}
         />
+        {t("maturityLevelsDescription", {
+          lng: "fa",
+          maturityLevelCount: data?.assessment.assessmentKit.maturityLevelCount,
+        })}
         {data?.assessment.assessmentKit.maturityLevels.map(
           (level: any, index: number) => (
             <Box
@@ -242,6 +281,8 @@ const ReportCard = ({ data }: any) => {
                     data?.assessment.assessmentKit.maturityLevelCount,
                   )[level.value - 1],
                   minWidth: "70px",
+                  direction: true ? "rtl" : "ltr",
+                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 }}
               >
                 {level.title}
@@ -251,6 +292,8 @@ const ReportCard = ({ data }: any) => {
                 component="span"
                 sx={{
                   ...theme.typography.body2,
+                  direction: true ? "rtl" : "ltr",
+                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 }}
               >
                 {level.description}
@@ -260,12 +303,14 @@ const ReportCard = ({ data }: any) => {
         )}
       </Section>
 
-      <Section title={t("topicsAndIndicators")}>
-        <Trans i18nKey="topicsTable" />
+      <Section title={t("topicsAndIndicators", { lng: "fa" })}>
+        {t("topicsTable", {
+          lng: "fa",
+        })}
         <TopicsList data={data} />
       </Section>
 
-      <Section title={t("questionnaires")}>
+      <Section title={t("questionnaires", { lng: "fa" })}>
         <QuestionnaireList data={data} />
       </Section>
     </Box>

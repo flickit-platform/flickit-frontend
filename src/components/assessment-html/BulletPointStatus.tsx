@@ -3,6 +3,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Typography } from "@mui/material";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { getMaturityLevelColors, styles } from "@styles";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface IBulletPointStatus {
   title: string;
@@ -26,7 +27,15 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
       }}
     >
       <ArrowLeftIcon sx={{ color: colorCode }} fontSize="medium" />
-      <Typography>{titleSub}</Typography>
+      <Typography
+        sx={{
+          direction: true ? "rtl" : "ltr",
+          fontFamily: true ? farsiFontFamily : primaryFontFamily,
+          textAlign: true ? "right" : "left",
+        }}
+      >
+        {titleSub}
+      </Typography>
       <FlatGauge
         maturityLevelNumber={maturityLevelCount}
         levelValue={value}
