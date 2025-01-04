@@ -2,10 +2,16 @@ import { keyframes, SxProps, Theme } from "@mui/material";
 import { TStatus } from "@types";
 import hasStatus from "@utils/hasStatus";
 import tinycolor from "tinycolor2";
+import { farsiFontFamily, primaryFontFamily } from "./theme";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
 const commonStyles = {
+  customizeFarsiFont: style({
+    direction: true ? "rtl" : "ltr",
+    fontFamily: true ? farsiFontFamily : primaryFontFamily,
+    textAlign: true ? "right" : "left",
+  }),
   centerVH: style({
     display: "flex",
     justifyContent: "center",
@@ -290,7 +296,6 @@ export const chipColorPalette: any = {
     color: "rgba(153, 94, 0, 1)",
   },
 };
-
 
 export const getColorOfStatus = (
   status: TStatus,

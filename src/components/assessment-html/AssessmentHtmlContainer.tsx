@@ -12,7 +12,7 @@ import { Trans } from "react-i18next";
 import { Button, Chip, Grid, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
 import AdviceItemsAccordion from "../assessment-report/advice-items/AdviceItemsAccordions";
@@ -98,6 +98,31 @@ const AssessmentExportContainer = () => {
     recommendationsSummary: "",
     adviceItems: [],
   });
+  const sharedStyles = {
+    chip: {
+      fontWeight: 200,
+      padding: 1,
+      background: "rgba(36, 102, 168, 0.04)",
+    },
+    box: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 0.5,
+      fontWeight: "bold",
+    },
+    typography: (isFarsi = true) => ({
+      direction: isFarsi ? "rtl" : "ltr",
+      fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+    }),
+  };
+
+  const getDirectionStyles = (isFarsi = true) => ({
+    direction: isFarsi ? "rtl" : "ltr",
+    fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+    textAlign: isFarsi ? "right" : "left",
+  });
+
   const dialogProps = useDialog();
 
   const iframeUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/index.html`;
@@ -170,60 +195,41 @@ const AssessmentExportContainer = () => {
     })),
   );
 
+  const renderChip = (icon: any, label: any) => (
+    <Chip
+      label={
+        <Box sx={{ ...sharedStyles.box, ...sharedStyles.typography(true) }}>
+          {icon}
+          {label}
+        </Box>
+      }
+      size="small"
+      sx={sharedStyles.chip}
+    />
+  );
+
   const renderChips = () => (
     <>
-      <Chip
-        label={
-          <Box sx={{ ...styles.centerVH, gap: 0.5 }}>
-            <DesignServicesIcon fontSize="small" color="primary" />
-            <Trans
-              i18nKey="assessmentKitWithTitle"
-              values={{ title: jsonData?.assessment.assessmentKit.title }}
-            />
-          </Box>
-        }
-        size="small"
-        sx={{
-          fontWeight: 200,
-          padding: 1,
-          background: "rgba(36, 102, 168, 0.04)",
-        }}
-      />
-      <Chip
-        label={
-          <Box sx={{ ...styles.centerVH, gap: 0.5 }}>
-            <EmojiObjectsIcon fontSize="small" color="primary" />
-            <Trans
-              i18nKey="questionsAndAnswer"
-              values={{
-                count: jsonData?.assessment.assessmentKit.questionsCount,
-              }}
-            />
-          </Box>
-        }
-        size="small"
-        sx={{
-          fontWeight: 200,
-          padding: 1,
-          background: "rgba(36, 102, 168, 0.04)",
-        }}
-      />
-      <Chip
-        label={
-          <Box sx={{ ...styles.centerVH, gap: 0.5 }}>
-            <CalendarMonthIcon fontSize="small" color="primary" />
-            {theme.direction === "rtl"
-              ? formatDate(jsonData?.assessment.creationTime, "Shamsi")
-              : formatDate(jsonData?.assessment.creationTime, "Miladi")}
-          </Box>
-        }
-        size="small"
-        sx={{
-          fontWeight: 200,
-          padding: 1,
-          background: "rgba(36, 102, 168, 0.04)",
-        }}
-      />
+      {renderChip(
+        <DesignServicesIcon fontSize="small" color="primary" />,
+        t("assessmentKitWithTitle", {
+          lng: "fa",
+          title: jsonData?.assessment.assessmentKit.title,
+        }),
+      )}
+      {renderChip(
+        <EmojiObjectsIcon fontSize="small" color="primary" />,
+        t("questionsAndAnswer", {
+          lng: "fa",
+          count: jsonData?.assessment.assessmentKit.questionsCount,
+        }),
+      )}
+      {renderChip(
+        <CalendarMonthIcon fontSize="small" color="primary" />,
+        true
+          ? formatDate(jsonData?.assessment.creationTime, "Shamsi")
+          : formatDate(jsonData?.assessment.creationTime, "Miladi"),
+      )}
     </>
   );
 
@@ -278,7 +284,16 @@ const AssessmentExportContainer = () => {
                 />
               </>
             ) : (
-              <Box m="auto" pb={3} sx={{ px: { xl: 20, lg: 6, xs: 2, sm: 3 } }}>
+              <Box
+                m="auto"
+                pb={3}
+                sx={{
+                  px: { xl: 20, lg: 6, xs: 2, sm: 3 },
+                  direction: true ? "rtl" : "ltr",
+                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                  textAlign: true ? "right" : "left",
+                }}
+              >
                 <AssessmentHtmlTitle pathInfo={pathInfo} />
                 <Box
                   display="flex"
@@ -290,8 +305,14 @@ const AssessmentExportContainer = () => {
                     color="primary"
                     textAlign="left"
                     variant="headlineLarge"
+                    sx={{
+                      direction: true ? "rtl" : "ltr",
+                      fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                    }}
                   >
-                    <Trans i18nKey="assessmentDocument" />
+                    {t("assessmentDocument", {
+                      lng: "fa",
+                    })}
                   </Typography>
                   {renderSharingSection()}
                 </Box>
@@ -345,6 +366,10 @@ const AssessmentExportContainer = () => {
                                 color: theme.palette.primary.main,
                                 ...theme.typography.headlineSmall,
                                 fontWeight: "bold",
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
                               {jsonData?.assessment.title}
@@ -356,9 +381,15 @@ const AssessmentExportContainer = () => {
                                 ...theme.typography.titleSmall,
                                 color: "#6C8093",
                                 mt: 2,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
-                              <Trans i18nKey="introduction" />
+                              {t("introduction", {
+                                lng: "fa",
+                              })}
                             </Typography>
                             <Typography
                               textAlign="justify"
@@ -366,6 +397,10 @@ const AssessmentExportContainer = () => {
                                 ...theme.typography.titleSmall,
                                 fontWeight: "light",
                                 mt: 1,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
                               {jsonData?.assessment.intro}
@@ -377,9 +412,15 @@ const AssessmentExportContainer = () => {
                                 ...theme.typography.titleSmall,
                                 color: "#6C8093",
                                 mt: 2,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
-                              <Trans i18nKey="summary" />
+                              {t("summary", {
+                                lng: "fa",
+                              })}
                             </Typography>
                             <Typography
                               textAlign="justify"
@@ -387,6 +428,10 @@ const AssessmentExportContainer = () => {
                                 ...theme.typography.titleSmall,
                                 fontWeight: "light",
                                 mt: 1,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
                               {jsonData?.assessment.executiveSummary}
@@ -407,7 +452,9 @@ const AssessmentExportContainer = () => {
                               confidence_value={
                                 jsonData?.assessment.confidenceValue
                               }
-                              confidence_text={t("withPercentConfidence")}
+                              confidence_text={t("withPercentConfidence", {
+                                lng: "fa",
+                              })}
                               isMobileScreen={false}
                               hideGuidance={true}
                               status_font_variant="titleMedium"
@@ -436,9 +483,15 @@ const AssessmentExportContainer = () => {
                             ...theme.typography.titleMedium,
                             color: "#6C8093",
                             my: 1,
+                            direction: true ? "rtl" : "ltr",
+                            fontFamily: true
+                              ? farsiFontFamily
+                              : primaryFontFamily,
                           }}
                         >
-                          <Trans i18nKey="prosAndCons" />
+                          {t("prosAndCons", {
+                            lng: "fa",
+                          })}
                         </Typography>
 
                         <TreeMapChart
@@ -466,10 +519,16 @@ const AssessmentExportContainer = () => {
                                 color: "#2B333B",
                                 my: 1,
                                 ...styles.centerV,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
                               <InfoOutlinedIcon fontSize="small" />
-                              <Trans i18nKey="treeMapChart" />
+                              {t("treeMapChart", {
+                                lng: "fa",
+                              })}
                             </Typography>
                             <Typography
                               textAlign="justify"
@@ -477,6 +536,10 @@ const AssessmentExportContainer = () => {
                                 ...theme.typography.titleSmall,
                                 fontWeight: "light",
                                 mt: 1,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
                               {jsonData?.assessment.assessmentKit.prosAndCons}
@@ -489,9 +552,15 @@ const AssessmentExportContainer = () => {
                                 color: "#2B333B",
                                 my: 1,
                                 ...styles.centerV,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
                               }}
                             >
-                              <Trans i18nKey="maturityLevels" />
+                              {t("maturityLevels", {
+                                lng: "fa",
+                              })}
                             </Typography>
                             <Grid container spacing={1}>
                               {jsonData?.assessment.assessmentKit.maturityLevels.map(
@@ -523,6 +592,10 @@ const AssessmentExportContainer = () => {
                                       sx={{
                                         ...theme.typography.body2,
                                         color: "#2B333B",
+                                        direction: true ? "rtl" : "ltr",
+                                        fontFamily: true
+                                          ? farsiFontFamily
+                                          : primaryFontFamily,
                                       }}
                                     >
                                       {level.title}
@@ -558,9 +631,15 @@ const AssessmentExportContainer = () => {
                           color: theme.palette.primary.main,
                           ...theme.typography.headlineSmall,
                           fontWeight: "bold",
+                          direction: true ? "rtl" : "ltr",
+                          fontFamily: true
+                            ? farsiFontFamily
+                            : primaryFontFamily,
                         }}
                       >
-                        <Trans i18nKey="recommendations" />
+                        {t("recommendations", {
+                          lng: "fa",
+                        })}
                       </Typography>
                       <Typography
                         textAlign="justify"
@@ -568,6 +647,10 @@ const AssessmentExportContainer = () => {
                           ...theme.typography.titleSmall,
                           fontWeight: "light",
                           my: 1,
+                          direction: true ? "rtl" : "ltr",
+                          fontFamily: true
+                            ? farsiFontFamily
+                            : primaryFontFamily,
                         }}
                       >
                         {jsonData?.recommendationsSummary}

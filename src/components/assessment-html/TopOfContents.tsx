@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 // Define the type for the state to track open items
 interface OpenItemsState {
@@ -82,6 +83,9 @@ export const AssessmentTOC = ({ data }: any) => {
         position: "sticky",
         top: 0,
         overflowY: "auto",
+        direction: true ? "rtl" : "ltr",
+        fontFamily: true ? farsiFontFamily : primaryFontFamily,
+        textAlign: true ? "right" : "left",
       }}
     >
       <Typography
@@ -90,9 +94,11 @@ export const AssessmentTOC = ({ data }: any) => {
         sx={{
           pb: 1,
           ...theme.typography.titleMedium,
+          direction: true ? "rtl" : "ltr",
+          fontFamily: true ? farsiFontFamily : primaryFontFamily,
         }}
       >
-        {t("quick_access")}
+        {t("quick_access", { lng: "fa" })}
       </Typography>
       <List
         sx={{
@@ -129,11 +135,17 @@ export const AssessmentTOC = ({ data }: any) => {
                   }
                 >
                   <ListItemText
-                    primary={t(item.key)}
+                    primary={t(item.key, { lng: "fa" })}
                     sx={{
                       "& .MuiTypography-root": {
                         ...theme.typography.semiBoldMedium,
+                        direction: true ? "rtl" : "ltr",
+                        fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                        textAlign: true ? "right" : "left",
                       },
+                      direction: true ? "rtl" : "ltr",
+                      fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                      textAlign: true ? "right" : "left",
                     }}
                   />
                   {hasSubItems &&
@@ -152,13 +164,23 @@ export const AssessmentTOC = ({ data }: any) => {
                       <ListItem key={subIndex} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText
-                            primary={t(subItem, { title: "" })}
+                            primary={t(subItem, { lng: "fa", title: "" })}
                             sx={{
                               ml: 2,
                               marginBlock: 1,
+                              direction: true ? "rtl" : "ltr",
+                              fontFamily: true
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                              textAlign: true ? "right" : "left",
                               color: theme.palette.text.secondary,
                               "& .MuiTypography-root": {
                                 ...theme.typography.semiBoldSmall,
+                                direction: true ? "rtl" : "ltr",
+                                fontFamily: true
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
+                                textAlign: true ? "right" : "left",
                               },
                             }}
                           />
