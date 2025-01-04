@@ -1,9 +1,6 @@
-import { useEffect } from "react";
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
-import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { useConfigContext } from "@/providers/ConfgProvider";
 import { useParams } from "react-router-dom";
 
 const DashboardTitle = (props: any) => {
@@ -11,10 +8,6 @@ const DashboardTitle = (props: any) => {
   const { spaceId, page } = useParams();
   const { space, assessment } = pathInfo;
 
-  const { config } = useConfigContext();
-  useEffect(() => {
-    setDocumentTitle(`${t("dashboard")}`, config.appTitle);
-  }, []);
 
   return (
     <Title
