@@ -3,7 +3,7 @@ import useDocumentTitle from "@utils/useDocumentTitle";
 import AssessmentSettingContainer from "@/components/dashboard/settings-tab/AssessmentSettingContainer";
 
 const AssessmentSettingScreen = () => {
-  useDocumentTitle(`${t("accessManagement")}`);
+  useDocumentTitle(`${t("settings")}`);
 
   return <AssessmentSettingContainer />;
 };
