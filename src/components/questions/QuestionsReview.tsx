@@ -53,7 +53,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
     if (questionsInfo.questions) {
       const answeredQuestionsCount = questionsInfo.questions.filter(
         (question) =>
-          question.answer && question.answer.selectedOption !== null,
+          question.answer && ( question.answer.selectedOption !== null || question.answer.isNotApplicable ),
       ).length;
       setAnsweredQuestions(answeredQuestionsCount);
       if (answeredQuestionsCount === 0) {
@@ -228,6 +228,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                       color: "#F9A03F",
                     }}
                   >
+                    {/*todo*/}
                     <Trans
                       i18nKey="youAnsweredQuestionOf"
                       values={{
