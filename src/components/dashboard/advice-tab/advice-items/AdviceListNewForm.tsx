@@ -18,7 +18,7 @@ import {
 import FormControl from "@mui/material/FormControl";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Grid from "@mui/material/Grid";
-import RichEditorFieldAssessment from "../RichEditorFieldAssessment";
+import RichEditorFieldAssessment from "../../../assessment-report/RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
@@ -29,8 +29,8 @@ import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import Impact from "@/components/common/icons/Impact";
-import languageDetector from "@/utils/languageDetector";
+import Impact from "@common/icons/Impact";
+import languageDetector from "@utils/languageDetector";
 import { t } from "i18next";
 
 interface IAdviceListProps {

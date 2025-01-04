@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import AssessmentAdviceContainer from "@components/assessment-report/AssessmentAdviceContainer";
+import AssessmentAdviceContainer from "@components/dashboard/advice-tab/AssessmentAdviceContainer";
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const AssessmentAdviceScreen = () => {
