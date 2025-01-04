@@ -228,7 +228,6 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                       color: "#F9A03F",
                     }}
                   >
-                    {/*todo*/}
                     <Trans
                       i18nKey="youAnsweredQuestionOf"
                       values={{
