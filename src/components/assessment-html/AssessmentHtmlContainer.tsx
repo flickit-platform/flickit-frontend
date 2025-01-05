@@ -186,9 +186,8 @@ const AssessmentExportContainer = () => {
   const combinedAttributes = jsonData?.subjects.flatMap((subject) =>
     subject.attributes.map((attribute) => ({
       name: attribute.title,
-      count: 1,
-      label: attribute.value.toString(),
-      color: attribute.maturityLevel.value.toString(),
+      count: attribute.value,
+      label: attribute.maturityLevel.value.toString(),
     })),
   );
 
