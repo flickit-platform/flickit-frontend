@@ -97,12 +97,12 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           y="54%"
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={18}
+          fontSize={16}
           fontWeight="bold"
           fill="#333"
           direction="rtl"
         >
-          {t("subjects", { lng: "fa" })}
+          {t("consideredSubjects", { lng: "fa" })}
         </text>
         <Pie
           data={data.map((item) => ({ ...item, value: equalValue }))}

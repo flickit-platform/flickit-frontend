@@ -48,6 +48,7 @@ type Subject = {
 type Attribute = {
   title: string;
   maturityLevel: MaturityLevel;
+  value: number;
 };
 
 type JsonData = {
@@ -186,7 +187,8 @@ const AssessmentExportContainer = () => {
     subject.attributes.map((attribute) => ({
       name: attribute.title,
       count: 1,
-      label: attribute.maturityLevel.value.toString(),
+      label: attribute.value.toString(),
+      color: attribute.maturityLevel.value.toString(),
     })),
   );
 
