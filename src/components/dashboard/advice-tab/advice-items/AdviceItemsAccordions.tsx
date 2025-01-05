@@ -71,7 +71,6 @@ const getChipData = (
   const priorityColor: any = getIconColors(
     level,
     type === "cost" ? ICON_COLORS : INVERSE_ICON_COLORS,
-    readOnly,
   );
   const translatedLevel = t(level.toLowerCase(), readOnly ? { lng: "fa" } : {});
   const translatedType = t(type, readOnly ? { lng: "fa" } : {});
