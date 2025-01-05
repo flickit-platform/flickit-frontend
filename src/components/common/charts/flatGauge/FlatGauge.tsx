@@ -100,7 +100,6 @@ const FlatGauge = (props: IGaugeProps) => {
           )}
           <Box
             style={{
-              direction: theme.direction,
               display: "flex",
               alignItems: "center",
               gap: "3px",
