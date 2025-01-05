@@ -47,12 +47,6 @@ const QuestionnaireContainer = () => {
       error={[questionnaireQueryData.errorObject?.response?.data]}
     >
       <Box>
-        <NotCompletedAlert
-          isCompleted={progress == 100}
-          hasStatus={false}
-          isAccessDenied={!isPermitted}
-          loading={questionnaireQueryData.loading}
-        />
         <Box
           flexWrap={"wrap"}
           sx={{
@@ -108,54 +102,6 @@ export const useQuestionnaire = () => {
     assessmentTotalProgress,
     fetchPathInfo,
   };
-};
-
-const NotCompletedAlert = (props: {
-  isCompleted: boolean;
-  loading: boolean;
-  hasStatus: boolean;
-  isAccessDenied: boolean;
-}) => {
-  const { isCompleted, loading, hasStatus, isAccessDenied } = props;
-
-  return (
-    <Box mt={2}>
-      {loading ? (
-        <LoadingSkeleton height="76px" />
-      ) : (
-        <AlertBox
-          severity={isCompleted ? "success" : "info"}
-          action={
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to="./../insights"
-              startIcon={<AnalyticsRoundedIcon />}
-              sx={{ display: isAccessDenied ? "none" : "" }}
-            >
-              <Trans i18nKey="viewInsights" />
-            </Button>
-          }
-        >
-          <AlertTitle>
-            {isCompleted ? (
-              <Trans i18nKey={"YouHaveFinishedAllQuestionnaires"} />
-            ) : hasStatus ? (
-              <Trans i18nKey="toGetMoreAccurateInsights" />
-            ) : (
-              <Trans i18nKey="toAssessSystemNeedToAnswerQuestions" />
-            )}
-          </AlertTitle>
-          {isCompleted ? (
-            <Trans i18nKey={"ToChangeYourInsightTryEditingQuestionnaires"} />
-          ) : (
-            <Trans i18nKey="pickupQuestionnaire" />
-          )}
-        </AlertBox>
-      )}
-    </Box>
-  );
 };
 
 const QuestionnaireTitle = (props: any) => {
