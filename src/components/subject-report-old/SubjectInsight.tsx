@@ -20,62 +20,22 @@ import { styles } from "@styles";
 import { theme } from "@/config/theme";
 import { t } from "i18next";
 import languageDetector from "@utils/languageDetector";
-import { LoadingButton } from "@mui/lab";
-import {useQuery} from "@utils/useQuery";
-import toastError from "@utils/toastError";
 
-export const SubjectInsight = () => {
+interface ISubjectInsight {
+  AssessmentLoading: boolean;
+  fetchAssessment: () => void;
+  editable: boolean;
+  aboutSection: any;
+}
+
+export const SubjectInsight = (props: ISubjectInsight) => {
+  const { AssessmentLoading, fetchAssessment, editable, aboutSection } = props;
   const { service } = useServiceContext();
-  const { assessmentId = "", subjectId = "" } = useParams();
-  const [aboutSection, setAboutSection] = useState<any>(null);
-  const [editable, setEditable] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [isApproved, setIsApproved] = useState(false);
-
-  const fetchAssessment = () => {
-    service
-      .fetchSubjectInsight({ assessmentId, subjectId }, {})
-      .then((res) => {
-        const data = res.data;
-        const selectedInsight = data.assessorInsight || data.defaultInsight;
-        if (selectedInsight) {
-          setIsApproved(data.approved);
-          setAboutSection(selectedInsight);
-          setEditable(data.editable ?? false);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching assessment insight:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-  const ApproveAISubject = useQuery({
-    service: (
-        args = {
-          assessmentId,
-          subjectId
-        },
-        config,
-    ) => service.ApproveAISubject(args, config),
-    runOnMount: false,
-  });
+  const { subjectId = "" } = useParams();
 
   useEffect(() => {
     fetchAssessment();
   }, [subjectId, service]);
-
-  const ApproveSubject = async (event: React.SyntheticEvent) => {
-    try {
-        event.stopPropagation()
-        await ApproveAISubject.query()
-        fetchAssessment();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
 
   return (
     <Box
@@ -88,7 +48,7 @@ export const SubjectInsight = () => {
       gap={0.5}
       ml={3}
     >
-      {loading ? (
+      {AssessmentLoading ? (
         <Box
           display="flex"
           justifyContent="center"
@@ -99,17 +59,6 @@ export const SubjectInsight = () => {
         </Box>
       ) : aboutSection ? (
         <>
-          {!isApproved &&  (
-            <Box sx={{ ml: "auto" }}>
-              <LoadingButton
-                variant={"contained"}
-                onClick={(event) => ApproveSubject(event)}
-                loading={ApproveAISubject.loading}
-              >
-               <Trans i18nKey={"approve"} />
-              </LoadingButton>
-            </Box>
-          )}
           <OnHoverRichEditor
             data={aboutSection.insight}
             editable={editable}

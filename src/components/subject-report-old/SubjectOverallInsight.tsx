@@ -6,6 +6,13 @@ import Title from "@common/Title";
 import Typography from "@mui/material/Typography";
 import SubjectOverallStatusLevelChart from "./SubjectOverallStatusLevelChart";
 import { SubjectInsight } from "./SubjectInsight";
+import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
+import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
+import { useParams } from "react-router-dom";
 
 const SubjectOverallInsight = (props: any) => {
   return (
@@ -22,6 +29,13 @@ const SubjectOverallInsight = (props: any) => {
 
 const OverallInsightText = (props: any) => {
   const { data = {}, loading } = props;
+  const [isApproved, setIsApproved] = useState(true);
+  const [aboutSection, setAboutSection] = useState<any>(null);
+  const [editable, setEditable] = useState(false);
+  const [AssessmentLoading, setAssessmentLoading] = useState(true);
+
+  const { service } = useServiceContext();
+
   const {
     subject,
     attributes,
@@ -30,6 +44,50 @@ const OverallInsightText = (props: any) => {
     maturityLevelsCount,
   } = data;
   const { title, maturityLevel, confidenceValue } = subject;
+  const { assessmentId = "", subjectId = "" } = useParams();
+
+  const ApproveAISubject = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        subjectId,
+      },
+      config,
+    ) => service.ApproveAISubject(args, config),
+    runOnMount: false,
+  });
+
+  const fetchAssessment = () => {
+    service
+      .fetchSubjectInsight({ assessmentId, subjectId }, {})
+      .then((res) => {
+        const data = res.data;
+        const selectedInsight = data.assessorInsight || data.defaultInsight;
+        if (selectedInsight) {
+          setIsApproved(data.approved);
+          setAboutSection(selectedInsight);
+          setEditable(data.editable ?? false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching assessment insight:", error);
+      })
+      .finally(() => {
+        setAssessmentLoading(false);
+      });
+  };
+
+  const ApproveSubject = async (event: React.SyntheticEvent) => {
+    try {
+      event.stopPropagation();
+      await ApproveAISubject.query();
+      fetchAssessment();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
   return (
     <Box display="flex" flexDirection={"column"} flex={1}>
       <Typography variant="titleLarge" sx={{ opacity: 0.96 }}>
@@ -81,10 +139,36 @@ const OverallInsightText = (props: any) => {
           </>
         )}
       </Typography>
-      <Typography variant="headlineSmall" mx={4} mt={4}>
+      <Typography
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          mb: 2,
+        }}
+        variant="headlineSmall"
+        mx={4}
+        mt={4}
+      >
         <Trans i18nKey="subjectBriefConclusion" />
+        {!isApproved && (
+          <Box sx={{ ml: "auto" }}>
+            <LoadingButton
+              variant={"contained"}
+              onClick={(event) => ApproveSubject(event)}
+              loading={ApproveAISubject.loading}
+            >
+              <Trans i18nKey={"approve"} />
+            </LoadingButton>
+          </Box>
+        )}
       </Typography>
-      <SubjectInsight />
+      <SubjectInsight
+        AssessmentLoading={AssessmentLoading}
+        fetchAssessment={fetchAssessment}
+        editable={editable}
+        aboutSection={aboutSection}
+      />
       <Grid container pt={5} spacing={4}>
         <Grid item xs={12} sm={6} md={5} lg={4}>
           <MostSigItems
