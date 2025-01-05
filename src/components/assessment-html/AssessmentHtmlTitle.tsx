@@ -5,7 +5,7 @@ import { t } from "i18next";
 
 const AssessmentHtmlTitle = (props: any) => {
   const { pathInfo } = props;
-  const { spaceId, page } = useParams();
+  const { spaceId } = useParams();
   const { space } = pathInfo;
 
   return (
@@ -22,7 +22,7 @@ const AssessmentHtmlTitle = (props: any) => {
           routes={[
             {
               title: space?.title,
-              to: `/${spaceId}/assessments/${page}`,
+              to: `/${spaceId}/assessments/1`,
             },
             // {
             //   title: `${assessment?.title} ${t("insights")}`,

@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Divider,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
 import { Link as RouterLink, useParams } from "react-router-dom";
@@ -150,7 +144,7 @@ const AssessmentReportContainer = (props: any) => {
                             data-cy="more-action-btn"
                             disabled={disableHtmlDocument}
                             component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/html-document/`}
+                            to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
                           >
                             <Assessment
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
