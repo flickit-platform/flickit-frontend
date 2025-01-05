@@ -136,9 +136,9 @@ const TopBox = (props: ITopBoxReport) => {
         }}
       >
         <Typography
+          textAlign="justify"
           sx={{
             ...theme.typography.body2,
-            textAlign: "center",
             direction: true ? "rtl" : "ltr",
             fontFamily: true ? farsiFontFamily : primaryFontFamily,
           }}
@@ -199,6 +199,7 @@ const BottomBox = (props: any) => {
         {t("analysisResults", { lng: "fa" })}
       </Typography>
       <Typography
+        textAlign="justify"
         sx={{
           fontSize: ".87rem",
           fontWeight: "light",
@@ -206,7 +207,6 @@ const BottomBox = (props: any) => {
           color: "#2B333B",
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,
-          textAlign: true ? "right" : "left",
         }}
       >
         {analyzation}

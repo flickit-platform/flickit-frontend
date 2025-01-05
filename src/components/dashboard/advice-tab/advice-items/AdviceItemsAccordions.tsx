@@ -63,14 +63,18 @@ const getIconColors = (
   colors: Record<string, keyof typeof COLORS>,
 ) => COLORS[colors[icon.toLowerCase()] || "unknown"];
 
-const getChipData = (type: "impact" | "cost", level: string) => {
+const getChipData = (
+  type: "impact" | "cost",
+  level: string,
+  readOnly: boolean,
+) => {
   const priorityColor: any = getIconColors(
     level,
     type === "cost" ? ICON_COLORS : INVERSE_ICON_COLORS,
   );
-  const translatedLevel = t(level.toLowerCase());
-  const translatedType = t(type);
-  const isFarsi = i18next.language === "fa";
+  const translatedLevel = t(level.toLowerCase(), readOnly ? { lng: "fa" } : {});
+  const translatedType = t(type, readOnly ? { lng: "fa" } : {});
+  const isFarsi = i18next.language === "fa" || readOnly;
 
   return {
     backgroundColor: priorityColor.background,
@@ -85,9 +89,13 @@ const getChipData = (type: "impact" | "cost", level: string) => {
 const CustomChip: React.FC<{
   type: "impact" | "cost";
   level: string;
-  direction: boolean;
-}> = ({ type, level, direction }) => {
-  const { backgroundColor, color, iconColor, label } = getChipData(type, level);
+  readOnly: boolean;
+}> = ({ type, level, readOnly }) => {
+  const { backgroundColor, color, iconColor, label } = getChipData(
+    type,
+    level,
+    readOnly,
+  );
   const Icon =
     type === "impact" ? (
       <Impact styles={{ color: iconColor, px: 2, width: "20px" }} />
@@ -113,8 +121,8 @@ const CustomChip: React.FC<{
         backgroundColor,
         color,
         "& .MuiChip-icon": {
-          marginRight: direction ? "0" : "initial",
-          marginLeft: direction ? "-10px" : "initial",
+          marginRight: readOnly ? "0" : "initial",
+          marginLeft: readOnly ? "-10px" : "initial",
         },
       }}
     />
@@ -322,14 +330,14 @@ const AdviceItemAccordion: React.FC<{
                   <CustomChip
                     type="impact"
                     level={item.impact}
-                    direction={readOnly}
+                    readOnly={readOnly}
                   />
                 </Grid>
                 <Grid item xs={readOnly ? 6 : 4.8}>
                   <CustomChip
                     type="cost"
                     level={item.cost}
-                    direction={readOnly}
+                    readOnly={readOnly}
                   />
                 </Grid>
                 <Grid
@@ -368,6 +376,8 @@ const AdviceItemAccordion: React.FC<{
         <AccordionDetails sx={{ padding: "8px 16px" }}>
           <Divider sx={{ marginBottom: "8px" }} />
           <Typography
+            textAlign="justify"
+            variant="body2"
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
             dir={languageDetector(item.description) ? "rtl" : "ltr"}
