@@ -162,16 +162,31 @@ const QuestionnaireList = ({ data }: any) => (
           marginBottom: "8px",
         }}
       >
-        <Typography
-          variant="titleSmall"
+        <Box
+          width="20%"
           sx={{
-            fontWeight: "bold",
-            width: "15%",
-            ...styles.customizeFarsiFont,
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {item.title}
-        </Typography>
+          <Typography
+            variant="titleSmall"
+            sx={{
+              fontWeight: "bold",
+              ...styles.customizeFarsiFont,
+            }}
+          >
+            {item.title}
+          </Typography>
+          <Typography
+            variant="titleSmall"
+            sx={{
+              fontWeight: "bold",
+            }}
+          >
+            {item.translatedTitle}
+          </Typography>
+        </Box>
         <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
         <Typography
           sx={{
