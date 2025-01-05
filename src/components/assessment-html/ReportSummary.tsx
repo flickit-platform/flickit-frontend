@@ -62,7 +62,10 @@ const StepsTable = ({ steps }: any) => (
                 ...styles.customizeFarsiFont,
               }}
             >
-              {item.description}
+              <Typography textAlign="justify" variant="body2">
+                {" "}
+                {item.description}
+              </Typography>
             </TableCell>
           </TableRow>
         ))}
@@ -104,7 +107,9 @@ const Section = ({ title, children }: any) => (
     <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
       {title}
     </Typography>
-    <Typography sx={textStyle}>{children}</Typography>
+    <Typography textAlign="justify" sx={textStyle}>
+      {children}
+    </Typography>
   </Box>
 );
 
@@ -297,6 +302,7 @@ const ReportCard = ({ data }: any) => {
               </Typography>
 
               <Typography
+                textAlign="justify"
                 component="span"
                 sx={{
                   ...theme.typography.body2,

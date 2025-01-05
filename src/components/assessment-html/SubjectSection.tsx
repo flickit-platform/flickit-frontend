@@ -59,7 +59,6 @@ const SubjectReport = ({ data }: any) => {
                     fontWeight: "bold",
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                    textAlign: true ? "right" : "left",
                   }}
                 >
                   {index + 1}
@@ -72,8 +71,8 @@ const SubjectReport = ({ data }: any) => {
                     fontWeight: "light",
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                    textAlign: true ? "right" : "left",
                   }}
+                  textAlign="justify"
                 >
                   {description}
                 </Typography>

@@ -376,6 +376,8 @@ const AdviceItemAccordion: React.FC<{
         <AccordionDetails sx={{ padding: "8px 16px" }}>
           <Divider sx={{ marginBottom: "8px" }} />
           <Typography
+            textAlign="justify"
+            variant="body2"
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
             dir={languageDetector(item.description) ? "rtl" : "ltr"}
