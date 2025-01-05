@@ -114,7 +114,7 @@ const Routes = () => {
             element={<AssessmentDocumentScreen />}
           />
           <Route
-            path="/:spaceId/assessments/:page/:assessmentId/html-document/"
+            path="/:spaceId/assessments/:page/:assessmentId/graphical-report/"
             element={<AssessmentHTMLDocumentScreen />}
           />
           <Route

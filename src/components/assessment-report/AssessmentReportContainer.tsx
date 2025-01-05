@@ -36,7 +36,7 @@ import AdviceItems from "./advice-items/AdviceItems";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", page = 1 } = useParams();
   const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
 
   const queryData = useQuery<IAssessmentReportModel>({
@@ -152,14 +152,16 @@ const AssessmentReportContainer = (props: any) => {
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
                   <Box display="flex" justifyContent="space-between">
-                    <Box sx={{ py: "0.6rem", display: "flex",marginLeft: "auto" }}>
+                    <Box
+                      sx={{ py: "0.6rem", display: "flex", marginLeft: "auto" }}
+                    >
                       <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
                         <Box>
                           <IconButton
                             data-cy="more-action-btn"
                             disabled={disableHtmlDocument}
                             component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/html-document/`}
+                            to={`/${spaceId}/assessments/${page}/${assessmentId}/graphical-report/`}
                           >
                             <Assessment
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
