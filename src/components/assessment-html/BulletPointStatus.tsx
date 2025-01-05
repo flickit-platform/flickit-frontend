@@ -28,6 +28,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
     >
       <ArrowLeftIcon sx={{ color: colorCode }} fontSize="medium" />
       <Typography
+        variant="titleSmall"
         sx={{
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,

@@ -109,7 +109,7 @@ const SubjectReport = ({ data }: any) => {
                 sm={6}
                 spacing={2}
                 m={"auto"}
-                sx={{ height: "250px" }}
+                sx={{ height: "300px" }}
               >
                 {item?.attributes?.length <= 2 ? (
                   <AssessmentSubjectRadialChart
