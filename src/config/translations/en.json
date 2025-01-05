@@ -770,5 +770,6 @@
   "copyReportLink": "Copy Report Link",
   "shareReportWithTitle": "Share {{title}} Report",
   "linkCopied": "Link Copied",
+  "exportDSL": "Export DSL",
   "approve": "approve"
 }
