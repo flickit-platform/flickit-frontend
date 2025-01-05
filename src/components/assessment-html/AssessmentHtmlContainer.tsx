@@ -8,8 +8,7 @@ import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeleton
 import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
-import { Trans } from "react-i18next";
-import { Button, Chip, Grid, Paper, Typography } from "@mui/material";
+import { Chip, Grid, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -25,11 +24,7 @@ import formatDate from "@utils/formatDate";
 import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
-import { Share } from "@mui/icons-material";
 import useDialog from "@/utils/useDialog";
-import { LoadingButton } from "@mui/lab";
-import ExpertGroupCEFormDialog from "../expert-groups/ExpertGroupCEFormDialog";
-import { ShareDialog } from "./ShareDialog";
 
 type MaturityLevel = {
   value: number;
@@ -466,6 +461,10 @@ const AssessmentExportContainer = () => {
                           data={jsonData?.subjects.map((subject) => ({
                             name: subject.title,
                             value: 1,
+                            color: getMaturityLevelColors(
+                              jsonData?.assessment.assessmentKit
+                                .maturityLevelCount,
+                            )[subject.maturityLevel.value - 1],
                             label:
                               subject.maturityLevel.title +
                               "(" +

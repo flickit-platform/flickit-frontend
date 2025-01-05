@@ -82,10 +82,11 @@ const getChipData = (type: "impact" | "cost", level: string) => {
   };
 };
 
-const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
-  type,
-  level,
-}) => {
+const CustomChip: React.FC<{
+  type: "impact" | "cost";
+  level: string;
+  direction: boolean;
+}> = ({ type, level, direction }) => {
   const { backgroundColor, color, iconColor, label } = getChipData(type, level);
   const Icon =
     type === "impact" ? (
@@ -99,11 +100,23 @@ const CustomChip: React.FC<{ type: "impact" | "cost"; level: string }> = ({
       size="small"
       label={label}
       icon={
-        <IconButton size="small" sx={{ color: iconColor + " !important" }}>
+        <IconButton
+          size="small"
+          sx={{
+            color: iconColor + " !important",
+          }}
+        >
           {Icon}
         </IconButton>
       }
-      sx={{ backgroundColor, color }}
+      sx={{
+        backgroundColor,
+        color,
+        "& .MuiChip-icon": {
+          marginRight: direction ? "0" : "initial",
+          marginLeft: direction ? "-10px" : "initial",
+        },
+      }}
     />
   );
 };
@@ -266,7 +279,7 @@ const AdviceItemAccordion: React.FC<{
               <Grid container alignItems="center" spacing={1}>
                 <Grid item xs={12} alignItems="center" display="flex">
                   <Typography
-                    variant="h6"
+                    variant="titleMedium"
                     sx={{
                       display: "inline-block",
                       overflow: "hidden",
@@ -286,7 +299,7 @@ const AdviceItemAccordion: React.FC<{
                     {item.title}
                   </Typography>
                   <Typography
-                    variant="subtitle1"
+                    variant="titleMedium"
                     color={getPriorityColor(item.priority.toLowerCase())}
                     sx={{
                       display: "inline-block",
@@ -306,10 +319,18 @@ const AdviceItemAccordion: React.FC<{
             <Grid item xs={12} sm={4} md={readOnly ? 4 : 3.7}>
               <Grid container justifyContent="flex-start" alignItems="center">
                 <Grid item xs={readOnly ? 6 : 4.8}>
-                  <CustomChip type="impact" level={item.impact} />
+                  <CustomChip
+                    type="impact"
+                    level={item.impact}
+                    direction={readOnly}
+                  />
                 </Grid>
                 <Grid item xs={readOnly ? 6 : 4.8}>
-                  <CustomChip type="cost" level={item.cost} />
+                  <CustomChip
+                    type="cost"
+                    level={item.cost}
+                    direction={readOnly}
+                  />
                 </Grid>
                 <Grid
                   item

@@ -153,6 +153,7 @@ const TopBox = (props: ITopBoxReport) => {
           text={maturityLevel.title}
           textPosition={"top"}
           confidenceLevelNum={confidenceValue}
+          confidenceText={t("confidenceLevel", { lng: "fa" })}
         />
       </Grid>
     </Grid>

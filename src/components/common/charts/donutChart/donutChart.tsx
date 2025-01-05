@@ -1,9 +1,10 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
 import { Typography } from "@mui/material";
-import {getMaturityLevelColors, styles} from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
+import languageDetector from "@/utils/languageDetector";
 
 interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;
@@ -50,12 +51,15 @@ const DonutChart = (props: IGaugeProps) => {
               display: "flex",
               gap: "5px",
               ...theme.typography.titleMedium,
-              fontWeight:"bold",
-              fontSize:"1.37rem",
+              fontWeight: "bold",
+              fontSize: "1.37rem",
               color: colorCode,
+              fontFamily: languageDetector(text ?? "")
+                ? farsiFontFamily
+                : primaryFontFamily,
             }}
           >
-           <Trans i18nKey={text} />
+            <Trans i18nKey={text} />
           </Typography>
         </Box>
       </Box>

@@ -254,13 +254,6 @@ const ReportCard = ({ data }: any) => {
       </Section>
 
       <Section title={t("maturityLevels", { lng: "fa" })}>
-        <Trans
-          i18nKey="maturityLevelsDescription"
-          values={{
-            maturityLevelCount:
-              data?.assessment.assessmentKit.maturityLevelCount,
-          }}
-        />
         {t("maturityLevelsDescription", {
           lng: "fa",
           maturityLevelCount: data?.assessment.assessmentKit.maturityLevelCount,
