@@ -66,13 +66,11 @@ export const SubjectInsight = () => {
     fetchAssessment();
   }, [subjectId, service]);
 
-  const ApproveSubject = (event: React.SyntheticEvent) => {
+  const ApproveSubject = async (event: React.SyntheticEvent) => {
     try {
-      (async ()=>{
         event.stopPropagation()
         await ApproveAISubject.query()
         fetchAssessment();
-      })()
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
