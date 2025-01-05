@@ -138,13 +138,11 @@ const SUbjectAttributeCard = (props: any) => {
     setSelectedMaturityLevel(id);
   };
 
-  const approveAttribute = (event: React.SyntheticEvent) => {
+  const approveAttribute = async (event: React.SyntheticEvent) => {
     try {
-      (async () => {
         event.stopPropagation()
         await ApprovedAIAttribute.query();
         updateAttributeAndData(id, assessmentId, "", true);
-      })();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
