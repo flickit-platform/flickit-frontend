@@ -21,31 +21,17 @@ import { theme } from "@/config/theme";
 import { t } from "i18next";
 import languageDetector from "@utils/languageDetector";
 
-export const SubjectInsight = () => {
-  const { service } = useServiceContext();
-  const { assessmentId = "", subjectId = "" } = useParams();
-  const [aboutSection, setAboutSection] = useState<any>(null);
-  const [editable, setEditable] = useState(false);
-  const [loading, setLoading] = useState(true);
+interface ISubjectInsight {
+  AssessmentLoading: boolean;
+  fetchAssessment: () => void;
+  editable: boolean;
+  aboutSection: any;
+}
 
-  const fetchAssessment = () => {
-    service
-      .fetchSubjectInsight({ assessmentId, subjectId }, {})
-      .then((res) => {
-        const data = res.data;
-        const selectedInsight = data.assessorInsight || data.defaultInsight;
-        if (selectedInsight) {
-          setAboutSection(selectedInsight);
-          setEditable(data.editable ?? false);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching assessment insight:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+export const SubjectInsight = (props: ISubjectInsight) => {
+  const { AssessmentLoading, fetchAssessment, editable, aboutSection } = props;
+  const { service } = useServiceContext();
+  const { subjectId = "" } = useParams();
 
   useEffect(() => {
     fetchAssessment();
@@ -62,7 +48,7 @@ export const SubjectInsight = () => {
       gap={0.5}
       ml={3}
     >
-      {loading ? (
+      {AssessmentLoading ? (
         <Box
           display="flex"
           justifyContent="center"

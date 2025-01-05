@@ -17,12 +17,12 @@ import toastError from "@utils/toastError";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
 import { LoadingButton } from "@mui/lab";
-import { primaryFontFamily } from "@/config/theme";
-import { styles } from "@/config/styles";
+import { primaryFontFamily } from "@config/theme";
+import { styles } from "@styles";
 import { FaWandMagicSparkles } from "react-icons/fa6";
-import { AssessmentReportNarrator } from "@components/assessment-report/assessmentReportNarrator";
-import AdviceDialog from "./AdviceDialog";
-import QueryBatchData from "../common/QueryBatchData";
+import { AssessmentReportNarrator } from "@components/dashboard/advice-tab/assessmentReportNarrator";
+import AdviceDialog from "../../assessment-report/AdviceDialog";
+import QueryBatchData from "@common/QueryBatchData";
 
 const AssessmentAdviceContainer = (props: any) => {
   const { subjects, assessment, permissions } = props;

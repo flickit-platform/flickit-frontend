@@ -9,7 +9,6 @@ import { Link, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { useEffect, useState } from "react";
-import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 
 const MainTabs = (props: any) => {
@@ -25,7 +24,7 @@ const MainTabs = (props: any) => {
     },
     { label: "insights", address: "insights", permission: "viewAssessmentReport" },
     { label: "reportTitle", address: "report", permission: false },
-    { label: "advices", address: "advices", permission: false },
+    { label: "advices", address: "advices", permission: "createAdvice" },
     { label: "settings", address: "settings", permission: "grantUserAssessmentRole" },
   ];
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
@@ -92,7 +91,7 @@ const MainTabs = (props: any) => {
                 <Tab
                   key={uniqueId()}
                   disabled={
-                    tab.label === "reportTitle" || tab.label === "advices"
+                    tab.label === "reportTitle"
                   }
                   to={`./${tab.address}/`}
                   component={Link}
