@@ -403,6 +403,15 @@ export const createService = (
         },
       );
     },
+    ApproveAISubject(
+      { assessmentId, subjectId }: { assessmentId: string; subjectId: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/approve-insight/`,
+        config
+      );
+    },
     updateSubjectInsight(
       {
         assessmentId,
@@ -560,7 +569,19 @@ export const createService = (
         },
       );
     },
-
+    ApprovedAIAttribute(
+      args: {
+        assessmentId: TId;
+        attributeId: TId;
+      },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { assessmentId, attributeId } = args ?? {};
+      return axios.put(
+            `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/approve-insight/`,
+          config
+      );
+    },
     updateAIReport(
       {
         data,
@@ -2165,7 +2186,22 @@ export const createService = (
         },
       );
     },
-
+    fetchAssessmentKitExportUrl(
+          args: { assessmentKitId: TId },
+          config: AxiosRequestConfig<any> | undefined,
+      ) {
+          const { assessmentKitId } = args ?? {};
+          return axios.get(
+              `/api/v1/assessment-kits/${assessmentKitId}/export-dsl/`,
+              {
+                  ...config,
+                  responseType: "blob",
+                  headers: {
+                      "Content-Type": "multipart/form-data",
+                  },
+              },
+          );
+    },
     fetchMaturityLevelQuestions(
       args: { assessmentKitId: TId; attributeId: TId; maturityLevelId: TId },
       config: AxiosRequestConfig<any> | undefined,
