@@ -1,3 +1,4 @@
+import { getTransparentColor } from "@/config/styles";
 import { t } from "i18next";
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -6,6 +7,7 @@ interface PieChartNode {
   name: string;
   value: number;
   label?: string;
+  color?: string;
 }
 
 interface CustomPieChartProps {
@@ -117,8 +119,8 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           {data.map((item, index) => (
             <Cell
               key={`cell-${index}`}
-              fill="#ffffff"
-              stroke="#C2850A"
+              fill={getTransparentColor(item.color ?? "#fff")}
+              stroke={item.color}
               strokeWidth={2}
             />
           ))}

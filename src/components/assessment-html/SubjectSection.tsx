@@ -46,8 +46,8 @@ const SubjectReport = ({ data }: any) => {
               container
               key={item.index}
               sx={{
-                direction: theme.direction,
-                fontFamily: is_farsi ? "Vazirmatn" : primaryFontFamily,
+                direction: true ? "rtl" : "ltr",
+                fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 mb: "40px",
               }}
             >
@@ -62,7 +62,9 @@ const SubjectReport = ({ data }: any) => {
                     textAlign: true ? "right" : "left",
                   }}
                 >
-                  {index + 1} {title}
+                  {index + 1}
+                  {") "}
+                  {title}
                 </Typography>
                 <Typography
                   sx={{
@@ -123,6 +125,7 @@ const SubjectReport = ({ data }: any) => {
                     maturityLevelsCount={maturityLevelCount ?? 5}
                     loading={false}
                     chartHeight={300}
+                    lng="fa"
                   />
                 )}
               </Grid>
