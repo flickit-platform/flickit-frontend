@@ -45,7 +45,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
         levelValue={value}
         text={title}
         textPosition="left"
-        sx={{ width: "210px" }}
+        sx={{ width: "210px", ml: "20px" }}
       />
     </Box>
   );
