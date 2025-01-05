@@ -569,7 +569,19 @@ export const createService = (
         },
       );
     },
-
+    ApprovedAIAttribute(
+      args: {
+        assessmentId: TId;
+        attributeId: TId;
+      },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { assessmentId, attributeId } = args ?? {};
+      return axios.put(
+            `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/approve-insight/`,
+          config
+      );
+    },
     updateAIReport(
       {
         data,

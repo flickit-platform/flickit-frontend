@@ -40,7 +40,9 @@ import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
+import { LoadingButton } from "@mui/lab";
 import { t } from "i18next";
+
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -56,7 +58,9 @@ const SUbjectAttributeCard = (props: any) => {
     attributesDataPolicy,
     editable,
   } = props;
+
   const { permissions }: { permissions: IPermissions } = props;
+
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
@@ -95,6 +99,17 @@ const SUbjectAttributeCard = (props: any) => {
     runOnMount: false,
   });
 
+  const ApprovedAIAttribute = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        attributeId: id
+      },
+      config,
+    ) => service.ApprovedAIAttribute(args, config),
+    runOnMount: false,
+  });
+
   useEffect(() => {
     if (expandedAttribute && selectedMaturityLevel) {
       fetchAffectedQuestionsOnAttributeQueryData.query();
@@ -122,6 +137,17 @@ const SUbjectAttributeCard = (props: any) => {
 
   const maturityHandelClick = (id: number) => {
     setSelectedMaturityLevel(id);
+  };
+
+  const approveAttribute = async (event: React.SyntheticEvent) => {
+    try {
+        event.stopPropagation()
+        await ApprovedAIAttribute.query();
+        updateAttributeAndData(id, assessmentId, "", true);
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
@@ -213,11 +239,22 @@ const SUbjectAttributeCard = (props: any) => {
                 </Typography>
                 {attributesDataPolicy[id?.toString()]?.aiInsight &&
                 attributesDataPolicy[id?.toString()]?.aiInsight.isValid ? (
-                  <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                    <div>
-                      <AIGenerated />
-                    </div>
-                  </Tooltip>
+                  <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                    {!attributesDataPolicy[id?.toString()]?.approved && (
+                      <LoadingButton
+                        onClick={(event)=>approveAttribute(event)}
+                        variant={"contained"}
+                        loading={ApprovedAIAttribute.loading}
+                      >
+                     <Trans i18nKey={"approve"} />
+                      </LoadingButton>
+                    )}
+                    <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
+                      <div>
+                        <AIGenerated />
+                      </div>
+                    </Tooltip>
+                  </Box>
                 ) : (attributesDataPolicy[id?.toString()]?.assessorInsight &&
                     !attributesDataPolicy[id?.toString()]?.assessorInsight
                       ?.isValid) ||
