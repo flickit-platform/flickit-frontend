@@ -769,5 +769,6 @@
   "shareReportViaEmail": "Share the report with new people via email...",
   "copyReportLink": "Copy Report Link",
   "shareReportWithTitle": "Share {{title}} Report",
-  "linkCopied": "Link Copied"
+  "linkCopied": "Link Copied",
+  "consideredSubjects": "Considered Subject"
 }
