@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Divider,
   IconButton,
-  Link,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -17,22 +15,13 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { AssessmentOverallStatus } from "./AssessmentOverallStatus";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import { IAssessmentReportModel, RolesType } from "@types";
-import AssessmentAdviceContainer from "./AssessmentAdviceContainer";
 import { AssessmentSummary } from "./AssessmentSummary";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { ArticleRounded, Assessment } from "@mui/icons-material";
 import { AssessmentInsight } from "./AssessmentInsight";
-import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
-import { theme } from "@config/theme";
-import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
-import AdviceListNewForm from "@/components/assessment-report/advice-items/AdviceListNewForm";
-import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
-import AdviceItems from "./advice-items/AdviceItems";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -152,7 +141,9 @@ const AssessmentReportContainer = (props: any) => {
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
                   <Box display="flex" justifyContent="space-between">
-                    <Box sx={{ py: "0.6rem", display: "flex",marginLeft: "auto" }}>
+                    <Box
+                      sx={{ py: "0.6rem", display: "flex", marginLeft: "auto" }}
+                    >
                       <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
                         <Box>
                           <IconButton
@@ -306,49 +297,6 @@ const AssessmentReportContainer = (props: any) => {
                     subjects={subjects}
                     colorCode={colorCode}
                   />
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box sx={{ ...styles.centerCV }} marginTop={6} gap={2}>
-                    <Typography
-                      color="#73808C"
-                      variant="h5"
-                      display="flex"
-                      alignItems="center"
-                    >
-                      <Trans i18nKey="advice" />
-                      <Box
-                        sx={{
-                          ml: theme.direction == "ltr" ? 1 : "unset",
-                          mr: theme.direction == "rtl" ? 1 : "unset",
-                          mt: 1,
-                        }}
-                      >
-                        <img src={BetaSvg} alt="beta" width={34} />
-                      </Box>
-                    </Typography>
-
-                    <Divider sx={{ width: "100%" }} />
-                  </Box>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12} id="advices" mt={2}>
-                  <AssessmentAdviceContainer
-                    subjects={subjects}
-                    assessment={assessment}
-                    permissions={permissions}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  id="advices-empty"
-                  mt={2}
-                >
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <AdviceItems />
-                  </Grid>
                 </Grid>
               </Grid>
             </Box>

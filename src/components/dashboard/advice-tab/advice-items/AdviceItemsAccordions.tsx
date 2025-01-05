@@ -13,18 +13,18 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import { AdviceItem } from "@/types";
+import { AdviceItem } from "@types";
 import i18next, { t } from "i18next";
-import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
-import Impact from "@/components/common/icons/Impact";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import Impact from "@common/icons/Impact";
 import AdviceListNewForm from "./AdviceListNewForm";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@/utils/useQuery";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import toastError from "@/utils/toastError";
-import { ICustomError } from "@/utils/CustomError";
-import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
+import toastError from "@utils/toastError";
+import { ICustomError } from "@utils/CustomError";
+import languageDetector from "@utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
