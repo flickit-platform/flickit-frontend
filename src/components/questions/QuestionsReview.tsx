@@ -53,7 +53,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
     if (questionsInfo.questions) {
       const answeredQuestionsCount = questionsInfo.questions.filter(
         (question) =>
-          question.answer && question.answer.selectedOption !== null,
+          question.answer && ( question.answer.selectedOption !== null || question.answer.isNotApplicable ),
       ).length;
       setAnsweredQuestions(answeredQuestionsCount);
       if (answeredQuestionsCount === 0) {

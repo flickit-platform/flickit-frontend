@@ -15,7 +15,7 @@ import SubjectReport from "./SubjectSection";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
-import AdviceItemsAccordion from "../assessment-report/advice-items/AdviceItemsAccordions";
+import AdviceItemsAccordion from "../dashboard/advice-tab/advice-items/AdviceItemsAccordions";
 import ReportCard from "./ReportSummary";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
