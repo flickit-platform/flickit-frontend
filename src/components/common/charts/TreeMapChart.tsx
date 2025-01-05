@@ -11,6 +11,7 @@ interface TreeMapNode {
   name: string;
   count: number;
   label: string;
+  color: string
 }
 
 interface TreeMapProps {
@@ -22,7 +23,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
   const colorPallet = getMaturityLevelColors(levels);
   const treeMapData = data.map((node) => ({
     ...node,
-    color: colorPallet[Number(node.label) - 1],
+    color: colorPallet[Number(node.color) - 1],
   }));
 
   return (

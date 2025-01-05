@@ -188,6 +188,7 @@ const AssessmentExportContainer = () => {
       name: attribute.title,
       count: 1,
       label: attribute.value.toString(),
+      color: attribute.maturityLevel.value.toString(),
     })),
   );
 
