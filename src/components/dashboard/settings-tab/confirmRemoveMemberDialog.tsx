@@ -48,7 +48,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
         await deleteUserRole.query(expandedRemoveDialog?.id);
         onCloseRemoveDialog();
         setChangeData((prev: boolean) => !prev);
-        // await fetchAssessmentsUserListRoles()
+        // await fetchAssessmentMembers()
       }
     } catch (e) {
       const err = e as ICustomError;

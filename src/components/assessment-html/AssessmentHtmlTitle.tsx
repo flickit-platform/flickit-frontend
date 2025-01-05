@@ -29,7 +29,7 @@ const AssessmentHtmlTitle = (props: any) => {
             //   to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
             // },
             {
-              title: t("assessmentDocument") as string,
+              title: t("assessmentDocument", { lng: "fa" }) as string,
             },
           ]}
           displayChip

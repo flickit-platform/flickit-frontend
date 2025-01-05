@@ -20,6 +20,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
+import { t } from "i18next";
 
 interface TableData {
   items: Item[];
@@ -78,7 +79,7 @@ interface ItemColumnMapping {
   answer: string;
   weight: number;
   score: number;
-  weightedScore: number;
+  weightedScore: string | number;
   confidence: number;
   evidenceCount: number;
 }
@@ -202,12 +203,16 @@ const MaturityLevelTable = ({
         : "-",
       answer: item.answer.index
         ? item.answer.index + ". " + item.answer.title
-        : "-",
+        : item.answer.isNotApplicable
+          ? t("notApplicable")
+          : "-",
       weight: item.question.weight,
       score: item.answer.score,
-      weightedScore: parseFloat(
-        parseFloat(item.answer.weightedScore.toString()).toFixed(2),
-      ),
+      weightedScore: item.answer.weightedScore?.toString()
+        ? parseFloat(
+            parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2),
+          )
+        : "",
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
     };

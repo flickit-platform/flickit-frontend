@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import { primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import GeneralLayout from "./layout/GeneralLayout";
 import languageDetector from "@utils/languageDetector";
 import Grid from "@mui/material/Grid";
@@ -57,12 +57,21 @@ const SubjectReport = ({ data }: any) => {
                     color: theme.palette.primary.main,
                     ...theme.typography.headlineSmall,
                     fontWeight: "bold",
+                    direction: true ? "rtl" : "ltr",
+                    fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                    textAlign: true ? "right" : "left",
                   }}
                 >
-                  {index + 1}) {title}
+                  {index + 1} {title}
                 </Typography>
                 <Typography
-                  sx={{ ...theme.typography.titleSmall, fontWeight: "light" }}
+                  sx={{
+                    ...theme.typography.titleSmall,
+                    fontWeight: "light",
+                    direction: true ? "rtl" : "ltr",
+                    fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                    textAlign: true ? "right" : "left",
+                  }}
                 >
                   {description}
                 </Typography>

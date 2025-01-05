@@ -40,9 +40,11 @@ import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
+import { t } from "i18next";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
+    description,
     title,
     maturityLevel,
     maturity_levels_count,
@@ -54,6 +56,7 @@ const SUbjectAttributeCard = (props: any) => {
     attributesDataPolicy,
     editable,
   } = props;
+  const { permissions }: { permissions: IPermissions } = props;
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
@@ -146,7 +149,9 @@ const SUbjectAttributeCard = (props: any) => {
             display: "none",
           },
         }}
-        expanded={expandedAttribute === id}
+        expanded={
+          permissions.viewAttributeScoreDetail && expandedAttribute === id
+        }
         onChange={handleChange(id)}
       >
         <AccordionSummary
@@ -169,6 +174,11 @@ const SUbjectAttributeCard = (props: any) => {
               margin: "0px !important",
               padding: "0px !important",
             },
+            "& :hover": {
+              cursor: permissions.viewAttributeScoreDetail
+                ? "pointer"
+                : "default",
+            },
           }}
           onClick={(event) => event.stopPropagation()}
         >
@@ -181,7 +191,7 @@ const SUbjectAttributeCard = (props: any) => {
               borderRadius: "16px",
             }}
           >
-            <Grid item xs={9} sx={{ p: 4 }}>
+            <Grid item xs={12} sm={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
                   sx={{
@@ -195,7 +205,7 @@ const SUbjectAttributeCard = (props: any) => {
               <Typography
                 sx={{ ...theme.typography.bodyMedium, color: "#6C8093", mb: 2 }}
               >
-                <Trans i18nKey={"AccuracyOfSystem"} />
+                {description}
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography color="#2466A8" variant="titleSmall">
@@ -283,7 +293,7 @@ const SUbjectAttributeCard = (props: any) => {
                 )
               )}
             </Grid>
-            <Grid sx={{ width: "100%", height: "100%" }} item xs={3}>
+            <Grid item xs={12} sm={3}>
               <Box
                 sx={{
                   width: "100%",
@@ -293,7 +303,18 @@ const SUbjectAttributeCard = (props: any) => {
                   alignItems: "center",
                   background: backgroundColor,
                   borderEndEndRadius: "16px",
-                  borderStartEndRadius: "16px",
+                  borderStartEndRadius: {
+                    sm: "16px",
+                    xs: 0,
+                  },
+                  mt: {
+                    sm: 0,
+                    xs: 2,
+                  },
+                  borderEndStartRadius: {
+                    sm: 0,
+                    xs: "16px",
+                  },
                   boxShadow: "inset 0 0 0 1px #C7CCD1",
                 }}
               >
@@ -313,15 +334,18 @@ const SUbjectAttributeCard = (props: any) => {
                       expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
                   }}
                 />
-                <ExpandMoreIcon
-                  sx={{
-                    position: "absolute",
-                    bottom: "16px",
-                    right: theme.direction === "rtl" ? "unset" : "16px",
-                    left: theme.direction === "rtl" ? "16px" : "unset",
-                    transform: expandedAttribute === id ? "scaleY(-1)" : "none",
-                  }}
-                />
+                {permissions.viewAttributeScoreDetail && (
+                  <ExpandMoreIcon
+                    sx={{
+                      position: "absolute",
+                      bottom: "16px",
+                      right: theme.direction === "rtl" ? "unset" : "16px",
+                      left: theme.direction === "rtl" ? "16px" : "unset",
+                      transform:
+                        expandedAttribute === id ? "scaleY(-1)" : "none",
+                    }}
+                  />
+                )}
               </Box>
             </Grid>
           </Grid>

@@ -80,17 +80,17 @@ export const createService = (
       return axios.get(`/api/v1/user-profile/`, config);
     },
     updateUserProfilePicture(
-          args: { data: any },
-          config: AxiosRequestConfig<any> | undefined,
-      ) {
-          const { data = {} } = args ?? {};
+      args: { data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { data = {} } = args ?? {};
 
-          return axios.put(`/api/v1/user-profile/picture/`, data, {
-              ...(config ?? {}),
-              headers: {
-                  "Content-Type": "multipart/form-data",
-              },
-          });
+      return axios.put(`/api/v1/user-profile/picture/`, data, {
+        ...(config ?? {}),
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     },
     updateUserInfo(args: any, config: AxiosRequestConfig<any> | undefined) {
       const { data } = args ?? {};
@@ -324,7 +324,7 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/assessment-user-roles/`, config);
     },
-    fetchAssessmentsUserListRoles(
+    fetchAssessmentMembers(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {
@@ -1360,14 +1360,23 @@ export const createService = (
         },
       );
     },
+    fetchAssessmentPermissions(
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/permissions/`,
+        config,
+      );
+    },
     fetchDashboard(
-          { assessmentId }: { assessmentId: TId },
-          config?: AxiosRequestConfig<any>,
-     ) {
-          return axios.get(
-              `/api/v1/assessments/${assessmentId}/dashboard/`,
-              config,
-          );
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/dashboard/`,
+        config,
+      );
     },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },

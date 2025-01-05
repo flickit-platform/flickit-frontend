@@ -262,7 +262,7 @@ export const theme = createTheme({
       fontWeight: "lighter",
       fontSize: "0.6875rem",
       lineHeight: "0.75rem",
-      letterSpacing: is_farsi ? "0px" : "0.5px",
+      letterSpacing: "0px",
     },
     labelMedium: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
