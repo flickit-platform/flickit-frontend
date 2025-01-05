@@ -97,7 +97,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           y="54%"
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={18}
+          fontSize={16}
           fontWeight="bold"
           fill="#333"
           direction="rtl"
