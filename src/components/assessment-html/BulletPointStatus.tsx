@@ -20,21 +20,24 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
   const colorCode = colorPallet[value - 1];
   return (
     <Box
+      display="flex"
+      justifyContent="space-between"
       sx={{
-        ...styles.centerVH,
         width: "100%",
-        gap: 2,
+        gap: 1,
       }}
     >
-      <ArrowLeftIcon sx={{ color: colorCode }} fontSize="medium" />
       <Typography
         variant="titleSmall"
         sx={{
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,
           textAlign: true ? "right" : "left",
+          ...styles.centerVH,
         }}
       >
+        <ArrowLeftIcon sx={{ color: colorCode }} fontSize="medium" />
+
         {titleSub}
       </Typography>
       <FlatGauge
@@ -42,6 +45,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
         levelValue={value}
         text={title}
         textPosition="left"
+        sx={{ width: "210px" }}
       />
     </Box>
   );

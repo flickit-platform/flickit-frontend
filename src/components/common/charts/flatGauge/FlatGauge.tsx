@@ -111,12 +111,11 @@ const FlatGauge = (props: IGaugeProps) => {
             {textPosition == "left" && (
               <Box
                 sx={{
-                  mr: theme.direction == "rtl" ? "1.3rem" : "",
-                  ml: theme.direction != "rtl" ? "1.3rem" : "",
                   color: colorCode,
                   fontFamily: languageDetector(text ?? "")
                     ? farsiFontFamily
                     : primaryFontFamily,
+                  minWidth: "80px",
                 }}
               >
                 <Trans i18nKey={`${text}`} />
