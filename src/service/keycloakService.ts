@@ -30,6 +30,12 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
 
       sessionStorage.setItem("currentUser", currentUser || "");
 
+      if (location.pathname.includes("html-document")) {
+        const space = location.pathname.split("/")[1];
+        const id = location.pathname.split("/")[4];
+        window.location.href = `/${space}/assessments/${id}/graphical-report/`;
+      }
+
       const hasRedirected = localStorage.getItem("hasRedirected");
       if (!hasRedirected) {
         localStorage.setItem("hasRedirected", "true");
