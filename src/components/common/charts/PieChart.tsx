@@ -76,16 +76,16 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           cx="50%"
           cy="50%"
           r="66"
-          fill="white"
-          stroke="#C2850A"
-          strokeWidth={3}
+          fill="#F3F5F6"
+          stroke="#C7CCD1"
+          strokeWidth={1}
         />
         <text
           x="50%"
-          y="50%"
+          y="48%"
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={18}
+          fontSize={24}
           fontWeight="bold"
           fill="#333"
           direction="rtl"
@@ -94,7 +94,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
         </text>
         <text
           x="50%"
-          y="55%"
+          y="54%"
           textAnchor="middle"
           dominantBaseline="middle"
           fontSize={18}
