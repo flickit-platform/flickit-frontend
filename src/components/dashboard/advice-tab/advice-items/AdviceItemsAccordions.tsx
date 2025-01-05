@@ -124,6 +124,9 @@ const CustomChip: React.FC<{
           marginRight: readOnly ? "0" : "initial",
           marginLeft: readOnly ? "-10px" : "initial",
         },
+        "& .MuiChip-label": {
+          fontFamily: readOnly ? farsiFontFamily : primaryFontFamily,
+        },
       }}
     />
   );
@@ -313,11 +316,21 @@ const AdviceItemAccordion: React.FC<{
                       display: "inline-block",
                       whiteSpace: "nowrap",
                     }}
+                    fontFamily={
+                      languageDetector(item.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                    }
                   >
                     (
-                    {!isFarsi
+                    {!isFarsi && !readOnly
                       ? t(item.priority.toLowerCase()) + " " + t("priority")
-                      : t("priority") + " " + t(item.priority.toLowerCase())}
+                      : t("priority", !readOnly ? {} : { lng: "fa" }) +
+                        " " +
+                        t(
+                          item.priority.toLowerCase(),
+                          !readOnly ? {} : { lng: "fa" },
+                        )}
                     )
                   </Typography>
                 </Grid>

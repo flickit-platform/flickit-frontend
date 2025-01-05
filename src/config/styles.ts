@@ -10,6 +10,7 @@ const commonStyles = {
   customizeFarsiFont: style({
     direction: true ? "rtl" : "ltr",
     fontFamily: true ? farsiFontFamily : primaryFontFamily,
+    textAlign: true ? "right" : "left",
   }),
   centerVH: style({
     display: "flex",
