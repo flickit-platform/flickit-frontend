@@ -1,13 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  Link,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
 import { Link as RouterLink, useParams } from "react-router-dom";
@@ -22,21 +14,16 @@ import { AssessmentSummary } from "./AssessmentSummary";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { ArticleRounded, Assessment } from "@mui/icons-material";
 import { AssessmentInsight } from "./AssessmentInsight";
 import BetaSvg from "@assets/svg/beta.svg";
 import PermissionControl from "../common/PermissionControl";
 import { theme } from "@config/theme";
-import EmptyAdviceList from "@components/assessment-report/advice-items/EmptyAdviceItems";
-import AdviceListNewForm from "@/components/assessment-report/advice-items/AdviceListNewForm";
-import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import AdviceItems from "./advice-items/AdviceItems";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
-  const { assessmentId = "", page = 1 } = useParams();
+  const { assessmentId = "" } = useParams();
   const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
 
   const queryData = useQuery<IAssessmentReportModel>({
@@ -161,7 +148,7 @@ const AssessmentReportContainer = (props: any) => {
                             data-cy="more-action-btn"
                             disabled={disableHtmlDocument}
                             component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/${page}/${assessmentId}/graphical-report/`}
+                            to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
                           >
                             <Assessment
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
