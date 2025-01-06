@@ -222,7 +222,7 @@ export const getMaturityLevelColors = (maturity_level_number: number) => {
 
 export const generateColorFromString = (str: string) => {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
+  for (let i = 0; i < str?.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
   }
   // Select a chip based on hash

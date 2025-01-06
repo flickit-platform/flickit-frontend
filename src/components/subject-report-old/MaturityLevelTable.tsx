@@ -23,7 +23,7 @@ import { uniqueId } from "lodash";
 import { t } from "i18next";
 import { ShareDialog } from "../assessment-html/ShareDialog";
 import useDialog from "@/utils/useDialog";
-import { QuestionDetailsDialog } from "./QuestionDetailsDialog";
+import QuestionDetailsDialog from "./QuestionDetailsDialog";
 
 interface TableData {
   items: Item[];
@@ -399,7 +399,12 @@ const MaturityLevelTable = ({
                       <TableRow
                         key={uniqueId()}
                         component="div"
-                        onClick={() => dialogProps.openDialog({ data: item })}
+                        onClick={() =>
+                          dialogProps.openDialog({
+                            type: "details",
+                            data: item,
+                          })
+                        }
                       >
                         {columns.map((column) => (
                           <TableCell
@@ -479,7 +484,7 @@ const ActiveCircleIcon = styled(CircleIcon)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
 }));
 
-const CircleRating = (props: any) => {
+export const CircleRating = (props: any) => {
   const { value, ...other } = props;
 
   return (

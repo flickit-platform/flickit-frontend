@@ -1,64 +1,67 @@
-import { Trans, useTranslation } from "react-i18next";
-import { DialogProps, Snackbar } from "@mui/material";
-import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
-import { useState } from "react";
-import { LoadingButton } from "@mui/lab";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useEffect, useMemo } from "react";
+import { DialogProps } from "@mui/material/Dialog";
+import { Trans } from "react-i18next";
+import { CEDialog } from "@common/dialogs/CEDialog";
+import { Chip, Typography } from "@mui/material";
+import { generateColorFromString } from "@/config/styles";
+import { CircleRating } from "./MaturityLevelTable";
 
-interface IDialogProps extends DialogProps {
-  open: boolean;
+interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;
+  onSubmitForm?: () => void;
+  openDialog?: any;
   context?: any;
 }
 
-export const QuestionDetailsDialog = (props: IDialogProps) => {
-  const { onClose: closeDialog, context = {}, ...rest } = props;
-  const { type, data = {} } = context;
-  const { t } = useTranslation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const { service } = useServiceContext();
-
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      setSnackbarOpen(true);
-    });
+const QuestionDetailsDialog = (props: IQuestionDetailsDialogDialogProps) => {
+  const {
+    onClose: closeDialog,
+    onSubmitForm,
+    context = {},
+    openDialog,
+    ...rest
+  } = props;
+  const { data = {} } = context;
+  const abortController = useMemo(() => new AbortController(), [rest.open]);
+  const close = () => {
+    abortController.abort();
+    closeDialog();
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  useEffect(() => {
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <CEDialog
       {...rest}
-      closeDialog={closeDialog}
+      closeDialog={close}
       title={
         <>
           <Trans i18nKey="question" />
         </>
       }
     >
-      <CEDialogActions
-        type="delete"
-        loading={false}
-        onClose={closeDialog}
-        hideSubmitButton
-        hideCancelButton
-      >
-        <LoadingButton onClick={handleCopyClick}>
-          <Trans i18nKey="question" />
-        </LoadingButton>
-
-        <LoadingButton variant="contained" onClick={closeDialog} sx={{ mx: 1 }}>
-          <Trans i18nKey="done" />
-        </LoadingButton>
-      </CEDialogActions>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        message={t("linkCopied")}
+      <Chip
+        label={data?.questionnaire}
+        style={{
+          backgroundColor: generateColorFromString(data?.questionnaire)
+            .backgroundColor,
+          color: generateColorFromString(data?.questionnaire).color,
+        }}
       />
+      <Typography>{data?.question?.title}</Typography>
+      <Typography>{data?.question?.hint}</Typography>
+      <Typography>{data?.answer?.title}</Typography>
+      <CircleRating value={data?.answer?.confidenceLevel} />
     </CEDialog>
   );
 };
+
+export default QuestionDetailsDialog;
