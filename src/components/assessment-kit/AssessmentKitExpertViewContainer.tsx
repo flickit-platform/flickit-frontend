@@ -67,7 +67,7 @@ const AssessmentKitExpertViewContainer = () => {
       const fileUrl = response.url;
       const a = document.createElement("a");
       a.href = fileUrl;
-      a.download = "file_name.zip";
+      a.download = `${assessmentKitTitle}.zip`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -88,7 +88,7 @@ const AssessmentKitExpertViewContainer = () => {
           const blobUrl = URL.createObjectURL(zipFile);
           const a = document.createElement("a");
           a.href = blobUrl;
-          a.download = `export-${assessmentKitId}.zip`;
+          a.download = `export-${assessmentKitTitle}.zip`;
           document.body.appendChild(a);
           a.click();
           a.remove();
@@ -151,7 +151,7 @@ const AssessmentKitExpertViewContainer = () => {
                   dialogProps.openDialog({});
                 }}
               >
-                <Typography mr={1} variant="button">
+                <Typography sx={{marginInlineEnd: 1}} variant="button">
                   <Trans i18nKey="updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
@@ -163,7 +163,7 @@ const AssessmentKitExpertViewContainer = () => {
                 sx={{ ml: 2 }}
                 onClick={handleExport}
               >
-                <Typography mr={1} variant="button">
+                <Typography sx={{marginInlineEnd: 1}} variant="button">
                   <Trans i18nKey="exportDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
@@ -174,7 +174,7 @@ const AssessmentKitExpertViewContainer = () => {
                 sx={{ ml: 2 }}
                 onClick={handleDownload}
               >
-                <Typography mr={1} variant="button">
+                <Typography sx={{marginInlineEnd: 1}} variant="button">
                   <Trans i18nKey="downloadDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
