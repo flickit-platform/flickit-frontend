@@ -151,6 +151,21 @@ export const createService = (
         config,
       );
     },
+
+    grantReportAccess(
+      args: { assessmentId: any; email: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { assessmentId, email } = args ?? {};
+
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/grant-report-access/`,
+        { email },
+        {
+          ...(config ?? {}),
+        },
+      );
+    },
     inviteMemberToAssessment(
       args: { assessmentId: any; email: any; roleId: any },
       config: AxiosRequestConfig<any> | undefined,
@@ -409,7 +424,7 @@ export const createService = (
     ) {
       return axios.put(
         `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/approve-insight/`,
-        config
+        config,
       );
     },
     updateSubjectInsight(
@@ -578,8 +593,8 @@ export const createService = (
     ) {
       const { assessmentId, attributeId } = args ?? {};
       return axios.put(
-            `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/approve-insight/`,
-          config
+        `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/approve-insight/`,
+        config,
       );
     },
     updateAIReport(
@@ -2187,20 +2202,20 @@ export const createService = (
       );
     },
     fetchAssessmentKitExportUrl(
-          args: { assessmentKitId: TId },
-          config: AxiosRequestConfig<any> | undefined,
-      ) {
-          const { assessmentKitId } = args ?? {};
-          return axios.get(
-              `/api/v1/assessment-kits/${assessmentKitId}/export-dsl/`,
-              {
-                  ...config,
-                  responseType: "blob",
-                  headers: {
-                      "Content-Type": "multipart/form-data",
-                  },
-              },
-          );
+      args: { assessmentKitId: TId },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { assessmentKitId } = args ?? {};
+      return axios.get(
+        `/api/v1/assessment-kits/${assessmentKitId}/export-dsl/`,
+        {
+          ...config,
+          responseType: "blob",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
     },
     fetchMaturityLevelQuestions(
       args: { assessmentKitId: TId; attributeId: TId; maturityLevelId: TId },
