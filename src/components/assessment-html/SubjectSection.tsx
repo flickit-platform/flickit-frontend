@@ -62,7 +62,7 @@ const SubjectReport = ({ data }: any) => {
                   }}
                 >
                   {index + 1}
-                  {" ) "}
+                  {") "}
                   {title}
                 </Typography>
                 <Typography

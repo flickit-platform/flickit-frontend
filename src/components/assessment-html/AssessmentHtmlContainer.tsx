@@ -467,7 +467,7 @@ const AssessmentExportContainer = () => {
                             )[subject.maturityLevel.value - 1],
                             label:
                               subject.maturityLevel.title +
-                              "(" +
+                              " (" +
                               subject.maturityLevel.value +
                               "/" +
                               jsonData?.assessment.assessmentKit
