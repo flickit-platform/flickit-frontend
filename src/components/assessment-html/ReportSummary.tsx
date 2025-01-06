@@ -17,6 +17,7 @@ import { t } from "i18next";
 const sectionStyle = {
   marginTop: "16px",
   padding: "16px",
+  textAlign: "justify",
 };
 
 const textStyle = {
@@ -61,6 +62,8 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
+                width: "20%",
+
                 ...styles.customizeFarsiFont,
               }}
             >
@@ -72,6 +75,7 @@ const StepsTable = ({ steps }: any) => (
               sx={{
                 padding: "8px",
                 ...styles.customizeFarsiFont,
+                textAlign: "justify",
               }}
             >
               <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
@@ -118,7 +122,11 @@ const Section = ({ title, children }: any) => (
     <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
       {title}
     </Typography>
-    <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
+    <Typography
+      sx={{ ...textStyle, textAlign: "justify" }}
+      variant="extraLight"
+      fontWeight={300}
+    >
       {children}
     </Typography>
   </Box>
