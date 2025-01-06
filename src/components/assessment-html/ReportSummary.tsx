@@ -275,7 +275,7 @@ const ReportCard = ({ data }: any) => {
             ?.map((elem: ISubject, index: number) =>
               index === data?.subjects?.length - 1 &&
               data?.subjects?.length !== 1
-                ? t("and") + elem?.title
+                ? t("and", { lng: "fa" }) + elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
