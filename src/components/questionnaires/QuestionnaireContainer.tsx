@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import { QuestionnaireList } from "./QuestionnaireList";
 import { Trans } from "react-i18next";
@@ -7,18 +7,19 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { IQuestionnairesModel } from "@types";
 import Title from "@common/TitleComponent";
-import AlertTitle from "@mui/material/AlertTitle";
-import { Link, useParams, useSearchParams } from "react-router-dom";
-import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
+import { useParams, useSearchParams } from "react-router-dom";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
-import Button from "@mui/material/Button";
-import AnalyticsRoundedIcon from "@mui/icons-material/AnalyticsRounded";
 import PermissionControl from "@common/PermissionControl";
-import AlertBox from "@common/AlertBox";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import QueryData from "../common/QueryData";
 import { useConfigContext } from "@/providers/ConfgProvider";
+import { MenuItem, Typography } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
+import { theme } from "@config/theme";
+
 const QuestionnaireContainer = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -42,11 +43,74 @@ const QuestionnaireContainer = () => {
       (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
 
+  const [personName, setPersonName] = useState<string[]>([]);
+
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(typeof value === "string" ? value.split(",") : value);
+  };
+
+  const names = [
+   t("unansweredQuestions") ,
+   t("lowConfidenceAnswers") ,
+   t("unresolvedComments") ,
+   t("answersWithNoEvidence") ,
+  ];
+
+  const isAllSelected = personName.length === names.length;
+
   return (
     <PermissionControl
       error={[questionnaireQueryData.errorObject?.response?.data]}
     >
       <Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <Typography>
+            <Trans i18nKey={"markQuestionsWithIssues"} />:
+          </Typography>
+          <FormControl sx={{ m: 1, width: 300 }}>
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={personName.map((item) =>t(item) )}
+              onChange={handleChange}
+              renderValue={(selected) =>
+                isAllSelected ? (
+                  <Trans i18nKey={"allIssuesSelected"} />
+                ) : (
+                  selected.join(", ")
+                )
+              }
+              sx={{
+                ...theme.typography.semiBoldLarge,
+                fontSize: "14px",
+                background: "#fff",
+                px: "0px",
+                height: "40px",
+              }}
+            >
+              {names.map((name: any) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={personName.includes(t(name))} />
+                  <ListItemText
+                    sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
+                    primary={<Trans i18nKey={`${name}`} />}
+                  />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
         <Box
           flexWrap={"wrap"}
           sx={{

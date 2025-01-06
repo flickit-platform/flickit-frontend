@@ -770,5 +770,11 @@
   "copyReportLink": "کپی کردن لینک گزارش",
   "shareReportWithTitle": "اشتراک‌‌گذاری گزارش {{title}}",
   "linkCopied": "لینک کپی شد",
-  "approve": "موافقت کردن"
+  "approve": "موافقت کردن",
+  "markQuestionsWithIssues": "نمایش پرسشنامه‌ها برحسب مشکل",
+  "unansweredQuestions": "پرسش‌های بی‌‌پاسخ",
+  "answersWithNoEvidence": "ثبت پاسخ بدون شاهد",
+  "lowConfidenceAnswers": "جواب‌ها با سطح اطمینان پایین",
+  "unresolvedComments": "کامنت‌های بررسی نشده",
+  "allIssuesSelected": "تمامی مشکلات انتخاب شده‌اند"
 }

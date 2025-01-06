@@ -770,5 +770,11 @@
   "copyReportLink": "Copy Report Link",
   "shareReportWithTitle": "Share {{title}} Report",
   "linkCopied": "Link Copied",
-  "approve": "approve"
+  "approve": "approve",
+  "markQuestionsWithIssues": "Mark Questions with issues",
+  "unansweredQuestions": "Unanswered questions",
+  "answersWithNoEvidence": "Answers with no evidence",
+  "lowConfidenceAnswers": "Low Confidence Answers",
+  "unresolvedComments": "Unresolved comments",
+  "allIssuesSelected": "All issues selected"
 }
