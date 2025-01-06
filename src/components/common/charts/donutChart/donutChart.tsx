@@ -23,7 +23,7 @@ const DonutChart = (props: IGaugeProps) => {
   );
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet[levelValue - 1];
+  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
 
   return (
     <Suspense fallback={<Trans i18nKey={"loading"} />}>
