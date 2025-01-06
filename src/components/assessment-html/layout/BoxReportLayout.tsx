@@ -60,7 +60,7 @@ const BoxReportLayout = (props: IBoxReport) => {
         gap: "24px",
         border: `1px solid ${colorCode}`,
         mb: 4,
-        width: "100%˝",
+        width: "100%",
       }}
     >
       <TopBox
@@ -136,9 +136,8 @@ const TopBox = (props: ITopBoxReport) => {
         }}
       >
         <Typography
-          textAlign="justify"
           sx={{
-            ...theme.typography.body2,
+            ...theme.typography.extraLight,
             direction: true ? "rtl" : "ltr",
             fontFamily: true ? farsiFontFamily : primaryFontFamily,
           }}
@@ -201,9 +200,8 @@ const BottomBox = (props: any) => {
       <Typography
         textAlign="justify"
         sx={{
-          fontSize: ".87rem",
-          fontWeight: "light",
-          lineHeight: "1.5rem",
+          ...theme.typography.extraLight,
+          mt: 1,
           color: "#2B333B",
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,

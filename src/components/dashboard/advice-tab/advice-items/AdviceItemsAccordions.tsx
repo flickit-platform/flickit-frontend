@@ -24,7 +24,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import toastError from "@utils/toastError";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
@@ -98,9 +98,9 @@ const CustomChip: React.FC<{
   );
   const Icon =
     type === "impact" ? (
-      <Impact styles={{ color: iconColor, px: 2, width: "20px" }} />
+      <Impact styles={{ color: iconColor, px: 2, width: "14px" }} />
     ) : (
-      <AttachMoneyOutlinedIcon sx={{ fontSize: "14px" }} />
+      <AttachMoneyOutlinedIcon sx={{ fontSize: "10px" }} />
     );
 
   return (
@@ -121,11 +121,17 @@ const CustomChip: React.FC<{
         backgroundColor,
         color,
         "& .MuiChip-icon": {
-          marginRight: readOnly ? "0" : "initial",
-          marginLeft: readOnly ? "-10px" : "initial",
+          marginRight: readOnly || theme.direction == "rtl" ? "0" : "-10px",
+          marginLeft: readOnly || theme.direction == "rtl" ? "-10px" : "0",
         },
         "& .MuiChip-label": {
-          fontFamily: readOnly ? farsiFontFamily : primaryFontFamily,
+          fontWeight: 200,
+          letterSpacing: "0px",
+          fontSize: "10px",
+          fontFamily:
+            readOnly || theme.direction == "rtl"
+              ? farsiFontFamily
+              : primaryFontFamily,
         },
       }}
     />
@@ -275,7 +281,10 @@ const AdviceItemAccordion: React.FC<{
         <AccordionSummary
           expandIcon={readOnly ? null : <ExpandMoreIcon fontSize="small" />}
           sx={{
-            "& .MuiAccordionSummary-content": { alignItems: "center" },
+            "& .MuiAccordionSummary-content": {
+              alignItems: "center",
+              minWidth: "20%",
+            },
             padding: "0 16px",
           }}
         >
@@ -290,7 +299,6 @@ const AdviceItemAccordion: React.FC<{
               <Grid container alignItems="center" spacing={1}>
                 <Grid item xs={12} alignItems="center" display="flex">
                   <Typography
-                    variant="titleMedium"
                     sx={{
                       display: "inline-block",
                       overflow: "hidden",
@@ -298,6 +306,9 @@ const AdviceItemAccordion: React.FC<{
                       whiteSpace: "nowrap",
                       wordBreak: "break-word",
                       marginInline: "8px",
+                      fontWeight: 500,
+                      letterSpacing: "0.15px",
+                      fontSize: "1rem",
                     }}
                     title={item.title}
                     dir={languageDetector(item.title) ? "rtl" : "ltr"}
@@ -310,11 +321,13 @@ const AdviceItemAccordion: React.FC<{
                     {item.title}
                   </Typography>
                   <Typography
-                    variant="titleMedium"
                     color={getPriorityColor(item.priority.toLowerCase())}
                     sx={{
                       display: "inline-block",
                       whiteSpace: "nowrap",
+                      fontWeight: 500,
+                      letterSpacing: "0.15px",
+                      fontSize: "1rem",
                     }}
                     fontFamily={
                       languageDetector(item.title)
@@ -337,16 +350,26 @@ const AdviceItemAccordion: React.FC<{
               </Grid>
             </Grid>
 
-            <Grid item xs={12} sm={4} md={readOnly ? 4 : 3.7}>
+            <Grid item xs={12} sm={4} md={readOnly ? 2.8 : 3.7}>
               <Grid container justifyContent="flex-start" alignItems="center">
-                <Grid item xs={readOnly ? 6 : 4.8}>
+                <Grid
+                  item
+                  md={readOnly ? 6 : 4.8}
+                  justifyContent="flex-end"
+                  display="flex"
+                >
                   <CustomChip
                     type="impact"
                     level={item.impact}
                     readOnly={readOnly}
                   />
                 </Grid>
-                <Grid item xs={readOnly ? 6 : 4.8}>
+                <Grid
+                  item
+                  md={readOnly ? 6 : 4.8}
+                  justifyContent="flex-end"
+                  display="flex"
+                >
                   <CustomChip
                     type="cost"
                     level={item.cost}
@@ -390,7 +413,7 @@ const AdviceItemAccordion: React.FC<{
           <Divider sx={{ marginBottom: "8px" }} />
           <Typography
             textAlign="justify"
-            variant="body2"
+            variant="extraLight"
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
             dir={languageDetector(item.description) ? "rtl" : "ltr"}

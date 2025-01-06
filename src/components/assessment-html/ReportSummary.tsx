@@ -41,7 +41,7 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "20%",
+                width: "2%",
                 ...styles.customizeFarsiFont,
               }}
             >
@@ -50,11 +50,13 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "30%",
+                width: "20%",
                 ...styles.customizeFarsiFont,
               }}
             >
-              {item.title}
+              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
+                {item.title}
+              </Typography>
             </TableCell>
             <TableCell
               sx={{
@@ -62,8 +64,17 @@ const StepsTable = ({ steps }: any) => (
                 ...styles.customizeFarsiFont,
               }}
             >
-              <Typography textAlign="justify" variant="body2">
-                {" "}
+              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
+                {item.summary}
+              </Typography>
+            </TableCell>
+            <TableCell
+              sx={{
+                padding: "8px",
+                ...styles.customizeFarsiFont,
+              }}
+            >
+              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
                 {item.description}
               </Typography>
             </TableCell>
@@ -107,7 +118,7 @@ const Section = ({ title, children }: any) => (
     <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
       {title}
     </Typography>
-    <Typography textAlign="justify" sx={textStyle}>
+    <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
       {children}
     </Typography>
   </Box>
@@ -133,11 +144,11 @@ const TopicsList = ({ data }: any) => (
             sx={{
               display: "flex",
               alignItems: "center",
-              marginBottom: "8px",
+              mt: 2,
             }}
           >
             <Typography
-              variant="titleSmall"
+              variant="extraLight"
               sx={{
                 fontWeight: "bold",
                 width: "20%",
@@ -148,7 +159,10 @@ const TopicsList = ({ data }: any) => (
               {attribute.title}
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-            <Typography sx={textStyle}>{attribute.description}</Typography>
+            <Typography sx={{ ...textStyle, width: "80%" }}>
+              {attribute.description}
+            </Typography>
+            <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
           </Box>
         ))}
       </Box>
@@ -165,17 +179,20 @@ const QuestionnaireList = ({ data }: any) => (
           display: "flex",
           alignItems: "center",
           marginBottom: "8px",
+          mt: 3,
         }}
       >
         <Box
-          width="20%"
+          width="200px"
           sx={{
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
           }}
         >
           <Typography
-            variant="titleSmall"
+            variant="extraLight"
             sx={{
               fontWeight: "bold",
               ...styles.customizeFarsiFont,
@@ -184,7 +201,7 @@ const QuestionnaireList = ({ data }: any) => (
             {item.title}
           </Typography>
           <Typography
-            variant="titleSmall"
+            variant="extraLight"
             sx={{
               fontWeight: "bold",
             }}
@@ -204,7 +221,10 @@ const QuestionnaireList = ({ data }: any) => (
           {item.questionCount} {t("question", { lng: "fa" })}
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-        <Typography sx={textStyle}>{item.description}</Typography>
+        <Typography sx={{ ...textStyle, width: "80%" }}>
+          {item.description}
+        </Typography>
+        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
       </Box>
     ))}
   </Box>
@@ -217,10 +237,11 @@ const ReportCard = ({ data }: any) => {
         position: "relative",
         backgroundColor: "#EAF3FC",
         borderRadius: "16px",
-        padding: "24px",
         width: "100%",
         marginTop: 8,
         border: "3px solid #2466A8",
+        paddingX: { md: 2, xs: 1 },
+        paddingY: 6,
       }}
     >
       <TitleBox />
@@ -305,7 +326,8 @@ const ReportCard = ({ data }: any) => {
                 textAlign="justify"
                 component="span"
                 sx={{
-                  ...theme.typography.body2,
+                  ...theme.typography.extraLight,
+                  fontWeight: 300,
                   direction: true ? "rtl" : "ltr",
                   fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 }}

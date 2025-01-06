@@ -44,7 +44,7 @@ const CustomNode: any = (props: any) => {
   if (width <= 20 || height <= 20) return null;
 
   const fontSize = width / 8;
-  const adjustedFontSize = fontSize > 12 ? 12 : fontSize;
+  const adjustedFontSize = fontSize > 13 ? 13 : fontSize;
 
   const truncatedName =
     name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 12)}...` : name;
@@ -60,7 +60,7 @@ const CustomNode: any = (props: any) => {
             textAnchor="middle"
             fill="#fff"
             fontSize={adjustedFontSize}
-            fontWeight={200}
+            fontWeight={50}
           >
             {truncatedName}
           </text>
@@ -69,7 +69,7 @@ const CustomNode: any = (props: any) => {
             y={y + height / 2 + 10}
             textAnchor="middle"
             fill="#fff"
-            fontWeight={200}
+            fontWeight={50}
             fontSize={adjustedFontSize}
           >
             {`${label}/${levels}`}

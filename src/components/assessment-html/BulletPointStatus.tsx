@@ -28,7 +28,8 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
       }}
     >
       <Typography
-        variant="titleSmall"
+        variant="extraLight"
+        fontWeight={400}
         sx={{
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,

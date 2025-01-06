@@ -110,6 +110,7 @@ const AssessmentExportContainer = () => {
     typography: (isFarsi = true) => ({
       direction: isFarsi ? "rtl" : "ltr",
       fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+      fontWeight: 200,
     }),
   };
 
@@ -328,26 +329,26 @@ const AssessmentExportContainer = () => {
                         borderStartStartRadius: 16,
                         boxShadow: "none",
                         width: "100%",
-                        padding: 6,
+                        padding: { md: 6, xs: 1 },
                       }}
                     >
                       <Box
                         sx={{
                           position: "absolute",
-                          right: "40px",
-                          top: "60px",
-                          bottom: "40px",
-                          width: "8px",
+                          right: { md: "40px", xs: "12px" },
+                          top: { md: "60px", xs: "6px" },
+                          bottom: { md: "40px", xs: "4px" },
+                          width: { md: "8px", xs: "2px" },
                           backgroundColor: "#D5E5F6",
                         }}
                       />
                       <Box
                         sx={{
                           position: "absolute",
-                          left: "40px",
-                          top: "60px",
-                          bottom: "40px",
-                          width: "8px",
+                          left: { md: "40px", xs: "12px" },
+                          top: { md: "60px", xs: "6px" },
+                          bottom: { md: "40px", xs: "4px" },
+                          width: { md: "8px", xs: "2px" },
                           backgroundColor: "#D5E5F6",
                         }}
                       />
@@ -390,8 +391,7 @@ const AssessmentExportContainer = () => {
                             <Typography
                               textAlign="justify"
                               sx={{
-                                ...theme.typography.titleSmall,
-                                fontWeight: "light",
+                                ...theme.typography.extraLight,
                                 mt: 1,
                                 direction: true ? "rtl" : "ltr",
                                 fontFamily: true
@@ -421,8 +421,7 @@ const AssessmentExportContainer = () => {
                             <Typography
                               textAlign="justify"
                               sx={{
-                                ...theme.typography.titleSmall,
-                                fontWeight: "light",
+                                ...theme.typography.extraLight,
                                 mt: 1,
                                 direction: true ? "rtl" : "ltr",
                                 fontFamily: true
@@ -523,6 +522,7 @@ const AssessmentExportContainer = () => {
                                 fontFamily: true
                                   ? farsiFontFamily
                                   : primaryFontFamily,
+                                gap: "4px",
                               }}
                             >
                               <InfoOutlinedIcon fontSize="small" />
@@ -533,7 +533,7 @@ const AssessmentExportContainer = () => {
                             <Typography
                               textAlign="justify"
                               sx={{
-                                ...theme.typography.titleSmall,
+                                ...theme.typography.extraLight,
                                 fontWeight: "light",
                                 mt: 1,
                                 direction: true ? "rtl" : "ltr",
@@ -621,7 +621,7 @@ const AssessmentExportContainer = () => {
                         borderEndEndRadius: 16,
                         boxShadow: "none",
                         width: "100%",
-                        padding: 6,
+                        padding: { md: 6, xs: 1 },
                       }}
                     >
                       <Typography
