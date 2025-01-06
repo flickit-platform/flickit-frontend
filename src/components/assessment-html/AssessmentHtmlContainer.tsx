@@ -25,6 +25,10 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
+import { ShareDialog } from "./ShareDialog";
+import { LoadingButton } from "@mui/lab";
+import { Share } from "@mui/icons-material";
+import { Trans } from "react-i18next";
 
 type MaturityLevel = {
   value: number;
@@ -184,6 +188,12 @@ const AssessmentExportContainer = () => {
     runOnMount: false,
   });
 
+  const fetchAssessmentMembersInvitees = useQuery<PathInfo>({
+    service: (args, config) =>
+      service.fetchAssessmentMembersInvitees({ assessmentId, ...(args || {}) }, config),
+    runOnMount: false,
+  });
+
   const combinedAttributes = jsonData?.subjects.flatMap((subject) =>
     subject.attributes.map((attribute) => ({
       name: attribute.title,
@@ -232,7 +242,7 @@ const AssessmentExportContainer = () => {
 
   const renderSharingSection = () => (
     <>
-      {/* <LoadingButton
+      <LoadingButton
         variant="contained"
         startIcon={<Share fontSize="small" />}
         size="small"
@@ -243,9 +253,10 @@ const AssessmentExportContainer = () => {
       <ShareDialog
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
-        fetchData={fetchAssessmentMembers}
+        fetchAssessmentMembers={fetchAssessmentMembers}
+        fetchAssessmentMembersInvitees={fetchAssessmentMembersInvitees}
         title={jsonData?.assessment.title}
-      /> */}
+      />
     </>
   );
 
