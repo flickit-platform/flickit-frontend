@@ -21,6 +21,9 @@ import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
 import { t } from "i18next";
+import { ShareDialog } from "../assessment-html/ShareDialog";
+import useDialog from "@/utils/useDialog";
+import { QuestionDetailsDialog } from "./QuestionDetailsDialog";
 
 interface TableData {
   items: Item[];
@@ -162,6 +165,7 @@ const MaturityLevelTable = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
+  const dialogProps = useDialog();
   const handleSort = (
     field: keyof ItemServerFieldsColumnMapping,
     order?: string,
@@ -392,7 +396,11 @@ const MaturityLevelTable = ({
                   .map((item: any) => {
                     const row = mapItemToRow(item);
                     return (
-                      <TableRow key={uniqueId()}>
+                      <TableRow
+                        key={uniqueId()}
+                        component="div"
+                        onClick={() => dialogProps.openDialog({ data: item })}
+                      >
                         {columns.map((column) => (
                           <TableCell
                             key={column.field}
@@ -452,6 +460,10 @@ const MaturityLevelTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <QuestionDetailsDialog
+        {...dialogProps}
+        onClose={() => dialogProps.onClose()}
+      />
     </Box>
   );
 };
