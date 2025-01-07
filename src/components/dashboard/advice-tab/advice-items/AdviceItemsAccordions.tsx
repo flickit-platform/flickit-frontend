@@ -331,11 +331,7 @@ const AdviceItemAccordion: React.FC<{
                       letterSpacing: "0.15px",
                       fontSize: "1rem",
                     }}
-                    fontFamily={
-                      languageDetector(item.title)
-                        ? farsiFontFamily
-                        : primaryFontFamily
-                    }
+                    fontFamily={isFarsi ? farsiFontFamily : primaryFontFamily}
                   >
                     (
                     {!isFarsi && !readOnly
@@ -353,25 +349,26 @@ const AdviceItemAccordion: React.FC<{
             </Grid>
 
             <Grid item xs={12} sm={4} md={readOnly ? 2.8 : 3.7}>
-              <Grid container justifyContent="flex-start" alignItems="center" spacing={1}>
+              <Grid
+                container
+                justifyContent="flex-start"
+                alignItems="center"
+                spacing={1}
+              >
                 <Grid
                   item
-                  md={readOnly ? 6 : 4.8}
-                  justifyContent="flex-end"
                   display="flex"
+                  xs={readOnly ? 12 : 10}
+                  alignItems="center"
+                  justifyContent={{ xs: "flex-start", sm: "flex-end" }}
+                  gap={1}
                 >
                   <CustomChip
                     type="impact"
                     level={item.impact}
                     readOnly={readOnly}
                   />
-                </Grid>
-                <Grid
-                  item
-                  md={readOnly ? 6 : 3.8}
-                  justifyContent="flex-start"
-                  display="flex"
-                >
+
                   <CustomChip
                     type="cost"
                     level={item.cost}
