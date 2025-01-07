@@ -53,10 +53,10 @@ const QuestionnaireContainer = () => {
   };
 
   const names = [
-   t("unansweredQuestions") ,
-   t("lowConfidenceAnswers") ,
-   t("unresolvedComments") ,
-   t("answersWithNoEvidence") ,
+    t("unansweredQuestions"),
+    t("lowConfidenceAnswers"),
+    t("unresolvedComments"),
+    t("answersWithNoEvidence"),
   ];
 
   const isAllSelected = personName.length === names.length;
@@ -75,14 +75,14 @@ const QuestionnaireContainer = () => {
           }}
         >
           <Typography>
-            <Trans i18nKey={"markQuestionsWithIssues"} />:
+            <Trans i18nKey={"filterQuestionsWithIssues"} />:
           </Typography>
           <FormControl sx={{ m: 1, width: 300 }}>
             <Select
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
               multiple
-              value={personName.map((item) =>t(item) )}
+              value={personName.map((item) => t(item))}
               onChange={handleChange}
               renderValue={(selected) =>
                 isAllSelected ? (

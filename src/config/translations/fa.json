@@ -773,7 +773,7 @@
   "consideredSubjects": "موضوع بررسی‌شده",
   "exportDSL": "بازسازی DSL",
   "approve": "موافقت کردن",
-  "markQuestionsWithIssues": "نمایش پرسشنامه‌ها برحسب مشکل",
+  "filterQuestionsWithIssues": "نمایش پرسشنامه‌ها برحسب مشکل",
   "unansweredQuestions": "پرسش‌های بی‌‌پاسخ",
   "answersWithNoEvidence": "ثبت پاسخ بدون شاهد",
   "lowConfidenceAnswers": "جواب‌ها با سطح اطمینان پایین",

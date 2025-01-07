@@ -773,10 +773,11 @@
   "consideredSubjects": "Considered Subject",
   "exportDSL": "Export DSL",
   "approve": "approve",
-  "markQuestionsWithIssues": "Mark Questions with issues",
+  "filterQuestionsWithIssues": "Filter by questionnair’s issues",
   "unansweredQuestions": "Unanswered questions",
   "answersWithNoEvidence": "Answers with no evidence",
   "lowConfidenceAnswers": "Low Confidence Answers",
   "unresolvedComments": "Unresolved comments",
-  "allIssuesSelected": "All issues selected"
+  "allIssuesSelected": "All issues selected",
+  "answeredWithLowConfidence": "Answers with no evidence"
 }

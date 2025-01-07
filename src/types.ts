@@ -412,6 +412,12 @@ export interface IQuestionnairesInfo {
   title: string;
   description: string;
   subjects: { id: TId; title: string }[];
+  issues: {
+    answeredWithLowConfidence?: number;
+    answeredWithoutEvidence?: number;
+    unanswered?: number;
+    unresolvedComments?: number;
+  };
 }
 export interface IQuestionnairesModel extends ITotalProgress {
   assessment_title: string;
@@ -713,7 +719,7 @@ export interface IOption {
 }
 
 export interface IFlatGauge {
-  colorCode :string;
+  colorCode: string;
   value: number;
 }
 
