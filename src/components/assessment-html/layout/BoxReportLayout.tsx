@@ -60,7 +60,7 @@ const BoxReportLayout = (props: IBoxReport) => {
         gap: "24px",
         border: `1px solid ${colorCode}`,
         mb: 4,
-        width: "100%˝",
+        width: "100%",
       }}
     >
       <TopBox
@@ -137,8 +137,7 @@ const TopBox = (props: ITopBoxReport) => {
       >
         <Typography
           sx={{
-            ...theme.typography.body2,
-            textAlign: "center",
+            ...theme.typography.extraLight,
             direction: true ? "rtl" : "ltr",
             fontFamily: true ? farsiFontFamily : primaryFontFamily,
           }}
@@ -153,6 +152,7 @@ const TopBox = (props: ITopBoxReport) => {
           text={maturityLevel.title}
           textPosition={"top"}
           confidenceLevelNum={confidenceValue}
+          confidenceText={t("confidenceLevel", { lng: "fa" })}
         />
       </Grid>
     </Grid>
@@ -198,14 +198,13 @@ const BottomBox = (props: any) => {
         {t("analysisResults", { lng: "fa" })}
       </Typography>
       <Typography
+        textAlign="justify"
         sx={{
-          fontSize: ".87rem",
-          fontWeight: "light",
-          lineHeight: "1.5rem",
+          ...theme.typography.extraLight,
+          mt: 1,
           color: "#2B333B",
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,
-          textAlign: true ? "right" : "left",
         }}
       >
         {analyzation}

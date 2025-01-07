@@ -1,3 +1,5 @@
+import { getTransparentColor } from "@/config/styles";
+import { useMediaQuery } from "@mui/material";
 import { t } from "i18next";
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -6,6 +8,7 @@ interface PieChartNode {
   name: string;
   value: number;
   label?: string;
+  color?: string;
 }
 
 interface CustomPieChartProps {
@@ -16,6 +19,9 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
   const sliceCount = data.length;
   const equalValue = total / sliceCount;
+  const isMobileScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("md"),
+  );
 
   const renderLabel = ({
     cx,
@@ -25,6 +31,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
     outerRadius,
     name,
     label,
+    color,
   }: any) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) / 2;
@@ -44,20 +51,21 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
         <text
           x={x}
           y={y - 10}
-          fill="#333"
+          fill={color}
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={14}
+          fontSize={16}
         >
           {truncatedName}
         </text>
         <text
           x={x}
           y={y + 10}
-          fill="#888"
+          fill={color}
+          fontWeight={700}
           textAnchor="middle"
           dominantBaseline="middle"
-          fontSize={12}
+          fontSize={14}
         >
           {truncatedLabel}
         </text>
@@ -68,48 +76,52 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
   const centeredText = `${sliceCount}`;
 
   return (
-    <ResponsiveContainer width="100%" height={370}>
+    <ResponsiveContainer width="100%" height={!isMobileScreen ? 370 : 250}>
       <PieChart>
-        <circle
-          cx="50%"
-          cy="50%"
-          r="66"
-          fill="white"
-          stroke="#C2850A"
-          strokeWidth={3}
-        />
-        <text
-          x="50%"
-          y="50%"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fontSize={18}
-          fontWeight="bold"
-          fill="#333"
-          direction="rtl"
-        >
-          {centeredText}
-        </text>
-        <text
-          x="50%"
-          y="55%"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fontSize={18}
-          fontWeight="bold"
-          fill="#333"
-          direction="rtl"
-        >
-          {t("subjects", { lng: "fa" })}
-        </text>
+        {!isMobileScreen && (
+          <>
+            <circle
+              cx="50%"
+              cy="50%"
+              r="66"
+              fill="#F3F5F6"
+              stroke="#C7CCD1"
+              strokeWidth={1}
+            />
+            <text
+              x="50%"
+              y="48%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={24}
+              fontWeight="bold"
+              fill="#333"
+              direction="rtl"
+            >
+              {centeredText}
+            </text>
+            <text
+              x="50%"
+              y="54%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={16}
+              fontWeight="bold"
+              fill="#333"
+              direction="rtl"
+            >
+              {t("consideredSubjects", { lng: "fa" })}
+            </text>
+          </>
+        )}
         <Pie
           data={data.map((item) => ({ ...item, value: equalValue }))}
           cx="50%"
           cy="50%"
           startAngle={90}
           endAngle={-270}
-          innerRadius={80}
-          outerRadius={180}
+          innerRadius={!isMobileScreen ? 80 : ""}
+          outerRadius={!isMobileScreen ? 180 : 120}
           dataKey="value"
           paddingAngle={5}
           label={renderLabel}
@@ -117,8 +129,8 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           {data.map((item, index) => (
             <Cell
               key={`cell-${index}`}
-              fill="#ffffff"
-              stroke="#C2850A"
+              fill={getTransparentColor(item.color ?? "#fff")}
+              stroke={item.color}
               strokeWidth={2}
             />
           ))}

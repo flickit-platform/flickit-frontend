@@ -233,7 +233,7 @@ export const generateColorFromString = (str: string) => {
 export const getTransparentColor = (color: string) => {
   const transparentColor =
     tinycolor(color).getBrightness() > 180
-      ? tinycolor(color).brighten(60).toRgbString()
+      ? tinycolor(color).lighten(35).toRgbString()
       : tinycolor(color).getBrightness() > 160
         ? tinycolor(color).lighten(40).toRgbString()
         : tinycolor(color).getBrightness() > 80

@@ -46,8 +46,8 @@ const SubjectReport = ({ data }: any) => {
               container
               key={item.index}
               sx={{
-                direction: theme.direction,
-                fontFamily: is_farsi ? "Vazirmatn" : primaryFontFamily,
+                direction: true ? "rtl" : "ltr",
+                fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 mb: "40px",
               }}
             >
@@ -59,19 +59,21 @@ const SubjectReport = ({ data }: any) => {
                     fontWeight: "bold",
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                    textAlign: true ? "right" : "left",
                   }}
                 >
-                  {index + 1} {title}
+                  {index + 1}
+                  {") "}
+                  {title}
                 </Typography>
                 <Typography
                   sx={{
-                    ...theme.typography.titleSmall,
-                    fontWeight: "light",
+                    ...theme.typography.extraLight,
+                    fontWeight:300,
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                    textAlign: true ? "right" : "left",
+                    mt: 2,
                   }}
+                  textAlign="justify"
                 >
                   {description}
                 </Typography>
@@ -109,7 +111,7 @@ const SubjectReport = ({ data }: any) => {
                 sm={6}
                 spacing={2}
                 m={"auto"}
-                sx={{ height: "250px" }}
+                sx={{ height: "300px" }}
               >
                 {item?.attributes?.length <= 2 ? (
                   <AssessmentSubjectRadialChart
@@ -123,6 +125,7 @@ const SubjectReport = ({ data }: any) => {
                     maturityLevelsCount={maturityLevelCount ?? 5}
                     loading={false}
                     chartHeight={300}
+                    lng="fa"
                   />
                 )}
               </Grid>

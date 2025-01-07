@@ -1,10 +1,12 @@
 import React, { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { getMaturityLevelColors } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
+import { t } from "i18next";
+import languageDetector from "@/utils/languageDetector";
 
 type TPosition = "top" | "left";
 
@@ -14,6 +16,8 @@ interface IGaugeProps extends BoxProps {
   text: string;
   textPosition: TPosition;
   confidenceLevelNum?: number;
+  confidenceText?: string | null;
+  lng?: string;
 }
 
 export const confidencePallet: any = {
@@ -36,8 +40,13 @@ const FlatGauge = (props: IGaugeProps) => {
     text,
     textPosition,
     confidenceLevelNum = 0,
+    confidenceText = t("confidenceLevel"),
+    lng,
     ...rest
   } = props;
+  const isMobileScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("md"),
+  );
 
   if (maturityLevelNumber < levelValue) return null;
 
@@ -60,7 +69,7 @@ const FlatGauge = (props: IGaugeProps) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet[levelValue - 1];
+  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
 
   return (
     <Suspense fallback={<Box>fallback</Box>}>
@@ -84,6 +93,9 @@ const FlatGauge = (props: IGaugeProps) => {
                 color: colorCode,
                 fontSize: "1.25rem",
                 fontWeight: "bold",
+                fontFamily: languageDetector(text ?? "")
+                  ? farsiFontFamily
+                  : primaryFontFamily,
               }}
             >
               {capitalizeFirstLetter(text)}
@@ -91,7 +103,6 @@ const FlatGauge = (props: IGaugeProps) => {
           )}
           <Box
             style={{
-              direction: theme.direction,
               display: "flex",
               alignItems: "center",
               gap: "3px",
@@ -102,9 +113,11 @@ const FlatGauge = (props: IGaugeProps) => {
             {textPosition == "left" && (
               <Box
                 sx={{
-                  mr: theme.direction == "rtl" ? "1.3rem" : "",
-                  ml: theme.direction != "rtl" ? "1.3rem" : "",
                   color: colorCode,
+                  fontFamily: languageDetector(text ?? "")
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                  minWidth: !isMobileScreen ? "80px" : "0",
                 }}
               >
                 <Trans i18nKey={`${text}`} />
@@ -115,16 +128,25 @@ const FlatGauge = (props: IGaugeProps) => {
             <Typography
               sx={{
                 display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 gap: "5px",
-                ...theme.typography.titleSmall,
+                ...theme.typography.extraLight,
+                fontWeight: 300,
                 color: "#9DA7B3",
+                fontFamily: languageDetector(confidenceText ?? "")
+                  ? farsiFontFamily
+                  : primaryFontFamily,
               }}
             >
-              <Trans i18nKey={"confidenceLevel"} />:{" "}
+              {confidenceText}
               <Typography
                 sx={{
                   color: checkColor(confidenceLevelNum),
                   ...theme.typography.titleMedium,
+                  fontFamily: languageDetector(confidenceText ?? "")
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 }}
               >
                 {" "}

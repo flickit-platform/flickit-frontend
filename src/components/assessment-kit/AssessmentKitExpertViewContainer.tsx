@@ -36,6 +36,7 @@ import { AssessmentKitDetailsType } from "@types";
 import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { primaryFontFamily, theme } from "@/config/theme";
+import { LoadingButton } from "@mui/lab";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -43,12 +44,16 @@ const AssessmentKitExpertViewContainer = () => {
   const dialogProps = useDialog();
   const { config } = useConfigContext();
   const [update, setForceUpdate] = useState<boolean>(false);
-  const { expertGroupId } = useParams();
+  const { expertGroupId, assessmentKitId = "" } = useParams();
   const [details, setDetails] = useState<AssessmentKitDetailsType>();
   const [expertGroup, setExpertGroup] = useState<any>();
   const [assessmentKitTitle, setAssessmentKitTitle] = useState<any>();
   const [hasActiveVersion, setHasActiveVersion] = useState<any>(false);
   const [loaded, setLoaded] = React.useState<boolean>(false);
+  const [loadingExportBtn, setLoadingExportBtn] =
+    React.useState<boolean>(false);
+
+  const { service } = useServiceContext();
 
   const AssessmentKitDetails = async () => {
     const data: AssessmentKitDetailsType = hasActiveVersion
@@ -62,7 +67,7 @@ const AssessmentKitExpertViewContainer = () => {
       const fileUrl = response.url;
       const a = document.createElement("a");
       a.href = fileUrl;
-      a.download = "file_name.zip";
+      a.download = `${assessmentKitTitle}.zip`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -70,6 +75,30 @@ const AssessmentKitExpertViewContainer = () => {
       const err = e as ICustomError;
       toastError(err);
     }
+  };
+  const handleExport = async () => {
+    try {
+      setLoadingExportBtn(true);
+      service
+        .fetchAssessmentKitExportUrl({ assessmentKitId }, {})
+        .then((res) => {
+          setLoadingExportBtn(false);
+          const { data } = res;
+          const zipFile = new Blob([data], { type: "application/zip" });
+          const blobUrl = URL.createObjectURL(zipFile);
+          const a = document.createElement("a");
+          a.href = blobUrl;
+          a.download = `export-${assessmentKitTitle}.zip`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        })
+        .catch((e) => {
+          setLoadingExportBtn(false);
+          const err = e as ICustomError;
+          toastError(err);
+        });
+    } catch (e) {}
   };
   useEffect(() => {
     if (!loaded) {
@@ -122,18 +151,30 @@ const AssessmentKitExpertViewContainer = () => {
                   dialogProps.openDialog({});
                 }}
               >
-                <Typography mr={1} variant="button">
+                <Typography sx={{marginInlineEnd: 1}} variant="button">
                   <Trans i18nKey="updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
               </Button>
+              <LoadingButton
+                variant="contained"
+                loading={loadingExportBtn}
+                size="small"
+                sx={{ ml: 2 }}
+                onClick={handleExport}
+              >
+                <Typography sx={{marginInlineEnd: 1}} variant="button">
+                  <Trans i18nKey="exportDSL" />
+                </Typography>
+                <CloudDownloadRoundedIcon />
+              </LoadingButton>
               <Button
                 variant="contained"
                 size="small"
                 sx={{ ml: 2 }}
                 onClick={handleDownload}
               >
-                <Typography mr={1} variant="button">
+                <Typography sx={{marginInlineEnd: 1}} variant="button">
                   <Trans i18nKey="downloadDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />

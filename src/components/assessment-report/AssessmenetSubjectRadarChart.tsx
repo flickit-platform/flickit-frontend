@@ -12,17 +12,20 @@ import Skeleton from "@mui/material/Skeleton";
 import { t } from "i18next";
 import convertToAssessmentChartData from "@/utils/convertToAssessmentChartData";
 import { useTheme } from "@mui/material";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface AssessmentSubjectRadarChartProps {
   loading: boolean;
   data: any[];
   maturityLevelsCount: number;
   chartHeight?: number;
+  lng?: string;
 }
 
 const AssessmentSubjectRadarChart: React.FC<
   AssessmentSubjectRadarChartProps
-> = ({ loading, data, maturityLevelsCount, chartHeight }) => {
+> = ({ loading, data, maturityLevelsCount, chartHeight, lng }) => {
   return loading ? (
     <Skeleton
       height={"620px"}
@@ -35,6 +38,7 @@ const AssessmentSubjectRadarChart: React.FC<
       data={data}
       maturityLevelsCount={maturityLevelsCount}
       chartHeight={chartHeight}
+      lng={lng}
     />
   );
 };
@@ -43,6 +47,7 @@ interface SubjectRadarProps {
   data: any[];
   maturityLevelsCount: number;
   chartHeight?: number;
+  lng?: string;
 }
 
 const breakTextIntoLines = (text: string, maxLineLength: number) => {
@@ -66,6 +71,7 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
   data,
   maturityLevelsCount,
   chartHeight,
+  lng,
 }) => {
   const theme = useTheme();
   const chartData = useMemo(() => convertToAssessmentChartData(data), [data]);
@@ -87,11 +93,22 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
                     {...rest}
                     y={
                       y +
-                      (y - cy) / (theme.direction === "rtl" ? 7 : 15) +
+                      (y - cy) /
+                        (theme.direction === "rtl" || lng === "fa" ? 7 : 15) +
                       index * 12
                     }
-                    x={x + (x - cx) / (theme.direction === "rtl" ? 7 : 15)}
-                    style={{ ...theme.typography.labelSmall }}
+                    x={
+                      x +
+                      (x - cx) /
+                        (theme.direction === "rtl" || lng === "fa" ? 7 : 15)
+                    }
+                    style={{
+                      fontFamily: languageDetector(line ?? "")
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                    fontSize={10}
+                    color="color(srgb 0.4245 0.5003 0.5759)"
                   >
                     {line}
                   </text>
@@ -99,7 +116,9 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
               </g>
             );
           }}
-          orientation={theme.direction === "rtl" ? "inner" : "outer"}
+          orientation={
+            theme.direction === "rtl" || lng === "fa" ? "inner" : "outer"
+          }
         />
         <PolarRadiusAxis
           angle={90}

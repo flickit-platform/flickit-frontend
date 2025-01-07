@@ -6,6 +6,9 @@ import { styles, getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import PermissionRequired from "@common/charts/permissionRequired";
+import languageDetector from "@/utils/languageDetector";
+import { t } from "i18next";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
   maturity_level_status: string;
@@ -38,7 +41,7 @@ const Gauge = (props: IGaugeProps) => {
     ...rest
   } = props;
   const colorPallet = getMaturityLevelColors(maturity_level_number);
-  const colorCode = colorPallet[level_value - 1];
+  const colorCode = colorPallet ? colorPallet[level_value - 1] : "gray";
   const GaugeComponent = useMemo(
     () => lazy(() => import(`./GaugeComponent${maturity_level_number}.tsx`)),
     [maturity_level_number],
@@ -109,7 +112,7 @@ const Gauge = (props: IGaugeProps) => {
               <Trans i18nKey="maturityGuidanceFirst" />
             </Typography>
           )}
-      
+
           {maturity_status_guide && (
             <Typography
               mt="1rem"
@@ -120,7 +123,12 @@ const Gauge = (props: IGaugeProps) => {
             </Typography>
           )}
           <Typography
-            sx={{ fontWeight: "bold" }}
+            sx={{
+              fontWeight: "bold",
+              fontFamily: languageDetector(t(maturity_level_status))
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
             variant={status_font_variant ? status_font_variant : "h6"}
             color={colorCode}
             fontSize={status_font_variant ? "2.5rem" : fontSize}
@@ -142,12 +150,22 @@ const Gauge = (props: IGaugeProps) => {
               alignItems="center"
               display="flex"
               gap="0.125rem"
+              sx={{
+                fontFamily: languageDetector(confidence_text)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
             >
               {confidence_text}
               <ConfidenceLevel
                 displayNumber
                 inputNumber={Math.ceil(confidenceValue)}
                 variant="titleMedium"
+                fontFamily={
+                  languageDetector(confidence_text)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+                }
               ></ConfidenceLevel>
             </Typography>
           )}

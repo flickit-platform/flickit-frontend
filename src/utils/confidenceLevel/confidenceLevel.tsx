@@ -2,17 +2,20 @@ import { lazy, Suspense, useMemo } from "react";
 import { colorPallet } from "./style";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import languageDetector from "../languageDetector";
 
 interface IconfidenceLevelType {
   inputNumber: number | null | undefined;
   displayNumber?: boolean;
   variant?: any;
+  fontFamily?: any;
 }
 
 const ConfidenceLevel = ({
   inputNumber = 0,
   displayNumber = false,
   variant = "titleLarge",
+  fontFamily,
 }: IconfidenceLevelType) => {
   const { id, colorText, number } = calculate(inputNumber);
 
@@ -31,7 +34,13 @@ const ConfidenceLevel = ({
         }}
       >
         {displayNumber && (
-          <Typography variant={variant} color={colorText}>
+          <Typography
+            variant={variant}
+            color={colorText}
+            sx={{
+              fontFamily: fontFamily,
+            }}
+          >
             {number}%
           </Typography>
         )}

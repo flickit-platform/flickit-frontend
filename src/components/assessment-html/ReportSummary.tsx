@@ -17,6 +17,7 @@ import { t } from "i18next";
 const sectionStyle = {
   marginTop: "16px",
   padding: "16px",
+  textAlign: "justify",
 };
 
 const textStyle = {
@@ -41,7 +42,7 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "20%",
+                width: "2%",
                 ...styles.customizeFarsiFont,
               }}
             >
@@ -50,19 +51,36 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "30%",
+                width: "20%",
                 ...styles.customizeFarsiFont,
               }}
             >
-              {item.title}
+              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
+                {item.title}
+              </Typography>
+            </TableCell>
+            <TableCell
+              sx={{
+                padding: "8px",
+                width: "20%",
+
+                ...styles.customizeFarsiFont,
+              }}
+            >
+              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
+                {item.summary}
+              </Typography>
             </TableCell>
             <TableCell
               sx={{
                 padding: "8px",
                 ...styles.customizeFarsiFont,
+                textAlign: "justify",
               }}
             >
-              {item.description}
+              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
+                {item.description}
+              </Typography>
             </TableCell>
           </TableRow>
         ))}
@@ -104,7 +122,13 @@ const Section = ({ title, children }: any) => (
     <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
       {title}
     </Typography>
-    <Typography sx={textStyle}>{children}</Typography>
+    <Typography
+      sx={{ ...textStyle, textAlign: "justify" }}
+      variant="extraLight"
+      fontWeight={300}
+    >
+      {children}
+    </Typography>
   </Box>
 );
 
@@ -128,11 +152,11 @@ const TopicsList = ({ data }: any) => (
             sx={{
               display: "flex",
               alignItems: "center",
-              marginBottom: "8px",
+              mt: 2,
             }}
           >
             <Typography
-              variant="titleSmall"
+              variant="extraLight"
               sx={{
                 fontWeight: "bold",
                 width: "20%",
@@ -143,7 +167,10 @@ const TopicsList = ({ data }: any) => (
               {attribute.title}
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-            <Typography sx={textStyle}>{attribute.description}</Typography>
+            <Typography sx={{ ...textStyle, width: "80%" }}>
+              {attribute.description}
+            </Typography>
+            <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
           </Box>
         ))}
       </Box>
@@ -160,18 +187,36 @@ const QuestionnaireList = ({ data }: any) => (
           display: "flex",
           alignItems: "center",
           marginBottom: "8px",
+          mt: 3,
         }}
       >
-        <Typography
-          variant="titleSmall"
+        <Box
+          width="200px"
           sx={{
-            fontWeight: "bold",
-            width: "15%",
-            ...styles.customizeFarsiFont,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
           }}
         >
-          {item.title}
-        </Typography>
+          <Typography
+            variant="extraLight"
+            sx={{
+              fontWeight: "bold",
+              ...styles.customizeFarsiFont,
+            }}
+          >
+            {item.title}
+          </Typography>
+          <Typography
+            variant="extraLight"
+            sx={{
+              fontWeight: "bold",
+            }}
+          >
+            {item.translatedTitle}
+          </Typography>
+        </Box>
         <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
         <Typography
           sx={{
@@ -184,7 +229,10 @@ const QuestionnaireList = ({ data }: any) => (
           {item.questionCount} {t("question", { lng: "fa" })}
         </Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-        <Typography sx={textStyle}>{item.description}</Typography>
+        <Typography sx={{ ...textStyle, width: "80%" }}>
+          {item.description}
+        </Typography>
+        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
       </Box>
     ))}
   </Box>
@@ -197,10 +245,11 @@ const ReportCard = ({ data }: any) => {
         position: "relative",
         backgroundColor: "#EAF3FC",
         borderRadius: "16px",
-        padding: "24px",
         width: "100%",
         marginTop: 8,
         border: "3px solid #2466A8",
+        paddingX: { md: 2, xs: 1 },
+        paddingY: 6,
       }}
     >
       <TitleBox />
@@ -226,7 +275,7 @@ const ReportCard = ({ data }: any) => {
             ?.map((elem: ISubject, index: number) =>
               index === data?.subjects?.length - 1 &&
               data?.subjects?.length !== 1
-                ? t("and") + elem?.title
+                ? t("and", { lng: "fa" }) + elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
@@ -239,13 +288,6 @@ const ReportCard = ({ data }: any) => {
       </Section>
 
       <Section title={t("maturityLevels", { lng: "fa" })}>
-        <Trans
-          i18nKey="maturityLevelsDescription"
-          values={{
-            maturityLevelCount:
-              data?.assessment.assessmentKit.maturityLevelCount,
-          }}
-        />
         {t("maturityLevelsDescription", {
           lng: "fa",
           maturityLevelCount: data?.assessment.assessmentKit.maturityLevelCount,
@@ -289,9 +331,11 @@ const ReportCard = ({ data }: any) => {
               </Typography>
 
               <Typography
+                textAlign="justify"
                 component="span"
                 sx={{
-                  ...theme.typography.body2,
+                  ...theme.typography.extraLight,
+                  fontWeight: 300,
                   direction: true ? "rtl" : "ltr",
                   fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 }}

@@ -22,7 +22,7 @@ const DashbordContainer = () => {
     const pathSegments = location.pathname
       .split("/")
       .filter((segment) => segment);
-    const lastPart = pathSegments[pathSegments.length - 1];
+    const lastPart = pathSegments[4];
     setSelectedTab(lastPart);
   }, [location]);
   const handleTabChange = (event: any, newValue: any) => {
