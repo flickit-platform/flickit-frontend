@@ -11,8 +11,6 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
       <Navbar />
       <Box
         sx={{
-          maxHeight: "calc(100vh - 48px)",
-          // overflow: "auto",
           p: !location.pathname.startsWith("/assessment-kits/")
             ? { xs: 1, sm: 1, md: 4 }
             : "0",
