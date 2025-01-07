@@ -23,7 +23,7 @@ import { uniqueId } from "lodash";
 import { t } from "i18next";
 import { ShareDialog } from "../assessment-html/ShareDialog";
 import useDialog from "@/utils/useDialog";
-import QuestionDetailsDialog from "./QuestionDetailsDialog";
+import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";
 
 interface TableData {
   items: Item[];
@@ -465,7 +465,7 @@ const MaturityLevelTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <QuestionDetailsDialog
+      <QuestionDetailsContainer
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
       />

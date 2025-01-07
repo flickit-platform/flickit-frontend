@@ -15,10 +15,11 @@ import { t } from "i18next";
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
   title: JSX.Element;
+  style?: any
 }
 
 export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
-  const { closeDialog, title, children, ...rest } = props;
+  const { closeDialog, title, children, style, ...rest } = props;
   const fullScreen = useScreenResize("sm");
 
   return (
@@ -33,7 +34,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV }}>
         {title}
       </DialogTitle>
-      <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
+      <DialogContent style={style} sx={{ display: "flex", flexDirection: "column" }}>
         {children}
       </DialogContent>
     </Dialog>

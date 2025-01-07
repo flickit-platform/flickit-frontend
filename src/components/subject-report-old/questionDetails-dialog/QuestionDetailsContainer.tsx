@@ -3,8 +3,10 @@ import { DialogProps } from "@mui/material/Dialog";
 import { Trans } from "react-i18next";
 import { CEDialog } from "@common/dialogs/CEDialog";
 import { Chip, Typography } from "@mui/material";
-import { generateColorFromString } from "@/config/styles";
-import { CircleRating } from "./MaturityLevelTable";
+import { generateColorFromString } from "@styles";
+import { CircleRating } from "../MaturityLevelTable";
+import NavigationQuestion from "@components/subject-report-old/questionDetails-dialog/NavigationQuestion";
+import QuestionSection from "@components/subject-report-old/questionDetails-dialog/questionSection";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;
@@ -13,7 +15,7 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
   context?: any;
 }
 
-const QuestionDetailsDialog = (props: IQuestionDetailsDialogDialogProps) => {
+const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const {
     onClose: closeDialog,
     onSubmitForm,
@@ -42,26 +44,17 @@ const QuestionDetailsDialog = (props: IQuestionDetailsDialogDialogProps) => {
     <CEDialog
       {...rest}
       closeDialog={close}
+      style={{padding: "32px"}}
       title={
         <>
-          <Trans i18nKey="question" />
+          <Trans i18nKey="questionDetails" />
         </>
       }
     >
-      <Chip
-        label={data?.questionnaire}
-        style={{
-          backgroundColor: generateColorFromString(data?.questionnaire)
-            .backgroundColor,
-          color: generateColorFromString(data?.questionnaire).color,
-        }}
-      />
-      <Typography>{data?.question?.title}</Typography>
-      <Typography>{data?.question?.hint}</Typography>
-      <Typography>{data?.answer?.title}</Typography>
-      <CircleRating value={data?.answer?.confidenceLevel} />
+      <NavigationQuestion />
+      <QuestionSection data={data} />
     </CEDialog>
   );
 };
 
-export default QuestionDetailsDialog;
+export default QuestionDetailsContainer;

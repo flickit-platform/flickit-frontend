@@ -772,5 +772,6 @@
   "linkCopied": "Link Copied",
   "consideredSubjects": "Considered Subject",
   "exportDSL": "Export DSL",
-  "approve": "approve"
+  "approve": "approve",
+  "questionDetails": "Question Details"
 }
