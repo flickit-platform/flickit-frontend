@@ -64,7 +64,10 @@ const QuestionnaireContainer = () => {
 
   const itemNames = [
     { translate: t("unansweredQuestions"), original: "unanswered" },
-    { translate: t("lowConfidenceAnswers"), original: "answeredWithLowConfidence" },
+    {
+      translate: t("lowConfidenceAnswers"),
+      original: "answeredWithLowConfidence",
+    },
     { translate: t("unresolvedComments"), original: "unresolvedComments" },
     {
       translate: t("answersWithNoEvidence"),
@@ -95,7 +98,7 @@ const QuestionnaireContainer = () => {
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
               multiple
-              value={issues.map((item:any) => t(item))}
+              value={issues.map((item: any) => t(item))}
               onChange={handleChange}
               renderValue={(selected) =>
                 isAllSelected ? (
@@ -119,9 +122,7 @@ const QuestionnaireContainer = () => {
                     value={item.translate}
                     onClick={() => handelSaveOriginal(item.original)}
                   >
-                    <Checkbox
-                      checked={issues.includes(t(item.translate))}
-                    />
+                    <Checkbox checked={issues.includes(t(item.translate))} />
                     <ListItemText
                       sx={{
                         ...theme.typography.semiBoldLarge,

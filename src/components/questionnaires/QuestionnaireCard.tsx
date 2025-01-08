@@ -27,7 +27,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
   permissions: IPermissions;
-  originalItem: any
+  originalItem: any;
 }
 
 const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
@@ -126,13 +126,81 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             isSmallScreen={isSmallScreen}
           />
         </Box>
-        <Box sx={{ my: "32px" }}>
-          {!!answeredWithLowConfidence && originalItem.includes("answeredWithLowConfidence") && (
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: "32px" }}>
+          {!!answeredWithLowConfidence &&
+            originalItem.includes("answeredWithLowConfidence") && (
+              <Chip
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                    {answeredWithLowConfidence && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          fontSize={"small"}
+                          style={{ fill: theme.palette.error.main }}
+                        />
+                        <Typography
+                          style={{
+                            color: theme.palette.error.main,
+                            ...theme.typography.bodyMedium,
+                          }}
+                        >
+                          <Trans i18nKey={"answeredWithLowConfidence"} />:{" "}
+                          {answeredWithLowConfidence}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Grid>
+                }
+              />
+            )}
+          {!!answeredWithoutEvidence &&
+            originalItem.includes("answeredWithoutEvidence") && (
+              <Chip
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                    {answeredWithoutEvidence && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          fontSize={"small"}
+                          style={{ fill: theme.palette.error.main }}
+                        />
+                        <Typography
+                          style={{
+                            color: theme.palette.error.main,
+                            ...theme.typography.bodyMedium,
+                          }}
+                        >
+                          <Trans i18nKey={"answeredWithoutEvidence"} />:{" "}
+                          {answeredWithoutEvidence}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Grid>
+                }
+              />
+            )}
+          {!!unanswered && originalItem.includes("unanswered") && (
             <Chip
               sx={{ background: "#8A0F240A" }}
               label={
                 <Grid>
-                  {answeredWithLowConfidence && (
+                  {unanswered && (
                     <Box
                       sx={{
                         display: "flex",
@@ -151,8 +219,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                           ...theme.typography.bodyMedium,
                         }}
                       >
-                        <Trans i18nKey={"answeredWithLowConfidence"} />:{" "}
-                        {answeredWithLowConfidence}
+                        <Trans i18nKey={"unanswered"} />: {unanswered}
                       </Typography>
                     </Box>
                   )}
@@ -160,105 +227,40 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
               }
             />
           )}
-          {!!answeredWithoutEvidence && originalItem.includes("answeredWithoutEvidence") && (
+          {!!unresolvedComments &&
+            originalItem.includes("unresolvedComments") && (
               <Chip
-                  sx={{ background: "#8A0F240A" }}
-                  label={
-                    <Grid>
-                      {answeredWithoutEvidence && (
-                          <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 1,
-                              }}
-                          >
-                            <InfoOutlinedIcon
-                                fontSize={"small"}
-                                style={{ fill: theme.palette.error.main }}
-                            />
-                            <Typography
-                                style={{
-                                  color: theme.palette.error.main,
-                                  ...theme.typography.bodyMedium,
-                                }}
-                            >
-                              <Trans i18nKey={"answeredWithoutEvidence"} />:{" "}
-                              {answeredWithoutEvidence}
-                            </Typography>
-                          </Box>
-                      )}
-                    </Grid>
-                  }
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                    {unresolvedComments && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          fontSize={"small"}
+                          style={{ fill: theme.palette.error.main }}
+                        />
+                        <Typography
+                          style={{
+                            color: theme.palette.error.main,
+                            ...theme.typography.bodyMedium,
+                          }}
+                        >
+                          <Trans i18nKey={"unresolvedComments"} />:{" "}
+                          {unresolvedComments}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Grid>
+                }
               />
-          )}
-          {!!unanswered && originalItem.includes("unanswered") && (
-              <Chip
-                  sx={{ background: "#8A0F240A" }}
-                  label={
-                    <Grid>
-                      {unanswered && (
-                          <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 1,
-                              }}
-                          >
-                            <InfoOutlinedIcon
-                                fontSize={"small"}
-                                style={{ fill: theme.palette.error.main }}
-                            />
-                            <Typography
-                                style={{
-                                  color: theme.palette.error.main,
-                                  ...theme.typography.bodyMedium,
-                                }}
-                            >
-                              <Trans i18nKey={"unanswered"} />:{" "}
-                              {unanswered}
-                            </Typography>
-                          </Box>
-                      )}
-                    </Grid>
-                  }
-              />
-          )}
-          {!!unresolvedComments && originalItem.includes("unresolvedComments") && (
-              <Chip
-                  sx={{ background: "#8A0F240A" }}
-                  label={
-                    <Grid>
-                      {unresolvedComments && (
-                          <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 1,
-                              }}
-                          >
-                            <InfoOutlinedIcon
-                                fontSize={"small"}
-                                style={{ fill: theme.palette.error.main }}
-                            />
-                            <Typography
-                                style={{
-                                  color: theme.palette.error.main,
-                                  ...theme.typography.bodyMedium,
-                                }}
-                            >
-                              <Trans i18nKey={"unresolvedComments"} />:{" "}
-                              {unresolvedComments}
-                            </Typography>
-                          </Box>
-                      )}
-                    </Grid>
-                  }
-              />
-          )}
+            )}
         </Box>
         <Box display="flex" alignItems="end" justifyContent={"space-between"}>
           <Box>

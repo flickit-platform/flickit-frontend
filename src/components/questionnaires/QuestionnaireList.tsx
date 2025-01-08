@@ -78,11 +78,19 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             renderLoading={() => <LoadingSkeletonOfQuestionnaires />}
             render={(data) => {
               const { items, permissions } = data;
-                console.log(items, originalItem)
               return (
                 <Grid container spacing={2}>
                   {items
-                      .filter((item: any) => originalItem.length === 0 ? item : Object.keys(item.issues).some(key => originalItem.includes(key) && item.issues[key] > 0 ) ).map((data: any) => {
+                    .filter((item: any) =>
+                      originalItem.length === 0
+                        ? item
+                        : Object.keys(item.issues).some(
+                            (key) =>
+                              originalItem.includes(key) &&
+                              item.issues[key] > 0,
+                          ),
+                    )
+                    .map((data: any) => {
                       return (
                         <Grid item xl={4} md={6} sm={12} xs={12} key={data.id}>
                           <QuestionnaireCard
