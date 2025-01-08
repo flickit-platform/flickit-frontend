@@ -848,7 +848,7 @@ const AnswerDetails = ({
           }}
         >
           {data.map((item: IAnswerHistory, index: number) => (
-            <Box key={item?.creationTime} width="100%">
+            <Box key={item?.creationTime} width="96%">
               <AnswerHistoryItem item={item} questionInfo={questionInfo} />
               <Divider sx={{ width: "100%", marginBlock: 2 }} />
             </Box>
@@ -1392,7 +1392,12 @@ const Evidence = (props: any) => {
           evidencesData &&
           permissions?.viewEvidenceList && (
             <>
-              {!evidencesData.length && permissions?.readonly ? (
+              {!evidencesData.filter((item: any) => {
+                if (type === "comment") {
+                  return item?.type === null;
+                }
+                return item?.type !== null;
+              }).length && permissions?.readonly ? (
                 <Box
                   sx={{
                     display: "flex",
@@ -1400,7 +1405,11 @@ const Evidence = (props: any) => {
                     width: "100%",
                   }}
                 >
-                  <EmptyState title={t("noEvidence")} />
+                  <EmptyState
+                    title={
+                      type === "evidence" ? t("noEvidence") : t("noComment")
+                    }
+                  />
                 </Box>
               ) : (
                 <>
@@ -1960,43 +1969,44 @@ const EvidenceDetail = (props: any) => {
                       gap: "10px",
                     }}
                   >
-                    <Box
-                      onClick={() => expandedEvidenceBtm()}
-                      sx={{ display: "flex" }}
-                    >
-                      {!attachmentsCount && (
-                        <Typography
-                          sx={{
-                            ...theme.typography?.titleMedium,
-                            fontSize: { xs: "10px", sm: "unset" },
-                          }}
-                        >
-                          <Trans i18nKey={"addAttachment"} />
-                        </Typography>
-                      )}
-                      {attachmentsCount >= 1 && (
-                        <Typography
-                          sx={{
-                            ...theme.typography?.titleMedium,
-                            display: "flex",
-                            gap: "5px",
-                          }}
-                        >
-                          {t("attachmentCount", { attachmentsCount })}
-                        </Typography>
-                      )}
-                      <img
-                        style={
-                          expandedEvidenceBox
-                            ? {
-                                rotate: "180deg",
-                                transition: "all .2s ease",
-                              }
-                            : { rotate: "0deg", transition: "all .2s ease" }
-                        }
-                        src={arrowBtn}
-                      />
-                    </Box>
+                    {(!permissions.readonly || attachmentsCount) && (
+                      <Box
+                        onClick={() => expandedEvidenceBtm()}
+                        sx={{ display: "flex" }}
+                      >
+                        {!attachmentsCount ? (
+                          <Typography
+                            sx={{
+                              ...theme.typography?.titleMedium,
+                              fontSize: { xs: "10px", sm: "unset" },
+                            }}
+                          >
+                            <Trans i18nKey={"addAttachment"} />
+                          </Typography>
+                        ) : (
+                          <Typography
+                            sx={{
+                              ...theme.typography?.titleMedium,
+                              display: "flex",
+                              gap: "5px",
+                            }}
+                          >
+                            {t("attachmentCount", { attachmentsCount })}
+                          </Typography>
+                        )}
+                        <img
+                          style={
+                            expandedEvidenceBox
+                              ? {
+                                  rotate: "180deg",
+                                  transition: "all .2s ease",
+                                }
+                              : { rotate: "0deg", transition: "all .2s ease" }
+                          }
+                          src={arrowBtn}
+                        />
+                      </Box>
+                    )}
                     <Grid
                       container
                       // ref={refBox}
@@ -2019,37 +2029,38 @@ const EvidenceDetail = (props: any) => {
                       <Box
                         sx={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}
                       >
-                        {permissions?.viewEvidenceAttachment && (
-                          <>
-                            {loadingFile
-                              ? skeleton.map((item, index) => {
-                                  return (
-                                    <Skeleton
-                                      key={item}
-                                      animation="wave"
-                                      variant="rounded"
-                                      width={40}
-                                      height={40}
-                                    />
-                                  );
-                                })
-                              : attachments.map((item, index) => {
-                                  return (
-                                    <FileIcon
-                                      evidenceId={id}
-                                      setEvidenceId={setEvidenceId}
-                                      item={item}
-                                      setExpandedDeleteAttachmentDialog={
-                                        setExpandedDeleteAttachmentDialog
-                                      }
-                                      evidenceBG={evidenceBG}
-                                      downloadFile={downloadFile}
-                                      key={item?.id}
-                                    />
-                                  );
-                                })}
-                          </>
-                        )}
+                        {permissions?.viewEvidenceAttachment ||
+                          (permissions.readonly && (
+                            <>
+                              {loadingFile
+                                ? skeleton.map((item, index) => {
+                                    return (
+                                      <Skeleton
+                                        key={item}
+                                        animation="wave"
+                                        variant="rounded"
+                                        width={40}
+                                        height={40}
+                                      />
+                                    );
+                                  })
+                                : attachments.map((item, index) => {
+                                    return (
+                                      <FileIcon
+                                        evidenceId={id}
+                                        setEvidenceId={setEvidenceId}
+                                        item={item}
+                                        setExpandedDeleteAttachmentDialog={
+                                          setExpandedDeleteAttachmentDialog
+                                        }
+                                        evidenceBG={evidenceBG}
+                                        downloadFile={downloadFile}
+                                        key={item?.id}
+                                      />
+                                    );
+                                  })}
+                            </>
+                          ))}
                         {attachments.length < 5 &&
                           permissions?.addEvidenceAttachment && (
                             <>
@@ -2162,7 +2173,7 @@ const EvidenceDetail = (props: any) => {
                     />
                   </IconButton>
                 )}
-                {resolvable && (
+                {resolvable && !permissions.readonly && (
                   <Tooltip title={<Trans i18nKey={"resolve"} />}>
                     <IconButton
                       aria-label="resolve"

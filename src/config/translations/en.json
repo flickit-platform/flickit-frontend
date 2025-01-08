@@ -375,6 +375,8 @@
   "noAssesmentHere": "No assesment here!",
   "noDraftVersion": "There is no draft version",
   "noEvidence": "No evidence has been noted yet!",
+  "noComment": "No comment has been noted yet!",
+  "done": "Done",
   "noEvidenceYet": "No evidence yet",
   "noNegativeEvidence": "No negative evidence noted",
   "noOptionAtTheMoment": "No options for answer at the moment.",
