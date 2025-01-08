@@ -386,6 +386,8 @@
   "noQuestionHere": "هیچ سوالی اینجا نیست!",
   "noQuestionOnLevel": "هیچ پرسشی در این سطح وجود ندارد",
   "noQuestionsHaveBeenAnswered": "هنوز هیچ سوالی پاسخ داده نشده است!",
+  "noQuestionHasBeenAnswered": "هنوز به این سوال پاسخ داده نشده‌است!",
+  "answerNow": "پاسخ به سوال",
   "noRecommendation": "هنوز هیچ توصیه و پیشنهادی برای نمایش وجود ندارد!",
   "noSpaceHere": "متاسفم! شما هیچ فضای کاری ندارید.",
   "notAdvisable": "توصیه ناپذیر",

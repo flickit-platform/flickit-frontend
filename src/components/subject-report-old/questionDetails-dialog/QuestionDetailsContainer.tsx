@@ -91,11 +91,13 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const renderQuestionDetails = () => (
     <Box sx={{ ...styles.centerCV, gap: 2 }}>
       <Chip
-        label={questionInfo?.questionnaire}
+        label={questionInfo?.questionnaire?.title}
         sx={{
-          backgroundColor: generateColorFromString(questionInfo?.questionnaire)
-            .backgroundColor,
-          color: generateColorFromString(questionInfo?.questionnaire).color,
+          backgroundColor: generateColorFromString(
+            questionInfo?.questionnaire?.title,
+          ).backgroundColor,
+          color: generateColorFromString(questionInfo?.questionnaire?.title)
+            .color,
           marginRight: "auto",
         }}
       />
@@ -190,31 +192,32 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     >
       <Box overflow="auto" px={2}>
         {renderNavigation()}
-        <AlertBox
-          severity={"error"}
-          variant="filled"
-          sx={{
-            backgroundColor: "rgba(138, 15, 36, 0.04)",
-            color: "#8A0F24",
-            borderRadius: "8px",
-          }}
-          action={
-            <Button
-              variant="outlined"
-              color="secondary"
-              component={Link}
-              to="./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}"
-              startIcon={<QuestionAnswer />}
-            >
-              <Trans i18nKey="goToQuestion" />
-            </Button>
-          }
-        >
-          <AlertTitle>
-            <Trans i18nKey={"YouHaveFinishedAllQuestionnaires"} />
-          </AlertTitle>
-          <Trans i18nKey={"ToChangeYourInsightTryEditingQuestionnaires"} />
-        </AlertBox>
+        {!questionInfo?.answer?.index && (
+          <AlertBox
+            severity={"error"}
+            variant="filled"
+            sx={{
+              backgroundColor: "rgba(138, 15, 36, 0.04)",
+              color: "#8A0F24",
+              borderRadius: "8px",
+              mb: 2,
+            }}
+            action={
+              <Button
+                variant="outlined"
+                color="error"
+                component={Link}
+                to={`./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
+              >
+                <Trans i18nKey="answerNow" />
+              </Button>
+            }
+          >
+            <AlertTitle>
+              <Trans i18nKey={"YouHaveFinishedAllQuestionnaires"} />
+            </AlertTitle>
+          </AlertBox>
+        )}
         {renderQuestionDetails()}
         <Divider sx={{ width: "100%", my: 2 }} />
         {renderAnswerDetails()}

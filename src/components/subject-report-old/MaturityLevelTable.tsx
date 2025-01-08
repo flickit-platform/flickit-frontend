@@ -35,7 +35,7 @@ interface TableData {
 }
 
 interface Item {
-  questionnaire: string;
+  questionnaire: { id: string; title: string };
   question: Question;
   answer: Answer;
 }
@@ -234,12 +234,12 @@ const MaturityLevelTable = ({
   };
 
   const mapItemToRow = (item: Item): ItemColumnMapping => {
-    const color = generateColorFromString(item.questionnaire);
+    const color = generateColorFromString(item.questionnaire?.title);
 
     return {
       questionnaire: (
         <Chip
-          label={item.questionnaire}
+          label={item?.questionnaire?.title}
           style={{ backgroundColor: color.backgroundColor, color: color.color }}
         />
       ),

@@ -372,6 +372,10 @@ export const QuestionTabsTemplate = (props: any) => {
     }
   }, [questionInfo]);
 
+  useEffect(() => {
+    setIsExpanded(true);
+  }, [value]);
+
   return (
     <TabContext value={value}>
       <Box sx={{ px: { xs: 2, sm: 0 }, mt: 2, width: "100%" }}>
