@@ -75,7 +75,46 @@ const QuestionnaireContainer = () => {
     },
   ];
 
-  const isAllSelected = issues.length === itemNames.length;
+  const handelSelected = (selected: any) => {
+      const isAllSelected = issues.length === itemNames.length;
+
+      if (selected.length == 0) {
+      return (
+        <Typography
+          sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
+        >
+          <Trans i18nKey={"noneSelected"} />
+        </Typography>
+      );
+    } else if (isAllSelected) {
+      return (
+        <Typography
+          sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
+        >
+          <Trans i18nKey={"allIssuesSelected"} />
+        </Typography>
+      );
+    } else {
+      if (selected.length == 1) {
+        return selected.join(", ");
+      } else {
+        return (
+          <Box
+            sx={{
+              ...theme.typography.semiBoldLarge,
+              color: "#333333",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Typography>{selected.length}</Typography>
+            <Trans i18nKey={"selectedIssuesType"} />
+          </Box>
+        );
+      }
+    }
+  };
 
   return (
     <PermissionControl
@@ -101,34 +140,7 @@ const QuestionnaireContainer = () => {
               value={issues.map((item: any) => t(item))}
               onChange={handleChange}
               displayEmpty={true}
-              renderValue={(selected) =>
-                selected.length == 0 ? (
-                  <Typography  sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}>
-                    <Trans i18nKey={"noneSelected"} />
-                  </Typography>
-                ) : isAllSelected ? (
-                  <Typography
-                    sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
-                  >
-                    <Trans i18nKey={"allIssuesSelected"} />
-                  </Typography>
-                ) : selected.length == 1 ? (
-                  selected.join(", ")
-                ) : (
-                  <Box
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: "#333333",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <Typography>{selected.length}</Typography>
-                    <Trans i18nKey={"selectedIssuesType"} />
-                  </Box>
-                )
-              }
+              renderValue={(selected) => handelSelected(selected)}
               sx={{
                 ...theme.typography.semiBoldLarge,
                 fontSize: "14px",

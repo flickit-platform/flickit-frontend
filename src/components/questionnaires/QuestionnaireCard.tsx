@@ -133,7 +133,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 sx={{ background: "#8A0F240A" }}
                 label={
                   <Grid>
-                    {answeredWithLowConfidence && (
                       <Box
                         sx={{
                           display: "flex",
@@ -156,7 +155,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                           {answeredWithLowConfidence}
                         </Typography>
                       </Box>
-                    )}
                   </Grid>
                 }
               />
@@ -167,7 +165,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 sx={{ background: "#8A0F240A" }}
                 label={
                   <Grid>
-                    {answeredWithoutEvidence && (
                       <Box
                         sx={{
                           display: "flex",
@@ -190,7 +187,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                           {answeredWithoutEvidence}
                         </Typography>
                       </Box>
-                    )}
+
                   </Grid>
                 }
               />
@@ -200,7 +197,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
               sx={{ background: "#8A0F240A" }}
               label={
                 <Grid>
-                  {unanswered && (
                     <Box
                       sx={{
                         display: "flex",
@@ -222,7 +218,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         <Trans i18nKey={"unanswered"} />: {unanswered}
                       </Typography>
                     </Box>
-                  )}
                 </Grid>
               }
             />
@@ -233,7 +228,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 sx={{ background: "#8A0F240A" }}
                 label={
                   <Grid>
-                    {unresolvedComments && (
                       <Box
                         sx={{
                           display: "flex",
@@ -256,7 +250,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                           {unresolvedComments}
                         </Typography>
                       </Box>
-                    )}
                   </Grid>
                 }
               />
