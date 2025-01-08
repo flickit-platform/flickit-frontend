@@ -779,5 +779,9 @@
   "lowConfidenceAnswers": "Low Confidence Answers",
   "unresolvedComments": "Unresolved comments",
   "allIssuesSelected": "All issues selected",
-  "answeredWithLowConfidence": "Answers with no evidence"
+  "answeredWithLowConfidence": "Low confidence answers",
+  "answeredWithoutEvidence": "Answers with no evidence",
+  "unanswered": "Unanswered questions",
+  "unresolvedComments": "Unresolved comments",
+  "noneSelected": "None selected"
 }

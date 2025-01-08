@@ -43,23 +43,36 @@ const QuestionnaireContainer = () => {
       (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
 
-  const [personName, setPersonName] = useState<string[]>([]);
+  const [issues, setIssues] = useState<string[]>([]);
+  const [originalItem, setOriginalItem] = useState<string[]>([]);
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+  const handleChange = (event: SelectChangeEvent<typeof issues>) => {
     const {
       target: { value },
     } = event;
-    setPersonName(typeof value === "string" ? value.split(",") : value);
+    setIssues(typeof value === "string" ? value.split(",") : value);
+  };
+  const handelSaveOriginal = (name: any) => {
+    if (!originalItem.includes(name)) {
+      setOriginalItem([...originalItem, name]);
+    } else {
+      const copySave = [...originalItem];
+      const filtered = copySave.filter((item) => item != name);
+      setOriginalItem(filtered);
+    }
   };
 
-  const names = [
-    t("unansweredQuestions"),
-    t("lowConfidenceAnswers"),
-    t("unresolvedComments"),
-    t("answersWithNoEvidence"),
+  const itemNames = [
+    { translate: t("unansweredQuestions"), original: "unanswered" },
+    { translate: t("lowConfidenceAnswers"), original: "answeredWithLowConfidence" },
+    { translate: t("unresolvedComments"), original: "unresolvedComments" },
+    {
+      translate: t("answersWithNoEvidence"),
+      original: "answeredWithoutEvidence",
+    },
   ];
 
-  const isAllSelected = personName.length === names.length;
+  const isAllSelected = issues.length === itemNames.length;
 
   return (
     <PermissionControl
@@ -82,7 +95,7 @@ const QuestionnaireContainer = () => {
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
               multiple
-              value={personName.map((item) => t(item))}
+              value={issues.map((item:any) => t(item))}
               onChange={handleChange}
               renderValue={(selected) =>
                 isAllSelected ? (
@@ -99,15 +112,26 @@ const QuestionnaireContainer = () => {
                 height: "40px",
               }}
             >
-              {names.map((name: any) => (
-                <MenuItem key={name} value={name}>
-                  <Checkbox checked={personName.includes(t(name))} />
-                  <ListItemText
-                    sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
-                    primary={<Trans i18nKey={`${name}`} />}
-                  />
-                </MenuItem>
-              ))}
+              {itemNames.map(
+                (item: { translate: string; original: string }) => (
+                  <MenuItem
+                    key={item.translate}
+                    value={item.translate}
+                    onClick={() => handelSaveOriginal(item.original)}
+                  >
+                    <Checkbox
+                      checked={issues.includes(t(item.translate))}
+                    />
+                    <ListItemText
+                      sx={{
+                        ...theme.typography.semiBoldLarge,
+                        color: "#333333",
+                      }}
+                      primary={<Trans i18nKey={`${item.translate}`} />}
+                    />
+                  </MenuItem>
+                ),
+              )}
             </Select>
           </FormControl>
         </Box>
@@ -132,6 +156,7 @@ const QuestionnaireContainer = () => {
           <QuestionnaireList
             assessmentTotalProgress={assessmentTotalProgress}
             questionnaireQueryData={questionnaireQueryData}
+            originalItem={originalItem}
           />
         </Box>
       </Box>
