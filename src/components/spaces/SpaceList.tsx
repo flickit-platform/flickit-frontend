@@ -128,18 +128,19 @@ const SpaceCard = (props: ISpaceCardProps) => {
         py: 1,
         mb: 1,
         backgroundColor: "white",
+        textDecoration: "none",
       }}
       justifyContent="space-between"
       data-cy="space-card"
+      component={Link}
+      to={`/${spaceId}/assessments/1`}
+      onClick={changeCurrentSpaceAndNavigateToAssessments}
     >
       <Box sx={{ ...styles.centerV }} alignSelf="stretch">
         <Box sx={{ ...styles.centerV }} alignSelf="stretch">
           <Typography
-            component={Link}
             variant="h6"
-            to={`/${spaceId}/assessments/1`}
             data-cy="space-card-link"
-            onClick={changeCurrentSpaceAndNavigateToAssessments}
             sx={{
               fontSize: "1.2rem",
               fontWeight: "bold",
@@ -179,11 +180,17 @@ const SpaceCard = (props: ISpaceCardProps) => {
       <Box sx={{ display: "flex" }}>
         <Box sx={{ ...styles.centerV }} gap={4}>
           <Tooltip title={<Trans i18nKey={"membersCount"} />}>
-            <Box sx={{ ...styles.centerV, opacity: 0.8 }}>
+            <Box
+              sx={{
+                ...styles.centerV,
+                opacity: 0.8,
+                textDecoration: "none",
+                color: "initial",
+              }}
+            >
               <PeopleOutlineRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
+                  marginInlineStart: 0.5,
                 }}
                 fontSize="small"
               />
@@ -191,11 +198,17 @@ const SpaceCard = (props: ISpaceCardProps) => {
             </Box>
           </Tooltip>
           <Tooltip title={<Trans i18nKey={"assessmentsCount"} />}>
-            <Box sx={{ ...styles.centerV, opacity: 0.8 }}>
+            <Box
+              sx={{
+                ...styles.centerV,
+                opacity: 0.8,
+                textDecoration: "none",
+                color: "initial",
+              }}
+            >
               <DescriptionRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
+                  marginInlineStart: 0.5,
                   opacity: 0.8,
                 }}
                 fontSize="small"
@@ -233,7 +246,10 @@ const SpaceCard = (props: ISpaceCardProps) => {
               open={showTooltip}
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
-              onClick={() => setShowTooltip(false)}
+              onClick={(e) => {
+                setShowTooltip(false);
+                e.stopPropagation();
+              }}
               title={<Trans i18nKey={"moreAction"} />}
             >
               <Box>
