@@ -22,10 +22,18 @@ const MainTabs = (props: any) => {
       address: "questionnaires",
       permission: "viewAssessmentQuestionnaireList",
     },
-    { label: "insights", address: "insights", permission: "viewAssessmentReport" },
+    {
+      label: "insights",
+      address: "insights",
+      permission: "viewAssessmentReport",
+    },
     { label: "reportTitle", address: "report", permission: false },
     { label: "advices", address: "advices", permission: "createAdvice" },
-    { label: "settings", address: "settings", permission: "grantUserAssessmentRole" },
+    {
+      label: "settings",
+      address: "settings",
+      permission: "grantUserAssessmentRole",
+    },
   ];
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
 
@@ -67,9 +75,8 @@ const MainTabs = (props: any) => {
             alignItems: "center",
             justifyContent: "center",
             // boxShadow: "0 4px 4px rgba(0,0,0,25%)",
-            my: 3,
+            my: 2,
             paddingBlock: 1,
-            paddingInline: "48px",
           }}
         >
           <Tabs
@@ -90,9 +97,7 @@ const MainTabs = (props: any) => {
               return (
                 <Tab
                   key={uniqueId()}
-                  disabled={
-                    tab.label === "reportTitle"
-                  }
+                  disabled={tab.label === "reportTitle"}
                   to={`./${tab.address}/`}
                   component={Link}
                   value={tab.address}

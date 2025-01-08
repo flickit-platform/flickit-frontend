@@ -44,8 +44,19 @@ const DashbordContainer = () => {
         return (
           <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
             <DashboardTitle pathInfo={pathInfo} />
-            <Grid container spacing={1} columns={12}>
-              <Grid item sm={12} xs={12} mt={1}>
+            <Grid
+              container
+              spacing={1}
+              columns={12}
+              display="flex"
+              alignItems="center"
+              mt={0.5}
+            >
+              <Grid
+                item
+                sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 4 : 12}
+                xs={12}
+              >
                 <Typography
                   color="primary"
                   textAlign="left"
@@ -54,14 +65,17 @@ const DashbordContainer = () => {
                   {pathInfo?.assessment?.title}
                 </Typography>
               </Grid>
+              <Grid
+                item
+                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
+                sx={{ display: "flex" }}
+              >
+                <MainTabs
+                  onTabChange={handleTabChange}
+                  selectedTab={selectedTab}
+                />
+              </Grid>
               <Grid container sm={12} xs={12}>
-                <Grid item xs={12} sx={{ display: "flex" }}>
-                  <MainTabs
-                    onTabChange={handleTabChange}
-                    selectedTab={selectedTab}
-                  />
-                </Grid>
-
                 <Grid item xs={12}>
                   {outlet}
                 </Grid>

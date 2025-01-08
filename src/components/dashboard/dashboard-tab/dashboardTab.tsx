@@ -107,22 +107,6 @@ const DashboardTab = () => {
             borderRadius: "1rem",
           }}
         >
-          <Typography
-            sx={{
-              ...theme.typography.headlineSmall,
-              display: "flex",
-              alignItems: "center",
-              textAlign: "center",
-              color: "#3D4D5C80",
-              gap: 2,
-              mb: 4,
-            }}
-          >
-            <Trans i18nKey={"assessmentSteps"} />
-            <Tooltip title={<Trans i18nKey={"assessmentStepsTooltip"} />}>
-              <InfoIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
-            </Tooltip>
-          </Typography>
           <StepperSection
             setActiveStep={setActiveStep}
             activeStep={activeStep}
