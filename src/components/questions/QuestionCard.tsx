@@ -94,7 +94,8 @@ import { evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
-import { CheckOutlined } from "@mui/icons-material";
+import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
+import EmptyState from "../kit-designer/common/EmptyState";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -347,55 +348,119 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           </Box>
         </Box>
       </Box>
-      <TabContext value={value}>
-        <Box sx={{ px: { xs: 2, sm: 0 }, mt: 2 }}>
-          <TabList
-            onChange={handleChange}
-            scrollButtons="auto"
-            variant="scrollable"
-          >
+      <QuestionTabsTemplate
+        value={value}
+        handleChange={handleChange}
+        questionsInfo={questionsInfo}
+        questionInfo={questionInfo}
+      />
+    </Box>
+  );
+};
+
+export const QuestionTabsTemplate = (props: any) => {
+  const { value, handleChange, questionsInfo, questionInfo } = props;
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const toggleTabs = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (questionsInfo?.permissions?.readonly) {
+      setIsExpanded(false);
+    }
+  }, [questionInfo]);
+
+  return (
+    <TabContext value={value}>
+      <Box sx={{ px: { xs: 2, sm: 0 }, mt: 2, width: "100%" }}>
+        <TabList
+          onChange={handleChange}
+          scrollButtons="auto"
+          variant="scrollable"
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <Tab
+            sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Trans i18nKey="evidences" />
+              </Box>
+            }
+            value="evidences"
+          />
+          {questionsInfo?.permissions?.viewAnswerHistory && (
             <Tab
-              sx={{ textTransform: "none", ...theme.typography.titleLarge }}
+              sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Trans i18nKey="evidences" />
+                  <Trans i18nKey="answerHistory" />
                 </Box>
               }
-              value="evidences"
+              value="history"
             />
-            {questionsInfo.permissions?.viewAnswerHistory && (
-              <Tab
-                sx={{ textTransform: "none", ...theme.typography.titleLarge }}
-                label={
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Trans i18nKey="answerHistory" />
-                  </Box>
-                }
-                value="history"
-              />
+          )}
+          {questionsInfo?.permissions?.viewAnswerHistory && (
+            <Tab
+              sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
+              label={
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Trans i18nKey="comments" />
+                </Box>
+              }
+              value="comment"
+            />
+          )}
+          <IconButton
+            onClick={toggleTabs}
+            sx={{
+              ml: 2,
+              padding: 0,
+              alignSelf: "center",
+              marginInlineStart: "auto",
+            }}
+          >
+            {isExpanded ? (
+              <ExpandLess fontSize="small" />
+            ) : (
+              <ExpandMore fontSize="small" />
             )}
-          </TabList>
-        </Box>
-        <TabPanel value="evidences">
-          <Box mt={2}>
-            <AnswerDetails
-              questionInfo={questionInfo}
-              type="evidence"
-              permissions={questionsInfo.permissions}
-            />
-          </Box>
-        </TabPanel>
-        <TabPanel value="history">
-          <Box mt={2}>
-            <AnswerDetails
-              questionInfo={questionInfo}
-              type="history"
-              permissions={questionsInfo.permissions}
-            />
-          </Box>
-        </TabPanel>
-      </TabContext>
-    </Box>
+          </IconButton>
+        </TabList>
+      </Box>
+      {isExpanded && (
+        <>
+          <TabPanel value="evidences" sx={{ width: "100%" }}>
+            <Box mt={2} width="100%">
+              <AnswerDetails
+                questionInfo={questionInfo}
+                type="evidence"
+                permissions={questionsInfo?.permissions}
+              />
+            </Box>
+          </TabPanel>
+          <TabPanel value="history" sx={{ width: "100%" }}>
+            <Box mt={2}>
+              <AnswerDetails
+                questionInfo={questionInfo}
+                type="history"
+                permissions={questionsInfo?.permissions}
+              />
+            </Box>
+          </TabPanel>
+          <TabPanel value="comment" sx={{ width: "100%" }}>
+            <Box mt={2} width="100%">
+              <AnswerDetails
+                questionInfo={questionInfo}
+                type="comment"
+                permissions={questionsInfo?.permissions}
+              />
+            </Box>
+          </TabPanel>
+        </>
+      )}
+    </TabContext>
   );
 };
 
@@ -467,7 +532,7 @@ const AnswerTemplate = (props: {
   const submitQuestion = async () => {
     dispatch(questionActions.setIsSubmitting(true));
     try {
-      if (permissions && permissions.answerQuestion) {
+      if (permissions && permissions?.answerQuestion) {
         const res = await service.submitAnswer(
           {
             assessmentId,
@@ -747,7 +812,7 @@ const AnswerDetails = ({
     </Box>
   ) : (
     <Box mt={2} width="100%" my={4}>
-      {type === "evidence" ? (
+      {type === "evidence" || type === "comment" ? (
         <Box
           display="flex"
           alignItems={"baseline"}
@@ -755,12 +820,12 @@ const AnswerDetails = ({
             flexDirection: "column",
             px: 2,
             width: "100%",
-            alignItems: "center",
             wordBreak: "break-word",
           }}
         >
           <Evidence
             {...dialogProps}
+            type={type}
             questionInfo={questionInfo}
             // evidencesQueryData={queryData}
             permissions={permissions}
@@ -771,7 +836,6 @@ const AnswerDetails = ({
           display="flex"
           alignItems={"baseline"}
           sx={{
-            maxHeight: "46vh",
             overflow: "auto",
             flexDirection: "column",
             width: "100%",
@@ -826,6 +890,7 @@ const AnswerHistoryItem = (props: any) => {
         gap={2}
         display="flex"
         alignItems="center"
+        width="100%"
       >
         <Avatar
           src={item?.createdBy?.pictureLink ?? undefined}
@@ -953,7 +1018,9 @@ const Evidence = (props: any) => {
   const {
     questionInfo,
     permissions,
-  }: { questionInfo: IQuestionInfo; permissions: IPermissions } = props;
+    type,
+  }: { questionInfo: IQuestionInfo; permissions: IPermissions; type: string } =
+    props;
   const { assessmentId = "" } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
 
@@ -982,7 +1049,7 @@ const Evidence = (props: any) => {
     })();
   }, []);
 
-  const [value, setValue] = React.useState("POSITIVE");
+  const [value, setValue] = useState<any>("POSITIVE");
   const [createAttachment, setCreateAttachment] = useState(false);
   const [loadingEvidence, setLoadingEvidence] = useState(false);
 
@@ -1090,14 +1157,26 @@ const Evidence = (props: any) => {
   };
 
   const rtl = localStorage.getItem("lang") === "fa";
-  return (
+
+  useEffect(() => {
+    if (type === "comment") {
+      setValue(null);
+    } else {
+      setValue(evidenceAttachmentType.positive);
+    }
+  }, [type]);
+  return evidencesQueryData.loading ? (
+    <Box sx={{ ...styles.centerVH }} height="30vh" width="100%">
+      <CircularProgress />
+    </Box>
+  ) : (
     <Box
       display={"flex"}
       flexDirection={"column"}
       width="100%"
-      sx={{ width: { md: "80%" } }}
+      px={!permissions?.readonly ? 10 : 0}
     >
-      {permissions.addEvidence && (
+      {permissions?.addEvidence && (
         <FormProvider {...formMethods}>
           <form
             onSubmit={formMethods.handleSubmit(onSubmit)}
@@ -1124,56 +1203,67 @@ const Evidence = (props: any) => {
                     },
                   }}
                 >
-                  <Tab
-                    label={<Trans i18nKey="negativeEvidence" />}
-                    value={evidenceAttachmentType.negative}
-                    sx={{
-                      display: "flex",
-                      flex: 1,
-                      "&.Mui-selected": {
-                        color: `${evidenceBG.borderColor}  !important`,
-                      },
-                      ...theme.typography.headlineSmall,
-                      fontSize: { xs: "1rem !important" },
-                    }}
-                  />
-                  <Tab
-                    label={
-                      <Box
-                        sx={{
-                          // display: "flex",
-                          // justifyContent: "center",
-                          // alignItems: "center",
-                          ...styles.centerV,
-                        }}
-                      >
-                        <Trans i18nKey="comment" />
-                      </Box>
-                    }
-                    sx={{
-                      display: "flex",
-                      flex: 1,
-                      "&.Mui-selected": {
-                        color: `${evidenceBG.borderColor}  !important`,
-                      },
-                      ...theme.typography.headlineSmall,
-                      fontSize: { xs: "1rem !important" },
-                    }}
-                    value={null}
-                  />
-                  <Tab
-                    label={<Trans i18nKey="positiveEvidence" />}
-                    sx={{
-                      display: "flex",
-                      flex: 1,
-                      "&.Mui-selected": {
-                        color: `${evidenceBG.borderColor}  !important`,
-                      },
-                      ...theme.typography.headlineSmall,
-                      fontSize: { xs: "1rem !important" },
-                    }}
-                    value={evidenceAttachmentType.positive}
-                  />
+                  {type === "evidence" && (
+                    <Tab
+                      label={<Trans i18nKey="negativeEvidence" />}
+                      value={evidenceAttachmentType.negative}
+                      sx={{
+                        display: "flex",
+                        flex: 1,
+                        maxWidth: "unset",
+                        "&.Mui-selected": {
+                          color: `${evidenceBG.borderColor}  !important`,
+                        },
+                        ...theme.typography.headlineSmall,
+                        fontSize: { xs: "1rem !important" },
+                      }}
+                    />
+                  )}
+                  {type === "comment" && (
+                    <Tab
+                      label={
+                        <Box
+                          sx={{
+                            // display: "flex",
+                            // justifyContent: "center",
+                            // alignItems: "center",
+                            ...styles.centerV,
+                          }}
+                        >
+                          <Trans i18nKey="comment" />
+                        </Box>
+                      }
+                      sx={{
+                        display: "flex",
+                        flex: 1,
+                        maxWidth: "unset",
+
+                        "&.Mui-selected": {
+                          color: `${evidenceBG.borderColor}  !important`,
+                        },
+                        ...theme.typography.headlineSmall,
+                        fontSize: { xs: "1rem !important" },
+                      }}
+                      value={null}
+                    />
+                  )}
+                  {type === "evidence" && (
+                    <Tab
+                      label={<Trans i18nKey="positiveEvidence" />}
+                      sx={{
+                        display: "flex",
+                        flex: 1,
+                        maxWidth: "unset",
+
+                        "&.Mui-selected": {
+                          color: `${evidenceBG.borderColor}  !important`,
+                        },
+                        ...theme.typography.headlineSmall,
+                        fontSize: { xs: "1rem !important" },
+                      }}
+                      value={evidenceAttachmentType.positive}
+                    />
+                  )}
                 </TabList>
               </TabContext>
               <Grid item xs={12} position={"relative"}>
@@ -1214,7 +1304,7 @@ const Evidence = (props: any) => {
                   data-cy="automatic-submit-check"
                   control={
                     <Checkbox
-                      disabled={!permissions.addEvidenceAttachment}
+                      disabled={!permissions?.addEvidenceAttachment}
                       checked={createAttachment}
                       onChange={() => setCreateAttachment((prev) => !prev)}
                       sx={{
@@ -1265,13 +1355,8 @@ const Evidence = (props: any) => {
               <Box display={"flex"} justifyContent={"end"} mt={2}>
                 <LoadingButton
                   sx={{
-                    ml: "auto",
                     borderRadius: "4px",
-                    py: 2,
                     px: 3,
-                    maxHeight: "40px",
-                    whiteSpace: "nowrap",
-                    width: { xs: "130px", sm: "220px" },
                     background: evidenceBG.borderColor,
                     "&:hover": {
                       background: evidenceBG.borderColor,
@@ -1282,14 +1367,17 @@ const Evidence = (props: any) => {
                   variant="contained"
                   loading={evidencesQueryData.loading}
                 >
-                  <Trans i18nKey={"createEvidence"} />
+                  <Trans
+                    i18nKey={"createEvidence"}
+                    values={{ title: t(type) }}
+                  />
                 </LoadingButton>
               </Box>
             </Grid>
           </form>
         </FormProvider>
       )}
-      <Box mt={3}>
+      <Box mt={3} width="100%">
         {loadingEvidence ? (
           <Box
             sx={{ display: "flex", justifyContent: "center", width: "100%" }}
@@ -1298,33 +1386,59 @@ const Evidence = (props: any) => {
           </Box>
         ) : (
           evidencesData &&
-          permissions.viewEvidenceList &&
-          evidencesData.map((item: any, index: number) => (
-            <EvidenceDetail
-              key={item?.id}
-              setValue={setValue}
-              item={item}
-              setLoadingEvidence={setLoadingEvidence}
-              evidencesData={evidencesData}
-              setEvidencesData={setEvidencesData}
-              setExpandedDeleteDialog={setExpandedDeleteDialog}
-              setExpandedDeleteAttachmentDialog={
-                setExpandedDeleteAttachmentDialog
-              }
-              setExpandedAttachmentsDialogs={setExpandedAttachmentsDialogs}
-              expandedAttachmentsDialogs={expandedAttachmentsDialogs}
-              setEvidenceId={setEvidenceId}
-              evidenceId={evidenceId}
-              evidencesQueryData={evidencesQueryData}
-              questionInfo={questionInfo}
-              assessmentId={assessmentId}
-              fetchAttachments={fetchAttachments}
-              attachmentData={attachmentData}
-              setAttachmentData={setAttachmentData}
-              deleteAttachment={deleteAttachment}
-              permissions={permissions}
-            />
-          ))
+          permissions?.viewEvidenceList && (
+            <>
+              {!evidencesData.length && permissions?.readonly ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <EmptyState title={t("noEvidence")} />
+                </Box>
+              ) : (
+                <>
+                  {evidencesData
+                    .filter((item: any) => {
+                      if (type === "comment") {
+                        return item?.type === null;
+                      }
+                      return item?.type !== null;
+                    })
+                    .map((item: any, index: number) => (
+                      <EvidenceDetail
+                        key={item?.id}
+                        setValue={setValue}
+                        item={item}
+                        setLoadingEvidence={setLoadingEvidence}
+                        evidencesData={evidencesData}
+                        setEvidencesData={setEvidencesData}
+                        setExpandedDeleteDialog={setExpandedDeleteDialog}
+                        setExpandedDeleteAttachmentDialog={
+                          setExpandedDeleteAttachmentDialog
+                        }
+                        setExpandedAttachmentsDialogs={
+                          setExpandedAttachmentsDialogs
+                        }
+                        expandedAttachmentsDialogs={expandedAttachmentsDialogs}
+                        setEvidenceId={setEvidenceId}
+                        evidenceId={evidenceId}
+                        evidencesQueryData={evidencesQueryData}
+                        questionInfo={questionInfo}
+                        assessmentId={assessmentId}
+                        fetchAttachments={fetchAttachments}
+                        attachmentData={attachmentData}
+                        setAttachmentData={setAttachmentData}
+                        deleteAttachment={deleteAttachment}
+                        permissions={permissions}
+                      />
+                    ))}
+                </>
+              )}
+            </>
+          )
         )}
         <EvidenceAttachmentsDialogs
           expanded={expandedAttachmentsDialogs}
@@ -1901,7 +2015,7 @@ const EvidenceDetail = (props: any) => {
                       <Box
                         sx={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}
                       >
-                        {permissions.viewEvidenceAttachment && (
+                        {permissions?.viewEvidenceAttachment && (
                           <>
                             {loadingFile
                               ? skeleton.map((item, index) => {
@@ -1933,7 +2047,7 @@ const EvidenceDetail = (props: any) => {
                           </>
                         )}
                         {attachments.length < 5 &&
-                          permissions.addEvidenceAttachment && (
+                          permissions?.addEvidenceAttachment && (
                             <>
                               <Grid
                                 item
@@ -2015,7 +2129,7 @@ const EvidenceDetail = (props: any) => {
                   gap: 2,
                 }}
               >
-                {permissions.updateEvidence && editable && (
+                {permissions?.updateEvidence && editable && (
                   <IconButton
                     aria-label="edit"
                     size="small"
@@ -2028,7 +2142,7 @@ const EvidenceDetail = (props: any) => {
                     />
                   </IconButton>
                 )}
-                {permissions.deleteEvidence && deletable && (
+                {permissions?.deleteEvidence && deletable && (
                   <IconButton
                     aria-label="delete"
                     size="small"

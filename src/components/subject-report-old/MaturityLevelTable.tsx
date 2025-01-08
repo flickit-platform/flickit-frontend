@@ -164,7 +164,48 @@ const MaturityLevelTable = ({
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
+    number | null
+  >(null);
 
+  const handleQuestionClick = (index: number) => {
+    setSelectedQuestionIndex(index);
+    dialogProps.openDialog({
+      type: "details",
+      questionInfo: tempData.items[index],
+      questionsInfo: tempData.items,
+      index: index,
+    });
+  };
+
+  const navigateToPreviousQuestion = () => {
+    if (selectedQuestionIndex !== null && selectedQuestionIndex > 0) {
+      const newIndex = selectedQuestionIndex - 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        questionInfo: tempData.items[newIndex],
+        questionsInfo: tempData.items,
+        index: selectedQuestionIndex - 1,
+      });
+    }
+  };
+
+  const navigateToNextQuestion = () => {
+    if (
+      selectedQuestionIndex !== null &&
+      selectedQuestionIndex < tempData.items.length - 1
+    ) {
+      const newIndex = selectedQuestionIndex + 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        questionInfo: tempData.items[newIndex],
+        questionsInfo: tempData.items,
+        index: selectedQuestionIndex + 1,
+      });
+    }
+  };
   const dialogProps = useDialog();
   const handleSort = (
     field: keyof ItemServerFieldsColumnMapping,
@@ -393,18 +434,13 @@ const MaturityLevelTable = ({
               <>
                 {tempData?.items
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item: any) => {
+                  .map((item: any, index: number) => {
                     const row = mapItemToRow(item);
                     return (
                       <TableRow
                         key={uniqueId()}
                         component="div"
-                        onClick={() =>
-                          dialogProps.openDialog({
-                            type: "details",
-                            data: item,
-                          })
-                        }
+                        onClick={() => handleQuestionClick(index)}
                       >
                         {columns.map((column) => (
                           <TableCell
@@ -468,6 +504,8 @@ const MaturityLevelTable = ({
       <QuestionDetailsContainer
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
+        onPreviousQuestion={navigateToPreviousQuestion}
+        onNextQuestion={navigateToNextQuestion}
       />
     </Box>
   );

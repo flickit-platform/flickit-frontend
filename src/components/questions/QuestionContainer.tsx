@@ -132,7 +132,7 @@ const findQuestion = (
     : undefined;
 };
 
-const useQuestion = () => {
+export const useQuestion = () => {
   const { questionIndex, questionsInfo, assessmentStatus, isSubmitting } =
     useQuestionContext();
   const loaded = !!questionsInfo?.questions;
