@@ -778,5 +778,9 @@
   "answersWithNoEvidence": "ثبت پاسخ بدون شاهد",
   "lowConfidenceAnswers": "جواب‌ها با سطح اطمینان پایین",
   "unresolvedComments": "کامنت‌های بررسی نشده",
-  "allIssuesSelected": "تمامی مشکلات انتخاب شده‌اند"
+  "allIssuesSelected": "تمامی مشکلات انتخاب شده‌اند",
+  "answeredWithLowConfidence": "جواب‌ها با سطح اطمینان پایین",
+  "answeredWithoutEvidence": "پاسخ بدون ثبت شاهد",
+  "unanswered": "سوال‌های بدون جواب",
+  "noneSelected": "گزینه‌ای انتخاب نشده است"
 }
