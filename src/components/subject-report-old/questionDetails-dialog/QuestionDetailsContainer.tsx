@@ -66,7 +66,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         disabled={index - 1 < 0}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
       >
-        <ArrowBackIos sx={{ fontSize: ".7rem" }} />
+        <ArrowBackIos
+          sx={{
+            fontSize: ".7rem",
+            transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
+          }}
+        />
         <Typography
           textTransform="uppercase"
           variant={"semiBoldLarge"}
@@ -83,7 +88,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         <Typography variant={"semiBoldLarge"} sx={{ fontSize: "12px" }}>
           <Trans i18nKey={"nextQuestion"} />
         </Typography>
-        <ArrowForwardIos sx={{ fontSize: ".7rem" }} />
+        <ArrowForwardIos
+          sx={{
+            fontSize: ".7rem",
+            transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
+          }}
+        />
       </Button>
     </Box>
   );
@@ -98,7 +108,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           ).backgroundColor,
           color: generateColorFromString(questionInfo?.questionnaire?.title)
             .color,
-          marginRight: "auto",
+          marginInlineEnd: "auto",
         }}
       />
       <Typography
@@ -107,6 +117,9 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           textAlign: languageDetector(questionInfo?.question?.title ?? "")
             ? "right"
             : "left",
+          direction: languageDetector(questionInfo?.question?.title ?? "")
+            ? "rtl"
+            : "ltr",
           color: "#2B333B",
         }}
       >
@@ -194,7 +207,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         {renderNavigation()}
         {!questionInfo?.answer?.index && (
           <AlertBox
-            severity={"error"}
+            severity="error"
             variant="filled"
             sx={{
               backgroundColor: "rgba(138, 15, 36, 0.04)",
@@ -214,7 +227,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             }
           >
             <AlertTitle>
-              <Trans i18nKey={"YouHaveFinishedAllQuestionnaires"} />
+              <Trans i18nKey={"noQuestionHasBeenAnswered"} />
             </AlertTitle>
           </AlertBox>
         )}
@@ -230,7 +243,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         hideCancelButton
       >
         <Button
-          variant="contained"
+          variant="outlined"
           color="primary"
           component={Link}
           to={`./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
