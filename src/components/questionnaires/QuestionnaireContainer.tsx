@@ -100,8 +100,13 @@ const QuestionnaireContainer = () => {
               multiple
               value={issues.map((item: any) => t(item))}
               onChange={handleChange}
+              displayEmpty={true}
               renderValue={(selected) =>
-                isAllSelected ? (
+                selected.length == 0 ? (
+                  <Typography color="textSecondary">
+                    <Trans i18nKey={"noneSelected"} />
+                  </Typography>
+                ) : isAllSelected ? (
                   <Trans i18nKey={"allIssuesSelected"} />
                 ) : (
                   selected.join(", ")
