@@ -772,5 +772,16 @@
   "linkCopied": "لینک کپی شد",
   "consideredSubjects": "موضوع بررسی‌شده",
   "exportDSL": "بازسازی DSL",
-  "approve": "موافقت کردن"
+  "approve": "موافقت کردن",
+  "filterQuestionsWithIssues": "نمایش پرسشنامه‌ها برحسب مشکل",
+  "unansweredQuestions": "پرسش‌های بی‌‌پاسخ",
+  "answersWithNoEvidence": "ثبت پاسخ بدون شاهد",
+  "lowConfidenceAnswers": "جواب‌ها با سطح اطمینان پایین",
+  "unresolvedComments": "کامنت‌های بررسی نشده",
+  "allIssuesSelected": "تمامی مشکلات انتخاب شده‌اند",
+  "answeredWithLowConfidence": "جواب‌ها با سطح اطمینان پایین",
+  "answeredWithoutEvidence": "پاسخ بدون ثبت شاهد",
+  "unanswered": "سوال‌های بدون جواب",
+  "noneSelected": "گزینه‌ای انتخاب نشده است",
+  "selectedIssuesType": "نوع مشکل انتخاب شده‌است"
 }
