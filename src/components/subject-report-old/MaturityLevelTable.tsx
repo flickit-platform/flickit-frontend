@@ -21,6 +21,9 @@ import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
 import { t } from "i18next";
+import { ShareDialog } from "../assessment-html/ShareDialog";
+import useDialog from "@/utils/useDialog";
+import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";
 
 interface TableData {
   items: Item[];
@@ -32,7 +35,7 @@ interface TableData {
 }
 
 interface Item {
-  questionnaire: string;
+  questionnaire: { id: string; title: string };
   question: Question;
   answer: Answer;
 }
@@ -161,7 +164,49 @@ const MaturityLevelTable = ({
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
+    number | null
+  >(null);
 
+  const handleQuestionClick = (index: number) => {
+    setSelectedQuestionIndex(index);
+    dialogProps.openDialog({
+      type: "details",
+      questionInfo: tempData.items[index],
+      questionsInfo: tempData.items,
+      index: index,
+    });
+  };
+
+  const navigateToPreviousQuestion = () => {
+    if (selectedQuestionIndex !== null && selectedQuestionIndex > 0) {
+      const newIndex = selectedQuestionIndex - 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        questionInfo: tempData.items[newIndex],
+        questionsInfo: tempData.items,
+        index: selectedQuestionIndex - 1,
+      });
+    }
+  };
+
+  const navigateToNextQuestion = () => {
+    if (
+      selectedQuestionIndex !== null &&
+      selectedQuestionIndex < tempData.items.length - 1
+    ) {
+      const newIndex = selectedQuestionIndex + 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        questionInfo: tempData.items[newIndex],
+        questionsInfo: tempData.items,
+        index: selectedQuestionIndex + 1,
+      });
+    }
+  };
+  const dialogProps = useDialog();
   const handleSort = (
     field: keyof ItemServerFieldsColumnMapping,
     order?: string,
@@ -189,12 +234,12 @@ const MaturityLevelTable = ({
   };
 
   const mapItemToRow = (item: Item): ItemColumnMapping => {
-    const color = generateColorFromString(item.questionnaire);
+    const color = generateColorFromString(item.questionnaire?.title);
 
     return {
       questionnaire: (
         <Chip
-          label={item.questionnaire}
+          label={item?.questionnaire?.title}
           style={{ backgroundColor: color.backgroundColor, color: color.color }}
         />
       ),
@@ -389,10 +434,14 @@ const MaturityLevelTable = ({
               <>
                 {tempData?.items
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item: any) => {
+                  .map((item: any, index: number) => {
                     const row = mapItemToRow(item);
                     return (
-                      <TableRow key={uniqueId()}>
+                      <TableRow
+                        key={uniqueId()}
+                        component="div"
+                        onClick={() => handleQuestionClick(index)}
+                      >
                         {columns.map((column) => (
                           <TableCell
                             key={column.field}
@@ -452,6 +501,12 @@ const MaturityLevelTable = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <QuestionDetailsContainer
+        {...dialogProps}
+        onClose={() => dialogProps.onClose()}
+        onPreviousQuestion={navigateToPreviousQuestion}
+        onNextQuestion={navigateToNextQuestion}
+      />
     </Box>
   );
 };
@@ -467,7 +522,7 @@ const ActiveCircleIcon = styled(CircleIcon)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
 }));
 
-const CircleRating = (props: any) => {
+export const CircleRating = (props: any) => {
   const { value, ...other } = props;
 
   return (
