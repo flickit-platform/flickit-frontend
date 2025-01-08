@@ -10,7 +10,7 @@ import Divider from "@mui/material/Divider";
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
   assessmentTotalProgress: any;
-  originalItem: any;
+  originalItem: string[];
 }
 
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {

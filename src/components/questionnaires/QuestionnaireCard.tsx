@@ -27,7 +27,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
   permissions: IPermissions;
-  originalItem: any;
+  originalItem: string[];
 }
 
 const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
