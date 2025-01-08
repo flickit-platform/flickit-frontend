@@ -5,7 +5,7 @@ import { t } from "i18next";
 
 const AssessmentHtmlTitle = (props: any) => {
   const { pathInfo } = props;
-  const { spaceId } = useParams();
+  const { spaceId, page } = useParams();
   const { space } = pathInfo;
 
   return (
@@ -24,10 +24,10 @@ const AssessmentHtmlTitle = (props: any) => {
               title: space?.title,
               to: `/${spaceId}/assessments/1`,
             },
-            // {
-            //   title: `${assessment?.title} ${t("insights")}`,
-            //   to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
-            // },
+            {
+              title: `${pathInfo?.assessment?.title} ${t("insights", { lng: "fa" })}`,
+              to: `/${spaceId}/assessments/${page}/${pathInfo?.assessment.id}/insights`,
+            },
             {
               title: t("assessmentDocument", { lng: "fa" }) as string,
             },
