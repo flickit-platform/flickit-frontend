@@ -782,5 +782,6 @@
   "answeredWithLowConfidence": "جواب‌ها با سطح اطمینان پایین",
   "answeredWithoutEvidence": "پاسخ بدون ثبت شاهد",
   "unanswered": "سوال‌های بدون جواب",
-  "noneSelected": "گزینه‌ای انتخاب نشده است"
+  "noneSelected": "گزینه‌ای انتخاب نشده است",
+  "selectedIssuesType": "نوع مشکل انتخاب شده‌است"
 }

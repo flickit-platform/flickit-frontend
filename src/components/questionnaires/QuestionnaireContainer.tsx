@@ -103,13 +103,30 @@ const QuestionnaireContainer = () => {
               displayEmpty={true}
               renderValue={(selected) =>
                 selected.length == 0 ? (
-                  <Typography color="textSecondary">
+                  <Typography  sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}>
                     <Trans i18nKey={"noneSelected"} />
                   </Typography>
                 ) : isAllSelected ? (
-                  <Trans i18nKey={"allIssuesSelected"} />
-                ) : (
+                  <Typography
+                    sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
+                  >
+                    <Trans i18nKey={"allIssuesSelected"} />
+                  </Typography>
+                ) : selected.length == 1 ? (
                   selected.join(", ")
+                ) : (
+                  <Box
+                    sx={{
+                      ...theme.typography.semiBoldLarge,
+                      color: "#333333",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <Typography>{selected.length}</Typography>
+                    <Trans i18nKey={"selectedIssuesType"} />
+                  </Box>
                 )
               }
               sx={{

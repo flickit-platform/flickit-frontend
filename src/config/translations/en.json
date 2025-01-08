@@ -782,5 +782,6 @@
   "answeredWithLowConfidence": "Low confidence answers",
   "answeredWithoutEvidence": "Answers with no evidence",
   "unanswered": "Unanswered questions",
-  "noneSelected": "None selected"
+  "noneSelected": "None selected",
+  "selectedIssuesType": "issue types selected"
 }
