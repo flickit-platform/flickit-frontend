@@ -18,17 +18,28 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
-import { useState } from "react";
+import React, { useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { theme } from "@/config/theme";
+import Grid from "@mui/material/Grid";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
   permissions: IPermissions;
+  originalItem: string[];
 }
 
 const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
-  const { data } = props;
+  const { data, originalItem } = props;
+  const {
+    issues: {
+      answeredWithLowConfidence,
+      answeredWithoutEvidence,
+      unanswered,
+      unresolvedComments,
+    },
+  } = data;
   const { permissions }: { permissions: IPermissions } = props;
   const {
     id,
@@ -41,7 +52,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
     nextQuestion,
   } = data || {};
   const isSmallScreen = useScreenResize("sm");
-  const is_farsi =  Boolean(localStorage.getItem("lang") === "fa") ;
+  const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   const [collapse, setCollapse] = useState<boolean>(false);
 
   return (
@@ -103,7 +114,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             />
           </Box>
         </Box>
-        <Box sx={{ ...styles.centerV }} pt={1} pb={2}>
+        <Box sx={{ ...styles.centerV }} pt={1}>
           <QuestionnaireProgress
             position="relative"
             left={is_farsi ? 0 : "-12px"}
@@ -114,6 +125,135 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             isQuestionnaire={true}
             isSmallScreen={isSmallScreen}
           />
+        </Box>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: "32px" }}>
+          {!!answeredWithLowConfidence &&
+            originalItem.includes("answeredWithLowConfidence") && (
+              <Chip
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          fontSize={"small"}
+                          style={{ fill: theme.palette.error.main }}
+                        />
+                        <Typography
+                          style={{
+                            color: theme.palette.error.main,
+                            ...theme.typography.bodyMedium,
+                          }}
+                        >
+                          <Trans i18nKey={"answeredWithLowConfidence"} />:{" "}
+                          {answeredWithLowConfidence}
+                        </Typography>
+                      </Box>
+                  </Grid>
+                }
+              />
+            )}
+          {!!answeredWithoutEvidence &&
+            originalItem.includes("answeredWithoutEvidence") && (
+              <Chip
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          fontSize={"small"}
+                          style={{ fill: theme.palette.error.main }}
+                        />
+                        <Typography
+                          style={{
+                            color: theme.palette.error.main,
+                            ...theme.typography.bodyMedium,
+                          }}
+                        >
+                          <Trans i18nKey={"answeredWithoutEvidence"} />:{" "}
+                          {answeredWithoutEvidence}
+                        </Typography>
+                      </Box>
+
+                  </Grid>
+                }
+              />
+            )}
+          {!!unanswered && originalItem.includes("unanswered") && (
+            <Chip
+              sx={{ background: "#8A0F240A" }}
+              label={
+                <Grid>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <InfoOutlinedIcon
+                        fontSize={"small"}
+                        style={{ fill: theme.palette.error.main }}
+                      />
+                      <Typography
+                        style={{
+                          color: theme.palette.error.main,
+                          ...theme.typography.bodyMedium,
+                        }}
+                      >
+                        <Trans i18nKey={"unanswered"} />: {unanswered}
+                      </Typography>
+                    </Box>
+                </Grid>
+              }
+            />
+          )}
+          {!!unresolvedComments &&
+            originalItem.includes("unresolvedComments") && (
+              <Chip
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          fontSize={"small"}
+                          style={{ fill: theme.palette.error.main }}
+                        />
+                        <Typography
+                          style={{
+                            color: theme.palette.error.main,
+                            ...theme.typography.bodyMedium,
+                          }}
+                        >
+                          <Trans i18nKey={"unresolvedComments"} />:{" "}
+                          {unresolvedComments}
+                        </Typography>
+                      </Box>
+                  </Grid>
+                }
+              />
+            )}
         </Box>
         <Box display="flex" alignItems="end" justifyContent={"space-between"}>
           <Box>
@@ -191,14 +331,19 @@ const ActionButtons = (props: {
   nextQuestion: number;
 }) => {
   const { id, progress, number_of_answers, nextQuestion, title } = props;
-  const is_farsi = localStorage.getItem("lang") === "fa"
+  const is_farsi = localStorage.getItem("lang") === "fa";
   return (
     <Box display="flex">
       {progress === 100 && (
         <ActionButton
           to={`${id}/1`}
           text="edit"
-          icon={<ModeEditOutlineRoundedIcon sx={{ ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }} fontSize="small" />}
+          icon={
+            <ModeEditOutlineRoundedIcon
+              sx={{ ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }}
+              fontSize="small"
+            />
+          }
         />
       )}
       {progress > 0 && (
@@ -206,14 +351,28 @@ const ActionButtons = (props: {
           to={`${id}/review`}
           text="review"
           state={{ name: "Questionnaires" }}
-          icon={<RemoveRedEyeRoundedIcon sx={{ ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }} fontSize="small" />}
+          icon={
+            <RemoveRedEyeRoundedIcon
+              sx={{ ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }}
+              fontSize="small"
+            />
+          }
         />
       )}
       {progress < 100 && progress > 0 && (
         <ActionButton
           to={`${id}/${nextQuestion || number_of_answers + 1}`}
           text="continue"
-          icon={<PlayArrowRoundedIcon sx={{transform: is_farsi ? 'rotate(-180deg)' : "", ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }} fontSize="small" />}
+          icon={
+            <PlayArrowRoundedIcon
+              sx={{
+                transform: is_farsi ? "rotate(-180deg)" : "",
+                ml: is_farsi ? 0 : 1,
+                mr: is_farsi ? 1 : 0,
+              }}
+              fontSize="small"
+            />
+          }
           data-cy={`questionnaire-${title}-start-btn`}
         />
       )}
@@ -221,7 +380,16 @@ const ActionButtons = (props: {
         <ActionButton
           to={`${id}/1`}
           text="start"
-          icon={<StartRoundedIcon sx={{transform: is_farsi ? 'rotate(-180deg)' : "", ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }} fontSize="small" />}
+          icon={
+            <StartRoundedIcon
+              sx={{
+                transform: is_farsi ? "rotate(-180deg)" : "",
+                ml: is_farsi ? 0 : 1,
+                mr: is_farsi ? 1 : 0,
+              }}
+              fontSize="small"
+            />
+          }
           data-cy={`questionnaire-${title}-start-btn`}
         />
       )}

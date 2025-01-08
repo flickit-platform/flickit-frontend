@@ -10,10 +10,12 @@ import Divider from "@mui/material/Divider";
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
   assessmentTotalProgress: any;
+  originalItem: string[];
 }
 
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
-  const { questionnaireQueryData, assessmentTotalProgress } = props;
+  const { questionnaireQueryData, assessmentTotalProgress, originalItem } =
+    props;
 
   return (
     <>
@@ -78,16 +80,27 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
               const { items, permissions } = data;
               return (
                 <Grid container spacing={2}>
-                  {items.map((data: any) => {
-                    return (
-                      <Grid item xl={4} md={6} sm={12} xs={12} key={data.id}>
-                        <QuestionnaireCard
-                          data={data}
-                          permissions={permissions}
-                        />
-                      </Grid>
-                    );
-                  })}
+                  {items
+                    .filter((item: any) =>
+                      originalItem.length === 0
+                        ? item
+                        : Object.keys(item.issues).some(
+                            (key) =>
+                              originalItem.includes(key) &&
+                              item.issues[key] > 0,
+                          ),
+                    )
+                    .map((data: any) => {
+                      return (
+                        <Grid item xl={4} md={6} sm={12} xs={12} key={data.id}>
+                          <QuestionnaireCard
+                            data={data}
+                            permissions={permissions}
+                            originalItem={originalItem}
+                          />
+                        </Grid>
+                      );
+                    })}
                 </Grid>
               );
             }}
@@ -97,4 +110,3 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
     </>
   );
 };
-

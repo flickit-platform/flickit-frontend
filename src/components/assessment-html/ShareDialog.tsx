@@ -8,6 +8,7 @@ import {
   Snackbar,
   Divider,
   Typography,
+  Chip,
 } from "@mui/material";
 import { Share, Link as LinkIcon } from "@mui/icons-material";
 import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
@@ -19,19 +20,24 @@ import stringAvatar from "@/utils/stringAvatar";
 import { useQuery } from "@/utils/useQuery";
 import { Link, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
+import toastError from "@/utils/toastError";
+import { ICustomError } from "@/utils/CustomError";
+import QueryBatchData from "../common/QueryBatchData";
 
 interface IDialogProps {
   open: boolean;
   onClose: () => void;
-  fetchData: any;
   title: string;
+  fetchAssessmentMembers: any;
+  fetchAssessmentMembersInvitees: any;
 }
 
 export const ShareDialog = ({
   open,
   onClose,
-  fetchData,
   title,
+  fetchAssessmentMembers,
+  fetchAssessmentMembersInvitees,
 }: IDialogProps) => {
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -39,28 +45,34 @@ export const ShareDialog = ({
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
 
-  const inviteMemberToAssessment = useQuery({
-    service: (args, config) => service.inviteMemberToAssessment(args, config),
+  const grantReportAccess = useQuery({
+    service: (args, config) => service.grantReportAccess(args, config),
     runOnMount: false,
   });
 
   useEffect(() => {
     if (open) {
-      fetchData.query();
+      fetchAssessmentMembers.query();
+      fetchAssessmentMembersInvitees.query();
     }
   }, [open]);
 
   const handleAddClick = async () => {
-    await inviteMemberToAssessment
-      .query({
-        email: value,
-        assessmentId,
-        roleId: 0,
-      })
-      .then(() => {
-        fetchData.query();
-        setValue("");
-      });
+    try {
+      await grantReportAccess
+        .query({
+          email: value,
+          assessmentId,
+        })
+        .then(() => {
+          fetchAssessmentMembers.query();
+          fetchAssessmentMembersInvitees.query();
+          setValue("");
+        });
+    } catch (error) {
+      const err = error as ICustomError;
+      toastError(err);
+    }
   };
 
   const handleCopyClick = () => {
@@ -115,8 +127,11 @@ export const ShareDialog = ({
         </Typography>
         <Divider sx={{ mt: 1 }} />
       </Box>
-      <QueryData
-        {...fetchData}
+      <QueryBatchData
+        queryBatchData={[
+          fetchAssessmentMembers,
+          fetchAssessmentMembersInvitees,
+        ]}
         renderLoading={() => {
           return (
             <>
@@ -132,30 +147,32 @@ export const ShareDialog = ({
             </>
           );
         }}
-        render={(data) => {
-          const { items } = data;
+        render={([assessmentMembers, asssessmentMembersInvitees]) => {
           return (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              {items.map((member: any) => {
+              {[
+                ...assessmentMembers.items,
+                ...asssessmentMembersInvitees.items,
+              ].map((member: any) => {
                 const { displayName, id, pictureLink, email } = member;
                 return (
-                  displayName && (
-                    <Box
-                      key={id}
-                      sx={{
-                        ...styles.centerV,
-                        gap: 1,
-                      }}
-                    >
-                      <Avatar
-                        {...stringAvatar(displayName.toUpperCase())}
-                        src={pictureLink}
-                        sx={{ width: 24, height: 24, fontSize: 12 }}
-                      ></Avatar>
-
-                      {email}
-                    </Box>
-                  )
+                  <Box
+                    key={id}
+                    sx={{
+                      ...styles.centerV,
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      {...stringAvatar(displayName?.toUpperCase())}
+                      src={pictureLink}
+                      sx={{ width: 24, height: 24, fontSize: 12 }}
+                    ></Avatar>
+                    {email}
+                    {asssessmentMembersInvitees.items.includes(member) && (
+                      <Chip label={t("invited")} size="small" />
+                    )}
+                  </Box>
                 );
               })}
             </Box>

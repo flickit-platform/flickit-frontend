@@ -775,5 +775,16 @@
   "consideredSubjects": "Considered Subject",
   "exportDSL": "Export DSL",
   "approve": "approve",
-  "questionDetails": "Question Details"
+  "questionDetails": "Question Details",
+  "filterQuestionsWithIssues": "Filter by questionnair’s issues",
+  "unansweredQuestions": "Unanswered questions",
+  "answersWithNoEvidence": "Answers with no evidence",
+  "lowConfidenceAnswers": "Low Confidence Answers",
+  "unresolvedComments": "Unresolved comments",
+  "allIssuesSelected": "All issues selected",
+  "answeredWithLowConfidence": "Low confidence answers",
+  "answeredWithoutEvidence": "Answers with no evidence",
+  "unanswered": "Unanswered questions",
+  "noneSelected": "None selected",
+  "selectedIssuesType": "issue types selected"
 }

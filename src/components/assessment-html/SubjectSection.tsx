@@ -67,10 +67,11 @@ const SubjectReport = ({ data }: any) => {
                 </Typography>
                 <Typography
                   sx={{
-                    ...theme.typography.titleSmall,
-                    fontWeight: "light",
+                    ...theme.typography.extraLight,
+                    fontWeight:300,
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                    mt: 2,
                   }}
                   textAlign="justify"
                 >

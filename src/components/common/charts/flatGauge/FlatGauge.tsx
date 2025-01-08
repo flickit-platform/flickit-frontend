@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { getMaturityLevelColors } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
@@ -44,6 +44,9 @@ const FlatGauge = (props: IGaugeProps) => {
     lng,
     ...rest
   } = props;
+  const isMobileScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("md"),
+  );
 
   if (maturityLevelNumber < levelValue) return null;
 
@@ -66,7 +69,7 @@ const FlatGauge = (props: IGaugeProps) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet[levelValue - 1];
+  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
 
   return (
     <Suspense fallback={<Box>fallback</Box>}>
@@ -114,7 +117,7 @@ const FlatGauge = (props: IGaugeProps) => {
                   fontFamily: languageDetector(text ?? "")
                     ? farsiFontFamily
                     : primaryFontFamily,
-                  minWidth: "80px",
+                  minWidth: !isMobileScreen ? "80px" : "0",
                 }}
               >
                 <Trans i18nKey={`${text}`} />
@@ -128,7 +131,8 @@ const FlatGauge = (props: IGaugeProps) => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "5px",
-                ...theme.typography.titleSmall,
+                ...theme.typography.extraLight,
+                fontWeight: 300,
                 color: "#9DA7B3",
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily

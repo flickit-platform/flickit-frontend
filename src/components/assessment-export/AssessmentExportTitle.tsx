@@ -37,10 +37,10 @@ const AssessmentExportTitle = (props: IAssessmentExportTitle) => {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
             },
-            // {
-            //   title: `${assessment?.title} ${t("insights")}`,
-            //   to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
-            // },
+            {
+              title: `${pathInfo?.assessment?.title} ${t("insights")}`,
+              to: `/${spaceId}/assessments/${page}/${pathInfo?.assessment?.id}/insights`,
+            },
             {
               title: t("assessmentDocument") as string,
             },

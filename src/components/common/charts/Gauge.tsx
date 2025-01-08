@@ -41,7 +41,7 @@ const Gauge = (props: IGaugeProps) => {
     ...rest
   } = props;
   const colorPallet = getMaturityLevelColors(maturity_level_number);
-  const colorCode = colorPallet[level_value - 1];
+  const colorCode = colorPallet ? colorPallet[level_value - 1] : "gray";
   const GaugeComponent = useMemo(
     () => lazy(() => import(`./GaugeComponent${maturity_level_number}.tsx`)),
     [maturity_level_number],

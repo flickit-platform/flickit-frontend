@@ -25,6 +25,10 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
+import { ShareDialog } from "./ShareDialog";
+import { LoadingButton } from "@mui/lab";
+import { Share } from "@mui/icons-material";
+import { Trans } from "react-i18next";
 
 type MaturityLevel = {
   value: number;
@@ -110,6 +114,7 @@ const AssessmentExportContainer = () => {
     typography: (isFarsi = true) => ({
       direction: isFarsi ? "rtl" : "ltr",
       fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+      fontWeight: 200,
     }),
   };
 
@@ -183,6 +188,12 @@ const AssessmentExportContainer = () => {
     runOnMount: false,
   });
 
+  const fetchAssessmentMembersInvitees = useQuery<PathInfo>({
+    service: (args, config) =>
+      service.fetchAssessmentMembersInvitees({ assessmentId, ...(args || {}) }, config),
+    runOnMount: false,
+  });
+
   const combinedAttributes = jsonData?.subjects.flatMap((subject) =>
     subject.attributes.map((attribute) => ({
       name: attribute.title,
@@ -231,7 +242,7 @@ const AssessmentExportContainer = () => {
 
   const renderSharingSection = () => (
     <>
-      {/* <LoadingButton
+      <LoadingButton
         variant="contained"
         startIcon={<Share fontSize="small" />}
         size="small"
@@ -242,9 +253,10 @@ const AssessmentExportContainer = () => {
       <ShareDialog
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
-        fetchData={fetchAssessmentMembers}
+        fetchAssessmentMembers={fetchAssessmentMembers}
+        fetchAssessmentMembersInvitees={fetchAssessmentMembersInvitees}
         title={jsonData?.assessment.title}
-      /> */}
+      />
     </>
   );
 
@@ -269,7 +281,7 @@ const AssessmentExportContainer = () => {
                     display="flex"
                     justifyContent="flex-end"
                     alignItems="center"
-                    // mt={-4}
+                    mt={-4}
                   >
                     {renderSharingSection()}
                   </Box>
@@ -328,26 +340,26 @@ const AssessmentExportContainer = () => {
                         borderStartStartRadius: 16,
                         boxShadow: "none",
                         width: "100%",
-                        padding: 6,
+                        padding: { md: 6, xs: 1 },
                       }}
                     >
                       <Box
                         sx={{
                           position: "absolute",
-                          right: "40px",
-                          top: "60px",
-                          bottom: "40px",
-                          width: "8px",
+                          right: { md: "40px", xs: "12px" },
+                          top: { md: "60px", xs: "6px" },
+                          bottom: { md: "40px", xs: "4px" },
+                          width: { md: "8px", xs: "2px" },
                           backgroundColor: "#D5E5F6",
                         }}
                       />
                       <Box
                         sx={{
                           position: "absolute",
-                          left: "40px",
-                          top: "60px",
-                          bottom: "40px",
-                          width: "8px",
+                          left: { md: "40px", xs: "12px" },
+                          top: { md: "60px", xs: "6px" },
+                          bottom: { md: "40px", xs: "4px" },
+                          width: { md: "8px", xs: "2px" },
                           backgroundColor: "#D5E5F6",
                         }}
                       />
@@ -390,8 +402,7 @@ const AssessmentExportContainer = () => {
                             <Typography
                               textAlign="justify"
                               sx={{
-                                ...theme.typography.titleSmall,
-                                fontWeight: "light",
+                                ...theme.typography.extraLight,
                                 mt: 1,
                                 direction: true ? "rtl" : "ltr",
                                 fontFamily: true
@@ -421,8 +432,7 @@ const AssessmentExportContainer = () => {
                             <Typography
                               textAlign="justify"
                               sx={{
-                                ...theme.typography.titleSmall,
-                                fontWeight: "light",
+                                ...theme.typography.extraLight,
                                 mt: 1,
                                 direction: true ? "rtl" : "ltr",
                                 fontFamily: true
@@ -468,7 +478,7 @@ const AssessmentExportContainer = () => {
                             )[subject.maturityLevel.value - 1],
                             label:
                               subject.maturityLevel.title +
-                              "(" +
+                              " (" +
                               subject.maturityLevel.value +
                               "/" +
                               jsonData?.assessment.assessmentKit
@@ -523,6 +533,7 @@ const AssessmentExportContainer = () => {
                                 fontFamily: true
                                   ? farsiFontFamily
                                   : primaryFontFamily,
+                                gap: "4px",
                               }}
                             >
                               <InfoOutlinedIcon fontSize="small" />
@@ -533,7 +544,7 @@ const AssessmentExportContainer = () => {
                             <Typography
                               textAlign="justify"
                               sx={{
-                                ...theme.typography.titleSmall,
+                                ...theme.typography.extraLight,
                                 fontWeight: "light",
                                 mt: 1,
                                 direction: true ? "rtl" : "ltr",
@@ -621,7 +632,7 @@ const AssessmentExportContainer = () => {
                         borderEndEndRadius: 16,
                         boxShadow: "none",
                         width: "100%",
-                        padding: 6,
+                        padding: { md: 6, xs: 1 },
                       }}
                     >
                       <Typography
