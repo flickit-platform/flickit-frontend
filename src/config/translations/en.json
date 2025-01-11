@@ -684,7 +684,7 @@
   "yesDeleteIt": "Yes, delete it",
   "yesterday": "Yesterday",
   "you": "You",
-  "youAnsweredQuestionOf": "{{answeredQuestions}} out of {{totalQuestions}} questions have been answered",
+  "youAnsweredQuestionOf": "{{answeredQuestions}} out of {{totalQuestions}} questions in the {{questionnaire}} questionnaire has been answered.",
   "youCan": "You can",
   "youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces": "You can only have access to the assessments that are in your spaces.",
   "youDontHaveCorrectPermissions": "You don't have correct permissions",

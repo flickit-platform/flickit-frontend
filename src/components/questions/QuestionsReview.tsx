@@ -32,7 +32,7 @@ const QuestionsReview = () => {
 
 export const Review = ({ questions = [], isReviewPage }: any) => {
   const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", questionnaireId = "" } = useParams();
 
   const AssessmentInfo = useQuery({
     service: (args = { assessmentId }, config) =>
@@ -48,12 +48,15 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
   const navigate = useNavigate();
   const { questionsInfo } = useQuestionContext();
   const [answeredQuestions, setAnsweredQuestions] = useState<number>();
+  const [questionnaireTitle, setQuestionnaireTitle] = useState<string>("");
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   useEffect(() => {
     if (questionsInfo.questions) {
       const answeredQuestionsCount = questionsInfo.questions.filter(
         (question) =>
-          question.answer && ( question.answer.selectedOption !== null || question.answer.isNotApplicable ),
+          question.answer &&
+          (question.answer.selectedOption !== null ||
+            question.answer.isNotApplicable),
       ).length;
       setAnsweredQuestions(answeredQuestionsCount);
       if (answeredQuestionsCount === 0) {
@@ -61,7 +64,15 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
       }
     }
   }, [questionsInfo]);
-  const { assessmentTotalProgress } = useQuestionnaire();
+  const { assessmentTotalProgress, fetchPathInfo } = useQuestionnaire();
+  useEffect(() => {
+    (async () => {
+      const {
+        questionnaire: { title },
+      } = await fetchPathInfo.query({ questionnaireId });
+      setQuestionnaireTitle(title);
+    })();
+  }, [questionnaireId]);
 
   const progress =
     ((assessmentTotalProgress?.data?.answersCount || 0) /
@@ -234,6 +245,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                         answeredQuestions: answeredQuestions,
                         totalQuestions:
                           questionsInfo?.total_number_of_questions,
+                        questionnaire: questionnaireTitle,
                       }}
                     />
                   </Typography>

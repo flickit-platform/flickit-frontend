@@ -683,7 +683,7 @@
   "yesDeleteIt": "بله، حذف شود",
   "yesterday": "دیروز",
   "you": "شما",
-  "youAnsweredQuestionOf": "{{answeredQuestions}} از {{totalQuestions}} سوال پاسخ داده شده است",
+  "youAnsweredQuestionOf": "{{answeredQuestions}} از {{totalQuestions}} سوال برای پرسشنامه‌ی {{questionnaire}} پاسخ داده شده است",
   "youCan": "شما می‌توانید",
   "youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces": "تنها می‌توانید به ارزیابی‌هایی که در فضاهای کاریی شما هستند دسترسی داشته باشید.",
   "youDontHaveCorrectPermissions": ".شما دسترسی‌های لازم را ندارید.",

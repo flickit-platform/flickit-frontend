@@ -18,6 +18,7 @@ import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
+import {styles} from "@styles";
 
 const QuestionsTitle = (props: {
   data: IQuestionnaireModel;
@@ -150,20 +151,29 @@ const QuestionsTitle = (props: {
                   <Trans i18nKey="questionnaireFinished" />
                 </Typography>
               ) : (
-                <Typography
-                  display="inline-block"
-                  variant="h5"
-                  fontWeight={"bold"}
-                  sx={{
-                    opacity: 0.6,
-                    ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
-                    mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
-                  }}
-                >
-                  {" "}
-                  <Trans i18nKey="question" /> {questionIndex}/
-                  {total_number_of_questions}
-                </Typography>
+                <Box sx={{ ...styles.centerVH }}>
+                  <Typography
+                    display="inline-block"
+                    variant="h5"
+                    fontWeight={"bold"}
+                  >
+                    {questionnaire.title}{" -"}
+                  </Typography>{" "}
+                  <Typography
+                    display="inline-block"
+                    variant="h5"
+                    fontWeight={"bold"}
+                    sx={{
+                      opacity: 0.6,
+                      ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
+                      mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
+                    }}
+                  >
+                    {" "}
+                    <Trans i18nKey="question" /> {questionIndex}/
+                    {total_number_of_questions}
+                  </Typography>
+                </Box>
               )}
             </Box>
           </>
