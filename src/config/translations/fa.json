@@ -784,7 +784,7 @@
   "questionDetails": "جزئیات سوال",
   "exportDSL": "بازسازی DSL",
   "approve": "موافقت کردن",
-  "filterQuestionsWithIssues": "نمایش پرسشنامه‌ها برحسب مشکل",
+  "filterQuestionsWithIssues": "نمایش برحسب مشکل",
   "unansweredQuestions": "پرسش‌های بی‌‌پاسخ",
   "answersWithNoEvidence": "ثبت پاسخ بدون شاهد",
   "lowConfidenceAnswers": "جواب‌ها با سطح اطمینان پایین",
@@ -793,6 +793,6 @@
   "answeredWithLowConfidence": "جواب‌ها با سطح اطمینان پایین",
   "answeredWithoutEvidence": "پاسخ بدون ثبت شاهد",
   "unanswered": "سوال‌های بدون جواب",
-  "noneSelected": "گزینه‌ای انتخاب نشده است",
+  "none": "گزینه‌ای انتخاب نشده‌است",
   "selectedIssuesType": "نوع مشکل انتخاب شده‌است"
 }

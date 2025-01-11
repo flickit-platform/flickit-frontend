@@ -43,133 +43,12 @@ const QuestionnaireContainer = () => {
       (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
 
-  const [issues, setIssues] = useState<string[]>([]);
-  const [originalItem, setOriginalItem] = useState<string[]>([]);
-
-  const handleChange = (event: SelectChangeEvent<typeof issues>) => {
-    const {
-      target: { value },
-    } = event;
-    setIssues(typeof value === "string" ? value.split(",") : value);
-  };
-  const handelSaveOriginal = (name: any) => {
-    if (!originalItem.includes(name)) {
-      setOriginalItem([...originalItem, name]);
-    } else {
-      const copySave = [...originalItem];
-      const filtered = copySave.filter((item) => item != name);
-      setOriginalItem(filtered);
-    }
-  };
-
-  const itemNames = [
-    { translate: t("unansweredQuestions"), original: "unanswered" },
-    {
-      translate: t("lowConfidenceAnswers"),
-      original: "answeredWithLowConfidence",
-    },
-    { translate: t("unresolvedComments"), original: "unresolvedComments" },
-    {
-      translate: t("answersWithNoEvidence"),
-      original: "answeredWithoutEvidence",
-    },
-  ];
-
-  const handelSelected = (selected: any) => {
-      const isAllSelected = issues.length === itemNames.length;
-
-      if (selected.length == 0) {
-      return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
-        >
-          <Trans i18nKey={"noneSelected"} />
-        </Typography>
-      );
-    } else if (isAllSelected) {
-      return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldLarge, color: "#333333" }}
-        >
-          <Trans i18nKey={"allIssuesSelected"} />
-        </Typography>
-      );
-    } else {
-      if (selected.length == 1) {
-        return selected.join(", ");
-      } else {
-        return (
-          <Box
-            sx={{
-              ...theme.typography.semiBoldLarge,
-              color: "#333333",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <Typography>{selected.length}</Typography>
-            <Trans i18nKey={"selectedIssuesType"} />
-          </Box>
-        );
-      }
-    }
-  };
 
   return (
     <PermissionControl
       error={[questionnaireQueryData.errorObject?.response?.data]}
     >
       <Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <Typography>
-            <Trans i18nKey={"filterQuestionsWithIssues"} />:
-          </Typography>
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={issues.map((item: any) => t(item))}
-              onChange={handleChange}
-              displayEmpty={true}
-              renderValue={(selected) => handelSelected(selected)}
-              sx={{
-                ...theme.typography.semiBoldLarge,
-                fontSize: "14px",
-                background: "#fff",
-                px: "0px",
-                height: "40px",
-              }}
-            >
-              {itemNames.map(
-                (item: { translate: string; original: string }) => (
-                  <MenuItem
-                    key={item.translate}
-                    value={item.translate}
-                    onClick={() => handelSaveOriginal(item.original)}
-                  >
-                    <Checkbox checked={issues.includes(t(item.translate))} />
-                    <ListItemText
-                      sx={{
-                        ...theme.typography.semiBoldLarge,
-                        color: "#333333",
-                      }}
-                      primary={<Trans i18nKey={`${item.translate}`} />}
-                    />
-                  </MenuItem>
-                ),
-              )}
-            </Select>
-          </FormControl>
-        </Box>
         <Box
           flexWrap={"wrap"}
           sx={{
@@ -191,7 +70,6 @@ const QuestionnaireContainer = () => {
           <QuestionnaireList
             assessmentTotalProgress={assessmentTotalProgress}
             questionnaireQueryData={questionnaireQueryData}
-            originalItem={originalItem}
           />
         </Box>
       </Box>
