@@ -8,6 +8,7 @@ import getFieldError from "@utils/getFieldError";
 import firstCharDetector from "@/utils/firstCharDetector";
 import {primaryFontFamily, theme} from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
+import languageDetector from "@utils/languageDetector";
 
 const InputField = () => {
   return <TextField />;
@@ -89,7 +90,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       setValueCount(event.target.value);
     }
     if (type !== "password") {
-      const isFarsi = firstCharDetector(event.target.value);
+      const isFarsi = languageDetector(event.target.value);
       event.target.dir = event.target.value.length == 0 && rtl ? "rtl" :
                          event.target.value.length == 0 && !rtl ? "ltr" :
                          rtl && isFarsi ? "rtl"  : !rtl && isFarsi ? "rtl" : "ltr"

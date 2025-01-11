@@ -1733,7 +1733,7 @@ const EvidenceDetail = (props: any) => {
     resolvable,
   } = item;
   const { displayName, pictureLink } = createdBy;
-  const is_farsi = firstCharDetector(description);
+  const is_farsi = languageDetector(description);
   const [evidenceBG, setEvidenceBG] = useState<any>();
 
   const { service } = useServiceContext();
