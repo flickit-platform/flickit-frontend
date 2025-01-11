@@ -350,6 +350,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
       </Box>
       <QuestionTabsTemplate
         value={value}
+        setValue={setValue}
         handleChange={handleChange}
         questionsInfo={questionsInfo}
         questionInfo={questionInfo}
@@ -359,22 +360,104 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, handleChange, questionsInfo, questionInfo } = props;
+  const { value, setValue, handleChange, questionsInfo, questionInfo } = props;
   const [isExpanded, setIsExpanded] = useState(true);
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
+  const [counts, setCounts] = useState({
+    evidences: 0,
+    history: 0,
+    comment: 0,
+  });
 
   const toggleTabs = () => {
     setIsExpanded((prev) => !prev);
+    if (!value) {
+      setValue(
+        counts.evidences
+          ? "evidences"
+          : counts.history
+            ? "history"
+            : counts.comment
+              ? "comment"
+              : null,
+      );
+    }
   };
 
+  const updateCount = (type: string, count: number) => {
+    setCounts((prev) => ({ ...prev, [type]: count }));
+  };
+
+  const handleTabFallback = () => {
+    if (value === "evidences" && isExpanded && counts.evidences === 0) {
+      setValue(counts.history ? "history" : counts.comment ? "comment" : null);
+    }
+  };
+
+  // Queries
+  const queryData = useQuery({
+    service: (
+      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 10 },
+      config,
+    ) => service.fetchAnswersHistory(args, config),
+    toastError: true,
+    runOnMount: true,
+  });
+
+  const evidencesQueryData = useQuery({
+    service: (
+      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 50 },
+      config,
+    ) => service.fetchEvidences(args, config),
+    toastError: true,
+    runOnMount: true,
+  });
+
+  // Effects
   useEffect(() => {
     if (questionsInfo?.permissions?.readonly) {
       setIsExpanded(false);
+      queryData.query();
+      evidencesQueryData.query();
     }
-  }, [questionInfo]);
+  }, [questionsInfo?.permissions?.readonly, questionInfo]);
 
   useEffect(() => {
-    setIsExpanded(true);
+    if (value) {
+      setIsExpanded(true);
+    }
   }, [value]);
+
+  useEffect(() => {
+    if (queryData.data?.items) {
+      updateCount("history", queryData.data.total || 0);
+    }
+  }, [queryData.data]);
+
+  useEffect(() => {
+    if (evidencesQueryData.data?.items) {
+      const evidenceItems = evidencesQueryData.data.items;
+      const evidenceCount = evidenceItems.filter(
+        (item: any) => item?.type !== null,
+      ).length;
+      const commentCount = evidenceItems.filter(
+        (item: any) => item?.type === null,
+      ).length;
+
+      updateCount("evidences", evidenceCount);
+      updateCount("comment", commentCount);
+      if (questionsInfo.permissions.readonly) {
+        handleTabFallback();
+      }
+    }
+  }, [evidencesQueryData.data]);
+
+  useEffect(() => {
+    if (!isExpanded && questionsInfo.permissions.readonly) {
+      setValue(null);
+    }
+  }, [isExpanded]);
 
   return (
     <TabContext value={value}>
@@ -390,9 +473,11 @@ export const QuestionTabsTemplate = (props: any) => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Trans i18nKey="evidences" />
+                {` (${counts.evidences})`}
               </Box>
             }
             value="evidences"
+            disabled={questionsInfo.permissions.readonly && !counts.evidences}
           />
           {questionsInfo?.permissions?.viewAnswerHistory && (
             <Tab
@@ -400,9 +485,11 @@ export const QuestionTabsTemplate = (props: any) => {
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Trans i18nKey="answerHistory" />
+                  {` (${counts.history})`}
                 </Box>
               }
               value="history"
+              disabled={questionsInfo.permissions.readonly && !counts.history}
             />
           )}
           {questionsInfo?.permissions?.viewAnswerHistory && (
@@ -411,9 +498,11 @@ export const QuestionTabsTemplate = (props: any) => {
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Trans i18nKey="comments" />
+                  {` (${counts.comment})`}
                 </Box>
               }
               value="comment"
+              disabled={questionsInfo.permissions.readonly && !counts.comment}
             />
           )}
           <IconButton
@@ -424,6 +513,12 @@ export const QuestionTabsTemplate = (props: any) => {
               alignSelf: "center",
               marginInlineStart: "auto",
             }}
+            disabled={
+              questionsInfo.permissions.readonly &&
+              !counts.comment &&
+              !counts.evidences &&
+              !counts.history
+            }
           >
             {isExpanded ? (
               <ExpandLess fontSize="small" />
@@ -441,6 +536,7 @@ export const QuestionTabsTemplate = (props: any) => {
                 questionInfo={questionInfo}
                 type="evidence"
                 permissions={questionsInfo?.permissions}
+                queryData={evidencesQueryData}
               />
             </Box>
           </TabPanel>
@@ -450,6 +546,7 @@ export const QuestionTabsTemplate = (props: any) => {
                 questionInfo={questionInfo}
                 type="history"
                 permissions={questionsInfo?.permissions}
+                queryData={queryData}
               />
             </Box>
           </TabPanel>
@@ -459,6 +556,7 @@ export const QuestionTabsTemplate = (props: any) => {
                 questionInfo={questionInfo}
                 type="comment"
                 permissions={questionsInfo?.permissions}
+                queryData={evidencesQueryData}
               />
             </Box>
           </TabPanel>
@@ -774,10 +872,12 @@ const AnswerDetails = ({
   questionInfo,
   type,
   permissions,
+  queryData,
 }: {
   questionInfo: any;
   type: string;
   permissions?: IPermissions;
+  queryData: any;
 }) => {
   const [page, setPage] = useState(0);
   const [data, setData] = useState<IAnswerHistory[]>([]);
@@ -785,18 +885,15 @@ const AnswerDetails = ({
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
-  const queryData = useQuery({
-    service: (
-      args = { questionId: questionInfo.id, assessmentId, page, size: 10 },
-      config,
-    ) => service.fetchAnswersHistory(args, config),
-    toastError: true,
-    runOnMount: Boolean(type === "history"),
-  });
-
   useEffect(() => {
     if (queryData.data?.items && type === "history") {
-      setData((prevData) => [...prevData, ...queryData.data.items]);
+      setData((prevData) => {
+        const mergedData = [...prevData, ...queryData.data.items];
+        const uniqueData = Array.from(
+          new Map(mergedData.map((item) => [item.creationTime, item])).values(),
+        );
+        return uniqueData;
+      });
     }
   }, [queryData.data]);
 
@@ -811,7 +908,7 @@ const AnswerDetails = ({
   };
 
   return queryData.loading ? (
-    <Box sx={{ ...styles.centerVH }} height="30vh" width="100%">
+    <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
       <CircularProgress />
     </Box>
   ) : (
@@ -831,7 +928,7 @@ const AnswerDetails = ({
             {...dialogProps}
             type={type}
             questionInfo={questionInfo}
-            // evidencesQueryData={queryData}
+            evidencesQueryData={queryData}
             permissions={permissions}
           />
         </Box>
@@ -1023,18 +1120,15 @@ const Evidence = (props: any) => {
     questionInfo,
     permissions,
     type,
-  }: { questionInfo: IQuestionInfo; permissions: IPermissions; type: string } =
-    props;
+    evidencesQueryData,
+  }: {
+    questionInfo: IQuestionInfo;
+    permissions: IPermissions;
+    type: string;
+    evidencesQueryData: any;
+  } = props;
   const { assessmentId = "" } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
-
-  const evidencesQueryData = useQuery({
-    service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 50 },
-      config,
-    ) => service.fetchEvidences(args, config),
-    toastError: true,
-  });
 
   const addEvidence = useQuery({
     service: (args, config) => service.addEvidence(args, config),
@@ -1047,11 +1141,10 @@ const Evidence = (props: any) => {
   });
 
   useEffect(() => {
-    (async () => {
-      const { items } = await evidencesQueryData.query();
-      setEvidencesData(items);
-    })();
-  }, []);
+    if (evidencesQueryData.data?.items) {
+      setEvidencesData(evidencesQueryData.data?.items);
+    }
+  }, [evidencesQueryData.data]);
 
   const [value, setValue] = useState<any>("POSITIVE");
   const [createAttachment, setCreateAttachment] = useState(false);
@@ -1170,7 +1263,7 @@ const Evidence = (props: any) => {
     }
   }, [type]);
   return evidencesQueryData.loading ? (
-    <Box sx={{ ...styles.centerVH }} height="30vh" width="100%">
+    <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
       <CircularProgress />
     </Box>
   ) : (
