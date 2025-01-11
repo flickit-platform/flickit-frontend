@@ -126,7 +126,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             isSmallScreen={isSmallScreen}
           />
         </Box>
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: "32px" }}>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: originalItem.length >= 1 ? "15px" : "10px" }}>
           {!!answeredWithLowConfidence &&
             originalItem.includes("answeredWithLowConfidence") && (
               <Chip
