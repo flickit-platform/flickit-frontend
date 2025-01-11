@@ -46,19 +46,15 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   } = props;
   const { questionInfo = {}, questionsInfo, index } = context;
 
-  const [value, setValue] = useState("evidences");
+  const [value, setValue] = useState(null);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: any) => {
     setValue(newValue);
   };
 
   const close = () => {
     closeDialog();
   };
-
-  useEffect(() => {
-    setValue("evidences");
-  }, [index]);
   const renderNavigation = () => (
     <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
       <Button
@@ -173,11 +169,37 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           </Box>
         </>
       ) : (
-        <EmptyState title={t("noOptionSelected")} />
+        <AlertBox
+          severity="error"
+          variant="filled"
+          sx={{
+            backgroundColor: "rgba(138, 15, 36, 0.04)",
+            color: "#8A0F24",
+            borderRadius: "8px",
+            mb: 2,
+            width: "100%",
+          }}
+          action={
+            <Button
+              variant="outlined"
+              color="error"
+              component={Link}
+              target="_blank"
+              to={`./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
+            >
+              <Trans i18nKey="answerNow" />
+            </Button>
+          }
+        >
+          <AlertTitle>
+            <Trans i18nKey={"noQuestionHasBeenAnswered"} />
+          </AlertTitle>
+        </AlertBox>
       )}
 
       <QuestionTabsTemplate
         value={value}
+        setValue={setValue}
         handleChange={handleChange}
         questionsInfo={{
           ...questionsInfo,
@@ -205,32 +227,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     >
       <Box overflow="auto" px={2}>
         {renderNavigation()}
-        {!questionInfo?.answer?.index && (
-          <AlertBox
-            severity="error"
-            variant="filled"
-            sx={{
-              backgroundColor: "rgba(138, 15, 36, 0.04)",
-              color: "#8A0F24",
-              borderRadius: "8px",
-              mb: 2,
-            }}
-            action={
-              <Button
-                variant="outlined"
-                color="error"
-                component={Link}
-                to={`./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
-              >
-                <Trans i18nKey="answerNow" />
-              </Button>
-            }
-          >
-            <AlertTitle>
-              <Trans i18nKey={"noQuestionHasBeenAnswered"} />
-            </AlertTitle>
-          </AlertBox>
-        )}
         {renderQuestionDetails()}
         <Divider sx={{ width: "100%", my: 2 }} />
         {renderAnswerDetails()}
@@ -248,6 +244,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           component={Link}
           to={`./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
           startIcon={<QuestionAnswer />}
+          target="_blank"
         >
           <Trans i18nKey="goToQuestion" />
         </Button>

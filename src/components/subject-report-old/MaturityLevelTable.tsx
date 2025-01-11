@@ -474,6 +474,7 @@ const MaturityLevelTable = ({
                                     ? "rtl"
                                     : "ltr"
                                   : "unset",
+                              cursor: "pointer",
                             }}
                           >
                             {column.field === "confidence" ? (
