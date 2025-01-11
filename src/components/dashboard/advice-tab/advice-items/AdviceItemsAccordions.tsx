@@ -457,7 +457,7 @@ const AdviceItemsAccordion: React.FC<{
 
   return (
     <Box>
-      {items.map((item) => (
+      {items?.map((item) => (
         <AdviceItemAccordion
           key={item.id}
           item={item}

@@ -109,7 +109,7 @@ export const AssessmentTOC = ({ data }: any) => {
         }}
         component="nav"
       >
-        {items.map((item, index) => {
+        {items?.map((item, index) => {
           const hasSubItems = item.subItems.length > 0;
 
           return (
@@ -160,7 +160,7 @@ export const AssessmentTOC = ({ data }: any) => {
                       bgcolor: "#F9FAFB",
                     }}
                   >
-                    {item.subItems.map((subItem: any, subIndex: any) => (
+                    {item.subItems?.map((subItem: any, subIndex: any) => (
                       <ListItem key={subIndex} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText

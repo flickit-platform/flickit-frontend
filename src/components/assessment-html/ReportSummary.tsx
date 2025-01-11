@@ -33,7 +33,7 @@ const sectionTitleStyle = {
   ...styles.customizeFarsiFont,
 };
 
-const StepsTable = ({ steps }: any) => (
+const StepsTable = ({ steps, columnsWidth }: any) => (
   <TableContainer component={Box}>
     <Table sx={{ width: "100%" }}>
       <TableBody>
@@ -42,7 +42,7 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "2%",
+                width: columnsWidth[0],
                 ...styles.customizeFarsiFont,
               }}
             >
@@ -51,7 +51,7 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "20%",
+                width: columnsWidth[1],
                 ...styles.customizeFarsiFont,
               }}
             >
@@ -62,7 +62,7 @@ const StepsTable = ({ steps }: any) => (
             <TableCell
               sx={{
                 padding: "8px",
-                width: "20%",
+                width: columnsWidth[2],
 
                 ...styles.customizeFarsiFont,
               }}
@@ -76,6 +76,7 @@ const StepsTable = ({ steps }: any) => (
                 padding: "8px",
                 ...styles.customizeFarsiFont,
                 textAlign: "justify",
+                width: columnsWidth[3],
               }}
             >
               <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
@@ -262,7 +263,16 @@ const ReportCard = ({ data }: any) => {
         {t("stepsDescription", {
           lng: "fa",
         })}
-        <StepsTable steps={data?.steps} />
+        <StepsTable steps={data?.steps} columnsWidth={["5%", "20%", "20%"]} />
+      </Section>
+      <Section title={t("participant", { lng: "fa" })}>
+        {t("participantDescription", {
+          lng: "fa",
+        })}
+        <StepsTable
+          steps={data?.participant}
+          columnsWidth={["5%", "20%", "20%", "5%"]}
+        />
       </Section>
 
       <Section title={t("assessmentKit", { lng: "fa" })}>
