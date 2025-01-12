@@ -96,6 +96,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
 import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
+import convertLinksToClickable from "@utils/convertTextToClickableLink";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -1775,14 +1776,6 @@ const EvidenceDetail = (props: any) => {
     setEvidenceId(id);
   }, [id]);
 
-  function convertLinksToClickable(text: string) {
-    const linkRegex =
-      /(https?:\/\/[^\s]+|www\.[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[^\s]*)?)/g;
-    return text.replace(linkRegex, (url: string) => {
-      const formattedUrl = url.startsWith("http") ? url : `https://${url}`;
-      return `<a onmouseover="this.style.textDecoration='underline'"  onmouseout="this.style.textDecoration='none'"  style="all: unset;color: #0052CC ; cursor: pointer !important" href="${formattedUrl}" target="_blank">${url}</a>`;
-    });
-  }
 
   const skeleton = Array.from(Array(attachmentsCount).keys());
   return (
@@ -1954,7 +1947,6 @@ const EvidenceDetail = (props: any) => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "1.7rem",
-                    // cursor: "pointer",
                     width: { xs: "auto", sm: "250px" },
                   }}
                 >
