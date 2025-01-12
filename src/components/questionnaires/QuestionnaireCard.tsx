@@ -97,9 +97,14 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 display="flex"
                 alignItems={"flex-start"}
               >
-                <Typography fontWeight={"bold"} sx={{ whiteSpace: "wrap" }} ref={titleRef}>
+                <Title
+                  fontWeight={"bold"}
+                  size="small"
+                  sx={{ whiteSpace: "wrap" }}
+                  ref={titleRef}
+                >
                   {title}
-                </Typography>
+                </Title>
                 {description && (
                   <IconButton
                     sx={{
