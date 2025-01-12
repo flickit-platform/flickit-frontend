@@ -1103,7 +1103,7 @@ const AnswerHistoryItem = (props: any) => {
 };
 
 const Evidence = (props: any) => {
-  const LIMITED = 200;
+  const LIMITED = 500;
   const [valueCount, setValueCount] = useState("");
   const [evidencesData, setEvidencesData] = useState<any[]>([]);
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
@@ -1369,7 +1369,7 @@ const Evidence = (props: any) => {
                   minRows={3}
                   maxRows={8}
                   minLength={3}
-                  maxLength={200}
+                  maxLength={LIMITED}
                   autoFocus={false}
                   defaultValue={""}
                   pallet={evidenceBG}
@@ -1700,7 +1700,7 @@ const EvidenceDetail = (props: any) => {
     setLoadingEvidence,
   } = props;
   const { permissions }: { permissions: IPermissions } = props;
-  const LIMITED = 200;
+  const LIMITED = 500;
   const [valueCount, setValueCount] = useState("");
   const [value, setValue] = React.useState<any>("POSITIVE");
   const [expandedEvidenceBox, setExpandedEvidenceBox] =
@@ -1912,7 +1912,7 @@ const EvidenceDetail = (props: any) => {
                       minRows={3}
                       maxRows={8}
                       minLength={3}
-                      maxLength={200}
+                      maxLength={LIMITED}
                       autoFocus={false}
                       defaultValue={description}
                       pallet={evidenceBG}
