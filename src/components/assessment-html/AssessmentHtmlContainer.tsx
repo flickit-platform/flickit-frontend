@@ -182,15 +182,9 @@ const AssessmentExportContainer = () => {
     runOnMount: true,
   });
 
-  const fetchAssessmentMembers = useQuery<PathInfo>({
+  const fetchGraphicalReportUsers = useQuery<PathInfo>({
     service: (args, config) =>
-      service.fetchAssessmentMembers({ assessmentId, ...(args || {}) }, config),
-    runOnMount: false,
-  });
-
-  const fetchAssessmentMembersInvitees = useQuery<PathInfo>({
-    service: (args, config) =>
-      service.fetchAssessmentMembersInvitees({ assessmentId, ...(args || {}) }, config),
+      service.fetchGraphicalReportUsers({ assessmentId, ...(args || {}) }, config),
     runOnMount: false,
   });
 
@@ -253,8 +247,7 @@ const AssessmentExportContainer = () => {
       <ShareDialog
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
-        fetchAssessmentMembers={fetchAssessmentMembers}
-        fetchAssessmentMembersInvitees={fetchAssessmentMembersInvitees}
+        fetchGraphicalReportUsers={fetchGraphicalReportUsers}
         title={jsonData?.assessment.title}
       />
     </>

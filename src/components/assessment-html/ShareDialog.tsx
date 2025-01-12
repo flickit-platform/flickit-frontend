@@ -28,16 +28,14 @@ interface IDialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  fetchAssessmentMembers: any;
-  fetchAssessmentMembersInvitees: any;
+  fetchGraphicalReportUsers: any;
 }
 
 export const ShareDialog = ({
   open,
   onClose,
   title,
-  fetchAssessmentMembers,
-  fetchAssessmentMembersInvitees,
+  fetchGraphicalReportUsers,
 }: IDialogProps) => {
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -52,8 +50,7 @@ export const ShareDialog = ({
 
   useEffect(() => {
     if (open) {
-      fetchAssessmentMembers.query();
-      fetchAssessmentMembersInvitees.query();
+      fetchGraphicalReportUsers.query();
     }
   }, [open]);
 
@@ -65,8 +62,7 @@ export const ShareDialog = ({
           assessmentId,
         })
         .then(() => {
-          fetchAssessmentMembers.query();
-          fetchAssessmentMembersInvitees.query();
+          fetchGraphicalReportUsers.query();
           setValue("");
         });
     } catch (error) {
@@ -92,7 +88,7 @@ export const ShareDialog = ({
       title={
         <>
           <Share />
-          <Trans i18nKey="shareReportWithTitle" values={{ title }} />
+          <Trans i18nKey="shareReport" values={{ title }} />
         </>
       }
       maxWidth="sm"
@@ -129,8 +125,7 @@ export const ShareDialog = ({
       </Box>
       <QueryBatchData
         queryBatchData={[
-          fetchAssessmentMembers,
-          fetchAssessmentMembersInvitees,
+          fetchGraphicalReportUsers,
         ]}
         renderLoading={() => {
           return (
@@ -147,12 +142,12 @@ export const ShareDialog = ({
             </>
           );
         }}
-        render={([assessmentMembers, asssessmentMembersInvitees]) => {
+        render={([graphicalReportUsers]) => {
           return (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {[
-                ...assessmentMembers.items,
-                ...asssessmentMembersInvitees.items,
+                ...graphicalReportUsers.users,
+                ...graphicalReportUsers.invitees,
               ].map((member: any) => {
                 const { displayName, id, pictureLink, email } = member;
                 return (
@@ -169,7 +164,7 @@ export const ShareDialog = ({
                       sx={{ width: 24, height: 24, fontSize: 12 }}
                     ></Avatar>
                     {email}
-                    {asssessmentMembersInvitees.items.includes(member) && (
+                    {graphicalReportUsers.invitees.includes(member) && (
                       <Chip label={t("invited")} size="small" />
                     )}
                   </Box>
