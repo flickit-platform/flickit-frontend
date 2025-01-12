@@ -206,19 +206,18 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             renderLoading={() => <LoadingSkeletonOfQuestionnaires />}
             render={(data) => {
               const { items, permissions } = data;
+              const filteredItems = items.filter((item: any) =>
+                originalItem.length === 0
+                  ? item
+                  : Object.keys(item.issues).some(
+                      (key) =>
+                        originalItem.includes(key) && item.issues[key] > 0,
+                    ),
+              );
               return (
                 <Grid container spacing={2} sx={{ minHeight: "250px" }}>
-                  {items
-                    .filter((item: any) =>
-                      originalItem.length === 0
-                        ? item
-                        : Object.keys(item.issues).some(
-                            (key) =>
-                              originalItem.includes(key) &&
-                              item.issues[key] > 0,
-                          ),
-                    )
-                    .map((data: any) => {
+                  {filteredItems.length > 0 ? (
+                    filteredItems.map((data: any) => {
                       return (
                         <Grid item xl={4} md={6} sm={12} xs={12} key={data.id}>
                           <QuestionnaireCard
@@ -228,13 +227,15 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                           />
                         </Grid>
                       );
-                    })}
-                  <Box sx={{ ...styles.centerVH, width: "100%" }}>
-                    <Typography>
-                      {/*{originalItem == 1 && <Trans i18nKey={""} />}*/}
-                      {/*{originalItem > 1 && <Trans i18nKey={""} />}*/}
-                    </Typography>
-                  </Box>
+                    })
+                  ) : (
+                    <Box sx={{ ...styles.centerVH, width: "100%" }}>
+                      <Typography sx={{...theme.typography.headlineLarge, color:"#C2CCD680" }}>
+                        {originalItem.length == 1 && <Trans i18nKey={"NoIssueFound"} />}
+                        {originalItem.length > 1 && <Trans i18nKey={"NoIssuesFound"} />}
+                      </Typography>
+                    </Box>
+                  )}
                 </Grid>
               );
             }}
