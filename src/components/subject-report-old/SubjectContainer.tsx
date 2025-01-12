@@ -311,31 +311,6 @@ const SubjectContainer = () => {
                       loading={loading}
                     />
                   </Box>
-                  <Hidden smDown>
-                    {attributesNumber > 2 && (
-                      <Box height={"620px"} mb={10} mt={10}>
-                        <Typography>
-                          <Trans
-                            i18nKey="inTheRadarChartBelow"
-                            values={{
-                              title: title || "",
-                            }}
-                          />
-                        </Typography>
-
-                        <SubjectRadarChart
-                          {...subjectQueryData}
-                          loading={loading}
-                        />
-                      </Box>
-                    )}
-                    <Box height={"520px"} mt={10}>
-                      <SubjectBarChart
-                        {...subjectQueryData}
-                        loading={loading}
-                      />
-                    </Box>
-                  </Hidden>
                 </Box>
                 <Box>
                   <SubjectAttributeList
