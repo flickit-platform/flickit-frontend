@@ -184,20 +184,7 @@ const AssessmentExportContainer = () => {
 
   const fetchGraphicalReportUsers = useQuery<PathInfo>({
     service: (args, config) =>
-<<<<<<< Updated upstream
       service.fetchGraphicalReportUsers({ assessmentId, ...(args || {}) }, config),
-=======
-      service.fetchAssessmentMembers({ assessmentId, ...(args || {}) }, config),
-    runOnMount: false,
-  });
-
-  const fetchAssessmentMembersInvitees = useQuery<PathInfo>({
-    service: (args, config) =>
-      service.fetchAssessmentMembersInvitees(
-        { assessmentId, ...(args || {}) },
-        config,
-      ),
->>>>>>> Stashed changes
     runOnMount: false,
   });
 
