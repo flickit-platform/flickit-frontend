@@ -88,7 +88,7 @@ export const ShareDialog = ({
       title={
         <>
           <Share />
-          <Trans i18nKey="shareReportWithTitle" values={{ title }} />
+          <Trans i18nKey="shareReport" values={{ title }} />
         </>
       }
       maxWidth="sm"
