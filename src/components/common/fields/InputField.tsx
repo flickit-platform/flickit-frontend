@@ -71,7 +71,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   useEffect(() => {
     if (inputRef.current && isFocused) {
       const inputValue = inputRef.current?.value;
-      const isFarsi = firstCharDetector(inputValue);
+      const isFarsi = languageDetector(inputValue);
       // inputRef.current.style.direction = isFarsi ? "rtl" : "ltr";
       inputRef.current.style.fontFamily = isFarsi
         ? "VazirMatn"
