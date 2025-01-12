@@ -12,7 +12,7 @@ import {
   Typography,
   Box,
   Chip,
-  Grid,
+  Grid, TablePagination,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
@@ -501,6 +501,14 @@ const MaturityLevelTable = ({
             )}
           </TableBody>
         </Table>
+        <TablePagination
+            component="div"
+            count={tempData?.items.length}
+            page={page}
+            onPageChange={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
       <QuestionDetailsContainer
         {...dialogProps}
