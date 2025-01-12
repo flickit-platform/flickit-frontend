@@ -223,8 +223,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                       return (
                         <Grid
                           item
-                          xl={questionCardColumnCondition ? 4 : 6}
-                          md={questionCardColumnCondition ? 6 : 12}
+                          // xl={questionCardColumnCondition ? 4 : 6}
+                          // md={questionCardColumnCondition ? 6 : 12}
+                          md={6}
                           sm={12}
                           xs={12}
                           key={data.id}
