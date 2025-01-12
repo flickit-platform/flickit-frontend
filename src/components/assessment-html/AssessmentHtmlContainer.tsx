@@ -281,7 +281,12 @@ const AssessmentExportContainer = () => {
                 </Box>
                 <div
                   dangerouslySetInnerHTML={{ __html: content }}
-                  style={{ width: "100%", height: "100%", overflowX: "hidden" }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    overflowX: "hidden",
+                    direction: "ltr",
+                  }}
                 />
               </>
             ) : (
