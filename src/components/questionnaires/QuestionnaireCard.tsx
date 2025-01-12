@@ -18,7 +18,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
@@ -28,10 +28,11 @@ interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
   permissions: IPermissions;
   originalItem: string[];
+  setQuestionCardColumnCondition: any;
 }
 
 const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
-  const { data, originalItem } = props;
+  const { data, originalItem, setQuestionCardColumnCondition } = props;
   const {
     issues: {
       answeredWithLowConfidence,
@@ -55,6 +56,23 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   const [collapse, setCollapse] = useState<boolean>(false);
 
+  const titleRef = useRef<any>(null);
+  const mainBoxRef = useRef<any>(null);
+  const boxRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (titleRef?.current) {
+      if (
+        mainBoxRef?.current?.offsetWidth -
+          (boxRef?.current?.offsetWidth + 50) <=
+        titleRef?.current?.offsetWidth
+      ) {
+        setQuestionCardColumnCondition(false);
+      } else {
+        setQuestionCardColumnCondition(true);
+      }
+    }
+  }, []);
   return (
     <Paper sx={{ mt: 3 }} data-cy="questionnaire-card">
       <Box
@@ -73,8 +91,20 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
               size="small"
               fontWeight={"bold"}
             >
-              <Box flex="1" display="flex" alignItems={"flex-start"}>
-                {title}
+              <Box
+                ref={mainBoxRef}
+                flex="1"
+                display="flex"
+                alignItems={"flex-start"}
+              >
+                <Title
+                  fontWeight={"bold"}
+                  size="small"
+                  sx={{ whiteSpace: "wrap" }}
+                  ref={titleRef}
+                >
+                  {title}
+                </Title>
                 {description && (
                   <IconButton
                     sx={{
@@ -91,6 +121,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
 
                 {!isSmallScreen && (
                   <Box
+                    ref={boxRef}
                     p="0 8px"
                     display="inline-block"
                     sx={{
@@ -126,77 +157,20 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             isSmallScreen={isSmallScreen}
           />
         </Box>
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: originalItem.length >= 1 ? "15px" : "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            flexWrap: "wrap",
+            my: originalItem.length >= 1 ? "15px" : "10px",
+          }}
+        >
           {!!answeredWithLowConfidence &&
             originalItem.includes("answeredWithLowConfidence") && (
               <Chip
                 sx={{ background: "#8A0F240A" }}
                 label={
                   <Grid>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: 1,
-                        }}
-                      >
-                        <InfoOutlinedIcon
-                          fontSize={"small"}
-                          style={{ fill: theme.palette.error.main }}
-                        />
-                        <Typography
-                          style={{
-                            color: theme.palette.error.main,
-                            ...theme.typography.bodyMedium,
-                          }}
-                        >
-                          <Trans i18nKey={"answeredWithLowConfidence"} />:{" "}
-                          {answeredWithLowConfidence}
-                        </Typography>
-                      </Box>
-                  </Grid>
-                }
-              />
-            )}
-          {!!answeredWithoutEvidence &&
-            originalItem.includes("answeredWithoutEvidence") && (
-              <Chip
-                sx={{ background: "#8A0F240A" }}
-                label={
-                  <Grid>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: 1,
-                        }}
-                      >
-                        <InfoOutlinedIcon
-                          fontSize={"small"}
-                          style={{ fill: theme.palette.error.main }}
-                        />
-                        <Typography
-                          style={{
-                            color: theme.palette.error.main,
-                            ...theme.typography.bodyMedium,
-                          }}
-                        >
-                          <Trans i18nKey={"answeredWithoutEvidence"} />:{" "}
-                          {answeredWithoutEvidence}
-                        </Typography>
-                      </Box>
-
-                  </Grid>
-                }
-              />
-            )}
-          {!!unanswered && originalItem.includes("unanswered") && (
-            <Chip
-              sx={{ background: "#8A0F240A" }}
-              label={
-                <Grid>
                     <Box
                       sx={{
                         display: "flex",
@@ -215,9 +189,72 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                           ...theme.typography.bodyMedium,
                         }}
                       >
-                        <Trans i18nKey={"unanswered"} />: {unanswered}
+                        <Trans i18nKey={"answeredWithLowConfidence"} />:{" "}
+                        {answeredWithLowConfidence}
                       </Typography>
                     </Box>
+                  </Grid>
+                }
+              />
+            )}
+          {!!answeredWithoutEvidence &&
+            originalItem.includes("answeredWithoutEvidence") && (
+              <Chip
+                sx={{ background: "#8A0F240A" }}
+                label={
+                  <Grid>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <InfoOutlinedIcon
+                        fontSize={"small"}
+                        style={{ fill: theme.palette.error.main }}
+                      />
+                      <Typography
+                        style={{
+                          color: theme.palette.error.main,
+                          ...theme.typography.bodyMedium,
+                        }}
+                      >
+                        <Trans i18nKey={"answeredWithoutEvidence"} />:{" "}
+                        {answeredWithoutEvidence}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                }
+              />
+            )}
+          {!!unanswered && originalItem.includes("unanswered") && (
+            <Chip
+              sx={{ background: "#8A0F240A" }}
+              label={
+                <Grid>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <InfoOutlinedIcon
+                      fontSize={"small"}
+                      style={{ fill: theme.palette.error.main }}
+                    />
+                    <Typography
+                      style={{
+                        color: theme.palette.error.main,
+                        ...theme.typography.bodyMedium,
+                      }}
+                    >
+                      <Trans i18nKey={"unanswered"} />: {unanswered}
+                    </Typography>
+                  </Box>
                 </Grid>
               }
             />
@@ -228,28 +265,28 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 sx={{ background: "#8A0F240A" }}
                 label={
                   <Grid>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: 1,
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <InfoOutlinedIcon
+                        fontSize={"small"}
+                        style={{ fill: theme.palette.error.main }}
+                      />
+                      <Typography
+                        style={{
+                          color: theme.palette.error.main,
+                          ...theme.typography.bodyMedium,
                         }}
                       >
-                        <InfoOutlinedIcon
-                          fontSize={"small"}
-                          style={{ fill: theme.palette.error.main }}
-                        />
-                        <Typography
-                          style={{
-                            color: theme.palette.error.main,
-                            ...theme.typography.bodyMedium,
-                          }}
-                        >
-                          <Trans i18nKey={"unresolvedComments"} />:{" "}
-                          {unresolvedComments}
-                        </Typography>
-                      </Box>
+                        <Trans i18nKey={"unresolvedComments"} />:{" "}
+                        {unresolvedComments}
+                      </Typography>
+                    </Box>
                   </Grid>
                 }
               />

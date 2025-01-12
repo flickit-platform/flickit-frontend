@@ -9,12 +9,12 @@ import Divider from "@mui/material/Divider";
 import { MenuItem, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
-import Select, {SelectChangeEvent} from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "i18next";
 import { theme } from "@config/theme";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import {useState} from "react";
+import { useState } from "react";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -22,81 +22,82 @@ interface IQuestionnaireListProps {
 }
 
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
-  const { questionnaireQueryData, assessmentTotalProgress } =
-    props;
-    const [issues, setIssues] = useState<string[]>([]);
-    const [originalItem, setOriginalItem] = useState<string[]>([]);
+  const { questionnaireQueryData, assessmentTotalProgress } = props;
+  const [issues, setIssues] = useState<string[]>([]);
+  const [originalItem, setOriginalItem] = useState<string[]>([]);
+  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
+    useState<boolean>(true);
 
-    const handleChange = (event: SelectChangeEvent<typeof issues>) => {
-        const {
-            target: { value },
-        } = event;
-        setIssues(typeof value === "string" ? value.split(",") : value);
-    };
+  const handleChange = (event: SelectChangeEvent<typeof issues>) => {
+    const {
+      target: { value },
+    } = event;
+    setIssues(typeof value === "string" ? value.split(",") : value);
+  };
 
-    const handelSaveOriginal = (name: any) => {
-        if (!originalItem.includes(name)) {
-            setOriginalItem([...originalItem, name]);
-        } else {
-            const copySave = [...originalItem];
-            const filtered = copySave.filter((item) => item != name);
-            setOriginalItem(filtered);
-        }
-    };
+  const handelSaveOriginal = (name: any) => {
+    if (!originalItem.includes(name)) {
+      setOriginalItem([...originalItem, name]);
+    } else {
+      const copySave = [...originalItem];
+      const filtered = copySave.filter((item) => item != name);
+      setOriginalItem(filtered);
+    }
+  };
 
-    const itemNames = [
-        { translate: t("unansweredQuestions"), original: "unanswered" },
-        {
-            translate: t("lowConfidenceAnswers"),
-            original: "answeredWithLowConfidence",
-        },
-        { translate: t("unresolvedComments"), original: "unresolvedComments" },
-        {
-            translate: t("answersWithNoEvidence"),
-            original: "answeredWithoutEvidence",
-        },
-    ];
+  const itemNames = [
+    { translate: t("unansweredQuestions"), original: "unanswered" },
+    {
+      translate: t("lowConfidenceAnswers"),
+      original: "answeredWithLowConfidence",
+    },
+    { translate: t("unresolvedComments"), original: "unresolvedComments" },
+    {
+      translate: t("answersWithNoEvidence"),
+      original: "answeredWithoutEvidence",
+    },
+  ];
 
-    const handelSelected = (selected: any) => {
-        const isAllSelected = issues.length === itemNames.length;
+  const handelSelected = (selected: any) => {
+    const isAllSelected = issues.length === itemNames.length;
 
-        if (selected.length == 0) {
-            return (
-                <Typography
-                    sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
-                >
-                    <Trans i18nKey={"none"} />
-                </Typography>
-            );
-        } else if (isAllSelected) {
-            return (
-                <Typography
-                    sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
-                >
-                    <Trans i18nKey={"allIssuesSelected"} />
-                </Typography>
-            );
-        } else {
-            if (selected.length == 1) {
-                return selected.join(", ");
-            } else {
-                return (
-                    <Box
-                        sx={{
-                            ...theme.typography.semiBoldMedium,
-                            color: "#333333",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                        }}
-                    >
-                        <Trans i18nKey={"selectedIssuesType"} />:
-                        <Typography>{selected.length}</Typography>
-                    </Box>
-                );
-            }
-        }
-    };
+    if (selected.length == 0) {
+      return (
+        <Typography
+          sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
+        >
+          <Trans i18nKey={"none"} />
+        </Typography>
+      );
+    } else if (isAllSelected) {
+      return (
+        <Typography
+          sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
+        >
+          <Trans i18nKey={"allIssuesSelected"} />
+        </Typography>
+      );
+    } else {
+      if (selected.length == 1) {
+        return selected.join(", ");
+      } else {
+        return (
+          <Box
+            sx={{
+              ...theme.typography.semiBoldMedium,
+              color: "#333333",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Trans i18nKey={"selectedIssuesType"} />:
+            <Typography>{selected.length}</Typography>
+          </Box>
+        );
+      }
+    }
+  };
 
   return (
     <>
@@ -126,7 +127,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             gap: 2,
           }}
         >
-          <Typography sx={{...theme.typography.semiBoldLarge}}>
+          <Typography sx={{ ...theme.typography.semiBoldLarge }}>
             <Trans i18nKey={"filterQuestionsWithIssues"} />:
           </Typography>
           <FormControl sx={{ m: 1, width: 250 }}>
@@ -220,11 +221,22 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                     )
                     .map((data: any) => {
                       return (
-                        <Grid item xl={4} md={6} sm={12} xs={12} key={data.id}>
+                        <Grid
+                          item
+                          // xl={questionCardColumnCondition ? 4 : 6}
+                          // md={questionCardColumnCondition ? 6 : 12}
+                          md={6}
+                          sm={12}
+                          xs={12}
+                          key={data.id}
+                        >
                           <QuestionnaireCard
                             data={data}
                             permissions={permissions}
                             originalItem={originalItem}
+                            setQuestionCardColumnCondition={
+                              setQuestionCardColumnCondition
+                            }
                           />
                         </Grid>
                       );
