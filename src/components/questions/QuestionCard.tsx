@@ -403,7 +403,7 @@ export const QuestionTabsTemplate = (props: any) => {
       config,
     ) => service.fetchAnswersHistory(args, config),
     toastError: true,
-    runOnMount: true,
+    runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
   });
 
   const evidencesQueryData = useQuery({
@@ -493,19 +493,17 @@ export const QuestionTabsTemplate = (props: any) => {
               disabled={questionsInfo.permissions.readonly && !counts.history}
             />
           )}
-          {questionsInfo?.permissions?.viewAnswerHistory && (
-            <Tab
-              sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
-              label={
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Trans i18nKey="comments" />
-                  {` (${counts.comment})`}
-                </Box>
-              }
-              value="comment"
-              disabled={questionsInfo.permissions.readonly && !counts.comment}
-            />
-          )}
+          <Tab
+            sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Trans i18nKey="comments" />
+                {` (${counts.comment})`}
+              </Box>
+            }
+            value="comment"
+            disabled={questionsInfo.permissions.readonly && !counts.comment}
+          />
           <IconButton
             onClick={toggleTabs}
             sx={{
@@ -1868,7 +1866,6 @@ const EvidenceDetail = (props: any) => {
   useEffect(() => {
     setEvidenceId(id);
   }, [id]);
-
 
   const skeleton = Array.from(Array(attachmentsCount).keys());
   return (
