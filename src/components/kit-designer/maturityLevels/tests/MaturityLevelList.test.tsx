@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import MaturityLevelList from "../MaturityLevelList";
 import { IMaturityLevel } from "@/types";
 import { vi } from "vitest";
-import {DeleteConfirmationDialog} from "@common/dialogs/DeleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 // Mock data for maturity levels  id: TId;
 const mockMaturityLevels: IMaturityLevel[] = [
@@ -10,7 +10,7 @@ const mockMaturityLevels: IMaturityLevel[] = [
   { id: 2, title: "Level 2", description: "Description 2", value: 2, index: 2 },
 ];
 
-const mockSetOpenDeleteDialog = {status: false, id:""}
+const mockSetOpenDeleteDialog = vi.fn();
 const mockOnEdit = vi.fn();
 const mockOnDelete = vi.fn();
 const mockOnReorder = vi.fn();
@@ -45,7 +45,7 @@ describe("MaturityLevelList", () => {
     });
 
     // Save the changes
-    fireEvent.click(screen.getByTestId("maturity-level-check-icon"))
+    fireEvent.click(screen.getByTestId("maturity-level-check-icon"));
 
     // Check if onEdit was called with the updated values
     expect(mockOnEdit).toHaveBeenCalledWith({
@@ -58,25 +58,28 @@ describe("MaturityLevelList", () => {
   });
 
   it("allows deleting a maturity level", () => {
-      // Click delete button for Level 1
-      let openBtn = fireEvent.click(screen.getAllByTestId("maturity-level-delete-icon")[0]);
-      render(
-          <DeleteConfirmationDialog
-              open={openBtn}
-              onClose={() => fireEvent.click(cancelButton)}
-              onConfirm={mockOnDelete}
-              title="warning"
-              content="deleteMaturityLevel"
-          />)
+    // Click delete button for Level 1
+    let openBtn = fireEvent.click(
+      screen.getAllByTestId("maturity-level-delete-icon")[0],
+    );
+    render(
+      <DeleteConfirmationDialog
+        open={openBtn}
+        onClose={() => fireEvent.click(cancelButton)}
+        onConfirm={mockOnDelete}
+        title="warning"
+        content="deleteMaturityLevel"
+      />,
+    );
 
-      const cancelButton = screen.getByTestId("cancel")
-      const confirmButton = screen.getByTestId("submit")
-      expect(screen.getByTestId('delete-confirmation-modal')).toBeInTheDocument();
-      expect(screen.getByTestId('submit')).toBeInTheDocument();
-      expect(screen.getByTestId('cancel')).toBeInTheDocument();
+    const cancelButton = screen.getByTestId("cancel");
+    const confirmButton = screen.getByTestId("submit");
+    expect(screen.getByTestId("delete-confirmation-modal")).toBeInTheDocument();
+    expect(screen.getByTestId("submit")).toBeInTheDocument();
+    expect(screen.getByTestId("cancel")).toBeInTheDocument();
 
-      // Check if onDelete was called with the correct id
-      fireEvent.click(confirmButton)
-      fireEvent.click(cancelButton);
+    // Check if onDelete was called with the correct id
+    fireEvent.click(confirmButton);
+    fireEvent.click(cancelButton);
   });
 });
