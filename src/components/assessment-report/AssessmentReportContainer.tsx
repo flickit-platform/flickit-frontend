@@ -141,7 +141,7 @@ const AssessmentReportContainer = (props: any) => {
                             data-cy="more-action-btn"
                             disabled={disableHtmlDocument}
                             component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/${page}/${assessmentId}/graphical-report/`}
+                            to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
                           >
                             <Assessment
                               sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
