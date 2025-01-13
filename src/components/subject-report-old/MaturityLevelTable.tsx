@@ -12,7 +12,8 @@ import {
   Typography,
   Box,
   Chip,
-  Grid, TablePagination,
+  Grid,
+  TablePagination,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
@@ -155,15 +156,20 @@ const MaturityLevelTable = ({
   tempData,
   updateSortOrder,
   scoreState,
+  setPage,
+  page,
+  rowsPerPage,
+  setRowsPerPage,
 }: {
   tempData: any;
   updateSortOrder: any;
   scoreState: any;
+  setPage: any,
+  page: number,
+  rowsPerPage: number,
+  setRowsPerPage: any,
 }) => {
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
@@ -433,7 +439,7 @@ const MaturityLevelTable = ({
             {tempData?.items.length > 0 ? (
               <>
                 {tempData?.items
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((item: any, index: number) => {
                     const row = mapItemToRow(item);
                     return (
@@ -502,12 +508,16 @@ const MaturityLevelTable = ({
           </TableBody>
         </Table>
         <TablePagination
-            component="div"
-            count={tempData?.items.length}
-            page={page}
-            onPageChange={handleChangePage}
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+          component="div"
+          count={questionsCount}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t("rowsPerPage")}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to}  ${t("of")} ${count !== -1 ? count : `${t("moreThan")} ${to}`}`
+          }
         />
       </TableContainer>
       <QuestionDetailsContainer

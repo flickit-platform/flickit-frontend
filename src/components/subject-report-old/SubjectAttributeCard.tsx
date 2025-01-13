@@ -71,6 +71,8 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
   const { service } = useServiceContext();
 
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
@@ -81,6 +83,8 @@ const SUbjectAttributeCard = (props: any) => {
         levelId: selectedMaturityLevel,
         sort,
         order,
+        page,
+        size : rowsPerPage
       },
       config,
     ) => service.fetchAffectedQuestionsOnAttribute(args, config),
@@ -115,7 +119,7 @@ const SUbjectAttributeCard = (props: any) => {
       fetchAffectedQuestionsOnAttributeQueryData.query();
       fetchScoreState.query();
     }
-  }, [expandedAttribute, selectedMaturityLevel]);
+  }, [expandedAttribute, selectedMaturityLevel, page]);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -132,6 +136,8 @@ const SUbjectAttributeCard = (props: any) => {
       levelId: selectedMaturityLevel,
       sort: newSort,
       order: newOrder,
+      page,
+      size: rowsPerPage
     });
   };
 
@@ -499,6 +505,10 @@ const SUbjectAttributeCard = (props: any) => {
                     tempData={affectedQuestionsOnAttribute}
                     scoreState={scoreState}
                     updateSortOrder={updateSortOrder}
+                    setPage={setPage}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
                   />
                 );
               }}

@@ -794,5 +794,7 @@
   "answeredWithoutEvidence": "پاسخ بدون ثبت شاهد",
   "unanswered": "سوال‌های بدون جواب",
   "none": "گزینه‌ای انتخاب نشده‌است",
-  "selectedIssuesType": "نوع مشکل انتخاب شده‌است"
+  "selectedIssuesType": "نوع مشکل انتخاب شده‌است",
+  "rowsPerPage": "تعداد ردیف‌ها در هر صفحه",
+  "moreThan": "بیش از"
 }

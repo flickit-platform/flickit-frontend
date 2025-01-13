@@ -792,5 +792,7 @@
   "answeredWithoutEvidence": "Answered with no evidence",
   "unanswered": "Unanswered questions",
   "none": "None",
-  "selectedIssuesType": "selected issue types"
+  "selectedIssuesType": "selected issue types",
+  "rowsPerPage": "Rows per page",
+  "moreThan": "More than"
 }
