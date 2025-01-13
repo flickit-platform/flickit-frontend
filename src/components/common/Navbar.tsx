@@ -116,9 +116,10 @@ const NotificationItem = ({
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
           }}
-        >
-          {message.content as string}
-        </Typography>
+          dangerouslySetInnerHTML={{
+            __html: message.content,
+          }}
+        />
       </Box>
 
       {/* Relative Time Ago */}
@@ -270,8 +271,12 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   gap={1}
                 >
                   {/* <Avatar sx={{ width: 24, height: 24 }}></Avatar> */}
-                  <Typography variant="bodyMedium">
-                    {(selectedMessage as any)?.content}
+                  <Typography
+                    variant="bodyMedium"
+                    dangerouslySetInnerHTML={{
+                      __html: (selectedMessage as any)?.content,
+                    }}
+                  >
                     {/* <Typography
                       variant="titleSmall"
                       component="span"
