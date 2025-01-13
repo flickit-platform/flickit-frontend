@@ -10,6 +10,8 @@ import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@types";
 import { useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 const DashbordContainer = () => {
   const location = useLocation();
@@ -61,6 +63,11 @@ const DashbordContainer = () => {
                   color="primary"
                   textAlign="left"
                   variant="headlineLarge"
+                  sx={{
+                    fontFamily: languageDetector(pathInfo?.assessment?.title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
                 >
                   {pathInfo?.assessment?.title}
                 </Typography>

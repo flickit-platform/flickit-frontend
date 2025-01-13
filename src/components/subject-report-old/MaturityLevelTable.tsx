@@ -16,7 +16,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import { Trans } from "react-i18next";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
@@ -466,7 +466,7 @@ const MaturityLevelTable = ({
                                 column.serverKey === "question" ||
                                 column.serverKey === "answer"
                                   ? languageDetector(
-                                      row[column.field].toString(),
+                                      row[column.field]?.toString(),
                                     )
                                     ? "right"
                                     : "left"
@@ -475,11 +475,16 @@ const MaturityLevelTable = ({
                                 column.serverKey === "question" ||
                                 column.serverKey === "answer"
                                   ? languageDetector(
-                                      row[column.field].toString(),
+                                      row[column.field]?.toString(),
                                     )
                                     ? "rtl"
                                     : "ltr"
                                   : "unset",
+                              fontFamily: languageDetector(
+                                row[column.field]?.toString(),
+                              )
+                                ? farsiFontFamily
+                                : primaryFontFamily,
                               cursor: "pointer",
                             }}
                           >

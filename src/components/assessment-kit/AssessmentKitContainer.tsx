@@ -26,7 +26,8 @@ import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { ECustomErrorType } from "@/types";
 import { ErrorNotFoundOrAccessDenied } from "../common/errors/ErrorNotFoundOrAccessDenied";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -200,7 +201,15 @@ const AssessmentKit = (props: any) => {
                       }}
                       avatar={<Avatar alt={title} src={pictureLink} />}
                       title={
-                        <Box component={"b"} fontSize=".95rem">
+                        <Box
+                          component={"b"}
+                          fontSize=".95rem"
+                          sx={{
+                            fontFamily: languageDetector(title)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          }}
+                        >
                           {title}
                         </Box>
                       }
@@ -212,7 +221,17 @@ const AssessmentKit = (props: any) => {
           </Box>
           <Box sx={{ ...styles.centerCVH, mt: 3 }}>
             <Box>
-              <Typography variant="subtitle2">{summary}</Typography>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  fontFamily: languageDetector(summary)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                  direction: languageDetector(summary) ? "rtl" : "ltr",
+                }}
+              >
+                {summary}
+              </Typography>
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1 }}>
               <Box
@@ -360,7 +379,15 @@ const AssessmentKit = (props: any) => {
                 <Title>
                   <Trans i18nKey="about" />
                 </Title>
-                <Box mt={2}>
+                <Box
+                  mt={2}
+                  sx={{
+                    fontFamily: languageDetector(summary)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                    direction: languageDetector(summary) ? "rtl" : "ltr",
+                  }}
+                >
                   <RichEditor content={about} />
                 </Box>
               </Box>
@@ -425,7 +452,15 @@ const AssessmentKit = (props: any) => {
                           </Box>
                           :{" "}
                           <Box
-                            sx={{ unicodeBidi: "plaintext" }}
+                            sx={{
+                              unicodeBidi: "plaintext",
+                              fontFamily: languageDetector(item.description)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                              direction: languageDetector(item.description)
+                                ? "rtl"
+                                : "ltr",
+                            }}
                             component="span"
                             fontSize="1rem"
                           >
@@ -457,7 +492,16 @@ const AssessmentKit = (props: any) => {
                         mr: theme.direction === "rtl" ? 4 : "unset",
                       }} // Adds bullet point styling
                     >
-                      <b>{subject.title}</b>: {subject.description}
+                      <b>{subject.title}</b>:{" "}
+                      <span
+                        style={{
+                          fontFamily: languageDetector(subject.description)
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        }}
+                      >
+                        {subject.description}
+                      </span>
                       <Typography
                         fontWeight="bold"
                         sx={{
@@ -501,13 +545,29 @@ const AssessmentKit = (props: any) => {
                                 component="span"
                                 fontSize="1rem"
                                 fontWeight="bold"
-                                sx={{ unicodeBidi: "plaintext" }}
+                                sx={{
+                                  unicodeBidi: "plaintext",
+                                  fontFamily: languageDetector(att.title)
+                                    ? farsiFontFamily
+                                    : primaryFontFamily,
+                                  direction: languageDetector(att.title)
+                                    ? "rtl"
+                                    : "ltr",
+                                }}
                               >
                                 {att.title}
                               </Box>
                               :{" "}
                               <Box
-                                sx={{ unicodeBidi: "plaintext" }}
+                                sx={{
+                                  unicodeBidi: "plaintext",
+                                  fontFamily: languageDetector(att.description)
+                                    ? farsiFontFamily
+                                    : primaryFontFamily,
+                                  direction: languageDetector(att.description)
+                                    ? "rtl"
+                                    : "ltr",
+                                }}
                                 component="span"
                                 fontSize="1rem"
                               >
@@ -558,7 +618,14 @@ const AssessmentKit = (props: any) => {
                         </Box>
                         :{" "}
                         <Box
-                          sx={{ unicodeBidi: "plaintext" }}
+                          sx={{
+                            unicodeBidi: "plaintext",
+                            fontFamily: languageDetector(
+                              questionnaire.description,
+                            )
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          }}
                           component="span"
                           fontSize="1rem"
                         >

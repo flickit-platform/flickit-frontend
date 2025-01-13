@@ -602,7 +602,7 @@
   "thereIsNoUnpublishedAssessmentKitYet": "کیت ارزیابی منتشر‌نشده‌ای وجود ندارد.",
   "theResultOfComparing": "نتیجه مقایسه",
   "thisAssessmentIsUsing": "این ارزیابی با استفاده از",
-  "thisAssessmentIsUsingSecondPart": " ساخته شده‌است.",
+  "thisAssessmentIsUsingSecondPart": " ساخته شده‌است",
   "thisFileNotAcceptable": "این فایل قابل قبول نیست.",
   "thisMonth": "این ماه",
   "thisPlaceIsEmpty": ".این مکان خالی است",
@@ -796,5 +796,7 @@
   "none": "گزینه‌ای انتخاب نشده‌است",
   "selectedIssuesType": "نوع مشکل انتخاب شده‌است",
   "rowsPerPage": "تعداد ردیف‌ها در هر صفحه",
-  "moreThan": "بیش از"
+  "moreThan": "بیش از",
+  "NoIssueFound": "هیچ پرسشنامه‌ای با مشکل انتخاب‌شده یافت نشد",
+  "NoIssuesFound": "هیچ پرسشنامه‌ای با مشکلات انتخاب‌شده یافت نشد"
 }

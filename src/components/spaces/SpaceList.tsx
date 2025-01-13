@@ -22,7 +22,8 @@ import { TDialogProps } from "@utils/useDialog";
 import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -151,6 +152,9 @@ const SpaceCard = (props: ISpaceCardProps) => {
               alignSelf: "stretch",
               px: 2,
               color: (t) => t.palette.primary.dark,
+              fontFamily: languageDetector(title)
+                ? farsiFontFamily
+                : primaryFontFamily,
             }}
           >
             {loading ? <CircularProgress size="20px" /> : <>{title}</>}

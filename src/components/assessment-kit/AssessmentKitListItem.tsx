@@ -13,9 +13,10 @@ import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import formatDate from "@utils/formatDate";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { Tooltip } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import languageDetector from "@/utils/languageDetector";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -82,6 +83,9 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
               display: "flex",
               alignItems: "center",
               alignSelf: "stretch",
+              fontFamily: languageDetector(title)
+                ? farsiFontFamily
+                : primaryFontFamily,
             }}
           >
             {title}

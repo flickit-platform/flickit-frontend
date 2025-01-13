@@ -44,7 +44,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import { Chip } from "@mui/material";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -163,6 +164,9 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                     textTransform: "none",
                     color: "#101c32",
                     background: "transparent",
+                    fontFamily: languageDetector(kit?.title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                   }}
                   data-cy="assessment-card-title"
                 />
@@ -183,6 +187,9 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                   textOverflow: "ellipsis",
                   margin: "0 auto",
                   width: "100%",
+                  fontFamily: languageDetector(item?.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 }}
                 data-cy="assessment-card-title"
               >

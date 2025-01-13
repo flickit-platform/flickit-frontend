@@ -24,6 +24,8 @@ import AssessmentSubjectRadarChart from "./AssessmenetSubjectRadarChart";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
 import { t } from "i18next";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -153,6 +155,9 @@ export const AssessmentSubjectAccordion = (
                 sx={{
                   textTransform: "none",
                   whiteSpace: "pre-wrap",
+                  fontFamily: languageDetector(title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 }}
                 variant="headlineMedium"
               >
@@ -183,7 +188,13 @@ export const AssessmentSubjectAccordion = (
                   variant="titleMedium"
                   fontWeight={400}
                   color="#243342"
-                  sx={{ textTransform: "none", whiteSpace: "break-spaces" }}
+                  sx={{
+                    textTransform: "none",
+                    whiteSpace: "break-spaces",
+                    fontFamily: languageDetector(description)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
                 >
                   {description}
                 </Typography>

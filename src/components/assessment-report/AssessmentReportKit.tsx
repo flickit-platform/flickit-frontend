@@ -6,6 +6,8 @@ import { styles } from "@styles";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import { useEffect, useRef, useState } from "react";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 interface IAssessmentReportKit {
   assessmentKit: IAssessmentKitReportModel;
 }
@@ -47,115 +49,76 @@ export const AssessmentReportKit = (props: IAssessmentReportKit) => {
         px: { xs: 2, sm: 3.75 },
       }}
     >
-      <Box sx={{ ...styles.centerCVH, justifyContent: "space-around" }} width="100%" height="100%" gap={1}>
-        <Box
-          display="flex"
-          flexDirection={"column"}
-          gap={3}
-          justifyContent="space-between"
-          width="100%"
-        >
-          <Typography variant="titleMedium" fontWeight={400} color="#243342">
-            <Trans i18nKey="thisAssessmentIsUsing" />{" "}
-            <Box
-              component={Link}
-              to={`/assessment-kits/${assessmentKit?.id}`}
-              sx={{
-                textDecoration: "none",
-                color: "#8B0035",
-                fontSize: "inherit",
-                fontWeight: 500,
-              }}
-            >
-              <Typography variant="titleLarge">
-                {assessmentKit.title}
-              </Typography>
-            </Box>{" "}
-            <Trans i18nKey="thisAssessmentIsUsingSecondPart" />.
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            gap="8px"
-            justifyContent="flex-end"
+      <Box
+        sx={{ ...styles.centerCVH, textAlign: "center" }}
+        width="100%"
+        height="100%"
+        gap={3}
+      >
+        <Typography variant="titleMedium" fontWeight={400} color="#243342">
+          <Trans i18nKey="thisAssessmentIsUsing" />{" "}
+          <Typography
+            variant="titleLarge"
+            component={Link}
+            to={`/assessment-kits/${assessmentKit?.id}`}
+            sx={{
+              textDecoration: "none",
+              color: "#8B0035",
+              fontSize: "inherit",
+              fontFamily: languageDetector(assessmentKit.title)
+                ? farsiFontFamily
+                : primaryFontFamily,
+              mx: 0.5,
+            }}
           >
-            <Typography
-              color="#73808C"
-              variant="titleMedium"
-              fontStyle="italic"
-              sx={{
-                whiteSpace: "nowrap",
-              }}
-            >
-              <Trans i18nKey="providedBy" />
-            </Typography>
-            <Avatar
-              component={Link}
-              to={`/user/expert-groups/${assessmentKit?.expertGroup.id}`}
-              src={assessmentKit.expertGroup.picture}
-              sx={{ cursor: "pointer" }}
-            />
-            <Typography
-              component={Link}
-              to={`/user/expert-groups/${assessmentKit?.expertGroup.id}`}
-              color="#8B0035"
-              variant="titleLarge"
-              sx={{
-                textDecoration: "none",
-              }}
-            >
-              {assessmentKit.expertGroup.title}
-            </Typography>
-          </Box>
-        </Box>
+            {assessmentKit.title}
+          </Typography>
+          <Trans i18nKey="thisAssessmentIsUsingSecondPart" />.
+        </Typography>
 
-        {isOverflowing ? (
-          <Box display="flex" flexDirection="column" width="100%" mb={1}>
-            <Typography
-              color="#243342"
-              variant="titleSmall"
-              fontWeight={500}
-              width="100%"
-              textAlign="start"
-              sx={{
-                whiteSpace: "pre-wrap",
-                overflow: isExpanded ? "visible" : "hidden",
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: isExpanded ? "none" : 1,
-              }}
-              ref={contentRef}
-            >
-              {assessmentKit.summary}
-            </Typography>
-            <Typography
-              variant="titleSmall"
-              fontWeight={500}
-              color="#246297"
-              sx={{ cursor: "pointer" }}
-              onClick={toggleExpanded}
-            >
-              {isExpanded ? "Show Less" : "Show More"}
-            </Typography>
-          </Box>
-        ) : (
-          <Box display="flex" width="100%" mb={1}>
-            <Typography
-              color="#243342"
-              variant="titleMedium"
-              fontWeight={400}
-              width="100%"
-              textAlign="start"
-              sx={{
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-              }}
-              ref={contentRef}
-            >
-              {assessmentKit.summary}
-            </Typography>
-          </Box>
-        )}
+        <Typography
+          color="#73808C"
+          variant="titleMedium"
+          fontStyle="italic"
+          sx={{
+            whiteSpace: "nowrap",
+          }}
+        >
+          <Trans i18nKey="providedBy" />
+        </Typography>
+        <Avatar
+          component={Link}
+          to={`/user/expert-groups/${assessmentKit?.expertGroup.id}`}
+          src={assessmentKit.expertGroup.picture}
+          sx={{ cursor: "pointer" }}
+        />
+        <Typography
+          component={Link}
+          to={`/user/expert-groups/${assessmentKit?.expertGroup.id}`}
+          color="#8B0035"
+          variant="titleLarge"
+          sx={{
+            textDecoration: "none",
+            fontFamily: languageDetector(assessmentKit.expertGroup.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
+        >
+          {assessmentKit.expertGroup.title}
+        </Typography>
+        <Typography
+          color="#243342"
+          variant="titleMedium"
+          fontWeight={400}
+          width="100%"
+          sx={{
+            fontFamily: languageDetector(assessmentKit.summary)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
+        >
+          {assessmentKit.summary}
+        </Typography>
       </Box>
     </Box>
   );
