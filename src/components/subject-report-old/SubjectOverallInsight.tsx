@@ -1,8 +1,6 @@
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import Title from "@common/Title";
 import Typography from "@mui/material/Typography";
 import SubjectOverallStatusLevelChart from "./SubjectOverallStatusLevelChart";
 import { SubjectInsight } from "./SubjectInsight";
@@ -39,8 +37,6 @@ const OverallInsightText = (props: any) => {
   const {
     subject,
     attributes,
-    topStrengths,
-    topWeaknesses,
     maturityLevelsCount,
   } = data;
   const { title, maturityLevel, confidenceValue } = subject;
@@ -169,72 +165,7 @@ const OverallInsightText = (props: any) => {
         editable={editable}
         aboutSection={aboutSection}
       />
-      <Grid container pt={5} spacing={4}>
-        <Grid item xs={12} sm={6} md={5} lg={4}>
-          <MostSigItems
-            color="#005e00"
-            text="strengths"
-            loading={loading}
-            att={topStrengths}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={5} lg={4}>
-          <MostSigItems
-            color="#b10202"
-            text="weaknesses"
-            loading={loading}
-            att={topWeaknesses}
-          />
-        </Grid>
-      </Grid>
     </Box>
   );
 };
-
-export const MostSigItems = ({
-  loading,
-  att,
-  items,
-  color,
-  text,
-}: {
-  loading: boolean;
-  att?: any[];
-  items?: string[];
-  color: string;
-  text: string;
-}) => {
-  return (
-    <>
-      <Title
-        fontSize={"1.1rem"}
-        borderBottom={true}
-        color={color}
-        letterSpacing={".08em"}
-      >
-        <Trans i18nKey={text} />
-      </Title>
-      <ul style={{ marginBlockStart: "8px", paddingInlineStart: "26px" }}>
-        {loading ? (
-          <MostSigItemLoadingSkeleton />
-        ) : (
-          (att || items)?.map((item: any, index: any) => {
-            return <li key={item?.id}>{att ? item?.title : item}</li>;
-          })
-        )}
-      </ul>
-    </>
-  );
-};
-
-const MostSigItemLoadingSkeleton = () => {
-  return (
-    <>
-      {[1, 2, 3].map((k) => (
-        <Skeleton key={k} />
-      ))}
-    </>
-  );
-};
-
 export default SubjectOverallInsight;

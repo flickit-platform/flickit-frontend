@@ -9,7 +9,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { AssessmentOverallStatus } from "./AssessmentOverallStatus";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import { IAssessmentReportModel, RolesType } from "@types";
-import { AssessmentSummary } from "./AssessmentSummary";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
@@ -121,8 +120,6 @@ const AssessmentReportContainer = (props: any) => {
             assessment || {};
           const { questionsCount, answersCount } = progress;
 
-          const totalProgress =
-            ((answersCount || 0) / (questionsCount || 1)) * 100;
           const totalAttributesLength = subjects.reduce(
             (sum: any, subject: any) => {
               return sum + (subject.attributes?.length || 0);
@@ -195,15 +192,9 @@ const AssessmentReportContainer = (props: any) => {
                           marginX={4}
                           variant="titleMedium"
                         >
-                          <Trans i18nKey="general" />
+                          <Trans i18nKey="assessmentKit" />
                         </Typography>
-                        <AssessmentSummary
-                          assessmentKit={assessment}
-                          data={data}
-                          progress={totalProgress}
-                          questionCount={questionsCount}
-                          answerCount={answersCount}
-                        />
+                        <AssessmentReportKit assessmentKit={assessmentKit} />
                       </Box>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -250,18 +241,6 @@ const AssessmentReportContainer = (props: any) => {
                       <Trans i18nKey="insight" />
                     </Typography>
                     <AssessmentInsight />
-                  </Box>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box display="flex" flexDirection="column" gap={1}>
-                    <Typography
-                      color="#73808C"
-                      marginX={4}
-                      variant="titleMedium"
-                    >
-                      <Trans i18nKey="assessmentKit" />
-                    </Typography>
-                    <AssessmentReportKit assessmentKit={assessmentKit} />
                   </Box>
                 </Grid>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
