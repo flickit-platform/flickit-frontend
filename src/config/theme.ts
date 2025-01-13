@@ -255,7 +255,7 @@ export const theme = createTheme({
     },
     bodyLarge: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: "lighter",
+      fontWeight: is_farsi ? "light" : "lighter",
       fontSize: "1rem",
       lineHeight: "1.5rem",
       letterSpacing: is_farsi ? "0px" : "0.5px",

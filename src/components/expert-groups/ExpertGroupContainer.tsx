@@ -54,7 +54,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import formatBytes from "@utils/formatBytes";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import Menu from "@mui/material/Menu";
@@ -63,6 +63,7 @@ import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { uniqueId } from "lodash";
+import languageDetector from "@/utils/languageDetector";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -175,7 +176,16 @@ const ExpertGroupContainer = () => {
                   )
                 }
               >
-                {title}
+                <span
+                  style={{
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
+                >
+                  {" "}
+                  {title}
+                </span>
               </Title>
               <Grid container spacing={3} sx={{ mt: 1 }}>
                 <Grid item xs={12} md={8}>
@@ -192,7 +202,15 @@ const ExpertGroupContainer = () => {
                           background: "white",
                         }}
                       >
-                        <Box minHeight={"160px"} mb={4}>
+                        <Box
+                          minHeight={"160px"}
+                          mb={4}
+                          sx={{
+                            fontFamily: languageDetector(bio)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          }}
+                        >
                           <RichEditor content={about} />
                         </Box>
                       </Box>
@@ -253,7 +271,15 @@ const ExpertGroupContainer = () => {
                       </Typography>
                       {bio && (
                         <Box mt={1}>
-                          <Typography>{bio}</Typography>
+                          <Typography
+                            sx={{
+                              fontFamily: languageDetector(bio)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                            }}
+                          >
+                            {bio}
+                          </Typography>
                         </Box>
                       )}
                       {website && (
@@ -1169,7 +1195,10 @@ const AssessmentKitsList = (props: any) => {
           renderLoading={() => (
             <>
               {forLoopComponent(5, (index) => (
-                <LoadingSkeleton key={uniqueId()} sx={{ height: "60px", mb: 1 }} />
+                <LoadingSkeleton
+                  key={uniqueId()}
+                  sx={{ height: "60px", mb: 1 }}
+                />
               ))}
             </>
           )}

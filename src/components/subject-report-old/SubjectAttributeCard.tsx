@@ -9,7 +9,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
@@ -222,13 +222,23 @@ const SUbjectAttributeCard = (props: any) => {
                   sx={{
                     ...theme.typography.headlineSmall,
                     textTransform: "none",
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                   }}
                 >
                   {title}
                 </Typography>
               </Title>
               <Typography
-                sx={{ ...theme.typography.bodyMedium, color: "#6C8093", mb: 2 }}
+                sx={{
+                  ...theme.typography.bodyMedium,
+                  color: "#6C8093",
+                  mb: 2,
+                  fontFamily: languageDetector(description)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                }}
               >
                 {description}
               </Typography>
@@ -1263,6 +1273,9 @@ const OnHoverInput = (props: any) => {
                 ...theme.typography.titleMedium,
                 fontWeight: "400",
                 unicodeBidi: "plaintext",
+                fontFamily: languageDetector(data)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
               }}
               sx={{
                 "& > p": {

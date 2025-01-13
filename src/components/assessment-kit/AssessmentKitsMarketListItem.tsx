@@ -10,7 +10,8 @@ import Title from "@common/Title";
 import ThumbUpOffAltRoundedIcon from "@mui/icons-material/ThumbUpOffAltRounded";
 import { Trans } from "react-i18next";
 import Tooltip from "@mui/material/Tooltip";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
   const HEIGHT_TITLE: number = 12;
@@ -112,6 +113,9 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             textOverflow: "ellipsis",
+            fontFamily: languageDetector(data.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {data.title}
@@ -119,7 +123,15 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
       </Title>
       <Box mt={4} mb={2}>
         <Tooltip title={data?.summary.length > 55 && data?.summary}>
-          <Typography sx={{ wordBreak: "break-word" }}>
+          <Typography
+            sx={{
+              wordBreak: "break-word",
+              fontFamily: languageDetector(data.summary)
+                ? farsiFontFamily
+                : primaryFontFamily,
+              direction: languageDetector(data.summary) ? "rtl" : "ltr",
+            }}
+          >
             {`${data.summary?.substring(0, 55)} ${data?.summary.length > 55 ? "..." : ""}` ||
               ""}
           </Typography>
@@ -141,6 +153,11 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
               fontSize=".95rem"
               textTransform={"capitalize"}
               color={"#000000de"}
+              sx={{
+                fontFamily: languageDetector(data.expertGroup?.title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
             >
               {data.expertGroup?.title}
             </Box>

@@ -9,6 +9,8 @@ import { useQuery } from "@utils/useQuery";
 import { Chip } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { uniqueId } from "lodash";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface ISupTitleBreadcrumbProps {
   routes: {
@@ -77,6 +79,12 @@ const SupTitleBreadcrumb = (
                     padding: "4px",
                     "& .MuiChip-label": {
                       ...theme.typography.bodyLarge,
+                      fontFamily: languageDetector(title as string)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                      fontWeight: languageDetector(title as string)
+                        ? "light"
+                        : "lighter",
                     },
                   }}
                 />
