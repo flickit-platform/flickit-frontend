@@ -91,7 +91,7 @@ const AssessmentReportContainer = (props: any) => {
       });
     }
   }, [queryData.errorObject]);
-  const { spaceId } = useParams();
+  const { spaceId, page } = useParams();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) => service.fetchAssessmentsRoles(args, config),
     toastError: false,
