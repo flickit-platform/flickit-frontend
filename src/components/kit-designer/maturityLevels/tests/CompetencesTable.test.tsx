@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import CompetencesTable from "../CompetencesTable"; // Adjust the import based on your file structure
 import { vi } from "vitest";
 import { ServiceProvider } from "@/providers/ServiceProvider"; // Import your ServiceProvider
+import axios from "axios";
 
 // Mock data for testing
 const mockData = [
@@ -51,43 +52,43 @@ describe("CompetencesTable", () => {
     expect(screen.getAllByText("5")[0]).toBeInTheDocument();
     expect(screen.getAllByText("10")[0]).toBeInTheDocument();
   });
-  
-  // it("handles adding a new competency", async () => {
-  //   axios.post = vi.fn().mockResolvedValue({});
-  //   render(
-  //     <MockServiceProvider>
-  //       <CompetencesTable
-  //         data={mockData}
-  //         maturityLevelsCompetences={mockMaturityLevelsCompetences}
-  //         kitVersionId={mockKitVersionId}
-  //       />
-  //     </MockServiceProvider>,
-  //   );
 
-  //   // Click on the cell to add a new competency
-  //   const cell = screen.getAllByText("-")[0].closest("td");
-  //   if (cell) {
-  //     fireEvent.click(cell);
-  //   }
+  it("handles adding a new competency", async () => {
+    axios.post = vi.fn().mockResolvedValue({});
+    render(
+      <MockServiceProvider>
+        <CompetencesTable
+          data={mockData}
+          maturityLevelsCompetences={mockMaturityLevelsCompetences}
+          kitVersionId={mockKitVersionId}
+        />
+      </MockServiceProvider>,
+    );
 
-  //   // Check that the TextField is displayed
-  //   const input = screen.getAllByDisplayValue("")[0];
-  //   fireEvent.change(input, { target: { value: "20" } });
-  //   fireEvent.blur(input); // Trigger save on blur
+    // Click on the cell to add a new competency
+    const cell = screen.getAllByText("-")[0].closest("td");
+    if (cell) {
+      fireEvent.click(cell);
+    }
 
-  //   // Wait for the service method to be called
-  //   await waitFor(() => {
-  //     expect((axios as any).default.post).toHaveBeenCalledTimes(1);
-  //     expect((axios as any).default.post).toHaveBeenCalledWith(
-  //       `/api/v1/kit-versions/${mockKitVersionId}/level-competences/`,
-  //       {
-  //         affectedLevelId: 1,
-  //         effectiveLevelId: 1,
-  //         kitVersionId: mockKitVersionId,
-  //         value: 20,
-  //       },
-  //       undefined,
-  //     );
-  //   });
-  // });
+    // Check that the TextField is displayed
+    const input = screen.getAllByDisplayValue("")[0];
+    fireEvent.change(input, { target: { value: "20" } });
+    fireEvent.blur(input); // Trigger save on blur
+
+    // Wait for the service method to be called
+    await waitFor(() => {
+      expect((axios as any).default.post).toHaveBeenCalledTimes(1);
+      expect((axios as any).default.post).toHaveBeenCalledWith(
+        `/api/v1/kit-versions/${mockKitVersionId}/level-competences/`,
+        {
+          affectedLevelId: 1,
+          effectiveLevelId: 1,
+          kitVersionId: mockKitVersionId,
+          value: 20,
+        },
+        undefined,
+      );
+    });
+  });
 });
