@@ -9,7 +9,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { AssessmentOverallStatus } from "./AssessmentOverallStatus";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import { IAssessmentReportModel, RolesType } from "@types";
-import { AssessmentSummary } from "./AssessmentSummary";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
@@ -121,8 +120,6 @@ const AssessmentReportContainer = (props: any) => {
             assessment || {};
           const { questionsCount, answersCount } = progress;
 
-          const totalProgress =
-            ((answersCount || 0) / (questionsCount || 1)) * 100;
           const totalAttributesLength = subjects.reduce(
             (sum: any, subject: any) => {
               return sum + (subject.attributes?.length || 0);
