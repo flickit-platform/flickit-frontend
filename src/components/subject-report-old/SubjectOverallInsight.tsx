@@ -19,6 +19,9 @@ const SubjectOverallInsight = (props: any) => {
     <Box>
       <Box display="flex" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
         <OverallInsightText {...props} />
+        <Box sx={{ pl: { xs: 0, sm: 3, md: 6 }, mt: { xs: 4, sm: 0 } }}>
+          <SubjectOverallStatusLevelChart {...props} />
+        </Box>
       </Box>
     </Box>
   );
