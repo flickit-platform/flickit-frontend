@@ -1,8 +1,8 @@
 const languageDetector = (text?: string | null) => {
   const farsiChars = new Set("ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی");
 
-  if (!text) return false;
-  for (const char of text) {
+  if (!text || text === undefined) return false;
+  for (const char of text.toString()) {
     if (farsiChars.has(char)) {
       return true;
     }

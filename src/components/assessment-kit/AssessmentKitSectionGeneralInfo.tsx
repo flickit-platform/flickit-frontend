@@ -35,7 +35,8 @@ import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -532,7 +533,16 @@ const OnHoverInput = (props: any) => {
         }}
         width="100%"
       >
-        <Typography variant="body2" mr={4} sx={{ minWidth: "64px !important" }}>
+        <Typography
+          variant="body2"
+          mr={4}
+          sx={{
+            minWidth: "64px !important",
+            fontFamily: languageDetector(title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
+        >
           {title}
         </Typography>
 

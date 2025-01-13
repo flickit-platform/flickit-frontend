@@ -41,8 +41,9 @@ import { SelectHeight } from "@utils/selectHeight";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import { theme } from "@config/theme";
-import {uniqueId} from "lodash";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { uniqueId } from "lodash";
+import languageDetector from "@/utils/languageDetector";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -224,67 +225,73 @@ export const AssessmentSettingGeneralBox = (props: {
           }}
         >
           {title.map((itemList: string, index: number) => {
-              return (
-                <Grid
-                  key={uniqueId()}
-                  item
-                  xs={12}
-                  sm={5}
+            return (
+              <Grid
+                key={uniqueId()}
+                item
+                xs={12}
+                sm={5}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: "10px",
+                }}
+              >
+                <Typography
+                  color="#78818b"
+                  fontWeight={500}
+                  whiteSpace={"nowrap"}
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    fontSize: { xs: "1rem", md: "1.375rem" },
+                  }}
+                  lineHeight={"normal"}
+                >
+                  <Trans i18nKey={`${itemList}`} />:
+                </Typography>
+
+                <Typography
+                  color="#0A2342"
+                  fontWeight={500}
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: "10px",
+                    justifyContent: "center",
+                    fontSize: { xs: "1rem", md: "1.375rem" },
+                    width: { md: "350px" },
+                    textAlign: "center",
                   }}
+                  lineHeight={"normal"}
                 >
-                  <Typography
-                    color="#78818b"
-                    fontWeight={500}
-                    whiteSpace={"nowrap"}
-                    sx={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      fontSize: { xs: "1rem", md: "1.375rem" },
-                    }}
-                    lineHeight={"normal"}
-                  >
-                    <Trans i18nKey={`${itemList}`} />:
-                  </Typography>
-
-                  <Typography
-                    color="#0A2342"
-                    fontWeight={500}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      fontSize: { xs: "1rem", md: "1.375rem" },
-                      width: { md: "350px" },
-                      textAlign: "center",
-                    }}
-                    lineHeight={"normal"}
-                  >
-                    {index == 0 && displayName}
-                    {index == 1 && (
-                      <Link
-                        style={{ textDecoration: "none", color: "inherit" }}
-                        to={`/assessment-kits/${kit.id}`}
-                      >
-                        {kit.title}
-                      </Link>
-                    )}
-                    {index == 2 &&
-                      (theme.direction == "rtl"
-                        ? formatDate(creationTime, "Shamsi")
-                        : formatDate(creationTime, "Miladi"))}
-                    {index == 3 &&
-                      (theme.direction == "rtl"
-                        ? formatDate(lastModificationTime, "Shamsi")
-                        : formatDate(lastModificationTime, "Miladi"))}
-                  </Typography>
-                </Grid>
-              );
-            })}
+                  {index == 0 && displayName}
+                  {index == 1 && (
+                    <Link
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                        fontFamily: languageDetector(kit.title)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                      }}
+                      to={`/assessment-kits/${kit.id}`}
+                    >
+                      {kit.title}
+                    </Link>
+                  )}
+                  {index == 2 &&
+                    (theme.direction == "rtl"
+                      ? formatDate(creationTime, "Shamsi")
+                      : formatDate(creationTime, "Miladi"))}
+                  {index == 3 &&
+                    (theme.direction == "rtl"
+                      ? formatDate(lastModificationTime, "Shamsi")
+                      : formatDate(lastModificationTime, "Miladi"))}
+                </Typography>
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
     </Box>
@@ -835,82 +842,82 @@ export const AssessmentSettingMemberBox = (props: {
                                     </Typography>
                                   </Box>
                                   {listOfRoles?.map(
-                                      (role: any, index: number) => (
-                                        <MenuItem
-                                          style={{ display: "block" }}
-                                          key={role.title}
-                                          value={role}
+                                    (role: any, index: number) => (
+                                      <MenuItem
+                                        style={{ display: "block" }}
+                                        key={role.title}
+                                        value={role}
+                                        sx={{
+                                          paddingY: "0px",
+                                          maxHeight: "200px",
+                                          ...(role.id === row.role.id && {
+                                            backgroundColor: "#9CCAFF",
+                                          }),
+                                          "&.MuiMenuItem-root:hover": {
+                                            ...(role.id === row.role.id
+                                              ? {
+                                                  backgroundColor: "#9CCAFF",
+                                                  color: "#004F83",
+                                                }
+                                              : {
+                                                  backgroundColor: "#EFEDF0",
+                                                  color: "#1B1B1E",
+                                                }),
+                                          },
+                                        }}
+                                      >
+                                        <Box
                                           sx={{
-                                            paddingY: "0px",
-                                            maxHeight: "200px",
-                                            ...(role.id === row.role.id && {
-                                              backgroundColor: "#9CCAFF",
-                                            }),
-                                            "&.MuiMenuItem-root:hover": {
+                                            maxWidth: "240px",
+                                            color: "#2B333B",
+                                            fontSize: "0.875rem",
+                                            lineHeight: "21px",
+                                            fontWeight: 500,
+                                            paddingY: "1rem",
+                                          }}
+                                        >
+                                          <Typography
+                                            sx={{
+                                              fontSize: "0.875rem",
                                               ...(role.id === row.role.id
                                                 ? {
-                                                    backgroundColor: "#9CCAFF",
                                                     color: "#004F83",
                                                   }
                                                 : {
-                                                    backgroundColor: "#EFEDF0",
                                                     color: "#1B1B1E",
                                                   }),
-                                            },
-                                          }}
-                                        >
-                                          <Box
-                                            sx={{
-                                              maxWidth: "240px",
+                                            }}
+                                          >
+                                            {role.title}
+                                          </Typography>
+
+                                          <div
+                                            style={{
                                               color: "#2B333B",
                                               fontSize: "0.875rem",
                                               lineHeight: "21px",
-                                              fontWeight: 500,
-                                              paddingY: "1rem",
+                                              fontWeight: 300,
+                                              whiteSpace: "break-spaces",
+                                              paddingTop: "1rem",
                                             }}
                                           >
-                                            <Typography
+                                            {role.description}
+                                          </div>
+                                        </Box>
+                                        {listOfRoles &&
+                                          listOfRoles.length > index + 1 && (
+                                            <Box
                                               sx={{
-                                                fontSize: "0.875rem",
-                                                ...(role.id === row.role.id
-                                                  ? {
-                                                      color: "#004F83",
-                                                    }
-                                                  : {
-                                                      color: "#1B1B1E",
-                                                    }),
+                                                height: "0.5px",
+                                                width: "80%",
+                                                backgroundColor: "#78818b",
+                                                mx: "auto",
                                               }}
-                                            >
-                                              {role.title}
-                                            </Typography>
-
-                                            <div
-                                              style={{
-                                                color: "#2B333B",
-                                                fontSize: "0.875rem",
-                                                lineHeight: "21px",
-                                                fontWeight: 300,
-                                                whiteSpace: "break-spaces",
-                                                paddingTop: "1rem",
-                                              }}
-                                            >
-                                              {role.description}
-                                            </div>
-                                          </Box>
-                                          {listOfRoles &&
-                                            listOfRoles.length > index + 1 && (
-                                              <Box
-                                                sx={{
-                                                  height: "0.5px",
-                                                  width: "80%",
-                                                  backgroundColor: "#78818b",
-                                                  mx: "auto",
-                                                }}
-                                              ></Box>
-                                            )}
-                                        </MenuItem>
-                                      ),
-                                    )}
+                                            ></Box>
+                                          )}
+                                      </MenuItem>
+                                    ),
+                                  )}
                                 </Select>
                               </Grid>
                             </FormControl>
@@ -1038,79 +1045,79 @@ const SelectionRole = (props: any) => {
         </Typography>
       </Box>
       {listOfRoles?.map((role: any, index: number) => (
-          <MenuItem
-            style={{ display: "block" }}
-            key={role.title}
-            value={role}
+        <MenuItem
+          style={{ display: "block" }}
+          key={role.title}
+          value={role}
+          sx={{
+            paddingY: "0px",
+            maxHeight: "200px",
+            ...(role.id === row.role.id && {
+              backgroundColor: "#9CCAFF",
+            }),
+            "&.MuiMenuItem-root:hover": {
+              ...(role.id === row.role.id
+                ? {
+                    backgroundColor: "#9CCAFF",
+                    color: "#004F83",
+                  }
+                : {
+                    backgroundColor: "#EFEDF0",
+                    color: "#1B1B1E",
+                  }),
+            },
+          }}
+        >
+          <Box
             sx={{
-              paddingY: "0px",
-              maxHeight: "200px",
-              ...(role.id === row.role.id && {
-                backgroundColor: "#9CCAFF",
-              }),
-              "&.MuiMenuItem-root:hover": {
+              maxWidth: "240px",
+              color: "#2B333B",
+              fontSize: "0.875rem",
+              lineHeight: "21px",
+              fontWeight: 500,
+              paddingY: "1rem",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "0.875rem",
                 ...(role.id === row.role.id
                   ? {
-                      backgroundColor: "#9CCAFF",
                       color: "#004F83",
                     }
                   : {
-                      backgroundColor: "#EFEDF0",
                       color: "#1B1B1E",
                     }),
-              },
-            }}
-          >
-            <Box
-              sx={{
-                maxWidth: "240px",
+              }}
+            >
+              {role.title}
+            </Typography>
+
+            <div
+              style={{
                 color: "#2B333B",
                 fontSize: "0.875rem",
                 lineHeight: "21px",
-                fontWeight: 500,
-                paddingY: "1rem",
+                fontWeight: 300,
+                whiteSpace: "break-spaces",
+                paddingTop: "1rem",
               }}
             >
-              <Typography
-                sx={{
-                  fontSize: "0.875rem",
-                  ...(role.id === row.role.id
-                    ? {
-                        color: "#004F83",
-                      }
-                    : {
-                        color: "#1B1B1E",
-                      }),
-                }}
-              >
-                {role.title}
-              </Typography>
-
-              <div
-                style={{
-                  color: "#2B333B",
-                  fontSize: "0.875rem",
-                  lineHeight: "21px",
-                  fontWeight: 300,
-                  whiteSpace: "break-spaces",
-                  paddingTop: "1rem",
-                }}
-              >
-                {role.description}
-              </div>
-            </Box>
-            {listOfRoles && listOfRoles.length > index + 1 && (
-              <Box
-                sx={{
-                  height: "0.5px",
-                  width: "80%",
-                  backgroundColor: "#78818b",
-                  mx: "auto",
-                }}
-              ></Box>
-            )}
-          </MenuItem>
-        ))}
+              {role.description}
+            </div>
+          </Box>
+          {listOfRoles && listOfRoles.length > index + 1 && (
+            <Box
+              sx={{
+                height: "0.5px",
+                width: "80%",
+                backgroundColor: "#78818b",
+                mx: "auto",
+              }}
+            ></Box>
+          )}
+        </MenuItem>
+      ))}
     </Select>
   );
 };
@@ -1300,7 +1307,12 @@ const OnHoverInputTitleSetting = (props: any) => {
             <Typography
               color="#004F83"
               fontWeight={500}
-              sx={{ fontSize: { xs: "1rem", sm: "1.375rem" } }}
+              sx={{
+                fontSize: { xs: "1rem", sm: "1.375rem" },
+                fontFamily: languageDetector(data)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
               lineHeight={"normal"}
             >
               {type == "title" && data?.replace(/<\/?p>/g, "")}

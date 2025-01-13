@@ -18,7 +18,7 @@ import {
   ArrowForwardIos,
   QuestionAnswer,
 } from "@mui/icons-material";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
 import EmptyState from "@/components/kit-designer/common/EmptyState";
@@ -116,6 +116,9 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           direction: languageDetector(questionInfo?.question?.title ?? "")
             ? "rtl"
             : "ltr",
+          fontFamily: languageDetector(questionInfo?.question?.title)
+            ? farsiFontFamily
+            : primaryFontFamily,
           color: "#2B333B",
         }}
       >
@@ -137,7 +140,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           >
             <Trans i18nKey={"hint"} />:
           </Typography>
-          <Typography sx={{ ...theme.typography.bodyMedium }}>
+          <Typography
+            sx={{
+              ...theme.typography.bodyMedium,
+              fontFamily: languageDetector(questionInfo?.question?.hint)
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+          >
             {questionInfo?.question?.hint}
           </Typography>
         </Box>
@@ -157,7 +167,17 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       {questionInfo?.answer?.index ? (
         <>
           <Box sx={{ p: 1, border: "1px solid #C7CCD1", borderRadius: 2 }}>
-            <Typography sx={{ ...theme.typography.bodyMedium }}>
+            <Typography
+              sx={{
+                ...theme.typography.bodyMedium,
+                direction: languageDetector(questionInfo?.answer?.title)
+                  ? "rtl"
+                  : "ltr",
+                fontFamily: languageDetector(questionInfo?.answer?.title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+            >
               {questionInfo?.answer?.index + ". " + questionInfo?.answer?.title}
             </Typography>
           </Box>
