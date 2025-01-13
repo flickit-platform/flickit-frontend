@@ -17,8 +17,9 @@ import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { theme } from "@/config/theme";
-import {styles} from "@styles";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { styles } from "@styles";
+import languageDetector from "@/utils/languageDetector";
 
 const QuestionsTitle = (props: {
   data: IQuestionnaireModel;
@@ -156,8 +157,14 @@ const QuestionsTitle = (props: {
                     display="inline-block"
                     variant="h5"
                     fontWeight={"bold"}
+                    style={{
+                      fontFamily: languageDetector(questionnaire.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
                   >
-                    {questionnaire.title}{" -"}
+                    {questionnaire.title}
+                    {" -"}
                   </Typography>{" "}
                   <Typography
                     display="inline-block"

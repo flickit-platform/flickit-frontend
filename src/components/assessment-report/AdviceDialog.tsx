@@ -57,7 +57,7 @@ const AdviceDialog = ({
         }}
       >
         <Typography variant="titleMedium" fontWeight={400} textAlign="left">
-          <Trans i18nKey="wichAttYouWant" />
+          <Trans i18nKey="whichAttYouWant" />
         </Typography>
       </Box>
 

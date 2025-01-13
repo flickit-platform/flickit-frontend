@@ -9,6 +9,8 @@ import {
 } from "recharts";
 import Skeleton from "@mui/material/Skeleton";
 import { convertToRadialChartData } from "@/utils/convertToAssessmentChartData";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 interface AssessmentSubjectRadialChartProps {
   loading: boolean;
@@ -37,7 +39,6 @@ interface SubjectRadialProps {
 
 const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
   const chartData = useMemo(() => convertToRadialChartData(data), [data]);
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart cx="50%" cy="50%" barSize={30} data={chartData}>
@@ -47,7 +48,14 @@ const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
         <Bar
           min={15}
           dataKey="ml"
-          label={{ position: "middle", fill: "#fff", fontSize: "1.75rem" }}
+          label={{
+            position: "middle",
+            fill: "#fff",
+            fontSize: "1.75rem",
+            fontFamily: languageDetector(chartData[0]?.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
           background
           name="name"
         />
