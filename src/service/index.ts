@@ -166,6 +166,12 @@ export const createService = (
         },
       );
     },
+    fetchGraphicalReportUsers(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/users-with-report-access/`, config);
+    },
     inviteMemberToAssessment(
       args: { assessmentId: any; email: any; roleId: any },
       config: AxiosRequestConfig<any> | undefined,

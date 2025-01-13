@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Hidden from "@mui/material/Hidden";
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
@@ -12,8 +11,6 @@ import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { SubjectAttributeList } from "./SubjectAttributeList";
-import SubjectRadarChart from "./SubjectRadarChart";
-import SubjectBarChart from "./SubjectBarChart";
 import SubjectOverallInsight from "./SubjectOverallInsight";
 import { ISubjectReportModel, TId } from "@types";
 import hasStatus from "@utils/hasStatus";
@@ -255,7 +252,6 @@ const SubjectContainer = () => {
         const isComplete = questionCount === answerCount;
         const progress = ((answerCount || 0) / (questionCount || 1)) * 100;
 
-        const attributesNumber = attributes.length;
         useEffect(() => {
           const loadAndFetchData = async () => {
             const ignoreIds = await loadAllAttributesData();
@@ -311,31 +307,6 @@ const SubjectContainer = () => {
                       loading={loading}
                     />
                   </Box>
-                  <Hidden smDown>
-                    {attributesNumber > 2 && (
-                      <Box height={"620px"} mb={10} mt={10}>
-                        <Typography>
-                          <Trans
-                            i18nKey="inTheRadarChartBelow"
-                            values={{
-                              title: title || "",
-                            }}
-                          />
-                        </Typography>
-
-                        <SubjectRadarChart
-                          {...subjectQueryData}
-                          loading={loading}
-                        />
-                      </Box>
-                    )}
-                    <Box height={"520px"} mt={10}>
-                      <SubjectBarChart
-                        {...subjectQueryData}
-                        loading={loading}
-                      />
-                    </Box>
-                  </Hidden>
                 </Box>
                 <Box>
                   <SubjectAttributeList

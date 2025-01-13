@@ -43,7 +43,6 @@ import QueryBatchData from "../common/QueryBatchData";
 import { LoadingButton } from "@mui/lab";
 import { t } from "i18next";
 
-
 const SUbjectAttributeCard = (props: any) => {
   const {
     description,
@@ -107,7 +106,7 @@ const SUbjectAttributeCard = (props: any) => {
     service: (
       args = {
         assessmentId,
-        attributeId: id
+        attributeId: id,
       },
       config,
     ) => service.ApprovedAIAttribute(args, config),
@@ -147,9 +146,9 @@ const SUbjectAttributeCard = (props: any) => {
 
   const approveAttribute = async (event: React.SyntheticEvent) => {
     try {
-        event.stopPropagation()
-        await ApprovedAIAttribute.query();
-        updateAttributeAndData(id, assessmentId, "", true);
+      event.stopPropagation();
+      await ApprovedAIAttribute.query();
+      updateAttributeAndData(id, assessmentId, "", true);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -240,19 +239,21 @@ const SUbjectAttributeCard = (props: any) => {
                 {description}
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography color="#2466A8" variant="titleSmall">
-                  <Trans i18nKey="insight" />
-                </Typography>
+                {attributesDataPolicy[id?.toString()] && (
+                  <Typography color="#2466A8" variant="titleSmall">
+                    <Trans i18nKey="insight" />
+                  </Typography>
+                )}
                 {attributesDataPolicy[id?.toString()]?.aiInsight &&
                 attributesDataPolicy[id?.toString()]?.aiInsight.isValid ? (
                   <Box sx={{ ...styles.centerVH, gap: 2 }}>
                     {!attributesDataPolicy[id?.toString()]?.approved && (
                       <LoadingButton
-                        onClick={(event)=>approveAttribute(event)}
+                        onClick={(event) => approveAttribute(event)}
                         variant={"contained"}
                         loading={ApprovedAIAttribute.loading}
                       >
-                     <Trans i18nKey={"approve"} />
+                        <Trans i18nKey={"approve"} />
                       </LoadingButton>
                     )}
                     <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>

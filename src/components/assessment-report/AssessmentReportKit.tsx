@@ -37,6 +37,7 @@ export const AssessmentReportKit = (props: IAssessmentReportKit) => {
       justifyContent="left"
       textAlign="left"
       maxHeight="100%"
+      height={"100%"}
       gap={3}
       py={2}
       sx={{
@@ -46,32 +47,11 @@ export const AssessmentReportKit = (props: IAssessmentReportKit) => {
         px: { xs: 2, sm: 3.75 },
       }}
     >
-      <Box sx={{ ...styles.centerCVH }} width="100%" gap={1}>
+      <Box sx={{ ...styles.centerCVH, justifyContent: "space-around" }} width="100%" height="100%" gap={1}>
         <Box
           display="flex"
-          flexDirection={{
-            xl:
-              assessmentKit.title.length +
-                assessmentKit.expertGroup.title.length >
-              80
-                ? "column"
-                : "row",
-            lg:
-              assessmentKit.title.length +
-                assessmentKit.expertGroup.title.length >
-              60
-                ? "column"
-                : "row",
-            md:
-              assessmentKit.title.length +
-                assessmentKit.expertGroup.title.length >
-              40
-                ? "column"
-                : "row",
-            xs: "column",
-            sm: "column",
-          }}
-          gap={1}
+          flexDirection={"column"}
+          gap={3}
           justifyContent="space-between"
           width="100%"
         >
