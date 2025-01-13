@@ -15,6 +15,7 @@ import { theme } from "@config/theme";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
+import { styles } from "@styles";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -25,6 +26,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [issues, setIssues] = useState<string[]>([]);
   const [originalItem, setOriginalItem] = useState<string[]>([]);
+
   const [questionCardColumnCondition, setQuestionCardColumnCondition] =
     useState<boolean>(true);
 
@@ -207,19 +209,18 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             renderLoading={() => <LoadingSkeletonOfQuestionnaires />}
             render={(data) => {
               const { items, permissions } = data;
+              const filteredItems = items.filter((item: any) =>
+                originalItem.length === 0
+                  ? item
+                  : Object.keys(item.issues).some(
+                      (key) =>
+                        originalItem.includes(key) && item.issues[key] > 0,
+                    ),
+              );
               return (
-                <Grid container spacing={2}>
-                  {items
-                    .filter((item: any) =>
-                      originalItem.length === 0
-                        ? item
-                        : Object.keys(item.issues).some(
-                            (key) =>
-                              originalItem.includes(key) &&
-                              item.issues[key] > 0,
-                          ),
-                    )
-                    .map((data: any) => {
+                <Grid container spacing={2} sx={{ minHeight: "250px" }}>
+                  {filteredItems.length > 0 ? (
+                    filteredItems.map((data: any) => {
                       return (
                         <Grid
                           item
@@ -240,7 +241,15 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                           />
                         </Grid>
                       );
-                    })}
+                    })
+                  ) : (
+                    <Box sx={{ ...styles.centerVH, width: "100%" }}>
+                      <Typography sx={{...theme.typography.headlineLarge, color:"#C2CCD680" }}>
+                        {originalItem.length == 1 && <Trans i18nKey={"NoIssueFound"} />}
+                        {originalItem.length > 1 && <Trans i18nKey={"NoIssuesFound"} />}
+                      </Typography>
+                    </Box>
+                  )}
                 </Grid>
               );
             }}

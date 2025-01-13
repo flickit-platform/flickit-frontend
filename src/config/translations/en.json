@@ -792,5 +792,7 @@
   "answeredWithoutEvidence": "Answered with no evidence",
   "unanswered": "Unanswered questions",
   "none": "None",
-  "selectedIssuesType": "selected issue types"
+  "selectedIssuesType": "selected issue types",
+  "NoIssueFound": "No questionnaire with selected issue found",
+  "NoIssuesFound": "No questionnaire with selected issues found"
 }
