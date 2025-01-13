@@ -1612,10 +1612,12 @@ export const createService = (
         levelId: TId;
         sort: any;
         order: any;
+        page?: any;
+        size?: any;
       },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      const { assessmentId, attributeId, levelId, sort, order } = args ?? {};
+      const { assessmentId, attributeId, levelId, sort, order, page, size } = args ?? {};
       return axios.get(
         `/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/`,
         {
@@ -1624,6 +1626,8 @@ export const createService = (
             maturityLevelId: levelId,
             sort: sort,
             order: order,
+            page: page,
+            size: size
           },
         },
       );

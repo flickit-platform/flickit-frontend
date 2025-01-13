@@ -793,6 +793,8 @@
   "unanswered": "Unanswered questions",
   "none": "None",
   "selectedIssuesType": "selected issue types",
+  "rowsPerPage": "Rows per page",
+  "moreThan": "More than",
   "NoIssueFound": "No questionnaire with selected issue found",
   "NoIssuesFound": "No questionnaire with selected issues found"
 }
