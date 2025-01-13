@@ -148,54 +148,38 @@ export const statusColorMap: Record<NonNullable<TStatus>, string> = {
   "Not Calculated": "#b7b7b7",
 };
 
+export const C1 = "#B71515";
+export const C2 = "#D73027";
+export const C3 = "#F46D43";
+export const C4 = "#FFBC00";
+export const C5 = "#E9D60C";
+export const C6 = "#BCC20A";
+export const C7 = "#99CB34";
+export const C8 = "#4FB34C";
+export const C9 = "#168345";
+export const C10 = "#0A5C25";
+
+export const C1BG = "#B7151533";
+export const C2BG = "#D7302733";
+export const C3BG = "#F46D4333";
+export const C4BG = "#FFBC0033";
+export const C5BG = "#E9D60C33";
+export const C6BG = "#BCC20A33";
+export const C7BG = "#99CB3433";
+export const C8BG = "#4FB34C33";
+export const C9BG = "#16834533";
+export const C10BG = "#0A5C2533";
+
 export const maturityLevelColorMap: any = {
-  ML2: ["#822123", "#347444"],
-  ML3: ["#822123", "#BE5923", "#347444"],
-  ML4: ["#822123", "#BE5923", "#F4B949", "#347444"],
-  ML5: ["#862123", "#BE5823", "#F4B942", "#9BB763", "#347444"],
-  ML6: ["#822123", "#BE5823", "#F4B942", "#347444", "#353F4E", "#D4AF37"],
-  ML7: [
-    "#822123",
-    "#B32E30",
-    "#BE5823",
-    "#F4B942",
-    "#347444",
-    "#353F4E",
-    "#D4AF37",
-  ],
-  ML8: [
-    "#822123",
-    "#B32E30",
-    "#BE5823",
-    "#E7A039",
-    "#F4B942",
-    "#347444",
-    "#353F4E",
-    "#D4AF37",
-  ],
-  ML9: [
-    "#822123",
-    "#B32E30",
-    "#BE5823",
-    "#E7A039",
-    "#F4B942",
-    "#9BB763",
-    "#347444",
-    "#353F4E",
-    "#D4AF37",
-  ],
-  ML10: [
-    "#822123",
-    "#B32E30",
-    "#BE5823",
-    "#E7A039",
-    "#F4B942",
-    "#9BB763",
-    "#347444",
-    "#2F6683",
-    "#353F4E",
-    "#D4AF37",
-  ],
+  ML2: [C1, C10],
+  ML3: [C1, C6, C10],
+  ML4: [C1, C5, C7, C10],
+  ML5: [C1, C4, C6, C8, C10],
+  ML6: [C1, C3, C5, C7, C8, C10],
+  ML7: [C1, C2, C4, C6, C7, C8, C10],
+  ML8: [C1, C2, C4, C5, C7, C8, C9, C10],
+  ML9: [C1, C2, C3, C4, C6, C7, C8, C9, C10],
+  ML10: [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10],
 };
 export const getMaturityLevelColors = (maturity_level_number: number) => {
   switch (maturity_level_number) {

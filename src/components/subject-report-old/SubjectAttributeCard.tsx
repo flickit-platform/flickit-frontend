@@ -3,7 +3,7 @@ import Title from "@common/Title";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors, getTransparentColor, styles } from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -158,7 +158,7 @@ const SUbjectAttributeCard = (props: any) => {
   const colorPallet = getMaturityLevelColors(maturity_levels_count);
   const maturityLevelColor = colorPallet[maturityLevel.value - 1];
 
-  const backgroundColor = getTransparentColor(maturityLevelColor);
+  const backgroundColor = maturityLevelColor + "33";
   return (
     <Box
       sx={{
