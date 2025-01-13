@@ -30,7 +30,7 @@ const DashboardTitle = (props: any) => {
             //     to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
             // },
             {
-              title: `${assessment?.title} ${t(location.pathname.split("/")[5])}`,
+              title: `${assessment?.title}`,
             },
           ]}
           displayChip

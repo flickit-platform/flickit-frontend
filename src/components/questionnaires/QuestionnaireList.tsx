@@ -27,6 +27,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const [issues, setIssues] = useState<string[]>([]);
   const [originalItem, setOriginalItem] = useState<string[]>([]);
 
+  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
+    useState<boolean>(true);
+
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
     const {
       target: { value },
@@ -219,11 +222,22 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                   {filteredItems.length > 0 ? (
                     filteredItems.map((data: any) => {
                       return (
-                        <Grid item xl={4} md={6} sm={12} xs={12} key={data.id}>
+                        <Grid
+                          item
+                          // xl={questionCardColumnCondition ? 4 : 6}
+                          // md={questionCardColumnCondition ? 6 : 12}
+                          md={6}
+                          sm={12}
+                          xs={12}
+                          key={data.id}
+                        >
                           <QuestionnaireCard
                             data={data}
                             permissions={permissions}
                             originalItem={originalItem}
+                            setQuestionCardColumnCondition={
+                              setQuestionCardColumnCondition
+                            }
                           />
                         </Grid>
                       );

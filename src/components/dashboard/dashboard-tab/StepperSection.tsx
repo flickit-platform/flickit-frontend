@@ -221,7 +221,7 @@ const StepBox = (props: IStepBox) => {
   if (insights) {
     const { unapproved, expired, notGenerated, expected } = metrics;
     const hasIssues = unapproved || expired || notGenerated;
-    const result = expected - (notGenerated + expired);
+    const result = expected - notGenerated;
     const completed = activeStep >= 1 && expected == result;
 
     if (completed && activeStep == 1) {
