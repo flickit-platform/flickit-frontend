@@ -96,6 +96,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
 import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
+import convertLinksToClickable from "@utils/convertTextToClickableLink";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -1868,6 +1869,7 @@ const EvidenceDetail = (props: any) => {
     setEvidenceId(id);
   }, [id]);
 
+
   const skeleton = Array.from(Array(attachmentsCount).keys());
   return (
     <Box display="flex" flexDirection="column" width="100%">
@@ -2038,7 +2040,6 @@ const EvidenceDetail = (props: any) => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "1.7rem",
-                    cursor: "pointer",
                     width: { xs: "auto", sm: "250px" },
                   }}
                 >
@@ -2053,7 +2054,11 @@ const EvidenceDetail = (props: any) => {
                       fontWeight: "normal",
                     }}
                   >
-                    {description}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: convertLinksToClickable(description),
+                      }}
+                    />
                   </Typography>
                   <Box
                     sx={{
