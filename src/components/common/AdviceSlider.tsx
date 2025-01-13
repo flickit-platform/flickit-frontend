@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { getMaturityLevelColors } from "@styles";
 import { Trans } from "react-i18next";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 const AdviceSlider = (props: any) => {
   const {
     defaultValue,
@@ -68,6 +70,9 @@ const AdviceSlider = (props: any) => {
             border: "1px solid #D81E5B",
             borderRadius: "8px",
             textAlign: "center",
+            fontFamily: languageDetector(subject?.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {subject.title}
@@ -80,6 +85,9 @@ const AdviceSlider = (props: any) => {
             width: { xs: "100%", sm: "240px" },
             px: "8px",
             textAlign: { xs: "center", sm: "left" },
+            fontFamily: languageDetector(attribute?.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {attribute.title}
@@ -169,6 +177,9 @@ const AdviceSlider = (props: any) => {
             color: colorPallet[currentState?.index - 1],
             fontSize: ".75rem",
             fontWeight: "700",
+            fontFamily: languageDetector(currentState?.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {currentState?.title}
@@ -188,6 +199,11 @@ const AdviceSlider = (props: any) => {
             color: colorPallet[value ? value - 1 : defaultValue - 1],
             fontSize: "1rem",
             fontWeight: "700",
+            fontFamily: languageDetector(
+              maturityLevels[value ? value - 1 : defaultValue - 1]?.title,
+            )
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {maturityLevels[value ? value - 1 : defaultValue - 1]?.title}

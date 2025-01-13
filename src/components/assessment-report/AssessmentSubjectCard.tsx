@@ -313,7 +313,15 @@ export const AssessmentSubjectAccordion = (
                       gap={1}
                       key={element.id}
                     >
-                      <Typography variant="titleMedium" color="#243342">
+                      <Typography
+                        variant="titleMedium"
+                        color="#243342"
+                        sx={{
+                          fontFamily: languageDetector(element.title)
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        }}
+                      >
                         {element.title}
                       </Typography>
                       <Box display="flex" alignItems="center" gap={0.5}>
@@ -323,6 +331,11 @@ export const AssessmentSubjectAccordion = (
                               getMaturityLevelColors(5)[
                                 element.maturityLevel.value - 1
                               ],
+                            fontFamily: languageDetector(
+                              element.maturityLevel.title,
+                            )
+                              ? farsiFontFamily
+                              : primaryFontFamily,
                           }}
                           variant="titleMedium"
                         >

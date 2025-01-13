@@ -66,12 +66,9 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
   }, [questionsInfo]);
   const { assessmentTotalProgress, fetchPathInfo } = useQuestionnaire();
   useEffect(() => {
-    (async () => {
-      const {
-        questionnaire: { title },
-      } = await fetchPathInfo.query({ questionnaireId });
-      setQuestionnaireTitle(title);
-    })();
+    fetchPathInfo.query({ questionnaireId }).then((data) => {
+      setQuestionnaireTitle(data?.questionnaire?.title);
+    });
   }, [questionnaireId]);
 
   const progress =

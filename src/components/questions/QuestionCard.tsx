@@ -2037,26 +2037,21 @@ const EvidenceDetail = (props: any) => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "1.7rem",
-                    width: { xs: "auto", sm: "250px" },
+                    minWidth: { xs: "auto", sm: "320px" },
                   }}
                 >
                   <Typography
-                    style={
-                      languageDetector(description)
-                        ? { fontFamily: farsiFontFamily }
-                        : { fontFamily: primaryFontFamily }
-                    }
                     sx={{
                       ...theme?.typography?.bodyLarge,
                       fontWeight: "normal",
+                      fontFamily: languageDetector(description)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
                     }}
-                  >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: convertLinksToClickable(description),
-                      }}
-                    />
-                  </Typography>
+                    dangerouslySetInnerHTML={{
+                      __html: convertLinksToClickable(description),
+                    }}
+                  ></Typography>
                   <Box
                     sx={{
                       display: "flex",
@@ -2067,7 +2062,7 @@ const EvidenceDetail = (props: any) => {
                     {(!permissions.readonly || attachmentsCount) && (
                       <Box
                         onClick={() => expandedEvidenceBtm()}
-                        sx={{ display: "flex" }}
+                        sx={{ display: "flex", cursor: "pointer" }}
                       >
                         {!attachmentsCount ? (
                           <Typography
@@ -2204,24 +2199,26 @@ const EvidenceDetail = (props: any) => {
                         </Box>
                       )}
                     </Grid>
+                    <Typography
+                      fontSize="12px"
+                      variant="overline"
+                      sx={{
+                        whiteSpace: "nowrap",
+                        lineHeight: "12px",
+                        fontFamily:
+                          theme.direction == "rtl"
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        textAlign: "end",
+                        mt: -2,
+                      }}
+                    >
+                      {theme.direction == "rtl"
+                        ? formatDate(lastModificationTime, "Shamsi")
+                        : formatDate(lastModificationTime, "Miladi")}
+                    </Typography>
                   </Box>
                 </Box>
-                <Typography
-                  fontSize="12px"
-                  variant="overline"
-                  sx={{
-                    whiteSpace: "nowrap",
-                    lineHeight: "12px",
-                    fontFamily:
-                      theme.direction == "rtl"
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                  }}
-                >
-                  {theme.direction == "rtl"
-                    ? formatDate(lastModificationTime, "Shamsi")
-                    : formatDate(lastModificationTime, "Miladi")}
-                </Typography>
               </Box>
             </Box>
             <Box

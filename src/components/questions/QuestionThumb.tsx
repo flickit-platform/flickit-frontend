@@ -3,15 +3,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LanguageDetector from "@utils/languageDetector";
+import languageDetector from "@utils/languageDetector";
 
 export const QuestionThumb = (props: any) => {
   const {
     questionsInfo,
     question = {},
     questionIndex,
-    onClose = () => { },
+    onClose = () => {},
     link,
     isSubmitting,
   } = props;
@@ -25,14 +26,32 @@ export const QuestionThumb = (props: any) => {
           <Trans i18nKey={"question"} /> {questionIndex}/
           {total_number_of_questions}
         </Typography>
-        <Typography variant="h6" sx={LanguageDetector(question?.title)? {fontFamily: farsiFontFamily, textAlign: "right" } : {fontFamily: primaryFontFamily, textAlign: "left"}}>{question?.title}</Typography>
+        <Typography
+          variant="h6"
+          sx={
+            LanguageDetector(question?.title)
+              ? { fontFamily: farsiFontFamily, textAlign: "right" }
+              : { fontFamily: primaryFontFamily, textAlign: "left" }
+          }
+        >
+          {question?.title}
+        </Typography>
       </Box>
       {question.answer?.selectedOption && (
         <Box mt={3}>
           <Typography variant="subMedium" textTransform="uppercase">
             <Trans i18nKey={"yourAnswer"} />
           </Typography>
-          <Typography variant="h6">
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: languageDetector(
+                question.answer?.selectedOption?.title,
+              )
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+          >
             {question.answer?.selectedOption?.title}
           </Typography>
         </Box>
@@ -50,7 +69,8 @@ export const QuestionThumb = (props: any) => {
       <Box display="flex">
         <Button
           sx={{
-            mt: 1, ml: theme.direction === "rtl" ? "unset" : "auto",
+            mt: 1,
+            ml: theme.direction === "rtl" ? "unset" : "auto",
             mr: theme.direction !== "rtl" ? "unset" : "auto",
           }}
           disabled={isSubmitting}
@@ -61,8 +81,8 @@ export const QuestionThumb = (props: any) => {
           }}
         >
           {question.answer ||
-            !permissions.answerQuestion ||
-            (question.answer && question.answer.isNotApplicable) ? (
+          !permissions.answerQuestion ||
+          (question.answer && question.answer.isNotApplicable) ? (
             <Trans i18nKey="edit" />
           ) : (
             <Trans i18nKey="submitAnAnswer" />

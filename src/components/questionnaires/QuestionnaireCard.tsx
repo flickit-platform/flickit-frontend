@@ -20,7 +20,7 @@ import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
 import React, { useEffect, useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
@@ -100,7 +100,12 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 <Title
                   fontWeight={"bold"}
                   size="small"
-                  sx={{ whiteSpace: "wrap" }}
+                  sx={{
+                    whiteSpace: "wrap",
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
                   ref={titleRef}
                 >
                   {title}
@@ -301,9 +306,11 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   label={title}
                   size="small"
                   sx={{
-                    marginRight: theme.direction === "ltr" ? 0.3 : "unset",
-                    marginLeft: theme.direction === "rtl" ? 0.3 : "unset",
+                    marginInlineEnd: 0.3,
                     mb: 0.1,
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                   }}
                   key={id}
                 />
@@ -342,7 +349,8 @@ const QuestionDescription = (props: any) => {
               width: "100%",
               border: "1px dashed #ffffff99",
               borderRadius: "8px",
-              direction: `${is_farsi ? "rtl" : "ltr"}`,
+              direction: is_farsi ? "rtl" : "ltr",
+              fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
             }}
           >
             <Box
