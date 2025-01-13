@@ -48,12 +48,12 @@ const LoadingGauge: React.FC = () => {
         </svg>
       </Box>
       <Box
-        sx={{ bottom: "50%", left: "38%", right: "38%" }}
+        sx={{ bottom: "50%",  left: "50%", transform: "translate(-50%, 0)" }}
         position="absolute"
       >
         <Typography
           sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}
-          variant="h5"
+          variant="h6"
           color="GrayText"
         >
           <Trans i18nKey="loading" />
