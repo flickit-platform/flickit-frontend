@@ -975,10 +975,7 @@ const AnswerHistoryItem = (props: any) => {
     item,
     questionInfo,
   }: { item: IAnswerHistory; questionInfo: IQuestionInfo } = props;
-  const { options } = questionInfo;
-  const selectedOption = options?.find(
-    (option: any) => option?.id === item?.answer?.selectedOption?.id,
-  );
+
   return (
     <Grid container spacing={2} px={1}>
       <Grid
@@ -1063,10 +1060,11 @@ const AnswerHistoryItem = (props: any) => {
               <Trans i18nKey="selectedOption" />:
             </Typography>
             <Typography variant="bodyMedium" maxWidth="400px">
-              {selectedOption ? (
+              {item?.answer?.selectedOption ? (
                 <>
                   {" "}
-                  {selectedOption?.index}.{selectedOption?.title}
+                  {item?.answer?.selectedOption?.index}.
+                  {item?.answer?.selectedOption?.title}
                 </>
               ) : (
                 <Trans i18nKey="noOptionSelected" />
