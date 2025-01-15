@@ -145,7 +145,12 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                     color: "#004F83",
                   }}
                 >
-                  <Trans i18nKey="allQuestionsHaveBeenAnswered" />
+                  <Trans
+                    i18nKey="allQuestionsHaveBeenAnswered"
+                    values={{
+                      questionnaire: questionnaireTitle,
+                    }}
+                  />
                 </Typography>
                 {progress === 100 ? (
                   <Typography
@@ -198,7 +203,10 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                     color: "#D81E5B",
                   }}
                 >
-                  <Trans i18nKey="noQuestionsHaveBeenAnswered" />
+                  <Trans
+                    i18nKey="noQuestionsHaveBeenAnswered"
+                    values={{ questionnaire: questionnaireTitle }}
+                  />
                 </Typography>
                 <Typography
                   variant="h4"
