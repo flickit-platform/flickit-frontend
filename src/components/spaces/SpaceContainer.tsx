@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import { SpaceLayout } from "./SpaceLayout";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
@@ -21,13 +21,13 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useNavigate, useParams } from "react-router-dom";
 import { theme } from "@/config/theme";
-import {ICustomError} from "@utils/CustomError";
+import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
   const navigate = useNavigate();
-  const {page } = useParams();
+  const { page } = useParams();
   const pageNumber = Number(page);
   const { fetchSpace, ...rest } = useFetchSpace();
   const { data, size, total } = rest;
@@ -36,7 +36,10 @@ const SpaceContainer = () => {
     event: React.ChangeEvent<unknown>,
     value: number,
   ) => {
-    if (Math.ceil(total / size) > Number(page) || Math.ceil(total / size) == Number(page)) {
+    if (
+      Math.ceil(total / size) > Number(page) ||
+      Math.ceil(total / size) == Number(page)
+    ) {
       navigate(`/spaces/${value}`);
     }
   };
@@ -46,7 +49,7 @@ const SpaceContainer = () => {
     navigate(`/spaces/${pageCount}`);
   }
 
-  const isEmpty = data?.items?.length === 0;
+  const isEmpty = data?.length === 0;
 
   return (
     <SpaceLayout
@@ -142,7 +145,7 @@ const SpaceContainer = () => {
         </Box>
       )}
       <QueryData
-          {...rest}
+        {...rest}
         renderLoading={() => (
           <Box mt={5}>
             {[1, 2, 3, 4, 5].map((item) => {
@@ -195,23 +198,19 @@ const SpaceContainer = () => {
           />
         </Stack>
       )}
-      <CreateSpaceDialog
-        {...dialogProps}
-        onSubmitForm={fetchSpace}
-      />
+      <CreateSpaceDialog {...dialogProps} onSubmitForm={fetchSpace} />
     </SpaceLayout>
   );
 };
-
 
 const useFetchSpace = () => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
-      undefined,
+    undefined,
   );
-  const {page } = useParams();
+  const { page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
   const pageNumber = Number(page);
@@ -226,8 +225,8 @@ const useFetchSpace = () => {
     setErrorObject(undefined);
     try {
       const { data: res } = await service.fetchSpaces(
-          { size: PAGESIZE, page: pageNumber },
-          { signal: abortController.current.signal },
+        { size: PAGESIZE, page: pageNumber },
+        { signal: abortController.current.signal },
       );
       if (res) {
         setData(res);
@@ -260,7 +259,7 @@ const useFetchSpace = () => {
     loaded: !!data,
     error,
     errorObject,
-    fetchSpace
+    fetchSpace,
   };
 };
 
