@@ -49,8 +49,6 @@ const SpaceContainer = () => {
     navigate(`/spaces/${pageCount}`);
   }
 
-  const isEmpty = data?.length === 0;
-
   return (
     <SpaceLayout
       title={
@@ -60,90 +58,6 @@ const SpaceContainer = () => {
         </Title>
       }
     >
-      {!isEmpty && (
-        <Box
-          sx={{
-            background: "white",
-            py: 1,
-            px: 2,
-            ...styles.centerV,
-            borderRadius: 1,
-            my: 3,
-          }}
-        >
-          <Box
-            ml={theme.direction === "rtl" ? "unset" : "auto"}
-            mr={theme.direction !== "rtl" ? "unset" : "auto"}
-          >
-            <ToolbarCreateItemBtn
-              icon={<CreateNewFolderRoundedIcon />}
-              onClick={dialogProps.openDialog}
-              shouldAnimate={isEmpty}
-              text="createSpace"
-            />
-          </Box>
-        </Box>
-      )}
-      {isEmpty && (
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-            mt: 6,
-            gap: 4,
-          }}
-        >
-          <img
-            src={SpaceEmptyStateSVG}
-            alt={"Oh! You have no space?"}
-            width="240px"
-          />
-          <Typography
-            textAlign="center"
-            variant="h3"
-            sx={{
-              color: "#9DA7B3",
-              fontSize: "3rem",
-              fontWeight: "900",
-              width: "60%",
-            }}
-          >
-            <Trans i18nKey="noSpaceHere" />
-          </Typography>
-          <Typography
-            textAlign="center"
-            variant="h1"
-            sx={{
-              color: "#9DA7B3",
-              fontSize: "1rem",
-              fontWeight: "500",
-              width: "60%",
-            }}
-          >
-            <Trans i18nKey="spacesAreEssentialForCreating" />
-          </Typography>
-          <Box>
-            <Button
-              startIcon={<AddRoundedIcon />}
-              variant="contained"
-              onClick={dialogProps.openDialog}
-              sx={{
-                animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
-                "&:hover": {
-                  animation: `${animations.noPomp}`,
-                },
-              }}
-            >
-              <Typography fontSize="1.25rem" variant="button">
-                <Trans i18nKey="createYourFirstSpace" />
-              </Typography>
-            </Button>
-          </Box>
-        </Box>
-      )}
       <QueryData
         {...rest}
         renderLoading={() => (
@@ -171,15 +85,100 @@ const SpaceContainer = () => {
         }
         render={(data) => {
           return (
-            <SpacesList
-              dialogProps={dialogProps}
-              data={data}
-              fetchSpaces={fetchSpace}
-            />
+            <>
+              {data?.length !== 0 ? (
+                <Box
+                  sx={{
+                    background: "white",
+                    py: 1,
+                    px: 2,
+                    ...styles.centerV,
+                    borderRadius: 1,
+                    my: 3,
+                  }}
+                >
+                  <Box
+                    ml={theme.direction === "rtl" ? "unset" : "auto"}
+                    mr={theme.direction !== "rtl" ? "unset" : "auto"}
+                  >
+                    <ToolbarCreateItemBtn
+                      icon={<CreateNewFolderRoundedIcon />}
+                      onClick={dialogProps.openDialog}
+                      shouldAnimate={data?.length === 0}
+                      text="createSpace"
+                    />
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    mt: 6,
+                    gap: 4,
+                  }}
+                >
+                  <img
+                    src={SpaceEmptyStateSVG}
+                    alt={"Oh! You have no space?"}
+                    width="240px"
+                  />
+                  <Typography
+                    textAlign="center"
+                    variant="h3"
+                    sx={{
+                      color: "#9DA7B3",
+                      fontSize: "3rem",
+                      fontWeight: "900",
+                      width: "60%",
+                    }}
+                  >
+                    <Trans i18nKey="noSpaceHere" />
+                  </Typography>
+                  <Typography
+                    textAlign="center"
+                    variant="h1"
+                    sx={{
+                      color: "#9DA7B3",
+                      fontSize: "1rem",
+                      fontWeight: "500",
+                      width: "60%",
+                    }}
+                  >
+                    <Trans i18nKey="spacesAreEssentialForCreating" />
+                  </Typography>
+                  <Box>
+                    <Button
+                      startIcon={<AddRoundedIcon />}
+                      variant="contained"
+                      onClick={dialogProps.openDialog}
+                      sx={{
+                        animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
+                        "&:hover": {
+                          animation: `${animations.noPomp}`,
+                        },
+                      }}
+                    >
+                      <Typography fontSize="1.25rem" variant="button">
+                        <Trans i18nKey="createYourFirstSpace" />
+                      </Typography>
+                    </Button>
+                  </Box>
+                </Box>
+              )}
+              <SpacesList
+                dialogProps={dialogProps}
+                data={data}
+                fetchSpaces={fetchSpace}
+              />
+            </>
           );
         }}
       />
-      {!isEmpty && (
+      {data.length !== 0 && (
         <Stack
           spacing={2}
           sx={{
