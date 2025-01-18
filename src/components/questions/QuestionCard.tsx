@@ -97,6 +97,7 @@ import { toCamelCase } from "@common/makeCamelcaseString";
 import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
+import { useQuestions } from "./QuestionsContainer";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -592,6 +593,8 @@ const AnswerTemplate = (props: {
     selcetedConfidenceLevel,
     confidenceLebels,
   } = props;
+  const { questionsResultQueryData } = useQuestions();
+
   const { options, answer } = questionInfo;
   const { total_number_of_questions, permissions } = questionsInfo;
   const { service } = useServiceContext();
@@ -664,6 +667,8 @@ const AnswerTemplate = (props: {
           } as TAnswer,
         }),
       );
+
+      questionsResultQueryData.query();
       if (isLastQuestion) {
         dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
         navigate(`../completed`, { replace: true });
@@ -1251,6 +1256,7 @@ const Evidence = (props: any) => {
   };
 
   const rtl = localStorage.getItem("lang") === "fa";
+  const { questionsResultQueryData } = useQuestions();
 
   useEffect(() => {
     if (type === "comment") {
@@ -1460,6 +1466,7 @@ const Evidence = (props: any) => {
                   type="submit"
                   variant="contained"
                   loading={evidencesQueryData.loading}
+                  onClick={() => questionsResultQueryData.query()}
                 >
                   <Trans
                     i18nKey={"createEvidence"}

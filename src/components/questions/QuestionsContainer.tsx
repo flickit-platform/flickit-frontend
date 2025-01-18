@@ -117,9 +117,8 @@ export const useQuestions = () => {
 
   // Fetch the initial set of questions (page 0) on mount
   useEffect(() => {
-    const fetchInitialQuestions = async () => {
-      try {
-        const response = await questionsResultQueryData.query({ page: 0 });
+    try {
+      questionsResultQueryData.query({ page: 0 }).then((response) => {
         if (response) {
           const { items = [], permissions, total } = response;
           setQuestions(items);
@@ -134,13 +133,11 @@ export const useQuestions = () => {
           );
           // console.log("Initial questions loaded:", items);
         }
-      } catch (e) {
-        console.error("Failed to load initial questions", e);
-        toastError(e as ICustomError);
-      }
-    };
-
-    fetchInitialQuestions();
+      });
+    } catch (e) {
+      console.error("Failed to load initial questions", e);
+      toastError(e as ICustomError);
+    }
   }, []);
 
   const loadMoreQuestions = async (newPage: number) => {
