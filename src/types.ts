@@ -90,7 +90,7 @@ export interface IPermissions {
   createAssessment: boolean;
   addEvidenceAttachment: boolean;
   exportAssessmentReport: boolean;
-  readonly?: boolean
+  readonly?: boolean;
 }
 
 export type TQuestionsInfo = {
@@ -373,7 +373,12 @@ export interface IAssessment {
   confidenceValue: number;
   // total_progress?: ITotalProgress;
   maturityLevel: IMaturityLevel;
-  manageable?: boolean;
+  permissions: {
+    canManageSettings: boolean;
+    canViewReport: boolean;
+    canViewDashboard: boolean;
+    canViewQuestionnaires: boolean;
+  };
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
