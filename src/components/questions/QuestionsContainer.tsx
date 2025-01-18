@@ -100,7 +100,7 @@ export const useQuestions = () => {
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.fetchQuestionsResult(
-        { questionnaireId, assessmentId, page: args.page, size: pageSize },
+        { questionnaireId, assessmentId, page: args.page ?? 0, size: pageSize },
         config,
       ),
     runOnMount: false, // We'll handle the initial run ourselves
