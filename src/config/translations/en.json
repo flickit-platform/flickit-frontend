@@ -798,5 +798,6 @@
   "rowsPerPage": "Rows per page",
   "moreThan": "More than",
   "NoIssueFound": "No questionnaire has the selected issue",
-  "NoIssuesFound": "No questionnaire has the selected issues"
+  "NoIssuesFound": "No questionnaire has the selected issues",
+  "regenerate": "Regenerate"
 }
