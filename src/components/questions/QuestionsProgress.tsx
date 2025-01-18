@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
 import { theme } from "@/config/theme";
+import { Tooltip } from "@mui/material";
 
 const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
@@ -111,6 +112,13 @@ export const QuestionProgressItem = (props: any) => {
 
   const { questionIndex } = useParams();
   const { handleClick, ...popoverProps } = usePopover();
+
+  const hasIssue =
+    question?.issues?.isUnanswered ||
+    question?.issues?.isAnsweredWithLowConfidence ||
+    question?.issues?.isAnsweredWithoutEvidences ||
+    question?.issues?.unresolvedCommentsCount;
+
   return (
     <Box
       sx={{
@@ -119,16 +127,21 @@ export const QuestionProgressItem = (props: any) => {
         height: "20px",
         cursor: questionIndex != question.index ? "pointer" : "auto",
         backgroundColor: (t: any) =>
-          question?.answer?.selectedOption || question?.answer?.isNotApplicable
-            ? `${t.palette.primary.main}`
-            : "white",
+          hasIssue
+            ? `${t.palette.secondary.main}`
+            : question?.answer?.selectedOption ||
+                question?.answer?.isNotApplicable
+              ? `${t.palette.primary.main}`
+              : "white",
         border: (t: any) => `3px solid white`,
         outline: (t: any) =>
           `${
-            question?.answer?.selectedOption ||
-            question?.answer?.isNotApplicable
-              ? t.palette.primary.main
-              : "#a7caed"
+            hasIssue
+              ? `${t.palette.secondary.main}`
+              : question?.answer?.selectedOption ||
+                  question?.answer?.isNotApplicable
+                ? t.palette.primary.main
+                : "#a7caed"
           } solid 5px`,
         transition: "background-color .3s ease, transform .2s ease",
         borderRadius: "8px",
@@ -138,30 +151,69 @@ export const QuestionProgressItem = (props: any) => {
         },
       }}
     >
-      <Box
-        sx={{ zIndex: 1, width: "100%", height: "100%" }}
-        onClick={(e: any) => {
-          questionIndex != question.index && handleClick(e);
-        }}
+      <Tooltip
+        title={
+          hasIssue ? (
+            <Box>
+              {[
+                question?.issues.isUnanswered && (
+                  <Trans i18nKey="unansweredQuestion" />
+                ),
+                question?.issues.isAnsweredWithLowConfidence && (
+                  <Trans i18nKey="lowConfidenceAnswers" />
+                ),
+                question?.issues.isAnsweredWithoutEvidences && (
+                  <Trans i18nKey="answersWithNoEvidence" />
+                ),
+                question?.issues.unresolvedCommentsCount > 0 && (
+                  <>
+                    {question?.issues.unresolvedCommentsCount}{" "}
+                    <Trans
+                      i18nKey={
+                        question?.issues.unresolvedCommentsCount !== 1
+                          ? "unresolvedComments"
+                          : "unresolvedComment"
+                      }
+                    />
+                  </>
+                ),
+              ]
+                .filter(Boolean)
+                .map((item, index) => (
+                  <div key={index}>{item}</div>
+                ))}
+            </Box>
+          ) : (
+            ""
+          )
+        }
       >
-        <Typography
-          sx={{
-            fontSize: question.index == questionIndex ? ".75rem" : ".7rem",
-            textAlign: "center",
-            lineHeight: "13px",
-            opacity: question.index == questionIndex ? 1 : 0.6,
-            color:
-              question?.answer?.selectedOption ||
-              question?.answer?.isNotApplicable
-                ? `white`
-                : "gray",
-            transition: "opacity .1s ease",
+        <Box
+          sx={{ zIndex: 1, width: "100%", height: "100%" }}
+          onClick={(e: any) => {
+            questionIndex != question.index && handleClick(e);
           }}
-          className="i-p-i-n"
         >
-          {question.index}
-        </Typography>
-      </Box>
+          <Typography
+            sx={{
+              fontSize: question.index == questionIndex ? ".75rem" : ".7rem",
+              textAlign: "center",
+              lineHeight: "13px",
+              opacity: question.index == questionIndex ? 1 : 0.6,
+              color:
+                question?.answer?.selectedOption ||
+                question?.answer?.isNotApplicable ||
+                hasIssue
+                  ? `white`
+                  : "gray",
+              transition: "opacity .1s ease",
+            }}
+            className="i-p-i-n"
+          >
+            {question.index}
+          </Typography>
+        </Box>
+      </Tooltip>
       <QuestionPopover {...popoverProps}>
         <QuestionThumb
           {...props}
