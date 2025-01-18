@@ -91,7 +91,7 @@ const DashboardTab = () => {
             );
             setTodoBoxData(todoData);
             setStepData(mappedData);
-          }, []);
+          }, [activeStep]);
 
           return (
             <Box
