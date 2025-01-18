@@ -1,6 +1,8 @@
 import { Trans } from "react-i18next";
 import ErrorImage from "@assets/img/errorBoundary.png";
-import { Component } from "react";
+import React, { Component } from "react";
+import Button from "@mui/material/Button";
+import {Link} from "react-router-dom";
 
 class ErrorBoundary extends Component {
   constructor(props: any) {
@@ -39,6 +41,14 @@ class ErrorBoundary extends Component {
           <h2 style={{ opacity: 0.8 }}>
             <Trans i18nKey={"someThingWentWrong"} />
           </h2>
+            <Button
+                variant="contained"
+                size="large"
+                component={Link}
+                to={"/"}
+            >
+                <Trans i18nKey={"backToHome"} />
+            </Button>
         </div>
       );
     }
