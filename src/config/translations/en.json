@@ -795,6 +795,6 @@
   "selectedIssuesType": "selected issue types",
   "rowsPerPage": "Rows per page",
   "moreThan": "More than",
-  "NoIssueFound": "No questionnaire with selected issue found",
-  "NoIssuesFound": "No questionnaire with selected issues found"
+  "NoIssueFound": "No questionnaire has the selected issue",
+  "NoIssuesFound": "No questionnaire has the selected issues"
 }
