@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Gauge } from "@common/charts/Gauge";
 import LoadingGauge from "@common/charts/LoadingGauge";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -9,6 +9,7 @@ import {
   Link,
   useLocation,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
@@ -33,9 +34,7 @@ import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import { useQuery } from "@utils/useQuery";
 
 interface IAssessmentCardProps {
-  item: IAssessment & { space: any } & { manageable?: boolean } & {
-    viewable?: boolean;
-  };
+  item: IAssessment & { space: any };
 
   dialogProps: TDialogProps;
   deleteAssessment: TQueryFunction<any, TId>;
@@ -53,6 +52,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const { item } = props;
   const abortController = useRef(new AbortController());
+  const { spaceId, page } = useParams();
 
   const {
     maturityLevel,
@@ -60,7 +60,6 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     kit,
     id,
     lastModificationTime,
-    viewable,
     confidenceValue,
   } = item;
   const hasML = hasMaturityLevel(maturityLevel?.value);
@@ -112,6 +111,15 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
       setCalculatePercentage(calc.toFixed(2));
     })();
   }, [isCalculateValid]);
+
+  const canViewReport = useMemo(() => {
+    return (
+      item.permissions.canViewReport &&
+      !item.permissions.canViewQuestionnaires &&
+      !item.permissions.canViewDashboard
+    );
+  }, [item.permissions]);
+
   return (
     <Grid item lg={3} md={4} sm={6} xs={12}>
       <Paper
@@ -132,7 +140,9 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
         elevation={4}
         data-cy="assessment-card"
       >
-        <Actions {...props} abortController={abortController} />
+        {item.permissions.canManageSettings && (
+          <Actions {...props} abortController={abortController} />
+        )}
         <Grid container sx={{ textDecoration: "none", height: "100%" }}>
           <Grid item xs={12}>
             <Box
@@ -145,9 +155,13 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               }}
               component={Link}
               to={
-                isCalculateValid && viewable
-                  ? `${item.id}/insights`
-                  : `${item.id}/questionnaires`
+                isCalculateValid && item.permissions.canViewDashboard
+                  ? `${item.id}/dashboard`
+                  : item.permissions.canViewQuestionnaires
+                    ? `${item.id}/questionnaires`
+                    : item.permissions.canViewReport
+                      ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                      : ""
               }
             >
               <Tooltip title={kit?.title}>
@@ -214,9 +228,13 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             mt={2}
             component={Link}
             to={
-              hasML && viewable
-                ? `${item.id}/insights`
-                : `${item.id}/questionnaires`
+              hasML && item.permissions.canViewDashboard
+                ? `${item.id}/dashboard`
+                : item.permissions.canViewQuestionnaires
+                  ? `${item.id}/questionnaires`
+                  : item.permissions.canViewReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                    : ""
             }
           >
             {show ? (
@@ -239,7 +257,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               <LoadingGauge />
             )}
           </Grid>
-          {viewable && (
+          {item.permissions.canViewReport && (
             <Grid item xs={12} mt="-4rem">
               <Typography
                 variant="titleSmall"
@@ -258,42 +276,56 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               </Typography>
             </Grid>
           )}
-          <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-            <Button
-              startIcon={<QuizRoundedIcon />}
-              fullWidth
-              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                e.stopPropagation();
-              }}
-              component={Link}
-              sx={{ position: "relative", zIndex: 1 }}
-              state={location}
-              to={`${item.id}/questionnaires`}
-              data-cy="questionnaires-btn"
-              variant={viewable ? "outlined" : "contained"}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  bottom: 0,
-                  background: viewable
-                    ? "rgba(102, 128, 153, 0.3)"
-                    : "rgb(0, 41, 70)",
-                  zIndex: -1,
-                  width: calculatePercentage ? `${calculatePercentage}%` : "0%",
-                  transition: "all 1s ease-in-out",
+          {item.permissions.canViewQuestionnaires && (
+            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
+              <Button
+                startIcon={<QuizRoundedIcon />}
+                fullWidth
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+                ) => {
+                  e.stopPropagation();
                 }}
-              ></Box>
-              <Trans i18nKey="questionnaires" />
-            </Button>
-          </Grid>
+                component={Link}
+                sx={{ position: "relative", zIndex: 1 }}
+                state={location}
+                to={`${item.id}/questionnaires`}
+                data-cy="questionnaires-btn"
+                variant={
+                  item.permissions.canViewDashboard ? "outlined" : "contained"
+                }
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                    background: item.permissions.canViewDashboard
+                      ? "rgba(102, 128, 153, 0.3)"
+                      : "rgb(0, 41, 70)",
+                    zIndex: -1,
+                    width: calculatePercentage
+                      ? `${calculatePercentage}%`
+                      : "0%",
+                    transition: "all 1s ease-in-out",
+                  }}
+                ></Box>
+                <Trans i18nKey="questionnaires" />
+              </Button>
+            </Grid>
+          )}
           <Grid
             item
             xs={12}
-            sx={{ ...styles.centerCH, display: viewable ? "block" : "none" }}
+            sx={{
+              ...styles.centerCH,
+              display:
+                item.permissions.canViewDashboard || canViewReport
+                  ? "block"
+                  : "none",
+            }}
             mt={1}
           >
             <Button
@@ -308,20 +340,41 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 }
               }}
               component={Link}
-              to={hasML && viewable ? `${item.id}/insights` : ""}
+              to={
+                hasML && item.permissions.canViewDashboard
+                  ? `${item.id}/dashboard`
+                  : canViewReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                    : ""
+              }
               sx={{
                 backgroundColor: "#2e7d72",
-                background: viewable ? `#01221e` : "rgba(0,59,100, 12%)",
-                color: !viewable ? "rgba(10,35,66, 38%)" : "",
-                boxShadow: !viewable ? "none" : "",
+                background:
+                  item.permissions.canViewDashboard || canViewReport
+                    ? `#01221e`
+                    : "rgba(0,59,100, 12%)",
+                color:
+                  !item.permissions.canViewDashboard && !canViewReport
+                    ? "rgba(10,35,66, 38%)"
+                    : "",
+                boxShadow:
+                  !item.permissions.canViewDashboard && !canViewReport
+                    ? "none"
+                    : "",
                 "&:hover": {
-                  background: viewable ? `` : "rgba(0,59,100, 12%)",
-                  boxShadow: !viewable ? "none" : "",
+                  background:
+                    item.permissions.canViewDashboard || canViewReport
+                      ? ``
+                      : "rgba(0,59,100, 12%)",
+                  boxShadow:
+                    !item.permissions.canViewDashboard && !canViewReport
+                      ? "none"
+                      : "",
                 },
               }}
               data-cy="view-insights-btn"
             >
-              <Trans i18nKey="insights" />
+              <Trans i18nKey="dashboard" />
             </Button>
           </Grid>
         </Grid>
@@ -332,9 +385,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
 
 const Actions = (props: {
   deleteAssessment: TQueryFunction<any, TId>;
-  item: IAssessment & { space: any } & { manageable?: boolean } & {
-    viewable?: boolean;
-  };
+  item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
 }) => {
@@ -370,11 +421,6 @@ const Actions = (props: {
       items={
         hasStatus(item.status)
           ? [
-              // {
-              //   icon: <EditRoundedIcon fontSize="small" />,
-              //   text: <Trans i18nKey="edit" />,
-              //   onClick: openEditDialog,
-              // },
               {
                 icon: <CompareRoundedIcon fontSize="small" />,
                 text: <Trans i18nKey="addToCompare" />,
@@ -388,17 +434,12 @@ const Actions = (props: {
               },
             ]
           : [
-              // {
-              //   icon: <EditRoundedIcon fontSize="small" />,
-              //   text: <Trans i18nKey="edit" />,
-              //   onClick: openEditDialog,
-              // },
-              item?.manageable && {
+              {
                 icon: <SettingsIcon fontSize="small" />,
                 text: <Trans i18nKey="settings" />,
                 onClick: assessmentSetting,
               },
-              item?.manageable && {
+              {
                 icon: <DeleteRoundedIcon fontSize="small" />,
                 text: <Trans i18nKey="delete" />,
                 onClick: deleteItem,

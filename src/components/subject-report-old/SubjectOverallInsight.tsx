@@ -34,11 +34,7 @@ const OverallInsightText = (props: any) => {
 
   const { service } = useServiceContext();
 
-  const {
-    subject,
-    attributes,
-    maturityLevelsCount,
-  } = data;
+  const { subject, attributes, maturityLevelsCount } = data;
   const { title, maturityLevel, confidenceValue } = subject;
   const { assessmentId = "", subjectId = "" } = useParams();
 
@@ -148,7 +144,7 @@ const OverallInsightText = (props: any) => {
       >
         <Trans i18nKey="subjectBriefConclusion" />
         {!isApproved && (
-          <Box sx={{ ml: "auto" }}>
+          <Box sx={{ marginInlineStart: "auto" }}>
             <LoadingButton
               variant={"contained"}
               onClick={(event) => ApproveSubject(event)}
