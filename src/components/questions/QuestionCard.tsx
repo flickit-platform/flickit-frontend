@@ -1115,7 +1115,7 @@ const Evidence = (props: any) => {
   const [expandedAttachmentsDialogs, setExpandedAttachmentsDialogs] =
     useState<any>({ expended: false, count: 0 });
   const [attachmentData, setAttachmentData] = useState<boolean>(false);
-  const is_farsi = firstCharDetector(valueCount);
+  const is_farsi = languageDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
   const {
@@ -1737,7 +1737,7 @@ const EvidenceDetail = (props: any) => {
     resolvable,
   } = item;
   const { displayName, pictureLink } = createdBy;
-  const is_farsi = firstCharDetector(description);
+  const is_farsi = languageDetector(description);
   const [evidenceBG, setEvidenceBG] = useState<any>();
 
   const { service } = useServiceContext();
