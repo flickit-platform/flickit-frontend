@@ -691,6 +691,19 @@ const AnswerTemplate = (props: {
     }
   };
 
+  const gotoPrevQuestion = async () => {
+    try {
+      const newQuestionIndex = questionIndex - 1;
+      dispatch(questionActions.goToQuestion(newQuestionIndex));
+      navigate(`../${newQuestionIndex}`, {
+        replace: true,
+      });
+    } catch (e) {
+      dispatch(questionActions.setIsSubmitting(false));
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
   useEffect(() => {
     if (
       submitOnAnswerSelection &&
@@ -823,7 +836,6 @@ const AnswerTemplate = (props: {
           mr: { xs: 0, md: 2 },
           display: "flex",
           flexDirection: "row-reverse",
-          // ml: "auto",
           justifyContent: "space-between",
           alignItems: "center",
         }}
@@ -833,40 +845,45 @@ const AnswerTemplate = (props: {
           color={"info"}
           loading={isSubmitting}
           disabled={(value || notApplicable) && !selcetedConfidenceLevel}
-          sx={
-            is_farsi
-              ? {
-                  fontSize: "1.2rem",
-                  mr: theme.direction === "rtl" ? "unset" : "auto",
-                }
-              : {
-                  fontSize: "1.2rem",
-                  ml: theme.direction === "rtl" ? "unset" : "auto",
-                }
-          }
+          sx={{
+            fontSize: "1.2rem",
+          }}
           onClick={submitQuestion}
         >
           <Trans i18nKey={"nextQuestion"} />
         </LoadingButton>
-        {may_not_be_applicable && (
-          <FormControlLabel
-            sx={{ color: theme.palette.primary.main }}
-            data-cy="automatic-submit-check"
-            control={
-              <Checkbox
-                checked={notApplicable}
-                onChange={(e) => notApplicableonChanhe(e)}
-                sx={{
-                  color: theme.palette.primary.main,
-                  "&.Mui-checked": {
+        <Box sx={styles.centerVH} gap={2}>
+          <LoadingButton
+            variant="contained"
+            color={"info"}
+            loading={isSubmitting}
+            sx={{
+              fontSize: "1.2rem",
+            }}
+            onClick={gotoPrevQuestion}
+          >
+            <Trans i18nKey={"previousQuestion"} />
+          </LoadingButton>
+          {may_not_be_applicable && (
+            <FormControlLabel
+              sx={{ color: theme.palette.primary.main }}
+              data-cy="automatic-submit-check"
+              control={
+                <Checkbox
+                  checked={notApplicable}
+                  onChange={(e) => notApplicableonChanhe(e)}
+                  sx={{
                     color: theme.palette.primary.main,
-                  },
-                }}
-              />
-            }
-            label={<Trans i18nKey={"notApplicable"} />}
-          />
-        )}
+                    "&.Mui-checked": {
+                      color: theme.palette.primary.main,
+                    },
+                  }}
+                />
+              }
+              label={<Trans i18nKey={"notApplicable"} />}
+            />
+          )}
+        </Box>
       </Box>
     </>
   );
