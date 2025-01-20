@@ -98,6 +98,7 @@ import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
 import { useQuestions } from "./QuestionsContainer";
+import { FormHelperText } from "@mui/material";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -169,7 +170,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           backgroundPosition: "-140px -140px",
           position: "relative",
           overflow: "hidden",
-          my: { xs: 2, md: 5 },
           mx: { xs: 2, sm: "auto" },
           mb: "0 !important",
           borderRadius: "8px 8px 0 0",
@@ -301,9 +301,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                     ) : (
                       <Box
                         sx={{
-                          marginRight: theme.direction === "ltr" ? 1 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 1 : "unset", // color: "#fff",
-                          color: `${disabledConfidence ? "#fff" : "#d32f2f"}`,
+                          marginInlineEnd: 1,
+                          color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
                         }}
                       >
                         <Typography>
@@ -316,8 +315,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                       </Box>
                     )}
                     <Rating
-                      // disabled={!questionsInfo?.permissions?.answerQuestion}
-                      disabled={disabledConfidence}
+                      disabled={!questionsInfo?.permissions?.answerQuestion}
                       value={
                         selcetedConfidenceLevel !== null
                           ? selcetedConfidenceLevel
@@ -420,10 +418,13 @@ export const QuestionTabsTemplate = (props: any) => {
   useEffect(() => {
     if (questionsInfo?.permissions?.readonly) {
       setIsExpanded(false);
-      queryData.query();
       evidencesQueryData.query();
     }
   }, [questionsInfo?.permissions?.readonly, questionInfo]);
+
+  useEffect(() => {
+    queryData.query();
+  }, [questionInfo]);
 
   useEffect(() => {
     if (value) {
@@ -593,6 +594,9 @@ const AnswerTemplate = (props: {
     selcetedConfidenceLevel,
     confidenceLebels,
   } = props;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [expandedDeleteDialog, setExpandedDeleteDialog] =
+    useState<boolean>(false);
   const { questionsResultQueryData } = useQuestions();
 
   const { options, answer } = questionInfo;
@@ -632,18 +636,21 @@ const AnswerTemplate = (props: {
       setDisabledConfidence(false);
     }
   }, [answer]);
+  const [error, setError] = useState("");
+
   // first checking if evidences have been submited or not
   const submitQuestion = async () => {
+    if (!value) dispatch(questionActions.setSelectedConfidenceLevel(null));
     dispatch(questionActions.setIsSubmitting(true));
     try {
       if (permissions && permissions?.answerQuestion) {
-        const res = await service.submitAnswer(
+        await service.submitAnswer(
           {
             assessmentId,
             data: {
               questionnaireId: questionnaireId,
               questionId: questionInfo?.id,
-              answerOptionId: value?.id || null,
+              answerOptionId: value?.id,
               isNotApplicable: notApplicable,
               confidenceLevelId:
                 value?.id || submitOnAnswerSelection || notApplicable
@@ -653,6 +660,7 @@ const AnswerTemplate = (props: {
           },
           { signal: abortController.current.signal },
         );
+        setIsSubmitted(true);
       }
 
       dispatch(questionActions.setIsSubmitting(false));
@@ -669,21 +677,12 @@ const AnswerTemplate = (props: {
       );
 
       questionsResultQueryData.query();
-      if (isLastQuestion) {
-        dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
-        navigate(`../completed`, { replace: true });
-        return;
-      }
+
       if (value) {
         dispatch(
           questionActions.setAssessmentStatus(EAssessmentStatus.INPROGRESS),
         );
       }
-      const newQuestionIndex = questionIndex + 1;
-      dispatch(questionActions.goToQuestion(newQuestionIndex));
-      navigate(`../${newQuestionIndex}`, {
-        replace: true,
-      });
     } catch (e) {
       dispatch(questionActions.setIsSubmitting(false));
       const err = e as ICustomError;
@@ -691,9 +690,15 @@ const AnswerTemplate = (props: {
     }
   };
 
-  const gotoPrevQuestion = async () => {
+  const goToQuestion = async (order: "desc" | "asc") => {
     try {
-      const newQuestionIndex = questionIndex - 1;
+      if (isLastQuestion) {
+        dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
+        navigate(`../completed`, { replace: true });
+        return;
+      }
+      const newQuestionIndex =
+        order === "desc" ? questionIndex - 1 : questionIndex + 1;
       dispatch(questionActions.goToQuestion(newQuestionIndex));
       navigate(`../${newQuestionIndex}`, {
         replace: true,
@@ -712,6 +717,16 @@ const AnswerTemplate = (props: {
       selcetedConfidenceLevel
     ) {
       submitQuestion();
+      const newQuestionIndex = questionIndex + 1;
+      if (isLastQuestion) {
+        dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
+        navigate(`../completed`, { replace: true });
+        return;
+      }
+      dispatch(questionActions.goToQuestion(newQuestionIndex));
+      navigate(`../${newQuestionIndex}`, {
+        replace: true,
+      });
     }
   }, [value]);
   const notApplicableonChanhe = (e: any) => {
@@ -840,27 +855,40 @@ const AnswerTemplate = (props: {
           alignItems: "center",
         }}
       >
-        <LoadingButton
-          variant="contained"
-          color={"info"}
-          loading={isSubmitting}
-          disabled={(value || notApplicable) && !selcetedConfidenceLevel}
-          sx={{
-            fontSize: "1.2rem",
-          }}
-          onClick={submitQuestion}
-        >
-          <Trans i18nKey={"nextQuestion"} />
-        </LoadingButton>
         <Box sx={styles.centerVH} gap={2}>
           <LoadingButton
             variant="contained"
             color={"info"}
-            loading={isSubmitting}
             sx={{
               fontSize: "1.2rem",
             }}
-            onClick={gotoPrevQuestion}
+            onClick={() =>
+              isSubmitted ? goToQuestion("asc") : setExpandedDeleteDialog(true)
+            }
+            disabled={isLastQuestion}
+          >
+            <Trans i18nKey={"nextQuestion"} />
+          </LoadingButton>
+          <LoadingButton
+            variant="contained"
+            color="info"
+            loading={isSubmitting}
+            sx={{ fontSize: "1.2rem" }}
+            onClick={submitQuestion}
+            // disabled={!value || notApplicable || !selcetedConfidenceLevel}
+          >
+            <Trans i18nKey="submit" />
+          </LoadingButton>{" "}
+        </Box>
+        <Box sx={styles.centerVH} gap={2}>
+          <LoadingButton
+            variant="contained"
+            color={"info"}
+            sx={{
+              fontSize: "1.2rem",
+            }}
+            disabled={questionIndex === 1}
+            onClick={() => goToQuestion("desc")}
           >
             <Trans i18nKey={"previousQuestion"} />
           </LoadingButton>
@@ -884,6 +912,14 @@ const AnswerTemplate = (props: {
             />
           )}
         </Box>
+        <DeleteDialog
+          expanded={expandedDeleteDialog}
+          onClose={() => setExpandedDeleteDialog(false)}
+          onConfirm={() => goToQuestion("asc")}
+          title={<Trans i18nKey={"areYouSureYouWantSkipThisQuestion"} />}
+          cancelText={<Trans i18nKey={"cancel"} />}
+          confirmText={<Trans i18nKey={"confirm"} />}
+        />{" "}
       </Box>
     </>
   );
