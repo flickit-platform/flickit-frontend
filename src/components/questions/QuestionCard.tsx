@@ -609,9 +609,11 @@ const AnswerTemplate = (props: {
   const navigate = useNavigate();
   const isLastQuestion = questionIndex == total_number_of_questions;
   const isSelectedValueTheSameAsAnswer =
-    questionInfo?.answer === value ||
+    questionInfo?.answer == value ||
+    questionInfo?.answer?.selectedOption == value ||
     (questionInfo?.answer?.selectedOption?.index == value?.index &&
-      questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel);
+      questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
+      questionInfo?.answer?.isNotApplicable === notApplicable);
   const changeHappened = useRef(false);
   const onChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -884,9 +886,8 @@ const AnswerTemplate = (props: {
                 ? goToQuestion("asc")
                 : setExpandedDeleteDialog(true)
             }
-            disabled={isLastQuestion}
           >
-            <Trans i18nKey={"next"} />
+            <Trans i18nKey={!isLastQuestion ? "next" : "review"} />
           </LoadingButton>
         </Box>
         <Box sx={styles.centerVH} gap={2}>
