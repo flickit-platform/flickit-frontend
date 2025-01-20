@@ -609,8 +609,11 @@ const AnswerTemplate = (props: {
   const navigate = useNavigate();
   const isLastQuestion = questionIndex == total_number_of_questions;
   const isSelectedValueTheSameAsAnswer =
+    (questionInfo?.mayNotBeApplicable &&
+      questionInfo?.answer?.isNotApplicable === notApplicable) ||
     questionInfo?.answer == value ||
-    questionInfo?.answer?.selectedOption == value ||
+    (questionInfo?.answer?.selectedOption == value &&
+      !questionInfo?.mayNotBeApplicable) ||
     (questionInfo?.answer?.selectedOption?.index == value?.index &&
       questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
       questionInfo?.answer?.isNotApplicable === notApplicable);
@@ -622,7 +625,7 @@ const AnswerTemplate = (props: {
     if (isSelectedValueTheSameAsAnswer) {
       changeHappened.current = true;
     }
-    if (value?.index !== v?.index) {
+    if (value?.index !== v?.index || !questionInfo?.mayNotBeApplicable) {
       setDisabledConfidence(false);
     } else {
       setDisabledConfidence(true);
@@ -692,7 +695,7 @@ const AnswerTemplate = (props: {
 
   const goToQuestion = async (order: "desc" | "asc") => {
     try {
-      if (isLastQuestion) {
+      if (isLastQuestion && order === "asc") {
         dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
         navigate(`../completed`, { replace: true });
         return;
