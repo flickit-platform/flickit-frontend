@@ -1,7 +1,7 @@
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import { Button, Typography } from "@mui/material";
+import {Button, Snackbar, Typography} from "@mui/material";
 import { Trans } from "react-i18next";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
@@ -22,8 +22,20 @@ import languageDetector from "@utils/languageDetector";
 import EditRounded from "@mui/icons-material/EditRounded";
 import Grid from "@mui/material/Grid";
 import TreeMapChart from "@common/charts/TreeMapChart";
+import { t } from "i18next";
+
 const ReportTab = () => {
-  const copyLink = () => {};
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const copyLink = () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        setSnackbarOpen(true);
+      });
+    };
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
   return (
     <>
       <Box
@@ -190,6 +202,12 @@ const ReportTab = () => {
           />
         </Box>
       </MainCard>
+        <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={3000}
+            onClose={handleCloseSnackbar}
+            message={t("linkCopied")}
+        />
     </>
   );
 };
