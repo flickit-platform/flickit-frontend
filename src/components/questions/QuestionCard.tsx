@@ -306,11 +306,13 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                         }}
                       >
                         <Typography>
-                          {disabledConfidence ? (
-                            <Trans i18nKey={"selectConfidenceLevel"} />
-                          ) : (
-                            <Trans i18nKey={"toContinueToSubmitAnAnswer"} />
-                          )}
+                          <Trans
+                            i18nKey={
+                              disabledConfidence
+                                ? "selectConfidenceLevel"
+                                : "toContinueToSubmitAnAnswer"
+                            }
+                          />
                         </Typography>
                       </Box>
                     )}
@@ -609,14 +611,16 @@ const AnswerTemplate = (props: {
   const navigate = useNavigate();
   const isLastQuestion = questionIndex == total_number_of_questions;
   const isSelectedValueTheSameAsAnswer =
-    (questionInfo?.mayNotBeApplicable &&
-      questionInfo?.answer?.isNotApplicable === notApplicable) ||
-    questionInfo?.answer == value ||
-    (questionInfo?.answer?.selectedOption == value &&
-      !questionInfo?.mayNotBeApplicable) ||
     (questionInfo?.answer?.selectedOption?.index == value?.index &&
       questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
-      questionInfo?.answer?.isNotApplicable === notApplicable);
+      questionInfo?.answer?.isNotApplicable === notApplicable) ||
+    (questionInfo?.mayNotBeApplicable &&
+      questionInfo?.answer?.isNotApplicable === notApplicable) ||
+    (questionInfo?.answer?.selectedOption == null &&
+      questionInfo.answer?.confidenceLevel == null &&
+      value === null &&
+      !questionInfo.mayNotBeApplicable);
+
   const changeHappened = useRef(false);
   const onChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -641,7 +645,10 @@ const AnswerTemplate = (props: {
     if (answer && answer?.selectedOption) {
       setDisabledConfidence(false);
     }
-  }, [answer]);
+    if (value == null) {
+      setDisabledConfidence(true);
+    }
+  }, [answer, value]);
 
   // first checking if evidences have been submited or not
   const submitQuestion = async () => {
@@ -853,7 +860,7 @@ const AnswerTemplate = (props: {
           mt: { xs: 4, md: 1 },
           mr: { xs: 0, md: 2 },
           display: "flex",
-          flexDirection: is_farsi ? "row" : "row-reverse",
+          flexDirection: "row-reverse",
           justifyContent: "space-between",
           alignItems: "center",
         }}
@@ -861,13 +868,12 @@ const AnswerTemplate = (props: {
         <Box
           sx={{
             ...styles.centerVH,
-            flexDirection: is_farsi ? "row-reverse" : "row",
           }}
           gap={2}
         >
           <LoadingButton
             variant="contained"
-            color="info"
+            color="success"
             loading={isSubmitting}
             sx={{ fontSize: "1.2rem" }}
             onClick={submitQuestion}
@@ -931,7 +937,7 @@ const AnswerTemplate = (props: {
           onConfirm={() => goToQuestion("asc")}
           title={<Trans i18nKey={"areYouSureYouWantSkipThisQuestion"} />}
           cancelText={<Trans i18nKey={"cancel"} />}
-          confirmText={<Trans i18nKey={"confirm"} />}
+          confirmText={<Trans i18nKey={"continue"} />}
         />{" "}
       </Box>
     </>
