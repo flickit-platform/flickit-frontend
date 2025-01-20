@@ -802,5 +802,9 @@
   "regenerate": "Regenerate",
   "backToHome": "Back to home",
   "reportTab": "report",
-  "strengthsAndRoomsForImprovement": "Strengths and rooms for improvement"
+  "strengthsAndRoomsForImprovement": "Strengths and rooms for improvement",
+  "stepsTakenForThisAssessment": "Steps taken for this assessment",
+  "assessmentContributors": "Assessment Contributors",
+  "stepsTakenSoFar": "Steps taken so far are these",
+  "peopleHaveContributingInAssessment": "People who are have contributing in this assessment"
 }
