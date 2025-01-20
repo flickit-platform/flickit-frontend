@@ -610,7 +610,9 @@ const AnswerTemplate = (props: {
   const navigate = useNavigate();
   const isLastQuestion = questionIndex == total_number_of_questions;
   const isSelectedValueTheSameAsAnswer =
-    questionInfo?.answer?.selectedOption?.index == value?.index;
+    questionInfo?.answer === value ||
+    (questionInfo?.answer?.selectedOption?.index == value?.index &&
+      questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel);
   const changeHappened = useRef(false);
   const onChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -636,11 +638,9 @@ const AnswerTemplate = (props: {
       setDisabledConfidence(false);
     }
   }, [answer]);
-  const [error, setError] = useState("");
 
   // first checking if evidences have been submited or not
   const submitQuestion = async () => {
-    if (!value) dispatch(questionActions.setSelectedConfidenceLevel(null));
     dispatch(questionActions.setIsSubmitting(true));
     try {
       if (permissions && permissions?.answerQuestion) {
@@ -650,7 +650,7 @@ const AnswerTemplate = (props: {
             data: {
               questionnaireId: questionnaireId,
               questionId: questionInfo?.id,
-              answerOptionId: value?.id,
+              answerOptionId: value?.id || null,
               isNotApplicable: notApplicable,
               confidenceLevelId:
                 value?.id || submitOnAnswerSelection || notApplicable
@@ -850,12 +850,31 @@ const AnswerTemplate = (props: {
           mt: { xs: 4, md: 1 },
           mr: { xs: 0, md: 2 },
           display: "flex",
-          flexDirection: "row-reverse",
+          flexDirection: is_farsi ? "row" : "row-reverse",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <Box sx={styles.centerVH} gap={2}>
+        <Box
+          sx={{
+            ...styles.centerVH,
+            flexDirection: is_farsi ? "row-reverse" : "row",
+          }}
+          gap={2}
+        >
+          <LoadingButton
+            variant="contained"
+            color="info"
+            loading={isSubmitting}
+            sx={{ fontSize: "1.2rem" }}
+            onClick={submitQuestion}
+            disabled={
+              isSelectedValueTheSameAsAnswer ||
+              ((value || notApplicable) && !selcetedConfidenceLevel)
+            }
+          >
+            <Trans i18nKey="submit" />
+          </LoadingButton>{" "}
           <LoadingButton
             variant="contained"
             color={"info"}
@@ -863,22 +882,14 @@ const AnswerTemplate = (props: {
               fontSize: "1.2rem",
             }}
             onClick={() =>
-              isSubmitted ? goToQuestion("asc") : setExpandedDeleteDialog(true)
+              isSubmitted || isSelectedValueTheSameAsAnswer
+                ? goToQuestion("asc")
+                : setExpandedDeleteDialog(true)
             }
             disabled={isLastQuestion}
           >
-            <Trans i18nKey={"nextQuestion"} />
+            <Trans i18nKey={"next"} />
           </LoadingButton>
-          <LoadingButton
-            variant="contained"
-            color="info"
-            loading={isSubmitting}
-            sx={{ fontSize: "1.2rem" }}
-            onClick={submitQuestion}
-            // disabled={!value || notApplicable || !selcetedConfidenceLevel}
-          >
-            <Trans i18nKey="submit" />
-          </LoadingButton>{" "}
         </Box>
         <Box sx={styles.centerVH} gap={2}>
           <LoadingButton
@@ -890,7 +901,7 @@ const AnswerTemplate = (props: {
             disabled={questionIndex === 1}
             onClick={() => goToQuestion("desc")}
           >
-            <Trans i18nKey={"previousQuestion"} />
+            <Trans i18nKey={"prev"} />
           </LoadingButton>
           {may_not_be_applicable && (
             <FormControlLabel
