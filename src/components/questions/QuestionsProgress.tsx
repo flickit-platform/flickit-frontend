@@ -29,7 +29,7 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
   return (
     <Box
       position="relative"
-      sx={{ mt: { xs: 1, sm: 3 }, mx: { xs: 0, sm: "24px" } }}
+      sx={{ my: { xs: 1, sm: 3 }, mx: { xs: 0, sm: "24px" } }}
     >
       <Hidden
         smDown
