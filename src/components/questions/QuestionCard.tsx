@@ -594,7 +594,6 @@ const AnswerTemplate = (props: {
     selcetedConfidenceLevel,
     confidenceLebels,
   } = props;
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
   const { questionsResultQueryData } = useQuestions();
@@ -660,7 +659,6 @@ const AnswerTemplate = (props: {
           },
           { signal: abortController.current.signal },
         );
-        setIsSubmitted(true);
       }
 
       dispatch(questionActions.setIsSubmitting(false));
@@ -882,7 +880,7 @@ const AnswerTemplate = (props: {
               fontSize: "1.2rem",
             }}
             onClick={() =>
-              isSubmitted || isSelectedValueTheSameAsAnswer
+              isSelectedValueTheSameAsAnswer
                 ? goToQuestion("asc")
                 : setExpandedDeleteDialog(true)
             }
