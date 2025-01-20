@@ -24,6 +24,7 @@ import FormatAlignRightRoundedIcon from "@mui/icons-material/FormatAlignRightRou
 import FormatAlignJustifyRoundedIcon from "@mui/icons-material/FormatAlignJustifyRounded";
 import FormatAlignCenterRoundedIcon from "@mui/icons-material/FormatAlignCenterRounded";
 import InsertLinkRoundedIcon from "@mui/icons-material/InsertLinkRounded";
+import TableRowsIcon from "@mui/icons-material/TableRows";
 
 const defaultGetMenuItems = (
   editor: Editor,
@@ -155,6 +156,22 @@ const defaultGetMenuItems = (
       icon: <RedoRoundedIcon fontSize="small" />,
       title: "Redo",
       action: () => editor.chain().focus().redo().run(),
+    },
+    {
+      icon: <TableRowsIcon fontSize="small" />,
+      title: "table",
+      action: () =>
+        editor
+          .chain()
+          .focus()
+          .insertTable({ rows: 1, cols: 2, withHeaderRow: false, })
+          .run(),
+    },
+    {
+      icon: <TableRowsIcon fontSize="small" />,
+      title: "Add column before",
+      action: () => editor.chain().focus().addColumnBefore().run(),
+      disable: !editor.can().addColumnBefore()
     },
   ];
 };

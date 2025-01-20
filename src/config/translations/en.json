@@ -800,5 +800,7 @@
   "NoIssueFound": "No questionnaire has the selected issue",
   "NoIssuesFound": "No questionnaire has the selected issues",
   "regenerate": "Regenerate",
-  "backToHome": "Back to home"
+  "backToHome": "Back to home",
+  "reportTab": "report",
+  "strengthsAndRoomsForImprovement": "Strengths and rooms for improvement"
 }

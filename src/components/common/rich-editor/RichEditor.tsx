@@ -8,6 +8,11 @@ import { useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
 import { primaryFontFamily } from "@/config/theme";
+import Table from "@tiptap/extension-table";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableCell } from "@tiptap/extension-table-cell";
+import "./style.css"
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -33,10 +38,43 @@ const RichEditor = (props: IRichEditorProps) => {
     checkLang,
     setLangDir,
   } = props;
+
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
+    const CustomTableCell = TableCell.extend({
+        addAttributes() {
+            return {
+                // extend the existing attributes …
+                ...this.parent?.(),
+
+                // and add a new one …
+                backgroundColor: {
+                    default: null,
+                    parseHTML: element => element.getAttribute('data-background-color'),
+                    renderHTML: attributes => {
+                        return {
+                            'data-background-color': attributes.backgroundColor,
+                            style: `background-color: ${attributes.backgroundColor}`,
+                        }
+                    },
+                },
+            }
+        },
+
+    })
+
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      // Default TableCell
+      // TableCell,
+      // Custom TableCell with backgroundColor attribute
+      TableCell,
+        CustomTableCell,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
@@ -52,7 +90,7 @@ const RichEditor = (props: IRichEditorProps) => {
         field.onChange(props.editor.getHTML());
 
         setIsFarsi(firstCharDetector(props.editor.getText()));
-        setLangDir(firstCharDetector(props.editor.getText()))
+        setLangDir(firstCharDetector(props.editor.getText()));
       }
     },
     onCreate(props) {
@@ -138,18 +176,18 @@ const RichEditor = (props: IRichEditorProps) => {
                 minHeight: "80px",
                 border: "1px solid rgba(0, 0, 0, 0.23)",
                 borderRadius: 1,
-                background:"#fff",
+                background: "#fff",
                 px: 1.5,
                 py: 1,
                 "& > p": editor?.isEmpty
                   ? {
                       marginBlockStart: 0,
                       marginBlockEnd: 0,
-                      textAlign:"initial"
+                      textAlign: "initial",
                     }
                   : {
                       unicodeBidi: "plaintext",
-                      textAlign:"initial"
+                      textAlign: "initial",
                     },
               },
             }

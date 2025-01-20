@@ -802,5 +802,7 @@
   "NoIssueFound": "هیچ پرسشنامه‌ای با مشکل انتخاب‌شده یافت نشد",
   "NoIssuesFound": "هیچ پرسشنامه‌ای با مشکلات انتخاب‌شده یافت نشد",
   "regenerate": "بازتولید",
-  "backToHome": "خانه"
+  "backToHome": "خانه",
+  "reportTab": "گزارش",
+  "strengthsAndRoomsForImprovement": "نقاط قوت و فضاهایی برای بهبود"
 }

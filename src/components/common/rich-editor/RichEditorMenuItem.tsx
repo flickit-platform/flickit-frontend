@@ -10,6 +10,7 @@ export interface IRichEditorMenuItem {
   action?: (props: IDialogProps) => any;
   isActive?: () => boolean;
   type?: "divider";
+  disable?: boolean;
   prompt?: {
     title: string;
     promptBody: (closeModal: () => void) => JSX.Element;
