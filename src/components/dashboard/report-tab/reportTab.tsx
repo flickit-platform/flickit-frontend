@@ -53,77 +53,81 @@ const ReportTab = () => {
             alignItems: "center",
           }}
         >
-          <Grid item xs={12} md={6}>
-            {"" ? (
-              <Box
-                sx={{ background: theme.palette.error.main, borderRadius: 2 }}
-              >
-                <Typography
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    ...theme.typography.semiBoldMedium,
-                    color: "#FAD1D8",
-                    py: 1,
-                    px: 2,
-                    gap: 1,
-                  }}
-                >
-                  <ReportProblemOutlinedIcon fontSize={"small"} />
-                  <Trans i18nKey={"fillInAllRequired"} />
-                </Typography>
-              </Box>
-            ) : (
-              <Box
-                sx={{
-                  background: theme.palette.warning.light,
-                  borderRadius: 2,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  py: 1,
-                  px: 2,
-                  gap: 5,
-                }}
-              >
-                <Typography
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    ...theme.typography.semiBoldMedium,
-                    color: theme.palette.warning.main,
+          {/*<Grid item xs={12} md={6}>*/}
+          {/*  {"" ? (*/}
+          {/*    <Box*/}
+          {/*      sx={{ background: theme.palette.error.main, borderRadius: 2 }}*/}
+          {/*    >*/}
+          {/*      <Typography*/}
+          {/*        sx={{*/}
+          {/*          display: "flex",*/}
+          {/*          justifyContent: "center",*/}
+          {/*          alignItems: "center",*/}
+          {/*          ...theme.typography.semiBoldMedium,*/}
+          {/*          color: "#FAD1D8",*/}
+          {/*          py: 1,*/}
+          {/*          px: 2,*/}
+          {/*          gap: 1,*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        <ReportProblemOutlinedIcon fontSize={"small"} />*/}
+          {/*        <Trans i18nKey={"fillInAllRequired"} />*/}
+          {/*      </Typography>*/}
+          {/*    </Box>*/}
+          {/*  ) : (*/}
+          {/*    <Box*/}
+          {/*      sx={{*/}
+          {/*        background: theme.palette.warning.light,*/}
+          {/*        borderRadius: 2,*/}
+          {/*        display: "flex",*/}
+          {/*        justifyContent: "space-between",*/}
+          {/*        alignItems: "center",*/}
+          {/*        py: 1,*/}
+          {/*        px: 2,*/}
+          {/*        gap: 5,*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      <Typography*/}
+          {/*        sx={{*/}
+          {/*          display: "flex",*/}
+          {/*          justifyContent: "center",*/}
+          {/*          alignItems: "center",*/}
+          {/*          ...theme.typography.semiBoldMedium,*/}
+          {/*          color: theme.palette.warning.main,*/}
 
-                    gap: 1,
-                  }}
-                >
-                  <ReportProblemOutlinedIcon fontSize={"small"} />
-                  <Trans i18nKey={"someAnswersNeedUpdating"} />
-                </Typography>
-                <Button
-                  variant="contained"
-                  sx={{
-                    minWidth: "unset",
-                    width: "28px",
-                    height: "28px",
-                    background: theme.palette.warning.main,
-                    "&:hover": {
-                      background: theme.palette.warning.main,
-                      width: "fit-content",
-                    },
-                  }}
-                >
-                  <CloseOutlinedIcon sx={{ color: "#fff" }} />
-                </Button>
-              </Box>
-            )}
-          </Grid>
+          {/*          gap: 1,*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        <ReportProblemOutlinedIcon fontSize={"small"} />*/}
+          {/*        <Trans i18nKey={"someAnswersNeedUpdating"} />*/}
+          {/*      </Typography>*/}
+          {/*      <Button*/}
+          {/*        variant="contained"*/}
+          {/*        sx={{*/}
+          {/*          minWidth: "unset",*/}
+          {/*          width: "28px",*/}
+          {/*          height: "28px",*/}
+          {/*          background: theme.palette.warning.main,*/}
+          {/*          "&:hover": {*/}
+          {/*            background: theme.palette.warning.main,*/}
+          {/*            width: "fit-content",*/}
+          {/*          },*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        <CloseOutlinedIcon sx={{ color: "#fff" }} />*/}
+          {/*      </Button>*/}
+          {/*    </Box>*/}
+          {/*  )}*/}
+          {/*</Grid>*/}
           <Grid
             item
             xs={12}
             md={4}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginLeft: "auto",
+            }}
           >
             <Box sx={{ ...styles.centerVH, gap: 1 }}>
               <Button
@@ -160,12 +164,15 @@ const ReportTab = () => {
             justifyContent: "flex-start",
             alignItems: "center",
             color: "#2B333B",
-            gap: 1,
+            gap: 2,
             mb: 3,
           }}
         >
           <Trans i18nKey={"introduction"} />
           <InfoOutlinedIcon />
+          <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
+            (<Trans i18nKey={"empty"} />)
+          </Typography>
         </Typography>
         <Box>
           <OnHoverInputReport
@@ -188,12 +195,15 @@ const ReportTab = () => {
                 justifyContent: "flex-start",
                 alignItems: "center",
                 color: "#2B333B",
-                gap: 1,
+                gap: 2,
                 mb: 3,
               }}
             >
               <Trans i18nKey={"strengthsAndRoomsForImprovement"} />
               <InfoOutlinedIcon />
+                <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
+                    (<Trans i18nKey={"empty"} />)
+                </Typography>
             </Typography>
             <OnHoverInputReport
               attributeId={1}
@@ -223,12 +233,15 @@ const ReportTab = () => {
             justifyContent: "flex-start",
             alignItems: "center",
             color: "#2B333B",
-            gap: 1,
+            gap: 2,
             mb: 3,
           }}
         >
           <Trans i18nKey={"stepsTakenForThisAssessment"} />
           <InfoOutlinedIcon />
+            <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
+                (<Trans i18nKey={"empty"} />)
+            </Typography>
         </Typography>
         <Box sx={{ marginInlineStart: "1rem" }}>
           <Typography
@@ -247,6 +260,7 @@ const ReportTab = () => {
             // infoQuery={updateAttributeAndData}
             type="summary"
             editable={true}
+
           />
         </Box>
       </MainCard>
@@ -258,12 +272,15 @@ const ReportTab = () => {
             justifyContent: "flex-start",
             alignItems: "center",
             color: "#2B333B",
-            gap: 1,
+            gap: 2,
             mb: 3,
           }}
         >
           <Trans i18nKey={"assessmentContributors"} />
           <InfoOutlinedIcon />
+            <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
+                (<Trans i18nKey={"empty"} />)
+            </Typography>
         </Typography>
         <Box sx={{ marginInlineStart: "1rem" }}>
           <Typography
