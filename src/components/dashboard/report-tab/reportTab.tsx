@@ -1,7 +1,7 @@
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import {Button, Snackbar, Typography} from "@mui/material";
+import { Button, Snackbar, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
@@ -23,45 +23,128 @@ import EditRounded from "@mui/icons-material/EditRounded";
 import Grid from "@mui/material/Grid";
 import TreeMapChart from "@common/charts/TreeMapChart";
 import { t } from "i18next";
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 const ReportTab = () => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    const copyLink = () => {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        setSnackbarOpen(true);
-      });
-    };
-    const handleCloseSnackbar = () => {
-        setSnackbarOpen(false);
-    };
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setSnackbarOpen(true);
+    });
+  };
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
   return (
     <>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 2,
           mt: "40px",
         }}
       >
-        <Box></Box>
-        <Box sx={{ ...styles.centerVH, gap: 1 }}>
-          <Button
-            onClick={copyLink}
-            sx={{ display: "flex", gap: 1 }}
-            variant={"outlined"}
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Grid item xs={12} md={6}>
+            {"" ? (
+              <Box
+                sx={{ background: theme.palette.error.main, borderRadius: 2 }}
+              >
+                <Typography
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    ...theme.typography.semiBoldMedium,
+                    color: "#FAD1D8",
+                    py: 1,
+                    px: 2,
+                    gap: 1,
+                  }}
+                >
+                  <ReportProblemOutlinedIcon fontSize={"small"} />
+                  <Trans i18nKey={"fillInAllRequired"} />
+                </Typography>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  background: theme.palette.warning.light,
+                  borderRadius: 2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  py: 1,
+                  px: 2,
+                  gap: 5,
+                }}
+              >
+                <Typography
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    ...theme.typography.semiBoldMedium,
+                    color: theme.palette.warning.main,
+
+                    gap: 1,
+                  }}
+                >
+                  <ReportProblemOutlinedIcon fontSize={"small"} />
+                  <Trans i18nKey={"someAnswersNeedUpdating"} />
+                </Typography>
+                <Button
+                  variant="contained"
+                  sx={{
+                    minWidth: "unset",
+                    width: "28px",
+                    height: "28px",
+                    background: theme.palette.warning.main,
+                    "&:hover": {
+                      background: theme.palette.warning.main,
+                      width: "fit-content",
+                    },
+                  }}
+                >
+                  <CloseOutlinedIcon sx={{ color: "#fff" }} />
+                </Button>
+              </Box>
+            )}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={4}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Trans i18nKey={"copy report link"} />
-            <InsertLinkIcon fontSize={"small"} />
-          </Button>
-          <Button sx={{ display: "flex", gap: 1 }} variant={"contained"}>
-            <Trans i18nKey={"view report"} />
-            <AssignmentOutlinedIcon fontSize={"small"} />
-          </Button>
-        </Box>
+            <Box sx={{ ...styles.centerVH, gap: 1 }}>
+              <Button
+                onClick={copyLink}
+                sx={{ display: "flex", gap: 1 }}
+                variant={"outlined"}
+              >
+                <Typography sx={{ whiteSpace: "nowrap" }}>
+                  <Trans i18nKey={"copy report link"} />
+                </Typography>
+                <InsertLinkIcon fontSize={"small"} />
+              </Button>
+              <Button sx={{ display: "flex", gap: 1 }} variant={"contained"}>
+                <Typography sx={{ whiteSpace: "nowrap" }}>
+                  <Trans i18nKey={"view report"} />
+                </Typography>
+                <AssignmentOutlinedIcon fontSize={"small"} />
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
       <MainCard
         style={{
@@ -202,12 +285,12 @@ const ReportTab = () => {
           />
         </Box>
       </MainCard>
-        <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={3000}
-            onClose={handleCloseSnackbar}
-            message={t("linkCopied")}
-        />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        message={t("linkCopied")}
+      />
     </>
   );
 };
