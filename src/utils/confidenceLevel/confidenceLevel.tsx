@@ -3,6 +3,7 @@ import { colorPallet } from "./style";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import languageDetector from "../languageDetector";
+import { confidenceColor, maturityLevelColorMap } from "@/config/styles";
 
 interface IconfidenceLevelType {
   inputNumber: number | null | undefined;
@@ -61,50 +62,42 @@ const calculate = (inputNumber: any) => {
     number = Math.ceil(inputNumber);
   }
 
+  let newNum = Math.floor(number / 20);
+  colorText = confidenceColor[newNum];
+
   switch (number >= 0) {
-    case number <= 10:
+    case number < 10:
       id = 10;
-      colorText = colorPallet["10"];
       break;
-    case number <= 20:
+    case number < 20:
       id = 20;
-      colorText = colorPallet["20"];
       break;
-    case number <= 30:
+    case number < 30:
       id = 30;
-      colorText = colorPallet["30"];
       break;
-    case number <= 40:
+    case number < 40:
       id = 40;
-      colorText = colorPallet["40"];
       break;
-    case number <= 50:
+    case number < 50:
       id = 50;
-      colorText = colorPallet["50"];
       break;
-    case number <= 60:
+    case number < 60:
       id = 60;
-      colorText = colorPallet["60"];
       break;
-    case number <= 70:
+    case number < 70:
       id = 70;
-      colorText = colorPallet["70"];
       break;
-    case number <= 80:
+    case number < 80:
       id = 80;
-      colorText = colorPallet["80"];
       break;
-    case number <= 90:
+    case number < 90:
       id = 90;
-      colorText = colorPallet["90"];
       break;
     case number <= 100:
       id = 100;
-      colorText = colorPallet["100"];
       break;
     default:
       id = 100;
-      colorText = colorPallet["100"];
   }
 
   return { id, colorText, number };

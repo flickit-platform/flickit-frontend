@@ -3,7 +3,11 @@ import Title from "@common/Title";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { getMaturityLevelColors, styles } from "@styles";
+import {
+  getMaturityLevelColors,
+  maturityLevelBGColorMap,
+  styles,
+} from "@styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -70,8 +74,8 @@ const SUbjectAttributeCard = (props: any) => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { service } = useServiceContext();
 
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
@@ -83,7 +87,7 @@ const SUbjectAttributeCard = (props: any) => {
         sort,
         order,
         page,
-        size : rowsPerPage
+        size: rowsPerPage,
       },
       config,
     ) => service.fetchAffectedQuestionsOnAttribute(args, config),
@@ -136,7 +140,7 @@ const SUbjectAttributeCard = (props: any) => {
       sort: newSort,
       order: newOrder,
       page,
-      size: rowsPerPage
+      size: rowsPerPage,
     });
   };
 
@@ -155,10 +159,9 @@ const SUbjectAttributeCard = (props: any) => {
     }
   };
 
-  const colorPallet = getMaturityLevelColors(maturity_levels_count);
-  const maturityLevelColor = colorPallet[maturityLevel.value - 1];
+  const colorPallet = getMaturityLevelColors(maturity_levels_count, true);
+  const backgroundColor = colorPallet[maturityLevel.value - 1];
 
-  const backgroundColor = maturityLevelColor + "33";
   return (
     <Box
       sx={{

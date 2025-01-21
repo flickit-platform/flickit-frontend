@@ -149,58 +149,79 @@ export const statusColorMap: Record<NonNullable<TStatus>, string> = {
 };
 
 export const C1 = "#B71515";
-export const C2 = "#D73027";
-export const C3 = "#F46D43";
-export const C4 = "#FFBC00";
-export const C5 = "#E9D60C";
-export const C6 = "#BCC20A";
+export const C2 = "#D74427";
+export const C3 = "#F55C3D";
+export const C4 = "#F2995A";
+export const C5 = "#FFBC00";
+export const C6 = "#FFD900";
 export const C7 = "#99CB34";
 export const C8 = "#4FB34C";
 export const C9 = "#168345";
 export const C10 = "#0A5C25";
 
-export const C1BG = "#B7151533";
-export const C2BG = "#D7302733";
-export const C3BG = "#F46D4333";
-export const C4BG = "#FFBC0033";
-export const C5BG = "#E9D60C33";
-export const C6BG = "#BCC20A33";
-export const C7BG = "#99CB3433";
-export const C8BG = "#4FB34C33";
-export const C9BG = "#16834533";
-export const C10BG = "#0A5C2533";
+export const C1BG = "#B7151515";
+export const C2BG = "#D7442715";
+export const C3BG = "#F55C3D15";
+export const C4BG = "#F2995A15";
+export const C5BG = "#FFBC0015";
+export const C6BG = "#FFD90015";
+export const C7BG = "#99CB3415";
+export const C8BG = "#4FB34C15";
+export const C9BG = "#16834515";
+export const C10BG = "#0A5C2515";
 
 export const maturityLevelColorMap: any = {
   ML2: [C1, C10],
   ML3: [C1, C6, C10],
   ML4: [C1, C5, C7, C10],
-  ML5: [C1, C4, C6, C8, C10],
+  ML5: [C1, C4, C5, C8, C10],
   ML6: [C1, C3, C5, C7, C8, C10],
   ML7: [C1, C2, C4, C6, C7, C8, C10],
   ML8: [C1, C2, C4, C5, C7, C8, C9, C10],
   ML9: [C1, C2, C3, C4, C6, C7, C8, C9, C10],
   ML10: [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10],
 };
-export const getMaturityLevelColors = (maturity_level_number: number) => {
+
+export const maturityLevelBGColorMap: any = {
+  ML2: [C1BG, C10BG],
+  ML3: [C1BG, C6BG, C10BG],
+  ML4: [C1BG, C5BG, C7BG, C10BG],
+  ML5: [C1BG, C4BG, C5BG, C8BG, C10BG],
+  ML6: [C1BG, C3BG, C5BG, C7BG, C8BG, C10BG],
+  ML7: [C1BG, C2BG, C4BG, C6BG, C7BG, C8BG, C10BG],
+  ML8: [C1BG, C2BG, C4BG, C5BG, C7BG, C8BG, C9BG, C10BG],
+  ML9: [C1BG, C2BG, C3BG, C4BG, C6BG, C7BG, C8BG, C9BG, C10BG],
+  ML10: [C1BG, C2BG, C3BG, C4BG, C5BG, C6BG, C7BG, C8BG, C9BG, C10BG],
+};
+
+export const confidenceColor = [C1, C3, C4, C8, C10];
+export const getMaturityLevelColors = (
+  maturity_level_number: number,
+  bg?: boolean,
+) => {
+  let maturityInstance = maturityLevelColorMap;
+  if (bg) {
+    maturityInstance = maturityLevelBGColorMap;
+  }
   switch (maturity_level_number) {
     case 2:
-      return maturityLevelColorMap.ML2;
+      return maturityInstance.ML2;
     case 3:
-      return maturityLevelColorMap.ML3;
+      return maturityInstance.ML3;
     case 4:
-      return maturityLevelColorMap.ML4;
+      return maturityInstance.ML4;
     case 5:
-      return maturityLevelColorMap.ML5;
+      return maturityInstance.ML5;
     case 6:
-      return maturityLevelColorMap.ML6;
+      return maturityInstance.ML6;
     case 7:
-      return maturityLevelColorMap.ML7;
+      return maturityInstance.ML7;
     case 8:
-      return maturityLevelColorMap.ML8;
+      return maturityInstance.ML8;
     case 9:
-      return maturityLevelColorMap.ML9;
+      return maturityInstance.ML9;
     case 10:
-      return maturityLevelColorMap.ML10;
+      return maturityInstance.ML10;
   }
 };
 

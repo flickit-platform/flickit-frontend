@@ -9,6 +9,7 @@ interface PieChartNode {
   value: number;
   label?: string;
   color?: string;
+  bgColor?: string;
 }
 
 interface CustomPieChartProps {
@@ -129,7 +130,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           {data.map((item, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={getTransparentColor(item.color ?? "#fff")}
+              fill={item.bgColor ?? "#fff"}
               stroke={item.color}
               strokeWidth={2}
             />
