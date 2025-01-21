@@ -12,7 +12,8 @@ import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
-import "./style.css"
+import "./style.css";
+import Placeholder from "@tiptap/extension-placeholder";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -24,6 +25,7 @@ interface IRichEditorProps {
   boxProps?: BoxProps;
   checkLang?: boolean;
   setLangDir?: any;
+  placeholder?: any;
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -37,30 +39,30 @@ const RichEditor = (props: IRichEditorProps) => {
     boxProps = {},
     checkLang,
     setLangDir,
+    placeholder,
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
-    const CustomTableCell = TableCell.extend({
-        addAttributes() {
+  const CustomTableCell = TableCell.extend({
+    addAttributes() {
+      return {
+        // extend the existing attributes …
+        ...this.parent?.(),
+
+        // and add a new one …
+        backgroundColor: {
+          default: null,
+          parseHTML: (element) => element.getAttribute("data-background-color"),
+          renderHTML: (attributes) => {
             return {
-                // extend the existing attributes …
-                ...this.parent?.(),
-
-                // and add a new one …
-                backgroundColor: {
-                    default: null,
-                    parseHTML: element => element.getAttribute('data-background-color'),
-                    renderHTML: attributes => {
-                        return {
-                            'data-background-color': attributes.backgroundColor,
-                            style: `background-color: ${attributes.backgroundColor}`,
-                        }
-                    },
-                },
-            }
+              "data-background-color": attributes.backgroundColor,
+              style: `background-color: ${attributes.backgroundColor}`,
+            };
+          },
         },
-
-    })
+      };
+    },
+  });
 
   const editor = useEditor({
     extensions: [
@@ -74,11 +76,14 @@ const RichEditor = (props: IRichEditorProps) => {
       // TableCell,
       // Custom TableCell with backgroundColor attribute
       TableCell,
-        CustomTableCell,
+      CustomTableCell,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
       Link,
+      Placeholder.configure({
+        placeholder: placeholder,
+      }),
     ],
     content: defaultValue,
     onUpdate(props) {

@@ -170,7 +170,12 @@ const ReportTab = () => {
         >
           <Trans i18nKey={"introduction"} />
           <InfoOutlinedIcon />
-          <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
+          <Typography
+            sx={{
+              ...theme.typography.semiBoldLarge,
+              color: theme.palette.error.main,
+            }}
+          >
             (<Trans i18nKey={"empty"} />)
           </Typography>
         </Typography>
@@ -178,10 +183,11 @@ const ReportTab = () => {
           <OnHoverInputReport
             attributeId={1}
             // formMethods={formMethods}
-            data={"This is state of the evaand high sonabsuch as enhanci"}
+            data={""}
             // infoQuery={updateAttributeAndData}
             type="summary"
             editable={true}
+            placeholder={"salam"}
           />
         </Box>
       </MainCard>
@@ -201,14 +207,19 @@ const ReportTab = () => {
             >
               <Trans i18nKey={"strengthsAndRoomsForImprovement"} />
               <InfoOutlinedIcon />
-                <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
-                    (<Trans i18nKey={"empty"} />)
-                </Typography>
+              <Typography
+                sx={{
+                  ...theme.typography.semiBoldLarge,
+                  color: theme.palette.error.main,
+                }}
+              >
+                (<Trans i18nKey={"empty"} />)
+              </Typography>
             </Typography>
             <OnHoverInputReport
               attributeId={1}
               // formMethods={formMethods}
-              data={"2"}
+              data={""}
               // infoQuery={updateAttributeAndData}
               type="summary"
               editable={true}
@@ -239,9 +250,14 @@ const ReportTab = () => {
         >
           <Trans i18nKey={"stepsTakenForThisAssessment"} />
           <InfoOutlinedIcon />
-            <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
-                (<Trans i18nKey={"empty"} />)
-            </Typography>
+          <Typography
+            sx={{
+              ...theme.typography.semiBoldLarge,
+              color: theme.palette.error.main,
+            }}
+          >
+            (<Trans i18nKey={"empty"} />)
+          </Typography>
         </Typography>
         <Box sx={{ marginInlineStart: "1rem" }}>
           <Typography
@@ -260,7 +276,6 @@ const ReportTab = () => {
             // infoQuery={updateAttributeAndData}
             type="summary"
             editable={true}
-
           />
         </Box>
       </MainCard>
@@ -278,9 +293,14 @@ const ReportTab = () => {
         >
           <Trans i18nKey={"assessmentContributors"} />
           <InfoOutlinedIcon />
-            <Typography sx={{ ...theme.typography.semiBoldLarge, color: theme.palette.error.main }}>
-                (<Trans i18nKey={"empty"} />)
-            </Typography>
+          <Typography
+            sx={{
+              ...theme.typography.semiBoldLarge,
+              color: theme.palette.error.main,
+            }}
+          >
+            (<Trans i18nKey={"empty"} />)
+          </Typography>
         </Typography>
         <Box sx={{ marginInlineStart: "1rem" }}>
           <Typography
@@ -313,7 +333,6 @@ const ReportTab = () => {
 };
 
 const OnHoverInputReport = (props: any) => {
-  const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {
     editable && setIsHovering(true);
@@ -322,9 +341,11 @@ const OnHoverInputReport = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { data, editable, type, attributeId, infoQuery } = props;
+  const { data, editable, type, attributeId, infoQuery, placeholder } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
+  const [show, setShow] = useState<boolean>(!!(!data));
+
   const handleCancel = () => {
     setShow(false);
     setError({});
@@ -382,6 +403,7 @@ const OnHoverInputReport = (props: any) => {
                 label={""}
                 required={false}
                 defaultValue={data || ""}
+                placeholder={t("noInsightSubmittedSoFar")}
               />
               <Box
                 sx={{

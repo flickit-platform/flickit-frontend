@@ -809,5 +809,6 @@
   "peopleHaveContributingInAssessment": "People who are have contributing in this assessment",
   "fillInAllRequired": "Essential sections are missing responses. Please fill in all required sections before viewing the report.",
   "someAnswersNeedUpdating": "Some scores and maturity levels have changed, so some of your answers may need updating.",
-  "empty": "Empty"
+  "empty": "Empty",
+  "noInsightSubmittedSoFar": "No insight has been submitted so far."
 }

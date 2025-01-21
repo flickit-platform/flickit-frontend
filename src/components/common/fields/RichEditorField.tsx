@@ -42,6 +42,7 @@ const RichEditorFieldBase = (props: any) => {
     label,
     disable_label,
     setLangDir,
+    placeholder
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
@@ -98,6 +99,7 @@ const RichEditorFieldBase = (props: any) => {
         field={field}
         checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
         setLangDir={setLangDir}
+        placeholder={placeholder}
       />
       <FormHelperText>{errorMessage as string}</FormHelperText>
     </FormControl>
