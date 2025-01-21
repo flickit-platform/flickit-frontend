@@ -153,19 +153,19 @@ const RichEditor = (props: IRichEditorProps) => {
               width: "100%",
               mt: 1.5,
               "&.Mui-focused .ProseMirror": {
-                borderColor: "#1976d2",
+                borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "#1976d2"}`,
                 borderWidth: "2px",
               },
               "&.Mui-focused:hover .ProseMirror": {
-                borderColor: "#1976d2",
+                borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "#1976d2"}` ,
               },
               "&.Mui-error .ProseMirror": {
                 borderColor: "#d32f2f",
               },
               "&.Mui-error:hover .ProseMirror": {
-                borderColor: "#d32f2f",
+                borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "#d32f2f"}`,
               },
-              "&:hover .ProseMirror": { borderColor: "rgba(0, 0, 0, 0.87)" },
+              "&:hover .ProseMirror": { borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "rgba(0, 0, 0, 0.87)"}` },
               "& .rich-editor--menu": editor?.isFocused
                 ? {
                     opacity: 1,
@@ -179,7 +179,7 @@ const RichEditor = (props: IRichEditorProps) => {
               "& .ProseMirror": {
                 outline: "none",
                 minHeight: "80px",
-                border: "1px solid rgba(0, 0, 0, 0.23)",
+                border: `1px solid ${editor?.isEmpty ? "#8A0F2480"  : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 background: "#fff",
                 px: 1.5,

@@ -810,5 +810,8 @@
   "fillInAllRequired": "Essential sections are missing responses. Please fill in all required sections before viewing the report.",
   "someAnswersNeedUpdating": "Some scores and maturity levels have changed, so some of your answers may need updating.",
   "empty": "Empty",
-  "noInsightSubmittedSoFar": "No insight has been submitted so far."
+  "writeIntroduction": "Write introduction here...",
+  "writeStrengthAndRooms": "Write about strength and rooms for improvement here...",
+  "writeStepsForAssessment": "Write about Steps taken for this assessment here...",
+  "writeAssessmentContributors": "Write about Assessment Contributors here..."
 }

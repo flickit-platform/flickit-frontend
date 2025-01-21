@@ -170,7 +170,10 @@ export const createService = (
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(`/api/v1/assessments/${assessmentId}/users-with-report-access/`, config);
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/users-with-report-access/`,
+        config,
+      );
     },
     inviteMemberToAssessment(
       args: { assessmentId: any; email: any; roleId: any },
@@ -550,6 +553,26 @@ export const createService = (
         {
           ...(config ?? {}),
         },
+      );
+    },
+    patchUpdateReportFields(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      console.log(assessmentId,"test assessmentId")
+      return axios.patch(
+        `/api/v1/assessments/${assessmentId}/report-metadata/`,
+        { intro: "", prosAndCons: "", steps: "", participants: "" },
+        { ...(config ?? {}) },
+      );
+    },
+    fetchReportFields(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/report-metadata/`,
+          {...(config ?? {})}
       );
     },
     loadAIReport(
@@ -1617,7 +1640,8 @@ export const createService = (
       },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      const { assessmentId, attributeId, levelId, sort, order, page, size } = args ?? {};
+      const { assessmentId, attributeId, levelId, sort, order, page, size } =
+        args ?? {};
       return axios.get(
         `/api/v1/assessments/${assessmentId}/report/attributes/${attributeId}/`,
         {
@@ -1627,7 +1651,7 @@ export const createService = (
             sort: sort,
             order: order,
             page: page,
-            size: size
+            size: size,
           },
         },
       );
