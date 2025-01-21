@@ -10,6 +10,7 @@ export interface IRichEditorMenuItem {
   action?: (props: IDialogProps) => any;
   isActive?: () => boolean;
   type?: "divider";
+  disable?: boolean;
   prompt?: {
     title: string;
     promptBody: (closeModal: () => void) => JSX.Element;
@@ -22,7 +23,7 @@ interface IRichEditorMenuItemProps {
 
 const RichEditorMenuItem = (props: IRichEditorMenuItemProps) => {
   const {
-    menuItem: { icon, title, action, isActive = false, prompt },
+    menuItem: { icon, title, action, isActive = false, prompt, disable },
   } = props;
 
   const dialogProps = useDialog();
@@ -42,6 +43,7 @@ const RichEditorMenuItem = (props: IRichEditorMenuItemProps) => {
             background: isActive && isActive() ? "#cccccc" : undefined,
           },
         }}
+        disabled={disable}
         size="small"
         type="button"
         onClick={(e) => {

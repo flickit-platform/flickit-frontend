@@ -31,6 +31,9 @@ const AssessmentReportScreen = lazy(
 const AdviceScreen = lazy(
   () => import("../screens/AdviceScreen"),
 );
+const ReportScreen = lazy(
+  () => import("../screens/ReportScreen"),
+);
 const AssessmentAdviceScreen = lazy(
   () => import("../screens/AssessmentAdviceScreen"),
 );
@@ -139,6 +142,10 @@ const Routes = () => {
             <Route
               path="advices/"
               element={<AdviceScreen />}
+            />
+            <Route
+                path="report/"
+                element={<ReportScreen />}
             />
             <Route
               path="questionnaires/:questionIndex"

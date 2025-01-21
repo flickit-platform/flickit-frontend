@@ -802,5 +802,18 @@
   "NoIssueFound": "No questionnaire has the selected issue",
   "NoIssuesFound": "No questionnaire has the selected issues",
   "regenerate": "Regenerate",
-  "backToHome": "Back to home"
+  "backToHome": "Back to home",
+  "reportTab": "report",
+  "strengthsAndRoomsForImprovement": "Strengths and rooms for improvement",
+  "stepsTakenForThisAssessment": "Steps taken for this assessment",
+  "assessmentContributors": "Assessment Contributors",
+  "stepsTakenSoFar": "Steps taken so far are these",
+  "peopleHaveContributingInAssessment": "People who are have contributing in this assessment",
+  "fillInAllRequired": "Essential sections are missing responses. Please fill in all required sections before viewing the report.",
+  "someAnswersNeedUpdating": "Some scores and maturity levels have changed, so some of your answers may need updating.",
+  "empty": "Empty",
+  "writeIntroduction": "Write introduction here...",
+  "writeStrengthAndRooms": "Write about strength and rooms for improvement here...",
+  "writeStepsForAssessment": "Write about Steps taken for this assessment here...",
+  "writeAssessmentContributors": "Write about Assessment Contributors here..."
 }

@@ -24,6 +24,16 @@ import FormatAlignRightRoundedIcon from "@mui/icons-material/FormatAlignRightRou
 import FormatAlignJustifyRoundedIcon from "@mui/icons-material/FormatAlignJustifyRounded";
 import FormatAlignCenterRoundedIcon from "@mui/icons-material/FormatAlignCenterRounded";
 import InsertLinkRoundedIcon from "@mui/icons-material/InsertLinkRounded";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import TableColumnAddRightIcon from "@atlaskit/icon/core/table-column-add-right";
+import TableColumnAddLeftIcon from "@atlaskit/icon/core/table-column-add-left";
+import TableColumnDeleteIcon from "@atlaskit/icon/core/table-column-delete";
+import TableRowAddAboveIcon from "@atlaskit/icon/core/table-row-add-above";
+import TableRowAddBelowIcon from "@atlaskit/icon/core/table-row-add-below";
+import TableRowDeleteIcon from "@atlaskit/icon/core/table-row-delete";
+import TableCellClearIcon from "@atlaskit/icon/core/table-cell-clear";
+import TableCellMergeIcon from "@atlaskit/icon/core/table-cell-merge";
+import TableCellSplitIcon from "@atlaskit/icon/core/table-cell-split";
 
 const defaultGetMenuItems = (
   editor: Editor,
@@ -155,6 +165,71 @@ const defaultGetMenuItems = (
       icon: <RedoRoundedIcon fontSize="small" />,
       title: "Redo",
       action: () => editor.chain().focus().redo().run(),
+    },
+    { type: "divider" },
+    {
+      icon: <TableChartIcon fontSize={"small"} />,
+      title: "table",
+      action: () =>
+        editor
+          .chain()
+          .focus()
+          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+          .run(),
+    },
+    {
+      icon: <TableColumnAddLeftIcon label="" />,
+      title: "Add column before",
+      action: () => editor.chain().focus().addColumnBefore().run(),
+      disable: !editor.can().addColumnBefore(),
+    },
+    {
+      icon: <TableColumnAddRightIcon label="" />,
+      title: "Add column after",
+      action: () => editor.chain().focus().addColumnAfter().run(),
+      disable: !editor.can().addColumnAfter(),
+    },
+    {
+      icon: <TableColumnDeleteIcon label="" />,
+      title: "Delete column",
+      action: () => editor.chain().focus().deleteColumn().run(),
+      disable: !editor.can().deleteColumn(),
+    },
+    {
+      icon: <TableRowAddAboveIcon label="" />,
+      title: "Add row before",
+      action: () => editor.chain().focus().addRowBefore().run(),
+      disable: !editor.can().addRowBefore(),
+    },
+    {
+      icon: <TableRowAddBelowIcon label="" />,
+      title: "Add row after",
+      action: () => editor.chain().focus().addRowAfter().run(),
+      disable: !editor.can().addRowAfter(),
+    },
+    {
+      icon: <TableRowDeleteIcon label="" />,
+      title: "Delete row",
+      action: () => editor.chain().focus().deleteRow().run(),
+      disable: !editor.can().deleteRow(),
+    },
+    {
+      icon: <TableCellClearIcon label="" />,
+      title: "Delete table",
+      action: () => editor.chain().focus().deleteTable().run(),
+      disable: !editor.can().deleteTable(),
+    },
+    {
+      icon: <TableCellMergeIcon label="" />,
+      title: "Merge cells",
+      action: () => editor.chain().focus().mergeCells().run(),
+      disable: !editor.can().mergeCells(),
+    },
+    {
+      icon: <TableCellSplitIcon label="" />,
+      title: "Split cell",
+      action: () => editor.chain().focus().splitCell().run(),
+      disable: !editor.can().splitCell(),
     },
   ];
 };

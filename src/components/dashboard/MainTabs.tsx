@@ -27,7 +27,7 @@ const MainTabs = (props: any) => {
       address: "insights",
       permission: "viewAssessmentReport",
     },
-    { label: "reportTitle", address: "report", permission: false },
+    { label: "reportTitle", address: "report", permission: "viewAssessmentReport" },
     { label: "advices", address: "advices", permission: "createAdvice" },
     {
       label: "settings",
@@ -97,7 +97,6 @@ const MainTabs = (props: any) => {
               return (
                 <Tab
                   key={uniqueId()}
-                  disabled={tab.label === "reportTitle"}
                   to={`./${tab.address}/`}
                   component={Link}
                   value={tab.address}

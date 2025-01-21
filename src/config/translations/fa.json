@@ -804,5 +804,18 @@
   "NoIssueFound": "هیچ پرسشنامه‌ای با مشکل انتخاب‌شده یافت نشد",
   "NoIssuesFound": "هیچ پرسشنامه‌ای با مشکلات انتخاب‌شده یافت نشد",
   "regenerate": "بازتولید",
-  "backToHome": "خانه"
+  "backToHome": "خانه",
+  "reportTab": "گزارش",
+  "strengthsAndRoomsForImprovement": "نقاط قوت و فضاهایی برای بهبود",
+  "stepsTakenForThisAssessment": "اقدامات انجام شده برای این ارزیابی",
+  "assessmentContributors": "مشارکت کنندگان در این ارزیابی",
+  "stepsTakenSoFar": "اقدامات انجام شده تاکنون",
+  "peopleHaveContributingInAssessment": "فرادی که در این ارزیابی مشارکت دارند",
+  "fillInAllRequired": "بخش های ضروری پاسخ ندارند. لطفا قبل از مشاهده گزارش، تمام بخش های مورد نیاز را پر کنید.",
+  "someAnswersNeedUpdating": "برخی از نمرات و سطوح بلوغ تغییر کرده اند، بنابراین برخی از پاسخ های شما ممکن است نیاز به به روز رسانی داشته باشند.",
+  "empty": "خالی",
+  "writeIntroduction": "در مورد مقدمه اینجا بنوسید...",
+  "writeStrengthAndRooms": "در مورد قدرت و فضاهایی برای بهبود اینجا بنویسید...",
+  "writeStepsForAssessment": "در مورد مراحل انجام شده برای این ارزیابی اینجا بنویسید...",
+  "writeAssessmentContributors": "درباره مشارکت کنندگان ارزیابی اینجا بنویسید..."
 }
