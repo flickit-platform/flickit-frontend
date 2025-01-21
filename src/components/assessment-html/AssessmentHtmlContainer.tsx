@@ -184,7 +184,10 @@ const AssessmentExportContainer = () => {
 
   const fetchGraphicalReportUsers = useQuery<PathInfo>({
     service: (args, config) =>
-      service.fetchGraphicalReportUsers({ assessmentId, ...(args || {}) }, config),
+      service.fetchGraphicalReportUsers(
+        { assessmentId, ...(args || {}) },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -482,6 +485,11 @@ const AssessmentExportContainer = () => {
                               jsonData?.assessment.assessmentKit
                                 .maturityLevelCount +
                               ")",
+                            bgColor: getMaturityLevelColors(
+                              jsonData?.assessment.assessmentKit
+                                .maturityLevelCount,
+                              true,
+                            )[subject.maturityLevel.value - 1],
                           }))}
                         />
                         <Typography

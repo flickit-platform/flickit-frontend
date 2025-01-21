@@ -2,8 +2,8 @@ import React, { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { Typography, useMediaQuery } from "@mui/material";
-import { getMaturityLevelColors } from "@styles";
+import { Chip, Typography, useMediaQuery } from "@mui/material";
+import { confidenceColor, getMaturityLevelColors, maturityLevelColorMap } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
@@ -57,14 +57,10 @@ const FlatGauge = (props: IGaugeProps) => {
 
   const checkColor = (num: number): string => {
     if (num == 100) {
-      return confidencePallet[100];
+      return confidenceColor[4];
     } else {
-      let newNum = Math.floor(num / 10) * 10;
-      if (num < 10) {
-        return confidencePallet[10];
-      } else {
-        return confidencePallet[newNum];
-      }
+      let newNum = Math.floor(num / 20);
+      return confidenceColor[newNum];
     }
   };
 
@@ -133,7 +129,6 @@ const FlatGauge = (props: IGaugeProps) => {
                 gap: "5px",
                 ...theme.typography.extraLight,
                 fontWeight: 300,
-                color: "#9DA7B3",
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily
                   : primaryFontFamily,
