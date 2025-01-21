@@ -16,6 +16,7 @@ import keycloakService from "@/service/keycloakService";
 import * as Sentry from "@sentry/react";
 import "./assets/font/fonts.css";
 import { NovuProvider } from "@novu/notification-center";
+import "@utils/richEditorStyles.css";
 
 {
   process.env.NODE_ENV !== "development" &&

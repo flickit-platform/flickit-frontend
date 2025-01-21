@@ -556,24 +556,22 @@ export const createService = (
       );
     },
     patchUpdateReportFields(
-      { assessmentId }: { assessmentId: string },
+      { assessmentId, reportData }: { assessmentId: string; reportData: any },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      console.log(assessmentId,"test assessmentId")
       return axios.patch(
         `/api/v1/assessments/${assessmentId}/report-metadata/`,
-        { intro: "", prosAndCons: "", steps: "", participants: "" },
-        { ...(config ?? {}) },
+        reportData,
+        config,
       );
     },
     fetchReportFields(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(
-        `/api/v1/assessments/${assessmentId}/report-metadata/`,
-          {...(config ?? {})}
-      );
+      return axios.get(`/api/v1/assessments/${assessmentId}/report-metadata/`, {
+        ...(config ?? {}),
+      });
     },
     loadAIReport(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },

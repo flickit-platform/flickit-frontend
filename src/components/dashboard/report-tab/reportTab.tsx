@@ -33,11 +33,7 @@ const ReportTab = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-  const patchUpdateReportFields = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.patchUpdateReportFields(args, config),
-    runOnMount: false,
-  });
+
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
       service.fetchReportFields(args, config),
@@ -193,27 +189,27 @@ const ReportTab = () => {
               >
                 <Trans i18nKey={"introduction"} />
                 <InfoOutlinedIcon />
-                  {!intro &&
-                      <Typography
-                          sx={{
-                              ...theme.typography.semiBoldLarge,
-                              color: theme.palette.error.main,
-                          }}
-                      >
-                          (<Trans i18nKey={"empty"} />)
-                      </Typography>
-                  }
-
+                {!intro && (
+                  <Typography
+                    sx={{
+                      ...theme.typography.semiBoldLarge,
+                      color: theme.palette.error.main,
+                    }}
+                  >
+                    (<Trans i18nKey={"empty"} />)
+                  </Typography>
+                )}
               </Typography>
               <Box>
                 <OnHoverInputReport
                   attributeId={1}
                   // formMethods={formMethods}
                   data={intro}
-                  infoQuery={patchUpdateReportFields.query}
+                  infoQuery={fetchReportFields}
                   type="summary"
                   editable={true}
                   placeholder={t("writeIntroduction")}
+                  name={"intro"}
                 />
               </Box>
             </MainCard>
@@ -233,23 +229,26 @@ const ReportTab = () => {
                   >
                     <Trans i18nKey={"strengthsAndRoomsForImprovement"} />
                     <InfoOutlinedIcon />
-                    <Typography
-                      sx={{
-                        ...theme.typography.semiBoldLarge,
-                        color: theme.palette.error.main,
-                      }}
-                    >
-                      (<Trans i18nKey={"empty"} />)
-                    </Typography>
+                    {!prosAndCons && (
+                      <Typography
+                        sx={{
+                          ...theme.typography.semiBoldLarge,
+                          color: theme.palette.error.main,
+                        }}
+                      >
+                        (<Trans i18nKey={"empty"} />)
+                      </Typography>
+                    )}
                   </Typography>
                   <OnHoverInputReport
-                    attributeId={1}
+                    attributeId={2}
                     // formMethods={formMethods}
                     data={prosAndCons}
-                    // infoQuery={updateAttributeAndData}
+                    infoQuery={fetchReportFields}
                     type="summary"
                     editable={true}
                     placeholder={t("writeStrengthAndRooms")}
+                    name={"prosAndCons"}
                   />
                 </Grid>
                 <Grid item>
@@ -277,14 +276,16 @@ const ReportTab = () => {
               >
                 <Trans i18nKey={"stepsTakenForThisAssessment"} />
                 <InfoOutlinedIcon />
-                <Typography
-                  sx={{
-                    ...theme.typography.semiBoldLarge,
-                    color: theme.palette.error.main,
-                  }}
-                >
-                  (<Trans i18nKey={"empty"} />)
-                </Typography>
+                {!steps && (
+                  <Typography
+                    sx={{
+                      ...theme.typography.semiBoldLarge,
+                      color: theme.palette.error.main,
+                    }}
+                  >
+                    (<Trans i18nKey={"empty"} />)
+                  </Typography>
+                )}
               </Typography>
               <Box sx={{ marginInlineStart: "1rem" }}>
                 <Typography
@@ -297,14 +298,14 @@ const ReportTab = () => {
                   <Trans i18nKey={"stepsTakenSoFar"} />
                 </Typography>
                 <OnHoverInputReport
-                  attributeId={1}
+                  attributeId={3}
                   // formMethods={formMethods}
                   data={steps}
-                  // infoQuery={updateAttributeAndData}
+                  infoQuery={fetchReportFields}
                   type="summary"
                   editable={true}
                   placeholder={t("writeStepsForAssessment")}
-
+                  name={"steps"}
                 />
               </Box>
             </MainCard>
@@ -322,14 +323,16 @@ const ReportTab = () => {
               >
                 <Trans i18nKey={"assessmentContributors"} />
                 <InfoOutlinedIcon />
-                <Typography
-                  sx={{
-                    ...theme.typography.semiBoldLarge,
-                    color: theme.palette.error.main,
-                  }}
-                >
-                  (<Trans i18nKey={"empty"} />)
-                </Typography>
+                {!participants && (
+                  <Typography
+                    sx={{
+                      ...theme.typography.semiBoldLarge,
+                      color: theme.palette.error.main,
+                    }}
+                  >
+                    (<Trans i18nKey={"empty"} />)
+                  </Typography>
+                )}
               </Typography>
               <Box sx={{ marginInlineStart: "1rem" }}>
                 <Typography
@@ -342,14 +345,14 @@ const ReportTab = () => {
                   <Trans i18nKey={"peopleHaveContributingInAssessment"} />
                 </Typography>
                 <OnHoverInputReport
-                  attributeId={1}
+                  attributeId={4}
                   // formMethods={formMethods}
                   data={participants}
-                  // infoQuery={updateAttributeAndData}
+                  infoQuery={fetchReportFields}
                   type="summary"
                   editable={true}
                   placeholder={t("writeAssessmentContributors")}
-
+                  name={"participants"}
                 />
               </Box>
             </MainCard>
@@ -368,14 +371,23 @@ const ReportTab = () => {
 
 const OnHoverInputReport = (props: any) => {
   const [isHovering, setIsHovering] = useState(false);
+  const { assessmentId = "" } = useParams();
+  const { service } = useServiceContext();
+
   const handleMouseOver = () => {
     editable && setIsHovering(true);
   };
 
+  const patchUpdateReportFields = useQuery({
+    service: (args, config) => service.patchUpdateReportFields(args, config),
+    runOnMount: false,
+  });
+
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { data, editable, type, attributeId, infoQuery, placeholder } = props;
+  const { data, editable, type, attributeId, infoQuery, placeholder, name } =
+    props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
   const [show, setShow] = useState<boolean>(!!!data);
@@ -386,16 +398,21 @@ const OnHoverInputReport = (props: any) => {
     setHasError(false);
   };
 
-  const { assessmentId = "" } = useParams();
-
   const updateAssessmentKit = async (
     data: any,
     event: any,
     shouldView?: boolean,
   ) => {
     try {
+      const reportData = {
+        [name]: data?.[name],
+      };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
-      const res = await infoQuery();
+      const res = await patchUpdateReportFields.query({
+        assessmentId,
+        reportData,
+      });
+      infoQuery.query();
       res?.message && toast.success(res?.message);
       setShow(false);
     } catch (e) {
@@ -413,7 +430,6 @@ const OnHoverInputReport = (props: any) => {
     }
   };
   const formMethods = useForm({ shouldUnregister: true });
-
   return (
     <Box
       sx={{
@@ -434,7 +450,7 @@ const OnHoverInputReport = (props: any) => {
               }}
             >
               <RichEditorField
-                name={"title"}
+                name={name}
                 label={""}
                 required={false}
                 defaultValue={data || ""}
@@ -514,7 +530,7 @@ const OnHoverInputReport = (props: any) => {
           >
             <Typography
               dangerouslySetInnerHTML={{
-                __html: data ?? "",
+                __html: data,
               }}
               style={{
                 display: "-webkit-box",
@@ -538,6 +554,7 @@ const OnHoverInputReport = (props: any) => {
                   textAlign: "initial",
                 },
               }}
+              className={"tiptap"}
             ></Typography>
           </Typography>
           {isHovering && (

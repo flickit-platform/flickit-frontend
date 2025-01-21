@@ -12,7 +12,6 @@ import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
-import "./style.css";
 import Placeholder from "@tiptap/extension-placeholder";
 
 interface IRichEditorProps {
