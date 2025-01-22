@@ -292,7 +292,9 @@ const OnHoverInputReport = (props: any) => {
     }
   }, []);
   const handleCancel = () => {
-    setShow(false);
+    if(data){
+      setShow(false);
+    }
     setError({});
     setHasError(false);
   };
@@ -307,13 +309,15 @@ const OnHoverInputReport = (props: any) => {
         [name]: data?.[name],
       };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
-      const res = await patchUpdateReportFields.query({
-        assessmentId,
-        reportData,
-      });
-      infoQuery.query();
-      res?.message && toast.success(res?.message);
-      setShow(false);
+      if(Object.values(reportData)[0]){
+        const res = await patchUpdateReportFields.query({
+          assessmentId,
+          reportData,
+        });
+        infoQuery.query();
+        res?.message && toast.success(res?.message);
+        setShow(false);
+      }
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
@@ -355,6 +359,7 @@ const OnHoverInputReport = (props: any) => {
                 required={false}
                 defaultValue={data || ""}
                 placeholder={placeholder}
+                type={"reportTab"}
               />
               {isHovering && (
                 <Box

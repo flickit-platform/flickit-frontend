@@ -260,6 +260,7 @@ const AdviceListNewForm = ({
                 mt: 6,
               }}
             >
+                {/*todo*/}
               <RichEditorFieldAssessment
                 name="advice-description"
                 label={t("description")}
