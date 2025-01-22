@@ -1351,6 +1351,19 @@ export const createService = (
         },
       );
     },
+    fetchQuestionIssues(
+      args: { assessmentId: TId; questionId: TId },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      const { assessmentId, questionId } = args ?? {};
+
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/questions/${questionId}/issues`,
+        {
+          ...(config ?? {}),
+        },
+      );
+    },
     fetchTotalProgress(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,

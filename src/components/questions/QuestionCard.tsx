@@ -97,7 +97,7 @@ import { toCamelCase } from "@common/makeCamelcaseString";
 import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
-import { useQuestions } from "./QuestionsContainer";
+import { useUpdateQuestionInfo } from "./QuestionsContainer";
 import { FormHelperText } from "@mui/material";
 
 interface IQuestionCardProps {
@@ -596,6 +596,8 @@ const AnswerTemplate = (props: {
     selcetedConfidenceLevel,
     confidenceLebels,
   } = props;
+  const { updateQuestionInfo } = useUpdateQuestionInfo();
+
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
   // const { questionsResultQueryData } = useQuestions();
@@ -682,6 +684,7 @@ const AnswerTemplate = (props: {
       }
 
       dispatch(questionActions.setIsSubmitting(false));
+      console.log(selcetedConfidenceLevel);
       dispatch(
         questionActions.setQuestionInfo({
           ...questionInfo,
@@ -691,10 +694,17 @@ const AnswerTemplate = (props: {
             confidenceLevel:
               confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
           } as TAnswer,
+          issues: {
+            isUnanswered: value ? false : true,
+            isAnsweredWithLowConfidence:
+              selcetedConfidenceLevel > 2 ? false : true,
+            isAnsweredWithoutEvidences:
+              questionInfo.issues?.isAnsweredWithoutEvidences,
+            unresolvedCommentsCount:
+              questionInfo.issues?.unresolvedCommentsCount,
+          },
         }),
       );
-
-      // questionsResultQueryData.query();
 
       if (value) {
         dispatch(
@@ -1186,6 +1196,7 @@ const AnswerHistoryItem = (props: any) => {
 };
 
 const Evidence = (props: any) => {
+  const dispatch = useQuestionDispatch();
   const LIMITED = 500;
   const [valueCount, setValueCount] = useState("");
   const [evidencesData, setEvidencesData] = useState<any[]>([]);
@@ -1331,6 +1342,44 @@ const Evidence = (props: any) => {
       toastError(err);
     }
   };
+
+  useEffect(() => {
+    console.log(questionInfo.issues);
+    console.log(
+      evidencesData.filter((item: any) => {
+        return item?.type === null && item.resolvable;
+      }).length,
+    );
+    console.log(
+      evidencesData.filter((item: any) => {
+        return item?.type === null && item.resolvable;
+      }).length,
+    );
+    dispatch(
+      questionActions.setQuestionInfo({
+        ...questionInfo,
+        issues: {
+          isUnanswered: questionInfo.issues?.isUnanswered,
+          isAnsweredWithLowConfidence:
+            questionInfo.issues?.isAnsweredWithLowConfidence,
+          isAnsweredWithoutEvidences:
+            type !== "comment"
+              ? evidencesData.filter((item: any) => {
+                  return item?.type !== null;
+                }).length > 0
+                ? false
+                : true
+              : questionInfo.issues?.isAnsweredWithoutEvidences,
+          unresolvedCommentsCount:
+            type === "comment"
+              ? evidencesData.filter((item: any) => {
+                  return item?.type === null && item.resolvable;
+                }).length
+              : questionInfo.issues?.unresolvedCommentsCount,
+        },
+      }),
+    );
+  }, [evidencesData]);
 
   const fetchAttachments = async (args: any) => {
     return fetchEvidenceAttachments.query({ ...args });
