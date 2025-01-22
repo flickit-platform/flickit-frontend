@@ -117,7 +117,9 @@ const QuestionsTitle = (props: {
     if (originalItem.length === 0 && didMount === false) return;
 
     const questionsHaveChanged = !filteredItems.every((item, index) => {
-      return item.issues === questionsInfo.questions[index]?.issues;
+      return (
+        JSON.stringify(item) === JSON.stringify(questionsInfo.questions[index])
+      );
     });
     if (questionsHaveChanged) {
       dispatch(
