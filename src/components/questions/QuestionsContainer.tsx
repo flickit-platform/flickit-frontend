@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   EAssessmentStatus,
   questionActions,
+  useQuestionContext,
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -14,6 +15,7 @@ import QueryBatchData from "@common/QueryBatchData";
 import { IQuestion, IQuestionnaireModel, IQuestionsModel } from "@types";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
+import { useQuestion } from "./QuestionContainer";
 
 const QuestionsContainer = (
   props: PropsWithChildren<{ isReview?: boolean }>,
@@ -82,6 +84,41 @@ export const QuestionsContainerC = (
       }}
     />
   );
+};
+
+export const useUpdateQuestionInfo = () => {
+  const dispatch = useQuestionDispatch();
+  const { service } = useServiceContext();
+  const { questionInfo, questionsInfo } = useQuestion();
+  const { assessmentId = "" } = useParams();
+
+  const fetchQuestionIssues = useQuery<IQuestionsModel>({
+    service: (args, config) =>
+      service.fetchQuestionIssues(
+        { assessmentId, questionId: questionInfo?.id },
+        config,
+      ),
+    runOnMount: false,
+  });
+
+  const updateQuestionInfo = async () => {
+    try {
+      const issues = await fetchQuestionIssues.query();
+
+      dispatch(
+        questionActions.setQuestionInfo({
+          ...questionInfo,
+          issues: issues,
+        }),
+      );
+      console.log(questionsInfo)
+
+    } catch (e) {
+      console.error("Error fetching question issues:", e);
+    }
+  };
+
+  return { updateQuestionInfo };
 };
 
 export const useQuestions = () => {

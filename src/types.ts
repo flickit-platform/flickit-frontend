@@ -56,10 +56,10 @@ export interface IQuestionInfo {
   advisable?: boolean;
   answerRangeId?: number;
   issues?: {
-    isUnanswered: boolean;
-    isAnsweredWithLowConfidence: boolean;
-    isAnsweredWithoutEvidences: boolean;
-    unresolvedCommentsCount: number;
+    isUnanswered: boolean | undefined;
+    isAnsweredWithLowConfidence: boolean | undefined;
+    isAnsweredWithoutEvidences: boolean | undefined;
+    unresolvedCommentsCount: number | undefined;
   };
 }
 
