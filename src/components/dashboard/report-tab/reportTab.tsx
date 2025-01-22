@@ -463,6 +463,7 @@ const OnHoverInputReport = (props: any) => {
                   height: showMore
                     ? "unset"
                     : paragraphRef?.current?.scrollHeight,
+                  transition: "all 1s ease-in-out",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   // whiteSpace:"nowrap",
