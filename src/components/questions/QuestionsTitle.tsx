@@ -24,6 +24,8 @@ import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionsFilteringDropdown } from "../questionnaires/QuestionnaireList";
 import { useQuestions } from "./QuestionsContainer";
+import { IconButton } from "@mui/material";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
 const itemNames = [
   {
@@ -125,7 +127,7 @@ const QuestionsTitle = (props: {
               />
             )}
 
-            {!isReview && (
+            {/* {!isReview && (
               <Button
                 disabled={isSubmitting}
                 component={Link}
@@ -148,7 +150,7 @@ const QuestionsTitle = (props: {
               >
                 <Trans i18nKey="review" />
               </Button>
-            )}
+            )} */}
           </Box>
         }
         // backLink={"/"}
@@ -218,6 +220,16 @@ const QuestionsTitle = (props: {
                 </Typography>
               ) : (
                 <Box sx={{ ...styles.centerVH }}>
+                  <IconButton
+                    component={Link}
+                    to={isReview ? "./../.." : "./.."}
+                  >
+                    {theme.direction === "ltr" ? (
+                      <ArrowBack color="primary" />
+                    ) : (
+                      <ArrowForward color="primary" />
+                    )}
+                  </IconButton>
                   <Typography
                     display="inline-block"
                     variant="h5"
