@@ -903,8 +903,9 @@ const AnswerTemplate = (props: {
                 ? goToQuestion("asc")
                 : setExpandedDeleteDialog(true)
             }
+            disabled={isLastQuestion}
           >
-            <Trans i18nKey={!isLastQuestion ? "next" : "review"} />
+            <Trans i18nKey="next" />
           </LoadingButton>
         </Box>
         <Box sx={styles.centerVH} gap={2}>

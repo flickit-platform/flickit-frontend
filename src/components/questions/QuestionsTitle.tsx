@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Title from "@common/Title";
 import {
   EAssessmentStatus,
@@ -65,6 +65,7 @@ const QuestionsTitle = (props: {
   const dispatch = useQuestionDispatch();
   const { questionsInfo } = useQuestionContext();
   const [didMount, setDidMount] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setDidMount(true);
@@ -79,11 +80,11 @@ const QuestionsTitle = (props: {
   }, [questionnaire, isComplete]);
 
   useEffect(() => {
-    const filteredItems = questions.filter((item: any) =>
+    const filteredItems = questions?.filter((item: any) =>
       originalItem.length === 0
         ? item
-        : Object.keys(item.issues).some(
-            (key) => originalItem.includes(key) && item.issues[key] > 0,
+        : Object.keys(item?.issues).some(
+            (key) => originalItem.includes(key) && item?.issues[key] > 0,
           ),
     );
 
@@ -97,7 +98,17 @@ const QuestionsTitle = (props: {
         permissions: questionsInfo.permissions,
       }),
     );
-    dispatch(questionActions.goToQuestion(filteredItems[0]?.index));
+    if (
+      filteredItems.findIndex(
+        (item) => item.index.toString() === questionIndex,
+      ) === -1 &&
+      !window.location.pathname.includes("review")
+    ) {
+      dispatch(questionActions.goToQuestion(filteredItems[0]?.index));
+      navigate(`./${filteredItems[0]?.index}`, {
+        replace: true,
+      });
+    }
   }, [originalItem]);
 
   return (
