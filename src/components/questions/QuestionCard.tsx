@@ -426,7 +426,7 @@ export const QuestionTabsTemplate = (props: any) => {
 
   useEffect(() => {
     queryData.query();
-  }, [questionInfo]);
+  }, [questionInfo.answer]);
 
   useEffect(() => {
     if (value) {
@@ -684,7 +684,6 @@ const AnswerTemplate = (props: {
       }
 
       dispatch(questionActions.setIsSubmitting(false));
-      console.log(selcetedConfidenceLevel);
       dispatch(
         questionActions.setQuestionInfo({
           ...questionInfo,
@@ -694,15 +693,6 @@ const AnswerTemplate = (props: {
             confidenceLevel:
               confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
           } as TAnswer,
-          issues: {
-            isUnanswered: value ? false : true,
-            isAnsweredWithLowConfidence:
-              selcetedConfidenceLevel > 2 ? false : true,
-            isAnsweredWithoutEvidences:
-              questionInfo.issues?.isAnsweredWithoutEvidences,
-            unresolvedCommentsCount:
-              questionInfo.issues?.unresolvedCommentsCount,
-          },
         }),
       );
 
@@ -1344,41 +1334,30 @@ const Evidence = (props: any) => {
   };
 
   useEffect(() => {
-    console.log(questionInfo.issues);
-    console.log(
-      evidencesData.filter((item: any) => {
-        return item?.type === null && item.resolvable;
-      }).length,
-    );
-    console.log(
-      evidencesData.filter((item: any) => {
-        return item?.type === null && item.resolvable;
-      }).length,
-    );
-    dispatch(
-      questionActions.setQuestionInfo({
-        ...questionInfo,
-        issues: {
-          isUnanswered: questionInfo.issues?.isUnanswered,
-          isAnsweredWithLowConfidence:
-            questionInfo.issues?.isAnsweredWithLowConfidence,
-          isAnsweredWithoutEvidences:
-            type !== "comment"
-              ? evidencesData.filter((item: any) => {
-                  return item?.type !== null;
-                }).length > 0
-                ? false
-                : true
-              : questionInfo.issues?.isAnsweredWithoutEvidences,
-          unresolvedCommentsCount:
-            type === "comment"
-              ? evidencesData.filter((item: any) => {
-                  return item?.type === null && item.resolvable;
-                }).length
-              : questionInfo.issues?.unresolvedCommentsCount,
-        },
-      }),
-    );
+    // dispatch(
+    //   questionActions.setQuestionInfo({
+    //     ...questionInfo,
+    //     issues: {
+    //       isUnanswered: questionInfo.issues?.isUnanswered,
+    //       isAnsweredWithLowConfidence:
+    //         questionInfo.issues?.isAnsweredWithLowConfidence,
+    //       isAnsweredWithoutEvidences:
+    //         type !== "comment"
+    //           ? evidencesData.filter((item: any) => {
+    //               return item?.type !== null;
+    //             }).length > 0
+    //             ? false
+    //             : true
+    //           : questionInfo.issues?.isAnsweredWithoutEvidences,
+    //       unresolvedCommentsCount:
+    //         type === "comment"
+    //           ? evidencesData.filter((item: any) => {
+    //               return item?.type === null && item.resolvable;
+    //             }).length
+    //           : questionInfo.issues?.unresolvedCommentsCount,
+    //     },
+    //   }),
+    // );
   }, [evidencesData]);
 
   const fetchAttachments = async (args: any) => {
