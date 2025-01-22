@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import { Button, Snackbar, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useRef, useState } from "react";
@@ -23,9 +23,9 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
 import { uniqueId } from "lodash";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
+import {styles} from "@styles";
 
 const ReportTab = () => {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
   const fetchReportFields = useQuery({
@@ -35,11 +35,8 @@ const ReportTab = () => {
   });
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      setSnackbarOpen(true);
+     toast(`${t("linkCopied")}`,{type:"success"})
     });
-  };
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
   };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
@@ -61,7 +58,7 @@ const ReportTab = () => {
     },
   ];
 
-  const loading = () => {
+  const Loading = () => {
     let count = Array.from(Array(4).keys());
     return (
       <>
@@ -78,7 +75,7 @@ const ReportTab = () => {
   return (
     <QueryData
       {...fetchReportFields}
-      loadingComponent={loading()}
+      loadingComponent={<Loading />}
       render={(data) => {
         return (
           <>
@@ -169,7 +166,7 @@ const ReportTab = () => {
                   sx={{
                     display: "flex",
                     justifyContent: "flex-end",
-                    marginLeft: "auto",
+                    marginInlineStart: "auto",
                   }}
                 >
                   {/*<Box sx={{ ...styles.centerVH, gap: 1 }}>*/}
@@ -202,7 +199,6 @@ const ReportTab = () => {
                 <MainCard
                   key={uniqueId()}
                   style={{
-                    // ...styles.centerCVH,
                     minHeight: "50px",
                     mt: 2,
                   }}
@@ -219,7 +215,6 @@ const ReportTab = () => {
                     }}
                   >
                     <Trans i18nKey={title} />
-                    {/*<InfoOutlinedIcon />*/}
                     {!data[name] && (
                       <Typography
                         sx={{
@@ -234,7 +229,6 @@ const ReportTab = () => {
                   <Box>
                     <OnHoverInputReport
                       attributeId={1}
-                      // formMethods={formMethods}
                       data={data[name]}
                       infoQuery={fetchReportFields}
                       type="summary"
@@ -246,12 +240,6 @@ const ReportTab = () => {
                 </MainCard>
               );
             })}
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={3000}
-              onClose={handleCloseSnackbar}
-              message={t("linkCopied")}
-            />
           </>
         );
       }}
@@ -356,9 +344,6 @@ const OnHoverInputReport = (props: any) => {
               sx={{
                 width: "100%",
                 height: "100%",
-                // display: "flex",
-                // justifyContent: "space-between",
-                // alignItems: "center",
                 position: "relative",
               }}
               onMouseOver={handleMouseOver}
@@ -374,10 +359,7 @@ const OnHoverInputReport = (props: any) => {
               {isHovering && (
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    ...styles.centerCVH,
                     gap: "4px",
                     // height: "100%",
                     position: "absolute",
