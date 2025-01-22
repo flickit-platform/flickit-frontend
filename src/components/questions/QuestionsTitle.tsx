@@ -65,7 +65,6 @@ const QuestionsTitle = (props: {
   const dispatch = useQuestionDispatch();
   const { questionsInfo } = useQuestionContext();
   const [didMount, setDidMount] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setDidMount(true);
@@ -80,15 +79,19 @@ const QuestionsTitle = (props: {
   }, [questionnaire, isComplete]);
 
   useEffect(() => {
-    const filteredItems = questions.map((item: any) => {
-      const updatedIssues = Object.keys(item.issues)
-        .filter((key) => originalItem.includes(key))
-        .reduce((acc: any, key) => {
-          acc[key] = item.issues[key];
-          return acc;
-        }, {});
-      return { ...item, issues: updatedIssues };
-    });
+    const filteredItems =
+      originalItem.length === 0
+        ? questions
+        : questions.map((item: any) => {
+            const updatedIssues = Object.keys(item.issues)
+              .filter((key) => originalItem.includes(key))
+              .reduce((acc: any, key) => {
+                acc[key] = item.issues[key];
+                return acc;
+              }, {});
+            return { ...item, issues: updatedIssues };
+          });
+
     if (originalItem.length === 0 && didMount === false) return;
 
     dispatch(
@@ -99,17 +102,6 @@ const QuestionsTitle = (props: {
         permissions: questionsInfo.permissions,
       }),
     );
-    if (
-      filteredItems.findIndex(
-        (item) => item.index.toString() === questionIndex,
-      ) === -1 &&
-      !window.location.pathname.includes("review")
-    ) {
-      dispatch(questionActions.goToQuestion(filteredItems[0]?.index));
-      navigate(`./${filteredItems[0]?.index}`, {
-        replace: true,
-      });
-    }
   }, [originalItem]);
 
   return (
