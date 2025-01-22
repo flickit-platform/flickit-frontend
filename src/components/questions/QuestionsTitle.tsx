@@ -116,14 +116,19 @@ const QuestionsTitle = (props: {
 
     if (originalItem.length === 0 && didMount === false) return;
 
-    dispatch(
-      questionActions.setQuestionsInfo({
-        total_number_of_questions: questionsInfo.total_number_of_questions,
-        resultId: questionsInfo.resultId,
-        questions: filteredItems,
-        permissions: questionsInfo.permissions,
-      }),
-    );
+    const questionsHaveChanged = !filteredItems.every((item, index) => {
+      return item.issues === questionsInfo.questions[index]?.issues;
+    });
+    if (questionsHaveChanged) {
+      dispatch(
+        questionActions.setQuestionsInfo({
+          total_number_of_questions: questionsInfo.total_number_of_questions,
+          resultId: questionsInfo.resultId,
+          questions: filteredItems,
+          permissions: questionsInfo.permissions,
+        }),
+      );
+    }
   }, [originalItem, questionsInfo]);
 
   return (

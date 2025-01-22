@@ -27,10 +27,7 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
   const isFinish = questionParam === "completed";
 
   return (
-    <Box
-      position="relative"
-      sx={{ my: { xs: 1, sm: 3 }, mx: { xs: 0, sm: "24px" } }}
-    >
+    <Box position="relative" sx={{ my: { xs: 1, sm: 3 } }}>
       <Hidden
         smDown
         mdDown={questions.length > 20}
@@ -42,9 +39,8 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
           position={"absolute"}
           sx={{
             ...styles.centerV,
-            width: "calc(100% - 114px)",
-            ml: theme.direction == "ltr" ? "57px" : "unset",
-            mr: theme.direction == "rtl" ? "57px" : "unset",
+            width: "calc(100% - 70px)",
+            marginInlineStart: "30px",
           }}
           height="100%"
           justifyContent="space-evenly"
@@ -62,49 +58,16 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
           })}
         </Box>
       </Hidden>
-      <Box sx={{ ...styles.centerV, px: { xs: 0.5, sm: 0 } }}>
-        <Button
-          size="small"
-          disabled={!hasPreviousQuestion || isSubmitting}
-          sx={{
-            minWidth: 0,
-            width: "56px",
-            marginRight: theme.direction === "ltr" ? "1px" : "unset",
-            marginLeft: theme.direction === "rtl" ? "1px" : "unset",
-          }}
-          component={Link}
-          to={`../${questionIndex - 1}`}
-        >
-          <Trans i18nKey={isFinish ? "edit" : "prev"} />
-        </Button>
-        <LinearProgress
-          sx={{ flex: 1, borderRadius: 4 }}
-          variant="determinate"
-          value={
-            assessmentStatus === EAssessmentStatus.DONE
-              ? 100
-              : (100 / (questions.length + 1)) *
-                (questions.findIndex((item) => item.index === questionIndex) +
-                  1)
-          }
-        />
-        <Button
-          size="small"
-          disabled={isFinish || isSubmitting}
-          sx={{ minWidth: 0, width: "56px", ml: "1px" }}
-          component={Link}
-          to={hasNextQuestion ? `../${questionIndex + 1}` : "../completed"}
-          onClick={() => {
-            if (!hasNextQuestion) {
-              dispatch(
-                questionActions.setAssessmentStatus(EAssessmentStatus.DONE),
-              );
-            }
-          }}
-        >
-          <Trans i18nKey={"skip"} />
-        </Button>
-      </Box>
+      <LinearProgress
+        sx={{ flex: 1, borderRadius: 4 }}
+        variant="determinate"
+        value={
+          assessmentStatus === EAssessmentStatus.DONE
+            ? 100
+            : (100 / (questions.length + 1)) *
+              (questions.findIndex((item) => item.index === questionIndex) + 1)
+        }
+      />
     </Box>
   );
 };
