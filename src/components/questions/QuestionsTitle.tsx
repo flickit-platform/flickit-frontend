@@ -65,7 +65,6 @@ const QuestionsTitle = (props: {
   const dispatch = useQuestionDispatch();
   const { questionsInfo } = useQuestionContext();
   const [didMount, setDidMount] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setDidMount(true);
@@ -80,13 +79,18 @@ const QuestionsTitle = (props: {
   }, [questionnaire, isComplete]);
 
   useEffect(() => {
-    const filteredItems = questions?.filter((item: any) =>
+    const filteredItems =
       originalItem.length === 0
-        ? item
-        : Object.keys(item?.issues).some(
-            (key) => originalItem.includes(key) && item?.issues[key] > 0,
-          ),
-    );
+        ? questions
+        : questions.map((item: any) => {
+            const updatedIssues = Object.keys(item.issues)
+              .filter((key) => originalItem.includes(key))
+              .reduce((acc: any, key) => {
+                acc[key] = item.issues[key];
+                return acc;
+              }, {});
+            return { ...item, issues: updatedIssues };
+          });
 
     if (originalItem.length === 0 && didMount === false) return;
 
@@ -98,17 +102,6 @@ const QuestionsTitle = (props: {
         permissions: questionsInfo.permissions,
       }),
     );
-    if (
-      filteredItems.findIndex(
-        (item) => item.index.toString() === questionIndex,
-      ) === -1 &&
-      !window.location.pathname.includes("review")
-    ) {
-      dispatch(questionActions.goToQuestion(filteredItems[0]?.index));
-      navigate(`./${filteredItems[0]?.index}`, {
-        replace: true,
-      });
-    }
   }, [originalItem]);
 
   return (
@@ -124,11 +117,14 @@ const QuestionsTitle = (props: {
         }}
         toolbar={
           <Box sx={{ mt: { xs: 1.5, sm: 0 } }}>
-            <QuestionsFilteringDropdown
-              setOriginalItem={setOriginalItem}
-              originalItem={originalItem}
-              itemNames={itemNames}
-            />
+            {!window.location.pathname.includes("review") && (
+              <QuestionsFilteringDropdown
+                setOriginalItem={setOriginalItem}
+                originalItem={originalItem}
+                itemNames={itemNames}
+              />
+            )}
+
             {!isReview && (
               <Button
                 disabled={isSubmitting}
