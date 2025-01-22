@@ -683,18 +683,31 @@ const AnswerTemplate = (props: {
         );
       }
 
-      dispatch(questionActions.setIsSubmitting(false));
-      dispatch(
-        questionActions.setQuestionInfo({
-          ...questionInfo,
-          answer: {
-            selectedOption: value,
-            isNotApplicable: notApplicable,
-            confidenceLevel:
-              confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
-          } as TAnswer,
-        }),
-      );
+      service
+        .fetchQuestionIssues(
+          {
+            assessmentId,
+            questionId: questionInfo?.id,
+          },
+          { signal: abortController.current.signal },
+        )
+        .then((res: any) => {
+          dispatch(
+            questionActions.setQuestionInfo({
+              ...questionInfo,
+              answer: {
+                selectedOption: value,
+                isNotApplicable: notApplicable,
+                confidenceLevel:
+                  confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+              } as TAnswer,
+              issues: res.data,
+            }),
+          );
+        });
+      setTimeout(() => {
+        dispatch(questionActions.setIsSubmitting(false));
+      }, 500);
 
       if (value) {
         dispatch(
@@ -1283,6 +1296,22 @@ const Evidence = (props: any) => {
         const { items } = await evidencesQueryData.query();
         setEvidencesData(items);
         setValueCount("");
+        service
+          .fetchQuestionIssues(
+            {
+              assessmentId,
+              questionId: questionInfo?.id,
+            },
+            {},
+          )
+          .then((res: any) => {
+            dispatch(
+              questionActions.setQuestionInfo({
+                ...questionInfo,
+                issues: res.data,
+              }),
+            );
+          });
       }
     } catch (e) {
       const err = e as ICustomError;
@@ -1309,6 +1338,22 @@ const Evidence = (props: any) => {
       setExpandedDeleteDialog(false);
       const { items } = await evidencesQueryData.query();
       setEvidencesData(items);
+      service
+        .fetchQuestionIssues(
+          {
+            assessmentId,
+            questionId: questionInfo?.id,
+          },
+          {},
+        )
+        .then((res: any) => {
+          dispatch(
+            questionActions.setQuestionInfo({
+              ...questionInfo,
+              issues: res.data,
+            }),
+          );
+        });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -1575,7 +1620,24 @@ const Evidence = (props: any) => {
                   type="submit"
                   variant="contained"
                   loading={evidencesQueryData.loading}
-                  // onClick={() => questionsResultQueryData.query()}
+                  onClick={() =>
+                    service
+                      .fetchQuestionIssues(
+                        {
+                          assessmentId,
+                          questionId: questionInfo?.id,
+                        },
+                        {},
+                      )
+                      .then((res: any) => {
+                        dispatch(
+                          questionActions.setQuestionInfo({
+                            ...questionInfo,
+                            issues: res.data,
+                          }),
+                        );
+                      })
+                  }
                 >
                   <Trans
                     i18nKey={"createEvidence"}
@@ -1845,6 +1907,7 @@ const EvidenceDetail = (props: any) => {
     deletable,
     resolvable,
   } = item;
+  const dispatch = useQuestionDispatch();
   const { displayName, pictureLink } = createdBy;
   const is_farsi = languageDetector(description);
   const [evidenceBG, setEvidenceBG] = useState<any>();
@@ -1908,6 +1971,22 @@ const EvidenceDetail = (props: any) => {
       setExpandedEvidenceBox(false);
       setIsEditing(false);
       setValueCount("");
+      service
+        .fetchQuestionIssues(
+          {
+            assessmentId,
+            questionId: questionInfo?.id,
+          },
+          {},
+        )
+        .then((res: any) => {
+          dispatch(
+            questionActions.setQuestionInfo({
+              ...questionInfo,
+              issues: res.data,
+            }),
+          );
+        });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err?.response?.data.description[0]);

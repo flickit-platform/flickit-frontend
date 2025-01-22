@@ -17,11 +17,15 @@ const questionReducer = (
         assessmentStatus: action.payload,
       };
     case QUESTION_ACTIONS_TYPE.SET_QUESTIONS_INFO:
+      console.log("Previous State:", prevState.questionsInfo);
+      console.log("Action Payload:", action.payload);
       return {
         ...prevState,
         questionsInfo: action.payload,
       };
     case QUESTION_ACTIONS_TYPE.SET_QUESTION_INFO:
+      console.log("Previous State:", prevState.questionsInfo);
+      console.log("Action Payload:", action.payload);
       return {
         ...prevState,
         questionsInfo: {
@@ -31,11 +35,15 @@ const questionReducer = (
               if (action.payload.index !== question.index) {
                 return question;
               }
-              return action.payload;
+              return {
+                ...question,
+                ...action.payload,
+              };
             },
           ),
         },
       };
+
     case QUESTION_ACTIONS_TYPE.SET_SUBMIT_ON_ANSWER_SELECTION:
       return {
         ...prevState,

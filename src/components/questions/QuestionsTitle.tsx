@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -63,10 +63,11 @@ const QuestionsTitle = (props: {
   const { space, assessment, questionnaire } = pathInfo;
   const { config } = useConfigContext();
   const [originalItem, setOriginalItem] = useState<any[]>([]);
-  const { questions } = useQuestions();
   const dispatch = useQuestionDispatch();
   const { questionsInfo } = useQuestionContext();
+  const { questions } = questionsInfo;
   const [didMount, setDidMount] = useState(false);
+  const initialQuestionsRef = useRef<any[]>([]);
 
   useEffect(() => {
     setDidMount(true);
@@ -81,18 +82,37 @@ const QuestionsTitle = (props: {
   }, [questionnaire, isComplete]);
 
   useEffect(() => {
-    const filteredItems =
-      originalItem.length === 0
-        ? questions
-        : questions.map((item: any) => {
-            const updatedIssues = Object.keys(item.issues)
-              .filter((key) => originalItem.includes(key))
-              .reduce((acc: any, key) => {
-                acc[key] = item.issues[key];
-                return acc;
-              }, {});
-            return { ...item, issues: updatedIssues };
+    if (initialQuestionsRef.current.length === 0) {
+      initialQuestionsRef.current = [...questionsInfo.questions];
+    }
+
+    const filteredItems = questionsInfo.questions.map(
+      (currentItem: any, index: number) => {
+        const initialItem = initialQuestionsRef.current[index];
+        const updatedIssues = { ...currentItem.issues };
+
+        Object.keys(initialItem.issues).forEach((key) => {
+          if (!(key in updatedIssues)) {
+            updatedIssues[key] = initialItem.issues[key];
+          }
+        });
+
+        if (originalItem.length > 0) {
+          Object.keys(initialItem.issues).forEach((key) => {
+            if (key in updatedIssues) {
+              initialItem.issues[key] = updatedIssues[key];
+            }
           });
+          Object.keys(updatedIssues).forEach((key) => {
+            if (!originalItem.includes(key)) {
+              delete updatedIssues[key];
+            }
+          });
+        }
+
+        return { ...currentItem, issues: updatedIssues };
+      },
+    );
 
     if (originalItem.length === 0 && didMount === false) return;
 
@@ -104,7 +124,7 @@ const QuestionsTitle = (props: {
         permissions: questionsInfo.permissions,
       }),
     );
-  }, [originalItem]);
+  }, [originalItem, questionsInfo]);
 
   return (
     <Box sx={{ pt: 1, pb: 0 }}>
@@ -153,30 +173,6 @@ const QuestionsTitle = (props: {
             )} */}
           </Box>
         }
-        // backLink={"/"}
-        // sup={
-        //   <SupTitleBreadcrumb
-        //     routes={[
-        //       {
-        //         title: space?.title,
-        //         to: `/${spaceId}/assessments/${page}`,
-        //         // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
-        //       },
-        //       {
-        //         title: `${assessment?.title} ${t("questionnaires")}`,
-        //         to: `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires`,
-        //         // icon: (
-        //         //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-        //         // ),
-        //       },
-        //       {
-        //         title: questionnaire?.title,
-        //         to: `/${spaceId}/assessments/${page}/${assessmentId}/questionnaires`,
-        //         // icon: <QuizRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
-        //       },
-        //     ]}
-        //   />
-        // }
       >
         {isReview ? (
           <div
