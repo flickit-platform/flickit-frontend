@@ -660,7 +660,6 @@ const AnswerTemplate = (props: {
     }
   }, [answer, value]);
 
-  // first checking if evidences have been submited or not
   const submitQuestion = async () => {
     dispatch(questionActions.setIsSubmitting(true));
     try {
@@ -1377,41 +1376,11 @@ const Evidence = (props: any) => {
       toastError(err);
     }
   };
-
-  useEffect(() => {
-    // dispatch(
-    //   questionActions.setQuestionInfo({
-    //     ...questionInfo,
-    //     issues: {
-    //       isUnanswered: questionInfo.issues?.isUnanswered,
-    //       isAnsweredWithLowConfidence:
-    //         questionInfo.issues?.isAnsweredWithLowConfidence,
-    //       isAnsweredWithoutEvidences:
-    //         type !== "comment"
-    //           ? evidencesData.filter((item: any) => {
-    //               return item?.type !== null;
-    //             }).length > 0
-    //             ? false
-    //             : true
-    //           : questionInfo.issues?.isAnsweredWithoutEvidences,
-    //       unresolvedCommentsCount:
-    //         type === "comment"
-    //           ? evidencesData.filter((item: any) => {
-    //               return item?.type === null && item.resolvable;
-    //             }).length
-    //           : questionInfo.issues?.unresolvedCommentsCount,
-    //     },
-    //   }),
-    // );
-  }, [evidencesData]);
-
   const fetchAttachments = async (args: any) => {
     return fetchEvidenceAttachments.query({ ...args });
   };
 
   const rtl = localStorage.getItem("lang") === "fa";
-  // const { questionsResultQueryData } = useQuestions();
-
   useEffect(() => {
     if (type === "comment") {
       setValue(null);
@@ -3156,4 +3125,3 @@ const QuestionGuide = (props: any) => {
   );
 };
 
-type TAnswerTemplate = { caption: string; value: number }[];
