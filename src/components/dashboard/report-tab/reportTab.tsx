@@ -145,27 +145,27 @@ const ReportTab = () => {
                     marginLeft: "auto",
                   }}
                 >
-                  <Box sx={{ ...styles.centerVH, gap: 1 }}>
-                    <Button
-                      onClick={copyLink}
-                      sx={{ display: "flex", gap: 1 }}
-                      variant={"outlined"}
-                    >
-                      <Typography sx={{ whiteSpace: "nowrap" }}>
-                        <Trans i18nKey={"copy report link"} />
-                      </Typography>
-                      <InsertLinkIcon fontSize={"small"} />
-                    </Button>
-                    <Button
-                      sx={{ display: "flex", gap: 1 }}
-                      variant={"contained"}
-                    >
-                      <Typography sx={{ whiteSpace: "nowrap" }}>
-                        <Trans i18nKey={"view report"} />
-                      </Typography>
-                      <AssignmentOutlinedIcon fontSize={"small"} />
-                    </Button>
-                  </Box>
+                  {/*<Box sx={{ ...styles.centerVH, gap: 1 }}>*/}
+                  {/*  <Button*/}
+                  {/*    onClick={copyLink}*/}
+                  {/*    sx={{ display: "flex", gap: 1 }}*/}
+                  {/*    variant={"outlined"}*/}
+                  {/*  >*/}
+                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
+                  {/*      <Trans i18nKey={"copy report link"} />*/}
+                  {/*    </Typography>*/}
+                  {/*    <InsertLinkIcon fontSize={"small"} />*/}
+                  {/*  </Button>*/}
+                  {/*  <Button*/}
+                  {/*    sx={{ display: "flex", gap: 1 }}*/}
+                  {/*    variant={"contained"}*/}
+                  {/*  >*/}
+                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
+                  {/*      <Trans i18nKey={"view report"} />*/}
+                  {/*    </Typography>*/}
+                  {/*    <AssignmentOutlinedIcon fontSize={"small"} />*/}
+                  {/*  </Button>*/}
+                  {/*</Box>*/}
                 </Grid>
               </Grid>
             </Box>
@@ -288,15 +288,6 @@ const ReportTab = () => {
                 )}
               </Typography>
               <Box sx={{ marginInlineStart: "1rem" }}>
-                <Typography
-                  sx={{
-                    ...theme.typography.bodyMedium,
-                    color: "#2B333B",
-                    mb: "1.2rem",
-                  }}
-                >
-                  <Trans i18nKey={"stepsTakenSoFar"} />
-                </Typography>
                 <OnHoverInputReport
                   attributeId={3}
                   // formMethods={formMethods}
@@ -335,15 +326,6 @@ const ReportTab = () => {
                 )}
               </Typography>
               <Box sx={{ marginInlineStart: "1rem" }}>
-                <Typography
-                  sx={{
-                    ...theme.typography.bodyMedium,
-                    color: "#2B333B",
-                    mb: "1.2rem",
-                  }}
-                >
-                  <Trans i18nKey={"peopleHaveContributingInAssessment"} />
-                </Typography>
                 <OnHoverInputReport
                   attributeId={4}
                   // formMethods={formMethods}
@@ -444,10 +426,14 @@ const OnHoverInputReport = (props: any) => {
             <Box
               sx={{
                 width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                height: "100%",
+                // display: "flex",
+                // justifyContent: "space-between",
+                // alignItems: "center",
+                position: "relative",
               }}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
             >
               <RichEditorField
                 name={name}
@@ -456,46 +442,51 @@ const OnHoverInputReport = (props: any) => {
                 defaultValue={data || ""}
                 placeholder={placeholder}
               />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <IconButton
-                  edge="end"
+              {isHovering && (
+                <Box
                   sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "3px",
-                    height: "36px",
-                    marginBottom: "2px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "4px",
+                    // height: "100%",
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
                   }}
-                  onClick={formMethods.handleSubmit(updateAssessmentKit)}
                 >
-                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "4px",
-                    height: "36px",
-                    marginBottom: "2px",
-                  }}
-                  onClick={handleCancel}
-                >
-                  <CancelRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Box>
+                  <IconButton
+                    // edge="end"
+                    sx={{
+                      background: theme.palette.primary.main,
+                      "&:hover": {
+                        background: theme.palette.primary.dark,
+                      },
+                      borderRadius: "0 8px 0 0",
+                      height: "49%",
+                    }}
+                    onClick={formMethods.handleSubmit(updateAssessmentKit)}
+                  >
+                    <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                  </IconButton>
+                  <IconButton
+                    // edge="end"
+                    sx={{
+                      background: theme.palette.primary.main,
+                      "&:hover": {
+                        background: theme.palette.primary.dark,
+                      },
+                      borderRadius: "0 0 8px 0",
+                      height: "49%",
+                    }}
+                    onClick={handleCancel}
+                  >
+                    <CancelRoundedIcon sx={{ color: "#fff" }} />
+                  </IconButton>
+                </Box>
+              )}
             </Box>
           </FormProviderWithForm>
           {hasError && (
@@ -508,16 +499,20 @@ const OnHoverInputReport = (props: any) => {
         <Box
           sx={{
             minHeight: "38px",
-            borderRadius: "4px",
+            borderRadius: "8px",
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             wordBreak: "break-word",
+            p: 1.5,
+            pr: 5,
+            border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
               borderColor: editable ? theme.palette.primary.main : "unset",
             },
+            position: "relative",
           }}
           onClick={() => setShow(!show)}
           onMouseOver={handleMouseOver}
@@ -560,14 +555,17 @@ const OnHoverInputReport = (props: any) => {
           {isHovering && (
             <IconButton
               title="Edit"
-              edge="end"
+              // edge="end"
               sx={{
                 background: theme.palette.primary.main,
                 "&:hover": {
                   background: theme.palette.primary.dark,
                 },
-                borderRadius: "3px",
-                height: "36px",
+                borderRadius: "0 8px 8px 0",
+                height: "100%",
+                position: "absolute",
+                right: 0,
+                top: 0,
               }}
               onClick={() => setShow(!show)}
             >

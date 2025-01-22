@@ -42,26 +42,6 @@ const RichEditor = (props: IRichEditorProps) => {
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
-  const CustomTableCell = TableCell.extend({
-    addAttributes() {
-      return {
-        // extend the existing attributes …
-        ...this.parent?.(),
-
-        // and add a new one …
-        backgroundColor: {
-          default: null,
-          parseHTML: (element) => element.getAttribute("data-background-color"),
-          renderHTML: (attributes) => {
-            return {
-              "data-background-color": attributes.backgroundColor,
-              style: `background-color: ${attributes.backgroundColor}`,
-            };
-          },
-        },
-      };
-    },
-  });
 
   const editor = useEditor({
     extensions: [
@@ -71,11 +51,7 @@ const RichEditor = (props: IRichEditorProps) => {
       }),
       TableRow,
       TableHeader,
-      // Default TableCell
-      // TableCell,
-      // Custom TableCell with backgroundColor attribute
       TableCell,
-      CustomTableCell,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
@@ -181,7 +157,8 @@ const RichEditor = (props: IRichEditorProps) => {
                 border: `1px solid ${editor?.isEmpty ? "#8A0F2480"  : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 background: "#fff",
-                px: 1.5,
+                pl: 1.5,
+                pr: 6,
                 py: 1,
                 "& > p": editor?.isEmpty
                   ? {

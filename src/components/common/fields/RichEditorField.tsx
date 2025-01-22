@@ -73,7 +73,8 @@ const RichEditorFieldBase = (props: any) => {
         position: "relative",
         minHeight: "54px",
         "& .MuiInputBase-input": {
-          marginTop: shrink ? 0 : 0.8,
+          // marginTop: shrink ? 0 : 0.8,
+          marginTop: 0,
         },
       }}
       error={hasError}
@@ -101,7 +102,7 @@ const RichEditorFieldBase = (props: any) => {
         setLangDir={setLangDir}
         placeholder={placeholder}
       />
-      <FormHelperText>{errorMessage as string}</FormHelperText>
+      <FormHelperText style={{marginTop:0}}>{errorMessage as string}</FormHelperText>
     </FormControl>
   );
 };
