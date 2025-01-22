@@ -1,11 +1,7 @@
-import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
 import { Button, Snackbar, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
-import InsertLinkIcon from "@mui/icons-material/InsertLink";
-import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -21,13 +17,12 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import languageDetector from "@utils/languageDetector";
 import EditRounded from "@mui/icons-material/EditRounded";
 import Grid from "@mui/material/Grid";
-import TreeMapChart from "@common/charts/TreeMapChart";
 import { t } from "i18next";
-import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
+import { uniqueId } from "lodash";
+import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 
 const ReportTab = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -46,12 +41,45 @@ const ReportTab = () => {
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+
+  const reportFields: { name: string; title: string; placeholder: string }[] = [
+    { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
+    {
+      name: "prosAndCons",
+      title: "strengthsAndRoomsForImprovement",
+      placeholder: "writeStrengthAndRooms",
+    },
+    {
+      name: "steps",
+      title: "stepsTakenForThisAssessment",
+      placeholder: "writeStepsForAssessment",
+    },
+    {
+      name: "participants",
+      title: "assessmentContributors",
+      placeholder: "writeAssessmentContributors",
+    },
+  ];
+
+  const loading = () => {
+    let count = Array.from(Array(4).keys());
+    return (
+      <>
+        {count.map((item) => (
+          <LoadingSkeleton
+            key={uniqueId()}
+            sx={{ height: "150px", mt: "50px" }}
+          />
+        ))}
+      </>
+    );
+  };
+
   return (
     <QueryData
       {...fetchReportFields}
-      loading={false}
+      loadingComponent={loading()}
       render={(data) => {
-        const { intro, prosAndCons, steps, participants } = data;
         return (
           <>
             <Box
@@ -168,53 +196,17 @@ const ReportTab = () => {
                 </Grid>
               </Grid>
             </Box>
-            <MainCard
-              style={{
-                // ...styles.centerCVH,
-                minHeight: "50px",
-                mt: 2,
-              }}
-            >
-              <Typography
-                style={{ ...theme.typography.semiBoldLarge }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  color: "#2B333B",
-                  gap: 2,
-                  mb: 3,
-                }}
-              >
-                <Trans i18nKey={"introduction"} />
-                <InfoOutlinedIcon />
-                {!intro && (
-                  <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: theme.palette.error.main,
-                    }}
-                  >
-                    (<Trans i18nKey={"empty"} />)
-                  </Typography>
-                )}
-              </Typography>
-              <Box>
-                <OnHoverInputReport
-                  attributeId={1}
-                  // formMethods={formMethods}
-                  data={intro}
-                  infoQuery={fetchReportFields}
-                  type="summary"
-                  editable={true}
-                  placeholder={t("writeIntroduction")}
-                  name={"intro"}
-                />
-              </Box>
-            </MainCard>
-            <MainCard style={{ mt: "40px" }}>
-              <Grid columns={12} container>
-                <Grid xs={12} item>
+            {reportFields.map((field) => {
+              const { name, title, placeholder } = field;
+              return (
+                <MainCard
+                  key={uniqueId()}
+                  style={{
+                    // ...styles.centerCVH,
+                    minHeight: "50px",
+                    mt: 2,
+                  }}
+                >
                   <Typography
                     style={{ ...theme.typography.semiBoldLarge }}
                     sx={{
@@ -226,9 +218,9 @@ const ReportTab = () => {
                       mb: 3,
                     }}
                   >
-                    <Trans i18nKey={"strengthsAndRoomsForImprovement"} />
-                    <InfoOutlinedIcon />
-                    {!prosAndCons && (
+                    <Trans i18nKey={title} />
+                    {/*<InfoOutlinedIcon />*/}
+                    {!data[name] && (
                       <Typography
                         sx={{
                           ...theme.typography.semiBoldLarge,
@@ -239,104 +231,21 @@ const ReportTab = () => {
                       </Typography>
                     )}
                   </Typography>
-                  <OnHoverInputReport
-                    attributeId={2}
-                    // formMethods={formMethods}
-                    data={prosAndCons}
-                    infoQuery={fetchReportFields}
-                    type="summary"
-                    editable={true}
-                    placeholder={t("writeStrengthAndRooms")}
-                    name={"prosAndCons"}
-                  />
-                </Grid>
-                <Grid item>
-                  {/*<TreeMapChart*/}
-                  {/*    data={combinedAttributes}*/}
-                  {/*    levels={*/}
-                  {/*        jsonData?.assessment.assessmentKit*/}
-                  {/*            .maturityLevelCount*/}
-                  {/*    }*/}
-                  {/*/>*/}
-                </Grid>
-              </Grid>
-            </MainCard>
-            <MainCard style={{ mt: "40px" }}>
-              <Typography
-                style={{ ...theme.typography.semiBoldLarge }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  color: "#2B333B",
-                  gap: 2,
-                  mb: 3,
-                }}
-              >
-                <Trans i18nKey={"stepsTakenForThisAssessment"} />
-                <InfoOutlinedIcon />
-                {!steps && (
-                  <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: theme.palette.error.main,
-                    }}
-                  >
-                    (<Trans i18nKey={"empty"} />)
-                  </Typography>
-                )}
-              </Typography>
-              <Box sx={{ marginInlineStart: "1rem" }}>
-                <OnHoverInputReport
-                  attributeId={3}
-                  // formMethods={formMethods}
-                  data={steps}
-                  infoQuery={fetchReportFields}
-                  type="summary"
-                  editable={true}
-                  placeholder={t("writeStepsForAssessment")}
-                  name={"steps"}
-                />
-              </Box>
-            </MainCard>
-            <MainCard style={{ mt: "40px" }}>
-              <Typography
-                style={{ ...theme.typography.semiBoldLarge }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  color: "#2B333B",
-                  gap: 2,
-                  mb: 3,
-                }}
-              >
-                <Trans i18nKey={"assessmentContributors"} />
-                <InfoOutlinedIcon />
-                {!participants && (
-                  <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: theme.palette.error.main,
-                    }}
-                  >
-                    (<Trans i18nKey={"empty"} />)
-                  </Typography>
-                )}
-              </Typography>
-              <Box sx={{ marginInlineStart: "1rem" }}>
-                <OnHoverInputReport
-                  attributeId={4}
-                  // formMethods={formMethods}
-                  data={participants}
-                  infoQuery={fetchReportFields}
-                  type="summary"
-                  editable={true}
-                  placeholder={t("writeAssessmentContributors")}
-                  name={"participants"}
-                />
-              </Box>
-            </MainCard>
+                  <Box>
+                    <OnHoverInputReport
+                      attributeId={1}
+                      // formMethods={formMethods}
+                      data={data[name]}
+                      infoQuery={fetchReportFields}
+                      type="summary"
+                      editable={true}
+                      placeholder={t(placeholder)}
+                      name={name}
+                    />
+                  </Box>
+                </MainCard>
+              );
+            })}
             <Snackbar
               open={snackbarOpen}
               autoHideDuration={3000}
@@ -551,7 +460,9 @@ const OnHoverInputReport = (props: any) => {
                 style={{
                   display: "-webkit-box",
                   width: "100%",
-                  height: showMore ? "unset"  : paragraphRef?.current?.scrollHeight ,
+                  height: showMore
+                    ? "unset"
+                    : paragraphRef?.current?.scrollHeight,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   // whiteSpace:"nowrap",
