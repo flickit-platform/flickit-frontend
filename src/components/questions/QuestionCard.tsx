@@ -598,7 +598,7 @@ const AnswerTemplate = (props: {
   } = props;
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
-  const { questionsResultQueryData } = useQuestions();
+  // const { questionsResultQueryData } = useQuestions();
 
   const { options, answer } = questionInfo;
   const { total_number_of_questions, permissions } = questionsInfo;
@@ -694,7 +694,7 @@ const AnswerTemplate = (props: {
         }),
       );
 
-      questionsResultQueryData.query();
+      // questionsResultQueryData.query();
 
       if (value) {
         dispatch(
@@ -903,8 +903,9 @@ const AnswerTemplate = (props: {
                 ? goToQuestion("asc")
                 : setExpandedDeleteDialog(true)
             }
+            disabled={isLastQuestion}
           >
-            <Trans i18nKey={!isLastQuestion ? "next" : "review"} />
+            <Trans i18nKey="next" />
           </LoadingButton>
         </Box>
         <Box sx={styles.centerVH} gap={2}>
@@ -1336,7 +1337,7 @@ const Evidence = (props: any) => {
   };
 
   const rtl = localStorage.getItem("lang") === "fa";
-  const { questionsResultQueryData } = useQuestions();
+  // const { questionsResultQueryData } = useQuestions();
 
   useEffect(() => {
     if (type === "comment") {
@@ -1546,7 +1547,7 @@ const Evidence = (props: any) => {
                   type="submit"
                   variant="contained"
                   loading={evidencesQueryData.loading}
-                  onClick={() => questionsResultQueryData.query()}
+                  // onClick={() => questionsResultQueryData.query()}
                 >
                   <Trans
                     i18nKey={"createEvidence"}

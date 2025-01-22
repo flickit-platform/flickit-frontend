@@ -18,6 +18,8 @@ import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { QuestionsProgress } from "./QuestionsProgress";
 import { ErrorNotFoundOrAccessDenied } from "@common/errors/ErrorNotFoundOrAccessDenied";
+import EmptyState from "../kit-designer/common/EmptyState";
+import { t } from "i18next";
 
 export const QuestionContainer = () => {
   const {
@@ -30,57 +32,58 @@ export const QuestionContainer = () => {
     questionsInfo,
     loaded,
     questionIndex,
+    realIndex,
   } = useQuestion();
-  return loaded ? (
-    hasAnyQuestion ? (
-      <Box overflow="hidden">
-        {questionsInfo.questions?.[questionIndex - 1] && (
-          <QuestionsProgress
-            hasNextQuestion={hasNextQuestion}
-            hasPreviousQuestion={hasPreviousQuestion}
-          />
-        )}
-        {assessmentStatus === EAssessmentStatus.DONE ? (
-          <Review questions={questionsInfo.questions} />
-        ) : (
-          <Box position="relative" sx={{ ...styles.centerVH }}>
-            {questionsInfo.questions?.[questionIndex - 1] ? (
-              <Box>
-                <Box
-                  display="flex"
-                  flexDirection={"column"}
-                  flex="1"
-                  py={2}
-                  sx={{ pt: { xs: 0, sm: 2 } }}
-                  ref={container}
-                >
-                  <TransitionGroup>
-                    <Collapse
-                      key={
-                        questionsInfo.questions[questionIndex - 1].index as any
-                      }
-                    >
-                      <QuestionCard
-                        questionsInfo={questionsInfo}
-                        questionInfo={questionInfo}
-                        key={questionsInfo.questions[questionIndex - 1].index}
-                      />
-                    </Collapse>
-                  </TransitionGroup>
+  return (
+    <>
+      {loaded && (
+        <Box overflow="hidden">
+          {questionsInfo.questions?.[realIndex - 1] && (
+            <QuestionsProgress
+              hasNextQuestion={hasNextQuestion}
+              hasPreviousQuestion={hasPreviousQuestion}
+            />
+          )}
+          {assessmentStatus === EAssessmentStatus.DONE ? (
+            <Review questions={questionsInfo.questions} />
+          ) : (
+            <Box position="relative" sx={{ ...styles.centerVH }}>
+              {questionsInfo.questions?.[realIndex - 1] ? (
+                <Box>
+                  <Box
+                    display="flex"
+                    flexDirection={"column"}
+                    flex="1"
+                    py={2}
+                    sx={{ pt: { xs: 0, sm: 2 } }}
+                    ref={container}
+                  >
+                    <TransitionGroup>
+                      <Collapse
+                        key={
+                          questionsInfo.questions[realIndex - 1].index as any
+                        }
+                      >
+                        <QuestionCard
+                          questionsInfo={questionsInfo}
+                          questionInfo={questionInfo}
+                          key={questionsInfo.questions[realIndex - 1].index}
+                        />
+                      </Collapse>
+                    </TransitionGroup>
+                  </Box>
                 </Box>
-              </Box>
-            ) : (
-              <Box mt={6}>
-                <ErrorNotFoundOrAccessDenied />
-              </Box>
-            )}
-          </Box>
-        )}
-      </Box>
-    ) : (
-      <ErrorEmptyData />
-    )
-  ) : null;
+              ) : (
+                <Box mt={6}>
+                  <EmptyState title={t("noQuestionAtTheMoment")} />
+                </Box>
+              )}
+            </Box>
+          )}
+        </Box>
+      )}
+    </>
+  );
 };
 
 export const SubmitOnSelectCheckBox = (props: any) => {
@@ -139,10 +142,14 @@ export const useQuestion = () => {
   const hasAnyQuestion = loaded
     ? (questionsInfo?.questions as any).length > 0
     : false;
+  const realIndex =
+    questionsInfo.questions.findIndex((item) => item.index === questionIndex) +
+    1;
+
   const questionInfo = findQuestion(questionsInfo.questions, questionIndex);
   const hasNextQuestion =
-    hasAnyQuestion && questionIndex < questionsInfo.total_number_of_questions;
-  const hasPreviousQuestion = hasAnyQuestion && questionIndex > 1;
+    hasAnyQuestion && realIndex < questionsInfo.total_number_of_questions;
+  const hasPreviousQuestion = hasAnyQuestion && realIndex > 1;
   const container = useRef(null);
 
   return {
@@ -154,6 +161,7 @@ export const useQuestion = () => {
     assessmentStatus,
     questionsInfo,
     questionIndex,
+    realIndex,
     isSubmitting,
     loaded,
   };

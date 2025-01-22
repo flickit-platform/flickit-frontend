@@ -5,7 +5,10 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Title from "@common/Title";
-import { useQuestionContext } from "@/providers/QuestionProvider";
+import {
+  setQuestionsInfo,
+  useQuestionContext,
+} from "@/providers/QuestionProvider";
 import doneSvg from "@assets/svg/Done.svg";
 import noQuestionSvg from "@assets/svg/noQuestion.svg";
 import someQuestionSvg from "@assets/svg/someQuestion.svg";
@@ -20,6 +23,7 @@ import { useQuery } from "@/utils/useQuery";
 import { primaryFontFamily, theme } from "@/config/theme";
 import { useQuestionnaire } from "../questionnaires/QuestionnaireContainer";
 import { toCamelCase } from "@common/makeCamelcaseString";
+import { IQuestionInfo } from "@/types";
 
 const QuestionsReview = () => {
   const { questionsInfo } = useQuestionContext();
@@ -63,7 +67,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
         setIsEmpty(true);
       }
     }
-  }, [questionsInfo]);
+  }, []);
   const { assessmentTotalProgress, fetchPathInfo } = useQuestionnaire();
   useEffect(() => {
     fetchPathInfo.query({ questionnaireId }).then((data) => {

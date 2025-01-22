@@ -55,6 +55,12 @@ export interface IQuestionInfo {
   confidence_level?: any;
   advisable?: boolean;
   answerRangeId?: number;
+  issues?: {
+    isUnanswered: boolean;
+    isAnsweredWithLowConfidence: boolean;
+    isAnsweredWithoutEvidences: boolean;
+    unresolvedCommentsCount: number;
+  };
 }
 
 export interface IPermissions {
