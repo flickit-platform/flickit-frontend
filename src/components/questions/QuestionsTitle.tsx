@@ -80,14 +80,15 @@ const QuestionsTitle = (props: {
   }, [questionnaire, isComplete]);
 
   useEffect(() => {
-    const filteredItems = questions?.filter((item: any) =>
-      originalItem.length === 0
-        ? item
-        : Object.keys(item?.issues).some(
-            (key) => originalItem.includes(key) && item?.issues[key] > 0,
-          ),
-    );
-
+    const filteredItems = questions.map((item: any) => {
+      const updatedIssues = Object.keys(item.issues)
+        .filter((key) => originalItem.includes(key))
+        .reduce((acc: any, key) => {
+          acc[key] = item.issues[key];
+          return acc;
+        }, {});
+      return { ...item, issues: updatedIssues };
+    });
     if (originalItem.length === 0 && didMount === false) return;
 
     dispatch(
@@ -124,11 +125,14 @@ const QuestionsTitle = (props: {
         }}
         toolbar={
           <Box sx={{ mt: { xs: 1.5, sm: 0 } }}>
-            <QuestionsFilteringDropdown
-              setOriginalItem={setOriginalItem}
-              originalItem={originalItem}
-              itemNames={itemNames}
-            />
+            {!window.location.pathname.includes("review") && (
+              <QuestionsFilteringDropdown
+                setOriginalItem={setOriginalItem}
+                originalItem={originalItem}
+                itemNames={itemNames}
+              />
+            )}
+
             {!isReview && (
               <Button
                 disabled={isSubmitting}
