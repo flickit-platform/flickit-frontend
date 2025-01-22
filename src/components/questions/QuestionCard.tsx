@@ -612,24 +612,46 @@ const AnswerTemplate = (props: {
   );
   const navigate = useNavigate();
   const isLastQuestion = questionIndex == total_number_of_questions;
-  const isSelectedValueTheSameAsAnswer =
-    (questionInfo?.answer?.selectedOption?.index === value?.index &&
-      questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
-      questionInfo?.answer?.isNotApplicable === notApplicable) ||
-    (questionInfo?.mayNotBeApplicable &&
-      questionInfo?.answer?.isNotApplicable === true &&
-      notApplicable === true) ||
-    (questionInfo?.answer === null &&
-      value === null &&
-      notApplicable === false) ||
-    (questionInfo?.answer?.selectedOption === null &&
-      questionInfo.answer?.confidenceLevel === null &&
-      value === null &&
-      questionInfo?.answer?.isNotApplicable === notApplicable) ||
-    (questionInfo?.answer?.selectedOption === null &&
-      questionInfo.answer?.confidenceLevel === null &&
-      value === null &&
-      !questionInfo.mayNotBeApplicable);
+  const isSelectedValueTheSameAsAnswer = useMemo(() => {
+    console.log(
+      (questionInfo?.answer?.selectedOption?.index === value?.index &&
+        questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
+        questionInfo?.answer?.isNotApplicable === notApplicable) ||
+        (questionInfo?.mayNotBeApplicable &&
+          questionInfo?.answer?.isNotApplicable === true &&
+          notApplicable === true) ||
+        (questionInfo?.answer === null &&
+          value === null &&
+          notApplicable === false) ||
+        (questionInfo?.answer?.selectedOption === null &&
+          questionInfo.answer?.confidenceLevel === null &&
+          value === null &&
+          questionInfo?.answer?.isNotApplicable === notApplicable) ||
+        (questionInfo?.answer?.selectedOption === null &&
+          questionInfo.answer?.confidenceLevel === null &&
+          value === null &&
+          !questionInfo.mayNotBeApplicable),
+    );
+    return (
+      (questionInfo?.answer?.selectedOption?.index === value?.index &&
+        questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
+        questionInfo?.answer?.isNotApplicable === notApplicable) ||
+      (questionInfo?.mayNotBeApplicable &&
+        questionInfo?.answer?.isNotApplicable === true &&
+        notApplicable === true) ||
+      (questionInfo?.answer === null &&
+        value === null &&
+        notApplicable === false) ||
+      (questionInfo?.answer?.selectedOption === null &&
+        questionInfo.answer?.confidenceLevel === null &&
+        value === null &&
+        questionInfo?.answer?.isNotApplicable === notApplicable) ||
+      (questionInfo?.answer?.selectedOption === null &&
+        questionInfo.answer?.confidenceLevel === null &&
+        value === null &&
+        !questionInfo.mayNotBeApplicable)
+    );
+  }, [questionInfo?.answer, value, notApplicable, selcetedConfidenceLevel]);
 
   const changeHappened = useRef(false);
   const onChange = (
@@ -682,7 +704,7 @@ const AnswerTemplate = (props: {
         );
       }
 
-      service
+      await service
         .fetchQuestionIssues(
           {
             assessmentId,
@@ -704,9 +726,7 @@ const AnswerTemplate = (props: {
             }),
           );
         });
-      setTimeout(() => {
-        dispatch(questionActions.setIsSubmitting(false));
-      }, 500);
+      dispatch(questionActions.setIsSubmitting(false));
 
       if (value) {
         dispatch(
@@ -3124,4 +3144,3 @@ const QuestionGuide = (props: any) => {
     </Box>
   );
 };
-
