@@ -598,7 +598,7 @@ const AnswerTemplate = (props: {
   } = props;
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
-  const { questionsResultQueryData } = useQuestions();
+  // const { questionsResultQueryData } = useQuestions();
 
   const { options, answer } = questionInfo;
   const { total_number_of_questions, permissions } = questionsInfo;
@@ -694,7 +694,7 @@ const AnswerTemplate = (props: {
         }),
       );
 
-      questionsResultQueryData.query();
+      // questionsResultQueryData.query();
 
       if (value) {
         dispatch(
@@ -1336,7 +1336,7 @@ const Evidence = (props: any) => {
   };
 
   const rtl = localStorage.getItem("lang") === "fa";
-  const { questionsResultQueryData } = useQuestions();
+  // const { questionsResultQueryData } = useQuestions();
 
   useEffect(() => {
     if (type === "comment") {
@@ -1546,7 +1546,7 @@ const Evidence = (props: any) => {
                   type="submit"
                   variant="contained"
                   loading={evidencesQueryData.loading}
-                  onClick={() => questionsResultQueryData.query()}
+                  // onClick={() => questionsResultQueryData.query()}
                 >
                   <Trans
                     i18nKey={"createEvidence"}

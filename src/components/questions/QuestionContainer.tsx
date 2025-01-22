@@ -18,6 +18,8 @@ import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { QuestionsProgress } from "./QuestionsProgress";
 import { ErrorNotFoundOrAccessDenied } from "@common/errors/ErrorNotFoundOrAccessDenied";
+import EmptyState from "../kit-designer/common/EmptyState";
+import { t } from "i18next";
 
 export const QuestionContainer = () => {
   const {
@@ -31,8 +33,8 @@ export const QuestionContainer = () => {
     loaded,
     questionIndex,
   } = useQuestion();
-  return loaded ? (
-    hasAnyQuestion ? (
+  return (
+    loaded && (
       <Box overflow="hidden">
         {questionsInfo.questions?.[questionIndex - 1] && (
           <QuestionsProgress
@@ -71,16 +73,14 @@ export const QuestionContainer = () => {
               </Box>
             ) : (
               <Box mt={6}>
-                <ErrorNotFoundOrAccessDenied />
+                <EmptyState title={t("noQuestionAtTheMoment")}/>
               </Box>
             )}
           </Box>
         )}
       </Box>
-    ) : (
-      <ErrorEmptyData />
     )
-  ) : null;
+  );
 };
 
 export const SubmitOnSelectCheckBox = (props: any) => {

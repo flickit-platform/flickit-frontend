@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -7,7 +7,9 @@ import { Link, useParams } from "react-router-dom";
 import Title from "@common/Title";
 import {
   EAssessmentStatus,
+  questionActions,
   useQuestionContext,
+  useQuestionDispatch,
 } from "@/providers/QuestionProvider";
 import AssignmentTurnedInRoundedIcon from "@mui/icons-material/AssignmentTurnedInRounded";
 import GradingRoundedIcon from "@mui/icons-material/GradingRounded";
@@ -20,6 +22,27 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
+import { QuestionsFilteringDropdown } from "../questionnaires/QuestionnaireList";
+import { useQuestions } from "./QuestionsContainer";
+
+const itemNames = [
+  {
+    translate: t("unansweredQuestions"),
+    original: "isUnanswered",
+  },
+  {
+    translate: t("lowConfidenceAnswers"),
+    original: "isAnsweredWithLowConfidence",
+  },
+  {
+    translate: t("unresolvedComments"),
+    original: "unresolvedCommentsCount",
+  },
+  {
+    translate: t("answersWithNoEvidence"),
+    original: "isAnsweredWithoutEvidences",
+  },
+];
 
 const QuestionsTitle = (props: {
   data: IQuestionnaireModel;
@@ -37,7 +60,15 @@ const QuestionsTitle = (props: {
   const canFinishQuestionnaire = !isComplete && !isReview;
   const { space, assessment, questionnaire } = pathInfo;
   const { config } = useConfigContext();
+  const [originalItem, setOriginalItem] = useState<any[]>([]);
+  const { questions } = useQuestions();
+  const dispatch = useQuestionDispatch();
+  const { questionsInfo } = useQuestionContext();
+  const [didMount, setDidMount] = useState(false);
 
+  useEffect(() => {
+    setDidMount(true);
+  }, []);
   useEffect(() => {
     if (isComplete) {
       setDocumentTitle(
@@ -46,6 +77,28 @@ const QuestionsTitle = (props: {
       );
     }
   }, [questionnaire, isComplete]);
+
+  useEffect(() => {
+    const filteredItems = questions.filter((item: any) =>
+      originalItem.length === 0
+        ? item
+        : Object.keys(item.issues).some(
+            (key) => originalItem.includes(key) && item.issues[key] > 0,
+          ),
+    );
+
+    if (originalItem.length === 0 && didMount === false) return;
+
+    dispatch(
+      questionActions.setQuestionsInfo({
+        total_number_of_questions: questionsInfo.total_number_of_questions,
+        resultId: questionsInfo.resultId,
+        questions: filteredItems,
+        permissions: questionsInfo.permissions,
+      }),
+    );
+    dispatch(questionActions.goToQuestion(filteredItems[0]?.index));
+  }, [originalItem]);
 
   return (
     <Box sx={{ pt: 1, pb: 0 }}>
@@ -60,6 +113,11 @@ const QuestionsTitle = (props: {
         }}
         toolbar={
           <Box sx={{ mt: { xs: 1.5, sm: 0 } }}>
+            <QuestionsFilteringDropdown
+              setOriginalItem={setOriginalItem}
+              originalItem={originalItem}
+              itemNames={itemNames}
+            />
             {!isReview && (
               <Button
                 disabled={isSubmitting}

@@ -83,7 +83,7 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
           value={
             assessmentStatus === EAssessmentStatus.DONE
               ? 100
-              : (100 / (total_number_of_questions + 1)) * questionIndex
+              : (100 / (questions.length + 1)) * questionIndex
           }
         />
         <Button

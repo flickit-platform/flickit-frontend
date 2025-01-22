@@ -22,14 +22,28 @@ interface IQuestionnaireListProps {
   assessmentTotalProgress: any;
 }
 
-export const QuestionnaireList = (props: IQuestionnaireListProps) => {
-  const { questionnaireQueryData, assessmentTotalProgress } = props;
+const itemNames = [
+  {
+    translate: t("unansweredQuestions"),
+    original: "unanswered",
+  },
+  {
+    translate: t("lowConfidenceAnswers"),
+    original: "answeredWithLowConfidence",
+  },
+  {
+    translate: t("unresolvedComments"),
+    original: "unresolvedComments",
+  },
+  {
+    translate: t("answersWithNoEvidence"),
+    original: "answeredWithoutEvidence",
+  },
+];
+
+export const QuestionsFilteringDropdown = (props: any) => {
+  const { originalItem, setOriginalItem, itemNames } = props;
   const [issues, setIssues] = useState<string[]>([]);
-  const [originalItem, setOriginalItem] = useState<string[]>([]);
-
-  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
-    useState<boolean>(true);
-
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
     const {
       target: { value },
@@ -46,19 +60,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
       setOriginalItem(filtered);
     }
   };
-
-  const itemNames = [
-    { translate: t("unansweredQuestions"), original: "unanswered" },
-    {
-      translate: t("lowConfidenceAnswers"),
-      original: "answeredWithLowConfidence",
-    },
-    { translate: t("unresolvedComments"), original: "unresolvedComments" },
-    {
-      translate: t("answersWithNoEvidence"),
-      original: "answeredWithoutEvidence",
-    },
-  ];
 
   const handelSelected = (selected: any) => {
     const isAllSelected = issues.length === itemNames.length;
@@ -100,7 +101,62 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
       }
     }
   };
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: 2,
+      }}
+    >
+      <Typography sx={{ ...theme.typography.semiBoldLarge }}>
+        <Trans i18nKey={"filterQuestionsWithIssues"} />:
+      </Typography>
+      <FormControl sx={{ m: 1, width: 250 }}>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={issues.map((item: any) => t(item))}
+          onChange={handleChange}
+          displayEmpty={true}
+          renderValue={(selected) => handelSelected(selected)}
+          sx={{
+            ...theme.typography.semiBoldMedium,
+            background: "#fff",
+            px: "0px",
+            height: "40px",
+          }}
+        >
+          {itemNames.map((item: { translate: string; original: string }) => (
+            <MenuItem
+              key={item.translate}
+              value={item.translate}
+              onClick={() => handelSaveOriginal(item.original)}
+            >
+              <Checkbox checked={issues.includes(t(item.translate))} />
+              <ListItemText
+                sx={{
+                  ...theme.typography.semiBoldMedium,
+                  color: "#333333",
+                }}
+                primary={<Trans i18nKey={`${item.translate}`} />}
+              />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
+  );
+};
 
+export const QuestionnaireList = (props: IQuestionnaireListProps) => {
+  const { questionnaireQueryData, assessmentTotalProgress } = props;
+  const [originalItem, setOriginalItem] = useState<string[]>([]);
+
+  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
+    useState<boolean>(true);
   return (
     <>
       <Box display={"flex"} justifyContent="space-between">
@@ -121,54 +177,11 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             return <FilterBySubject fetchQuestionnaires={fetchQuestionnaires} subjects={subjects} />;
           }}
         /> */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <Typography sx={{ ...theme.typography.semiBoldLarge }}>
-            <Trans i18nKey={"filterQuestionsWithIssues"} />:
-          </Typography>
-          <FormControl sx={{ m: 1, width: 250 }}>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={issues.map((item: any) => t(item))}
-              onChange={handleChange}
-              displayEmpty={true}
-              renderValue={(selected) => handelSelected(selected)}
-              sx={{
-                ...theme.typography.semiBoldMedium,
-                background: "#fff",
-                px: "0px",
-                height: "40px",
-              }}
-            >
-              {itemNames.map(
-                (item: { translate: string; original: string }) => (
-                  <MenuItem
-                    key={item.translate}
-                    value={item.translate}
-                    onClick={() => handelSaveOriginal(item.original)}
-                  >
-                    <Checkbox checked={issues.includes(t(item.translate))} />
-                    <ListItemText
-                      sx={{
-                        ...theme.typography.semiBoldMedium,
-                        color: "#333333",
-                      }}
-                      primary={<Trans i18nKey={`${item.translate}`} />}
-                    />
-                  </MenuItem>
-                ),
-              )}
-            </Select>
-          </FormControl>
-        </Box>
+        <QuestionsFilteringDropdown
+          setOriginalItem={setOriginalItem}
+          originalItem={originalItem}
+          itemNames={itemNames}
+        />
         <Box
           minWidth="130px"
           display="flex"
@@ -244,9 +257,18 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                     })
                   ) : (
                     <Box sx={{ ...styles.centerVH, width: "100%" }}>
-                      <Typography sx={{...theme.typography.headlineLarge, color:"#C2CCD680" }}>
-                        {originalItem.length == 1 && <Trans i18nKey={"NoIssueFound"} />}
-                        {originalItem.length > 1 && <Trans i18nKey={"NoIssuesFound"} />}
+                      <Typography
+                        sx={{
+                          ...theme.typography.headlineLarge,
+                          color: "#C2CCD680",
+                        }}
+                      >
+                        {originalItem.length == 1 && (
+                          <Trans i18nKey={"NoIssueFound"} />
+                        )}
+                        {originalItem.length > 1 && (
+                          <Trans i18nKey={"NoIssuesFound"} />
+                        )}
                       </Typography>
                     </Box>
                   )}
