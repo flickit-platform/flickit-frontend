@@ -7,7 +7,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
@@ -33,7 +33,6 @@ const ReportTab = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
       service.fetchReportFields(args, config),
@@ -373,7 +372,28 @@ const OnHoverInputReport = (props: any) => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
   const [show, setShow] = useState<boolean>(!!!data);
+  const [showMore, setShowMore] = useState(false);
+  const [showBtn, setShowBtn] = useState(false);
 
+  const paragraphRef = useRef<any>(null);
+
+  const toggleShowMore = () => {
+    setShowMore((prev) => !prev);
+  };
+  useEffect(() => {
+    if (paragraphRef?.current) {
+      if (
+        paragraphRef?.current?.offsetHeight <
+        paragraphRef?.current?.scrollHeight
+      ) {
+        setShowMore(true);
+        setShowBtn(true);
+      } else {
+        setShowMore(false);
+        setShowBtn(false);
+      }
+    }
+  }, []);
   const handleCancel = () => {
     setShow(false);
     setError({});
@@ -496,82 +516,96 @@ const OnHoverInputReport = (props: any) => {
           )}
         </Box>
       ) : (
-        <Box
-          sx={{
-            minHeight: "38px",
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            wordBreak: "break-word",
-            p: 1.5,
-            pr: 5,
-            border: "1px solid #fff",
-            "&:hover": {
-              border: editable ? "1px solid #1976d299" : "unset",
-              borderColor: editable ? theme.palette.primary.main : "unset",
-            },
-            position: "relative",
-          }}
-          onClick={() => setShow(!show)}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          <Typography
+        <Box sx={{ width: "100%" }}>
+          <Box
             sx={{
+              minHeight: "38px",
+              borderRadius: "8px",
               width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              wordBreak: "break-word",
+              p: 1.5,
+              pr: 5,
+              border: "1px solid #fff",
+              "&:hover": {
+                border: editable ? "1px solid #1976d299" : "unset",
+                borderColor: editable ? theme.palette.primary.main : "unset",
+              },
+              position: "relative",
             }}
+            onClick={() => setShow(!show)}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
           >
             <Typography
-              dangerouslySetInnerHTML={{
-                __html: data,
-              }}
-              style={{
-                display: "-webkit-box",
-                // height:"100px",
+              sx={{
                 width: "100%",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                // whiteSpace:"nowrap",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-                ...theme.typography.titleMedium,
-                fontWeight: "400",
-                unicodeBidi: "plaintext",
-                fontFamily: languageDetector(data)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
               }}
-              sx={{
-                "& > p": {
-                  unicodeBidi: "plaintext",
-                  textAlign: "initial",
-                },
-              }}
-              className={"tiptap"}
-            ></Typography>
-          </Typography>
-          {isHovering && (
-            <IconButton
-              title="Edit"
-              // edge="end"
-              sx={{
-                background: theme.palette.primary.main,
-                "&:hover": {
-                  background: theme.palette.primary.dark,
-                },
-                borderRadius: "0 8px 8px 0",
-                height: "100%",
-                position: "absolute",
-                right: 0,
-                top: 0,
-              }}
-              onClick={() => setShow(!show)}
             >
-              <EditRounded sx={{ color: "#fff" }} />
-            </IconButton>
-          )}
+              <Typography
+                dangerouslySetInnerHTML={{
+                  __html: data,
+                }}
+                style={{
+                  display: "-webkit-box",
+                  width: "100%",
+                  height: showMore ? "unset"  : paragraphRef?.current?.scrollHeight ,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  // whiteSpace:"nowrap",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  ...theme.typography.titleMedium,
+                  fontWeight: "400",
+                  unicodeBidi: "plaintext",
+                  fontFamily: languageDetector(data)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                }}
+                sx={{
+                  "& > p": {
+                    unicodeBidi: "plaintext",
+                    textAlign: "initial",
+                  },
+                }}
+                ref={paragraphRef}
+                className={"tiptap"}
+              ></Typography>
+            </Typography>
+            {isHovering && (
+              <IconButton
+                title="Edit"
+                // edge="end"
+                sx={{
+                  background: theme.palette.primary.main,
+                  "&:hover": {
+                    background: theme.palette.primary.dark,
+                  },
+                  borderRadius: "0 8px 8px 0",
+                  height: "100%",
+                  position: "absolute",
+                  right: 0,
+                  top: 0,
+                }}
+                onClick={() => setShow(!show)}
+              >
+                <EditRounded sx={{ color: "#fff" }} />
+              </IconButton>
+            )}
+          </Box>
+          {showBtn ? (
+            showMore ? (
+              <Button variant={"text"} onClick={toggleShowMore}>
+                <Trans i18nKey={"showMore"} />
+              </Button>
+            ) : (
+              <Button onClick={toggleShowMore}>
+                <Trans i18nKey={"showLess"} />
+              </Button>
+            )
+          ) : null}
         </Box>
       )}
     </Box>
