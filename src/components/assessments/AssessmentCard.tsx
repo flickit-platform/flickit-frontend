@@ -35,7 +35,6 @@ import { useQuery } from "@utils/useQuery";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
-
   dialogProps: TDialogProps;
   deleteAssessment: TQueryFunction<any, TId>;
 }
@@ -45,6 +44,7 @@ import { Chip } from "@mui/material";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { ArticleRounded, Assessment } from "@mui/icons-material";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -276,7 +276,57 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               </Typography>
             </Grid>
           )}
-          {item.permissions.canViewQuestionnaires && (
+          {item?.permissions?.canViewReport && item?.hasReport && (
+            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
+              <Button
+                startIcon={
+                  <Assessment sx={{ fontSize: "1.5rem", margin: "0.1rem" }} />
+                }
+                fullWidth
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+                ) => {
+                  e.stopPropagation();
+                }}
+                component={Link}
+                sx={{ position: "relative", zIndex: 1 }}
+                state={location}
+                to={`/${spaceId}/assessments/${item.id}/graphical-report/`}
+                data-cy="graphical-btn"
+                variant={item?.hasReport ? "outlined" : "contained"}
+              >
+                <Trans i18nKey="graphicChart" />
+              </Button>
+            </Grid>
+          )}
+          {item?.permissions?.canViewReport && !item.hasReport && (
+            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
+              <Button
+                startIcon={
+                  <ArticleRounded
+                    sx={{ fontSize: "1.5rem", margin: "0.1rem" }}
+                  />
+                }
+                fullWidth
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+                ) => {
+                  e.stopPropagation();
+                }}
+                component={Link}
+                sx={{ position: "relative", zIndex: 1 }}
+                state={location}
+                to={`/${spaceId}/assessments/1/${item.id}/assessment-document/`}
+                data-cy="report-btn"
+                variant={
+                  item.permissions.canViewReport ? "outlined" : "contained"
+                }
+              >
+                <Trans i18nKey="reportTitle" />
+              </Button>
+            </Grid>
+          )}
+          {!item.permissions.canViewReport && (
             <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
               <Button
                 startIcon={<QuizRoundedIcon />}
