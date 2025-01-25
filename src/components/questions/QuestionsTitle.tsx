@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Title from "@common/Title";
 import {
   EAssessmentStatus,
@@ -12,10 +11,7 @@ import {
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
 import AssignmentTurnedInRoundedIcon from "@mui/icons-material/AssignmentTurnedInRounded";
-import GradingRoundedIcon from "@mui/icons-material/GradingRounded";
-import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import { IQuestionnaireModel } from "@types";
-import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
@@ -23,7 +19,6 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionsFilteringDropdown } from "../questionnaires/QuestionnaireList";
-import { useQuestions } from "./QuestionsContainer";
 import { IconButton } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
@@ -55,17 +50,14 @@ const QuestionsTitle = (props: {
   const {
     questionsInfo: { total_number_of_questions },
     assessmentStatus,
-    isSubmitting,
   } = useQuestionContext();
-  const { spaceId, assessmentId, questionIndex, page } = useParams();
+  const { questionIndex, page } = useParams();
   const isComplete = questionIndex === "completed";
-  const canFinishQuestionnaire = !isComplete && !isReview;
-  const { space, assessment, questionnaire } = pathInfo;
+  const { questionnaire } = pathInfo;
   const { config } = useConfigContext();
   const [originalItem, setOriginalItem] = useState<any[]>([]);
   const dispatch = useQuestionDispatch();
   const { questionsInfo } = useQuestionContext();
-  const { questions } = questionsInfo;
   const [didMount, setDidMount] = useState(false);
   const initialQuestionsRef = useRef<any[]>([]);
 
@@ -151,6 +143,8 @@ const QuestionsTitle = (props: {
                 setOriginalItem={setOriginalItem}
                 originalItem={originalItem}
                 itemNames={itemNames}
+                dropdownLabel={<Trans i18nKey="highlightQuestionsWithIssues" />}
+                allSelected
               />
             )}
 
