@@ -444,7 +444,12 @@ const SubjectTitle = (props: {
               // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
             {
-              title: `${assessment?.title} ${t("insights")}`,
+              title: (
+                <Trans
+                  i18nKey="insightsWithTitle"
+                  values={{ title: assessment?.title }}
+                />
+              ),
               to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
             },
             {
@@ -464,7 +469,7 @@ const SubjectTitle = (props: {
             color: "rgba(0, 0, 0, 0.87)",
           }}
         /> */}
-        {loading ? (
+        {loading && (
           <Skeleton
             width={"84px"}
             sx={{
@@ -473,10 +478,8 @@ const SubjectTitle = (props: {
               display: "inline-block",
             }}
           />
-        ) : (
-          title || ""
         )}{" "}
-        <Trans i18nKey="insights" />
+        <Trans i18nKey="insightsWithTitle" values={{ title: title || "" }} />
       </Box>
     </Title>
   );

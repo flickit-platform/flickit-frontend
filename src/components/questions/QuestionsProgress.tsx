@@ -122,7 +122,7 @@ export const QuestionProgressItem = (props: any) => {
             <Box>
               {[
                 question?.issues.isUnanswered && (
-                  <Trans i18nKey="unansweredQuestion" />
+                  <Trans i18nKey="unansweredQuestions" />
                 ),
                 question?.issues.isAnsweredWithLowConfidence && (
                   <Trans i18nKey="lowConfidenceAnswers" />

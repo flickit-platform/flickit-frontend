@@ -2053,11 +2053,13 @@ const EvidenceDetail = (props: any) => {
   return (
     <Box display="flex" flexDirection="column" width="100%">
       <Box sx={{ display: "flex", gap: { xs: "7px", sm: "1rem" }, mb: 4 }}>
-        <Avatar
-          {...stringAvatar(displayName.toUpperCase())}
-          src={pictureLink}
-          sx={{ width: 56, height: 56 }}
-        ></Avatar>
+        <Tooltip title={displayName}>
+          <Avatar
+            {...stringAvatar(displayName.toUpperCase())}
+            src={pictureLink}
+            sx={{ width: 56, height: 56 }}
+          ></Avatar>
+        </Tooltip>
         {isEditing ? (
           <>
             <FormProvider {...formMethods}>

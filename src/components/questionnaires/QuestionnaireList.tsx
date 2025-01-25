@@ -42,7 +42,13 @@ const itemNames = [
 ];
 
 export const QuestionsFilteringDropdown = (props: any) => {
-  const { originalItem, setOriginalItem, itemNames } = props;
+  const {
+    originalItem,
+    setOriginalItem,
+    itemNames,
+    dropdownLabel,
+    allSelected,
+  } = props;
   const [issues, setIssues] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
     const {
@@ -69,7 +75,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         <Typography
           sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
         >
-          <Trans i18nKey={"none"} />
+          <Trans i18nKey={allSelected ? "allIssuesSelected" : "none"} />
         </Typography>
       );
     } else if (isAllSelected) {
@@ -111,7 +117,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
       }}
     >
       <Typography sx={{ ...theme.typography.semiBoldLarge }}>
-        <Trans i18nKey={"filterQuestionsWithIssues"} />:
+        {dropdownLabel ? (
+          dropdownLabel
+        ) : (
+          <Trans i18nKey={"filterQuestionsWithIssues"} />
+        )}
       </Typography>
       <FormControl sx={{ m: 1, width: 250 }}>
         <Select
