@@ -72,7 +72,8 @@
     margin: 0;
     overflow: hidden;
     table-layout: fixed;
-    width: 100%;
+    width: 90%;
+    margin: auto;
 }
 .tiptap table td, .tiptap table th {
     border: 1px solid gray;
@@ -86,7 +87,7 @@
     margin-bottom: 0;
 }
 .tiptap table th {
-    background-color: gray;
+    background-color: rgba(102, 128, 153, 0.3);
     font-weight: bold;
     text-align: left;
 }

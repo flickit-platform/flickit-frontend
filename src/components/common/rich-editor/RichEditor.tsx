@@ -7,7 +7,7 @@ import Link from "@tiptap/extension-link";
 import { useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
-import { primaryFontFamily } from "@/config/theme";
+import { primaryFontFamily, theme } from "@/config/theme";
 import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
@@ -25,6 +25,7 @@ interface IRichEditorProps {
   checkLang?: boolean;
   setLangDir?: any;
   placeholder?: any;
+  type?: string;
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -39,29 +40,10 @@ const RichEditor = (props: IRichEditorProps) => {
     checkLang,
     setLangDir,
     placeholder,
+    type,
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
-  const CustomTableCell = TableCell.extend({
-    addAttributes() {
-      return {
-        // extend the existing attributes …
-        ...this.parent?.(),
-
-        // and add a new one …
-        backgroundColor: {
-          default: null,
-          parseHTML: (element) => element.getAttribute("data-background-color"),
-          renderHTML: (attributes) => {
-            return {
-              "data-background-color": attributes.backgroundColor,
-              style: `background-color: ${attributes.backgroundColor}`,
-            };
-          },
-        },
-      };
-    },
-  });
 
   const editor = useEditor({
     extensions: [
@@ -71,11 +53,7 @@ const RichEditor = (props: IRichEditorProps) => {
       }),
       TableRow,
       TableHeader,
-      // Default TableCell
-      // TableCell,
-      // Custom TableCell with backgroundColor attribute
       TableCell,
-      CustomTableCell,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
@@ -152,19 +130,21 @@ const RichEditor = (props: IRichEditorProps) => {
               width: "100%",
               mt: 1.5,
               "&.Mui-focused .ProseMirror": {
-                borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "#1976d2"}`,
+                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#1976d2"}`,
                 borderWidth: "2px",
               },
               "&.Mui-focused:hover .ProseMirror": {
-                borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "#1976d2"}` ,
+                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#1976d2"}`,
               },
               "&.Mui-error .ProseMirror": {
                 borderColor: "#d32f2f",
               },
               "&.Mui-error:hover .ProseMirror": {
-                borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "#d32f2f"}`,
+                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#d32f2f"}`,
               },
-              "&:hover .ProseMirror": { borderColor: `${editor?.isEmpty ? "#8A0F2480"  : "rgba(0, 0, 0, 0.87)"}` },
+              "&:hover .ProseMirror": {
+                borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.87)"}`,
+              },
               "& .rich-editor--menu": editor?.isFocused
                 ? {
                     opacity: 1,
@@ -175,13 +155,18 @@ const RichEditor = (props: IRichEditorProps) => {
                 opacity: 1,
                 zIndex: 10,
               },
+              ".ProseMirror p.is-editor-empty:first-child:before ": {
+                float: theme.direction == "rtl" ? "right" : "left",
+                direction: theme.direction == "rtl" ? "rtl" : "ltr",
+              },
               "& .ProseMirror": {
                 outline: "none",
                 minHeight: "80px",
-                border: `1px solid ${editor?.isEmpty ? "#8A0F2480"  : "rgba(0, 0, 0, 0.23)"}`,
+                border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 background: "#fff",
-                px: 1.5,
+                pl: type === "reportTab" && isFarsi ? 6 : 1.5,
+                pr: type === "reportTab" && isFarsi ? 1.5 : 6,
                 py: 1,
                 "& > p": editor?.isEmpty
                   ? {

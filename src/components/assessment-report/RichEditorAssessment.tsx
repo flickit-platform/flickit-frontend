@@ -8,6 +8,10 @@ import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
 import { primaryFontFamily, theme } from "@/config/theme";
+import Table from "@tiptap/extension-table";
+import {TableRow} from "@tiptap/extension-table-row";
+import {TableHeader} from "@tiptap/extension-table-header";
+import {TableCell} from "@tiptap/extension-table-cell";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -49,10 +53,19 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
       Link,
+      // Placeholder.configure({
+      //   placeholder: placeholder,
+      // }),
     ],
     content: defaultValue,
     onUpdate(props) {

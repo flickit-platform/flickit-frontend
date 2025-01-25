@@ -26,7 +26,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
         zIndex: -1,
         right: 0,
         opacity: 0,
-        top: "-8px",
+        top: "-11px",
         transform: "translateY(-100%)",
         py: 0.5,
         px: 0.6,

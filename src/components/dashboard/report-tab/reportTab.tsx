@@ -1,13 +1,9 @@
-import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import { Button, Snackbar, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
-import InsertLinkIcon from "@mui/icons-material/InsertLink";
-import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
@@ -21,38 +17,52 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import languageDetector from "@utils/languageDetector";
 import EditRounded from "@mui/icons-material/EditRounded";
 import Grid from "@mui/material/Grid";
-import TreeMapChart from "@common/charts/TreeMapChart";
 import { t } from "i18next";
-import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
+import { uniqueId } from "lodash";
+import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
+import { styles } from "@styles";
 
 const ReportTab = () => {
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
       service.fetchReportFields(args, config),
     runOnMount: true,
   });
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      setSnackbarOpen(true);
-    });
-  };
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  // const copyLink = () => {
+  //   navigator.clipboard.writeText(window.location.href).then(() => {
+  //    toast(`${t("linkCopied")}`,{type:"success"})
+  //   });
+  // };
+
+  const reportFields: { name: string; title: string; placeholder: string }[] = [
+    { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
+    {
+      name: "prosAndCons",
+      title: "strengthsAndRoomsForImprovement",
+      placeholder: "writeStrengthAndRooms",
+    },
+    {
+      name: "steps",
+      title: "stepsTakenForThisAssessment",
+      placeholder: "writeStepsForAssessment",
+    },
+    {
+      name: "participants",
+      title: "assessmentContributors",
+      placeholder: "writeAssessmentContributors",
+    },
+  ];
+
   return (
     <QueryData
       {...fetchReportFields}
-      loading={false}
+      loadingComponent={<Loading />}
       render={(data) => {
-        const { intro, prosAndCons, steps, participants } = data;
         return (
           <>
             <Box
@@ -142,80 +152,43 @@ const ReportTab = () => {
                   sx={{
                     display: "flex",
                     justifyContent: "flex-end",
-                    marginLeft: "auto",
+                    marginInlineStart: "auto",
                   }}
                 >
-                  <Box sx={{ ...styles.centerVH, gap: 1 }}>
-                    <Button
-                      onClick={copyLink}
-                      sx={{ display: "flex", gap: 1 }}
-                      variant={"outlined"}
-                    >
-                      <Typography sx={{ whiteSpace: "nowrap" }}>
-                        <Trans i18nKey={"copy report link"} />
-                      </Typography>
-                      <InsertLinkIcon fontSize={"small"} />
-                    </Button>
-                    <Button
-                      sx={{ display: "flex", gap: 1 }}
-                      variant={"contained"}
-                    >
-                      <Typography sx={{ whiteSpace: "nowrap" }}>
-                        <Trans i18nKey={"view report"} />
-                      </Typography>
-                      <AssignmentOutlinedIcon fontSize={"small"} />
-                    </Button>
-                  </Box>
+                  {/*<Box sx={{ ...styles.centerVH, gap: 1 }}>*/}
+                  {/*  <Button*/}
+                  {/*    onClick={copyLink}*/}
+                  {/*    sx={{ display: "flex", gap: 1 }}*/}
+                  {/*    variant={"outlined"}*/}
+                  {/*  >*/}
+                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
+                  {/*      <Trans i18nKey={"copy report link"} />*/}
+                  {/*    </Typography>*/}
+                  {/*    <InsertLinkIcon fontSize={"small"} />*/}
+                  {/*  </Button>*/}
+                  {/*  <Button*/}
+                  {/*    sx={{ display: "flex", gap: 1 }}*/}
+                  {/*    variant={"contained"}*/}
+                  {/*  >*/}
+                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
+                  {/*      <Trans i18nKey={"view report"} />*/}
+                  {/*    </Typography>*/}
+                  {/*    <AssignmentOutlinedIcon fontSize={"small"} />*/}
+                  {/*  </Button>*/}
+                  {/*</Box>*/}
                 </Grid>
               </Grid>
             </Box>
-            <MainCard
-              style={{
-                // ...styles.centerCVH,
-                minHeight: "50px",
-                mt: 2,
-              }}
-            >
-              <Typography
-                style={{ ...theme.typography.semiBoldLarge }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  color: "#2B333B",
-                  gap: 2,
-                  mb: 3,
-                }}
-              >
-                <Trans i18nKey={"introduction"} />
-                <InfoOutlinedIcon />
-                {!intro && (
-                  <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: theme.palette.error.main,
-                    }}
-                  >
-                    (<Trans i18nKey={"empty"} />)
-                  </Typography>
-                )}
-              </Typography>
-              <Box>
-                <OnHoverInputReport
-                  attributeId={1}
-                  // formMethods={formMethods}
-                  data={intro}
-                  infoQuery={fetchReportFields}
-                  type="summary"
-                  editable={true}
-                  placeholder={t("writeIntroduction")}
-                  name={"intro"}
-                />
-              </Box>
-            </MainCard>
-            <MainCard style={{ mt: "40px" }}>
-              <Grid columns={12} container>
-                <Grid xs={12} item>
+            {reportFields.map((field) => {
+              const { name, title, placeholder } = field;
+              return (
+                <MainCard
+                  key={uniqueId()}
+                  style={{
+                    minHeight: "50px",
+                    mt: 2,
+                  }}
+                >
                   <Typography
                     style={{ ...theme.typography.semiBoldLarge }}
                     sx={{
@@ -227,9 +200,8 @@ const ReportTab = () => {
                       mb: 3,
                     }}
                   >
-                    <Trans i18nKey={"strengthsAndRoomsForImprovement"} />
-                    <InfoOutlinedIcon />
-                    {!prosAndCons && (
+                    <Trans i18nKey={title} />
+                    {!data[name] && (
                       <Typography
                         sx={{
                           ...theme.typography.semiBoldLarge,
@@ -240,132 +212,38 @@ const ReportTab = () => {
                       </Typography>
                     )}
                   </Typography>
-                  <OnHoverInputReport
-                    attributeId={2}
-                    // formMethods={formMethods}
-                    data={prosAndCons}
-                    infoQuery={fetchReportFields}
-                    type="summary"
-                    editable={true}
-                    placeholder={t("writeStrengthAndRooms")}
-                    name={"prosAndCons"}
-                  />
-                </Grid>
-                <Grid item>
-                  {/*<TreeMapChart*/}
-                  {/*    data={combinedAttributes}*/}
-                  {/*    levels={*/}
-                  {/*        jsonData?.assessment.assessmentKit*/}
-                  {/*            .maturityLevelCount*/}
-                  {/*    }*/}
-                  {/*/>*/}
-                </Grid>
-              </Grid>
-            </MainCard>
-            <MainCard style={{ mt: "40px" }}>
-              <Typography
-                style={{ ...theme.typography.semiBoldLarge }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  color: "#2B333B",
-                  gap: 2,
-                  mb: 3,
-                }}
-              >
-                <Trans i18nKey={"stepsTakenForThisAssessment"} />
-                <InfoOutlinedIcon />
-                {!steps && (
-                  <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: theme.palette.error.main,
-                    }}
-                  >
-                    (<Trans i18nKey={"empty"} />)
-                  </Typography>
-                )}
-              </Typography>
-              <Box sx={{ marginInlineStart: "1rem" }}>
-                <Typography
-                  sx={{
-                    ...theme.typography.bodyMedium,
-                    color: "#2B333B",
-                    mb: "1.2rem",
-                  }}
-                >
-                  <Trans i18nKey={"stepsTakenSoFar"} />
-                </Typography>
-                <OnHoverInputReport
-                  attributeId={3}
-                  // formMethods={formMethods}
-                  data={steps}
-                  infoQuery={fetchReportFields}
-                  type="summary"
-                  editable={true}
-                  placeholder={t("writeStepsForAssessment")}
-                  name={"steps"}
-                />
-              </Box>
-            </MainCard>
-            <MainCard style={{ mt: "40px" }}>
-              <Typography
-                style={{ ...theme.typography.semiBoldLarge }}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  color: "#2B333B",
-                  gap: 2,
-                  mb: 3,
-                }}
-              >
-                <Trans i18nKey={"assessmentContributors"} />
-                <InfoOutlinedIcon />
-                {!participants && (
-                  <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: theme.palette.error.main,
-                    }}
-                  >
-                    (<Trans i18nKey={"empty"} />)
-                  </Typography>
-                )}
-              </Typography>
-              <Box sx={{ marginInlineStart: "1rem" }}>
-                <Typography
-                  sx={{
-                    ...theme.typography.bodyMedium,
-                    color: "#2B333B",
-                    mb: "1.2rem",
-                  }}
-                >
-                  <Trans i18nKey={"peopleHaveContributingInAssessment"} />
-                </Typography>
-                <OnHoverInputReport
-                  attributeId={4}
-                  // formMethods={formMethods}
-                  data={participants}
-                  infoQuery={fetchReportFields}
-                  type="summary"
-                  editable={true}
-                  placeholder={t("writeAssessmentContributors")}
-                  name={"participants"}
-                />
-              </Box>
-            </MainCard>
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={3000}
-              onClose={handleCloseSnackbar}
-              message={t("linkCopied")}
-            />
+                  <Box>
+                    <OnHoverInputReport
+                      attributeId={1}
+                      data={data[name]}
+                      infoQuery={fetchReportFields}
+                      type="summary"
+                      editable={true}
+                      placeholder={t(placeholder)}
+                      name={name}
+                    />
+                  </Box>
+                </MainCard>
+              );
+            })}
           </>
         );
       }}
     />
+  );
+};
+
+const Loading = () => {
+  let count = Array.from(Array(4).keys());
+  return (
+    <>
+      {count.map((item) => (
+        <LoadingSkeleton
+          key={uniqueId()}
+          sx={{ height: "150px", mt: "50px" }}
+        />
+      ))}
+    </>
   );
 };
 
@@ -391,9 +269,32 @@ const OnHoverInputReport = (props: any) => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
   const [show, setShow] = useState<boolean>(!!!data);
+  const [showMore, setShowMore] = useState(false);
+  const [showBtn, setShowBtn] = useState(false);
+  const [isFarsi, setIsFarsi] = useState(languageDetector(data));
+  const paragraphRef = useRef<any>(null);
 
+  const toggleShowMore = () => {
+    setShowMore((prev) => !prev);
+  };
+  useEffect(() => {
+    if (paragraphRef?.current) {
+      if (
+        paragraphRef?.current?.offsetHeight <
+        paragraphRef?.current?.scrollHeight
+      ) {
+        setShowMore(true);
+        setShowBtn(true);
+      } else {
+        setShowMore(false);
+        setShowBtn(false);
+      }
+    }
+  }, []);
   const handleCancel = () => {
-    setShow(false);
+    if (data) {
+      setShow(false);
+    }
     setError({});
     setHasError(false);
   };
@@ -408,13 +309,15 @@ const OnHoverInputReport = (props: any) => {
         [name]: data?.[name],
       };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
-      const res = await patchUpdateReportFields.query({
-        assessmentId,
-        reportData,
-      });
-      infoQuery.query();
-      res?.message && toast.success(res?.message);
-      setShow(false);
+      if (Object.values(reportData)[0]) {
+        const res = await patchUpdateReportFields.query({
+          assessmentId,
+          reportData,
+        });
+        infoQuery.query();
+        res?.message && toast.success(res?.message);
+        setShow(false);
+      }
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
@@ -430,6 +333,18 @@ const OnHoverInputReport = (props: any) => {
     }
   };
   const formMethods = useForm({ shouldUnregister: true });
+
+  const toggleBtn = () =>
+    showMore ? (
+      <Button variant={"text"} onClick={toggleShowMore}>
+        <Trans i18nKey={"showMore"} />
+      </Button>
+    ) : (
+      <Button onClick={toggleShowMore}>
+        <Trans i18nKey={"showLess"} />
+      </Button>
+    );
+
   return (
     <Box
       sx={{
@@ -444,10 +359,11 @@ const OnHoverInputReport = (props: any) => {
             <Box
               sx={{
                 width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                height: "100%",
+                position: "relative",
               }}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
             >
               <RichEditorField
                 name={name}
@@ -455,47 +371,53 @@ const OnHoverInputReport = (props: any) => {
                 required={false}
                 defaultValue={data || ""}
                 placeholder={placeholder}
+                type={"reportTab"}
+                setLangDir={setIsFarsi}
+                isFarsi={isFarsi}
               />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <IconButton
-                  edge="end"
+              {isHovering && (
+                <Box
                   sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "3px",
-                    height: "36px",
-                    marginBottom: "2px",
+                    ...styles.centerCVH,
+                    gap: "4px",
+                    // height: "100%",
+                    position: "absolute",
+                    right: isFarsi ? "unset" : 0,
+                    left: isFarsi ? 0 : "unset",
+                    top: 0,
+                    bottom: 0,
                   }}
-                  onClick={formMethods.handleSubmit(updateAssessmentKit)}
                 >
-                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "4px",
-                    height: "36px",
-                    marginBottom: "2px",
-                  }}
-                  onClick={handleCancel}
-                >
-                  <CancelRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Box>
+                  <IconButton
+                    // edge="end"
+                    sx={{
+                      background: theme.palette.primary.main,
+                      "&:hover": {
+                        background: theme.palette.primary.dark,
+                      },
+                      borderRadius: isFarsi ? "8px 0 0 0" : "0 8px 0 0",
+                      height: "49%",
+                    }}
+                    onClick={formMethods.handleSubmit(updateAssessmentKit)}
+                  >
+                    <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                  </IconButton>
+                  <IconButton
+                    // edge="end"
+                    sx={{
+                      background: theme.palette.primary.main,
+                      "&:hover": {
+                        background: theme.palette.primary.dark,
+                      },
+                      borderRadius: isFarsi ? "0 0 0 8px" : "0 0 8px 0",
+                      height: "49%",
+                    }}
+                    onClick={handleCancel}
+                  >
+                    <CancelRoundedIcon sx={{ color: "#fff" }} />
+                  </IconButton>
+                </Box>
+              )}
             </Box>
           </FormProviderWithForm>
           {hasError && (
@@ -505,75 +427,91 @@ const OnHoverInputReport = (props: any) => {
           )}
         </Box>
       ) : (
-        <Box
-          sx={{
-            minHeight: "38px",
-            borderRadius: "4px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            wordBreak: "break-word",
-            "&:hover": {
-              border: editable ? "1px solid #1976d299" : "unset",
-              borderColor: editable ? theme.palette.primary.main : "unset",
-            },
-          }}
-          onClick={() => setShow(!show)}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          <Typography
+        <Box sx={{ width: "100%" }}>
+          <Box
             sx={{
+              minHeight: "38px",
+              borderRadius: "8px",
               width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              wordBreak: "break-word",
+              p: 1.5,
+              pr: languageDetector(data) ? 1 : 5,
+              pl:languageDetector(data) ? 5 : 1,
+              border: "1px solid #fff",
+              "&:hover": {
+                border: editable ? "1px solid #1976d299" : "unset",
+                borderColor: editable ? theme.palette.primary.main : "unset",
+              },
+              position: "relative",
             }}
+            onClick={() => setShow(!show)}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
           >
             <Typography
-              dangerouslySetInnerHTML={{
-                __html: data,
-              }}
-              style={{
-                display: "-webkit-box",
-                // height:"100px",
+              sx={{
                 width: "100%",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                // whiteSpace:"nowrap",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-                ...theme.typography.titleMedium,
-                fontWeight: "400",
-                unicodeBidi: "plaintext",
-                fontFamily: languageDetector(data)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
               }}
-              sx={{
-                "& > p": {
-                  unicodeBidi: "plaintext",
-                  textAlign: "initial",
-                },
-              }}
-              className={"tiptap"}
-            ></Typography>
-          </Typography>
-          {isHovering && (
-            <IconButton
-              title="Edit"
-              edge="end"
-              sx={{
-                background: theme.palette.primary.main,
-                "&:hover": {
-                  background: theme.palette.primary.dark,
-                },
-                borderRadius: "3px",
-                height: "36px",
-              }}
-              onClick={() => setShow(!show)}
             >
-              <EditRounded sx={{ color: "#fff" }} />
-            </IconButton>
-          )}
+              <Typography
+                dangerouslySetInnerHTML={{
+                  __html: data,
+                }}
+                style={{
+                  display: "-webkit-box",
+                  width: "100%",
+                  height: showMore
+                    ? "unset"
+                    : paragraphRef?.current?.scrollHeight,
+                  transition: "all 1s ease-in-out",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  // whiteSpace:"nowrap",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  ...theme.typography.titleMedium,
+                  fontWeight: "400",
+                  unicodeBidi: "plaintext",
+                  fontFamily: languageDetector(data)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                }}
+                sx={{
+                  "& > p": {
+                    unicodeBidi: "plaintext",
+                    textAlign: "initial",
+                  },
+                }}
+                ref={paragraphRef}
+                className={"tiptap"}
+              ></Typography>
+            </Typography>
+            {isHovering && (
+              <IconButton
+                title="Edit"
+                // edge="end"
+                sx={{
+                  background: theme.palette.primary.main,
+                  "&:hover": {
+                    background: theme.palette.primary.dark,
+                  },
+                  borderRadius: languageDetector(data) ? "8px 0 0 8px"  : "0 8px 8px 0",
+                  height: "100%",
+                  position: "absolute",
+                  right: languageDetector(data) ? "unset" :  0,
+                  left: languageDetector(data) ? 0 :  "unset",
+                  top: 0,
+                }}
+                onClick={() => setShow(!show)}
+              >
+                <EditRounded sx={{ color: "#fff" }} />
+              </IconButton>
+            )}
+          </Box>
+          {showBtn ? toggleBtn() : null}
         </Box>
       )}
     </Box>
