@@ -370,6 +370,7 @@ export interface IAssessment {
   lastModificationTime: string;
   status: TStatus;
   title: string;
+  hasReport: boolean;
   // code: string;
   color: IColor;
   isCalculateValid: boolean;

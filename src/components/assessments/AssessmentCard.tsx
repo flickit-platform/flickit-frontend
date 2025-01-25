@@ -34,8 +34,7 @@ import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import { useQuery } from "@utils/useQuery";
 
 interface IAssessmentCardProps {
-  item: IAssessment & { space: any, canViewReport: boolean, hasReport: boolean };
-
+  item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   deleteAssessment: TQueryFunction<any, TId>;
 }
@@ -122,7 +121,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   }, [item.permissions]);
 
   const detectAssessmentCardBtn = () => {
-      if( item?.canViewReport && item?.hasReport ){
+      if( item?.permissions?.canViewReport && item?.hasReport ){
           return (
               <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
                   <Button
@@ -139,14 +138,14 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                       to={`/${spaceId}/assessments/${item.id}/graphical-report/`}
                       data-cy="graphical-btn"
                       variant={
-                          item.hasReport ? "outlined" : "contained"
+                          item?.hasReport ? "outlined" : "contained"
                       }
                   >
                       <Trans i18nKey="graphicChart" />
                   </Button>
               </Grid>
           )
-      } else if(item?.canViewReport && !item.hasReport){
+      } else if(item?.permissions?.canViewReport && !item.hasReport){
           return (
             <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
               <Button
