@@ -23,7 +23,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
 import { uniqueId } from "lodash";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
-import {styles} from "@styles";
+import { styles } from "@styles";
 
 const ReportTab = () => {
   const { assessmentId = "" } = useParams();
@@ -33,11 +33,11 @@ const ReportTab = () => {
       service.fetchReportFields(args, config),
     runOnMount: true,
   });
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-     toast(`${t("linkCopied")}`,{type:"success"})
-    });
-  };
+  // const copyLink = () => {
+  //   navigator.clipboard.writeText(window.location.href).then(() => {
+  //    toast(`${t("linkCopied")}`,{type:"success"})
+  //   });
+  // };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
     { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
@@ -57,20 +57,6 @@ const ReportTab = () => {
       placeholder: "writeAssessmentContributors",
     },
   ];
-
-  const Loading = () => {
-    let count = Array.from(Array(4).keys());
-    return (
-      <>
-        {count.map((item) => (
-          <LoadingSkeleton
-            key={uniqueId()}
-            sx={{ height: "150px", mt: "50px" }}
-          />
-        ))}
-      </>
-    );
-  };
 
   return (
     <QueryData
@@ -247,6 +233,20 @@ const ReportTab = () => {
   );
 };
 
+const Loading = () => {
+  let count = Array.from(Array(4).keys());
+  return (
+    <>
+      {count.map((item) => (
+        <LoadingSkeleton
+          key={uniqueId()}
+          sx={{ height: "150px", mt: "50px" }}
+        />
+      ))}
+    </>
+  );
+};
+
 const OnHoverInputReport = (props: any) => {
   const [isHovering, setIsHovering] = useState(false);
   const { assessmentId = "" } = useParams();
@@ -292,7 +292,7 @@ const OnHoverInputReport = (props: any) => {
     }
   }, []);
   const handleCancel = () => {
-    if(data){
+    if (data) {
       setShow(false);
     }
     setError({});
@@ -309,7 +309,7 @@ const OnHoverInputReport = (props: any) => {
         [name]: data?.[name],
       };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
-      if(Object.values(reportData)[0]){
+      if (Object.values(reportData)[0]) {
         const res = await patchUpdateReportFields.query({
           assessmentId,
           reportData,
@@ -333,6 +333,18 @@ const OnHoverInputReport = (props: any) => {
     }
   };
   const formMethods = useForm({ shouldUnregister: true });
+
+  const toggleBtn = () =>
+    showMore ? (
+      <Button variant={"text"} onClick={toggleShowMore}>
+        <Trans i18nKey={"showMore"} />
+      </Button>
+    ) : (
+      <Button onClick={toggleShowMore}>
+        <Trans i18nKey={"showLess"} />
+      </Button>
+    );
+
   return (
     <Box
       sx={{
@@ -494,17 +506,7 @@ const OnHoverInputReport = (props: any) => {
               </IconButton>
             )}
           </Box>
-          {showBtn ? (
-            showMore ? (
-              <Button variant={"text"} onClick={toggleShowMore}>
-                <Trans i18nKey={"showMore"} />
-              </Button>
-            ) : (
-              <Button onClick={toggleShowMore}>
-                <Trans i18nKey={"showLess"} />
-              </Button>
-            )
-          ) : null}
+          {showBtn ? toggleBtn() : null}
         </Box>
       )}
     </Box>
