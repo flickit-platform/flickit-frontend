@@ -165,8 +165,8 @@ const RichEditor = (props: IRichEditorProps) => {
                 border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 background: "#fff",
-                pl: 1.5,
-                pr: type === "reportTab" ? 6 : 1.5,
+                pl: type === "reportTab" && isFarsi ? 6 : 1.5,
+                pr: type === "reportTab" && isFarsi ? 1.5 : 6,
                 py: 1,
                 "& > p": editor?.isEmpty
                   ? {

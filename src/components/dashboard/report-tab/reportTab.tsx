@@ -271,7 +271,7 @@ const OnHoverInputReport = (props: any) => {
   const [show, setShow] = useState<boolean>(!!!data);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
-
+  const [isFarsi, setIsFarsi] = useState(languageDetector(data));
   const paragraphRef = useRef<any>(null);
 
   const toggleShowMore = () => {
@@ -372,6 +372,8 @@ const OnHoverInputReport = (props: any) => {
                 defaultValue={data || ""}
                 placeholder={placeholder}
                 type={"reportTab"}
+                setLangDir={setIsFarsi}
+                isFarsi={isFarsi}
               />
               {isHovering && (
                 <Box
@@ -380,7 +382,8 @@ const OnHoverInputReport = (props: any) => {
                     gap: "4px",
                     // height: "100%",
                     position: "absolute",
-                    right: 0,
+                    right: isFarsi ? "unset" : 0,
+                    left: isFarsi ? 0 : "unset",
                     top: 0,
                     bottom: 0,
                   }}
@@ -392,7 +395,7 @@ const OnHoverInputReport = (props: any) => {
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: "0 8px 0 0",
+                      borderRadius: isFarsi ? "8px 0 0 0" : "0 8px 0 0",
                       height: "49%",
                     }}
                     onClick={formMethods.handleSubmit(updateAssessmentKit)}
@@ -406,7 +409,7 @@ const OnHoverInputReport = (props: any) => {
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: "0 0 8px 0",
+                      borderRadius: isFarsi ? "0 0 0 8px" : "0 0 8px 0",
                       height: "49%",
                     }}
                     onClick={handleCancel}
@@ -435,7 +438,8 @@ const OnHoverInputReport = (props: any) => {
               alignItems: "center",
               wordBreak: "break-word",
               p: 1.5,
-              pr: 5,
+              pr: languageDetector(data) ? 1 : 5,
+              pl:languageDetector(data) ? 5 : 1,
               border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
@@ -494,10 +498,11 @@ const OnHoverInputReport = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "0 8px 8px 0",
+                  borderRadius: languageDetector(data) ? "8px 0 0 8px"  : "0 8px 8px 0",
                   height: "100%",
                   position: "absolute",
-                  right: 0,
+                  right: languageDetector(data) ? "unset" :  0,
+                  left: languageDetector(data) ? 0 :  "unset",
                   top: 0,
                 }}
                 onClick={() => setShow(!show)}

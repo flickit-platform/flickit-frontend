@@ -43,7 +43,8 @@ const RichEditorFieldBase = (props: any) => {
     disable_label,
     setLangDir,
     placeholder,
-    type
+    type,
+    detectLang
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
