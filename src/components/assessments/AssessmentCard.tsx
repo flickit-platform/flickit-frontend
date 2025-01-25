@@ -295,7 +295,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 data-cy="graphical-btn"
                 variant={item?.hasReport ? "outlined" : "contained"}
               >
-                <Trans i18nKey="graphicChart" />
+                <Trans i18nKey="reportTitle" />
               </Button>
             </Grid>
           )}
