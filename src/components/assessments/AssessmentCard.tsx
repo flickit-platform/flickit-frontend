@@ -44,7 +44,7 @@ import { Chip } from "@mui/material";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { ArticleRounded, Assessment } from "@mui/icons-material";
+import { Assessment } from "@mui/icons-material";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -52,7 +52,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const { item } = props;
   const abortController = useRef(new AbortController());
-  const { spaceId, page } = useParams();
+  const { spaceId } = useParams();
 
   const {
     maturityLevel,
@@ -155,12 +155,14 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               }}
               component={Link}
               to={
-                isCalculateValid && item.permissions.canViewDashboard
-                  ? `${item.id}/dashboard`
-                  : item.permissions.canViewQuestionnaires
-                    ? `${item.id}/questionnaires`
-                    : item.permissions.canViewReport
-                      ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                isCalculateValid &&
+                item.permissions.canViewReport &&
+                item.hasReport
+                  ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                  : item.permissions.canViewDashboard
+                    ? `${item.id}/dashboard`
+                    : item.permissions.canViewQuestionnaires
+                      ? `${item.id}/questionnaires`
                       : ""
               }
             >
@@ -228,12 +230,12 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             mt={2}
             component={Link}
             to={
-              hasML && item.permissions.canViewDashboard
-                ? `${item.id}/dashboard`
-                : item.permissions.canViewQuestionnaires
-                  ? `${item.id}/questionnaires`
-                  : item.permissions.canViewReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+              hasML && item.hasReport && item.permissions.canViewReport
+                ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                : item.permissions.canViewDashboard
+                  ? `${item.id}/dashboard`
+                  : item.permissions.canViewQuestionnaires
+                    ? `${item.id}/questionnaires`
                     : ""
             }
           >
@@ -276,11 +278,16 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               </Typography>
             </Grid>
           )}
-          {item?.permissions?.canViewReport && item?.hasReport && (
+          {(item.permissions.canViewQuestionnaires ||
+            (item.permissions.canViewReport && item.hasReport)) && (
             <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
               <Button
                 startIcon={
-                  <Assessment sx={{ fontSize: "1.5rem", margin: "0.1rem" }} />
+                  item.permissions.canViewReport || item.hasReport ? (
+                    <Assessment />
+                  ) : (
+                    <QuizRoundedIcon />
+                  )
                 }
                 fullWidth
                 onClick={(
@@ -291,58 +298,18 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 component={Link}
                 sx={{ position: "relative", zIndex: 1 }}
                 state={location}
-                to={`/${spaceId}/assessments/${item.id}/graphical-report/`}
-                data-cy="graphical-btn"
-                variant={item?.hasReport ? "outlined" : "contained"}
-              >
-                <Trans i18nKey="graphicChart" />
-              </Button>
-            </Grid>
-          )}
-          {item?.permissions?.canViewReport && !item.hasReport && (
-            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-              <Button
-                startIcon={
-                  <ArticleRounded
-                    sx={{ fontSize: "1.5rem", margin: "0.1rem" }}
-                  />
+                to={
+                  item.permissions.canViewReport && item.hasReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                    : item.permissions.canViewQuestionnaires
+                      ? `${item.id}/questionnaires`
+                      : ""
                 }
-                fullWidth
-                onClick={(
-                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-                ) => {
-                  e.stopPropagation();
-                }}
-                component={Link}
-                sx={{ position: "relative", zIndex: 1 }}
-                state={location}
-                to={`/${spaceId}/assessments/1/${item.id}/assessment-document/`}
-                data-cy="report-btn"
-                variant={
-                  item.permissions.canViewReport ? "outlined" : "contained"
-                }
-              >
-                <Trans i18nKey="reportTitle" />
-              </Button>
-            </Grid>
-          )}
-          {!item.permissions.canViewReport && (
-            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-              <Button
-                startIcon={<QuizRoundedIcon />}
-                fullWidth
-                onClick={(
-                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-                ) => {
-                  e.stopPropagation();
-                }}
-                component={Link}
-                sx={{ position: "relative", zIndex: 1 }}
-                state={location}
-                to={`${item.id}/questionnaires`}
                 data-cy="questionnaires-btn"
                 variant={
-                  item.permissions.canViewDashboard ? "outlined" : "contained"
+                  !item.permissions.canViewReport || !item.hasReport
+                    ? "outlined"
+                    : "contained"
                 }
               >
                 <Box
@@ -352,17 +319,23 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                     right: 0,
                     left: 0,
                     bottom: 0,
-                    background: item.permissions.canViewDashboard
-                      ? "rgba(102, 128, 153, 0.3)"
-                      : "rgb(0, 41, 70)",
+                    background: "rgba(102, 128, 153, 0.3)",
                     zIndex: -1,
-                    width: calculatePercentage
-                      ? `${calculatePercentage}%`
-                      : "0%",
+                    width:
+                      !(item.permissions.canViewReport && item.hasReport) &&
+                      calculatePercentage
+                        ? `${calculatePercentage}%`
+                        : "0%",
                     transition: "all 1s ease-in-out",
                   }}
                 ></Box>
-                <Trans i18nKey="questionnaires" />
+                <Trans
+                  i18nKey={
+                    item.permissions.canViewReport && item.hasReport
+                      ? "reportTitle"
+                      : "questionnaires"
+                  }
+                />
               </Button>
             </Grid>
           )}
@@ -371,10 +344,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             xs={12}
             sx={{
               ...styles.centerCH,
-              display:
-                item.permissions.canViewDashboard || canViewReport
-                  ? "block"
-                  : "none",
+              display: item.permissions.canViewDashboard ? "block" : "none",
             }}
             mt={1}
           >
