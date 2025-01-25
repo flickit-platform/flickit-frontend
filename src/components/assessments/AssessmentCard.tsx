@@ -44,7 +44,7 @@ import { Chip } from "@mui/material";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
-import {ArticleRounded, Assessment} from "@mui/icons-material";
+import { ArticleRounded, Assessment } from "@mui/icons-material";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -119,100 +119,6 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
       !item.permissions.canViewDashboard
     );
   }, [item.permissions]);
-
-  const detectAssessmentCardBtn = () => {
-      if( item?.permissions?.canViewReport && item?.hasReport ){
-          return (
-              <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-                  <Button
-                      startIcon={<Assessment
-                          sx={{ fontSize: "1.5rem", margin: "0.1rem" }}
-                          />}
-                      fullWidth
-                      onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                          e.stopPropagation();
-                      }}
-                      component={Link}
-                      sx={{ position: "relative", zIndex: 1 }}
-                      state={location}
-                      to={`/${spaceId}/assessments/${item.id}/graphical-report/`}
-                      data-cy="graphical-btn"
-                      variant={
-                          item?.hasReport ? "outlined" : "contained"
-                      }
-                  >
-                      <Trans i18nKey="graphicChart" />
-                  </Button>
-              </Grid>
-          )
-      } else if(item?.permissions?.canViewReport && !item.hasReport){
-          return (
-            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-              <Button
-                startIcon={
-                  <ArticleRounded
-                    sx={{ fontSize: "1.5rem", margin: "0.1rem" }}
-                  />
-                }
-                fullWidth
-                onClick={(
-                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-                ) => {
-                  e.stopPropagation();
-                }}
-                component={Link}
-                sx={{ position: "relative", zIndex: 1 }}
-                state={location}
-                to={`/${spaceId}/assessments/1/${item.id}/assessment-document/`}
-                data-cy="report-btn"
-                variant={
-                  item.permissions.canViewReport ? "outlined" : "contained"
-                }
-              >
-                <Trans i18nKey="reportTitle" />
-              </Button>
-            </Grid>
-          );
-      }
-      else if (!item.permissions.canViewReport) {
-      return (
-        <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-          <Button
-            startIcon={<QuizRoundedIcon />}
-            fullWidth
-            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-              e.stopPropagation();
-            }}
-            component={Link}
-            sx={{ position: "relative", zIndex: 1 }}
-            state={location}
-            to={`${item.id}/questionnaires`}
-            data-cy="questionnaires-btn"
-            variant={
-              item.permissions.canViewDashboard ? "outlined" : "contained"
-            }
-          >
-            <Box
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-                background: item.permissions.canViewDashboard
-                  ? "rgba(102, 128, 153, 0.3)"
-                  : "rgb(0, 41, 70)",
-                zIndex: -1,
-                width: calculatePercentage ? `${calculatePercentage}%` : "0%",
-                transition: "all 1s ease-in-out",
-              }}
-            ></Box>
-            <Trans i18nKey="questionnaires" />
-          </Button>
-        </Grid>
-      );
-    }
-  };
 
   return (
     <Grid item lg={3} md={4} sm={6} xs={12}>
@@ -370,7 +276,96 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               </Typography>
             </Grid>
           )}
-            {detectAssessmentCardBtn()}
+          {item?.permissions?.canViewReport && item?.hasReport && (
+            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
+              <Button
+                startIcon={
+                  <Assessment sx={{ fontSize: "1.5rem", margin: "0.1rem" }} />
+                }
+                fullWidth
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+                ) => {
+                  e.stopPropagation();
+                }}
+                component={Link}
+                sx={{ position: "relative", zIndex: 1 }}
+                state={location}
+                to={`/${spaceId}/assessments/${item.id}/graphical-report/`}
+                data-cy="graphical-btn"
+                variant={item?.hasReport ? "outlined" : "contained"}
+              >
+                <Trans i18nKey="graphicChart" />
+              </Button>
+            </Grid>
+          )}
+          {item?.permissions?.canViewReport && !item.hasReport && (
+            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
+              <Button
+                startIcon={
+                  <ArticleRounded
+                    sx={{ fontSize: "1.5rem", margin: "0.1rem" }}
+                  />
+                }
+                fullWidth
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+                ) => {
+                  e.stopPropagation();
+                }}
+                component={Link}
+                sx={{ position: "relative", zIndex: 1 }}
+                state={location}
+                to={`/${spaceId}/assessments/1/${item.id}/assessment-document/`}
+                data-cy="report-btn"
+                variant={
+                  item.permissions.canViewReport ? "outlined" : "contained"
+                }
+              >
+                <Trans i18nKey="reportTitle" />
+              </Button>
+            </Grid>
+          )}
+          {!item.permissions.canViewReport && (
+            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
+              <Button
+                startIcon={<QuizRoundedIcon />}
+                fullWidth
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+                ) => {
+                  e.stopPropagation();
+                }}
+                component={Link}
+                sx={{ position: "relative", zIndex: 1 }}
+                state={location}
+                to={`${item.id}/questionnaires`}
+                data-cy="questionnaires-btn"
+                variant={
+                  item.permissions.canViewDashboard ? "outlined" : "contained"
+                }
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                    background: item.permissions.canViewDashboard
+                      ? "rgba(102, 128, 153, 0.3)"
+                      : "rgb(0, 41, 70)",
+                    zIndex: -1,
+                    width: calculatePercentage
+                      ? `${calculatePercentage}%`
+                      : "0%",
+                    transition: "all 1s ease-in-out",
+                  }}
+                ></Box>
+                <Trans i18nKey="questionnaires" />
+              </Button>
+            </Grid>
+          )}
           <Grid
             item
             xs={12}
