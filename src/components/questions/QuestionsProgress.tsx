@@ -73,7 +73,7 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
 };
 
 export const QuestionProgressItem = (props: any) => {
-  const { question, to } = props;
+  const { question, to, questionsInfo } = props;
 
   const { questionIndex } = useParams();
   const { handleClick, ...popoverProps } = usePopover();
@@ -92,7 +92,7 @@ export const QuestionProgressItem = (props: any) => {
         height: "20px",
         cursor: questionIndex != question.index ? "pointer" : "auto",
         backgroundColor: (t: any) =>
-          hasIssue
+          hasIssue && questionsInfo.permissions.viewDashboard
             ? `${t.palette.secondary.main}`
             : question?.answer?.selectedOption ||
                 question?.answer?.isNotApplicable
@@ -101,7 +101,7 @@ export const QuestionProgressItem = (props: any) => {
         border: (t: any) => `3px solid white`,
         outline: (t: any) =>
           `${
-            hasIssue
+            hasIssue && questionsInfo.permissions.viewDashboard
               ? `${t.palette.secondary.main}`
               : question?.answer?.selectedOption ||
                   question?.answer?.isNotApplicable
@@ -118,7 +118,7 @@ export const QuestionProgressItem = (props: any) => {
     >
       <Tooltip
         title={
-          hasIssue ? (
+          hasIssue && questionsInfo.permissions.viewDashboard ? (
             <Box>
               {[
                 question?.issues.isUnanswered && (
@@ -168,7 +168,7 @@ export const QuestionProgressItem = (props: any) => {
               color:
                 question?.answer?.selectedOption ||
                 question?.answer?.isNotApplicable ||
-                hasIssue
+                (hasIssue && questionsInfo.permissions.viewDashboard)
                   ? `white`
                   : "gray",
               transition: "opacity .1s ease",

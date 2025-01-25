@@ -425,7 +425,9 @@ export const QuestionTabsTemplate = (props: any) => {
   }, [questionsInfo?.permissions?.readonly, questionInfo]);
 
   useEffect(() => {
-    queryData.query();
+    if (questionsInfo?.permissions?.viewAnswerHistory) {
+      queryData.query();
+    }
   }, [questionInfo.answer]);
 
   useEffect(() => {
@@ -704,28 +706,43 @@ const AnswerTemplate = (props: {
         );
       }
 
-      await service
-        .fetchQuestionIssues(
-          {
-            assessmentId,
-            questionId: questionInfo?.id,
-          },
-          { signal: abortController.current.signal },
-        )
-        .then((res: any) => {
-          dispatch(
-            questionActions.setQuestionInfo({
-              ...questionInfo,
-              answer: {
-                selectedOption: value,
-                isNotApplicable: notApplicable,
-                confidenceLevel:
-                  confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
-              } as TAnswer,
-              issues: res.data,
-            }),
-          );
-        });
+      if (questionsInfo.permissions?.viewAnswerHistory) {
+        await service
+          .fetchQuestionIssues(
+            {
+              assessmentId,
+              questionId: questionInfo?.id,
+            },
+            { signal: abortController.current.signal },
+          )
+          .then((res: any) => {
+            dispatch(
+              questionActions.setQuestionInfo({
+                ...questionInfo,
+                answer: {
+                  selectedOption: value,
+                  isNotApplicable: notApplicable,
+                  confidenceLevel:
+                    confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+                } as TAnswer,
+                issues: res.data,
+              }),
+            );
+          });
+      } else {
+        dispatch(
+          questionActions.setQuestionInfo({
+            ...questionInfo,
+            answer: {
+              selectedOption: value,
+              isNotApplicable: notApplicable,
+              confidenceLevel:
+                confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+            } as TAnswer,
+          }),
+        );
+      }
+
       dispatch(questionActions.setIsSubmitting(false));
 
       if (value) {
@@ -1315,22 +1332,24 @@ const Evidence = (props: any) => {
         const { items } = await evidencesQueryData.query();
         setEvidencesData(items);
         setValueCount("");
-        service
-          .fetchQuestionIssues(
-            {
-              assessmentId,
-              questionId: questionInfo?.id,
-            },
-            {},
-          )
-          .then((res: any) => {
-            dispatch(
-              questionActions.setQuestionInfo({
-                ...questionInfo,
-                issues: res.data,
-              }),
-            );
-          });
+        if (permissions?.viewDashboard) {
+          service
+            .fetchQuestionIssues(
+              {
+                assessmentId,
+                questionId: questionInfo?.id,
+              },
+              {},
+            )
+            .then((res: any) => {
+              dispatch(
+                questionActions.setQuestionInfo({
+                  ...questionInfo,
+                  issues: res.data,
+                }),
+              );
+            });
+        }
       }
     } catch (e) {
       const err = e as ICustomError;
@@ -1357,22 +1376,24 @@ const Evidence = (props: any) => {
       setExpandedDeleteDialog(false);
       const { items } = await evidencesQueryData.query();
       setEvidencesData(items);
-      service
-        .fetchQuestionIssues(
-          {
-            assessmentId,
-            questionId: questionInfo?.id,
-          },
-          {},
-        )
-        .then((res: any) => {
-          dispatch(
-            questionActions.setQuestionInfo({
-              ...questionInfo,
-              issues: res.data,
-            }),
-          );
-        });
+      if (permissions?.viewDashboard) {
+        service
+          .fetchQuestionIssues(
+            {
+              assessmentId,
+              questionId: questionInfo?.id,
+            },
+            {},
+          )
+          .then((res: any) => {
+            dispatch(
+              questionActions.setQuestionInfo({
+                ...questionInfo,
+                issues: res.data,
+              }),
+            );
+          });
+      }
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -1610,6 +1631,7 @@ const Evidence = (props: any) => {
                   variant="contained"
                   loading={evidencesQueryData.loading}
                   onClick={() =>
+                    permissions?.viewDashboard &&
                     service
                       .fetchQuestionIssues(
                         {
@@ -1960,22 +1982,24 @@ const EvidenceDetail = (props: any) => {
       setExpandedEvidenceBox(false);
       setIsEditing(false);
       setValueCount("");
-      service
-        .fetchQuestionIssues(
-          {
-            assessmentId,
-            questionId: questionInfo?.id,
-          },
-          {},
-        )
-        .then((res: any) => {
-          dispatch(
-            questionActions.setQuestionInfo({
-              ...questionInfo,
-              issues: res.data,
-            }),
-          );
-        });
+      if (permissions?.viewDashboard) {
+        service
+          .fetchQuestionIssues(
+            {
+              assessmentId,
+              questionId: questionInfo?.id,
+            },
+            {},
+          )
+          .then((res: any) => {
+            dispatch(
+              questionActions.setQuestionInfo({
+                ...questionInfo,
+                issues: res.data,
+              }),
+            );
+          });
+      }
     } catch (e) {
       const err = e as ICustomError;
       toastError(err?.response?.data.description[0]);

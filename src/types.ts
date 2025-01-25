@@ -97,6 +97,7 @@ export interface IPermissions {
   addEvidenceAttachment: boolean;
   exportAssessmentReport: boolean;
   readonly?: boolean;
+  viewDashboard?: boolean
 }
 
 export type TQuestionsInfo = {
