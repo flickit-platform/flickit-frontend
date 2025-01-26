@@ -755,6 +755,18 @@ const AnswerTemplate = (props: {
       const err = e as ICustomError;
       toastError(err);
     }
+    if (submitOnAnswerSelection) {
+      const newQuestionIndex = questionIndex + 1;
+      if (isLastQuestion) {
+        dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
+        navigate(`../completed`, { replace: true });
+        return;
+      }
+      dispatch(questionActions.goToQuestion(newQuestionIndex));
+      navigate(`../${newQuestionIndex}`, {
+        replace: true,
+      });
+    }
   };
 
   const goToQuestion = async (order: "desc" | "asc") => {
@@ -776,26 +788,7 @@ const AnswerTemplate = (props: {
       toastError(err);
     }
   };
-  useEffect(() => {
-    if (
-      submitOnAnswerSelection &&
-      value &&
-      changeHappened.current &&
-      selcetedConfidenceLevel
-    ) {
-      submitQuestion();
-      const newQuestionIndex = questionIndex + 1;
-      if (isLastQuestion) {
-        dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
-        navigate(`../completed`, { replace: true });
-        return;
-      }
-      dispatch(questionActions.goToQuestion(newQuestionIndex));
-      navigate(`../${newQuestionIndex}`, {
-        replace: true,
-      });
-    }
-  }, [value]);
+  
   const notApplicableonChanhe = (e: any) => {
     setNotApplicable(e.target.checked || false);
     if (e.target.checked) {
