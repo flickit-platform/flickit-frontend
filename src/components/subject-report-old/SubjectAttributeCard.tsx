@@ -532,7 +532,6 @@ const AttributeInsight = (props: any) => {
       )}
       errorComponent={<></>}
       render={(data) => {
-        console.log(data);
         return (
           <>
             {(data.editable ||
@@ -549,9 +548,11 @@ const AttributeInsight = (props: any) => {
                     <Trans i18nKey="insight" />
                   </Typography>
 
-                  {data.aiInsight && data.aiInsight.isValid ? (
+                  {data.aiInsight &&
+                  data.aiInsight.isValid &&
+                  !data.approved ? (
                     <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                      {!data.approved && data?.editable && (
+                      {data?.editable && (
                         <LoadingButton
                           onClick={(event) => approveAttribute(event)}
                           variant="contained"
@@ -595,19 +596,27 @@ const AttributeInsight = (props: any) => {
                   ) : (
                     data?.editable && (
                       <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                        {progress === 100 && (
-                          <LoadingButton
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onGenerateAIInsight();
-                            }}
-                            variant={"contained"}
-                            loading={generateAIInsight.loading}
-                            size="small"
-                          >
-                            <Trans i18nKey={"generate"} />
-                          </LoadingButton>
-                        )}{" "}
+                        <Tooltip
+                          title={
+                            <Trans i18nKey="questionsArentCompleteSoAICantBeGenerated" />
+                          }
+                          disableHoverListener={progress === 100}
+                        >
+                          <div>
+                            <LoadingButton
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                onGenerateAIInsight();
+                              }}
+                              variant={"contained"}
+                              loading={generateAIInsight.loading}
+                              size="small"
+                              disabled={progress !== 100}
+                            >
+                              <Trans i18nKey={"generate"} />
+                            </LoadingButton>
+                          </div>
+                        </Tooltip>
                       </Box>
                     )
                   )}
