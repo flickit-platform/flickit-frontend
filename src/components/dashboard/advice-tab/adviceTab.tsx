@@ -41,29 +41,6 @@ const AdviceTab = () => {
           } = data || {};
           return (
             <>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                <Box sx={{ ...styles.centerCV }} gap={2}>
-                  <Typography
-                    color="#73808C"
-                    variant="h5"
-                    display="flex"
-                    alignItems="center"
-                  >
-                    <Trans i18nKey="advice" />
-                    <Box
-                      sx={{
-                        ml: theme.direction == "ltr" ? 1 : "unset",
-                        mr: theme.direction == "rtl" ? 1 : "unset",
-                        mt: 1,
-                      }}
-                    >
-                      <img src={BetaSvg} alt="beta" width={34} />
-                    </Box>
-                  </Typography>
-
-                  <Divider sx={{ width: "100%" }} />
-                </Box>
-              </Grid>
               <Grid item lg={12} md={12} sm={12} xs={12} id="advices" mt={2}>
                 <AssessmentAdviceContainer
                   subjects={subjects}

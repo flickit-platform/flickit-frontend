@@ -793,6 +793,7 @@
   "lowConfidenceAnswers": "پاسخ با سطح اطمینان پایین",
   "unresolvedComments": "یادداشت حل‌نشده",
   "unresolvedComment": "یادداشت‌ حل‌نشده",
+  "generate": "تولید",
   "all": "همه",
   "answeredWithLowConfidence": "امتیازدهی با سطح اطمینان پایین",
   "answeredWithoutEvidence": "پاسخ بدون ثبت شاهد",

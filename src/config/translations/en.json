@@ -792,6 +792,7 @@
   "lowConfidenceAnswers": "Answered with low confidence",
   "unresolvedComments": "Unresolved comments",
   "unresolvedComment": "Unresolved comment",
+  "generate": "Generate",
   "all": "All",
   "answeredWithLowConfidence": "Answered with low confidence",
   "answeredWithoutEvidence": "Answered with no evidence",
