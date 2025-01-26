@@ -7,6 +7,8 @@ import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { uniqueId } from "lodash";
+import { Link } from "react-router-dom";
+import MLink from "@mui/material/Link";
 
 interface IStepperSection {
   setActiveStep: any;
@@ -112,27 +114,35 @@ const StepBox = (props: IStepBox) => {
 
   let content;
 
-  const issuesTag = (
-    <Chip
-      label={
-        <Box sx={{ ...styles.centerVH, gap: 1 }}>
-          <Typography
-            sx={{ ...theme.typography.labelMedium }}
-          >{`  ${calcOfIssues()}  `}</Typography>
-          <Typography sx={{ ...theme.typography.labelSmall }}>
-            {t((calcOfIssues() || 0) > 1 ? "issues" : "issue").toUpperCase()}
-          </Typography>
-        </Box>
-      }
-      size="small"
-      sx={{
-        ...theme.typography.labelMedium,
-        color: "#B8144B",
-        background: "#FCE8EF",
-        direction: theme.direction,
-      }}
-    />
-  );
+  const issuesTag = (text:string) => {
+    return (
+      <MLink sx={{textDecoration:"none"}} onClick={(e) => e.stopPropagation()} href={`#${text}`}>
+        <Chip
+          label={
+            <Box sx={{ ...styles.centerVH, gap: 1 }}>
+              <Typography
+                sx={{ ...theme.typography.labelMedium }}
+              >{`  ${calcOfIssues()}  `}</Typography>
+              <Typography sx={{ ...theme.typography.labelSmall }}>
+                {t(
+                  (calcOfIssues() || 0) > 1 ? "issues" : "issue",
+                ).toUpperCase()}
+              </Typography>
+            </Box>
+          }
+          size="small"
+          sx={{
+            ...theme.typography.labelMedium,
+            color: "#B8144B",
+            background: "#FCE8EF",
+            direction: theme.direction,
+            cursor: "pointer"
+          }}
+        />
+      </MLink>
+    );
+  };
+
   const currentTag = (
     <Chip
       label={t("currentStep")}
@@ -196,7 +206,7 @@ const StepBox = (props: IStepBox) => {
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {answered == total ? completedTag : currentTag}
-            {hasIssues ? issuesTag : null}
+            {hasIssues ? issuesTag("questions") : null}
           </Box>
         </Box>
         <Box
@@ -245,7 +255,7 @@ const StepBox = (props: IStepBox) => {
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && activeStep == 1 && currentTag}
-            {hasIssues ? issuesTag : null}
+            {hasIssues ? issuesTag("insights") : null}
           </Box>
         </Box>
         <Box
@@ -292,7 +302,7 @@ const StepBox = (props: IStepBox) => {
             <Box sx={{ ...styles.centerCVH, gap: 1 }}>
               {completed && activeStep >= 2 && completedTag}
               {!completed && activeStep == 2 && currentTag}
-              {hasIssues && !completed ? issuesTag : null}
+              {hasIssues && !completed ? issuesTag("advices") : null}
             </Box>
           )}
         </Box>
@@ -302,6 +312,14 @@ const StepBox = (props: IStepBox) => {
 
   return (
     <Grid
+      component={Link}
+      to={
+        questions
+          ? `../questionnaires/`
+          : insights
+            ? "../insights"
+            : "../advices"
+      }
       item
       md={4}
       sx={{
@@ -314,6 +332,9 @@ const StepBox = (props: IStepBox) => {
         borderBottom: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
         width: "100%",
         textAlign: "center",
+        cursor: "pointer",
+        textDecoration: "none",
+        color: "inherit",
       }}
     >
       <Typography
