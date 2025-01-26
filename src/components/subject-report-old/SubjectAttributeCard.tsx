@@ -175,11 +175,6 @@ const SUbjectAttributeCard = (props: any) => {
               margin: "0px !important",
               padding: "0px !important",
             },
-            "& :hover": {
-              cursor: permissions.viewAttributeScoreDetail
-                ? "pointer"
-                : "default",
-            },
           }}
           onClick={(event) => event.stopPropagation()}
         >
@@ -547,54 +542,52 @@ const AttributeInsight = (props: any) => {
                   <Typography color="#2466A8" variant="titleSmall">
                     <Trans i18nKey="insight" />
                   </Typography>
-
-                  {data.aiInsight &&
-                  data.aiInsight.isValid &&
-                  !data.approved ? (
-                    <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                      {data?.editable && (
-                        <LoadingButton
-                          onClick={(event) => approveAttribute(event)}
-                          variant="contained"
-                          loading={ApprovedAIAttribute.loading}
-                          size="small"
-                        >
-                          <Trans i18nKey="approve" />
-                        </LoadingButton>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: 2,
+                    }}
+                  >
+                    {data?.aiInsight &&
+                      data?.aiInsight?.isValid &&
+                      !data.approved && (
+                        <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
+                          <div>
+                            <AIGenerated />
+                          </div>
+                        </Tooltip>
                       )}
-                      <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                        <div>
-                          <AIGenerated />
-                        </div>
-                      </Tooltip>
-                    </Box>
-                  ) : (data?.assessorInsight &&
+                    {(data?.assessorInsight &&
                       !data?.assessorInsight?.isValid) ||
-                    (data?.aiInsight && !data?.aiInsight?.isValid) ? (
-                    <Tooltip title={<Trans i18nKey="invalidInsight" />}>
-                      <div>
-                        <AIGenerated
-                          title="outdated"
-                          type="warning"
-                          icon={<></>}
-                        />
+                    (data?.aiInsight && !data?.aiInsight?.isValid) ||
+                    ((data?.aiInsight || data?.assessorInsight) &&
+                      !data.approved) ? (
+                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                        <Tooltip title={<Trans i18nKey="invalidInsight" />}>
+                          <div>
+                            <AIGenerated
+                              title="outdated"
+                              type="warning"
+                              icon={<></>}
+                            />
+                          </div>
+                        </Tooltip>
                         {data?.editable && (
-                          <Button
+                          <LoadingButton
+                            onClick={(event) => approveAttribute(event)}
                             variant="contained"
+                            loading={ApprovedAIAttribute.loading}
                             size="small"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onGenerateAIInsight();
-                            }}
-                            sx={{ mx: 2 }}
                           >
-                            <Trans i18nKey="regenerate" />
-                          </Button>
+                            <Trans i18nKey="approve" />
+                          </LoadingButton>
                         )}
-                      </div>
-                    </Tooltip>
-                  ) : (
-                    data?.editable && (
+                      </Box>
+                    ) : (
+                      <></>
+                    )}{" "}
+                    {data?.editable && (
                       <Box sx={{ ...styles.centerVH, gap: 2 }}>
                         <Tooltip
                           title={
@@ -613,13 +606,17 @@ const AttributeInsight = (props: any) => {
                               size="small"
                               disabled={progress !== 100}
                             >
-                              <Trans i18nKey={"generate"} />
+                              <Trans
+                                i18nKey={
+                                  data?.aiInsight ? "regenerate" : "generate"
+                                }
+                              />
                             </LoadingButton>
                           </div>
                         </Tooltip>
                       </Box>
-                    )
-                  )}
+                    )}
+                  </Box>
                 </Box>
 
                 <Box
@@ -826,6 +823,7 @@ const OnHoverInput = (props: any) => {
         justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
+        cursor: "text !important",
       }}
     >
       {editable && show ? (
@@ -840,9 +838,10 @@ const OnHoverInput = (props: any) => {
               }}
             >
               <RichEditorField
-                name={"title"}
-                label={<Trans i18nKey="about" />}
-                required={true}
+                name="title"
+                placeholder={t("writeHere", {
+                  title: t("insight").toLowerCase(),
+                })}
                 defaultValue={data || ""}
               />
               <Box
