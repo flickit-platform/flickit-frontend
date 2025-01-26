@@ -1,4 +1,3 @@
-import { getTransparentColor } from "@/config/styles";
 import { useMediaQuery } from "@mui/material";
 import { t } from "i18next";
 import React from "react";

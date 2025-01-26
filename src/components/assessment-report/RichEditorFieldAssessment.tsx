@@ -1,7 +1,6 @@
 import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
 import RichEditorAssessment from "./RichEditorAssessment";

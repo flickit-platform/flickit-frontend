@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import { Trans } from "react-i18next";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
