@@ -25,11 +25,11 @@ interface ISubjectInsight {
   AssessmentLoading: boolean;
   fetchAssessment: () => void;
   editable: boolean;
-  aboutSection: any;
+  insight: any;
 }
 
 export const SubjectInsight = (props: ISubjectInsight) => {
-  const { AssessmentLoading, fetchAssessment, editable, aboutSection } = props;
+  const { AssessmentLoading, fetchAssessment, editable, insight } = props;
   const { service } = useServiceContext();
   const { subjectId = "" } = useParams();
 
@@ -57,29 +57,29 @@ export const SubjectInsight = (props: ISubjectInsight) => {
         >
           <CircularProgress />
         </Box>
-      ) : aboutSection ? (
+      ) : insight ? (
         <>
           <OnHoverRichEditor
-            data={aboutSection.insight}
+            data={insight.insight}
             editable={editable}
             infoQuery={fetchAssessment}
           />
-          {aboutSection?.creationTime && (
+          {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
               {format(
                 new Date(
-                  new Date(aboutSection?.creationTime).getTime() -
-                    new Date(aboutSection?.creationTime).getTimezoneOffset() *
+                  new Date(insight?.creationTime).getTime() -
+                    new Date(insight?.creationTime).getTimezoneOffset() *
                       60000,
                 ),
                 "yyyy/MM/dd HH:mm",
               ) +
                 " (" +
-                t(convertToRelativeTime(aboutSection?.creationTime)) +
+                t(convertToRelativeTime(insight?.creationTime)) +
                 ")"}
             </Typography>
           )}
-          {editable && !aboutSection?.isValid && (
+          {editable && !insight?.isValid && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{

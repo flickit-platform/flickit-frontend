@@ -3,11 +3,7 @@ import Title from "@common/Title";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import {
-  getMaturityLevelColors,
-  maturityLevelBGColorMap,
-  styles,
-} from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -17,10 +13,9 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
 import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
@@ -39,7 +34,7 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Button } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
@@ -56,21 +51,16 @@ const SUbjectAttributeCard = (props: any) => {
     maturityScores,
     confidenceValue,
     id,
-    attributesData,
-    updateAttributeAndData,
-    attributesDataPolicy,
-    editable,
+    progress,
   } = props;
 
   const { permissions }: { permissions: IPermissions } = props;
-
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
     maturityScores[0].maturityLevel.id,
   );
-  const [sort, setSort] = useState<string>("questionnaire");
-  const [order, setOrder] = useState<string>("asc");
+
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
@@ -84,8 +74,8 @@ const SUbjectAttributeCard = (props: any) => {
         assessmentId,
         attributeId: expandedAttribute,
         levelId: selectedMaturityLevel,
-        sort,
-        order,
+        sort: "questionnaire",
+        order: "asc",
         page,
         size: rowsPerPage,
       },
@@ -103,17 +93,6 @@ const SUbjectAttributeCard = (props: any) => {
       },
       config,
     ) => service.fetchScoreState(args, config),
-    runOnMount: false,
-  });
-
-  const ApprovedAIAttribute = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.ApprovedAIAttribute(args, config),
     runOnMount: false,
   });
 
@@ -148,17 +127,6 @@ const SUbjectAttributeCard = (props: any) => {
     setSelectedMaturityLevel(id);
   };
 
-  const approveAttribute = async (event: React.SyntheticEvent) => {
-    try {
-      event.stopPropagation();
-      await ApprovedAIAttribute.query();
-      updateAttributeAndData(id, assessmentId, "", true);
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
   const colorPallet = getMaturityLevelColors(maturity_levels_count, true);
   const backgroundColor = colorPallet[maturityLevel.value - 1];
 
@@ -167,7 +135,6 @@ const SUbjectAttributeCard = (props: any) => {
       sx={{
         borderRadius: "16px !important",
         py: { xs: 3, sm: 4 },
-        // pr: { xs: 1.5, sm: 3, md: 4 },
         mb: 5,
         padding: "0px !important",
       }}
@@ -251,104 +218,7 @@ const SUbjectAttributeCard = (props: any) => {
               >
                 {description}
               </Typography>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                {attributesDataPolicy[id?.toString()] && (
-                  <Typography color="#2466A8" variant="titleSmall">
-                    <Trans i18nKey="insight" />
-                  </Typography>
-                )}
-                {attributesDataPolicy[id?.toString()]?.aiInsight &&
-                attributesDataPolicy[id?.toString()]?.aiInsight.isValid ? (
-                  <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                    {!attributesDataPolicy[id?.toString()]?.approved && (
-                      <LoadingButton
-                        onClick={(event) => approveAttribute(event)}
-                        variant={"contained"}
-                        loading={ApprovedAIAttribute.loading}
-                      >
-                        <Trans i18nKey={"approve"} />
-                      </LoadingButton>
-                    )}
-                    <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                      <div>
-                        <AIGenerated />
-                      </div>
-                    </Tooltip>
-                  </Box>
-                ) : (attributesDataPolicy[id?.toString()]?.assessorInsight &&
-                    !attributesDataPolicy[id?.toString()]?.assessorInsight
-                      ?.isValid) ||
-                  (attributesDataPolicy[id?.toString()]?.aiInsight &&
-                    !attributesDataPolicy[id?.toString()]?.aiInsight
-                      ?.isValid) ? (
-                  <Tooltip title={<Trans i18nKey="invalidInsight" />}>
-                    <div>
-                      <AIGenerated
-                        title="outdated"
-                        type="warning"
-                        icon={<></>}
-                      />
-                      {attributesDataPolicy[id?.toString()]?.editable && (
-                        <Button
-                          variant="contained"
-                          size="small"
-                          onClick={(event) => {
-                            updateAttributeAndData(id, assessmentId, "", true);
-                            event.stopPropagation();
-                          }}
-                          sx={{ mx: 2 }}
-                        >
-                          <Trans i18nKey="regenerate" />
-                        </Button>
-                      )}
-                    </div>
-                  </Tooltip>
-                ) : !attributesData[id?.toString()] && editable ? (
-                  <AIGenerated title="warning" type="warning" icon={<></>} />
-                ) : (
-                  <></>
-                )}{" "}
-              </Box>
-
-              {attributesData[id?.toString()] ? (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  onClick={(event) => event.stopPropagation()}
-                  mt={2}
-                >
-                  <OnHoverInput
-                    attributeId={id}
-                    // formMethods={formMethods}
-                    data={attributesData[id?.toString()]}
-                    infoQuery={updateAttributeAndData}
-                    type="summary"
-                    editable={attributesDataPolicy[id?.toString()]?.editable}
-                  />
-                </Box>
-              ) : (
-                editable && (
-                  <Box sx={{ ...styles.centerV }} gap={0.5} my={1}>
-                    <Typography variant="titleMedium" fontWeight={400}>
-                      <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedFirstSection" />
-                    </Typography>
-                    <Typography
-                      component={Link}
-                      to={`./../../questionnaires?subject_pk=${id}`}
-                      color="#2D80D2"
-                      variant="titleMedium"
-                      sx={{
-                        textDecoration: "none",
-                      }}
-                    >
-                      <Trans i18nKey={"assessmentQuestion"} />
-                    </Typography>
-                    <Typography variant="titleMedium" fontWeight={400}>
-                      <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />
-                    </Typography>
-                  </Box>
-                )
-              )}
+              <AttributeInsight progress={progress} id={id} />
             </Grid>
             <Grid item xs={12} sm={3}>
               <Box
@@ -527,7 +397,6 @@ const SUbjectAttributeCard = (props: any) => {
                 );
               }}
             />
-            {/* {TopNavValue === 0 && <MaturityLevelTable />} */}
           </Box>
         </AccordionDetails>
       </Accordion>
@@ -576,6 +445,175 @@ export const AttributeStatusBarContainer = (props: any) => {
         </Typography>
       </Box>
     </Box>
+  );
+};
+
+const AttributeInsight = (props: any) => {
+  const { id, progress } = props;
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
+
+  const ApprovedAIAttribute = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        attributeId: id,
+      },
+      config,
+    ) => service.ApprovedAIAttribute(args, config),
+    runOnMount: false,
+  });
+  const loadAttributeInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        attributeId: id,
+      },
+      config,
+    ) => service.loadAttributeInsight(args, config),
+    runOnMount: true,
+  });
+
+  const generateAIInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        attributeId: id,
+      },
+      config,
+    ) => service.generateAIInsight(args, config),
+    runOnMount: false,
+  });
+
+  const onCreateInsight = async (title: string) => {
+    await service
+      .createAttributeInsight(
+        {
+          assessmentId,
+          attributeId: id,
+          data: { assessorInsight: title },
+        },
+        {},
+      )
+      .then(() => {
+        loadAttributeInsight.query();
+      });
+  };
+
+  const onGenerateAIInsight = async () => {
+    generateAIInsight.query().then(() => {
+      loadAttributeInsight.query();
+    });
+  };
+  const approveAttribute = async (event: React.SyntheticEvent) => {
+    try {
+      event.stopPropagation();
+      await ApprovedAIAttribute.query();
+      await loadAttributeInsight.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+  return (
+    <QueryData
+      {...loadAttributeInsight}
+      renderLoading={() => (
+        <Skeleton
+          variant="rectangular"
+          sx={{ borderRadius: 2, height: "60px", mb: 1 }}
+        />
+      )}
+      errorComponent={<></>}
+      render={(data) => {
+        console.log(data);
+        return (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography color="#2466A8" variant="titleSmall">
+                <Trans i18nKey="insight" />
+              </Typography>
+
+              {data.aiInsight && data.aiInsight.isValid ? (
+                <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                  {!data.approved && (
+                    <LoadingButton
+                      onClick={(event) => approveAttribute(event)}
+                      variant="contained"
+                      loading={ApprovedAIAttribute.loading}
+                      size="small"
+                    >
+                      <Trans i18nKey="approve" />
+                    </LoadingButton>
+                  )}
+                  <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
+                    <div>
+                      <AIGenerated />
+                    </div>
+                  </Tooltip>
+                </Box>
+              ) : (data?.assessorInsight && !data?.assessorInsight?.isValid) ||
+                (data?.aiInsight && !data?.aiInsight?.isValid) ? (
+                <Tooltip title={<Trans i18nKey="invalidInsight" />}>
+                  <div>
+                    <AIGenerated title="outdated" type="warning" icon={<></>} />
+                    {data?.editable && (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={(event) => {
+                          onGenerateAIInsight();
+                          event.stopPropagation();
+                        }}
+                        sx={{ mx: 2 }}
+                      >
+                        <Trans i18nKey="regenerate" />
+                      </Button>
+                    )}
+                  </div>
+                </Tooltip>
+              ) : (
+                data?.editable && (
+                  <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                    {progress === 100 && (
+                      <LoadingButton
+                        onClick={(event) => onGenerateAIInsight()}
+                        variant={"contained"}
+                        loading={generateAIInsight.loading}
+                        size="small"
+                      >
+                        <Trans i18nKey={"generate"} />
+                      </LoadingButton>
+                    )}{" "}
+                  </Box>
+                )
+              )}
+            </Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              onClick={(event) => event.stopPropagation()}
+              mt={1}
+            >
+              <OnHoverInput
+                attributeId={id}
+                data={
+                  data?.assessorInsight?.insight || data?.aiInsight?.insight
+                }
+                infoQuery={onCreateInsight}
+                type="summary"
+                editable={data?.editable}
+              />
+            </Box>
+          </>
+        );
+      }}
+    />
   );
 };
 
@@ -644,433 +682,6 @@ export const AttributeStatusBar = (props: any) => {
   );
 };
 
-const MaturityLevelDetailsContainer = (props: any) => {
-  const { maturity_score, totalml, mn, expanded, setExpanded, attributeId } =
-    props;
-  const { permissions }: { permissions: IPermissions } = props;
-  const { maturityLevel, score } = maturity_score;
-  const colorPallet = getMaturityLevelColors(mn);
-  const statusColor = colorPallet[maturityLevel?.index - 1];
-  const is_passed = maturityLevel?.index <= totalml;
-  const { service } = useServiceContext();
-  const { assessmentId } = useParams();
-  const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
-    service: (
-      args = { assessmentId, attributeId: attributeId, levelId: expanded },
-      config,
-    ) => service.fetchAffectedQuestionsOnAttribute(args, config),
-    runOnMount: false,
-  });
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
-  useEffect(() => {
-    if (expanded === maturityLevel?.id) {
-      fetchAffectedQuestionsOnAttributeQueryData.query();
-    }
-  }, [expanded]);
-
-  let text;
-  if (score == null) {
-    text = <Trans i18nKey="noQuestionOnLevel" />;
-  }
-  if (is_passed && maturityLevel?.index == totalml) {
-    text = <Trans i18nKey="theHighestLevelAchived" />;
-  }
-
-  const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip placement="bottom" {...props} classes={{ popper: className }} />
-  ))({
-    [`& .${tooltipClasses.tooltip}`]: {
-      maxWidth: 600,
-      marginLeft: "36px",
-      fontSize: "14px",
-    },
-  });
-  return (
-    <Box
-      display={"flex"}
-      sx={{
-        maxWidth: { xs: "100%", sm: "100%" },
-        flexDirection: { xs: "column", sm: "row" },
-      }}
-    >
-      <Accordion
-        expanded={expanded === maturityLevel?.id}
-        onChange={handleChange(maturityLevel?.id)}
-        sx={{ width: "100%", boxShadow: "none !important" }}
-      >
-        <AccordionSummary
-          expandIcon={
-            permissions.viewQuestionnaireQuestions && <ExpandMoreIcon />
-          }
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-          sx={{ padding: "0 !important" }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              flexDirection: { xs: "column", md: "row" },
-            }}
-          >
-            <Box display={"flex"} flex={1}>
-              <Box width="100%">
-                <MaturityLevelDetailsBar
-                  text={text}
-                  score={score}
-                  highestIndex={is_passed && maturityLevel?.index == totalml}
-                  is_passed={is_passed}
-                />
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                ...styles.centerV,
-                pl: 2,
-                width: { xs: "100%", md: "30%", lg: "19%" },
-              }}
-            >
-              <Typography
-                variant="h4"
-                fontWeight={"bold"}
-                sx={{
-                  borderLeft: `2px solid ${
-                    is_passed ? statusColor : "#808080"
-                  }`,
-                  pl: 1,
-                  ml: { xs: -2, sm: 0 },
-                  pr: { xs: 0, sm: 1 },
-                  color: is_passed ? statusColor : "#808080",
-                }}
-              >
-                <Trans i18nKey={`${maturityLevel?.title}`} />
-              </Typography>
-            </Box>
-          </Box>
-        </AccordionSummary>
-        {permissions.viewQuestionnaireQuestions && (
-          <AccordionDetails>
-            <QueryData
-              {...fetchAffectedQuestionsOnAttributeQueryData}
-              render={(data) => {
-                const {
-                  maxPossibleScore,
-                  gainedScore,
-                  gainedScorePercentage,
-                  questionsCount,
-                  questionnaires,
-                } = data;
-                return (
-                  <>
-                    <Typography variant="body2" display={"flex"}>
-                      <Trans i18nKey="maxPossibleScore" />:
-                      <Typography
-                        variant="body2"
-                        fontWeight={"bold"}
-                        sx={{
-                          ml: theme.direction == "ltr" ? 2 : "unset",
-                          mr: theme.direction == "rtl" ? 2 : "unset",
-                        }}
-                      >
-                        {maxPossibleScore}
-                      </Typography>
-                    </Typography>
-                    <Typography mt={2} variant="body2" display={"flex"}>
-                      <Trans i18nKey="gainedScore" />:
-                      <Typography
-                        variant="body2"
-                        display={"flex"}
-                        fontWeight={"bold"}
-                        sx={{
-                          ml: theme.direction == "ltr" ? 2 : "unset",
-                          mr: theme.direction == "rtl" ? 2 : "unset",
-                        }}
-                      >
-                        {Math.ceil(gainedScore)}
-                        <Typography
-                          variant="body2"
-                          fontWeight={"bold"}
-                          ml={0.5}
-                        >
-                          ({Math.ceil(gainedScorePercentage * 100)} %)
-                        </Typography>
-                      </Typography>
-                    </Typography>
-                    <Typography mt={2} variant="body2" display={"flex"}>
-                      <Trans i18nKey="questionsCount" />:
-                      <Typography
-                        variant="body2"
-                        fontWeight={"bold"}
-                        sx={{
-                          ml: theme.direction == "ltr" ? 2 : "unset",
-                          mr: theme.direction == "rtl" ? 2 : "unset",
-                        }}
-                      >
-                        {questionsCount}
-                      </Typography>
-                    </Typography>
-                    <Divider sx={{ my: 2 }} />
-                    {questionnaires.map((questionnaire: any) => {
-                      const { title, questionScores } = questionnaire;
-
-                      return (
-                        <>
-                          <Box>
-                            <Typography
-                              variant="body2"
-                              fontWeight={"bold"}
-                              sx={{
-                                opacity: "0.8",
-                                ml: theme.direction == "ltr" ? 1 : "unset",
-                                mr: theme.direction == "rtl" ? 1 : "unset",
-                              }}
-                            >
-                              {title}
-                            </Typography>
-                          </Box>
-
-                          <Box mt={2}>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                width: { xs: "100%", sm: "100%", md: "80%" },
-                                flexDirection: "column",
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  ml:
-                                    theme.direction == "ltr"
-                                      ? { xs: 0, sm: 4 }
-                                      : "unset",
-                                  mr:
-                                    theme.direction == "rtl"
-                                      ? { xs: 0, sm: 4 }
-                                      : "unset",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                  }}
-                                >
-                                  <Box sx={{ width: "40%" }}>
-                                    <Typography
-                                      variant="titleSmall"
-                                      sx={{
-                                        pb: "4px",
-                                        color: "#767676",
-                                        display: "block",
-                                      }}
-                                      textAlign={"center"}
-                                    >
-                                      <Trans i18nKey="questions" />
-                                    </Typography>
-                                  </Box>
-                                  <Box sx={{ width: "10%" }}>
-                                    <Typography
-                                      variant="titleSmall"
-                                      sx={{
-                                        pb: "4px",
-                                        color: "#767676",
-                                        display: "block",
-                                      }}
-                                      textAlign={"center"}
-                                    >
-                                      <Trans i18nKey="weight" />
-                                    </Typography>
-                                  </Box>
-                                  <Box sx={{ width: "25%" }}>
-                                    <Typography
-                                      sx={{
-                                        pb: "4px",
-                                        color: "#767676",
-                                        display: "block",
-                                      }}
-                                      variant="titleSmall"
-                                      textAlign={"center"}
-                                    >
-                                      <Trans i18nKey="answer" />
-                                    </Typography>
-                                  </Box>
-                                  <Box sx={{ width: "10%" }}>
-                                    <Typography
-                                      sx={{
-                                        pb: "4px",
-                                        color: "#767676",
-                                        display: "block",
-                                      }}
-                                      variant="titleSmall"
-                                      textAlign={"center"}
-                                    >
-                                      <Trans i18nKey="score" />
-                                    </Typography>
-                                  </Box>
-                                  <Box sx={{ width: "15%" }}>
-                                    <Typography
-                                      sx={{
-                                        pb: "4px",
-                                        color: "#767676",
-                                        display: "block",
-                                      }}
-                                      variant="titleSmall"
-                                      textAlign={"center"}
-                                    >
-                                      <Trans i18nKey="weightedScore" />
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                                <Divider sx={{ my: 1 }} />
-                                {questionScores.map((question: any) => {
-                                  const {
-                                    questionIndex,
-                                    questionTitle,
-                                    questionWeight,
-                                    answerOptionIndex,
-                                    answerOptionTitle,
-                                    answerIsNotApplicable,
-                                    answerScore,
-                                    weightedScore,
-                                  } = question;
-
-                                  const is_farsi =
-                                    languageDetector(questionTitle);
-
-                                  return (
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        my: 1,
-                                      }}
-                                    >
-                                      <CustomWidthTooltip
-                                        title={`${questionIndex}.${questionTitle}`}
-                                      >
-                                        <Box sx={{ width: "40%" }}>
-                                          <Typography
-                                            display="flex"
-                                            variant="titleMedium"
-                                            textAlign={"left"}
-                                          >
-                                            {questionIndex}.
-                                            <Typography
-                                              variant="titleMedium"
-                                              dir={is_farsi ? "rtl" : "ltr"}
-                                              sx={{
-                                                whiteSpace: "nowrap",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                              }}
-                                            >
-                                              {questionTitle}
-                                            </Typography>
-                                          </Typography>
-                                        </Box>
-                                      </CustomWidthTooltip>
-                                      <Box
-                                        sx={{
-                                          width: "10%",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        <Typography
-                                          variant="titleMedium"
-                                          textAlign={"center"}
-                                        >
-                                          {questionWeight}
-                                        </Typography>
-                                      </Box>
-                                      <Tooltip
-                                        title={
-                                          answerIsNotApplicable
-                                            ? "NA"
-                                            : answerOptionTitle !== null
-                                              ? `${answerOptionIndex}.${answerOptionTitle}`
-                                              : "---"
-                                        }
-                                      >
-                                        <Box
-                                          sx={{
-                                            width: "25%",
-                                            textAlign: "center",
-                                          }}
-                                        >
-                                          <Typography
-                                            variant="titleMedium"
-                                            textAlign={"center"}
-                                          >
-                                            {answerIsNotApplicable
-                                              ? "NA"
-                                              : answerOptionTitle !== null
-                                                ? `${answerOptionIndex}.${answerOptionTitle}`
-                                                : "---"}
-                                          </Typography>
-                                        </Box>
-                                      </Tooltip>
-                                      <Box
-                                        sx={{
-                                          width: "10%",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        <Typography
-                                          variant="titleMedium"
-                                          textAlign={"center"}
-                                        >
-                                          {answerIsNotApplicable
-                                            ? "---"
-                                            : answerScore}
-                                        </Typography>
-                                      </Box>
-                                      <Box
-                                        sx={{
-                                          width: "15%",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        <Typography
-                                          variant="titleMedium"
-                                          textAlign={"center"}
-                                        >
-                                          {answerIsNotApplicable
-                                            ? "---"
-                                            : weightedScore}
-                                        </Typography>
-                                      </Box>
-                                    </Box>
-                                  );
-                                })}
-                              </Box>
-                            </Box>
-                            <Divider
-                              sx={{
-                                my: 4,
-                                background: "#7A589B",
-                                opacity: "40%",
-                              }}
-                            />
-                          </Box>
-                        </>
-                      );
-                    })}
-                  </>
-                );
-              }}
-            />
-          </AccordionDetails>
-        )}
-      </Accordion>
-    </Box>
-  );
-};
 export const MaturityLevelDetailsBar = (props: any) => {
   const { score, is_passed, text } = props;
   const width = `${score != null ? score : 100}%`;
@@ -1144,7 +755,7 @@ const OnHoverInput = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const { data, editable, type, attributeId, infoQuery } = props;
+  const { data, editable, type, infoQuery } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [error, setError] = useState<any>({});
   const handleCancel = () => {
@@ -1153,15 +764,13 @@ const OnHoverInput = (props: any) => {
     setHasError(false);
   };
 
-  const { assessmentId = "" } = useParams();
-
   const updateAssessmentKit = async (
     data: any,
     event: any,
     shouldView?: boolean,
   ) => {
     try {
-      const res = await infoQuery(attributeId, assessmentId, data.title);
+      const res = await infoQuery(data.title);
       res?.message && toast.success(res?.message);
       setShow(false);
     } catch (e) {
@@ -1186,10 +795,11 @@ const OnHoverInput = (props: any) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        width: "100%",
       }}
     >
       {editable && show ? (
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100% " }}>
+        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
           <FormProviderWithForm formMethods={formMethods}>
             <Box
               sx={{
@@ -1215,7 +825,6 @@ const OnHoverInput = (props: any) => {
                 }}
               >
                 <IconButton
-                  edge="end"
                   sx={{
                     background: theme.palette.primary.main,
                     "&:hover": {
@@ -1230,7 +839,6 @@ const OnHoverInput = (props: any) => {
                   <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
                 </IconButton>
                 <IconButton
-                  edge="end"
                   sx={{
                     background: theme.palette.primary.main,
                     "&:hover": {
@@ -1279,7 +887,8 @@ const OnHoverInput = (props: any) => {
           >
             <Typography
               dangerouslySetInnerHTML={{
-                __html: data ?? "",
+                __html:
+                  data ?? t("writeHere", { title: t("insight").toLowerCase() }),
               }}
               style={{
                 whiteSpace: "pre-wrap",
@@ -1301,7 +910,6 @@ const OnHoverInput = (props: any) => {
           {isHovering && (
             <IconButton
               title="Edit"
-              edge="end"
               sx={{
                 background: theme.palette.primary.main,
                 "&:hover": {

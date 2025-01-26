@@ -28,7 +28,7 @@ const SubjectOverallInsight = (props: any) => {
 const OverallInsightText = (props: any) => {
   const { data = {}, loading } = props;
   const [isApproved, setIsApproved] = useState(true);
-  const [aboutSection, setAboutSection] = useState<any>(null);
+  const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [AssessmentLoading, setAssessmentLoading] = useState(true);
 
@@ -57,7 +57,7 @@ const OverallInsightText = (props: any) => {
         const selectedInsight = data.assessorInsight || data.defaultInsight;
         if (selectedInsight) {
           setIsApproved(data.approved);
-          setAboutSection(selectedInsight);
+          setInsight(selectedInsight);
           setEditable(data.editable ?? false);
         }
       })
@@ -159,7 +159,7 @@ const OverallInsightText = (props: any) => {
         AssessmentLoading={AssessmentLoading}
         fetchAssessment={fetchAssessment}
         editable={editable}
-        aboutSection={aboutSection}
+        insight={insight}
       />
     </Box>
   );
