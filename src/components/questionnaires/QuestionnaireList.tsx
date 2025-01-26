@@ -14,8 +14,9 @@ import { t } from "i18next";
 import { theme } from "@config/theme";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styles } from "@styles";
+import { useLocation } from "react-router-dom";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -48,6 +49,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
     itemNames,
     dropdownLabel,
     allSelected,
+    filteredItem,
   } = props;
   const [issues, setIssues] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
@@ -56,6 +58,12 @@ export const QuestionsFilteringDropdown = (props: any) => {
     } = event;
     setIssues(typeof value === "string" ? value.split(",") : value);
   };
+
+  useEffect(() => {
+    if (filteredItem) {
+      setIssues([filteredItem]);
+    }
+  }, []);
 
   const handelSaveOriginal = (name: any) => {
     if (!originalItem.includes(name)) {
@@ -145,7 +153,12 @@ export const QuestionsFilteringDropdown = (props: any) => {
               value={item.translate}
               onClick={() => handelSaveOriginal(item.original)}
             >
-              <Checkbox checked={issues.includes(t(item.translate))} />
+              <Checkbox
+                checked={
+                  issues.includes(t(item.translate)) ||
+                  issues.includes(item.original)
+                }
+              />
               <ListItemText
                 sx={{
                   ...theme.typography.semiBoldMedium,
@@ -167,6 +180,15 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
 
   const [questionCardColumnCondition, setQuestionCardColumnCondition] =
     useState<boolean>(true);
+
+  const { state } = useLocation();
+
+  useEffect(() => {
+      if (state){
+          setOriginalItem([state]);
+      }
+  }, []);
+
   return (
     <>
       <Box display={"flex"} justifyContent="space-between">
@@ -191,6 +213,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           setOriginalItem={setOriginalItem}
           originalItem={originalItem}
           itemNames={itemNames}
+          filteredItem={state}
         />
         <Box
           minWidth="130px"

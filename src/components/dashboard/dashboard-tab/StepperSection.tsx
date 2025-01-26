@@ -136,6 +136,7 @@ const StepBox = (props: IStepBox) => {
             color: "#B8144B",
             background: "#FCE8EF",
             direction: theme.direction,
+            cursor: "pointer"
           }}
         />
       </MLink>

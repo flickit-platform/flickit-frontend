@@ -7,7 +7,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
 import { uniqueId } from "lodash";
 import Tooltip from "@mui/material/Tooltip";
-import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TodoBox = (props: any) => {
   const { todoBoxData } = props;
@@ -63,7 +63,12 @@ const TodoBox = (props: any) => {
                     .map(([key, value]) => {
                       return (
                         <Grid item xs={12} md={6} key={uniqueId()}>
-                          <IssuesItem originalName={item.name} key={key} name={key} value={value} />
+                          <IssuesItem
+                            originalName={item.name}
+                            key={key}
+                            name={key}
+                            value={value}
+                          />
                         </Grid>
                       );
                     })}
@@ -147,13 +152,22 @@ const TodoBox = (props: any) => {
 
 const IssuesItem = (props: any) => {
   const { name, value, now, next, originalName } = props;
+  const navigate = useNavigate();
+  const link = originalName == "questions" && "questionnaires";
 
-  const link = originalName == "questions" && "questionnaires"
+  const filteredQuestionnaire = (name: string) => {
+    let newName = name;
+    if (name == "withoutEvidence") {
+      newName = "answeredWithoutEvidence";
+    }
+    if (originalName == "questions") {
+      navigate(`../${link}`, { state: newName });
+    }
+  };
 
   return (
     <Box
-      component={Link}
-      to={`../${link}`}
+      onClick={() => filteredQuestionnaire(name)}
       sx={{
         p: 2,
         borderRadius: 2,
@@ -163,6 +177,7 @@ const IssuesItem = (props: any) => {
         alignItems: "center",
         gap: 1,
         textDecoration: "none",
+        cursor: originalName == "questions" ? "pointer" : "unset",
       }}
     >
       <InfoOutlinedIcon
