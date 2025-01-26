@@ -150,9 +150,7 @@ const useSubject = () => {
       await calculateMaturityLevelQuery.query();
       await subjectQueryData.query({ subjectId, assessmentId });
       await subjectProgressQueryData.query({ subjectId, assessmentId });
-    } catch (e) {
-      toastError(e as ICustomError);
-    }
+    } catch (e) {}
   };
   const calculateConfidence = async () => {
     try {

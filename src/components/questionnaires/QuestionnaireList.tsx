@@ -63,6 +63,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
     if (!!filteredItem && typeof filteredItem == "string") {
       setIssues([filteredItem]);
     }
+    if (allSelected) {
+      const allItems = itemNames.map((item: any) => item.translate);
+      setIssues(allItems);
+      setOriginalItem(itemNames.map((item: any) => item.original));
+    }
   }, []);
 
   const handelSaveOriginal = (name: any) => {
@@ -83,7 +88,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         <Typography
           sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
         >
-          <Trans i18nKey={allSelected ? "allIssuesSelected" : "none"} />
+          <Trans i18nKey="none" />
         </Typography>
       );
     } else if (isAllSelected) {
@@ -91,7 +96,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         <Typography
           sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
         >
-          <Trans i18nKey={"allIssuesSelected"} />
+          <Trans i18nKey={"all"} />
         </Typography>
       );
     } else {

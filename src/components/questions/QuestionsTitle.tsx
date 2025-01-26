@@ -88,19 +88,11 @@ const QuestionsTitle = (props: {
             updatedIssues[key] = initialItem.issues[key];
           }
         });
-
-        if (originalItem.length > 0) {
-          Object.keys(initialItem.issues).forEach((key) => {
-            if (key in updatedIssues) {
-              initialItem.issues[key] = updatedIssues[key];
-            }
-          });
-          Object.keys(updatedIssues).forEach((key) => {
-            if (!originalItem.includes(key)) {
-              delete updatedIssues[key];
-            }
-          });
-        }
+        Object.keys(updatedIssues).forEach((key) => {
+          if (!originalItem.includes(key)) {
+            delete updatedIssues[key];
+          }
+        });
 
         return { ...currentItem, issues: updatedIssues };
       },
@@ -138,16 +130,18 @@ const QuestionsTitle = (props: {
         }}
         toolbar={
           <Box sx={{ mt: { xs: 1.5, sm: 0 } }}>
-            {(!window.location.pathname.includes("review") &&
-              questionsInfo.permissions?.viewDashboard) && (
-              <QuestionsFilteringDropdown
-                setOriginalItem={setOriginalItem}
-                originalItem={originalItem}
-                itemNames={itemNames}
-                dropdownLabel={<Trans i18nKey="highlightQuestionsWithIssues" />}
-                allSelected
-              />
-            )}
+            {!window.location.pathname.includes("review") &&
+              questionsInfo.permissions?.viewDashboard && (
+                <QuestionsFilteringDropdown
+                  setOriginalItem={setOriginalItem}
+                  originalItem={originalItem}
+                  itemNames={itemNames}
+                  dropdownLabel={
+                    <Trans i18nKey="highlightQuestionsWithIssues" />
+                  }
+                  allSelected
+                />
+              )}
 
             {/* {!isReview && (
               <Button
