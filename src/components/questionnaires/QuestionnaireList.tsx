@@ -60,7 +60,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
   };
 
   useEffect(() => {
-    if (filteredItem) {
+    if (!!filteredItem && typeof filteredItem == "string") {
       setIssues([filteredItem]);
     }
   }, []);
@@ -184,9 +184,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { state } = useLocation();
 
   useEffect(() => {
-      if (state){
-          setOriginalItem([state]);
-      }
+    if (!!state && typeof state == "string") {
+      setOriginalItem([state]);
+    }
   }, []);
 
   return (

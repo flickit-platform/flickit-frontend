@@ -116,7 +116,7 @@ const StepBox = (props: IStepBox) => {
 
   const issuesTag = (text:string) => {
     return (
-      <MLink onClick={(e) => e.stopPropagation()} href={`#${text}`}>
+      <MLink sx={{textDecoration:"none"}} onClick={(e) => e.stopPropagation()} href={`#${text}`}>
         <Chip
           label={
             <Box sx={{ ...styles.centerVH, gap: 1 }}>
