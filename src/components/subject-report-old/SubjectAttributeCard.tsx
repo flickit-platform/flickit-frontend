@@ -550,20 +550,17 @@ const AttributeInsight = (props: any) => {
                     }}
                   >
                     {data?.aiInsight &&
-                      data?.aiInsight?.isValid &&
-                      !data.approved && (
-                        <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                          <div>
-                            <AIGenerated />
-                          </div>
-                        </Tooltip>
-                      )}
-                    {(data?.assessorInsight &&
-                      !data?.assessorInsight?.isValid) ||
-                    (data?.aiInsight && !data?.aiInsight?.isValid) ||
-                    ((data?.aiInsight || data?.assessorInsight) &&
-                      !data.approved) ? (
-                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                    data?.aiInsight?.isValid &&
+                    !data.approved ? (
+                      <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
+                        <div>
+                          <AIGenerated />
+                        </div>
+                      </Tooltip>
+                    ) : (
+                      ((data?.assessorInsight &&
+                        !data?.assessorInsight?.isValid) ||
+                        (data?.aiInsight && !data?.aiInsight?.isValid)) && (
                         <Tooltip title={<Trans i18nKey="invalidInsight" />}>
                           <div>
                             <AIGenerated
@@ -573,6 +570,14 @@ const AttributeInsight = (props: any) => {
                             />
                           </div>
                         </Tooltip>
+                      )
+                    )}
+                    {(data?.assessorInsight &&
+                      !data?.assessorInsight?.isValid) ||
+                    (data?.aiInsight && !data?.aiInsight?.isValid) ||
+                    ((data?.aiInsight || data?.assessorInsight) &&
+                      !data.approved) ? (
+                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
                         {data?.editable && (
                           <LoadingButton
                             onClick={(event) => approveAttribute(event)}
