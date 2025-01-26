@@ -501,9 +501,15 @@ const AttributeInsight = (props: any) => {
   };
 
   const onGenerateAIInsight = async () => {
-    generateAIInsight.query().then(() => {
-      loadAttributeInsight.query();
-    });
+    generateAIInsight
+      .query()
+      .then(() => {
+        loadAttributeInsight.query();
+      })
+      .catch((e) => {
+        const err = e as ICustomError;
+        toastError(err);
+      });
   };
   const approveAttribute = async (event: React.SyntheticEvent) => {
     try {
