@@ -5,13 +5,7 @@ import SubjectAttributeCard from "./SubjectAttributeCard";
 import { IPermissions } from "@/types";
 
 export const SubjectAttributeList = (props: any) => {
-  const {
-    data,
-    attributesData,
-    updateAttributeAndData,
-    attributesDataPolicy,
-    editable,
-  } = props;
+  const { data, progress } = props;
   const { subject, attributes, maturityLevelsCount } = data;
   const { permissions }: { permissions: IPermissions } = data;
   const { title } = subject;
@@ -31,11 +25,8 @@ export const SubjectAttributeList = (props: any) => {
               maturity_levels_count={maturityLevelsCount}
               {...result}
               key={result.id}
-              attributesData={attributesData}
-              attributesDataPolicy={attributesDataPolicy}
-              updateAttributeAndData={updateAttributeAndData}
-              editable={editable}
               permissions={permissions}
+              progress={progress}
             />
           );
         })}

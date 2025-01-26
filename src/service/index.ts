@@ -573,21 +573,21 @@ export const createService = (
         ...(config ?? {}),
       });
     },
-    loadAIReport(
+    loadAttributeInsight(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },
       config?: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.get(
-        `/api/v1/assessments/${assessmentId}/ai-report/attributes/${attributeId}/`,
+        `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/insight/`,
         config,
       );
     },
-    fetchAIReport(
+    generateAIInsight(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },
       config?: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.post(
-        `/api/v1/assessments/${assessmentId}/ai-report/attributes/${attributeId}/`,
+        `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/ai-insight/`,
         config,
       );
     },
@@ -624,7 +624,7 @@ export const createService = (
         config,
       );
     },
-    updateAIReport(
+    createAttributeInsight(
       {
         data,
         assessmentId,
@@ -632,8 +632,8 @@ export const createService = (
       }: { data: any; assessmentId: string; attributeId: TId },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.put(
-        `/api/v1/assessments/${assessmentId}/ai-report/attributes/${attributeId}/`,
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/insight/`,
         data,
         config,
       );

@@ -11,7 +11,6 @@ import {
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { getMaturityLevelColors, styles } from "@/config/styles";
 import { ISubject } from "@/types";
-import { Trans } from "react-i18next";
 import { t } from "i18next";
 
 const sectionStyle = {

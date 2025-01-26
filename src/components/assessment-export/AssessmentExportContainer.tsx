@@ -4,14 +4,8 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
-import { getMaturityLevelColors, styles } from "@styles";
-import {
-  IAssessmentResponse,
-  IAttribute,
-  ISubject,
-  PathInfo,
-  TId,
-} from "@types";
+import { getMaturityLevelColors } from "@styles";
+import { IAssessmentResponse, IAttribute, ISubject, PathInfo } from "@types";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -29,7 +23,6 @@ import Box from "@mui/material/Box";
 import AssessmentExportTitle from "./AssessmentExportTitle";
 import FiberManualRecordOutlined from "@mui/icons-material/FiberManualRecordOutlined";
 import FiberManualRecordRounded from "@mui/icons-material/FiberManualRecordRounded";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import TableChartRounded from "@mui/icons-material/TableChartRounded";
 import AssessmentSubjectRadarChart from "./AssessmenetSubjectRadarChart";
 import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
@@ -39,7 +32,7 @@ import { AttributeStatusBarContainer } from "../subject-report-old/SubjectAttrib
 import setDocumentTitle from "@/utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { useQuestionnaire } from "../questionnaires/QuestionnaireContainer";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { theme } from "@/config/theme";
@@ -53,13 +46,6 @@ const AssessmentExportContainer = () => {
   const [adviceNarration, setAdviceNarration] = useState<string>("");
   const [aiGenerated, setAiGenerated] = useState<boolean>(false);
   const [errorObject, setErrorObject] = useState<any>(undefined);
-  const [attributesData, setAttributesData] = useState<any>({});
-  const [editable, setEditable] = useState<any>(true);
-  const [loadingAttributes, setLoadingAttributes] = useState<{
-    [id: string]: boolean;
-  }>({});
-  const [attributesDataPolicy, setAttributesDataPolicy] = useState<any>({});
-
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const { config } = useConfigContext();
@@ -103,45 +89,6 @@ const AssessmentExportContainer = () => {
     toastError: false,
   });
 
-  const FetchAttributeData = async (assessmentId: string, attributeId: TId) => {
-    try {
-      const result = await service.fetchAIReport(
-        { assessmentId, attributeId },
-        undefined,
-      );
-      return result?.data?.content || "";
-    } catch (error: any) {
-      handleFetchError(error);
-      return null;
-    }
-  };
-
-  const LoadAttributeData = async (assessmentId: string, attributeId: TId) => {
-    try {
-      const result = await service.loadAIReport(
-        { assessmentId, attributeId },
-        undefined,
-      );
-      return result?.data || "";
-    } catch (error: any) {
-      handleFetchError(error);
-      return null;
-    }
-  };
-
-  const handleFetchError = async (error: any) => {
-    setErrorObject(error?.response?.data);
-    if (error?.response?.data?.code === "CALCULATE_NOT_VALID") {
-      await calculateMaturityLevelQuery.query();
-      fetchAllAttributesData();
-    }
-    if (error?.response?.data?.code === "CONFIDENCE_CALCULATION_NOT_VALID") {
-      await calculateConfidenceLevelQuery.query();
-      fetchAllAttributesData();
-    }
-    console.error("Error fetching data:", error);
-  };
-
   useEffect(() => {
     const hash = window?.location?.hash?.substring(1);
     if (hash) {
@@ -177,141 +124,6 @@ const AssessmentExportContainer = () => {
     }
   }, [AssessmentReport?.errorObject]);
 
-  const createAttributesDataPromises = (ignoreIds: any[]) =>
-    AssessmentReport?.data?.subjects.flatMap((subject: any) =>
-      subject?.attributes
-        ?.filter((attribute: any) => !ignoreIds.includes(attribute?.id))
-        .map((attribute: any) => fetchSingleAttributeData(attribute)),
-    );
-
-  const fetchSingleAttributeData = async (attribute: any) => {
-    setLoadingAttributes((prevLoading) => ({
-      ...prevLoading,
-      [attribute?.id]: true,
-    }));
-    try {
-      const result = await FetchAttributeData(assessmentId, attribute?.id);
-      return { id: attribute?.id, data: result };
-    } catch (error) {
-      console.error(
-        `Failed to fetch data for attribute ${attribute?.id}:`,
-        error,
-      );
-      return null;
-    } finally {
-      setLoadingAttributes((prevLoading) => ({
-        ...prevLoading,
-        [attribute?.id]: false,
-      }));
-    }
-  };
-
-  const createAttributesPolicyPromises = (newIgnoreIds: any[]) =>
-    AssessmentReport?.data?.subjects?.flatMap((subject: any) =>
-      subject?.attributes.map((attribute: any) =>
-        loadSingleAttributeData(attribute, newIgnoreIds),
-      ),
-    );
-
-  const loadSingleAttributeData = async (
-    attribute: any,
-    newIgnoreIds: any[],
-  ) => {
-    setLoadingAttributes((prevLoading) => ({
-      ...prevLoading,
-      [attribute?.id]: true,
-    }));
-    try {
-      const result = await LoadAttributeData(assessmentId, attribute?.id);
-      processAttributeResult(result, attribute?.id, newIgnoreIds);
-      return { id: attribute?.id, data: result };
-    } catch (error) {
-      console.error(
-        `Failed to load data for attribute ${attribute?.id}:`,
-        error,
-      );
-      return null;
-    } finally {
-      setLoadingAttributes((prevLoading) => ({
-        ...prevLoading,
-        [attribute?.id]: false,
-      }));
-    }
-  };
-
-  const processAttributeResult = (
-    result: any,
-    attributeId: any,
-    newIgnoreIds: any[],
-  ) => {
-    if (!result.editable) setEditable(false);
-
-    const shouldIgnore =
-      !result.editable && !result?.assessorInsight && !result?.aiInsight;
-    if (
-      shouldIgnore ||
-      (result?.aiInsight?.insight && result?.aiInsight?.isValid)
-    ) {
-      setAttributesData((prevData: any) => ({
-        ...prevData,
-        [attributeId]:
-          result?.aiInsight?.insight || result?.assessorInsight?.insight,
-      }));
-      newIgnoreIds.push(attributeId);
-    }
-  };
-
-  const updateAttributesData = (allAttributesData: any) => {
-    const attributesDataObject = allAttributesData?.reduce(
-      (acc: any, { id, data }: any) => {
-        acc[id] = data;
-        return acc;
-      },
-      {},
-    );
-    setAttributesData((prevData: any) => ({
-      ...prevData,
-      ...attributesDataObject,
-    }));
-  };
-
-  const updateAttributesDataPolicy = (allAttributesDataPolicy: any) => {
-    const attributesDataPolicyObject = allAttributesDataPolicy?.reduce(
-      (acc: any, { id, data }: any) => {
-        acc[id] = data;
-        return acc;
-      },
-      {},
-    );
-    setAttributesDataPolicy(attributesDataPolicyObject);
-  };
-
-  const fetchAllAttributesData = async (ignoreIds: any[] = []) => {
-    try {
-      const attributesDataPromises = createAttributesDataPromises(ignoreIds);
-      const allAttributesData = attributesDataPromises.length
-        ? await Promise.all(attributesDataPromises)
-        : [];
-      updateAttributesData(allAttributesData);
-    } catch (error) {
-      console.error("Error fetching all attributes data:", error);
-    }
-  };
-
-  const loadAllAttributesData = async () => {
-    const newIgnoreIds: any[] = [];
-    try {
-      const attributesDataPolicyPromises =
-        createAttributesPolicyPromises(newIgnoreIds);
-      const allAttributesDataPolicy = attributesDataPolicyPromises.length
-        ? await Promise.all(attributesDataPolicyPromises)
-        : [];
-      updateAttributesDataPolicy(allAttributesDataPolicy);
-    } catch (error) {
-      console.error("Error loading all attributes data:", error);
-    }
-    return newIgnoreIds;
-  };
 
   const refs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -373,19 +185,6 @@ const AssessmentExportContainer = () => {
               config?.appTitle,
             );
           }, [assessment]);
-
-          useEffect(() => {
-            const loadAndFetchData = async () => {
-              const ignoreIds = await loadAllAttributesData();
-              if (questionsCount === answersCount && editable) {
-                await fetchAllAttributesData(ignoreIds);
-              }
-            };
-
-            if (AssessmentReport?.data && assessmentId) {
-              loadAndFetchData();
-            }
-          }, [AssessmentReport?.data, assessmentId]);
 
           const colorPallet = getMaturityLevelColors(
             assessment?.assessmentKit?.maturityLevels
@@ -1405,201 +1204,6 @@ const AssessmentExportContainer = () => {
                                       </IconButton>
                                     </Tooltip>
                                   </Box>
-
-                                  {attributesData[attribute?.id?.toString()] ? (
-                                    <Typography variant="displaySmall">
-                                      {
-                                        attributesData[
-                                          attribute?.id?.toString()
-                                        ]
-                                      }
-                                    </Typography>
-                                  ) : editable &&
-                                    loadingAttributes[
-                                      attribute?.id?.toString()
-                                    ] ? (
-                                    <Box display="flex" alignItems="center">
-                                      <CircularProgress
-                                        size={24}
-                                        sx={{
-                                          marginRight:
-                                            theme.direction === "ltr"
-                                              ? 1
-                                              : "unset",
-                                          marginLeft:
-                                            theme.direction === "rtl"
-                                              ? 1
-                                              : "unset",
-                                        }}
-                                      />
-                                      <Typography variant="displaySmall">
-                                        <Trans i18nKey="generatingInsight" />
-                                      </Typography>
-                                    </Box>
-                                  ) : (
-                                    editable && (
-                                      <Box
-                                        sx={{ ...styles.centerV }}
-                                        gap={0.5}
-                                        my={1}
-                                      >
-                                        <Box
-                                          sx={{
-                                            zIndex: 1,
-                                            display: "flex",
-                                            justifyContent: "flex-start",
-                                            ml: { xs: 0.75, sm: 0.75, md: 1 },
-                                          }}
-                                        >
-                                          <Typography
-                                            variant="labelSmall"
-                                            sx={{
-                                              backgroundColor: "#d85e1e",
-                                              color: "white",
-                                              padding: "0.35rem 0.35rem",
-                                              borderRadius: "4px",
-                                              fontWeight: "bold",
-                                            }}
-                                          >
-                                            <Trans i18nKey={"warning"} />
-                                          </Typography>
-                                        </Box>
-                                        <Typography
-                                          variant="titleMedium"
-                                          fontWeight={400}
-                                          color="#243342"
-                                        >
-                                          <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedFirstSection" />{" "}
-                                          <Box
-                                            component={RouterLink}
-                                            to={`./../questionnaires?subject_pk=${subject?.id}`}
-                                            sx={{
-                                              textDecoration: "none",
-                                              color: theme.palette.primary.main,
-                                            }}
-                                          >
-                                            <Typography variant="titleMedium">
-                                              <Trans i18nKey={"assessmentQuestion"}/>
-                                            </Typography>
-                                          </Box>{" "}
-                                          <Trans i18nKey="questionsArentCompleteSoAICantBeGeneratedSecondSection" />
-                                        </Typography>
-                                      </Box>
-                                    )
-                                  )}
-                                  {attributesDataPolicy[
-                                    attribute?.id?.toString()
-                                  ]?.aiInsight &&
-                                    attributesDataPolicy[
-                                      attribute?.id?.toString()
-                                    ]?.aiInsight.isValid && (
-                                      <Box sx={{ ...styles.centerV }} gap={2}>
-                                        <AIGenerated />
-                                        <Box
-                                          sx={{
-                                            display: "flex",
-                                            alignItems: "flex-start",
-                                            backgroundColor:
-                                              "rgba(255, 249, 196, 0.31)",
-                                            padding: 1,
-                                            borderRadius: 2,
-                                            maxWidth: "80%",
-                                          }}
-                                        >
-                                          <InfoOutlined
-                                            color="primary"
-                                            sx={{
-                                              marginRight:
-                                                theme.direction === "ltr"
-                                                  ? 1
-                                                  : "unset",
-                                              marginLeft:
-                                                theme.direction === "rtl"
-                                                  ? 1
-                                                  : "unset",
-                                            }}
-                                          />
-                                          <Typography
-                                            variant="titleMedium"
-                                            fontWeight={400}
-                                            textAlign={
-                                              theme.direction == "rtl"
-                                                ? "right"
-                                                : "left"
-                                            }
-                                          >
-                                            <Trans i18nKey="invalidAIInsight" />
-                                          </Typography>
-                                        </Box>
-                                      </Box>
-                                    )}
-                                  {((attributesDataPolicy[
-                                    attribute?.id?.toString()
-                                  ]?.assessorInsight &&
-                                    !attributesDataPolicy[
-                                      attribute?.id?.toString()
-                                    ]?.assessorInsight?.isValid) ||
-                                    (attributesDataPolicy[
-                                      attribute?.id?.toString()
-                                    ]?.aiInsight &&
-                                      !attributesDataPolicy[
-                                        attribute?.id?.toString()
-                                      ]?.aiInsight?.isValid)) && (
-                                    <Box sx={{ ...styles.centerV }} gap={2}>
-                                      <Box
-                                        sx={{
-                                          zIndex: 1,
-                                          display: "flex",
-                                          justifyContent: "flex-start",
-                                        }}
-                                      >
-                                        <Typography
-                                          variant="labelSmall"
-                                          sx={{
-                                            backgroundColor: "#d85e1e",
-                                            color: "white",
-                                            padding: "0.35rem 0.35rem",
-                                            borderRadius: "4px",
-                                            fontWeight: "bold",
-                                          }}
-                                        >
-                                          <Trans i18nKey="outdated" />
-                                        </Typography>
-                                      </Box>
-                                      <Box
-                                        sx={{
-                                          display: "flex",
-                                          alignItems: "flex-start",
-                                          backgroundColor:
-                                            "rgba(255, 249, 196, 0.31)",
-                                          padding: 1,
-                                          borderRadius: 4,
-                                          maxWidth: "100%",
-                                        }}
-                                      >
-                                        <InfoOutlined
-                                          color="primary"
-                                          sx={{
-                                            marginRight:
-                                              theme.direction === "ltr"
-                                                ? 1
-                                                : "unset",
-                                            marginLeft:
-                                              theme.direction === "rtl"
-                                                ? 1
-                                                : "unset",
-                                          }}
-                                        />
-                                        <Typography
-                                          variant="titleMedium"
-                                          fontWeight={400}
-                                          textAlign="left"
-                                        >
-                                          <Trans i18nKey="invalidInsight" />
-                                        </Typography>
-                                      </Box>
-                                    </Box>
-                                  )}
                                 </Box>
                               </TableCell>
                             </TableRow>
