@@ -535,87 +535,102 @@ const AttributeInsight = (props: any) => {
         console.log(data);
         return (
           <>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography color="#2466A8" variant="titleSmall">
-                <Trans i18nKey="insight" />
-              </Typography>
+            {(data.editable ||
+              data?.assessorInsight?.insight ||
+              data?.aiInsight?.insight) && (
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography color="#2466A8" variant="titleSmall">
+                    <Trans i18nKey="insight" />
+                  </Typography>
 
-              {data.aiInsight && data.aiInsight.isValid ? (
-                <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                  {!data.approved && (
-                    <LoadingButton
-                      onClick={(event) => approveAttribute(event)}
-                      variant="contained"
-                      loading={ApprovedAIAttribute.loading}
-                      size="small"
-                    >
-                      <Trans i18nKey="approve" />
-                    </LoadingButton>
+                  {data.aiInsight && data.aiInsight.isValid ? (
+                    <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                      {!data.approved && data?.editable && (
+                        <LoadingButton
+                          onClick={(event) => approveAttribute(event)}
+                          variant="contained"
+                          loading={ApprovedAIAttribute.loading}
+                          size="small"
+                        >
+                          <Trans i18nKey="approve" />
+                        </LoadingButton>
+                      )}
+                      <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
+                        <div>
+                          <AIGenerated />
+                        </div>
+                      </Tooltip>
+                    </Box>
+                  ) : (data?.assessorInsight &&
+                      !data?.assessorInsight?.isValid) ||
+                    (data?.aiInsight && !data?.aiInsight?.isValid) ? (
+                    <Tooltip title={<Trans i18nKey="invalidInsight" />}>
+                      <div>
+                        <AIGenerated
+                          title="outdated"
+                          type="warning"
+                          icon={<></>}
+                        />
+                        {data?.editable && (
+                          <Button
+                            variant="contained"
+                            size="small"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              onGenerateAIInsight();
+                            }}
+                            sx={{ mx: 2 }}
+                          >
+                            <Trans i18nKey="regenerate" />
+                          </Button>
+                        )}
+                      </div>
+                    </Tooltip>
+                  ) : (
+                    data?.editable && (
+                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
+                        {progress === 100 && (
+                          <LoadingButton
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              onGenerateAIInsight();
+                            }}
+                            variant={"contained"}
+                            loading={generateAIInsight.loading}
+                            size="small"
+                          >
+                            <Trans i18nKey={"generate"} />
+                          </LoadingButton>
+                        )}{" "}
+                      </Box>
+                    )
                   )}
-                  <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                    <div>
-                      <AIGenerated />
-                    </div>
-                  </Tooltip>
                 </Box>
-              ) : (data?.assessorInsight && !data?.assessorInsight?.isValid) ||
-                (data?.aiInsight && !data?.aiInsight?.isValid) ? (
-                <Tooltip title={<Trans i18nKey="invalidInsight" />}>
-                  <div>
-                    <AIGenerated title="outdated" type="warning" icon={<></>} />
-                    {data?.editable && (
-                      <Button
-                        variant="contained"
-                        size="small"
-                        onClick={(event) => {
-                          onGenerateAIInsight();
-                          event.stopPropagation();
-                        }}
-                        sx={{ mx: 2 }}
-                      >
-                        <Trans i18nKey="regenerate" />
-                      </Button>
-                    )}
-                  </div>
-                </Tooltip>
-              ) : (
-                data?.editable && (
-                  <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                    {progress === 100 && (
-                      <LoadingButton
-                        onClick={(event) => onGenerateAIInsight()}
-                        variant={"contained"}
-                        loading={generateAIInsight.loading}
-                        size="small"
-                      >
-                        <Trans i18nKey={"generate"} />
-                      </LoadingButton>
-                    )}{" "}
-                  </Box>
-                )
-              )}
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              onClick={(event) => event.stopPropagation()}
-              mt={1}
-            >
-              <OnHoverInput
-                attributeId={id}
-                data={
-                  data?.assessorInsight?.insight || data?.aiInsight?.insight
-                }
-                infoQuery={onCreateInsight}
-                type="summary"
-                editable={data?.editable}
-              />
-            </Box>
+
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  onClick={(event) => event.stopPropagation()}
+                  mt={1}
+                >
+                  <OnHoverInput
+                    attributeId={id}
+                    data={
+                      data?.assessorInsight?.insight || data?.aiInsight?.insight
+                    }
+                    infoQuery={onCreateInsight}
+                    type="summary"
+                    editable={data?.editable}
+                  />
+                </Box>
+              </>
+            )}
           </>
         );
       }}
