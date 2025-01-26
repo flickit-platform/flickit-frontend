@@ -257,7 +257,7 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt: 6,
+                mt: 12,
               }}
             >
               <RichEditorFieldAssessment
