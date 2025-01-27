@@ -817,5 +817,9 @@
   "writeStepsForAssessment": "Write about Steps taken for this assessment here...",
   "writeAssessmentContributors": "Write about Assessment Contributors here...",
   "writeHere": "Write about {{title}} here...",
-  "showLess": "Show Less"
+  "showLess": "Show Less",
+  "fa": "Persian",
+  "en": "English",
+  "english": "English",
+  "persian": "Persian"
 }
