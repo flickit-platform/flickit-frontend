@@ -75,6 +75,7 @@ const ReportTab = () => {
       loadingComponent={<Loading />}
       render={(data) => {
         const { metadata, published } = data;
+
         return (
           <>
             <Box
@@ -247,7 +248,7 @@ const ReportTab = () => {
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
                           disabled={
-                              !Object.values(metadata).includes(null) && published == false
+                              Object.values(metadata).includes(null) || published == false
                           }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
