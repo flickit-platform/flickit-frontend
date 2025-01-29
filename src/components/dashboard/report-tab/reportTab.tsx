@@ -469,7 +469,6 @@ const OnHoverInputReport = (props: any) => {
                   transition: "all 1s ease-in-out",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  // whiteSpace:"nowrap",
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                   ...theme.typography.titleMedium,

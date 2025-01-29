@@ -131,7 +131,7 @@ const Gauge = (props: IGaugeProps) => {
             }}
             variant={status_font_variant ? status_font_variant : "h6"}
             color={colorCode}
-            fontSize={status_font_variant ? "2.5rem" : fontSize}
+            fontSize={status_font_variant ? "2rem" : fontSize}
             mt={maturity_status_guide ? "0.5rem" : "0px"}
             mb={maturity_status_guide ? "-0.5rem" : 0}
           >

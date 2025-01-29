@@ -18,7 +18,6 @@ interface IAttribute {
   title: string;
   confidenceValue?: number | any;
   analyzation?: string | any;
-  translatedTitle: string;
   maturityLevel: {
     id: number;
     title: string;
@@ -36,7 +35,7 @@ const SubjectReport = ({ data }: any) => {
   return (
     <GeneralLayout>
       {subjects?.map((item: any, index: number) => {
-        const { title, description, maturityLevel } = item;
+        const { title, insight, maturityLevel } = item;
         const is_farsi = languageDetector(title);
         return (
           <>
@@ -66,17 +65,19 @@ const SubjectReport = ({ data }: any) => {
                   {title}
                 </Typography>
                 <Typography
+                  component="div"
                   sx={{
                     ...theme.typography.extraLight,
-                    fontWeight:300,
+                    fontWeight: 300,
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
                     mt: 2,
                   }}
                   textAlign="justify"
-                >
-                  {description}
-                </Typography>
+                  dangerouslySetInnerHTML={{
+                    __html: insight ?? "",
+                  }}
+                ></Typography>
               </Grid>
               <Grid item xs={12} sm={3}>
                 <DonutChart

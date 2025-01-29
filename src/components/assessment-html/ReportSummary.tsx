@@ -12,6 +12,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { getMaturityLevelColors, styles } from "@/config/styles";
 import { ISubject } from "@/types";
 import { t } from "i18next";
+import languageDetector from "@/utils/languageDetector";
 
 const sectionStyle = {
   marginTop: "16px",
@@ -180,23 +181,15 @@ const TopicsList = ({ data }: any) => (
 
 const QuestionnaireList = ({ data }: any) => (
   <Box>
-    {data?.questionnaires?.map((item: any, index: any) => (
-      <Box
-        key={index}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "8px",
-          mt: 3,
-        }}
-      >
+    {data?.assessment?.assessmentKit.questionnaires?.map(
+      (item: any, index: any) => (
         <Box
-          width="200px"
+          key={index}
           sx={{
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
+            marginBottom: "8px",
+            mt: 3,
           }}
         >
           <Typography
@@ -204,37 +197,30 @@ const QuestionnaireList = ({ data }: any) => (
             sx={{
               fontWeight: "bold",
               ...styles.customizeFarsiFont,
+              width: "200px",
             }}
           >
             {item.title}
           </Typography>
+          <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
           <Typography
-            variant="extraLight"
             sx={{
-              fontWeight: "bold",
+              ...textStyle,
+              width: "80px",
+              direction: true ? "rtl" : "ltr",
+              fontFamily: true ? farsiFontFamily : primaryFontFamily,
             }}
           >
-            {item.translatedTitle}
+            {item.questionCount} {t("question", { lng: "fa" })}
           </Typography>
+          <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+          <Typography sx={{ ...textStyle, width: "80%" }}>
+            {item.description}
+          </Typography>
+          <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
         </Box>
-        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-        <Typography
-          sx={{
-            ...textStyle,
-            width: "70px",
-            direction: true ? "rtl" : "ltr",
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
-          }}
-        >
-          {item.questionCount} {t("question", { lng: "fa" })}
-        </Typography>
-        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-        <Typography sx={{ ...textStyle, width: "80%" }}>
-          {item.description}
-        </Typography>
-        <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-      </Box>
-    ))}
+      ),
+    )}
   </Box>
 );
 
@@ -255,23 +241,63 @@ const ReportCard = ({ data }: any) => {
       <TitleBox />
 
       <Section title={t("disclaimer", { lng: "fa" })}>
-        {data?.assessment.intro}
+        <Typography
+          component="div"
+          sx={{
+            fontFamily: languageDetector(data?.assessmentProcess.steps)
+              ? farsiFontFamily
+              : primaryFontFamily,
+            ...textStyle,
+            textAlign: "justify",
+            wordBreak: "break-all",
+          }}
+          dangerouslySetInnerHTML={{ __html: data?.assessment.intro }}
+          className={"tiptap"}
+        ></Typography>
       </Section>
 
       <Section title={t("evaluationSteps", { lng: "fa" })}>
         {t("stepsDescription", {
           lng: "fa",
         })}
-        <StepsTable steps={data?.steps} columnsWidth={["5%", "20%", "20%"]} />
+        <Typography
+          variant="extraLight"
+          fontWeight={300}
+          sx={{
+            fontFamily: languageDetector(data?.assessmentProcess.steps)
+              ? farsiFontFamily
+              : primaryFontFamily,
+            ...textStyle,
+            textAlign: "justify",
+            wordBreak: "break-all",
+          }}
+          dangerouslySetInnerHTML={{ __html: data?.assessmentProcess.steps }}
+          className={"tiptap"}
+        />
+        {/* <StepsTable steps={data?.steps} columnsWidth={["5%", "20%", "20%"]} /> */}
       </Section>
       <Section title={t("participant", { lng: "fa" })}>
         {t("participantDescription", {
           lng: "fa",
         })}
-        <StepsTable
+        <Typography
+          sx={{
+            fontFamily: languageDetector(data?.assessmentProcess.participant)
+              ? farsiFontFamily
+              : primaryFontFamily,
+            ...textStyle,
+            textAlign: "justify",
+            wordBreak: "break-all",
+          }}
+          dangerouslySetInnerHTML={{
+            __html: data?.assessmentProcess.participant,
+          }}
+          className={"tiptap"}
+        />
+        {/* <StepsTable
           steps={data?.participant}
           columnsWidth={["5%", "20%", "20%", "5%"]}
-        />
+        /> */}
       </Section>
 
       <Section title={t("assessmentKit", { lng: "fa" })}>

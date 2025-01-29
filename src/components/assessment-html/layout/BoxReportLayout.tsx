@@ -13,7 +13,6 @@ interface IBoxReport {
   analyzation: string;
   confidenceValue: number;
   maturityLevelCount: number;
-  translatedTitle: string;
   maturityLevel: {
     id: number;
     title: string;
@@ -33,7 +32,6 @@ interface ITopBoxReport {
   };
   confidenceValue: number;
   maturityLevelCount: number;
-  translatedTitle: string;
 }
 const BoxReportLayout = (props: IBoxReport) => {
   const {
@@ -41,7 +39,6 @@ const BoxReportLayout = (props: IBoxReport) => {
     analyzation,
     maturityLevel,
     maturityLevelCount,
-    translatedTitle,
     ...rest
   } = props;
 
@@ -60,14 +57,14 @@ const BoxReportLayout = (props: IBoxReport) => {
         border: `1px solid ${colorCode}`,
         mb: 4,
         width: "100%",
+        paddingX: 4,
       }}
     >
       <TopBox
         ConfidenceColor={colorCode}
-        confidenceValue={confidenceValue}
+        confidenceValue={Math.ceil(confidenceValue)}
         maturityLevel={maturityLevel}
         maturityLevelCount={maturityLevelCount}
-        translatedTitle={translatedTitle}
         {...rest}
       />
       <BottomBox analyzation={analyzation} />
@@ -83,57 +80,31 @@ const TopBox = (props: ITopBoxReport) => {
     maturityLevel,
     confidenceValue,
     maturityLevelCount,
-    translatedTitle,
   } = props;
   return (
     <Grid
       spacing={2}
       container
-      sx={{ display: "flex", justifyContent: "space-evenly" }}
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+      textAlign="center"
     >
-      <Grid
-        xs={12}
-        sm={4}
-        sx={{ ...styles.centerCVH, gap: 1 }}
-        item
-        component="div"
-        id={title}
-      >
+      <Grid xs={12} sm={4} item component="div" id={title}>
         <Typography
           sx={{
             ...theme.typography.titleLarge,
             color: `${ConfidenceColor}`,
             direction: true ? "rtl" : "ltr",
             fontFamily: true ? farsiFontFamily : primaryFontFamily,
-            textAlign: true ? "right" : "left",
           }}
         >
           {title}
         </Typography>
-        <Typography
-          sx={{
-            ...theme.typography.titleSmall,
-            color: "rgba(61, 77, 92, 0.5)",
-            direction: true ? "rtl" : "ltr",
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
-            textAlign: true ? "right" : "left",
-          }}
-        >
-          {translatedTitle}
-        </Typography>
       </Grid>
-      <Grid
-        xs={12}
-        sm={4}
-        item
-        sx={{
-          ...theme.typography.labelLarge,
-          ...styles.centerVH,
-          textAlign: "center",
-          direction: true ? "rtl" : "ltr",
-          fontFamily: true ? farsiFontFamily : primaryFontFamily,
-        }}
-      >
+      <Grid xs={12} sm={4.5} item>
         <Typography
           sx={{
             ...theme.typography.extraLight,
@@ -144,7 +115,7 @@ const TopBox = (props: ITopBoxReport) => {
           {t(description, { lng: "fa" })}
         </Typography>
       </Grid>
-      <Grid display={"flex"} justifyContent={"center"} xs={12} sm={4} item>
+      <Grid xs={12} sm={3.5} item>
         <FlatGauge
           maturityLevelNumber={maturityLevelCount}
           levelValue={maturityLevel.value}
@@ -163,7 +134,7 @@ const BottomBox = (props: any) => {
   return (
     <Box
       sx={{
-        width: "90%",
+        width: "100%",
         mx: "auto",
         borderRadius: "1rem",
         backgroundColor: "#2466A80A",

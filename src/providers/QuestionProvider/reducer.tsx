@@ -17,8 +17,6 @@ const questionReducer = (
         assessmentStatus: action.payload,
       };
     case QUESTION_ACTIONS_TYPE.SET_QUESTIONS_INFO:
-      console.log("Previous State:", prevState.questionsInfo);
-      console.log("Action Payload:", action.payload);
       return {
         ...prevState,
         questionsInfo: action.payload,
