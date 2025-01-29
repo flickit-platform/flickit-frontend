@@ -4,7 +4,7 @@ import { Button, Divider, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
@@ -25,13 +25,12 @@ import { uniqueId } from "lodash";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { styles } from "@styles";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import Switch from "@mui/material/Switch";
 
 const ReportTab = () => {
-  const { assessmentId = "" } = useParams();
+  const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-  const [checkedPublish, setCheckedPublish] = useState(true);
-
 
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
@@ -39,8 +38,17 @@ const ReportTab = () => {
     runOnMount: true,
   });
 
-  const handlePublishChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckedPublish(event.target.checked);
+  const PublishReportStatus = useQuery({
+    service: (args, config) => service.PublishReportStatus(args, config),
+    runOnMount: false,
+  });
+
+  const handlePublishChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    let data = { published: event.target.checked };
+    await PublishReportStatus.query({ assessmentId, data });
+    await fetchReportFields.query();
   };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
@@ -61,7 +69,6 @@ const ReportTab = () => {
       placeholder: "writeAssessmentContributors",
     },
   ];
-  const label = { inputProps: { "aria-label": "Size switch demo" } };
   return (
     <QueryData
       {...fetchReportFields}
@@ -177,7 +184,7 @@ const ReportTab = () => {
                     style={{
                       minHeight: "50px",
                       mt: 2,
-                      width: name == "intro" ? "65%" : "100%",
+                      width: name == "intro" ? "68%" : "100%",
                     }}
                   >
                     <Typography
@@ -218,26 +225,30 @@ const ReportTab = () => {
                   {name == "intro" && (
                     <MainCard
                       style={{
-                        minHeight: "50px",
+                        minHeight: "180px",
                         mt: 2,
                         width: "30%",
                         display: "flex",
                         justifyContent: "center",
                         alignSelf: "flex-start",
-                        height: "150px",
                       }}
                     >
                       <Box
                         sx={{
                           display: "flex",
                           flexDirection: "column",
-                          justifyContent: "space-around",
+                          justifyContent: "space-between",
                           alignItems: "center",
                         }}
                       >
                         <Button
-                          sx={{ display: "flex", gap: 1 }}
+                          component={Link}
+                          to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
+                          sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
+                          disabled={
+                              !Object.values(metadata).includes(null) && published == false
+                          }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
                             <Trans i18nKey={"viewReportPage"} />
@@ -245,14 +256,52 @@ const ReportTab = () => {
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
                         <Divider sx={{ width: "100%" }} />
-                        <Box sx={{display: "flex" , justifyContent: "space-between"}}>
-                          <Typography>
-                            <Trans i18nKey={"publishReport"}/>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{ ...theme.typography.semiBoldLarge }}
+                          >
+                            <Trans i18nKey={"publishReport"} />
                           </Typography>
-                          <Switch {...label} checked={checkedPublish}
-                                  onChange={handlePublishChange} size="small" />
+                          <Switch
+                            checked={published}
+                            onChange={handlePublishChange}
+                            size="small"
+                            disabled={Object.values(metadata).includes(null)}
+                            sx={{ cursor: "pointer" }}
+                          />
                         </Box>
 
+                        {Object.values(metadata).includes(null) && (
+                          <Box
+                            sx={{
+                              background: theme.palette.error.main,
+                              borderRadius: 2,
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                ...theme.typography.semiBoldSmall,
+                                color: "#FAD1D8",
+                                py: 1,
+                                px: 2,
+                                gap: 1,
+                              }}
+                            >
+                              <ReportProblemOutlinedIcon fontSize={"small"} />
+                              <Trans i18nKey={"fillInAllRequired"} />
+                            </Typography>
+                          </Box>
+                        )}
                       </Box>
                     </MainCard>
                   )}
@@ -342,7 +391,7 @@ const OnHoverInputReport = (props: any) => {
         [name]: data?.[name],
       };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
-      if (Object.values(reportData)[0]) {
+      // if (Object.values(reportData)[0]) {
         const res = await patchUpdateReportFields.query({
           assessmentId,
           reportData,
@@ -350,7 +399,7 @@ const OnHoverInputReport = (props: any) => {
         infoQuery.query();
         res?.message && toast.success(res?.message);
         setShow(false);
-      }
+      // }
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {

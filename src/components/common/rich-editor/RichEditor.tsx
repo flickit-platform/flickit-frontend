@@ -161,7 +161,7 @@ const RichEditor = (props: IRichEditorProps) => {
               },
               "& .ProseMirror": {
                 outline: "none",
-                minHeight: "80px",
+                minHeight:  `${editor?.isEmpty && type === "reportTab" ? "100px" : "80px"}` ,
                 border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 background: "#fff",
