@@ -18,7 +18,7 @@ interface IAttribute {
   index: string;
   title: string;
   confidenceValue?: number | any;
-  analyzation?: string | any;
+  insight: any;
   maturityLevel: {
     id: number;
     title: string;
@@ -136,7 +136,6 @@ const SubjectReport = ({ data }: any) => {
               return (
                 <BoxReportLayout
                   confidenceValue={attribute.confidenceValue}
-                  analyzation={attribute.analyzation}
                   maturityLevelCount={maturityLevelCount}
                   {...attribute}
                 />

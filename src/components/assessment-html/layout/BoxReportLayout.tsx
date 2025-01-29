@@ -10,7 +10,7 @@ import { t } from "i18next";
 interface IBoxReport {
   title: string;
   description: string;
-  analyzation: string;
+  insight: string;
   confidenceValue: number;
   maturityLevelCount: number;
   maturityLevel: {
@@ -36,7 +36,7 @@ interface ITopBoxReport {
 const BoxReportLayout = (props: IBoxReport) => {
   const {
     confidenceValue,
-    analyzation,
+    insight,
     maturityLevel,
     maturityLevelCount,
     ...rest
@@ -67,7 +67,7 @@ const BoxReportLayout = (props: IBoxReport) => {
         maturityLevelCount={maturityLevelCount}
         {...rest}
       />
-      <BottomBox analyzation={analyzation} />
+      <BottomBox insight={insight} />
     </Box>
   );
 };
@@ -130,7 +130,7 @@ const TopBox = (props: ITopBoxReport) => {
 };
 
 const BottomBox = (props: any) => {
-  const { analyzation } = props;
+  const { insight } = props;
   return (
     <Box
       sx={{
@@ -177,7 +177,7 @@ const BottomBox = (props: any) => {
           fontFamily: true ? farsiFontFamily : primaryFontFamily,
         }}
       >
-        {analyzation ?? t("unavailable", { lng: "fa" })}
+        {insight ?? t("unavailable", { lng: "fa" })}
       </Typography>
     </Box>
   );
