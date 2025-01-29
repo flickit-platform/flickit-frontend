@@ -178,6 +178,7 @@ const ReportTab = () => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    flexDirection: {xs: "column-reverse", md: "row"}
                   }}
                 >
                   <MainCard
@@ -185,7 +186,7 @@ const ReportTab = () => {
                     style={{
                       minHeight: "50px",
                       mt: 2,
-                      width: name == "intro" ? "68%" : "100%",
+                      width: name == "intro" ? {xs: "100%", md: "68%"} : "100%",
                     }}
                   >
                     <Typography
@@ -228,7 +229,7 @@ const ReportTab = () => {
                       style={{
                         minHeight: "180px",
                         mt: 2,
-                        width: "30%",
+                        width: {xs: "100%", md: "30%"},
                         display: "flex",
                         justifyContent: "center",
                         alignSelf: "flex-start",
