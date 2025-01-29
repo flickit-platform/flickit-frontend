@@ -581,6 +581,14 @@ export const createService = (
         ...(config ?? {}),
       });
     },
+    PublishReportStatus(
+      { assessmentId,data }: { assessmentId: string, data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(`/api/v1/assessments/${assessmentId}/report-publish-status/`, data,{
+        ...(config ?? {}),
+      });
+    },
     loadAttributeInsight(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },
       config?: AxiosRequestConfig<any> | undefined,

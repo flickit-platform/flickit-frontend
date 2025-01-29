@@ -811,7 +811,7 @@
   "strengthsAndRoomsForImprovement": "Strengths and rooms for improvement",
   "stepsTakenForThisAssessment": "Steps taken for this assessment",
   "assessmentContributors": "Assessment Contributors",
-  "fillInAllRequired": "Essential sections are missing responses. Please fill in all required sections before viewing the report.",
+  "fillInAllRequired": "Please fill in all sections first.",
   "someAnswersNeedUpdating": "Some scores and maturity levels have changed, so some of your answers may need updating.",
   "empty": "Empty",
   "writeIntroduction": "Write introduction here...",
@@ -819,5 +819,7 @@
   "writeStepsForAssessment": "Write about Steps taken for this assessment here...",
   "writeAssessmentContributors": "Write about Assessment Contributors here...",
   "writeHere": "Write about {{title}} here...",
-  "showLess": "Show Less"
+  "showLess": "Show Less",
+  "viewReportPage": "View Report Page",
+  "publishReport": "Publish report"
 }
