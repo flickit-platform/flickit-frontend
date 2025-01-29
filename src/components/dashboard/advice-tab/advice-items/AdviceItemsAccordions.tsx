@@ -331,7 +331,9 @@ const AdviceItemAccordion: React.FC<{
                       letterSpacing: "0.15px",
                       fontSize: "1rem",
                     }}
-                    fontFamily={isFarsi ? farsiFontFamily : primaryFontFamily}
+                    fontFamily={
+                      isFarsi || readOnly ? farsiFontFamily : primaryFontFamily
+                    }
                   >
                     (
                     {!isFarsi && !readOnly
