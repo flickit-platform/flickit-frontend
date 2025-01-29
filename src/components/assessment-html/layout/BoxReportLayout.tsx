@@ -177,7 +177,7 @@ const BottomBox = (props: any) => {
           fontFamily: true ? farsiFontFamily : primaryFontFamily,
         }}
       >
-        {analyzation}
+        {analyzation ?? t("unavailable", { lng: "fa" })}
       </Typography>
     </Box>
   );
