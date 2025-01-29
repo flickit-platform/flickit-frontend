@@ -111,7 +111,6 @@ export const useUpdateQuestionInfo = () => {
           issues: issues,
         }),
       );
-      console.log(questionsInfo)
 
     } catch (e) {
       console.error("Error fetching question issues:", e);
@@ -168,7 +167,6 @@ export const useQuestions = () => {
               permissions: permissions,
             }),
           );
-          // console.log("Initial questions loaded:", items);
         }
       });
     } catch (e) {
@@ -192,7 +190,6 @@ export const useQuestions = () => {
             permissions: permissions,
           }),
         );
-        // console.log("More questions loaded:", items);
       }
     } catch (e) {
       console.error("Failed to load more questions", e);

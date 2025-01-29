@@ -34,33 +34,10 @@ interface ISpaceListProps {
 const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
 
-  // const setUserInfo = (signal: AbortSignal) => {
-  //   // service
-  //   //   .getSignedInUser(undefined, { signal })
-  //   //   .then(({ data }) => {
-  //   //     // dispatch(authActions.setUserInfo(data));
-  //   //   })
-  //   //   .catch((e) => {
-  //   //     const err = e as ICustomError;
-  //   //     toastError(err);
-  //   //   });
-  // };
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   // setUserInfo(controller.signal);
-  //   return () => {
-  //     controller?.abort();
-  //   };
-  // }, []);
-
-  // const { items = [] } = data || {};
-
   return (
     <Box sx={{ overflowX: "hidden", py: 1 }}>
       <Box sx={{ minWidth: { xs: "320px", sm: "440px" } }}>
         {data.map((item: any) => {
-          // console.log(items,"test items")
           return (
             <SpaceCard
               key={item?.id}
@@ -69,7 +46,6 @@ const SpacesList = (props: ISpaceListProps) => {
               owner={item?.owner}
               dialogProps={dialogProps}
               fetchSpaces={fetchSpaces}
-              // setUserInfo={setUserInfo}
             />
           );
         })}
@@ -322,7 +298,6 @@ const Actions = (props: any) => {
       await fetchSpaces();
     } catch (e) {
       const err = e as ICustomError;
-      // console.log(err);
       toastError(err);
     }
   };

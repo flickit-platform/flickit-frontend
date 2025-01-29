@@ -56,25 +56,6 @@ const AssessmentReportContainer = (props: any) => {
     } catch (e) {}
   };
 
-  const iframeUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/index.html`;
-  const jsonUrl = `${import.meta.env.VITE_STATIC_HTML}${assessmentId}/greport.json`;
-
-  useEffect(() => {
-    const checkIframeUrl = async () => {
-      try {
-        const response = await fetch(iframeUrl, { method: "HEAD" });
-        const jsonResponse = await fetch(jsonUrl, { method: "HEAD" });
-        if (response.status === 404 && jsonResponse.status === 404) {
-          setDisableHtmlDodument(true);
-        }
-      } catch (error) {
-        setDisableHtmlDodument(true);
-        console.error("Error fetching iframe URL:", error);
-      }
-    };
-
-    checkIframeUrl();
-  }, [iframeUrl]);
   useEffect(() => {
     if (queryData.errorObject?.response?.data?.code == "CALCULATE_NOT_VALID") {
       calculate();
@@ -111,14 +92,12 @@ const AssessmentReportContainer = (props: any) => {
           const {
             assessment,
             subjects,
-            assessmentPermissions: { manageable, exportable },
-            permissions,
+            assessmentPermissions: { exportable },
           } = data || {};
 
           const colorCode = assessment?.color?.code || "#101c32";
           const { assessmentKit, maturityLevel, confidenceValue } =
             assessment || {};
-          const { questionsCount, answersCount } = progress;
 
           const totalAttributesLength = subjects.reduce(
             (sum: any, subject: any) => {
@@ -163,20 +142,6 @@ const AssessmentReportContainer = (props: any) => {
                           </IconButton>
                         </Box>
                       </Tooltip>
-                      {/* <Tooltip title={<Trans i18nKey={"assessmentSettings"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            disabled={!manageable}
-                            component={manageable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/settings/`}
-                          >
-                            <SettingsIcon
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip> */}
                     </Box>
                   </Box>
                   <Grid container alignItems="stretch" spacing={2} mt={1}>
@@ -220,14 +185,6 @@ const AssessmentReportContainer = (props: any) => {
                         />
                       </Box>
                     </Grid>
-                    {/* <Grid item lg={4} md={12} sm={12} xs={12}>
-                    <Box display="flex" flexDirection="column" gap={1}>
-                      <Typography color="#73808C" marginX={4}>
-                        <Trans i18nKey="subjectStatus" />
-                      </Typography>
-                      <AssessmentSubjectStatus subjects={subjects} />
-                    </Box>
-                  </Grid> */}
                   </Grid>
                 </Grid>
 

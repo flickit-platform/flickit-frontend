@@ -615,25 +615,6 @@ const AnswerTemplate = (props: {
   const navigate = useNavigate();
   const isLastQuestion = questionIndex == total_number_of_questions;
   const isSelectedValueTheSameAsAnswer = useMemo(() => {
-    console.log(
-      (questionInfo?.answer?.selectedOption?.index === value?.index &&
-        questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&
-        questionInfo?.answer?.isNotApplicable === notApplicable) ||
-        (questionInfo?.mayNotBeApplicable &&
-          questionInfo?.answer?.isNotApplicable === true &&
-          notApplicable === true) ||
-        (questionInfo?.answer === null &&
-          value === null &&
-          notApplicable === false) ||
-        (questionInfo?.answer?.selectedOption === null &&
-          questionInfo.answer?.confidenceLevel === null &&
-          value === null &&
-          questionInfo?.answer?.isNotApplicable === notApplicable) ||
-        (questionInfo?.answer?.selectedOption === null &&
-          questionInfo.answer?.confidenceLevel === null &&
-          value === null &&
-          !questionInfo.mayNotBeApplicable),
-    );
     return (
       (questionInfo?.answer?.selectedOption?.index === value?.index &&
         questionInfo.answer?.confidenceLevel?.id === selcetedConfidenceLevel &&

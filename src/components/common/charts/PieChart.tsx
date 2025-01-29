@@ -35,22 +35,21 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
   }: any) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) / 2;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    const maxLength = 17;
+    const maxLength = 22;
     const truncatedName =
-      name.length > maxLength ? name.substring(0, maxLength) + "..." : name;
+      name?.length > maxLength ? name?.substring(0, maxLength) + "..." : name;
     const truncatedLabel =
       label && label.length > maxLength
         ? label.substring(0, maxLength) + "..."
         : label;
+    const xprime = cx + radius * Math.cos(-midAngle * RADIAN);
+    const yprime = cy + radius * Math.sin(-midAngle * RADIAN);
+    const isUpsideDown = midAngle < -0 && -160 < midAngle;
+    const textRotation = isUpsideDown ? midAngle + 90 : midAngle - 90;
 
     return (
-      <g>
+      <g transform={`translate(${xprime}, ${yprime}) rotate(${-textRotation})`}>
         <text
-          x={x}
-          y={y - 10}
           fill={color}
           textAnchor="middle"
           dominantBaseline="middle"
@@ -59,8 +58,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
           {truncatedName}
         </text>
         <text
-          x={x}
-          y={y + 10}
+          y={20}
           fill={color}
           fontWeight={700}
           textAnchor="middle"

@@ -555,6 +555,14 @@ export const createService = (
         },
       );
     },
+    fetchGraphicalReport(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/graphical-report/`, {
+        ...(config ?? {}),
+      });
+    },
     patchUpdateReportFields(
       { assessmentId, reportData }: { assessmentId: string; reportData: any },
       config: AxiosRequestConfig<any> | undefined,

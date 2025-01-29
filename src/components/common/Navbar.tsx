@@ -424,8 +424,6 @@ const Navbar = () => {
     if (spaceId) {
       fetchSpaceInfo();
     }
-    // console.log(MULTILINGUALITY)
-    // console.log(MULTILINGUALITY)
   }, [spaceId]);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

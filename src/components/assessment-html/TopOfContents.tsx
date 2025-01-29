@@ -32,7 +32,6 @@ export const AssessmentTOC = ({ data }: any) => {
   };
 
   const subjects = useMemo(() => {
-    console.log(data);
     return (
       data?.subjects?.map((subject: any) => ({
         key: subject.title,
