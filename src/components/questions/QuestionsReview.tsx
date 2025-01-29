@@ -154,6 +154,20 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                     values={{
                       questionnaire: questionnaireTitle,
                     }}
+                    components={{
+                      style: (
+                        <Box
+                          component={Link}
+                          to={"../questionnaires"}
+                          style={{
+                            display: "inline",
+                            color: theme.palette.secondary.main,
+                            cursor: "pointer",
+                            textDecoration: "none"
+                          }}
+                        />
+                      ),
+                    }}
                   />
                 </Typography>
                 {progress === 100 ? (
@@ -256,6 +270,16 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                           questionsInfo?.total_number_of_questions,
                         questionnaire: questionnaireTitle,
                       }}
+                      components={{style: <Box
+                            component={Link}
+                            to={"../questionnaires"}
+                            style={{
+                              display: "inline",
+                              color: theme.palette.secondary.main,
+                              cursor: "pointer",
+                              textDecoration: "none"
+                            }}
+                        />}}
                     />
                   </Typography>
                   <Typography
