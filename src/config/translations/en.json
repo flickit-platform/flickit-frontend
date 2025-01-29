@@ -817,5 +817,7 @@
   "writeStepsForAssessment": "Write about Steps taken for this assessment here...",
   "writeAssessmentContributors": "Write about Assessment Contributors here...",
   "writeHere": "Write about {{title}} here...",
-  "showLess": "Show Less"
+  "showLess": "Show Less",
+  "viewReportPage": "View Report Page",
+  "publishReport": "Publish report"
 }

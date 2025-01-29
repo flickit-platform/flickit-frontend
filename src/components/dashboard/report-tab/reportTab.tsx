@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import { Button, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useRef, useState } from "react";
@@ -24,20 +24,24 @@ import QueryData from "@common/QueryData";
 import { uniqueId } from "lodash";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { styles } from "@styles";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import Switch from "@mui/material/Switch";
 
 const ReportTab = () => {
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
+  const [checkedPublish, setCheckedPublish] = useState(true);
+
+
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
       service.fetchReportFields(args, config),
     runOnMount: true,
   });
-  // const copyLink = () => {
-  //   navigator.clipboard.writeText(window.location.href).then(() => {
-  //    toast(`${t("linkCopied")}`,{type:"success"})
-  //   });
-  // };
+
+  const handlePublishChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckedPublish(event.target.checked);
+  };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
     { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
@@ -57,12 +61,13 @@ const ReportTab = () => {
       placeholder: "writeAssessmentContributors",
     },
   ];
-
+  const label = { inputProps: { "aria-label": "Size switch demo" } };
   return (
     <QueryData
       {...fetchReportFields}
       loadingComponent={<Loading />}
       render={(data) => {
+        const { metadata, published } = data;
         return (
           <>
             <Box
@@ -154,76 +159,104 @@ const ReportTab = () => {
                     justifyContent: "flex-end",
                     marginInlineStart: "auto",
                   }}
-                >
-                  {/*<Box sx={{ ...styles.centerVH, gap: 1 }}>*/}
-                  {/*  <Button*/}
-                  {/*    onClick={copyLink}*/}
-                  {/*    sx={{ display: "flex", gap: 1 }}*/}
-                  {/*    variant={"outlined"}*/}
-                  {/*  >*/}
-                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
-                  {/*      <Trans i18nKey={"copy report link"} />*/}
-                  {/*    </Typography>*/}
-                  {/*    <InsertLinkIcon fontSize={"small"} />*/}
-                  {/*  </Button>*/}
-                  {/*  <Button*/}
-                  {/*    sx={{ display: "flex", gap: 1 }}*/}
-                  {/*    variant={"contained"}*/}
-                  {/*  >*/}
-                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
-                  {/*      <Trans i18nKey={"view report"} />*/}
-                  {/*    </Typography>*/}
-                  {/*    <AssignmentOutlinedIcon fontSize={"small"} />*/}
-                  {/*  </Button>*/}
-                  {/*</Box>*/}
-                </Grid>
+                ></Grid>
               </Grid>
             </Box>
             {reportFields.map((field) => {
               const { name, title, placeholder } = field;
               return (
-                <MainCard
-                  key={uniqueId()}
-                  style={{
-                    minHeight: "50px",
-                    mt: 2,
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  <Typography
-                    style={{ ...theme.typography.semiBoldLarge }}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      color: "#2B333B",
-                      gap: 2,
-                      mb: 3,
+                  <MainCard
+                    key={uniqueId()}
+                    style={{
+                      minHeight: "50px",
+                      mt: 2,
+                      width: name == "intro" ? "65%" : "100%",
                     }}
                   >
-                    <Trans i18nKey={title} />
-                    {!data[name] && (
-                      <Typography
+                    <Typography
+                      style={{ ...theme.typography.semiBoldLarge }}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        color: "#2B333B",
+                        gap: 2,
+                        mb: 3,
+                      }}
+                    >
+                      <Trans i18nKey={title} />
+                      {!metadata[name] && (
+                        <Typography
+                          sx={{
+                            ...theme.typography.semiBoldLarge,
+                            color: theme.palette.error.main,
+                          }}
+                        >
+                          (<Trans i18nKey={"empty"} />)
+                        </Typography>
+                      )}
+                    </Typography>
+                    <Box>
+                      <OnHoverInputReport
+                        attributeId={1}
+                        data={metadata[name]}
+                        infoQuery={fetchReportFields}
+                        type="summary"
+                        editable={true}
+                        placeholder={t(placeholder)}
+                        name={name}
+                      />
+                    </Box>
+                  </MainCard>
+                  {name == "intro" && (
+                    <MainCard
+                      style={{
+                        minHeight: "50px",
+                        mt: 2,
+                        width: "30%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignSelf: "flex-start",
+                        height: "150px",
+                      }}
+                    >
+                      <Box
                         sx={{
-                          ...theme.typography.semiBoldLarge,
-                          color: theme.palette.error.main,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-around",
+                          alignItems: "center",
                         }}
                       >
-                        (<Trans i18nKey={"empty"} />)
-                      </Typography>
-                    )}
-                  </Typography>
-                  <Box>
-                    <OnHoverInputReport
-                      attributeId={1}
-                      data={data[name]}
-                      infoQuery={fetchReportFields}
-                      type="summary"
-                      editable={true}
-                      placeholder={t(placeholder)}
-                      name={name}
-                    />
-                  </Box>
-                </MainCard>
+                        <Button
+                          sx={{ display: "flex", gap: 1 }}
+                          variant={"contained"}
+                        >
+                          <Typography sx={{ whiteSpace: "nowrap" }}>
+                            <Trans i18nKey={"viewReportPage"} />
+                          </Typography>
+                          <AssignmentOutlinedIcon fontSize={"small"} />
+                        </Button>
+                        <Divider sx={{ width: "100%" }} />
+                        <Box sx={{display: "flex" , justifyContent: "space-between"}}>
+                          <Typography>
+                            <Trans i18nKey={"publishReport"}/>
+                          </Typography>
+                          <Switch {...label} checked={checkedPublish}
+                                  onChange={handlePublishChange} size="small" />
+                        </Box>
+
+                      </Box>
+                    </MainCard>
+                  )}
+                </Box>
               );
             })}
           </>
@@ -439,7 +472,7 @@ const OnHoverInputReport = (props: any) => {
               wordBreak: "break-word",
               p: 1.5,
               pr: languageDetector(data) ? 1 : 5,
-              pl:languageDetector(data) ? 5 : 1,
+              pl: languageDetector(data) ? 5 : 1,
               border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
@@ -498,11 +531,13 @@ const OnHoverInputReport = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data) ? "8px 0 0 8px"  : "0 8px 8px 0",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 8px"
+                    : "0 8px 8px 0",
                   height: "100%",
                   position: "absolute",
-                  right: languageDetector(data) ? "unset" :  0,
-                  left: languageDetector(data) ? 0 :  "unset",
+                  right: languageDetector(data) ? "unset" : 0,
+                  left: languageDetector(data) ? 0 : "unset",
                   top: 0,
                 }}
                 onClick={() => setShow(!show)}
