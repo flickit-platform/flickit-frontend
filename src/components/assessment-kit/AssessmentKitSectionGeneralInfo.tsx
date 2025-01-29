@@ -65,7 +65,6 @@ const AssessmentKitSectionGeneralInfo = (
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [choseLang, setChoseLang] = useState<string | undefined>("");
   const handleMouseOver = (editable: boolean) => {
     editable && setIsHovering(true);
   };
@@ -112,9 +111,9 @@ const AssessmentKitSectionGeneralInfo = (
     }
   };
 
-    const Languages = [{ title: "Persian" }, { title: "English" }];
+  const Languages = [{ title: "Persian" }, { title: "English" }];
 
-    return (
+  return (
     <QueryBatchData
       queryBatchData={[
         fetchAssessmentKitInfoQuery,
@@ -163,6 +162,7 @@ const AssessmentKitSectionGeneralInfo = (
                   p: 2.5,
                   borderRadius: 2,
                   background: "white",
+                  height: "100%",
                 }}
               >
                 <OnHoverInput
@@ -406,6 +406,7 @@ const AssessmentKitSectionGeneralInfo = (
                   p: 2.5,
                   borderRadius: 2,
                   background: "white",
+                  height: "100%",
                 }}
               >
                 {creationTime && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FormControl from "@mui/material/FormControl";
 import { InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
 import { Trans } from "react-i18next";
