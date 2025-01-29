@@ -112,7 +112,9 @@ const AssessmentKitSectionGeneralInfo = (
     }
   };
 
-  return (
+    const Languages = [{ title: "Persian" }, { title: "English" }];
+
+    return (
     <QueryBatchData
       queryBatchData={[
         fetchAssessmentKitInfoQuery,
@@ -392,6 +394,7 @@ const AssessmentKitSectionGeneralInfo = (
                   <SelectLanguage
                     handleChange={handleLanguageChange}
                     lang={lang}
+                    languages={Languages}
                   />
                 </Box>
               </Box>

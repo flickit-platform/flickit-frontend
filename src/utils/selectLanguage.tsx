@@ -5,9 +5,7 @@ import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const SelectLanguage = (props: any) => {
-  const { lang, handleChange } = props;
-
-  const Languages = [{ title: "Persian" }, { title: "English" }];
+  const { lang, handleChange, languages } = props;
 
   return (
     <FormControl sx={{ width: "100%" }}>
@@ -32,10 +30,11 @@ const SelectLanguage = (props: any) => {
           "& .MuiSelect-select": {
             display: "flex",
             alignItems: "center",
+            padding: "12px !important",
           },
         }}
       >
-        {Languages?.map((option: any) => (
+        {languages?.map((option: any) => (
           <MenuItem key={option} value={option.title}>
             <Trans i18nKey={option.title} />
           </MenuItem>
