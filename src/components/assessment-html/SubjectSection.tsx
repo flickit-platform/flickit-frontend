@@ -10,6 +10,7 @@ import AssessmentSubjectRadarChart from "@components/assessment-report/Assessmen
 import BoxReportLayout from "./layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@components/assessment-report/AssessmenetSubjectRadial";
 import { styles } from "@styles";
+import { t } from "i18next";
 
 interface IAttribute {
   id: number;
@@ -75,7 +76,7 @@ const SubjectReport = ({ data }: any) => {
                   }}
                   textAlign="justify"
                   dangerouslySetInnerHTML={{
-                    __html: insight ?? "",
+                    __html: insight ?? t("unavailable", { lng: "fa" }),
                   }}
                 ></Typography>
               </Grid>

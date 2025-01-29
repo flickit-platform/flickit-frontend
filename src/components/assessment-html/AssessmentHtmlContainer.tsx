@@ -255,7 +255,9 @@ const AssessmentExportContainer = () => {
                               : primaryFontFamily,
                           }}
                           dangerouslySetInnerHTML={{
-                            __html: reportData?.assessment.intro ?? "",
+                            __html:
+                              reportData?.assessment.intro ??
+                              t("unavailable", { lng: "fa" }),
                           }}
                           className="tiptap"
                         />
@@ -289,7 +291,9 @@ const AssessmentExportContainer = () => {
                               : primaryFontFamily,
                           }}
                           dangerouslySetInnerHTML={{
-                            __html: reportData?.assessment.overallInsight ?? "",
+                            __html:
+                              reportData?.assessment.overallInsight ??
+                              t("unavailable", { lng: "fa" }),
                           }}
                         ></Typography>
                       </Grid>
@@ -411,7 +415,9 @@ const AssessmentExportContainer = () => {
                               : primaryFontFamily,
                           }}
                           dangerouslySetInnerHTML={{
-                            __html: reportData?.assessment.prosAndCons,
+                            __html:
+                              reportData?.assessment.prosAndCons ??
+                              t("unavailable", { lng: "fa" }),
                           }}
                         ></Typography>
                       </Grid>
@@ -509,25 +515,48 @@ const AssessmentExportContainer = () => {
                       lng: "fa",
                     })}
                   </Typography>
-                  <Typography
-                    textAlign="justify"
-                    sx={{
-                      ...theme.typography.titleSmall,
-                      fontWeight: "light",
-                      my: 1,
-                      direction: true ? "rtl" : "ltr",
-                      fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                    }}
-                  >
-                    {reportData?.recommendationsSummary}
-                  </Typography>
-                  <AdviceItemsAccordion
-                    items={reportData.adviceItems}
-                    onDelete={() => {}}
-                    setDisplayedItems={() => {}}
-                    query={undefined}
-                    readOnly
-                  />
+                  {reportData?.advice?.narration ||
+                  reportData?.advice?.adviceItems?.length ? (
+                    <>
+                      {" "}
+                      <Typography
+                        textAlign="justify"
+                        sx={{
+                          ...theme.typography.titleSmall,
+                          fontWeight: "light",
+                          my: 1,
+                          direction: true ? "rtl" : "ltr",
+                          fontFamily: true
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html: reportData?.advice?.narration,
+                        }}
+                      ></Typography>
+                      <AdviceItemsAccordion
+                        items={reportData?.advice?.adviceItems}
+                        onDelete={() => {}}
+                        setDisplayedItems={() => {}}
+                        query={undefined}
+                        readOnly
+                      />
+                    </>
+                  ) : (
+                    <Typography
+                      textAlign="justify"
+                      sx={{
+                        ...theme.typography.titleSmall,
+                        fontWeight: "light",
+                        my: 1,
+                        direction: true ? "rtl" : "ltr",
+                        fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                      }}
+                    >
+                      {t("unavailable", { lng: "fa" })}
+                    </Typography>
+                  )}
+
                   <div id="evaluationProcess">
                     <ReportCard data={reportData} />
                   </div>

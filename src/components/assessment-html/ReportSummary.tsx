@@ -242,6 +242,15 @@ const ReportCard = ({ data }: any) => {
 
       <Section title={t("disclaimer", { lng: "fa" })}>
         <Typography
+          variant="extraLight"
+          sx={{
+            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            textAlign: "justify",
+          }}
+        >
+          {t("disclaimerDescription", { lng: "fa" })}
+        </Typography>
+        {/* <Typography
           component="div"
           sx={{
             fontFamily: languageDetector(data?.assessmentProcess.steps)
@@ -253,47 +262,69 @@ const ReportCard = ({ data }: any) => {
           }}
           dangerouslySetInnerHTML={{ __html: data?.assessment.intro }}
           className={"tiptap"}
-        ></Typography>
+        ></Typography> */}
       </Section>
 
       <Section title={t("evaluationSteps", { lng: "fa" })}>
-        {t("stepsDescription", {
-          lng: "fa",
-        })}
-        <Typography
-          variant="extraLight"
-          fontWeight={300}
-          sx={{
-            fontFamily: languageDetector(data?.assessmentProcess.steps)
-              ? farsiFontFamily
-              : primaryFontFamily,
-            ...textStyle,
-            textAlign: "justify",
-            wordBreak: "break-all",
-          }}
-          dangerouslySetInnerHTML={{ __html: data?.assessmentProcess.steps }}
-          className={"tiptap"}
-        />
+        {data?.assessmentProcess.steps ? (
+          <>
+            {t("stepsDescription", {
+              lng: "fa",
+            })}
+            <Typography
+              variant="extraLight"
+              fontWeight={300}
+              sx={{
+                fontFamily: languageDetector(data?.assessmentProcess.steps)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+                ...textStyle,
+                textAlign: "justify",
+              }}
+              dangerouslySetInnerHTML={{
+                __html:
+                  data?.assessmentProcess.steps ??
+                  t("unavailable", { lng: "fa" }),
+              }}
+              className={"tiptap"}
+            />
+          </>
+        ) : (
+          <>{t("unavailable", { lng: "fa" })}</>
+        )}
+
         {/* <StepsTable steps={data?.steps} columnsWidth={["5%", "20%", "20%"]} /> */}
       </Section>
       <Section title={t("participant", { lng: "fa" })}>
-        {t("participantDescription", {
-          lng: "fa",
-        })}
-        <Typography
-          sx={{
-            fontFamily: languageDetector(data?.assessmentProcess.participant)
-              ? farsiFontFamily
-              : primaryFontFamily,
-            ...textStyle,
-            textAlign: "justify",
-            wordBreak: "break-all",
-          }}
-          dangerouslySetInnerHTML={{
-            __html: data?.assessmentProcess.participant,
-          }}
-          className={"tiptap"}
-        />
+        {data?.assessmentProcess.participant ? (
+          <>
+            {t("participantDescription", {
+              lng: "fa",
+            })}
+            <Typography
+              variant="extraLight"
+              fontWeight={300}
+              sx={{
+                fontFamily: languageDetector(
+                  data?.assessmentProcess.participant,
+                )
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+                ...textStyle,
+                textAlign: "justify",
+              }}
+              dangerouslySetInnerHTML={{
+                __html:
+                  data?.assessmentProcess.participant ??
+                  t("unavailable", { lng: "fa" }),
+              }}
+              className={"tiptap"}
+            />
+          </>
+        ) : (
+          <>{t("unavailable", { lng: "fa" })}</>
+        )}
+
         {/* <StepsTable
           steps={data?.participant}
           columnsWidth={["5%", "20%", "20%", "5%"]}
