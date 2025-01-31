@@ -267,28 +267,23 @@ const ReportCard = ({ data }: any) => {
 
       <Section title={t("evaluationSteps", { lng: "fa" })}>
         {data?.assessmentProcess.steps ? (
-          <>
-            {t("stepsDescription", {
-              lng: "fa",
-            })}
-            <Typography
-              variant="extraLight"
-              fontWeight={300}
-              sx={{
-                fontFamily: languageDetector(data?.assessmentProcess.steps)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-                ...textStyle,
-                textAlign: "justify",
-              }}
-              dangerouslySetInnerHTML={{
-                __html:
-                  data?.assessmentProcess.steps ??
-                  t("unavailable", { lng: "fa" }),
-              }}
-              className={"tiptap"}
-            />
-          </>
+          <Typography
+            variant="extraLight"
+            fontWeight={300}
+            sx={{
+              fontFamily: languageDetector(data?.assessmentProcess.steps)
+                ? farsiFontFamily
+                : primaryFontFamily,
+              ...textStyle,
+              textAlign: "justify",
+            }}
+            dangerouslySetInnerHTML={{
+              __html:
+                data?.assessmentProcess.steps ??
+                t("unavailable", { lng: "fa" }),
+            }}
+            className={"tiptap"}
+          />
         ) : (
           <>{t("unavailable", { lng: "fa" })}</>
         )}
@@ -297,30 +292,23 @@ const ReportCard = ({ data }: any) => {
       </Section>
       <Section title={t("participant", { lng: "fa" })}>
         {data?.assessmentProcess.participant ? (
-          <>
-            {t("participantDescription", {
-              lng: "fa",
-            })}
-            <Typography
-              variant="extraLight"
-              fontWeight={300}
-              sx={{
-                fontFamily: languageDetector(
-                  data?.assessmentProcess.participant,
-                )
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-                ...textStyle,
-                textAlign: "justify",
-              }}
-              dangerouslySetInnerHTML={{
-                __html:
-                  data?.assessmentProcess.participant ??
-                  t("unavailable", { lng: "fa" }),
-              }}
-              className={"tiptap"}
-            />
-          </>
+          <Typography
+            variant="extraLight"
+            fontWeight={300}
+            sx={{
+              fontFamily: languageDetector(data?.assessmentProcess.participant)
+                ? farsiFontFamily
+                : primaryFontFamily,
+              ...textStyle,
+              textAlign: "justify",
+            }}
+            dangerouslySetInnerHTML={{
+              __html:
+                data?.assessmentProcess.participant ??
+                t("unavailable", { lng: "fa" }),
+            }}
+            className={"tiptap"}
+          />
         ) : (
           <>{t("unavailable", { lng: "fa" })}</>
         )}

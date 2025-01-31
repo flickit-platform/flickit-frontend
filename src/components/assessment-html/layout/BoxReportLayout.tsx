@@ -168,6 +168,7 @@ const BottomBox = (props: any) => {
         {t("analysisResults", { lng: "fa" })}
       </Typography>
       <Typography
+        component="div"
         textAlign="justify"
         sx={{
           ...theme.typography.extraLight,
@@ -176,9 +177,10 @@ const BottomBox = (props: any) => {
           direction: true ? "rtl" : "ltr",
           fontFamily: true ? farsiFontFamily : primaryFontFamily,
         }}
-      >
-        {insight ?? t("unavailable", { lng: "fa" })}
-      </Typography>
+        dangerouslySetInnerHTML={{
+          __html: insight ?? t("unavailable", { lng: "fa" }),
+        }}
+      ></Typography>
     </Box>
   );
 };
