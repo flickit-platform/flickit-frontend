@@ -147,7 +147,7 @@ const AssessmentExportContainer = () => {
                   fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 }}
               >
-                {t("assessmentDocument", {
+                {t("assessmentReport", {
                   lng: "fa",
                 })}
               </Typography>
