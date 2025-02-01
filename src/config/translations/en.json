@@ -821,5 +821,6 @@
   "writeHere": "Write about {{title}} here...",
   "showLess": "Show Less",
   "viewReportPage": "View Report Page",
-  "publishReport": "Publish report"
+  "publishReport": "Publish report",
+  "introductionReport": "introduction"
 }

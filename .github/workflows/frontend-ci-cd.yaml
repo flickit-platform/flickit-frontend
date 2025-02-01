@@ -32,7 +32,7 @@ jobs:
       - name: Test and coverage
         run: npm run test -- --coverage  # Run tests with Vitest and generate coverage
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lcov-report
           path: ./coverage/lcov.info
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Download coverage report
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: lcov-report  # Name of the artifact to download
       - name: SonarCloud Scan
