@@ -155,12 +155,10 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               }}
               component={Link}
               to={
-                isCalculateValid &&
-                item.permissions.canViewReport &&
-                item.hasReport
-                  ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                  : item.permissions.canViewDashboard
-                    ? `${item.id}/dashboard`
+                isCalculateValid && item.permissions.canViewDashboard
+                  ? `${item.id}/dashboard`
+                  : item.permissions.canViewReport && item.hasReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
                     : item.permissions.canViewQuestionnaires
                       ? `${item.id}/questionnaires`
                       : ""
@@ -230,10 +228,10 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             mt={2}
             component={Link}
             to={
-              hasML && item.hasReport && item.permissions.canViewReport
-                ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                : item.permissions.canViewDashboard
-                  ? `${item.id}/dashboard`
+              hasML && item.permissions.canViewDashboard
+                ? `${item.id}/dashboard`
+                : item.hasReport && item.permissions.canViewReport
+                  ? `/${spaceId}/assessments/${item.id}/graphical-report/`
                   : item.permissions.canViewQuestionnaires
                     ? `${item.id}/questionnaires`
                     : ""

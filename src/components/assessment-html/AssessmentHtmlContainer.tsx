@@ -94,7 +94,7 @@ const AssessmentExportContainer = () => {
     <>
       {renderChip(
         <DesignServicesIcon fontSize="small" color="primary" />,
-        t("assessmentKitWithTitle", {
+        t("kitWithTitle", {
           lng: "fa",
           title: reportData?.assessment.assessmentKit.title,
         }),
@@ -364,7 +364,7 @@ const AssessmentExportContainer = () => {
                       data={reportData?.subjects.flatMap((subject: any) =>
                         subject.attributes.map((attribute: any) => ({
                           name: attribute.title,
-                          count: attribute.value,
+                          count: attribute.weight,
                           label: attribute.maturityLevel.value.toString(),
                         })),
                       )}
@@ -372,6 +372,7 @@ const AssessmentExportContainer = () => {
                         reportData?.assessment.assessmentKit.maturityLevelCount
                       }
                     />
+
                     <Grid
                       xs={12}
                       md={12}
@@ -438,7 +439,14 @@ const AssessmentExportContainer = () => {
                             lng: "fa",
                           })}
                         </Typography>
-                        <Grid container spacing={1}>
+                        <Grid
+                          container
+                          xs={12}
+                          sx={{
+                            flexDirection: "column",
+                          }}
+                          mt={2}
+                        >
                           {reportData?.assessment.assessmentKit.maturityLevels.map(
                             (level: any, index: number) => (
                               <Box
