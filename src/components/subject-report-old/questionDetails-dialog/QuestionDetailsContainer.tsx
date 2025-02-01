@@ -24,7 +24,7 @@ import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
 import EmptyState from "@/components/kit-designer/common/EmptyState";
 import { t } from "i18next";
 import { LoadingButton } from "@mui/lab";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AlertBox from "@/components/common/AlertBox";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
@@ -35,7 +35,6 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
 }
 
 const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
-  const navigate = useNavigate();
 
   const {
     onClose: closeDialog,

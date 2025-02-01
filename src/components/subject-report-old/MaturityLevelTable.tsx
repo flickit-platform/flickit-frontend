@@ -447,6 +447,7 @@ const MaturityLevelTable = ({
                         key={uniqueId()}
                         component="div"
                         onClick={() => handleQuestionClick(index)}
+                        data-testid="open-question-details-dialog"
                       >
                         {columns.map((column) => (
                           <TableCell
@@ -525,6 +526,7 @@ const MaturityLevelTable = ({
           }
         />
       </TableContainer>
+      {/*todo*/}
       <QuestionDetailsContainer
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
