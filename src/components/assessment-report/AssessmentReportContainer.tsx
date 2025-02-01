@@ -110,40 +110,6 @@ const AssessmentReportContainer = (props: any) => {
             <Box m="auto" pb={3}>
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
-                  <Box display="flex" justifyContent="space-between">
-                    <Box
-                      sx={{ py: "0.6rem", display: "flex", marginLeft: "auto" }}
-                    >
-                      <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            disabled={disableHtmlDocument}
-                            component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
-                          >
-                            <Assessment
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip>
-                      <Tooltip title={<Trans i18nKey={"assessmentDocument"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            disabled={!exportable}
-                            component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/assessment-document/`}
-                          >
-                            <ArticleRounded
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip>
-                    </Box>
-                  </Box>
                   <Grid container alignItems="stretch" spacing={2} mt={1}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <Box
