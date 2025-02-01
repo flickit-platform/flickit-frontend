@@ -52,7 +52,7 @@ const ReportTab = () => {
   };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
-    { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
+    { name: "intro", title: "introductionReport", placeholder: "writeIntroduction" },
     {
       name: "prosAndCons",
       title: "strengthsAndRoomsForImprovement",
