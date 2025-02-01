@@ -47,6 +47,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const [buttonStep, setButtonStep] = useState<any>(0);
   const [lang,setLang] = useState("");
   const { service } = useServiceContext();
+  const languages = [{ title: "Persian" }, { title: "English" }];
+
   const {
     onClose: closeDialog,
     assessmentKits,
@@ -353,7 +355,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             md={4}
             sx={{width:"100%", display: `${activeStep === 0 ? "none" : ""}` }}
         >
-          <SelectLanguage handleChange={handleSelectedChange} lang={lang}/>
+          <SelectLanguage handleChange={handleSelectedChange} lang={lang} languages={languages} />
         </Grid>
         <Grid
           item
