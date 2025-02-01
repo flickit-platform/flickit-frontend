@@ -118,7 +118,6 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
     editor?.commands.clearContent(true);
     removeDescriptionAdvice.current = false;
   }
-  console.log(fieldLabel);
   return (
     <Box
       {...boxProps}

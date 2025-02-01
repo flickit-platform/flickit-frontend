@@ -10,6 +10,7 @@ import AssessmentSubjectRadarChart from "@components/assessment-report/Assessmen
 import BoxReportLayout from "./layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@components/assessment-report/AssessmenetSubjectRadial";
 import { styles } from "@styles";
+import { t } from "i18next";
 
 interface IAttribute {
   id: number;
@@ -17,8 +18,7 @@ interface IAttribute {
   index: string;
   title: string;
   confidenceValue?: number | any;
-  analyzation?: string | any;
-  translatedTitle: string;
+  insight: any;
   maturityLevel: {
     id: number;
     title: string;
@@ -36,7 +36,7 @@ const SubjectReport = ({ data }: any) => {
   return (
     <GeneralLayout>
       {subjects?.map((item: any, index: number) => {
-        const { title, description, maturityLevel } = item;
+        const { title, insight, maturityLevel } = item;
         const is_farsi = languageDetector(title);
         return (
           <>
@@ -66,17 +66,19 @@ const SubjectReport = ({ data }: any) => {
                   {title}
                 </Typography>
                 <Typography
+                  component="div"
                   sx={{
                     ...theme.typography.extraLight,
-                    fontWeight:300,
+                    fontWeight: 300,
                     direction: true ? "rtl" : "ltr",
                     fontFamily: true ? farsiFontFamily : primaryFontFamily,
                     mt: 2,
                   }}
                   textAlign="justify"
-                >
-                  {description}
-                </Typography>
+                  dangerouslySetInnerHTML={{
+                    __html: insight ?? t("unavailable", { lng: "fa" }),
+                  }}
+                ></Typography>
               </Grid>
               <Grid item xs={12} sm={3}>
                 <DonutChart
@@ -134,7 +136,6 @@ const SubjectReport = ({ data }: any) => {
               return (
                 <BoxReportLayout
                   confidenceValue={attribute.confidenceValue}
-                  analyzation={attribute.analyzation}
                   maturityLevelCount={maturityLevelCount}
                   {...attribute}
                 />

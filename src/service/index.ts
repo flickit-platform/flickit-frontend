@@ -555,6 +555,14 @@ export const createService = (
         },
       );
     },
+    fetchGraphicalReport(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/graphical-report/`, {
+        ...(config ?? {}),
+      });
+    },
     patchUpdateReportFields(
       { assessmentId, reportData }: { assessmentId: string; reportData: any },
       config: AxiosRequestConfig<any> | undefined,
@@ -570,6 +578,14 @@ export const createService = (
       config: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.get(`/api/v1/assessments/${assessmentId}/report-metadata/`, {
+        ...(config ?? {}),
+      });
+    },
+    PublishReportStatus(
+      { assessmentId,data }: { assessmentId: string, data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(`/api/v1/assessments/${assessmentId}/report-publish-status/`, data,{
         ...(config ?? {}),
       });
     },

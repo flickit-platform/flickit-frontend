@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import { Button, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
@@ -24,20 +24,32 @@ import QueryData from "@common/QueryData";
 import { uniqueId } from "lodash";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { styles } from "@styles";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+import Switch from "@mui/material/Switch";
 
 const ReportTab = () => {
-  const { assessmentId = "" } = useParams();
+  const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
+
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
       service.fetchReportFields(args, config),
     runOnMount: true,
   });
-  // const copyLink = () => {
-  //   navigator.clipboard.writeText(window.location.href).then(() => {
-  //    toast(`${t("linkCopied")}`,{type:"success"})
-  //   });
-  // };
+
+  const PublishReportStatus = useQuery({
+    service: (args, config) => service.PublishReportStatus(args, config),
+    runOnMount: false,
+  });
+
+  const handlePublishChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    let data = { published: event.target.checked };
+    await PublishReportStatus.query({ assessmentId, data });
+    await fetchReportFields.query();
+  };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
     { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
@@ -57,12 +69,13 @@ const ReportTab = () => {
       placeholder: "writeAssessmentContributors",
     },
   ];
-
   return (
     <QueryData
       {...fetchReportFields}
       loadingComponent={<Loading />}
       render={(data) => {
+        const { metadata, published } = data;
+
         return (
           <>
             <Box
@@ -154,76 +167,147 @@ const ReportTab = () => {
                     justifyContent: "flex-end",
                     marginInlineStart: "auto",
                   }}
-                >
-                  {/*<Box sx={{ ...styles.centerVH, gap: 1 }}>*/}
-                  {/*  <Button*/}
-                  {/*    onClick={copyLink}*/}
-                  {/*    sx={{ display: "flex", gap: 1 }}*/}
-                  {/*    variant={"outlined"}*/}
-                  {/*  >*/}
-                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
-                  {/*      <Trans i18nKey={"copy report link"} />*/}
-                  {/*    </Typography>*/}
-                  {/*    <InsertLinkIcon fontSize={"small"} />*/}
-                  {/*  </Button>*/}
-                  {/*  <Button*/}
-                  {/*    sx={{ display: "flex", gap: 1 }}*/}
-                  {/*    variant={"contained"}*/}
-                  {/*  >*/}
-                  {/*    <Typography sx={{ whiteSpace: "nowrap" }}>*/}
-                  {/*      <Trans i18nKey={"view report"} />*/}
-                  {/*    </Typography>*/}
-                  {/*    <AssignmentOutlinedIcon fontSize={"small"} />*/}
-                  {/*  </Button>*/}
-                  {/*</Box>*/}
-                </Grid>
+                ></Grid>
               </Grid>
             </Box>
             {reportFields.map((field) => {
               const { name, title, placeholder } = field;
               return (
-                <MainCard
-                  key={uniqueId()}
-                  style={{
-                    minHeight: "50px",
-                    mt: 2,
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexDirection: {xs: "column-reverse", md: "row"}
                   }}
                 >
-                  <Typography
-                    style={{ ...theme.typography.semiBoldLarge }}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      color: "#2B333B",
-                      gap: 2,
-                      mb: 3,
+                  <MainCard
+                    key={uniqueId()}
+                    style={{
+                      minHeight: "50px",
+                      mt: 2,
+                      width: name == "intro" ? {xs: "100%", md: "68%"} : "100%",
                     }}
                   >
-                    <Trans i18nKey={title} />
-                    {!data[name] && (
-                      <Typography
+                    <Typography
+                      style={{ ...theme.typography.semiBoldLarge }}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        color: "#2B333B",
+                        gap: 2,
+                        mb: 3,
+                      }}
+                    >
+                      <Trans i18nKey={title} />
+                      {!metadata[name] && (
+                        <Typography
+                          sx={{
+                            ...theme.typography.semiBoldLarge,
+                            color: theme.palette.error.main,
+                          }}
+                        >
+                          (<Trans i18nKey={"empty"} />)
+                        </Typography>
+                      )}
+                    </Typography>
+                    <Box>
+                      <OnHoverInputReport
+                        attributeId={1}
+                        data={metadata[name]}
+                        infoQuery={fetchReportFields}
+                        type="summary"
+                        editable={true}
+                        placeholder={t(placeholder)}
+                        name={name}
+                      />
+                    </Box>
+                  </MainCard>
+                  {name == "intro" && (
+                    <MainCard
+                      style={{
+                        minHeight: "180px",
+                        mt: 2,
+                        width: {xs: "100%", md: "30%"},
+                        display: "flex",
+                        justifyContent: "center",
+                        alignSelf: "flex-start",
+                      }}
+                    >
+                      <Box
                         sx={{
-                          ...theme.typography.semiBoldLarge,
-                          color: theme.palette.error.main,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          alignItems: "center",
                         }}
                       >
-                        (<Trans i18nKey={"empty"} />)
-                      </Typography>
-                    )}
-                  </Typography>
-                  <Box>
-                    <OnHoverInputReport
-                      attributeId={1}
-                      data={data[name]}
-                      infoQuery={fetchReportFields}
-                      type="summary"
-                      editable={true}
-                      placeholder={t(placeholder)}
-                      name={name}
-                    />
-                  </Box>
-                </MainCard>
+                        <Button
+                          component={Link}
+                          to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
+                          sx={{ display: "flex", gap: 1, width: "100%" }}
+                          variant={"contained"}
+                          disabled={
+                              Object.values(metadata).includes(null) || published == false
+                          }
+                        >
+                          <Typography sx={{ whiteSpace: "nowrap" }}>
+                            <Trans i18nKey={"viewReportPage"} />
+                          </Typography>
+                          <AssignmentOutlinedIcon fontSize={"small"} />
+                        </Button>
+                        <Divider sx={{ width: "100%" }} />
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography
+                            sx={{ ...theme.typography.semiBoldLarge }}
+                          >
+                            <Trans i18nKey={"publishReport"} />
+                          </Typography>
+                          <Switch
+                            checked={published}
+                            onChange={handlePublishChange}
+                            size="small"
+                            disabled={Object.values(metadata).includes(null)}
+                            sx={{ cursor: "pointer" }}
+                          />
+                        </Box>
+
+                        {Object.values(metadata).includes(null) && (
+                          <Box
+                            sx={{
+                              background: theme.palette.error.main,
+                              borderRadius: 2,
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                ...theme.typography.semiBoldSmall,
+                                color: "#FAD1D8",
+                                py: 1,
+                                px: 2,
+                                gap: 1,
+                              }}
+                            >
+                              <ReportProblemOutlinedIcon fontSize={"small"} />
+                              <Trans i18nKey={"fillInAllRequired"} />
+                            </Typography>
+                          </Box>
+                        )}
+                      </Box>
+                    </MainCard>
+                  )}
+                </Box>
               );
             })}
           </>
@@ -309,7 +393,7 @@ const OnHoverInputReport = (props: any) => {
         [name]: data?.[name],
       };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
-      if (Object.values(reportData)[0]) {
+      // if (Object.values(reportData)[0]) {
         const res = await patchUpdateReportFields.query({
           assessmentId,
           reportData,
@@ -317,7 +401,7 @@ const OnHoverInputReport = (props: any) => {
         infoQuery.query();
         res?.message && toast.success(res?.message);
         setShow(false);
-      }
+      // }
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
@@ -439,7 +523,7 @@ const OnHoverInputReport = (props: any) => {
               wordBreak: "break-word",
               p: 1.5,
               pr: languageDetector(data) ? 1 : 5,
-              pl:languageDetector(data) ? 5 : 1,
+              pl: languageDetector(data) ? 5 : 1,
               border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
@@ -469,7 +553,6 @@ const OnHoverInputReport = (props: any) => {
                   transition: "all 1s ease-in-out",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  // whiteSpace:"nowrap",
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                   ...theme.typography.titleMedium,
@@ -498,11 +581,13 @@ const OnHoverInputReport = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data) ? "8px 0 0 8px"  : "0 8px 8px 0",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 8px"
+                    : "0 8px 8px 0",
                   height: "100%",
                   position: "absolute",
-                  right: languageDetector(data) ? "unset" :  0,
-                  left: languageDetector(data) ? 0 :  "unset",
+                  right: languageDetector(data) ? "unset" : 0,
+                  left: languageDetector(data) ? 0 : "unset",
                   top: 0,
                 }}
                 onClick={() => setShow(!show)}

@@ -1,9 +1,9 @@
-import React, { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { Chip, Typography, useMediaQuery } from "@mui/material";
-import { confidenceColor, getMaturityLevelColors, maturityLevelColorMap } from "@styles";
+import { Typography } from "@mui/material";
+import { confidenceColor, getMaturityLevelColors } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
@@ -44,9 +44,6 @@ const FlatGauge = (props: IGaugeProps) => {
     lng,
     ...rest
   } = props;
-  const isMobileScreen = useMediaQuery((theme: any) =>
-    theme.breakpoints.down("md"),
-  );
 
   if (maturityLevelNumber < levelValue) return null;
 
@@ -69,7 +66,7 @@ const FlatGauge = (props: IGaugeProps) => {
 
   return (
     <Suspense fallback={<Box>fallback</Box>}>
-      <Box sx={{ width: "100%", height: "100%" }} {...rest}>
+      <Box sx={{ height: "100%" }} {...rest}>
         <Box
           sx={{
             display: "flex",
@@ -107,17 +104,18 @@ const FlatGauge = (props: IGaugeProps) => {
           >
             <FlatGaugeComponent colorCode={colorCode} value={levelValue} />
             {textPosition == "left" && (
-              <Box
+              <Typography
                 sx={{
                   color: colorCode,
                   fontFamily: languageDetector(text ?? "")
                     ? farsiFontFamily
                     : primaryFontFamily,
-                  minWidth: !isMobileScreen ? "80px" : "0",
+                  marginInlineStart: 0.5,
+                  textAlign: "right",
                 }}
               >
                 <Trans i18nKey={`${text}`} />
-              </Box>
+              </Typography>
             )}
           </Box>
           {textPosition == "top" && (

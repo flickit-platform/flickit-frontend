@@ -198,7 +198,6 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         link.remove();
       }
     } catch (e) {
-      // console.log(e);
     }
   };
 

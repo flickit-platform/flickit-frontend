@@ -68,6 +68,26 @@ const commonStyles = {
   }),
 };
 
+const sharedChipStyles = {
+  chip: {
+    fontWeight: 200,
+    padding: 1,
+    background: "rgba(36, 102, 168, 0.04)",
+  },
+  box: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 0.5,
+    fontWeight: "bold",
+  },
+  typography: (isFarsi = true) => ({
+    direction: isFarsi ? "rtl" : "ltr",
+    fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+    fontWeight: 200,
+  }),
+};
+
 const cards = {
   auth: style({
     ...commonStyles.centerCH,
@@ -132,6 +152,7 @@ export const styles = {
   ...auth,
   ...buttons,
   ...compare,
+  ...sharedChipStyles,
   cards,
 };
 
