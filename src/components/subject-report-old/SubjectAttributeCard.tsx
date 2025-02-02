@@ -904,6 +904,7 @@ const OnHoverInput = (props: any) => {
             alignItems: "center",
             wordBreak: "break-word",
             paddingInlineStart: isHovering ? 1 : 0,
+            paddingInlineEnd:isHovering ? 5 : 0,
             border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",

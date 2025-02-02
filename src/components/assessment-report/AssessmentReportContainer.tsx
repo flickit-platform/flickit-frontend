@@ -155,7 +155,7 @@ const AssessmentReportContainer = (props: any) => {
                 </Grid>
 
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box display="flex" flexDirection="column" gap={1}>
+                  <Box display="flex" flexDirection="column" gap={1} height="100%">
                     <Typography
                       color="#73808C"
                       marginX={4}
