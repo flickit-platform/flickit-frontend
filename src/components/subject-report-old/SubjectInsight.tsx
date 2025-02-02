@@ -184,12 +184,17 @@ const OnHoverRichEditor = (props: any) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        height: "100%",
       }}
     >
       {editable && show ? (
-        <FormProviderWithForm formMethods={formMethods}>
+        <FormProviderWithForm
+          formMethods={formMethods}
+          style={{ height: "100%" }}
+        >
           <Box
             sx={{
+              height: "100%",
               width: "100%",
               display: "flex",
               justifyContent: "space-between",

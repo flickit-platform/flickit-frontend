@@ -241,6 +241,7 @@ const SubjectTitle = (props: {
             },
             {
               title: <>{title || <Trans i18nKey="technicalDueDiligence" />}</>,
+           
             },
           ]}
         />

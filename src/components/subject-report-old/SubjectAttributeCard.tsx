@@ -903,8 +903,7 @@ const OnHoverInput = (props: any) => {
             justifyContent: "space-between",
             alignItems: "center",
             wordBreak: "break-word",
-            pr: languageDetector(data) ? 1 : 5,
-            pl: languageDetector(data) ? 5 : 1,
+            paddingInlineStart: isHovering ? 1 : 0,
             border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
