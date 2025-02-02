@@ -188,7 +188,7 @@ const OnHoverRichEditor = (props: any) => {
       {editable && show ? (
         <FormProviderWithForm
           formMethods={formMethods}
-          style={{ height: "100%" }}
+          style={{ height: "100%", width: "100%" }}
         >
           <Box
             sx={{

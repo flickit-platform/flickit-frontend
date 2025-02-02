@@ -242,12 +242,13 @@ const OnHoverRichEditor = (props: any) => {
         alignItems: "center",
         direction: languageDetector(data) ? "rtl" : "ltr",
         height: "100%",
+        width: "100%",
       }}
     >
       {editable && show ? (
         <FormProviderWithForm
           formMethods={formMethods}
-          style={{ height: "100%" }}
+          style={{ height: "100%", width: "100%" }}
         >
           <Box
             sx={{
