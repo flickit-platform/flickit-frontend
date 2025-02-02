@@ -825,7 +825,7 @@ const AnswerTemplate = (props: {
         display={"flex"}
         justifyContent="flex-start"
         mt={4}
-        sx={is_farsi ? { direction: "rtl" } : {}}
+        sx={{ direction: "rtl" }}
       >
         <NavigationButton
           direction={theme.direction}

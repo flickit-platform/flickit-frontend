@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DialogProps } from "@mui/material/Dialog";
 import { Trans } from "react-i18next";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
@@ -21,8 +21,6 @@ import {
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
-import EmptyState from "@/components/kit-designer/common/EmptyState";
-import { t } from "i18next";
 import { LoadingButton } from "@mui/lab";
 import { Link, useNavigate } from "react-router-dom";
 import AlertBox from "@/components/common/AlertBox";
