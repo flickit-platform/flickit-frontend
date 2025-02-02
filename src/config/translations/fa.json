@@ -584,7 +584,7 @@
   "submitAnswer": "ارسال پاسخ",
   "submit": "ثبت",
   "submitAnswerAutomatically": "ارسال پاسخ به‌صورت خودکار",
-  "submitAnswerAutomaticallyAndGoToNextQuestion": "ارسال پاسخ به‌صورت خودکار و رفتن به پرسش بعدی",
+  "submitAnswerAutomaticallyAndGoToNextQuestion": "رفتن به پرسش بعدی پس از ثبت پاسخ",
   "successCreatedAssessmentMessage": "در حال حاضر فقط شما امکان دیدن این ارزیابی را دارید. شما می‌توانید با استفاده از صفحه‌ی تنظیمات ارزیابی به دیگران دسترسی به این ارزیابی را بدهید.",
   "successCreatedAssessmentTitle": "{{title}} با موفقیت ساخته‌شد.",
   "successCreatedAssessmentTitleFirstPart": "این ارزیابی ",

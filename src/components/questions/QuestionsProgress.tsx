@@ -64,7 +64,7 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
         value={
           assessmentStatus === EAssessmentStatus.DONE
             ? 100
-            : (100 / (questions.length + 1)) *
+            : (99 / (questions.length + 1)) *
               (questions.findIndex((item) => item.index === questionIndex) + 1)
         }
       />
