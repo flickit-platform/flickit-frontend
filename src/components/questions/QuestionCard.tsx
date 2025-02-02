@@ -840,6 +840,7 @@ const AnswerTemplate = (props: {
           sx={{
             flexDirection: { xs: "column", md: "row" },
             width: { xs: "100%", sm: "80%", md: "auto" },
+            direction: is_farsi ? "rtl" : "ltr",
           }}
           flexWrap={"wrap"}
         >
