@@ -964,8 +964,6 @@ const AnswerTemplate = (props: {
             loading={isSubmitting}
             sx={{
               fontSize: "1.2rem",
-              background: "white",
-              color: "black",
               "&.Mui-disabled": {
                 background: "#C2CCD650",
                 color: "black",
