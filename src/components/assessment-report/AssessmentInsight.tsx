@@ -61,7 +61,7 @@ export const AssessmentInsight = () => {
       alignItems="left"
       justifyContent="left"
       textAlign="left"
-      maxHeight="100%"
+      height="100%"
       gap={0.5}
       py={2}
       sx={{
@@ -241,13 +241,18 @@ const OnHoverRichEditor = (props: any) => {
         display: "flex",
         alignItems: "center",
         direction: languageDetector(data) ? "rtl" : "ltr",
+        height: "100%",
       }}
     >
       {editable && show ? (
-        <FormProviderWithForm formMethods={formMethods}>
+        <FormProviderWithForm
+          formMethods={formMethods}
+          style={{ height: "100%" }}
+        >
           <Box
             sx={{
               width: "100%",
+              height: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",

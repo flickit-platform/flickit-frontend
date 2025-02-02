@@ -17,7 +17,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
 import languageDetector from "@utils/languageDetector";
 
@@ -41,9 +41,6 @@ export const SubjectInsight = (props: ISubjectInsight) => {
     <Box
       display="flex"
       flexDirection="column"
-      alignItems="left"
-      justifyContent="left"
-      textAlign="left"
       maxHeight="100%"
       gap={0.5}
       ml={3}
@@ -185,6 +182,7 @@ const OnHoverRichEditor = (props: any) => {
         display: "flex",
         alignItems: "center",
         height: "100%",
+        direction: languageDetector(data) ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (
@@ -194,13 +192,11 @@ const OnHoverRichEditor = (props: any) => {
         >
           <Box
             sx={{
-              height: "100%",
               width: "100%",
               display: "flex",
+              height: "100%",
               justifyContent: "space-between",
               alignItems: "center",
-              direction: languageDetector(data) ? "rtl" : "ltr",
-              textAlign: languageDetector(data) ? "right" : "left",
             }}
           >
             <RichEditorField
@@ -267,8 +263,8 @@ const OnHoverRichEditor = (props: any) => {
             justifyContent: "space-between",
             alignItems: "center",
             wordBreak: "break-word",
-            pr: languageDetector(data) ? 1 : 5,
-            pl: languageDetector(data) ? 5 : 1,
+            paddingInlineStart: isHovering ? 1 : 0,
+            paddingInlineEnd: isHovering ? 5 : 0,
             border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
@@ -280,7 +276,14 @@ const OnHoverRichEditor = (props: any) => {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          <Typography dangerouslySetInnerHTML={{ __html: data }} />
+          <Typography
+            dangerouslySetInnerHTML={{ __html: data }}
+            sx={{
+              fontFamily: languageDetector(data)
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+          />
           {isHovering && editable && (
             <IconButton
               title="Edit"
