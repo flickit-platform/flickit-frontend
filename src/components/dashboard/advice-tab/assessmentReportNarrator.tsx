@@ -17,7 +17,7 @@ import { format } from "date-fns";
 import { convertToRelativeTime } from "@utils/convertToRelativeTime";
 import AIGenerated from "@common/tags/AIGenerated";
 import toastError from "@utils/toastError";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import formatDate from "@utils/formatDate";
 import languageDetector from "@utils/languageDetector";
 
@@ -302,7 +302,12 @@ const OnHoverRichEditor = (props: any) => {
           onMouseOut={handleMouseOut}
         >
           {data ? (
-            <Typography dangerouslySetInnerHTML={{ __html: data }} />
+            <Typography
+              fontFamily={
+                languageDetector(data) ? farsiFontFamily : primaryFontFamily
+              }
+              dangerouslySetInnerHTML={{ __html: data }}
+            />
           ) : (
             <Typography color="#73808C">
               <Trans i18nKey="writeYourOwnAdvices..." />
