@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { QuestionnaireList } from "./QuestionnaireList";
 import { Trans } from "react-i18next";
@@ -13,12 +13,6 @@ import PermissionControl from "@common/PermissionControl";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { MenuItem, Typography } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import { theme } from "@config/theme";
 
 const QuestionnaireContainer = () => {
   const { service } = useServiceContext();
