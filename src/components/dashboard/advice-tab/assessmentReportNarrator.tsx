@@ -149,7 +149,7 @@ export const AssessmentReportNarrator = ({
   );
 };
 
-const OnHoverRichEditor = (props: any) => {
+export const OnHoverRichEditor = (props: any) => {
   const {
     data,
     editable,
@@ -161,7 +161,6 @@ const OnHoverRichEditor = (props: any) => {
   } = props;
   const abortController = useRef(new AbortController());
   const [isHovering, setIsHovering] = useState(false);
-  const [langDir, setLangDir] = useState(languageDetector(data));
   const [show, setShow] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState<any>({});
@@ -211,7 +210,7 @@ const OnHoverRichEditor = (props: any) => {
         display: "flex",
         alignItems: "center",
         width: "100%",
-        direction: langDir ? "rtl" : "ltr",
+        direction: languageDetector(data) ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (
@@ -230,7 +229,6 @@ const OnHoverRichEditor = (props: any) => {
               disable_label={true}
               required={true}
               defaultValue={data || ""}
-              setLangDir={setLangDir}
             />
             <Box
               sx={{
@@ -242,30 +240,30 @@ const OnHoverRichEditor = (props: any) => {
               }}
             >
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "3px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 0"
+                    : "0 8px 0 0",
+                  height: "49%",
                 }}
                 onClick={formMethods.handleSubmit(onSubmit)}
               >
                 <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
               </IconButton>
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "4px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "0 0 0 8px"
+                    : "0 0 8px 0",
+                  height: "49%",
                 }}
                 onClick={handleCancel}
               >
@@ -280,59 +278,70 @@ const OnHoverRichEditor = (props: any) => {
           </Box>
         </FormProviderWithForm>
       ) : (
-        <Box
-          sx={{
-            borderRadius: "4px",
-            paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-            paddingRight: theme.direction === "rtl" ? "12px" : "8px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            "&:hover": {
-              border: editable ? "1px solid #1976d299" : "unset",
-              borderColor: editable ? theme.palette.primary.main : "unset",
-            },
-          }}
-          onClick={() => {
-            setShow(!show);
-            onEditing(true);
-          }}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          {data ? (
-            <Typography
-              fontFamily={
-                languageDetector(data) ? farsiFontFamily : primaryFontFamily
-              }
-              dangerouslySetInnerHTML={{ __html: data }}
-            />
-          ) : (
-            <Typography color="#73808C">
-              <Trans i18nKey="writeYourOwnAdvices..." />
-            </Typography>
-          )}
-          {((data === "" && editable) || (isHovering && editable)) && (
-            <IconButton
-              title="Edit"
-              edge="end"
-              sx={{
-                background: theme.palette.primary.main,
-                "&:hover": {
-                  background: theme.palette.primary.dark,
-                },
-                borderRadius: "3px",
-                height: "36px",
-              }}
-              onClick={() => {
-                setShow(!show);
-                onEditing(true);
-              }}
-            >
-              <EditRounded sx={{ color: "#fff" }} />
-            </IconButton>
-          )}
+        <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              minHeight: "38px",
+              borderRadius: "8px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              wordBreak: "break-word",
+              pr: languageDetector(data) ? 1 : 5,
+              pl: languageDetector(data) ? 5 : 1,
+              border: "1px solid #fff",
+              "&:hover": {
+                border: editable ? "1px solid #1976d299" : "unset",
+                borderColor: editable ? theme.palette.primary.main : "unset",
+              },
+              position: "relative",
+            }}
+            onClick={() => {
+              setShow(!show);
+              onEditing(true);
+            }}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            {data ? (
+              <Typography
+                fontFamily={
+                  languageDetector(data) ? farsiFontFamily : primaryFontFamily
+                }
+                dangerouslySetInnerHTML={{ __html: data }}
+              />
+            ) : (
+              <Typography color="#73808C">
+                <Trans i18nKey="writeYourOwnAdvices..." />
+              </Typography>
+            )}
+            {((data === "" && editable) || (isHovering && editable)) && (
+              <IconButton
+                title="Edit"
+                sx={{
+                  background: theme.palette.primary.main,
+                  "&:hover": {
+                    background: theme.palette.primary.dark,
+                  },
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 8px"
+                    : "0 8px 8px 0",
+                  height: "100%",
+                  position: "absolute",
+                  right: languageDetector(data) ? "unset" : 0,
+                  left: languageDetector(data) ? 0 : "unset",
+                  top: 0,
+                }}
+                onClick={() => {
+                  setShow(!show);
+                  onEditing(true);
+                }}
+              >
+                <EditRounded sx={{ color: "#fff" }} />
+              </IconButton>
+            )}
+          </Box>
         </Box>
       )}
     </Box>

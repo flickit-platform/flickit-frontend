@@ -17,10 +17,11 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
 import firstCharDetector from "@utils/firstCharDetector";
+import languageDetector from "@/utils/languageDetector";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
@@ -239,6 +240,7 @@ const OnHoverRichEditor = (props: any) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        direction: languageDetector(data) ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (
@@ -268,30 +270,30 @@ const OnHoverRichEditor = (props: any) => {
               }}
             >
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "3px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 0"
+                    : "0 8px 0 0",
+                  height: "49%",
                 }}
                 onClick={formMethods.handleSubmit(onSubmit)}
               >
                 <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
               </IconButton>
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "4px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "0 0 0 8px"
+                    : "0 0 8px 0",
+                  height: "49%",
                 }}
                 onClick={handleCancel}
               >
@@ -308,17 +310,21 @@ const OnHoverRichEditor = (props: any) => {
       ) : (
         <Box
           sx={{
-            borderRadius: "4px",
-            paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-            paddingRight: theme.direction === "rtl" ? "12px" : "8px",
+            minHeight: "38px",
+            borderRadius: "8px",
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            wordBreak: "break-word",
+            pr: languageDetector(data) ? 1 : 5,
+            pl: languageDetector(data) ? 5 : 1,
+            border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
               borderColor: editable ? theme.palette.primary.main : "unset",
             },
+            position: "relative",
           }}
           onClick={() => setShow(!show)}
           onMouseOver={handleMouseOver}
@@ -329,6 +335,9 @@ const OnHoverRichEditor = (props: any) => {
               textAlign: firstCharDetector(data.replace(/<[^>]*>/g, ""))
                 ? "right"
                 : "left",
+              fontFamily: languageDetector(data)
+                ? farsiFontFamily
+                : primaryFontFamily,
               width: "100%",
             }}
             dangerouslySetInnerHTML={{ __html: data }}
@@ -336,14 +345,19 @@ const OnHoverRichEditor = (props: any) => {
           {isHovering && editable && (
             <IconButton
               title="Edit"
-              edge="end"
               sx={{
                 background: theme.palette.primary.main,
                 "&:hover": {
                   background: theme.palette.primary.dark,
                 },
-                borderRadius: "3px",
-                height: "36px",
+                borderRadius: languageDetector(data)
+                  ? "8px 0 0 8px"
+                  : "0 8px 8px 0",
+                height: "100%",
+                position: "absolute",
+                right: languageDetector(data) ? "unset" : 0,
+                left: languageDetector(data) ? 0 : "unset",
+                top: 0,
               }}
               onClick={() => setShow(!show)}
             >

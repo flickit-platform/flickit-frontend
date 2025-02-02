@@ -970,30 +970,30 @@ const OnHoverRichEditor = (props: any) => {
                 }}
               >
                 <IconButton
-                  edge="end"
                   sx={{
                     background: theme.palette.primary.main,
                     "&:hover": {
                       background: theme.palette.primary.dark,
                     },
-                    borderRadius: "3px",
-                    height: "36px",
-                    marginBottom: "2px",
+                    borderRadius: languageDetector(data)
+                      ? "8px 0 0 0"
+                      : "0 8px 0 0",
+                    height: "49%",
                   }}
                   onClick={formMethods.handleSubmit(onSubmit)}
                 >
                   <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
                 </IconButton>
                 <IconButton
-                  edge="end"
                   sx={{
                     background: theme.palette.primary.main,
                     "&:hover": {
                       background: theme.palette.primary.dark,
                     },
-                    borderRadius: "4px",
-                    height: "36px",
-                    marginBottom: "2px",
+                    borderRadius: languageDetector(data)
+                      ? "0 0 0 8px"
+                      : "0 0 8px 0",
+                    height: "49%",
                   }}
                   onClick={handleCancel}
                 >
@@ -1010,18 +1010,21 @@ const OnHoverRichEditor = (props: any) => {
         ) : (
           <Box
             sx={{
-              // height: "38px",
-              borderRadius: "4px",
-              paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-              paddingRight: theme.direction === "rtl" ? "12px" : "8px",
+              minHeight: "38px",
+              borderRadius: "8px",
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              wordBreak: "break-word",
+              pr: languageDetector(data) ? 1 : 5,
+              pl: languageDetector(data) ? 5 : 1,
+              border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
                 borderColor: editable ? theme.palette.primary.main : "unset",
               },
+              position: "relative",
             }}
             onClick={() => setShow(!show)}
             onMouseOver={handleMouseOver}
@@ -1035,14 +1038,19 @@ const OnHoverRichEditor = (props: any) => {
             {isHovering && (
               <IconButton
                 title="Edit"
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "3px",
-                  height: "36px",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 8px"
+                    : "0 8px 8px 0",
+                  height: "100%",
+                  position: "absolute",
+                  right: languageDetector(data) ? "unset" : 0,
+                  left: languageDetector(data) ? 0 : "unset",
+                  top: 0,
                 }}
                 onClick={() => setShow(!show)}
               >
