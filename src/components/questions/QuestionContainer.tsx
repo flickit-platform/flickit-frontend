@@ -23,7 +23,6 @@ import { t } from "i18next";
 
 export const QuestionContainer = () => {
   const {
-    hasAnyQuestion,
     questionInfo,
     hasNextQuestion,
     hasPreviousQuestion,
@@ -31,7 +30,6 @@ export const QuestionContainer = () => {
     assessmentStatus,
     questionsInfo,
     loaded,
-    questionIndex,
     realIndex,
   } = useQuestion();
   return (
