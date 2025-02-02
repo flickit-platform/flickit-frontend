@@ -184,7 +184,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             variant="subLarge"
             sx={
               is_farsi
-                ? { color: "white", opacity: 0.65, direction: "rtl", px: 6 }
+                ? { color: "white", opacity: 0.65, px: 6 }
                 : { color: "white", opacity: 0.65, px: 6 }
             }
           >
@@ -205,6 +205,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                 : {
                     pt: 0.5,
                     fontSize: "2rem",
+                    direction: "ltr",
                     px: 6,
                   }
             }
@@ -217,9 +218,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             ))}
           </Typography>
 
-          <Box sx={{ direction: `${is_farsi ? "rtl" : "ltr"}`, px: 6 }}>
-            {hint && <QuestionGuide hint={hint} />}
-          </Box>
+          <Box sx={{ px: 6 }}>{hint && <QuestionGuide hint={hint} />}</Box>
 
           {/* Answer template */}
           <AnswerTemplate
