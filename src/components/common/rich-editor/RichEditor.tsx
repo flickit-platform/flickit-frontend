@@ -4,7 +4,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import StarterKit from "@tiptap/starter-kit";
 import RichEditorMenuBar from "./RichEditorMenuBar";
 import Link from "@tiptap/extension-link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
 import { primaryFontFamily, theme } from "@/config/theme";
@@ -23,7 +23,6 @@ interface IRichEditorProps {
   content?: string;
   boxProps?: BoxProps;
   checkLang?: boolean;
-  setLangDir?: any;
   placeholder?: any;
   type?: string;
 }
@@ -38,13 +37,16 @@ const RichEditor = (props: IRichEditorProps) => {
     field,
     boxProps = {},
     checkLang,
-    setLangDir,
     placeholder,
     type,
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
 
+  useEffect(() => {
+    setIsFarsi(checkLang);
+  }, [checkLang]);
+  
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -72,7 +74,6 @@ const RichEditor = (props: IRichEditorProps) => {
         field.onChange(props.editor.getHTML());
 
         setIsFarsi(firstCharDetector(props.editor.getText()));
-        setLangDir(firstCharDetector(props.editor.getText()));
       }
     },
     onCreate(props) {
@@ -161,7 +162,7 @@ const RichEditor = (props: IRichEditorProps) => {
               },
               "& .ProseMirror": {
                 outline: "none",
-                minHeight:  `${editor?.isEmpty && type === "reportTab" ? "100px" : "80px"}` ,
+                minHeight: `${editor?.isEmpty && type === "reportTab" ? "100px" : "80px"}`,
                 border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
                 background: "#fff",
