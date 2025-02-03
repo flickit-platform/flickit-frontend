@@ -229,7 +229,6 @@ const SubjectTitle = (props: {
             {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
-              // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
             {
               title: (
@@ -242,9 +241,7 @@ const SubjectTitle = (props: {
             },
             {
               title: <>{title || <Trans i18nKey="technicalDueDiligence" />}</>,
-              // icon: (
-              //   <AnalyticsRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-              // ),
+           
             },
           ]}
         />

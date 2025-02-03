@@ -3,7 +3,7 @@ import useDocumentTitle from "@utils/useDocumentTitle";
 import HtmltExportContainer from "@/components/assessment-html/AssessmentHtmlContainer";
 
 const AssessmentDocumentScreen = () => {
-  useDocumentTitle(`${t("document", { title: "" })}`);
+  useDocumentTitle(`${t("assessmentReport", { title: "" })}`);
 
   return <HtmltExportContainer />;
 };

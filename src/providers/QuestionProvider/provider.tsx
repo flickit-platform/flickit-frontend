@@ -1,9 +1,4 @@
-import React, {
-  useReducer,
-  FC,
-  useContext,
-  useEffect,
-} from "react";
+import React, { useReducer, FC, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { TQuestionsInfo } from "@types";
 import { questionActions } from "./actions";
@@ -55,7 +50,7 @@ export const QuestionProvider: FC<IQuestionProviderProps> = ({ children }) => {
       questions: undefined,
       assessmentStatus: EAssessmentStatus.NOT_STARTED,
     },
-    submitOnAnswerSelection: false,
+    submitOnAnswerSelection: true,
     selcetedConfidenceLevel: null,
     isSubmitting: false,
     evidences: "",

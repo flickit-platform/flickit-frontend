@@ -108,7 +108,15 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   }}
                   ref={titleRef}
                 >
-                  {title}
+                  <span
+                    style={{
+                      fontFamily: languageDetector(title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                  >
+                    {title}
+                  </span>
                 </Title>
                 {description && (
                   <IconButton

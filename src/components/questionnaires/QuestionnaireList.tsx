@@ -61,7 +61,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
   useEffect(() => {
     if (!!filteredItem && typeof filteredItem == "string") {
-      setIssues([filteredItem]);
+      const filteredItemObj = itemNames.find(
+        (item: any) => filteredItem === item.original,
+      );
+
+      setIssues([filteredItemObj.translate]);
     }
     if (allSelected) {
       const allItems = itemNames.map((item: any) => item.translate);

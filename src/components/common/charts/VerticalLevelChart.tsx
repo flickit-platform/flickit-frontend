@@ -4,6 +4,8 @@ import { Trans } from "react-i18next";
 import { getMaturityLevelColors, styles } from "@styles";
 import Skeleton from "@mui/material/Skeleton";
 import { TStatus } from "@types";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface IVerticalLevelChartProps extends BoxProps {
   loading?: boolean;
@@ -44,10 +46,17 @@ const VerticalLevelChart = (props: IVerticalLevelChartProps) => {
             borderBottom: loading
               ? undefined
               : `2px solid ${colorPallet[ml - 1]}`,
+            fontFamily: languageDetector(status)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
           variant="headlineLarge"
         >
-          {loading ? <Skeleton width={"164px"} /> : <Trans i18nKey={`${status}`} />}
+          {loading ? (
+            <Skeleton width={"164px"} />
+          ) : (
+            <Trans i18nKey={`${status}`} />
+          )}
         </Typography>
       </Box>
       <Box display="flex" mt={2}>
