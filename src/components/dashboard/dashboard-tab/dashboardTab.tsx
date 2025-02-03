@@ -36,6 +36,7 @@ const DashboardTab = () => {
               { category: "questions", metrics: data.questions },
               { category: "insights", metrics: data.insights },
               { category: "advices", metrics: data.advices },
+              { category: "report", metrics: data.report },
             ];
             const todoData: any = { now: [], next: [] };
 
