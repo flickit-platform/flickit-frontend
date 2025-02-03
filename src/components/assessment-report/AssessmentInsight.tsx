@@ -213,6 +213,7 @@ export const AssessmentInsight = () => {
                 </Box>
                 {!isApproved && (
                   <LoadingButton
+                    sx={{ marginInlineStart: "auto" }}
                     variant={"contained"}
                     onClick={(event) => ApproveInsight(event)}
                     loading={ApproveAssessmentInsight.loading}
@@ -221,7 +222,7 @@ export const AssessmentInsight = () => {
                     <Trans i18nKey={"approve"} />
                   </LoadingButton>
                 )}
-                {editable  && (
+                {editable && isAssessorInsight && (
                   <LoadingButton
                     onClick={(event) => {
                       event.stopPropagation();
