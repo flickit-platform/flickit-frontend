@@ -22,6 +22,9 @@ import { t } from "i18next";
 import formatDate from "@utils/formatDate";
 import firstCharDetector from "@utils/firstCharDetector";
 import languageDetector from "@/utils/languageDetector";
+import { LoadingButton } from "@mui/lab";
+import { useQuery } from "@/utils/useQuery";
+import toastError from "@/utils/toastError";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
@@ -29,7 +32,37 @@ export const AssessmentInsight = () => {
   const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isApproved, setIsApproved] = useState(true);
+  const [isAssessorInsight, setIsAssessorInsight] = useState(false);
 
+  const ApproveAssessmentInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+      },
+      config,
+    ) => service.approveAssessmentInsight(args, config),
+    runOnMount: false,
+  });
+  const InitAssessmentInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+      },
+      config,
+    ) => service.initAssessmentInsight(args, config),
+    runOnMount: false,
+  });
+  const ApproveInsight = async (event: React.SyntheticEvent) => {
+    try {
+      event.stopPropagation();
+      await ApproveAssessmentInsight.query();
+      fetchAssessment();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
   const fetchAssessment = () => {
     service
       .fetchAssessmentInsight({ assessmentId }, {})
@@ -41,6 +74,7 @@ export const AssessmentInsight = () => {
           setInsight(selectedInsight);
           setEditable(data.editable ?? false);
           setIsApproved(data.approved);
+          setIsAssessorInsight(data.assessorInsight ? true : false);
         }
       })
       .catch((error) => {
@@ -177,6 +211,31 @@ export const AssessmentInsight = () => {
                     />
                   </Typography>
                 </Box>
+                {!isApproved && (
+                  <LoadingButton
+                    variant={"contained"}
+                    onClick={(event) => ApproveInsight(event)}
+                    loading={ApproveAssessmentInsight.loading}
+                    size="small"
+                  >
+                    <Trans i18nKey={"approve"} />
+                  </LoadingButton>
+                )}
+                {editable  && (
+                  <LoadingButton
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      InitAssessmentInsight.query().then(() =>
+                        fetchAssessment(),
+                      );
+                    }}
+                    variant={"contained"}
+                    loading={InitAssessmentInsight.loading}
+                    size="small"
+                  >
+                    <Trans i18nKey={"generate"} />
+                  </LoadingButton>
+                )}
               </Box>
             )}
         </>

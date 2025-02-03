@@ -452,11 +452,29 @@ export const createService = (
         },
       );
     },
+    initAssessmentInsight(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/init-overall-insight/`,
+        config,
+      );
+    },
+    approveAssessmentInsight(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/approve-overall-insight/`,
+        config,
+      );
+    },
     fetchAssessmentInsight(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(`/api/v1/assessments/${assessmentId}/insight/`, {
+      return axios.get(`/api/v1/assessments/${assessmentId}/overall-insight/`, {
         ...(config ?? {}),
       });
     },
@@ -464,7 +482,7 @@ export const createService = (
       { assessmentId, data }: { assessmentId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.post(`/api/v1/assessments/${assessmentId}/insight/`, data, {
+      return axios.post(`/api/v1/assessments/${assessmentId}/overall-insight/`, data, {
         ...(config ?? {}),
       });
     },
@@ -559,9 +577,12 @@ export const createService = (
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(`/api/v1/assessments/${assessmentId}/graphical-report/`, {
-        ...(config ?? {}),
-      });
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/graphical-report/`,
+        {
+          ...(config ?? {}),
+        },
+      );
     },
     patchUpdateReportFields(
       { assessmentId, reportData }: { assessmentId: string; reportData: any },
@@ -582,12 +603,16 @@ export const createService = (
       });
     },
     PublishReportStatus(
-      { assessmentId,data }: { assessmentId: string, data: any },
+      { assessmentId, data }: { assessmentId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.put(`/api/v1/assessments/${assessmentId}/report-publish-status/`, data,{
-        ...(config ?? {}),
-      });
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/report-publish-status/`,
+        data,
+        {
+          ...(config ?? {}),
+        },
+      );
     },
     loadAttributeInsight(
       { assessmentId, attributeId }: { assessmentId: string; attributeId: TId },
