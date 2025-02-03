@@ -179,7 +179,7 @@ export const theme = createTheme({
     },
     headlineSmall: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 500,
+      fontWeight: 600,
       fontSize: "1.5rem",
       lineHeight: "2rem",
       letterSpacing: is_farsi ? "0px" : "-3%",
