@@ -26,7 +26,7 @@ import languageDetector from "@/utils/languageDetector";
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [aboutSection, setAboutSection] = useState<any>(null);
+  const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -38,8 +38,9 @@ export const AssessmentInsight = () => {
         const selectedInsight = data.assessorInsight || data.defaultInsight;
 
         if (selectedInsight) {
-          setAboutSection(selectedInsight);
+          setInsight(selectedInsight);
           setEditable(data.editable ?? false);
+          setIsApproved(data.approved);
         }
       })
       .catch((error) => {
@@ -80,23 +81,21 @@ export const AssessmentInsight = () => {
         >
           <CircularProgress />
         </Box>
-      ) : aboutSection ? (
+      ) : insight ? (
         <>
           <OnHoverRichEditor
-            data={aboutSection.insight}
+            data={insight.insight}
             editable={editable}
             infoQuery={fetchAssessment}
           />
-          {aboutSection?.creationTime && (
+          {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
               {theme.direction == "rtl"
                 ? formatDate(
                     format(
                       new Date(
-                        new Date(aboutSection?.creationTime).getTime() -
-                          new Date(
-                            aboutSection?.creationTime,
-                          ).getTimezoneOffset() *
+                        new Date(insight?.creationTime).getTime() -
+                          new Date(insight?.creationTime).getTimezoneOffset() *
                             60000,
                       ),
                       "yyyy/MM/dd HH:mm",
@@ -104,25 +103,23 @@ export const AssessmentInsight = () => {
                     "Shamsi",
                   ) +
                   " (" +
-                  t(convertToRelativeTime(aboutSection?.creationTime)) +
+                  t(convertToRelativeTime(insight?.creationTime)) +
                   ")"
                 : format(
                     new Date(
-                      new Date(aboutSection?.creationTime).getTime() -
-                        new Date(
-                          aboutSection?.creationTime,
-                        ).getTimezoneOffset() *
+                      new Date(insight?.creationTime).getTime() -
+                        new Date(insight?.creationTime).getTimezoneOffset() *
                           60000,
                     ),
                     "yyyy/MM/dd HH:mm",
                   ) +
                   " (" +
-                  t(convertToRelativeTime(aboutSection?.creationTime)) +
+                  t(convertToRelativeTime(insight?.creationTime)) +
                   ")"}
             </Typography>
           )}
-          {(aboutSection.hasOwnProperty("isValid") || editable) &&
-            !aboutSection?.isValid && (
+          {(insight.hasOwnProperty("isValid") || editable) &&
+            !insight?.isValid && (
               <Box sx={{ ...styles.centerV }} gap={2} my={1}>
                 <Box
                   sx={{
@@ -144,9 +141,7 @@ export const AssessmentInsight = () => {
                   >
                     <Trans
                       i18nKey={
-                        aboutSection.hasOwnProperty("isValid")
-                          ? "outdated"
-                          : "note"
+                        insight.hasOwnProperty("isValid") ? "outdated" : "note"
                       }
                     />
                   </Typography>
@@ -175,7 +170,7 @@ export const AssessmentInsight = () => {
                   >
                     <Trans
                       i18nKey={
-                        aboutSection.hasOwnProperty("isValid")
+                        insight.hasOwnProperty("isValid")
                           ? "invalidInsight"
                           : "defaultInsightTemplate"
                       }
