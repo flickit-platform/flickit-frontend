@@ -37,7 +37,7 @@ const StepperSection = (props: IStepperSection) => {
       }}
     >
       <Stepper
-        sx={{ width: "70%", mx: "auto", mb: "30px" }}
+        sx={{ width: "80%", mx: "auto", mb: "30px" }}
         activeStep={activeStep}
       >
         {stepData.map((label: any, index: number) => {
@@ -408,17 +408,17 @@ const StepBox = (props: IStepBox) => {
       >
         {questions && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"answeredQuestionsTitle"} />
+            <Trans i18nKey={"answeringQuestionsTitle"} />
           </Typography>
         )}
         {insights && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"submittedInsights"} />
+            <Trans i18nKey={"submittingInsights"} />
           </Typography>
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"suggestedAdvices"} />
+            <Trans i18nKey={"providingAdvices"} />
           </Typography>
         )}
         {report && (
