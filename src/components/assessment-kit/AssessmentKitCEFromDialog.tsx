@@ -45,7 +45,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const [zippedData, setZippedData] = useState<any>(null);
   const [dropNewFile, setDropNewFile] = useState<any>(null);
   const [buttonStep, setButtonStep] = useState<any>(0);
-  const [lang,setLang] = useState("");
+  const [lang,setLang] = useState("English");
   const { service } = useServiceContext();
   const languages = [{ title: "Persian" }, { title: "English" }];
 
