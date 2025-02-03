@@ -37,7 +37,7 @@ const StepperSection = (props: IStepperSection) => {
       }}
     >
       <Stepper
-        sx={{ width: "70%", mx: "auto", mb: "30px" }}
+        sx={{ width: "80%", mx: "auto", mb: "30px" }}
         activeStep={activeStep}
       >
         {stepData.map((label: any, index: number) => {
@@ -95,6 +95,7 @@ const StepBox = (props: IStepBox) => {
   const questions = category == "questions";
   const insights = category == "insights";
   const advices = category == "advices";
+  const report = category == "report";
 
   const calcOfIssues = () => {
     if (questions) {
@@ -109,14 +110,25 @@ const StepBox = (props: IStepBox) => {
         .reduce((acc, [_, value]) => acc + value, 0);
     } else if (advices) {
       return Object.keys(metrics).filter((item) => item).length;
+    } else if (report) {
+      return Object.entries(metrics)
+        .filter(
+          ([key]) =>
+            key != "totalMetadata" && key != "providedMetadata" && metrics[key],
+        )
+        .reduce((acc, [_, value]) => acc + value, 0);
     }
   };
 
   let content;
 
-  const issuesTag = (text:string) => {
+  const issuesTag = (text: string) => {
     return (
-      <MLink sx={{textDecoration:"none"}} onClick={(e) => e.stopPropagation()} href={`#${text}`}>
+      <MLink
+        sx={{ textDecoration: "none" }}
+        onClick={(e) => e.stopPropagation()}
+        href={`#${text}`}
+      >
         <Chip
           label={
             <Box sx={{ ...styles.centerVH, gap: 1 }}>
@@ -136,7 +148,7 @@ const StepBox = (props: IStepBox) => {
             color: "#B8144B",
             background: "#FCE8EF",
             direction: theme.direction,
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         />
       </MLink>
@@ -310,6 +322,50 @@ const StepBox = (props: IStepBox) => {
     );
   }
 
+  if (report) {
+    const { unprovidedMetadata, unpublished, providedMetadata, totalMetadata } =
+      metrics;
+    const completed =
+      activeStep >= 3 &&
+      providedMetadata == totalMetadata &&
+      unpublished === false;
+
+    const hasIssues = unprovidedMetadata >= 1 || unpublished;
+
+    if (completed && activeStep == 3) {
+      setActiveStep((prev: number) => prev + 1);
+    }
+
+    content = (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: "calc(100% - 60px)",
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Typography variant="headlineLarge">
+            {`${providedMetadata} / ${totalMetadata} `}
+          </Typography>
+          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+            {completed && activeStep >= 3 && completedTag}
+            {!completed && activeStep == 3 && currentTag}
+            {hasIssues ? issuesTag("report") : null}
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Grid
       component={Link}
@@ -318,17 +374,22 @@ const StepBox = (props: IStepBox) => {
           ? `../questionnaires/`
           : insights
             ? "../insights"
-            : "../advices"
+            : advices
+              ? "../advices"
+              : "../report"
       }
       item
-      md={4}
+      md={3}
       sx={{
         px: "20px",
         py: "10px",
         height: "190px",
-        borderRight: { md: insights ? "1px solid #C7CCD1" : "" },
-        borderLeft: { md: insights ? "1px solid #C7CCD1" : "" },
-        borderTop: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
+        borderRight: { md: insights || report  ? "1px solid #C7CCD1" : "" },
+        borderLeft: { md: insights || report ? "1px solid #C7CCD1" : "" },
+        borderTop: {
+          xs: insights || report ? "1px solid #C7CCD1" : "",
+          md: "none",
+        },
         borderBottom: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
         width: "100%",
         textAlign: "center",
@@ -347,17 +408,22 @@ const StepBox = (props: IStepBox) => {
       >
         {questions && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"answeredQuestionsTitle"} />
+            <Trans i18nKey={"answeringQuestionsTitle"} />
           </Typography>
         )}
         {insights && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"submittedInsights"} />
+            <Trans i18nKey={"submittingInsights"} />
           </Typography>
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"suggestedAdvices"} />
+            <Trans i18nKey={"providingAdvices"} />
+          </Typography>
+        )}
+        {report && (
+          <Typography variant="semiBoldXLarge">
+            <Trans i18nKey={"preparingReport"} />
           </Typography>
         )}
       </Typography>

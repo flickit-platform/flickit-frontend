@@ -55,6 +55,9 @@ const TodoBox = (props: any) => {
                     {item.name == "advices" && (
                       <Trans i18nKey={"advicesIssues"} />
                     )}
+                    {item.name == "report" && (
+                      <Trans i18nKey={"reportIssues"} />
+                    )}
                   </Typography>
                 </Box>
                 <Grid container columns={12} spacing={2} mb={"40px"}>
@@ -121,6 +124,9 @@ const TodoBox = (props: any) => {
                     )}
                     {item.name == "advices" && (
                       <Trans i18nKey={"advicesIssues"} />
+                    )}
+                    {item.name == "report" && (
+                      <Trans i18nKey={"reportIssues"} />
                     )}
                   </Typography>
                 </Box>
@@ -235,6 +241,13 @@ const IssuesItem = (props: any) => {
           ) : (
             <Trans i18nKey={"expiredDueToNewAnswer"} />
           ))}
+        {name == "unprovidedMetadata" &&
+          (value > 1 ? (
+            <Trans i18nKey={"metadataAreNotProvider"} />
+          ) : (
+            <Trans i18nKey={"metadataIsNotProvider"} />
+          ))}
+        {name == "unpublished" && <Trans i18nKey={"unpublishedReport"} />}
         {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}
       </Typography>
     </Box>

@@ -36,9 +36,9 @@ const DashboardTab = () => {
               { category: "questions", metrics: data.questions },
               { category: "insights", metrics: data.insights },
               { category: "advices", metrics: data.advices },
+              { category: "report", metrics: data.report },
             ];
             const todoData: any = { now: [], next: [] };
-
             const updatedData = mappedData.map((item) => {
               return {
                 category: item.category,
@@ -48,6 +48,8 @@ const DashboardTab = () => {
                       (key !== "total" &&
                         key !== "answered" &&
                         key !== "expected" &&
+                        key !== "totalMetadata" &&
+                        key !== "providedMetadata" &&
                         value) ||
                       (key === "total" &&
                         item.category === "advices" &&
@@ -74,6 +76,18 @@ const DashboardTab = () => {
                     if (
                       (item.category == "insights" &&
                         item.metrics.notGenerated) ||
+                      item.category == "questions"
+                    ) {
+                      item.metrics.name = item.category;
+                      todoData.now.push(item.metrics);
+                    } else {
+                      item.metrics.name = item.category;
+                      todoData.next.push(item.metrics);
+                    }
+                  } else if (activeStep == 2) {
+                    if (
+                      item.category == "advice" ||
+                      item.category == "insights" ||
                       item.category == "questions"
                     ) {
                       item.metrics.name = item.category;
