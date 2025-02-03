@@ -825,5 +825,9 @@
   "publishReport": "انتشار گزارش",
   "introductionReport": "مقدمه گزارش",
   "assessmentReport": "گزارش ارزیابی",
-  "preparingReport": "آماده‌سازی گزارش"
+  "preparingReport": "آماده‌سازی گزارش",
+  "reportIssues": "موارد گزارش‌ها",
+  "metadataIsNotProvider": "قسمت از اطلاعات مورد نیاز برای آماده‌سازی گزارش تکمیل نشده است.",
+  "metadataAreNotProvider": "قسمت از اطلاعات مورد نیاز برای آماده‌سازی گزارش تکمیل نشده است.",
+  "unpublishedReport": "گزارش ارزیابی منشتر نشده است و برای دیگران قابل مشاهده نیست."
 }

@@ -824,5 +824,9 @@
   "publishReport": "Publish report",
   "introductionReport": "introduction",
   "assessmentReport": "Assessment report",
-  "preparingReport": "Preparing report"
+  "preparingReport": "Preparing report",
+  "reportIssues": "Report issues",
+  "metadataIsNotProvider": "part of metadata is not provided",
+  "metadataAreNotProvider": "parts of metadata are not provided",
+  "unpublishedReport": "The assessment report is unpublished and not viewable by others!"
 }
