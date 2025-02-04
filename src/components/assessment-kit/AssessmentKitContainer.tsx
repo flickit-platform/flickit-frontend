@@ -432,7 +432,7 @@ const AssessmentKit = (props: any) => {
                 <Box component="ul" mt={3}>
                   {maturityLevels.map((item: any) => {
                     return (
-                      <Box sx={{ ml: 4, mt: 1 }} component="li" key={item?.id}>
+                      <Box sx={{direction:languageDetector(item.title) ? "rtl" : "ltr"  ,textAlign: languageDetector(item.title) ? "right": "left" , ml: languageDetector(item.title) ? "unset" : 4, mr: languageDetector(item.title) ? 4 : "unset"  ,mt: 1 }} component="li" key={item?.id}>
                         <Typography
                           variant="body2"
                           sx={{
@@ -485,6 +485,8 @@ const AssessmentKit = (props: any) => {
                       mb={2}
                       key={subject?.id}
                       sx={{
+                        direction: languageDetector(subject.title) ? "rtl" : "ltr",
+                        textAlign: languageDetector(subject.title) ? "right" : "left",
                         mt: 1,
                         fontSize: "1.2rem",
                         listStyleType: "disc",
@@ -517,15 +519,16 @@ const AssessmentKit = (props: any) => {
                           <Box
                             sx={{
                               mt: 1,
-                              ml: 4,
+                              ml: theme.direction == "rtl" ? "unset" : 4,
+                              mr: theme.direction == "rtl" ? 4 : "unset",
                               position: "relative",
                               "&:before": {
                                 content: '"•"',
                                 position: "absolute",
                                 left:
-                                  theme.direction === "ltr" ? "-1em" : "unset",
+                                  languageDetector(att.title) ? "unset" : "-1em" ,
                                 right:
-                                  theme.direction === "rtl" ? "-1em" : "unset",
+                                  languageDetector(att.title) ? "-1em" : "unset",
                                 top: 0,
                               },
                             }}
@@ -595,7 +598,7 @@ const AssessmentKit = (props: any) => {
                 {questionnaires.map((questionnaire: any, index: number) => {
                   return (
                     <Box
-                      sx={{ ml: 4, mt: 2 }}
+                        sx={{direction:languageDetector(questionnaire.title) ? "rtl" : "ltr"  ,textAlign: languageDetector(questionnaire.title) ? "right": "left" , ml: languageDetector(questionnaire.title) ? "unset" : 4, mr: languageDetector(questionnaire.title) ? 4 : "unset"  ,mt: 2 }}
                       component="li"
                       key={questionnaire?.id}
                     >
