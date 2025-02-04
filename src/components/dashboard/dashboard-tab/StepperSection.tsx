@@ -1,5 +1,12 @@
 import Box from "@mui/material/Box";
-import { Step, StepLabel, Stepper, Typography } from "@mui/material";
+import {
+  IconButton,
+  Step,
+  StepLabel,
+  Stepper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
@@ -9,6 +16,7 @@ import { styles } from "@styles";
 import { uniqueId } from "lodash";
 import { Link } from "react-router-dom";
 import MLink from "@mui/material/Link";
+import { InfoOutlined } from "@mui/icons-material";
 
 interface IStepperSection {
   setActiveStep: any;
@@ -29,9 +37,9 @@ const StepperSection = (props: IStepperSection) => {
     <Box
       sx={{
         background: "#fff",
-        borderRadius: "1rem",
+        borderRadius: "12px",
         width: "100%",
-        py: 4,
+        p: 4,
         backgroundColor: "#fff",
         boxShadow: "0 0 8px 0 #0A234240",
       }}
@@ -384,8 +392,7 @@ const StepBox = (props: IStepBox) => {
         px: "20px",
         py: "10px",
         height: "190px",
-        borderRight: { md: insights || report  ? "1px solid #C7CCD1" : "" },
-        borderLeft: { md: insights || report ? "1px solid #C7CCD1" : "" },
+        borderInlineEnd: !report ? "1px solid #C7CCD1" : "",
         borderTop: {
           xs: insights || report ? "1px solid #C7CCD1" : "",
           md: "none",

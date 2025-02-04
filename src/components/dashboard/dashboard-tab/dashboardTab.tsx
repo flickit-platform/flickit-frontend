@@ -110,12 +110,8 @@ const DashboardTab = () => {
           return (
             <Box
               sx={{
-                p: "45px",
-                height: "100%",
+                mt: "40px",
                 width: "100%",
-                background: "#F9FAFB",
-                border: "2px solid #C7CCD1",
-                borderRadius: "1rem",
               }}
             >
               <StepperSection

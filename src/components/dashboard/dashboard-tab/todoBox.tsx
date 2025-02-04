@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -8,29 +8,40 @@ import Grid from "@mui/material/Grid";
 import { uniqueId } from "lodash";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate } from "react-router-dom";
+import { styles } from "@styles";
 
 const TodoBox = (props: any) => {
   const { todoBoxData } = props;
   const { now, next } = todoBoxData;
   return (
-    <Box sx={{ mt: "50px" }}>
+    <Box sx={{ mt: "40px" }}>
       {now?.length > 0 && (
-        <Box sx={{ mb: "30px" }}>
-          <Typography
-            sx={{
-              ...theme.typography.headlineSmall,
-              display: "flex",
-              alignItems: "center",
-              color: "#2B333B",
-              gap: 1,
-              mb: "40px",
-            }}
-          >
-            <Trans i18nKey={"whatToDoNow"} />
-            <Tooltip title={<Trans i18nKey={"whatToDoNowTooltip"} />}>
-              <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+        <Box
+          sx={{
+            background: "#fff",
+            borderRadius: "12px",
+            width: "100%",
+            p: 4,
+            backgroundColor: "#fff",
+            boxShadow: "0 0 8px 0 #0A234240",
+            mb: "40px",
+          }}
+        >
+          {" "}
+          <Box sx={{ ...styles.centerV }}>
+            <Typography
+              sx={{
+                ...theme.typography.headlineSmall,
+              }}
+            >
+              <Trans i18nKey="whatToDoNow" />
+            </Typography>
+            <Tooltip title={<Trans i18nKey="whatToDoNowTooltip" />}>
+              <IconButton size="small" color="primary">
+                <InfoOutlinedIcon />
+              </IconButton>
             </Tooltip>
-          </Typography>
+          </Box>
           {now.map((item: any) => {
             return (
               <React.Fragment key={uniqueId()}>
@@ -41,6 +52,7 @@ const TodoBox = (props: any) => {
                     alignItems: "center",
                     justifyContent: "space-between",
                     mb: "23px",
+                    mt: "32px",
                   }}
                 >
                   <Typography
@@ -60,7 +72,7 @@ const TodoBox = (props: any) => {
                     )}
                   </Typography>
                 </Box>
-                <Grid container columns={12} spacing={2} mb={"40px"}>
+                <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
@@ -82,22 +94,35 @@ const TodoBox = (props: any) => {
         </Box>
       )}
       {next?.length > 0 && (
-        <>
-          <Typography
-            sx={{
-              ...theme.typography.headlineSmall,
-              display: "flex",
-              alignItems: "center",
-              color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-              gap: 1,
-              mb: "40px",
-            }}
-          >
-            <Trans i18nKey={"whatToDoNext"} />
-            <Tooltip title={<Trans i18nKey={"whatToDoNextTooltip"} />}>
-              <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+        <Box
+          sx={{
+            background: "#fff",
+            borderRadius: "12px",
+            width: "100%",
+            p: 4,
+            backgroundColor: "#fff",
+            boxShadow: "0 0 8px 0 #0A234240",
+          }}
+        >
+          {" "}
+          <Box sx={{ ...styles.centerV }}>
+            <Typography
+              sx={{
+                ...theme.typography.headlineSmall,
+                color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
+              }}
+            >
+              <Trans i18nKey="whatToDoNext" />
+            </Typography>
+            <Tooltip title={<Trans i18nKey="whatToDoNextTooltip" />}>
+              <IconButton
+                size="small"
+                color={now.length < 0 ? "primary" : "default"}
+              >
+                <InfoOutlinedIcon />
+              </IconButton>
             </Tooltip>
-          </Typography>
+          </Box>
           {next.map((item: any, index: number) => {
             return (
               <>
@@ -107,6 +132,7 @@ const TodoBox = (props: any) => {
                     alignItems: "center",
                     justifyContent: "space-between",
                     mb: "23px",
+                    mt: "32px",
                   }}
                   id={item.name}
                 >
@@ -130,7 +156,7 @@ const TodoBox = (props: any) => {
                     )}
                   </Typography>
                 </Box>
-                <Grid container columns={12} spacing={2} mb={"40px"}>
+                <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
                     .filter(([key]) => key !== "name")
                     .map(([key, value], index: number) => {
@@ -150,7 +176,7 @@ const TodoBox = (props: any) => {
               </>
             );
           })}
-        </>
+        </Box>
       )}
     </Box>
   );

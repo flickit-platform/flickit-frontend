@@ -59,18 +59,18 @@ const ReportTab = () => {
     },
     {
       name: "prosAndCons",
-      title: "strengthsAndRoomsForImprovement",
-      placeholder: "writeStrengthAndRooms",
+      title: "strengthsAndAreasForImprovement",
+      placeholder: "writeStrengthAndAreas",
     },
     {
       name: "steps",
-      title: "stepsTakenForThisAssessment",
+      title: "assessmentSteps",
       placeholder: "writeStepsForAssessment",
     },
     {
       name: "participants",
-      title: "assessmentContributors",
-      placeholder: "writeAssessmentContributors",
+      title: "participants",
+      placeholder: "writeAboutParticipants",
     },
   ];
   return (
@@ -96,72 +96,6 @@ const ReportTab = () => {
                   alignItems: "center",
                 }}
               >
-                {/*<Grid item xs={12} md={6}>*/}
-                {/*  {"" ? (*/}
-                {/*    <Box*/}
-                {/*      sx={{ background: theme.palette.error.main, borderRadius: 2 }}*/}
-                {/*    >*/}
-                {/*      <Typography*/}
-                {/*        sx={{*/}
-                {/*          display: "flex",*/}
-                {/*          justifyContent: "center",*/}
-                {/*          alignItems: "center",*/}
-                {/*          ...theme.typography.semiBoldMedium,*/}
-                {/*          color: "#FAD1D8",*/}
-                {/*          py: 1,*/}
-                {/*          px: 2,*/}
-                {/*          gap: 1,*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        <ReportProblemOutlinedIcon fontSize={"small"} />*/}
-                {/*        <Trans i18nKey={"fillInAllRequired"} />*/}
-                {/*      </Typography>*/}
-                {/*    </Box>*/}
-                {/*  ) : (*/}
-                {/*    <Box*/}
-                {/*      sx={{*/}
-                {/*        background: theme.palette.warning.light,*/}
-                {/*        borderRadius: 2,*/}
-                {/*        display: "flex",*/}
-                {/*        justifyContent: "space-between",*/}
-                {/*        alignItems: "center",*/}
-                {/*        py: 1,*/}
-                {/*        px: 2,*/}
-                {/*        gap: 5,*/}
-                {/*      }}*/}
-                {/*    >*/}
-                {/*      <Typography*/}
-                {/*        sx={{*/}
-                {/*          display: "flex",*/}
-                {/*          justifyContent: "center",*/}
-                {/*          alignItems: "center",*/}
-                {/*          ...theme.typography.semiBoldMedium,*/}
-                {/*          color: theme.palette.warning.main,*/}
-
-                {/*          gap: 1,*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        <ReportProblemOutlinedIcon fontSize={"small"} />*/}
-                {/*        <Trans i18nKey={"someAnswersNeedUpdating"} />*/}
-                {/*      </Typography>*/}
-                {/*      <Button*/}
-                {/*        variant="contained"*/}
-                {/*        sx={{*/}
-                {/*          minWidth: "unset",*/}
-                {/*          width: "28px",*/}
-                {/*          height: "28px",*/}
-                {/*          background: theme.palette.warning.main,*/}
-                {/*          "&:hover": {*/}
-                {/*            background: theme.palette.warning.main,*/}
-                {/*            width: "fit-content",*/}
-                {/*          },*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        <CloseOutlinedIcon sx={{ color: "#fff" }} />*/}
-                {/*      </Button>*/}
-                {/*    </Box>*/}
-                {/*  )}*/}
-                {/*</Grid>*/}
                 <Grid
                   item
                   xs={12}
@@ -259,7 +193,7 @@ const ReportTab = () => {
                           }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
-                            <Trans i18nKey={"viewReportPage"} />
+                            <Trans i18nKey={"viewReport"} />
                           </Typography>
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
@@ -289,8 +223,7 @@ const ReportTab = () => {
                         {Object.values(metadata).includes(null) && (
                           <Box
                             sx={{
-                              background: theme.palette.error.main,
-                              borderRadius: 2,
+                              background: "transparent",
                             }}
                           >
                             <Typography
@@ -299,7 +232,7 @@ const ReportTab = () => {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 ...theme.typography.semiBoldSmall,
-                                color: "#FAD1D8",
+                                color: theme.palette.error.main,
                                 py: 1,
                                 px: 2,
                                 gap: 1,
@@ -482,7 +415,9 @@ const OnHoverInputReport = (props: any) => {
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: languageDetector(data) ? "8px 0 0 0" : "0 8px 0 0",
+                      borderRadius: languageDetector(data)
+                        ? "8px 0 0 0"
+                        : "0 8px 0 0",
                       height: "49%",
                     }}
                     onClick={formMethods.handleSubmit(updateAssessmentKit)}
@@ -496,7 +431,9 @@ const OnHoverInputReport = (props: any) => {
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: languageDetector(data) ? "0 0 0 8px" : "0 0 8px 0",
+                      borderRadius: languageDetector(data)
+                        ? "0 0 0 8px"
+                        : "0 0 8px 0",
                       height: "49%",
                     }}
                     onClick={handleCancel}
