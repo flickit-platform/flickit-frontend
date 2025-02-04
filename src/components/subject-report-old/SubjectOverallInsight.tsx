@@ -29,7 +29,6 @@ const OverallInsightText = (props: any) => {
   const { data = {}, loading } = props;
   const [isApproved, setIsApproved] = useState(true);
   const [insight, setInsight] = useState<any>(null);
-  const [isAccessorInsight, setIsAccessorInsight] = useState<any>(false);
   const [editable, setEditable] = useState(false);
   const [AssessmentLoading, setAssessmentLoading] = useState(true);
 
@@ -71,7 +70,6 @@ const OverallInsightText = (props: any) => {
           setIsApproved(data.approved);
           setInsight(selectedInsight);
           setEditable(data.editable ?? false);
-          setIsAccessorInsight(data.assessorInsight ? true : false);
         }
       })
       .catch((error) => {
@@ -159,7 +157,7 @@ const OverallInsightText = (props: any) => {
               <Trans i18nKey={"approve"} />
             </LoadingButton>
           )}
-          {editable && isAccessorInsight && (
+          {editable && (
             <LoadingButton
               onClick={(event) => {
                 event.stopPropagation();
@@ -169,7 +167,7 @@ const OverallInsightText = (props: any) => {
               loading={InitInsight.loading}
               size="small"
             >
-              <Trans i18nKey={"generate"} />
+              <Trans i18nKey={"regenerate"} />
             </LoadingButton>
           )}
         </Box>
