@@ -526,7 +526,6 @@ const MaturityLevelTable = ({
           }
         />
       </TableContainer>
-      {/*todo*/}
       <QuestionDetailsContainer
         {...dialogProps}
         onClose={() => dialogProps.onClose()}
@@ -549,11 +548,12 @@ const ActiveCircleIcon = styled(CircleIcon)(({ theme }) => ({
 }));
 
 export const CircleRating = (props: any) => {
-  const { value, ...other } = props;
+  const { value, dataTestid, ...other } = props;
 
   return (
     <Rating
       {...other}
+      data-testid={dataTestid}
       value={value}
       max={5}
       readOnly

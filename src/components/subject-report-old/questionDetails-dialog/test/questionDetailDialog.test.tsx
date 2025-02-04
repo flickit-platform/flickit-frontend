@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import QuestionDetailsContainer from "@components/subject-report-old/questionDetails-dialog/QuestionDetailsContainer";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
@@ -62,8 +62,19 @@ describe("open detail dialog test", () => {
     );
   });
 
-  it("open dialog", () => {
+  it("rating level", () => {
     const confidenceLevel = screen.getByTestId("RatingLevelNum");
     expect(confidenceLevel).toBeInTheDocument();
   });
+
+  it("check title of question in question modal", () => {
+    const title = screen.getByTestId("questionDetailTitle");
+    expect(title).toHaveTextContent("How efficiently are 'Build Management Tools' like Maven, Gradle, MSBuild, Ant and Bazel being employed?");
+  });
+
+  it("check questionnaire title of question in question modal", () => {
+    const questionnaireTitle = screen.getByTestId("questionDetailQuestionnaireTitle");
+    expect(questionnaireTitle).toHaveTextContent("Development");
+  });
+
 });

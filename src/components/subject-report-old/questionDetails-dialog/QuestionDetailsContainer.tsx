@@ -96,6 +96,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const renderQuestionDetails = () => (
     <Box sx={{ ...styles.centerCV, gap: 2 }}>
       <Chip
+        data-testid={"questionDetailQuestionnaireTitle"}
         label={questionInfo?.questionnaire?.title}
         sx={{
           backgroundColor: generateColorFromString(
@@ -120,6 +121,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             : primaryFontFamily,
           color: "#2B333B",
         }}
+        data-testid={"questionDetailTitle"}
       >
         {questionInfo?.question?.title}
       </Typography>
@@ -184,7 +186,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             <Typography>
               <Trans i18nKey={"yourConfidence"} />
             </Typography>
-            <CircleRating value={questionInfo?.answer?.confidenceLevel} />
+            <CircleRating dataTestid={"RatingLevelNum"} value={questionInfo?.answer?.confidenceLevel} />
           </Box>
         </>
       ) : (
