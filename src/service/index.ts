@@ -436,6 +436,17 @@ export const createService = (
         config,
       );
     },
+    InitInsight(
+      { assessmentId, subjectId }: { assessmentId: string; subjectId: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/init-insight/`,
+        {
+          ...(config ?? {}),
+        },
+      );
+    },
     updateSubjectInsight(
       {
         assessmentId,
@@ -445,7 +456,7 @@ export const createService = (
       config: AxiosRequestConfig<any> | undefined,
     ) {
       return axios.post(
-        `/api/v1/assessments/${assessmentId}/insight/subjects/${subjectId}/`,
+        `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/insight/`,
         data,
         {
           ...(config ?? {}),

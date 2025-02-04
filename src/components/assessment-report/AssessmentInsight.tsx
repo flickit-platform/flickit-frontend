@@ -246,7 +246,7 @@ export const AssessmentInsight = () => {
         </>
       ) : (
         <Typography variant="body2">
-          <Trans i18nKey="noInsightAvailable" />{" "}
+          <Trans i18nKey="unavailable" />{" "}
         </Typography>
       )}
     </Box>

@@ -230,10 +230,10 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             to={
               hasML && item.permissions.canViewDashboard
                 ? `${item.id}/dashboard`
-                : item.hasReport && item.permissions.canViewReport
-                  ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                  : item.permissions.canViewQuestionnaires
-                    ? `${item.id}/questionnaires`
+                : item.permissions.canViewQuestionnaires
+                  ? `${item.id}/questionnaires`
+                  : item.hasReport && item.permissions.canViewReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
                     : ""
             }
           >
@@ -342,12 +342,24 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             xs={12}
             sx={{
               ...styles.centerCH,
-              display: item.permissions.canViewDashboard ? "block" : "none",
+              display:
+                item.permissions.canViewDashboard ||
+                (item.permissions.canViewQuestionnaires &&
+                  item.permissions.canViewReport &&
+                  item.hasReport)
+                  ? "block"
+                  : "none",
             }}
             mt={1}
           >
             <Button
-              startIcon={<QueryStatsRounded />}
+              startIcon={
+                item.permissions.canViewQuestionnaires ? (
+                  <QuizRoundedIcon />
+                ) : (
+                  <QueryStatsRounded />
+                )
+              }
               variant={"contained"}
               fullWidth
               onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -361,38 +373,56 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               to={
                 hasML && item.permissions.canViewDashboard
                   ? `${item.id}/dashboard`
-                  : canViewReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                    : ""
+                  : item.permissions.canViewQuestionnaires
+                    ? `${item.id}/questionnaires`
+                    : canViewReport
+                      ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                      : ""
               }
               sx={{
                 backgroundColor: "#2e7d72",
                 background:
-                  item.permissions.canViewDashboard || canViewReport
+                  item.permissions.canViewDashboard ||
+                  canViewReport ||
+                  item.permissions.canViewQuestionnaires
                     ? `#01221e`
                     : "rgba(0,59,100, 12%)",
                 color:
-                  !item.permissions.canViewDashboard && !canViewReport
+                  !item.permissions.canViewDashboard &&
+                  !canViewReport &&
+                  !item.permissions.canViewQuestionnaires
                     ? "rgba(10,35,66, 38%)"
                     : "",
                 boxShadow:
-                  !item.permissions.canViewDashboard && !canViewReport
+                  !item.permissions.canViewDashboard &&
+                  !canViewReport &&
+                  !item.permissions.canViewQuestionnaires
                     ? "none"
                     : "",
                 "&:hover": {
                   background:
-                    item.permissions.canViewDashboard || canViewReport
+                    item.permissions.canViewDashboard ||
+                    canViewReport ||
+                    item.permissions.canViewQuestionnaires
                       ? ``
                       : "rgba(0,59,100, 12%)",
                   boxShadow:
-                    !item.permissions.canViewDashboard && !canViewReport
+                    !item.permissions.canViewDashboard &&
+                    !canViewReport &&
+                    !item.permissions.canViewQuestionnaires
                       ? "none"
                       : "",
                 },
               }}
               data-cy="view-insights-btn"
             >
-              <Trans i18nKey="dashboard" />
+              <Trans
+                i18nKey={
+                  item.permissions.canViewDashboard
+                    ? "dashboard"
+                    : "questionnaire"
+                }
+              />
             </Button>
           </Grid>
         </Grid>

@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -8,29 +8,40 @@ import Grid from "@mui/material/Grid";
 import { uniqueId } from "lodash";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate } from "react-router-dom";
+import { styles } from "@styles";
 
 const TodoBox = (props: any) => {
   const { todoBoxData } = props;
   const { now, next } = todoBoxData;
   return (
-    <Box sx={{ mt: "50px" }}>
+    <Box sx={{ mt: "40px" }}>
       {now?.length > 0 && (
-        <Box sx={{ mb: "30px" }}>
-          <Typography
-            sx={{
-              ...theme.typography.headlineSmall,
-              display: "flex",
-              alignItems: "center",
-              color: "#2B333B",
-              gap: 1,
-              mb: "40px",
-            }}
-          >
-            <Trans i18nKey={"whatToDoNow"} />
-            <Tooltip title={<Trans i18nKey={"whatToDoNowTooltip"} />}>
-              <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+        <Box
+          sx={{
+            background: "#fff",
+            borderRadius: "12px",
+            width: "100%",
+            p: 4,
+            backgroundColor: "#fff",
+            boxShadow: "0 0 8px 0 #0A234240",
+            mb: "40px",
+          }}
+        >
+          {" "}
+          <Box sx={{ ...styles.centerV, mt: "-6px" }}>
+            <Typography
+              sx={{
+                ...theme.typography.headlineSmall,
+              }}
+            >
+              <Trans i18nKey="whatToDoNow" />
+            </Typography>
+            <Tooltip title={<Trans i18nKey="whatToDoNowTooltip" />}>
+              <IconButton size="small" color="primary">
+                <InfoOutlinedIcon />
+              </IconButton>
             </Tooltip>
-          </Typography>
+          </Box>
           {now.map((item: any) => {
             return (
               <React.Fragment key={uniqueId()}>
@@ -41,6 +52,7 @@ const TodoBox = (props: any) => {
                     alignItems: "center",
                     justifyContent: "space-between",
                     mb: "23px",
+                    mt: "32px",
                   }}
                 >
                   <Typography
@@ -55,9 +67,12 @@ const TodoBox = (props: any) => {
                     {item.name == "advices" && (
                       <Trans i18nKey={"advicesIssues"} />
                     )}
+                    {item.name == "report" && (
+                      <Trans i18nKey={"reportIssues"} />
+                    )}
                   </Typography>
                 </Box>
-                <Grid container columns={12} spacing={2} mb={"40px"}>
+                <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
                     .filter(([key]) => key !== "name")
                     .map(([key, value]) => {
@@ -79,22 +94,35 @@ const TodoBox = (props: any) => {
         </Box>
       )}
       {next?.length > 0 && (
-        <>
-          <Typography
-            sx={{
-              ...theme.typography.headlineSmall,
-              display: "flex",
-              alignItems: "center",
-              color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-              gap: 1,
-              mb: "40px",
-            }}
-          >
-            <Trans i18nKey={"whatToDoNext"} />
-            <Tooltip title={<Trans i18nKey={"whatToDoNextTooltip"} />}>
-              <InfoOutlinedIcon sx={{ cursor: "pointer" }} fontSize={"small"} />
+        <Box
+          sx={{
+            background: "#fff",
+            borderRadius: "12px",
+            width: "100%",
+            p: 4,
+            backgroundColor: "#fff",
+            boxShadow: "0 0 8px 0 #0A234240",
+          }}
+        >
+          {" "}
+          <Box sx={{ ...styles.centerV, mt: "-6px" }}>
+            <Typography
+              sx={{
+                ...theme.typography.headlineSmall,
+                color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
+              }}
+            >
+              <Trans i18nKey="whatToDoNext" />
+            </Typography>
+            <Tooltip title={<Trans i18nKey="whatToDoNextTooltip" />}>
+              <IconButton
+                size="small"
+                color={now.length < 0 ? "primary" : "default"}
+              >
+                <InfoOutlinedIcon />
+              </IconButton>
             </Tooltip>
-          </Typography>
+          </Box>
           {next.map((item: any, index: number) => {
             return (
               <>
@@ -104,6 +132,7 @@ const TodoBox = (props: any) => {
                     alignItems: "center",
                     justifyContent: "space-between",
                     mb: "23px",
+                    mt: "32px",
                   }}
                   id={item.name}
                 >
@@ -122,9 +151,12 @@ const TodoBox = (props: any) => {
                     {item.name == "advices" && (
                       <Trans i18nKey={"advicesIssues"} />
                     )}
+                    {item.name == "report" && (
+                      <Trans i18nKey={"reportIssues"} />
+                    )}
                   </Typography>
                 </Box>
-                <Grid container columns={12} spacing={2} mb={"40px"}>
+                <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
                     .filter(([key]) => key !== "name")
                     .map(([key, value], index: number) => {
@@ -144,7 +176,7 @@ const TodoBox = (props: any) => {
               </>
             );
           })}
-        </>
+        </Box>
       )}
     </Box>
   );
@@ -169,7 +201,8 @@ const IssuesItem = (props: any) => {
     <Box
       onClick={() => filteredQuestionnaire(name)}
       sx={{
-        p: 2,
+        py: 1,
+        px: 2,
         borderRadius: 2,
         border: "1px solid #C7CCD1",
         background: now?.length > 0 && next?.length > 0 ? "#F3F5F6" : "#EAF2FB",
@@ -235,6 +268,13 @@ const IssuesItem = (props: any) => {
           ) : (
             <Trans i18nKey={"expiredDueToNewAnswer"} />
           ))}
+        {name == "unprovidedMetadata" &&
+          (value > 1 ? (
+            <Trans i18nKey={"metadataAreNotProvider"} />
+          ) : (
+            <Trans i18nKey={"metadataIsNotProvider"} />
+          ))}
+        {name == "unpublished" && <Trans i18nKey={"unpublishedReport"} />}
         {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}
       </Typography>
     </Box>

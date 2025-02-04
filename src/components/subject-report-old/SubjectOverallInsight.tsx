@@ -11,7 +11,7 @@ import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
-
+import { styles } from "@styles";
 const SubjectOverallInsight = (props: any) => {
   return (
     <Box>
@@ -46,6 +46,17 @@ const OverallInsightText = (props: any) => {
       },
       config,
     ) => service.ApproveAISubject(args, config),
+    runOnMount: false,
+  });
+
+  const InitInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        subjectId,
+      },
+      config,
+    ) => service.InitInsight(args, config),
     runOnMount: false,
   });
 
@@ -131,30 +142,36 @@ const OverallInsightText = (props: any) => {
           </>
         )}
       </Typography>
-      <Typography
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          mb: 2,
-        }}
-        variant="headlineSmall"
-        mx={4}
-        mt={4}
-      >
-        <Trans i18nKey="subjectBriefConclusion" />
-        {!isApproved && (
-          <Box sx={{ marginInlineStart: "auto" }}>
+      <Box sx={{ ...styles.centerV, mt: 4, mb: 2, marginInlineStart: 3 }}>
+        <Typography variant="headlineSmall">
+          <Trans i18nKey="subjectBriefConclusion" />
+        </Typography>
+        <Box sx={{ ...styles.centerV, marginInlineStart: "auto", gap: 1 }}>
+          {!isApproved && editable && (
             <LoadingButton
               variant={"contained"}
               onClick={(event) => ApproveSubject(event)}
               loading={ApproveAISubject.loading}
+              size="small"
             >
               <Trans i18nKey={"approve"} />
             </LoadingButton>
-          </Box>
-        )}
-      </Typography>
+          )}
+          {editable && (
+            <LoadingButton
+              onClick={(event) => {
+                event.stopPropagation();
+                InitInsight.query().then(() => fetchAssessment());
+              }}
+              variant={"contained"}
+              loading={InitInsight.loading}
+              size="small"
+            >
+              <Trans i18nKey={"regenerate"} />
+            </LoadingButton>
+          )}
+        </Box>
+      </Box>
       <SubjectInsight
         AssessmentLoading={AssessmentLoading}
         fetchAssessment={fetchAssessment}

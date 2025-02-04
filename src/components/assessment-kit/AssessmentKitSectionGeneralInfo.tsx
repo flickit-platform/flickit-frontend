@@ -37,6 +37,7 @@ import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import SelectLanguage from "@utils/selectLanguage";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -93,6 +94,25 @@ const AssessmentKitSectionGeneralInfo = (
       toastError(err);
     }
   };
+  const handleLanguageChange = async (e: any) => {
+    const { value } = e.target;
+
+    let adjustValue = value == "English" ? "EN" : "FA";
+
+    try {
+      await service.updateAssessmentKitStats(
+        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue } },
+        { signal: abortController.current.signal },
+      );
+      await fetchAssessmentKitInfoQuery.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
+  const languages = [{ title: "Persian" }, { title: "English" }];
+
   return (
     <QueryBatchData
       queryBatchData={[
@@ -116,6 +136,7 @@ const AssessmentKitSectionGeneralInfo = (
           tags,
           editable,
           hasActiveVersion,
+          lang,
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -141,6 +162,7 @@ const AssessmentKitSectionGeneralInfo = (
                   p: 2.5,
                   borderRadius: 2,
                   background: "white",
+                  height: "100%",
                 }}
               >
                 <OnHoverInput
@@ -354,6 +376,28 @@ const AssessmentKitSectionGeneralInfo = (
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
+                <Box
+                  my={1.5}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    mr={4}
+                    sx={{ minWidth: "64px !important" }}
+                  >
+                    <Trans i18nKey={"language"} />
+                  </Typography>
+                  <SelectLanguage
+                    handleChange={handleLanguageChange}
+                    lang={lang}
+                    languages={languages}
+                    editable={editable}
+                  />
+                </Box>
               </Box>
             </Grid>
             <Grid item xs={12} md={5}>
@@ -363,6 +407,7 @@ const AssessmentKitSectionGeneralInfo = (
                   p: 2.5,
                   borderRadius: 2,
                   background: "white",
+                  height: "100%",
                 }}
               >
                 {creationTime && (
