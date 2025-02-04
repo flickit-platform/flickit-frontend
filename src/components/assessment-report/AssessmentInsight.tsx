@@ -115,10 +115,16 @@ export const AssessmentInsight = () => {
         </Box>
       ) : insight ? (
         <>
-          <Box sx={{ ...styles.centerV, width: "100%" }}>
+          <Box
+            sx={{
+              ...styles.centerV,
+              width: "100%",
+              gap: 1,
+              justifyContent: "end",
+            }}
+          >
             {!isApproved && (
               <LoadingButton
-                sx={{ marginInlineStart: "auto" }}
                 variant={"contained"}
                 onClick={(event) => ApproveInsight(event)}
                 loading={ApproveAssessmentInsight.loading}
@@ -129,7 +135,6 @@ export const AssessmentInsight = () => {
             )}
             {editable && (
               <LoadingButton
-                sx={{ marginInlineStart: "auto" }}
                 onClick={(event) => {
                   event.stopPropagation();
                   InitAssessmentInsight.query().then(() => fetchAssessment());
