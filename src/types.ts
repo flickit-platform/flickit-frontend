@@ -612,6 +612,7 @@ export interface AssessmentKitInfoType {
   tags: [];
   editable?: boolean;
   hasActiveVersion?: boolean;
+  lang?: string
 }
 export interface AssessmentKitStatsType {
   creationTime: string;
