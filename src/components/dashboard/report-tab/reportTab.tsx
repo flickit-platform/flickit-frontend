@@ -31,7 +31,7 @@ import Switch from "@mui/material/Switch";
 const ReportTab = () => {
   const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-
+  const [disablePublish,setDisablePublish] = useState(true)
   const fetchReportFields = useQuery({
     service: (args = { assessmentId }, config) =>
       service.fetchReportFields(args, config),
@@ -44,11 +44,24 @@ const ReportTab = () => {
   });
 
   const handlePublishChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>, metadata: any
   ) => {
-    let data = { published: event.target.checked };
-    await PublishReportStatus.query({ assessmentId, data });
-    await fetchReportFields.query();
+    if(Object.values(metadata).includes(null)){
+      if(!event.target.checked){
+        let data = { published: event.target.checked };
+        await PublishReportStatus.query({ assessmentId, data });
+        await fetchReportFields.query();
+        setDisablePublish(true)
+      }else{
+        setDisablePublish(true)
+      }
+    }else{
+      let data = { published: event.target.checked };
+      await PublishReportStatus.query({ assessmentId, data });
+      await fetchReportFields.query();
+      setDisablePublish(false)
+    }
+
   };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
@@ -80,6 +93,11 @@ const ReportTab = () => {
       render={(data) => {
         const { metadata, published } = data;
 
+        useEffect(()=>{
+          if(!Object.values(metadata).includes(null)){
+            setDisablePublish(false)
+          }
+        },[])
         return (
           <>
             <Box
@@ -213,9 +231,9 @@ const ReportTab = () => {
                           </Typography>
                           <Switch
                             checked={published}
-                            onChange={handlePublishChange}
+                            onChange={(event)=>handlePublishChange(event,metadata)}
                             size="small"
-                            disabled={Object.values(metadata).includes(null)}
+                            disabled={disablePublish}
                             sx={{ cursor: "pointer" }}
                           />
                         </Box>
