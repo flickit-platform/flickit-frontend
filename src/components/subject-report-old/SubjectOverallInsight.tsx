@@ -142,11 +142,19 @@ const OverallInsightText = (props: any) => {
           </>
         )}
       </Typography>
-      <Box sx={{ ...styles.centerV, mt: 4, mb: 2, marginInlineStart: 3 }}>
+      <Box
+        sx={{
+          ...styles.centerV,
+          mt: 4,
+          mb: 2,
+          marginInlineStart: 3,
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="headlineSmall">
           <Trans i18nKey="subjectBriefConclusion" />
         </Typography>
-        <Box sx={{ ...styles.centerV, marginInlineStart: "auto", gap: 1 }}>
+        <Box sx={{ ...styles.centerV, gap: 1 }}>
           {!isApproved && editable && (
             <LoadingButton
               variant={"contained"}
