@@ -41,10 +41,8 @@ const RichEditorFieldBase = (props: any) => {
     required,
     label,
     disable_label,
-    setLangDir,
     placeholder,
     type,
-    detectLang
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
@@ -75,7 +73,6 @@ const RichEditorFieldBase = (props: any) => {
         position: "relative",
         minHeight: "54px",
         "& .MuiInputBase-input": {
-          // marginTop: shrink ? 0 : 0.8,
           marginTop: 0,
         },
       }}
@@ -101,11 +98,12 @@ const RichEditorFieldBase = (props: any) => {
         defaultValue={defaultValue}
         field={field}
         checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
-        setLangDir={setLangDir}
         placeholder={placeholder}
         type={type}
       />
-      <FormHelperText style={{marginTop:0}}>{errorMessage as string}</FormHelperText>
+      <FormHelperText style={{ marginTop: 0 }}>
+        {errorMessage as string}
+      </FormHelperText>
     </FormControl>
   );
 };

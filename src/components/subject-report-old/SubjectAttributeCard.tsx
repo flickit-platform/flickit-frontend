@@ -34,7 +34,7 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Button, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
@@ -796,11 +796,7 @@ const OnHoverInput = (props: any) => {
     setHasError(false);
   };
 
-  const updateAssessmentKit = async (
-    data: any,
-    event: any,
-    shouldView?: boolean,
-  ) => {
+  const updateAssessmentKit = async (data: any) => {
     try {
       const res = await infoQuery(data.title);
       res?.message && toast.success(res?.message);
@@ -829,86 +825,92 @@ const OnHoverInput = (props: any) => {
         alignItems: "center",
         width: "100%",
         cursor: "text !important",
+        direction: languageDetector(data) ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-          <FormProviderWithForm formMethods={formMethods}>
+        <FormProviderWithForm formMethods={formMethods}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <RichEditorField
+              name="title"
+              label={<Box></Box>}
+              placeholder={t("writeHere", {
+                title: t("insight").toLowerCase(),
+              })}
+              defaultValue={data || ""}
+            />
             <Box
               sx={{
-                width: "100%",
                 display: "flex",
-                justifyContent: "space-between",
+                flexDirection: "column",
+                justifyContent: "center",
                 alignItems: "center",
+                height: "100%",
               }}
             >
-              <RichEditorField
-                name="title"
-                placeholder={t("writeHere", {
-                  title: t("insight").toLowerCase(),
-                })}
-                defaultValue={data || ""}
-              />
-              <Box
+              <IconButton
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
+                  background: theme.palette.primary.main,
+                  "&:hover": {
+                    background: theme.palette.primary.dark,
+                  },
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 0"
+                    : "0 8px 0 0",
+                  height: "49%",
                 }}
+                onClick={formMethods.handleSubmit(updateAssessmentKit)}
               >
-                <IconButton
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "3px",
-                    height: "36px",
-                    marginBottom: "2px",
-                  }}
-                  onClick={formMethods.handleSubmit(updateAssessmentKit)}
-                >
-                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-                <IconButton
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: "4px",
-                    height: "36px",
-                    marginBottom: "2px",
-                  }}
-                  onClick={handleCancel}
-                >
-                  <CancelRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Box>
+                <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+              </IconButton>
+              <IconButton
+                sx={{
+                  background: theme.palette.primary.main,
+                  "&:hover": {
+                    background: theme.palette.primary.dark,
+                  },
+                  borderRadius: languageDetector(data)
+                    ? "0 0 0 8px"
+                    : "0 0 8px 0",
+                  height: "49%",
+                }}
+                onClick={handleCancel}
+              >
+                <CancelRoundedIcon sx={{ color: "#fff" }} />
+              </IconButton>
             </Box>
-          </FormProviderWithForm>
-          {hasError && (
-            <Typography color="#ba000d" variant="caption">
-              {error?.data?.[type]}
-            </Typography>
-          )}
-        </Box>
+            {hasError && (
+              <Typography color="#ba000d" variant="caption">
+                {error?.data?.about}
+              </Typography>
+            )}
+          </Box>
+        </FormProviderWithForm>
       ) : (
         <Box
           sx={{
             minHeight: "38px",
-            borderRadius: "4px",
+            borderRadius: "8px",
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             wordBreak: "break-word",
+            paddingInlineStart: isHovering ? 1 : 0,
+            paddingInlineEnd:isHovering ? 5 : 0,
+            border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
               borderColor: editable ? theme.palette.primary.main : "unset",
             },
+            position: "relative",
           }}
           onClick={() => setShow(!show)}
           onMouseOver={handleMouseOver}
@@ -949,8 +951,14 @@ const OnHoverInput = (props: any) => {
                 "&:hover": {
                   background: theme.palette.primary.dark,
                 },
-                borderRadius: "3px",
-                height: "36px",
+                borderRadius: languageDetector(data)
+                  ? "8px 0 0 8px"
+                  : "0 8px 8px 0",
+                height: "100%",
+                position: "absolute",
+                right: languageDetector(data) ? "unset" : 0,
+                left: languageDetector(data) ? 0 : "unset",
+                top: 0,
               }}
               onClick={() => setShow(!show)}
             >

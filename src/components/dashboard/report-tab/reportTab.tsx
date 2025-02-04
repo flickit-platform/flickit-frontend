@@ -52,7 +52,11 @@ const ReportTab = () => {
   };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
-    { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
+    {
+      name: "intro",
+      title: "introductionReport",
+      placeholder: "writeIntroduction",
+    },
     {
       name: "prosAndCons",
       title: "strengthsAndRoomsForImprovement",
@@ -178,7 +182,7 @@ const ReportTab = () => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    flexDirection: {xs: "column-reverse", md: "row"}
+                    flexDirection: { xs: "column-reverse", md: "row" },
                   }}
                 >
                   <MainCard
@@ -186,7 +190,8 @@ const ReportTab = () => {
                     style={{
                       minHeight: "50px",
                       mt: 2,
-                      width: name == "intro" ? {xs: "100%", md: "68%"} : "100%",
+                      width:
+                        name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
                   >
                     <Typography
@@ -229,7 +234,7 @@ const ReportTab = () => {
                       style={{
                         minHeight: "180px",
                         mt: 2,
-                        width: {xs: "100%", md: "30%"},
+                        width: { xs: "100%", md: "30%" },
                         display: "flex",
                         justifyContent: "center",
                         alignSelf: "flex-start",
@@ -249,7 +254,8 @@ const ReportTab = () => {
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
                           disabled={
-                              Object.values(metadata).includes(null) || published == false
+                            Object.values(metadata).includes(null) ||
+                            published == false
                           }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
@@ -355,7 +361,6 @@ const OnHoverInputReport = (props: any) => {
   const [show, setShow] = useState<boolean>(!!!data);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
-  const [isFarsi, setIsFarsi] = useState(languageDetector(data));
   const paragraphRef = useRef<any>(null);
 
   const toggleShowMore = () => {
@@ -394,13 +399,13 @@ const OnHoverInputReport = (props: any) => {
       };
       // const res = await infoQuery(attributeId, assessmentId, data.title);
       // if (Object.values(reportData)[0]) {
-        const res = await patchUpdateReportFields.query({
-          assessmentId,
-          reportData,
-        });
-        infoQuery.query();
-        res?.message && toast.success(res?.message);
-        setShow(false);
+      const res = await patchUpdateReportFields.query({
+        assessmentId,
+        reportData,
+      });
+      infoQuery.query();
+      res?.message && toast.success(res?.message);
+      setShow(false);
       // }
     } catch (e) {
       const err = e as ICustomError;
@@ -438,13 +443,21 @@ const OnHoverInputReport = (props: any) => {
       }}
     >
       {editable && show ? (
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100% " }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100% ",
+            direction: languageDetector(data) ? "rtl" : "ltr",
+          }}
+        >
           <FormProviderWithForm formMethods={formMethods}>
             <Box
               sx={{
                 width: "100%",
                 height: "100%",
                 position: "relative",
+                display: "flex",
               }}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
@@ -455,31 +468,21 @@ const OnHoverInputReport = (props: any) => {
                 required={false}
                 defaultValue={data || ""}
                 placeholder={placeholder}
-                type={"reportTab"}
-                setLangDir={setIsFarsi}
-                isFarsi={isFarsi}
+                type="reportTab"
               />
               {isHovering && (
                 <Box
                   sx={{
                     ...styles.centerCVH,
-                    gap: "4px",
-                    // height: "100%",
-                    position: "absolute",
-                    right: isFarsi ? "unset" : 0,
-                    left: isFarsi ? 0 : "unset",
-                    top: 0,
-                    bottom: 0,
                   }}
                 >
                   <IconButton
-                    // edge="end"
                     sx={{
                       background: theme.palette.primary.main,
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: isFarsi ? "8px 0 0 0" : "0 8px 0 0",
+                      borderRadius: languageDetector(data) ? "8px 0 0 0" : "0 8px 0 0",
                       height: "49%",
                     }}
                     onClick={formMethods.handleSubmit(updateAssessmentKit)}
@@ -493,7 +496,7 @@ const OnHoverInputReport = (props: any) => {
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: isFarsi ? "0 0 0 8px" : "0 0 8px 0",
+                      borderRadius: languageDetector(data) ? "0 0 0 8px" : "0 0 8px 0",
                       height: "49%",
                     }}
                     onClick={handleCancel}
@@ -575,7 +578,6 @@ const OnHoverInputReport = (props: any) => {
             {isHovering && (
               <IconButton
                 title="Edit"
-                // edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
