@@ -147,7 +147,7 @@ const OverallInsightText = (props: any) => {
           <Trans i18nKey="subjectBriefConclusion" />
         </Typography>
         <Box sx={{ ...styles.centerV, marginInlineStart: "auto", gap: 1 }}>
-          {!isApproved && (
+          {!isApproved && editable && (
             <LoadingButton
               variant={"contained"}
               onClick={(event) => ApproveSubject(event)}
