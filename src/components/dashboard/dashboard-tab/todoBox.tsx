@@ -28,7 +28,7 @@ const TodoBox = (props: any) => {
           }}
         >
           {" "}
-          <Box sx={{ ...styles.centerV }}>
+          <Box sx={{ ...styles.centerV, mt: "-6px" }}>
             <Typography
               sx={{
                 ...theme.typography.headlineSmall,
@@ -105,7 +105,7 @@ const TodoBox = (props: any) => {
           }}
         >
           {" "}
-          <Box sx={{ ...styles.centerV }}>
+          <Box sx={{ ...styles.centerV, mt: "-6px" }}>
             <Typography
               sx={{
                 ...theme.typography.headlineSmall,
@@ -201,7 +201,8 @@ const IssuesItem = (props: any) => {
     <Box
       onClick={() => filteredQuestionnaire(name)}
       sx={{
-        p: 2,
+        py: 1,
+        px: 2,
         borderRadius: 2,
         border: "1px solid #C7CCD1",
         background: now?.length > 0 && next?.length > 0 ? "#F3F5F6" : "#EAF2FB",

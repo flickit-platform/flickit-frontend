@@ -110,7 +110,7 @@ const DashboardTab = () => {
           return (
             <Box
               sx={{
-                mt: "40px",
+                mt: "32px",
                 width: "100%",
               }}
             >
