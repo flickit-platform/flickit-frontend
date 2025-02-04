@@ -221,7 +221,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography variant="headlineLarge">
+          <Typography sx={{direction:"ltr"}} variant="headlineLarge">
             {`${answered} / ${total} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -269,7 +269,7 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <Typography variant="headlineLarge">
+          <Typography sx={{direction:"ltr"}}  variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -361,7 +361,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography variant="headlineLarge">
+          <Typography sx={{direction:"ltr"}}  variant="headlineLarge">
             {`${providedMetadata} / ${totalMetadata} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
