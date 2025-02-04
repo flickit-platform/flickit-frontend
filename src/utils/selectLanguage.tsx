@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const SelectLanguage = (props: any) => {
-  const { lang, handleChange, languages } = props;
+  const { lang, handleChange, languages, editable } = props;
 
   return (
     <FormControl sx={{ width: "100%" }}>
@@ -14,6 +14,7 @@ const SelectLanguage = (props: any) => {
         <Trans i18nKey={"language"} />
       </InputLabel>
       <Select
+        disabled={editable != undefined ? !editable : false}
         size="small"
         labelId={`language-name-label`}
         value={lang}

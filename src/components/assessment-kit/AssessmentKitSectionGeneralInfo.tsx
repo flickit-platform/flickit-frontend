@@ -395,6 +395,7 @@ const AssessmentKitSectionGeneralInfo = (
                     handleChange={handleLanguageChange}
                     lang={lang}
                     languages={languages}
+                    editable={editable}
                   />
                 </Box>
               </Box>
