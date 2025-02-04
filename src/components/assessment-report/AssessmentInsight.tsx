@@ -33,7 +33,6 @@ export const AssessmentInsight = () => {
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isApproved, setIsApproved] = useState(true);
-  const [isAssessorInsight, setIsAssessorInsight] = useState(false);
 
   const ApproveAssessmentInsight = useQuery({
     service: (
@@ -74,7 +73,6 @@ export const AssessmentInsight = () => {
           setInsight(selectedInsight);
           setEditable(data.editable ?? false);
           setIsApproved(data.approved);
-          setIsAssessorInsight(data.assessorInsight ? true : false);
         }
       })
       .catch((error) => {
@@ -117,6 +115,33 @@ export const AssessmentInsight = () => {
         </Box>
       ) : insight ? (
         <>
+          <Box sx={{ ...styles.centerV, width: "100%" }}>
+            {!isApproved && (
+              <LoadingButton
+                sx={{ marginInlineStart: "auto" }}
+                variant={"contained"}
+                onClick={(event) => ApproveInsight(event)}
+                loading={ApproveAssessmentInsight.loading}
+                size="small"
+              >
+                <Trans i18nKey={"approve"} />
+              </LoadingButton>
+            )}
+            {editable && (
+              <LoadingButton
+                sx={{ marginInlineStart: "auto" }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  InitAssessmentInsight.query().then(() => fetchAssessment());
+                }}
+                variant={"contained"}
+                loading={InitAssessmentInsight.loading}
+                size="small"
+              >
+                <Trans i18nKey={"regenerate"} />
+              </LoadingButton>
+            )}
+          </Box>
           <OnHoverRichEditor
             data={insight.insight}
             editable={editable}
@@ -211,32 +236,6 @@ export const AssessmentInsight = () => {
                     />
                   </Typography>
                 </Box>
-                {!isApproved && (
-                  <LoadingButton
-                    sx={{ marginInlineStart: "auto" }}
-                    variant={"contained"}
-                    onClick={(event) => ApproveInsight(event)}
-                    loading={ApproveAssessmentInsight.loading}
-                    size="small"
-                  >
-                    <Trans i18nKey={"approve"} />
-                  </LoadingButton>
-                )}
-                {editable && isAssessorInsight && (
-                  <LoadingButton
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      InitAssessmentInsight.query().then(() =>
-                        fetchAssessment(),
-                      );
-                    }}
-                    variant={"contained"}
-                    loading={InitAssessmentInsight.loading}
-                    size="small"
-                  >
-                    <Trans i18nKey={"generate"} />
-                  </LoadingButton>
-                )}
               </Box>
             )}
         </>
