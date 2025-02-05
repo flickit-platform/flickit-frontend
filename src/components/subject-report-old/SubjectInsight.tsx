@@ -279,7 +279,10 @@ const OnHoverRichEditor = (props: any) => {
           <Typography
             dangerouslySetInnerHTML={{
               __html:
-                data ?? t("writeHere", { title: t("insight").toLowerCase() }),
+                data ??
+                (editable
+                  ? t("writeHere", { title: t("insight").toLowerCase() })
+                  : t("unavailable")),
             }}
             sx={{
               fontFamily: languageDetector(data)

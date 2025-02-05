@@ -407,7 +407,10 @@ const OnHoverRichEditor = (props: any) => {
             }}
             dangerouslySetInnerHTML={{
               __html:
-                data ?? t("writeHere", { title: t("insight").toLowerCase() }),
+                data ??
+                (editable
+                  ? t("writeHere", { title: t("insight").toLowerCase() })
+                  : t("unavailable")),
             }}
           />
           {isHovering && editable && (
