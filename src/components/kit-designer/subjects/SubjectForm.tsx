@@ -172,7 +172,6 @@ const SubjectForm = ({
             variant="outlined"
             fullWidth
             size="small"
-            // label={<Trans i18nKey="weight" />}
             margin="normal"
             type="number"
             inputProps={{

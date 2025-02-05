@@ -11,13 +11,11 @@ import {
 } from "@providers/QuestionProvider";
 import { QuestionCard } from "./QuestionCard";
 import { Trans } from "react-i18next";
-import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import { Review } from "./QuestionsReview";
 import { TransitionGroup } from "react-transition-group";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { QuestionsProgress } from "./QuestionsProgress";
-import { ErrorNotFoundOrAccessDenied } from "@common/errors/ErrorNotFoundOrAccessDenied";
 import EmptyState from "../kit-designer/common/EmptyState";
 import { t } from "i18next";
 

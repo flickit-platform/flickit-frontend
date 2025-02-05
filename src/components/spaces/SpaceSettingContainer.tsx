@@ -41,7 +41,6 @@ const SpaceSettingContainer = () => {
                 to: "/spaces/1",
                 title: "spaces",
                 sup: "spaces",
-                // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
               },
             ]}
           />
@@ -135,9 +134,7 @@ function SpaceSettings(props: { editable: boolean }) {
           </TabList>
         </Box>
         <TabPanel value="1">
-          {/* <ErrorAccessDenied hasAccess={isOwner}> */}
           <SpaceMembers editable={editable} />
-          {/* </ErrorAccessDenied> */}
         </TabPanel>
       </TabContext>
     </Box>

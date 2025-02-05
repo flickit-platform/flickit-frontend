@@ -92,20 +92,6 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          {/* <Grid item xs={12} sm={6}>
-            <UploadField
-              accept={{
-                "image/jpeg": [".jpeg", ".jpg"],
-                "image/png": [".png"],
-              }}
-              defaultValueType="image"
-              defaultValue={defaultValues.pictureLink}
-              shouldFetchFileInfo={true}
-              name="picture"
-              label={<Trans i18nKey="accountPicture" />}
-              maxSize={convertToBytes(2, "MB")}
-              />
-          </Grid> */}
           <Grid item xs={12} sm={12}>
             <InputFieldUC
               autoFocus={true}

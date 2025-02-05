@@ -53,7 +53,6 @@ const SpaceContainer = () => {
     <SpaceLayout
       title={
         <Title borderBottom={true} size="large">
-          {/* <FolderRoundedIcon sx={{ mr: 1 }} /> */}
           <Trans i18nKey="spaces" />
         </Title>
       }
@@ -237,9 +236,6 @@ const useFetchSpace = () => {
 
       setLoading(false);
     } catch (e) {
-      // if (isNaN(page as any)) {
-      //   return navigate(`*`);
-      // }
       const err = e as ICustomError;
       toastError(err, { filterByStatus: [404] });
       setLoading(false);

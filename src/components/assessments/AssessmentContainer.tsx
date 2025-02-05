@@ -65,7 +65,6 @@ const AssessmentContainer = () => {
           }
         >
           <Box>
-            {/* <DescriptionRoundedIcon sx={{ mr: 1 }} /> */}
             <Trans i18nKey="assessments" />
           </Box>
         </Title>
@@ -175,7 +174,6 @@ const AssessmentContainer = () => {
 
         <QueryData
           {...rest}
-          // renderLoading={() => <LoadingSkeletonOfAssessments />}
           emptyDataComponent={
             <ErrorEmptyData
               emptyMessage={<Trans i18nKey="nothingToSeeHere" />}
@@ -250,12 +248,6 @@ const useFetchAssessments = () => {
         { signal: abortController.current.signal },
       );
       if (res) {
-        // if (
-        //   Math.ceil(total / size) < parseInt(page ?? "1", 10) ||
-        //   isNaN(page as any)
-        // ) {
-        //   return navigate(`*`);
-        // }
         setData(res);
         setError(false);
       } else {
@@ -265,9 +257,6 @@ const useFetchAssessments = () => {
 
       setLoading(false);
     } catch (e) {
-      // if (isNaN(page as any)) {
-      //   return navigate(`*`);
-      // }
       const err = e as ICustomError;
       toastError(err, { filterByStatus: [404] });
       setLoading(false);

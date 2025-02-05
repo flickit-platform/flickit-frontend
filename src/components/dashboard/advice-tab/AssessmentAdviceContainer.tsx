@@ -59,7 +59,6 @@ const AssessmentAdviceContainer = (props: any) => {
   const handleClose = () => {
     setExpanded(false);
   };
-  // { subjectId: string; assessmentId: string }
   const createAdviceQueryData = useQuery<ISubjectReportModel>({
     service: (args, config) => service.createAdvice(args, config),
     runOnMount: false,

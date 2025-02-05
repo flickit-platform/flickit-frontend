@@ -85,11 +85,6 @@ const AnaweRangeContent = () => {
         await postKitAnswerRange.query({ kitVersionId, data });
       }
 
-      // Reset form and re-fetch data after saving
-      // setShowQuestionnairesForm(false);
-      // await fetchAnswerRangeKit.query();
-      // maturityLevelsCompetences.query();
-
       // Reset the form values
       setNewAnswerRange({
         title: "",
@@ -127,8 +122,6 @@ const AnaweRangeContent = () => {
       });
 
       setShowNewAnswerRangeForm(false);
-      // await fetchAnswerRangeKit.query();
-      // maturityLevelsCompetences.query();
 
       setNewAnswerRange({
         title: "",
@@ -196,24 +189,6 @@ const AnaweRangeContent = () => {
           subTitle={"answerRangeList"}
         />
         <Divider sx={{ my: 1 }} />
-        {/*<QueryBatchData*/}
-        {/*  queryBatchData={[fetchAnswerRangeKit]}*/}
-        {/*  renderLoading={() => <LoadingSkeletonKitCard />}*/}
-        {/*  render={([AnswerRangeData]) => {*/}
-        {/*    return (*/}
-
-        {/*{fetchAnswerRangeKit.loading ? (*/}
-        {/*    <Box*/}
-        {/*        sx={{*/}
-        {/*          display: "flex",*/}
-        {/*          justifyContent: "center",*/}
-        {/*          alignItems: "center",*/}
-        {/*          py: 2,*/}
-        {/*        }}*/}
-        {/*    >*/}
-        {/*      <CircularProgress />*/}
-        {/*    </Box>*/}
-        {/*) : (*/}
         <>
           {data?.length !== 0 ? (
             <Box maxHeight={500} overflow="auto">

@@ -84,16 +84,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
           setShow(true);
         }
       }
-      // if (!is_confidence_valid) {
-      //   await calculateConfidenceLevelQuery.query();
-      // }
-    } catch (e) {
-      // const err = e as ICustomError;
-      // toastError(err, { filterByStatus: [404] });
-      // setLoading(false);
-      // setError(true);
-      // setErrorObject(err);
-    }
+    } catch (e) {}
   };
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>

@@ -70,9 +70,6 @@ const AssessmentSettingContainer = () => {
     (async () => {
       const { manageable, kit, kitCustomId } = await AssessmentInfo.query();
       setKitInfo({ kit, kitCustomId });
-      // if (!manageable) {
-      //   return navigate("*");
-      // }
     })();
   }, [assessmentId]);
   useEffect(() => {
@@ -168,9 +165,7 @@ const AssessmentSettingContainer = () => {
                 expandedRemoveDialog={expandedRemoveModal}
                 onCloseRemoveDialog={handleCloseRemoveModal}
                 assessmentId={assessmentId}
-                fetchAssessmentMembers={
-                  fetchAssessmentMembers.query
-                }
+                fetchAssessmentMembers={fetchAssessmentMembers.query}
                 inviteesMemberList={inviteesMemberList}
                 assessmentName={title}
                 setChangeData={setChangeData}

@@ -407,7 +407,6 @@ export const AttributeStatusBarContainer = (props: any) => {
     <Box
       display={"flex"}
       sx={{
-        // ml: { xs: -1.5, sm: -3, md: -4 },
         flexDirection: { xs: "column", md: "row" },
       }}
     >

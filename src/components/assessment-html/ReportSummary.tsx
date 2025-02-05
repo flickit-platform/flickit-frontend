@@ -250,19 +250,6 @@ const ReportCard = ({ data }: any) => {
         >
           {t("disclaimerDescription", { lng: "fa" })}
         </Typography>
-        {/* <Typography
-          component="div"
-          sx={{
-            fontFamily: languageDetector(data?.assessmentProcess.steps)
-              ? farsiFontFamily
-              : primaryFontFamily,
-            ...textStyle,
-            textAlign: "justify",
-            wordBreak: "break-all",
-          }}
-          dangerouslySetInnerHTML={{ __html: data?.assessment.intro }}
-          className={"tiptap"}
-        ></Typography> */}
       </Section>
 
       <Section title={t("evaluationSteps", { lng: "fa" })}>
@@ -287,8 +274,6 @@ const ReportCard = ({ data }: any) => {
         ) : (
           <>{t("unavailable", { lng: "fa" })}</>
         )}
-
-        {/* <StepsTable steps={data?.steps} columnsWidth={["5%", "20%", "20%"]} /> */}
       </Section>
       <Section title={t("participant", { lng: "fa" })}>
         {data?.assessmentProcess.participant ? (
@@ -312,11 +297,6 @@ const ReportCard = ({ data }: any) => {
         ) : (
           <>{t("unavailable", { lng: "fa" })}</>
         )}
-
-        {/* <StepsTable
-          steps={data?.participant}
-          columnsWidth={["5%", "20%", "20%", "5%"]}
-        /> */}
       </Section>
 
       <Section title={t("assessmentKit", { lng: "fa" })}>

@@ -24,10 +24,6 @@ const AssessmentHtmlTitle = (props: any) => {
               title: space?.title,
               to: `/${spaceId}/assessments/1`,
             },
-            // {
-            //   title: `${pathInfo?.assessment?.title} ${t("insights", { lng: "fa" })}`,
-            //   to: `/${spaceId}/assessments/1/${pathInfo?.assessment.id}/insights`,
-            // },
             {
               title: t("assessmentReport", { lng: "fa" }) as string,
             },

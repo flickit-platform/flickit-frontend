@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import AssessmentAdviceContainer from "./AssessmentAdviceContainer";
 import AdviceItems from "@components/dashboard/advice-tab/advice-items/AdviceItems";
@@ -9,13 +9,6 @@ import PermissionControl from "@common/PermissionControl";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import QueryData from "@common/QueryData";
 import { useParams } from "react-router-dom";
-import Box from "@mui/material/Box";
-import { styles } from "@styles";
-import Typography from "@mui/material/Typography";
-import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
-import BetaSvg from "@assets/svg/beta.svg";
-import { Divider } from "@mui/material";
 
 const AdviceTab = () => {
   const { service } = useServiceContext();

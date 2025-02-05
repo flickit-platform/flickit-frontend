@@ -25,7 +25,6 @@ const OptionForm = ({
 }: OptionFormProps) => {
   return (
     <Box
-      // mt={1.5}
       p={1.5}
       sx={{
         backgroundColor: "#F3F5F6",
@@ -36,34 +35,6 @@ const OptionForm = ({
         position: "relative",
       }}
     >
-      {/*<Box*/}
-      {/*    sx={{...styles.centerCVH, background: "#F3F5F6"}}*/}
-      {/*    borderRadius="0.5rem"*/}
-      {/*    mr={2}*/}
-      {/*    p={0.25}*/}
-      {/*>*/}
-      {/*    <TextField*/}
-      {/*        required*/}
-      {/*        id="new-maturity"*/}
-      {/*        type="number"*/}
-      {/*        name="index"*/}
-      {/*        value={newItem.index}*/}
-      {/*        onChange={handleInputChange}*/}
-      {/*        variant="outlined"*/}
-      {/*        size="small"*/}
-      {/*        inputProps={{*/}
-      {/*            "data-testid": "question-value",*/}
-      {/*            style: {textAlign: "center", width: "40px"},*/}
-      {/*        }}*/}
-      {/*        sx={{*/}
-      {/*            fontSize: 14,*/}
-      {/*            "& .MuiInputBase-root": {*/}
-      {/*                fontSize: 14,*/}
-      {/*            },*/}
-      {/*            background: "#fff",*/}
-      {/*        }}*/}
-      {/*    />*/}
-      {/*</Box>*/}
 
       <Box sx={{ width: { xs: "65%", md: "70%" } }} mx={1}>
         <TextField

@@ -334,8 +334,7 @@ const OnHoverInputReport = (props: any) => {
       const reportData = {
         [name]: data?.[name],
       };
-      // const res = await infoQuery(attributeId, assessmentId, data.title);
-      // if (Object.values(reportData)[0]) {
+
       const res = await patchUpdateReportFields.query({
         assessmentId,
         reportData,
@@ -343,7 +342,6 @@ const OnHoverInputReport = (props: any) => {
       infoQuery.query();
       res?.message && toast.success(res?.message);
       setShow(false);
-      // }
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
@@ -429,7 +427,6 @@ const OnHoverInputReport = (props: any) => {
                     <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
                   </IconButton>
                   <IconButton
-                    // edge="end"
                     sx={{
                       background: theme.palette.primary.main,
                       "&:hover": {
