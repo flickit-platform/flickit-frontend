@@ -265,7 +265,6 @@ export const AssessmentSubjectAccordion = (
               ) : (
                 <AssessmentSubjectRadialChart
                   data={subjectAttributes}
-                  maturityLevelsCount={maturityLevelCount ?? 5}
                   loading={false}
                 />
               )}
