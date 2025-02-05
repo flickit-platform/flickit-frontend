@@ -709,11 +709,11 @@
   "reports": "Reports",
   "assessmentSteps": "Assessment steps",
   "submittingInsights": "Submitting Insights",
-  "providingAdvices": "Providing Advices",
+  "providingAdvice": "Providing Advice",
   "issues": "Issues",
   "currentStep": "Current step",
   "fromTotalQuestionsCount": "of total questions",
-  "totalInsightsCount": " of total Insights",
+  "totalInsightsCount": " of total insights",
   "whatToDoNow": "What to do now",
   "whatToDoNext": "What to do next",
   "questionsIssues": "Questions issues",
@@ -831,7 +831,7 @@
   "assessmentReport": "Assessment report",
   "preparingReport": "Preparing Report",
   "reportIssues": "Report issues",
-  "metadataIsNotProvider": "part of metadata is not provided",
+  "metadataIsNotProvider": "part of metadata is not provided.",
   "metadataAreNotProvider": "parts of metadata are not provided",
   "unpublishedReport": "The assessment report is unpublished and not viewable by others!"
 }
