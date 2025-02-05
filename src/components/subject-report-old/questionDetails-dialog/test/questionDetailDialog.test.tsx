@@ -63,18 +63,22 @@ describe("open detail dialog test", () => {
   });
 
   it("rating level", () => {
-    const confidenceLevel = screen.getByTestId("RatingLevelNum");
+    const confidenceLevel = screen.getByTestId("rating-level-num");
     expect(confidenceLevel).toBeInTheDocument();
   });
 
   it("check title of question in question modal", () => {
-    const title = screen.getByTestId("questionDetailTitle");
+    const title = screen.getByTestId("question-detail-title");
     expect(title).toHaveTextContent("How efficiently are 'Build Management Tools' like Maven, Gradle, MSBuild, Ant and Bazel being employed?");
   });
 
   it("check questionnaire title of question in question modal", () => {
-    const questionnaireTitle = screen.getByTestId("questionDetailQuestionnaireTitle");
+    const questionnaireTitle = screen.getByTestId("question-detail-questionnaire-title");
     expect(questionnaireTitle).toHaveTextContent("Development");
+  });
+  it("check next question", () => {
+    const nextQuestion = screen.getByTestId("question-modal-next-question");
+
   });
 
 });

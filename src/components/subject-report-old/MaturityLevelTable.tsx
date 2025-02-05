@@ -548,12 +548,12 @@ const ActiveCircleIcon = styled(CircleIcon)(({ theme }) => ({
 }));
 
 export const CircleRating = (props: any) => {
-  const { value, dataTestid, ...other } = props;
+  const { value, ...other } = props;
 
   return (
     <Rating
       {...other}
-      data-testid={dataTestid}
+      data-testid={"rating-level-num"}
       value={value}
       max={5}
       readOnly
