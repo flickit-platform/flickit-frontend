@@ -32,7 +32,6 @@ const KitCustomization = (props: any) => {
   const [requiredTitle, setRequiredTitle] = useState<boolean>(false);
 
   const formMethods = useForm({ shouldUnregister: true });
-  // const { id } = kitInfo
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
@@ -224,8 +223,6 @@ const KitCustomization = (props: any) => {
               <Grid
                 item
                 xs={12}
-                // sm={12}
-                // md={8}
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",

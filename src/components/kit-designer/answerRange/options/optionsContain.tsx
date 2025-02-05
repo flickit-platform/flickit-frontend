@@ -41,11 +41,6 @@ const OptionContain = (props: any) => {
   };
 
   const handleSaveClick = async (item: IOption) => {
-    // onEdit({
-    //     ...item,
-    //     title: tempValues.title,
-    //     value: tempValues.value,
-    // });
     setEditMode(null);
     const data = {
       ...item,
@@ -60,7 +55,6 @@ const OptionContain = (props: any) => {
     }).then(() => {
       setChangeData((prev: any) => !prev);
     });
-    // await fetchQuery.query()
   };
 
   const handleCancelClick = () => {
@@ -203,13 +197,6 @@ const OptionContain = (props: any) => {
               >
                 <ModeEditOutlineOutlinedIcon fontSize="small" />
               </IconButton>
-              {/*<IconButton*/}
-              {/*    size="small"*/}
-              {/*    // onClick={() => onDelete(item.id)}*/}
-              {/*    sx={{ ml: 1 }}*/}
-              {/*>*/}
-              {/*    <DeleteRoundedIcon fontSize="small" />*/}
-              {/*</IconButton>*/}
             </>
           )}
         </Box>

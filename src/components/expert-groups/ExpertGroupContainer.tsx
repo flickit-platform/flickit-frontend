@@ -1417,10 +1417,6 @@ const ExpertGroupMembersDetail = (props: any) => {
                                   </Typography>
                                 </Box>
                               </Box>
-                              {/* <Box ml="auto" sx={{ ...styles.centerV }}>
-                      {isOwner && <Chip label={<Trans i18nKey="owner" />} size="small" sx={{ mr: 1.5 }} />}
-                      {<MemberActions isOwner={isOwner} member={member} fetchSpaceMembers={spaceMembersQueryData.query} />}
-                    </Box> */}
                             </Box>
                           </Grid>
                         );

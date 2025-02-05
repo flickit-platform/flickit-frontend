@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import { styles } from "@styles";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import { useEffect, useRef, useState } from "react";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 interface IAssessmentReportKit {
@@ -14,22 +13,6 @@ interface IAssessmentReportKit {
 
 export const AssessmentReportKit = (props: IAssessmentReportKit) => {
   const { assessmentKit } = props;
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isOverflowing, setIsOverflowing] = useState(false);
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    const element: any = contentRef.current;
-    if (element) {
-      const computedStyle = window.getComputedStyle(element);
-      const lineHeight = parseFloat(computedStyle.lineHeight);
-      const elementHeight = element.offsetHeight;
-      setIsOverflowing(elementHeight > lineHeight);
-    }
-  }, [assessmentKit.summary]);
-  const toggleExpanded = () => {
-    setIsExpanded((prev) => !prev);
-  };
 
   return (
     <Box

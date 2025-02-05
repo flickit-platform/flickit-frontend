@@ -10,9 +10,8 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { generateColorFromString } from "@styles";
 import { CircleRating } from "../MaturityLevelTable";
-import { styles } from "@styles";
+import { styles, generateColorFromString } from "@styles";
 import {
   ArrowBackIos,
   ArrowForwardIos,

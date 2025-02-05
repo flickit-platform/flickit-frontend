@@ -118,7 +118,6 @@ const SubjectReport = ({ data }: any) => {
                 {item?.attributes?.length <= 2 ? (
                   <AssessmentSubjectRadialChart
                     data={item.attributes}
-                    maturityLevelsCount={maturityLevelCount ?? 5}
                     loading={false}
                   />
                 ) : (

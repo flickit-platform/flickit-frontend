@@ -86,20 +86,6 @@ const UserContainer = () => {
                 <Box>
                   <UserAccount />
                 </Box>
-                {/* <Box mt={16} borderTop={"1px solid #cfc7c7"} pt={1}>
-              <Grid container spacing={4}>
-                <Grid item md={4} sm={6} xs={12}>
-                  <Typography
-                    sx={{ opacity: 0.85 }}
-                    fontSize={"1rem"}
-                    letterSpacing=".05rem"
-                  >
-                    <Trans i18nKey="signOutOfYourAccount" />
-                  </Typography>
-                  <SignOut />
-                </Grid>
-              </Grid>
-            </Box> */}
               </Box>
             </TabPanel>
             <TabPanel value="expert-groups">

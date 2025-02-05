@@ -1,8 +1,5 @@
 import createPalette from "@mui/material/styles/createPalette";
 import { createTheme } from "@mui/material";
-// export const primaryFontFamily =
-//   '"Roboto","Helvetica","Arial","sans-serif","Vazirmatn"';
-// export const primaryFontFamily = "Oswald, Roboto, Vazirmatn";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
 export const primaryFontFamily = "NotoSans";
 export const secondaryFontFamily = "OpenSans";
@@ -488,16 +485,9 @@ export const theme = createTheme({
           minHeight: "40px",
           transition: "background-color .1s ease, color .1s ease",
           color: "rgba(0, 0, 0, 0.6)", // Default text color
-
-          // Adding hover state for background color and text color
-          "&:hover": {
-            // backgroundColor: "#f0f0f0",
-            // color: "#2466A8",
-          },
           "&.Mui-selected": {
             color: palette.secondary.main,
             fontWeight: "bold",
-            // background: "rgba(36, 102, 168, 0.08)"
           },
           "&.MuiTabs-indicator": {
             backgroundColor: "#2466A8",

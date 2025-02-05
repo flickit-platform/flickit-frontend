@@ -1,12 +1,5 @@
 import Box from "@mui/material/Box";
-import {
-  IconButton,
-  Step,
-  StepLabel,
-  Stepper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
@@ -16,7 +9,6 @@ import { styles } from "@styles";
 import { uniqueId } from "lodash";
 import { Link } from "react-router-dom";
 import MLink from "@mui/material/Link";
-import { InfoOutlined } from "@mui/icons-material";
 
 interface IStepperSection {
   setActiveStep: any;

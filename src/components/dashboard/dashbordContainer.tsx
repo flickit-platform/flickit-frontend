@@ -38,7 +38,6 @@ const DashbordContainer = () => {
   });
 
   return (
-    // <PermissionControl error={[errorObject]}>
     <QueryBatchData
       queryBatchData={[fetchPathInfo]}
       renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
@@ -92,7 +91,6 @@ const DashbordContainer = () => {
         );
       }}
     />
-    // </PermissionControl>
   );
 };
 export default DashbordContainer;

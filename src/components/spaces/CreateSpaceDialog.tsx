@@ -135,17 +135,8 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          {/* <Grid item xs={12}>
-            <InputFieldUC
-              name="code"
-              required={true}
-              defaultValue={defaultValues.code || nanoid(5)}
-              label={<Trans i18nKey="code" />}
-            />
-          </Grid> */}
           <Grid item xs={12}>
             <InputFieldUC
-              // autoFocus={true}
               name="title"
               defaultValue={defaultValues.title || ""}
               required={true}

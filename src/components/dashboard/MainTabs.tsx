@@ -78,7 +78,6 @@ const MainTabs = (props: any) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // boxShadow: "0 4px 4px rgba(0,0,0,25%)",
             mt: 1,
             mb: 2,
             paddingBlock: 1,

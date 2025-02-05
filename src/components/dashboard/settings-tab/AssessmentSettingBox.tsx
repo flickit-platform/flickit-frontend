@@ -443,7 +443,6 @@ export const AssessmentSettingMemberBox = (props: {
           </Button>
         </Box>
         <Divider sx={{ width: "100%", marginTop: "24px" }} />
-        {/*<Paper sx={{width: '100%', overflow: 'hidden'}}>*/}
         <TableContainer
           sx={{
             maxHeight: 840,
@@ -602,7 +601,6 @@ export const AssessmentSettingMemberBox = (props: {
                             alignItems: "center",
                           }}
                         >
-                          {/*<Grid item lg={8} sx={{minWidth: {xs: "100%", md: "12vw", lg:"10vw", xl: "160px"}}} >*/}
                           <Grid
                             item
                             lg={8}
@@ -780,7 +778,6 @@ export const AssessmentSettingMemberBox = (props: {
                                 alignItems: "center",
                               }}
                             >
-                              {/*<Grid item lg={8} sx={{minWidth: {xs: "100%", md: "12vw", lg:"10vw", xl: "160px"}}} >*/}
                               <Grid
                                 item
                                 lg={8}

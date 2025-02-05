@@ -23,7 +23,6 @@ interface IComparePartsItemProps {
   data: any;
   index: number;
   disabled: boolean;
-  // fetchAssessmentsInfo: TQueryFunction;
 }
 
 const ComparePartItem = (props: IComparePartsItemProps) => {
@@ -44,7 +43,6 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
     >
       {data?.id && (
         <DeleteAssessmentIconBtn
-          // fetchAssessmentsInfo={fetchAssessmentsInfo}
           index={index}
           id={data?.id}
         />

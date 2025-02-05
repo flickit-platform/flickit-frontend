@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { Box, Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -12,14 +12,12 @@ import { IAssessmentReportModel, RolesType } from "@types";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { ArticleRounded, Assessment } from "@mui/icons-material";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../common/PermissionControl";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
 
   const queryData = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
@@ -72,7 +70,6 @@ const AssessmentReportContainer = (props: any) => {
       });
     }
   }, [queryData.errorObject]);
-  const { spaceId, page } = useParams();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) => service.fetchAssessmentsRoles(args, config),
     toastError: false,

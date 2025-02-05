@@ -81,8 +81,6 @@ const AssessmentKit = (props: any) => {
     questionnaires = [],
     maturityLevels,
     tags = [],
-
-    // expert_group = {},
   } = data || {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({

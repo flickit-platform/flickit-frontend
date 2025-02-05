@@ -70,7 +70,6 @@ const SubjectRadar = (props: any) => {
           tickCount={maturityLevelsCount + 1}
           tick={false}
         />
-        {/* <Radar name="confidence level" dataKey="cl" stroke="#137681" fill="#3596A1" fillOpacity={0.5} /> */}
         <Radar
           name={t("maturityLevel") as string}
           dataKey="ml"

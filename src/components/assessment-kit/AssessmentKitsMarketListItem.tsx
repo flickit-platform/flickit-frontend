@@ -21,8 +21,6 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
       sx={{
         minHeight: "280px",
         position: "relative",
-        // background: "#e7ecef",
-        // background: "#dee2e6",
         background: "#E5E5E5",
         borderRadius: 2,
         p: 4,
@@ -34,45 +32,8 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
         flexDirection: "column",
       }}
     >
-      {/* <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: "50%",
-          transform: "translate(-50%,-95%)",
-          background:
-            "radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%)",
-          width: "44px",
-          height: "16px",
-          borderRadius: "100%",
-          borderBottomLeftRadius: 0,
-          borderBottomRightRadius: 0,
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            transform: "translate(-50%,85%)",
-            background: "#bdbdbd",
-            width: "12px",
-            height: "12px",
-            borderRadius: "100%",
-          }}
-        ></Box>
-      </Box> */}
       <Title
         size="small"
-        // toolbar={
-        //   <Box sx={{ ...styles.centerV }}>
-        //     <ThumbUpOffAltRoundedIcon
-        //       fontSize="inherit"
-        //       sx={{ mr: 0.5, pb: 0.2 }}
-        //     />
-        //     {data.likes || 0}
-        //   </Box>
-        // }
         sx={{ width: "100%", height: `${HEIGHT_TITLE}vh` }}
         sub={
           <Box
@@ -212,24 +173,6 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
             </Box>
           </Box>
         </Box>
-        {/* <Box>
-            <Box
-              sx={{
-                py: 0.3,
-                px: 0.8,
-                background: "#7954B3",
-                color: "#fff",
-                fontSize: ".8rem",
-                borderRadius: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                m: 0.2,
-              }}
-            >
-              <Trans i18nKey="private" />
-            </Box>
-          </Box> */}
         <Typography
           fontWeight={"bold"}
           sx={{

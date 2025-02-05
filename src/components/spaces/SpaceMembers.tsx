@@ -71,12 +71,7 @@ export const SpaceMembers = (props: any) => {
       controller = new AbortController();
       resetForm();
       spaceMembersQueryData.query();
-      service
-        .getSignedInUser(undefined, { signal: controller.signal })
-        .then(({ data }) => {
-          // dispatch(authActions.setUserInfo(data));
-        })
-        .catch((e) => {});
+      service.getSignedInUser(undefined, { signal: controller.signal });
     }
     return () => {
       controller?.abort();

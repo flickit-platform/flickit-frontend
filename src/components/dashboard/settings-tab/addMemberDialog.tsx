@@ -135,7 +135,6 @@ const AddMemberDialog = (props: {
             roleId: roleSelected.id,
           })
         : await addRoleMemberQueryData.query();
-      // await fetchAssessmentMembers()
       setChangeData((prev: boolean) => !prev);
       closeDialog();
     } catch (e) {
@@ -261,7 +260,6 @@ const AddMemberDialog = (props: {
               value={roleSelected?.title}
               displayEmpty
               onChange={handleChangeRole}
-              // disabled={memberSelected == "" ? true : false}
               sx={{
                 height: "40px",
               }}

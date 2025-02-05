@@ -54,7 +54,6 @@ const OptionList = ({
     onReorder(newReorderedItems);
   };
 
-
   const handleSaveClick = (item: IOption) => {
     onEdit({
       ...item,
@@ -81,8 +80,6 @@ const OptionList = ({
       title: tempValues.title,
       value: tempValues.value,
     });
-    // setIsAddingNew(false);
-    // setTempValues({ title: "", value: 1, index: reorderedItems.length + 1 });
   };
 
   useEffect(() => {
@@ -242,22 +239,7 @@ const OptionList = ({
                             </IconButton>
                           </>
                         ) : (
-                          <>
-                            {/* <IconButton
-                              size="small"
-                              onClick={() => handleEditClick(item)}
-                              sx={{ ml: 1 }}
-                            >
-                              <EditRoundedIcon fontSize="small" />
-                            </IconButton>
-                            <IconButton
-                              size="small"
-                              onClick={() => onDelete(item.id)}
-                              sx={{ ml: 1 }}
-                            >
-                              <DeleteRoundedIcon fontSize="small" />
-                            </IconButton> */}
-                          </>
+                          <></>
                         )}
                       </Box>
                     </Box>
