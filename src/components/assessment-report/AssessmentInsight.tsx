@@ -71,9 +71,9 @@ export const AssessmentInsight = () => {
 
         if (selectedInsight) {
           setInsight(selectedInsight);
-          setEditable(data.editable ?? false);
           setIsApproved(data.approved);
         }
+        setEditable(data.editable ?? false);
       })
       .catch((error) => {
         console.error("Error fetching assessment insight:", error);
@@ -113,7 +113,7 @@ export const AssessmentInsight = () => {
         >
           <CircularProgress />
         </Box>
-      ) : insight ? (
+      ) : (
         <>
           <Box
             sx={{
@@ -148,9 +148,12 @@ export const AssessmentInsight = () => {
             )}
           </Box>
           <OnHoverRichEditor
-            data={insight.insight}
+            data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            placeholder={t("writeHere", {
+              title: t("insight").toLowerCase(),
+            })}
           />
           {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
@@ -182,8 +185,9 @@ export const AssessmentInsight = () => {
                   ")"}
             </Typography>
           )}
-          {(insight.hasOwnProperty("isValid") || editable) &&
-            !insight?.isValid && (
+          {(insight?.hasOwnProperty("isValid") || editable) &&
+            !insight?.isValid &&
+            insight && (
               <Box sx={{ ...styles.centerV }} gap={2} my={1}>
                 <Box
                   sx={{
@@ -205,7 +209,7 @@ export const AssessmentInsight = () => {
                   >
                     <Trans
                       i18nKey={
-                        insight.hasOwnProperty("isValid") ? "outdated" : "note"
+                        insight?.hasOwnProperty("isValid") ? "outdated" : "note"
                       }
                     />
                   </Typography>
@@ -234,7 +238,7 @@ export const AssessmentInsight = () => {
                   >
                     <Trans
                       i18nKey={
-                        insight.hasOwnProperty("isValid")
+                        insight?.hasOwnProperty("isValid")
                           ? "invalidInsight"
                           : "defaultInsightTemplate"
                       }
@@ -244,10 +248,6 @@ export const AssessmentInsight = () => {
               </Box>
             )}
         </>
-      ) : (
-        <Typography variant="body2">
-          <Trans i18nKey="unavailable" />{" "}
-        </Typography>
       )}
     </Box>
   );
@@ -397,7 +397,7 @@ const OnHoverRichEditor = (props: any) => {
         >
           <Typography
             sx={{
-              textAlign: firstCharDetector(data.replace(/<[^>]*>/g, ""))
+              textAlign: firstCharDetector(data?.replace(/<[^>]*>/g, ""))
                 ? "right"
                 : "left",
               fontFamily: languageDetector(data)
@@ -405,7 +405,13 @@ const OnHoverRichEditor = (props: any) => {
                 : primaryFontFamily,
               width: "100%",
             }}
-            dangerouslySetInnerHTML={{ __html: data }}
+            dangerouslySetInnerHTML={{
+              __html:
+                data ??
+                (editable
+                  ? t("writeHere", { title: t("insight").toLowerCase() })
+                  : t("unavailable")),
+            }}
           />
           {isHovering && editable && (
             <IconButton

@@ -69,8 +69,8 @@ const OverallInsightText = (props: any) => {
         if (selectedInsight) {
           setIsApproved(data.approved);
           setInsight(selectedInsight);
-          setEditable(data.editable ?? false);
         }
+        setEditable(data.editable ?? false);
       })
       .catch((error) => {
         console.error("Error fetching assessment insight:", error);

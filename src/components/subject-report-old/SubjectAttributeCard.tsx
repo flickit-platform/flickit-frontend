@@ -776,7 +776,7 @@ export const MaturityLevelDetailsBar = (props: any) => {
   );
 };
 
-const OnHoverInput = (props: any) => {
+export const OnHoverInput = (props: any) => {
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {
