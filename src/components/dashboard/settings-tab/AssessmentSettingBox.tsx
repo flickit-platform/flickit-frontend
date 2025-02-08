@@ -44,6 +44,8 @@ import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { uniqueId } from "lodash";
 import languageDetector from "@/utils/languageDetector";
+import { TablePagination } from "@mui/material";
+import { t } from "i18next";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -323,6 +325,17 @@ export const AssessmentSettingMemberBox = (props: {
     inviteesMemberList.query();
   }, [changeData]);
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
   interface Column {
     id: "displayName" | "email" | "role";
     label: string;
@@ -653,6 +666,18 @@ export const AssessmentSettingMemberBox = (props: {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          component="div"
+          count={10}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t("rowsPerPage")}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to}  ${t("of")} ${count !== -1 ? count : `${t("moreThan")} ${to}`}`
+          }
+        />
         <Divider sx={{ width: "100%", marginBlock: "24px" }} />
 
         {inviteesMemberList?.data?.items?.length > 0 && (
