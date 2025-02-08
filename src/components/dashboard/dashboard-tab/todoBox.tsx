@@ -18,13 +18,7 @@ const TodoBox = (props: any) => {
       {now?.length > 0 && (
         <Box
           sx={{
-            background: "#fff",
-            borderRadius: "12px",
-            width: "100%",
-            p: 4,
-            backgroundColor: "#fff",
-            boxShadow: "0 0 8px 0 #0A234240",
-            mb: "40px",
+            ...styles.boxStyle,
           }}
         >
           {" "}
@@ -96,12 +90,7 @@ const TodoBox = (props: any) => {
       {next?.length > 0 && (
         <Box
           sx={{
-            background: "#fff",
-            borderRadius: "12px",
-            width: "100%",
-            p: 4,
-            backgroundColor: "#fff",
-            boxShadow: "0 0 8px 0 #0A234240",
+            ...styles.boxStyle,
           }}
         >
           {" "}

@@ -6,26 +6,72 @@ import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Skeleton from "@mui/material/Skeleton";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import EmptyAdvice from "@assets/svg/lampComment.svg";
-import StarsAdvice from "@assets/svg/Stars.svg";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
-import { ISubjectReportModel } from "@types";
+import { IAssessmentReportModel, ISubjectReportModel } from "@types";
 import { useServiceContext } from "@providers/ServiceProvider";
 import toastError from "@utils/toastError";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
 import { LoadingButton } from "@mui/lab";
 import { primaryFontFamily } from "@config/theme";
-import { styles } from "@styles";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { AssessmentReportNarrator } from "@components/dashboard/advice-tab/assessmentReportNarrator";
-import AdviceDialog from "../../assessment-report/AdviceDialog";
+import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
+import EmptyState from "./EmptyState";
+import AdviceItems from "./advice-items/AdviceItems";
+import { styles } from "@styles";
+import { Divider, Typography } from "@mui/material";
 
 const AssessmentAdviceContainer = (props: any) => {
-  const { subjects, assessment, permissions } = props;
+  const queryData = useQuery<IAssessmentReportModel>({
+    service: (args, config) =>
+      service.fetchAssessment({ assessmentId }, config),
+    toastError: false,
+  });
+
+  const calculateMaturityLevelQuery = useQuery({
+    service: (args = { assessmentId }, config) =>
+      service.calculateMaturityLevel(args, config),
+    runOnMount: false,
+  });
+  const calculate = async () => {
+    try {
+      await calculateMaturityLevelQuery.query();
+      await queryData.query();
+    } catch (e) {}
+  };
+
+  const calculateConfidenceLevelQuery = useQuery({
+    service: (args = { assessmentId }, config) =>
+      service.calculateConfidenceLevel(args, config),
+    runOnMount: false,
+  });
+
+  const calculateConfidenceLevel = async () => {
+    try {
+      await calculateConfidenceLevelQuery.query();
+      await queryData.query();
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    if (queryData.errorObject?.response?.data?.code == "CALCULATE_NOT_VALID") {
+      calculate();
+    }
+    if (
+      queryData.errorObject?.response?.data?.code ==
+      "CONFIDENCE_CALCULATION_NOT_VALID"
+    ) {
+      calculateConfidenceLevel();
+    }
+    if (queryData?.errorObject?.response?.data?.code === "DEPRECATED") {
+      service.migrateKitVersion({ assessmentId }).then(() => {
+        queryData.query();
+      });
+    }
+  }, [queryData.errorObject]);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [isWritingAdvice, setIsWritingAdvice] = useState<boolean>(false);
   const [adviceResult, setAdviceResult] = useState<any>();
@@ -111,18 +157,20 @@ const AssessmentAdviceContainer = (props: any) => {
   const [isFarsi, setIsFarsi] = useState<boolean>(false);
   const attributeColorPallet = ["#D81E5B", "#F9A03F", "#0A2342"];
   const attributeBGColorPallet = ["#FDF1F5", "#FEF5EB", "#EDF4FC"];
-  const filteredMaturityLevels = useMemo(() => {
-    const filteredData = assessment?.assessmentKit?.maturityLevels.sort(
-      (elem1: any, elem2: any) => elem1.index - elem2.index,
-    );
-    return filteredData;
-  }, [assessment]);
 
   return (
     <QueryBatchData
-      queryBatchData={[fetchAdviceNarration]}
+      queryBatchData={[fetchAdviceNarration, queryData]}
       renderLoading={() => <Skeleton height={160} />}
-      render={([narrationComponent]) => {
+      render={([narrationComponent, data]) => {
+        const { assessment, subjects, permissions } = data || {};
+        const filteredMaturityLevels = useMemo(() => {
+          const filteredData = assessment?.assessmentKit?.maturityLevels.sort(
+            (elem1: any, elem2: any) => elem1.index - elem2.index,
+          );
+          return filteredData;
+        }, [assessment]);
+
         useEffect(() => {
           const adviceEmptyState = !(
             narrationComponent?.aiNarration ||
@@ -143,138 +191,22 @@ const AssessmentAdviceContainer = (props: any) => {
               loading={createAdviceQueryData.loading}
             />
             {emptyState && !isWritingAdvice && !AIGenerated ? (
-              <Box
-                sx={{
-                  borderRadius: "12px",
-                  border: `${adviceResult || isWritingAdvice ? "none" : "1px solid #9DA7B3"}`,
-                  p: 6,
-                  margin: "0 auto",
-                  display: `${adviceResult || isWritingAdvice ? "none" : ""}`,
-                  position: "relative",
-                  background: "radial-gradient(circle, #2466A8, #1B4D7E)",
-                }}
-              >
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: "50%",
-                    transform: "translateX(-50%)", // Center the lamp
-                  }}
-                >
-                  <img src={EmptyAdvice} alt="lamp" width="100%" />
-                </Box>
-
-                {/* Stars aligned to the top right */}
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: "0",
-                    right: "0",
-                  }}
-                >
-                  <img src={StarsAdvice} alt="stars" width="100%" />
-                </Box>
-
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    mt: 12,
-                  }}
-                >
-                  {" "}
-                  <Typography
-                    variant="headlineMedium"
-                    color="primary.contrastText"
-                  >
-                    <Trans i18nKey="noAdviceGeneratedYet" />
-                  </Typography>
-                </Box>
-                {permissions?.createAdvice && (
-                  <Box
-                    sx={{
-                      ...styles.centerCVH,
-                      mt: 4,
-                    }}
-                    textAlign="center"
-                  >
-                    <Typography
-                      variant="bodyLarge"
-                      color="primary.contrastText"
-                      maxWidth="50vw"
-                    >
-                      <Trans i18nKey="theAdvisorService" />
-                    </Typography>
-                  </Box>
-                )}
-                {/* Button */}
-                {permissions?.createAdvice && (
-                  <Box
-                    sx={{
-                      display: `${adviceResult ? "none" : "flex"}`,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      mt: 3,
-                      gap: 2,
-                    }}
-                  >
-                    <Button
-                      variant="outlined"
-                      sx={{
-                        borderColor: "white",
-                        color: "white",
-                        "&:hover": {
-                          borderColor: "#d9dde3",
-                          color: "#d9dde3",
-                        },
-                      }}
-                      onClick={() => setIsWritingAdvice(true)}
-                    >
-                      <Trans i18nKey="writeYourOwnAdvices" />
-                    </Button>{" "}
-                    <Tooltip
-                      title={
-                        !narrationComponent.aiEnabled && (
-                          <Trans i18nKey="AIDisabled" />
-                        )
-                      }
-                    >
-                      <div>
-                        <Button
-                          variant="outlined"
-                          sx={{
-                            background: "white",
-                            "&:hover": {
-                              background: "#d9dde3",
-                            },
-                            display: "flex",
-                            gap: 1,
-                          }}
-                          onClick={handleClickOpen}
-                          disabled={!narrationComponent.aiEnabled}
-                        >
-                          <Trans i18nKey="useAdviceAssistant" />
-                          <FaWandMagicSparkles />
-                        </Button>
-                      </div>
-                    </Tooltip>
-                  </Box>
-                )}
-              </Box>
+              <EmptyState
+                adviceResult={adviceResult}
+                isWritingAdvice={isWritingAdvice}
+                permissions={permissions}
+                setIsWritingAdvice={setIsWritingAdvice}
+                handleClickOpen={handleClickOpen}
+                narrationComponent={narrationComponent}
+              />
             ) : (
-              !adviceResult && (
-                <>
-                  <AssessmentReportNarrator
-                    isWritingAdvice={isWritingAdvice}
-                    setIsWritingAdvice={setIsWritingAdvice}
-                    setEmptyState={setEmptyState}
-                    setAIGenerated={setAIGenerated}
-                  />
-                  {permissions?.createAdvice && !isWritingAdvice && (
-                    <Box display="flex" justifyContent="flex-end" mt={2}>
+              <Box sx={{ ...styles.boxStyle }}>
+                {!adviceResult && (
+                  <>
+                    <Box display="flex" justifyContent="space-between" mt={2}>
+                      <Typography variant="semiBoldLarge">
+                        <Trans i18nKey="approachToAdvice" />
+                      </Typography>
                       <Tooltip
                         title={
                           !narrationComponent.aiEnabled && (
@@ -289,14 +221,15 @@ const AssessmentAdviceContainer = (props: any) => {
                               display: "flex",
                               gap: 1,
                             }}
+                            size="small"
                             onClick={handleClickOpen}
                             disabled={!narrationComponent.aiEnabled}
                           >
                             <Trans
                               i18nKey={
                                 AIGenerated
-                                  ? "regenerate"
-                                  : "useAdviceAssistant"
+                                  ? "regenerateAdvicesViaAI"
+                                  : "generateAdvicesViaAI"
                               }
                             />
                             <FaWandMagicSparkles />
@@ -304,13 +237,21 @@ const AssessmentAdviceContainer = (props: any) => {
                         </div>
                       </Tooltip>
                     </Box>
-                  )}
-                </>
-              )
+
+                    <AssessmentReportNarrator
+                      isWritingAdvice={isWritingAdvice}
+                      setIsWritingAdvice={setIsWritingAdvice}
+                      setEmptyState={setEmptyState}
+                      setAIGenerated={setAIGenerated}
+                    />
+                  </>
+                )}
+                <Divider />
+                <AdviceItems />
+              </Box>
             )}
             {adviceResult && (
               <>
-                {/* List header */}
                 <Grid
                   container
                   spacing={2}
@@ -351,7 +292,6 @@ const AssessmentAdviceContainer = (props: any) => {
                   </Grid>
                 </Grid>
 
-                {/* Paginated list items */}
                 {paginatedAdvice?.map((item: any, index: number) => {
                   const {
                     question,
@@ -401,7 +341,14 @@ const AssessmentAdviceContainer = (props: any) => {
                             question?.title.length > 100 ? question?.title : ""
                           }
                         >
-                          <Box sx={{textAlign: "center" ,unicodeBidi: "plaintext" }}>{question?.title}</Box>
+                          <Box
+                            sx={{
+                              textAlign: "center",
+                              unicodeBidi: "plaintext",
+                            }}
+                          >
+                            {question?.title}
+                          </Box>
                         </Tooltip>
                       </Grid>
                       <Grid

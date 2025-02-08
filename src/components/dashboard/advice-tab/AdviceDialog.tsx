@@ -8,7 +8,7 @@ import { LoadingButton } from "@mui/lab";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import Setting from "@assets/svg/setting.svg";
-import AdviceSlider from "../common/AdviceSlider";
+import AdviceSlider from "@/components/common/AdviceSlider";
 import { theme } from "@/config/theme";
 
 const AdviceDialog = ({
@@ -72,7 +72,6 @@ const AdviceDialog = ({
           alignItems: "center",
           textAlign: "center",
           gap: 3,
-          p: 2,
         }}
       >
         <Box

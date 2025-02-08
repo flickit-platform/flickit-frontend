@@ -171,13 +171,8 @@ const AdviceItems = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Typography
-                  color="#73808C"
-                  variant="h5"
-                  display="flex"
-                  alignItems="center"
-                >
-                  <Trans i18nKey="adviceItems" />
+                <Typography variant="semiBoldLarge">
+                  <Trans i18nKey="suggestedActionItems" />
                 </Typography>
                 {displayedItems.length !== 0 && (
                   <Link
@@ -191,11 +186,12 @@ const AdviceItems = () => {
                     }}
                   >
                     <Button
-                      variant="contained"
+                      size="small"
+                      variant="outlined"
                       onClick={handleAddNewRow}
                       data-test-id="newAdvice"
                     >
-                      <Trans i18nKey="newAdviceItem" />
+                      <Trans i18nKey="newActionItem" />
                     </Button>
                   </Link>
                 )}
@@ -235,7 +231,7 @@ const AdviceItems = () => {
               !showNewAdviceListForm && (
                 <EmptyAdviceList
                   onAddNewRow={handleAddNewRow}
-                  btnTitle="newAdviceItem"
+                  btnTitle="newActionItem"
                   title="NoAdviceSoFar"
                   subTitle="CreateFirstAdvice"
                 />

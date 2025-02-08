@@ -4,7 +4,9 @@ import Slider from "@mui/material/Slider";
 import { getMaturityLevelColors } from "@styles";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { Typography } from "@mui/material";
+import { styles } from "@styles";
 const AdviceSlider = (props: any) => {
   const {
     defaultValue,
@@ -52,7 +54,7 @@ const AdviceSlider = (props: any) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        px: { xs: 3, sm: 8 },
+        px: { xs: 3, sm: 4 },
         width: "100%",
         margin: "0 auto",
         flexDirection: { xs: "column", sm: "row" },
@@ -60,7 +62,7 @@ const AdviceSlider = (props: any) => {
         textAlign: "start",
       }}
     >
-      <Box sx={{ display: "contents" }}>
+      <Box sx={{ ...styles.centerVH }} gap={2} width="30%">
         <Box
           sx={{
             px: "10px",
@@ -77,28 +79,20 @@ const AdviceSlider = (props: any) => {
         >
           {subject.title}
         </Box>
-        <Box
+        <Typography
+          variant="semiBoldXLarge"
           sx={{
-            fontSize: "1.5rem",
-            fontWeight: "500",
-            ml: { xs: 0, sm: 4 },
-            width: { xs: "100%", sm: "240px" },
-            px: "8px",
-            textAlign: { xs: "center", sm: "left" },
+            width: "100%",
+            maxWidth: "260px",
             fontFamily: languageDetector(attribute?.title)
               ? farsiFontFamily
               : primaryFontFamily,
           }}
         >
           {attribute.title}
-        </Box>
+        </Typography>
       </Box>
-
-      <Box
-        sx={{ width: { xs: "100%", sm: "400px" }, marginInline: "16px" }}
-        margin={"0 auto"}
-        my={{ xs: 2, sm: 6 }}
-      >
+      <Box sx={{ width: { xs: "100%", md: "320px" } }} mt={4}>
         <Box px={2}>
           <Slider
             defaultValue={defaultValue}
@@ -107,20 +101,30 @@ const AdviceSlider = (props: any) => {
             onChange={handleSliderChange}
             value={value}
             marks
+            sx={{
+              "& .MuiSlider-thumb": {
+                marginRight: "-20px",
+              },
+            }}
           />
         </Box>
         <Box
           display={"flex"}
           flexDirection={"column"}
-          marginTop={"-5px"}
-          width={"92%"}
-          ml={"4%"}
-          mr={"4%"}
+          width={"91%"}
           mt={"-10px"}
+          sx={{
+            marginInlineStart: "2%",
+            marginInlineEnd: "4%",
+          }}
         >
           <Box
             position={"relative"}
             left={`${
+              ((defaultValue - 1) * 99) /
+              (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
+            }%`}
+            right={`${
               ((defaultValue - 1) * 99) /
               (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
             }%`}
@@ -142,7 +146,11 @@ const AdviceSlider = (props: any) => {
                 ((defaultValue - 1) * 99) /
                 (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
               }%`,
-              marginInlineStart: "-25px",
+              right: `${
+                ((defaultValue - 1) * 99) /
+                (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
+              }%`,
+              marginInlineStart: "-20px",
               mt: "-5px",
               whiteSpace: "nowrap",
               fontSize: ".75rem",
@@ -158,56 +166,54 @@ const AdviceSlider = (props: any) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
           textAlign: "center",
-          width: "100px",
+          width: "20%",
         }}
       >
-        <Box
+        <Typography
           sx={{
-            color: "#9DA7B3",
-            fontSize: ".75rem",
-            fontWeight: "400",
+            color: "#6C8093",
           }}
+          variant="bodySmall"
         >
-          <Trans i18nKey="from" />
-        </Box>
-        <Box
-          sx={{
-            color: colorPallet[currentState?.index - 1],
-            fontSize: ".75rem",
-            fontWeight: "700",
-            fontFamily: languageDetector(currentState?.title)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-        >
-          {currentState?.title}
-        </Box>
-        <Box
-          sx={{
-            color: "#9DA7B3",
-            fontSize: ".75rem",
-            fontWeight: "400",
-          }}
-        >
-          <Trans i18nKey="to" />
-        </Box>
-
-        <Box
-          sx={{
-            color: colorPallet[value ? value - 1 : defaultValue - 1],
-            fontSize: "1rem",
-            fontWeight: "700",
-            fontFamily: languageDetector(
-              maturityLevels[value ? value - 1 : defaultValue - 1]?.title,
-            )
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-        >
-          {maturityLevels[value ? value - 1 : defaultValue - 1]?.title}
-        </Box>
+          <Trans
+            i18nKey="fromTo"
+            values={{
+              fromTitle: currentState?.title,
+              toTitle:
+                maturityLevels[value ? value - 1 : defaultValue - 1]?.title,
+            }}
+            components={{
+              fromStyle: (
+                <span
+                  style={{
+                    fontSize: "14px",
+                    color: colorPallet[currentState?.index - 1],
+                    fontWeight: "700",
+                    fontFamily: languageDetector(currentState?.title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
+                />
+              ),
+              toStyle: (
+                <span
+                  style={{
+                    fontSize: "14px",
+                    color: colorPallet[value ? value - 1 : defaultValue - 1],
+                    fontWeight: "700",
+                    fontFamily: languageDetector(
+                      maturityLevels[value ? value - 1 : defaultValue - 1]
+                        ?.title,
+                    )
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
+                />
+              ),
+            }}
+          />
+        </Typography>
       </Box>
     </Box>
   );

@@ -75,13 +75,6 @@ export const AssessmentReportNarrator = ({
       maxHeight="100%"
       gap={0.5}
       py={2}
-      sx={{
-        background: "#fff",
-        boxShadow: "0px 0px 8px 0px rgba(0, 0, 0, 0.25)",
-        borderRadius: "12px",
-        px: { xs: 2, sm: 3.75 },
-        position: "relative",
-      }}
     >
       {isAIGenerated && (
         <Box sx={{ position: "absolute", top: -12, right: 8 }}>
