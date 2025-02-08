@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import {fireEvent, render, screen, within} from "@testing-library/react";
 import QuestionDetailsContainer from "@components/subject-report-old/questionDetails-dialog/QuestionDetailsContainer";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
@@ -78,6 +78,8 @@ describe("open detail dialog test", () => {
   });
   it("check next question", () => {
     const nextQuestion = screen.getByTestId("question-modal-next-question");
+    fireEvent.click(nextQuestion)
+    // expect()
 
   });
 
