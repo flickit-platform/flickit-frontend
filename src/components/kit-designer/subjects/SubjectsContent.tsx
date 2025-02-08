@@ -103,7 +103,6 @@ const SubjectsContent = () => {
       // Reset form and re-fetch data after saving
       // setShowSubjectForm(false);
       await fetchSubjectKit.query();
-      // maturityLevelsCompetences.query();
 
       // Reset the form values
       setNewSubject({
@@ -149,7 +148,6 @@ const SubjectsContent = () => {
 
       setShowNewSubjectForm(false);
       fetchSubjectKit.query();
-      // maturityLevelsCompetences.query();
 
       setNewSubject({
         title: "",

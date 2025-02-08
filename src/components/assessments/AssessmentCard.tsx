@@ -84,16 +84,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
           setShow(true);
         }
       }
-      // if (!is_confidence_valid) {
-      //   await calculateConfidenceLevelQuery.query();
-      // }
-    } catch (e) {
-      // const err = e as ICustomError;
-      // toastError(err, { filterByStatus: [404] });
-      // setLoading(false);
-      // setError(true);
-      // setErrorObject(err);
-    }
+    } catch (e) {}
   };
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
@@ -155,12 +146,10 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               }}
               component={Link}
               to={
-                isCalculateValid &&
-                item.permissions.canViewReport &&
-                item.hasReport
-                  ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                  : item.permissions.canViewDashboard
-                    ? `${item.id}/dashboard`
+                isCalculateValid && item.permissions.canViewDashboard
+                  ? `${item.id}/dashboard`
+                  : item.permissions.canViewReport && item.hasReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
                     : item.permissions.canViewQuestionnaires
                       ? `${item.id}/questionnaires`
                       : ""
@@ -230,12 +219,12 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             mt={2}
             component={Link}
             to={
-              hasML && item.hasReport && item.permissions.canViewReport
-                ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                : item.permissions.canViewDashboard
-                  ? `${item.id}/dashboard`
-                  : item.permissions.canViewQuestionnaires
-                    ? `${item.id}/questionnaires`
+              hasML && item.permissions.canViewDashboard
+                ? `${item.id}/dashboard`
+                : item.permissions.canViewQuestionnaires
+                  ? `${item.id}/questionnaires`
+                  : item.hasReport && item.permissions.canViewReport
+                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
                     : ""
             }
           >
@@ -344,12 +333,24 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             xs={12}
             sx={{
               ...styles.centerCH,
-              display: item.permissions.canViewDashboard ? "block" : "none",
+              display:
+                item.permissions.canViewDashboard ||
+                (item.permissions.canViewQuestionnaires &&
+                  item.permissions.canViewReport &&
+                  item.hasReport)
+                  ? "block"
+                  : "none",
             }}
             mt={1}
           >
             <Button
-              startIcon={<QueryStatsRounded />}
+              startIcon={
+                item.permissions.canViewQuestionnaires ? (
+                  <QuizRoundedIcon />
+                ) : (
+                  <QueryStatsRounded />
+                )
+              }
               variant={"contained"}
               fullWidth
               onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -363,38 +364,56 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               to={
                 hasML && item.permissions.canViewDashboard
                   ? `${item.id}/dashboard`
-                  : canViewReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                    : ""
+                  : item.permissions.canViewQuestionnaires
+                    ? `${item.id}/questionnaires`
+                    : canViewReport
+                      ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                      : ""
               }
               sx={{
                 backgroundColor: "#2e7d72",
                 background:
-                  item.permissions.canViewDashboard || canViewReport
+                  item.permissions.canViewDashboard ||
+                  canViewReport ||
+                  item.permissions.canViewQuestionnaires
                     ? `#01221e`
                     : "rgba(0,59,100, 12%)",
                 color:
-                  !item.permissions.canViewDashboard && !canViewReport
+                  !item.permissions.canViewDashboard &&
+                  !canViewReport &&
+                  !item.permissions.canViewQuestionnaires
                     ? "rgba(10,35,66, 38%)"
                     : "",
                 boxShadow:
-                  !item.permissions.canViewDashboard && !canViewReport
+                  !item.permissions.canViewDashboard &&
+                  !canViewReport &&
+                  !item.permissions.canViewQuestionnaires
                     ? "none"
                     : "",
                 "&:hover": {
                   background:
-                    item.permissions.canViewDashboard || canViewReport
+                    item.permissions.canViewDashboard ||
+                    canViewReport ||
+                    item.permissions.canViewQuestionnaires
                       ? ``
                       : "rgba(0,59,100, 12%)",
                   boxShadow:
-                    !item.permissions.canViewDashboard && !canViewReport
+                    !item.permissions.canViewDashboard &&
+                    !canViewReport &&
+                    !item.permissions.canViewQuestionnaires
                       ? "none"
                       : "",
                 },
               }}
               data-cy="view-insights-btn"
             >
-              <Trans i18nKey="dashboard" />
+              <Trans
+                i18nKey={
+                  item.permissions.canViewDashboard
+                    ? "dashboard"
+                    : "questionnaire"
+                }
+              />
             </Button>
           </Grid>
         </Grid>

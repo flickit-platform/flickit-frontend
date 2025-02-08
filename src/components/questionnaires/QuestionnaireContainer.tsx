@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { QuestionnaireList } from "./QuestionnaireList";
 import { Trans } from "react-i18next";
@@ -13,12 +13,6 @@ import PermissionControl from "@common/PermissionControl";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { MenuItem, Typography } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import { theme } from "@config/theme";
 
 const QuestionnaireContainer = () => {
   const { service } = useServiceContext();
@@ -42,7 +36,6 @@ const QuestionnaireContainer = () => {
     ((assessmentTotalProgress?.data?.answersCount || 0) /
       (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
-
 
   return (
     <PermissionControl
@@ -130,19 +123,14 @@ const QuestionnaireTitle = (props: any) => {
             {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
-              // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
             {
               title: assessment?.title,
-              // icon: (
-              //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-              // ),
             },
           ]}
         />
       }
     >
-      {/* <QuizRoundedIcon sx={{ mr: 1 }} /> */}
       <Trans i18nKey="questionnaires" />
     </Title>
   );

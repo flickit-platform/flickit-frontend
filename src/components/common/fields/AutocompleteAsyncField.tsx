@@ -251,9 +251,6 @@ const AutocompleteBaseField = (
     setOpen(true);
   };
 
-  const handleClose = () => {
-    // setOpen(true);
-  };
 
   const handleBlur = () => {
     if (
@@ -275,7 +272,6 @@ const AutocompleteBaseField = (
       loading={loading}
       open={open}
       onOpen={handleOpen}
-      onClose={handleClose}
       clearOnBlur={!hasAddBtn}
       loadingText={
         options.length > 5 ? <LoadingComponent options={options} /> : undefined

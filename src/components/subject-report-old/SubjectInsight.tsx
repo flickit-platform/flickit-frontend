@@ -17,7 +17,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
 import languageDetector from "@utils/languageDetector";
 
@@ -35,15 +35,12 @@ export const SubjectInsight = (props: ISubjectInsight) => {
 
   useEffect(() => {
     fetchAssessment();
-  }, [subjectId, service]);
+  }, [subjectId, service, editable]);
 
   return (
     <Box
       display="flex"
       flexDirection="column"
-      alignItems="left"
-      justifyContent="left"
-      textAlign="left"
       maxHeight="100%"
       gap={0.5}
       ml={3}
@@ -57,20 +54,22 @@ export const SubjectInsight = (props: ISubjectInsight) => {
         >
           <CircularProgress />
         </Box>
-      ) : insight ? (
+      ) : (
         <>
           <OnHoverRichEditor
-            data={insight.insight}
+            data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            placeholder={t("writeHere", {
+              title: t("insight").toLowerCase(),
+            })}
           />
           {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
               {format(
                 new Date(
                   new Date(insight?.creationTime).getTime() -
-                    new Date(insight?.creationTime).getTimezoneOffset() *
-                      60000,
+                    new Date(insight?.creationTime).getTimezoneOffset() * 60000,
                 ),
                 "yyyy/MM/dd HH:mm",
               ) +
@@ -79,7 +78,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                 ")"}
             </Typography>
           )}
-          {editable && !insight?.isValid && (
+          {editable && insight && !insight?.isValid && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{
@@ -130,10 +129,6 @@ export const SubjectInsight = (props: ISubjectInsight) => {
             </Box>
           )}
         </>
-      ) : (
-        <Typography variant="body2">
-          <Trans i18nKey="noInsightAvailable" />{" "}
-        </Typography>
       )}
     </Box>
   );
@@ -185,18 +180,22 @@ const OnHoverRichEditor = (props: any) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        height: "100%",
+        direction: languageDetector(data) ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (
-        <FormProviderWithForm formMethods={formMethods}>
+        <FormProviderWithForm
+          formMethods={formMethods}
+          style={{ height: "100%", width: "100%" }}
+        >
           <Box
             sx={{
               width: "100%",
               display: "flex",
+              height: "100%",
               justifyContent: "space-between",
               alignItems: "center",
-              direction: languageDetector(data) ? "rtl" : "ltr",
-              textAlign: languageDetector(data) ? "right" : "left",
             }}
           >
             <RichEditorField
@@ -216,30 +215,30 @@ const OnHoverRichEditor = (props: any) => {
               }}
             >
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "3px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 0"
+                    : "0 8px 0 0",
+                  height: "49%",
                 }}
                 onClick={formMethods.handleSubmit(onSubmit)}
               >
                 <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
               </IconButton>
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "4px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "0 0 0 8px"
+                    : "0 0 8px 0",
+                  height: "49%",
                 }}
                 onClick={handleCancel}
               >
@@ -256,36 +255,56 @@ const OnHoverRichEditor = (props: any) => {
       ) : (
         <Box
           sx={{
-            borderRadius: "4px",
-            paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-            paddingRight: theme.direction === "ltr" ? "12px" : "8px",
+            minHeight: "38px",
+            borderRadius: "8px",
             width: "100%",
             display: "flex",
-            direction: languageDetector(data) ? "rtl" : "ltr",
-            textAlign: languageDetector(data) ? "right" : "left",
             justifyContent: "space-between",
             alignItems: "center",
+            wordBreak: "break-word",
+            paddingInlineStart: isHovering ? 1 : 0,
+            paddingInlineEnd: isHovering ? 5 : 0,
+            border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
               borderColor: editable ? theme.palette.primary.main : "unset",
             },
+            position: "relative",
           }}
           onClick={() => setShow(!show)}
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          <Typography dangerouslySetInnerHTML={{ __html: data }} />
+          <Typography
+            dangerouslySetInnerHTML={{
+              __html:
+                data ??
+                (editable
+                  ? t("writeHere", { title: t("insight").toLowerCase() })
+                  : t("unavailable")),
+            }}
+            sx={{
+              fontFamily: languageDetector(data)
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+          />
           {isHovering && editable && (
             <IconButton
               title="Edit"
-              edge="end"
               sx={{
                 background: theme.palette.primary.main,
                 "&:hover": {
                   background: theme.palette.primary.dark,
                 },
-                borderRadius: "3px",
-                height: "36px",
+                borderRadius: languageDetector(data)
+                  ? "8px 0 0 8px"
+                  : "0 8px 8px 0",
+                height: "100%",
+                position: "absolute",
+                right: languageDetector(data) ? "unset" : 0,
+                left: languageDetector(data) ? 0 : "unset",
+                top: 0,
               }}
               onClick={() => setShow(!show)}
             >

@@ -335,27 +335,6 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
         </Box>
       ) : (
         <NotificationCenter
-          // header={({ setScreen, screen }) => (
-          //   <Box
-          //     display="flex"
-          //     justifyContent="space-between"
-          //     alignItems="center"
-          //     sx={{ padding: "16px", borderBottom: "1px solid #e0e0e0" }}
-          //   >
-          //     <Typography variant="h6">
-          //       <Trans i18nKey="notificationHeader" />
-          //     </Typography>
-          //     {notificationCount}
-
-          //     <Button
-          //       variant="outlined"
-          //       // onClick={handleMarkAllAsRead} // Action handler
-          //       // startIcon={<DoneAllIcon />}
-          //     >
-          //       <Trans i18nKey="markAllAsRead" />
-          //     </Button>
-          //   </Box>
-          // )}
           onUnseenCountChanged={(unseenCount: number) =>
             handleUnseenCountChanged(unseenCount)
           }

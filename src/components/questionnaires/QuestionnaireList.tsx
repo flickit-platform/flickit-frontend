@@ -61,7 +61,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
   useEffect(() => {
     if (!!filteredItem && typeof filteredItem == "string") {
-      setIssues([filteredItem]);
+      const filteredItemObj = itemNames.find(
+        (item: any) => filteredItem === item.original,
+      );
+
+      setIssues([filteredItemObj.translate]);
     }
     if (allSelected) {
       const allItems = itemNames.map((item: any) => item.translate);
@@ -197,23 +201,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   return (
     <>
       <Box display={"flex"} justifyContent="space-between">
-        {/* <QueryData
-          {...(pageQueryData || {})}
-          errorComponent={<></>}
-          renderLoading={() => {
-            return (
-              <Box height="100%" sx={{ ...styles.centerV, pl: 1 }}>
-                {[1, 2, 3].map((item) => {
-                  return <LoadingSkeleton height="36px" width="70px" key={item} sx={{ ml: 1 }} />;
-                })}
-              </Box>
-            );
-          }}
-          render={(data) => {
-            const { subjects = [] } = data;
-            return <FilterBySubject fetchQuestionnaires={fetchQuestionnaires} subjects={subjects} />;
-          }}
-        /> */}
         <QuestionsFilteringDropdown
           setOriginalItem={setOriginalItem}
           originalItem={originalItem}
@@ -273,15 +260,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                   {filteredItems.length > 0 ? (
                     filteredItems.map((data: any) => {
                       return (
-                        <Grid
-                          item
-                          // xl={questionCardColumnCondition ? 4 : 6}
-                          // md={questionCardColumnCondition ? 6 : 12}
-                          md={6}
-                          sm={12}
-                          xs={12}
-                          key={data.id}
-                        >
+                        <Grid item md={6} sm={12} xs={12} key={data.id}>
                           <QuestionnaireCard
                             data={data}
                             permissions={permissions}

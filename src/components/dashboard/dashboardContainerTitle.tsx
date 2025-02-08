@@ -8,7 +8,6 @@ const DashboardTitle = (props: any) => {
   const { spaceId, page } = useParams();
   const { space, assessment } = pathInfo;
 
-
   return (
     <Title
       backLink="/"
@@ -25,10 +24,6 @@ const DashboardTitle = (props: any) => {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
             },
-            // {
-            //     title: `${assessment?.title} ${t("insights")}`,
-            //     to: `/${spaceId}/assessments/${page}/${assessment.id}/insights`,
-            // },
             {
               title: `${assessment?.title}`,
             },

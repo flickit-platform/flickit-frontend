@@ -28,7 +28,11 @@ const MainTabs = (props: any) => {
       permission: "viewAssessmentReport",
     },
     { label: "advices", address: "advices", permission: "createAdvice" },
-    { label: "reportTitle", address: "report", permission: "manageReportMetadata" },
+    {
+      label: "reportTitle",
+      address: "report",
+      permission: "manageReportMetadata",
+    },
     {
       label: "settings",
       address: "settings",
@@ -74,8 +78,8 @@ const MainTabs = (props: any) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            // boxShadow: "0 4px 4px rgba(0,0,0,25%)",
-            my: 2,
+            mt: 1,
+            mb: 2,
             paddingBlock: 1,
           }}
         >

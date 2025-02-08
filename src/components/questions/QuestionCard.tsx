@@ -61,7 +61,6 @@ import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import Rating from "@mui/material/Rating";
 import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUncheckedRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
-import firstCharDetector from "@/utils/firstCharDetector";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
@@ -94,11 +93,15 @@ import { evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
-import { CheckOutlined, ExpandLess, ExpandMore } from "@mui/icons-material";
+import {
+  ArrowBack,
+  ArrowForward,
+  CheckOutlined,
+  ExpandLess,
+  ExpandMore,
+} from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
-import { useUpdateQuestionInfo } from "./QuestionsContainer";
-import { FormHelperText } from "@mui/material";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -181,8 +184,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             variant="subLarge"
             sx={
               is_farsi
-                ? { color: "white", opacity: 0.65, direction: "rtl" }
-                : { color: "white", opacity: 0.65 }
+                ? { color: "white", opacity: 0.65, px: 6 }
+                : { color: "white", opacity: 0.65, px: 6 }
             }
           >
             <Trans i18nKey="question" />
@@ -197,10 +200,13 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                     fontSize: "2rem",
                     fontFamily: { xs: "Vazirmatn", lg: "Vazirmatn" },
                     direction: "rtl",
+                    px: 6,
                   }
                 : {
                     pt: 0.5,
                     fontSize: "2rem",
+                    direction: "ltr",
+                    px: 6,
                   }
             }
           >
@@ -212,9 +218,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             ))}
           </Typography>
 
-          <Box sx={{ direction: `${is_farsi ? "rtl" : "ltr"}` }}>
-            {hint && <QuestionGuide hint={hint} />}
-          </Box>
+          <Box sx={{ px: 6 }}>{hint && <QuestionGuide hint={hint} />}</Box>
 
           {/* Answer template */}
           <AnswerTemplate
@@ -571,6 +575,20 @@ export const QuestionTabsTemplate = (props: any) => {
   );
 };
 
+const getArrowColor = (isActive: boolean) => (isActive ? "white" : "gray");
+
+const NavigationButton = ({
+  onClick,
+  disabled,
+  icon: Icon,
+  marginStyle,
+  isActive,
+}: any) => (
+  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle}>
+    <Icon sx={{ color: getArrowColor(isActive), fontSize: "48px" }} />
+  </IconButton>
+);
+
 const AnswerTemplate = (props: {
   questionInfo: IQuestionInfo;
   questionIndex: number;
@@ -598,11 +616,9 @@ const AnswerTemplate = (props: {
     selcetedConfidenceLevel,
     confidenceLebels,
   } = props;
-  const { updateQuestionInfo } = useUpdateQuestionInfo();
 
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
-  // const { questionsResultQueryData } = useQuestions();
 
   const { options, answer } = questionInfo;
   const { total_number_of_questions, permissions } = questionsInfo;
@@ -769,7 +785,7 @@ const AnswerTemplate = (props: {
       toastError(err);
     }
   };
-  
+
   const notApplicableonChanhe = (e: any) => {
     setNotApplicable(e.target.checked || false);
     if (e.target.checked) {
@@ -778,19 +794,51 @@ const AnswerTemplate = (props: {
       setDisabledConfidence(true);
     }
   };
+
+  const isLTR = theme.direction === "ltr";
+
+  const handleForwardClick = () => {
+    if (isLTR) {
+      isSelectedValueTheSameAsAnswer
+        ? goToQuestion("asc")
+        : setExpandedDeleteDialog(true);
+    } else {
+      goToQuestion("desc");
+    }
+  };
+
+  const handleBackwardClick = () => {
+    if (!isLTR) {
+      isSelectedValueTheSameAsAnswer
+        ? goToQuestion("asc")
+        : setExpandedDeleteDialog(true);
+    } else {
+      goToQuestion("desc");
+    }
+  };
+
   return (
     <>
       <Box
         display={"flex"}
         justifyContent="flex-start"
         mt={4}
-        sx={is_farsi ? { direction: "rtl" } : {}}
+        sx={{ direction: "rtl" }}
       >
+        <NavigationButton
+          direction={theme.direction}
+          onClick={handleForwardClick}
+          disabled={isLTR ? isLastQuestion : questionIndex === 1}
+          icon={ArrowForward}
+          marginStyle={{ marginInlineStart: { sm: 0, md: "-30px" } }}
+          isActive={isLTR ? !isLastQuestion : questionIndex !== 1}
+        />
         <Box
           display={"flex"}
           sx={{
             flexDirection: { xs: "column", md: "row" },
             width: { xs: "100%", sm: "80%", md: "auto" },
+            direction: is_farsi ? "rtl" : "ltr",
           }}
           flexWrap={"wrap"}
         >
@@ -873,6 +921,14 @@ const AnswerTemplate = (props: {
             );
           })}
         </Box>
+        <NavigationButton
+          direction={theme.direction}
+          onClick={handleBackwardClick}
+          disabled={isLTR ? questionIndex === 1 : isLastQuestion}
+          icon={ArrowBack}
+          marginStyle={{ marginInlineEnd: { sm: 0, md: "-30px" } }}
+          isActive={isLTR ? questionIndex !== 1 : !isLastQuestion}
+        />
       </Box>
       {notApplicable && (
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -889,7 +945,7 @@ const AnswerTemplate = (props: {
       <Box
         sx={{
           mt: { xs: 4, md: 1 },
-          mr: { xs: 0, md: 2 },
+          px: 6,
           display: "flex",
           flexDirection: "row-reverse",
           justifyContent: "space-between",
@@ -904,9 +960,14 @@ const AnswerTemplate = (props: {
         >
           <LoadingButton
             variant="contained"
-            color="success"
             loading={isSubmitting}
-            sx={{ fontSize: "1.2rem" }}
+            sx={{
+              fontSize: "1.2rem",
+              "&.Mui-disabled": {
+                background: "#C2CCD650",
+                color: "black",
+              },
+            }}
             onClick={submitQuestion}
             disabled={
               isSelectedValueTheSameAsAnswer ||
@@ -915,34 +976,8 @@ const AnswerTemplate = (props: {
           >
             <Trans i18nKey="submit" />
           </LoadingButton>{" "}
-          <LoadingButton
-            variant="contained"
-            color={"info"}
-            sx={{
-              fontSize: "1.2rem",
-            }}
-            onClick={() =>
-              isSelectedValueTheSameAsAnswer
-                ? goToQuestion("asc")
-                : setExpandedDeleteDialog(true)
-            }
-            disabled={isLastQuestion}
-          >
-            <Trans i18nKey="next" />
-          </LoadingButton>
         </Box>
         <Box sx={styles.centerVH} gap={2}>
-          <LoadingButton
-            variant="contained"
-            color={"info"}
-            sx={{
-              fontSize: "1.2rem",
-            }}
-            disabled={questionIndex === 1}
-            onClick={() => goToQuestion("desc")}
-          >
-            <Trans i18nKey={"prev"} />
-          </LoadingButton>
           {may_not_be_applicable && (
             <FormControlLabel
               sx={{ color: theme.palette.primary.main }}
@@ -1462,9 +1497,6 @@ const Evidence = (props: any) => {
                       label={
                         <Box
                           sx={{
-                            // display: "flex",
-                            // justifyContent: "center",
-                            // alignItems: "center",
                             ...styles.centerV,
                           }}
                         >
@@ -1932,7 +1964,6 @@ const EvidenceDetail = (props: any) => {
   };
 
   const onUpdate = async () => {
-    // formContext.setValue("evidence", description);
     setIsEditing((prev) => !prev);
 
     if (type === "Positive") {
@@ -2015,8 +2046,6 @@ const EvidenceDetail = (props: any) => {
   }, [type]);
 
   const theme = useTheme();
-  // const refBox = useRef<any>(null)
-
   useEffect(() => {
     (async () => {
       if (attachmentData && evidenceId == id) {
@@ -2100,7 +2129,6 @@ const EvidenceDetail = (props: any) => {
                       name="evidenceDetail"
                       label={null}
                       required={true}
-                      // placeholder={`${description}`}
                       borderRadius={"12px"}
                       setValueCount={setValueCount}
                       hasCounter={true}
@@ -2192,8 +2220,6 @@ const EvidenceDetail = (props: any) => {
                 height: "fit-content",
                 display: "flex",
                 flexDirection: "column",
-                // alignItems: "flex-end",
-                // border: `1px solid ${evidenceBG?.borderColor}`,
                 background: evidenceBG?.background,
                 color: "#0A2342",
                 borderRadius:
@@ -2281,8 +2307,6 @@ const EvidenceDetail = (props: any) => {
                     )}
                     <Grid
                       container
-                      // ref={refBox}
-                      // style={expandedEvidenceBox ? {maxHeight: refBox?.current.innerHeight && refBox?.current.innerHeight} : {
                       style={
                         expandedEvidenceBox
                           ? {}
@@ -2617,7 +2641,6 @@ const MyDropzone = (props: any) => {
                 alt={"gif"}
               />
             )}
-            {/*{typeFile == "image" && <img style={{ width: "60%", height: "60%" }} src={dispalyFile ? `${dispalyFile}` : "#"} />}*/}
             {typeFile == "pdf" && (
               <section style={{ width: "50%", height: "70%" }}>
                 <FileType name={"pdf"} />{" "}
@@ -2835,7 +2858,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
       open={expanded.expended}
       onClose={closeDialog}
       maxWidth={"sm"}
-      // fullScreen={fullScreen}
       fullWidth
       sx={{
         ".MuiDialog-paper::-webkit-scrollbar": {
@@ -3029,7 +3051,6 @@ const DeleteDialog = (props: any) => {
       open={expanded}
       onClose={onClose}
       maxWidth={"sm"}
-      // fullScreen={fullScreen}
       fullWidth
       sx={{
         ".MuiDialog-paper::-webkit-scrollbar": {

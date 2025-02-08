@@ -15,7 +15,6 @@ import languageDetector from "@/utils/languageDetector";
 interface AssessmentSubjectRadialChartProps {
   loading: boolean;
   data: any[];
-  maturityLevelsCount: number;
 }
 
 const AssessmentSubjectRadialChart: React.FC<

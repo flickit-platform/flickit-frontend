@@ -52,21 +52,25 @@ const ReportTab = () => {
   };
 
   const reportFields: { name: string; title: string; placeholder: string }[] = [
-    { name: "intro", title: "introduction", placeholder: "writeIntroduction" },
+    {
+      name: "intro",
+      title: "introductionReport",
+      placeholder: "writeIntroduction",
+    },
     {
       name: "prosAndCons",
-      title: "strengthsAndRoomsForImprovement",
-      placeholder: "writeStrengthAndRooms",
+      title: "strengthsAndAreasForImprovement",
+      placeholder: "writeStrengthAndAreas",
     },
     {
       name: "steps",
-      title: "stepsTakenForThisAssessment",
+      title: "assessmentSteps",
       placeholder: "writeStepsForAssessment",
     },
     {
       name: "participants",
-      title: "assessmentContributors",
-      placeholder: "writeAssessmentContributors",
+      title: "participants",
+      placeholder: "writeAboutParticipants",
     },
   ];
   return (
@@ -92,72 +96,6 @@ const ReportTab = () => {
                   alignItems: "center",
                 }}
               >
-                {/*<Grid item xs={12} md={6}>*/}
-                {/*  {"" ? (*/}
-                {/*    <Box*/}
-                {/*      sx={{ background: theme.palette.error.main, borderRadius: 2 }}*/}
-                {/*    >*/}
-                {/*      <Typography*/}
-                {/*        sx={{*/}
-                {/*          display: "flex",*/}
-                {/*          justifyContent: "center",*/}
-                {/*          alignItems: "center",*/}
-                {/*          ...theme.typography.semiBoldMedium,*/}
-                {/*          color: "#FAD1D8",*/}
-                {/*          py: 1,*/}
-                {/*          px: 2,*/}
-                {/*          gap: 1,*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        <ReportProblemOutlinedIcon fontSize={"small"} />*/}
-                {/*        <Trans i18nKey={"fillInAllRequired"} />*/}
-                {/*      </Typography>*/}
-                {/*    </Box>*/}
-                {/*  ) : (*/}
-                {/*    <Box*/}
-                {/*      sx={{*/}
-                {/*        background: theme.palette.warning.light,*/}
-                {/*        borderRadius: 2,*/}
-                {/*        display: "flex",*/}
-                {/*        justifyContent: "space-between",*/}
-                {/*        alignItems: "center",*/}
-                {/*        py: 1,*/}
-                {/*        px: 2,*/}
-                {/*        gap: 5,*/}
-                {/*      }}*/}
-                {/*    >*/}
-                {/*      <Typography*/}
-                {/*        sx={{*/}
-                {/*          display: "flex",*/}
-                {/*          justifyContent: "center",*/}
-                {/*          alignItems: "center",*/}
-                {/*          ...theme.typography.semiBoldMedium,*/}
-                {/*          color: theme.palette.warning.main,*/}
-
-                {/*          gap: 1,*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        <ReportProblemOutlinedIcon fontSize={"small"} />*/}
-                {/*        <Trans i18nKey={"someAnswersNeedUpdating"} />*/}
-                {/*      </Typography>*/}
-                {/*      <Button*/}
-                {/*        variant="contained"*/}
-                {/*        sx={{*/}
-                {/*          minWidth: "unset",*/}
-                {/*          width: "28px",*/}
-                {/*          height: "28px",*/}
-                {/*          background: theme.palette.warning.main,*/}
-                {/*          "&:hover": {*/}
-                {/*            background: theme.palette.warning.main,*/}
-                {/*            width: "fit-content",*/}
-                {/*          },*/}
-                {/*        }}*/}
-                {/*      >*/}
-                {/*        <CloseOutlinedIcon sx={{ color: "#fff" }} />*/}
-                {/*      </Button>*/}
-                {/*    </Box>*/}
-                {/*  )}*/}
-                {/*</Grid>*/}
                 <Grid
                   item
                   xs={12}
@@ -178,7 +116,7 @@ const ReportTab = () => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    flexDirection: {xs: "column-reverse", md: "row"}
+                    flexDirection: { xs: "column-reverse", md: "row" },
                   }}
                 >
                   <MainCard
@@ -186,7 +124,8 @@ const ReportTab = () => {
                     style={{
                       minHeight: "50px",
                       mt: 2,
-                      width: name == "intro" ? {xs: "100%", md: "68%"} : "100%",
+                      width:
+                        name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
                   >
                     <Typography
@@ -229,7 +168,7 @@ const ReportTab = () => {
                       style={{
                         minHeight: "180px",
                         mt: 2,
-                        width: {xs: "100%", md: "30%"},
+                        width: { xs: "100%", md: "30%" },
                         display: "flex",
                         justifyContent: "center",
                         alignSelf: "flex-start",
@@ -249,11 +188,12 @@ const ReportTab = () => {
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
                           disabled={
-                              Object.values(metadata).includes(null) || published == false
+                            Object.values(metadata).includes(null) ||
+                            published == false
                           }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
-                            <Trans i18nKey={"viewReportPage"} />
+                            <Trans i18nKey={"viewReport"} />
                           </Typography>
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
@@ -275,35 +215,38 @@ const ReportTab = () => {
                             checked={published}
                             onChange={handlePublishChange}
                             size="small"
-                            disabled={Object.values(metadata).includes(null)}
+                            disabled={
+                              Object.values(metadata).includes(null) &&
+                              !published
+                            }
                             sx={{ cursor: "pointer" }}
                           />
                         </Box>
 
-                        {Object.values(metadata).includes(null) && (
-                          <Box
-                            sx={{
-                              background: theme.palette.error.main,
-                              borderRadius: 2,
-                            }}
-                          >
-                            <Typography
+                        {Object.values(metadata).includes(null) &&
+                          !published && (
+                            <Box
                               sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                ...theme.typography.semiBoldSmall,
-                                color: "#FAD1D8",
-                                py: 1,
-                                px: 2,
-                                gap: 1,
+                                background: "transparent",
                               }}
                             >
-                              <ReportProblemOutlinedIcon fontSize={"small"} />
-                              <Trans i18nKey={"fillInAllRequired"} />
-                            </Typography>
-                          </Box>
-                        )}
+                              <Typography
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  ...theme.typography.semiBoldSmall,
+                                  color: theme.palette.error.main,
+                                  py: 1,
+                                  px: 2,
+                                  gap: 1,
+                                }}
+                              >
+                                <ReportProblemOutlinedIcon fontSize={"small"} />
+                                <Trans i18nKey={"fillInAllRequired"} />
+                              </Typography>
+                            </Box>
+                          )}
                       </Box>
                     </MainCard>
                   )}
@@ -355,7 +298,6 @@ const OnHoverInputReport = (props: any) => {
   const [show, setShow] = useState<boolean>(!!!data);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
-  const [isFarsi, setIsFarsi] = useState(languageDetector(data));
   const paragraphRef = useRef<any>(null);
 
   const toggleShowMore = () => {
@@ -392,16 +334,14 @@ const OnHoverInputReport = (props: any) => {
       const reportData = {
         [name]: data?.[name],
       };
-      // const res = await infoQuery(attributeId, assessmentId, data.title);
-      // if (Object.values(reportData)[0]) {
-        const res = await patchUpdateReportFields.query({
-          assessmentId,
-          reportData,
-        });
-        infoQuery.query();
-        res?.message && toast.success(res?.message);
-        setShow(false);
-      // }
+
+      const res = await patchUpdateReportFields.query({
+        assessmentId,
+        reportData,
+      });
+      infoQuery.query();
+      res?.message && toast.success(res?.message);
+      setShow(false);
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
@@ -438,13 +378,21 @@ const OnHoverInputReport = (props: any) => {
       }}
     >
       {editable && show ? (
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100% " }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100% ",
+            direction: languageDetector(data) ? "rtl" : "ltr",
+          }}
+        >
           <FormProviderWithForm formMethods={formMethods}>
             <Box
               sx={{
                 width: "100%",
                 height: "100%",
                 position: "relative",
+                display: "flex",
               }}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
@@ -455,31 +403,23 @@ const OnHoverInputReport = (props: any) => {
                 required={false}
                 defaultValue={data || ""}
                 placeholder={placeholder}
-                type={"reportTab"}
-                setLangDir={setIsFarsi}
-                isFarsi={isFarsi}
+                type="reportTab"
               />
               {isHovering && (
                 <Box
                   sx={{
                     ...styles.centerCVH,
-                    gap: "4px",
-                    // height: "100%",
-                    position: "absolute",
-                    right: isFarsi ? "unset" : 0,
-                    left: isFarsi ? 0 : "unset",
-                    top: 0,
-                    bottom: 0,
                   }}
                 >
                   <IconButton
-                    // edge="end"
                     sx={{
                       background: theme.palette.primary.main,
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: isFarsi ? "8px 0 0 0" : "0 8px 0 0",
+                      borderRadius: languageDetector(data)
+                        ? "8px 0 0 0"
+                        : "0 8px 0 0",
                       height: "49%",
                     }}
                     onClick={formMethods.handleSubmit(updateAssessmentKit)}
@@ -487,13 +427,14 @@ const OnHoverInputReport = (props: any) => {
                     <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
                   </IconButton>
                   <IconButton
-                    // edge="end"
                     sx={{
                       background: theme.palette.primary.main,
                       "&:hover": {
                         background: theme.palette.primary.dark,
                       },
-                      borderRadius: isFarsi ? "0 0 0 8px" : "0 0 8px 0",
+                      borderRadius: languageDetector(data)
+                        ? "0 0 0 8px"
+                        : "0 0 8px 0",
                       height: "49%",
                     }}
                     onClick={handleCancel}
@@ -575,7 +516,6 @@ const OnHoverInputReport = (props: any) => {
             {isHovering && (
               <IconButton
                 title="Edit"
-                // edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {

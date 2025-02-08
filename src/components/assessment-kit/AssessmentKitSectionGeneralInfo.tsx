@@ -37,6 +37,7 @@ import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import SelectLanguage from "@utils/selectLanguage";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -93,6 +94,25 @@ const AssessmentKitSectionGeneralInfo = (
       toastError(err);
     }
   };
+  const handleLanguageChange = async (e: any) => {
+    const { value } = e.target;
+
+    let adjustValue = value == "English" ? "EN" : "FA";
+
+    try {
+      await service.updateAssessmentKitStats(
+        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue } },
+        { signal: abortController.current.signal },
+      );
+      await fetchAssessmentKitInfoQuery.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
+  const languages = [{ title: "Persian" }, { title: "English" }];
+
   return (
     <QueryBatchData
       queryBatchData={[
@@ -116,6 +136,7 @@ const AssessmentKitSectionGeneralInfo = (
           tags,
           editable,
           hasActiveVersion,
+          lang,
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -141,6 +162,7 @@ const AssessmentKitSectionGeneralInfo = (
                   p: 2.5,
                   borderRadius: 2,
                   background: "white",
+                  height: "100%",
                 }}
               >
                 <OnHoverInput
@@ -190,12 +212,6 @@ const AssessmentKitSectionGeneralInfo = (
                     <Trans i18nKey={"free"} />
                   </Typography>
                 </Box>
-                {/* <OnHoverAutocompleteAsyncField
-                    data={tags}
-                    title={<Trans i18nKey="tags" />}
-                    infoQuery={fetchAssessmentKitInfoQuery.query}
-                    editable ={editable }
-                  /> */}
 
                 <Box
                   my={1.5}
@@ -354,6 +370,28 @@ const AssessmentKitSectionGeneralInfo = (
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
+                <Box
+                  my={1.5}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    mr={4}
+                    sx={{ minWidth: "64px !important" }}
+                  >
+                    <Trans i18nKey={"language"} />
+                  </Typography>
+                  <SelectLanguage
+                    handleChange={handleLanguageChange}
+                    lang={lang}
+                    languages={languages}
+                    editable={editable}
+                  />
+                </Box>
               </Box>
             </Grid>
             <Grid item xs={12} md={5}>
@@ -363,6 +401,7 @@ const AssessmentKitSectionGeneralInfo = (
                   p: 2.5,
                   borderRadius: 2,
                   background: "white",
+                  height: "100%",
                 }}
               >
                 {creationTime && (
@@ -495,7 +534,6 @@ const OnHoverInput = (props: any) => {
       config,
     ) => service.updateAssessmentKitStats(args, config),
     runOnMount: false,
-    // toastError: true,
   });
   const updateAssessmentKit = async () => {
     try {
@@ -809,7 +847,6 @@ const OnHoverVisibilityStatus = (props: any) => {
         <Box
           sx={{
             display: "flex",
-            // justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -970,30 +1007,30 @@ const OnHoverRichEditor = (props: any) => {
                 }}
               >
                 <IconButton
-                  edge="end"
                   sx={{
                     background: theme.palette.primary.main,
                     "&:hover": {
                       background: theme.palette.primary.dark,
                     },
-                    borderRadius: "3px",
-                    height: "36px",
-                    marginBottom: "2px",
+                    borderRadius: languageDetector(data)
+                      ? "8px 0 0 0"
+                      : "0 8px 0 0",
+                    height: "49%",
                   }}
                   onClick={formMethods.handleSubmit(onSubmit)}
                 >
                   <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
                 </IconButton>
                 <IconButton
-                  edge="end"
                   sx={{
                     background: theme.palette.primary.main,
                     "&:hover": {
                       background: theme.palette.primary.dark,
                     },
-                    borderRadius: "4px",
-                    height: "36px",
-                    marginBottom: "2px",
+                    borderRadius: languageDetector(data)
+                      ? "0 0 0 8px"
+                      : "0 0 8px 0",
+                    height: "49%",
                   }}
                   onClick={handleCancel}
                 >
@@ -1010,18 +1047,21 @@ const OnHoverRichEditor = (props: any) => {
         ) : (
           <Box
             sx={{
-              // height: "38px",
-              borderRadius: "4px",
-              paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-              paddingRight: theme.direction === "rtl" ? "12px" : "8px",
+              minHeight: "38px",
+              borderRadius: "8px",
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              wordBreak: "break-word",
+              pr: languageDetector(data) ? 1 : 5,
+              pl: languageDetector(data) ? 5 : 1,
+              border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
                 borderColor: editable ? theme.palette.primary.main : "unset",
               },
+              position: "relative",
             }}
             onClick={() => setShow(!show)}
             onMouseOver={handleMouseOver}
@@ -1035,14 +1075,19 @@ const OnHoverRichEditor = (props: any) => {
             {isHovering && (
               <IconButton
                 title="Edit"
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "3px",
-                  height: "36px",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 8px"
+                    : "0 8px 8px 0",
+                  height: "100%",
+                  position: "absolute",
+                  right: languageDetector(data) ? "unset" : 0,
+                  left: languageDetector(data) ? 0 : "unset",
+                  top: 0,
                 }}
                 onClick={() => setShow(!show)}
               >

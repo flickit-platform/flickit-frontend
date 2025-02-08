@@ -31,10 +31,7 @@ const CompareResultAssessmentsSection = (props: {
         {data.map((item, index: number) => {
           return (
             <Box
-              // item
-              // xs={4}
               sx={{
-                // ...styles.compareResultBorder,
                 width: "300px",
               }}
               key={item?.id}

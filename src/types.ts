@@ -147,7 +147,6 @@ export interface IUserInfo {
   id: TId;
   displayName: string;
   email: string;
-  // current_space: ISpaceInfo | null;
   bio?: string;
   pictureLink?: null | string;
   linkedin?: string | null;
@@ -372,14 +371,12 @@ export interface IAssessment {
   status: TStatus;
   title: string;
   hasReport: boolean;
-  // code: string;
   color: IColor;
   isCalculateValid: boolean;
   isConfidenceValid?: boolean;
   assessment_results: string[];
   kit: IAssessmentKitList;
   confidenceValue: number;
-  // total_progress?: ITotalProgress;
   maturityLevel: IMaturityLevel;
   permissions: {
     canManageSettings: boolean;
@@ -612,6 +609,7 @@ export interface AssessmentKitInfoType {
   tags: [];
   editable?: boolean;
   hasActiveVersion?: boolean;
+  lang?: string
 }
 export interface AssessmentKitStatsType {
   creationTime: string;

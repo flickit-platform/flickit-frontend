@@ -86,11 +86,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       >
         <Box>
           <Box flex={1}>
-            <Title
-              // sub={last_updated && `${(<Trans i18nKey={"lastUpdated"} />)} ${last_updated}`}
-              size="small"
-              fontWeight={"bold"}
-            >
+            <Title size="small" fontWeight={"bold"}>
               <Box
                 ref={mainBoxRef}
                 flex="1"
@@ -108,7 +104,15 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   }}
                   ref={titleRef}
                 >
-                  {title}
+                  <span
+                    style={{
+                      fontFamily: languageDetector(title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                  >
+                    {title}
+                  </span>
                 </Title>
                 {description && (
                   <IconButton

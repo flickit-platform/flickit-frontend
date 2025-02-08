@@ -30,11 +30,9 @@ import { t } from "i18next";
 import OptionForm from "@components/kit-designer/answerRange/options/optionForm";
 
 interface ListOfItemsProps {
-  // items: Array<KitDesignListItems>;
   items: any;
   onEdit: (id: any) => void;
   onDelete: (id: any) => void;
-  // onReorder: (reorderedItems: KitDesignListItems[]) => void;
   onReorder: any;
   deleteBtn: boolean;
   name: string;
@@ -58,15 +56,9 @@ const ListOfItems = ({
   fetchQuery,
   onEdit,
   onDelete,
-  onReorder,
   deleteBtn,
   setChangeData,
-  name,
 }: ListOfItemsProps) => {
-  // const fetchOptionListKit = useQuery({
-  //   service: (args, config) => service.fetchOptionListKit(args, config),
-  //   runOnMount: false,
-  // });
   const postOptionsKit = useQuery({
     service: (args, config) => service.postOptionsKit(args, config),
     runOnMount: false,
@@ -125,10 +117,6 @@ const ListOfItems = ({
     async (event: React.SyntheticEvent, isExpanded: boolean) => {
       try {
         if (isExpanded) {
-          // const data = await fetchOptionListKit.query({
-          //   kitVersionId,
-          //   questionId: id,
-          // });
           setNewOptions({
             title: "",
             index:
@@ -137,7 +125,6 @@ const ListOfItems = ({
             value: 1,
             id: null,
           });
-          // setQuestionData(data?.items);
         } else {
           handleCancel(id);
         }
@@ -149,14 +136,7 @@ const ListOfItems = ({
 
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
-      // const orders = newOrder.map((item, idx) => ({
-      //   questionId: item.id,
-      //   index: idx + 1,
-      // }));
-      // await service.changeQuestionsOrder(
-      //   { kitVersionId },
-      //   { questionOrders: orders, questionnaireId: questionnaireId },
-      // );
+ 
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -213,7 +193,6 @@ const ListOfItems = ({
       handleCancel(id);
 
       await postOptionsKit.query({ kitVersionId, data }).then(() => {
-        // fetchQuery.query();
         setChangeData((prev: any) => !prev);
       });
     } catch (e) {
@@ -297,7 +276,6 @@ const ListOfItems = ({
               >
                 <Box
                   sx={{
-                    // flexGrow: 1,
                     display: "flex",
                     justifyContent: "space-between",
                     width: "100%",

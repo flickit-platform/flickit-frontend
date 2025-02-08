@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
@@ -12,7 +12,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { SubjectAttributeList } from "./SubjectAttributeList";
 import SubjectOverallInsight from "./SubjectOverallInsight";
-import { ISubjectReportModel, TId } from "@types";
+import { ISubjectReportModel } from "@types";
 import hasStatus from "@utils/hasStatus";
 import QuestionnairesNotCompleteAlert from "../questionnaires/QuestionnairesNotCompleteAlert";
 import Button from "@mui/material/Button";
@@ -20,11 +20,8 @@ import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import QueryBatchData from "@common/QueryBatchData";
-import toastError from "@/utils/toastError";
-import { ICustomError } from "@/utils/CustomError";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
-import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 
 const SubjectContainer = () => {
   const {
@@ -36,9 +33,6 @@ const SubjectContainer = () => {
     subjectProgressQueryData,
     fetchPathInfo,
   } = useSubject();
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
-
   return (
     <QueryBatchData
       queryBatchData={[
@@ -50,7 +44,7 @@ const SubjectContainer = () => {
       loading={loading}
       loaded={loaded}
       render={([data = {}, subjectProgress = {}, pathInfo = {}]) => {
-        const { attributes, subject } = data;
+        const { subject } = data;
         const { isConfidenceValid, isCalculateValid, title } = subject;
         const { answerCount, questionCount } = subjectProgress;
         const isComplete = questionCount === answerCount;
@@ -229,7 +223,6 @@ const SubjectTitle = (props: {
             {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
-              // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
             {
               title: (
@@ -242,21 +235,12 @@ const SubjectTitle = (props: {
             },
             {
               title: <>{title || <Trans i18nKey="technicalDueDiligence" />}</>,
-              // icon: (
-              //   <AnalyticsRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-              // ),
             },
           ]}
         />
       }
     >
       <Box sx={{ ...styles.centerV, unicodeBidi: "plaintext" }}>
-        {/* <QueryStatsRoundedIcon
-          sx={{
-            mr: 1,
-            color: "rgba(0, 0, 0, 0.87)",
-          }}
-        /> */}
         {loading && (
           <Skeleton
             width={"84px"}

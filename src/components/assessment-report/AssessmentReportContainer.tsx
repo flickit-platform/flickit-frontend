@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Box, Divider, IconButton, Tooltip, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { Box, Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import QueryBatchData from "@common/QueryBatchData";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -12,14 +12,12 @@ import { IAssessmentReportModel, RolesType } from "@types";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { ArticleRounded, Assessment } from "@mui/icons-material";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../common/PermissionControl";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [disableHtmlDocument, setDisableHtmlDodument] = useState(false);
 
   const queryData = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
@@ -72,7 +70,6 @@ const AssessmentReportContainer = (props: any) => {
       });
     }
   }, [queryData.errorObject]);
-  const { spaceId, page } = useParams();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) => service.fetchAssessmentsRoles(args, config),
     toastError: false,
@@ -110,40 +107,6 @@ const AssessmentReportContainer = (props: any) => {
             <Box m="auto" pb={3}>
               <Grid container spacing={1} columns={12} mt={0}>
                 <Grid item sm={12} xs={12}>
-                  <Box display="flex" justifyContent="space-between">
-                    <Box
-                      sx={{ py: "0.6rem", display: "flex", marginLeft: "auto" }}
-                    >
-                      <Tooltip title={<Trans i18nKey={"graphicChart"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            disabled={disableHtmlDocument}
-                            component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
-                          >
-                            <Assessment
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip>
-                      <Tooltip title={<Trans i18nKey={"assessmentDocument"} />}>
-                        <Box>
-                          <IconButton
-                            data-cy="more-action-btn"
-                            disabled={!exportable}
-                            component={exportable ? RouterLink : "div"}
-                            to={`/${spaceId}/assessments/1/${assessmentId}/assessment-document/`}
-                          >
-                            <ArticleRounded
-                              sx={{ fontSize: "1.5rem", margin: "0.2rem" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      </Tooltip>
-                    </Box>
-                  </Box>
                   <Grid container alignItems="stretch" spacing={2} mt={1}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <Box
@@ -189,7 +152,7 @@ const AssessmentReportContainer = (props: any) => {
                 </Grid>
 
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box display="flex" flexDirection="column" gap={1}>
+                  <Box display="flex" flexDirection="column" gap={1} height="100%">
                     <Typography
                       color="#73808C"
                       marginX={4}

@@ -48,7 +48,6 @@ const ConfirmRemoveMemberDialog = (props: any) => {
         await deleteUserRole.query(expandedRemoveDialog?.id);
         onCloseRemoveDialog();
         setChangeData((prev: boolean) => !prev);
-        // await fetchAssessmentMembers()
       }
     } catch (e) {
       const err = e as ICustomError;
@@ -61,7 +60,6 @@ const ConfirmRemoveMemberDialog = (props: any) => {
       open={expandedRemoveDialog.display}
       onClose={onCloseRemoveDialog}
       maxWidth={"sm"}
-      // fullScreen={fullScreen}
       fullWidth
       sx={{
         ".MuiDialog-paper::-webkit-scrollbar": {

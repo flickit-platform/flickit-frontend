@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import AssessmentAdviceContainer from "./AssessmentAdviceContainer";
 import AdviceItems from "@components/dashboard/advice-tab/advice-items/AdviceItems";
@@ -9,13 +9,6 @@ import PermissionControl from "@common/PermissionControl";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
 import QueryData from "@common/QueryData";
 import { useParams } from "react-router-dom";
-import Box from "@mui/material/Box";
-import { styles } from "@styles";
-import Typography from "@mui/material/Typography";
-import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
-import BetaSvg from "@assets/svg/beta.svg";
-import { Divider } from "@mui/material";
 
 const AdviceTab = () => {
   const { service } = useServiceContext();
@@ -27,6 +20,47 @@ const AdviceTab = () => {
     toastError: false,
   });
 
+    const calculateMaturityLevelQuery = useQuery({
+        service: (args = { assessmentId }, config) =>
+            service.calculateMaturityLevel(args, config),
+        runOnMount: false,
+    });
+    const calculate = async () => {
+        try {
+            await calculateMaturityLevelQuery.query();
+            await queryData.query();
+        } catch (e) {}
+    };
+
+    const calculateConfidenceLevelQuery = useQuery({
+        service: (args = { assessmentId }, config) =>
+            service.calculateConfidenceLevel(args, config),
+        runOnMount: false,
+    });
+
+    const calculateConfidenceLevel = async () => {
+        try {
+            await calculateConfidenceLevelQuery.query();
+            await queryData.query();
+        } catch (e) {}
+    };
+
+    useEffect(() => {
+        if (queryData.errorObject?.response?.data?.code == "CALCULATE_NOT_VALID") {
+            calculate();
+        }
+        if (
+            queryData.errorObject?.response?.data?.code ==
+            "CONFIDENCE_CALCULATION_NOT_VALID"
+        ) {
+            calculateConfidenceLevel();
+        }
+        if (queryData?.errorObject?.response?.data?.code === "DEPRECATED") {
+            service.migrateKitVersion({ assessmentId }).then(() => {
+                queryData.query();
+            });
+        }
+    }, [queryData.errorObject]);
   return (
     <PermissionControl error={[queryData.errorObject?.response?.data]}>
       <QueryData

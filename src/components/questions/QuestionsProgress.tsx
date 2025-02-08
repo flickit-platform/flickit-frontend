@@ -1,30 +1,20 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Hidden from "@mui/material/Hidden";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Trans } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { styles } from "@styles";
-import {
-  EAssessmentStatus,
-  questionActions,
-  useQuestionContext,
-  useQuestionDispatch,
-} from "@/providers/QuestionProvider";
+import { EAssessmentStatus, useQuestionContext } from "@/providers/QuestionProvider";
 import usePopover from "@utils/usePopover";
 import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
-import { theme } from "@/config/theme";
 import { Tooltip } from "@mui/material";
 
-const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
+const QuestionsProgress = ({}: any) => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
     useQuestionContext();
-  const { total_number_of_questions, questions = [] } = questionsInfo;
-  const dispatch = useQuestionDispatch();
-  const { questionIndex: questionParam } = useParams();
-  const isFinish = questionParam === "completed";
+  const { questions = [] } = questionsInfo;
 
   return (
     <Box position="relative" sx={{ my: { xs: 1, sm: 3 } }}>
@@ -64,7 +54,7 @@ const QuestionsProgress = ({ hasNextQuestion, hasPreviousQuestion }: any) => {
         value={
           assessmentStatus === EAssessmentStatus.DONE
             ? 100
-            : (100 / (questions.length + 1)) *
+            : (99 / (questions.length + 1)) *
               (questions.findIndex((item) => item.index === questionIndex) + 1)
         }
       />

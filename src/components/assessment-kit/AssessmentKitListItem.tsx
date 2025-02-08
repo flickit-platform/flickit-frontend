@@ -135,9 +135,6 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
                 <LoadingButton
                   variant="outlined"
                   size="small"
-                  // disabled={!draftVersionId}
-                  // component={!draftVersionId ? Link : "div"}
-                  // to={!draftVersionId ? `kit-designer/${draftVersionId}` : ''}
                   color={!draftVersionId ? "primary" : "inherit"}
                   onClick={draftClicked}
                   loading={cloneAssessmentKit.loading}
@@ -170,36 +167,11 @@ const Actions = (props: any) => {
     runOnMount: false,
   });
 
-  // const publishAssessmentKitQuery = useQuery({
-  //   service: (args, config) => service.publishAssessmentKit({ id }, config),
-  //   runOnMount: false,
-  // });
-
-  // const unPublishAssessmentKitQuery = useQuery({
-  //   service: (args, config) => service.unPublishAssessmentKit({ id }, config),
-  //   runOnMount: false,
-  // });
-
   if (!fetchAssessmentKits) {
     console.warn(
       "fetchAssessmentKits not provided. assessment kit list won't be updated on any action",
     );
   }
-
-  // const openEditDialog = (e: any) => {
-  //   setEditLoading(true);
-  //   service
-  //     .fetchSpace({ spaceId }, { signal: abortController.signal })
-  //     .then(({ data }) => {
-  //       setEditLoading(false);
-  //       dialogProps.openDialog({ data, type: "update" });
-  //     })
-  //     .catch((e) => {
-  //       const err = e as ICustomError;
-  //       toastError(err);
-  //       setEditLoading(false);
-  //     });
-  // };
 
   const deleteItem = async (e: any) => {
     try {
@@ -209,50 +181,17 @@ const Actions = (props: any) => {
         size: 10,
         page: 1,
       });
-      // await setUserInfo();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
     }
   };
 
-  // const publishAssessmentKit = async (e: any) => {
-  //   try {
-  //     const res = await publishAssessmentKitQuery.query();
-  //     res.message && toast.success(res.message);
-  //     await fetchAssessmentKits?.();
-  //   } catch (e) {
-  //     const err = e as ICustomError;
-  //     toastError(err);
-  //   }
-  // };
-
-  // const unPublishAssessmentKit = async (e: any) => {
-  //   try {
-  //     const res = await unPublishAssessmentKitQuery.query();
-  //     res.message && toast.success(res.message);
-  //     await fetchAssessmentKits();
-  //   } catch (e) {
-  //     const err = e as ICustomError;
-  //     toastError(err);
-  //   }
-  // };
   return hasAccess ? (
     <MoreActions
       {...useMenu()}
       loading={deleteAssessmentKitQuery.loading}
       items={[
-        // is_active
-        //   ? {
-        //       icon: <ArchiveRoundedIcon fontSize="small" />,
-        //       text: <Trans i18nKey="archive" />,
-        //       onClick: unPublishAssessmentKit,
-        //     }
-        //   : {
-        //       icon: <PublishedWithChangesRoundedIcon fontSize="small" />,
-        //       text: <Trans i18nKey="publish" />,
-        //       onClick: publishAssessmentKit,
-        //     },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="delete" />,

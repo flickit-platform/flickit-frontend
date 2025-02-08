@@ -17,18 +17,50 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
-import firstCharDetector from "@utils/firstCharDetector";
+import languageDetector from "@/utils/languageDetector";
+import { LoadingButton } from "@mui/lab";
+import { useQuery } from "@/utils/useQuery";
+import toastError from "@/utils/toastError";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [aboutSection, setAboutSection] = useState<any>(null);
+  const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isApproved, setIsApproved] = useState(true);
 
+  const ApproveAssessmentInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+      },
+      config,
+    ) => service.approveAssessmentInsight(args, config),
+    runOnMount: false,
+  });
+  const InitAssessmentInsight = useQuery({
+    service: (
+      args = {
+        assessmentId,
+      },
+      config,
+    ) => service.initAssessmentInsight(args, config),
+    runOnMount: false,
+  });
+  const ApproveInsight = async (event: React.SyntheticEvent) => {
+    try {
+      event.stopPropagation();
+      await ApproveAssessmentInsight.query();
+      fetchAssessment();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
   const fetchAssessment = () => {
     service
       .fetchAssessmentInsight({ assessmentId }, {})
@@ -37,9 +69,10 @@ export const AssessmentInsight = () => {
         const selectedInsight = data.assessorInsight || data.defaultInsight;
 
         if (selectedInsight) {
-          setAboutSection(selectedInsight);
-          setEditable(data.editable ?? false);
+          setInsight(selectedInsight);
+          setIsApproved(data.approved);
         }
+        setEditable(data.editable ?? false);
       })
       .catch((error) => {
         console.error("Error fetching assessment insight:", error);
@@ -60,7 +93,7 @@ export const AssessmentInsight = () => {
       alignItems="left"
       justifyContent="left"
       textAlign="left"
-      maxHeight="100%"
+      height="100%"
       gap={0.5}
       py={2}
       sx={{
@@ -79,23 +112,56 @@ export const AssessmentInsight = () => {
         >
           <CircularProgress />
         </Box>
-      ) : aboutSection ? (
+      ) : (
         <>
+          <Box
+            sx={{
+              ...styles.centerV,
+              width: "100%",
+              gap: 1,
+              justifyContent: "end",
+            }}
+          >
+            {!isApproved && (
+              <LoadingButton
+                variant={"contained"}
+                onClick={(event) => ApproveInsight(event)}
+                loading={ApproveAssessmentInsight.loading}
+                size="small"
+              >
+                <Trans i18nKey={"approve"} />
+              </LoadingButton>
+            )}
+            {editable && (
+              <LoadingButton
+                onClick={(event) => {
+                  event.stopPropagation();
+                  InitAssessmentInsight.query().then(() => fetchAssessment());
+                }}
+                variant={"contained"}
+                loading={InitAssessmentInsight.loading}
+                size="small"
+              >
+                <Trans i18nKey={!insight ? "generate" : "regenerate"} />
+              </LoadingButton>
+            )}
+          </Box>
           <OnHoverRichEditor
-            data={aboutSection.insight}
+            data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            placeholder={t("writeHere", {
+              title: t("insight").toLowerCase(),
+            })}
           />
-          {aboutSection?.creationTime && (
+          {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
-              {theme.direction == "rtl"
+              {languageDetector(insight)
                 ? formatDate(
                     format(
                       new Date(
-                        new Date(aboutSection?.creationTime).getTime() -
-                          new Date(
-                            aboutSection?.creationTime,
-                          ).getTimezoneOffset() *
+                        new Date(insight?.creationTime).getTime() -
+                          new Date(insight?.creationTime).getTimezoneOffset() *
                             60000,
                       ),
                       "yyyy/MM/dd HH:mm",
@@ -103,25 +169,24 @@ export const AssessmentInsight = () => {
                     "Shamsi",
                   ) +
                   " (" +
-                  t(convertToRelativeTime(aboutSection?.creationTime)) +
+                  t(convertToRelativeTime(insight?.creationTime)) +
                   ")"
                 : format(
                     new Date(
-                      new Date(aboutSection?.creationTime).getTime() -
-                        new Date(
-                          aboutSection?.creationTime,
-                        ).getTimezoneOffset() *
+                      new Date(insight?.creationTime).getTime() -
+                        new Date(insight?.creationTime).getTimezoneOffset() *
                           60000,
                     ),
                     "yyyy/MM/dd HH:mm",
                   ) +
                   " (" +
-                  t(convertToRelativeTime(aboutSection?.creationTime)) +
+                  t(convertToRelativeTime(insight?.creationTime)) +
                   ")"}
             </Typography>
           )}
-          {(aboutSection.hasOwnProperty("isValid") || editable) &&
-            !aboutSection?.isValid && (
+          {(insight?.hasOwnProperty("isValid") || editable) &&
+            !insight?.isValid &&
+            insight && (
               <Box sx={{ ...styles.centerV }} gap={2} my={1}>
                 <Box
                   sx={{
@@ -143,9 +208,7 @@ export const AssessmentInsight = () => {
                   >
                     <Trans
                       i18nKey={
-                        aboutSection.hasOwnProperty("isValid")
-                          ? "outdated"
-                          : "note"
+                        insight?.hasOwnProperty("isValid") ? "outdated" : "note"
                       }
                     />
                   </Typography>
@@ -174,7 +237,7 @@ export const AssessmentInsight = () => {
                   >
                     <Trans
                       i18nKey={
-                        aboutSection.hasOwnProperty("isValid")
+                        insight?.hasOwnProperty("isValid")
                           ? "invalidInsight"
                           : "defaultInsightTemplate"
                       }
@@ -184,10 +247,6 @@ export const AssessmentInsight = () => {
               </Box>
             )}
         </>
-      ) : (
-        <Typography variant="body2">
-          <Trans i18nKey="noInsightAvailable" />{" "}
-        </Typography>
       )}
     </Box>
   );
@@ -239,13 +298,20 @@ const OnHoverRichEditor = (props: any) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        direction: languageDetector(data) ? "rtl" : "ltr",
+        height: "100%",
+        width: "100%",
       }}
     >
       {editable && show ? (
-        <FormProviderWithForm formMethods={formMethods}>
+        <FormProviderWithForm
+          formMethods={formMethods}
+          style={{ height: "100%", width: "100%" }}
+        >
           <Box
             sx={{
               width: "100%",
+              height: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
@@ -268,30 +334,30 @@ const OnHoverRichEditor = (props: any) => {
               }}
             >
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "3px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "8px 0 0 0"
+                    : "0 8px 0 0",
+                  height: "49%",
                 }}
                 onClick={formMethods.handleSubmit(onSubmit)}
               >
                 <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
               </IconButton>
               <IconButton
-                edge="end"
                 sx={{
                   background: theme.palette.primary.main,
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: "4px",
-                  height: "36px",
-                  marginBottom: "2px",
+                  borderRadius: languageDetector(data)
+                    ? "0 0 0 8px"
+                    : "0 0 8px 0",
+                  height: "49%",
                 }}
                 onClick={handleCancel}
               >
@@ -308,17 +374,21 @@ const OnHoverRichEditor = (props: any) => {
       ) : (
         <Box
           sx={{
-            borderRadius: "4px",
-            paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-            paddingRight: theme.direction === "rtl" ? "12px" : "8px",
+            minHeight: "38px",
+            borderRadius: "8px",
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            wordBreak: "break-word",
+            pr: languageDetector(data) ? 1 : 5,
+            pl: languageDetector(data) ? 5 : 1,
+            border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
               borderColor: editable ? theme.palette.primary.main : "unset",
             },
+            position: "relative",
           }}
           onClick={() => setShow(!show)}
           onMouseOver={handleMouseOver}
@@ -326,24 +396,38 @@ const OnHoverRichEditor = (props: any) => {
         >
           <Typography
             sx={{
-              textAlign: firstCharDetector(data.replace(/<[^>]*>/g, ""))
+              textAlign: languageDetector(data?.replace(/<[^>]*>/g, ""))
                 ? "right"
                 : "left",
+              fontFamily: languageDetector(data)
+                ? farsiFontFamily
+                : primaryFontFamily,
               width: "100%",
             }}
-            dangerouslySetInnerHTML={{ __html: data }}
+            dangerouslySetInnerHTML={{
+              __html:
+                data ??
+                (editable
+                  ? t("writeHere", { title: t("insight").toLowerCase() })
+                  : t("unavailable")),
+            }}
           />
           {isHovering && editable && (
             <IconButton
               title="Edit"
-              edge="end"
               sx={{
                 background: theme.palette.primary.main,
                 "&:hover": {
                   background: theme.palette.primary.dark,
                 },
-                borderRadius: "3px",
-                height: "36px",
+                borderRadius: languageDetector(data)
+                  ? "8px 0 0 8px"
+                  : "0 8px 8px 0",
+                height: "100%",
+                position: "absolute",
+                right: languageDetector(data) ? "unset" : 0,
+                left: languageDetector(data) ? 0 : "unset",
+                top: 0,
               }}
               onClick={() => setShow(!show)}
             >

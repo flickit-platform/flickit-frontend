@@ -22,7 +22,6 @@ import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
 import { uniqueId } from "lodash";
 import { t } from "i18next";
-import { ShareDialog } from "../assessment-html/ShareDialog";
 import useDialog from "@/utils/useDialog";
 import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";
 
@@ -164,10 +163,10 @@ const MaturityLevelTable = ({
   tempData: any;
   updateSortOrder: any;
   scoreState: any;
-  setPage: any,
-  page: number,
-  rowsPerPage: number,
-  setRowsPerPage: any,
+  setPage: any;
+  page: number;
+  rowsPerPage: number;
+  setRowsPerPage: any;
 }) => {
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<

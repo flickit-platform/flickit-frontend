@@ -25,6 +25,7 @@ import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
 import { LoadingButton } from "@mui/lab";
 import { theme } from "@/config/theme";
+import SelectLanguage from "@utils/selectLanguage";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -44,7 +45,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const [zippedData, setZippedData] = useState<any>(null);
   const [dropNewFile, setDropNewFile] = useState<any>(null);
   const [buttonStep, setButtonStep] = useState<any>(0);
+  const [lang,setLang] = useState("English");
   const { service } = useServiceContext();
+  const languages = [{ title: "Persian" }, { title: "English" }];
+
   const {
     onClose: closeDialog,
     assessmentKits,
@@ -81,6 +85,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setDropNewFile(null);
     setConvertData(null);
     setIsValid(false);
+    setLang("English")
   };
   const fetchSampleExecl = useQuery({
     service: (args, config) => service.fetchExcelToDSLSampleFile(args, config),
@@ -100,6 +105,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       isPrivate: isPrivate,
       tagIds: tags.map((t: any) => t.id),
       expertGroupId: expertGroupId,
+      lang : lang == "English" ? "EN" : "FA",
       ...restOfData,
     };
     if (type !== "draft") {
@@ -193,6 +199,11 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       }
     } catch (e) {
     }
+  };
+
+  const handleSelectedChange = (e: any) => {
+    const { value } = e.target;
+    setLang(value);
   };
 
   const formContent = (
@@ -320,7 +331,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         <Grid
           item
           xs={12}
-          md={12}
+          sm={8}
+          md={8}
           sx={{ display: `${activeStep === 0 ? "none" : ""}` }}
         >
           <AutocompleteAsyncField
@@ -334,6 +346,15 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             required={true}
             label={<Trans i18nKey="tags" />}
           />
+        </Grid>
+        <Grid
+            item
+            xs={12}
+            sm={4}
+            md={4}
+            sx={{width:"100%", display: `${activeStep === 0 ? "none" : ""}` }}
+        >
+          <SelectLanguage handleChange={handleSelectedChange} lang={lang} languages={languages} />
         </Grid>
         <Grid
           item

@@ -40,7 +40,6 @@ const RichEditorFieldBase = (props: any) => {
     required,
     label,
     disable_label,
-    setLangDir,
     setNewAdvice,
     removeDescriptionAdvice,
     errorMessage
@@ -100,7 +99,6 @@ const RichEditorFieldBase = (props: any) => {
         defaultValue={defaultValue}
         field={field}
         checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
-        setLangDir={setLangDir}
         setNewAdvice={setNewAdvice}
         removeDescriptionAdvice={removeDescriptionAdvice}
         fieldLabel={label}
