@@ -29,7 +29,7 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import Switch from "@mui/material/Switch";
 
 const ReportTab = () => {
-  const { spaceId = "", assessmentId = "" } = useParams();
+  const { spaceId = "", assessmentId = "", page="" } = useParams();
   const { service } = useServiceContext();
 
   const fetchReportFields = useQuery({
@@ -184,7 +184,7 @@ const ReportTab = () => {
                       >
                         <Button
                           component={Link}
-                          to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
+                          to={`/${spaceId}/assessments/${page}/${assessmentId}/graphical-report/`}
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
                           disabled={

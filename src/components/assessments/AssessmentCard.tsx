@@ -52,7 +52,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const { item } = props;
   const abortController = useRef(new AbortController());
-  const { spaceId } = useParams();
+  const { spaceId, page } = useParams();
 
   const {
     maturityLevel,
@@ -149,7 +149,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 isCalculateValid && item.permissions.canViewDashboard
                   ? `${item.id}/dashboard`
                   : item.permissions.canViewReport && item.hasReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                    ? `/${spaceId}/assessments/${page}/${item.id}/graphical-report/`
                     : item.permissions.canViewQuestionnaires
                       ? `${item.id}/questionnaires`
                       : ""
@@ -224,7 +224,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 : item.permissions.canViewQuestionnaires
                   ? `${item.id}/questionnaires`
                   : item.hasReport && item.permissions.canViewReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                    ? `/${spaceId}/assessments/${page}/${item.id}/graphical-report/`
                     : ""
             }
           >
@@ -289,7 +289,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 state={location}
                 to={
                   item.permissions.canViewReport && item.hasReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                    ? `/${spaceId}/assessments/${page}/${item.id}/graphical-report/`
                     : item.permissions.canViewQuestionnaires
                       ? `${item.id}/questionnaires`
                       : ""
@@ -367,7 +367,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                   : item.permissions.canViewQuestionnaires
                     ? `${item.id}/questionnaires`
                     : canViewReport
-                      ? `/${spaceId}/assessments/${item.id}/graphical-report/`
+                      ? `/${spaceId}/assessments/${page}/${item.id}/graphical-report/`
                       : ""
               }
               sx={{
