@@ -3,31 +3,15 @@ import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
-import { useParams } from "react-router-dom";
-import { useQuery } from "@utils/useQuery";
-import { ISubjectReportModel } from "@types";
-import { useServiceContext } from "@providers/ServiceProvider";
 import { primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import CustomTablePagination from "@components/common/CustomTablePagination";
+import { uniqueId } from "lodash";
 
-const AdviceQuestionTable = ({
-  adviceResult,
-  setAdviceResult,
-  handleClose,
-  target,
-  permissions,
-}: any) => {
+const AdviceQuestionTable = ({ adviceResult }: any) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const { assessmentId = "" } = useParams();
-  const { service } = useServiceContext();
-
-  const totalPages = useMemo(
-    () => Math.ceil(adviceResult?.length / rowsPerPage),
-    [adviceResult, rowsPerPage],
-  );
 
   const paginatedAdvice = useMemo(() => {
     const startIndex = currentPage * rowsPerPage;
@@ -46,7 +30,7 @@ const AdviceQuestionTable = ({
       <Box
         px={4}
         sx={{
-          maxHeight: "56vh",
+          height: "56vh",
           overflowY: "auto",
         }}
       >
@@ -113,7 +97,7 @@ const AdviceQuestionTable = ({
               container
               spacing={2}
               sx={{ alignItems: "center", mb: 2 }}
-              key={item?.id}
+              key={uniqueId()}
             >
               <Grid
                 item

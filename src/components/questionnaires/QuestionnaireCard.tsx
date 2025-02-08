@@ -303,7 +303,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
         </Box>
         <Box display="flex" alignItems="end" justifyContent={"space-between"}>
           <Box>
-            {subjects.map((subject) => {
+            {subjects?.map((subject) => {
               const { title, id } = subject;
               return (
                 <Chip

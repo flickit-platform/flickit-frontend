@@ -323,7 +323,7 @@ const AssessmentExportContainer = () => {
                       </Grid>
                     </Grid>
                     <PieChart
-                      data={reportData?.subjects.map((subject: any) => ({
+                      data={reportData?.subjects?.map((subject: any) => ({
                         name: subject.title,
                         value: 1,
                         color: getMaturityLevelColors(

@@ -4,7 +4,7 @@ import Slider from "@mui/material/Slider";
 import { getMaturityLevelColors } from "@styles";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { Typography } from "@mui/material";
 import { styles } from "@styles";
 const AdviceSlider = (props: any) => {
@@ -17,7 +17,7 @@ const AdviceSlider = (props: any) => {
     target,
     currentState,
   } = props;
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(defaultValue ?? 0);
   const handleSliderChange = (event: Event, newValue: any) => {
     if (newValue >= defaultValue) {
       setValue(newValue);

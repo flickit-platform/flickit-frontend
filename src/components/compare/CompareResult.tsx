@@ -97,7 +97,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
         }}
       />
       <Trans i18nKey={"whichHasNamed"} values={{ value: subjects.length }} />
-      {subjects.map((subject: any, index: number) => (
+      {subjects?.map((subject: any, index: number) => (
         <MuiLink
           key={subject?.id}
           href={`#${subject.title}`}

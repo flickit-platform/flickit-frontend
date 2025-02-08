@@ -26,7 +26,7 @@ const AdviceDialog = ({
   filteredMaturityLevels,
   permissions,
   fetchAdviceNarration,
-  setAIGenerated
+  setAIGenerated,
 }: any) => {
   const [adviceResult, setAdviceResult] = useState<any>([]);
   const [step, setStep] = useState<number>(1); // Step state
@@ -75,7 +75,7 @@ const AdviceDialog = ({
         });
         setAdviceResult(null);
         fetchAdviceNarration.query();
-        setAIGenerated(true)
+        setAIGenerated(true);
         handleClose();
       }
     } catch (e) {
@@ -86,7 +86,7 @@ const AdviceDialog = ({
 
   const handleBack = () => {
     if (step === 2) {
-      setStep(1); 
+      setStep(1);
     }
   };
 
@@ -97,6 +97,7 @@ const AdviceDialog = ({
       fullWidth
       maxWidth="md"
       fullScreen={false}
+      sx={{ overflowY: "auto" }}
     >
       <DialogTitle sx={{ ...styles.centerV }}>
         <>
@@ -164,7 +165,7 @@ const AdviceDialog = ({
               display: step === 1 ? "block" : "none",
             }}
           >
-            {subjects.map((subject: any) =>
+            {subjects?.map((subject: any) =>
               subject?.attributes.map((attribute: any) => (
                 <AdviceSlider
                   key={attribute.id}
@@ -208,7 +209,11 @@ const AdviceDialog = ({
             }}
           >
             {step === 2 && (
-              <Button onClick={handleBack} sx={{ mr: "auto" }} variant="outlined">
+              <Button
+                onClick={handleBack}
+                sx={{ mr: "auto" }}
+                variant="outlined"
+              >
                 <Trans i18nKey="back" />
               </Button>
             )}

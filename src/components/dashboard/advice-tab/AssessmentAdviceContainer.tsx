@@ -100,21 +100,25 @@ const AssessmentAdviceContainer = (props: any) => {
     if (fetchAdviceNarration.data?.aiNarration) {
       setIsAIGenerated(true);
     } else {
-      setIsAIGenerated(false);
+      setIsAIGenerated(true);
     }
   }, [fetchAdviceNarration.data]);
+
+  const computeFilteredMaturityLevels = (assessment: any) => {
+    if (!assessment?.assessmentKit?.maturityLevels) return [];
+    return assessment.assessmentKit.maturityLevels.sort(
+      (elem1: any, elem2: any) => elem1.index - elem2.index,
+    );
+  };
+
   return (
     <QueryBatchData
       queryBatchData={[fetchAdviceNarration, fetchAssessment, fetchAdviceItems]}
       renderLoading={() => <Skeleton height={160} />}
       render={([narrationComponent, assessmentData, adviceItems]) => {
         const { assessment, subjects, permissions } = assessmentData || {};
-        const filteredMaturityLevels = useMemo(() => {
-          const filteredData = assessment?.assessmentKit?.maturityLevels.sort(
-            (elem1: any, elem2: any) => elem1.index - elem2.index,
-          );
-          return filteredData;
-        }, [assessment]);
+        const filteredMaturityLevels =
+          computeFilteredMaturityLevels(assessment);
 
         return (
           <Box mt={4}>
