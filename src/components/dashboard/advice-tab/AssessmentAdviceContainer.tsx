@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -97,11 +97,7 @@ const AssessmentAdviceContainer = (props: any) => {
   });
 
   useEffect(() => {
-    if (fetchAdviceNarration.data?.aiNarration) {
-      setIsAIGenerated(true);
-    } else {
-      setIsAIGenerated(true);
-    }
+    setIsAIGenerated(!!fetchAdviceNarration.data?.aiNarration);
   }, [fetchAdviceNarration.data]);
 
   const computeFilteredMaturityLevels = (assessment: any) => {

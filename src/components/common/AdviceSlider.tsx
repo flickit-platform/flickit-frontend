@@ -1,12 +1,11 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { getMaturityLevelColors } from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { Typography } from "@mui/material";
-import { styles } from "@styles";
 const AdviceSlider = (props: any) => {
   const {
     defaultValue,
