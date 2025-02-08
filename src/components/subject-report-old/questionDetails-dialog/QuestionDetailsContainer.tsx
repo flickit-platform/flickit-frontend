@@ -57,6 +57,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const renderNavigation = () => (
     <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
       <Button
+        data-testid = "question-modal-previous-question"
         onClick={onPreviousQuestion}
         disabled={index - 1 < 0}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
