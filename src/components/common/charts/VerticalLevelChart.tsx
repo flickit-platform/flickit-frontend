@@ -6,6 +6,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { TStatus } from "@types";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { t } from "i18next";
 
 interface IVerticalLevelChartProps extends BoxProps {
   loading?: boolean;
@@ -46,7 +47,7 @@ const VerticalLevelChart = (props: IVerticalLevelChartProps) => {
             borderBottom: loading
               ? undefined
               : `2px solid ${colorPallet[ml - 1]}`,
-            fontFamily: languageDetector(status)
+            fontFamily: languageDetector(t(status ?? ""))
               ? farsiFontFamily
               : primaryFontFamily,
           }}

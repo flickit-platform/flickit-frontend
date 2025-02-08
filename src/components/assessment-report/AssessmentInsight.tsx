@@ -20,7 +20,6 @@ import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
-import firstCharDetector from "@utils/firstCharDetector";
 import languageDetector from "@/utils/languageDetector";
 import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@/utils/useQuery";
@@ -143,7 +142,7 @@ export const AssessmentInsight = () => {
                 loading={InitAssessmentInsight.loading}
                 size="small"
               >
-                <Trans i18nKey={"regenerate"} />
+                <Trans i18nKey={!insight ? "generate" : "regenerate"} />
               </LoadingButton>
             )}
           </Box>
@@ -157,7 +156,7 @@ export const AssessmentInsight = () => {
           />
           {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
-              {theme.direction == "rtl"
+              {languageDetector(insight)
                 ? formatDate(
                     format(
                       new Date(
@@ -397,7 +396,7 @@ const OnHoverRichEditor = (props: any) => {
         >
           <Typography
             sx={{
-              textAlign: firstCharDetector(data?.replace(/<[^>]*>/g, ""))
+              textAlign: languageDetector(data?.replace(/<[^>]*>/g, ""))
                 ? "right"
                 : "left",
               fontFamily: languageDetector(data)

@@ -114,7 +114,7 @@ const AdviceSlider = (props: any) => {
           flexDirection={"column"}
           marginTop={"-5px"}
           width={"92%"}
-          ml={"1.5%"}
+          ml={"4%"}
           mr={"4%"}
           mt={"-10px"}
         >
@@ -142,7 +142,7 @@ const AdviceSlider = (props: any) => {
                 ((defaultValue - 1) * 99) /
                 (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
               }%`,
-              ml: "-25px",
+              marginInlineStart: "-25px",
               mt: "-5px",
               whiteSpace: "nowrap",
               fontSize: ".75rem",
