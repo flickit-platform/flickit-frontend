@@ -53,7 +53,7 @@ type reportData = {
 };
 
 const AssessmentExportContainer = () => {
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", spaceId = "" } = useParams();
   const { service } = useServiceContext();
 
   const dialogProps = useDialog();
@@ -154,7 +154,7 @@ const AssessmentExportContainer = () => {
                   <IconButton
                     color={"primary"}
                     component={Link}
-                    to={permissions.canViewDashboard ? `./../dashboard` : "/"}
+                    to={permissions.canViewDashboard ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/` : "/"}
                   >
                     <ArrowForward sx={{...theme.typography.headlineMedium}} />
                   </IconButton>

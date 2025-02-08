@@ -32,9 +32,8 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
 
       if (location.pathname.includes("html-document")) {
         const space = location.pathname.split("/")[1];
-        const page = location.pathname.split("/")[3];
         const id = location.pathname.split("/")[4];
-        window.location.href = `/${space}/assessments/${page}/${id}/graphical-report/`;
+        window.location.href = `/${space}/assessments/${id}/graphical-report/`;
       }
 
       const hasRedirected = localStorage.getItem("hasRedirected");
