@@ -35,7 +35,6 @@ export const SubjectInsight = (props: ISubjectInsight) => {
 
   useEffect(() => {
     fetchAssessment();
-    console.log(editable);
   }, [subjectId, service, editable]);
 
   return (
