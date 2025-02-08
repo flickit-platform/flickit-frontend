@@ -102,7 +102,7 @@ const CustomChip: React.FC<{
         styles={{ color: iconColor, px: 2, width: readOnly ? "14px" : "20px" }}
       />
     ) : (
-      <AttachMoneyOutlinedIcon sx={{ fontSize: "10px" }} />
+      <AttachMoneyOutlinedIcon fontSize="small" />
     );
 
   return (

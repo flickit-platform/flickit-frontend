@@ -25,6 +25,7 @@ export const AssessmentReportNarrator = ({
   setIsWritingAdvice,
   setEmptyState,
   setAIGenerated,
+  fetchAdviceNarration
 }: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -96,7 +97,7 @@ export const AssessmentReportNarrator = ({
           <OnHoverRichEditor
             data={aboutSection?.narration ? aboutSection?.narration : ""}
             editable={editable}
-            infoQuery={fetchAssessment}
+            infoQuery={fetchAdviceNarration.query}
             onEditing={onEditing}
             setEmptyState={setEmptyState}
             setIsAIGenerated={setIsAIGenerated}

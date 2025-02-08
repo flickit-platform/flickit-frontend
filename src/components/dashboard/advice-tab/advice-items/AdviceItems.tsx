@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import EmptyAdviceList from "@components/dashboard/advice-tab/advice-items/EmptyAdviceItems";
-import QueryData from "@common/QueryData";
 import { LoadingSkeletonKitCard } from "@common/loadings/LoadingSkeletonKitCard";
 import AdviceItemsAccordion from "./AdviceItemsAccordions";
 import { Box, Button, Divider, Link, Typography } from "@mui/material";
@@ -13,6 +12,7 @@ import toastError from "@utils/toastError";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import AdviceListNewForm from "./AdviceListNewForm";
+import QueryData from "@/components/common/QueryData";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
@@ -22,7 +22,7 @@ const AdviceItems = () => {
   const [errormessage, setErrorMessage] = useState({});
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
 
-  const queryData = useQuery<any>({
+  const fetchAdviceItems = useQuery<any>({
     service: (args, config) =>
       service.fetchAdviceItems({ assessmentId, page, size: 50 }, config),
     toastError: false,
@@ -34,7 +34,7 @@ const AdviceItems = () => {
     runOnMount: false,
   });
 
-  const { data } = queryData;
+  const { data } = fetchAdviceItems;
   const totalItems = data?.total || 0;
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const AdviceItems = () => {
 
   useEffect(() => {
     if (page > 0) {
-      queryData.query();
+      fetchAdviceItems.query();
     }
   }, [page]);
 
@@ -139,7 +139,7 @@ const AdviceItems = () => {
         return;
       } else {
         await postAdviceItem.query().then((res) => {
-          queryData.query();
+          fetchAdviceItems.query();
           setDisplayedItems([]);
         });
         removeDescriptionAdvice.current = true;
@@ -160,7 +160,7 @@ const AdviceItems = () => {
   };
   return (
     <QueryData
-      {...queryData}
+      {...fetchAdviceItems}
       renderLoading={() => <LoadingSkeletonKitCard />}
       render={() => (
         <Grid container>
@@ -223,7 +223,7 @@ const AdviceItems = () => {
                   items={displayedItems}
                   onDelete={handleDeleteAdviceItem}
                   setDisplayedItems={setDisplayedItems}
-                  query={queryData}
+                  query={fetchAdviceItems}
                   readOnly={false}
                 />
               </Box>

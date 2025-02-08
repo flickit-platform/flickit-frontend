@@ -7,7 +7,6 @@ import EmptyAdvice from "@assets/svg/lampComment.svg";
 import StarsAdvice from "@assets/svg/Stars.svg";
 
 interface EmptyStateProps {
-  adviceResult: boolean;
   isWritingAdvice: boolean;
   permissions: { createAdvice: boolean } | null;
   setIsWritingAdvice: (value: boolean) => void;
@@ -16,7 +15,6 @@ interface EmptyStateProps {
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
-  adviceResult,
   isWritingAdvice,
   permissions,
   setIsWritingAdvice,
@@ -27,10 +25,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({
     <Box
       sx={{
         borderRadius: "12px",
-        border: `${adviceResult || isWritingAdvice ? "none" : "1px solid #9DA7B3"}`,
+        border: `${isWritingAdvice ? "none" : "1px solid #9DA7B3"}`,
         p: 6,
         margin: "0 auto",
-        display: `${adviceResult || isWritingAdvice ? "none" : ""}`,
+        display: `${isWritingAdvice ? "none" : ""}`,
         position: "relative",
         background: "radial-gradient(circle, #2466A8, #1B4D7E)",
       }}
@@ -91,7 +89,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       {permissions?.createAdvice && (
         <Box
           sx={{
-            display: `${adviceResult ? "none" : "flex"}`,
+            display: "flex",
             justifyContent: "center",
             alignItems: "center",
             mt: 3,

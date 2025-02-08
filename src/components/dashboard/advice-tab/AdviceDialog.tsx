@@ -10,24 +10,93 @@ import { styles } from "@/config/styles";
 import Setting from "@assets/svg/setting.svg";
 import AdviceSlider from "@/components/common/AdviceSlider";
 import { theme } from "@/config/theme";
+import { useEffect, useState } from "react";
+import toastError from "@/utils/toastError";
+import { ICustomError } from "@/utils/CustomError";
+import { useQuery } from "@/utils/useQuery";
+import { ISubjectReportModel } from "@/types";
+import { useServiceContext } from "@/providers/ServiceProvider";
+import { useParams } from "react-router-dom";
+import AdviceQuestionTable from "./AdviceQuestionTable";
 
 const AdviceDialog = ({
   open,
   handleClose,
   subjects,
-  target,
-  setTarget,
   filteredMaturityLevels,
-  createAdvice,
-  loading,
+  permissions,
+  fetchAdviceNarration,
+  setAIGenerated
 }: any) => {
+  const [adviceResult, setAdviceResult] = useState<any>([]);
+  const [step, setStep] = useState<number>(1); // Step state
+  const { assessmentId = "" } = useParams();
+  const { service } = useServiceContext();
+  const [target, setTarget] = useState<any>([]);
+
+  const createAdviceQueryData = useQuery<ISubjectReportModel>({
+    service: (args, config) => service.createAdvice(args, config),
+    runOnMount: false,
+  });
+
+  const createAINarrationQueryData = useQuery<ISubjectReportModel>({
+    service: (args, config) => service.createAINarration(args, config),
+    runOnMount: false,
+  });
+
+  useEffect(() => {
+    setAdviceResult([]);
+    setStep(1);
+  }, [open]);
+
+  const createAdvice = async () => {
+    try {
+      if (target) {
+        const data = await createAdviceQueryData.query({
+          assessmentId: assessmentId,
+          attributeLevelTargets: target,
+        });
+        setAdviceResult(data?.items);
+        setStep(2);
+      }
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
+  const generateAdviceViaAI = async () => {
+    try {
+      if (target) {
+        await createAINarrationQueryData.query({
+          assessmentId: assessmentId,
+          attributeLevelTargets: target,
+          adviceListItems: adviceResult,
+        });
+        setAdviceResult(null);
+        fetchAdviceNarration.query();
+        setAIGenerated(true)
+        handleClose();
+      }
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
+
+  const handleBack = () => {
+    if (step === 2) {
+      setStep(1); 
+    }
+  };
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       fullWidth
       maxWidth="md"
-      fullScreen={false} // Pass as needed
+      fullScreen={false}
     >
       <DialogTitle sx={{ ...styles.centerV }}>
         <>
@@ -56,8 +125,8 @@ const AdviceDialog = ({
           marginTop: "-8px",
         }}
       >
-        <Typography variant="titleMedium" fontWeight={400} textAlign="left">
-          <Trans i18nKey="whichAttYouWant" />
+        <Typography variant="titleMedium" fontWeight={400}>
+          <Trans i18nKey={step === 1 ? "whichAttYouWant" : "reviewAdvice"} />
         </Typography>
       </Box>
 
@@ -65,7 +134,7 @@ const AdviceDialog = ({
         sx={{
           padding: "unset",
           background: "#fff",
-          overflowX: "hidden",
+          overflow: "hidden",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -85,12 +154,14 @@ const AdviceDialog = ({
         >
           <Box
             mt={2}
+            px={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
               background: "#fff",
               maxHeight: "60vh",
               overflow: "auto",
               overflowX: "hidden",
+              display: step === 1 ? "block" : "none",
             }}
           >
             {subjects.map((subject: any) =>
@@ -109,6 +180,25 @@ const AdviceDialog = ({
             )}
           </Box>
           <Box
+            mt={2}
+            sx={{
+              borderRadius: { xs: 0, sm: "0 0 12px 12px" },
+              background: "#fff",
+              maxHeight: "70vh",
+              overflow: "hidden",
+              overflowX: "hidden",
+              display: step === 2 ? "block" : "none",
+            }}
+          >
+            <AdviceQuestionTable
+              adviceResult={adviceResult}
+              setAdviceResult={setAdviceResult}
+              handleClose={handleClose}
+              target={target}
+              permissions={permissions}
+            />
+          </Box>
+          <Box
             sx={{
               width: "100%",
               display: "flex",
@@ -117,6 +207,11 @@ const AdviceDialog = ({
               justifyContent: "flex-end",
             }}
           >
+            {step === 2 && (
+              <Button onClick={handleBack} sx={{ mr: "auto" }} variant="outlined">
+                <Trans i18nKey="back" />
+              </Button>
+            )}
             <Button onClick={handleClose}>
               <Trans i18nKey="cancel" />
             </Button>
@@ -124,10 +219,14 @@ const AdviceDialog = ({
             <LoadingButton
               variant="contained"
               color="primary"
-              onClick={createAdvice}
-              loading={loading}
+              onClick={step === 1 ? createAdvice : generateAdviceViaAI}
+              loading={
+                step === 1
+                  ? createAdviceQueryData.loading
+                  : createAINarrationQueryData.loading
+              }
             >
-              <Trans i18nKey="next" />
+              <Trans i18nKey={step === 1 ? "continue" : "finish"} />
             </LoadingButton>
           </Box>
         </Box>
