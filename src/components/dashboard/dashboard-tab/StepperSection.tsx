@@ -417,7 +417,7 @@ const StepBox = (props: IStepBox) => {
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"providingAdvices"} />
+            <Trans i18nKey={"providingAdvice"} />
           </Typography>
         )}
         {report && (
