@@ -186,7 +186,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {subjects.map((subject, index) => (
+            {subjects?.map((subject, index) => (
               <React.Fragment key={subject.id}>
                 <TableRow
                   sx={{ background: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}

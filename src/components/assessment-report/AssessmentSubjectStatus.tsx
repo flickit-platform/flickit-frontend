@@ -44,7 +44,7 @@ export const AssessmentSubjectStatus = (props: IAssessmentSubjectStatus) => {
         overflow="auto"
         paddingX={2}
       >
-        {subjects.map((element: any) => {
+        {subjects?.map((element: any) => {
           return (
             <div key={element.id}>
               <Box

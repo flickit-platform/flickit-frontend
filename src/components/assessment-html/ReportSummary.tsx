@@ -135,7 +135,7 @@ const Section = ({ title, children }: any) => (
 
 const TopicsList = ({ data }: any) => (
   <Box>
-    {data?.subjects.map((subject: any, index: any) => (
+    {data?.subjects?.map((subject: any, index: any) => (
       <Box key={index} sx={{ marginBottom: "16px" }}>
         <Typography
           sx={{

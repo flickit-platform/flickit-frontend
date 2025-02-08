@@ -1,11 +1,11 @@
 import { t } from "i18next";
 import useDocumentTitle from "@utils/useDocumentTitle";
-import AdviceTab from "@components/dashboard/advice-tab/adviceTab";
+import AssessmentAdviceContainer from "@/components/dashboard/advice-tab/AssessmentAdviceContainer";
 
 const AdvicesScreen = () => {
     useDocumentTitle(`${t("advices")}`);
 
-     return <AdviceTab />;
+     return <AssessmentAdviceContainer />;
 };
 
 export default AdvicesScreen;
