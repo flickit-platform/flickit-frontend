@@ -152,10 +152,11 @@ const AssessmentExportContainer = () => {
                   }}
                 >
                   <IconButton
+                    color={"primary"}
                     component={Link}
                     to={permissions.canViewDashboard ? `./../dashboard` : "/"}
                   >
-                    <ArrowForward />
+                    <ArrowForward sx={{...theme.typography.headlineMedium}} />
                   </IconButton>
                   {t("assessmentReport", {
                     lng: "fa",
