@@ -308,6 +308,11 @@ export const AssessmentSettingMemberBox = (props: {
   setChangeData?: any;
   changeData?: any;
   inviteesMemberList: any;
+  totalUser: number;
+  page: number;
+  handleChangePage: (event: any, newPage: any) => void;
+  rowsPerPage: number;
+  handleChangeRowsPerPage: (event: any) => void;
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -319,23 +324,17 @@ export const AssessmentSettingMemberBox = (props: {
     openRemoveModal,
     changeData,
     inviteesMemberList,
+    totalUser,
+    page,
+    handleChangePage,
+    rowsPerPage,
+    handleChangeRowsPerPage,
   } = props;
 
   useEffect(() => {
     inviteesMemberList.query();
   }, [changeData]);
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
   interface Column {
     id: "displayName" | "email" | "role";
     label: string;
@@ -668,7 +667,7 @@ export const AssessmentSettingMemberBox = (props: {
         </TableContainer>
         <TablePagination
           component="div"
-          count={10}
+          count={totalUser}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}

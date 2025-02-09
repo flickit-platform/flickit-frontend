@@ -274,10 +274,16 @@ export const createService = (
       return axios.delete(`/api/v1/space-invitations/${inviteId}/`, config);
     },
     fetchSpaceMembers(
-      { spaceId }: { spaceId: string },
+      { spaceId, size, page }: { spaceId: string,size?: number, page?: number },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(`/api/v1/spaces/${spaceId}/members/`, config);
+      return axios.get(`/api/v1/spaces/${spaceId}/members/`, {
+        ...(config ?? {}),
+        params:{
+          size,
+          page
+        }
+      });
     },
     fetchSpaceMembersInvitees(
       { spaceId }: { spaceId: string },
@@ -349,10 +355,16 @@ export const createService = (
       return axios.get(`/api/v1/assessment-user-roles/`, config);
     },
     fetchAssessmentMembers(
-      { assessmentId }: { assessmentId: string },
+      { assessmentId, page, size  }: { assessmentId: string, page?: number, size?: number },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(`/api/v1/assessments/${assessmentId}/users`, config);
+      return axios.get(`/api/v1/assessments/${assessmentId}/users`, {
+        ...(config ?? {}),
+        params: {
+          page: page,
+          size: size,
+        },
+      });
     },
     addRoleMember(
       args: { assessmentId: string; userId: string; roleId: number },

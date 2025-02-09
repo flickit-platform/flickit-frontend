@@ -41,7 +41,6 @@ export enum EUserType {
 const AddMemberDialog = (props: {
   expanded: boolean;
   onClose: () => void;
-  listOfUser: any;
   setChangeData?: any;
   cancelText: any;
   confirmText: any;
@@ -55,7 +54,6 @@ const AddMemberDialog = (props: {
     confirmText,
     setChangeData,
     listOfRoles = [],
-    listOfUser,
     assessmentId,
   } = props;
 
@@ -75,7 +73,13 @@ const AddMemberDialog = (props: {
   });
 
   const spaceMembersQueryData = useQuery({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId }, config),
+    service: (args, config) => service.fetchSpaceMembers({ spaceId, page:0, size: 100 }, config),
+  });
+  const fetchAssessmentMembers = useQuery({
+    service: (args , config) =>
+        service.fetchAssessmentMembers(args, config),
+    toastError: false,
+    toastErrorOptions: { filterByStatus: [404] },
   });
 
   const addRoleMemberQueryData = useQuery({
@@ -106,12 +110,13 @@ const AddMemberDialog = (props: {
       try {
         setAddedEmailType(EUserType.DEFAULT);
         const { data } = await spaceMembersQueryData;
+        const { items: member } = await fetchAssessmentMembers.query({ assessmentId, page:0, size: 100 });
         if (data) {
           const { items } = data;
-          const filtredItems = items.filter((item: any) =>
-            listOfUser.some((userListItem: any) => item.id === userListItem.id),
+          const filteredItem = items.filter((item: any) =>
+              member.some((userListItem: any) => item.id === userListItem.id),
           );
-          setMemberOfSpace(filtredItems);
+          setMemberOfSpace(filteredItem);
         }
       } catch (e) {
         const err = e as ICustomError;
@@ -421,7 +426,7 @@ const EmailField = ({
   const { service } = useServiceContext();
   const { spaceId = "" } = useParams();
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId }, config),
+    service: (args, config) => service.fetchSpaceMembers({ spaceId, page:0 , size: 100 }, config),
     accessor: "items",
   });
   const loadUserByEmail = useQuery({
