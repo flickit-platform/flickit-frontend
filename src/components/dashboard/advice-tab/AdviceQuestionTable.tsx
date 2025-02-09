@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
-import { primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { Typography } from "@mui/material";
 import CustomTablePagination from "@components/common/CustomTablePagination";
@@ -128,7 +128,15 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                 <Tooltip
                   title={question?.title.length > 100 ? question?.title : ""}
                 >
-                  <Typography variant="semiBoldMedium" textAlign="center">
+                  <Typography
+                    variant="semiBoldMedium"
+                    textAlign="center"
+                    sx={{
+                      fontFamily: languageDetector(question?.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                  >
                     {question?.title}
                   </Typography>
                 </Tooltip>
@@ -141,6 +149,9 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                   textAlign: "center",
                   fontWeight: "300",
                   color: "#0A2342",
+                  fontFamily: languageDetector(answeredOption.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 }}
               >
                 {answeredOption &&
@@ -155,6 +166,9 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                   fontWeight: "300",
                   color: "#0A2342",
                   fontSize: "14px",
+                  fontFamily: languageDetector(recommendedOption.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 }}
               >
                 {recommendedOption &&
@@ -182,7 +196,9 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                       borderRadius: "8px",
                       m: "4px",
                       textAlign: "center",
-                      fontFamily: `${languageDetector(attribute.title) ? "Vazirmatn" : primaryFontFamily}`,
+                      fontFamily: languageDetector(attribute.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
                     }}
                   >
                     {attribute.title}
@@ -194,6 +210,11 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                   variant="labelMedium"
                   component="div"
                   color="primary"
+                  sx={{
+                    fontFamily: languageDetector(questionnaire.title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
                 >
                   {questionnaire.title}
                 </Typography>

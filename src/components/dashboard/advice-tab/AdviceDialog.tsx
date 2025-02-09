@@ -26,7 +26,6 @@ const AdviceDialog = ({
   filteredMaturityLevels,
   permissions,
   fetchAdviceNarration,
-  setAIGenerated,
 }: any) => {
   const [adviceResult, setAdviceResult] = useState<any>([]);
   const [step, setStep] = useState<number>(1); // Step state
