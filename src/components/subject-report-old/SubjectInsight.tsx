@@ -61,6 +61,8 @@ export const SubjectInsight = (props: ISubjectInsight) => {
             data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            updateInsight={service.updateSubjectInsight}
+            updateInsightParams={subjectId}
             placeholder={t("writeHere", {
               title: t("insight").toLowerCase(),
             })}
@@ -79,7 +81,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                 ")"}
             </Typography>
           )}
-          {!isApproved && insight && (
+          {(!isApproved || (!insight?.isValid && insight)) && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{

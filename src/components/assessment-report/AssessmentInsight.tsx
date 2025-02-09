@@ -124,7 +124,7 @@ export const AssessmentInsight = () => {
               justifyContent: "end",
             }}
           >
-            {!isApproved && (
+            {(!isApproved || (!insight?.isValid && insight)) && editable && (
               <LoadingButton
                 variant={"contained"}
                 onClick={(event) => ApproveInsight(event)}
@@ -152,6 +152,7 @@ export const AssessmentInsight = () => {
             data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            updateInsight={service.updateAssessmentInsight}
             placeholder={t("writeHere", {
               title: t("insight").toLowerCase(),
             })}
@@ -186,7 +187,7 @@ export const AssessmentInsight = () => {
                   ")"}
             </Typography>
           )}
-          {!isApproved && insight && (
+          {(!isApproved || (!insight?.isValid && insight)) && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{
@@ -247,12 +248,12 @@ export const AssessmentInsight = () => {
 };
 
 export const OnHoverRichEditor = (props: any) => {
-  const { data, editable, infoQuery } = props;
+  const { data, editable, infoQuery, updateInsight, updateInsightParams } =
+    props;
   const abortController = useRef(new AbortController());
   const [isHovering, setIsHovering] = useState(false);
   const [show, setShow] = useState(false);
   const { assessmentId = "" } = useParams();
-  const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
   const [tempData, setTempData] = useState("");
 
@@ -271,8 +272,12 @@ export const OnHoverRichEditor = (props: any) => {
   const onSubmit = async (data: any, event: any) => {
     event.preventDefault();
     try {
-      await service.updateAssessmentInsight(
-        { assessmentId, data: { insight: data.insight } },
+      await updateInsight(
+        {
+          assessmentId,
+          data: { insight: data.insight },
+          subjectId: updateInsightParams,
+        },
         { signal: abortController.current.signal },
       );
       await infoQuery();
