@@ -21,7 +21,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
 import { LoadingButton } from "@mui/lab";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AlertBox from "@/components/common/AlertBox";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
@@ -32,7 +32,6 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
 }
 
 const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
-  const navigate = useNavigate();
 
   const {
     onClose: closeDialog,
@@ -55,6 +54,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const renderNavigation = () => (
     <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
       <Button
+        data-testid = "question-modal-previous-question"
         onClick={onPreviousQuestion}
         disabled={index - 1 < 0}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
@@ -74,6 +74,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Typography>
       </Button>
       <Button
+        data-testid = "question-modal-next-question"
         onClick={onNextQuestion}
         disabled={index + 2 > questionsInfo?.length}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
@@ -94,6 +95,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const renderQuestionDetails = () => (
     <Box sx={{ ...styles.centerCV, gap: 2 }}>
       <Chip
+        data-testid={"question-detail-questionnaire-title"}
         label={questionInfo?.questionnaire?.title}
         sx={{
           backgroundColor: generateColorFromString(
@@ -118,6 +120,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             : primaryFontFamily,
           color: "#2B333B",
         }}
+        data-testid={"question-detail-title"}
       >
         {questionInfo?.question?.title}
       </Typography>
