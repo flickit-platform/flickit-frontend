@@ -3,33 +3,27 @@ import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import CancelRounded from "@mui/icons-material/CancelRounded";
-import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
-import EditRounded from "@mui/icons-material/EditRounded";
+import { useEffect, useState } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import FormProviderWithForm from "../common/FormProviderWithForm";
-import RichEditorField from "../common/fields/RichEditorField";
-import { ICustomError } from "@/utils/CustomError";
-import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { theme } from "@/config/theme";
 import { t } from "i18next";
-import languageDetector from "@utils/languageDetector";
+import { OnHoverRichEditor } from "../assessment-report/AssessmentInsight";
 
 interface ISubjectInsight {
   AssessmentLoading: boolean;
   fetchAssessment: () => void;
   editable: boolean;
   insight: any;
+  isSystemic: any;
 }
 
 export const SubjectInsight = (props: ISubjectInsight) => {
-  const { AssessmentLoading, fetchAssessment, editable, insight } = props;
+  const { AssessmentLoading, fetchAssessment, editable, insight, isSystemic } =
+    props;
   const { service } = useServiceContext();
   const { subjectId = "" } = useParams();
 
@@ -78,7 +72,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                 ")"}
             </Typography>
           )}
-          {editable && insight && !insight?.isValid && (
+          {((!insight?.isValid && insight) || isSystemic) && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{
@@ -98,7 +92,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                     fontWeight: "bold",
                   }}
                 >
-                  <Trans i18nKey={"outdated"} />
+                  <Trans i18nKey={isSystemic ? "note" : "outdated"} />
                 </Typography>
               </Box>
               <Box
@@ -123,7 +117,11 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                   fontWeight={400}
                   textAlign="left"
                 >
-                  <Trans i18nKey="invalidInsight" />
+                  <Trans
+                    i18nKey={
+                      isSystemic ? "defaultInsightTemplate" : "invalidInsight"
+                    }
+                  />
                 </Typography>
               </Box>
             </Box>
@@ -134,185 +132,185 @@ export const SubjectInsight = (props: ISubjectInsight) => {
   );
 };
 
-const OnHoverRichEditor = (props: any) => {
-  const { data, editable, infoQuery } = props;
-  const abortController = useRef(new AbortController());
-  const [isHovering, setIsHovering] = useState(false);
-  const [show, setShow] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [error, setError] = useState<any>({});
-  const { assessmentId = "", subjectId } = useParams();
-  const { service } = useServiceContext();
-  const formMethods = useForm({ shouldUnregister: true });
+// const OnHoverRichEditor = (props: any) => {
+//   const { data, editable, infoQuery } = props;
+//   const abortController = useRef(new AbortController());
+//   const [isHovering, setIsHovering] = useState(false);
+//   const [show, setShow] = useState(false);
+//   const [hasError, setHasError] = useState(false);
+//   const [error, setError] = useState<any>({});
+//   const { assessmentId = "", subjectId } = useParams();
+//   const { service } = useServiceContext();
+//   const formMethods = useForm({ shouldUnregister: true });
 
-  const handleMouseOver = () => {
-    editable && setIsHovering(true);
-  };
+//   const handleMouseOver = () => {
+//     editable && setIsHovering(true);
+//   };
 
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
+//   const handleMouseOut = () => {
+//     setIsHovering(false);
+//   };
 
-  const handleCancel = () => {
-    setShow(false);
-    setError({});
-    setHasError(false);
-  };
+//   const handleCancel = () => {
+//     setShow(false);
+//     setError({});
+//     setHasError(false);
+//   };
 
-  const onSubmit = async (data: any, event: any) => {
-    event.preventDefault();
-    try {
-      await service.updateSubjectInsight(
-        { assessmentId, data: { insight: data.insight }, subjectId },
-        { signal: abortController.current.signal },
-      );
-      await infoQuery();
-      setShow(false);
-    } catch (e) {
-      const err = e as ICustomError;
-      setError(err);
-      setHasError(true);
-    }
-  };
+//   const onSubmit = async (data: any, event: any) => {
+//     event.preventDefault();
+//     try {
+//       await service.updateSubjectInsight(
+//         { assessmentId, data: { insight: data.insight }, subjectId },
+//         { signal: abortController.current.signal },
+//       );
+//       await infoQuery();
+//       setShow(false);
+//     } catch (e) {
+//       const err = e as ICustomError;
+//       setError(err);
+//       setHasError(true);
+//     }
+//   };
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        height: "100%",
-        direction: languageDetector(data) ? "rtl" : "ltr",
-      }}
-    >
-      {editable && show ? (
-        <FormProviderWithForm
-          formMethods={formMethods}
-          style={{ height: "100%", width: "100%" }}
-        >
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              height: "100%",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <RichEditorField
-              name="insight"
-              label={<Box></Box>}
-              disable_label={true}
-              required={true}
-              defaultValue={data || ""}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <IconButton
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(data)
-                    ? "8px 0 0 0"
-                    : "0 8px 0 0",
-                  height: "49%",
-                }}
-                onClick={formMethods.handleSubmit(onSubmit)}
-              >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
-              </IconButton>
-              <IconButton
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(data)
-                    ? "0 0 0 8px"
-                    : "0 0 8px 0",
-                  height: "49%",
-                }}
-                onClick={handleCancel}
-              >
-                <CancelRounded sx={{ color: "#fff" }} />
-              </IconButton>
-            </Box>
-            {hasError && (
-              <Typography color="#ba000d" variant="caption">
-                {error?.data?.about}
-              </Typography>
-            )}
-          </Box>
-        </FormProviderWithForm>
-      ) : (
-        <Box
-          sx={{
-            minHeight: "38px",
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            wordBreak: "break-word",
-            paddingInlineStart: isHovering ? 1 : 0,
-            paddingInlineEnd: isHovering ? 5 : 0,
-            border: "1px solid #fff",
-            "&:hover": {
-              border: editable ? "1px solid #1976d299" : "unset",
-              borderColor: editable ? theme.palette.primary.main : "unset",
-            },
-            position: "relative",
-          }}
-          onClick={() => setShow(!show)}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          <Typography
-            dangerouslySetInnerHTML={{
-              __html:
-                data ??
-                (editable
-                  ? t("writeHere", { title: t("insight").toLowerCase() })
-                  : t("unavailable")),
-            }}
-            sx={{
-              fontFamily: languageDetector(data)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            }}
-          />
-          {isHovering && editable && (
-            <IconButton
-              title="Edit"
-              sx={{
-                background: theme.palette.primary.main,
-                "&:hover": {
-                  background: theme.palette.primary.dark,
-                },
-                borderRadius: languageDetector(data)
-                  ? "8px 0 0 8px"
-                  : "0 8px 8px 0",
-                height: "100%",
-                position: "absolute",
-                right: languageDetector(data) ? "unset" : 0,
-                left: languageDetector(data) ? 0 : "unset",
-                top: 0,
-              }}
-              onClick={() => setShow(!show)}
-            >
-              <EditRounded sx={{ color: "#fff" }} />
-            </IconButton>
-          )}
-        </Box>
-      )}
-    </Box>
-  );
-};
+//   return (
+//     <Box
+//       sx={{
+//         display: "flex",
+//         alignItems: "center",
+//         height: "100%",
+//         direction: languageDetector(data) ? "rtl" : "ltr",
+//       }}
+//     >
+//       {editable && show ? (
+//         <FormProviderWithForm
+//           formMethods={formMethods}
+//           style={{ height: "100%", width: "100%" }}
+//         >
+//           <Box
+//             sx={{
+//               width: "100%",
+//               display: "flex",
+//               height: "100%",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//             }}
+//           >
+//             <RichEditorField
+//               name="insight"
+//               label={<Box></Box>}
+//               disable_label={true}
+//               required={true}
+//               defaultValue={data || ""}
+//             />
+//             <Box
+//               sx={{
+//                 display: "flex",
+//                 flexDirection: "column",
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//                 height: "100%",
+//               }}
+//             >
+//               <IconButton
+//                 sx={{
+//                   background: theme.palette.primary.main,
+//                   "&:hover": {
+//                     background: theme.palette.primary.dark,
+//                   },
+//                   borderRadius: languageDetector(data)
+//                     ? "8px 0 0 0"
+//                     : "0 8px 0 0",
+//                   height: "49%",
+//                 }}
+//                 onClick={formMethods.handleSubmit(onSubmit)}
+//               >
+//                 <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
+//               </IconButton>
+//               <IconButton
+//                 sx={{
+//                   background: theme.palette.primary.main,
+//                   "&:hover": {
+//                     background: theme.palette.primary.dark,
+//                   },
+//                   borderRadius: languageDetector(data)
+//                     ? "0 0 0 8px"
+//                     : "0 0 8px 0",
+//                   height: "49%",
+//                 }}
+//                 onClick={handleCancel}
+//               >
+//                 <CancelRounded sx={{ color: "#fff" }} />
+//               </IconButton>
+//             </Box>
+//             {hasError && (
+//               <Typography color="#ba000d" variant="caption">
+//                 {error?.data?.about}
+//               </Typography>
+//             )}
+//           </Box>
+//         </FormProviderWithForm>
+//       ) : (
+//         <Box
+//           sx={{
+//             minHeight: "38px",
+//             borderRadius: "8px",
+//             width: "100%",
+//             display: "flex",
+//             justifyContent: "space-between",
+//             alignItems: "center",
+//             wordBreak: "break-word",
+//             paddingInlineStart: isHovering ? 1 : 0,
+//             paddingInlineEnd: isHovering ? 5 : 0,
+//             border: "1px solid #fff",
+//             "&:hover": {
+//               border: editable ? "1px solid #1976d299" : "unset",
+//               borderColor: editable ? theme.palette.primary.main : "unset",
+//             },
+//             position: "relative",
+//           }}
+//           onClick={() => setShow(!show)}
+//           onMouseOver={handleMouseOver}
+//           onMouseOut={handleMouseOut}
+//         >
+//           <Typography
+//             dangerouslySetInnerHTML={{
+//               __html:
+//                 data ??
+//                 (editable
+//                   ? t("writeHere", { title: t("insight").toLowerCase() })
+//                   : t("unavailable")),
+//             }}
+//             sx={{
+//               fontFamily: languageDetector(data)
+//                 ? farsiFontFamily
+//                 : primaryFontFamily,
+//             }}
+//           />
+//           {isHovering && editable && (
+//             <IconButton
+//               title="Edit"
+//               sx={{
+//                 background: theme.palette.primary.main,
+//                 "&:hover": {
+//                   background: theme.palette.primary.dark,
+//                 },
+//                 borderRadius: languageDetector(data)
+//                   ? "8px 0 0 8px"
+//                   : "0 8px 8px 0",
+//                 height: "100%",
+//                 position: "absolute",
+//                 right: languageDetector(data) ? "unset" : 0,
+//                 left: languageDetector(data) ? 0 : "unset",
+//                 top: 0,
+//               }}
+//               onClick={() => setShow(!show)}
+//             >
+//               <EditRounded sx={{ color: "#fff" }} />
+//             </IconButton>
+//           )}
+//         </Box>
+//       )}
+//     </Box>
+//   );
+// };

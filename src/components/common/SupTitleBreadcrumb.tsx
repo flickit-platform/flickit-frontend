@@ -30,6 +30,7 @@ const SupTitleBreadcrumb = (
   props: ISupTitleBreadcrumbProps & BreadcrumbsProps,
 ) => {
   const { displayChip, mouseCursor = "auto", routes = [], ...rest } = props;
+  console.log(props)
   const theme = useTheme();
   return (
     <Breadcrumbs {...rest}>

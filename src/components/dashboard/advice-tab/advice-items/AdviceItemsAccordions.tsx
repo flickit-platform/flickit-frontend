@@ -48,9 +48,9 @@ const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
 
 const getPriorityColor = (priority: string) => {
   let color;
-  if (priority.toLowerCase() === "high") {
+  if (priority.toLowerCase() === t("high").toLowerCase()) {
     color = "#E72943";
-  } else if (priority.toLowerCase() === "low") {
+  } else if (priority.toLowerCase() === t("low").toLowerCase()) {
     color = "#3D4D5C80";
   } else {
     color = "primary";
@@ -58,20 +58,30 @@ const getPriorityColor = (priority: string) => {
   return color;
 };
 
-const getIconColors = (
-  icon: string,
-  colors: Record<string, keyof typeof COLORS>,
-) => COLORS[colors[icon.toLowerCase()] || "unknown"];
+const getIconColors = (level: string, type: string) => {
+  let obj;
+  if (
+    (level.toLowerCase() === t("high").toLowerCase() && type !== "cost") ||
+    (level.toLowerCase() === t("low").toLowerCase() && type === "cost")
+  ) {
+    obj = COLORS.primary;
+  } else if (
+    (level.toLowerCase() === t("high").toLowerCase() && type === "cost") ||
+    (level.toLowerCase() === t("low").toLowerCase() && type !== "cost")
+  ) {
+    obj = COLORS.error;
+  } else {
+    obj = COLORS.secondary;
+  }
+  return obj;
+};
 
 const getChipData = (
   type: "impact" | "cost",
   level: string,
   readOnly: boolean,
 ) => {
-  const priorityColor: any = getIconColors(
-    level,
-    type === "cost" ? ICON_COLORS : INVERSE_ICON_COLORS,
-  );
+  const priorityColor: any = getIconColors(level, type);
   const translatedLevel = t(level.toLowerCase(), readOnly ? { lng: "fa" } : {});
   const translatedType = t(type, readOnly ? { lng: "fa" } : {});
   const isFarsi = i18next.language === "fa" || readOnly;

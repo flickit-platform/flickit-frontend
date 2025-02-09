@@ -25,7 +25,7 @@ export const AssessmentReportNarrator = ({
   setIsWritingAdvice,
   setEmptyState,
   setAIGenerated,
-  fetchAdviceNarration
+  fetchAdviceNarration,
 }: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -157,10 +157,15 @@ export const OnHoverRichEditor = (props: any) => {
   const [isHovering, setIsHovering] = useState(false);
   const [show, setShow] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [tempData, setTempData] = useState("");
   const [error, setError] = useState<any>({});
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
+
+  useEffect(() => {
+    setTempData(formMethods.getValues().narration);
+  }, [formMethods.watch("narration")]);
 
   const handleMouseOver = () => {
     editable && setIsHovering(true);
@@ -204,7 +209,7 @@ export const OnHoverRichEditor = (props: any) => {
         display: "flex",
         alignItems: "center",
         width: "100%",
-        direction: languageDetector(data) ? "rtl" : "ltr",
+        direction: languageDetector(tempData || data) ? "rtl" : "ltr",
       }}
     >
       {editable && show ? (
@@ -214,7 +219,7 @@ export const OnHoverRichEditor = (props: any) => {
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
             <RichEditorField
@@ -239,7 +244,7 @@ export const OnHoverRichEditor = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data)
+                  borderRadius: languageDetector(tempData || data)
                     ? "8px 0 0 0"
                     : "0 8px 0 0",
                   height: "49%",
@@ -254,7 +259,7 @@ export const OnHoverRichEditor = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data)
+                  borderRadius: languageDetector(tempData || data)
                     ? "0 0 0 8px"
                     : "0 0 8px 0",
                   height: "49%",
@@ -282,8 +287,8 @@ export const OnHoverRichEditor = (props: any) => {
               justifyContent: "space-between",
               alignItems: "center",
               wordBreak: "break-word",
-              pr: languageDetector(data) ? 1 : 5,
-              pl: languageDetector(data) ? 5 : 1,
+              pr: languageDetector(tempData || data) ? 1 : 5,
+              pl: languageDetector(tempData || data) ? 5 : 1,
               border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
@@ -301,7 +306,7 @@ export const OnHoverRichEditor = (props: any) => {
             {data ? (
               <Typography
                 fontFamily={
-                  languageDetector(data) ? farsiFontFamily : primaryFontFamily
+                  languageDetector(tempData || data) ? farsiFontFamily : primaryFontFamily
                 }
                 dangerouslySetInnerHTML={{ __html: data }}
               />
@@ -318,13 +323,13 @@ export const OnHoverRichEditor = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data)
+                  borderRadius: languageDetector(tempData || data)
                     ? "8px 0 0 8px"
                     : "0 8px 8px 0",
                   height: "100%",
                   position: "absolute",
-                  right: languageDetector(data) ? "unset" : 0,
-                  left: languageDetector(data) ? 0 : "unset",
+                  right: languageDetector(tempData || data) ? "unset" : 0,
+                  left: languageDetector(tempData || data) ? 0 : "unset",
                   top: 0,
                 }}
                 onClick={() => {
