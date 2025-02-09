@@ -72,7 +72,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                 ")"}
             </Typography>
           )}
-          {((!insight?.isValid && insight) || isSystemic) && (
+          {!insight?.isValid && (insight || isSystemic) && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{
