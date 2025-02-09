@@ -21,7 +21,6 @@ export const defaultUserInfo = {
   id: "",
   email: "",
   subscriberHash: "",
-  // current_space: null,
 };
 
 const getAccessTokenFormStorage = () => {
@@ -44,9 +43,6 @@ export const AuthContext = createContext<IAuthContext>({
 });
 
 export const AuthProvider: FC<IAuthProviderProps> = ({ children }) => {
-  // const appDispatch = useAppDispatch();
-  // const navigate = useNavigate();
-
   const [state, dispatch] = useReducer(authReducer, {
     isAuthenticatedUser: false,
     accessToken: getAccessTokenFormStorage(),

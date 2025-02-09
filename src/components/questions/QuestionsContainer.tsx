@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   EAssessmentStatus,
   questionActions,
-  useQuestionContext,
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -70,11 +69,7 @@ export const QuestionsContainerC = (
         return (
           <Box sx={{ overflowX: "hidden" }}>
             <Box py={1}>
-              <QuestionsTitle
-                data={questionnaireData as IQuestionnaireModel}
-                isReview={isReview}
-                pathInfo={pathInfo}
-              />
+              <QuestionsTitle isReview={isReview} pathInfo={pathInfo} />
             </Box>
             <Box display="flex" justifyContent="center">
               {children}
@@ -111,7 +106,6 @@ export const useUpdateQuestionInfo = () => {
           issues: issues,
         }),
       );
-
     } catch (e) {
       console.error("Error fetching question issues:", e);
     }
@@ -207,12 +201,6 @@ export const useQuestions = () => {
       }
     }
   }, [questionIndex, questions.length, totalQuestions]);
-
-  // useEffect(() => {
-  //   if (assessmentStatus === EAssessmentStatus.DONE) {
-  //     loadMoreQuestions(page);
-  //   }
-  // }, [assessmentStatus]);
 
   return {
     questions,

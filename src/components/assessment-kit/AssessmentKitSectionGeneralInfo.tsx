@@ -212,12 +212,6 @@ const AssessmentKitSectionGeneralInfo = (
                     <Trans i18nKey={"free"} />
                   </Typography>
                 </Box>
-                {/* <OnHoverAutocompleteAsyncField
-                    data={tags}
-                    title={<Trans i18nKey="tags" />}
-                    infoQuery={fetchAssessmentKitInfoQuery.query}
-                    editable ={editable }
-                  /> */}
 
                 <Box
                   my={1.5}
@@ -540,7 +534,6 @@ const OnHoverInput = (props: any) => {
       config,
     ) => service.updateAssessmentKitStats(args, config),
     runOnMount: false,
-    // toastError: true,
   });
   const updateAssessmentKit = async () => {
     try {
@@ -854,7 +847,6 @@ const OnHoverVisibilityStatus = (props: any) => {
         <Box
           sx={{
             display: "flex",
-            // justifyContent: "space-between",
             width: "100%",
           }}
         >

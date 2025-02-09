@@ -11,7 +11,6 @@ import {
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
 import AssignmentTurnedInRoundedIcon from "@mui/icons-material/AssignmentTurnedInRounded";
-import { IQuestionnaireModel } from "@types";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
@@ -41,17 +40,13 @@ const itemNames = [
   },
 ];
 
-const QuestionsTitle = (props: {
-  data: IQuestionnaireModel;
-  isReview?: boolean;
-  pathInfo: any;
-}) => {
+const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   const { isReview, pathInfo } = props;
   const {
     questionsInfo: { total_number_of_questions },
     assessmentStatus,
   } = useQuestionContext();
-  const { questionIndex, page } = useParams();
+  const { questionIndex } = useParams();
   const isComplete = questionIndex === "completed";
   const { questionnaire } = pathInfo;
   const { config } = useConfigContext();
@@ -142,31 +137,6 @@ const QuestionsTitle = (props: {
                   allSelected
                 />
               )}
-
-            {/* {!isReview && (
-              <Button
-                disabled={isSubmitting}
-                component={Link}
-                to={isReview ? "./../.." : "./.."}
-                sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                }}
-                startIcon={<QuizRoundedIcon />}
-              >
-                <Trans i18nKey="selectAnotherQuestionnaire" />
-              </Button>
-            )}
-            {canFinishQuestionnaire && (
-              <Button
-                disabled={isSubmitting}
-                component={Link}
-                to={"./review"}
-                startIcon={<GradingRoundedIcon />}
-              >
-                <Trans i18nKey="review" />
-              </Button>
-            )} */}
           </Box>
         }
       >
@@ -176,13 +146,7 @@ const QuestionsTitle = (props: {
               display: "flex",
               flexDirection: theme.direction === "rtl" ? "row-reverse" : "row",
             }}
-          >
-            {/* {questionnaire?.title}
-            <div style={{ marginInline: 4 }}></div> */}
-            {/* <Title size="large">
-              <Trans i18nKey="review" />
-            </Title> */}
-          </div>
+          ></div>
         ) : (
           <>
             {assessmentStatus === EAssessmentStatus.DONE && (
@@ -196,7 +160,6 @@ const QuestionsTitle = (props: {
               />
             )}
             <Box display="block">
-              {/* {questionnaire?.title}{" "} */}
               {assessmentStatus === EAssessmentStatus.DONE ? (
                 <Typography
                   display="inline-flex"

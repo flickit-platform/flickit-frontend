@@ -215,34 +215,38 @@ const ReportTab = () => {
                             checked={published}
                             onChange={handlePublishChange}
                             size="small"
-                            disabled={Object.values(metadata).includes(null)}
+                            disabled={
+                              Object.values(metadata).includes(null) &&
+                              !published
+                            }
                             sx={{ cursor: "pointer" }}
                           />
                         </Box>
 
-                        {Object.values(metadata).includes(null) && (
-                          <Box
-                            sx={{
-                              background: "transparent",
-                            }}
-                          >
-                            <Typography
+                        {Object.values(metadata).includes(null) &&
+                          !published && (
+                            <Box
                               sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                ...theme.typography.semiBoldSmall,
-                                color: theme.palette.error.main,
-                                py: 1,
-                                px: 2,
-                                gap: 1,
+                                background: "transparent",
                               }}
                             >
-                              <ReportProblemOutlinedIcon fontSize={"small"} />
-                              <Trans i18nKey={"fillInAllRequired"} />
-                            </Typography>
-                          </Box>
-                        )}
+                              <Typography
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  ...theme.typography.semiBoldSmall,
+                                  color: theme.palette.error.main,
+                                  py: 1,
+                                  px: 2,
+                                  gap: 1,
+                                }}
+                              >
+                                <ReportProblemOutlinedIcon fontSize={"small"} />
+                                <Trans i18nKey={"fillInAllRequired"} />
+                              </Typography>
+                            </Box>
+                          )}
                       </Box>
                     </MainCard>
                   )}
@@ -330,8 +334,7 @@ const OnHoverInputReport = (props: any) => {
       const reportData = {
         [name]: data?.[name],
       };
-      // const res = await infoQuery(attributeId, assessmentId, data.title);
-      // if (Object.values(reportData)[0]) {
+
       const res = await patchUpdateReportFields.query({
         assessmentId,
         reportData,
@@ -339,7 +342,6 @@ const OnHoverInputReport = (props: any) => {
       infoQuery.query();
       res?.message && toast.success(res?.message);
       setShow(false);
-      // }
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
@@ -425,7 +427,6 @@ const OnHoverInputReport = (props: any) => {
                     <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
                   </IconButton>
                   <IconButton
-                    // edge="end"
                     sx={{
                       background: theme.palette.primary.main,
                       "&:hover": {

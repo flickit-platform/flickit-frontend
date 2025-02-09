@@ -165,8 +165,6 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       await postAnswerOptionsKit.query({ kitVersionId, data }).then(() => {
         fetchOptions.query();
       });
-      // await fetchOptions.query();
-
       setShowNewOptionForm(false);
       setNewOption({
         title: "",

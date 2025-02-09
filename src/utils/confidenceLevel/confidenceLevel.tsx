@@ -1,9 +1,7 @@
 import { lazy, Suspense, useMemo } from "react";
-import { colorPallet } from "./style";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import languageDetector from "../languageDetector";
-import { confidenceColor, maturityLevelColorMap } from "@/config/styles";
+import { confidenceColor } from "@/config/styles";
 
 interface IconfidenceLevelType {
   inputNumber: number | null | undefined;

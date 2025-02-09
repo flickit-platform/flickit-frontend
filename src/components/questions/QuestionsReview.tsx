@@ -5,10 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Title from "@common/Title";
-import {
-  setQuestionsInfo,
-  useQuestionContext,
-} from "@/providers/QuestionProvider";
+import { useQuestionContext } from "@/providers/QuestionProvider";
 import doneSvg from "@assets/svg/Done.svg";
 import noQuestionSvg from "@assets/svg/noQuestion.svg";
 import someQuestionSvg from "@assets/svg/someQuestion.svg";
@@ -17,13 +14,12 @@ import languageDetector from "@utils/languageDetector";
 import Rating from "@mui/material/Rating";
 import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUncheckedRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { primaryFontFamily, theme } from "@/config/theme";
 import { useQuestionnaire } from "../questionnaires/QuestionnaireContainer";
 import { toCamelCase } from "@common/makeCamelcaseString";
-import { IQuestionInfo } from "@/types";
 
 const QuestionsReview = () => {
   const { questionsInfo } = useQuestionContext();
@@ -310,7 +306,6 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
               component={Link}
               to={"./../../../insights/"}
               sx={{ fontSize: "1rem", display: isPermitted ? "" : "none" }}
-              // sx={{borderRadius:"32px"}}
             >
               <Trans i18nKey="insights" />
             </Button>
@@ -320,7 +315,6 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
               component={Link}
               to={"./../../../questionnaires"}
               sx={{ fontSize: "1rem" }}
-              // sx={{borderRadius:"32px"}}
             >
               <Trans i18nKey="chooseAnotherQuestionnaire" />
             </Button>

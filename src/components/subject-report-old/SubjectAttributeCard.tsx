@@ -407,7 +407,6 @@ export const AttributeStatusBarContainer = (props: any) => {
     <Box
       display={"flex"}
       sx={{
-        // ml: { xs: -1.5, sm: -3, md: -4 },
         flexDirection: { xs: "column", md: "row" },
       }}
     >
@@ -777,7 +776,7 @@ export const MaturityLevelDetailsBar = (props: any) => {
   );
 };
 
-const OnHoverInput = (props: any) => {
+export const OnHoverInput = (props: any) => {
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {

@@ -86,11 +86,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       >
         <Box>
           <Box flex={1}>
-            <Title
-              // sub={last_updated && `${(<Trans i18nKey={"lastUpdated"} />)} ${last_updated}`}
-              size="small"
-              fontWeight={"bold"}
-            >
+            <Title size="small" fontWeight={"bold"}>
               <Box
                 ref={mainBoxRef}
                 flex="1"
@@ -307,7 +303,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
         </Box>
         <Box display="flex" alignItems="end" justifyContent={"space-between"}>
           <Box>
-            {subjects.map((subject) => {
+            {subjects?.map((subject) => {
               const { title, id } = subject;
               return (
                 <Chip

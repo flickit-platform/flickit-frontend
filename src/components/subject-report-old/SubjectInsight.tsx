@@ -35,7 +35,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
 
   useEffect(() => {
     fetchAssessment();
-  }, [subjectId, service]);
+  }, [subjectId, service, editable]);
 
   return (
     <Box
@@ -54,12 +54,15 @@ export const SubjectInsight = (props: ISubjectInsight) => {
         >
           <CircularProgress />
         </Box>
-      ) : insight ? (
+      ) : (
         <>
           <OnHoverRichEditor
-            data={insight.insight}
+            data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            placeholder={t("writeHere", {
+              title: t("insight").toLowerCase(),
+            })}
           />
           {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
@@ -75,7 +78,7 @@ export const SubjectInsight = (props: ISubjectInsight) => {
                 ")"}
             </Typography>
           )}
-          {editable && !insight?.isValid && (
+          {editable && insight && !insight?.isValid && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{
@@ -126,10 +129,6 @@ export const SubjectInsight = (props: ISubjectInsight) => {
             </Box>
           )}
         </>
-      ) : (
-        <Typography variant="body2">
-          <Trans i18nKey="unavailable" />{" "}
-        </Typography>
       )}
     </Box>
   );
@@ -277,7 +276,13 @@ const OnHoverRichEditor = (props: any) => {
           onMouseOut={handleMouseOut}
         >
           <Typography
-            dangerouslySetInnerHTML={{ __html: data }}
+            dangerouslySetInnerHTML={{
+              __html:
+                data ??
+                (editable
+                  ? t("writeHere", { title: t("insight").toLowerCase() })
+                  : t("unavailable")),
+            }}
             sx={{
               fontFamily: languageDetector(data)
                 ? farsiFontFamily

@@ -38,7 +38,6 @@ const DashbordContainer = () => {
   });
 
   return (
-    // <PermissionControl error={[errorObject]}>
     <QueryBatchData
       queryBatchData={[fetchPathInfo]}
       renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
@@ -82,7 +81,7 @@ const DashbordContainer = () => {
                   selectedTab={selectedTab}
                 />
               </Grid>
-              <Grid container sm={12} xs={12}>
+              <Grid container>
                 <Grid item xs={12}>
                   {outlet}
                 </Grid>
@@ -92,7 +91,6 @@ const DashbordContainer = () => {
         );
       }}
     />
-    // </PermissionControl>
   );
 };
 export default DashbordContainer;

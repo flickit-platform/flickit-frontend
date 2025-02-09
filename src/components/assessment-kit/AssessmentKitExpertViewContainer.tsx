@@ -151,7 +151,7 @@ const AssessmentKitExpertViewContainer = () => {
                   dialogProps.openDialog({});
                 }}
               >
-                <Typography sx={{marginInlineEnd: 1}} variant="button">
+                <Typography sx={{ marginInlineEnd: 1 }} variant="button">
                   <Trans i18nKey="updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
@@ -163,7 +163,7 @@ const AssessmentKitExpertViewContainer = () => {
                 sx={{ ml: 2 }}
                 onClick={handleExport}
               >
-                <Typography sx={{marginInlineEnd: 1}} variant="button">
+                <Typography sx={{ marginInlineEnd: 1 }} variant="button">
                   <Trans i18nKey="exportDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
@@ -174,7 +174,7 @@ const AssessmentKitExpertViewContainer = () => {
                 sx={{ ml: 2 }}
                 onClick={handleDownload}
               >
-                <Typography sx={{marginInlineEnd: 1}} variant="button">
+                <Typography sx={{ marginInlineEnd: 1 }} variant="button">
                   <Trans i18nKey="downloadDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
@@ -335,31 +335,10 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
               >
                 {subject.index}.{subject.title}
               </Typography>
-              {/* <Typography
-                sx={{
-                  color: "text.secondary",
-                  position: "relative",
-                  mr: 2,
-                  maxWidth: { xs: "90px", md: "130px", lg: "320px" },
-                  display: { xs: "none", md: "block" },
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  transition: "opacity .2s ease",
-                  opacity: isExpanded ? 0 : 1,
-                }}
-              >
-                {subject.description}
-              </Typography> */}
             </AccordionSummary>
             <AccordionDetails>
               <Box p={1}>
                 <Grid container spacing={2} sx={{ mb: 1 }}>
-                  {/* <Grid item xs={12} sm={5} md={4} lg={3}>
-                    {subject.report_infos.map((info: any, index: number) => {
-                      return <InfoItem info={info} bg="white" key={index} />;
-                    })}
-                  </Grid> */}
                   <Grid item xs={12} sm={7} md={8} lg={9}>
                     <Box
                       display="flex"
@@ -431,21 +410,6 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                             >
                               {index + 1}.{item.title}
                             </Typography>
-                            {/* <Typography
-                            sx={{
-                              opacity: 0.9,
-                              marginLeft: isExpanded ? 0 : 5,
-                              marginTop: isExpanded ? 2 : 0,
-                              maxWidth: isExpanded
-                                ? undefined
-                                : { xs: "90px", md: "130px", lg: "320px" },
-                              display: { xs: "none", md: "block" },
-                              ...(isExpanded ? {} : styles.ellipsis),
-                            }}
-                            variant="body2"
-                          >
-                            {item.description}
-                          </Typography> */}
                           </Box>
                           <AssessmentKitQuestionsList
                             isExpanded={isExpanded}
@@ -563,7 +527,7 @@ const AssessmentKitQuestionnaires = (props: {
                   <Typography variant="body2">
                     <Trans i18nKey="relatedSubjects" />:
                   </Typography>
-                  {questionnaireDetails?.relatedSubjects.map(
+                  {questionnaireDetails?.relatedsubjects?.map(
                     (subject: string, index: number) => (
                       <Typography
                         variant="body2"
@@ -772,162 +736,6 @@ const AssessmentKitQuestionsList = (props: {
           </TabPanel>
         </TabContext>
       </Box>
-      {/* <Typography variant="h6" sx={{ opacity: 0.8 }} fontSize=".9rem">
-        <Trans i18nKey="questions" />
-        <span style={{ float: "right" }}>{questions.length}</span>
-      </Typography> */}
-      {/* <Box sx={{ overflowX: "auto" }}>
-        <Box
-          sx={{
-            minWidth: "580px",
-            marginTop: 6,
-            paddingInlineStart: { xs: 0, md: "30px" },
-            listStyle: "none",
-          }}
-          component="ol"
-        >
-          <AttributeDetails index={index} />
-          {questions.map((question: any, index: number) => {
-            const {
-              title,
-              options = [],
-              relatedAttributes = [],
-              impact,
-            } = question || {};
-            const hasRelatedAttributes = relatedAttributes.length > 0;
-            const hasImpact = impact !== null && impact !== undefined;
-            const gridColumns = hasRelatedAttributes || hasImpact ? 15 : 12;
-            if (title && questionsRef[title]) {
-              return null;
-            } else if (title && !questionsRef[title]) {
-              questionsRef[title] = true;
-            }
-            const dialogProps = useDialog();
-            return (
-              <li style={{ marginBottom: "12px" }} key={index}>
-                <Box display="flex" justifyContent={"space-between"} py={1}>
-                  <Grid container spacing={2} columns={12}>
-                    <Grid xs={12} item>
-                      <Typography
-                        variant="body1"
-                        fontWeight={"bold"}
-                        position="relative"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => {
-                          dialogProps.openDialog({});
-                        }}
-                      >
-                        {index === 0 && (
-                          <Typography
-                            sx={{
-                              position: "absolute",
-                              top: "-36px",
-                              pb: "2px",
-                              color: "#767676",
-                              display: "block",
-                              fontSize: "0.8rem",
-                              width: "100%",
-                              borderBottom: (t) =>
-                                `1px solid ${t.palette.primary.light}`,
-                            }}
-                            component="span"
-                          >
-                            <Trans i18nKey={"title"} />
-                          </Typography>
-                        )}
-                        {title}
-                      </Typography>
-                    </Grid> */}
-      {/* <Grid item xs={5}>
-                      <Box position={"relative"} minWidth="160px">
-                        {index === 0 && (
-                          <Typography
-                            sx={{
-                              position: "absolute",
-                              width: "100%",
-                              top: "-36px",
-                              pb: "2px",
-                              color: "#767676",
-                              borderBottom: (t) => `1px solid ${t.palette.warning.main}`,
-                            }}
-                            variant="subMedium"
-                          >
-                            <Trans i18nKey={"questionOptions"} />
-                          </Typography>
-                        )}
-                        <ul style={{ paddingInlineStart: "20px" }}>
-                          {options.map((option: string, index: number) => {
-                            return <li key={option}>{option}</li>;
-                          })}
-                        </ul>
-                      </Box>
-                    </Grid> */}
-      {/* {hasImpact && (
-                      <Grid item xs={2}>
-                        <Box position={"relative"}>
-                          {index === 0 && (
-                            <Typography
-                              sx={{
-                                width: "100%",
-                                position: "absolute",
-                                top: "-36px",
-                                pb: "2px",
-                                color: "#767676",
-                                borderBottom: (t) => `1px solid ${t.palette.secondary.dark}`,
-                              }}
-                              variant="subMedium"
-                            >
-                              <Trans i18nKey={"Impact"} />
-                            </Typography>
-                          )}
-                          <Box px={1}>{impact}</Box>
-                        </Box>
-                      </Grid>
-                    )} */}
-      {/* {hasRelatedAttributes && (
-                      <Grid item xs={3}>
-                        <Box position={"relative"} minWidth="300px">
-                          {index === 0 && (
-                            <Typography
-                              sx={{
-                                width: "100%",
-                                position: "absolute",
-                                top: "-36px",
-                                pb: "2px",
-                                color: "#767676",
-                                borderBottom: (t) =>
-                                  `1px solid ${t.palette.secondary.dark}`,
-                              }}
-                              variant="subMedium"
-                            >
-                              <Trans i18nKey={"relatedAttributes"} />
-                            </Typography>
-                          )}
-                          <Box>
-                            {relatedAttributes.map((att: any) => {
-                              return (
-                                <Chip
-                                  key={att.id}
-                                  label={att.title}
-                                  color="secondary"
-                                  sx={{ mr: 0.5, mb: 0.2 }}
-                                  size="small"
-                                />
-                              );
-                            })}
-                          </Box>
-                        </Box>
-                      </Grid>
-                    )} */}
-      {/* <AssessmentKitDialog {...dialogProps} question={question} />
-                  </Grid>
-                </Box>
-                {index !== questions.length - 1 && <Divider />}
-              </li>
-            );
-          })}
-        </Box>
-      </Box> */}
     </Box>
   );
 };
@@ -1011,12 +819,6 @@ const UpdateAssessmentKitDialog = (props: any) => {
         <Trans i18nKey="pleaseNoteThatThereAreSomeLimitations" />
       </Typography>
       <Box sx={{ ml: 4, my: 2 }}>
-        {/* <Typography component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="deletingAnSubjectOrAddingANewOne" />
-        </Typography> */}
-        {/* <Typography component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="deletingAnAttributeOrAddingANewOne" />
-        </Typography> */}
         <Typography component="li" variant="body1" fontWeight={"bold"}>
           <Trans i18nKey="deletingAQuestionnaire" />
         </Typography>
@@ -1380,12 +1182,9 @@ const QuestionnairesQuestionList = (props: any) => {
     } catch (e) {}
   };
   function formatNumber(value: any) {
-    // Check if the value is an integer (no decimal places)
     if (Number.isInteger(value)) {
-      // Convert to string and append '.0'
       return parseFloat(value).toFixed(1);
     }
-    // If it already has decimal places, keep it as is
     return value.toString();
   }
   return (
@@ -1766,21 +1565,6 @@ const MaturityLevelsDetails = (props: any) => {
 const useAssessmentKit = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
-  const subjectId = 1;
-  // const assessmentKitQueryProps = useQuery({
-  //   service: (args = { assessmentKitId }, config) =>
-  //     service.inspectAssessmentKit(args, config),
-  // });
-  // const analyzeAssessmentKitQuery = useQuery({
-  //   service: (args = { assessmentKitId }, config) =>
-  //     service.analyzeAssessmentKit(args, config),
-  //   runOnMount: true,
-  // });
-  // const fetchAssessmentKitQuery = useQuery({
-  //   service: (args = { assessmentKitId }, config) =>
-  //     service.fetchAssessmentKitdata(args, config),
-  //   runOnMount: true,
-  // });
   const fetchAssessmentKitDetailsQuery = useQuery({
     service: (args = { assessmentKitId }, config) =>
       service.fetchAssessmentKitDetails(args, config),
@@ -1818,9 +1602,6 @@ const useAssessmentKit = () => {
   });
 
   return {
-    // assessmentKitQueryProps,
-    // analyzeAssessmentKitQuery,
-    // fetchAssessmentKitQuery,
     fetchAssessmentKitDetailsQuery,
     fetchAssessmentKitSubjectDetailsQuery,
     fetchAssessmentKitSubjectAttributesDetailsQuery,

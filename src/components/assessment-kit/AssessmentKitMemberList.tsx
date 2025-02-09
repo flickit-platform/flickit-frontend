@@ -108,7 +108,6 @@ export default function MemberList(props: any) {
           )}
         </Box>
         <Divider sx={{ width: "100%", marginTop: "24px" }} />
-        {/*<Paper sx={{width: '100%', overflow: 'hidden'}}>*/}
         <TableContainer
           sx={{
             maxHeight: 840,
@@ -154,7 +153,7 @@ export default function MemberList(props: any) {
                       },
                     }}
                   >
-                      <Trans i18nKey={`${column.label}`} />
+                    <Trans i18nKey={`${column.label}`} />
                   </TableCell>
                 ))}
               </TableRow>
@@ -427,14 +426,6 @@ const AddMemberModal = (props: any) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          {/* <Grid item xs={12}>
-            <InputFieldUC
-              name="code"
-              required={true}
-              defaultValue={defaultValues.code || nanoid(5)}
-              label={<Trans i18nKey="code" />}
-            />
-          </Grid> */}
           <Grid item xs={12}>
             <AddMember inputRef={inputRef} queryData={query} />
           </Grid>

@@ -60,7 +60,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   newAttribute,
   showNewAttributeForm,
   handleEdit,
-  setOpenDeleteDialog
+  setOpenDeleteDialog,
 }) => {
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
@@ -186,7 +186,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {subjects.map((subject, index) => (
+            {subjects?.map((subject, index) => (
               <React.Fragment key={subject.id}>
                 <TableRow
                   sx={{ background: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
@@ -270,7 +270,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             flexGrow: 1,
                                             mt: 0.5,
                                           }}
-                                          data-testid = "display-attribute-title"
+                                          data-testid="display-attribute-title"
                                         >
                                           {attribute.title}
                                         </TableCell>
@@ -280,13 +280,11 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             flexGrow: 1,
                                             mt: 0.5,
                                           }}
-                                          data-testid = "display-attribute-description"
+                                          data-testid="display-attribute-description"
                                         >
                                           {attribute.description}
                                         </TableCell>
-                                        <TableCell
-                                            data-testid = "display-attribute-weight"
-                                        >
+                                        <TableCell data-testid="display-attribute-weight">
                                           {attribute.weight}
                                         </TableCell>
                                         <TableCell
@@ -304,13 +302,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           >
                                             <EditIcon fontSize="small" />
                                           </IconButton>
-                                          {/* <IconButton
-                                            onClick={() => setOpenDeleteDialog({status:true,id:attribute.id})}
-                                            size="small"
-                                            color="secondary"
-                                          >
-                                            <DeleteIcon fontSize="small" />
-                                          </IconButton> */}
                                         </TableCell>
                                       </>
                                     )}

@@ -69,8 +69,8 @@ const OverallInsightText = (props: any) => {
         if (selectedInsight) {
           setIsApproved(data.approved);
           setInsight(selectedInsight);
-          setEditable(data.editable ?? false);
         }
+        setEditable(data.editable ?? false);
       })
       .catch((error) => {
         console.error("Error fetching assessment insight:", error);
@@ -142,11 +142,19 @@ const OverallInsightText = (props: any) => {
           </>
         )}
       </Typography>
-      <Box sx={{ ...styles.centerV, mt: 4, mb: 2, marginInlineStart: 3 }}>
+      <Box
+        sx={{
+          ...styles.centerV,
+          mt: 4,
+          mb: 2,
+          marginInline: 3,
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="headlineSmall">
           <Trans i18nKey="subjectBriefConclusion" />
         </Typography>
-        <Box sx={{ ...styles.centerV, marginInlineStart: "auto", gap: 1 }}>
+        <Box sx={{ ...styles.centerV, gap: 1 }}>
           {!isApproved && editable && (
             <LoadingButton
               variant={"contained"}
@@ -167,7 +175,7 @@ const OverallInsightText = (props: any) => {
               loading={InitInsight.loading}
               size="small"
             >
-              <Trans i18nKey={"regenerate"} />
+              <Trans i18nKey={!insight ? "generate" : "regenerate"} />
             </LoadingButton>
           )}
         </Box>

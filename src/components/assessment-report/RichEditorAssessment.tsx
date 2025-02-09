@@ -61,9 +61,6 @@ const RichEditorAssessment = (props: IRichEditorProps) => {
         types: ["heading", "paragraph"],
       }),
       Link,
-      // Placeholder.configure({
-      //   placeholder: placeholder,
-      // }),
     ],
     content: defaultValue,
     onUpdate(props) {

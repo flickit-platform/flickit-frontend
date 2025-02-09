@@ -619,7 +619,6 @@ const AnswerTemplate = (props: {
 
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
-  // const { questionsResultQueryData } = useQuestions();
 
   const { options, answer } = questionInfo;
   const { total_number_of_questions, permissions } = questionsInfo;
@@ -1498,9 +1497,6 @@ const Evidence = (props: any) => {
                       label={
                         <Box
                           sx={{
-                            // display: "flex",
-                            // justifyContent: "center",
-                            // alignItems: "center",
                             ...styles.centerV,
                           }}
                         >
@@ -1968,7 +1964,6 @@ const EvidenceDetail = (props: any) => {
   };
 
   const onUpdate = async () => {
-    // formContext.setValue("evidence", description);
     setIsEditing((prev) => !prev);
 
     if (type === "Positive") {
@@ -2051,8 +2046,6 @@ const EvidenceDetail = (props: any) => {
   }, [type]);
 
   const theme = useTheme();
-  // const refBox = useRef<any>(null)
-
   useEffect(() => {
     (async () => {
       if (attachmentData && evidenceId == id) {
@@ -2136,7 +2129,6 @@ const EvidenceDetail = (props: any) => {
                       name="evidenceDetail"
                       label={null}
                       required={true}
-                      // placeholder={`${description}`}
                       borderRadius={"12px"}
                       setValueCount={setValueCount}
                       hasCounter={true}
@@ -2228,8 +2220,6 @@ const EvidenceDetail = (props: any) => {
                 height: "fit-content",
                 display: "flex",
                 flexDirection: "column",
-                // alignItems: "flex-end",
-                // border: `1px solid ${evidenceBG?.borderColor}`,
                 background: evidenceBG?.background,
                 color: "#0A2342",
                 borderRadius:
@@ -2317,8 +2307,6 @@ const EvidenceDetail = (props: any) => {
                     )}
                     <Grid
                       container
-                      // ref={refBox}
-                      // style={expandedEvidenceBox ? {maxHeight: refBox?.current.innerHeight && refBox?.current.innerHeight} : {
                       style={
                         expandedEvidenceBox
                           ? {}
@@ -2653,7 +2641,6 @@ const MyDropzone = (props: any) => {
                 alt={"gif"}
               />
             )}
-            {/*{typeFile == "image" && <img style={{ width: "60%", height: "60%" }} src={dispalyFile ? `${dispalyFile}` : "#"} />}*/}
             {typeFile == "pdf" && (
               <section style={{ width: "50%", height: "70%" }}>
                 <FileType name={"pdf"} />{" "}
@@ -2871,7 +2858,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
       open={expanded.expended}
       onClose={closeDialog}
       maxWidth={"sm"}
-      // fullScreen={fullScreen}
       fullWidth
       sx={{
         ".MuiDialog-paper::-webkit-scrollbar": {
@@ -3065,7 +3051,6 @@ const DeleteDialog = (props: any) => {
       open={expanded}
       onClose={onClose}
       maxWidth={"sm"}
-      // fullScreen={fullScreen}
       fullWidth
       sx={{
         ".MuiDialog-paper::-webkit-scrollbar": {

@@ -22,7 +22,7 @@ import { TDialogProps } from "@utils/useDialog";
 import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 
 interface ISpaceListProps {
@@ -90,7 +90,6 @@ const SpaceCard = (props: ISpaceCardProps) => {
     service
       .getSignedInUser(undefined, { signal: abortController.signal })
       .then(({ data }) => {
-        // dispatch(authActions.setUserInfo(data));
         navigate(`/${spaceId}/assessments/1`);
       })
       .catch((e) => {});

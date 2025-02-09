@@ -37,7 +37,6 @@ const QuestionnaireContainer = () => {
       (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
 
-
   return (
     <PermissionControl
       error={[questionnaireQueryData.errorObject?.response?.data]}
@@ -124,19 +123,14 @@ const QuestionnaireTitle = (props: any) => {
             {
               title: space?.title,
               to: `/${spaceId}/assessments/${page}`,
-              // icon: <FolderRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />,
             },
             {
               title: assessment?.title,
-              // icon: (
-              //   <DescriptionRoundedIcon fontSize="inherit" sx={{ mr: 0.5 }} />
-              // ),
             },
           ]}
         />
       }
     >
-      {/* <QuizRoundedIcon sx={{ mr: 1 }} /> */}
       <Trans i18nKey="questionnaires" />
     </Title>
   );

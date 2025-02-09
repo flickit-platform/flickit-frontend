@@ -99,7 +99,6 @@ const useGetSignedInUserInfo = (
     }
 
     return () => {
-      // abortController.current?.abort();
     };
   }, []);
 

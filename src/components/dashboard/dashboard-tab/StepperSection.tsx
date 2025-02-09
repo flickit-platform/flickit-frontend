@@ -1,12 +1,5 @@
 import Box from "@mui/material/Box";
-import {
-  IconButton,
-  Step,
-  StepLabel,
-  Stepper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
@@ -16,7 +9,6 @@ import { styles } from "@styles";
 import { uniqueId } from "lodash";
 import { Link } from "react-router-dom";
 import MLink from "@mui/material/Link";
-import { InfoOutlined } from "@mui/icons-material";
 
 interface IStepperSection {
   setActiveStep: any;
@@ -36,12 +28,7 @@ const StepperSection = (props: IStepperSection) => {
   return (
     <Box
       sx={{
-        background: "#fff",
-        borderRadius: "12px",
-        width: "100%",
-        p: 4,
-        backgroundColor: "#fff",
-        boxShadow: "0 0 8px 0 #0A234240",
+        ...styles.boxStyle,
       }}
     >
       <Stepper
@@ -221,7 +208,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography variant="headlineLarge">
+          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${answered} / ${total} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -269,7 +256,7 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <Typography variant="headlineLarge">
+          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -361,7 +348,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography variant="headlineLarge">
+          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${providedMetadata} / ${totalMetadata} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -425,7 +412,7 @@ const StepBox = (props: IStepBox) => {
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"providingAdvices"} />
+            <Trans i18nKey={"providingAdvice"} />
           </Typography>
         )}
         {report && (
