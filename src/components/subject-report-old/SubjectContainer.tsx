@@ -225,16 +225,11 @@ const SubjectTitle = (props: {
               to: `/${spaceId}/assessments/${page}`,
             },
             {
-              title: (
-                <Trans
-                  i18nKey="insightsWithTitle"
-                  values={{ title: assessment?.title }}
-                />
-              ),
+              title: t("insightsWithTitle", { title: assessment?.title }),
               to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
             },
             {
-              title: <>{title || <Trans i18nKey="technicalDueDiligence" />}</>,
+              title: title || t("technicalDueDiligence"),
             },
           ]}
         />
@@ -251,7 +246,7 @@ const SubjectTitle = (props: {
             }}
           />
         )}{" "}
-        <Trans i18nKey="insightsWithTitle" values={{ title: title || "" }} />
+        {t("insightsWithTitle", { title: assessment?.title })}{" "}
       </Box>
     </Title>
   );

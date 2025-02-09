@@ -31,6 +31,7 @@ const OverallInsightText = (props: any) => {
   const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [AssessmentLoading, setAssessmentLoading] = useState(true);
+  const [isSystemic, setIsSystemic] = useState(true);
 
   const { service } = useServiceContext();
 
@@ -69,6 +70,7 @@ const OverallInsightText = (props: any) => {
         if (selectedInsight) {
           setIsApproved(data.approved);
           setInsight(selectedInsight);
+          setIsSystemic(data.defaultInsight ?? false);
         }
         setEditable(data.editable ?? false);
       })
@@ -155,7 +157,7 @@ const OverallInsightText = (props: any) => {
           <Trans i18nKey="subjectBriefConclusion" />
         </Typography>
         <Box sx={{ ...styles.centerV, gap: 1 }}>
-          {!isApproved && editable && (
+          {(!isApproved || (!insight?.isValid && insight)) && editable && (
             <LoadingButton
               variant={"contained"}
               onClick={(event) => ApproveSubject(event)}
@@ -185,6 +187,8 @@ const OverallInsightText = (props: any) => {
         fetchAssessment={fetchAssessment}
         editable={editable}
         insight={insight}
+        isSystemic={isSystemic}
+        isApproved={isApproved}
       />
     </Box>
   );

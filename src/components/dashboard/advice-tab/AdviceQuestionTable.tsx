@@ -149,13 +149,13 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                   textAlign: "center",
                   fontWeight: "300",
                   color: "#0A2342",
-                  fontFamily: languageDetector(answeredOption.title)
+                  fontFamily: languageDetector(answeredOption?.title)
                     ? farsiFontFamily
                     : primaryFontFamily,
                 }}
               >
                 {answeredOption &&
-                  `${answeredOption.index}. ${answeredOption.title}`}
+                  `${answeredOption?.index}. ${answeredOption?.title}`}
               </Grid>
               <Grid
                 item
@@ -196,12 +196,12 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                       borderRadius: "8px",
                       m: "4px",
                       textAlign: "center",
-                      fontFamily: languageDetector(attribute.title)
+                      fontFamily: languageDetector(attribute?.title)
                         ? farsiFontFamily
                         : primaryFontFamily,
                     }}
                   >
-                    {attribute.title}
+                    {attribute?.title}
                   </Box>
                 ))}
               </Grid>
@@ -211,12 +211,12 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                   component="div"
                   color="primary"
                   sx={{
-                    fontFamily: languageDetector(questionnaire.title)
+                    fontFamily: languageDetector(questionnaire?.title)
                       ? farsiFontFamily
                       : primaryFontFamily,
                   }}
                 >
-                  {questionnaire.title}
+                  {questionnaire?.title}
                 </Typography>
                 <Typography variant="labelMedium" color="primary">
                   Q.{question?.index}
