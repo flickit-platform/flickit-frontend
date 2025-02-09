@@ -75,7 +75,6 @@ const AdviceDialog = ({
         });
         setAdviceResult(null);
         fetchAdviceNarration.query();
-        setAIGenerated(true);
         handleClose();
       }
     } catch (e) {
