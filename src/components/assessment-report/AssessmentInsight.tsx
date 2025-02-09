@@ -188,7 +188,7 @@ export const AssessmentInsight = () => {
                   ")"}
             </Typography>
           )}
-          {!insight?.isValid && (insight || isSystemic) && (
+          {!isApproved && insight && (
             <Box sx={{ ...styles.centerV }} gap={2} my={1}>
               <Box
                 sx={{

@@ -188,6 +188,7 @@ const OverallInsightText = (props: any) => {
         editable={editable}
         insight={insight}
         isSystemic={isSystemic}
+        isApproved={isApproved}
       />
     </Box>
   );
