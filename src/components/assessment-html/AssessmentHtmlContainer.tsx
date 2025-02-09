@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
 import {
@@ -13,7 +13,7 @@ import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeleton
 import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
-import { Chip, Grid, Paper, Typography } from "@mui/material";
+import { Chip, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -32,7 +32,7 @@ import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
 import { ShareDialog } from "./ShareDialog";
 import { LoadingButton } from "@mui/lab";
-import { Share } from "@mui/icons-material";
+import { ArrowForward, Share } from "@mui/icons-material";
 import { Trans } from "react-i18next";
 
 type reportData = {
@@ -51,7 +51,7 @@ type reportData = {
 };
 
 const AssessmentExportContainer = () => {
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", spaceId = "" } = useParams();
   const { service } = useServiceContext();
 
   const dialogProps = useDialog();
@@ -147,6 +147,17 @@ const AssessmentExportContainer = () => {
                   fontFamily: true ? farsiFontFamily : primaryFontFamily,
                 }}
               >
+                <IconButton
+                  color={"primary"}
+                  component={Link}
+                  to={
+                    reportData?.permissions.canViewDashboard
+                      ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/`
+                      : `/${spaceId}/assessments/1/`
+                  }
+                >
+                  <ArrowForward sx={{ ...theme.typography.headlineMedium }} />
+                </IconButton>
                 {t("assessmentReport", {
                   lng: "fa",
                 })}
