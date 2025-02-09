@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";

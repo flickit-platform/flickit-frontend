@@ -24,8 +24,6 @@ import languageDetector from "@/utils/languageDetector";
 import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
-import AIGenerated from "../common/tags/AIGenerated";
-import { Tooltip } from "@mui/material";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
