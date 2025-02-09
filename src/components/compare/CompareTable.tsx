@@ -17,7 +17,7 @@ const CompareTable = (props: { data?: any; isSubject: boolean }) => {
         />
       ) : (
         <Box>
-          {data?.subjects.map((subject: any) => {
+          {data?.subjects?.map((subject: any) => {
             return (
               <CompareResultSubjectAttributesBarChart
                 data={subject}

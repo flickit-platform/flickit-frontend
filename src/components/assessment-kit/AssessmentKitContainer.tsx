@@ -476,7 +476,7 @@ const AssessmentKit = (props: any) => {
                 <Trans i18nKey={"subjects"} />
               </Title>
               <Box component="ul" mt={3}>
-                {subjects.map((subject: any, index: number) => {
+                {subjects?.map((subject: any, index: number) => {
                   return (
                     <Box
                       component="li"

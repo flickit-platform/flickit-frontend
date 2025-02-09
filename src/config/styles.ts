@@ -138,6 +138,17 @@ const buttons = {
   }),
 };
 
+const box = {
+  boxStyle: style({
+    background: "#fff",
+    borderRadius: "12px",
+    width: "100%",
+    p: 4,
+    backgroundColor: "#fff",
+    boxShadow: "0 0 8px 0 #0A234240",
+    mb: "40px",
+  }),
+};
 const compare = {
   compareResultBorder: style({
     "&:not(:last-of-type) > div": {
@@ -153,6 +164,7 @@ export const styles = {
   ...buttons,
   ...compare,
   ...sharedChipStyles,
+  ...box,
   cards,
 };
 

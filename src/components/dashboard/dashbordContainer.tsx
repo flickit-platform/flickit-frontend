@@ -81,7 +81,7 @@ const DashbordContainer = () => {
                   selectedTab={selectedTab}
                 />
               </Grid>
-              <Grid container sm={12} xs={12}>
+              <Grid container>
                 <Grid item xs={12}>
                   {outlet}
                 </Grid>

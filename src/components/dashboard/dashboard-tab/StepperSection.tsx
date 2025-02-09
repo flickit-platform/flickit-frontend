@@ -28,12 +28,7 @@ const StepperSection = (props: IStepperSection) => {
   return (
     <Box
       sx={{
-        background: "#fff",
-        borderRadius: "12px",
-        width: "100%",
-        p: 4,
-        backgroundColor: "#fff",
-        boxShadow: "0 0 8px 0 #0A234240",
+        ...styles.boxStyle,
       }}
     >
       <Stepper
@@ -213,7 +208,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography sx={{direction:"ltr"}} variant="headlineLarge">
+          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${answered} / ${total} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -261,7 +256,7 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <Typography sx={{direction:"ltr"}}  variant="headlineLarge">
+          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -353,7 +348,7 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography sx={{direction:"ltr"}}  variant="headlineLarge">
+          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${providedMetadata} / ${totalMetadata} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
@@ -417,7 +412,7 @@ const StepBox = (props: IStepBox) => {
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"providingAdvices"} />
+            <Trans i18nKey={"providingAdvice"} />
           </Typography>
         )}
         {report && (

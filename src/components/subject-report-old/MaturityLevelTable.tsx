@@ -437,64 +437,67 @@ const MaturityLevelTable = ({
           <TableBody>
             {tempData?.items.length > 0 ? (
               <>
-                {tempData?.items.map((item: any, index: number) => {
-                  const row = mapItemToRow(item);
-                  return (
-                    <TableRow
-                      key={uniqueId()}
-                      component="div"
-                      onClick={() => handleQuestionClick(index)}
-                    >
-                      {columns.map((column) => (
-                        <TableCell
-                          key={column.field}
-                          align={column.align || "left"}
-                          title={
-                            column.field === "questionnaire"
-                              ? item.questionnaire
-                              : row[column.field]?.toString()
-                          }
-                          sx={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            maxWidth: column.width || "100%",
-                            textAlign:
-                              column.serverKey === "question" ||
-                              column.serverKey === "answer"
-                                ? languageDetector(
-                                    row[column.field]?.toString(),
-                                  )
-                                  ? "right"
-                                  : "left"
-                                : column.align,
-                            direction:
-                              column.serverKey === "question" ||
-                              column.serverKey === "answer"
-                                ? languageDetector(
-                                    row[column.field]?.toString(),
-                                  )
-                                  ? "rtl"
-                                  : "ltr"
-                                : "unset",
-                            fontFamily: languageDetector(
-                              row[column.field]?.toString(),
-                            )
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                            cursor: "pointer",
-                          }}
-                        >
-                          {column.field === "confidence" ? (
-                            <CircleRating value={row.confidence} />
-                          ) : (
-                            row[column.field]
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  );
-                })}
+                {tempData?.items
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((item: any, index: number) => {
+                    const row = mapItemToRow(item);
+                    return (
+                      <TableRow
+                        key={uniqueId()}
+                        component="div"
+                        onClick={() => handleQuestionClick(index)}
+                        data-testid="open-question-details-dialog"
+                      >
+                        {columns.map((column) => (
+                          <TableCell
+                            key={column.field}
+                            align={column.align || "left"}
+                            title={
+                              column.field === "questionnaire"
+                                ? item.questionnaire
+                                : row[column.field]?.toString()
+                            }
+                            sx={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              maxWidth: column.width || "100%",
+                              textAlign:
+                                column.serverKey === "question" ||
+                                column.serverKey === "answer"
+                                  ? languageDetector(
+                                      row[column.field]?.toString(),
+                                    )
+                                    ? "right"
+                                    : "left"
+                                  : column.align,
+                              direction:
+                                column.serverKey === "question" ||
+                                column.serverKey === "answer"
+                                  ? languageDetector(
+                                      row[column.field]?.toString(),
+                                    )
+                                    ? "rtl"
+                                    : "ltr"
+                                  : "unset",
+                              fontFamily: languageDetector(
+                                row[column.field]?.toString(),
+                              )
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                              cursor: "pointer",
+                            }}
+                          >
+                            {column.field === "confidence" ? (
+                              <CircleRating value={row.confidence} />
+                            ) : (
+                              row[column.field]
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
               </>
             ) : (
               <TableCell
@@ -549,6 +552,7 @@ export const CircleRating = (props: any) => {
   return (
     <Rating
       {...other}
+      data-testid={"rating-level-num"}
       value={value}
       max={5}
       readOnly

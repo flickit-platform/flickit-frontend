@@ -147,7 +147,7 @@ const OverallInsightText = (props: any) => {
           ...styles.centerV,
           mt: 4,
           mb: 2,
-          marginInlineStart: 3,
+          marginInline: 3,
           justifyContent: "space-between",
         }}
       >
@@ -175,7 +175,7 @@ const OverallInsightText = (props: any) => {
               loading={InitInsight.loading}
               size="small"
             >
-              <Trans i18nKey={"regenerate"} />
+              <Trans i18nKey={!insight ? "generate" : "regenerate"} />
             </LoadingButton>
           )}
         </Box>

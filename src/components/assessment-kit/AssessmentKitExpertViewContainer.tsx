@@ -527,7 +527,7 @@ const AssessmentKitQuestionnaires = (props: {
                   <Typography variant="body2">
                     <Trans i18nKey="relatedSubjects" />:
                   </Typography>
-                  {questionnaireDetails?.relatedSubjects.map(
+                  {questionnaireDetails?.relatedsubjects?.map(
                     (subject: string, index: number) => (
                       <Typography
                         variant="body2"

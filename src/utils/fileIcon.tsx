@@ -158,7 +158,6 @@ export const FileIcon = (props: any) => {
           {name?.substring(0, 6)}...
         </p>
       )}
-
       <p
         style={{
           position: "absolute",
