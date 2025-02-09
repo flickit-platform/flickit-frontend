@@ -1,7 +1,6 @@
 import { keyframes, SxProps, Theme } from "@mui/material";
 import { TStatus } from "@types";
 import hasStatus from "@utils/hasStatus";
-import tinycolor from "tinycolor2";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
@@ -266,18 +265,6 @@ export const generateColorFromString = (str: string) => {
   // Select a chip based on hash
   const chipIndex = (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
   return chipColorPalette[`chip${chipIndex}`];
-};
-
-export const getTransparentColor = (color: string) => {
-  const transparentColor =
-    tinycolor(color).getBrightness() > 180
-      ? tinycolor(color).lighten(35).toRgbString()
-      : tinycolor(color).getBrightness() > 160
-        ? tinycolor(color).lighten(40).toRgbString()
-        : tinycolor(color).getBrightness() > 80
-          ? tinycolor(color).lighten(50).toRgbString()
-          : tinycolor(color).lighten(60).toRgbString();
-  return transparentColor;
 };
 
 export const chipColorPalette: any = {
