@@ -320,33 +320,69 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                         </Typography>
                       </Box>
                     )}
-                    <Rating
-                      disabled={!questionsInfo?.permissions?.answerQuestion}
-                      value={
-                        selcetedConfidenceLevel !== null
-                          ? selcetedConfidenceLevel
-                          : null
-                      }
-                      size="medium"
-                      onChange={(event, newValue) => {
-                        dispatch(
-                          questionActions.setSelectedConfidenceLevel(newValue),
-                        );
-                      }}
-                      icon={
-                        <RadioButtonCheckedRoundedIcon
-                          sx={{ mx: 0.25, color: "#42a5f5" }}
-                          fontSize="inherit"
-                        />
-                      }
-                      emptyIcon={
-                        <RadioButtonUncheckedRoundedIcon
-                          style={{ opacity: 0.55 }}
-                          sx={{ mx: 0.25, color: "#fff" }}
-                          fontSize="inherit"
-                        />
-                      }
-                    />
+                    <Box sx={{ position: "relative" }}>
+                      <Rating
+                        disabled
+                        value={Number(answer?.confidenceLevel?.id)}
+                        size="medium"
+                        icon={
+                          <RadioButtonCheckedRoundedIcon
+                            sx={{
+                              mx: 0.25,
+                              color: "transparent",
+                              borderRadius: "100%",
+                              border: "2px solid #42a5f5",
+                            }}
+                            fontSize="inherit"
+                          />
+                        }
+                        emptyIcon={
+                          <RadioButtonUncheckedRoundedIcon
+                            sx={{ mx: 0.25, color: "#fff" }}
+                            fontSize="inherit"
+                          />
+                        }
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          zIndex: 1,
+                        }}
+                      />
+
+                      <Rating
+                        disabled={!questionsInfo?.permissions?.answerQuestion}
+                        value={
+                          selcetedConfidenceLevel !== null
+                            ? selcetedConfidenceLevel
+                            : null
+                        }
+                        size="medium"
+                        onChange={(event, newValue) => {
+                          dispatch(
+                            questionActions.setSelectedConfidenceLevel(
+                              newValue,
+                            ),
+                          );
+                        }}
+                        icon={
+                          <RadioButtonCheckedRoundedIcon
+                            sx={{ mx: 0.25, color: "#42a5f5" }}
+                            fontSize="inherit"
+                          />
+                        }
+                        emptyIcon={
+                          <RadioButtonUncheckedRoundedIcon
+                            sx={{ mx: 0.25, color: "transparent" }}
+                            fontSize="inherit"
+                          />
+                        }
+                        sx={{
+                          position: "relative",
+                          zIndex: 2,
+                        }}
+                      />
+                    </Box>
                   </Box>
                 );
               }}
@@ -843,7 +879,7 @@ const AnswerTemplate = (props: {
           flexWrap={"wrap"}
         >
           {options?.map((option: any, index: number) => {
-            const { index: templateValue, title } = option || {};
+            const { index: defaultSelectedIndex, title } = option || {};
             return (
               <Box
                 key={option?.id}
@@ -857,7 +893,7 @@ const AnswerTemplate = (props: {
                   fullWidth
                   size="large"
                   value={option}
-                  selected={templateValue === value?.index}
+                  selected={defaultSelectedIndex === value?.index}
                   onChange={onChange}
                   disabled={
                     isSubmitting ||
@@ -872,7 +908,7 @@ const AnswerTemplate = (props: {
                     fontSize: { xs: "1.15rem", sm: "1.3rem" },
                     fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
-                    boxShadow: "0 0 2px white",
+                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ? "#0acb89" : "white"}`,
                     borderWidth: "2px",
                     borderColor: "transparent",
                     "&.Mui-selected": {
@@ -895,7 +931,7 @@ const AnswerTemplate = (props: {
                 >
                   <Checkbox
                     disableRipple={true}
-                    checked={templateValue === value?.index}
+                    checked={defaultSelectedIndex === value?.index}
                     disabled
                     sx={{
                       position: "absoulte",
@@ -915,7 +951,7 @@ const AnswerTemplate = (props: {
                       },
                     }}
                   />
-                  {templateValue}. {title}
+                  {defaultSelectedIndex}. {title}
                 </ToggleButton>
               </Box>
             );
