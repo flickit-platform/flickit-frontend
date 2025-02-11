@@ -32,11 +32,13 @@ const DashboardTab = () => {
         render={(data) => {
           useEffect(() => {
             const data = fetchDashboard.data;
+            const { unpublished, ...rest } = data.report;
+            const updateReport = { ...rest, unpublished };
             const mappedData = [
               { category: "questions", metrics: data.questions },
               { category: "insights", metrics: data.insights },
               { category: "advices", metrics: data.advices },
-              { category: "report", metrics: data.report },
+              { category: "report", metrics: updateReport },
             ];
             const todoData: any = { now: [], next: [] };
             const updatedData = mappedData.map((item) => {
