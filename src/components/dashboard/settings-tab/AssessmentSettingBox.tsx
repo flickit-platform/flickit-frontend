@@ -74,14 +74,13 @@ export const AssessmentSettingGeneralBox = (props: {
     <Box
       sx={{
         ...styles.centerCVH,
-        px: { xs: "15px", sm: "51px" },
+        p: { xs: "15px", sm: "30px" },
       }}
       gap={2}
       height={"auto"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"8px"}
-      py={"32px"}
+      borderRadius={"12px"}
     >
       <Box height={"100%"} width={"100%"}>
         <Typography
@@ -401,15 +400,14 @@ export const AssessmentSettingMemberBox = (props: {
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
-        px: { xs: "15px", sm: "51px" },
+        p: { xs: "15px", sm: "30px" },
       }}
       gap={2}
       height={"auto"}
       minHeight={"350px"}
       width={"100%"}
       bgcolor={"#FFF"}
-      borderRadius={"8px"}
-      py={"32px"}
+      borderRadius={"12px"}
     >
       <Box height={"100%"} width={"100%"}>
         <Box
