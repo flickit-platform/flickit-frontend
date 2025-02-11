@@ -132,6 +132,11 @@ const AssessmentKit = (props: any) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Title
               size="medium"
+              sx={{
+                  fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+              }}
               sup={
                 <SupTitleBreadcrumb
                   color="white"
