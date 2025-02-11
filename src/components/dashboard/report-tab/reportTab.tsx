@@ -82,32 +82,6 @@ const ReportTab = () => {
 
         return (
           <>
-            <Box
-              sx={{
-                mt: "40px",
-              }}
-            >
-              <Grid
-                container
-                spacing={2}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Grid
-                  item
-                  xs={12}
-                  md={4}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginInlineStart: "auto",
-                  }}
-                ></Grid>
-              </Grid>
-            </Box>
             {reportFields.map((field) => {
               const { name, title, placeholder } = field;
               return (
@@ -123,7 +97,7 @@ const ReportTab = () => {
                     key={uniqueId()}
                     style={{
                       minHeight: "50px",
-                      mt: 2,
+                      mt: 4,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
@@ -167,7 +141,7 @@ const ReportTab = () => {
                     <MainCard
                       style={{
                         minHeight: "180px",
-                        mt: 2,
+                        mt: 4,
                         width: { xs: "100%", md: "30%" },
                         display: "flex",
                         justifyContent: "center",
