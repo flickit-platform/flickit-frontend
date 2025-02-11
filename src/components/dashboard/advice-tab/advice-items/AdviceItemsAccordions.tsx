@@ -26,6 +26,12 @@ import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 
+enum ELevel {
+  HIGH = "HIGH",
+  MEDIUM = "MEDIUM",
+  LOW = "LOW",
+}
+
 const COLORS = {
   primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
   secondary: { background: "#F9F3EB", text: "#995700", icon: "#995700" },
@@ -34,23 +40,11 @@ const COLORS = {
   unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
 };
 
-const ICON_COLORS: Record<string, keyof typeof COLORS> = {
-  high: "error",
-  medium: "secondary",
-  low: "primary",
-};
-
-const INVERSE_ICON_COLORS: Record<string, keyof typeof COLORS> = {
-  high: "primary",
-  medium: "secondary",
-  low: "error",
-};
-
 const getPriorityColor = (priority: string) => {
   let color;
-  if (priority.toLowerCase() === t("high").toLowerCase()) {
+  if (priority === ELevel.HIGH) {
     color = "#E72943";
-  } else if (priority.toLowerCase() === t("low").toLowerCase()) {
+  } else if (priority === ELevel.LOW) {
     color = "#3D4D5C80";
   } else {
     color = "primary";
@@ -61,13 +55,13 @@ const getPriorityColor = (priority: string) => {
 const getIconColors = (level: string, type: string) => {
   let obj;
   if (
-    (level.toLowerCase() === t("high").toLowerCase() && type !== "cost") ||
-    (level.toLowerCase() === t("low").toLowerCase() && type === "cost")
+    (level === ELevel.HIGH && type !== "cost") ||
+    (level === ELevel.LOW && type === "cost")
   ) {
     obj = COLORS.primary;
   } else if (
-    (level.toLowerCase() === t("high").toLowerCase() && type === "cost") ||
-    (level.toLowerCase() === t("low").toLowerCase() && type !== "cost")
+    (level === ELevel.HIGH && type === "cost") ||
+    (level === ELevel.LOW && type !== "cost")
   ) {
     obj = COLORS.error;
   } else {
@@ -82,7 +76,7 @@ const getChipData = (
   readOnly: boolean,
 ) => {
   const priorityColor: any = getIconColors(level, type);
-  const translatedLevel = t(level.toLowerCase(), readOnly ? { lng: "fa" } : {});
+  const translatedLevel = t(level?.toLowerCase(), readOnly ? { lng: "fa" } : {});
   const translatedType = t(type, readOnly ? { lng: "fa" } : {});
   const isFarsi = i18next.language === "fa" || readOnly;
 
@@ -198,9 +192,9 @@ const AdviceItemAccordion: React.FC<{
       setNewAdvice({
         title: item.title,
         description: item.description,
-        priority: item.priority.toUpperCase(),
-        cost: item.cost.toUpperCase(),
-        impact: item.impact.toUpperCase(),
+        priority: item.priority.code,
+        cost: item.cost.code,
+        impact: item.impact.code,
       });
     }
   }, [isEditing, item, assessmentId]);
@@ -209,9 +203,9 @@ const AdviceItemAccordion: React.FC<{
     setNewAdvice({
       title: item.title,
       description: item.description,
-      priority: item.priority.toUpperCase(),
-      cost: item.cost.toUpperCase(),
-      impact: item.impact.toUpperCase(),
+      priority: item.priority.code,
+      cost: item.cost.code,
+      impact: item.impact.code,
     });
     setEditingItemId(null);
   };
@@ -334,7 +328,7 @@ const AdviceItemAccordion: React.FC<{
                     {item.title}
                   </Typography>
                   <Typography
-                    color={getPriorityColor(item.priority.toLowerCase())}
+                    color={getPriorityColor(item.priority.code)}
                     sx={{
                       display: "inline-block",
                       whiteSpace: "nowrap",
@@ -348,13 +342,10 @@ const AdviceItemAccordion: React.FC<{
                   >
                     (
                     {!isFarsi && !readOnly
-                      ? t(item.priority.toLowerCase()) + " " + t("priority")
+                      ? item.priority.title + " " + t("priority")
                       : t("priority", !readOnly ? {} : { lng: "fa" }) +
                         " " +
-                        t(
-                          item.priority.toLowerCase(),
-                          !readOnly ? {} : { lng: "fa" },
-                        )}
+                        item.priority.title}
                     )
                   </Typography>
                 </Grid>
@@ -378,13 +369,13 @@ const AdviceItemAccordion: React.FC<{
                 >
                   <CustomChip
                     type="impact"
-                    level={item.impact}
+                    level={item.impact.code}
                     readOnly={readOnly}
                   />
 
                   <CustomChip
                     type="cost"
-                    level={item.cost}
+                    level={item.cost.code}
                     readOnly={readOnly}
                   />
                 </Grid>

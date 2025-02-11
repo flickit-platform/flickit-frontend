@@ -97,7 +97,7 @@ export interface IPermissions {
   addEvidenceAttachment: boolean;
   exportAssessmentReport: boolean;
   readonly?: boolean;
-  viewDashboard?: boolean
+  viewDashboard?: boolean;
 }
 
 export type TQuestionsInfo = {
@@ -609,7 +609,7 @@ export interface AssessmentKitInfoType {
   tags: [];
   editable?: boolean;
   hasActiveVersion?: boolean;
-  lang?: string
+  lang?: string;
 }
 export interface AssessmentKitStatsType {
   creationTime: string;
@@ -739,7 +739,7 @@ export interface AdviceItem {
   id: string;
   title: string;
   description: string;
-  cost: string;
-  priority: string;
-  impact: string;
+  cost: { code: string; title: string };
+  priority: { code: string; title: string };
+  impact: { code: string; title: string };
 }
