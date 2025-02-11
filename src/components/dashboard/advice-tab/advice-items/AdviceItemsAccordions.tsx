@@ -76,7 +76,7 @@ const getChipData = (
   readOnly: boolean,
 ) => {
   const priorityColor: any = getIconColors(level, type);
-  const translatedLevel = t(level?.toLowerCase(), readOnly ? { lng: "fa" } : {});
+  const translatedLevel = t(level.toLowerCase(), readOnly ? { lng: "fa" } : {});
   const translatedType = t(type, readOnly ? { lng: "fa" } : {});
   const isFarsi = i18next.language === "fa" || readOnly;
 
@@ -342,10 +342,15 @@ const AdviceItemAccordion: React.FC<{
                   >
                     (
                     {!isFarsi && !readOnly
-                      ? item.priority.title + " " + t("priority")
+                      ? t(item.priority.code.toLowerCase()) +
+                        " " +
+                        t("priority")
                       : t("priority", !readOnly ? {} : { lng: "fa" }) +
                         " " +
-                        item.priority.title}
+                        t(
+                          item.priority.code.toLowerCase(),
+                          !readOnly ? {} : { lng: "fa" },
+                        )}
                     )
                   </Typography>
                 </Grid>

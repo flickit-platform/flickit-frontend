@@ -837,5 +837,8 @@
   "reportIssues": "Report issues",
   "metadataIsNotProvider": "part of metadata is not provided.",
   "metadataAreNotProvider": "parts of metadata are not provided",
-  "unpublishedReport": "The assessment report is unpublished and not viewable by others!"
+  "unpublishedReport": "The assessment report is unpublished and not viewable by others!",
+  "زیاد": "high",
+  "متوسط": "medium",
+  "کم": "low"
 }
