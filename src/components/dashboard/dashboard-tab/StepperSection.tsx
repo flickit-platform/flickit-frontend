@@ -370,7 +370,7 @@ const StepBox = (props: IStepBox) => {
           : insights
             ? "../insights"
             : advices
-              ? "../advices"
+              ? "../advice"
               : "../report"
       }
       item
