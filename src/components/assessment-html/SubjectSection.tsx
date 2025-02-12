@@ -11,24 +11,9 @@ import BoxReportLayout from "./layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@components/assessment-report/AssessmenetSubjectRadial";
 import { styles } from "@styles";
 import { t } from "i18next";
+import { IGraphicalReport } from "@/types";
 
-interface IAttribute {
-  id: number;
-  description: string;
-  index: string;
-  title: string;
-  confidenceValue?: number | any;
-  insight: any;
-  maturityLevel: {
-    id: number;
-    title: string;
-    index: number;
-    value: number;
-    description: string;
-  };
-}
-
-const SubjectReport = ({ data }: any) => {
+const SubjectReport = (graphicalReport: IGraphicalReport) => {
   const [maturityLevelCount] = useState<number>(
     data?.assessment?.assessmentKit?.maturityLevelCount,
   );

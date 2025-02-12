@@ -386,6 +386,12 @@ export interface IAssessment {
   };
 }
 
+export interface IUserPermissions {
+  canManageSettings: boolean;
+  canViewReport: boolean;
+  canViewDashboard: boolean;
+  canViewQuestionnaires: boolean;
+}
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
   requested_space: string | null;
 }
@@ -742,4 +748,29 @@ export interface AdviceItem {
   cost: { code: string; title: string };
   priority: { code: string; title: string };
   impact: { code: string; title: string };
+}
+
+export interface IGraphicalReport {
+  assessment: {
+    title: string;
+    intro: string;
+    overallInsight: string;
+    creationTime: string;
+    assessmentKit: any;
+    maturityLevel: IMaturityLevel;
+    confidenceValue: number;
+    prosAndCons: string;
+    language: string;
+  };
+  subjects: ISubject[];
+  recommendationsSummary: string;
+  advice: {
+    adviceItems: AdviceItem[];
+    narration: string;
+  };
+  permissions: IUserPermissions;
+  assessmentProcess: {
+    steps: string;
+    participant: string;
+  };
 }
