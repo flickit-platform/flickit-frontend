@@ -82,32 +82,6 @@ const ReportTab = () => {
 
         return (
           <>
-            <Box
-              sx={{
-                mt: "40px",
-              }}
-            >
-              <Grid
-                container
-                spacing={2}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Grid
-                  item
-                  xs={12}
-                  md={4}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginInlineStart: "auto",
-                  }}
-                ></Grid>
-              </Grid>
-            </Box>
             {reportFields.map((field) => {
               const { name, title, placeholder } = field;
               return (
@@ -123,7 +97,7 @@ const ReportTab = () => {
                     key={uniqueId()}
                     style={{
                       minHeight: "50px",
-                      mt: 2,
+                      mt: name == "intro" ? 4 : 5,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
@@ -136,7 +110,7 @@ const ReportTab = () => {
                         alignItems: "center",
                         color: "#2B333B",
                         gap: 2,
-                        mb: 3,
+                        mb: 2,
                       }}
                     >
                       <Trans i18nKey={title} />
@@ -167,7 +141,7 @@ const ReportTab = () => {
                     <MainCard
                       style={{
                         minHeight: "180px",
-                        mt: 2,
+                        mt: 4,
                         width: { xs: "100%", md: "30%" },
                         display: "flex",
                         justifyContent: "center",
@@ -180,6 +154,7 @@ const ReportTab = () => {
                           flexDirection: "column",
                           justifyContent: "space-between",
                           alignItems: "center",
+                          width:"100%"
                         }}
                       >
                         <Button
@@ -267,7 +242,7 @@ const Loading = () => {
       {count.map((item) => (
         <LoadingSkeleton
           key={uniqueId()}
-          sx={{ height: "150px", mt: "50px" }}
+          sx={{ height: "150px", mt: "32px" }}
         />
       ))}
     </>
@@ -463,8 +438,8 @@ const OnHoverInputReport = (props: any) => {
               alignItems: "center",
               wordBreak: "break-word",
               p: 1.5,
-              pr: languageDetector(data) ? 1 : 5,
-              pl: languageDetector(data) ? 5 : 1,
+              pr: languageDetector(data) ? 2 : 5,
+              pl: languageDetector(data) ? 5 : 2,
               border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
