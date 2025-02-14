@@ -840,5 +840,6 @@
   "unpublishedReport": "The assessment report is unpublished and not viewable by others!",
   "زیاد": "high",
   "متوسط": "medium",
-  "کم": "low"
+  "کم": "low",
+  "privateTitle": "Private"
 }
