@@ -6,11 +6,6 @@ import { farsiFontFamily, primaryFontFamily } from "./theme";
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
 const commonStyles = {
-  customizeFarsiFont: style({
-    direction: true ? "rtl" : "ltr",
-    fontFamily: true ? farsiFontFamily : primaryFontFamily,
-    textAlign: true ? "right" : "left",
-  }),
   centerVH: style({
     display: "flex",
     justifyContent: "center",
@@ -80,10 +75,9 @@ const sharedChipStyles = {
     gap: 0.5,
     fontWeight: "bold",
   },
-  typography: (isFarsi = true) => ({
-    direction: isFarsi ? "rtl" : "ltr",
-    fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
-    fontWeight: 200,
+  rtlStyle: (isRTL = true) => ({
+    direction: isRTL ? "rtl" : "ltr",
+    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
   }),
 };
 

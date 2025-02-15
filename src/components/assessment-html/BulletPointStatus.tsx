@@ -12,9 +12,15 @@ interface IBulletPointStatus {
     title: string;
   };
   maturityLevelCount: number;
+  language: string;
 }
 const BulletPointStatus = (props: IBulletPointStatus) => {
-  const { title: titleSub, maturityLevel, maturityLevelCount } = props;
+  const {
+    title: titleSub,
+    maturityLevel,
+    maturityLevelCount,
+    language,
+  } = props;
   const { value, title } = maturityLevel;
   const colorPallet = getMaturityLevelColors(maturityLevelCount);
   const colorCode = colorPallet[value - 1];
@@ -25,9 +31,9 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
           variant="extraLight"
           fontWeight={400}
           sx={{
-            direction: true ? "rtl" : "ltr",
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
-            textAlign: true ? "right" : "left",
+            direction: language === "fa" ? "rtl" : "ltr",
+            fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+            textAlign: language === "fa" ? "right" : "left",
             ...styles.centerVH,
           }}
         >
