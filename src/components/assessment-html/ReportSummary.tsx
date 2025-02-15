@@ -181,7 +181,7 @@ const QuestionnaireList = ({
           <Typography
             sx={{
               ...textStyle,
-              width: "80px",
+              width: "120px",
               ...styles.rtlStyle(
                 graphicalReport?.lang.code.toLowerCase() === "fa",
               ),
