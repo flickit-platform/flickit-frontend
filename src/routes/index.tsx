@@ -132,7 +132,7 @@ const Routes = () => {
               element={<AssessmentReportScreen />}
             />
             <Route
-              path="advices/"
+              path="advice/"
               element={<AdviceScreen />}
             />
             <Route

@@ -29,30 +29,6 @@ import { LoadingButton } from "@mui/lab";
 import { ArrowForward, Share } from "@mui/icons-material";
 import { Trans } from "react-i18next";
 
-const transformAdviceItems = (adviceItems: any[]) => {
-  return adviceItems?.map((item) => {
-    return {
-      ...item,
-      cost: {
-        code: t(item.cost, { lng: "en" }).toUpperCase(),
-        title: item.cost,
-      },
-      priority: {
-        code: t(item.priority, {
-          lng: "en",
-        }).toUpperCase(),
-        title: item.priority,
-      },
-      impact: {
-        code: t(item.impact, {
-          lng: "en",
-        }).toUpperCase(),
-        title: item.impact,
-      },
-    };
-  });
-};
-
 const AssessmentExportContainer = () => {
   const { assessmentId = "", spaceId = "" } = useParams();
   const { service } = useServiceContext();
@@ -552,8 +528,8 @@ const AssessmentExportContainer = () => {
                           }}
                         ></Typography>
                         <AdviceItemsAccordion
-                          items={transformAdviceItems(advice?.adviceItems)}
-                          onDelete={() => {}}
+                        items={reportData?.advice?.adviceItems}
+                        onDelete={() => {}}
                           setDisplayedItems={() => {}}
                           query={undefined}
                           readOnly
