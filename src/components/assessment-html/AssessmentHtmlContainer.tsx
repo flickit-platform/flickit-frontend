@@ -528,7 +528,7 @@ const AssessmentExportContainer = () => {
                           }}
                         ></Typography>
                         <AdviceItemsAccordion
-                        items={reportData?.advice?.adviceItems}
+                        items={graphicalReport?.advice?.adviceItems}
                         onDelete={() => {}}
                           setDisplayedItems={() => {}}
                           query={undefined}
