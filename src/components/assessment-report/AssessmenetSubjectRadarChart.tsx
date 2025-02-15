@@ -94,13 +94,13 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
                     y={
                       y +
                       (y - cy) /
-                        (theme.direction === "rtl" || lng === "fa" ? 7 : 15) +
+                        ((theme.direction === "rtl" && !lng) || lng === "fa" ? 7 : 15) +
                       index * 12
                     }
                     x={
                       x +
                       (x - cx) /
-                        (theme.direction === "rtl" || lng === "fa" ? 7 : 15)
+                        ((theme.direction === "rtl" && !lng) || lng === "fa" ? 7 : 15)
                     }
                     style={{
                       fontFamily: languageDetector(line ?? "")
@@ -117,7 +117,9 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
             );
           }}
           orientation={
-            theme.direction === "rtl" || lng === "fa" ? "inner" : "outer"
+            (theme.direction === "rtl" && !lng) || lng === "fa"
+              ? "inner"
+              : "outer"
           }
         />
         <PolarRadiusAxis

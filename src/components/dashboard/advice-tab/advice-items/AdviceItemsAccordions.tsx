@@ -134,16 +134,26 @@ const CustomChip: React.FC<{
         color,
         "& .MuiChip-icon": {
           marginRight:
-            language === "fa" || theme.direction == "rtl" ? "0" : "-10px",
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? "0"
+              : "-10px",
           marginLeft:
-            language === "fa" || theme.direction == "rtl" ? "-10px" : "0",
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? "-10px"
+              : "0",
         },
         "& .MuiChip-label": {
-          fontWeight: language === "fa" ? 200 : "initial",
+          fontWeight:
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? 200
+              : "initial",
           letterSpacing: "0px",
-          fontSize: language === "fa" ? "10px" : "12px",
+          fontSize:
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? "10px"
+              : "12px",
           fontFamily:
-            language === "fa" || theme.direction == "rtl"
+            language === "fa" || (!readOnly && theme.direction == "rtl")
               ? farsiFontFamily
               : primaryFontFamily,
         },
