@@ -528,11 +528,12 @@ const AssessmentExportContainer = () => {
                           }}
                         ></Typography>
                         <AdviceItemsAccordion
-                        items={graphicalReport?.advice?.adviceItems}
-                        onDelete={() => {}}
+                          items={graphicalReport?.advice?.adviceItems}
+                          onDelete={() => {}}
                           setDisplayedItems={() => {}}
                           query={undefined}
                           readOnly
+                          language={lang.code.toLowerCase()}
                         />
                       </>
                     ) : (
