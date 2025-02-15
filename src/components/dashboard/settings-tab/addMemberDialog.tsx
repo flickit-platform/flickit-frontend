@@ -27,6 +27,7 @@ import useScreenResize from "@/utils/useScreenResize";
 import { styles } from "@styles";
 import { Settings } from "@mui/icons-material";
 import { theme } from "@/config/theme";
+import axios from "axios";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -46,6 +47,7 @@ const AddMemberDialog = (props: {
   confirmText: any;
   listOfRoles: any[];
   assessmentId: any;
+  listOfUser: any[] | number;
 }) => {
   const {
     expanded,
@@ -55,6 +57,7 @@ const AddMemberDialog = (props: {
     setChangeData,
     listOfRoles = [],
     assessmentId,
+    listOfUser,
   } = props;
 
   const [addedEmailType, setAddedEmailType] = useState<string>(
@@ -73,13 +76,8 @@ const AddMemberDialog = (props: {
   });
 
   const spaceMembersQueryData = useQuery({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId, page:0, size: 100 }, config),
-  });
-  const fetchAssessmentMembers = useQuery({
-    service: (args , config) =>
-        service.fetchAssessmentMembers(args, config),
-    toastError: false,
-    toastErrorOptions: { filterByStatus: [404] },
+    service: (args, config) =>
+      service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
   });
 
   const addRoleMemberQueryData = useQuery({
@@ -109,12 +107,49 @@ const AddMemberDialog = (props: {
     (async () => {
       try {
         setAddedEmailType(EUserType.DEFAULT);
-        const { data } = await spaceMembersQueryData;
-        const { items: member } = await fetchAssessmentMembers.query({ assessmentId, page:0, size: 100 });
-        if (data) {
-          const { items } = data;
-          const filteredItem = items.filter((item: any) =>
-              member.some((userListItem: any) => item.id === userListItem.id),
+        if (expanded){
+          const spaceMembers = spaceMembersQueryData?.data?.total;
+          let spaceList: any[] = [];
+          let assessmentList: any[] = [];
+          if (spaceMembers > spaceMembersQueryData?.data?.size) {
+            const spaceCount = Math.ceil(
+                spaceMembers / spaceMembersQueryData?.data?.size,
+            );
+            for (let i = 0; i < spaceCount; i++) {
+              let {
+                data: { items },
+              } = await axios.get(`/api/v1/spaces/${spaceId}/members/`, {
+                params: {
+                  size: 100,
+                  page: i,
+                },
+              });
+              spaceList.push(...items);
+            }
+          } else {
+            spaceList.push(...spaceMembersQueryData?.data?.items);
+          }
+
+          if (typeof listOfUser == "object") {
+            assessmentList.push(...listOfUser);
+          } else {
+            const assessmentCount = Math.ceil(listOfUser / 100);
+            for (let i = 0; i < assessmentCount; i++) {
+              let {
+                data: { items },
+              } = await axios.get(`/api/v1/assessments/${assessmentId}/users`, {
+                params: {
+                  page: i,
+                  size: 100,
+                },
+              });
+              assessmentList.push(...items);
+            }
+          }
+          const filteredItem = spaceList.filter((item: any) =>
+              assessmentList.some(
+                  (userListItem: any) => item.id === userListItem.id,
+              ),
           );
           setMemberOfSpace(filteredItem);
         }
@@ -244,7 +279,7 @@ const AddMemberDialog = (props: {
           width="100%"
           mt={1}
         >
-          <Typography sx={{whiteSpace:"noWrap"}}>
+          <Typography sx={{ whiteSpace: "noWrap" }}>
             <Trans i18nKey={"add"} />
           </Typography>
           <Box width="50%">
@@ -303,65 +338,65 @@ const AddMemberDialog = (props: {
                 </Typography>
               </Box>
               {listOfRoles?.map((role: any, index: number) => {
-                  return (
-                    <MenuItem
-                      style={{ display: "block" }}
-                      key={role.title}
-                      value={role}
-                      id={role.id}
+                return (
+                  <MenuItem
+                    style={{ display: "block" }}
+                    key={role.title}
+                    value={role}
+                    id={role.id}
+                    sx={{
+                      "&.MuiMenuItem-root:hover": {
+                        ...(roleSelected?.title == role.title
+                          ? {
+                              backgroundColor: "#9CCAFF",
+                              color: "#004F83",
+                            }
+                          : {
+                              backgroundColor: "#EFEDF0",
+                              color: "#1B1B1E",
+                            }),
+                      },
+                      background:
+                        roleSelected?.title == role.title ? "#9CCAFF" : "",
+                    }}
+                  >
+                    <Box
                       sx={{
-                        "&.MuiMenuItem-root:hover": {
-                          ...(roleSelected?.title == role.title
-                            ? {
-                                backgroundColor: "#9CCAFF",
-                                color: "#004F83",
-                              }
-                            : {
-                                backgroundColor: "#EFEDF0",
-                                color: "#1B1B1E",
-                              }),
-                        },
-                        background:
-                          roleSelected?.title == role.title ? "#9CCAFF" : "",
+                        maxWidth: "240px",
+                        color: "#2B333B",
+                        fontSize: "0.875rem",
+                        lineHeight: "21px",
+                        fontWeight: 500,
+                        paddingY: "1rem",
                       }}
                     >
-                      <Box
-                        sx={{
-                          maxWidth: "240px",
+                      <Typography>{role.title}</Typography>
+                      <div
+                        style={{
                           color: "#2B333B",
                           fontSize: "0.875rem",
                           lineHeight: "21px",
-                          fontWeight: 500,
-                          paddingY: "1rem",
+                          fontWeight: 300,
+                          whiteSpace: "break-spaces",
+                          paddingTop: "1rem",
                         }}
                       >
-                        <Typography>{role.title}</Typography>
-                        <div
-                          style={{
-                            color: "#2B333B",
-                            fontSize: "0.875rem",
-                            lineHeight: "21px",
-                            fontWeight: 300,
-                            whiteSpace: "break-spaces",
-                            paddingTop: "1rem",
-                          }}
-                        >
-                          {role.description}
-                        </div>
-                      </Box>
-                      {listOfRoles && listOfRoles.length > index + 1 && (
-                        <Box
-                          sx={{
-                            height: "0.5px",
-                            width: "80%",
-                            backgroundColor: "#9DA7B3",
-                            mx: "auto",
-                          }}
-                        ></Box>
-                      )}
-                    </MenuItem>
-                  );
-                })}
+                        {role.description}
+                      </div>
+                    </Box>
+                    {listOfRoles && listOfRoles.length > index + 1 && (
+                      <Box
+                        sx={{
+                          height: "0.5px",
+                          width: "80%",
+                          backgroundColor: "#9DA7B3",
+                          mx: "auto",
+                        }}
+                      ></Box>
+                    )}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </Box>
@@ -426,7 +461,8 @@ const EmailField = ({
   const { service } = useServiceContext();
   const { spaceId = "" } = useParams();
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId, page:0 , size: 100 }, config),
+    service: (args, config) =>
+      service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
     accessor: "items",
   });
   const loadUserByEmail = useQuery({

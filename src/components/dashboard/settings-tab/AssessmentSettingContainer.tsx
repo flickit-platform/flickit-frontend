@@ -173,6 +173,7 @@ const AssessmentSettingContainer = () => {
                 expanded={expanded}
                 onClose={handleClose}
                 listOfRoles={listOfRoles}
+                listOfUser={totalUser <= fetchAssessmentMembers?.data?.size ? listOfUser : totalUser}
                 assessmentId={assessmentId}
                 cancelText={<Trans i18nKey={"cancel"} />}
                 confirmText={<Trans i18nKey={"addToThisAssessment"} />}
