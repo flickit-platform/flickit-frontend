@@ -91,13 +91,13 @@ const ReportTab = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     flexDirection: { xs: "column-reverse", md: "row" },
+                    mt: name == "intro" ? 4 : null,
                   }}
                 >
                   <MainCard
                     key={uniqueId()}
                     style={{
                       minHeight: "50px",
-                      mt: name == "intro" ? 4 : 5,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
@@ -141,7 +141,6 @@ const ReportTab = () => {
                     <MainCard
                       style={{
                         minHeight: "180px",
-                        mt: 4,
                         width: { xs: "100%", md: "30%" },
                         display: "flex",
                         justifyContent: "center",
