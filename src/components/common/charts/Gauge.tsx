@@ -135,7 +135,7 @@ const Gauge = (props: IGaugeProps) => {
             mt={maturity_status_guide ? "0.5rem" : "0px"}
             mb={maturity_status_guide ? "-0.5rem" : 0}
           >
-            <Trans i18nKey={`${maturity_level_status}`} />
+            {maturity_level_status}{" "}
           </Typography>
           {confidence_text && (
             <Typography
