@@ -133,9 +133,9 @@ const AssessmentExportContainer = () => {
         queryBatchData={[fetchPathInfo, fetchGraphicalReport]}
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
         render={([pathInfo, graphicalReport]) => {
-          const { assessment, advice, permissions, subjects } =
+          const { assessment, advice, permissions, subjects, lang } =
             graphicalReport as IGraphicalReport;
-          const rtlLanguage = assessment.language === "fa";
+          const rtlLanguage = lang.code.toLowerCase() === "fa";
           return (
             <Box
               m="auto"
@@ -146,7 +146,10 @@ const AssessmentExportContainer = () => {
                 ...styles.rtlStyle(rtlLanguage),
               }}
             >
-              <AssessmentHtmlTitle pathInfo={pathInfo} />
+              <AssessmentHtmlTitle
+                pathInfo={pathInfo}
+                language={lang.code.toLowerCase()}
+              />
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -170,10 +173,15 @@ const AssessmentExportContainer = () => {
                         : `/${spaceId}/assessments/1/`
                     }
                   >
-                    <ArrowForward sx={{ ...theme.typography.headlineMedium }} />
+                    <ArrowForward
+                      sx={{
+                        ...theme.typography.headlineMedium,
+                        transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
+                      }}
+                    />
                   </IconButton>
                   {t("assessmentReport", {
-                    lng: assessment.language,
+                    lng: lang.code.toLowerCase(),
                   })}
                 </Typography>
                 <>
@@ -235,7 +243,10 @@ const AssessmentExportContainer = () => {
                     <Box padding={3} width="100%">
                       <Grid container spacing={4} sx={{ mb: "40px" }}>
                         <Grid item xs={12} sm={12}>
-                          {renderChips(graphicalReport, assessment.language)}
+                          {renderChips(
+                            graphicalReport,
+                            lang.code.toLowerCase(),
+                          )}
                         </Grid>
                         <Grid item xs={12} sm={6} md={6} lg={8}>
                           <Typography
@@ -259,7 +270,7 @@ const AssessmentExportContainer = () => {
                             }}
                           >
                             {t("introduction", {
-                              lng: assessment.language,
+                              lng: lang.code.toLowerCase(),
                             })}
                           </Typography>
                           <Typography
@@ -273,7 +284,9 @@ const AssessmentExportContainer = () => {
                             dangerouslySetInnerHTML={{
                               __html:
                                 assessment.intro ??
-                                t("unavailable", { lng: assessment.language }),
+                                t("unavailable", {
+                                  lng: lang.code.toLowerCase(),
+                                }),
                             }}
                             className="tiptap"
                           />
@@ -289,7 +302,7 @@ const AssessmentExportContainer = () => {
                             }}
                           >
                             {t("summary", {
-                              lng: assessment.language,
+                              lng: lang.code.toLowerCase(),
                             })}
                           </Typography>
                           <Typography
@@ -303,7 +316,9 @@ const AssessmentExportContainer = () => {
                             dangerouslySetInnerHTML={{
                               __html:
                                 assessment.overallInsight ??
-                                t("unavailable", { lng: assessment.language }),
+                                t("unavailable", {
+                                  lng: lang.code.toLowerCase(),
+                                }),
                             }}
                           ></Typography>
                         </Grid>
@@ -318,7 +333,7 @@ const AssessmentExportContainer = () => {
                             }
                             confidence_value={assessment.confidenceValue}
                             confidence_text={t("withPercentConfidence", {
-                              lng: assessment.language,
+                              lng: lang.code.toLowerCase(),
                             })}
                             isMobileScreen={false}
                             hideGuidance={true}
@@ -345,6 +360,7 @@ const AssessmentExportContainer = () => {
                             true,
                           )[subject.maturityLevel.value - 1],
                         }))}
+                        language={lang.code.toLowerCase()}
                       />
                       <Typography
                         component="div"
@@ -357,7 +373,7 @@ const AssessmentExportContainer = () => {
                         }}
                       >
                         {t("prosAndCons", {
-                          lng: assessment.language,
+                          lng: lang.code.toLowerCase(),
                         })}
                       </Typography>
 
@@ -399,7 +415,7 @@ const AssessmentExportContainer = () => {
                           >
                             <InfoOutlinedIcon fontSize="small" />
                             {t("treeMapChart", {
-                              lng: assessment.language,
+                              lng: lang.code.toLowerCase(),
                             })}
                           </Typography>
                           <Typography
@@ -414,7 +430,9 @@ const AssessmentExportContainer = () => {
                             dangerouslySetInnerHTML={{
                               __html:
                                 assessment.prosAndCons ??
-                                t("unavailable", { lng: assessment.language }),
+                                t("unavailable", {
+                                  lng: lang.code.toLowerCase(),
+                                }),
                             }}
                           ></Typography>
                         </Grid>
@@ -432,7 +450,7 @@ const AssessmentExportContainer = () => {
                             }}
                           >
                             {t("maturityLevels", {
-                              lng: assessment.language,
+                              lng: lang.code.toLowerCase(),
                             })}
                           </Typography>
                           <Grid
@@ -515,7 +533,7 @@ const AssessmentExportContainer = () => {
                       }}
                     >
                       {t("recommendations", {
-                        lng: assessment.language,
+                        lng: lang.code.toLowerCase(),
                       })}
                     </Typography>
                     {advice?.narration || advice?.adviceItems?.length ? (
@@ -551,7 +569,7 @@ const AssessmentExportContainer = () => {
                           ...styles.rtlStyle(rtlLanguage),
                         }}
                       >
-                        {t("unavailable", { lng: assessment.language })}
+                        {t("unavailable", { lng: lang.code.toLowerCase() })}
                       </Typography>
                     )}
 

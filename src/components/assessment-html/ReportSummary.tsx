@@ -22,7 +22,7 @@ const sectionTitleStyle = {
   marginBottom: "12px",
 };
 
-const TitleBox = (language: string) => (
+const TitleBox = ({ language }: { language: string }) => (
   <Box
     sx={{
       position: "absolute",
@@ -45,7 +45,7 @@ const TitleBox = (language: string) => (
       }}
     >
       {t("how_was_this_report_built", {
-        lng: "fa",
+        lng: language,
       })}
     </Typography>
   </Box>
@@ -61,7 +61,11 @@ const Section = ({ title, children, rtlLanguage }: any) => (
       {title}
     </Typography>
     <Typography
-      sx={{ ...textStyle, textAlign: "justify" }}
+      sx={{
+        ...textStyle,
+        textAlign: "justify",
+        ...styles.rtlStyle(rtlLanguage),
+      }}
       variant="extraLight"
       fontWeight={300}
     >
@@ -70,7 +74,11 @@ const Section = ({ title, children, rtlLanguage }: any) => (
   </Box>
 );
 
-const TopicsList = (graphicalReport: IGraphicalReport) => (
+const TopicsList = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => (
   <Box>
     {graphicalReport?.subjects?.map((subject: any, index: any) => (
       <Box key={index} sx={{ marginBottom: "16px" }}>
@@ -80,8 +88,12 @@ const TopicsList = (graphicalReport: IGraphicalReport) => (
             color: "#2466A8",
             marginBottom: "8px",
             textAlign:
-              graphicalReport?.assessment.language === "fa" ? "right" : "left",
-            ...styles.rtlStyle(graphicalReport?.assessment.language === "fa"),
+              graphicalReport?.lang.code.toLowerCase() === "fa"
+                ? "right"
+                : "left",
+            ...styles.rtlStyle(
+              graphicalReport?.lang.code.toLowerCase() === "fa",
+            ),
           }}
         >
           {subject.title}
@@ -102,18 +114,26 @@ const TopicsList = (graphicalReport: IGraphicalReport) => (
                 width: "20%",
                 marginRight: "8px",
                 textAlign:
-                  graphicalReport?.assessment.language === "fa"
+                  graphicalReport?.lang.code.toLowerCase() === "fa"
                     ? "right"
                     : "left",
                 ...styles.rtlStyle(
-                  graphicalReport?.assessment.language === "fa",
+                  graphicalReport?.lang.code.toLowerCase() === "fa",
                 ),
               }}
             >
               {attribute.title}
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-            <Typography sx={{ ...textStyle, width: "80%" }}>
+            <Typography
+              sx={{
+                ...textStyle,
+                width: "80%",
+                ...styles.rtlStyle(
+                  graphicalReport?.lang.code.toLowerCase() === "fa",
+                ),
+              }}
+            >
               {attribute.description}
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
@@ -124,7 +144,11 @@ const TopicsList = (graphicalReport: IGraphicalReport) => (
   </Box>
 );
 
-const QuestionnaireList = (graphicalReport: IGraphicalReport) => (
+const QuestionnaireList = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => (
   <Box>
     {graphicalReport?.assessment?.assessmentKit.questionnaires?.map(
       (item: any, index: any) => (
@@ -141,7 +165,13 @@ const QuestionnaireList = (graphicalReport: IGraphicalReport) => (
             variant="extraLight"
             sx={{
               fontWeight: "bold",
-              ...styles.customizeFarsiFont,
+              textAlign:
+                graphicalReport?.lang.code.toLowerCase() === "fa"
+                  ? "right"
+                  : "left",
+              ...styles.rtlStyle(
+                graphicalReport?.lang.code.toLowerCase() === "fa",
+              ),
               width: "200px",
             }}
           >
@@ -152,13 +182,30 @@ const QuestionnaireList = (graphicalReport: IGraphicalReport) => (
             sx={{
               ...textStyle,
               width: "80px",
-              ...styles.rtlStyle(graphicalReport?.assessment.language === "fa"),
+              ...styles.rtlStyle(
+                graphicalReport?.lang.code.toLowerCase() === "fa",
+              ),
             }}
           >
-            {item.questionCount} {t("question", { lng: "fa" })}
+            {item.questionCount}{" "}
+            {t("question", { lng: graphicalReport?.lang.code.toLowerCase() })}
           </Typography>
-          <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-          <Typography sx={{ ...textStyle, width: "80%" }}>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{
+              mx: "8px",
+            }}
+          />
+          <Typography
+            sx={{
+              ...textStyle,
+              width: "80%",
+              ...styles.rtlStyle(
+                graphicalReport?.lang.code.toLowerCase() === "fa",
+              ),
+            }}
+          >
             {item.description}
           </Typography>
           <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
@@ -168,10 +215,14 @@ const QuestionnaireList = (graphicalReport: IGraphicalReport) => (
   </Box>
 );
 
-const ReportCard = (graphicalReport: IGraphicalReport) => {
-  const { assessment, advice, permissions, subjects, assessmentProcess } =
-    graphicalReport as IGraphicalReport;
-  const rtlLanguage = assessment.language === "fa";
+const ReportCard = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => {
+  const { assessment, advice, permissions, subjects, assessmentProcess, lang } =
+    graphicalReport;
+  const rtlLanguage = lang.code.toLowerCase() === "fa";
   return (
     <Box
       sx={{
@@ -185,24 +236,30 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
         paddingY: 6,
       }}
     >
-      <TitleBox language={assessment.language} />
+      <TitleBox language={lang.code.toLowerCase()} />
 
       <Section
-        title={t("disclaimer", { lng: assessment.language })}
+        title={t("disclaimer", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
         <Typography
           variant="extraLight"
           sx={{
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            fontFamily:
+              lang.code.toLowerCase() === "fa"
+                ? farsiFontFamily
+                : primaryFontFamily,
             textAlign: "justify",
           }}
         >
-          {t("disclaimerDescription", { lng: assessment.language })}
+          {t("disclaimerDescription", { lng: lang.code.toLowerCase() })}
         </Typography>
       </Section>
 
-      <Section title={t("evaluationSteps", { lng: assessment.language })}>
+      <Section
+        title={t("evaluationSteps", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {assessmentProcess.steps ? (
           <Typography
             variant="extraLight"
@@ -217,15 +274,18 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
             dangerouslySetInnerHTML={{
               __html:
                 assessmentProcess.steps ??
-                t("unavailable", { lng: assessment.language }),
+                t("unavailable", { lng: lang.code.toLowerCase() }),
             }}
             className={"tiptap"}
           />
         ) : (
-          <>{t("unavailable", { lng: assessment.language })}</>
+          <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
         )}
       </Section>
-      <Section title={t("participant", { lng: assessment.language })}>
+      <Section
+        title={t("participant", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {assessmentProcess.participant ? (
           <Typography
             variant="extraLight"
@@ -239,26 +299,29 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
             }}
             dangerouslySetInnerHTML={{
               __html:
-                data?.assessmentProcess.participant ??
-                t("unavailable", { lng: assessment.language }),
+                graphicalReport?.assessmentProcess.participant ??
+                t("unavailable", { lng: lang.code.toLowerCase() }),
             }}
             className={"tiptap"}
           />
         ) : (
-          <>{t("unavailable", { lng: assessment.language })}</>
+          <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
         )}
       </Section>
 
-      <Section title={t("assessmentKit", { lng: assessment.language })}>
+      <Section
+        title={t("assessmentKit", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {t("assessmentKitDescription", {
-          lng: "fa",
+          lng: lang.code.toLowerCase(),
           title: assessment.assessmentKit.title,
           attributesCount: assessment.assessmentKit.attributesCount,
           subjectsLength: subjects.length,
           subjects: subjects
             ?.map((elem: ISubject, index: number) =>
               index === subjects?.length - 1 && subjects?.length !== 1
-                ? t("and", { lng: "fa" }) + elem?.title
+                ? t("and", { lng: lang.code.toLowerCase() }) + elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
@@ -269,9 +332,12 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
         })}
       </Section>
 
-      <Section title={t("maturityLevels", { lng: assessment.language })}>
+      <Section
+        title={t("maturityLevels", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {t("maturityLevelsDescription", {
-          lng: assessment.language,
+          lng: lang.code.toLowerCase(),
           maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
         })}
         {assessment.assessmentKit.maturityLevels.map(
@@ -305,8 +371,11 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
                     assessment.assessmentKit.maturityLevelCount,
                   )[level.value - 1],
                   minWidth: "70px",
-                  direction: true ? "rtl" : "ltr",
-                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                  direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                  fontFamily:
+                    lang.code.toLowerCase() === "fa"
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                 }}
               >
                 {level.title}
@@ -318,8 +387,11 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
                 sx={{
                   ...theme.typography.extraLight,
                   fontWeight: 300,
-                  direction: true ? "rtl" : "ltr",
-                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                  direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                  fontFamily:
+                    lang.code.toLowerCase() === "fa"
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                 }}
               >
                 {level.description}
@@ -329,14 +401,20 @@ const ReportCard = (graphicalReport: IGraphicalReport) => {
         )}
       </Section>
 
-      <Section title={t("topicsAndIndicators", { lng: assessment.language })}>
+      <Section
+        title={t("topicsAndIndicators", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {t("topicsTable", {
-          lng: "fa",
+          lng: lang.code.toLowerCase(),
         })}
         <TopicsList graphicalReport={graphicalReport} />
       </Section>
 
-      <Section title={t("questionnaires", { lng: assessment.language })}>
+      <Section
+        title={t("questionnaires", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         <QuestionnaireList graphicalReport={graphicalReport} />
       </Section>
     </Box>

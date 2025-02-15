@@ -19,7 +19,11 @@ interface OpenItemsState {
   [key: string]: boolean;
 }
 
-export const AssessmentTOC = (graphicalReport: IGraphicalReport) => {
+export const AssessmentTOC = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -31,13 +35,13 @@ export const AssessmentTOC = (graphicalReport: IGraphicalReport) => {
       [itemKey]: !prevState[itemKey],
     }));
   };
-  const { assessment, advice, permissions } =
+  const { assessment, advice, permissions, lang } =
     graphicalReport as IGraphicalReport;
-  const rtlLanguage = assessment.language === "fa";
+  const rtlLanguage = lang.code.toLowerCase() === "fa";
 
   const subjects: any = useMemo(() => {
     return (
-      subjects?.map((subject: ISubject) => ({
+      graphicalReport.subjects?.map((subject: ISubject) => ({
         key: subject.title,
         subItems:
           subject?.attributes?.map(
@@ -100,7 +104,7 @@ export const AssessmentTOC = (graphicalReport: IGraphicalReport) => {
           ...styles.rtlStyle(rtlLanguage),
         }}
       >
-        {t("quick_access", { lng: assessment.language })}
+        {t("quick_access", { lng: lang.code.toLowerCase() })}
       </Typography>
       <List
         sx={{
@@ -137,7 +141,7 @@ export const AssessmentTOC = (graphicalReport: IGraphicalReport) => {
                   }
                 >
                   <ListItemText
-                    primary={t(item.key, { lng: "fa" })}
+                    primary={t(item.key, { lng: lang.code.toLowerCase() })}
                     sx={{
                       "& .MuiTypography-root": {
                         ...theme.typography.semiBoldMedium,
@@ -164,7 +168,7 @@ export const AssessmentTOC = (graphicalReport: IGraphicalReport) => {
                       <ListItem key={subIndex} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText
-                            primary={t(subItem, { lng: "fa", title: "" })}
+                            primary={t(subItem, { lng: lang.code.toLowerCase(), title: "" })}
                             sx={{
                               ml: 2,
                               marginBlock: 1,

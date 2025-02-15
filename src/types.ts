@@ -773,4 +773,5 @@ export interface IGraphicalReport {
     steps: string;
     participant: string;
   };
+  lang: { code: string };
 }

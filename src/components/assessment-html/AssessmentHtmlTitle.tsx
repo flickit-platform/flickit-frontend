@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { t } from "i18next";
 
 const AssessmentHtmlTitle = (props: any) => {
-  const { pathInfo } = props;
+  const { pathInfo, language } = props;
   const { spaceId } = useParams();
   const { space } = pathInfo;
 
@@ -25,7 +25,7 @@ const AssessmentHtmlTitle = (props: any) => {
               to: `/${spaceId}/assessments/1`,
             },
             {
-              title: t("assessmentReport", { lng: "fa" }) as string,
+              title: t("assessmentReport", { lng: language }) as string,
             },
           ]}
           displayChip

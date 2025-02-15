@@ -13,16 +13,19 @@ import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types";
 
-const SubjectReport = (graphicalReport: IGraphicalReport) => {
+const SubjectReport = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => {
   const [maturityLevelCount] = useState<number>(
-    data?.assessment?.assessmentKit?.maturityLevelCount,
+    graphicalReport?.assessment?.assessmentKit?.maturityLevelCount,
   );
-  const { subjects } = data;
+  const { subjects, lang } = graphicalReport;
   return (
     <GeneralLayout>
       {subjects?.map((item: any, index: number) => {
         const { title, insight, maturityLevel } = item;
-        const is_farsi = languageDetector(title);
         return (
           <>
             <Grid
@@ -31,8 +34,11 @@ const SubjectReport = (graphicalReport: IGraphicalReport) => {
               container
               key={item.index}
               sx={{
-                direction: true ? "rtl" : "ltr",
-                fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                fontFamily:
+                  lang.code.toLowerCase() === "fa"
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 mb: "40px",
               }}
             >
@@ -42,8 +48,11 @@ const SubjectReport = (graphicalReport: IGraphicalReport) => {
                     color: theme.palette.primary.main,
                     ...theme.typography.headlineSmall,
                     fontWeight: "bold",
-                    direction: true ? "rtl" : "ltr",
-                    fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                    direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                    fontFamily:
+                      lang.code.toLowerCase() === "fa"
+                        ? farsiFontFamily
+                        : primaryFontFamily,
                   }}
                 >
                   {index + 1}
@@ -55,13 +64,18 @@ const SubjectReport = (graphicalReport: IGraphicalReport) => {
                   sx={{
                     ...theme.typography.extraLight,
                     fontWeight: 300,
-                    direction: true ? "rtl" : "ltr",
-                    fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                    direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                    fontFamily:
+                      lang.code.toLowerCase() === "fa"
+                        ? farsiFontFamily
+                        : primaryFontFamily,
                     mt: 2,
                   }}
                   textAlign="justify"
                   dangerouslySetInnerHTML={{
-                    __html: insight ?? t("unavailable", { lng: "fa" }),
+                    __html:
+                      insight ??
+                      t("unavailable", { lng: lang.code.toLowerCase() }),
                   }}
                 ></Typography>
               </Grid>
@@ -81,13 +95,14 @@ const SubjectReport = (graphicalReport: IGraphicalReport) => {
                 spacing={2}
                 sx={{ ...styles.centerCVH, gap: 2 }}
               >
-                {item?.attributes?.map((attribute: IAttribute) => {
+                {item?.attributes?.map((attribute: any) => {
                   return (
                     <BulletPointStatus
                       key={attribute.index}
                       title={attribute.title}
                       maturityLevel={attribute.maturityLevel}
                       maturityLevelCount={maturityLevelCount}
+                      language={lang.code.toLowerCase()}
                     />
                   );
                 })}
@@ -111,14 +126,15 @@ const SubjectReport = (graphicalReport: IGraphicalReport) => {
                     maturityLevelsCount={maturityLevelCount ?? 5}
                     loading={false}
                     chartHeight={300}
-                    lng="fa"
+                    lng={lang.code.toLowerCase()}
                   />
                 )}
               </Grid>
             </Grid>
-            {item?.attributes?.map((attribute: IAttribute) => {
+            {item?.attributes?.map((attribute: any) => {
               return (
                 <BoxReportLayout
+                  language={lang.code.toLowerCase()}
                   confidenceValue={attribute.confidenceValue}
                   maturityLevelCount={maturityLevelCount}
                   {...attribute}
