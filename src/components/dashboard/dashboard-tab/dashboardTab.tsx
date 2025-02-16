@@ -121,7 +121,7 @@ const DashboardTab = () => {
                 activeStep={activeStep}
                 stepData={stepData}
               />
-              <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} />
+              <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} fetchDashboard={fetchDashboard} />
             </Box>
           );
         }}

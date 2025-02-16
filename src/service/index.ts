@@ -1512,6 +1512,15 @@ export const createService = (
         config,
       );
     },
+    approveInsights(
+        { assessmentId }: { assessmentId: TId},
+        config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+          `/api/v1/assessments/${assessmentId}/approve-insights/`,
+          { ...config },
+      );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,
