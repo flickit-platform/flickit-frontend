@@ -209,7 +209,6 @@ const QuestionnairesContent = () => {
           btnTitle={"newQuestionnaire"}
           mainTitle={"questionnaires"}
           description={"questionnairesKitDesignerDescription"}
-          subTitle={"questionnairesList"}
         />
         {fetchQuestionnairesKit.loaded &&
         fetchQuestionnairesKit.data.items.length !== 0 ? (

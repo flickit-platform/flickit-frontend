@@ -38,6 +38,7 @@ const MaturityLevelsHeader = ({
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
+            marginInlineStart: "auto"
           }}
         >
           <Button variant="contained" onClick={onNewMaturityLevelClick} data-test-id="newMaturity">

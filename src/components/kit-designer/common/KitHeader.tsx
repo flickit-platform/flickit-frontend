@@ -44,6 +44,7 @@ const KitDHeader = ({
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
+            marginInlineStart: "auto"
           }}
         >
           <Button variant="contained" onClick={onAddNewRow}>
