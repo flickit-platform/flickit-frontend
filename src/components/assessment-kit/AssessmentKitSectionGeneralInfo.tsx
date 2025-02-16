@@ -576,9 +576,6 @@ const OnHoverInput = (props: any) => {
           mr={4}
           sx={{
             minWidth: "64px !important",
-            fontFamily: languageDetector(title)
-              ? farsiFontFamily
-              : primaryFontFamily,
           }}
         >
           {title}
@@ -795,7 +792,7 @@ const OnHoverStatus = (props: any) => {
               sx={{ userSelect: "none" }}
               fontSize=".75rem"
             >
-              <Trans i18nKey="unpublished" />
+              <Trans i18nKey="unPublished" />
             </Typography>
           </Box>
         </Box>
