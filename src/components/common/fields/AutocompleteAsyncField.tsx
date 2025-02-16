@@ -19,6 +19,7 @@ import { TQueryProps } from "@types";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { theme } from "@config/theme";
 import { uniqueId } from "lodash";
+import {Trans} from "react-i18next";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -371,7 +372,7 @@ const AutocompleteBaseField = (
               sx={{ justifyContent: "start", textTransform: "none" }}
               ref={loadingButtonRef}
             >
-              Add "{option.inputValue}"
+           <Trans i18nKey={"add"} /> "{option.inputValue}"
             </LoadingButton>
           </li>
         ) : (

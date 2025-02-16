@@ -429,7 +429,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                 <InputAdornment position="end">
                   <IconButton
                     title="Submit Edit"
-                    edge="end"
+                    edge= {theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#49CED0",
                       borderRadius: "2px",
@@ -443,7 +443,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
-                    edge="end"
+                    edge= {theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#E04B7C",
                       borderRadius: "2px",
