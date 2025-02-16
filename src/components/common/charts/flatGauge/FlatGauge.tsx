@@ -114,7 +114,7 @@ const FlatGauge = (props: IGaugeProps) => {
                   textAlign: "right",
                 }}
               >
-                <Trans i18nKey={`${text}`} />
+                {text}
               </Typography>
             )}
           </Box>

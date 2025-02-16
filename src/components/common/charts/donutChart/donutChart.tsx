@@ -59,7 +59,7 @@ const DonutChart = (props: IGaugeProps) => {
                 : primaryFontFamily,
             }}
           >
-            <Trans i18nKey={text} />
+            {text}
           </Typography>
         </Box>
       </Box>

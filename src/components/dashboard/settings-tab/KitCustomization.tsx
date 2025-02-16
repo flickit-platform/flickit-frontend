@@ -23,6 +23,7 @@ import { LoadingButton } from "@mui/lab";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";
+import {styles} from "@styles";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -188,18 +189,10 @@ const KitCustomization = (props: any) => {
       {!fetchKitCustomization.errorObject?.response && (
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            px: { xs: "15px", sm: "51px" },
+            ...styles.boxStyle,
+            minHeight: "350px"
           }}
           gap={2}
-          height={"auto"}
-          minHeight={"350px"}
-          width={"100%"}
-          bgcolor={"#FFF"}
-          borderRadius={"8px"}
-          py={"32px"}
         >
           <Box height={"100%"} width={"100%"}>
             <Typography

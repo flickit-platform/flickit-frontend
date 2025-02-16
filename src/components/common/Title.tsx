@@ -143,6 +143,7 @@ const Title = (props: ITitle) => {
             ...styles.centerV,
             display: { xs: "block", sm: "flex" },
             ...((titleProps?.sx || {}) as any),
+            ...(rest.sx || {}),
           }}
         >
           {children}

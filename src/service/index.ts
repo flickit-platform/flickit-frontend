@@ -937,6 +937,12 @@ export const createService = (
         config,
       );
     },
+    fetchPreAdviceInfo(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/pre-advice-info/`, config);
+    },
     fetchAssessment(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
