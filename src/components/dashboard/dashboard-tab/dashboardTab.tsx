@@ -88,7 +88,7 @@ const DashboardTab = () => {
                     }
                   } else if (activeStep == 2) {
                     if (
-                      item.category == "advice" ||
+                      item.category == "advices" ||
                       item.category == "insights" ||
                       item.category == "questions"
                     ) {
