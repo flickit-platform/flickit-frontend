@@ -97,7 +97,8 @@ const ReportTab = () => {
                   <MainCard
                     key={uniqueId()}
                     style={{
-                      minHeight: "50px",
+                      minHeight: "180px",
+                      mt: name == "intro" ? 4 : 5,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
