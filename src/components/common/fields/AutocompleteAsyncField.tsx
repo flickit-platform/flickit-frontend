@@ -20,8 +20,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { theme } from "@config/theme";
 import { uniqueId } from "lodash";
 import Chip from "@mui/material/Chip";
-import {Typography} from "@mui/material";
-import {Trans} from "react-i18next";
+import { Typography } from "@mui/material";
+import { Trans } from "react-i18next";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -50,7 +50,7 @@ const AutocompleteAsyncField = (
     required = false,
     hasAddBtn = false,
     editable = false,
-    filterFields = ["title", "lang","isPrivate"],
+    filterFields = ["title", "lang", "isPrivate"],
     createItemQuery,
     setError,
     searchable,
@@ -254,7 +254,6 @@ const AutocompleteBaseField = (
     setOpen(true);
   };
 
-
   const handleBlur = () => {
     if (
       inputValue &&
@@ -380,18 +379,32 @@ const AutocompleteBaseField = (
         ) : (
           <li {...props} style={{ display: "flex", gap: "8px" }}>
             <Box>{option?.[filterFields[0]]}</Box>
-            {!!option?.[filterFields[1]] && <Box sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80" }}>
-              ({option?.[filterFields[1]]})
-            </Box>}
-            {option?.[filterFields[2]] && <Chip
-                sx={{background:"linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)", marginInlineStart:"auto"}}
+            {!!option?.[filterFields[1]] && (
+              <Box
+                sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80" }}
+              >
+                ({option?.[filterFields[1]]})
+              </Box>
+            )}
+            {option?.[filterFields[2]] && (
+              <Chip
+                sx={{
+                  background:
+                    "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
+                  marginInlineStart: "auto",
+                  "& .MuiChip-label": {
+                    padding: "0px 8px !important",
+                  },
+                }}
                 label={
-              <Typography sx={{...theme.typography.semiBoldSmall,color: "#fff"}}>
-                <Trans i18nKey={`privateTitle`} />
-              </Typography>
+                  <Typography
+                    sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
+                  >
+                    <Trans i18nKey={`privateTitle`} />
+                  </Typography>
                 }
-               />
-          }
+              />
+            )}
           </li>
         )
       }
