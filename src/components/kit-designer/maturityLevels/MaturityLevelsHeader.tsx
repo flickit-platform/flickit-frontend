@@ -29,9 +29,6 @@ const MaturityLevelsHeader = ({
       alignItems="center"
       mt={4}
     >
-      <Typography variant="headlineSmall" fontWeight="bold">
-        <Trans i18nKey="maturityLevelsList" />
-      </Typography>
       {hasMaturityLevels ? (
         <Link
           href="#new-maturity"

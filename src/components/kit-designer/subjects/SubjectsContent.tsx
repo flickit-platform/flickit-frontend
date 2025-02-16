@@ -204,7 +204,6 @@ const SubjectsContent = () => {
             mainTitle={"subjects"}
             btnTitle={"newSubject"}
             description={"subjectsKitDesignerDescription"}
-            subTitle={"subjectsList"}
             />
         {fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
