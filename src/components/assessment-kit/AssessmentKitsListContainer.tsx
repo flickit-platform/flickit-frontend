@@ -18,7 +18,7 @@ import { uniqueId } from "lodash";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { t } from "i18next";
-import { MenuItem } from "@mui/material";
+import {MenuItem, Typography} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useTranslation } from "react-i18next";
@@ -88,10 +88,26 @@ const AssessmentKitsListContainer = () => {
           value={currentLang}
           onChange={handleChange}
           displayEmpty={true}
-          renderValue={(selected) =>
-            kitLanguages.map((item: any) =>
-              item.code == selected ? item.title : null,
-            )
+          renderValue={
+            (selected) => {
+              const find = kitLanguages.find((item: any) => item.code == selected);
+              if (find) {
+                return find.title;
+              } else {
+                return  <Typography
+                    sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
+                >
+                  <Trans i18nKey="none" />
+                </Typography>;
+              }
+            }
+            // kitLanguages.map((item: any) => {
+            //   if (item.code == selected) {
+            //     return item.title;
+            //   }else if(!selected){
+            //     return <Box>none</Box>
+            //   }
+            // })
           }
           sx={{
             ...theme.typography.semiBoldMedium,
