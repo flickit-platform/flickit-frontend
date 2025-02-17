@@ -80,7 +80,7 @@ const AssessmentKitsListContainer = () => {
   };
   return (
     <Box>
-      <FormControl sx={{ m: 1, width: 250 }}>
+      <FormControl sx={{ m: 1, width: 160 }}>
         <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
