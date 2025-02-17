@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { styles } from "@styles";
@@ -15,22 +15,105 @@ import TabContext from "@mui/lab/TabContext";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import { uniqueId } from "lodash";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { t } from "i18next";
+import { MenuItem } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
+import { useTranslation } from "react-i18next";
+
 const AssessmentKitsListContainer = () => {
   const { service } = useServiceContext();
   const [value, setValue] = useState("public");
+  const { i18n } = useTranslation();
+  const [currentLang, setCurrentLang] = useState<any>(i18n.language.toUpperCase());
+  const [kitLanguages, setKitLanguages] = useState<any>([]);
+  console.log(currentLang, "currentLang");
   const publicAssessmentKitsQueryData = useQuery({
-    service: (args = { isPrivate: false }, config) =>
+    service: (args = { isPrivate: false, lang: currentLang }, config) =>
       service.fetchAssessmentKits(args, config),
   });
   const privateAssessmentKitsQueryData = useQuery({
-    service: (args = { isPrivate: true }, config) =>
+    service: (args = { isPrivate: true, lang: currentLang }, config) =>
       service.fetchAssessmentKits(args, config),
   });
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const fetchKitLanguage = useQuery({
+    service: (args, config) => service.fetchKitLanguage(args, config),
+  });
+  useEffect(() => {
+    (async () => {
+      const { kitLanguages } = await fetchKitLanguage?.data;
+      setKitLanguages(kitLanguages);
+    })();
+  }, [fetchKitLanguage?.data]);
+
+  useEffect(() => {
+    (async () => {
+      await privateAssessmentKitsQueryData.query();
+      await publicAssessmentKitsQueryData.query();
+    })();
+  }, [currentLang]);
+
+  const handleChange = (selected: any) => {
+    const { value } = selected.target;
+    console.log(value,"test value")
+    let lang: string = "";
+    if (value == "Persian" || value == "فارسی") {
+      lang = "FA";
+    } else if (value == "English" || value == "انگلیسی") {
+      lang = "EN";
+    }
+    setCurrentLang((prev: any)=>{
+      if(prev === lang){
+        return null
+      }else{
+        return lang
+      }
+    });
+  };
+  console.log(currentLang, "currentlang");
   return (
     <Box>
+      <FormControl sx={{ m: 1, width: 250 }}>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          // multiple
+          value={currentLang}
+          onChange={handleChange}
+          displayEmpty={true}
+          renderValue={(selected) => kitLanguages.map((item: any) =>
+              item.code == selected ? item.title : null,
+            )
+          }
+          sx={{
+            ...theme.typography.semiBoldMedium,
+            background: "#fff",
+            px: "0px",
+            height: "40px",
+          }}
+        >
+          {kitLanguages.map((lang: { code: string; title: string }) => {
+            return (
+              <MenuItem key={lang.code} value={lang.title}>
+                <Checkbox checked={lang.code === currentLang} />
+                <ListItemText
+                  sx={{
+                    ...theme.typography.semiBoldMedium,
+                    color: "#333333",
+                  }}
+                  primary={lang.title}
+                />
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
       <TabContext value={value}>
         <Box>
           <TabList onChange={handleTabChange}>
