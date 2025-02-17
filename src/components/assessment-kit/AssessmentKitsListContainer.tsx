@@ -27,16 +27,19 @@ const AssessmentKitsListContainer = () => {
   const { service } = useServiceContext();
   const [value, setValue] = useState("public");
   const { i18n } = useTranslation();
-  const [currentLang, setCurrentLang] = useState<any>(i18n.language.toUpperCase());
+  const [currentLang, setCurrentLang] = useState<any>(
+    i18n.language.toUpperCase(),
+  );
   const [kitLanguages, setKitLanguages] = useState<any>([]);
-  console.log(currentLang, "currentLang");
   const publicAssessmentKitsQueryData = useQuery({
     service: (args = { isPrivate: false, lang: currentLang }, config) =>
       service.fetchAssessmentKits(args, config),
+    runOnMount: false,
   });
   const privateAssessmentKitsQueryData = useQuery({
     service: (args = { isPrivate: true, lang: currentLang }, config) =>
       service.fetchAssessmentKits(args, config),
+    runOnMount: false,
   });
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -61,22 +64,20 @@ const AssessmentKitsListContainer = () => {
 
   const handleChange = (selected: any) => {
     const { value } = selected.target;
-    console.log(value,"test value")
     let lang: string = "";
     if (value == "Persian" || value == "فارسی") {
       lang = "FA";
     } else if (value == "English" || value == "انگلیسی") {
       lang = "EN";
     }
-    setCurrentLang((prev: any)=>{
-      if(prev === lang){
-        return null
-      }else{
-        return lang
+    setCurrentLang((prev: any) => {
+      if (prev === lang) {
+        return null;
+      } else {
+        return lang;
       }
     });
   };
-  console.log(currentLang, "currentlang");
   return (
     <Box>
       <FormControl sx={{ m: 1, width: 250 }}>
@@ -87,7 +88,8 @@ const AssessmentKitsListContainer = () => {
           value={currentLang}
           onChange={handleChange}
           displayEmpty={true}
-          renderValue={(selected) => kitLanguages.map((item: any) =>
+          renderValue={(selected) =>
+            kitLanguages.map((item: any) =>
               item.code == selected ? item.title : null,
             )
           }
