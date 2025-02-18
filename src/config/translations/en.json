@@ -841,5 +841,6 @@
   "زیاد": "high",
   "متوسط": "medium",
   "کم": "low",
-  "approveAll": "Approve all"
+  "approveAll": "Approve all",
+  "answerNeedApprove": "The selected answer needs approval from an assessor."
 }

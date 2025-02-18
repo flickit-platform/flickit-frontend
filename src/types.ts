@@ -98,6 +98,7 @@ export interface IPermissions {
   exportAssessmentReport: boolean;
   readonly?: boolean;
   viewDashboard?: boolean;
+  approveAnswer?: boolean;
 }
 
 export type TQuestionsInfo = {
@@ -122,6 +123,7 @@ export type TAnswer = {
   index?: string | number;
   caption?: string;
   evidences?: TEvidences;
+  approved?: boolean;
 };
 export type TEvidences = {
   created_by_id: TId;
