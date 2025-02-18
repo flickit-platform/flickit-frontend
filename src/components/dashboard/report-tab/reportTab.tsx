@@ -162,10 +162,6 @@ const ReportTab = () => {
                           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
-                          disabled={
-                            Object.values(metadata).includes(null) ||
-                            published == false
-                          }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
                             <Trans i18nKey={"viewReport"} />
