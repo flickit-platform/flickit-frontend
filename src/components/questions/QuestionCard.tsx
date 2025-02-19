@@ -875,6 +875,13 @@ const AnswerTemplate = (props: {
               questions: items,
             }),
           );
+          const newQuestionIndex = questionIndex + 1;
+          if (submitOnAnswerSelection) {
+            dispatch(questionActions.goToQuestion(newQuestionIndex));
+            navigate(`../${newQuestionIndex}`, {
+              replace: true,
+            });
+          }
         });
       };
       approve()
@@ -953,7 +960,10 @@ const AnswerTemplate = (props: {
                     justifyContent: "flex-start",
                     boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ? "#0acb89" : "white"}`,
                     borderWidth: "2px",
-                    borderColor: "transparent",
+                    borderColor:
+                      answer?.selectedOption?.index === defaultSelectedIndex
+                        ? "#CC7400"
+                        : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
@@ -1065,53 +1075,49 @@ const AnswerTemplate = (props: {
             onClick={submitQuestion}
             disabled={
               isSelectedValueTheSameAsAnswer ||
+              !value ||
               ((value || notApplicable) && !selcetedConfidenceLevel)
             }
           >
             <Trans i18nKey="submit" />
           </LoadingButton>{" "}
         </Box>
-        {answer?.approved == false &&
-          permissions?.approveAnswer &&
-          isSelectedValueTheSameAsAnswer && (
-            <Box
+        {answer?.approved == false && permissions?.approveAnswer && (
+          <Box
+            sx={{
+              ...styles.centerVH,
+              background: "#CC74004D",
+              borderRadius: "4px",
+              p: 2,
+              gap: 4,
+              height: "40px",
+              boxSizing: "border-box",
+            }}
+          >
+            <Typography
+              sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
+            >
+              <Trans i18nKey={"answerNeedApprove"} />
+            </Typography>
+            <Button
+              onClick={onApprove}
               sx={{
-                ...styles.centerVH,
-                background: "#CC74004D",
-                borderRadius: "4px",
-                p: 2,
-                gap: 4,
-                height: "40px",
-                boxSizing: "border-box",
+                background: "#CC7400",
+                boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
+                "&:hover": {
+                  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
+                  background: "#CC7400",
+                },
               }}
             >
-              <Typography
-                sx={{ ...theme.typography.labelSmall, color: "#FF9000" }}
-              >
-                <Trans i18nKey={"answerNeedApprove"} />
+              <Typography sx={{ ...theme.typography.bodySmall, color: "#fff" }}>
+                <Trans i18nKey={"approve"} />
               </Typography>
-              <Button
-                onClick={onApprove}
-                sx={{
-                  background: "#CC7400",
-                  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                  "&:hover": {
-                    boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                    background: "#CC7400",
-                  },
-                }}
-              >
-                <Typography
-                  sx={{ ...theme.typography.bodySmall, color: "#fff" }}
-                >
-                  <Trans i18nKey={"approve"} />
-                </Typography>
-              </Button>
-            </Box>
-          )}
-
-          {may_not_be_applicable && (
-              <Box sx={styles.centerVH} gap={2}>
+            </Button>
+          </Box>
+        )}
+        {may_not_be_applicable && (
+          <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
               sx={{ color: theme.palette.primary.main }}
               data-cy="automatic-submit-check"
@@ -1129,9 +1135,8 @@ const AnswerTemplate = (props: {
               }
               label={<Trans i18nKey={"notApplicable"} />}
             />
-              </Box>
-          )}
-
+          </Box>
+        )}
         <DeleteDialog
           expanded={expandedDeleteDialog}
           onClose={() => setExpandedDeleteDialog(false)}
