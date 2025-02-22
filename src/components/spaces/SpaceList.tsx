@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@utils/useMenu";
@@ -20,7 +20,7 @@ import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
 import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
@@ -60,6 +60,9 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
+}
+enum spaceLevel {
+    premium  = "PREMIUM",
 }
 
 const SpaceCard = (props: ISpaceCardProps) => {
@@ -142,7 +145,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
         >
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
-        {type?.code !== "PREMIUM" && (
+        {type?.code !== spaceLevel.premium && (
           <img
             style={{ width: "24px", height: "32px" }}
             src={premium}
@@ -150,7 +153,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
           />
         )}
       </Box>
-      <Box sx={{ display: "flex", gap: { xs: 1, sm:2, md: 4 } }}>
+      <Box sx={{ display: "flex", gap: { xs: 1, sm: 2, md: 4 } }}>
         <Box sx={{ ...styles.centerV, gap: { xs: 1, sm: 2, md: 4 } }}>
           <Tooltip title={<Trans i18nKey={owner?.displayName} />}>
             <Chip
