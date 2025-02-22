@@ -69,7 +69,7 @@ const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const { userInfo } = useAuthContext();
-
+  const [languages, setLanguages] = useState([])
   const { assessmentKitQuery, handleChangePage, ...rest } =
     useFetchAssessmentKit();
   const { size, total, page } = rest;
@@ -92,6 +92,17 @@ const ExpertGroupContainer = () => {
     service: (args, config) => service.removeExpertGroupMembers(args, config),
     runOnMount: false,
   });
+    const fetchKitLanguage = useQuery({
+        service: (args, config) => service.fetchKitLanguage(args, config),
+        runOnMount: false,
+    });
+    useEffect(() => {
+        const getLang = async () => {
+            const { kitLanguages } = await fetchKitLanguage.query();
+            setLanguages(kitLanguages)
+        };
+        getLang();
+    }, []);
 
   const setDocTitle = useDocumentTitle(t("expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
@@ -226,6 +237,7 @@ const ExpertGroupContainer = () => {
                       is_expert={editable}
                       setAssessmentKitsCounts={setAssessmentKitsCounts}
                       assessmentKitQuery={assessmentKitQuery}
+                      languages={languages}
                     />
                     <Stack
                       spacing={2}
@@ -1072,10 +1084,11 @@ const AssessmentKitsList = (props: any) => {
     is_member,
     excelToDslDialogProps,
     assessmentKitQuery,
+    languages
   } = props;
   const { expertGroupId } = useParams();
   const kitDesignerDialogProps = useDialog({
-    context: { type: "draft", data: { expertGroupId, dsl_id: 959 } },
+    context: { type: "draft", data: { expertGroupId, dsl_id: 959, languages } },
   });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

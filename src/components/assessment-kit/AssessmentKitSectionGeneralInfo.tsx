@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import { toast } from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import {useState, useRef, useEffect} from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -48,6 +48,7 @@ const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
   const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
+  const [languages, setLanguages] = useState<{ code: string, title: string }[]>([])
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
@@ -61,6 +62,17 @@ const AssessmentKitSectionGeneralInfo = (
       service.fetchAssessmentKitStats(args, config),
     runOnMount: true,
   });
+    const fetchKitLanguage = useQuery({
+        service: (args, config) => service.fetchKitLanguage(args, config),
+        runOnMount: false,
+    });
+    useEffect(() => {
+        const getLang = async () => {
+            const { kitLanguages } = await fetchKitLanguage.query();
+            setLanguages(kitLanguages)
+        };
+        getLang();
+    }, []);
 
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
@@ -97,11 +109,11 @@ const AssessmentKitSectionGeneralInfo = (
   const handleLanguageChange = async (e: any) => {
     const { value } = e.target;
 
-    let adjustValue = value == "English" ? "EN" : "FA";
+    let adjustValue = languages.find((item: { code: string, title: string }) => item.title == value)
 
     try {
       await service.updateAssessmentKitStats(
-        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue } },
+        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue?.code } },
         { signal: abortController.current.signal },
       );
       await fetchAssessmentKitInfoQuery.query();
@@ -111,7 +123,6 @@ const AssessmentKitSectionGeneralInfo = (
     }
   };
 
-  const languages = [{ title: "Persian" }, { title: "English" }];
 
   return (
     <QueryBatchData
