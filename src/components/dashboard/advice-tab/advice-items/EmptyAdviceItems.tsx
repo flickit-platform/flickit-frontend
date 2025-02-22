@@ -10,7 +10,7 @@ interface EmptyStateProps {
   onAddNewRow: () => void;
   btnTitle: string;
   title: string;
-  subTitle: string;
+  subTitle?: string;
   disabled?: boolean;
   disableTextBox?: ReactElement<any, any>;
 }

@@ -232,8 +232,7 @@ const AdviceItems = () => {
                 <EmptyAdviceList
                   onAddNewRow={handleAddNewRow}
                   btnTitle="newActionItem"
-                  title="NoAdviceSoFar"
-                  subTitle="CreateFirstAdvice"
+                  title="noActionYet"
                 />
               )
             )}
