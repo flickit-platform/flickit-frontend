@@ -64,16 +64,16 @@ import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { uniqueId } from "lodash";
 import languageDetector from "@/utils/languageDetector";
+import {useConfigContext} from "@providers/ConfgProvider";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const { userInfo } = useAuthContext();
-  const [languages, setLanguages] = useState([])
   const { assessmentKitQuery, handleChangePage, ...rest } =
     useFetchAssessmentKit();
   const { size, total, page } = rest;
-
+  const {config: {languages}} = useConfigContext();
   const pageCount = size === 0 ? 1 : Math.ceil(total / size);
   const queryData = useQuery({
     service: (args = { id: expertGroupId }, config) =>
@@ -92,17 +92,7 @@ const ExpertGroupContainer = () => {
     service: (args, config) => service.removeExpertGroupMembers(args, config),
     runOnMount: false,
   });
-    const fetchKitLanguage = useQuery({
-        service: (args, config) => service.fetchKitLanguage(args, config),
-        runOnMount: false,
-    });
-    useEffect(() => {
-        const getLang = async () => {
-            const { kitLanguages } = await fetchKitLanguage.query();
-            setLanguages(kitLanguages)
-        };
-        getLang();
-    }, []);
+
 
   const setDocTitle = useDocumentTitle(t("expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({

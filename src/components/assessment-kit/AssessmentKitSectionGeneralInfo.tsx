@@ -38,6 +38,7 @@ import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
+import {useConfigContext} from "@providers/ConfgProvider";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -48,7 +49,7 @@ const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
   const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
-  const [languages, setLanguages] = useState<{ code: string, title: string }[]>([])
+  const {config: {languages}} : any = useConfigContext();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
@@ -62,17 +63,6 @@ const AssessmentKitSectionGeneralInfo = (
       service.fetchAssessmentKitStats(args, config),
     runOnMount: true,
   });
-    const fetchKitLanguage = useQuery({
-        service: (args, config) => service.fetchKitLanguage(args, config),
-        runOnMount: false,
-    });
-    useEffect(() => {
-        const getLang = async () => {
-            const { kitLanguages } = await fetchKitLanguage.query();
-            setLanguages(kitLanguages)
-        };
-        getLang();
-    }, []);
 
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
