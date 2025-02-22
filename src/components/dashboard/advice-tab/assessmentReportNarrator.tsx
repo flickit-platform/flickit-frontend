@@ -1,89 +1,45 @@
 import Box from "@mui/material/Box";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import IconButton from "@mui/material/IconButton";
-import CancelRounded from "@mui/icons-material/CancelRounded";
-import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
-import EditRounded from "@mui/icons-material/EditRounded";
-import FormProviderWithForm from "@common/FormProviderWithForm";
-import RichEditorField from "@common/fields/RichEditorField";
-import { ICustomError } from "@utils/CustomError";
-import { useForm } from "react-hook-form";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@utils/convertToRelativeTime";
-import AIGenerated from "@common/tags/AIGenerated";
-import toastError from "@utils/toastError";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { theme } from "@config/theme";
 import formatDate from "@utils/formatDate";
-import languageDetector from "@utils/languageDetector";
+import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 
-export const AssessmentReportNarrator = ({
-  setIsWritingAdvice,
-  setEmptyState,
-  setAIGenerated,
-  fetchAdviceNarration,
-}: any) => {
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
   const [aboutSection, setAboutSection] = useState<any>(null);
   const [editable, setEditable] = useState(false);
-  const [isAIGenerated, setIsAIGenerated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
+  const abortController = useRef(new AbortController());
+
   const { t } = useTranslation();
 
-  const onEditing = (editingMode: boolean) => {
-    setIsWritingAdvice(editingMode);
-  };
-  const fetchAssessment = () => {
-    service
-      .fetchAdviceNarration({ assessmentId }, {})
-      .then((res) => {
-        const data = res.data;
-        setEditable(data.editable ?? false);
-        if (data?.aiNarration?.narration) {
-          setIsAIGenerated(true);
-          setAIGenerated(true);
-        }
-        const selectedNarration = data?.aiNarration || data?.assessorNarration;
-
-        if (selectedNarration) {
-          setAboutSection(selectedNarration);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching assessment insight:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    fetchAssessment();
-  }, [assessmentId, service]);
+    console.log(fetchAdviceNarration.data);
+    setAboutSection(
+      fetchAdviceNarration.data?.aiNarration ||
+        fetchAdviceNarration.data?.assessorNarration,
+    );
+    setEditable(fetchAdviceNarration.data.editable ?? false);
+  }, []);
 
   return (
     <Box
       display="flex"
       flexDirection="column"
-      alignItems="start"
+      alignItems="stretch"
       justifyContent="start"
       textAlign="start"
-      maxHeight="100%"
       gap={0.5}
       py={2}
     >
-      {isAIGenerated && (
-        <Box sx={{ position: "absolute", top: -12, right: 8 }}>
-          <AIGenerated />
-        </Box>
-      )}
-
-      {loading ? (
+      {fetchAdviceNarration.loading ? (
         <Box
           display="flex"
           justifyContent="center"
@@ -94,14 +50,21 @@ export const AssessmentReportNarrator = ({
         </Box>
       ) : (
         <>
-          <OnHoverRichEditor
-            data={aboutSection?.narration ? aboutSection?.narration : ""}
+          <EditableRichEditor
+            defaultValue={aboutSection?.narration}
             editable={editable}
+            fieldName="narration"
+            onSubmit={async (payload, event) => {
+              await service.updateAdviceNarration(
+                {
+                  assessmentId,
+                  data: { assessorNarration: payload.narration },
+                },
+                { signal: abortController.current.signal },
+              );
+            }}
             infoQuery={fetchAdviceNarration.query}
-            onEditing={onEditing}
-            setEmptyState={setEmptyState}
-            setIsAIGenerated={setIsAIGenerated}
-            setAIGenerated={setAIGenerated}
+            placeholder={t("writeYourOwnAdvices...") ?? ""}
           />
           {aboutSection?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
@@ -138,210 +101,6 @@ export const AssessmentReportNarrator = ({
             </Typography>
           )}
         </>
-      )}
-    </Box>
-  );
-};
-
-export const OnHoverRichEditor = (props: any) => {
-  const {
-    data,
-    editable,
-    infoQuery,
-    onEditing,
-    setEmptyState,
-    setIsAIGenerated,
-    setAIGenerated,
-  } = props;
-  const abortController = useRef(new AbortController());
-  const [isHovering, setIsHovering] = useState(false);
-  const [show, setShow] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [tempData, setTempData] = useState("");
-  const [error, setError] = useState<any>({});
-  const { assessmentId = "" } = useParams();
-  const { service } = useServiceContext();
-  const formMethods = useForm({ shouldUnregister: true });
-
-  useEffect(() => {
-    setTempData(formMethods.getValues().narration);
-  }, [formMethods.watch("narration")]);
-
-  const handleMouseOver = () => {
-    editable && setIsHovering(true);
-  };
-
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
-
-  const handleCancel = () => {
-    onEditing(false);
-    setShow(false);
-    setError({});
-    setHasError(false);
-  };
-
-  const onSubmit = async (payload: any, event: any) => {
-    event.preventDefault();
-    try {
-      await service.updateAdviceNarration(
-        { assessmentId, data: { assessorNarration: payload.narration } },
-        { signal: abortController.current.signal },
-      );
-      await infoQuery();
-      setEmptyState(false);
-      onEditing(false);
-      setShow(false);
-      setIsAIGenerated(false);
-      setAIGenerated(false);
-    } catch (e) {
-      const err = e as ICustomError;
-      setError(err);
-      setHasError(true);
-      toastError(err);
-    }
-  };
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-        direction: languageDetector(tempData || data) ? "rtl" : "ltr",
-      }}
-    >
-      {editable && show ? (
-        <FormProviderWithForm formMethods={formMethods}>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <RichEditorField
-              name="narration"
-              label={<Box></Box>}
-              disable_label={true}
-              required={true}
-              defaultValue={data || ""}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <IconButton
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(tempData || data)
-                    ? "8px 0 0 0"
-                    : "0 8px 0 0",
-                  height: "49%",
-                }}
-                onClick={formMethods.handleSubmit(onSubmit)}
-              >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
-              </IconButton>
-              <IconButton
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(tempData || data)
-                    ? "0 0 0 8px"
-                    : "0 0 8px 0",
-                  height: "49%",
-                }}
-                onClick={handleCancel}
-              >
-                <CancelRounded sx={{ color: "#fff" }} />
-              </IconButton>
-            </Box>
-            {hasError && (
-              <Typography color="#ba000d" variant="caption">
-                {error?.data?.about}
-              </Typography>
-            )}
-          </Box>
-        </FormProviderWithForm>
-      ) : (
-        <Box sx={{ width: "100%" }}>
-          <Box
-            sx={{
-              minHeight: "38px",
-              borderRadius: "8px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              wordBreak: "break-word",
-              pr: languageDetector(tempData || data) ? 1 : 5,
-              pl: languageDetector(tempData || data) ? 5 : 1,
-              border: "1px solid #fff",
-              "&:hover": {
-                border: editable ? "1px solid #1976d299" : "unset",
-                borderColor: editable ? theme.palette.primary.main : "unset",
-              },
-              position: "relative",
-            }}
-            onClick={() => {
-              setShow(!show);
-              onEditing(true);
-            }}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-          >
-            {data ? (
-              <Typography
-                fontFamily={
-                  languageDetector(tempData || data) ? farsiFontFamily : primaryFontFamily
-                }
-                dangerouslySetInnerHTML={{ __html: data }}
-              />
-            ) : (
-              <Typography color="#73808C">
-                <Trans i18nKey="writeYourOwnAdvices..." />
-              </Typography>
-            )}
-            {((data === "" && editable) || (isHovering && editable)) && (
-              <IconButton
-                title="Edit"
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(tempData || data)
-                    ? "8px 0 0 8px"
-                    : "0 8px 8px 0",
-                  height: "100%",
-                  position: "absolute",
-                  right: languageDetector(tempData || data) ? "unset" : 0,
-                  left: languageDetector(tempData || data) ? 0 : "unset",
-                  top: 0,
-                }}
-                onClick={() => {
-                  setShow(!show);
-                  onEditing(true);
-                }}
-              >
-                <EditRounded sx={{ color: "#fff" }} />
-              </IconButton>
-            )}
-          </Box>
-        </Box>
       )}
     </Box>
   );

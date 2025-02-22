@@ -12,23 +12,22 @@ import { FaWandMagicSparkles } from "react-icons/fa6";
 import { AssessmentReportNarrator } from "@components/dashboard/advice-tab/assessmentReportNarrator";
 import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
-import EmptyState from "./EmptyState";
 import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
 import { Divider, Typography } from "@mui/material";
 import AIGenerated from "@common/tags/AIGenerated";
 
 const AssessmentAdviceContainer = (props: any) => {
-  const fetchPreAdviceInfo = useQuery<IAssessmentReportModel>({
+  const fetchPreAdviceInfo = useQuery<any>({
     service: (args, config) =>
       service.fetchPreAdviceInfo({ assessmentId }, config),
     toastError: false,
+    runOnMount: false,
   });
-
-  const fetchAdviceItems = useQuery<any>({
+  const fetchAdviceNarration = useQuery<any>({
     service: (args, config) =>
-      service.fetchAdviceItems({ assessmentId, page: 0, size: 50 }, config),
-    toastError: true,
+      service.fetchAdviceNarration({ assessmentId }, config),
+    toastError: false,
   });
 
   const calculateMaturityLevelQuery = useQuery({
@@ -39,7 +38,7 @@ const AssessmentAdviceContainer = (props: any) => {
   const calculate = async () => {
     try {
       await calculateMaturityLevelQuery.query();
-      await fetchPreAdviceInfo.query();
+      await fetchAdviceNarration.query();
     } catch (e) {}
   };
 
@@ -52,34 +51,34 @@ const AssessmentAdviceContainer = (props: any) => {
   const calculateConfidenceLevel = async () => {
     try {
       await calculateConfidenceLevelQuery.query();
-      await fetchPreAdviceInfo.query();
+      await fetchAdviceNarration.query();
     } catch (e) {}
   };
 
   useEffect(() => {
     if (
-      fetchPreAdviceInfo.errorObject?.response?.data?.code ==
+      fetchAdviceNarration.errorObject?.response?.data?.code ==
       "CALCULATE_NOT_VALID"
     ) {
       calculate();
     }
     if (
-      fetchPreAdviceInfo.errorObject?.response?.data?.code ==
+      fetchAdviceNarration.errorObject?.response?.data?.code ==
       "CONFIDENCE_CALCULATION_NOT_VALID"
     ) {
       calculateConfidenceLevel();
     }
     if (
-      fetchPreAdviceInfo?.errorObject?.response?.data?.code === "DEPRECATED"
+      fetchAdviceNarration?.errorObject?.response?.data?.code === "DEPRECATED"
     ) {
       service.migrateKitVersion({ assessmentId }).then(() => {
-        fetchPreAdviceInfo.query();
+        fetchAdviceNarration.query();
       });
     }
-  }, [fetchPreAdviceInfo.errorObject]);
+  }, [fetchAdviceNarration.errorObject]);
   const [expanded, setExpanded] = useState<boolean>(false);
-  const [isWritingAdvice, setIsWritingAdvice] = useState<boolean>(false);
   const [isAIGenerated, setIsAIGenerated] = useState<boolean>(false);
+  const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);
 
   const { assessmentId = "" } = useParams();
 
@@ -87,108 +86,92 @@ const AssessmentAdviceContainer = (props: any) => {
 
   const handleClickOpen = () => {
     setExpanded(true);
+    if (!hasExpandedOnce) {
+      fetchPreAdviceInfo.query();
+      setHasExpandedOnce(true);
+    }
   };
 
   const handleClose = () => {
     setExpanded(false);
   };
 
-  const fetchAdviceNarration = useQuery<any>({
-    service: (args, config) =>
-      service.fetchAdviceNarration({ assessmentId }, config),
-    toastError: false,
-  });
-
   useEffect(() => {
     setIsAIGenerated(!!fetchAdviceNarration.data?.aiNarration);
   }, [fetchAdviceNarration.data]);
 
+  const fetchAssessmentPermissions = useQuery({
+    service: (args, config) =>
+      service.fetchAssessmentPermissions(
+        { assessmentId, ...(args || {}) },
+        config,
+      ),
+    runOnMount: true,
+  });
+
   return (
     <QueryBatchData
-      queryBatchData={[
-        fetchAdviceNarration,
-        fetchPreAdviceInfo,
-        fetchAdviceItems,
-      ]}
+      queryBatchData={[fetchAdviceNarration, fetchAssessmentPermissions]}
       renderLoading={() => <Skeleton height={160} />}
-      render={([narrationComponent, adviceInfo, adviceItems]) => {
-        const { attributes, maturityLevels, permissions } = adviceInfo || {};
+      render={([narrationComponent, permissionsData]) => {
+        const { permissions } = permissionsData;
 
         return (
           <Box mt={4}>
             <AdviceDialog
               open={expanded}
               handleClose={handleClose}
-              attributes={attributes}
-              filteredMaturityLevels={maturityLevels}
+              fetchPreAdviceInfo={fetchPreAdviceInfo}
               permissions={permissions}
               fetchAdviceNarration={fetchAdviceNarration}
             />
-            {!(
-              narrationComponent?.aiNarration ||
-              narrationComponent?.assessorNarration
-            ) &&
-            !isWritingAdvice &&
-            !adviceItems?.items?.length ? (
-              <EmptyState
-                isWritingAdvice={isWritingAdvice}
-                permissions={permissions}
-                setIsWritingAdvice={setIsWritingAdvice}
-                handleClickOpen={handleClickOpen}
-                narrationComponent={narrationComponent}
-              />
-            ) : (
-              <Box sx={{ ...styles.boxStyle }}>
-                <>
-                  <Box display="flex" justifyContent="space-between" mt={2}>
-                    <Box sx={{ ...styles.centerVH }} gap={1}>
-                      <Typography variant="semiBoldLarge">
-                        <Trans i18nKey="approachToAdvice" />
-                      </Typography>
-                      {isAIGenerated && <AIGenerated />}
-                    </Box>
-                    <Tooltip
-                      title={
-                        !narrationComponent.aiEnabled && (
-                          <Trans i18nKey="AIDisabled" />
-                        )
-                      }
-                    >
-                      <div>
-                        <Button
-                          variant="contained"
-                          sx={{
-                            display: "flex",
-                            gap: 1,
-                          }}
-                          size="small"
-                          onClick={handleClickOpen}
-                          disabled={!narrationComponent.aiEnabled}
-                        >
-                          <Trans
-                            i18nKey={
-                              isAIGenerated
-                                ? "regenerateAdvicesViaAI"
-                                : "generateAdvicesViaAI"
-                            }
-                          />
-                          <FaWandMagicSparkles />
-                        </Button>
-                      </div>
-                    </Tooltip>
+            <Box sx={{ ...styles.boxStyle }}>
+              <>
+                <Box display="flex" justifyContent="space-between" mt={2}>
+                  <Box sx={{ ...styles.centerVH }} gap={1}>
+                    <Typography variant="semiBoldLarge">
+                      <Trans i18nKey="approachToAdvice" />
+                    </Typography>
+                    {isAIGenerated && <AIGenerated />}
                   </Box>
+                  <Tooltip
+                    title={
+                      !narrationComponent.aiEnabled && (
+                        <Trans i18nKey="AIDisabled" />
+                      )
+                    }
+                  >
+                    <div>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                        }}
+                        size="small"
+                        onClick={handleClickOpen}
+                        disabled={!narrationComponent.aiEnabled}
+                      >
+                        <Trans
+                          i18nKey={
+                            isAIGenerated
+                              ? "regenerateAdvicesViaAI"
+                              : "generateAdvicesViaAI"
+                          }
+                        />
+                        <FaWandMagicSparkles />
+                      </Button>
+                    </div>
+                  </Tooltip>
+                </Box>
 
-                  <AssessmentReportNarrator
-                    isWritingAdvice={isWritingAdvice}
-                    setIsWritingAdvice={setIsWritingAdvice}
-                    setAIGenerated={setIsAIGenerated}
-                    fetchAdviceNarration={fetchAdviceNarration}
-                  />
-                </>
-                <Divider />
-                <AdviceItems />
-              </Box>
-            )}
+                <AssessmentReportNarrator
+                  fetchAdviceNarration={fetchAdviceNarration}
+                />
+              </>
+              <Divider />
+              <AdviceItems />
+            </Box>
           </Box>
         );
       }}
