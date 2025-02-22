@@ -937,6 +937,12 @@ export const createService = (
         config,
       );
     },
+    fetchPreAdviceInfo(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/pre-advice-info/`, config);
+    },
     fetchAssessment(
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
@@ -1504,6 +1510,15 @@ export const createService = (
       return axios.get(
         `/api/v1/assessments/${assessmentId}/dashboard/`,
         config,
+      );
+    },
+    approveInsights(
+        { assessmentId }: { assessmentId: TId},
+        config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+          `/api/v1/assessments/${assessmentId}/approve-insights/`,
+          { ...config },
       );
     },
     saveCompareItem(

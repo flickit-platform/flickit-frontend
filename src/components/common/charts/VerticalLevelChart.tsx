@@ -53,11 +53,7 @@ const VerticalLevelChart = (props: IVerticalLevelChartProps) => {
           }}
           variant="headlineLarge"
         >
-          {loading ? (
-            <Skeleton width={"164px"} />
-          ) : (
-            <Trans i18nKey={`${status}`} />
-          )}
+          {loading ? <Skeleton width={"164px"} /> : status}
         </Typography>
       </Box>
       <Box display="flex" mt={2}>

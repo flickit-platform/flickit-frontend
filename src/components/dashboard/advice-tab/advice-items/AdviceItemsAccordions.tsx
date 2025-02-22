@@ -74,10 +74,14 @@ const getChipData = (
   type: "impact" | "cost",
   level: string,
   readOnly: boolean,
+  language?: string,
 ) => {
   const priorityColor: any = getIconColors(level, type);
-  const translatedLevel = t(level.toLowerCase(), readOnly ? { lng: "fa" } : {});
-  const translatedType = t(type, readOnly ? { lng: "fa" } : {});
+  const translatedLevel = t(
+    level.toLowerCase(),
+    readOnly ? { lng: language } : {},
+  );
+  const translatedType = t(type, readOnly ? { lng: language } : {});
   const isFarsi = i18next.language === "fa" || readOnly;
 
   return {
@@ -94,11 +98,13 @@ const CustomChip: React.FC<{
   type: "impact" | "cost";
   level: string;
   readOnly: boolean;
-}> = ({ type, level, readOnly }) => {
+  language?: string;
+}> = ({ type, level, readOnly, language }) => {
   const { backgroundColor, color, iconColor, label } = getChipData(
     type,
     level,
     readOnly,
+    language,
   );
   const Icon =
     type === "impact" ? (
@@ -127,15 +133,27 @@ const CustomChip: React.FC<{
         backgroundColor,
         color,
         "& .MuiChip-icon": {
-          marginRight: readOnly || theme.direction == "rtl" ? "0" : "-10px",
-          marginLeft: readOnly || theme.direction == "rtl" ? "-10px" : "0",
+          marginRight:
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? "0"
+              : "-10px",
+          marginLeft:
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? "-10px"
+              : "0",
         },
         "& .MuiChip-label": {
-          fontWeight: readOnly ? 200 : "initial",
+          fontWeight:
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? 200
+              : "initial",
           letterSpacing: "0px",
-          fontSize: readOnly ? "10px" : "12px",
+          fontSize:
+            language === "fa" || (!readOnly && theme.direction == "rtl")
+              ? "10px"
+              : "12px",
           fontFamily:
-            readOnly || theme.direction == "rtl"
+            language === "fa" || (!readOnly && theme.direction == "rtl")
               ? farsiFontFamily
               : primaryFontFamily,
         },
@@ -154,6 +172,7 @@ const AdviceItemAccordion: React.FC<{
   setDisplayedItems: any;
   query: any;
   readOnly: boolean;
+  language?: string;
 }> = ({
   item,
   onDelete,
@@ -164,6 +183,7 @@ const AdviceItemAccordion: React.FC<{
   setDisplayedItems,
   query,
   readOnly,
+  language,
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -345,11 +365,11 @@ const AdviceItemAccordion: React.FC<{
                       ? t(item.priority.code.toLowerCase()) +
                         " " +
                         t("priority")
-                      : t("priority", !readOnly ? {} : { lng: "fa" }) +
+                      : t("priority", !readOnly ? {} : { lng: language }) +
                         " " +
                         t(
                           item.priority.code.toLowerCase(),
-                          !readOnly ? {} : { lng: "fa" },
+                          !readOnly ? {} : { lng: language },
                         )}
                     )
                   </Typography>
@@ -376,12 +396,14 @@ const AdviceItemAccordion: React.FC<{
                     type="impact"
                     level={item.impact.code}
                     readOnly={readOnly}
+                    language={language}
                   />
 
                   <CustomChip
                     type="cost"
                     level={item.cost.code}
                     readOnly={readOnly}
+                    language={language}
                   />
                 </Grid>
                 <Grid
@@ -457,7 +479,8 @@ const AdviceItemsAccordion: React.FC<{
   setDisplayedItems: any;
   query: any;
   readOnly: boolean;
-}> = ({ items, onDelete, setDisplayedItems, query, readOnly }) => {
+  language?: string;
+}> = ({ items, onDelete, setDisplayedItems, query, readOnly, language }) => {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const handleEdit = (id: string) => {
@@ -478,6 +501,7 @@ const AdviceItemsAccordion: React.FC<{
           setDisplayedItems={setDisplayedItems}
           query={query}
           readOnly={readOnly}
+          language={language}
         />
       ))}
     </Box>

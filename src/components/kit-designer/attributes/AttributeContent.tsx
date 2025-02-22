@@ -220,7 +220,6 @@ const AttributesContent = () => {
           }
           mainTitle={"attributes"}
           description={"attributesKitDesignerDescription"}
-          subTitle={"attributesList"}
           btnTitle={"newAttribute"}
         />
         {fetchAttributeKit.loaded &&

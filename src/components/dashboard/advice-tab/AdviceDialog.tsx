@@ -22,7 +22,7 @@ import AdviceQuestionTable from "./AdviceQuestionTable";
 const AdviceDialog = ({
   open,
   handleClose,
-  subjects,
+  attributes,
   filteredMaturityLevels,
   permissions,
   fetchAdviceNarration,
@@ -163,20 +163,26 @@ const AdviceDialog = ({
               display: step === 1 ? "block" : "none",
             }}
           >
-            {subjects?.map((subject: any) =>
-              subject?.attributes.map((attribute: any) => (
-                <AdviceSlider
-                  key={attribute.id}
-                  defaultValue={attribute?.maturityLevel?.value || 0}
-                  currentState={attribute?.maturityLevel}
-                  attribute={attribute}
-                  subject={subject}
-                  maturityLevels={filteredMaturityLevels}
-                  target={target}
-                  setTarget={setTarget}
-                />
-              )),
-            )}
+            {attributes.map((attribute: any) => (
+              <AdviceSlider
+                key={attribute.id}
+                defaultValue={
+                  filteredMaturityLevels.find(
+                    (maturityLevel: any) =>
+                      maturityLevel.id == attribute?.maturityLevel.id,
+                  )?.value || 0
+                }
+                currentState={filteredMaturityLevels.find(
+                  (maturityLevel: any) =>
+                    maturityLevel.id == attribute?.maturityLevel.id,
+                )}
+                attribute={attribute}
+                subject={attribute.subject}
+                maturityLevels={filteredMaturityLevels}
+                target={target}
+                setTarget={setTarget}
+              />
+            ))}
           </Box>
           <Box
             mt={2}

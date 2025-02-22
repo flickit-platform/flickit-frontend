@@ -186,7 +186,6 @@ const AnaweRangeContent = () => {
           btnTitle={"newAnswerRange"}
           mainTitle={"answerRanges"}
           description={"answerRangeKitDesignerDescription"}
-          subTitle={"answerRangeList"}
         />
         <Divider sx={{ my: 1 }} />
         <>

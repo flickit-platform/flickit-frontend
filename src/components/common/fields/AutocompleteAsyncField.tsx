@@ -373,7 +373,7 @@ const AutocompleteBaseField = (
               sx={{ justifyContent: "start", textTransform: "none" }}
               ref={loadingButtonRef}
             >
-              Add "{option.inputValue}"
+           <Trans i18nKey={"add"} /> "{option.inputValue}"
             </LoadingButton>
           </li>
         ) : (

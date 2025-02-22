@@ -19,9 +19,9 @@ import { Divider, Typography } from "@mui/material";
 import AIGenerated from "@common/tags/AIGenerated";
 
 const AssessmentAdviceContainer = (props: any) => {
-  const fetchAssessment = useQuery<IAssessmentReportModel>({
+  const fetchPreAdviceInfo = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
-      service.fetchAssessment({ assessmentId }, config),
+      service.fetchPreAdviceInfo({ assessmentId }, config),
     toastError: false,
   });
 
@@ -39,7 +39,7 @@ const AssessmentAdviceContainer = (props: any) => {
   const calculate = async () => {
     try {
       await calculateMaturityLevelQuery.query();
-      await fetchAssessment.query();
+      await fetchPreAdviceInfo.query();
     } catch (e) {}
   };
 
@@ -52,28 +52,31 @@ const AssessmentAdviceContainer = (props: any) => {
   const calculateConfidenceLevel = async () => {
     try {
       await calculateConfidenceLevelQuery.query();
-      await fetchAssessment.query();
+      await fetchPreAdviceInfo.query();
     } catch (e) {}
   };
 
   useEffect(() => {
     if (
-      fetchAssessment.errorObject?.response?.data?.code == "CALCULATE_NOT_VALID"
+      fetchPreAdviceInfo.errorObject?.response?.data?.code ==
+      "CALCULATE_NOT_VALID"
     ) {
       calculate();
     }
     if (
-      fetchAssessment.errorObject?.response?.data?.code ==
+      fetchPreAdviceInfo.errorObject?.response?.data?.code ==
       "CONFIDENCE_CALCULATION_NOT_VALID"
     ) {
       calculateConfidenceLevel();
     }
-    if (fetchAssessment?.errorObject?.response?.data?.code === "DEPRECATED") {
+    if (
+      fetchPreAdviceInfo?.errorObject?.response?.data?.code === "DEPRECATED"
+    ) {
       service.migrateKitVersion({ assessmentId }).then(() => {
-        fetchAssessment.query();
+        fetchPreAdviceInfo.query();
       });
     }
-  }, [fetchAssessment.errorObject]);
+  }, [fetchPreAdviceInfo.errorObject]);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [isWritingAdvice, setIsWritingAdvice] = useState<boolean>(false);
   const [isAIGenerated, setIsAIGenerated] = useState<boolean>(false);
@@ -100,29 +103,24 @@ const AssessmentAdviceContainer = (props: any) => {
     setIsAIGenerated(!!fetchAdviceNarration.data?.aiNarration);
   }, [fetchAdviceNarration.data]);
 
-  const computeFilteredMaturityLevels = (assessment: any) => {
-    if (!assessment?.assessmentKit?.maturityLevels) return [];
-    return assessment.assessmentKit.maturityLevels.sort(
-      (elem1: any, elem2: any) => elem1.index - elem2.index,
-    );
-  };
-
   return (
     <QueryBatchData
-      queryBatchData={[fetchAdviceNarration, fetchAssessment, fetchAdviceItems]}
+      queryBatchData={[
+        fetchAdviceNarration,
+        fetchPreAdviceInfo,
+        fetchAdviceItems,
+      ]}
       renderLoading={() => <Skeleton height={160} />}
-      render={([narrationComponent, assessmentData, adviceItems]) => {
-        const { assessment, subjects, permissions } = assessmentData || {};
-        const filteredMaturityLevels =
-          computeFilteredMaturityLevels(assessment);
+      render={([narrationComponent, adviceInfo, adviceItems]) => {
+        const { attributes, maturityLevels, permissions } = adviceInfo || {};
 
         return (
           <Box mt={4}>
             <AdviceDialog
               open={expanded}
               handleClose={handleClose}
-              subjects={subjects}
-              filteredMaturityLevels={filteredMaturityLevels}
+              attributes={attributes}
+              filteredMaturityLevels={maturityLevels}
               permissions={permissions}
               fetchAdviceNarration={fetchAdviceNarration}
             />

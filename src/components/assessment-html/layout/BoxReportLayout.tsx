@@ -20,6 +20,7 @@ interface IBoxReport {
     value: number;
     description: string;
   };
+  language: string;
 }
 
 interface ITopBoxReport {
@@ -32,6 +33,7 @@ interface ITopBoxReport {
   };
   confidenceValue: number;
   maturityLevelCount: number;
+  language: string;
 }
 const BoxReportLayout = (props: IBoxReport) => {
   const {
@@ -39,6 +41,7 @@ const BoxReportLayout = (props: IBoxReport) => {
     insight,
     maturityLevel,
     maturityLevelCount,
+    language,
     ...rest
   } = props;
 
@@ -65,9 +68,10 @@ const BoxReportLayout = (props: IBoxReport) => {
         confidenceValue={Math.ceil(confidenceValue)}
         maturityLevel={maturityLevel}
         maturityLevelCount={maturityLevelCount}
+        language={language}
         {...rest}
       />
-      <BottomBox insight={insight} />
+      <BottomBox insight={insight} language={language} />
     </Box>
   );
 };
@@ -80,6 +84,7 @@ const TopBox = (props: ITopBoxReport) => {
     maturityLevel,
     confidenceValue,
     maturityLevelCount,
+    language,
   } = props;
   return (
     <Grid
@@ -97,8 +102,8 @@ const TopBox = (props: ITopBoxReport) => {
           sx={{
             ...theme.typography.titleLarge,
             color: `${ConfidenceColor}`,
-            direction: true ? "rtl" : "ltr",
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            direction: language === "fa" ? "rtl" : "ltr",
+            fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
           }}
         >
           {title}
@@ -108,11 +113,11 @@ const TopBox = (props: ITopBoxReport) => {
         <Typography
           sx={{
             ...theme.typography.extraLight,
-            direction: true ? "rtl" : "ltr",
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            direction: language === "fa" ? "rtl" : "ltr",
+            fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
           }}
         >
-          {t(description, { lng: "fa" })}
+          {t(description, { lng: language })}
         </Typography>
       </Grid>
       <Grid xs={12} sm={3.5} item>
@@ -122,7 +127,7 @@ const TopBox = (props: ITopBoxReport) => {
           text={maturityLevel.title}
           textPosition={"top"}
           confidenceLevelNum={confidenceValue}
-          confidenceText={t("confidenceLevel", { lng: "fa" })}
+          confidenceText={t("confidenceLevel", { lng: language })}
         />
       </Grid>
     </Grid>
@@ -130,7 +135,7 @@ const TopBox = (props: ITopBoxReport) => {
 };
 
 const BottomBox = (props: any) => {
-  const { insight } = props;
+  const { insight, language } = props;
   return (
     <Box
       sx={{
@@ -160,12 +165,12 @@ const BottomBox = (props: any) => {
           ...theme.typography.labelMedium,
           color: "#2466A8",
           fontSize: "1rem",
-          direction: true ? "rtl" : "ltr",
-          fontFamily: true ? farsiFontFamily : primaryFontFamily,
-          textAlign: true ? "right" : "left",
+          direction: language === "fa" ? "rtl" : "ltr",
+          fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+          textAlign: language === "fa" ? "right" : "left",
         }}
       >
-        {t("analysisResults", { lng: "fa" })}
+        {t("analysisResults", { lng: language })}
       </Typography>
       <Typography
         component="div"
@@ -174,11 +179,11 @@ const BottomBox = (props: any) => {
           ...theme.typography.extraLight,
           mt: 1,
           color: "#2B333B",
-          direction: true ? "rtl" : "ltr",
-          fontFamily: true ? farsiFontFamily : primaryFontFamily,
+          direction: language === "fa" ? "rtl" : "ltr",
+          fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
         }}
         dangerouslySetInnerHTML={{
-          __html: insight ?? t("unavailable", { lng: "fa" }),
+          __html: insight ?? t("unavailable", { lng: language }),
         }}
       ></Typography>
     </Box>
