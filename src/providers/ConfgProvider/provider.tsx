@@ -62,6 +62,13 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
         favIcon.setAttribute("href", res.data.favLink);
       }
     });
+    service.fetchKitLanguage({}).then((res: any)=>{
+      dispatch({
+        type: ActionTypes.App_Languages,
+        payload: res.data.kitLanguages,
+      })
+    })
+
   }, []);
   return (
     <AppContext.Provider value={{ config, dispatch }}>
