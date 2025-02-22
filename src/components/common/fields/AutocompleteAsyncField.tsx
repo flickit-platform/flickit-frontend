@@ -388,13 +388,11 @@ const AutocompleteBaseField = (
             )}
             {option?.[filterFields[2]] && (
               <Chip
+                size="small"
                 sx={{
                   background:
                     "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
                   marginInlineStart: "auto",
-                  "& .MuiChip-label": {
-                    padding: "0px 8px !important",
-                  },
                 }}
                 label={
                   <Typography
