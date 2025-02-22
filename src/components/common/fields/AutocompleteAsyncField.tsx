@@ -19,7 +19,9 @@ import { TQueryProps } from "@types";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { theme } from "@config/theme";
 import { uniqueId } from "lodash";
-import {Trans} from "react-i18next";
+import Chip from "@mui/material/Chip";
+import { Typography } from "@mui/material";
+import { Trans } from "react-i18next";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -32,7 +34,7 @@ interface IAutocompleteAsyncFieldProps
     RegisterOptions<any, any>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
-  filterFields?: string[];
+  filterFields?: any;
   createItemQuery?: any;
   setError?: any;
 }
@@ -48,7 +50,7 @@ const AutocompleteAsyncField = (
     required = false,
     hasAddBtn = false,
     editable = false,
-    filterFields = ["title"],
+    filterFields = ["title", "lang", "isPrivate"],
     createItemQuery,
     setError,
     searchable,
@@ -96,7 +98,7 @@ interface IAutocompleteAsyncFieldBase
   searchOnType?: boolean;
   editable?: boolean;
   hasAddBtn?: boolean;
-  filterFields?: string[];
+  filterFields?: any[];
   filterOptionsByProperty?: (option: any) => boolean;
   createItemQuery?: any;
   setError?: any;
@@ -252,7 +254,6 @@ const AutocompleteBaseField = (
     setOpen(true);
   };
 
-
   const handleBlur = () => {
     if (
       inputValue &&
@@ -376,7 +377,33 @@ const AutocompleteBaseField = (
             </LoadingButton>
           </li>
         ) : (
-          <li {...props}>{option?.[filterFields[0]]}</li>
+          <li {...props} style={{ display: "flex", gap: "8px" }}>
+            <Box>{option?.[filterFields[0]]}</Box>
+            {!!option?.[filterFields[1]] && (
+              <Box
+                sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80" }}
+              >
+                ({option?.[filterFields[1]]})
+              </Box>
+            )}
+            {option?.[filterFields[2]] && (
+              <Chip
+                size="small"
+                sx={{
+                  background:
+                    "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
+                  marginInlineStart: "auto",
+                }}
+                label={
+                  <Typography
+                    sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
+                  >
+                    <Trans i18nKey={`privateTitle`} />
+                  </Typography>
+                }
+              />
+            )}
+          </li>
         )
       }
       noOptionsText={
