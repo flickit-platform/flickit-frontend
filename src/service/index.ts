@@ -493,9 +493,13 @@ export const createService = (
       { assessmentId, data }: { assessmentId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.post(`/api/v1/assessments/${assessmentId}/overall-insight/`, data, {
-        ...(config ?? {}),
-      });
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/overall-insight/`,
+        data,
+        {
+          ...(config ?? {}),
+        },
+      );
     },
     postAdviceItem(
       { data }: { data: any },
@@ -941,7 +945,10 @@ export const createService = (
       { assessmentId }: { assessmentId: string },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.get(`/api/v1/assessments/${assessmentId}/pre-advice-info/`, config);
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/pre-advice-info/`,
+        config,
+      );
     },
     fetchAssessment(
       { assessmentId }: { assessmentId: string },
@@ -1422,6 +1429,16 @@ export const createService = (
         },
       );
     },
+    approveAnswer(
+      { assessmentId, data }: { assessmentId: TId; data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/approve-answer/`,
+        data,
+        config,
+      );
+    },
     fetchTotalProgress(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,
@@ -1513,12 +1530,12 @@ export const createService = (
       );
     },
     approveInsights(
-        { assessmentId }: { assessmentId: TId},
-        config?: AxiosRequestConfig<any>,
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
     ) {
       return axios.put(
-          `/api/v1/assessments/${assessmentId}/approve-insights/`,
-          { ...config },
+        `/api/v1/assessments/${assessmentId}/approve-insights/`,
+        { ...config },
       );
     },
     saveCompareItem(

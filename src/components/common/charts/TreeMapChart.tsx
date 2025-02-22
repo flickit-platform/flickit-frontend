@@ -1,6 +1,8 @@
 import React from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
+import { useMediaQuery } from "@mui/material";
+import { theme } from "@/config/theme";
 
 interface TreeMapNode {
   name: string;
@@ -43,8 +45,10 @@ const CustomNode: any = (props: any) => {
 
   if (width <= 20 || height <= 20) return null;
 
-  const fontSize = width / 8;
-  const adjustedFontSize = fontSize > 13 ? 13 : fontSize;
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const fontSize = width / (isSmallScreen ? 10 : 8);
+  const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
 
   const truncatedName =
     name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 12)}...` : name;

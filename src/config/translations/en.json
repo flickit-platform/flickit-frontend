@@ -170,7 +170,6 @@
   "comments": "Comments",
   "goToQuestion": "Go To Question",
   "createExpertGroup": "Create expert group",
-  "CreateFirstAdvice": "Create your first advice here",
   "createQuestion": "Create Question",
   "createSpace": "New Space",
   "createYourFirstSpace": "Create your first space",
@@ -378,7 +377,7 @@
   "nextQuestion": "NEXT QUESTION",
   "nice": "Nice!",
   "noAdviceGeneratedYet": "No Advice Yet!",
-  "NoAdviceSoFar": "Ops! No Advice So Far",
+  "noActionYet": "Oops! No action items yet!",
   "noAssesmentHere": "No assesment here!",
   "noDraftVersion": "There is no draft version",
   "noEvidence": "No evidence has been noted yet!",
@@ -841,5 +840,8 @@
   "زیاد": "high",
   "متوسط": "medium",
   "کم": "low",
+  "approveAll": "Approve all",
+  "answerNeedApprove": "The selected answer needs approval from an assessor.",
+  "privateTitle": "Private",
   "approveAll": "Approve all"
 }
