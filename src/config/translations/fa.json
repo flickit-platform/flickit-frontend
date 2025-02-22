@@ -34,7 +34,7 @@
   "addRole": "افزودن نقش",
   "addToCompare": "افزودن به لیست مقایسه",
   "addToCompareList": "افزودن به لیست مقایسه",
-  "addToThisAssessment": "اضافه کردن به این ارزیابی",
+  "addToThisAssessment": "انجام",
   "advancedSettings": "تنظیمات پیشرفته",
   "advancedSettingsDescription": "در این بخش می توانید در مورد برخی تنظیمات جانبی این سوال تصمیم گیری کنید.",
   "advice": "توصیه",
@@ -104,7 +104,7 @@
   "assessmentSubject": "موضوع ارزیابی",
   "assessmentTitle": "عنوان ارزیابی",
   "assessorInsight": "تحلیل ارزیاب",
-  "assignRole": "اختصاص نقش",
+  "assignRole": "تخصیص نقش",
   "asYourConfidenceLevel": " به عنوان سطح اطمینان خود",
   "atLeastCharacter": "حداقل سه کاراکتر",
   "attachmentCount": "شامل {{attachmentsCount}} پیوست",
@@ -178,7 +178,7 @@
   "currentSpace": "فضای کاری فعلی",
   "currentStage": "وضعیت فعلی",
   "reviewAdvice": "بر اساس هدف گذاری تعیین شده در بخش قبل، پاسخ به پرسشنامه ها بررسی می شود. از آنجا، سؤالاتی انتخاب می شوند که مستقیماً با اهداف انتخاب شده همسو می شوند، جایی که بهبود این حوزه ها بیشترین تأثیر را در دستیابی به اهداف تعریف شده خواهد داشت.",
-  "customizingSubjectAndAttributes": "سفارشی کردن موضوعات و ویژگی ها",
+  "customizingSubjectAndAttributes": "سفارشی کردن موضوعات و ویژگی\u200Cها",
   "dateCreated": "تاریخ ایجاد",
   "decline": "رد کردن",
   "default": "پیش‌فرض",
@@ -662,7 +662,7 @@
   "viewAssessmentKitMarket": "مشاهده بازار کیت ارزیابی",
   "viewInsights": "مشاهده تحلیل‌ها",
   "viewOtherAssessmentKitsFromThisAuthor": "مشاهده سایر کیت‌های ارزیابی از این نویسنده",
-  "viewTheWeightAndSubject": "در اینجا می توانید وزن موضوعات یا ویژگی های مختلف را مشاهده کرده و آنها را به دلخواه برای این ارزیابی خاص تنظیم کنید.",
+  "viewTheWeightAndSubject": "در اینجا می\u200Cتوانید ورن موضوعات با ویژگی\u200Cهای مختلف را مشاهده کرده و آن\u200Cها را به دلخواه برای این ارزیابی خاص تنظیم کنید.",
   "visibility": "قابلیت مشاهده",
   "warning": "اخطار",
   "wasEstimate": "سطح بلوغ کلی {{title}} برابر با",
@@ -841,5 +841,6 @@
   "approveAll": "تایید همه",
   "answerNeedApprove": "پاسخ داده‌شده نیاز به تایید یک ارزیاب دارد.",
   "privateTitle": "اختصاصی",
-  "approveAll": "تایید همه"
+  "approveAll": "تایید همه",
+  "'email' format is not valid.": "ایمیل وارد شده معتبر نمباشید."
 }

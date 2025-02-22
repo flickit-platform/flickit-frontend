@@ -113,6 +113,7 @@ export const AssessmentSettingGeneralBox = (props: {
                 fontSize: { xs: "1rem", sm: "1.375rem" },
                 whiteSpace: { xs: "wrap", sm: "nowrap" },
                 color: "#78818b",
+                width: "250px",
               }}
             >
               <Trans i18nKey="assessmentTitle" />:
@@ -122,6 +123,7 @@ export const AssessmentSettingGeneralBox = (props: {
               sx={{
                 ...styles.centerVH,
                 width: { md: "350px" },
+                  justifyContent:"flex-start"
               }}
             >
               <OnHoverInputTitleSetting
@@ -153,6 +155,7 @@ export const AssessmentSettingGeneralBox = (props: {
                   gap: "6px",
                   fontSize: { xs: "1rem", sm: "1.375rem" },
                   whiteSpace: { xs: "wrap", sm: "nowrap" },
+                  width: "250px",
                 }}
                 lineHeight={"normal"}
               >
@@ -162,7 +165,7 @@ export const AssessmentSettingGeneralBox = (props: {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "flex-start",
                   width: { md: "350px" },
                   flexDirection: "column",
                 }}
@@ -208,85 +211,77 @@ export const AssessmentSettingGeneralBox = (props: {
         <Divider
           sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
         />
+          <Grid container spacing={2} sx={{ ...styles.centerH }}>
+                {title.map((itemList: string, index: number) => {
+                  return (
+                    <Grid
+                      key={uniqueId()}
 
-        <Grid
-          container
-          sx={{
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          {title.map((itemList: string, index: number) => {
-            return (
-              <Grid
-                key={uniqueId()}
-                item
-                xs={12}
-                sm={5}
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mb: "10px",
-                }}
-              >
-                <Typography
-                  color="#78818b"
-                  fontWeight={500}
-                  whiteSpace={"nowrap"}
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    fontSize: { xs: "1rem", md: "1.375rem" },
-                  }}
-                  lineHeight={"normal"}
-                >
-                  <Trans i18nKey={`${itemList}`} />:
-                </Typography>
-
-                <Typography
-                  color="#0A2342"
-                  fontWeight={500}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    fontSize: { xs: "1rem", md: "1.375rem" },
-                    width: { md: "350px" },
-                    textAlign: "center",
-                  }}
-                  lineHeight={"normal"}
-                >
-                  {index == 0 && displayName}
-                  {index == 1 && (
-                    <Link
-                      style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontFamily: languageDetector(kit.title)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
+                      item
+                      xs={12}
+                      md={6}
+                      sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          mb: "10px",
                       }}
-                      to={`/assessment-kits/${kit.id}`}
                     >
-                      {kit.title}
-                    </Link>
-                  )}
-                  {index == 2 &&
-                    (theme.direction == "rtl"
-                      ? formatDate(creationTime, "Shamsi")
-                      : formatDate(creationTime, "Miladi"))}
-                  {index == 3 &&
-                    (theme.direction == "rtl"
-                      ? formatDate(lastModificationTime, "Shamsi")
-                      : formatDate(lastModificationTime, "Miladi"))}
-                </Typography>
-              </Grid>
-            );
-          })}
-        </Grid>
+                      <Typography
+                        color="#78818b"
+                        fontWeight={500}
+                        whiteSpace={"nowrap"}
+                        sx={{
+                          width: "250px",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          fontSize: { xs: "1rem", md: "1.375rem" },
+                        }}
+                        lineHeight={"normal"}
+                      >
+                        <Trans i18nKey={`${itemList}`} />:
+                      </Typography>
+
+                      <Typography
+                        color="#0A2342"
+                        fontWeight={500}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          fontSize: { xs: "1rem", md: "1.375rem" },
+                          width: { md: "350px" },
+                          textAlign: "right",
+                        }}
+                        lineHeight={"normal"}
+                      >
+                        {index == 0 && displayName}
+                        {index == 1 && (
+                          <Link
+                            style={{
+                              textDecoration: "none",
+                              color: "inherit",
+                              fontFamily: languageDetector(kit.title)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                            }}
+                            to={`/assessment-kits/${kit.id}`}
+                          >
+                            {kit.title}
+                          </Link>
+                        )}
+                        {index == 2 &&
+                          (theme.direction == "rtl"
+                            ? formatDate(creationTime, "Shamsi")
+                            : formatDate(creationTime, "Miladi"))}
+                        {index == 3 &&
+                          (theme.direction == "rtl"
+                            ? formatDate(lastModificationTime, "Shamsi")
+                            : formatDate(lastModificationTime, "Miladi"))}
+                      </Typography>
+                    </Grid>
+                  );
+                })}
+          </Grid>
       </Box>
     </Box>
   );
@@ -341,14 +336,14 @@ export const AssessmentSettingMemberBox = (props: {
     {
       id: "email",
       label: "email",
-      minWidth: "33vw",
+      minWidth: "20vw",
       display: "none",
       position: "center",
     },
     {
       id: "role",
       label: "role",
-      minWidth: "10vw",
+      minWidth: "20vw",
       position: "center",
     },
   ];
@@ -449,9 +444,11 @@ export const AssessmentSettingMemberBox = (props: {
             >
               <TableRow
                 sx={{
-                  display: "inline",
-                  justifyContent: "center",
+                  display: "flex",
+                  justifyContent: "space-evenly",
                   width: "100%",
+                    px:"1rem",
+                    gap: { xs: "0px", md: "1.3rem" },
                 }}
               >
                 {columns.map((column) => (
@@ -459,6 +456,8 @@ export const AssessmentSettingMemberBox = (props: {
                     key={column.id}
                     align={column.align}
                     sx={{
+
+                        px:0,
                       minWidth: {
                         xs: "8.1rem",
                         sm: "12rem",
@@ -487,7 +486,7 @@ export const AssessmentSettingMemberBox = (props: {
                   <TableRow
                     tabIndex={-1}
                     key={row.id}
-                    sx={{ background: !row.editable ? "#ebe8e85c" : "" }}
+                    sx={{ background: !row.editable ? "#ebe8e85c" : "",p:0 }}
                   >
                     <TableCell
                       sx={{
@@ -499,9 +498,10 @@ export const AssessmentSettingMemberBox = (props: {
                         paddingX: { xs: "0px", md: "1rem" },
                       }}
                     >
-                      <Box sx={{ width: "18vw" }}>
+                      <Box sx={{ width: "20vw" }}>
                         <Box
                           sx={{
+                             paddingInlineStart: {xs:0,  md:"30%" } ,
                             display: "flex",
                             justifyContent: { xs: "flex-start" },
                             alignItems: "center",
@@ -570,7 +570,7 @@ export const AssessmentSettingMemberBox = (props: {
                       <Box
                         sx={{
                           display: "flex",
-                          justifyContent: "flex-end",
+                          justifyContent: "flex-start",
                           alignItems: "center",
                           gap: { xs: "0px", md: ".7rem" },
                           width: { xs: "10.1rem", md: "20vw" },
@@ -1241,7 +1241,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                 <InputAdornment position="end">
                   <IconButton
                     title="Submit Edit"
-                    edge="end"
+                    edge= {theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#49CED0",
                       borderRadius: "2px",
@@ -1255,7 +1255,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
-                    edge="end"
+                    edge= {theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#E04B7C",
                       borderRadius: "2px",

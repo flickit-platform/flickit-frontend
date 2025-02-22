@@ -22,6 +22,7 @@ import { uniqueId } from "lodash";
 import Chip from "@mui/material/Chip";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
+import { t } from "i18next";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -349,7 +350,7 @@ const AutocompleteBaseField = (
           error={hasError || errorObject?.response?.data.message}
           helperText={
             (errorMessage as ReactNode) ||
-            errorObject?.response?.data.message ||
+             ( errorObject?.response?.data.message && t(`${errorObject?.response?.data.message}`)) ||
             helperText
           }
           sx={{
