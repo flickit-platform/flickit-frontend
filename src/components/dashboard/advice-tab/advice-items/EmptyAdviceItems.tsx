@@ -46,7 +46,7 @@ const EmptyAdviceList = ({
       fontWeight="bold"
       color="rgba(61, 77, 92, 0.5)"
     />
-    <TextContent textKey={subTitle} variant="bodyMedium" />
+    <TextContent textKey={subTitle ?? ""} variant="bodyMedium" />
     <Tooltip disableHoverListener={!disabled} title={disableTextBox}>
       <div>
         <Button variant="contained" onClick={onAddNewRow} disabled={disabled}>
