@@ -102,6 +102,7 @@ import {
 } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
+import { useQuestions } from "@components/questions/QuestionsContainer";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -661,6 +662,7 @@ const AnswerTemplate = (props: {
   const { service } = useServiceContext();
   const dispatch = useQuestionDispatch();
   const { assessmentId = "", questionnaireId } = useParams();
+  const { questionsResultQueryData } = useQuestions();
   const [value, setValue] = useState<TAnswer | null>(
     answer?.selectedOption || null,
   );
@@ -716,6 +718,14 @@ const AnswerTemplate = (props: {
       setDisabledConfidence(true);
     }
   }, [answer, value]);
+
+  const approveAnswer = useQuery({
+    service: (
+      args = { assessmentId, data: { questionId: questionInfo.id } },
+      config,
+    ) => service.approveAnswer(args, config),
+    runOnMount: false,
+  });
 
   const submitQuestion = async () => {
     dispatch(questionActions.setIsSubmitting(true));
@@ -853,6 +863,36 @@ const AnswerTemplate = (props: {
     }
   };
 
+  const onApprove = async () => {
+    try {
+      await approveAnswer.query();
+      await questionsResultQueryData.query({ page: 0 }).then((response) => {
+        const { items = [] } = response;
+        dispatch(
+          questionActions.setQuestionsInfo({
+            ...questionsInfo,
+            questions: items,
+          }),
+        );
+        if (isLastQuestion) {
+          dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
+          navigate(`../completed`, { replace: true });
+          return;
+        } else {
+          const newQuestionIndex = questionIndex + 1;
+          if (submitOnAnswerSelection) {
+            dispatch(questionActions.goToQuestion(newQuestionIndex));
+            navigate(`../${newQuestionIndex}`, {
+              replace: true,
+            });
+          }
+        }
+      });
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
   return (
     <>
       <Box
@@ -908,18 +948,40 @@ const AnswerTemplate = (props: {
                     fontSize: { xs: "1.15rem", sm: "1.3rem" },
                     fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ? "#0acb89" : "white"}`,
+                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ?
+                         answer?.approved == false &&
+                        permissions?.approveAnswer
+                            ? "#CC7400":
+                        "#0acb89" : "white"}`,
                     borderWidth: "2px",
-                    borderColor: "transparent",
+                    borderColor:
+                      answer?.selectedOption?.index === defaultSelectedIndex
+                        ? "#CC7400"
+                        : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
-                        backgroundColor: "#0ec586",
+                        backgroundColor: !isSelectedValueTheSameAsAnswer
+                          ? "#0ec586"
+                          : answer?.approved == false &&
+                              permissions?.approveAnswer
+                            ? "#CC7400"
+                            : "#0ec586",
                       },
-                      backgroundImage: `url(${AnswerSvg})`,
+                      backgroundImage: !isSelectedValueTheSameAsAnswer
+                        ? "#0ec586"
+                        : answer?.approved == false &&
+                            permissions?.approveAnswer
+                          ? null
+                          : `url(${AnswerSvg})`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "right",
                       color: "white",
-                      backgroundColor: "#0acb89",
+                      backgroundColor: !isSelectedValueTheSameAsAnswer
+                        ? "#0ec586"
+                        : answer?.approved == false &&
+                            permissions?.approveAnswer
+                          ? "#CC7400"
+                          : "#0acb89",
                       borderColor: "transparent",
                       zIndex: 2,
                       position: "relative",
@@ -981,7 +1043,7 @@ const AnswerTemplate = (props: {
       <Box
         sx={{
           mt: { xs: 4, md: 1 },
-          px: 6,
+          px: 4,
           display: "flex",
           flexDirection: "row-reverse",
           justifyContent: "space-between",
@@ -1007,14 +1069,51 @@ const AnswerTemplate = (props: {
             onClick={submitQuestion}
             disabled={
               isSelectedValueTheSameAsAnswer ||
+              !value ||
               ((value || notApplicable) && !selcetedConfidenceLevel)
             }
           >
             <Trans i18nKey="submit" />
           </LoadingButton>{" "}
         </Box>
-        <Box sx={styles.centerVH} gap={2}>
-          {may_not_be_applicable && (
+        {isSelectedValueTheSameAsAnswer &&
+          answer?.approved == false &&
+          permissions?.approveAnswer && (
+            <Box
+              sx={{
+                ...styles.centerVH,
+                background: "#CC74004D",
+                borderRadius: "4px",
+                p: 2,
+                gap: 4,
+                height: "40px",
+                boxSizing: "border-box",
+              }}
+            >
+              <Typography
+                sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
+              >
+                <Trans i18nKey={"answerNeedApprove"} />
+              </Typography>
+              <Button
+                onClick={onApprove}
+                sx={{
+                  background: "#CC7400",
+                  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
+                  "&:hover": {
+                    boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
+                    background: "#CC7400",
+                  },
+                }}
+              >
+                <Typography variant="bodySmall" sx={{ color: "#fff" }}>
+                  <Trans i18nKey={"approve"} />
+                </Typography>
+              </Button>
+            </Box>
+          )}
+        {may_not_be_applicable && (
+          <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
               sx={{ color: theme.palette.primary.main }}
               data-cy="automatic-submit-check"
@@ -1032,8 +1131,8 @@ const AnswerTemplate = (props: {
               }
               label={<Trans i18nKey={"notApplicable"} />}
             />
-          )}
-        </Box>
+          </Box>
+        )}
         <DeleteDialog
           expanded={expandedDeleteDialog}
           onClose={() => setExpandedDeleteDialog(false)}
