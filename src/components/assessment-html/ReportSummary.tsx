@@ -234,6 +234,10 @@ const ReportCard = ({
         border: "3px solid #2466A8",
         paddingX: { md: 2, xs: 1 },
         paddingY: 6,
+        display: {
+          md: "block",
+          xs: "none",
+        },
       }}
     >
       <TitleBox language={lang.code.toLowerCase()} />
