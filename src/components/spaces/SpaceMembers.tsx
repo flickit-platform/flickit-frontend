@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { useEffect, useRef } from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import { useParams } from "react-router-dom";
 import Title from "@common/Title";
 import QueryData from "@common/QueryData";
@@ -33,6 +33,8 @@ import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -41,8 +43,10 @@ export const SpaceMembers = (props: any) => {
   const { userInfo } = useAuthContext();
   const userId = userInfo?.id;
   const user_id_ref = useRef<HTMLInputElement>(null);
-  const spaceMembersQueryData = useQuery<IMemberModel>({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId }, config),
+  const [page, setPage] = useState(1);
+  const spaceMembersQueryData = useQuery({
+    service: (args, config) =>
+      service.fetchSpaceMembers({ spaceId, page: page - 1, size: 10 }, config),
   });
   const spaceMembersInviteeQueryData = useQuery<IMemberModel>({
     service: (args, config) =>
@@ -60,11 +64,9 @@ export const SpaceMembers = (props: any) => {
     ) => service.addMemberToSpace({ spaceId: id, email: value }, config),
     runOnMount: false,
   });
-
   const resetForm = () => {
     user_id_ref.current?.form?.reset();
   };
-
   useEffect(() => {
     let controller: AbortController;
     if (data?.id) {
@@ -77,6 +79,27 @@ export const SpaceMembers = (props: any) => {
       controller?.abort();
     };
   }, [data]);
+
+  useEffect(() => {
+    spaceMembersQueryData.query();
+  }, [page]);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    page: number,
+  ) => {
+    setPage(page);
+  };
+
+  const totalPages = useMemo(()=>
+      !spaceMembersQueryData.data || spaceMembersQueryData?.data?.size === 0
+          ? 1
+          : Math.ceil(
+              spaceMembersQueryData?.data?.total / spaceMembersQueryData.data?.size,
+          )
+      ,[spaceMembersQueryData?.data?.size])
+
+
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
     <Box mt={1} p={3} sx={{ borderRadius: 1, background: "white" }}>
@@ -261,6 +284,23 @@ export const SpaceMembers = (props: any) => {
                     )
                   );
                 })}
+                <Stack
+                  spacing={2}
+                  sx={{
+                    mt: 3,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Pagination
+                    variant="outlined"
+                    color="primary"
+                    count={totalPages}
+                    onChange={handleChangePage}
+                    page={page}
+                  />
+                </Stack>
               </Box>
             );
           }}

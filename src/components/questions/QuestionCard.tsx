@@ -102,6 +102,8 @@ import {
 } from "@mui/icons-material";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -404,6 +406,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 export const QuestionTabsTemplate = (props: any) => {
   const { value, setValue, handleChange, questionsInfo, questionInfo } = props;
   const [isExpanded, setIsExpanded] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [counts, setCounts] = useState({
@@ -446,10 +449,9 @@ export const QuestionTabsTemplate = (props: any) => {
     toastError: true,
     runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
   });
-
   const evidencesQueryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 50 },
+      args = { questionId: questionInfo.id, assessmentId, page: currentPage - 1, size: 10 },
       config,
     ) => service.fetchEvidences(args, config),
     toastError: true,
@@ -505,6 +507,10 @@ export const QuestionTabsTemplate = (props: any) => {
       setValue(null);
     }
   }, [isExpanded]);
+
+  useEffect(()=>{
+      evidencesQueryData.query()
+  },[currentPage])
 
   return (
     <TabContext value={value}>
@@ -582,6 +588,8 @@ export const QuestionTabsTemplate = (props: any) => {
                 type="evidence"
                 permissions={questionsInfo?.permissions}
                 queryData={evidencesQueryData}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
               />
             </Box>
           </TabPanel>
@@ -1052,11 +1060,15 @@ const AnswerDetails = ({
   type,
   permissions,
   queryData,
+  currentPage,
+  setCurrentPage
 }: {
   questionInfo: any;
   type: string;
   permissions?: IPermissions;
   queryData: any;
+  currentPage?: number,
+  setCurrentPage?: any
 }) => {
   const [page, setPage] = useState(0);
   const [data, setData] = useState<IAnswerHistory[]>([]);
@@ -1109,6 +1121,8 @@ const AnswerDetails = ({
             questionInfo={questionInfo}
             evidencesQueryData={queryData}
             permissions={permissions}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </Box>
       ) : data.length > 0 ? (
@@ -1299,11 +1313,15 @@ const Evidence = (props: any) => {
     permissions,
     type,
     evidencesQueryData,
+    currentPage,
+    setCurrentPage
   }: {
     questionInfo: IQuestionInfo;
     permissions: IPermissions;
     type: string;
     evidencesQueryData: any;
+    currentPage: number,
+    setCurrentPage: any
   } = props;
   const { assessmentId = "" } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
@@ -1474,6 +1492,19 @@ const Evidence = (props: any) => {
       setValue(evidenceAttachmentType.positive);
     }
   }, [type]);
+
+    const handleChangePage = (
+        event: React.ChangeEvent<unknown>,
+        value: number,
+    ) => {
+        setCurrentPage(value);
+    };
+
+    const pageCount =
+        !evidencesQueryData.data || evidencesQueryData.data?.size === 0
+            ? 1
+            : Math.ceil(evidencesQueryData.data?.total / evidencesQueryData.data?.size);
+
   return evidencesQueryData.loading ? (
     <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
       <CircularProgress />
@@ -1769,6 +1800,23 @@ const Evidence = (props: any) => {
                         permissions={permissions}
                       />
                     ))}
+                    <Stack
+                        spacing={2}
+                        sx={{
+                            mt: 3,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Pagination
+                            variant="outlined"
+                            color="primary"
+                            count={pageCount}
+                            onChange={handleChangePage}
+                            page={currentPage}
+                        />
+                    </Stack>
                 </>
               )}
             </>
