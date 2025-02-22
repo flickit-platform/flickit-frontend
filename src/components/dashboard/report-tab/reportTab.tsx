@@ -98,7 +98,7 @@ const ReportTab = () => {
                     key={uniqueId()}
                     style={{
                       minHeight: "180px",
-                      mt: name == "intro" ? 4 : 5,
+                      // mt: name == "intro" ? 4 : 5,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
                     }}
@@ -162,10 +162,6 @@ const ReportTab = () => {
                           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
-                          disabled={
-                            Object.values(metadata).includes(null) ||
-                            published == false
-                          }
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
                             <Trans i18nKey={"viewReport"} />
