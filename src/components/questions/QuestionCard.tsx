@@ -863,18 +863,22 @@ const AnswerTemplate = (props: {
     }
   };
 
-  const onApprove = () => {
+  const onApprove = async () => {
     try {
-      const approve = async () => {
-        await approveAnswer.query();
-        await questionsResultQueryData.query({ page: 0 }).then((response) => {
-          const { items = [] } = response;
-          dispatch(
-            questionActions.setQuestionsInfo({
-              ...questionsInfo,
-              questions: items,
-            }),
-          );
+      await approveAnswer.query();
+      await questionsResultQueryData.query({ page: 0 }).then((response) => {
+        const { items = [] } = response;
+        dispatch(
+          questionActions.setQuestionsInfo({
+            ...questionsInfo,
+            questions: items,
+          }),
+        );
+        if (isLastQuestion) {
+          dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
+          navigate(`../completed`, { replace: true });
+          return;
+        } else {
           const newQuestionIndex = questionIndex + 1;
           if (submitOnAnswerSelection) {
             dispatch(questionActions.goToQuestion(newQuestionIndex));
@@ -882,22 +886,8 @@ const AnswerTemplate = (props: {
               replace: true,
             });
           }
-        });
-      };
-      approve()
-        .then(() => {
-          if (isLastQuestion) {
-            dispatch(
-              questionActions.setAssessmentStatus(EAssessmentStatus.DONE),
-            );
-            navigate(`../completed`, { replace: true });
-            return;
-          }
-        })
-        .catch((e) => {
-          const err = e as ICustomError;
-          toastError(err);
-        });
+        }
+      });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -1082,40 +1072,42 @@ const AnswerTemplate = (props: {
             <Trans i18nKey="submit" />
           </LoadingButton>{" "}
         </Box>
-        {answer?.approved == false && permissions?.approveAnswer && (
-          <Box
-            sx={{
-              ...styles.centerVH,
-              background: "#CC74004D",
-              borderRadius: "4px",
-              p: 2,
-              gap: 4,
-              height: "40px",
-              boxSizing: "border-box",
-            }}
-          >
-            <Typography
-              sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
-            >
-              <Trans i18nKey={"answerNeedApprove"} />
-            </Typography>
-            <Button
-              onClick={onApprove}
+        {isSelectedValueTheSameAsAnswer &&
+          answer?.approved == false &&
+          permissions?.approveAnswer && (
+            <Box
               sx={{
-                background: "#CC7400",
-                boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                "&:hover": {
-                  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                  background: "#CC7400",
-                },
+                ...styles.centerVH,
+                background: "#CC74004D",
+                borderRadius: "4px",
+                p: 2,
+                gap: 4,
+                height: "40px",
+                boxSizing: "border-box",
               }}
             >
-              <Typography sx={{ ...theme.typography.bodySmall, color: "#fff" }}>
-                <Trans i18nKey={"approve"} />
+              <Typography
+                sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
+              >
+                <Trans i18nKey={"answerNeedApprove"} />
               </Typography>
-            </Button>
-          </Box>
-        )}
+              <Button
+                onClick={onApprove}
+                sx={{
+                  background: "#CC7400",
+                  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
+                  "&:hover": {
+                    boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
+                    background: "#CC7400",
+                  },
+                }}
+              >
+                <Typography variant="bodySmall" sx={{ color: "#fff" }}>
+                  <Trans i18nKey={"approve"} />
+                </Typography>
+              </Button>
+            </Box>
+          )}
         {may_not_be_applicable && (
           <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
