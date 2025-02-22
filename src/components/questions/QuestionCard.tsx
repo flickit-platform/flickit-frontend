@@ -948,7 +948,11 @@ const AnswerTemplate = (props: {
                     fontSize: { xs: "1.15rem", sm: "1.3rem" },
                     fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ? "#0acb89" : "white"}`,
+                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ?
+                         answer?.approved == false &&
+                        permissions?.approveAnswer
+                            ? "#CC7400":
+                        "#0acb89" : "white"}`,
                     borderWidth: "2px",
                     borderColor:
                       answer?.selectedOption?.index === defaultSelectedIndex
@@ -1039,7 +1043,7 @@ const AnswerTemplate = (props: {
       <Box
         sx={{
           mt: { xs: 4, md: 1 },
-          px: 6,
+          px: 4,
           display: "flex",
           flexDirection: "row-reverse",
           justifyContent: "space-between",
