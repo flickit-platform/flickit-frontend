@@ -6,7 +6,6 @@ import Skeleton from "@mui/material/Skeleton";
 import Tooltip from "@mui/material/Tooltip";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
-import { IAssessmentReportModel } from "@types";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { AssessmentReportNarrator } from "@components/dashboard/advice-tab/assessmentReportNarrator";
