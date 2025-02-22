@@ -120,7 +120,15 @@ export const AssessmentTOC = ({
 
           return (
             <React.Fragment key={index}>
-              <ListItem disablePadding>
+              <ListItem
+                disablePadding
+                sx={{
+                  display: {
+                    md: "block",
+                    xs: item.key !== "evaluation_process" ? "block" : "none",
+                  },
+                }}
+              >
                 <ListItemButton
                   component="a"
                   href={`#${item.id}`}
@@ -168,7 +176,10 @@ export const AssessmentTOC = ({
                       <ListItem key={subIndex} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText
-                            primary={t(subItem, { lng: lang.code.toLowerCase(), title: "" })}
+                            primary={t(subItem, {
+                              lng: lang.code.toLowerCase(),
+                              title: "",
+                            })}
                             sx={{
                               ml: 2,
                               marginBlock: 1,
