@@ -1863,12 +1863,7 @@ export const createService = (
       );
     },
     fetchTenantInfo(config: AxiosRequestConfig<any> | undefined) {
-      return axios.get(`/api/v1/tenant/info/`, {
-        ...(config ?? {}),
-      });
-    },
-    fetchTenantLogo(config: AxiosRequestConfig<any> | undefined) {
-      return axios.get(`/api/v1/tenant/logo/`, {
+      return axios.get(`/api/v1/tenant/`, {
         ...(config ?? {}),
       });
     },
