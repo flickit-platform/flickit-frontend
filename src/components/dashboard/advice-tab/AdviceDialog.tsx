@@ -19,6 +19,8 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { CircularProgress } from "@mui/material";
+import { LoadingSkeleton } from "@/components/common/loadings/LoadingSkeleton";
+import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 
 const AdviceDialog = ({
   open,
@@ -26,6 +28,7 @@ const AdviceDialog = ({
   fetchPreAdviceInfo,
   permissions,
   fetchAdviceNarration,
+  loading,
 }: any) => {
   const [adviceResult, setAdviceResult] = useState<any>([]);
   const [step, setStep] = useState<number>(1); // Step state
@@ -151,15 +154,8 @@ const AdviceDialog = ({
             margin: "0 auto",
           }}
         >
-          {fetchPreAdviceInfo.loading && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
-            >
-              <CircularProgress />
-            </Box>
+          {(fetchPreAdviceInfo.loading || loading) && (
+            <LoadingSkeletonKitCard />
           )}
           <Box
             mt={2}
