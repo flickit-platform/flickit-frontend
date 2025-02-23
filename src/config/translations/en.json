@@ -34,7 +34,7 @@
   "addRole": "Add Role",
   "addToCompare": "Add to compare",
   "addToCompareList": "Add to compare list",
-  "addToThisAssessment": "Add to this assessment",
+  "addToThisAssessment": "done",
   "advancedSettings": "Advance Settings",
   "advancedSettingsDescription": "In this section, you can make decisions about some ancillary settings for this question.",
   "advice": "Advice",
@@ -843,5 +843,6 @@
   "approveAll": "Approve all",
   "answerNeedApprove": "The selected answer needs approval from an assessor.",
   "privateTitle": "Private",
-  "approveAll": "Approve all"
+  "approveAll": "Approve all",
+  "'email' format is not valid.": "'email' format is not valid."
 }
