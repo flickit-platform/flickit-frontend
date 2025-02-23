@@ -1551,13 +1551,13 @@ export const createService = (
       args: any,
       config: AxiosRequestConfig<any> | undefined = {},
     ) {
-      const { query, isPrivate, lang } = args ?? {};
-      const params = query ? { query } : { isPrivate, lang };
+      const { query, isPrivate } = args ?? {};
+      const params = query ? { query } : { isPrivate };
       return axios.get(`/api/v2/assessment-kits/`, { params, ...config });
     },
     fetchKitLanguage(
-      args: any,
-      config: AxiosRequestConfig<any> | undefined = {},
+        args: any,
+        config: AxiosRequestConfig<any> | undefined = {},
     ) {
       return axios.get(`/api/v1/kit-languages/`, config);
     },
