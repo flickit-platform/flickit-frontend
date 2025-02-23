@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { FaWandMagicSparkles } from "react-icons/fa6";
-import { AssessmentReportNarrator } from "@components/dashboard/advice-tab/assessmentReportNarrator";
+import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/assessmentReportNarrator";
 import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
@@ -34,47 +34,53 @@ const AssessmentAdviceContainer = (props: any) => {
       service.calculateMaturityLevel(args, config),
     runOnMount: false,
   });
-  const calculate = async () => {
-    try {
-      await calculateMaturityLevelQuery.query();
-      await fetchAdviceNarration.query();
-    } catch (e) {}
-  };
 
   const calculateConfidenceLevelQuery = useQuery({
     service: (args = { assessmentId }, config) =>
       service.calculateConfidenceLevel(args, config),
     runOnMount: false,
   });
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const calculateMaturityLevel = async () => {
+    try {
+      await calculateMaturityLevelQuery.query();
+    } catch (e) {}
+  };
 
   const calculateConfidenceLevel = async () => {
     try {
       await calculateConfidenceLevelQuery.query();
-      await fetchAdviceNarration.query();
     } catch (e) {}
   };
 
+  const handleErrorResponse = async (errorCode: any) => {
+    setLoading(true);
+
+    switch (errorCode) {
+      case "CALCULATE_NOT_VALID":
+        await calculateMaturityLevel();
+        break;
+      case "CONFIDENCE_CALCULATION_NOT_VALID":
+        await calculateConfidenceLevel();
+        break;
+      case "DEPRECATED":
+        await service.migrateKitVersion({ assessmentId });
+        break;
+      default:
+        break;
+    }
+    fetchPreAdviceInfo.query();
+    setLoading(false);
+  };
+
   useEffect(() => {
-    if (
-      fetchAdviceNarration.errorObject?.response?.data?.code ==
-      "CALCULATE_NOT_VALID"
-    ) {
-      calculate();
+    const errorCode = fetchPreAdviceInfo.errorObject?.response?.data?.code;
+    if (errorCode) {
+      handleErrorResponse(errorCode);
     }
-    if (
-      fetchAdviceNarration.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
-    ) {
-      calculateConfidenceLevel();
-    }
-    if (
-      fetchAdviceNarration?.errorObject?.response?.data?.code === "DEPRECATED"
-    ) {
-      service.migrateKitVersion({ assessmentId }).then(() => {
-        fetchAdviceNarration.query();
-      });
-    }
-  }, [fetchAdviceNarration.errorObject]);
+  }, [fetchPreAdviceInfo.errorObject]);
+
   const [expanded, setExpanded] = useState<boolean>(false);
   const [isAIGenerated, setIsAIGenerated] = useState<boolean>(false);
   const [hasExpandedOnce, setHasExpandedOnce] = useState<boolean>(false);
@@ -118,6 +124,7 @@ const AssessmentAdviceContainer = (props: any) => {
         return (
           <Box mt={4}>
             <AdviceDialog
+              loading={loading}
               open={expanded}
               handleClose={handleClose}
               fetchPreAdviceInfo={fetchPreAdviceInfo}
