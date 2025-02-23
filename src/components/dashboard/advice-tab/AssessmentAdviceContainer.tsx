@@ -133,7 +133,7 @@ const AssessmentAdviceContainer = (props: any) => {
             />
             <Box sx={{ ...styles.boxStyle }}>
               <>
-                <Box display="flex" justifyContent="space-between" mt={2}>
+                <Box display="flex" justifyContent="space-between">
                   <Box sx={{ ...styles.centerVH }} gap={1}>
                     <Typography variant="semiBoldLarge">
                       <Trans i18nKey="approachToAdvice" />
