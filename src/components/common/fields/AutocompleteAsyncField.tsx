@@ -1,27 +1,23 @@
-import { ReactNode, useEffect, useRef, useState, useMemo } from "react";
-import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
+import {ReactNode, useEffect, useMemo, useRef, useState} from "react";
+import Autocomplete, {AutocompleteProps} from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
-import { TQueryServiceFunction, useQuery } from "@utils/useQuery";
-import {
-  Controller,
-  ControllerRenderProps,
-  RegisterOptions,
-  useFormContext,
-} from "react-hook-form";
+import {TQueryServiceFunction, useQuery} from "@utils/useQuery";
+import {Controller, ControllerRenderProps, RegisterOptions, useFormContext,} from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
 import Box from "@mui/material/Box";
-import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
+import {LoadingSkeleton} from "../loadings/LoadingSkeleton";
 import forLoopComponent from "@utils/forLoopComponent";
 import ErrorDataLoading from "../errors/ErrorDataLoading";
-import { styles } from "@styles";
-import { TQueryProps } from "@types";
+import {styles} from "@styles";
+import {TQueryProps} from "@types";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { theme } from "@config/theme";
-import { uniqueId } from "lodash";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import {uniqueId} from "lodash";
 import Chip from "@mui/material/Chip";
-import { Typography } from "@mui/material";
-import { Trans } from "react-i18next";
+import {Typography} from "@mui/material";
+import {Trans} from "react-i18next";
+import languageDetector from "@utils/languageDetector";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -377,8 +373,14 @@ const AutocompleteBaseField = (
             </LoadingButton>
           </li>
         ) : (
-          <li {...props} style={{ display: "flex", gap: "8px" }}>
-            <Box>{option?.[filterFields[0]]}</Box>
+          <li {...props} style={{display: "flex", gap: "8px"}}>
+            <Box sx={{
+              fontFamily: languageDetector(option?.[filterFields[0]])
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+            >{option?.[filterFields[0]]}
+            </Box>
             {!!option?.[filterFields[1]] && (
               <Box
                 sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80" }}
