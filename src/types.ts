@@ -777,3 +777,5 @@ export interface IGraphicalReport {
   };
   lang: { code: string };
 }
+
+export interface ILangs { code: string, title: string}
