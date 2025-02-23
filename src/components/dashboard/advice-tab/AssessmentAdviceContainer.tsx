@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { FaWandMagicSparkles } from "react-icons/fa6";
-import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/AssessmentReportNarrator";
+import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/assessmentReportNarrator";
 import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
