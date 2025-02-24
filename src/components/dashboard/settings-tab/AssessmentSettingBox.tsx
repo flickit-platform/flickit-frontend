@@ -331,19 +331,19 @@ export const AssessmentSettingMemberBox = (props: {
   });
 
   const columns: readonly Column[] = [
-    { id: "displayName", label: "name", minWidth: "20vw", position: "center" },
+    { id: "displayName", label: "name", minWidth: "24%", position: "center" },
     {
       id: "email",
       label: "email",
-      minWidth: "20vw",
+      minWidth: "0%",
       display: "none",
       position: "center",
     },
     {
       id: "role",
       label: "role",
-      minWidth: "20vw",
-      position: "center",
+      minWidth: "22%",
+      position: "start",
     },
   ];
 
@@ -444,7 +444,7 @@ export const AssessmentSettingMemberBox = (props: {
               <TableRow
                 sx={{
                   display: "flex",
-                  justifyContent: "space-evenly",
+                  justifyContent: "space-between",
                   width: "100%",
                     px:"1rem",
                     gap: { xs: "0px", md: "1.3rem" },
@@ -500,7 +500,6 @@ export const AssessmentSettingMemberBox = (props: {
                       <Box sx={{ width: "20vw" }}>
                         <Box
                           sx={{
-                             paddingInlineStart: {xs:0,  md:"30%" } ,
                             display: "flex",
                             justifyContent: { xs: "flex-start" },
                             alignItems: "center",
