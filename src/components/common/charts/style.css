@@ -19,6 +19,10 @@
   margin-top: 36px;
 }
 
+.recharts-pie-label-line {
+  display: none;
+}
+
 @media screen and (max-width: 620px) {
   .insight--report__gauge {
     margin-top: 6%;

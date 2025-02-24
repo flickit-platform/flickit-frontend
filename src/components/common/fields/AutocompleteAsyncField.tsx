@@ -15,6 +15,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import {uniqueId} from "lodash";
 import Chip from "@mui/material/Chip";
+import { t } from "i18next";
 import {Typography} from "@mui/material";
 import {Trans} from "react-i18next";
 import languageDetector from "@utils/languageDetector";
@@ -345,7 +346,7 @@ const AutocompleteBaseField = (
           error={hasError || errorObject?.response?.data.message}
           helperText={
             (errorMessage as ReactNode) ||
-            errorObject?.response?.data.message ||
+             ( errorObject?.response?.data.message && t(`${errorObject?.response?.data.message}`)) ||
             helperText
           }
           sx={{
