@@ -513,19 +513,6 @@ export const theme = createTheme({
         },
       },
     },
-
-    MuiSelect: {
-      styleOverrides: {
-        select: {
-          paddingInline: "24px",
-        },
-        icon: {
-          left: is_farsi ? "7px" : "unset",
-          right: is_farsi ? "unset" : "7px",
-        },
-      },
-    },
-
     MuiChip: {
       styleOverrides: {
         root: {
@@ -605,6 +592,14 @@ export const theme = createTheme({
         tooltip: {
           color: "#FFFFFF",
           backgroundColor: "#576675E6",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          paddingRight: !is_farsi ? "42px !important" : "8px !important",
+          paddingLeft: is_farsi ? "42px !important" : "8px !important",
         },
       },
     },
