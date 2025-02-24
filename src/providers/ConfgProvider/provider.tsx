@@ -60,6 +60,12 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
       // Update title tag
       document.title = appTitle;
+      service.fetchKitLanguage({}).then((res: any)=>{
+        dispatch({
+          type: ActionTypes.App_Languages,
+          payload: res.data.kitLanguages,
+        })
+      })
     });
   }, []);
   return (
