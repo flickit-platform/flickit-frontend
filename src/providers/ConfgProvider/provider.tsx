@@ -34,6 +34,15 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   useEffect(() => {
     service.fetchTenantInfo(undefined).then((res: any) => {
+      dispatch({
+        type: ActionTypes.SET_APP_LOGO_URL,
+        payload: res.data.logo.logoLink,
+      });
+      const favIcon = document.querySelector('link[rel="icon"]');
+      if (favIcon) {
+        favIcon.setAttribute("href", res.data.logo.favLink);
+      }
+
       const appTitle = res.data.name;
       dispatch({
         type: ActionTypes.SET_APP_TITLE,
@@ -51,16 +60,6 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
       // Update title tag
       document.title = appTitle;
-    });
-    service.fetchTenantLogo(undefined).then((res: any) => {
-      dispatch({
-        type: ActionTypes.SET_APP_LOGO_URL,
-        payload: res.data.logoLink,
-      });
-      const favIcon = document.querySelector('link[rel="icon"]');
-      if (favIcon) {
-        favIcon.setAttribute("href", res.data.favLink);
-      }
     });
   }, []);
   return (

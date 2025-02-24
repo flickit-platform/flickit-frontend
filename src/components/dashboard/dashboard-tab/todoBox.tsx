@@ -13,6 +13,7 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -226,7 +227,7 @@ const IssuesItem = (props: any) => {
         cursor: originalName == "questions" ? "pointer" : "unset",
       }}
     >
-      <InfoOutlinedIcon
+      <ErrorOutlineIcon
         style={
           now?.length > 0 && next?.length > 0
             ? { fill: "#8A0F24" }

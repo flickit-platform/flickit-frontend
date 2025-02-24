@@ -18,14 +18,17 @@ import { ISubjectReportModel } from "@/types";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
+import { CircularProgress } from "@mui/material";
+import { LoadingSkeleton } from "@/components/common/loadings/LoadingSkeleton";
+import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 
 const AdviceDialog = ({
   open,
   handleClose,
-  attributes,
-  filteredMaturityLevels,
+  fetchPreAdviceInfo,
   permissions,
   fetchAdviceNarration,
+  loading,
 }: any) => {
   const [adviceResult, setAdviceResult] = useState<any>([]);
   const [step, setStep] = useState<number>(1); // Step state
@@ -151,6 +154,9 @@ const AdviceDialog = ({
             margin: "0 auto",
           }}
         >
+          {(fetchPreAdviceInfo.loading || loading) && (
+            <LoadingSkeletonKitCard />
+          )}
           <Box
             mt={2}
             px={2}
@@ -163,22 +169,22 @@ const AdviceDialog = ({
               display: step === 1 ? "block" : "none",
             }}
           >
-            {attributes.map((attribute: any) => (
+            {fetchPreAdviceInfo.data?.attributes?.map((attribute: any) => (
               <AdviceSlider
                 key={attribute.id}
                 defaultValue={
-                  filteredMaturityLevels.find(
+                  fetchPreAdviceInfo.data?.maturityLevels.find(
                     (maturityLevel: any) =>
                       maturityLevel.id == attribute?.maturityLevel.id,
                   )?.value || 0
                 }
-                currentState={filteredMaturityLevels.find(
+                currentState={fetchPreAdviceInfo.data?.maturityLevels.find(
                   (maturityLevel: any) =>
                     maturityLevel.id == attribute?.maturityLevel.id,
                 )}
                 attribute={attribute}
                 subject={attribute.subject}
-                maturityLevels={filteredMaturityLevels}
+                maturityLevels={fetchPreAdviceInfo.data?.maturityLevels}
                 target={target}
                 setTarget={setTarget}
               />
