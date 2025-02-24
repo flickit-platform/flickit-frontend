@@ -250,7 +250,6 @@ export const AssessmentSettingGeneralBox = (props: {
                           justifyContent: "flex-start",
                           fontSize: { xs: "1rem", md: "1.375rem" },
                           width: { md: "350px" },
-                          textAlign: "right",
                         }}
                         lineHeight={"normal"}
                       >
