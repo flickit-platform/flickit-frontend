@@ -384,7 +384,7 @@ const AssessmentKitSectionGeneralInfo = (
                     mr={4}
                     sx={{ minWidth: "64px !important" }}
                   >
-                    <Trans i18nKey={} />
+                    <Trans i18nKey={"language"} />
                   </Typography>
                   <SelectLanguage
                     handleChange={handleLanguageChange}
