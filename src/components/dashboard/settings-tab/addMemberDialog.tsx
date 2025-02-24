@@ -79,6 +79,12 @@ const AddMemberDialog = (props: {
     service: (args, config) =>
       service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
   });
+  const fetchAssessmentMembers = useQuery({
+    service: (args , config) =>
+        service.fetchAssessmentMembers(args, config),
+    toastError: false,
+    toastErrorOptions: { filterByStatus: [404] },
+  });
 
   const addRoleMemberQueryData = useQuery({
     service: (
@@ -107,53 +113,18 @@ const AddMemberDialog = (props: {
     (async () => {
       try {
         setAddedEmailType(EUserType.DEFAULT);
-        if (expanded){
-          const spaceMembers = spaceMembersQueryData?.data?.total;
-          let spaceList: any[] = [];
-          let assessmentList: any[] = [];
-          if (spaceMembers > spaceMembersQueryData?.data?.size) {
-            const spaceCount = Math.ceil(
-                spaceMembers / spaceMembersQueryData?.data?.size,
+        if (expanded) {
+          const {data} = await spaceMembersQueryData;
+          const {items: member} = await fetchAssessmentMembers.query({assessmentId, page: 0, size: 100});
+          if (data) {
+            const {items} = data;
+            const filteredItem = items.filter((item: any) =>
+                member.some((userListItem: any) => item.id === userListItem.id),
             );
-            for (let i = 0; i < spaceCount; i++) {
-              let {
-                data: { items },
-              } = await axios.get(`/api/v1/spaces/${spaceId}/members/`, {
-                params: {
-                  size: 100,
-                  page: i,
-                },
-              });
-              spaceList.push(...items);
-            }
-          } else {
-            spaceList.push(...spaceMembersQueryData?.data?.items);
+            setMemberOfSpace(filteredItem);
           }
-
-          if (typeof listOfUser == "object") {
-            assessmentList.push(...listOfUser);
-          } else {
-            const assessmentCount = Math.ceil(listOfUser / 100);
-            for (let i = 0; i < assessmentCount; i++) {
-              let {
-                data: { items },
-              } = await axios.get(`/api/v1/assessments/${assessmentId}/users`, {
-                params: {
-                  page: i,
-                  size: 100,
-                },
-              });
-              assessmentList.push(...items);
-            }
-          }
-          const filteredItem = spaceList.filter((item: any) =>
-              assessmentList.some(
-                  (userListItem: any) => item.id === userListItem.id,
-              ),
-          );
-          setMemberOfSpace(filteredItem);
         }
-      } catch (e) {
+      }catch (e) {
         const err = e as ICustomError;
         toastError(err);
       }

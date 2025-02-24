@@ -1464,10 +1464,12 @@ const Evidence = (props: any) => {
         setCurrentPage(value);
     };
 
-    const pageCount =
-        !evidencesQueryData.data || evidencesQueryData.data?.size === 0
-            ? 1
-            : Math.ceil(evidencesQueryData.data?.total / evidencesQueryData.data?.size);
+    const pageCount = useMemo(()=>{
+      return !evidencesQueryData.data || evidencesQueryData.data?.size === 0
+          ? 1
+          : Math.ceil(evidencesQueryData.data?.total / evidencesQueryData.data?.size);
+    },[evidencesQueryData?.data?.total])
+
 
   return evidencesQueryData.loading ? (
     <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
