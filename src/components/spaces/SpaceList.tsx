@@ -35,7 +35,7 @@ const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
 
   return (
-    <Box sx={{ overflowX: "hidden", py: 1 }}>
+    <Box sx={{ overflowX: "hidden", pb: 1 }}>
       <Box sx={{ minWidth: { xs: "320px", sm: "440px" } }}>
         {data.map((item: any) => {
           return (
@@ -62,7 +62,7 @@ interface ISpaceCardProps {
   fetchSpaces: TQueryFunction<ISpacesModel>;
 }
 enum spaceLevel {
-    premium  = "PREMIUM",
+  premium = "PREMIUM",
 }
 
 const SpaceCard = (props: ISpaceCardProps) => {
@@ -102,10 +102,10 @@ const SpaceCard = (props: ISpaceCardProps) => {
     <Box
       sx={{
         ...styles.centerV,
-        boxShadow: (t) => `0 5px 8px -8px ${t.palette.grey[400]}`,
+        boxShadow: "0 0 8px 0 #0A234240",
         borderRadius: 2,
         px: { xs: 1, sm: 2, md: 4 },
-        py: { xs: 1, md: 2 },
+        py: { xs: 1, md: "12px" },
         mb: { xs: 1, md: 2 },
         backgroundColor: "white",
         textDecoration: "none",
@@ -121,7 +121,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
         sx={{
           ...styles.centerV,
           width: { xs: "min-content", sm: "auto" },
-          gap: { xs: "10px", sm: "20px" },
+          gap: { xs: "10px", sm: "16px" },
         }}
         alignSelf="stretch"
       >
@@ -147,7 +147,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
         </Typography>
         {type?.code !== spaceLevel.premium && (
           <img
-            style={{ width: "24px", height: "32px" }}
+            style={{ width: "32px", height: "32px" }}
             src={premium}
             alt={"premium-sign"}
           />
@@ -158,7 +158,6 @@ const SpaceCard = (props: ISpaceCardProps) => {
           <Tooltip title={<Trans i18nKey={owner?.displayName} />}>
             <Chip
               sx={{
-                opacity: 0.7,
                 color: `${isOwner ? theme.palette.primary.main : "#2B333B"}`,
                 borderColor: `${isOwner ? theme.palette.primary.main : "#C7CCD1"}`,
                 width: { xs: "80px", sm: "120px", md: "auto" },
@@ -191,10 +190,13 @@ const SpaceCard = (props: ISpaceCardProps) => {
               <PeopleOutlineRoundedIcon
                 sx={{
                   marginInlineStart: 0.5,
+                  fill: "#2B333B",
                 }}
                 fontSize="small"
               />
-              <Typography fontWeight={"bold"}>{membersCount}</Typography>
+              <Typography color="#2B333B" fontWeight={"bold"}>
+                {membersCount}
+              </Typography>
             </Box>
           </Tooltip>
           <Tooltip title={<Trans i18nKey={"assessmentsCount"} />}>
@@ -211,17 +213,23 @@ const SpaceCard = (props: ISpaceCardProps) => {
               <DescriptionOutlinedIcon
                 sx={{
                   marginInlineStart: 0.5,
-                  opacity: 0.8,
+                  fill: "#2B333B",
                 }}
                 fontSize="small"
               />
-              <Typography fontWeight={"bold"}>{assessmentsCount}</Typography>
+              <Typography color="#2B333B" fontWeight={"bold"}>
+                {assessmentsCount}
+              </Typography>
             </Box>
           </Tooltip>
         </Box>
         <Box
           justifyContent={"flex-end"}
-          sx={{ ...styles.centerV, minWidth: { xs: "60px", sm: "120px" } }}
+          sx={{
+            ...styles.centerV,
+            gap: 2,
+            minWidth: { xs: "60px", sm: "120px" },
+          }}
         >
           {isActiveSpace && (
             <Box mr={1}>
@@ -239,8 +247,9 @@ const SpaceCard = (props: ISpaceCardProps) => {
                   size="small"
                   component={Link}
                   to={`/${spaceId}/setting`}
+                  sx={{ width: "24px", height: "24px" }}
                 >
-                  <SettingsOutlinedIcon />
+                  <SettingsOutlinedIcon sx={{ fill: "#2B333B" }} />
                 </IconButton>
               </Box>
             </Tooltip>
@@ -357,6 +366,8 @@ const Actions = (props: any) => {
           },
       ]}
       setShowTooltip={setShowTooltip}
+      color={"#2B333B"}
+      IconButtonProps={{ width: "20px", height: "20px" }}
     />
   );
 };

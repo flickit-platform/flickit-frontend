@@ -13,7 +13,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
-import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
+import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import SpaceEmptyStateSVG from "@assets/svg/spaceEmptyState.svg";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { styles, animations } from "@styles";
@@ -52,9 +52,29 @@ const SpaceContainer = () => {
   return (
     <SpaceLayout
       title={
-        <Title borderBottom={true} size="large">
-          <Trans i18nKey="spaces" />
-        </Title>
+        <Box sx={{ ...styles.centerVH, mb: "40px" }}>
+          <Title
+            borderBottom={true}
+            size="large"
+            sx={{ width: "100%", fontSize: "4rem", lineHeight: "unset" }}
+            toolbarProps={{ whiteSpace: "nowrap" }}
+            toolbar={
+              data?.length !== 0 ? (
+                <ToolbarCreateItemBtn
+                  icon={<CreateNewFolderOutlinedIcon />}
+                  onClick={dialogProps.openDialog}
+                  shouldAnimate={data?.length === 0}
+                  text="createSpace"
+                />
+              ) : (
+                <></>
+              )
+            }
+          >
+            <Trans i18nKey="spaces" />
+          </Title>
+          {}
+        </Box>
       }
     >
       <QueryData
@@ -85,30 +105,7 @@ const SpaceContainer = () => {
         render={(data) => {
           return (
             <>
-              {data?.length !== 0 ? (
-                <Box
-                  sx={{
-                    background: "white",
-                    py: 1,
-                    px: 2,
-                    ...styles.centerV,
-                    borderRadius: 1,
-                    my: 3,
-                  }}
-                >
-                  <Box
-                    ml={theme.direction === "rtl" ? "unset" : "auto"}
-                    mr={theme.direction !== "rtl" ? "unset" : "auto"}
-                  >
-                    <ToolbarCreateItemBtn
-                      icon={<CreateNewFolderRoundedIcon />}
-                      onClick={dialogProps.openDialog}
-                      shouldAnimate={data?.length === 0}
-                      text="createSpace"
-                    />
-                  </Box>
-                </Box>
-              ) : (
+              {data?.length == 0 && (
                 <Box
                   sx={{
                     width: "100%",
