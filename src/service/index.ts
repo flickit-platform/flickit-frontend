@@ -1551,8 +1551,7 @@ export const createService = (
       args: any,
       config: AxiosRequestConfig<any> | undefined = {},
     ) {
-      const { langs : selectedLangs, isPrivate } = args ?? {};
-      const langs = selectedLangs.join(",")
+      const { langs , isPrivate } = args ?? {};
       return axios.get(`/api/v2/assessment-kits/`, {
         params:{
           isPrivate,

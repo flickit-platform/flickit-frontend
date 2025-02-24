@@ -29,47 +29,47 @@ const AssessmentKitsListContainer = () => {
     const {service} = useServiceContext();
     const [value, setValue] = useState("public");
     const {i18n} = useTranslation();
-    const [langs, setlangs] = useState<string[]>([]);
-    const [filtredLangs, setFiltredLangs] = useState<any>([]);
+    const [langsCode, setLangsCode] = useState<string[]>([i18n.language.toUpperCase()]);
     const {config: {languages}}: any = useConfigContext();
     const publicAssessmentKitsQueryData = useQuery({
-        service: (args = {isPrivate: false, langs}, config) =>
+        service: (args , config) =>
             service.fetchAssessmentKits(args, config),
         runOnMount: false,
     });
     const privateAssessmentKitsQueryData = useQuery({
-        service: (args = {isPrivate: true, langs}, config) =>
+        service: (args, config) =>
             service.fetchAssessmentKits(args, config),
         runOnMount: false,
     });
-
-    useEffect(() => {
-        setlangs([i18n.language.toUpperCase()])
-    }, []);
 
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
 
-    useEffect(() => {
-        (async () => {
-            await privateAssessmentKitsQueryData.query();
-            await publicAssessmentKitsQueryData.query();
-        })();
-    }, [langs.length]);
-
-    useMemo(() => {
-        let filtred = languages.filter((item: {code: string, title: string}) => langs.includes(item.code))
-        setFiltredLangs(filtred)
-    }, [langs.length])
-
-    const handleChange = (event: SelectChangeEvent<typeof langs>) => {
-        const {target: {value}} = event;
-        setlangs(typeof value === "string" ? value.split(",") : value);
+    const fetchData = async () => {
+        const langs = langsCode.join(",")
+            await Promise.all([
+                privateAssessmentKitsQueryData.query({isPrivate: true, langs}),
+                publicAssessmentKitsQueryData.query({isPrivate: false, langs})
+            ]);
     };
 
-    const handelSelected = (selected: string[]) => {
+    useEffect(() => {
+        fetchData();
+    }, [langsCode]);
+
+    const filtredLangs = useMemo(() =>
+            languages.filter((item: {code: string, title: string}) => langsCode.includes(item.code)),
+        [langsCode.length]
+    );
+
+    const handleChange = (event: SelectChangeEvent<typeof langsCode>) => {
+        const {target: {value}} = event;
+        setLangsCode(Array.isArray(value) ? value : value.split(","));
+    };
+
+    const handleSelected = (selected: string[]) => {
         if (selected.length == 0) {
             return (
                 <Typography
@@ -88,8 +88,8 @@ const AssessmentKitsListContainer = () => {
     };
 
     const handleDelete = (langCode: string): void => {
-        const filteredLanguages: string[] = langs.filter((lang: string) => lang !== langCode)
-        setlangs(filteredLanguages)
+        const filteredLanguages: string[] = langsCode.filter((lang: string) => lang !== langCode)
+        setLangsCode(filteredLanguages)
     }
     return (
         <Box>
@@ -99,25 +99,25 @@ const AssessmentKitsListContainer = () => {
                         labelId="demo-multiple-checkbox-label"
                         id="demo-multiple-checkbox"
                         multiple
-                        value={langs}
+                        value={langsCode}
                         onChange={handleChange}
                         displayEmpty={true}
-                        renderValue={(selected) => handelSelected(selected)}
+                        renderValue={(selected) => handleSelected(selected)}
                         sx={{
                             ...theme.typography.semiBoldMedium,
                             background: "#fff",
                             px: "0px",
                             height: "40px",
-                            backgroundColor: langs.length >= 1 ? theme.palette.primary.main : "",
+                            backgroundColor: langsCode.length >= 1 ? theme.palette.primary.main : "",
                             "& .MuiSelect-icon": {
-                                color: langs.length >= 1 ? "#fff" : "unset"
+                                color: langsCode.length >= 1 ? "#fff" : "unset"
                             }
                         }}
                     >
                         {languages.map((lang: { code: string; title: string }) => {
                             return (
                                 <MenuItem key={lang.code} value={lang.code}>
-                                    <Checkbox checked={langs.includes(lang.code)}/>
+                                    <Checkbox checked={langsCode.includes(lang.code)}/>
                                     <ListItemText
                                         sx={{
                                             ...theme.typography.semiBoldMedium,
