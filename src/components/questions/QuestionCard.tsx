@@ -447,10 +447,9 @@ export const QuestionTabsTemplate = (props: any) => {
     toastError: true,
     runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
   });
-
   const evidencesQueryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 50 },
+      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 100 },
       config,
     ) => service.fetchEvidences(args, config),
     toastError: true,
@@ -576,6 +575,7 @@ export const QuestionTabsTemplate = (props: any) => {
       </Box>
       {isExpanded && (
         <>
+          {/*todo*/}
           <TabPanel value="evidences" sx={{ width: "100%" }}>
             <Box mt={2} width="100%">
               <AnswerDetails
@@ -1573,6 +1573,7 @@ const Evidence = (props: any) => {
       setValue(evidenceAttachmentType.positive);
     }
   }, [type]);
+
   return evidencesQueryData.loading ? (
     <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
       <CircularProgress />
