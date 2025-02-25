@@ -19,7 +19,7 @@ interface EditableRichEditorProps {
   editable?: boolean;
   fieldName: string;
   onSubmit: (data: any, event: any) => Promise<void>;
-  infoQuery: () => Promise<void>;
+  infoQuery: any;
   placeholder?: string;
 }
 
