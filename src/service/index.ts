@@ -132,6 +132,12 @@ export const createService = (
     createSpace(data: any, config: AxiosRequestConfig<any> | undefined) {
       return axios.post(`/api/v1/spaces/`, data, config);
     },
+    fetchSpaceType(
+        arg: any,
+        config: AxiosRequestConfig<any> | undefined
+    ) {
+      return axios.get(`/api/v1/space-types/`, config);
+    },
     updateSpace(
       { spaceId, data }: { spaceId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { DialogProps } from "@mui/material/Dialog";
 import { nanoid } from "nanoid";
@@ -16,6 +16,11 @@ import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRound
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { theme } from "@/config/theme";
+import FormControl from "@mui/material/FormControl";
+import {InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import {useQuery} from "@utils/useQuery";
+import {ISpaceType} from "@types";
 
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
@@ -27,6 +32,8 @@ interface ICreateSpaceDialogProps extends DialogProps {
 const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
+  const [spaceType, setSpaceType] = useState<ISpaceType[]>([]);
+  const [selectedType, setSelectedType] = useState<string>("BASIC");
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,
@@ -48,7 +55,25 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     closeDialog();
   };
 
+  const fetchSpaceType =  useQuery({
+    service: (args , config) =>
+        service.fetchSpaceType(args, config),
+    runOnMount: false,
+  });
+
+  const allSpacesType = async () =>{
+  let {spaceTypes} = await fetchSpaceType.query()
+  setSpaceType(spaceTypes)
+  }
+
+  useEffect(()=>{
+    allSpacesType().then()
+  },[])
+
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
+    if(type !== "update"){
+      data = {...data,type: selectedType}
+    }
     setLoading(true);
     try {
       let createdSpaceId = 1;
@@ -113,6 +138,11 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     }
   }, [openDialog, formMethods, abortController]);
 
+  const handleChange = (e: any) => {
+    const { value } = e.target;
+    setSelectedType(value)
+  };
+
   return (
     <CEDialog
       {...rest}
@@ -135,7 +165,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={12}>
+          <Grid item xs={type == "update" ? 12 : 9}>
             <InputFieldUC
               name="title"
               defaultValue={defaultValues.title || ""}
@@ -143,6 +173,50 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
               label={<Trans i18nKey="title" />}
               isFocused={isFocused}
             />
+          </Grid>
+          <Grid item xs={3}>
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel id="spaceType-name-label">
+                {" "}
+                <Trans i18nKey={"spaceType"} />
+              </InputLabel>
+              <Select
+                  // disabled={editable != undefined ? !editable : false}
+                  size="small"
+                  labelId={`spaceType-name-label`}
+                  value={selectedType}
+                  IconComponent={KeyboardArrowDownIcon}
+                  displayEmpty
+                  defaultValue={spaceType[0]?.title}
+                  required={true}
+                  input={<OutlinedInput label="spaceType" />}
+                  onChange={(e) => handleChange(e)}
+                  sx={{
+                    fontSize: "14px",
+                    background: "#fff",
+                    px: "0px",
+                    height: "40px",
+                    "& .MuiSelect-select": {
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "12px !important",
+                    },
+                  }}
+              >
+                {spaceType?.map((type: any) => (
+                    <MenuItem sx={{
+                        //   "&:: -webkit-background-clip": "text",
+                        // "&:: -webkit-text-fill-color": "transparent",
+                        // background: "linear-gradient(-90deg, #1B4D7E, #2D80D2, #1B4D7E)"
+
+                    }}
+                              disabled={type.code == "PREMIUM"}
+                              key={type} value={type.code}>
+                      <Trans i18nKey={type.title} />
+                    </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
         <CEDialogActions
