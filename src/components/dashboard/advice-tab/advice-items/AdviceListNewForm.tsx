@@ -18,7 +18,6 @@ import {
 import FormControl from "@mui/material/FormControl";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Grid from "@mui/material/Grid";
-import RichEditorFieldAssessment from "../../../assessment-report/RichEditorFieldAssessment";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
@@ -32,6 +31,7 @@ import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import Impact from "@common/icons/Impact";
 import languageDetector from "@utils/languageDetector";
 import { t } from "i18next";
+import RichEditorField from "@/components/common/fields/RichEditorField";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -122,6 +122,17 @@ const AdviceListNewForm = ({
     }
     return element;
   };
+
+  useEffect(() => {
+    console.log(newAdvice);
+  }, [newAdvice]);
+
+  useEffect(() => {
+    setNewAdvice((prevState: any) => ({
+      ...prevState,
+      description: formMethods.getValues()["advice-description"],
+    }));
+  }, [formMethods.watch("advice-description")]);
 
   return (
     <Box
@@ -260,7 +271,7 @@ const AdviceListNewForm = ({
                 mt: 12,
               }}
             >
-              <RichEditorFieldAssessment
+              <RichEditorField
                 name="advice-description"
                 label={t("description")}
                 disable_label={false}
@@ -269,6 +280,8 @@ const AdviceListNewForm = ({
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
+                type={errormessage?.description ? "reportTab" : ""}
+                showEditorMenu
               />
             </Box>
           </FormProviderWithForm>
