@@ -143,7 +143,6 @@ export const QuestionsFilteringDropdown = (props: any) => {
         )}
       </Typography>
       <FormControl sx={{ m: 1, width: 250 }}>
-        <InputLabel id="demo-multiple-checkbox-label-kit-container"></InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label-kit-container"
           id="demo-multiple-checkbox"
@@ -151,7 +150,6 @@ export const QuestionsFilteringDropdown = (props: any) => {
           value={issues.map((item: any) => t(item))}
           onChange={handleChange}
           displayEmpty={true}
-          input={<OutlinedInput label="languages" />}
           renderValue={(selected) => handelSelected(selected)}
           sx={{
             ...theme.typography.semiBoldMedium,
