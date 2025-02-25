@@ -143,7 +143,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         )}
       </Typography>
       <FormControl sx={{ m: 1, width: 250 }}>
-        <InputLabel id="demo-multiple-checkbox-label-kit-container"><Trans i18nKey={"languages"} /></InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label-kit-container"></InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label-kit-container"
           id="demo-multiple-checkbox"
