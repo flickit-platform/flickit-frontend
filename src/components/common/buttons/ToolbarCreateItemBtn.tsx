@@ -19,7 +19,7 @@ export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
     <Button
       {...rest}
       size="small"
-      startIcon={icon}
+      endIcon={icon}
       onClick={onClick}
       variant="contained"
       sx={{

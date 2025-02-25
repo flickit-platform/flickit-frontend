@@ -28,6 +28,8 @@ interface IMoreActionsProps {
     | false
   )[];
   setShowTooltip?: (e: boolean) => void;
+  color?: string;
+  IconButtonProps?: any;
 }
 
 const MoreActions = (props: IMoreActionsProps) => {
@@ -42,6 +44,8 @@ const MoreActions = (props: IMoreActionsProps) => {
     hideInnerIconButton = false,
     fontSize = "inherit",
     setShowTooltip,
+    color,
+    IconButtonProps,
   } = props;
 
   const menuItems = items.filter((item) => !!item) as {
@@ -56,6 +60,7 @@ const MoreActions = (props: IMoreActionsProps) => {
       {!hideInnerIconButton && (
         <IconButton
           data-cy="more-action-btn"
+          sx={IconButtonProps}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -66,7 +71,10 @@ const MoreActions = (props: IMoreActionsProps) => {
           {loading ? (
             <CircularProgress size="1.25rem" />
           ) : (
-            <MoreVertIcon fontSize={fontSize ? fontSize : "small"} />
+            <MoreVertIcon
+              sx={{ fill: color }}
+              fontSize={fontSize ? fontSize : "small"}
+            />
           )}
         </IconButton>
       )}
