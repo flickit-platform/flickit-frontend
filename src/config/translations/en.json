@@ -724,6 +724,8 @@
   "advicesIssues": "Advices issues",
   "needsForAnswer": "question needs answer.",
   "needForAnswers": "questions need answers.",
+  "answerNeedsApproval": "answer needs approval.",
+  "answersNeedApproval": "answers need approval.",
   "lackForEvidence": "question lacks supporting evidence.",
   "lackForEvidences": "questions lack supporting evidence.",
   "questionsConfidenceAnswers": "questions have low-confidence answers.",
