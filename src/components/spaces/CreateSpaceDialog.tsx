@@ -17,11 +17,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { theme } from "@/config/theme";
 import FormControl from "@mui/material/FormControl";
-import {InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
+import { InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {useQuery} from "@utils/useQuery";
-import {ISpaceType} from "@types";
-
+import { useQuery } from "@utils/useQuery";
+import { ISpaceType } from "@types";
+import premiumIcon from "@/assets/svg/premium-icon.svg";
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
   onSubmitForm: () => void;
@@ -53,26 +53,26 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const close = () => {
     abortController.abort();
     closeDialog();
+    setSelectedType("");
   };
 
-  const fetchSpaceType =  useQuery({
-    service: (args , config) =>
-        service.fetchSpaceType(args, config),
+  const fetchSpaceType = useQuery({
+    service: (args, config) => service.fetchSpaceType(args, config),
     runOnMount: false,
   });
 
-  const allSpacesType = async () =>{
-  let {spaceTypes} = await fetchSpaceType.query()
-  setSpaceType(spaceTypes)
-  }
+  const allSpacesType = async () => {
+    let { spaceTypes } = await fetchSpaceType.query();
+    setSpaceType(spaceTypes);
+  };
 
-  useEffect(()=>{
-    allSpacesType().then()
-  },[])
+  useEffect(() => {
+    allSpacesType().then();
+  }, []);
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
-    if(type !== "update"){
-      data = {...data,type: selectedType}
+    if (type !== "update") {
+      data = { ...data, type: selectedType };
     }
     setLoading(true);
     try {
@@ -140,7 +140,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
 
   const handleChange = (e: any) => {
     const { value } = e.target;
-    setSelectedType(value)
+    setSelectedType(value);
   };
 
   return (
@@ -174,13 +174,14 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
               isFocused={isFocused}
             />
           </Grid>
-          <Grid item xs={3}>
-            <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="spaceType-name-label">
-                {" "}
-                <Trans i18nKey={"spaceType"} />
-              </InputLabel>
-              <Select
+          {type !== "update" && (
+            <Grid item xs={3}>
+              <FormControl sx={{ width: "100%" }}>
+                <InputLabel id="spaceType-name-label">
+                  {" "}
+                  <Trans i18nKey={"spaceType"} />
+                </InputLabel>
+                <Select
                   // disabled={editable != undefined ? !editable : false}
                   size="small"
                   labelId={`spaceType-name-label`}
@@ -200,24 +201,42 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
                       display: "flex",
                       alignItems: "center",
                       padding: "12px !important",
+                      gap: 1,
                     },
                   }}
-              >
-                {spaceType?.map((type: any) => (
-                    <MenuItem sx={{
-                        //   "&:: -webkit-background-clip": "text",
-                        // "&:: -webkit-text-fill-color": "transparent",
-                        // background: "linear-gradient(-90deg, #1B4D7E, #2D80D2, #1B4D7E)"
-
-                    }}
-                              disabled={type.code == "PREMIUM"}
-                              key={type} value={type.code}>
+                >
+                  {spaceType?.map((type: any) => (
+                    <MenuItem
+                      sx={{
+                        color: "#2B333B",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor:
+                          type.code == "PREMIUM" ? "transparent" : "unset",
+                        backgroundImage:
+                          type.code == "PREMIUM"
+                            ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
+                            : "unset",
+                        gap: 1,
+                        marginLeft: type.code != "PREMIUM" ? "24px" : "unset",
+                      }}
+                      disabled={type.code == "PREMIUM"}
+                      key={type}
+                      value={type.code}
+                    >
+                      {type.code == "PREMIUM" && (
+                        <img
+                          src={premiumIcon}
+                          alt={"premium"}
+                          style={{ width: "16px", height: "21px" }}
+                        />
+                      )}
                       <Trans i18nKey={type.title} />
                     </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          )}
         </Grid>
         <CEDialogActions
           closeDialog={close}
