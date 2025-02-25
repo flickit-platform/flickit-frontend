@@ -62,8 +62,12 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   });
 
   const allSpacesType = async () => {
-    let { spaceTypes } = await fetchSpaceType.query();
-    setSpaceType(spaceTypes);
+    let data = await fetchSpaceType.query();
+    if(data){
+      const { spaceTypes: getSpaceType } = data
+      setSpaceType(getSpaceType);
+    }
+
   };
 
   useEffect(() => {
