@@ -21,6 +21,7 @@ interface EditableRichEditorProps {
   onSubmit: (data: any, event: any) => Promise<void>;
   infoQuery: any;
   placeholder?: string;
+  required?: boolean;
 }
 
 export const EditableRichEditor = (props: EditableRichEditorProps) => {
@@ -31,6 +32,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     onSubmit,
     infoQuery,
     placeholder,
+    required = true,
   } = props;
   const { t } = useTranslation();
   const [isHovering, setIsHovering] = useState(false);
@@ -94,7 +96,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               name={fieldName}
               label={<Box></Box>}
               disable_label={true}
-              required={true}
+              required={required}
               defaultValue={defaultValue || ""}
               textAlign="justify"
             />
