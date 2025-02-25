@@ -449,7 +449,7 @@ export const QuestionTabsTemplate = (props: any) => {
   });
   const evidencesQueryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 50 },
+      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 100 },
       config,
     ) => service.fetchEvidences(args, config),
     toastError: true,
