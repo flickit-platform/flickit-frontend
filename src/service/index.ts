@@ -1538,6 +1538,15 @@ export const createService = (
         { ...config },
       );
     },
+    generatedInsights(
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/generate-insights/`,
+        { ...config },
+      );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,

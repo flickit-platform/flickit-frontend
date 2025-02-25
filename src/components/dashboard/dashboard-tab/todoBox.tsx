@@ -191,6 +191,12 @@ const IssuesItem = (props: any) => {
     runOnMount: false,
   });
 
+    const generatedInsights = useQuery({
+        service: (args = { assessmentId }, config) =>
+            service.generatedInsights(args, config),
+        runOnMount: false,
+    });
+
   const filteredQuestionnaire = (name: string) => {
     let newName = name;
     if (name == "withoutEvidence") {
@@ -210,6 +216,16 @@ const IssuesItem = (props: any) => {
       toastError(err);
     }
   };
+
+    const approvedGeneratedAll= async () => {
+        try {
+            await generatedInsights.query();
+            await fetchDashboard.query();
+        } catch (e) {
+            const err = e as ICustomError;
+            toastError(err);
+        }
+    };
 
   return (
     <Box
@@ -303,6 +319,21 @@ const IssuesItem = (props: any) => {
         >
           <Typography sx={{ ...theme.typography.labelMedium }}>
             <Trans i18nKey={"approveAll"} />
+          </Typography>
+        </Button>
+      )}
+        {name == "notGenerated" && (
+        <Button
+          onClick={approvedGeneratedAll}
+          sx={{
+            padding: "4px 10px",
+            marginInlineStart: "auto",
+            color: theme.palette.primary.main,
+          }}
+          variant={"outlined"}
+        >
+          <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Trans i18nKey={"GenerateAll"} />
           </Typography>
         </Button>
       )}
