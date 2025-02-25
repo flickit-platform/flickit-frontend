@@ -261,7 +261,7 @@ const AddMemberDialog = (props: {
               />
             </FormProviderWithForm>
           </Box>
-          <Typography>
+          <Typography sx={{whiteSpace: "nowrap"}}>
             <Trans i18nKey={"as"} />
           </Typography>
           <FormControl sx={{ width: "40%" }}>

@@ -1,17 +1,11 @@
 import { keyframes, SxProps, Theme } from "@mui/material";
 import { TStatus } from "@types";
 import hasStatus from "@utils/hasStatus";
-import tinycolor from "tinycolor2";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
 const commonStyles = {
-  customizeFarsiFont: style({
-    direction: true ? "rtl" : "ltr",
-    fontFamily: true ? farsiFontFamily : primaryFontFamily,
-    textAlign: true ? "right" : "left",
-  }),
   centerVH: style({
     display: "flex",
     justifyContent: "center",
@@ -81,10 +75,9 @@ const sharedChipStyles = {
     gap: 0.5,
     fontWeight: "bold",
   },
-  typography: (isFarsi = true) => ({
-    direction: isFarsi ? "rtl" : "ltr",
-    fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
-    fontWeight: 200,
+  rtlStyle: (isRTL = true) => ({
+    direction: isRTL ? "rtl" : "ltr",
+    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
   }),
 };
 
@@ -138,6 +131,17 @@ const buttons = {
   }),
 };
 
+const box = {
+  boxStyle: style({
+    background: "#fff",
+    borderRadius: "12px",
+    width: "100%",
+    p: 4,
+    backgroundColor: "#fff",
+    boxShadow: "0 0 8px 0 #0A234240",
+    mb: "40px",
+  }),
+};
 const compare = {
   compareResultBorder: style({
     "&:not(:last-of-type) > div": {
@@ -153,6 +157,7 @@ export const styles = {
   ...buttons,
   ...compare,
   ...sharedChipStyles,
+  ...box,
   cards,
 };
 
@@ -254,18 +259,6 @@ export const generateColorFromString = (str: string) => {
   // Select a chip based on hash
   const chipIndex = (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
   return chipColorPalette[`chip${chipIndex}`];
-};
-
-export const getTransparentColor = (color: string) => {
-  const transparentColor =
-    tinycolor(color).getBrightness() > 180
-      ? tinycolor(color).lighten(35).toRgbString()
-      : tinycolor(color).getBrightness() > 160
-        ? tinycolor(color).lighten(40).toRgbString()
-        : tinycolor(color).getBrightness() > 80
-          ? tinycolor(color).lighten(50).toRgbString()
-          : tinycolor(color).lighten(60).toRgbString();
-  return transparentColor;
 };
 
 export const chipColorPalette: any = {

@@ -11,14 +11,19 @@ import {
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { IAttribute, IGraphicalReport, ISubject } from "@/types";
+import { styles } from "@styles";
 
 // Define the type for the state to track open items
 interface OpenItemsState {
   [key: string]: boolean;
 }
 
-export const AssessmentTOC = ({ data }: any) => {
+export const AssessmentTOC = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -30,17 +35,22 @@ export const AssessmentTOC = ({ data }: any) => {
       [itemKey]: !prevState[itemKey],
     }));
   };
+  const { assessment, advice, permissions, lang } =
+    graphicalReport as IGraphicalReport;
+  const rtlLanguage = lang.code.toLowerCase() === "fa";
 
-  const subjects = useMemo(() => {
+  const subjects: any = useMemo(() => {
     return (
-      data?.subjects?.map((subject: any) => ({
+      graphicalReport.subjects?.map((subject: ISubject) => ({
         key: subject.title,
         subItems:
-          subject?.attributes?.map((attribute: any) => attribute.title) || [],
+          subject?.attributes?.map(
+            (attribute: IAttribute) => attribute.title,
+          ) || [],
         id: subject.title,
       })) || []
     );
-  }, [data]);
+  }, [graphicalReport]);
 
   const items = [
     {
@@ -70,7 +80,6 @@ export const AssessmentTOC = ({ data }: any) => {
       id: "evaluationProcess",
     },
   ];
-
   return (
     <Box
       sx={{
@@ -82,9 +91,8 @@ export const AssessmentTOC = ({ data }: any) => {
         position: "sticky",
         top: 0,
         overflowY: "auto",
-        direction: true ? "rtl" : "ltr",
-        fontFamily: true ? farsiFontFamily : primaryFontFamily,
-        textAlign: true ? "right" : "left",
+        textAlign: rtlLanguage ? "right" : "left",
+        ...styles.rtlStyle(rtlLanguage),
       }}
     >
       <Typography
@@ -93,11 +101,10 @@ export const AssessmentTOC = ({ data }: any) => {
         sx={{
           pb: 1,
           ...theme.typography.titleMedium,
-          direction: true ? "rtl" : "ltr",
-          fontFamily: true ? farsiFontFamily : primaryFontFamily,
+          ...styles.rtlStyle(rtlLanguage),
         }}
       >
-        {t("quick_access", { lng: "fa" })}
+        {t("quick_access", { lng: lang.code.toLowerCase() })}
       </Typography>
       <List
         sx={{
@@ -113,7 +120,15 @@ export const AssessmentTOC = ({ data }: any) => {
 
           return (
             <React.Fragment key={index}>
-              <ListItem disablePadding>
+              <ListItem
+                disablePadding
+                sx={{
+                  display: {
+                    md: "block",
+                    xs: item.key !== "evaluation_process" ? "block" : "none",
+                  },
+                }}
+              >
                 <ListItemButton
                   component="a"
                   href={`#${item.id}`}
@@ -134,17 +149,15 @@ export const AssessmentTOC = ({ data }: any) => {
                   }
                 >
                   <ListItemText
-                    primary={t(item.key, { lng: "fa" })}
+                    primary={t(item.key, { lng: lang.code.toLowerCase() })}
                     sx={{
                       "& .MuiTypography-root": {
                         ...theme.typography.semiBoldMedium,
-                        direction: true ? "rtl" : "ltr",
-                        fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                        textAlign: true ? "right" : "left",
+                        textAlign: rtlLanguage ? "right" : "left",
+                        ...styles.rtlStyle(rtlLanguage),
                       },
-                      direction: true ? "rtl" : "ltr",
-                      fontFamily: true ? farsiFontFamily : primaryFontFamily,
-                      textAlign: true ? "right" : "left",
+                      textAlign: rtlLanguage ? "right" : "left",
+                      ...styles.rtlStyle(rtlLanguage),
                     }}
                   />
                   {hasSubItems &&
@@ -163,23 +176,20 @@ export const AssessmentTOC = ({ data }: any) => {
                       <ListItem key={subIndex} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText
-                            primary={t(subItem, { lng: "fa", title: "" })}
+                            primary={t(subItem, {
+                              lng: lang.code.toLowerCase(),
+                              title: "",
+                            })}
                             sx={{
                               ml: 2,
                               marginBlock: 1,
-                              direction: true ? "rtl" : "ltr",
-                              fontFamily: true
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                              textAlign: true ? "right" : "left",
+                              textAlign: rtlLanguage ? "right" : "left",
+                              ...styles.rtlStyle(rtlLanguage),
                               color: theme.palette.text.secondary,
                               "& .MuiTypography-root": {
                                 ...theme.typography.semiBoldSmall,
-                                direction: true ? "rtl" : "ltr",
-                                fontFamily: true
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                                textAlign: true ? "right" : "left",
+                                textAlign: rtlLanguage ? "right" : "left",
+                                ...styles.rtlStyle(rtlLanguage),
                               },
                             }}
                           />

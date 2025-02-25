@@ -32,11 +32,13 @@ const DashboardTab = () => {
         render={(data) => {
           useEffect(() => {
             const data = fetchDashboard.data;
+            const { unpublished, ...rest } = data.report;
+            const updateReport = { ...rest, unpublished };
             const mappedData = [
               { category: "questions", metrics: data.questions },
               { category: "insights", metrics: data.insights },
               { category: "advices", metrics: data.advices },
-              { category: "report", metrics: data.report },
+              { category: "report", metrics: updateReport },
             ];
             const todoData: any = { now: [], next: [] };
             const updatedData = mappedData.map((item) => {
@@ -86,7 +88,7 @@ const DashboardTab = () => {
                     }
                   } else if (activeStep == 2) {
                     if (
-                      item.category == "advice" ||
+                      item.category == "advices" ||
                       item.category == "insights" ||
                       item.category == "questions"
                     ) {
@@ -119,7 +121,7 @@ const DashboardTab = () => {
                 activeStep={activeStep}
                 stepData={stepData}
               />
-              <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} />
+              <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} fetchDashboard={fetchDashboard} />
             </Box>
           );
         }}

@@ -1,30 +1,29 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { IconButton, Typography } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
 import { uniqueId } from "lodash";
 import Tooltip from "@mui/material/Tooltip";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styles } from "@styles";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
+import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const TodoBox = (props: any) => {
-  const { todoBoxData } = props;
+  const { todoBoxData, fetchDashboard } = props;
   const { now, next } = todoBoxData;
   return (
     <Box sx={{ mt: "40px" }}>
       {now?.length > 0 && (
         <Box
           sx={{
-            background: "#fff",
-            borderRadius: "12px",
-            width: "100%",
-            p: 4,
-            backgroundColor: "#fff",
-            boxShadow: "0 0 8px 0 #0A234240",
-            mb: "40px",
+            ...styles.boxStyle,
           }}
         >
           {" "}
@@ -83,6 +82,7 @@ const TodoBox = (props: any) => {
                             key={key}
                             name={key}
                             value={value}
+                            fetchDashboard={fetchDashboard}
                           />
                         </Grid>
                       );
@@ -96,12 +96,7 @@ const TodoBox = (props: any) => {
       {next?.length > 0 && (
         <Box
           sx={{
-            background: "#fff",
-            borderRadius: "12px",
-            width: "100%",
-            p: 4,
-            backgroundColor: "#fff",
-            boxShadow: "0 0 8px 0 #0A234240",
+            ...styles.boxStyle,
           }}
         >
           {" "}
@@ -168,6 +163,7 @@ const TodoBox = (props: any) => {
                             now={now}
                             next={next}
                             originalName={item.name}
+                            fetchDashboard={fetchDashboard}
                           />
                         </Grid>
                       );
@@ -183,9 +179,17 @@ const TodoBox = (props: any) => {
 };
 
 const IssuesItem = (props: any) => {
-  const { name, value, now, next, originalName } = props;
+  const { name, value, now, next, originalName, fetchDashboard } = props;
   const navigate = useNavigate();
   const link = originalName == "questions" && "questionnaires";
+  const { service } = useServiceContext();
+  const { assessmentId } = useParams();
+
+  const approveInsights = useQuery({
+    service: (args = { assessmentId }, config) =>
+      service.approveInsights(args, config),
+    runOnMount: false,
+  });
 
   const filteredQuestionnaire = (name: string) => {
     let newName = name;
@@ -194,6 +198,16 @@ const IssuesItem = (props: any) => {
     }
     if (originalName == "questions") {
       navigate(`../${link}`, { state: newName });
+    }
+  };
+
+  const approvedAllInsights = async () => {
+    try {
+      await approveInsights.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
     }
   };
 
@@ -213,7 +227,7 @@ const IssuesItem = (props: any) => {
         cursor: originalName == "questions" ? "pointer" : "unset",
       }}
     >
-      <InfoOutlinedIcon
+      <ErrorOutlineIcon
         style={
           now?.length > 0 && next?.length > 0
             ? { fill: "#8A0F24" }
@@ -277,6 +291,21 @@ const IssuesItem = (props: any) => {
         {name == "unpublished" && <Trans i18nKey={"unpublishedReport"} />}
         {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}
       </Typography>
+      {name == "unapproved" && (
+        <Button
+          onClick={approvedAllInsights}
+          sx={{
+            padding: "4px 10px",
+            marginInlineStart: "auto",
+            color: theme.palette.primary.main,
+          }}
+          variant={"outlined"}
+        >
+          <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Trans i18nKey={"approveAll"} />
+          </Typography>
+        </Button>
+      )}
     </Box>
   );
 };

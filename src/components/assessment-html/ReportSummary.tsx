@@ -1,16 +1,7 @@
-import {
-  Box,
-  Typography,
-  Divider,
-  TableContainer,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { getMaturityLevelColors, styles } from "@/config/styles";
-import { ISubject } from "@/types";
+import { IGraphicalReport, ISubject } from "@/types";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 
@@ -24,73 +15,14 @@ const textStyle = {
   fontSize: "14px",
   lineHeight: "1.8",
   color: "#424242",
-  ...styles.customizeFarsiFont,
 };
 
 const sectionTitleStyle = {
   fontWeight: "bold",
   marginBottom: "12px",
-  ...styles.customizeFarsiFont,
 };
 
-const StepsTable = ({ steps, columnsWidth }: any) => (
-  <TableContainer component={Box}>
-    <Table sx={{ width: "100%" }}>
-      <TableBody>
-        {steps?.map((item: any, index: any) => (
-          <TableRow key={index}>
-            <TableCell
-              sx={{
-                padding: "8px",
-                width: columnsWidth[0],
-                ...styles.customizeFarsiFont,
-              }}
-            >
-              {item.index}
-            </TableCell>
-            <TableCell
-              sx={{
-                padding: "8px",
-                width: columnsWidth[1],
-                ...styles.customizeFarsiFont,
-              }}
-            >
-              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
-                {item.title}
-              </Typography>
-            </TableCell>
-            <TableCell
-              sx={{
-                padding: "8px",
-                width: columnsWidth[2],
-
-                ...styles.customizeFarsiFont,
-              }}
-            >
-              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
-                {item.summary}
-              </Typography>
-            </TableCell>
-            <TableCell
-              sx={{
-                padding: "8px",
-                ...styles.customizeFarsiFont,
-                textAlign: "justify",
-                width: columnsWidth[3],
-              }}
-            >
-              <Typography sx={textStyle} variant="extraLight" fontWeight={300}>
-                {item.description}
-              </Typography>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
-
-const TitleBox = () => (
+const TitleBox = ({ language }: { language: string }) => (
   <Box
     sx={{
       position: "absolute",
@@ -108,23 +40,32 @@ const TitleBox = () => (
       sx={{
         fontWeight: "bold",
         margin: 0,
-        ...styles.customizeFarsiFont,
+        textAlign: language === "fa" ? "right" : "left",
+        ...styles.rtlStyle(language === "fa"),
       }}
     >
       {t("how_was_this_report_built", {
-        lng: "fa",
+        lng: language,
       })}
     </Typography>
   </Box>
 );
 
-const Section = ({ title, children }: any) => (
+const Section = ({ title, children, rtlLanguage }: any) => (
   <Box sx={sectionStyle}>
-    <Typography color="primary" variant="h6" sx={sectionTitleStyle}>
+    <Typography
+      color="primary"
+      variant="h6"
+      sx={{ ...sectionTitleStyle, ...styles.rtlStyle(rtlLanguage) }}
+    >
       {title}
     </Typography>
     <Typography
-      sx={{ ...textStyle, textAlign: "justify" }}
+      sx={{
+        ...textStyle,
+        textAlign: "justify",
+        ...styles.rtlStyle(rtlLanguage),
+      }}
       variant="extraLight"
       fontWeight={300}
     >
@@ -133,16 +74,26 @@ const Section = ({ title, children }: any) => (
   </Box>
 );
 
-const TopicsList = ({ data }: any) => (
+const TopicsList = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => (
   <Box>
-    {data?.subjects.map((subject: any, index: any) => (
+    {graphicalReport?.subjects?.map((subject: any, index: any) => (
       <Box key={index} sx={{ marginBottom: "16px" }}>
         <Typography
           sx={{
             fontWeight: "bold",
             color: "#2466A8",
             marginBottom: "8px",
-            ...styles.customizeFarsiFont,
+            textAlign:
+              graphicalReport?.lang.code.toLowerCase() === "fa"
+                ? "right"
+                : "left",
+            ...styles.rtlStyle(
+              graphicalReport?.lang.code.toLowerCase() === "fa",
+            ),
           }}
         >
           {subject.title}
@@ -162,13 +113,27 @@ const TopicsList = ({ data }: any) => (
                 fontWeight: "bold",
                 width: "20%",
                 marginRight: "8px",
-                ...styles.customizeFarsiFont,
+                textAlign:
+                  graphicalReport?.lang.code.toLowerCase() === "fa"
+                    ? "right"
+                    : "left",
+                ...styles.rtlStyle(
+                  graphicalReport?.lang.code.toLowerCase() === "fa",
+                ),
               }}
             >
               {attribute.title}
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-            <Typography sx={{ ...textStyle, width: "80%" }}>
+            <Typography
+              sx={{
+                ...textStyle,
+                width: "80%",
+                ...styles.rtlStyle(
+                  graphicalReport?.lang.code.toLowerCase() === "fa",
+                ),
+              }}
+            >
               {attribute.description}
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
@@ -179,9 +144,13 @@ const TopicsList = ({ data }: any) => (
   </Box>
 );
 
-const QuestionnaireList = ({ data }: any) => (
+const QuestionnaireList = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => (
   <Box>
-    {data?.assessment?.assessmentKit.questionnaires?.map(
+    {graphicalReport?.assessment?.assessmentKit.questionnaires?.map(
       (item: any, index: any) => (
         <Box
           key={index}
@@ -196,7 +165,13 @@ const QuestionnaireList = ({ data }: any) => (
             variant="extraLight"
             sx={{
               fontWeight: "bold",
-              ...styles.customizeFarsiFont,
+              textAlign:
+                graphicalReport?.lang.code.toLowerCase() === "fa"
+                  ? "right"
+                  : "left",
+              ...styles.rtlStyle(
+                graphicalReport?.lang.code.toLowerCase() === "fa",
+              ),
               width: "200px",
             }}
           >
@@ -206,15 +181,31 @@ const QuestionnaireList = ({ data }: any) => (
           <Typography
             sx={{
               ...textStyle,
-              width: "80px",
-              direction: true ? "rtl" : "ltr",
-              fontFamily: true ? farsiFontFamily : primaryFontFamily,
+              width: "120px",
+              ...styles.rtlStyle(
+                graphicalReport?.lang.code.toLowerCase() === "fa",
+              ),
             }}
           >
-            {item.questionCount} {t("question", { lng: "fa" })}
+            {item.questionCount}{" "}
+            {t("question", { lng: graphicalReport?.lang.code.toLowerCase() })}
           </Typography>
-          <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-          <Typography sx={{ ...textStyle, width: "80%" }}>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{
+              mx: "8px",
+            }}
+          />
+          <Typography
+            sx={{
+              ...textStyle,
+              width: "80%",
+              ...styles.rtlStyle(
+                graphicalReport?.lang.code.toLowerCase() === "fa",
+              ),
+            }}
+          >
             {item.description}
           </Typography>
           <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
@@ -224,7 +215,14 @@ const QuestionnaireList = ({ data }: any) => (
   </Box>
 );
 
-const ReportCard = ({ data }: any) => {
+const ReportCard = ({
+  graphicalReport,
+}: {
+  graphicalReport: IGraphicalReport;
+}) => {
+  const { assessment, advice, permissions, subjects, assessmentProcess, lang } =
+    graphicalReport;
+  const rtlLanguage = lang.code.toLowerCase() === "fa";
   return (
     <Box
       sx={{
@@ -236,29 +234,42 @@ const ReportCard = ({ data }: any) => {
         border: "3px solid #2466A8",
         paddingX: { md: 2, xs: 1 },
         paddingY: 6,
+        display: {
+          md: "block",
+          xs: "none",
+        },
       }}
     >
-      <TitleBox />
+      <TitleBox language={lang.code.toLowerCase()} />
 
-      <Section title={t("disclaimer", { lng: "fa" })}>
+      <Section
+        title={t("disclaimer", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         <Typography
           variant="extraLight"
           sx={{
-            fontFamily: true ? farsiFontFamily : primaryFontFamily,
+            fontFamily:
+              lang.code.toLowerCase() === "fa"
+                ? farsiFontFamily
+                : primaryFontFamily,
             textAlign: "justify",
           }}
         >
-          {t("disclaimerDescription", { lng: "fa" })}
+          {t("disclaimerDescription", { lng: lang.code.toLowerCase() })}
         </Typography>
       </Section>
 
-      <Section title={t("evaluationSteps", { lng: "fa" })}>
-        {data?.assessmentProcess.steps ? (
+      <Section
+        title={t("evaluationSteps", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
+        {assessmentProcess.steps ? (
           <Typography
             variant="extraLight"
             fontWeight={300}
             sx={{
-              fontFamily: languageDetector(data?.assessmentProcess.steps)
+              fontFamily: languageDetector(assessmentProcess.steps)
                 ? farsiFontFamily
                 : primaryFontFamily,
               ...textStyle,
@@ -266,22 +277,25 @@ const ReportCard = ({ data }: any) => {
             }}
             dangerouslySetInnerHTML={{
               __html:
-                data?.assessmentProcess.steps ??
-                t("unavailable", { lng: "fa" }),
+                assessmentProcess.steps ??
+                t("unavailable", { lng: lang.code.toLowerCase() }),
             }}
             className={"tiptap"}
           />
         ) : (
-          <>{t("unavailable", { lng: "fa" })}</>
+          <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
         )}
       </Section>
-      <Section title={t("participant", { lng: "fa" })}>
-        {data?.assessmentProcess.participant ? (
+      <Section
+        title={t("participant", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
+        {assessmentProcess.participant ? (
           <Typography
             variant="extraLight"
             fontWeight={300}
             sx={{
-              fontFamily: languageDetector(data?.assessmentProcess.participant)
+              fontFamily: languageDetector(assessmentProcess.participant)
                 ? farsiFontFamily
                 : primaryFontFamily,
               ...textStyle,
@@ -289,44 +303,48 @@ const ReportCard = ({ data }: any) => {
             }}
             dangerouslySetInnerHTML={{
               __html:
-                data?.assessmentProcess.participant ??
-                t("unavailable", { lng: "fa" }),
+                graphicalReport?.assessmentProcess.participant ??
+                t("unavailable", { lng: lang.code.toLowerCase() }),
             }}
             className={"tiptap"}
           />
         ) : (
-          <>{t("unavailable", { lng: "fa" })}</>
+          <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
         )}
       </Section>
 
-      <Section title={t("assessmentKit", { lng: "fa" })}>
+      <Section
+        title={t("assessmentKit", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {t("assessmentKitDescription", {
-          lng: "fa",
-          title: data?.assessment.assessmentKit.title,
-          attributesCount: data?.assessment.assessmentKit.attributesCount,
-          subjectsLength: data?.subjects.length,
-          subjects: data?.subjects
+          lng: lang.code.toLowerCase(),
+          title: assessment.assessmentKit.title,
+          attributesCount: assessment.assessmentKit.attributesCount,
+          subjectsLength: subjects.length,
+          subjects: subjects
             ?.map((elem: ISubject, index: number) =>
-              index === data?.subjects?.length - 1 &&
-              data?.subjects?.length !== 1
-                ? t("and", { lng: "fa" }) + elem?.title
+              index === subjects?.length - 1 && subjects?.length !== 1
+                ? t("and", { lng: lang.code.toLowerCase() }) + elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
             )
             ?.join(""),
-          maturityLevelCount: data?.assessment.assessmentKit.maturityLevelCount,
-          questionnairesCount:
-            data?.assessment.assessmentKit.questionnairesCount,
+          maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
+          questionnairesCount: assessment.assessmentKit.questionnairesCount,
         })}
       </Section>
 
-      <Section title={t("maturityLevels", { lng: "fa" })}>
+      <Section
+        title={t("maturityLevels", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {t("maturityLevelsDescription", {
-          lng: "fa",
-          maturityLevelCount: data?.assessment.assessmentKit.maturityLevelCount,
+          lng: lang.code.toLowerCase(),
+          maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
         })}
-        {data?.assessment.assessmentKit.maturityLevels.map(
+        {assessment.assessmentKit.maturityLevels.map(
           (level: any, index: number) => (
             <Box
               key={index}
@@ -339,7 +357,7 @@ const ReportCard = ({ data }: any) => {
               <Box
                 sx={{
                   backgroundColor: getMaturityLevelColors(
-                    data?.assessment.assessmentKit.maturityLevelCount,
+                    assessment.assessmentKit.maturityLevelCount,
                   )[level.value - 1],
                   height: "10px",
                   width: "27px",
@@ -354,11 +372,14 @@ const ReportCard = ({ data }: any) => {
                 sx={{
                   ...theme.typography.body2,
                   color: getMaturityLevelColors(
-                    data?.assessment.assessmentKit.maturityLevelCount,
+                    assessment.assessmentKit.maturityLevelCount,
                   )[level.value - 1],
                   minWidth: "70px",
-                  direction: true ? "rtl" : "ltr",
-                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                  direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                  fontFamily:
+                    lang.code.toLowerCase() === "fa"
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                 }}
               >
                 {level.title}
@@ -370,8 +391,11 @@ const ReportCard = ({ data }: any) => {
                 sx={{
                   ...theme.typography.extraLight,
                   fontWeight: 300,
-                  direction: true ? "rtl" : "ltr",
-                  fontFamily: true ? farsiFontFamily : primaryFontFamily,
+                  direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                  fontFamily:
+                    lang.code.toLowerCase() === "fa"
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                 }}
               >
                 {level.description}
@@ -381,15 +405,21 @@ const ReportCard = ({ data }: any) => {
         )}
       </Section>
 
-      <Section title={t("topicsAndIndicators", { lng: "fa" })}>
+      <Section
+        title={t("topicsAndIndicators", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
         {t("topicsTable", {
-          lng: "fa",
+          lng: lang.code.toLowerCase(),
         })}
-        <TopicsList data={data} />
+        <TopicsList graphicalReport={graphicalReport} />
       </Section>
 
-      <Section title={t("questionnaires", { lng: "fa" })}>
-        <QuestionnaireList data={data} />
+      <Section
+        title={t("questionnaires", { lng: lang.code.toLowerCase() })}
+        rtlLanguage={rtlLanguage}
+      >
+        <QuestionnaireList graphicalReport={graphicalReport} />
       </Section>
     </Box>
   );

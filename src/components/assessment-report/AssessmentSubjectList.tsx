@@ -20,7 +20,7 @@ export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
           <ErrorEmptyData />
         ) : (
           <Grid container spacing={5}>
-            {subjects.map((subject) => {
+            {subjects?.map((subject) => {
               return (
                 <Grid item xs={12} sm={12} md={12} lg={12} key={subject?.id}>
                   <AssessmentSubjectAccordion

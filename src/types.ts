@@ -97,7 +97,8 @@ export interface IPermissions {
   addEvidenceAttachment: boolean;
   exportAssessmentReport: boolean;
   readonly?: boolean;
-  viewDashboard?: boolean
+  viewDashboard?: boolean;
+  approveAnswer?: boolean;
 }
 
 export type TQuestionsInfo = {
@@ -122,6 +123,7 @@ export type TAnswer = {
   index?: string | number;
   caption?: string;
   evidences?: TEvidences;
+  approved?: boolean;
 };
 export type TEvidences = {
   created_by_id: TId;
@@ -386,6 +388,12 @@ export interface IAssessment {
   };
 }
 
+export interface IUserPermissions {
+  canManageSettings: boolean;
+  canViewReport: boolean;
+  canViewDashboard: boolean;
+  canViewQuestionnaires: boolean;
+}
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
   requested_space: string | null;
 }
@@ -609,7 +617,7 @@ export interface AssessmentKitInfoType {
   tags: [];
   editable?: boolean;
   hasActiveVersion?: boolean;
-  lang?: string
+  lang?: string;
 }
 export interface AssessmentKitStatsType {
   creationTime: string;
@@ -739,7 +747,35 @@ export interface AdviceItem {
   id: string;
   title: string;
   description: string;
-  cost: string;
-  priority: string;
-  impact: string;
+  cost: { code: string; title: string };
+  priority: { code: string; title: string };
+  impact: { code: string; title: string };
 }
+
+export interface IGraphicalReport {
+  assessment: {
+    title: string;
+    intro: string;
+    overallInsight: string;
+    creationTime: string;
+    assessmentKit: any;
+    maturityLevel: IMaturityLevel;
+    confidenceValue: number;
+    prosAndCons: string;
+    language: string;
+  };
+  subjects: ISubject[];
+  recommendationsSummary: string;
+  advice: {
+    adviceItems: AdviceItem[];
+    narration: string;
+  };
+  permissions: IUserPermissions;
+  assessmentProcess: {
+    steps: string;
+    participant: string;
+  };
+  lang: { code: string };
+}
+
+export interface ILangs { code: string, title: string}

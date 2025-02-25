@@ -226,7 +226,6 @@ export const theme = createTheme({
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
       fontWeight: 600,
       fontSize: "1rem",
-      lineHeight: "1.5rem",
       letterSpacing: is_farsi ? "0px" : ".15px",
     },
     titleLarge: {
@@ -254,7 +253,6 @@ export const theme = createTheme({
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
       fontWeight: is_farsi ? "light" : "lighter",
       fontSize: "1rem",
-      lineHeight: "1.5rem",
       letterSpacing: is_farsi ? "0px" : "0.5px",
     },
     labelSmall: {
@@ -289,7 +287,6 @@ export const theme = createTheme({
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "200",
       fontSize: "0.875rem",
-      lineHeight: "1.5rem",
       letterSpacing: "0.25px",
     },
     semiBoldSmall: {
@@ -303,7 +300,6 @@ export const theme = createTheme({
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "500",
       fontSize: "1rem",
-      lineHeight: "1.5rem",
       letterSpacing: is_farsi ? "0px" : "0.15px",
     },
     semiBoldMedium: {
@@ -315,7 +311,7 @@ export const theme = createTheme({
     },
     semiBoldXLarge: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-      fontWeight: "600",
+      fontWeight: "500",
       fontSize: "1.375rem",
       lineHeight: "1.75rem",
       letterSpacing: "0px",
@@ -517,19 +513,6 @@ export const theme = createTheme({
         },
       },
     },
-
-    MuiSelect: {
-      styleOverrides: {
-        select: {
-          paddingInline: "24px",
-        },
-        icon: {
-          left: is_farsi ? "7px" : "unset",
-          right: is_farsi ? "unset" : "7px",
-        },
-      },
-    },
-
     MuiChip: {
       styleOverrides: {
         root: {
@@ -609,6 +592,14 @@ export const theme = createTheme({
         tooltip: {
           color: "#FFFFFF",
           backgroundColor: "#576675E6",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          paddingRight: !is_farsi ? "42px !important" : "8px !important",
+          paddingLeft: is_farsi ? "42px !important" : "8px !important",
         },
       },
     },

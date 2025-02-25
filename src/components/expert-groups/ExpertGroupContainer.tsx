@@ -64,16 +64,16 @@ import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { uniqueId } from "lodash";
 import languageDetector from "@/utils/languageDetector";
+import {useConfigContext} from "@providers/ConfgProvider";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const { userInfo } = useAuthContext();
-
   const { assessmentKitQuery, handleChangePage, ...rest } =
     useFetchAssessmentKit();
   const { size, total, page } = rest;
-
+  const {config: {languages}} = useConfigContext();
   const pageCount = size === 0 ? 1 : Math.ceil(total / size);
   const queryData = useQuery({
     service: (args = { id: expertGroupId }, config) =>
@@ -92,6 +92,7 @@ const ExpertGroupContainer = () => {
     service: (args, config) => service.removeExpertGroupMembers(args, config),
     runOnMount: false,
   });
+
 
   const setDocTitle = useDocumentTitle(t("expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
@@ -226,6 +227,7 @@ const ExpertGroupContainer = () => {
                       is_expert={editable}
                       setAssessmentKitsCounts={setAssessmentKitsCounts}
                       assessmentKitQuery={assessmentKitQuery}
+                      languages={languages}
                     />
                     <Stack
                       spacing={2}
@@ -1072,10 +1074,11 @@ const AssessmentKitsList = (props: any) => {
     is_member,
     excelToDslDialogProps,
     assessmentKitQuery,
+    languages
   } = props;
   const { expertGroupId } = useParams();
   const kitDesignerDialogProps = useDialog({
-    context: { type: "draft", data: { expertGroupId, dsl_id: 959 } },
+    context: { type: "draft", data: { expertGroupId, dsl_id: 959, languages } },
   });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

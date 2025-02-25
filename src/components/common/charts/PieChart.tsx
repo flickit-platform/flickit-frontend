@@ -13,9 +13,10 @@ interface PieChartNode {
 
 interface CustomPieChartProps {
   data: PieChartNode[];
+  language: string;
 }
 
-const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
+const CustomPieChart: React.FC<CustomPieChartProps> = ({ data, language }) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
   const sliceCount = data.length;
   const equalValue = total / sliceCount;
@@ -108,7 +109,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
               fill="#333"
               direction="rtl"
             >
-              {t("consideredSubjects", { lng: "fa" })}
+              {t("consideredSubjects", { lng: language })}
             </text>
           </>
         )}

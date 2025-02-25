@@ -8,7 +8,6 @@ interface KItDHeaderProps {
   onAddNewRow: () => void;
   mainTitle: string;
   description: string;
-  subTitle: string;
   hasBtn: boolean;
   btnTitle: string;
 }
@@ -16,7 +15,6 @@ interface KItDHeaderProps {
 const KitDHeader = ({
   mainTitle,
   description,
-  subTitle,
   hasBtn,
   onAddNewRow,
   btnTitle,
@@ -37,9 +35,6 @@ const KitDHeader = ({
       alignItems="center"
       mt={4}
     >
-      <Typography variant="headlineSmall" fontWeight="bold">
-        <Trans i18nKey={`${subTitle}`} />
-      </Typography>
       {hasBtn ? (
         <Link
           href="#new-maturity"
@@ -49,6 +44,7 @@ const KitDHeader = ({
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
+            marginInlineStart: "auto"
           }}
         >
           <Button variant="contained" onClick={onAddNewRow}>

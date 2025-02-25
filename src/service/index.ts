@@ -505,9 +505,13 @@ export const createService = (
       { assessmentId, data }: { assessmentId: string; data: any },
       config: AxiosRequestConfig<any> | undefined,
     ) {
-      return axios.post(`/api/v1/assessments/${assessmentId}/overall-insight/`, data, {
-        ...(config ?? {}),
-      });
+      return axios.post(
+        `/api/v1/assessments/${assessmentId}/overall-insight/`,
+        data,
+        {
+          ...(config ?? {}),
+        },
+      );
     },
     postAdviceItem(
       { data }: { data: any },
@@ -946,6 +950,15 @@ export const createService = (
       return axios.put(
         `/api/v1/kit-versions/${kitVersionId}/attributes/${attributeId}/`,
         data,
+        config,
+      );
+    },
+    fetchPreAdviceInfo(
+      { assessmentId }: { assessmentId: string },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/pre-advice-info/`,
         config,
       );
     },
@@ -1428,6 +1441,16 @@ export const createService = (
         },
       );
     },
+    approveAnswer(
+      { assessmentId, data }: { assessmentId: TId; data: any },
+      config: AxiosRequestConfig<any> | undefined,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/approve-answer/`,
+        data,
+        config,
+      );
+    },
     fetchTotalProgress(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,
@@ -1518,6 +1541,15 @@ export const createService = (
         config,
       );
     },
+    approveInsights(
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/approve-insights/`,
+        { ...config },
+      );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config: AxiosRequestConfig<any> | undefined,
@@ -1531,9 +1563,19 @@ export const createService = (
       args: any,
       config: AxiosRequestConfig<any> | undefined = {},
     ) {
-      const { query, isPrivate } = args ?? {};
-      const params = query ? { query } : { isPrivate };
-      return axios.get(`/api/v2/assessment-kits/`, { params, ...config });
+      const { langs , isPrivate } = args ?? {};
+      return axios.get(`/api/v2/assessment-kits/`, {
+        params:{
+          isPrivate,
+          langs
+        }
+        , ...config });
+    },
+    fetchKitLanguage(
+        args: any,
+        config: AxiosRequestConfig<any> | undefined = {},
+    ) {
+      return axios.get(`/api/v1/kit-languages/`, config);
     },
     fetchAssessmentKitsOptions(
       args: any,
@@ -1837,12 +1879,7 @@ export const createService = (
       );
     },
     fetchTenantInfo(config: AxiosRequestConfig<any> | undefined) {
-      return axios.get(`/api/v1/tenant/info/`, {
-        ...(config ?? {}),
-      });
-    },
-    fetchTenantLogo(config: AxiosRequestConfig<any> | undefined) {
-      return axios.get(`/api/v1/tenant/logo/`, {
+      return axios.get(`/api/v1/tenant/`, {
         ...(config ?? {}),
       });
     },

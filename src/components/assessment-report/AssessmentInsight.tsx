@@ -20,7 +20,6 @@ import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
-import firstCharDetector from "@utils/firstCharDetector";
 import languageDetector from "@/utils/languageDetector";
 import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@/utils/useQuery";
@@ -33,6 +32,7 @@ export const AssessmentInsight = () => {
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isApproved, setIsApproved] = useState(true);
+  const [isSystemic, setIsSystemic] = useState(true);
 
   const ApproveAssessmentInsight = useQuery({
     service: (
@@ -70,6 +70,7 @@ export const AssessmentInsight = () => {
         const selectedInsight = data.assessorInsight || data.defaultInsight;
 
         if (selectedInsight) {
+          setIsSystemic(data.defaultInsight ?? false);
           setInsight(selectedInsight);
           setIsApproved(data.approved);
         }
@@ -123,7 +124,7 @@ export const AssessmentInsight = () => {
               justifyContent: "end",
             }}
           >
-            {!isApproved && (
+            {(!isApproved || (!insight?.isValid && insight)) && editable && (
               <LoadingButton
                 variant={"contained"}
                 onClick={(event) => ApproveInsight(event)}
@@ -143,7 +144,7 @@ export const AssessmentInsight = () => {
                 loading={InitAssessmentInsight.loading}
                 size="small"
               >
-                <Trans i18nKey={"regenerate"} />
+                <Trans i18nKey={!insight ? "generate" : "regenerate"} />
               </LoadingButton>
             )}
           </Box>
@@ -151,13 +152,14 @@ export const AssessmentInsight = () => {
             data={insight?.insight}
             editable={editable}
             infoQuery={fetchAssessment}
+            updateInsight={service.updateAssessmentInsight}
             placeholder={t("writeHere", {
               title: t("insight").toLowerCase(),
             })}
           />
           {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
-              {theme.direction == "rtl"
+              {languageDetector(insight)
                 ? formatDate(
                     format(
                       new Date(
@@ -185,84 +187,75 @@ export const AssessmentInsight = () => {
                   ")"}
             </Typography>
           )}
-          {(insight?.hasOwnProperty("isValid") || editable) &&
-            !insight?.isValid &&
-            insight && (
-              <Box sx={{ ...styles.centerV }} gap={2} my={1}>
-                <Box
+          {(!isApproved || (!insight?.isValid && insight)) && (
+            <Box sx={{ ...styles.centerV }} gap={2} my={1}>
+              <Box
+                sx={{
+                  zIndex: 1,
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  ml: { xs: 0.75, sm: 0.75, md: 1 },
+                }}
+              >
+                <Typography
+                  variant="labelSmall"
                   sx={{
-                    zIndex: 1,
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    ml: { xs: 0.75, sm: 0.75, md: 1 },
+                    backgroundColor: "#d85e1e",
+                    color: "white",
+                    padding: "0.35rem 0.35rem",
+                    borderRadius: "4px",
+                    fontWeight: "bold",
                   }}
                 >
-                  <Typography
-                    variant="labelSmall"
-                    sx={{
-                      backgroundColor: "#d85e1e",
-                      color: "white",
-                      padding: "0.35rem 0.35rem",
-                      borderRadius: "4px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Trans
-                      i18nKey={
-                        insight?.hasOwnProperty("isValid") ? "outdated" : "note"
-                      }
-                    />
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    backgroundColor: "rgba(255, 249, 196, 0.31)",
-                    padding: 1,
-                    borderRadius: 2,
-                    maxWidth: "100%",
-                  }}
-                >
-                  <InfoOutlined
-                    color="primary"
-                    sx={{
-                      marginRight: theme.direction === "ltr" ? 1 : "unset",
-                      marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                    }}
-                  />
-                  <Typography
-                    variant="titleMedium"
-                    fontWeight={400}
-                    textAlign="left"
-                  >
-                    <Trans
-                      i18nKey={
-                        insight?.hasOwnProperty("isValid")
-                          ? "invalidInsight"
-                          : "defaultInsightTemplate"
-                      }
-                    />
-                  </Typography>
-                </Box>
+                  <Trans i18nKey={!isSystemic ? "outdated" : "note"} />
+                </Typography>
               </Box>
-            )}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  backgroundColor: "rgba(255, 249, 196, 0.31)",
+                  padding: 1,
+                  borderRadius: 2,
+                  maxWidth: "100%",
+                }}
+              >
+                <InfoOutlined
+                  color="primary"
+                  sx={{
+                    marginRight: theme.direction === "ltr" ? 1 : "unset",
+                    marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  }}
+                />
+                <Typography
+                  variant="titleMedium"
+                  fontWeight={400}
+                  textAlign="left"
+                >
+                  <Trans
+                    i18nKey={
+                      !isSystemic ? "invalidInsight" : "defaultInsightTemplate"
+                    }
+                  />
+                </Typography>
+              </Box>
+            </Box>
+          )}
         </>
       )}
     </Box>
   );
 };
 
-const OnHoverRichEditor = (props: any) => {
-  const { data, editable, infoQuery } = props;
+export const OnHoverRichEditor = (props: any) => {
+  const { data, editable, infoQuery, updateInsight, updateInsightParams } =
+    props;
   const abortController = useRef(new AbortController());
   const [isHovering, setIsHovering] = useState(false);
   const [show, setShow] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [error, setError] = useState<any>({});
   const { assessmentId = "" } = useParams();
-  const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
+  const [tempData, setTempData] = useState("");
 
   const handleMouseOver = () => {
     editable && setIsHovering(true);
@@ -274,32 +267,36 @@ const OnHoverRichEditor = (props: any) => {
 
   const handleCancel = () => {
     setShow(false);
-    setError({});
-    setHasError(false);
   };
 
   const onSubmit = async (data: any, event: any) => {
     event.preventDefault();
     try {
-      await service.updateAssessmentInsight(
-        { assessmentId, data: { insight: data.insight } },
+      await updateInsight(
+        {
+          assessmentId,
+          data: { insight: data.insight },
+          subjectId: updateInsightParams,
+        },
         { signal: abortController.current.signal },
       );
       await infoQuery();
       setShow(false);
     } catch (e) {
       const err = e as ICustomError;
-      setError(err);
-      setHasError(true);
+      toastError(err);
     }
   };
 
+  useEffect(() => {
+    setTempData(formMethods.getValues().insight);
+  }, [formMethods.watch("insight")]);
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        direction: languageDetector(data) ? "rtl" : "ltr",
+        direction: languageDetector(tempData || data) ? "rtl" : "ltr",
         height: "100%",
         width: "100%",
       }}
@@ -315,7 +312,7 @@ const OnHoverRichEditor = (props: any) => {
               height: "100%",
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
             <RichEditorField
@@ -330,8 +327,8 @@ const OnHoverRichEditor = (props: any) => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
+                alignItems: "flex-start",
+                height: tempData === "" ? "80%" : "100%",
               }}
             >
               <IconButton
@@ -340,7 +337,7 @@ const OnHoverRichEditor = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data)
+                  borderRadius: languageDetector(tempData || data)
                     ? "8px 0 0 0"
                     : "0 8px 0 0",
                   height: "49%",
@@ -355,7 +352,7 @@ const OnHoverRichEditor = (props: any) => {
                   "&:hover": {
                     background: theme.palette.primary.dark,
                   },
-                  borderRadius: languageDetector(data)
+                  borderRadius: languageDetector(tempData || data)
                     ? "0 0 0 8px"
                     : "0 0 8px 0",
                   height: "49%",
@@ -365,11 +362,6 @@ const OnHoverRichEditor = (props: any) => {
                 <CancelRounded sx={{ color: "#fff" }} />
               </IconButton>
             </Box>
-            {hasError && (
-              <Typography color="#ba000d" variant="caption">
-                {error?.data?.about}
-              </Typography>
-            )}
           </Box>
         </FormProviderWithForm>
       ) : (
@@ -382,8 +374,8 @@ const OnHoverRichEditor = (props: any) => {
             justifyContent: "space-between",
             alignItems: "center",
             wordBreak: "break-word",
-            pr: languageDetector(data) ? 1 : 5,
-            pl: languageDetector(data) ? 5 : 1,
+            pr: languageDetector(tempData || data) ? 1 : 5,
+            pl: languageDetector(tempData || data) ? 5 : 1,
             border: "1px solid #fff",
             "&:hover": {
               border: editable ? "1px solid #1976d299" : "unset",
@@ -397,10 +389,12 @@ const OnHoverRichEditor = (props: any) => {
         >
           <Typography
             sx={{
-              textAlign: firstCharDetector(data?.replace(/<[^>]*>/g, ""))
+              textAlign: languageDetector(
+                (tempData || data)?.replace(/<[^>]*>/g, ""),
+              )
                 ? "right"
                 : "left",
-              fontFamily: languageDetector(data)
+              fontFamily: languageDetector(tempData || data)
                 ? farsiFontFamily
                 : primaryFontFamily,
               width: "100%",
@@ -421,13 +415,13 @@ const OnHoverRichEditor = (props: any) => {
                 "&:hover": {
                   background: theme.palette.primary.dark,
                 },
-                borderRadius: languageDetector(data)
+                borderRadius: languageDetector(tempData || data)
                   ? "8px 0 0 8px"
                   : "0 8px 8px 0",
                 height: "100%",
                 position: "absolute",
-                right: languageDetector(data) ? "unset" : 0,
-                left: languageDetector(data) ? 0 : "unset",
+                right: languageDetector(tempData || data) ? "unset" : 0,
+                left: languageDetector(tempData || data) ? 0 : "unset",
                 top: 0,
               }}
               onClick={() => setShow(!show)}

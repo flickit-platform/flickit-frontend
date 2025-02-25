@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import { toast } from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import {useState, useRef, useEffect} from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -38,6 +38,7 @@ import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
+import {useConfigContext} from "@providers/ConfgProvider";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -48,6 +49,7 @@ const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
   const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
+  const {config: {languages}} : any = useConfigContext();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
@@ -97,11 +99,11 @@ const AssessmentKitSectionGeneralInfo = (
   const handleLanguageChange = async (e: any) => {
     const { value } = e.target;
 
-    let adjustValue = value == "English" ? "EN" : "FA";
+    let adjustValue = languages.find((item: { code: string, title: string }) => item.title == value)
 
     try {
       await service.updateAssessmentKitStats(
-        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue } },
+        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue?.code } },
         { signal: abortController.current.signal },
       );
       await fetchAssessmentKitInfoQuery.query();
@@ -111,7 +113,6 @@ const AssessmentKitSectionGeneralInfo = (
     }
   };
 
-  const languages = [{ title: "Persian" }, { title: "English" }];
 
   return (
     <QueryBatchData
@@ -576,9 +577,6 @@ const OnHoverInput = (props: any) => {
           mr={4}
           sx={{
             minWidth: "64px !important",
-            fontFamily: languageDetector(title)
-              ? farsiFontFamily
-              : primaryFontFamily,
           }}
         >
           {title}
@@ -795,7 +793,7 @@ const OnHoverStatus = (props: any) => {
               sx={{ userSelect: "none" }}
               fontSize=".75rem"
             >
-              <Trans i18nKey="unpublished" />
+              <Trans i18nKey="unPublished" />
             </Typography>
           </Box>
         </Box>

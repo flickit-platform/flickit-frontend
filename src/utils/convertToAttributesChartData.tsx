@@ -41,7 +41,7 @@ export const convertToAssessmentsChartData = (data: any, assessments?: any) => {
     assessmentTitleMap[assessment.id] = assessment.title;
   });
 
-  return data.subjects.map((subject: any, index: number) => {
+  return data.subjects?.map((subject: any, index: number) => {
     const subjectData: any = {
       index: index,
       title: subject.title,

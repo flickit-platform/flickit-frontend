@@ -2,7 +2,7 @@ import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { confidenceColor, getMaturityLevelColors } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
@@ -63,62 +63,62 @@ const FlatGauge = (props: IGaugeProps) => {
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
   const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isFarsi = languageDetector(text ?? "");
 
   return (
     <Suspense fallback={<Box>fallback</Box>}>
-      <Box sx={{ height: "100%" }} {...rest}>
+      <Box sx={{ height: "100%", textAlign: "center" }} {...rest}>
         <Box
           sx={{
             display: "flex",
-            flexDirection: `${textPosition == "top" ? "column" : "row"}`,
-            textAlign: "center",
-            width: "fit-content",
+            flexDirection:
+              textPosition === "top" || isSmallScreen ? "column" : "row",
             gap: "1rem",
             justifyContent: "center",
             alignItems: "center",
             mx: "auto",
           }}
         >
-          {textPosition == "top" && (
+          {textPosition === "top" && (
             <Typography
               sx={{
                 ...theme.typography.semiBoldLarge,
                 color: colorCode,
                 fontSize: "1.25rem",
                 fontWeight: "bold",
-                fontFamily: languageDetector(text ?? "")
-                  ? farsiFontFamily
-                  : primaryFontFamily,
+                fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
               }}
             >
               {capitalizeFirstLetter(text)}
             </Typography>
           )}
+
           <Box
-            style={{
+            sx={{
               display: "flex",
               alignItems: "center",
               gap: "3px",
               width: "fit-content",
+              flexDirection: isSmallScreen ? "column" : "row",
             }}
           >
             <FlatGaugeComponent colorCode={colorCode} value={levelValue} />
-            {textPosition == "left" && (
+            {textPosition === "left" && (
               <Typography
                 sx={{
                   color: colorCode,
-                  fontFamily: languageDetector(text ?? "")
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                  marginInlineStart: 0.5,
+                  fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
+                  ml: 0.5,
                   textAlign: "right",
                 }}
               >
-                <Trans i18nKey={`${text}`} />
+                {text}
               </Typography>
             )}
           </Box>
-          {textPosition == "top" && (
+
+          {textPosition === "top" && (
             <Typography
               sx={{
                 display: "flex",
@@ -142,8 +142,7 @@ const FlatGauge = (props: IGaugeProps) => {
                     : primaryFontFamily,
                 }}
               >
-                {" "}
-                {confidenceLevelNum}%{" "}
+                {confidenceLevelNum}%
               </Typography>
             </Typography>
           )}

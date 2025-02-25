@@ -29,9 +29,6 @@ const MaturityLevelsHeader = ({
       alignItems="center"
       mt={4}
     >
-      <Typography variant="headlineSmall" fontWeight="bold">
-        <Trans i18nKey="maturityLevelsList" />
-      </Typography>
       {hasMaturityLevels ? (
         <Link
           href="#new-maturity"
@@ -41,6 +38,7 @@ const MaturityLevelsHeader = ({
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
+            marginInlineStart: "auto"
           }}
         >
           <Button variant="contained" onClick={onNewMaturityLevelClick} data-test-id="newMaturity">

@@ -132,6 +132,11 @@ const AssessmentKit = (props: any) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Title
               size="medium"
+              sx={{
+                  fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+              }}
               sup={
                 <SupTitleBreadcrumb
                   color="white"
@@ -444,7 +449,12 @@ const AssessmentKit = (props: any) => {
                             component="span"
                             fontSize="1rem"
                             fontWeight="bold"
-                            sx={{ unicodeBidi: "plaintext" }}
+                            sx={{
+                              unicodeBidi: "plaintext",
+                              fontFamily: languageDetector(item.title)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                            }}
                           >
                             {item.title}
                           </Box>
@@ -476,7 +486,7 @@ const AssessmentKit = (props: any) => {
                 <Trans i18nKey={"subjects"} />
               </Title>
               <Box component="ul" mt={3}>
-                {subjects.map((subject: any, index: number) => {
+                {subjects?.map((subject: any, index: number) => {
                   return (
                     <Box
                       component="li"
@@ -490,7 +500,16 @@ const AssessmentKit = (props: any) => {
                         mr: theme.direction === "rtl" ? 4 : "unset",
                       }} // Adds bullet point styling
                     >
-                      <b>{subject.title}</b>:{" "}
+                      <b
+                        style={{
+                          fontFamily: languageDetector(subject.description)
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        }}
+                      >
+                        {subject.title}
+                      </b>
+                      :{" "}
                       <span
                         style={{
                           fontFamily: languageDetector(subject.description)
@@ -607,7 +626,12 @@ const AssessmentKit = (props: any) => {
                         }}
                       >
                         <Box
-                          sx={{ unicodeBidi: "plaintext" }}
+                          sx={{
+                            unicodeBidi: "plaintext",
+                            fontFamily: languageDetector(questionnaire.title)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          }}
                           component="span"
                           fontSize="1rem"
                           fontWeight="bold"

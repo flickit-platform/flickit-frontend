@@ -9,8 +9,9 @@ import {
 } from "recharts";
 import Skeleton from "@mui/material/Skeleton";
 import { convertToRadialChartData } from "@/utils/convertToAssessmentChartData";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { useMediaQuery } from "@mui/material";
 
 interface AssessmentSubjectRadialChartProps {
   loading: boolean;
@@ -37,12 +38,19 @@ interface SubjectRadialProps {
 }
 
 const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const wordLimit = !isSmallScreen ? 18 : 12;
+  const formatXAxisTick = (tick: string) => {
+    return tick.length > wordLimit
+      ? `${tick?.substring(0, wordLimit)}...`
+      : tick;
+  };
   const chartData = useMemo(() => convertToRadialChartData(data), [data]);
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart cx="50%" cy="50%" barSize={30} data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="title" />
+        <XAxis dataKey="title" interval={0} tickFormatter={formatXAxisTick} />
         <YAxis type="number" domain={[0, 5]} tickCount={6} />
         <Bar
           min={15}

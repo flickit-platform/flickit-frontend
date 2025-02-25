@@ -338,7 +338,7 @@ export const AssessmentSubjectAccordion = (
                           }}
                           variant="titleMedium"
                         >
-                          <Trans i18nKey={`${element.maturityLevel.title}`} />
+                          {element.maturityLevel.title}{" "}
                         </Typography>
                         <ConfidenceLevel
                           inputNumber={element.confidenceValue}

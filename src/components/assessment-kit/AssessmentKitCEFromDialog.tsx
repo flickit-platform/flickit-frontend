@@ -45,9 +45,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const [zippedData, setZippedData] = useState<any>(null);
   const [dropNewFile, setDropNewFile] = useState<any>(null);
   const [buttonStep, setButtonStep] = useState<any>(0);
-  const [lang,setLang] = useState("English");
   const { service } = useServiceContext();
-  const languages = [{ title: "Persian" }, { title: "English" }];
 
   const {
     onClose: closeDialog,
@@ -64,7 +62,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   }, []);
   const { type, data = {} } = context;
   const { expertGroupId: fallbackExpertGroupId } = useParams();
-  const { id, expertGroupId = fallbackExpertGroupId } = data;
+  const { id, expertGroupId = fallbackExpertGroupId,languages } = data;
+  const [lang,setLang] = useState("");
   const defaultValues = type === "update" ? data : {};
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -85,7 +84,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setDropNewFile(null);
     setConvertData(null);
     setIsValid(false);
-    setLang("English")
+    setLang(languages[0].title)
   };
   const fetchSampleExecl = useQuery({
     service: (args, config) => service.fetchExcelToDSLSampleFile(args, config),
@@ -98,6 +97,12 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if(languages){
+      setLang(languages[0].title)
+    }
+  }, [languages]);
+
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     event.preventDefault();
     const { tags = [], ...restOfData } = data;
@@ -105,7 +110,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       isPrivate: isPrivate,
       tagIds: tags.map((t: any) => t.id),
       expertGroupId: expertGroupId,
-      lang : lang == "English" ? "EN" : "FA",
+      lang : lang == languages[0]?.title ? languages[0]?.code : languages[1]?.code,
       ...restOfData,
     };
     if (type !== "draft") {

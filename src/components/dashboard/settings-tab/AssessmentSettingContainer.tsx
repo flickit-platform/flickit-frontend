@@ -134,8 +134,8 @@ const AssessmentSettingContainer = () => {
           } = pathInfo;
           const { items: listOfRoles } = roles;
           return (
-            <Box m="auto" pb={3}>
-              <Grid container columns={12} mb={"32px"}>
+            <Box m="auto" mt={"32px"}>
+              <Grid container columns={12}>
                 <Grid item sm={12} xs={12}>
                   <AssessmentSettingGeneralBox
                     AssessmentInfoQuery={AssessmentInfo.query}
@@ -146,7 +146,7 @@ const AssessmentSettingContainer = () => {
                   />
                 </Grid>
               </Grid>
-              <Grid container columns={12} mb={"32px"}>
+              <Grid container columns={12}>
                 <Grid item sm={12} xs={12}>
                   <AssessmentSettingMemberBox
                     listOfRoles={listOfRoles}
