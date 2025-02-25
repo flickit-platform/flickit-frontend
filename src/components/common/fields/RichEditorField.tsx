@@ -101,7 +101,7 @@ const RichEditorFieldBase = (props: any) => {
         placeholder={placeholder}
         type={type}
       />
-      <FormHelperText style={{ marginTop: 0 }}>
+      <FormHelperText style={{ marginTop: 0, marginLeft: 0, marginRight: 0 }}>
         {errorMessage as string}
       </FormHelperText>
     </FormControl>
