@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, Button } from "@mui/material";
 import {
   CancelRounded,
   CheckCircleOutlineRounded,
@@ -37,10 +37,14 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const { t } = useTranslation();
   const [isHovering, setIsHovering] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [showBtn, setShowBtn] = useState(false);
+  const paragraphRef = useRef<HTMLDivElement>(null);
   const formMethods = useForm({
     defaultValues: { [fieldName]: defaultValue || "" },
   });
   const [tempData, setTempData] = useState(defaultValue || "");
+
   useEffect(() => {
     setTempData(defaultValue);
   }, [defaultValue]);
@@ -67,6 +71,18 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   useEffect(() => {
     setTempData(formMethods.getValues()[fieldName]);
   }, [formMethods.watch(fieldName)]);
+
+  useEffect(() => {
+    if (paragraphRef.current) {
+      const isOverflowing =
+        paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight;
+      setShowBtn(isOverflowing);
+    }
+  }, [tempData]);
+
+  const toggleShowMore = () => {
+    setShowMore((prev) => !prev);
+  };
 
   return (
     <Box
@@ -139,62 +155,75 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           </Box>
         </FormProviderWithForm>
       ) : (
-        <Box
-          sx={{
-            minHeight: "38px",
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            wordBreak: "break-word",
-            pr: languageDetector(tempData) ? 1 : 5,
-            pl: languageDetector(tempData) ? 5 : 1,
-            border: "1px solid #fff",
-            "&:hover": {
-              border: editable ? "1px solid #1976d299" : "unset",
-              borderColor: editable ? theme.palette.primary.main : "unset",
-            },
-            position: "relative",
-          }}
-          onClick={() => editable && setShowEditor(true)}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          <Typography
-            textAlign="justify"
+        <Box sx={{ width: "100%" }}>
+          <Box
             sx={{
-              fontFamily: languageDetector(tempData)
-                ? farsiFontFamily
-                : primaryFontFamily,
+              minHeight: "38px",
+              borderRadius: "8px",
               width: "100%",
-              color: !tempData ? "rgba(61, 77, 92, 0.5)" : "initial",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              wordBreak: "break-word",
+              pr: languageDetector(tempData) ? 1 : 5,
+              pl: languageDetector(tempData) ? 5 : 1,
+              border: "1px solid #fff",
+              "&:hover": {
+                border: editable ? "1px solid #1976d299" : "unset",
+                borderColor: editable ? theme.palette.primary.main : "unset",
+              },
+              position: "relative",
             }}
-            dangerouslySetInnerHTML={{
-              __html:
-                tempData ||
-                (editable ? placeholder || t("writeHere") : t("unavailable")),
-            }}
-          />
-          {isHovering && editable && (
-            <IconButton
-              title="Edit"
+            onClick={() => editable && setShowEditor(true)}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            <Typography
+              textAlign="justify"
               sx={{
-                background: theme.palette.primary.main,
-                "&:hover": { background: theme.palette.primary.dark },
-                borderRadius: languageDetector(tempData)
-                  ? "8px 0 0 8px"
-                  : "0 8px 8px 0",
-                height: "100%",
-                position: "absolute",
-                right: languageDetector(tempData) ? "unset" : 0,
-                left: languageDetector(tempData) ? 0 : "unset",
-                top: 0,
+                fontFamily: languageDetector(tempData)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+                width: "100%",
+                color: !tempData ? "rgba(61, 77, 92, 0.5)" : "initial",
+                display: "-webkit-box",
+                WebkitLineClamp: showMore ? "unset" : 3,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
-              onClick={() => setShowEditor(true)}
-            >
-              <EditRounded sx={{ color: "#fff" }} />
-            </IconButton>
+              dangerouslySetInnerHTML={{
+                __html:
+                  tempData ||
+                  (editable ? placeholder || t("writeHere") : t("unavailable")),
+              }}
+              ref={paragraphRef}
+            />
+            {isHovering && editable && (
+              <IconButton
+                title="Edit"
+                sx={{
+                  background: theme.palette.primary.main,
+                  "&:hover": { background: theme.palette.primary.dark },
+                  borderRadius: languageDetector(tempData)
+                    ? "8px 0 0 8px"
+                    : "0 8px 8px 0",
+                  height: "100%",
+                  position: "absolute",
+                  right: languageDetector(tempData) ? "unset" : 0,
+                  left: languageDetector(tempData) ? 0 : "unset",
+                  top: 0,
+                }}
+                onClick={() => setShowEditor(true)}
+              >
+                <EditRounded sx={{ color: "#fff" }} />
+              </IconButton>
+            )}
+          </Box>
+          {showBtn && (
+            <Button variant="text" onClick={toggleShowMore}>
+              {showMore ? t("showLess") : t("showMore")}
+            </Button>
           )}
         </Box>
       )}
