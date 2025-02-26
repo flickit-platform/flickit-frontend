@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { DialogProps } from "@mui/material/Dialog";
 import { nanoid } from "nanoid";
@@ -16,7 +16,13 @@ import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRound
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { theme } from "@/config/theme";
-
+import FormControl from "@mui/material/FormControl";
+import { InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useQuery } from "@utils/useQuery";
+import { ISpaceType } from "@types";
+import premiumIcon from "@/assets/svg/premium-icon.svg";
+import {SelectField} from "@common/fields/SelectField";
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
   onSubmitForm: () => void;
@@ -27,6 +33,8 @@ interface ICreateSpaceDialogProps extends DialogProps {
 const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
+  const [spaceType, setSpaceType] = useState<ISpaceType[]>([]);
+  const [selectedType, setSelectedType] = useState<string>("BASIC");
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,
@@ -46,9 +54,31 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const close = () => {
     abortController.abort();
     closeDialog();
+    setSelectedType("");
   };
 
+  const fetchSpaceType = useQuery({
+    service: (args, config) => service.fetchSpaceType(args, config),
+    runOnMount: false,
+  });
+
+  const allSpacesType = async () => {
+    let data = await fetchSpaceType.query();
+    if(data){
+      const { spaceTypes: getSpaceType } = data
+      setSpaceType(getSpaceType);
+    }
+
+  };
+
+  useEffect(() => {
+    allSpacesType().then();
+  }, []);
+
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
+    if (type !== "update") {
+      data = { ...data, type: selectedType };
+    }
     setLoading(true);
     try {
       let createdSpaceId = 1;
@@ -113,6 +143,11 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     }
   }, [openDialog, formMethods, abortController]);
 
+  const handleChange = (e: any) => {
+    const { value } = e.target;
+    setSelectedType(value);
+  };
+
   return (
     <CEDialog
       {...rest}
@@ -135,7 +170,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={12}>
+          <Grid item xs={type == "update" ? 12 : 9}>
             <InputFieldUC
               name="title"
               defaultValue={defaultValues.title || ""}
@@ -144,6 +179,68 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
               isFocused={isFocused}
             />
           </Grid>
+          {type !== "update" && (
+            <Grid item xs={3}>
+              <FormControl sx={{ width: "100%" }}>
+                <SelectField
+                  // disabled={editable != undefined ? !editable : false}
+                  id="spaceType-name-label"
+                  size="small"
+                  label={<Trans i18nKey={"spaceType"} />}
+                  value={selectedType}
+                  IconComponent={KeyboardArrowDownIcon}
+                  displayEmpty
+                  name={"spaceType-select"}
+                  defaultValue={spaceType[0]?.title}
+                  required={true}
+                  nullable={false}
+                  input={<OutlinedInput label="spaceType" />}
+                  onChange={(e) => handleChange(e)}
+                  sx={{
+                    fontSize: "14px",
+                    background: "#fff",
+                    px: "0px",
+                    height: "40px",
+                    "& .MuiSelect-select": {
+                      display: "flex",
+                      alignItems: "center",
+                      padding: "12px !important",
+                      gap: 1,
+                    },
+                  }}
+                >
+                  {spaceType?.map((type: any) => (
+                    <MenuItem
+                      sx={{
+                        color: "#2B333B",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor:
+                          type.code == "PREMIUM" ? "transparent" : "unset",
+                        backgroundImage:
+                          type.code == "PREMIUM"
+                            ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
+                            : "unset",
+                        gap: 1,
+                        marginLeft: type.code != "PREMIUM" ? "24px" : "unset",
+                      }}
+                      disabled={type.code == "PREMIUM"}
+                      key={type}
+                      value={type.code}
+                    >
+                      {type.code == "PREMIUM" && (
+                        <img
+                          src={premiumIcon}
+                          alt={"premium"}
+                          style={{ width: "16px", height: "21px" }}
+                        />
+                      )}
+                      <Trans i18nKey={type.title} />
+                    </MenuItem>
+                  ))}
+                </SelectField>
+              </FormControl>
+            </Grid>
+          )}
         </Grid>
         <CEDialogActions
           closeDialog={close}

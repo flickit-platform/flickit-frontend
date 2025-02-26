@@ -66,7 +66,7 @@ describe("CreateSpaceDialog", () => {
       expect((axios as any).default.post).toHaveBeenCalledTimes(1);
       expect((axios as any).default.post).toHaveBeenCalledWith(
         "/api/v1/spaces/",
-        { title: "New Space" },
+        { title: "New Space", type: "BASIC" },
         expect.anything(),
       );
     });

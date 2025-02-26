@@ -777,6 +777,11 @@ export interface IGraphicalReport {
   lang: { code: string };
 }
 
+export interface ISpaceType {
+  code: string;
+  title: string
+}
+
 export interface ILangs {
   code: string;
   title: string;
