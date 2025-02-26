@@ -187,7 +187,6 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                       "subject",
                       subject.id,
                       subject.weight.customValue || subject.weight.defaultValue,
-                      index,
                     )
                   ) : (
                     <Box sx={{ display: "flex", gap: 1 }}>
@@ -248,7 +247,6 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         attribute.id,
                         attribute.weight.customValue ||
                           attribute.weight.defaultValue,
-                        attrIndex,
                       )
                     ) : (
                       <Box sx={{ display: "flex", gap: 1 }}>

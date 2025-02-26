@@ -16,7 +16,7 @@ interface IMoreActionsProps {
   hideInnerIconButton?: boolean;
   anchorEl?: Element | ((element: Element) => Element) | null;
   fontSize?: "inherit" | "small" | "large" | "medium";
-  items?: (
+  items: (
     | {
         icon?: JSX.Element;
         onClick?: React.MouseEventHandler<HTMLLIElement>;
@@ -24,6 +24,7 @@ interface IMoreActionsProps {
         menuItemProps?: MenuItemProps & { "data-cy"?: string };
       }
     | null
+    | undefined
     | false
   )[];
   setShowTooltip?: (e: boolean) => void;
