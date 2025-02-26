@@ -8,16 +8,6 @@ import { useParams, useSearchParams } from "react-router-dom";
 import PermissionControl from "@common/PermissionControl";
 
 const QuestionnaireContainer = () => {
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
-
-  const AssessmentInfo = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.AssessmentsLoad(args, config),
-    toastError: false,
-    toastErrorOptions: { filterByStatus: [404] },
-  });
-
   const { questionnaireQueryData, assessmentTotalProgress } =
     useQuestionnaire();
 

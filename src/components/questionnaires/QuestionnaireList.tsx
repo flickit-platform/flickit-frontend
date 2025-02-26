@@ -187,9 +187,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
 
-  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
-    useState<boolean>(true);
-
   const { state } = useLocation();
 
   useEffect(() => {

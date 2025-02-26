@@ -18,7 +18,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
