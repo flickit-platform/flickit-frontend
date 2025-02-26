@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import RichEditorMenuItem, { IRichEditorMenuItem } from "./RichEditorMenuItem";
 import defaultGetMenuItems from "./defaultGetMenuItems";
+import { uniqueId } from "lodash";
 
 interface IRichEditorMenuBarProps {
   editor: Editor;
@@ -42,9 +43,9 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
       onFocus={(e) => e.preventDefault()}
       tabIndex={-1}
     >
-      {menuItems.map((menuItem, index) => (
+      {menuItems.map((menuItem) => (
         <Box
-          key={`divider-${index.toString()}`}
+          key={uniqueId()}
           sx={{ display: "flex", flexWrap: "wrap" }}
           onFocus={(e) => e.preventDefault()}
           onClick={(e) => {

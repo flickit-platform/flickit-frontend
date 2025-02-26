@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Grid, Typography } from "@mui/material";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";

@@ -14,12 +14,12 @@ interface IMoreActionsProps {
   closeMenu: (e: any) => void;
   loading?: boolean;
   hideInnerIconButton?: boolean;
-  anchorEl?: Element | ((element: Element) => Element) | null | undefined;
+  anchorEl?: Element | ((element: Element) => Element) | null;
   fontSize?: "inherit" | "small" | "large" | "medium";
   items: (
     | {
         icon?: JSX.Element;
-        onClick?: React.MouseEventHandler<HTMLLIElement> | undefined;
+        onClick?: React.MouseEventHandler<HTMLLIElement>;
         text: JSX.Element;
         menuItemProps?: MenuItemProps & { "data-cy"?: string };
       }
@@ -28,6 +28,8 @@ interface IMoreActionsProps {
     | false
   )[];
   setShowTooltip?: (e: boolean) => void;
+  color?: string;
+  IconButtonProps?: any;
 }
 
 const MoreActions = (props: IMoreActionsProps) => {
@@ -42,11 +44,13 @@ const MoreActions = (props: IMoreActionsProps) => {
     hideInnerIconButton = false,
     fontSize = "inherit",
     setShowTooltip,
+    color,
+    IconButtonProps,
   } = props;
 
   const menuItems = items.filter((item) => !!item) as {
     icon?: JSX.Element;
-    onClick?: React.MouseEventHandler<HTMLLIElement> | undefined;
+    onClick?: React.MouseEventHandler<HTMLLIElement>;
     text: JSX.Element;
     menuItemProps?: MenuItemProps & { "data-cy"?: string };
   }[];
@@ -56,6 +60,7 @@ const MoreActions = (props: IMoreActionsProps) => {
       {!hideInnerIconButton && (
         <IconButton
           data-cy="more-action-btn"
+          sx={IconButtonProps}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -66,7 +71,10 @@ const MoreActions = (props: IMoreActionsProps) => {
           {loading ? (
             <CircularProgress size="1.25rem" />
           ) : (
-            <MoreVertIcon fontSize={fontSize ? fontSize : "small"} />
+            <MoreVertIcon
+              sx={{ fill: color }}
+              fontSize={fontSize ? fontSize : "small"}
+            />
           )}
         </IconButton>
       )}

@@ -26,8 +26,8 @@ interface ListOfItemsProps {
 interface ITempValues {
   title: string;
   description: string;
-  weight: number | undefined;
-  question: number | undefined;
+  weight?: number;
+  question?: number;
 }
 const ListOfItems = ({
   items,
@@ -35,7 +35,7 @@ const ListOfItems = ({
   onReorder,
   deleteBtn,
   name,
-  setOpenDeleteDialog
+  setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
@@ -233,7 +233,12 @@ const ListOfItems = ({
                             {deleteBtn && (
                               <IconButton
                                 size="small"
-                                onClick={() => setOpenDeleteDialog({status:true,id: item.id})}
+                                onClick={() =>
+                                  setOpenDeleteDialog({
+                                    status: true,
+                                    id: item.id,
+                                  })
+                                }
                                 sx={{ mx: 1 }}
                                 color="secondary"
                                 data-testid="items-delete-icon"

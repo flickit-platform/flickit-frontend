@@ -2,7 +2,6 @@ import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import GeneralLayout from "./layout/GeneralLayout";
-import languageDetector from "@utils/languageDetector";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
 import BulletPointStatus from "./BulletPointStatus";
@@ -12,6 +11,7 @@ import AssessmentSubjectRadialChart from "@components/assessment-report/Assessme
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types";
+import { uniqueId } from "lodash";
 
 const SubjectReport = ({
   graphicalReport,
@@ -134,6 +134,7 @@ const SubjectReport = ({
             {item?.attributes?.map((attribute: any) => {
               return (
                 <BoxReportLayout
+                  key={uniqueId()}
                   language={lang.code.toLowerCase()}
                   confidenceValue={attribute.confidenceValue}
                   maturityLevelCount={maturityLevelCount}

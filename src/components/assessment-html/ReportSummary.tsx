@@ -4,6 +4,7 @@ import { getMaturityLevelColors, styles } from "@/config/styles";
 import { IGraphicalReport, ISubject } from "@/types";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
+import { uniqueId } from "lodash";
 
 const sectionStyle = {
   marginTop: "16px",
@@ -80,8 +81,8 @@ const TopicsList = ({
   graphicalReport: IGraphicalReport;
 }) => (
   <Box>
-    {graphicalReport?.subjects?.map((subject: any, index: any) => (
-      <Box key={index} sx={{ marginBottom: "16px" }}>
+    {graphicalReport?.subjects?.map((subject: any) => (
+      <Box key={uniqueId()} sx={{ marginBottom: "16px" }}>
         <Typography
           sx={{
             fontWeight: "bold",
@@ -98,9 +99,9 @@ const TopicsList = ({
         >
           {subject.title}
         </Typography>
-        {subject.attributes.map((attribute: any, idx: any) => (
+        {subject.attributes.map((attribute: any) => (
           <Box
-            key={idx}
+            key={uniqueId()}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -151,9 +152,9 @@ const QuestionnaireList = ({
 }) => (
   <Box>
     {graphicalReport?.assessment?.assessmentKit.questionnaires?.map(
-      (item: any, index: any) => (
+      (item: any) => (
         <Box
-          key={index}
+          key={uniqueId()}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -220,8 +221,7 @@ const ReportCard = ({
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
-  const { assessment, advice, permissions, subjects, assessmentProcess, lang } =
-    graphicalReport;
+  const { assessment, subjects, assessmentProcess, lang } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
   return (
     <Box
@@ -344,65 +344,63 @@ const ReportCard = ({
           lng: lang.code.toLowerCase(),
           maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
         })}
-        {assessment.assessmentKit.maturityLevels.map(
-          (level: any, index: number) => (
+        {assessment.assessmentKit.maturityLevels.map((level: any) => (
+          <Box
+            key={uniqueId()}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
             <Box
-              key={index}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
+                backgroundColor: getMaturityLevelColors(
+                  assessment.assessmentKit.maturityLevelCount,
+                )[level.value - 1],
+                height: "10px",
+                width: "27px",
+                borderRadius: "16px",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+            ></Box>
+
+            <Typography
+              component="span"
+              sx={{
+                ...theme.typography.body2,
+                color: getMaturityLevelColors(
+                  assessment.assessmentKit.maturityLevelCount,
+                )[level.value - 1],
+                minWidth: "70px",
+                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                fontFamily:
+                  lang.code.toLowerCase() === "fa"
+                    ? farsiFontFamily
+                    : primaryFontFamily,
               }}
             >
-              <Box
-                sx={{
-                  backgroundColor: getMaturityLevelColors(
-                    assessment.assessmentKit.maturityLevelCount,
-                  )[level.value - 1],
-                  height: "10px",
-                  width: "27px",
-                  borderRadius: "16px",
-                  color: "#fff",
-                  fontWeight: "bold",
-                }}
-              ></Box>
+              {level.title}
+            </Typography>
 
-              <Typography
-                component="span"
-                sx={{
-                  ...theme.typography.body2,
-                  color: getMaturityLevelColors(
-                    assessment.assessmentKit.maturityLevelCount,
-                  )[level.value - 1],
-                  minWidth: "70px",
-                  direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                  fontFamily:
-                    lang.code.toLowerCase() === "fa"
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                }}
-              >
-                {level.title}
-              </Typography>
-
-              <Typography
-                textAlign="justify"
-                component="span"
-                sx={{
-                  ...theme.typography.extraLight,
-                  fontWeight: 300,
-                  direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                  fontFamily:
-                    lang.code.toLowerCase() === "fa"
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                }}
-              >
-                {level.description}
-              </Typography>
-            </Box>
-          ),
-        )}
+            <Typography
+              textAlign="justify"
+              component="span"
+              sx={{
+                ...theme.typography.extraLight,
+                fontWeight: 300,
+                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
+                fontFamily:
+                  lang.code.toLowerCase() === "fa"
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+              }}
+            >
+              {level.description}
+            </Typography>
+          </Box>
+        ))}
       </Section>
 
       <Section

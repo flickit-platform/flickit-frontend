@@ -123,16 +123,14 @@ export const ShareDialog = ({
         <Divider sx={{ mt: 1 }} />
       </Box>
       <QueryBatchData
-        queryBatchData={[
-          fetchGraphicalReportUsers,
-        ]}
+        queryBatchData={[fetchGraphicalReportUsers]}
         renderLoading={() => {
           return (
             <>
-              {[1, 2, 3].map((item) => {
+              {[1, 2, 3].map((number) => {
                 return (
                   <Skeleton
-                    key={item}
+                    key={number}
                     variant="rectangular"
                     sx={{ borderRadius: 2, height: "30px", mb: 1 }}
                   />

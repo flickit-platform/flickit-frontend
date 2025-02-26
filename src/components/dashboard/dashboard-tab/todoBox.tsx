@@ -13,7 +13,7 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -118,9 +118,9 @@ const TodoBox = (props: any) => {
               </IconButton>
             </Tooltip>
           </Box>
-          {next.map((item: any, index: number) => {
+          {next.map((item: any) => {
             return (
-              <>
+              <Box key={uniqueId()}>
                 <Box
                   sx={{
                     display: "flex",
@@ -169,7 +169,7 @@ const TodoBox = (props: any) => {
                       );
                     })}
                 </Grid>
-              </>
+              </Box>
             );
           })}
         </Box>
@@ -191,6 +191,12 @@ const IssuesItem = (props: any) => {
     runOnMount: false,
   });
 
+    const generateInsights = useQuery({
+        service: (args = { assessmentId }, config) =>
+            service.generateInsights(args, config),
+        runOnMount: false,
+    });
+
   const filteredQuestionnaire = (name: string) => {
     let newName = name;
     if (name == "withoutEvidence") {
@@ -210,6 +216,16 @@ const IssuesItem = (props: any) => {
       toastError(err);
     }
   };
+
+    const approvedGeneratedAll= async () => {
+        try {
+            await generateInsights.query();
+            await fetchDashboard.query();
+        } catch (e) {
+            const err = e as ICustomError;
+            toastError(err);
+        }
+    };
 
   return (
     <Box
@@ -248,6 +264,12 @@ const IssuesItem = (props: any) => {
             <Trans i18nKey={"needForAnswers"} />
           ) : (
             <Trans i18nKey={"needsForAnswer"} />
+          ))}
+          {name == "unapprovedAnswers" &&
+          (value > 1 ? (
+            <Trans i18nKey={"answersNeedApproval"} />
+          ) : (
+            <Trans i18nKey={"answerNeedsApproval"} />
           ))}
         {name == "answeredWithLowConfidence" &&
           (value > 1 ? (
@@ -303,6 +325,21 @@ const IssuesItem = (props: any) => {
         >
           <Typography sx={{ ...theme.typography.labelMedium }}>
             <Trans i18nKey={"approveAll"} />
+          </Typography>
+        </Button>
+      )}
+        {name == "notGenerated" && (
+        <Button
+          onClick={approvedGeneratedAll}
+          sx={{
+            padding: "4px 10px",
+            marginInlineStart: "auto",
+            color: theme.palette.primary.main,
+          }}
+          variant={"outlined"}
+        >
+          <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Trans i18nKey={"GenerateAll"} />
           </Typography>
         </Button>
       )}

@@ -104,7 +104,12 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               </Typography>
             </Box>
           ) : validateKitVersion?.data?.isValid ? (
-            <Box display="flex" alignItems="center" gap={1} color="color(srgb 0.4176 0.72 0.6025)">
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={1}
+              color="color(srgb 0.4176 0.72 0.6025)"
+            >
               <CheckCircleIcon color="inherit" />
               <Typography variant="bodyMedium">
                 <Trans i18nKey="kitValidated" />{" "}
@@ -124,13 +129,11 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                 </Typography>
               </Box>
               <ul>
-                {validateKitVersion?.data?.errors.map(
-                  (error: string, index: number) => (
-                    <li key={error}>
-                      <Typography variant="bodyMedium">{error}</Typography>
-                    </li>
-                  ),
-                )}
+                {validateKitVersion?.data?.errors.map((error: string) => (
+                  <li key={error}>
+                    <Typography variant="bodyMedium">{error}</Typography>
+                  </li>
+                ))}
               </ul>
             </>
           )}

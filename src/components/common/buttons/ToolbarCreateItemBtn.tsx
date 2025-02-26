@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 
 interface IToolbarCreateItemBtnProps extends ButtonProps {
   icon?: JSX.Element;
-  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   shouldAnimate?: boolean;
   text: `create${string}`;
   minWidth?: string;
@@ -19,7 +19,7 @@ export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
     <Button
       {...rest}
       size="small"
-      startIcon={icon}
+      endIcon={icon}
       onClick={onClick}
       variant="contained"
       sx={{

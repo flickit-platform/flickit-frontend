@@ -17,8 +17,6 @@ import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useState } from "react";
 import { styles } from "@styles";
 import { useLocation } from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -41,6 +39,10 @@ const itemNames = [
   {
     translate: t("answersWithNoEvidence"),
     original: "answeredWithoutEvidence",
+  },
+  {
+    translate: t("unapprovedAnswers"),
+    original: "unapprovedAnswers",
   },
 ];
 
@@ -143,7 +145,6 @@ export const QuestionsFilteringDropdown = (props: any) => {
         )}
       </Typography>
       <FormControl sx={{ m: 1, width: 250 }}>
-        <InputLabel id="demo-multiple-checkbox-label-kit-container"><Trans i18nKey={"languages"} /></InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label-kit-container"
           id="demo-multiple-checkbox"
@@ -151,7 +152,6 @@ export const QuestionsFilteringDropdown = (props: any) => {
           value={issues.map((item: any) => t(item))}
           onChange={handleChange}
           displayEmpty={true}
-          input={<OutlinedInput label="languages" />}
           renderValue={(selected) => handelSelected(selected)}
           sx={{
             ...theme.typography.semiBoldMedium,
@@ -190,9 +190,6 @@ export const QuestionsFilteringDropdown = (props: any) => {
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
-
-  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
-    useState<boolean>(true);
 
   const { state } = useLocation();
 
@@ -269,9 +266,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                             data={data}
                             permissions={permissions}
                             originalItem={originalItem}
-                            setQuestionCardColumnCondition={
-                              setQuestionCardColumnCondition
-                            }
                           />
                         </Grid>
                       );

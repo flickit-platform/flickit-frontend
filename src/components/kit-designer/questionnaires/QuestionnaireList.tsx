@@ -41,8 +41,8 @@ interface ListOfItemsProps {
 interface ITempValues {
   title: string;
   description: string;
-  weight: number | undefined;
-  question: number | undefined;
+  weight?: number;
+  question?: number;
 }
 interface IQuestion {
   advisable: boolean;

@@ -1,4 +1,4 @@
-export default function PreAttachment({ mainColor }: { mainColor: string }) {
+export default function PreAttachment({ mainColor }: any) {
   return (
     <svg
       width="40"

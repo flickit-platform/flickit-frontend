@@ -21,7 +21,6 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    console.log(fetchAdviceNarration.data);
     setAboutSection(
       fetchAdviceNarration.data?.aiNarration ||
         fetchAdviceNarration.data?.assessorNarration,

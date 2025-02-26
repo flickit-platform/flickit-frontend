@@ -26,6 +26,7 @@ import { useQuery } from "@utils/useQuery";
 import { LoadingButton } from "@mui/lab";
 import { theme } from "@/config/theme";
 import SelectLanguage from "@utils/selectLanguage";
+import { uniqueId } from "lodash";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -62,8 +63,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   }, []);
   const { type, data = {} } = context;
   const { expertGroupId: fallbackExpertGroupId } = useParams();
-  const { id, expertGroupId = fallbackExpertGroupId,languages } = data;
-  const [lang,setLang] = useState("");
+  const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
+  const [lang, setLang] = useState("");
   const defaultValues = type === "update" ? data : {};
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -84,7 +85,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setDropNewFile(null);
     setConvertData(null);
     setIsValid(false);
-    setLang(languages[0].title)
+    setLang(languages[0].title);
   };
   const fetchSampleExecl = useQuery({
     service: (args, config) => service.fetchExcelToDSLSampleFile(args, config),
@@ -98,8 +99,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   }, []);
 
   useEffect(() => {
-    if(languages){
-      setLang(languages[0].title)
+    if (languages) {
+      setLang(languages[0].title);
     }
   }, [languages]);
 
@@ -110,7 +111,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       isPrivate: isPrivate,
       tagIds: tags.map((t: any) => t.id),
       expertGroupId: expertGroupId,
-      lang : lang == languages[0]?.title ? languages[0]?.code : languages[1]?.code,
+      lang:
+        lang == languages[0]?.title ? languages[0]?.code : languages[1]?.code,
       ...restOfData,
     };
     if (type !== "draft") {
@@ -181,7 +183,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         type: "application/zip",
         lastModified: new Date().getTime(),
       });
-      setZippedData({file:zipfile, name:fileName});
+      setZippedData({ file: zipfile, name: fileName });
       setButtonStep(1);
       setDropNewFile([file]);
     });
@@ -202,8 +204,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         link.click();
         link.remove();
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   const handleSelectedChange = (e: any) => {
@@ -353,13 +354,17 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           />
         </Grid>
         <Grid
-            item
-            xs={12}
-            sm={4}
-            md={4}
-            sx={{width:"100%", display: `${activeStep === 0 ? "none" : ""}` }}
+          item
+          xs={12}
+          sm={4}
+          md={4}
+          sx={{ width: "100%", display: `${activeStep === 0 ? "none" : ""}` }}
         >
-          <SelectLanguage handleChange={handleSelectedChange} lang={lang} languages={languages} />
+          <SelectLanguage
+            handleChange={handleSelectedChange}
+            lang={lang}
+            languages={languages}
+          />
         </Grid>
         <Grid
           item
@@ -452,9 +457,9 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       <Divider />
       <Box mt={4} sx={{ maxHeight: "260px", overflow: "scroll" }}>
         {syntaxErrorObject &&
-          syntaxErrorObject.map((e: any, index: number) => {
+          syntaxErrorObject.map((e: any) => {
             return (
-              <Box sx={{ ml: 1 }} key={e?.line}>
+              <Box sx={{ ml: 1 }} key={uniqueId()}>
                 <Alert severity="error" sx={{ my: 2 }}>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <Typography variant="subtitle2" color="error">

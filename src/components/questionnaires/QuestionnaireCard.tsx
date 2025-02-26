@@ -18,27 +18,27 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
   permissions: IPermissions;
   originalItem: string[];
-  setQuestionCardColumnCondition: any;
 }
 
 const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
-  const { data, originalItem, setQuestionCardColumnCondition } = props;
+  const { data, originalItem } = props;
   const {
     issues: {
       answeredWithLowConfidence,
       answeredWithoutEvidence,
       unanswered,
       unresolvedComments,
+      unapprovedAnswers
     },
   } = data;
   const { permissions }: { permissions: IPermissions } = props;
@@ -60,19 +60,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   const mainBoxRef = useRef<any>(null);
   const boxRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (titleRef?.current) {
-      if (
-        mainBoxRef?.current?.offsetWidth -
-          (boxRef?.current?.offsetWidth + 50) <=
-        titleRef?.current?.offsetWidth
-      ) {
-        setQuestionCardColumnCondition(false);
-      } else {
-        setQuestionCardColumnCondition(true);
-      }
-    }
-  }, []);
   return (
     <Paper sx={{ mt: 3 }} data-cy="questionnaire-card">
       <Box
@@ -188,7 +175,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         gap: 1,
                       }}
                     >
-                      <InfoOutlinedIcon
+                      <ErrorOutlineIcon
                         fontSize={"small"}
                         style={{ fill: theme.palette.error.main }}
                       />
@@ -220,7 +207,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         gap: 1,
                       }}
                     >
-                      <InfoOutlinedIcon
+                      <ErrorOutlineIcon
                         fontSize={"small"}
                         style={{ fill: theme.palette.error.main }}
                       />
@@ -238,6 +225,38 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 }
               />
             )}
+          {!!unapprovedAnswers &&
+              originalItem.includes("unapprovedAnswers") && (
+                  <Chip
+                      sx={{ background: "#8A0F240A" }}
+                      label={
+                        <Grid>
+                          <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 1,
+                              }}
+                          >
+                            <ErrorOutlineIcon
+                                fontSize={"small"}
+                                style={{ fill: theme.palette.error.main }}
+                            />
+                            <Typography
+                                style={{
+                                  color: theme.palette.error.main,
+                                  ...theme.typography.bodyMedium,
+                                }}
+                            >
+                              <Trans i18nKey={"unapprovedAnswers"} />:{" "}
+                              {unapprovedAnswers}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      }
+                  />
+              )}
           {!!unanswered && originalItem.includes("unanswered") && (
             <Chip
               sx={{ background: "#8A0F240A" }}
@@ -251,7 +270,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                       gap: 1,
                     }}
                   >
-                    <InfoOutlinedIcon
+                    <ErrorOutlineIcon
                       fontSize={"small"}
                       style={{ fill: theme.palette.error.main }}
                     />
@@ -282,7 +301,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         gap: 1,
                       }}
                     >
-                      <InfoOutlinedIcon
+                      <ErrorOutlineIcon
                         fontSize={"small"}
                         style={{ fill: theme.palette.error.main }}
                       />

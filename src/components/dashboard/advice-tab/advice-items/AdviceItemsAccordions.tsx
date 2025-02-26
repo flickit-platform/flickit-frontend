@@ -208,15 +208,13 @@ const AdviceItemAccordion: React.FC<{
   const removeDescriptionAdvice = useRef(false);
 
   useEffect(() => {
-    if (isEditing) {
-      setNewAdvice({
-        title: item.title,
-        description: item.description,
-        priority: item.priority.code,
-        cost: item.cost.code,
-        impact: item.impact.code,
-      });
-    }
+    setNewAdvice({
+      title: item.title,
+      description: item.description,
+      priority: item.priority.code,
+      cost: item.cost.code,
+      impact: item.impact.code,
+    });
   }, [isEditing, item, assessmentId]);
 
   const handleCancel = () => {

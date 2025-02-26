@@ -4,7 +4,7 @@ import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import lens from "@assets/svg/lens.svg";
-import { getMaturityLevelColors, styles } from "@styles";
+import { getMaturityLevelColors } from "@styles";
 import { t } from "i18next";
 
 interface IBoxReport {

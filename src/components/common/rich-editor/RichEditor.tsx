@@ -25,6 +25,7 @@ interface IRichEditorProps {
   checkLang?: boolean;
   placeholder?: any;
   type?: string;
+  showEditorMenu?: boolean
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -39,6 +40,7 @@ const RichEditor = (props: IRichEditorProps) => {
     checkLang,
     placeholder,
     type,
+    showEditorMenu
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
@@ -146,7 +148,7 @@ const RichEditor = (props: IRichEditorProps) => {
               "&:hover .ProseMirror": {
                 borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.87)"}`,
               },
-              "& .rich-editor--menu": editor?.isFocused
+              "& .rich-editor--menu": editor?.isFocused || showEditorMenu
                 ? {
                     opacity: 1,
                     zIndex: 10,

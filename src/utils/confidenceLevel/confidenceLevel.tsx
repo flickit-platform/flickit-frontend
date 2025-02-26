@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { confidenceColor } from "@/config/styles";
 
 interface IconfidenceLevelType {
-  inputNumber: number | null | undefined;
+  inputNumber?: number | null;
   displayNumber?: boolean;
   variant?: any;
   fontFamily?: any;

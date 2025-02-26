@@ -173,7 +173,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           closeDialog={close}
           loading={loading}
           type={type}
-          hasViewBtn={hideSubmitAndView ? false : true}
+          hasViewBtn={!hideSubmitAndView}
           onSubmit={(...args) =>
             formMethods.handleSubmit((data) => onSubmit(data, ...args))
           }

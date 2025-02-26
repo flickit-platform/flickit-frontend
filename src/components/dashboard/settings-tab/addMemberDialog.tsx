@@ -41,7 +41,6 @@ export enum EUserType {
 const AddMemberDialog = (props: {
   expanded: boolean;
   onClose: () => void;
-  listOfUser: any;
   setChangeData?: any;
   cancelText: any;
   confirmText: any;
@@ -55,7 +54,6 @@ const AddMemberDialog = (props: {
     confirmText,
     setChangeData,
     listOfRoles = [],
-    listOfUser,
     assessmentId,
   } = props;
 
@@ -75,7 +73,13 @@ const AddMemberDialog = (props: {
   });
 
   const spaceMembersQueryData = useQuery({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId }, config),
+    service: (args, config) =>
+      service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
+  });
+  const fetchAssessmentMembers = useQuery({
+    service: (args, config) => service.fetchAssessmentMembers(args, config),
+    toastError: false,
+    toastErrorOptions: { filterByStatus: [404] },
   });
 
   const addRoleMemberQueryData = useQuery({
@@ -105,13 +109,20 @@ const AddMemberDialog = (props: {
     (async () => {
       try {
         setAddedEmailType(EUserType.DEFAULT);
-        const { data } = await spaceMembersQueryData;
-        if (data) {
-          const { items } = data;
-          const filtredItems = items.filter((item: any) =>
-            listOfUser.some((userListItem: any) => item.id === userListItem.id),
-          );
-          setMemberOfSpace(filtredItems);
+        if (expanded) {
+          const { data } = spaceMembersQueryData;
+          const { items: member } = await fetchAssessmentMembers.query({
+            assessmentId,
+            page: 0,
+            size: 100,
+          });
+          if (data) {
+            const { items } = data;
+            const filteredItem = items.filter((item: any) =>
+              member.some((userListItem: any) => item.id === userListItem.id),
+            );
+            setMemberOfSpace(filteredItem);
+          }
         }
       } catch (e) {
         const err = e as ICustomError;
@@ -239,7 +250,7 @@ const AddMemberDialog = (props: {
           width="100%"
           mt={1}
         >
-          <Typography sx={{whiteSpace:"noWrap"}}>
+          <Typography sx={{ whiteSpace: "noWrap" }}>
             <Trans i18nKey={"add"} />
           </Typography>
           <Box width="50%">
@@ -250,7 +261,7 @@ const AddMemberDialog = (props: {
               />
             </FormProviderWithForm>
           </Box>
-          <Typography sx={{whiteSpace: "nowrap"}}>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             <Trans i18nKey={"as"} />
           </Typography>
           <FormControl sx={{ width: "40%" }}>
@@ -298,65 +309,65 @@ const AddMemberDialog = (props: {
                 </Typography>
               </Box>
               {listOfRoles?.map((role: any, index: number) => {
-                  return (
-                    <MenuItem
-                      style={{ display: "block" }}
-                      key={role.title}
-                      value={role}
-                      id={role.id}
+                return (
+                  <MenuItem
+                    style={{ display: "block" }}
+                    key={role.title}
+                    value={role}
+                    id={role.id}
+                    sx={{
+                      "&.MuiMenuItem-root:hover": {
+                        ...(roleSelected?.title == role.title
+                          ? {
+                              backgroundColor: "#9CCAFF",
+                              color: "#004F83",
+                            }
+                          : {
+                              backgroundColor: "#EFEDF0",
+                              color: "#1B1B1E",
+                            }),
+                      },
+                      background:
+                        roleSelected?.title == role.title ? "#9CCAFF" : "",
+                    }}
+                  >
+                    <Box
                       sx={{
-                        "&.MuiMenuItem-root:hover": {
-                          ...(roleSelected?.title == role.title
-                            ? {
-                                backgroundColor: "#9CCAFF",
-                                color: "#004F83",
-                              }
-                            : {
-                                backgroundColor: "#EFEDF0",
-                                color: "#1B1B1E",
-                              }),
-                        },
-                        background:
-                          roleSelected?.title == role.title ? "#9CCAFF" : "",
+                        maxWidth: "240px",
+                        color: "#2B333B",
+                        fontSize: "0.875rem",
+                        lineHeight: "21px",
+                        fontWeight: 500,
+                        paddingY: "1rem",
                       }}
                     >
-                      <Box
-                        sx={{
-                          maxWidth: "240px",
+                      <Typography>{role.title}</Typography>
+                      <div
+                        style={{
                           color: "#2B333B",
                           fontSize: "0.875rem",
                           lineHeight: "21px",
-                          fontWeight: 500,
-                          paddingY: "1rem",
+                          fontWeight: 300,
+                          whiteSpace: "break-spaces",
+                          paddingTop: "1rem",
                         }}
                       >
-                        <Typography>{role.title}</Typography>
-                        <div
-                          style={{
-                            color: "#2B333B",
-                            fontSize: "0.875rem",
-                            lineHeight: "21px",
-                            fontWeight: 300,
-                            whiteSpace: "break-spaces",
-                            paddingTop: "1rem",
-                          }}
-                        >
-                          {role.description}
-                        </div>
-                      </Box>
-                      {listOfRoles && listOfRoles.length > index + 1 && (
-                        <Box
-                          sx={{
-                            height: "0.5px",
-                            width: "80%",
-                            backgroundColor: "#9DA7B3",
-                            mx: "auto",
-                          }}
-                        ></Box>
-                      )}
-                    </MenuItem>
-                  );
-                })}
+                        {role.description}
+                      </div>
+                    </Box>
+                    {listOfRoles && listOfRoles.length > index + 1 && (
+                      <Box
+                        sx={{
+                          height: "0.5px",
+                          width: "80%",
+                          backgroundColor: "#9DA7B3",
+                          mx: "auto",
+                        }}
+                      ></Box>
+                    )}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </Box>
@@ -421,7 +432,8 @@ const EmailField = ({
   const { service } = useServiceContext();
   const { spaceId = "" } = useParams();
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.fetchSpaceMembers({ spaceId }, config),
+    service: (args, config) =>
+      service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
     accessor: "items",
   });
   const loadUserByEmail = useQuery({

@@ -19,7 +19,7 @@ interface IAssessmentAccessManagementTitle {
 const AssessmentSettingTitle = (props: IAssessmentAccessManagementTitle) => {
   const { pathInfo } = props;
   const { spaceId, page } = useParams();
-  const { space, assessment } = pathInfo;
+  const { space } = pathInfo;
 
   return (
     <Title

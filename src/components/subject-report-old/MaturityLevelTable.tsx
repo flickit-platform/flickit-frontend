@@ -368,13 +368,13 @@ const MaturityLevelTable = ({
               {columns.map((column) => (
                 <TableCell
                   key={column.field}
-                  align={column.align || "left"}
+                  align={column.align ?? "left"}
                   sx={{
                     color:
                       tempData.sort === column.field
                         ? theme.palette.primary.main + " !important"
                         : "#939393 !important",
-                    width: column.width || "auto",
+                    width: column.width ?? "auto",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
@@ -451,7 +451,7 @@ const MaturityLevelTable = ({
                         {columns.map((column) => (
                           <TableCell
                             key={column.field}
-                            align={column.align || "left"}
+                            align={column.align ?? "left"}
                             title={
                               column.field === "questionnaire"
                                 ? item.questionnaire
@@ -461,7 +461,7 @@ const MaturityLevelTable = ({
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap",
-                              maxWidth: column.width || "100%",
+                              maxWidth: column.width ?? "100%",
                               textAlign:
                                 column.serverKey === "question" ||
                                 column.serverKey === "answer"
