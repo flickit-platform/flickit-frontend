@@ -1538,7 +1538,7 @@ export const createService = (
         { ...config },
       );
     },
-    generatedInsights(
+    generateInsights(
       { assessmentId }: { assessmentId: TId },
       config?: AxiosRequestConfig<any>,
     ) {

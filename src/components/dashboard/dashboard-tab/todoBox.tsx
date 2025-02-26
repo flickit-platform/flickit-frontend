@@ -191,9 +191,9 @@ const IssuesItem = (props: any) => {
     runOnMount: false,
   });
 
-    const generatedInsights = useQuery({
+    const generateInsights = useQuery({
         service: (args = { assessmentId }, config) =>
-            service.generatedInsights(args, config),
+            service.generateInsights(args, config),
         runOnMount: false,
     });
 
@@ -219,7 +219,7 @@ const IssuesItem = (props: any) => {
 
     const approvedGeneratedAll= async () => {
         try {
-            await generatedInsights.query();
+            await generateInsights.query();
             await fetchDashboard.query();
         } catch (e) {
             const err = e as ICustomError;
