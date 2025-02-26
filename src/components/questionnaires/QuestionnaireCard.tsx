@@ -22,7 +22,7 @@ import React, { useEffect, useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -189,7 +189,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         gap: 1,
                       }}
                     >
-                      <InfoOutlinedIcon
+                      <ErrorOutlineIcon
                         fontSize={"small"}
                         style={{ fill: theme.palette.error.main }}
                       />
@@ -221,7 +221,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         gap: 1,
                       }}
                     >
-                      <InfoOutlinedIcon
+                      <ErrorOutlineIcon
                         fontSize={"small"}
                         style={{ fill: theme.palette.error.main }}
                       />
@@ -253,7 +253,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                                 gap: 1,
                               }}
                           >
-                            <InfoOutlinedIcon
+                            <ErrorOutlineIcon
                                 fontSize={"small"}
                                 style={{ fill: theme.palette.error.main }}
                             />
@@ -284,7 +284,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                       gap: 1,
                     }}
                   >
-                    <InfoOutlinedIcon
+                    <ErrorOutlineIcon
                       fontSize={"small"}
                       style={{ fill: theme.palette.error.main }}
                     />
@@ -315,7 +315,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                         gap: 1,
                       }}
                     >
-                      <InfoOutlinedIcon
+                      <ErrorOutlineIcon
                         fontSize={"small"}
                         style={{ fill: theme.palette.error.main }}
                       />
