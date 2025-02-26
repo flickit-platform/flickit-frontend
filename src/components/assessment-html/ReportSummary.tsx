@@ -221,8 +221,7 @@ const ReportCard = ({
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
-  const { assessment, advice, permissions, subjects, assessmentProcess, lang } =
-    graphicalReport;
+  const { assessment, subjects, assessmentProcess, lang } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
   return (
     <Box
