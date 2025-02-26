@@ -50,8 +50,8 @@ export const DeleteConfirmationDialog = ({
         type="delete"
         loading={false}
         onClose={onClose}
-        submitButtonLabel={confirmButtonText || t("confirm")}
-        cancelLabel={cancelButtonText || t("cancel")}
+        submitButtonLabel={confirmButtonText ?? t("confirm")}
+        cancelLabel={cancelButtonText ?? t("cancel")}
         onSubmit={onConfirm}
       />
     </CEDialog>
