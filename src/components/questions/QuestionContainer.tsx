@@ -22,8 +22,7 @@ import { t } from "i18next";
 export const QuestionContainer = () => {
   const {
     questionInfo,
-    hasNextQuestion,
-    hasPreviousQuestion,
+
     container,
     assessmentStatus,
     questionsInfo,
@@ -34,12 +33,7 @@ export const QuestionContainer = () => {
     <>
       {loaded && (
         <Box overflow="hidden">
-          {questionsInfo.questions?.[realIndex - 1] && (
-            <QuestionsProgress
-              hasNextQuestion={hasNextQuestion}
-              hasPreviousQuestion={hasPreviousQuestion}
-            />
-          )}
+          {questionsInfo.questions?.[realIndex - 1] && <QuestionsProgress />}
           {assessmentStatus === EAssessmentStatus.DONE ? (
             <Review questions={questionsInfo.questions} />
           ) : (

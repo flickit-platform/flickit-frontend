@@ -118,14 +118,14 @@ const AssessmentKitSettingFormDialog = (
             <InputFieldUC
               name="title"
               label={<Trans i18nKey="title" />}
-              defaultValue={fetchAssessmentKitData?.title || ""}
+              defaultValue={fetchAssessmentKitData?.title ?? ""}
             />
           </Grid>
           <Grid item xs={12} md={12}>
             <InputFieldUC
               name="summary"
               label={<Trans i18nKey="summary" />}
-              defaultValue={fetchAssessmentKitData?.summary || ""}
+              defaultValue={fetchAssessmentKitData?.summary ?? ""}
             />
           </Grid>
           <Grid item xs={12} md={12}>

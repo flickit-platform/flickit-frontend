@@ -15,7 +15,7 @@ import { QuestionPopover } from "./QuestionPopover";
 import { Tooltip } from "@mui/material";
 import { uniqueId } from "lodash";
 
-const QuestionsProgress = ({}: any) => {
+const QuestionsProgress = () => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
     useQuestionContext();
   const { questions = [] } = questionsInfo;

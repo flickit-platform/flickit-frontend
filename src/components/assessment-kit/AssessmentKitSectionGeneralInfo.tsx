@@ -93,7 +93,7 @@ const AssessmentKitSectionGeneralInfo = (
       );
 
       await fetchAssessmentKitInfoQuery.query();
-      await handleCancel();
+      handleCancel();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);

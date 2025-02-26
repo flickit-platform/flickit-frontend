@@ -1495,7 +1495,7 @@ const QuestionnairesQuestionList = (props: any) => {
   );
 };
 const MaturityLevelsDetails = (props: any) => {
-  const { maturity_levels, update } = props;
+  const { maturity_levels } = props;
   const colorPallet = getMaturityLevelColors(
     maturity_levels ? maturity_levels.length : 5,
   );

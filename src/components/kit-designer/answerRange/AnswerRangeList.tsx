@@ -44,7 +44,7 @@ interface ITempValues {
 }
 interface IQuestion {
   advisable: boolean;
-  hint: null | any;
+  hint: any;
   id: number;
   index: number;
   mayNotBeApplicable: boolean;

@@ -707,7 +707,7 @@ export const AttributeStatusBar = (props: any) => {
 
 export const MaturityLevelDetailsBar = (props: any) => {
   const { score, is_passed, text } = props;
-  const width = `${score != null ? score : 100}%`;
+  const width = `${score ?? 100}%`;
   const bg_color = is_passed ? "#1769aa" : "#545252";
   const color = is_passed ? "#d1e6f8" : "#808080";
   return (

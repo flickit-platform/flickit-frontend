@@ -20,7 +20,6 @@ import { styles, animations } from "@styles";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useNavigate, useParams } from "react-router-dom";
-import { theme } from "@/config/theme";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 

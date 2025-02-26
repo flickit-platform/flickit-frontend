@@ -110,7 +110,7 @@ const AddMemberDialog = (props: {
       try {
         setAddedEmailType(EUserType.DEFAULT);
         if (expanded) {
-          const { data } = await spaceMembersQueryData;
+          const { data } = spaceMembersQueryData;
           const { items: member } = await fetchAssessmentMembers.query({
             assessmentId,
             page: 0,

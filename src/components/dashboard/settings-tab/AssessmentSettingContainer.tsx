@@ -68,7 +68,7 @@ const AssessmentSettingContainer = () => {
 
   useEffect(() => {
     (async () => {
-      const { manageable, kit, kitCustomId } = await AssessmentInfo.query();
+      const { kit, kitCustomId } = await AssessmentInfo.query();
       setKitInfo({ kit, kitCustomId });
     })();
   }, [assessmentId]);

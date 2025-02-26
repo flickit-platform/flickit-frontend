@@ -2783,7 +2783,7 @@ const MyDropzone = (props: any) => {
             )}
             {typeFile == "pdf" && (
               <section style={{ width: "50%", height: "70%" }}>
-                <FileType name={"pdf"} />{" "}
+                <FileType />{" "}
               </section>
             )}
             {typeFile == "zip" && (

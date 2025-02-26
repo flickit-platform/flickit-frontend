@@ -102,7 +102,7 @@ const EditSpaceButton = (props: any) => {
   );
 };
 
-function SpaceSettings(props: { editable: boolean }) {
+function SpaceSettings(props: any) {
   const { editable } = props;
 
   const [value, setValue] = React.useState("1");
