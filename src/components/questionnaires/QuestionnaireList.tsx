@@ -17,8 +17,6 @@ import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useState } from "react";
 import { styles } from "@styles";
 import { useLocation } from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -193,9 +191,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
 
-  const [questionCardColumnCondition, setQuestionCardColumnCondition] =
-    useState<boolean>(true);
-
   const { state } = useLocation();
 
   useEffect(() => {
@@ -271,9 +266,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                             data={data}
                             permissions={permissions}
                             originalItem={originalItem}
-                            setQuestionCardColumnCondition={
-                              setQuestionCardColumnCondition
-                            }
                           />
                         </Grid>
                       );

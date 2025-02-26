@@ -8,7 +8,14 @@ import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
 
 const RichEditorField = (props: any) => {
-  const { name, rules = {}, defaultValue, required = false, ...rest } = props;
+  const {
+    name,
+    rules = {},
+    defaultValue,
+    required = false,
+    showEditorMenu,
+    ...rest
+  } = props;
   const { control } = useFormContext();
 
   return (
@@ -26,6 +33,7 @@ const RichEditorField = (props: any) => {
             required={required}
             field={field}
             defaultValue={defaultValue}
+            showEditorMenu={showEditorMenu}
           />
         );
       }}
@@ -43,6 +51,7 @@ const RichEditorFieldBase = (props: any) => {
     disable_label,
     placeholder,
     type,
+    showEditorMenu,
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
@@ -100,8 +109,9 @@ const RichEditorFieldBase = (props: any) => {
         checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
         placeholder={placeholder}
         type={type}
+        showEditorMenu={showEditorMenu}
       />
-      <FormHelperText style={{ marginTop: 0 }}>
+      <FormHelperText style={{ marginTop: 0, marginLeft: 0, marginRight: 0 }}>
         {errorMessage as string}
       </FormHelperText>
     </FormControl>

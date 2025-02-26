@@ -845,7 +845,7 @@
   "approveAll": "Approve all",
   "answerNeedApprove": "The selected answer needs approval from an assessor.",
   "privateTitle": "Private",
-  "approveAll": "Approve all",
   "'email' format is not valid.": "'email' format is not valid.",
-  "unapprovedAnswers": "Unapproved answers"
+  "unapprovedAnswers": "Unapproved answers",
+  "GenerateAll": "Generate all"
 }

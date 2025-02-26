@@ -447,10 +447,9 @@ export const QuestionTabsTemplate = (props: any) => {
     toastError: true,
     runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
   });
-
   const evidencesQueryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 50 },
+      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 100 },
       config,
     ) => service.fetchEvidences(args, config),
     toastError: true,
@@ -576,6 +575,7 @@ export const QuestionTabsTemplate = (props: any) => {
       </Box>
       {isExpanded && (
         <>
+          {/*todo*/}
           <TabPanel value="evidences" sx={{ width: "100%" }}>
             <Box mt={2} width="100%">
               <AnswerDetails
@@ -948,11 +948,14 @@ const AnswerTemplate = (props: {
                     fontSize: { xs: "1.15rem", sm: "1.3rem" },
                     fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ?
-                         answer?.approved == false &&
-                        permissions?.approveAnswer
-                            ? "#CC7400":
-                        "#0acb89" : "white"}`,
+                    boxShadow: `0 0 2px ${
+                      answer?.selectedOption?.index === defaultSelectedIndex
+                        ? answer?.approved == false &&
+                          permissions?.approveAnswer
+                          ? "#CC7400"
+                          : "#0acb89"
+                        : "white"
+                    }`,
                     borderWidth: "2px",
                     borderColor:
                       answer?.selectedOption?.index === defaultSelectedIndex
@@ -1250,10 +1253,7 @@ const AnswerDetails = ({
 };
 
 const AnswerHistoryItem = (props: any) => {
-  const {
-    item,
-    questionInfo,
-  }: { item: IAnswerHistory; questionInfo: IQuestionInfo } = props;
+  const { item }: { item: IAnswerHistory } = props;
 
   return (
     <Grid container spacing={2} px={1}>
@@ -1573,6 +1573,7 @@ const Evidence = (props: any) => {
       setValue(evidenceAttachmentType.positive);
     }
   }, [type]);
+
   return evidencesQueryData.loading ? (
     <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
       <CircularProgress />

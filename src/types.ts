@@ -283,6 +283,7 @@ export interface ISpaceModel {
   membersCount?: number;
   assessmentsCount?: number;
   is_default_space_for_current_user?: boolean;
+  type?: {code: string, title: string};
 }
 
 export interface ISpacesModel extends IDefaultModel<ISpaceModel> {

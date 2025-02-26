@@ -18,7 +18,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
@@ -28,11 +28,10 @@ interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
   permissions: IPermissions;
   originalItem: string[];
-  setQuestionCardColumnCondition: any;
 }
 
 const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
-  const { data, originalItem, setQuestionCardColumnCondition } = props;
+  const { data, originalItem } = props;
   const {
     issues: {
       answeredWithLowConfidence,
@@ -61,19 +60,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   const mainBoxRef = useRef<any>(null);
   const boxRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (titleRef?.current) {
-      if (
-        mainBoxRef?.current?.offsetWidth -
-          (boxRef?.current?.offsetWidth + 50) <=
-        titleRef?.current?.offsetWidth
-      ) {
-        setQuestionCardColumnCondition(false);
-      } else {
-        setQuestionCardColumnCondition(true);
-      }
-    }
-  }, []);
   return (
     <Paper sx={{ mt: 3 }} data-cy="questionnaire-card">
       <Box

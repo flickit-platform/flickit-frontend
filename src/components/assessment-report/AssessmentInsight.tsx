@@ -4,35 +4,35 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import IconButton from "@mui/material/IconButton";
-import CancelRounded from "@mui/icons-material/CancelRounded";
-import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
-import EditRounded from "@mui/icons-material/EditRounded";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import FormProviderWithForm from "../common/FormProviderWithForm";
-import RichEditorField from "../common/fields/RichEditorField";
 import { ICustomError } from "@/utils/CustomError";
-import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
 import languageDetector from "@/utils/languageDetector";
 import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
+import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [isApproved, setIsApproved] = useState(true);
   const [isSystemic, setIsSystemic] = useState(true);
+  const abortController = useRef(new AbortController());
+
+  const fetchAssessmentInsight = useQuery<any>({
+    service: (args, config) =>
+      service.fetchAssessmentInsight({ assessmentId }, config),
+    toastError: false,
+  });
 
   const ApproveAssessmentInsight = useQuery({
     service: (
@@ -56,37 +56,24 @@ export const AssessmentInsight = () => {
     try {
       event.stopPropagation();
       await ApproveAssessmentInsight.query();
-      fetchAssessment();
+      await fetchAssessmentInsight.query();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
     }
   };
-  const fetchAssessment = () => {
-    service
-      .fetchAssessmentInsight({ assessmentId }, {})
-      .then((res) => {
-        const data = res.data;
-        const selectedInsight = data.assessorInsight || data.defaultInsight;
-
-        if (selectedInsight) {
-          setIsSystemic(data.defaultInsight ?? false);
-          setInsight(selectedInsight);
-          setIsApproved(data.approved);
-        }
-        setEditable(data.editable ?? false);
-      })
-      .catch((error) => {
-        console.error("Error fetching assessment insight:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
 
   useEffect(() => {
-    fetchAssessment();
-  }, [assessmentId, service]);
+    const data = fetchAssessmentInsight.data;
+    const selectedInsight = data?.assessorInsight || data?.defaultInsight;
+
+    if (selectedInsight) {
+      setIsSystemic(data?.defaultInsight ?? false);
+      setInsight(selectedInsight);
+      setIsApproved(data?.approved);
+    }
+    setEditable(data?.editable ?? false);
+  }, [fetchAssessmentInsight.data]);
 
   return (
     <Box
@@ -105,7 +92,7 @@ export const AssessmentInsight = () => {
         px: { xs: 2, sm: 3.75 },
       }}
     >
-      {loading ? (
+      {fetchAssessmentInsight.loading ? (
         <Box
           display="flex"
           justifyContent="center"
@@ -138,7 +125,9 @@ export const AssessmentInsight = () => {
               <LoadingButton
                 onClick={(event) => {
                   event.stopPropagation();
-                  InitAssessmentInsight.query().then(() => fetchAssessment());
+                  InitAssessmentInsight.query().then(() =>
+                    fetchAssessmentInsight.query(),
+                  );
                 }}
                 variant={"contained"}
                 loading={InitAssessmentInsight.loading}
@@ -148,14 +137,25 @@ export const AssessmentInsight = () => {
               </LoadingButton>
             )}
           </Box>
-          <OnHoverRichEditor
-            data={insight?.insight}
+          <EditableRichEditor
+            defaultValue={insight?.insight}
             editable={editable}
-            infoQuery={fetchAssessment}
-            updateInsight={service.updateAssessmentInsight}
-            placeholder={t("writeHere", {
-              title: t("insight").toLowerCase(),
-            })}
+            fieldName="insight"
+            onSubmit={async (payload: any, event: any) => {
+              await service.updateAssessmentInsight(
+                {
+                  assessmentId,
+                  data: { insight: payload?.insight },
+                },
+                { signal: abortController.current.signal },
+              );
+            }}
+            infoQuery={fetchAssessmentInsight.query}
+            placeholder={
+              t("writeHere", {
+                title: t("insight").toLowerCase(),
+              }) ?? ""
+            }
           />
           {insight?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
@@ -242,194 +242,6 @@ export const AssessmentInsight = () => {
             </Box>
           )}
         </>
-      )}
-    </Box>
-  );
-};
-
-export const OnHoverRichEditor = (props: any) => {
-  const { data, editable, infoQuery, updateInsight, updateInsightParams } =
-    props;
-  const abortController = useRef(new AbortController());
-  const [isHovering, setIsHovering] = useState(false);
-  const [show, setShow] = useState(false);
-  const { assessmentId = "" } = useParams();
-  const formMethods = useForm({ shouldUnregister: true });
-  const [tempData, setTempData] = useState("");
-
-  const handleMouseOver = () => {
-    editable && setIsHovering(true);
-  };
-
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
-
-  const handleCancel = () => {
-    setShow(false);
-  };
-
-  const onSubmit = async (data: any, event: any) => {
-    event.preventDefault();
-    try {
-      await updateInsight(
-        {
-          assessmentId,
-          data: { insight: data.insight },
-          subjectId: updateInsightParams,
-        },
-        { signal: abortController.current.signal },
-      );
-      await infoQuery();
-      setShow(false);
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  useEffect(() => {
-    setTempData(formMethods.getValues().insight);
-  }, [formMethods.watch("insight")]);
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        direction: languageDetector(tempData || data) ? "rtl" : "ltr",
-        height: "100%",
-        width: "100%",
-      }}
-    >
-      {editable && show ? (
-        <FormProviderWithForm
-          formMethods={formMethods}
-          style={{ height: "100%", width: "100%" }}
-        >
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <RichEditorField
-              name="insight"
-              label={<Box></Box>}
-              disable_label={true}
-              required={true}
-              defaultValue={data || ""}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "flex-start",
-                height: tempData === "" ? "80%" : "100%",
-              }}
-            >
-              <IconButton
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(tempData || data)
-                    ? "8px 0 0 0"
-                    : "0 8px 0 0",
-                  height: "49%",
-                }}
-                onClick={formMethods.handleSubmit(onSubmit)}
-              >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
-              </IconButton>
-              <IconButton
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(tempData || data)
-                    ? "0 0 0 8px"
-                    : "0 0 8px 0",
-                  height: "49%",
-                }}
-                onClick={handleCancel}
-              >
-                <CancelRounded sx={{ color: "#fff" }} />
-              </IconButton>
-            </Box>
-          </Box>
-        </FormProviderWithForm>
-      ) : (
-        <Box
-          sx={{
-            minHeight: "38px",
-            borderRadius: "8px",
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            wordBreak: "break-word",
-            pr: languageDetector(tempData || data) ? 1 : 5,
-            pl: languageDetector(tempData || data) ? 5 : 1,
-            border: "1px solid #fff",
-            "&:hover": {
-              border: editable ? "1px solid #1976d299" : "unset",
-              borderColor: editable ? theme.palette.primary.main : "unset",
-            },
-            position: "relative",
-          }}
-          onClick={() => setShow(!show)}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          <Typography
-            sx={{
-              textAlign: languageDetector(
-                (tempData || data)?.replace(/<[^>]*>/g, ""),
-              )
-                ? "right"
-                : "left",
-              fontFamily: languageDetector(tempData || data)
-                ? farsiFontFamily
-                : primaryFontFamily,
-              width: "100%",
-            }}
-            dangerouslySetInnerHTML={{
-              __html:
-                data ??
-                (editable
-                  ? t("writeHere", { title: t("insight").toLowerCase() })
-                  : t("unavailable")),
-            }}
-          />
-          {isHovering && editable && (
-            <IconButton
-              title="Edit"
-              sx={{
-                background: theme.palette.primary.main,
-                "&:hover": {
-                  background: theme.palette.primary.dark,
-                },
-                borderRadius: languageDetector(tempData || data)
-                  ? "8px 0 0 8px"
-                  : "0 8px 8px 0",
-                height: "100%",
-                position: "absolute",
-                right: languageDetector(tempData || data) ? "unset" : 0,
-                left: languageDetector(tempData || data) ? 0 : "unset",
-                top: 0,
-              }}
-              onClick={() => setShow(!show)}
-            >
-              <EditRounded sx={{ color: "#fff" }} />
-            </IconButton>
-          )}
-        </Box>
       )}
     </Box>
   );

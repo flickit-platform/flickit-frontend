@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import QueryBatchData from "@common/QueryBatchData";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
 import { RolesType } from "@types";
@@ -20,7 +20,6 @@ import PermissionControl from "@common/PermissionControl";
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const navigate = useNavigate();
   const [expanded, setExpanded] = useState<boolean>(false);
   const [expandedRemoveModal, setExpandedRemoveModal] = useState<{
     display: boolean;
@@ -29,12 +28,14 @@ const AssessmentSettingContainer = () => {
     invited?: boolean;
   }>({ display: false, name: "", id: "", invited: false });
   const [listOfUser, setListOfUser] = useState([]);
+  const [totalUser, setTotalUser] = useState<number>(0);
   const [changeData, setChangeData] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
   const [kitInfo, setKitInfo] = useState<null | {
     kit: { id: number; title: string };
     kitCustomId: null | number;
   }>(null);
-
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) => service.fetchAssessmentsRoles(args, config),
@@ -43,8 +44,7 @@ const AssessmentSettingContainer = () => {
   });
 
   const fetchAssessmentMembers = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.fetchAssessmentMembers(args, config),
+    service: (args, config) => service.fetchAssessmentMembers(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -74,10 +74,25 @@ const AssessmentSettingContainer = () => {
   }, [assessmentId]);
   useEffect(() => {
     (async () => {
-      const { items } = await fetchAssessmentMembers.query();
+      const { items, total } = await fetchAssessmentMembers.query({
+        assessmentId,
+        page,
+        size: rowsPerPage,
+      });
       setListOfUser(items);
+      setTotalUser(total);
     })();
-  }, [changeData]);
+  }, [changeData, page, rowsPerPage]);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const handleClickOpen = () => {
     setExpanded(true);
@@ -143,6 +158,11 @@ const AssessmentSettingContainer = () => {
                     openRemoveModal={handleOpenRemoveModal}
                     setChangeData={setChangeData}
                     changeData={changeData}
+                    totalUser={totalUser}
+                    page={page}
+                    handleChangePage={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                   />
                 </Grid>
               </Grid>
@@ -155,7 +175,6 @@ const AssessmentSettingContainer = () => {
                 expanded={expanded}
                 onClose={handleClose}
                 listOfRoles={listOfRoles}
-                listOfUser={listOfUser}
                 assessmentId={assessmentId}
                 cancelText={<Trans i18nKey={"cancel"} />}
                 confirmText={<Trans i18nKey={"addToThisAssessment"} />}
