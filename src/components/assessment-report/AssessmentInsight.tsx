@@ -18,6 +18,10 @@ import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
+import AIGeneratedInsight from "../common/buttons/ActionPopup";
+import ActionPopup from "../common/buttons/ActionPopup";
+import { FaWandMagicSparkles } from "react-icons/fa6";
+import { useConfigContext } from "@/providers/ConfgProvider";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
@@ -25,8 +29,10 @@ export const AssessmentInsight = () => {
   const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
   const [isApproved, setIsApproved] = useState(true);
+  const [isExpired, setIsExpired] = useState(false);
   const [isSystemic, setIsSystemic] = useState(true);
   const abortController = useRef(new AbortController());
+  const { config } = useConfigContext();
 
   const fetchAssessmentInsight = useQuery<any>({
     service: (args, config) =>
@@ -66,6 +72,9 @@ export const AssessmentInsight = () => {
   useEffect(() => {
     const data = fetchAssessmentInsight.data;
     const selectedInsight = data?.assessorInsight || data?.defaultInsight;
+    setIsExpired(
+      (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
+    );
 
     if (selectedInsight) {
       setIsSystemic(data?.defaultInsight ?? false);
@@ -107,34 +116,86 @@ export const AssessmentInsight = () => {
             sx={{
               ...styles.centerV,
               width: "100%",
-              gap: 1,
               justifyContent: "end",
             }}
           >
-            {(!isApproved || (!insight?.isValid && insight)) && editable && (
-              <LoadingButton
-                variant={"contained"}
-                onClick={(event) => ApproveInsight(event)}
-                loading={ApproveAssessmentInsight.loading}
-                size="small"
-              >
-                <Trans i18nKey={"approve"} />
-              </LoadingButton>
-            )}
             {editable && (
-              <LoadingButton
-                onClick={(event) => {
-                  event.stopPropagation();
+              <ActionPopup
+                status={
+                  insight
+                    ? isExpired
+                      ? "expired"
+                      : isApproved
+                        ? "approved"
+                        : "pending"
+                    : "default"
+                }
+                hidePrimaryButton={insight && !isExpired && !isApproved}
+                onPrimaryAction={(event: any) => {
                   InitAssessmentInsight.query().then(() =>
                     fetchAssessmentInsight.query(),
                   );
                 }}
-                variant={"contained"}
-                loading={InitAssessmentInsight.loading}
-                size="small"
-              >
-                <Trans i18nKey={!insight ? "generate" : "regenerate"} />
-              </LoadingButton>
+                loadingPrimary={InitAssessmentInsight.loading}
+                onSecondaryAction={(event: any) => ApproveInsight(event)}
+                loadingSecondary={ApproveAssessmentInsight.loading}
+                colorScheme={
+                  !insight
+                    ? {
+                        muiColor: "primary",
+                        main: theme.palette.primary.main,
+                        light: theme.palette.primary.light,
+                      }
+                    : isApproved && !isExpired
+                      ? {
+                          muiColor: "success",
+                          main: theme.palette.success.main,
+                          light: theme.palette.success.light,
+                        }
+                      : {
+                          muiColor: "error",
+                          main: theme.palette.error.main,
+                          light: theme.palette.error.light,
+                        }
+                }
+                texts={{
+                  buttonLabel: (
+                    <Typography
+                      variant="labelMedium"
+                      sx={{ ...styles.centerVH, gap: 1 }}
+                    >
+                      <FaWandMagicSparkles />{" "}
+                      {t(
+                        insight
+                          ? isExpired
+                            ? "insightPage.insightIsExpired"
+                            : isApproved
+                              ? "insightPage.insightIsApproved"
+                              : "insightPage.generatedByAppNeedsApproval"
+                          : "insightPage.generateInsight",
+                        {
+                          title: config.appTitle,
+                        },
+                      )}
+                    </Typography>
+                  ),
+                  description: isExpired
+                    ? t("insightPage.insightIsExpiredDescrption")
+                    : insight
+                      ? t("insightPage.generatedByAppNeedsApprovalDescrption", {
+                          title: config.appTitle,
+                        })
+                      : t("insightPage.generateInsightDescription", {
+                          title: config.appTitle,
+                        }),
+                  primaryAction: insight
+                    ? t("insightPage.regenerate")
+                    : t("insightPage.generateInsight"),
+                  secondaryAction: t("insightPage.approveInsight"),
+                  confirmMessage: t("insightPage.regenerateDescription"),
+                  cancelMessage: t("insightPage.no"),
+                }}
+              />
             )}
           </Box>
           <EditableRichEditor

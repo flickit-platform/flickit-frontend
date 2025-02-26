@@ -845,5 +845,24 @@
   "privateTitle": "اختصاصی",
   "'email' format is not valid.": "ایمیل وارد شده معتبر نمی‌باشد.",
   "unapprovedAnswers": "پاسخ‌های تاییدنشده",
-  "GenerateAll": "تولید همه"
+  "GenerateAll": "تولید همه",
+  "insightPage": {
+    "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
+    "AIGeneratedNeedsApprovalDescrption": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",
+    "generatedByAppNeedsApproval": "نوشته‌ {{title}} (نیازمند تایید)",
+    "generatedByAppNeedsApprovalDescrption": "این تحلیل، بر اساس نتایج ارزیابی و توسط {{title}} نوشته شده است و ممکن است نادقیق یا ناقص باشد. لازم توسط توسط یک ارزیاب ویرایش شده و یا تایید شود.",
+    "insightIsApproved": "تاییدشده",
+    "insightIsApprovedDescrption": "تحلیل فعلی، کاملا به‌روز و تاییدشده است. در صورت تمایل، با استفاده از هوش مصنوعی بازتولید می‌شود.",
+    "insightIsExpired": "منقضی‌شده (نیازمند تایید)",
+    "insightIsExpiredDescrption": "این تحلیل به دلیل ارائه پاسخ‌های جدید منقضی شده و نیاز به تایید یا ویرایش توسط ارزیاب دارد. هم‌چنین می‌تواند با هوش مصنوعی بازتولید شود.",
+    "generateInsightViaAI": "تحلیل نوشته شده با هوش مصنوعی",
+    "generateInsightViaAIDescription": "به کمک هوش مصنوعی می‌توانید بر اساس پاسخ‌هایی که به پرسش‌ها داده شده است؛ برای این تحلیل متن تولید کنید.",
+    "approveInsight": "تایید تحلیل",
+    "regenerateViaAI": "بازتولید با هوش مصنوعی",
+    "regenerateDescription": "تحلیل فعلی از بین خواهد رفت. آیا می‌خواهید یک تحلیل جدید با هوش مصنوعی تولید شود؟",
+    "generateInsight": "تولید تحلیل",
+    "generateInsightDescription": "به کمک هوش مصنوعی می‌توانید بر اساس پاسخ‌هایی که به پرسش‌ها داده شده است؛ برای این تحلیل متن تولید کنید.",
+    "regenerate": "بازتولید",
+    "no": "خیر"
+  }
 }

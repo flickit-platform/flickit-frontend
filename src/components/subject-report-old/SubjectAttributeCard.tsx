@@ -10,7 +10,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
@@ -34,6 +34,9 @@ import QueryBatchData from "../common/QueryBatchData";
 import { LoadingButton } from "@mui/lab";
 import { t } from "i18next";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
+import ActionPopup from "../common/buttons/ActionPopup";
+import { useConfigContext } from "@/providers/ConfgProvider";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -435,97 +438,72 @@ export const AttributeStatusBarContainer = (props: any) => {
   );
 };
 
-const AttributeInsight = (props: any) => {
-  const { id, progress } = props;
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+const AttributeInsight = memo(
+  ({ id, progress }: { id: string; progress: any }) => {
+    const { service } = useServiceContext();
+    const { assessmentId = "" } = useParams();
+    const { config } = useConfigContext();
 
-  const ApprovedAIAttribute = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.ApprovedAIAttribute(args, config),
-    runOnMount: false,
-  });
-  const loadAttributeInsight = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.loadAttributeInsight(args, config),
-    runOnMount: true,
-  });
+    const queryArgs = useMemo(
+      () => ({ assessmentId, attributeId: id }),
+      [assessmentId, id],
+    );
 
-  const generateAIInsight = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.generateAIInsight(args, config),
-    runOnMount: false,
-  });
+    const ApprovedAIAttribute = useQuery({
+      service: (args = queryArgs, config) =>
+        service.ApprovedAIAttribute(args, config),
+      runOnMount: false,
+    });
 
-  const onGenerateAIInsight = async () => {
-    generateAIInsight
-      .query()
-      .then(() => {
-        loadAttributeInsight.query();
-      })
-      .catch((e) => {
-        const err = e as ICustomError;
-        toastError(err);
-      });
-  };
-  const approveAttribute = async (event: React.SyntheticEvent) => {
-    try {
-      event.stopPropagation();
-      await ApprovedAIAttribute.query();
-      await loadAttributeInsight.query();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-  return (
-    <QueryData
-      {...loadAttributeInsight}
-      renderLoading={() => (
-        <Skeleton
-          variant="rectangular"
-          sx={{ borderRadius: 2, height: "60px", mb: 1 }}
-        />
-      )}
-      errorComponent={<></>}
-      render={(data) => {
-        return (
+    const loadAttributeInsight = useQuery({
+      service: (args = queryArgs, config) =>
+        service.loadAttributeInsight(args, config),
+      runOnMount: true,
+    });
+
+    const generateAIInsight = useQuery({
+      service: (args = queryArgs, config) =>
+        service.generateAIInsight(args, config),
+      runOnMount: false,
+    });
+
+    const approveAttribute = useCallback(
+      async (event: React.SyntheticEvent) => {
+        event.stopPropagation();
+        try {
+          await ApprovedAIAttribute.query();
+          await loadAttributeInsight.query();
+        } catch (e) {
+          toastError(e as ICustomError);
+        }
+      },
+      [ApprovedAIAttribute, loadAttributeInsight],
+    );
+
+    return (
+      <QueryData
+        {...loadAttributeInsight}
+        renderLoading={() => (
+          <Skeleton
+            variant="rectangular"
+            sx={{ borderRadius: 2, height: "60px", mb: 1 }}
+          />
+        )}
+        errorComponent={<></>}
+        render={(data) => (
           <>
             {(data.editable ||
               data?.assessorInsight?.insight ||
               data?.aiInsight?.insight) && (
               <>
                 <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                  onClick={(event) => event.stopPropagation()}
                 >
                   <Typography color="#2466A8" variant="titleSmall">
                     <Trans i18nKey="insight" />
                   </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 2,
-                    }}
-                  >
+                  <Box sx={{ display: "flex", gap: 2 }}>
                     {data?.aiInsight &&
                     data?.aiInsight?.isValid &&
                     !data.approved ? (
@@ -535,9 +513,9 @@ const AttributeInsight = (props: any) => {
                         </div>
                       </Tooltip>
                     ) : (
-                      ((data?.assessorInsight &&
+                      (data?.assessorInsight &&
                         !data?.assessorInsight?.isValid) ||
-                        (data?.aiInsight && !data?.aiInsight?.isValid)) && (
+                      (data?.aiInsight && !data?.aiInsight?.isValid && (
                         <Tooltip title={<Trans i18nKey="invalidInsight" />}>
                           <div>
                             <AIGenerated
@@ -547,7 +525,7 @@ const AttributeInsight = (props: any) => {
                             />
                           </div>
                         </Tooltip>
-                      )
+                      ))
                     )}
                     {(data?.assessorInsight &&
                       !data?.assessorInsight?.isValid) ||
@@ -568,39 +546,130 @@ const AttributeInsight = (props: any) => {
                       </Box>
                     ) : (
                       <></>
-                    )}{" "}
+                    )}
                     {data?.editable && (
-                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                        <Tooltip
-                          title={
-                            <Trans i18nKey="questionsArentCompleteSoAICantBeGenerated" />
-                          }
-                          disableHoverListener={progress === 100}
-                        >
-                          <div>
-                            <LoadingButton
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                onGenerateAIInsight();
-                              }}
-                              variant={"contained"}
-                              loading={generateAIInsight.loading}
-                              size="small"
-                              disabled={progress !== 100}
-                            >
-                              <Trans
-                                i18nKey={
-                                  data?.aiInsight ? "regenerate" : "generate"
+                      <ActionPopup
+                        status={
+                          data?.assessorInsight || data?.aiInsight
+                            ? (data?.assessorInsight &&
+                                !data?.assessorInsight?.isValid) ||
+                              (data?.aiInsight && !data?.aiInsight?.isValid)
+                              ? "expired"
+                              : !(
+                                    (data?.assessorInsight &&
+                                      !data?.assessorInsight?.isValid) ||
+                                    (data?.aiInsight &&
+                                      !data?.aiInsight?.isValid) ||
+                                    ((data?.aiInsight ||
+                                      data?.assessorInsight) &&
+                                      !data.approved)
+                                  )
+                                ? "approved"
+                                : "pending"
+                            : "default"
+                        }
+                        onPrimaryAction={(event: any) => {
+                          generateAIInsight
+                            .query()
+                            .then(() => loadAttributeInsight.query());
+                        }}
+                        loadingPrimary={generateAIInsight.loading}
+                        onSecondaryAction={approveAttribute}
+                        loadingSecondary={ApprovedAIAttribute.loading}
+                        colorScheme={
+                          !(data?.assessorInsight || data?.aiInsight)
+                            ? {
+                                muiColor: "primary",
+                                main: theme.palette.primary.main,
+                                light: theme.palette.primary.light,
+                              }
+                            : !(
+                                  (data?.assessorInsight &&
+                                    !data?.assessorInsight?.isValid) ||
+                                  (data?.aiInsight &&
+                                    !data?.aiInsight?.isValid) ||
+                                  ((data?.aiInsight || data?.assessorInsight) &&
+                                    !data.approved)
+                                )
+                              ? {
+                                  muiColor: "success",
+                                  main: theme.palette.success.main,
+                                  light: theme.palette.success.light,
                                 }
-                              />
-                            </LoadingButton>
-                          </div>
-                        </Tooltip>
-                      </Box>
+                              : {
+                                  muiColor: "error",
+                                  main: theme.palette.error.main,
+                                  light: theme.palette.error.light,
+                                }
+                        }
+                        texts={{
+                          buttonLabel: (
+                            <Typography
+                              variant="labelMedium"
+                              sx={{ ...styles.centerVH, gap: 1 }}
+                            >
+                              <FaWandMagicSparkles />{" "}
+                              {t(
+                                data?.assessorInsight || data?.aiInsight
+                                  ? (data?.assessorInsight &&
+                                      !data?.assessorInsight?.isValid) ||
+                                    (data?.aiInsight &&
+                                      !data?.aiInsight?.isValid)
+                                    ? "insightPage.insightIsExpired"
+                                    : !(
+                                          (data?.assessorInsight &&
+                                            !data?.assessorInsight?.isValid) ||
+                                          (data?.aiInsight &&
+                                            !data?.aiInsight?.isValid) ||
+                                          ((data?.aiInsight ||
+                                            data?.assessorInsight) &&
+                                            !data.approved)
+                                        )
+                                      ? "insightPage.insightIsApproved"
+                                      : "insightPage.generatedByAppNeedsApproval"
+                                  : "insightPage.generateInsight",
+                                {
+                                  title: config.appTitle,
+                                },
+                              )}
+                            </Typography>
+                          ),
+                          description: t(
+                            data?.assessorInsight || data?.aiInsight
+                              ? (data?.assessorInsight &&
+                                  !data?.assessorInsight?.isValid) ||
+                                (data?.aiInsight && !data?.aiInsight?.isValid)
+                                ? "insightPage.insightIsExpiredDescrption"
+                                : !(
+                                      (data?.assessorInsight &&
+                                        !data?.assessorInsight?.isValid) ||
+                                      (data?.aiInsight &&
+                                        !data?.aiInsight?.isValid) ||
+                                      ((data?.aiInsight ||
+                                        data?.assessorInsight) &&
+                                        !data.approved)
+                                    )
+                                  ? "insightPage.insightIsApprovedDescrption"
+                                  : "insightPage.AIGeneratedNeedsApprovalDescrption"
+                              : "insightPage.generateInsightDescription",
+                            {
+                              title: config.appTitle,
+                            },
+                          ),
+                          primaryAction:
+                            data?.assessorInsight || data?.aiInsight
+                              ? t("insightPage.regenerate")
+                              : t("insightPage.generateInsight"),
+                          secondaryAction: t("insightPage.approveInsight"),
+                          confirmMessage: t(
+                            "insightPage.regenerateDescription",
+                          ),
+                          cancelMessage: t("insightPage.no"),
+                        }}
+                      />
                     )}
                   </Box>
                 </Box>
-
                 <Box
                   display="flex"
                   alignItems="center"
@@ -613,32 +682,28 @@ const AttributeInsight = (props: any) => {
                     }
                     editable={data?.editable}
                     fieldName="title"
-                    onSubmit={async (payload: any, event: any) => {
-                      await service.createAttributeInsight(
-                        {
-                          assessmentId,
-                          attributeId: id,
-                          data: { assessorInsight: payload.title },
-                        },
-                        {},
-                      );
+                    onSubmit={async (payload: any) => {
+                      await service.createAttributeInsight({
+                        assessmentId,
+                        attributeId: id,
+                        data: { assessorInsight: payload.title },
+                      });
                     }}
                     infoQuery={loadAttributeInsight.query}
                     placeholder={
-                      t("writeHere", {
-                        title: t("insight").toLowerCase(),
-                      }) ?? ""
+                      t("writeHere", { title: t("insight").toLowerCase() }) ??
+                      ""
                     }
                   />
                 </Box>
               </>
             )}
           </>
-        );
-      }}
-    />
-  );
-};
+        )}
+      />
+    );
+  },
+);
 
 export const AttributeStatusBar = (props: any) => {
   const { ml, cl, isMl, mn } = props;
