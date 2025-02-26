@@ -39,6 +39,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       answeredWithoutEvidence,
       unanswered,
       unresolvedComments,
+      unapprovedAnswers
     },
   } = data;
   const { permissions }: { permissions: IPermissions } = props;
@@ -238,6 +239,38 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 }
               />
             )}
+          {!!unapprovedAnswers &&
+              originalItem.includes("unapprovedAnswers") && (
+                  <Chip
+                      sx={{ background: "#8A0F240A" }}
+                      label={
+                        <Grid>
+                          <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 1,
+                              }}
+                          >
+                            <InfoOutlinedIcon
+                                fontSize={"small"}
+                                style={{ fill: theme.palette.error.main }}
+                            />
+                            <Typography
+                                style={{
+                                  color: theme.palette.error.main,
+                                  ...theme.typography.bodyMedium,
+                                }}
+                            >
+                              <Trans i18nKey={"unapprovedAnswers"} />:{" "}
+                              {unapprovedAnswers}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      }
+                  />
+              )}
           {!!unanswered && originalItem.includes("unanswered") && (
             <Chip
               sx={{ background: "#8A0F240A" }}

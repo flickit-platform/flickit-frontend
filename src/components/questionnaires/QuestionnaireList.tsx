@@ -42,6 +42,10 @@ const itemNames = [
     translate: t("answersWithNoEvidence"),
     original: "answeredWithoutEvidence",
   },
+  {
+    translate: t("unapprovedAnswers"),
+    original: "unapprovedAnswers",
+  },
 ];
 
 export const QuestionsFilteringDropdown = (props: any) => {
