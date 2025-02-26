@@ -437,6 +437,7 @@ export interface IQuestionnairesInfo {
     answeredWithoutEvidence?: number;
     unanswered?: number;
     unresolvedComments?: number;
+    unapprovedAnswers?: number;
   };
 }
 export interface IQuestionnairesModel extends ITotalProgress {

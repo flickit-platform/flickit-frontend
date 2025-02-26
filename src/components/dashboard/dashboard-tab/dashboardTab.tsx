@@ -34,8 +34,10 @@ const DashboardTab = () => {
             const data = fetchDashboard.data;
             const { unpublished, ...rest } = data.report;
             const updateReport = { ...rest, unpublished };
+            const {unanswered,unapprovedAnswers, ...others} = data.questions
+            const updateQuestion = { unanswered,unapprovedAnswers, ...others };
             const mappedData = [
-              { category: "questions", metrics: data.questions },
+              { category: "questions", metrics: updateQuestion },
               { category: "insights", metrics: data.insights },
               { category: "advices", metrics: data.advices },
               { category: "report", metrics: updateReport },

@@ -265,6 +265,12 @@ const IssuesItem = (props: any) => {
           ) : (
             <Trans i18nKey={"needsForAnswer"} />
           ))}
+          {name == "unapprovedAnswers" &&
+          (value > 1 ? (
+            <Trans i18nKey={"answersNeedApproval"} />
+          ) : (
+            <Trans i18nKey={"answerNeedsApproval"} />
+          ))}
         {name == "answeredWithLowConfidence" &&
           (value > 1 ? (
             <Trans i18nKey={"questionsConfidenceAnswers"} />

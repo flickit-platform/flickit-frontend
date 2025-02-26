@@ -724,6 +724,8 @@
   "advicesIssues": "Advices issues",
   "needsForAnswer": "question needs answer.",
   "needForAnswers": "questions need answers.",
+  "answerNeedsApproval": "answer needs approval.",
+  "answersNeedApproval": "answers need approval.",
   "lackForEvidence": "question lacks supporting evidence.",
   "lackForEvidences": "questions lack supporting evidence.",
   "questionsConfidenceAnswers": "questions have low-confidence answers.",
@@ -843,6 +845,7 @@
   "approveAll": "Approve all",
   "answerNeedApprove": "The selected answer needs approval from an assessor.",
   "privateTitle": "Private",
-  "GenerateAll": "Generate all",
-  "'email' format is not valid.": "'email' format is not valid."
+  "'email' format is not valid.": "'email' format is not valid.",
+  "unapprovedAnswers": "Unapproved answers",
+  "GenerateAll": "Generate all"
 }

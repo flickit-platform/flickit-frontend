@@ -722,6 +722,8 @@
   "advicesIssues": "موارد توصیه‌ها",
   "needsForAnswer": "سوال منتظر پاسخ است.",
   "needForAnswers": "سوال منتظر پاسخ است.",
+  "answerNeedsApproval": "پاسخ نیاز به تایید دارند.",
+  "answersNeedApproval": "پاسخ نیاز به تایید دارند.",
   "lackForEvidences": "سوال پاسخ داده شده ولی شاهدی برای آن‌ها‌ ثبت نشده‌است.",
   "lackForEvidence": "سوال، پاسخ بدون شاهد دارد.",
   "UnresolvedComment": "یادداشت نیاز به بررسی دارد.",
@@ -841,6 +843,7 @@
   "approveAll": "تایید همه",
   "answerNeedApprove": "پاسخ داده‌شده نیاز به تایید یک ارزیاب دارد.",
   "privateTitle": "اختصاصی",
-  "GenerateAll": "تولید همه",
-  "'email' format is not valid.": "ایمیل وارد شده معتبر نمی‌باشد."
+  "'email' format is not valid.": "ایمیل وارد شده معتبر نمی‌باشد.",
+  "unapprovedAnswers": "پاسخ‌های تاییدنشده",
+  "GenerateAll": "تولید همه"
 }
