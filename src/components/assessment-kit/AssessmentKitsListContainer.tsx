@@ -173,6 +173,7 @@ const AssessmentKitsListContainer = () => {
             {filtredLangs.map((lang: ILangs) => {
               return (
                 <Chip
+                  key={uniqueId()}
                   color="primary"
                   variant="outlined"
                   sx={{ background: "#EAF2FB" }}

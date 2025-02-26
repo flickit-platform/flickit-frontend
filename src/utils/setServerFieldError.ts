@@ -4,10 +4,7 @@ export interface FieldErrorData {
   [key: string]: string[];
 }
 
-const setServerFieldErrors = (
-  e: ICustomError | unknown,
-  formMethods: UseFormReturn<any>,
-) => {
+const setServerFieldErrors = (e: unknown, formMethods: UseFormReturn<any>) => {
   const { response, status } = e as ICustomError;
   if (status !== 400 || !response || !response.data) {
     return;

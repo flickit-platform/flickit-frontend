@@ -103,6 +103,7 @@ import {
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
 import { useQuestions } from "@components/questions/QuestionsContainer";
+import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -211,7 +212,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                   }
             }
           >
-            {title.split("\n").map((line, index) => (
+            {title.split("\n").map((line) => (
               <React.Fragment key={line}>
                 {line}
                 <br />
@@ -634,7 +635,7 @@ const AnswerTemplate = (props: {
   setNotApplicable: any;
   notApplicable: boolean;
   may_not_be_applicable: boolean;
-  is_farsi: boolean | undefined;
+  is_farsi?: boolean;
   setDisabledConfidence: any;
   selcetedConfidenceLevel: any;
   confidenceLebels: any;
@@ -653,9 +654,10 @@ const AnswerTemplate = (props: {
     selcetedConfidenceLevel,
     confidenceLebels,
   } = props;
-
-  const [expandedDeleteDialog, setExpandedDeleteDialog] =
-    useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
 
   const { options, answer } = questionInfo;
   const { total_number_of_questions, permissions } = questionsInfo;
@@ -847,7 +849,7 @@ const AnswerTemplate = (props: {
     if (isLTR) {
       isSelectedValueTheSameAsAnswer
         ? goToQuestion("asc")
-        : setExpandedDeleteDialog(true);
+        : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
     } else {
       goToQuestion("desc");
     }
@@ -857,7 +859,7 @@ const AnswerTemplate = (props: {
     if (!isLTR) {
       isSelectedValueTheSameAsAnswer
         ? goToQuestion("asc")
-        : setExpandedDeleteDialog(true);
+        : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
     } else {
       goToQuestion("desc");
     }
@@ -1136,14 +1138,16 @@ const AnswerTemplate = (props: {
             />
           </Box>
         )}
-        <DeleteDialog
-          expanded={expandedDeleteDialog}
-          onClose={() => setExpandedDeleteDialog(false)}
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
           onConfirm={() => goToQuestion("asc")}
-          title={<Trans i18nKey={"areYouSureYouWantSkipThisQuestion"} />}
-          cancelText={<Trans i18nKey={"cancel"} />}
-          confirmText={<Trans i18nKey={"continue"} />}
-        />{" "}
+          title="warning"
+          content="areYouSureYouWantSkipThisQuestion"
+          confirmButtonText={t("continue")}
+        />
       </Box>
     </>
   );
@@ -1893,16 +1897,15 @@ const Evidence = (props: any) => {
           setAttachmentData={setAttachmentData}
           createAttachment={createAttachment}
         />
-        <DeleteDialog
-          expanded={expandedDeleteDialog}
+        <DeleteConfirmationDialog
+          open={expandedDeleteDialog}
           onClose={() => setExpandedDeleteDialog(false)}
           onConfirm={deleteItem}
-          title={<Trans i18nKey={"areYouSureYouWantDeleteThisEvidence"} />}
-          cancelText={<Trans i18nKey={"cancel"} />}
-          confirmText={<Trans i18nKey={"confirm"} />}
+          title="warning"
+          content="areYouSureYouWantDeleteThisEvidence"
         />
-        <DeleteDialog
-          expanded={expandedDeleteAttachmentDialog.expended}
+        <DeleteConfirmationDialog
+          open={expandedDeleteAttachmentDialog.expended}
           onClose={() =>
             setExpandedDeleteAttachmentDialog({
               ...expandedAttachmentsDialogs,
@@ -1910,9 +1913,10 @@ const Evidence = (props: any) => {
             })
           }
           onConfirm={deleteAttachment}
-          title={<Trans i18nKey={"areYouSureYouWantDeleteThisAttachment"} />}
-          cancelText={<Trans i18nKey={"letMeSeeItAgain"} />}
-          confirmText={<Trans i18nKey={"yesDeleteIt"} />}
+          title="warning"
+          content="areYouSureYouWantDeleteThisAttachment"
+          confirmButtonText={t("yesDeleteIt")}
+          cancelButtonText={t("letMeSeeItAgain")}
         />
       </Box>
     </Box>
@@ -2465,7 +2469,7 @@ const EvidenceDetail = (props: any) => {
                           (permissions.readonly && (
                             <>
                               {loadingFile
-                                ? skeleton.map((item, index) => {
+                                ? skeleton.map((item) => {
                                     return (
                                       <Skeleton
                                         key={item}
@@ -2476,7 +2480,7 @@ const EvidenceDetail = (props: any) => {
                                       />
                                     );
                                   })
-                                : attachments.map((item, index) => {
+                                : attachments.map((item) => {
                                     return (
                                       <FileIcon
                                         evidenceId={id}
@@ -2779,7 +2783,7 @@ const MyDropzone = (props: any) => {
             )}
             {typeFile == "pdf" && (
               <section style={{ width: "50%", height: "70%" }}>
-                <FileType name={"pdf"} />{" "}
+                <FileType />{" "}
               </section>
             )}
             {typeFile == "zip" && (
@@ -3179,50 +3183,6 @@ const EvidenceAttachmentsDialogs = (props: any) => {
   );
 };
 
-const DeleteDialog = (props: any) => {
-  const { expanded, onClose, onConfirm, title, cancelText, confirmText } =
-    props;
-  return (
-    <Dialog
-      open={expanded}
-      onClose={onClose}
-      maxWidth={"sm"}
-      fullWidth
-      sx={{
-        ".MuiDialog-paper::-webkit-scrollbar": {
-          display: "none",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        },
-      }}
-    >
-      {" "}
-      <DialogTitle textTransform="uppercase">
-        <Trans i18nKey="warning" />
-      </DialogTitle>
-      <DialogContent
-        sx={{
-          overflowX: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          textAlign: "center",
-        }}
-      >
-        <Typography sx={{ color: "#0A2342" }}>{title}</Typography>
-
-        <Box mt={2} alignSelf="flex-end" sx={{ display: "flex", gap: 2 }}>
-          <Button onClick={onClose}>{cancelText}</Button>
-          <Button variant="contained" onClick={onConfirm}>
-            {confirmText}
-          </Button>
-        </Box>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 const QuestionGuide = (props: any) => {
   const [collapse, setCollapse] = useState<boolean>(false);
   const { hint } = props;
@@ -3281,13 +3241,13 @@ const QuestionGuide = (props: any) => {
                   ? hint
                       .substring(1)
                       .split("\n")
-                      .map((line: string, index: number) => (
+                      .map((line: string) => (
                         <React.Fragment key={line}>
                           {line}
                           <br />
                         </React.Fragment>
                       ))
-                  : hint.split("\n").map((line: string, index: number) => (
+                  : hint.split("\n").map((line: string) => (
                       <React.Fragment key={line}>
                         {line}
                         <br />

@@ -71,8 +71,8 @@ const AttributeImpactList = ({
     if (id !== null && item && attribute) {
       setTempValues({
         questionId,
-        attributeId: attribute?.attributeId || undefined,
-        maturityLevelId: item?.maturityLevel?.maturityLevelId || undefined,
+        attributeId: attribute?.attributeId ?? undefined,
+        maturityLevelId: item?.maturityLevel?.maturityLevelId ?? undefined,
         weight: item.weight || 1,
       });
     }

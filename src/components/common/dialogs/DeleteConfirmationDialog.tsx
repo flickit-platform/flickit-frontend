@@ -9,6 +9,8 @@ interface IDeleteConfirmationDialogProps {
   onConfirm: () => void;
   title: string;
   content: string;
+  confirmButtonText?: string | null;
+  cancelButtonText?: string | null;
 }
 
 export const DeleteConfirmationDialog = ({
@@ -17,6 +19,8 @@ export const DeleteConfirmationDialog = ({
   onConfirm,
   title,
   content,
+  confirmButtonText,
+  cancelButtonText,
 }: IDeleteConfirmationDialogProps) => {
   const { t } = useTranslation();
 
@@ -37,9 +41,7 @@ export const DeleteConfirmationDialog = ({
           i18nKey={content}
           values={{ title }}
           components={{
-            title: (
-              <span style={{ fontWeight: "bold", color: "#B86A77" }} />
-            ),
+            title: <span style={{ fontWeight: "bold", color: "#B86A77" }} />,
           }}
         />
       </Typography>
@@ -48,7 +50,8 @@ export const DeleteConfirmationDialog = ({
         type="delete"
         loading={false}
         onClose={onClose}
-        submitButtonLabel={t("confirm")}
+        submitButtonLabel={confirmButtonText ?? t("confirm")}
+        cancelLabel={cancelButtonText ?? t("cancel")}
         onSubmit={onConfirm}
       />
     </CEDialog>

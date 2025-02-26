@@ -19,9 +19,7 @@ const PermissionControl = (props: PropsWithChildren<any>) => {
   return <>{children}</>;
 };
 
-const getHasViewPermission = (
-  error: (ICustomError | undefined) | (ICustomError | undefined)[],
-) => {
+const getHasViewPermission = (error?: ICustomError | ICustomError[]) => {
   if (
     !error ||
     (typeof error === "object" && Object.keys(error).length === 0)
@@ -36,7 +34,9 @@ const getHasViewPermission = (
       error.findIndex(
         (err) =>
           err?.code === ECustomErrorType.ACCESS_DENIED ||
-          err?.code === ECustomErrorType.NOT_FOUND || err?.status === 404 || err?.status === 403,
+          err?.code === ECustomErrorType.NOT_FOUND ||
+          err?.status === 404 ||
+          err?.status === 403,
       ) !== -1
     ) {
       return false;

@@ -14,11 +14,8 @@ interface IQueryData<T> {
   loading: boolean;
   error: boolean;
   loaded: boolean;
-  errorObject: ICustomError | undefined;
-  query?: (
-    args?: any,
-    config?: AxiosRequestConfig<any> | undefined,
-  ) => Promise<any>;
+  errorObject?: ICustomError;
+  query?: (args?: any, config?: AxiosRequestConfig<any>) => Promise<any>;
   abortController?: AbortController;
 }
 
@@ -32,13 +29,13 @@ interface IQueryBatchDataProps<T> {
     err: (ICustomError | ICustomError[] | undefined)[] | undefined,
     errorComponent: JSX.Element,
   ) => JSX.Element;
-  isDataEmpty?: (data?: (T | undefined)[]) => boolean;
+  isDataEmpty?: (data?: T[]) => boolean;
   queryBatchData: IQueryData<T>[];
   data?: T[];
   loading?: boolean;
   error?: boolean;
   loaded?: boolean;
-  errorObject?: (ICustomError | undefined)[];
+  errorObject?: ICustomError[];
 }
 
 const QueryBatchData = <T extends any = any>(

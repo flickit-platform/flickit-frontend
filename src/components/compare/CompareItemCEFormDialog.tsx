@@ -160,7 +160,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
             loadMoreHandler={setPageCount}
             getTotalHandler={setTotal}
             MenuProps={MenuProps}
-            nullable={total >= 1 ? false : true}
+            nullable={total < 1}
             renderOption={(option = {}) => {
               return (
                 <MenuItem

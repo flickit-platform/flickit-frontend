@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 
 interface IToolbarCreateItemBtnProps extends ButtonProps {
   icon?: JSX.Element;
-  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   shouldAnimate?: boolean;
   text: `create${string}`;
   minWidth?: string;

@@ -4,13 +4,14 @@ import Typography from "@mui/material/Typography";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import { theme } from "@config/theme";
+import { uniqueId } from "lodash";
 
 interface IInfoItems {
   renderMap?: Record<string, (...args: any) => JSX.Element>;
   component?: FC<{ title: string }>;
   info: {
     title: string;
-    item: any | any[];
+    item: any;
     type?: string;
     action?: JSX.Element;
   };
@@ -74,6 +75,7 @@ const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
       {items.length !== 0
         ? items?.map((item) => (
             <Chip
+              key={uniqueId()}
               size="small"
               label={item}
               sx={{ ml: 0.3, mt: 0.5 }}
@@ -108,7 +110,7 @@ const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
 const renderInfo = (
   info: {
     title: string;
-    item: any | any[];
+    item: any;
     type?: string;
     action?: JSX.Element;
   },

@@ -47,7 +47,7 @@ interface ISelectField extends SelectProps {
   options: any[];
   nullable?: boolean;
   name: string;
-  size?: "small" | "medium" | undefined;
+  size?: "small" | "medium";
   loading?: boolean;
   renderLoading?: () => JSX.Element;
   error?: boolean;

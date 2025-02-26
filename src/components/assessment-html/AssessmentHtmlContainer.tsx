@@ -28,6 +28,7 @@ import { ShareDialog } from "./ShareDialog";
 import { LoadingButton } from "@mui/lab";
 import { ArrowForward, Share } from "@mui/icons-material";
 import { Trans } from "react-i18next";
+import { uniqueId } from "lodash";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "", spaceId = "" } = useParams();
@@ -62,7 +63,7 @@ const AssessmentExportContainer = () => {
         <Box
           sx={{
             ...styles.box,
-            ...styles.rtlStyle(language === "fa" ?? false),
+            ...styles.rtlStyle(language === "fa"),
             fontWeight: 200,
           }}
         >
@@ -440,7 +441,7 @@ const AssessmentExportContainer = () => {
                             {assessment.assessmentKit.maturityLevels.map(
                               (level: any, index: number) => (
                                 <Box
-                                  key={index}
+                                  key={uniqueId()}
                                   sx={{
                                     display: "flex",
                                     alignItems: "center",

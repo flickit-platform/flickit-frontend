@@ -133,9 +133,9 @@ const AssessmentKit = (props: any) => {
             <Title
               size="medium"
               sx={{
-                  fontFamily: languageDetector(title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
+                fontFamily: languageDetector(title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
               }}
               sup={
                 <SupTitleBreadcrumb
@@ -160,7 +160,7 @@ const AssessmentKit = (props: any) => {
                     opacity: 0.9,
                   }}
                 >
-                  {tags.map((tag: any, index: number) => (
+                  {tags.map((tag: any) => (
                     <Chip
                       key={tag?.id}
                       label={tag.title}

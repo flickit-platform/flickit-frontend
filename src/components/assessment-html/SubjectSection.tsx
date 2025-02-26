@@ -11,6 +11,7 @@ import AssessmentSubjectRadialChart from "@components/assessment-report/Assessme
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types";
+import { uniqueId } from "lodash";
 
 const SubjectReport = ({
   graphicalReport,
@@ -133,6 +134,7 @@ const SubjectReport = ({
             {item?.attributes?.map((attribute: any) => {
               return (
                 <BoxReportLayout
+                  key={uniqueId()}
                   language={lang.code.toLowerCase()}
                   confidenceValue={attribute.confidenceValue}
                   maturityLevelCount={maturityLevelCount}

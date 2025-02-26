@@ -74,6 +74,7 @@ const ReportTab = () => {
               const { name, title, placeholder } = field;
               return (
                 <Box
+                  key={uniqueId()}
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",

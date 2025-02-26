@@ -1,15 +1,9 @@
 import Keycloak, { KeycloakInstance } from "keycloak-js";
-// const _kc: KeycloakInstance = new Keycloak("/keycloak.json");
 const _kc: KeycloakInstance = new Keycloak({
   url: import.meta.env.VITE_SSO_URL,
   realm: import.meta.env.VITE_SSO_REALM,
   clientId: import.meta.env.VITE_SSO_CLIENT_ID,
 });
-/**
- * Initializes Keycloak instance and calls the provided callback function if successfully authenticated.
- *
- * @param onAuthenticatedCallback
- */
 
 const initKeycloak = (onAuthenticatedCallback: () => void) => {
   _kc

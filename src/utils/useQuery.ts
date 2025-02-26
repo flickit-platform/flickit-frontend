@@ -7,7 +7,7 @@ import get from "lodash/get";
 
 export type TQueryServiceFunction<T extends any = any, A extends any = any> = (
   args?: A,
-  config?: AxiosRequestConfig<any> | undefined,
+  config?: AxiosRequestConfig<any>,
 ) => Promise<AxiosResponse<T, any>>;
 interface IUseQueryProps<T, A> {
   /**
@@ -97,7 +97,7 @@ export const useQuery = <T extends any = any, A extends any = any>(
   }, []);
 
   const query = async (
-    args?: A | undefined,
+    args?: A,
     config: AxiosRequestConfig<any> | undefined = {},
   ) => {
     setLoading(true);
@@ -129,7 +129,7 @@ export const useQuery = <T extends any = any, A extends any = any>(
       setErrorObject(err);
       setLoading(false);
       setError(true);
-      if (typeof err != "string"){
+      if (typeof err != "string") {
         return Promise.reject(err);
       }
     }
