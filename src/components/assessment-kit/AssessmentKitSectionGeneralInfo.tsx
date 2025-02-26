@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import { toast } from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import {useState, useRef, useEffect} from "react";
+import { useState, useRef } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -35,7 +35,7 @@ import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import {useConfigContext} from "@providers/ConfgProvider";

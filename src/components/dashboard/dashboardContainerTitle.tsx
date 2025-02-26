@@ -1,6 +1,5 @@
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
-import { t } from "i18next";
 import { useParams } from "react-router-dom";
 
 const DashboardTitle = (props: any) => {

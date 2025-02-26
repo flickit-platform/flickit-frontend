@@ -1,18 +1,11 @@
-import { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { QuestionnaireList } from "./QuestionnaireList";
-import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { IQuestionnairesModel } from "@types";
-import Title from "@common/TitleComponent";
 import { useParams, useSearchParams } from "react-router-dom";
-import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import PermissionControl from "@common/PermissionControl";
-import setDocumentTitle from "@utils/setDocumentTitle";
-import { t } from "i18next";
-import { useConfigContext } from "@/providers/ConfgProvider";
 
 const QuestionnaireContainer = () => {
   const { service } = useServiceContext();
@@ -25,11 +18,7 @@ const QuestionnaireContainer = () => {
     toastErrorOptions: { filterByStatus: [404] },
   });
 
-  const isPermitted = useMemo(() => {
-    return AssessmentInfo?.data?.viewable;
-  }, [AssessmentInfo]);
-
-  const { questionnaireQueryData, assessmentTotalProgress, fetchPathInfo } =
+  const { questionnaireQueryData, assessmentTotalProgress } =
     useQuestionnaire();
 
   const progress =
@@ -97,43 +86,6 @@ export const useQuestionnaire = () => {
     assessmentTotalProgress,
     fetchPathInfo,
   };
-};
-
-const QuestionnaireTitle = (props: any) => {
-  const { pathInfo } = props;
-  const { spaceId, page } = useParams();
-  const { space, assessment } = pathInfo;
-
-  const { config } = useConfigContext();
-
-  useEffect(() => {
-    setDocumentTitle(
-      `${assessment?.title} ${t("questionnaires")}`,
-      config.appTitle,
-    );
-  }, [assessment]);
-
-  return (
-    <Title
-      backLink="/"
-      size="large"
-      sup={
-        <SupTitleBreadcrumb
-          routes={[
-            {
-              title: space?.title,
-              to: `/${spaceId}/assessments/${page}`,
-            },
-            {
-              title: assessment?.title,
-            },
-          ]}
-        />
-      }
-    >
-      <Trans i18nKey="questionnaires" />
-    </Title>
-  );
 };
 
 export { QuestionnaireContainer };

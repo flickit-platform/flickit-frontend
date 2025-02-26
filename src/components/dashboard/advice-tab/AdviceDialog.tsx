@@ -18,8 +18,6 @@ import { ISubjectReportModel } from "@/types";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
-import { CircularProgress } from "@mui/material";
-import { LoadingSkeleton } from "@/components/common/loadings/LoadingSkeleton";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 
 const AdviceDialog = ({
