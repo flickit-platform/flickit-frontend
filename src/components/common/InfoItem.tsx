@@ -10,7 +10,7 @@ interface IInfoItems {
   component?: FC<{ title: string }>;
   info: {
     title: string;
-    item: any | any[];
+    item: any;
     type?: string;
     action?: JSX.Element;
   };
@@ -108,7 +108,7 @@ const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
 const renderInfo = (
   info: {
     title: string;
-    item: any | any[];
+    item: any;
     type?: string;
     action?: JSX.Element;
   },
