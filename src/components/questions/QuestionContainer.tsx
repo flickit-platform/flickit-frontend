@@ -124,7 +124,7 @@ export const SubmitOnSelectCheckBox = (props: any) => {
 
 const findQuestion = (
   questions: any[] = [],
-  questionIndex: string | undefined | number,
+  questionIndex?: string | number,
 ) => {
   return questionIndex
     ? questions.find((question) => question.index == Number(questionIndex))

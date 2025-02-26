@@ -17,7 +17,7 @@ interface IQueryDataProps<T> {
   loading: boolean;
   error: boolean;
   loaded: boolean;
-  errorObject: ICustomError | undefined;
+  errorObject?: ICustomError;
   abortController?: AbortController;
   render: (data: T) => JSX.Element;
   renderLoading?: () => JSX.Element;

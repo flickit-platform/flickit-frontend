@@ -120,8 +120,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
   const renderEditableTextField = (
     type: "subject" | "attribute",
     id: string | number,
-    value: number | string | undefined,
-    index: number,
+    value?: number | string,
   ) => {
     const inputValue =
       (

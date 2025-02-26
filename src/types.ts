@@ -56,10 +56,10 @@ export interface IQuestionInfo {
   advisable?: boolean;
   answerRangeId?: number;
   issues?: {
-    isUnanswered: boolean | undefined;
-    isAnsweredWithLowConfidence: boolean | undefined;
-    isAnsweredWithoutEvidences: boolean | undefined;
-    unresolvedCommentsCount: number | undefined;
+    isUnanswered?: boolean;
+    isAnsweredWithLowConfidence?: boolean;
+    isAnsweredWithoutEvidences?: boolean;
+    unresolvedCommentsCount?: number;
   };
 }
 
@@ -103,7 +103,7 @@ export interface IPermissions {
 
 export type TQuestionsInfo = {
   total_number_of_questions: number;
-  resultId: TId | undefined;
+  resultId?: TId;
   questions: IQuestionInfo[];
   permissions?: IPermissions;
 };
@@ -283,7 +283,7 @@ export interface ISpaceModel {
   membersCount?: number;
   assessmentsCount?: number;
   is_default_space_for_current_user?: boolean;
-  type?: {code: string, title: string};
+  type?: { code: string; title: string };
 }
 
 export interface ISpacesModel extends IDefaultModel<ISpaceModel> {
@@ -470,7 +470,7 @@ export interface ISubjectReportModel extends IDefaultModel<ISubjectReport> {
 
 export type TQueryFunction<T extends any = any, A extends any = any> = (
   args?: A,
-  config?: AxiosRequestConfig<any> | undefined,
+  config?: AxiosRequestConfig<any>,
 ) => Promise<T>;
 
 export type TQueryProps<T extends any = any, A extends any = any> = {
@@ -478,11 +478,8 @@ export type TQueryProps<T extends any = any, A extends any = any> = {
   loading: boolean;
   loaded: boolean;
   error: boolean;
-  errorObject: ICustomError | undefined;
-  query: (
-    args?: A | undefined,
-    config?: AxiosRequestConfig<any> | undefined,
-  ) => Promise<T>;
+  errorObject?: ICustomError;
+  query: (args?: A, config?: AxiosRequestConfig<any>) => Promise<T>;
   abortController?: AbortController;
 };
 
@@ -779,4 +776,7 @@ export interface IGraphicalReport {
   lang: { code: string };
 }
 
-export interface ILangs { code: string, title: string}
+export interface ILangs {
+  code: string;
+  title: string;
+}

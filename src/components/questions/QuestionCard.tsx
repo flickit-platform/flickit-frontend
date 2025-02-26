@@ -635,7 +635,7 @@ const AnswerTemplate = (props: {
   setNotApplicable: any;
   notApplicable: boolean;
   may_not_be_applicable: boolean;
-  is_farsi: boolean | undefined;
+  is_farsi?: boolean;
   setDisabledConfidence: any;
   selcetedConfidenceLevel: any;
   confidenceLebels: any;

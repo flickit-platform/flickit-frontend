@@ -14,17 +14,16 @@ interface IMoreActionsProps {
   closeMenu: (e: any) => void;
   loading?: boolean;
   hideInnerIconButton?: boolean;
-  anchorEl?: Element | ((element: Element) => Element) | null | undefined;
+  anchorEl?: Element | ((element: Element) => Element) | null;
   fontSize?: "inherit" | "small" | "large" | "medium";
-  items: (
+  items?: (
     | {
         icon?: JSX.Element;
-        onClick?: React.MouseEventHandler<HTMLLIElement> | undefined;
+        onClick?: React.MouseEventHandler<HTMLLIElement>;
         text: JSX.Element;
         menuItemProps?: MenuItemProps & { "data-cy"?: string };
       }
     | null
-    | undefined
     | false
   )[];
   setShowTooltip?: (e: boolean) => void;
@@ -50,7 +49,7 @@ const MoreActions = (props: IMoreActionsProps) => {
 
   const menuItems = items.filter((item) => !!item) as {
     icon?: JSX.Element;
-    onClick?: React.MouseEventHandler<HTMLLIElement> | undefined;
+    onClick?: React.MouseEventHandler<HTMLLIElement>;
     text: JSX.Element;
     menuItemProps?: MenuItemProps & { "data-cy"?: string };
   }[];
