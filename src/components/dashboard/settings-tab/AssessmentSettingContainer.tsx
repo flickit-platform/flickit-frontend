@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import QueryBatchData from "@common/QueryBatchData";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
 import { RolesType } from "@types";
@@ -20,7 +20,6 @@ import PermissionControl from "@common/PermissionControl";
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const navigate = useNavigate();
   const [expanded, setExpanded] = useState<boolean>(false);
   const [expandedRemoveModal, setExpandedRemoveModal] = useState<{
     display: boolean;
@@ -45,8 +44,7 @@ const AssessmentSettingContainer = () => {
   });
 
   const fetchAssessmentMembers = useQuery({
-    service: (args , config) =>
-      service.fetchAssessmentMembers(args, config),
+    service: (args, config) => service.fetchAssessmentMembers(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -76,7 +74,11 @@ const AssessmentSettingContainer = () => {
   }, [assessmentId]);
   useEffect(() => {
     (async () => {
-      const { items, total } = await fetchAssessmentMembers.query({ assessmentId, page, size: rowsPerPage });
+      const { items, total } = await fetchAssessmentMembers.query({
+        assessmentId,
+        page,
+        size: rowsPerPage,
+      });
       setListOfUser(items);
       setTotalUser(total);
     })();
@@ -173,7 +175,6 @@ const AssessmentSettingContainer = () => {
                 expanded={expanded}
                 onClose={handleClose}
                 listOfRoles={listOfRoles}
-                listOfUser={totalUser <= fetchAssessmentMembers?.data?.size ? listOfUser : totalUser}
                 assessmentId={assessmentId}
                 cancelText={<Trans i18nKey={"cancel"} />}
                 confirmText={<Trans i18nKey={"addToThisAssessment"} />}

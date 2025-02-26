@@ -27,7 +27,6 @@ import useScreenResize from "@/utils/useScreenResize";
 import { styles } from "@styles";
 import { Settings } from "@mui/icons-material";
 import { theme } from "@/config/theme";
-import axios from "axios";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -47,7 +46,6 @@ const AddMemberDialog = (props: {
   confirmText: any;
   listOfRoles: any[];
   assessmentId: any;
-  listOfUser: any[] | number;
 }) => {
   const {
     expanded,
@@ -57,7 +55,6 @@ const AddMemberDialog = (props: {
     setChangeData,
     listOfRoles = [],
     assessmentId,
-    listOfUser,
   } = props;
 
   const [addedEmailType, setAddedEmailType] = useState<string>(
@@ -80,8 +77,7 @@ const AddMemberDialog = (props: {
       service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
   });
   const fetchAssessmentMembers = useQuery({
-    service: (args , config) =>
-        service.fetchAssessmentMembers(args, config),
+    service: (args, config) => service.fetchAssessmentMembers(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -114,17 +110,21 @@ const AddMemberDialog = (props: {
       try {
         setAddedEmailType(EUserType.DEFAULT);
         if (expanded) {
-          const {data} = await spaceMembersQueryData;
-          const {items: member} = await fetchAssessmentMembers.query({assessmentId, page: 0, size: 100});
+          const { data } = await spaceMembersQueryData;
+          const { items: member } = await fetchAssessmentMembers.query({
+            assessmentId,
+            page: 0,
+            size: 100,
+          });
           if (data) {
-            const {items} = data;
+            const { items } = data;
             const filteredItem = items.filter((item: any) =>
-                member.some((userListItem: any) => item.id === userListItem.id),
+              member.some((userListItem: any) => item.id === userListItem.id),
             );
             setMemberOfSpace(filteredItem);
           }
         }
-      }catch (e) {
+      } catch (e) {
         const err = e as ICustomError;
         toastError(err);
       }
@@ -261,7 +261,7 @@ const AddMemberDialog = (props: {
               />
             </FormProviderWithForm>
           </Box>
-          <Typography sx={{whiteSpace: "nowrap"}}>
+          <Typography sx={{ whiteSpace: "nowrap" }}>
             <Trans i18nKey={"as"} />
           </Typography>
           <FormControl sx={{ width: "40%" }}>

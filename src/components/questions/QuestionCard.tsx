@@ -948,11 +948,14 @@ const AnswerTemplate = (props: {
                     fontSize: { xs: "1.15rem", sm: "1.3rem" },
                     fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 2px ${answer?.selectedOption?.index === defaultSelectedIndex ?
-                         answer?.approved == false &&
-                        permissions?.approveAnswer
-                            ? "#CC7400":
-                        "#0acb89" : "white"}`,
+                    boxShadow: `0 0 2px ${
+                      answer?.selectedOption?.index === defaultSelectedIndex
+                        ? answer?.approved == false &&
+                          permissions?.approveAnswer
+                          ? "#CC7400"
+                          : "#0acb89"
+                        : "white"
+                    }`,
                     borderWidth: "2px",
                     borderColor:
                       answer?.selectedOption?.index === defaultSelectedIndex
@@ -1250,10 +1253,7 @@ const AnswerDetails = ({
 };
 
 const AnswerHistoryItem = (props: any) => {
-  const {
-    item,
-    questionInfo,
-  }: { item: IAnswerHistory; questionInfo: IQuestionInfo } = props;
+  const { item }: { item: IAnswerHistory } = props;
 
   return (
     <Grid container spacing={2} px={1}>

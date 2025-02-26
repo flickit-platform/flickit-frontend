@@ -35,8 +35,7 @@ export const AssessmentTOC = ({
       [itemKey]: !prevState[itemKey],
     }));
   };
-  const { assessment, advice, permissions, lang } =
-    graphicalReport as IGraphicalReport;
+  const { lang } = graphicalReport as IGraphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
 
   const subjects: any = useMemo(() => {
@@ -115,11 +114,11 @@ export const AssessmentTOC = ({
         }}
         component="nav"
       >
-        {items?.map((item, index) => {
+        {items?.map((item) => {
           const hasSubItems = item.subItems.length > 0;
 
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={item}>
               <ListItem
                 disablePadding
                 sx={{
@@ -173,7 +172,7 @@ export const AssessmentTOC = ({
                     }}
                   >
                     {item.subItems?.map((subItem: any, subIndex: any) => (
-                      <ListItem key={subIndex} disablePadding>
+                      <ListItem key={subItem} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText
                             primary={t(subItem, {

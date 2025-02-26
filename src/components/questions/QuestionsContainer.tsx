@@ -62,10 +62,10 @@ export const QuestionsContainerC = (
 
   return (
     <QueryBatchData<IQuestionsModel | IQuestionnaireModel>
-      queryBatchData={[questionsResultQueryData, fetchPathInfo]}
+      queryBatchData={[fetchPathInfo]}
       loaded={questionsResultQueryData.loaded}
       renderLoading={() => <LoadingSkeletonOfQuestions />}
-      render={([questionnaireData, pathInfo = {}]) => {
+      render={([pathInfo = {}]) => {
         return (
           <Box sx={{ overflowX: "hidden" }}>
             <Box py={1}>
@@ -84,7 +84,7 @@ export const QuestionsContainerC = (
 export const useUpdateQuestionInfo = () => {
   const dispatch = useQuestionDispatch();
   const { service } = useServiceContext();
-  const { questionInfo, questionsInfo } = useQuestion();
+  const { questionInfo } = useQuestion();
   const { assessmentId = "" } = useParams();
 
   const fetchQuestionIssues = useQuery<IQuestionsModel>({

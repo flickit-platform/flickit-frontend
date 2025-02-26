@@ -19,16 +19,8 @@ import Tooltip from "@mui/material/Tooltip";
 import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
-import { toast } from "react-toastify";
-import IconButton from "@mui/material/IconButton";
-import EditRounded from "@mui/icons-material/EditRounded";
 import { IPermissions } from "@/types";
 import AIGenerated from "../common/tags/AIGenerated";
-import RichEditorField from "@common/fields/RichEditorField";
-import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useForm } from "react-hook-form";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
@@ -479,21 +471,6 @@ const AttributeInsight = (props: any) => {
     ) => service.generateAIInsight(args, config),
     runOnMount: false,
   });
-
-  const onCreateInsight = async (title: string) => {
-    await service
-      .createAttributeInsight(
-        {
-          assessmentId,
-          attributeId: id,
-          data: { assessorInsight: title },
-        },
-        {},
-      )
-      .then(() => {
-        loadAttributeInsight.query();
-      });
-  };
 
   const onGenerateAIInsight = async () => {
     generateAIInsight

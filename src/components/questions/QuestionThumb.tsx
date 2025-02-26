@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
-import LanguageDetector from "@utils/languageDetector";
 import languageDetector from "@utils/languageDetector";
 
 export const QuestionThumb = (props: any) => {
@@ -29,7 +28,7 @@ export const QuestionThumb = (props: any) => {
         <Typography
           variant="h6"
           sx={
-            LanguageDetector(question?.title)
+            languageDetector(question?.title)
               ? { fontFamily: farsiFontFamily, textAlign: "right" }
               : { fontFamily: primaryFontFamily, textAlign: "left" }
           }

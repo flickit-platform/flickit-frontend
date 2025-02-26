@@ -332,11 +332,6 @@ export const AssessmentSettingMemberBox = (props: {
     position: string;
   }
 
-  const editUserRole = useQuery({
-    service: (args, config) =>
-      service.editUserRole({ assessmentId, ...args }, config),
-    runOnMount: false,
-  });
   const editUserRoleInvited = useQuery({
     service: (args, config) => service.editUserRoleInvited(args, config),
     runOnMount: false,
