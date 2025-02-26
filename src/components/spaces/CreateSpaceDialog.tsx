@@ -22,6 +22,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useQuery } from "@utils/useQuery";
 import { ISpaceType } from "@types";
 import premiumIcon from "@/assets/svg/premium-icon.svg";
+import {SelectField} from "@common/fields/SelectField";
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
   onSubmitForm: () => void;
@@ -181,19 +182,18 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
           {type !== "update" && (
             <Grid item xs={3}>
               <FormControl sx={{ width: "100%" }}>
-                <InputLabel id="spaceType-name-label">
-                  {" "}
-                  <Trans i18nKey={"spaceType"} />
-                </InputLabel>
-                <Select
+                <SelectField
                   // disabled={editable != undefined ? !editable : false}
+                  id="spaceType-name-label"
                   size="small"
-                  labelId={`spaceType-name-label`}
+                  label={<Trans i18nKey={"spaceType"} />}
                   value={selectedType}
                   IconComponent={KeyboardArrowDownIcon}
                   displayEmpty
+                  name={"spaceType-select"}
                   defaultValue={spaceType[0]?.title}
                   required={true}
+                  nullable={false}
                   input={<OutlinedInput label="spaceType" />}
                   onChange={(e) => handleChange(e)}
                   sx={{
@@ -237,7 +237,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
                       <Trans i18nKey={type.title} />
                     </MenuItem>
                   ))}
-                </Select>
+                </SelectField>
               </FormControl>
             </Grid>
           )}
