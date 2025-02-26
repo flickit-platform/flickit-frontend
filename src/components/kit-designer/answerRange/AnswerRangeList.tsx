@@ -213,7 +213,7 @@ const ListOfItems = ({
     });
   };
   return (
-    <Box>
+    <>
       {items?.map((item: any) => (
         <Box
           key={uniqueId()}
@@ -525,7 +525,7 @@ const ListOfItems = ({
           </Accordion>
         </Box>
       ))}
-    </Box>
+    </>
   );
 };
 
