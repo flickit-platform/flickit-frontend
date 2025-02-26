@@ -496,7 +496,7 @@ export interface IDialogProps extends DialogProps {
 }
 
 export interface IDialogContext {
-  type: TDialogContextType | (string & {});
+  type: TDialogContextType;
   data?: any;
   staticData?: any;
   onSubmit?: (...args: any) => any;
