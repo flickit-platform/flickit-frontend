@@ -15,7 +15,7 @@ import { t } from "i18next";
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
   title: JSX.Element;
-  style?: any
+  style?: any;
 }
 
 export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
@@ -34,7 +34,10 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV }}>
         {title}
       </DialogTitle>
-      <DialogContent style={style} sx={{ display: "flex", flexDirection: "column" }}>
+      <DialogContent
+        style={style}
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
         {children}
       </DialogContent>
     </Dialog>
@@ -54,7 +57,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   onSubmit?: (e: any, shouldView?: boolean) => any;
   onBack?: () => void;
   hasBackBtn?: boolean;
-  cancelLabel?: string;
+  cancelLabel?: string | null;
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -88,7 +91,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
         {!hideCancelButton && (
           <Grid item>
             <Button onClick={onClose} data-cy="cancel" data-testid="cancel">
-              <Trans i18nKey={cancelLabel} />
+              <Trans i18nKey={cancelLabel ?? ""} />
             </Button>
           </Grid>
         )}
