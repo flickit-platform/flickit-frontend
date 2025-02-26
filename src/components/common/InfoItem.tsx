@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import { theme } from "@config/theme";
+import { uniqueId } from "lodash";
 
 interface IInfoItems {
   renderMap?: Record<string, (...args: any) => JSX.Element>;
@@ -74,6 +75,7 @@ const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
       {items.length !== 0
         ? items?.map((item) => (
             <Chip
+              key={uniqueId()}
               size="small"
               label={item}
               sx={{ ml: 0.3, mt: 0.5 }}

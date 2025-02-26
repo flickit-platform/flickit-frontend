@@ -13,6 +13,7 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { IAttribute, IGraphicalReport, ISubject } from "@/types";
 import { styles } from "@styles";
+import { uniqueId } from "lodash";
 
 // Define the type for the state to track open items
 interface OpenItemsState {
@@ -118,7 +119,7 @@ export const AssessmentTOC = ({
           const hasSubItems = item.subItems.length > 0;
 
           return (
-            <React.Fragment key={item}>
+            <React.Fragment key={uniqueId()}>
               <ListItem
                 disablePadding
                 sx={{
@@ -171,8 +172,8 @@ export const AssessmentTOC = ({
                       bgcolor: "#F9FAFB",
                     }}
                   >
-                    {item.subItems?.map((subItem: any, subIndex: any) => (
-                      <ListItem key={subItem} disablePadding>
+                    {item.subItems?.map((subItem: any) => (
+                      <ListItem key={uniqueId()} disablePadding>
                         <ListItemButton component="a" href={`#${subItem}`}>
                           <ListItemText
                             primary={t(subItem, {

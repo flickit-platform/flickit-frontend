@@ -1,5 +1,6 @@
 import { useMediaQuery } from "@mui/material";
 import { t } from "i18next";
+import { uniqueId } from "lodash";
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
@@ -125,9 +126,9 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data, language }) => {
           paddingAngle={5}
           label={renderLabel}
         >
-          {data.map((item, index) => (
+          {data.map((item) => (
             <Cell
-              key={`cell-${index}`}
+              key={uniqueId()}
               fill={item.bgColor ?? "#fff"}
               stroke={item.color}
               strokeWidth={2}

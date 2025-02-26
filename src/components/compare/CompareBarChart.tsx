@@ -10,7 +10,8 @@ import {
   Bar,
   TooltipProps,
 } from "recharts";
-import {theme} from "@config/theme";
+import { theme } from "@config/theme";
+import { uniqueId } from "lodash";
 
 interface CompareBarProps {
   data: any[];
@@ -34,8 +35,8 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
           padding: "10px",
         }}
       >
-        {payload.map((entry, index) => (
-          <p key={`tooltip-item-${index}`} style={{ color: entry.color }}>
+        {payload.map((entry) => (
+          <p key={uniqueId()} style={{ color: entry.color }}>
             {`${entry.name}: ${
               entry.payload[`${entry.dataKey}Title`]
                 ? entry.payload[`${entry.dataKey}Title`]
@@ -115,7 +116,7 @@ const CustomAxisTick = (props: any) => {
         x={0}
         y={0}
         dy={16}
-        textAnchor= {theme.direction == "rtl" ? "start" : "end"}
+        textAnchor={theme.direction == "rtl" ? "start" : "end"}
         fill="#666"
         transform="rotate(-45)"
       >

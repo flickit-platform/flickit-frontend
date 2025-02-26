@@ -20,7 +20,7 @@ import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import { alpha, Button } from "@mui/material";
-import { debounce } from "lodash";
+import { debounce, uniqueId } from "lodash";
 import { Add } from "@mui/icons-material";
 import EmptyStateOptions from "@components/kit-designer/answerRange/options/emptyStateOptions";
 import Divider from "@mui/material/Divider";
@@ -136,7 +136,6 @@ const ListOfItems = ({
 
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
- 
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -215,8 +214,9 @@ const ListOfItems = ({
   };
   return (
     <Box>
-      {items?.map((item: any, index: any) => (
+      {items?.map((item: any) => (
         <Box
+          key={uniqueId()}
           mt={1.5}
           sx={{
             backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",

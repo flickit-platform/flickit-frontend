@@ -13,7 +13,7 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -118,9 +118,9 @@ const TodoBox = (props: any) => {
               </IconButton>
             </Tooltip>
           </Box>
-          {next.map((item: any, index: number) => {
+          {next.map((item: any) => {
             return (
-              <>
+              <Box key={uniqueId()}>
                 <Box
                   sx={{
                     display: "flex",
@@ -169,7 +169,7 @@ const TodoBox = (props: any) => {
                       );
                     })}
                 </Grid>
-              </>
+              </Box>
             );
           })}
         </Box>

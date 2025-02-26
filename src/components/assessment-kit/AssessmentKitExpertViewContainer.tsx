@@ -37,6 +37,7 @@ import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { primaryFontFamily, theme } from "@/config/theme";
 import { LoadingButton } from "@mui/lab";
+import { uniqueId } from "lodash";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -301,7 +302,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
 
   return (
     <Box>
-      {details.map((subject, index) => {
+      {details.map((subject) => {
         const isExpanded = expanded === subject.title;
         return (
           <Accordion
@@ -459,7 +460,7 @@ const AssessmentKitQuestionnaires = (props: {
   };
   return (
     <Box>
-      {details.map((questionnaire, index) => {
+      {details.map((questionnaire) => {
         const isExpanded = expanded === questionnaire.title;
         return (
           <Accordion
@@ -528,12 +529,12 @@ const AssessmentKitQuestionnaires = (props: {
                     <Trans i18nKey="relatedSubjects" />:
                   </Typography>
                   {questionnaireDetails?.relatedsubjects?.map(
-                    (subject: string, index: number) => (
+                    (subject: string) => (
                       <Typography
                         variant="body2"
                         sx={{ ml: 2 }}
                         fontWeight="bold"
-                        key={subject}
+                        key={uniqueId()}
                       >
                         {subject}
                       </Typography>
@@ -702,6 +703,7 @@ const AssessmentKitQuestionsList = (props: {
                 (item: any, index: number) => {
                   return (
                     <Tab
+                      key={uniqueId()}
                       sx={{
                         "&.Mui-selected": {
                           color: `${colorPallet[index]}  !important`,
@@ -876,7 +878,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
         {syntaxErrorObject &&
           syntaxErrorObject.map((e: any) => {
             return (
-              <Box sx={{ ml: 1 }}>
+              <Box key={uniqueId()} sx={{ ml: 1 }}>
                 <Alert severity="error" sx={{ my: 2 }}>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <Typography variant="subtitle2" color="error">
@@ -906,7 +908,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
         {updateErrorObject &&
           updateErrorObject.map((e: any) => {
             return (
-              <Box sx={{ ml: 1 }}>
+              <Box key={uniqueId()} sx={{ ml: 1 }}>
                 <Alert severity="error" sx={{ my: 2 }}>
                   <Box sx={{ display: "flex" }}>
                     <Typography variant="subtitle2" color="error">
@@ -1117,6 +1119,7 @@ const SubjectQuestionList = (props: any) => {
                 </Box>
                 {question.answerOptions.map((item: any) => (
                   <Box
+                    key={uniqueId()}
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -1347,6 +1350,7 @@ const QuestionnairesQuestionList = (props: any) => {
                         {questionsDetails?.options.map(
                           (option: any, index: number) => (
                             <Typography
+                              key={uniqueId()}
                               sx={{
                                 color: "#767676",
                                 fontSize: "0.8rem",
@@ -1368,6 +1372,7 @@ const QuestionnairesQuestionList = (props: any) => {
                         (attributes: any, index: number) => {
                           return (
                             <Box
+                              key={uniqueId()}
                               sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -1397,6 +1402,7 @@ const QuestionnairesQuestionList = (props: any) => {
                                   (affectedLevel: any) => {
                                     return (
                                       <Typography
+                                        key={uniqueId()}
                                         variant="body1"
                                         fontWeight={"bold"}
                                         sx={{ py: 1 }}
@@ -1421,6 +1427,7 @@ const QuestionnairesQuestionList = (props: any) => {
                                   (affectedLevel: any) => {
                                     return (
                                       <Typography
+                                        key={uniqueId()}
                                         variant="body1"
                                         fontWeight={"bold"}
                                         sx={{ py: 1 }}
@@ -1444,6 +1451,7 @@ const QuestionnairesQuestionList = (props: any) => {
                                   (affectedLevel: any) => {
                                     return (
                                       <Box
+                                        key={uniqueId()}
                                         sx={{
                                           display: "flex",
                                           justifyContent: "space-between",
@@ -1454,6 +1462,7 @@ const QuestionnairesQuestionList = (props: any) => {
                                           (option: any) => {
                                             return (
                                               <Typography
+                                                key={uniqueId()}
                                                 variant="body1"
                                                 fontWeight={"bold"}
                                                 sx={{
@@ -1542,6 +1551,7 @@ const MaturityLevelsDetails = (props: any) => {
                     const { title, value } = comp;
                     return (
                       <Typography
+                        key={uniqueId()}
                         sx={{ transform: "skew(30deg)" }}
                         fontSize=".75rem"
                         color="#fff"

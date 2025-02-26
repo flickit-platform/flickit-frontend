@@ -212,7 +212,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                   }
             }
           >
-            {title.split("\n").map((line, index) => (
+            {title.split("\n").map((line) => (
               <React.Fragment key={line}>
                 {line}
                 <br />
@@ -2469,7 +2469,7 @@ const EvidenceDetail = (props: any) => {
                           (permissions.readonly && (
                             <>
                               {loadingFile
-                                ? skeleton.map((item, index) => {
+                                ? skeleton.map((item) => {
                                     return (
                                       <Skeleton
                                         key={item}
@@ -2480,7 +2480,7 @@ const EvidenceDetail = (props: any) => {
                                       />
                                     );
                                   })
-                                : attachments.map((item, index) => {
+                                : attachments.map((item) => {
                                     return (
                                       <FileIcon
                                         evidenceId={id}
@@ -3241,13 +3241,13 @@ const QuestionGuide = (props: any) => {
                   ? hint
                       .substring(1)
                       .split("\n")
-                      .map((line: string, index: number) => (
+                      .map((line: string) => (
                         <React.Fragment key={line}>
                           {line}
                           <br />
                         </React.Fragment>
                       ))
-                  : hint.split("\n").map((line: string, index: number) => (
+                  : hint.split("\n").map((line: string) => (
                       <React.Fragment key={line}>
                         {line}
                         <br />

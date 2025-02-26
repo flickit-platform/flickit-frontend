@@ -206,7 +206,7 @@ const AdviceListNewForm = ({
                 },
               }}
             >
-              {selectAdvice?.map((item: any, index) => {
+              {selectAdvice?.map((item: any) => {
                 return (
                   <FormControl key={item} sx={{ width: "30%" }}>
                     <InputLabel id="demo-multiple-name-label">

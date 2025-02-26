@@ -38,7 +38,8 @@ import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
-import {useConfigContext} from "@providers/ConfgProvider";
+import { useConfigContext } from "@providers/ConfgProvider";
+import { uniqueId } from "lodash";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -49,7 +50,9 @@ const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
   const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
-  const {config: {languages}} : any = useConfigContext();
+  const {
+    config: { languages },
+  }: any = useConfigContext();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
@@ -99,11 +102,16 @@ const AssessmentKitSectionGeneralInfo = (
   const handleLanguageChange = async (e: any) => {
     const { value } = e.target;
 
-    let adjustValue = languages.find((item: { code: string, title: string }) => item.title == value)
+    let adjustValue = languages.find(
+      (item: { code: string; title: string }) => item.title == value,
+    );
 
     try {
       await service.updateAssessmentKitStats(
-        { assessmentKitId: assessmentKitId || "", data: { lang: adjustValue?.code } },
+        {
+          assessmentKitId: assessmentKitId || "",
+          data: { lang: adjustValue?.code },
+        },
         { signal: abortController.current.signal },
       );
       await fetchAssessmentKitInfoQuery.query();
@@ -112,7 +120,6 @@ const AssessmentKitSectionGeneralInfo = (
       toastError(err);
     }
   };
-
 
   return (
     <QueryBatchData
@@ -325,9 +332,10 @@ const AssessmentKitSectionGeneralInfo = (
                       onMouseOut={handleMouseOut}
                     >
                       <Box sx={{ display: "flex" }}>
-                        {tags.map((tag: any, index: number) => {
+                        {tags.map((tag: any) => {
                           return (
                             <Box
+                              key={uniqueId()}
                               sx={{
                                 background: "#00000014",
                                 fontSize: "0.875rem",

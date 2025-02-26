@@ -4,12 +4,16 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
-import { EAssessmentStatus, useQuestionContext } from "@/providers/QuestionProvider";
+import {
+  EAssessmentStatus,
+  useQuestionContext,
+} from "@/providers/QuestionProvider";
 import usePopover from "@utils/usePopover";
 import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
 import { Tooltip } from "@mui/material";
+import { uniqueId } from "lodash";
 
 const QuestionsProgress = ({}: any) => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
@@ -134,8 +138,8 @@ export const QuestionProgressItem = (props: any) => {
                 ),
               ]
                 .filter(Boolean)
-                .map((item, index) => (
-                  <div key={index}>{item}</div>
+                .map((item) => (
+                  <div key={uniqueId()}>{item}</div>
                 ))}
             </Box>
           ) : (
