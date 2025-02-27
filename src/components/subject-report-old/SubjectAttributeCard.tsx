@@ -11,29 +11,21 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React, { useEffect, useState } from "react";
-import QueryData from "@common/QueryData";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
-import Tooltip from "@mui/material/Tooltip";
 import languageDetector from "@utils/languageDetector";
-import toastError from "@/utils/toastError";
-import { ICustomError } from "@/utils/CustomError";
 import { IPermissions } from "@/types";
-import AIGenerated from "../common/tags/AIGenerated";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Skeleton } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
-import { LoadingButton } from "@mui/lab";
-import { t } from "i18next";
-import { EditableRichEditor } from "../common/fields/EditableRichEditor";
+import { AttributeInsight } from "./AttributeInsight";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -432,211 +424,6 @@ export const AttributeStatusBarContainer = (props: any) => {
         </Typography>
       </Box>
     </Box>
-  );
-};
-
-const AttributeInsight = (props: any) => {
-  const { id, progress } = props;
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
-
-  const ApprovedAIAttribute = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.ApprovedAIAttribute(args, config),
-    runOnMount: false,
-  });
-  const loadAttributeInsight = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.loadAttributeInsight(args, config),
-    runOnMount: true,
-  });
-
-  const generateAIInsight = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: id,
-      },
-      config,
-    ) => service.generateAIInsight(args, config),
-    runOnMount: false,
-  });
-
-  const onGenerateAIInsight = async () => {
-    generateAIInsight
-      .query()
-      .then(() => {
-        loadAttributeInsight.query();
-      })
-      .catch((e) => {
-        const err = e as ICustomError;
-        toastError(err);
-      });
-  };
-  const approveAttribute = async (event: React.SyntheticEvent) => {
-    try {
-      event.stopPropagation();
-      await ApprovedAIAttribute.query();
-      await loadAttributeInsight.query();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-  return (
-    <QueryData
-      {...loadAttributeInsight}
-      renderLoading={() => (
-        <Skeleton
-          variant="rectangular"
-          sx={{ borderRadius: 2, height: "60px", mb: 1 }}
-        />
-      )}
-      errorComponent={<></>}
-      render={(data) => {
-        return (
-          <>
-            {(data.editable ||
-              data?.assessorInsight?.insight ||
-              data?.aiInsight?.insight) && (
-              <>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography color="#2466A8" variant="titleSmall">
-                    <Trans i18nKey="insight" />
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 2,
-                    }}
-                  >
-                    {data?.aiInsight &&
-                    data?.aiInsight?.isValid &&
-                    !data.approved ? (
-                      <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                        <div>
-                          <AIGenerated />
-                        </div>
-                      </Tooltip>
-                    ) : (
-                      ((data?.assessorInsight &&
-                        !data?.assessorInsight?.isValid) ||
-                        (data?.aiInsight && !data?.aiInsight?.isValid)) && (
-                        <Tooltip title={<Trans i18nKey="invalidInsight" />}>
-                          <div>
-                            <AIGenerated
-                              title="outdated"
-                              type="warning"
-                              icon={<></>}
-                            />
-                          </div>
-                        </Tooltip>
-                      )
-                    )}
-                    {(data?.assessorInsight &&
-                      !data?.assessorInsight?.isValid) ||
-                    (data?.aiInsight && !data?.aiInsight?.isValid) ||
-                    ((data?.aiInsight || data?.assessorInsight) &&
-                      !data.approved) ? (
-                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                        {data?.editable && (
-                          <LoadingButton
-                            onClick={(event) => approveAttribute(event)}
-                            variant="contained"
-                            loading={ApprovedAIAttribute.loading}
-                            size="small"
-                          >
-                            <Trans i18nKey="approve" />
-                          </LoadingButton>
-                        )}
-                      </Box>
-                    ) : (
-                      <></>
-                    )}{" "}
-                    {data?.editable && (
-                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                        <Tooltip
-                          title={
-                            <Trans i18nKey="questionsArentCompleteSoAICantBeGenerated" />
-                          }
-                          disableHoverListener={progress === 100}
-                        >
-                          <div>
-                            <LoadingButton
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                onGenerateAIInsight();
-                              }}
-                              variant={"contained"}
-                              loading={generateAIInsight.loading}
-                              size="small"
-                              disabled={progress !== 100}
-                            >
-                              <Trans
-                                i18nKey={
-                                  data?.aiInsight ? "regenerate" : "generate"
-                                }
-                              />
-                            </LoadingButton>
-                          </div>
-                        </Tooltip>
-                      </Box>
-                    )}
-                  </Box>
-                </Box>
-
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  onClick={(event) => event.stopPropagation()}
-                  mt={1}
-                >
-                  <EditableRichEditor
-                    defaultValue={
-                      data?.assessorInsight?.insight || data?.aiInsight?.insight
-                    }
-                    editable={data?.editable}
-                    fieldName="title"
-                    onSubmit={async (payload: any, event: any) => {
-                      await service.createAttributeInsight(
-                        {
-                          assessmentId,
-                          attributeId: id,
-                          data: { assessorInsight: payload.title },
-                        },
-                        {},
-                      );
-                    }}
-                    infoQuery={loadAttributeInsight.query}
-                    placeholder={
-                      t("writeHere", {
-                        title: t("insight").toLowerCase(),
-                      }) ?? ""
-                    }
-                  />
-                </Box>
-              </>
-            )}
-          </>
-        );
-      }}
-    />
   );
 };
 
