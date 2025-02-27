@@ -7,6 +7,7 @@ import {
   Paper,
   ClickAwayListener,
   Tooltip,
+  Grid,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { ExpandLessOutlined, ExpandMoreOutlined } from "@mui/icons-material";
@@ -67,6 +68,7 @@ const ActionPopup = ({
       handleConfirmClose();
     }
   };
+
   return (
     <Box>
       <Button
@@ -75,7 +77,6 @@ const ActionPopup = ({
         color={colorScheme.muiColor}
         onClick={handleToggle}
         sx={{
-          width: "345px",
           justifyContent: "space-between",
           backgroundColor: colorScheme.light,
           borderRadius: open ? "0px" : "16px",
@@ -97,7 +98,10 @@ const ActionPopup = ({
         open={open}
         anchorEl={anchorRef.current}
         placement="bottom"
-        sx={{ zIndex: 1, width: "345px" }}
+        sx={{
+          zIndex: 1,
+          width: anchorRef.current?.offsetWidth,
+        }}
       >
         <ClickAwayListener onClickAway={handleClose}>
           {confirmDialog ? (
@@ -118,34 +122,37 @@ const ActionPopup = ({
                 sx={{ ...theme.typography.bodySmall, color: colorScheme.main }}
                 mb={1}
               >
-                {" "}
                 {texts.confirmMessage}
               </Typography>
-              <Box sx={{ display: "flex", gap: "10px", marginTop: 2 }}>
-                <LoadingButton
-                  variant="contained"
-                  color={colorScheme.muiColor}
-                  onClick={(event) => {
-                    onPrimaryAction(event);
-                    handleConfirmClose();
-                  }}
-                  loading={loadingPrimary}
-                  fullWidth
-                  size="small"
-                >
-                  {texts.primaryAction}
-                </LoadingButton>
-                <Button
-                  variant="outlined"
-                  color={colorScheme.muiColor}
-                  onClick={handleConfirmClose}
-                  fullWidth
-                  sx={{ backgroundColor: "white" }}
-                  size="small"
-                >
-                  {texts.cancelMessage}
-                </Button>
-              </Box>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={8}>
+                  <LoadingButton
+                    variant="contained"
+                    color={colorScheme.muiColor}
+                    onClick={(event) => {
+                      onPrimaryAction(event);
+                      handleConfirmClose();
+                    }}
+                    loading={loadingPrimary}
+                    fullWidth
+                    size="small"
+                  >
+                    {texts.primaryAction}
+                  </LoadingButton>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Button
+                    variant="outlined"
+                    color={colorScheme.muiColor}
+                    onClick={handleConfirmClose}
+                    fullWidth
+                    sx={{ backgroundColor: "white" }}
+                    size="small"
+                  >
+                    {texts.cancelMessage}
+                  </Button>
+                </Grid>
+              </Grid>
             </Paper>
           ) : (
             <Paper
