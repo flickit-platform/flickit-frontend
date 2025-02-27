@@ -31,7 +31,6 @@ import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
-import { LoadingButton } from "@mui/lab";
 import { t } from "i18next";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";

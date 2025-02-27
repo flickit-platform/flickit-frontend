@@ -3,7 +3,6 @@ import { Trans } from "react-i18next";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SubjectOverallStatusLevelChart from "./SubjectOverallStatusLevelChart";
-import { LoadingButton } from "@mui/lab";
 import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
@@ -12,7 +11,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
 import CircularProgress from "@mui/material/CircularProgress";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { theme } from "@/config/theme";
@@ -21,6 +19,7 @@ import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { useConfigContext } from "@/providers/ConfgProvider";
+import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 const SubjectOverallInsight = (props: any) => {
   return (
@@ -44,7 +43,6 @@ const OverallInsightText = (props: any) => {
   const [isApproved, setIsApproved] = useState(true);
   const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
-  const [isSystemic, setIsSystemic] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
 
   const { service } = useServiceContext();
@@ -100,12 +98,31 @@ const OverallInsightText = (props: any) => {
     );
 
     if (selectedInsight) {
-      setIsSystemic(data?.defaultInsight ?? false);
       setInsight(selectedInsight);
       setIsApproved(data?.approved);
     }
     setEditable(data?.editable ?? false);
   }, [fetchSubjectInsight.data]);
+
+  const {
+    status,
+    hidePrimaryButton,
+    onPrimaryAction,
+    loadingPrimary,
+    onSecondaryAction,
+    loadingSecondary,
+    colorScheme,
+    texts,
+  } = useInsightPopup({
+    insight,
+    isExpired,
+    isApproved,
+    initQuery: InitInsight.query,
+    fetchQuery: fetchSubjectInsight.query,
+    approveAction: ApproveSubject,
+    initLoading: InitInsight.loading,
+    approveLoading: ApproveAISubject.loading,
+  });
   return (
     <Box display="flex" flexDirection={"column"} flex={1}>
       <Typography variant="titleLarge" sx={{ opacity: 0.96 }}>
@@ -171,78 +188,14 @@ const OverallInsightText = (props: any) => {
         </Typography>
         {editable && (
           <ActionPopup
-            status={
-              insight
-                ? isExpired
-                  ? "expired"
-                  : isApproved
-                    ? "approved"
-                    : "pending"
-                : "default"
-            }
-            hidePrimaryButton={insight && !isExpired && !isApproved}
-            onPrimaryAction={(event) => {
-              InitInsight.query().then(() => fetchSubjectInsight.query());
-            }}
-            loadingPrimary={InitInsight.loading}
-            onSecondaryAction={(event: any) => ApproveSubject(event)}
-            loadingSecondary={ApproveAISubject.loading}
-            colorScheme={
-              !insight
-                ? {
-                    muiColor: "primary",
-                    main: theme.palette.primary.main,
-                    light: theme.palette.primary.light,
-                  }
-                : isApproved && !isExpired
-                  ? {
-                      muiColor: "success",
-                      main: theme.palette.success.main,
-                      light: theme.palette.success.light,
-                    }
-                  : {
-                      muiColor: "error",
-                      main: theme.palette.error.main,
-                      light: theme.palette.error.light,
-                    }
-            }
-            texts={{
-              buttonLabel: (
-                <Typography
-                  variant="labelMedium"
-                  sx={{ ...styles.centerVH, gap: 1 }}
-                >
-                  <FaWandMagicSparkles />{" "}
-                  {t(
-                    insight
-                      ? isExpired
-                        ? "insightPage.insightIsExpired"
-                        : isApproved
-                          ? "insightPage.insightIsApproved"
-                          : "insightPage.generatedByAppNeedsApproval"
-                      : "insightPage.generateInsight",
-                    {
-                      title: config.appTitle,
-                    },
-                  )}
-                </Typography>
-              ),
-              description: isExpired
-                ? t("insightPage.insightIsExpiredDescrption")
-                : insight
-                  ? t("insightPage.generatedByAppNeedsApprovalDescrption", {
-                      title: config.appTitle,
-                    })
-                  : t("insightPage.generateInsightDescription", {
-                      title: config.appTitle,
-                    }),
-              primaryAction: insight
-                ? t("insightPage.regenerate")
-                : t("insightPage.generateInsight"),
-              secondaryAction: t("insightPage.approveInsight"),
-              confirmMessage: t("insightPage.regenerateDescription"),
-              cancelMessage: t("insightPage.no"),
-            }}
+            status={status}
+            hidePrimaryButton={hidePrimaryButton}
+            onPrimaryAction={onPrimaryAction}
+            loadingPrimary={loadingPrimary}
+            onSecondaryAction={onSecondaryAction}
+            loadingSecondary={loadingSecondary}
+            colorScheme={colorScheme}
+            texts={texts}
           />
         )}
       </Box>

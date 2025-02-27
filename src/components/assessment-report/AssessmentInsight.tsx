@@ -1,10 +1,8 @@
 import Box from "@mui/material/Box";
-import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { ICustomError } from "@/utils/CustomError";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
@@ -14,14 +12,13 @@ import { theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
 import languageDetector from "@/utils/languageDetector";
-import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
-import AIGeneratedInsight from "../common/buttons/ActionPopup";
 import ActionPopup from "../common/buttons/ActionPopup";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { useConfigContext } from "@/providers/ConfgProvider";
+import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
@@ -30,7 +27,6 @@ export const AssessmentInsight = () => {
   const [editable, setEditable] = useState(false);
   const [isApproved, setIsApproved] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
-  const [isSystemic, setIsSystemic] = useState(true);
   const abortController = useRef(new AbortController());
   const { config } = useConfigContext();
 
@@ -77,12 +73,31 @@ export const AssessmentInsight = () => {
     );
 
     if (selectedInsight) {
-      setIsSystemic(data?.defaultInsight ?? false);
       setInsight(selectedInsight);
       setIsApproved(data?.approved);
     }
     setEditable(data?.editable ?? false);
   }, [fetchAssessmentInsight.data]);
+
+  const {
+    status,
+    hidePrimaryButton,
+    onPrimaryAction,
+    loadingPrimary,
+    onSecondaryAction,
+    loadingSecondary,
+    colorScheme,
+    texts,
+  } = useInsightPopup({
+    insight,
+    isExpired,
+    isApproved,
+    initQuery: InitAssessmentInsight.query,
+    fetchQuery: fetchAssessmentInsight.query,
+    approveAction: ApproveInsight,
+    initLoading: InitAssessmentInsight.loading,
+    approveLoading: ApproveAssessmentInsight.loading,
+  });
 
   return (
     <Box
@@ -121,80 +136,14 @@ export const AssessmentInsight = () => {
           >
             {editable && (
               <ActionPopup
-                status={
-                  insight
-                    ? isExpired
-                      ? "expired"
-                      : isApproved
-                        ? "approved"
-                        : "pending"
-                    : "default"
-                }
-                hidePrimaryButton={insight && !isExpired && !isApproved}
-                onPrimaryAction={(event: any) => {
-                  InitAssessmentInsight.query().then(() =>
-                    fetchAssessmentInsight.query(),
-                  );
-                }}
-                loadingPrimary={InitAssessmentInsight.loading}
-                onSecondaryAction={(event: any) => ApproveInsight(event)}
-                loadingSecondary={ApproveAssessmentInsight.loading}
-                colorScheme={
-                  !insight
-                    ? {
-                        muiColor: "primary",
-                        main: theme.palette.primary.main,
-                        light: theme.palette.primary.light,
-                      }
-                    : isApproved && !isExpired
-                      ? {
-                          muiColor: "success",
-                          main: theme.palette.success.main,
-                          light: theme.palette.success.light,
-                        }
-                      : {
-                          muiColor: "error",
-                          main: theme.palette.error.main,
-                          light: theme.palette.error.light,
-                        }
-                }
-                texts={{
-                  buttonLabel: (
-                    <Typography
-                      variant="labelMedium"
-                      sx={{ ...styles.centerVH, gap: 1 }}
-                    >
-                      <FaWandMagicSparkles />{" "}
-                      {t(
-                        insight
-                          ? isExpired
-                            ? "insightPage.insightIsExpired"
-                            : isApproved
-                              ? "insightPage.insightIsApproved"
-                              : "insightPage.generatedByAppNeedsApproval"
-                          : "insightPage.generateInsight",
-                        {
-                          title: config.appTitle,
-                        },
-                      )}
-                    </Typography>
-                  ),
-                  description: isExpired
-                    ? t("insightPage.insightIsExpiredDescrption")
-                    : insight
-                      ? t("insightPage.generatedByAppNeedsApprovalDescrption", {
-                          title: config.appTitle,
-                        })
-                      : t("insightPage.generateInsightDescription", {
-                          title: config.appTitle,
-                        }),
-                  primaryAction: insight
-                    ? t("insightPage.regenerate")
-                    : t("insightPage.generateInsight"),
-                  secondaryAction: t("insightPage.approveInsight"),
-                  confirmMessage: t("insightPage.regenerateDescription"),
-                  cancelMessage: t("insightPage.no"),
-                }}
+                status={status}
+                hidePrimaryButton={hidePrimaryButton}
+                onPrimaryAction={onPrimaryAction}
+                loadingPrimary={loadingPrimary}
+                onSecondaryAction={onSecondaryAction}
+                loadingSecondary={loadingSecondary}
+                colorScheme={colorScheme}
+                texts={texts}
               />
             )}
           </Box>
