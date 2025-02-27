@@ -31,7 +31,7 @@ interface UseInsightPopupProps {
   isApproved: boolean;
   initQuery: () => Promise<void>;
   fetchQuery: () => Promise<void>;
-  approveAction: (event: any) => void;
+  approveAction: (event: React.SyntheticEvent) => Promise<void>;
   initLoading: boolean;
   approveLoading: boolean;
 }
