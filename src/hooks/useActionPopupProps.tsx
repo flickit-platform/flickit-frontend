@@ -5,6 +5,7 @@ import { Typography } from "@mui/material";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { styles } from "@styles";
 import { useQuery } from "@/utils/useQuery";
+import { useConfigContext } from "@/providers/ConfgProvider";
 
 interface UseActionPopupProps {
   data: {
@@ -18,9 +19,6 @@ interface UseActionPopupProps {
   loadAttributeInsight: ReturnType<typeof useQuery>;
   approveAction: (event: React.SyntheticEvent) => Promise<void>;
   ApprovedAIAttribute: ReturnType<typeof useQuery>;
-  config: {
-    appTitle: string;
-  };
 }
 
 interface ColorScheme {
@@ -45,8 +43,8 @@ const useActionPopupProps = ({
   loadAttributeInsight,
   approveAction,
   ApprovedAIAttribute,
-  config,
 }: UseActionPopupProps) => {
+  const { config } = useConfigContext();
   const getInsightValidity = useCallback(() => {
     const hasAssessorInsight = data?.assessorInsight?.isValid;
     const hasAIInsight = data?.aiInsight?.isValid;
@@ -86,7 +84,14 @@ const useActionPopupProps = ({
           main: theme.palette.error.main,
           light: theme.palette.error.light,
         };
-  }, [data, getInsightValidity]);
+  }, [data, getInsightValidity]); // Extracted logic for button text determination
+
+  const getButtonLabelText = useCallback(() => {
+    const { isExpired, isApproved } = getInsightValidity();
+    if (isExpired) return t("insightPage.insightIsExpired");
+    if (isApproved) return t("insightPage.insightIsApproved");
+    return t("insightPage.generatedByAppNeedsApproval");
+  }, [data, getInsightValidity, t]);
 
   const getPopupTexts = useCallback((): PopupTexts => {
     const { isExpired, isApproved } = getInsightValidity();
@@ -94,14 +99,7 @@ const useActionPopupProps = ({
     const buttonLabel = (
       <Typography variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
         <FaWandMagicSparkles />
-        {t(
-          isExpired
-            ? "insightPage.insightIsExpired"
-            : isApproved
-              ? "insightPage.insightIsApproved"
-              : "insightPage.generatedByAppNeedsApproval",
-          { title: config.appTitle },
-        )}
+        {getButtonLabelText()}
       </Typography>
     );
 
@@ -125,7 +123,7 @@ const useActionPopupProps = ({
       confirmMessage: t("insightPage.regenerateDescription"),
       cancelMessage: t("insightPage.no"),
     };
-  }, [data, config, getInsightValidity, t]);
+  }, [data, getInsightValidity, getButtonLabelText]);
 
   return {
     disablePrimaryButton: shouldDisablePrimaryButton,

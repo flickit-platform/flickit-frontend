@@ -86,22 +86,27 @@ const useInsightPopup = ({
       main: theme.palette.error.main,
       light: theme.palette.error.light,
     };
-  }, [insight, isApproved, isExpired, theme]);
+  }, [insight, isApproved, isExpired, theme]); // Extract the logic for determining the button label
+
+  const getButtonLabelText = useCallback(() => {
+    if (!insight)
+      return t("insightPage.generateInsight", { title: config.appTitle });
+
+    if (isExpired)
+      return t("insightPage.insightIsExpired", { title: config.appTitle });
+    if (isApproved)
+      return t("insightPage.insightIsApproved", { title: config.appTitle });
+
+    return t("insightPage.generatedByAppNeedsApproval", {
+      title: config.appTitle,
+    });
+  }, [insight, isExpired, isApproved, config, t]);
 
   const getPopupTexts = useCallback((): PopupTexts => {
     const buttonLabel = (
       <Typography variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
         <FaWandMagicSparkles />
-        {t(
-          insight
-            ? isExpired
-              ? "insightPage.insightIsExpired"
-              : isApproved
-                ? "insightPage.insightIsApproved"
-                : "insightPage.generatedByAppNeedsApproval"
-            : "insightPage.generateInsight",
-          { title: config.appTitle },
-        )}
+        {getButtonLabelText()}
       </Typography>
     );
 
@@ -129,7 +134,7 @@ const useInsightPopup = ({
       confirmMessage: t("insightPage.regenerateDescription"),
       cancelMessage: t("insightPage.no"),
     };
-  }, [insight, isExpired, isApproved, config, t, styles]);
+  }, [insight, isExpired, isApproved, config, t, getButtonLabelText]);
 
   return {
     status: getInsightStatus(),
