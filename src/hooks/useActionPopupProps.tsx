@@ -47,126 +47,93 @@ const useActionPopupProps = ({
   ApprovedAIAttribute,
   config,
 }: UseActionPopupProps) => {
-  const getInsightStatus = useCallback(() => {
-    if (data?.assessorInsight || data?.aiInsight) {
-      if (
-        (data.assessorInsight && !data.assessorInsight.isValid) ||
-        (data.aiInsight && !data.aiInsight.isValid)
-      ) {
-        return "expired";
-      }
-      if (
-        !(
-          (data.assessorInsight && !data.assessorInsight.isValid) ||
-          (data.aiInsight && !data.aiInsight.isValid) ||
-          ((data.aiInsight || data.assessorInsight) && !data.approved)
-        )
-      ) {
-        return "approved";
-      }
-      return "pending";
-    }
-    return "default";
+  const getInsightValidity = useCallback(() => {
+    const hasAssessorInsight = data?.assessorInsight?.isValid;
+    const hasAIInsight = data?.aiInsight?.isValid;
+
+    return {
+      isExpired: !hasAssessorInsight || !hasAIInsight,
+      isApproved: data?.approved,
+    };
   }, [data]);
 
-  const shouldDisablePrimaryButton = useCallback(() => progress !== 100, [progress]);
+  const getInsightStatus = useCallback(() => {
+    const { isExpired, isApproved } = getInsightValidity();
+    if (isExpired) return "expired";
+    if (isApproved) return "approved";
+    return "pending";
+  }, [getInsightValidity]);
 
-  const getDisablePrimaryButtonText = useCallback(
-    () => t("insightPage.questionsArentCompleteSoAICantBeGenerated") ?? "",
-    [t]
-  );
-
-  const handlePrimaryAction = useCallback(
-    (event: React.SyntheticEvent) => {
-      generateAIInsight.query().then(() => loadAttributeInsight.query());
-    },
-    [generateAIInsight, loadAttributeInsight]
-  );
+  const shouldDisablePrimaryButton = progress !== 100;
 
   const getColorScheme = useCallback((): ColorScheme => {
-    if (!(data?.assessorInsight || data?.aiInsight)) {
+    const { isApproved } = getInsightValidity();
+    if (!data?.assessorInsight && !data?.aiInsight) {
       return {
         muiColor: "primary",
         main: theme.palette.primary.main,
         light: theme.palette.primary.light,
       };
     }
-    if (
-      !(
-        (data.assessorInsight && !data.assessorInsight.isValid) ||
-        (data.aiInsight && !data.aiInsight.isValid) ||
-        ((data.aiInsight || data.assessorInsight) && !data.approved)
-      )
-    ) {
-      return {
-        muiColor: "success",
-        main: theme.palette.success.main,
-        light: theme.palette.success.light,
-      };
-    }
-    return {
-      muiColor: "error",
-      main: theme.palette.error.main,
-      light: theme.palette.error.light,
-    };
-  }, [data]);
+    return isApproved
+      ? {
+          muiColor: "success",
+          main: theme.palette.success.main,
+          light: theme.palette.success.light,
+        }
+      : {
+          muiColor: "error",
+          main: theme.palette.error.main,
+          light: theme.palette.error.light,
+        };
+  }, [data, getInsightValidity]);
 
   const getPopupTexts = useCallback((): PopupTexts => {
+    const { isExpired, isApproved } = getInsightValidity();
+
     const buttonLabel = (
       <Typography variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
-        <FaWandMagicSparkles />{" "}
+        <FaWandMagicSparkles />
         {t(
-          data?.assessorInsight || data?.aiInsight
-            ? (data.assessorInsight && !data.assessorInsight.isValid) ||
-              (data.aiInsight && !data.aiInsight.isValid)
-              ? "insightPage.insightIsExpired"
-              : !(
-                  (data.assessorInsight && !data.assessorInsight.isValid) ||
-                  (data.aiInsight && !data.aiInsight.isValid) ||
-                  ((data.aiInsight || data.assessorInsight) && !data.approved)
-                )
+          isExpired
+            ? "insightPage.insightIsExpired"
+            : isApproved
               ? "insightPage.insightIsApproved"
-              : "insightPage.generatedByAppNeedsApproval"
-            : "insightPage.generateInsight",
-          { title: config.appTitle }
+              : "insightPage.generatedByAppNeedsApproval",
+          { title: config.appTitle },
         )}
       </Typography>
     );
 
     const description = t(
-      data?.assessorInsight || data?.aiInsight
-        ? (data.assessorInsight && !data.assessorInsight.isValid) ||
-          (data.aiInsight && !data.aiInsight.isValid)
-          ? "insightPage.insightIsExpiredDescription"
-          : !(
-              (data.assessorInsight && !data.assessorInsight.isValid) ||
-              (data.aiInsight && !data.aiInsight.isValid) ||
-              ((data.aiInsight || data.assessorInsight) && !data.approved)
-            )
+      isExpired
+        ? "insightPage.insightIsExpiredDescription"
+        : isApproved
           ? "insightPage.AIinsightIsApprovedDescription"
-          : "insightPage.AIGeneratedNeedsApprovalDescription"
-        : "insightPage.generateInsightDescription",
-      { title: config.appTitle }
+          : "insightPage.AIGeneratedNeedsApprovalDescription",
+      { title: config.appTitle },
     );
 
     return {
       buttonLabel,
       description,
       primaryAction:
-        data?.assessorInsight || data?.aiInsight
+        isExpired || isApproved
           ? t("insightPage.regenerate")
           : t("insightPage.generateInsight"),
       secondaryAction: t("insightPage.approveInsight"),
       confirmMessage: t("insightPage.regenerateDescription"),
       cancelMessage: t("insightPage.no"),
     };
-  }, [data, config, t]);
+  }, [data, config, getInsightValidity, t]);
 
   return {
-    disablePrimaryButton: shouldDisablePrimaryButton(),
-    disablePrimaryButtonText: getDisablePrimaryButtonText(),
+    disablePrimaryButton: shouldDisablePrimaryButton,
+    disablePrimaryButtonText:
+      t("insightPage.questionsArentCompleteSoAICantBeGenerated") ?? "",
     status: getInsightStatus(),
-    onPrimaryAction: handlePrimaryAction,
+    onPrimaryAction: () =>
+      generateAIInsight.query().then(() => loadAttributeInsight.query()),
     loadingPrimary: generateAIInsight.loading,
     onSecondaryAction: approveAction,
     loadingSecondary: ApprovedAIAttribute.loading,

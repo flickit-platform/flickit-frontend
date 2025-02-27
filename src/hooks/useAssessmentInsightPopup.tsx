@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { Theme } from "@mui/material/styles";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { Typography } from "@mui/material";
 import { theme } from "@/config/theme";
