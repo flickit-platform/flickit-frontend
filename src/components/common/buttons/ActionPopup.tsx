@@ -65,7 +65,7 @@ const ActionPopup = ({
       setConfirmDialog(true);
     } else {
       onPrimaryAction(event);
-      handleConfirmClose();
+      setOpen(false);
     }
   };
 
@@ -77,6 +77,8 @@ const ActionPopup = ({
         color={colorScheme.muiColor}
         onClick={handleToggle}
         sx={{
+          display: "flex",
+          minWidth: "220px",
           justifyContent: "space-between",
           backgroundColor: colorScheme.light,
           borderRadius: open ? "0px" : "16px",
@@ -101,6 +103,7 @@ const ActionPopup = ({
         sx={{
           zIndex: 1,
           width: anchorRef.current?.offsetWidth,
+          minWidth: "220px",
         }}
       >
         <ClickAwayListener onClickAway={handleClose}>
@@ -132,6 +135,7 @@ const ActionPopup = ({
                     onClick={(event) => {
                       onPrimaryAction(event);
                       handleConfirmClose();
+                      setOpen(false);
                     }}
                     loading={loadingPrimary}
                     fullWidth
@@ -184,7 +188,10 @@ const ActionPopup = ({
                     loading={loadingSecondary}
                     variant="outlined"
                     color={colorScheme.muiColor}
-                    onClick={(event) => onSecondaryAction(event)}
+                    onClick={(event) => {
+                      onSecondaryAction(event);
+                      setOpen(false);
+                    }}
                     fullWidth
                     sx={{ backgroundColor: "white" }}
                     size="small"
