@@ -8,7 +8,6 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
 import { t } from "i18next";
 import formatDate from "@utils/formatDate";
 import languageDetector from "@/utils/languageDetector";
@@ -16,8 +15,6 @@ import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
-import { FaWandMagicSparkles } from "react-icons/fa6";
-import { useConfigContext } from "@/providers/ConfgProvider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 export const AssessmentInsight = () => {
@@ -28,7 +25,6 @@ export const AssessmentInsight = () => {
   const [isApproved, setIsApproved] = useState(true);
   const [isExpired, setIsExpired] = useState(false);
   const abortController = useRef(new AbortController());
-  const { config } = useConfigContext();
 
   const fetchAssessmentInsight = useQuery<any>({
     service: (args, config) =>

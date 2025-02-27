@@ -13,12 +13,9 @@ import { styles } from "@styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
-import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
-import { FaWandMagicSparkles } from "react-icons/fa6";
-import { useConfigContext } from "@/providers/ConfgProvider";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 const SubjectOverallInsight = (props: any) => {
@@ -36,7 +33,6 @@ const SubjectOverallInsight = (props: any) => {
 
 const OverallInsightText = (props: any) => {
   const { data = {}, loading } = props;
-  const { config } = useConfigContext();
 
   const abortController = useRef(new AbortController());
 
