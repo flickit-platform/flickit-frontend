@@ -135,16 +135,6 @@ export const AttributeInsight = memo(
                     <Trans i18nKey="insight" />
                   </Typography>
                   <Box sx={{ display: "flex", gap: 2 }}>
-                    {data?.aiInsight &&
-                      data?.aiInsight?.isValid &&
-                      !data.approved && (
-                        <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                          <div>
-                            <AIGenerated />
-                          </div>
-                        </Tooltip>
-                      )}
-
                     {data?.editable && (
                       <ActionPopup
                         disablePrimaryButton={progress !== 100}
