@@ -248,60 +248,6 @@ export const AssessmentInsight = () => {
                   ")"}
             </Typography>
           )}
-          {(!isApproved || (!insight?.isValid && insight)) && (
-            <Box sx={{ ...styles.centerV }} gap={2} my={1}>
-              <Box
-                sx={{
-                  zIndex: 1,
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  ml: { xs: 0.75, sm: 0.75, md: 1 },
-                }}
-              >
-                <Typography
-                  variant="labelSmall"
-                  sx={{
-                    backgroundColor: "#d85e1e",
-                    color: "white",
-                    padding: "0.35rem 0.35rem",
-                    borderRadius: "4px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <Trans i18nKey={!isSystemic ? "outdated" : "note"} />
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  backgroundColor: "rgba(255, 249, 196, 0.31)",
-                  padding: 1,
-                  borderRadius: 2,
-                  maxWidth: "100%",
-                }}
-              >
-                <InfoOutlined
-                  color="primary"
-                  sx={{
-                    marginRight: theme.direction === "ltr" ? 1 : "unset",
-                    marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                  }}
-                />
-                <Typography
-                  variant="titleMedium"
-                  fontWeight={400}
-                  textAlign="left"
-                >
-                  <Trans
-                    i18nKey={
-                      !isSystemic ? "invalidInsight" : "defaultInsightTemplate"
-                    }
-                  />
-                </Typography>
-              </Box>
-            </Box>
-          )}
         </>
       )}
     </Box>

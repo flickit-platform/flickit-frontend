@@ -6,6 +6,7 @@ import {
   Popper,
   Paper,
   ClickAwayListener,
+  Tooltip,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { ExpandLessOutlined, ExpandMoreOutlined } from "@mui/icons-material";
@@ -14,6 +15,8 @@ import { theme } from "@/config/theme";
 interface ActionPopupProps {
   status: "default" | "pending" | "approved" | "expired";
   hidePrimaryButton?: boolean;
+  disablePrimaryButton?: boolean;
+  disablePrimaryButtonText?: string;
   onPrimaryAction: (event: any) => void;
   loadingPrimary: boolean;
   onSecondaryAction: (event: any) => void;
@@ -36,6 +39,8 @@ interface ActionPopupProps {
 const ActionPopup = ({
   status,
   hidePrimaryButton,
+  disablePrimaryButton,
+  disablePrimaryButtonText,
   onPrimaryAction,
   loadingPrimary,
   onSecondaryAction,
@@ -181,19 +186,27 @@ const ActionPopup = ({
                   </LoadingButton>
                 )}
                 {!hidePrimaryButton && (
-                  <LoadingButton
-                    variant="outlined"
-                    color={colorScheme.muiColor}
-                    onClick={(event) => {
-                      handlePrimaryAction(event);
-                    }}
-                    loading={loadingPrimary}
-                    fullWidth
-                    sx={{ backgroundColor: "white" }}
-                    size="small"
+                  <Tooltip
+                    disableHoverListener={!disablePrimaryButton}
+                    title={disablePrimaryButtonText}
                   >
-                    {texts.primaryAction}
-                  </LoadingButton>
+                    <div>
+                      <LoadingButton
+                        variant="outlined"
+                        color={colorScheme.muiColor}
+                        onClick={(event) => {
+                          handlePrimaryAction(event);
+                        }}
+                        loading={loadingPrimary}
+                        fullWidth
+                        sx={{ backgroundColor: "white" }}
+                        size="small"
+                        disabled={disablePrimaryButton}
+                      >
+                        {texts.primaryAction}
+                      </LoadingButton>
+                    </div>
+                  </Tooltip>
                 )}
               </Box>
             </Paper>

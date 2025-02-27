@@ -489,7 +489,6 @@
   "questionOptions": "گزینه‌های پرسش",
   "questionPlaceholder": "در این قسمت سوال را وارد نمایید.",
   "questions": "پرسش‌ها",
-  "questionsArentCompleteSoAICantBeGenerated": "تا زمانی که تمام پرسش‌های ارزیابی  پاسخ داده نشود، تحلیل‌های مبتنی بر AI ارائه نمی‌شود.",
   "questionsCount": "تعداد پرسش‌ها",
   "readAbout": "درباره",
   "recentSpaces": "فضاهای کاری اخیر",
@@ -863,6 +862,7 @@
     "generateInsight": "تولید تحلیل",
     "generateInsightDescription": "به کمک هوش مصنوعی می‌توانید بر اساس پاسخ‌هایی که به پرسش‌ها داده شده است؛ برای این تحلیل متن تولید کنید.",
     "regenerate": "بازتولید",
-    "no": "خیر"
+    "no": "خیر",
+    "questionsArentCompleteSoAICantBeGenerated": "تا زمانی که تمام پرسش‌های ارزیابی  پاسخ داده نشود، تحلیل‌های مبتنی بر AI ارائه نمی‌شود."
   }
 }

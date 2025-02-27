@@ -505,50 +505,21 @@ const AttributeInsight = memo(
                   </Typography>
                   <Box sx={{ display: "flex", gap: 2 }}>
                     {data?.aiInsight &&
-                    data?.aiInsight?.isValid &&
-                    !data.approved ? (
-                      <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                        <div>
-                          <AIGenerated />
-                        </div>
-                      </Tooltip>
-                    ) : (
-                      (data?.assessorInsight &&
-                        !data?.assessorInsight?.isValid) ||
-                      (data?.aiInsight && !data?.aiInsight?.isValid && (
-                        <Tooltip title={<Trans i18nKey="invalidInsight" />}>
+                      data?.aiInsight?.isValid &&
+                      !data.approved && (
+                        <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
                           <div>
-                            <AIGenerated
-                              title="outdated"
-                              type="warning"
-                              icon={<></>}
-                            />
+                            <AIGenerated />
                           </div>
                         </Tooltip>
-                      ))
-                    )}
-                    {(data?.assessorInsight &&
-                      !data?.assessorInsight?.isValid) ||
-                    (data?.aiInsight && !data?.aiInsight?.isValid) ||
-                    ((data?.aiInsight || data?.assessorInsight) &&
-                      !data.approved) ? (
-                      <Box sx={{ ...styles.centerVH, gap: 2 }}>
-                        {data?.editable && (
-                          <LoadingButton
-                            onClick={(event) => approveAttribute(event)}
-                            variant="contained"
-                            loading={ApprovedAIAttribute.loading}
-                            size="small"
-                          >
-                            <Trans i18nKey="approve" />
-                          </LoadingButton>
-                        )}
-                      </Box>
-                    ) : (
-                      <></>
-                    )}
+                      )}
+
                     {data?.editable && (
                       <ActionPopup
+                        disablePrimaryButton={progress !== 100}
+                        disablePrimaryButtonText={
+                          t("insightPage.questionsArentCompleteSoAICantBeGenerated") ?? ""
+                        }
                         status={
                           data?.assessorInsight || data?.aiInsight
                             ? (data?.assessorInsight &&
