@@ -10,32 +10,22 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import QueryData from "@common/QueryData";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
-import Tooltip from "@mui/material/Tooltip";
 import languageDetector from "@utils/languageDetector";
-import toastError from "@/utils/toastError";
-import { ICustomError } from "@/utils/CustomError";
 import { IPermissions } from "@/types";
-import AIGenerated from "../common/tags/AIGenerated";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Skeleton } from "@mui/material";
 import MaturityLevelTable from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
-import { t } from "i18next";
-import { EditableRichEditor } from "../common/fields/EditableRichEditor";
-import ActionPopup from "../common/buttons/ActionPopup";
-import { useConfigContext } from "@/providers/ConfgProvider";
-import { FaWandMagicSparkles } from "react-icons/fa6";
+import { AttributeInsight } from "./AttributeInsight";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -436,244 +426,6 @@ export const AttributeStatusBarContainer = (props: any) => {
     </Box>
   );
 };
-
-const AttributeInsight = memo(
-  ({ id, progress }: { id: string; progress: any }) => {
-    const { service } = useServiceContext();
-    const { assessmentId = "" } = useParams();
-    const { config } = useConfigContext();
-
-    const queryArgs = useMemo(
-      () => ({ assessmentId, attributeId: id }),
-      [assessmentId, id],
-    );
-
-    const ApprovedAIAttribute = useQuery({
-      service: (args = queryArgs, config) =>
-        service.ApprovedAIAttribute(args, config),
-      runOnMount: false,
-    });
-
-    const loadAttributeInsight = useQuery({
-      service: (args = queryArgs, config) =>
-        service.loadAttributeInsight(args, config),
-      runOnMount: true,
-    });
-
-    const generateAIInsight = useQuery({
-      service: (args = queryArgs, config) =>
-        service.generateAIInsight(args, config),
-      runOnMount: false,
-    });
-
-    const approveAttribute = useCallback(
-      async (event: React.SyntheticEvent) => {
-        event.stopPropagation();
-        try {
-          await ApprovedAIAttribute.query();
-          await loadAttributeInsight.query();
-        } catch (e) {
-          toastError(e as ICustomError);
-        }
-      },
-      [ApprovedAIAttribute, loadAttributeInsight],
-    );
-
-    return (
-      <QueryData
-        {...loadAttributeInsight}
-        renderLoading={() => (
-          <Skeleton
-            variant="rectangular"
-            sx={{ borderRadius: 2, height: "60px", mb: 1 }}
-          />
-        )}
-        errorComponent={<></>}
-        render={(data) => (
-          <>
-            {(data.editable ||
-              data?.assessorInsight?.insight ||
-              data?.aiInsight?.insight) && (
-              <>
-                <Box
-                  sx={{ display: "flex", justifyContent: "space-between" }}
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  <Typography color="#2466A8" variant="titleSmall">
-                    <Trans i18nKey="insight" />
-                  </Typography>
-                  <Box sx={{ display: "flex", gap: 2 }}>
-                    {data?.aiInsight &&
-                      data?.aiInsight?.isValid &&
-                      !data.approved && (
-                        <Tooltip title={<Trans i18nKey="invalidAIInsight" />}>
-                          <div>
-                            <AIGenerated />
-                          </div>
-                        </Tooltip>
-                      )}
-
-                    {data?.editable && (
-                      <ActionPopup
-                        disablePrimaryButton={progress !== 100}
-                        disablePrimaryButtonText={
-                          t("insightPage.questionsArentCompleteSoAICantBeGenerated") ?? ""
-                        }
-                        status={
-                          data?.assessorInsight || data?.aiInsight
-                            ? (data?.assessorInsight &&
-                                !data?.assessorInsight?.isValid) ||
-                              (data?.aiInsight && !data?.aiInsight?.isValid)
-                              ? "expired"
-                              : !(
-                                    (data?.assessorInsight &&
-                                      !data?.assessorInsight?.isValid) ||
-                                    (data?.aiInsight &&
-                                      !data?.aiInsight?.isValid) ||
-                                    ((data?.aiInsight ||
-                                      data?.assessorInsight) &&
-                                      !data.approved)
-                                  )
-                                ? "approved"
-                                : "pending"
-                            : "default"
-                        }
-                        onPrimaryAction={(event: any) => {
-                          generateAIInsight
-                            .query()
-                            .then(() => loadAttributeInsight.query());
-                        }}
-                        loadingPrimary={generateAIInsight.loading}
-                        onSecondaryAction={approveAttribute}
-                        loadingSecondary={ApprovedAIAttribute.loading}
-                        colorScheme={
-                          !(data?.assessorInsight || data?.aiInsight)
-                            ? {
-                                muiColor: "primary",
-                                main: theme.palette.primary.main,
-                                light: theme.palette.primary.light,
-                              }
-                            : !(
-                                  (data?.assessorInsight &&
-                                    !data?.assessorInsight?.isValid) ||
-                                  (data?.aiInsight &&
-                                    !data?.aiInsight?.isValid) ||
-                                  ((data?.aiInsight || data?.assessorInsight) &&
-                                    !data.approved)
-                                )
-                              ? {
-                                  muiColor: "success",
-                                  main: theme.palette.success.main,
-                                  light: theme.palette.success.light,
-                                }
-                              : {
-                                  muiColor: "error",
-                                  main: theme.palette.error.main,
-                                  light: theme.palette.error.light,
-                                }
-                        }
-                        texts={{
-                          buttonLabel: (
-                            <Typography
-                              variant="labelMedium"
-                              sx={{ ...styles.centerVH, gap: 1 }}
-                            >
-                              <FaWandMagicSparkles />{" "}
-                              {t(
-                                data?.assessorInsight || data?.aiInsight
-                                  ? (data?.assessorInsight &&
-                                      !data?.assessorInsight?.isValid) ||
-                                    (data?.aiInsight &&
-                                      !data?.aiInsight?.isValid)
-                                    ? "insightPage.insightIsExpired"
-                                    : !(
-                                          (data?.assessorInsight &&
-                                            !data?.assessorInsight?.isValid) ||
-                                          (data?.aiInsight &&
-                                            !data?.aiInsight?.isValid) ||
-                                          ((data?.aiInsight ||
-                                            data?.assessorInsight) &&
-                                            !data.approved)
-                                        )
-                                      ? "insightPage.insightIsApproved"
-                                      : "insightPage.generatedByAppNeedsApproval"
-                                  : "insightPage.generateInsight",
-                                {
-                                  title: config.appTitle,
-                                },
-                              )}
-                            </Typography>
-                          ),
-                          description: t(
-                            data?.assessorInsight || data?.aiInsight
-                              ? (data?.assessorInsight &&
-                                  !data?.assessorInsight?.isValid) ||
-                                (data?.aiInsight && !data?.aiInsight?.isValid)
-                                ? "insightPage.insightIsExpiredDescription"
-                                : !(
-                                      (data?.assessorInsight &&
-                                        !data?.assessorInsight?.isValid) ||
-                                      (data?.aiInsight &&
-                                        !data?.aiInsight?.isValid) ||
-                                      ((data?.aiInsight ||
-                                        data?.assessorInsight) &&
-                                        !data.approved)
-                                    )
-                                  ? "insightPage.AIinsightIsApprovedDescription"
-                                  : "insightPage.AIGeneratedNeedsApprovalDescription"
-                              : "insightPage.generateInsightDescription",
-                            {
-                              title: config.appTitle,
-                            },
-                          ),
-                          primaryAction:
-                            data?.assessorInsight || data?.aiInsight
-                              ? t("insightPage.regenerate")
-                              : t("insightPage.generateInsight"),
-                          secondaryAction: t("insightPage.approveInsight"),
-                          confirmMessage: t(
-                            "insightPage.regenerateDescription",
-                          ),
-                          cancelMessage: t("insightPage.no"),
-                        }}
-                      />
-                    )}
-                  </Box>
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  onClick={(event) => event.stopPropagation()}
-                  mt={1}
-                >
-                  <EditableRichEditor
-                    defaultValue={
-                      data?.assessorInsight?.insight || data?.aiInsight?.insight
-                    }
-                    editable={data?.editable}
-                    fieldName="title"
-                    onSubmit={async (payload: any) => {
-                      await service.createAttributeInsight({
-                        assessmentId,
-                        attributeId: id,
-                        data: { assessorInsight: payload.title },
-                      });
-                    }}
-                    infoQuery={loadAttributeInsight.query}
-                    placeholder={
-                      t("writeHere", { title: t("insight").toLowerCase() }) ??
-                      ""
-                    }
-                  />
-                </Box>
-              </>
-            )}
-          </>
-        )}
-      />
-    );
-  },
-);
 
 export const AttributeStatusBar = (props: any) => {
   const { ml, cl, isMl, mn } = props;
