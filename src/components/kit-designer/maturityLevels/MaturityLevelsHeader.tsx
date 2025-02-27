@@ -20,7 +20,7 @@ const MaturityLevelsHeader = ({
       </Typography>
       <br />
       <Typography variant="bodyMedium">
-        <Trans i18nKey="maturityLevelsKitDesignerDescrption" />
+        <Trans i18nKey="maturityLevelsKitDesignerDescription" />
       </Typography>
     </div>
     <Box

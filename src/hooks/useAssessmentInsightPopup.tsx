@@ -109,9 +109,13 @@ const useInsightPopup = ({
     const description = isExpired
       ? t("insightPage.insightIsExpiredDescription")
       : insight
-        ? t("insightPage.generatedByAppNeedsApprovalDescription", {
-            title: config.appTitle,
-          })
+        ? isApproved
+          ? t("insightPage.insightIsApprovedDescription", {
+              title: config.appTitle,
+            })
+          : t("insightPage.generatedByAppNeedsApprovalDescription", {
+              title: config.appTitle,
+            })
         : t("insightPage.generateInsightDescription", {
             title: config.appTitle,
           });

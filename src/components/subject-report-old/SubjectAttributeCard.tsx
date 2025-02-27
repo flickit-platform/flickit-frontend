@@ -609,7 +609,7 @@ const AttributeInsight = memo(
                               ? (data?.assessorInsight &&
                                   !data?.assessorInsight?.isValid) ||
                                 (data?.aiInsight && !data?.aiInsight?.isValid)
-                                ? "insightPage.insightIsExpiredDescrption"
+                                ? "insightPage.insightIsExpiredDescription"
                                 : !(
                                       (data?.assessorInsight &&
                                         !data?.assessorInsight?.isValid) ||
@@ -619,8 +619,8 @@ const AttributeInsight = memo(
                                         data?.assessorInsight) &&
                                         !data.approved)
                                     )
-                                  ? "insightPage.insightIsApprovedDescrption"
-                                  : "insightPage.AIGeneratedNeedsApprovalDescrption"
+                                  ? "insightPage.AIinsightIsApprovedDescription"
+                                  : "insightPage.AIGeneratedNeedsApprovalDescription"
                               : "insightPage.generateInsightDescription",
                             {
                               title: config.appTitle,
