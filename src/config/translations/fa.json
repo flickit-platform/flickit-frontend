@@ -152,7 +152,7 @@
   "completeNow": "اکنون کامل کنید",
   "completeSomeOfQuestionnaires": "برای دریافت گزارش‌های پایه، چند پرسشنامه را تکمیل کنید.",
   "completeTheAssessment": "ارزیابی را کامل کنید",
-  "confidence": "اطمینان",
+  "confidence": "سطح اطمینان",
   "confidenceLevel": "سطح اطمینان",
   "confirm": "بله، مطمئنم",
   "continue": "ادامه",
@@ -845,7 +845,7 @@
   "'email' format is not valid.": "ایمیل وارد شده معتبر نمی‌باشد.",
   "unapprovedAnswers": "پاسخ‌های تاییدنشده",
   "GenerateAll": "تولید همه",
-  "insightPage": {
+  "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",
     "generatedByAppNeedsApproval": "نوشته‌ {{title}} (نیازمند تایید)",
@@ -867,5 +867,8 @@
     "no": "خیر",
     "questionsArentCompleteSoAICantBeGenerated": "تا زمانی که تمام پرسش‌های ارزیابی  پاسخ داده نشود، تحلیل‌های مبتنی بر AI ارائه نمی‌شود.",
     "insightIsNotGenerated": "تولیدنشده"
+  },
+  "insightsTab": {
+    "assessmentOverallInsights": "تحلیل کلی نتایج ارزیابی"
   }
 }

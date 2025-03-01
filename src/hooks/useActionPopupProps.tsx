@@ -88,9 +88,9 @@ const useActionPopupProps = ({
 
   const getButtonLabelText = useCallback(() => {
     const { isExpired, isApproved } = getInsightValidity();
-    if (isExpired) return t("insightPage.insightIsExpired");
-    if (isApproved) return t("insightPage.insightIsApproved");
-    return t("insightPage.generatedByAppNeedsApproval");
+    if (isExpired) return t("generateInsights.insightIsExpired");
+    if (isApproved) return t("generateInsights.insightIsApproved");
+    return t("generateInsights.generatedByAppNeedsApproval");
   }, [data, getInsightValidity, t]);
 
   const getPopupTexts = useCallback((): PopupTexts => {
@@ -105,10 +105,10 @@ const useActionPopupProps = ({
 
     const description = t(
       isExpired
-        ? "insightPage.insightIsExpiredDescription"
+        ? "generateInsights.insightIsExpiredDescription"
         : isApproved
-          ? "insightPage.AIinsightIsApprovedDescription"
-          : "insightPage.AIGeneratedNeedsApprovalDescription",
+          ? "generateInsights.AIinsightIsApprovedDescription"
+          : "generateInsights.AIGeneratedNeedsApprovalDescription",
       { title: config.appTitle },
     );
 
@@ -117,18 +117,18 @@ const useActionPopupProps = ({
       description,
       primaryAction:
         isExpired || isApproved
-          ? t("insightPage.regenerate")
-          : t("insightPage.generateInsight"),
-      secondaryAction: t("insightPage.approveInsight"),
-      confirmMessage: t("insightPage.regenerateDescription"),
-      cancelMessage: t("insightPage.no"),
+          ? t("generateInsights.regenerate")
+          : t("generateInsights.generateInsight"),
+      secondaryAction: t("generateInsights.approveInsight"),
+      confirmMessage: t("generateInsights.regenerateDescription"),
+      cancelMessage: t("generateInsights.no"),
     };
   }, [data, getInsightValidity, getButtonLabelText]);
 
   return {
     disablePrimaryButton: shouldDisablePrimaryButton,
     disablePrimaryButtonText:
-      t("insightPage.questionsArentCompleteSoAICantBeGenerated") ?? "",
+      t("generateInsights.questionsArentCompleteSoAICantBeGenerated") ?? "",
     status: getInsightStatus(),
     onPrimaryAction: () =>
       generateAIInsight.query().then(() => loadAttributeInsight.query()),

@@ -59,33 +59,33 @@ export const AttributeInsight = memo(
     const getPrimaryButtonText = (data: any, t: any) => {
       if (data?.assessorInsight || data?.aiInsight) {
         if (isInsightExpired(data)) {
-          return t("insightPage.insightIsExpired");
+          return t("generateInsights.insightIsExpired");
         }
         if (isInsightApproved(data)) {
-          return t("insightPage.insightIsApproved");
+          return t("generateInsights.insightIsApproved");
         }
-        return t("insightPage.AIGeneratedNeedsApproval");
+        return t("generateInsights.AIGeneratedNeedsApproval");
       }
-      return t("insightPage.insightIsNotGenerated");
+      return t("generateInsights.insightIsNotGenerated");
     };
 
     const getDescriptionText = (data: any, t: any) => {
       if (data?.assessorInsight || data?.aiInsight) {
         if (isInsightExpired(data)) {
-          return t("insightPage.insightIsExpiredDescription");
+          return t("generateInsights.insightIsExpiredDescription");
         }
         if (isInsightApproved(data)) {
-          return t("insightPage.AIinsightIsApprovedDescription");
+          return t("generateInsights.AIinsightIsApprovedDescription");
         }
-        return t("insightPage.AIGeneratedNeedsApprovalDescription");
+        return t("generateInsights.AIGeneratedNeedsApprovalDescription");
       }
-      return t("insightPage.generateInsightViaAIDescription");
+      return t("generateInsights.generateInsightViaAIDescription");
     };
 
     const getPrimaryActionText = (data: any, t: any) => {
       return data?.assessorInsight || data?.aiInsight
-        ? t("insightPage.regenerate")
-        : t("insightPage.generateInsight");
+        ? t("generateInsights.regenerate")
+        : t("generateInsights.generateInsight");
     };
 
     const getStatusColorScheme: any = (data: any, theme: any) => {
@@ -139,7 +139,7 @@ export const AttributeInsight = memo(
                         disablePrimaryButton={progress !== 100}
                         disablePrimaryButtonText={
                           t(
-                            "insightPage.questionsArentCompleteSoAICantBeGenerated",
+                            "generateInsights.questionsArentCompleteSoAICantBeGenerated",
                           ) ?? ""
                         }
                         status={getInsightStatus(data)}
@@ -164,11 +164,11 @@ export const AttributeInsight = memo(
                           ),
                           description: getDescriptionText(data, t),
                           primaryAction: getPrimaryActionText(data, t),
-                          secondaryAction: t("insightPage.approveInsight"),
+                          secondaryAction: t("generateInsights.approveInsight"),
                           confirmMessage: t(
-                            "insightPage.regenerateViaAIDescription",
+                            "generateInsights.regenerateViaAIDescription",
                           ),
-                          cancelMessage: t("insightPage.no"),
+                          cancelMessage: t("generateInsights.no"),
                         }}
                       />
                     )}

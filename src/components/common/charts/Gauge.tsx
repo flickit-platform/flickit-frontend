@@ -1,6 +1,6 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense, useMemo, useRef } from "react";
 import { Trans } from "react-i18next";
 import { styles, getMaturityLevelColors } from "@styles";
 import SkeletonGauge from "@common/charts/SkeletonGauge";
@@ -9,6 +9,7 @@ import PermissionRequired from "@common/charts/permissionRequired";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
   maturity_level_status: string;
@@ -22,39 +23,46 @@ interface IGaugeProps extends BoxProps {
   maturity_status_guide?: string | null;
   maturity_status_guide_variant?: any;
   status_font_variant?: any;
+  textPosition?: "top" | "bottom";
 }
 
-const Gauge = (props: IGaugeProps) => {
-  const {
-    maturity_level_status,
-    maturity_level_number = 5,
-    level_value,
-    confidence_value,
-    height = 200,
-    className,
-    hideGuidance,
-    isMobileScreen,
-    confidence_text,
-    maturity_status_guide,
-    maturity_status_guide_variant = "titleMedium",
-    status_font_variant,
-    ...rest
-  } = props;
+const Gauge = ({
+  maturity_level_status,
+  maturity_level_number = 5,
+  level_value,
+  confidence_value = 0,
+  height = 200,
+  className,
+  hideGuidance,
+  isMobileScreen,
+  confidence_text,
+  maturity_status_guide,
+  maturity_status_guide_variant = "titleMedium",
+  status_font_variant,
+  textPosition = "top",
+  ...rest
+}: IGaugeProps) => {
   const colorPallet = getMaturityLevelColors(maturity_level_number);
-  const colorCode = colorPallet ? colorPallet[level_value - 1] : "gray";
-  const GaugeComponent = useMemo(
-    () => lazy(() => import(`./GaugeComponent${maturity_level_number}.tsx`)),
-    [maturity_level_number],
-  );
+  const colorCode = colorPallet?.[level_value - 1] || "gray";
 
-  const confidenceValue = confidence_value ? confidence_value : 0;
+  const gaugeComponentCache = useRef<any>({});
+
+  const GaugeComponent = useMemo(() => {
+    if (!gaugeComponentCache.current[maturity_level_number]) {
+      gaugeComponentCache.current[maturity_level_number] = lazy(
+        () => import(`./GaugeComponent${maturity_level_number}.tsx`),
+      );
+    }
+    return gaugeComponentCache.current[maturity_level_number];
+  }, [maturity_level_number]);
+
   const calculateFontSize = (length: number): string => {
     const maxLength = 14; // Example threshold for maximum length
-    const minLength = 8; // Example threshold for minimum length
+    const minLength = 4; // Example threshold for minimum length
     let maxFontSizeRem = 1.5; // 24px / 16 = 1.5rem
     let minFontSizeRem = 1; // 18px / 16 = 1.125rem
     if (isMobileScreen) {
-      maxFontSizeRem = 1.35;
+      maxFontSizeRem = 2.5;
       minFontSizeRem = 1.125;
     }
     if (hideGuidance && !isMobileScreen) {
@@ -71,23 +79,31 @@ const Gauge = (props: IGaugeProps) => {
         (maxFontSizeRem - minFontSizeRem);
     return `${fontSizeRem}rem`;
   };
-  const fontSize = calculateFontSize(maturity_level_status?.length);
+
+  const fontSize = calculateFontSize(maturity_level_status?.length || 0);
+
   return (
-    <Box p={1} position="relative" width="100%" {...rest}>
+    <Box
+      position="relative"
+      width="100%"
+      height={height}
+      overflow="hidden" // اضافه کردن overflow: hidden
+      {...rest}
+    >
       <Suspense fallback={<SkeletonGauge />}>
         {maturity_level_status ? (
           <GaugeComponent
             confidence_value={confidence_value}
             colorCode={colorCode}
-            value={level_value ? level_value : -1}
+            value={level_value || -1}
             height={height}
             className={className}
           />
         ) : (
           <img
-            width={"100%"}
+            width="100%"
             height={height}
-            src={"/assets/svg/maturityNull.svg"}
+            src="/assets/svg/maturityNull.svg"
           />
         )}
       </Suspense>
@@ -95,15 +111,17 @@ const Gauge = (props: IGaugeProps) => {
         <Box
           sx={{
             ...styles.centerCVH,
-            top: isMobileScreen ? "20%" : "unset",
-            bottom: hideGuidance ? `24%` : "40%",
-            left: isMobileScreen ? "26%" : "20%",
-            right: isMobileScreen ? "26%" : "20%",
+            position: "absolute",
+            top: isMobileScreen ? "unset" : "50%",
+            bottom: isMobileScreen ? "4%" : "unset",
+            left: "50%",
+            transform: isMobileScreen
+              ? "translateX(-50%)"
+              : "translate(-50%, -50%)",
             textAlign: "center",
           }}
-          position="absolute"
         >
-          {!hideGuidance && (
+          {!hideGuidance && !isMobileScreen && (
             <Typography
               variant="subtitle2"
               color="black"
@@ -112,7 +130,6 @@ const Gauge = (props: IGaugeProps) => {
               <Trans i18nKey="maturityGuidanceFirst" />
             </Typography>
           )}
-
           {maturity_status_guide && (
             <Typography
               mt="1rem"
@@ -135,20 +152,16 @@ const Gauge = (props: IGaugeProps) => {
             mt={maturity_status_guide ? "0.5rem" : "0px"}
             mb={maturity_status_guide ? "-0.5rem" : 0}
           >
-            {maturity_level_status}{" "}
+            {maturity_level_status}
           </Typography>
           {confidence_text && (
             <Typography
-              variant={
-                maturity_status_guide_variant
-                  ? maturity_status_guide_variant
-                  : "titleMedium"
-              }
-              color="#243342"
-              mt="1.5rem"
+              variant={maturity_status_guide_variant}
+              color="#6C8093"
+              mt={!isMobileScreen ? "1.5rem" : "unset"}
+              display="flex"
               justifyContent="center"
               alignItems="center"
-              display="flex"
               gap="0.125rem"
               sx={{
                 fontFamily: languageDetector(confidence_text)
@@ -159,17 +172,17 @@ const Gauge = (props: IGaugeProps) => {
               {confidence_text}
               <ConfidenceLevel
                 displayNumber
-                inputNumber={Math.ceil(confidenceValue)}
-                variant="titleMedium"
+                inputNumber={Math.ceil(confidence_value ?? 0)}
+                variant="titleSmall"
                 fontFamily={
                   languageDetector(confidence_text)
                     ? farsiFontFamily
                     : primaryFontFamily
                 }
-              ></ConfidenceLevel>
+              />
             </Typography>
           )}
-          {!hideGuidance && (
+          {!hideGuidance && !isMobileScreen && (
             <Typography
               variant="subtitle2"
               color="black"
@@ -181,12 +194,7 @@ const Gauge = (props: IGaugeProps) => {
         </Box>
       ) : (
         <Box
-          sx={{
-            ...styles.centerCVH,
-            bottom: "22%",
-            left: "25%",
-            right: "25%",
-          }}
+          sx={{ ...styles.centerCVH, bottom: "22%", left: "25%", right: "25%" }}
           position="absolute"
         >
           <PermissionRequired />

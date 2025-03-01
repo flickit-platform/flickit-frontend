@@ -90,14 +90,14 @@ const useInsightPopup = ({
 
   const getButtonLabelText = useCallback(() => {
     if (!insight)
-      return t("insightPage.insightIsNotGenerated", { title: config.appTitle });
+      return t("generateInsights.insightIsNotGenerated", { title: config.appTitle });
 
     if (isExpired)
-      return t("insightPage.insightIsExpired", { title: config.appTitle });
+      return t("generateInsights.insightIsExpired", { title: config.appTitle });
     if (isApproved)
-      return t("insightPage.insightIsApproved", { title: config.appTitle });
+      return t("generateInsights.insightIsApproved", { title: config.appTitle });
 
-    return t("insightPage.generatedByAppNeedsApproval", {
+    return t("generateInsights.generatedByAppNeedsApproval", {
       title: config.appTitle,
     });
   }, [insight, isExpired, isApproved, config, t]);
@@ -111,16 +111,16 @@ const useInsightPopup = ({
     );
 
     const description = isExpired
-      ? t("insightPage.insightIsExpiredDescription")
+      ? t("generateInsights.insightIsExpiredDescription")
       : insight
         ? isApproved
-          ? t("insightPage.insightIsApprovedDescription", {
+          ? t("generateInsights.insightIsApprovedDescription", {
               title: config.appTitle,
             })
-          : t("insightPage.generatedByAppNeedsApprovalDescription", {
+          : t("generateInsights.generatedByAppNeedsApprovalDescription", {
               title: config.appTitle,
             })
-        : t("insightPage.generateInsightDescription", {
+        : t("generateInsights.generateInsightDescription", {
             title: config.appTitle,
           });
 
@@ -128,11 +128,11 @@ const useInsightPopup = ({
       buttonLabel,
       description,
       primaryAction: insight
-        ? t("insightPage.regenerate")
-        : t("insightPage.generateInsight"),
-      secondaryAction: t("insightPage.approveInsight"),
-      confirmMessage: t("insightPage.regenerateDescription"),
-      cancelMessage: t("insightPage.no"),
+        ? t("generateInsights.regenerate")
+        : t("generateInsights.generateInsight"),
+      secondaryAction: t("generateInsights.approveInsight"),
+      confirmMessage: t("generateInsights.regenerateDescription"),
+      cancelMessage: t("generateInsights.no"),
     };
   }, [insight, isExpired, isApproved, config, t, getButtonLabelText]);
 

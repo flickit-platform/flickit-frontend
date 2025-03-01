@@ -16,6 +16,10 @@ import toastError from "@/utils/toastError";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
+import QueryData from "../common/QueryData";
+import { LoadingSkeletonKitCard } from "../common/loadings/LoadingSkeletonKitCard";
+import { Skeleton } from "@mui/material";
+import { Trans } from "react-i18next";
 
 export const AssessmentInsight = () => {
   const { service } = useServiceContext();
@@ -96,105 +100,96 @@ export const AssessmentInsight = () => {
   });
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="left"
-      justifyContent="left"
-      textAlign="left"
-      height="100%"
-      gap={0.5}
-      py={2}
-      sx={{
-        background: "#fff",
-        boxShadow: "0px 0px 8px 0px rgba(0, 0, 0, 0.25)",
-        borderRadius: "12px",
-        px: { xs: 2, sm: 3.75 },
-      }}
-    >
-      {fetchAssessmentInsight.loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <>
+    <QueryData
+      {...fetchAssessmentInsight}
+      renderLoading={() => <Skeleton height={240} width="100%" />}
+      render={() => {
+        return (
           <Box
-            sx={{
-              ...styles.centerV,
-              width: "100%",
-              justifyContent: "end",
-            }}
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            height="100%"
+            width="100%"
           >
-            {editable && (
-              <ActionPopup
-                status={status}
-                hidePrimaryButton={hidePrimaryButton}
-                onPrimaryAction={onPrimaryAction}
-                loadingPrimary={loadingPrimary}
-                onSecondaryAction={onSecondaryAction}
-                loadingSecondary={loadingSecondary}
-                colorScheme={colorScheme}
-                texts={texts}
-              />
-            )}
-          </Box>
-          <EditableRichEditor
-            defaultValue={insight?.insight}
-            editable={editable}
-            fieldName="insight"
-            onSubmit={async (payload: any, event: any) => {
-              await service.updateAssessmentInsight(
-                {
-                  assessmentId,
-                  data: { insight: payload?.insight },
-                },
-                { signal: abortController.current.signal },
-              );
-            }}
-            infoQuery={fetchAssessmentInsight.query}
-            placeholder={
-              t("writeHere", {
-                title: t("insight").toLowerCase(),
-              }) ?? ""
-            }
-          />
-          {insight?.creationTime && (
-            <Typography variant="bodyMedium" mx={1}>
-              {languageDetector(insight)
-                ? formatDate(
-                    format(
+            <Box
+              sx={{
+                ...styles.centerV,
+                width: "100%",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography variant="semiBoldLarge">
+                <Trans i18nKey="insightsTab.assessmentOverallInsights"/>
+              </Typography>
+              {editable && (
+                <ActionPopup
+                  status={status}
+                  hidePrimaryButton={hidePrimaryButton}
+                  onPrimaryAction={onPrimaryAction}
+                  loadingPrimary={loadingPrimary}
+                  onSecondaryAction={onSecondaryAction}
+                  loadingSecondary={loadingSecondary}
+                  colorScheme={colorScheme}
+                  texts={texts}
+                />
+              )}
+            </Box>
+            <EditableRichEditor
+              defaultValue={insight?.insight}
+              editable={editable}
+              fieldName="insight"
+              onSubmit={async (payload: any, event: any) => {
+                await service.updateAssessmentInsight(
+                  {
+                    assessmentId,
+                    data: { insight: payload?.insight },
+                  },
+                  { signal: abortController.current.signal },
+                );
+              }}
+              infoQuery={fetchAssessmentInsight.query}
+              placeholder={
+                t("writeHere", {
+                  title: t("insight").toLowerCase(),
+                }) ?? ""
+              }
+            />
+            {insight?.creationTime && (
+              <Typography variant="bodyMedium" mx={1}>
+                {languageDetector(insight)
+                  ? formatDate(
+                      format(
+                        new Date(
+                          new Date(insight?.creationTime).getTime() -
+                            new Date(
+                              insight?.creationTime,
+                            ).getTimezoneOffset() *
+                              60000,
+                        ),
+                        "yyyy/MM/dd HH:mm",
+                      ),
+                      "Shamsi",
+                    ) +
+                    " (" +
+                    t(convertToRelativeTime(insight?.creationTime)) +
+                    ")"
+                  : format(
                       new Date(
                         new Date(insight?.creationTime).getTime() -
                           new Date(insight?.creationTime).getTimezoneOffset() *
                             60000,
                       ),
                       "yyyy/MM/dd HH:mm",
-                    ),
-                    "Shamsi",
-                  ) +
-                  " (" +
-                  t(convertToRelativeTime(insight?.creationTime)) +
-                  ")"
-                : format(
-                    new Date(
-                      new Date(insight?.creationTime).getTime() -
-                        new Date(insight?.creationTime).getTimezoneOffset() *
-                          60000,
-                    ),
-                    "yyyy/MM/dd HH:mm",
-                  ) +
-                  " (" +
-                  t(convertToRelativeTime(insight?.creationTime)) +
-                  ")"}
-            </Typography>
-          )}
-        </>
-      )}
-    </Box>
+                    ) +
+                    " (" +
+                    t(convertToRelativeTime(insight?.creationTime)) +
+                    ")"}
+              </Typography>
+            )}
+          </Box>
+        );
+      }}
+    />
   );
 };
