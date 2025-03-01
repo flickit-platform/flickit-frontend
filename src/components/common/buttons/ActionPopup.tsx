@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -51,7 +51,9 @@ const ActionPopup = ({
 }: ActionPopupProps) => {
   const [open, setOpen] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState(false);
+  const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
   const anchorRef = useRef<HTMLButtonElement | null>(null);
+  const [popperPosition, setPopperPosition] = useState({ top: 0, left: 0 });
 
   const handleToggle = () => setOpen((prev) => !prev);
   const handleClose = (event: any) => {
@@ -69,6 +71,60 @@ const ActionPopup = ({
     }
   };
 
+  useEffect(() => {
+    if (open && anchorRef.current) {
+      const anchorRect = anchorRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - anchorRect.bottom;
+      const spaceAbove = anchorRect.top;
+
+      if (spaceBelow < 200 && spaceAbove > 200) {
+        setPlacement("top");
+        setPopperPosition({
+          top: anchorRect.top + window.scrollY - 200,
+          left: anchorRect.left + window.scrollX,
+        });
+      } else {
+        setPlacement("bottom");
+        setPopperPosition({
+          top: anchorRect.bottom + window.scrollY,
+          left: anchorRect.left + window.scrollX,
+        });
+      }
+    }
+  }, [open]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (open && anchorRef.current) {
+        const anchorRect = anchorRef.current.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - anchorRect.bottom;
+        const spaceAbove = anchorRect.top;
+
+        if (spaceBelow < 200 && spaceAbove > 200) {
+          setPlacement("top");
+          setPopperPosition({
+            top: anchorRect.top + window.scrollY - 200,
+            left: anchorRect.left + window.scrollX,
+          });
+        } else {
+          setPlacement("bottom");
+          setPopperPosition({
+            top: anchorRect.bottom + window.scrollY,
+            left: anchorRect.left + window.scrollX,
+          });
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [open]);
+
   return (
     <Box>
       <Button
@@ -81,9 +137,12 @@ const ActionPopup = ({
           minWidth: "220px",
           justifyContent: "space-between",
           backgroundColor: colorScheme.light,
-          borderRadius: open ? "0px" : "16px",
-          borderTopLeftRadius: "16px",
-          borderTopRightRadius: "16px",
+          borderRadius:
+            placement === "bottom" && open
+              ? "16px 16px 0px 0px"
+              : placement === "top" && open
+              ? "0px 0px 16px 16px"
+              : "16px",
           borderColor: colorScheme.main,
           color: colorScheme.main,
           "&:hover": {
@@ -99,11 +158,14 @@ const ActionPopup = ({
       <Popper
         open={open}
         anchorEl={anchorRef.current}
-        placement="bottom"
+        placement={placement}
         sx={{
           zIndex: 1,
           width: anchorRef.current?.offsetWidth,
           minWidth: "220px",
+          position: "fixed",
+          top: popperPosition.top,
+          left: popperPosition.left,
         }}
       >
         <ClickAwayListener onClickAway={handleClose}>
@@ -113,9 +175,8 @@ const ActionPopup = ({
                 padding: "10px 16px 16px 16px",
                 backgroundColor: colorScheme.light,
                 border: `1px solid ${colorScheme.main}`,
-                borderRadius: "0px",
-                borderBottomLeftRadius: "16px",
-                borderBottomRightRadius: "16px",
+                borderRadius:
+                  placement === "bottom" ? "0px 0px 16px 16px" : "16px 16px 0px 0px",
                 boxShadow: "none",
               }}
             >
@@ -164,10 +225,8 @@ const ActionPopup = ({
                 padding: "10px 16px 16px 16px",
                 backgroundColor: colorScheme.light,
                 border: `1px solid ${colorScheme.main}`,
-                borderRadius: "0px",
-                borderTop: "0px",
-                borderBottomLeftRadius: "16px",
-                borderBottomRightRadius: "16px",
+                borderRadius:
+                  placement === "bottom" ? "0px 0px 16px 16px" : "16px 16px 0px 0px",
                 boxShadow: "none",
               }}
             >
