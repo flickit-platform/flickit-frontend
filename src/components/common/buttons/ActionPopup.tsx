@@ -110,7 +110,8 @@ const ActionPopup = ({
           {confirmDialog ? (
             <Paper
               sx={{
-                padding: 2,
+                paddingBlock: 1,
+                paddingInline: 2,
                 backgroundColor: colorScheme.light,
                 border: `1px solid ${colorScheme.main}`,
                 borderRadius: "0px",
@@ -128,7 +129,7 @@ const ActionPopup = ({
                 {texts.confirmMessage}
               </Typography>
               <Grid container spacing={1}>
-                <Grid item xs={12} sm={8}>
+                <Grid item xs={12} sm={7.5}>
                   <LoadingButton
                     variant="contained"
                     color={colorScheme.muiColor}
@@ -161,7 +162,8 @@ const ActionPopup = ({
           ) : (
             <Paper
               sx={{
-                padding: 2,
+                paddingBlock: "10px",
+                paddingInline: 2,
                 backgroundColor: colorScheme.light,
                 border: `1px solid ${colorScheme.main}`,
                 borderRadius: "0px",

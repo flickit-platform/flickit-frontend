@@ -66,7 +66,7 @@ export const AttributeInsight = memo(
         }
         return t("insightPage.AIGeneratedNeedsApproval");
       }
-      return t("insightPage.generateInsight");
+      return t("insightPage.insightIsNotGenerated");
     };
 
     const getDescriptionText = (data: any, t: any) => {
@@ -79,7 +79,7 @@ export const AttributeInsight = memo(
         }
         return t("insightPage.AIGeneratedNeedsApprovalDescription");
       }
-      return t("insightPage.generateInsightDescription");
+      return t("insightPage.generateInsightViaAIDescription");
     };
 
     const getPrimaryActionText = (data: any, t: any) => {
@@ -166,7 +166,7 @@ export const AttributeInsight = memo(
                           primaryAction: getPrimaryActionText(data, t),
                           secondaryAction: t("insightPage.approveInsight"),
                           confirmMessage: t(
-                            "insightPage.regenerateDescription",
+                            "insightPage.regenerateViaAIDescription",
                           ),
                           cancelMessage: t("insightPage.no"),
                         }}

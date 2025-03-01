@@ -90,7 +90,7 @@ const useInsightPopup = ({
 
   const getButtonLabelText = useCallback(() => {
     if (!insight)
-      return t("insightPage.generateInsight", { title: config.appTitle });
+      return t("insightPage.insightIsNotGenerated", { title: config.appTitle });
 
     if (isExpired)
       return t("insightPage.insightIsExpired", { title: config.appTitle });

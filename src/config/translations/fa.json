@@ -855,15 +855,17 @@
     "AIinsightIsApprovedDescription": "تحلیل فعلی، کاملا به‌روز و تاییدشده است. در صورت تمایل، بازتولید می‌شود.",
     "insightIsExpired": "منقضی‌شده (نیازمند تایید)",
     "insightIsExpiredDescription": "این تحلیل به دلیل ارائه پاسخ‌های جدید منقضی شده و نیاز به تایید یا ویرایش توسط ارزیاب دارد. هم‌چنین می‌تواند با هوش مصنوعی بازتولید شود.",
-    "generateInsightViaAI": "تحلیل نوشته شده با هوش مصنوعی",
+    "generateInsightViaAI": "تولید تحلیل با هوش مصنوعی",
     "generateInsightViaAIDescription": "به کمک هوش مصنوعی می‌توانید بر اساس پاسخ‌هایی که به پرسش‌ها داده شده است؛ برای این تحلیل متن تولید کنید.",
     "approveInsight": "تایید تحلیل",
     "regenerateViaAI": "بازتولید با هوش مصنوعی",
-    "regenerateDescription": "تحلیل فعلی از بین خواهد رفت. آیا می‌خواهید یک تحلیل جدید با هوش مصنوعی تولید شود؟",
+    "regenerateViaAIDescription": "تحلیل فعلی از بین خواهد رفت. آیا می‌خواهید یک تحلیل جدید با هوش مصنوعی تولید شود؟",
+    "regenerateDescription": "تحلیل فعلی از بین خواهد رفت. آیا می‌خواهید یک تحلیل جدید تولید شود؟",
     "generateInsight": "تولید تحلیل",
     "generateInsightDescription": "به کمک هوش مصنوعی می‌توانید بر اساس پاسخ‌هایی که به پرسش‌ها داده شده است؛ برای این تحلیل متن تولید کنید.",
     "regenerate": "بازتولید",
     "no": "خیر",
-    "questionsArentCompleteSoAICantBeGenerated": "تا زمانی که تمام پرسش‌های ارزیابی  پاسخ داده نشود، تحلیل‌های مبتنی بر AI ارائه نمی‌شود."
+    "questionsArentCompleteSoAICantBeGenerated": "تا زمانی که تمام پرسش‌های ارزیابی  پاسخ داده نشود، تحلیل‌های مبتنی بر AI ارائه نمی‌شود.",
+    "insightIsNotGenerated": "تولیدنشده"
   }
 }
