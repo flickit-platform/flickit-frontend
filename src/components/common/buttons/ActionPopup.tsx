@@ -110,8 +110,7 @@ const ActionPopup = ({
           {confirmDialog ? (
             <Paper
               sx={{
-                paddingBlock: 1,
-                paddingInline: 2,
+                padding: "10px 16px 16px 16px",
                 backgroundColor: colorScheme.light,
                 border: `1px solid ${colorScheme.main}`,
                 borderRadius: "0px",
@@ -162,8 +161,7 @@ const ActionPopup = ({
           ) : (
             <Paper
               sx={{
-                paddingBlock: "10px",
-                paddingInline: 2,
+                padding: "10px 16px 16px 16px",
                 backgroundColor: colorScheme.light,
                 border: `1px solid ${colorScheme.main}`,
                 borderRadius: "0px",
