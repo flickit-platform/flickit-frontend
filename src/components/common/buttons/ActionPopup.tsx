@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -102,6 +102,11 @@ const ActionPopup = ({
     };
   }, [open]);
 
+  const borderRadiusValue = useMemo(() => {
+    if (!open) return "16px";
+    return placement === "bottom" ? "16px 16px 0px 0px" : "0px 0px 16px 16px";
+  }, [open, placement]);
+
   return (
     <Box>
       <Button
@@ -114,11 +119,7 @@ const ActionPopup = ({
           minWidth: "220px",
           justifyContent: "space-between",
           backgroundColor: colorScheme.light,
-          borderRadius: open
-            ? placement === "bottom"
-              ? "16px 16px 0 0"
-              : "0 0 16px 16px"
-            : "16px",
+          borderRadius: borderRadiusValue,
           borderColor: colorScheme.main,
           color: colorScheme.main,
           "&:hover": {
