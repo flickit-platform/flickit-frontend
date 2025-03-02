@@ -55,12 +55,16 @@ const SpaceContainer = () => {
           <Title
             borderBottom={true}
             size="large"
-            sx={{ width: "100%", fontSize: "4rem", lineHeight: "unset" }}
+            sx={{ width: "100%" }}
             toolbarProps={{ whiteSpace: "nowrap" }}
             toolbar={
               data?.length !== 0 ? (
                 <ToolbarCreateItemBtn
-                  icon={<CreateNewFolderOutlinedIcon />}
+                  icon={
+                    <CreateNewFolderOutlinedIcon
+                      sx={{ marginInlineStart: 1, marginInlineEnd: 0 }}
+                    />
+                  }
                   onClick={dialogProps.openDialog}
                   shouldAnimate={data?.length === 0}
                   text="createSpace"
