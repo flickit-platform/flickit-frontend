@@ -26,6 +26,7 @@ import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import DonutChart from "../common/charts/donutChart/donutChart";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -402,15 +403,11 @@ const SubjectStatus = (
     >
       <Box>
         {hasStats ? (
-          <Gauge
-            maturity_level_number={maturityLevelCount ?? 5}
-            isMobileScreen={isMobileScreen ? false : true}
-            maturity_level_status={maturity_level?.title ?? ""}
-            level_value={maturity_level?.index ?? 0}
-            hideGuidance={true}
-            height={getNumberBaseOnScreen(240, 240, 160, 160, 160)}
-            maturity_status_guide={t("subjectMaturityLevelIs")}
-            maturity_status_guide_variant="titleSmall"
+          <DonutChart
+            maturityLevelNumber={maturityLevelCount ?? 5}
+            levelValue={maturity_level?.value ?? 1}
+            text={maturity_level?.title ?? ""}
+            displayTitle={false}
           />
         ) : (
           <Typography>
