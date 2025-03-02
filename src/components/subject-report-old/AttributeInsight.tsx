@@ -85,7 +85,7 @@ export const AttributeInsight = memo(
     const getPrimaryActionText = (data: any, t: any) => {
       return data?.assessorInsight || data?.aiInsight
         ? t("insightPage.regenerate")
-        : t("insightPage.generateInsight");
+        : t("insightPage.generateInsightViaAI");
     };
 
     const getStatusColorScheme: any = (data: any, theme: any) => {
