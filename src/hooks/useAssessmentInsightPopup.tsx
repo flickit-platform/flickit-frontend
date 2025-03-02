@@ -22,7 +22,7 @@ interface PopupTexts {
   primaryAction: string;
   secondaryAction: string;
   confirmMessage: string;
-  confirmMButtonLabel: string;
+  confirmButtonLabel: string;
   cancelButtonLabel: string;
 }
 
@@ -133,7 +133,7 @@ const useInsightPopup = ({
         : t("insightPage.generateInsight"),
       secondaryAction: t("insightPage.approveInsight"),
       confirmMessage: t("insightPage.regenerateDescription"),
-      confirmMButtonLabel: t("insightPage.regenerate"),
+      confirmButtonLabel: t("insightPage.regenerate"),
       cancelButtonLabel: t("insightPage.no"),
     };
   }, [insight, isExpired, isApproved, getButtonLabelText]);
