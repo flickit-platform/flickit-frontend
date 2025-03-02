@@ -33,7 +33,7 @@ interface PopupTexts {
   primaryAction: string;
   secondaryAction: string;
   confirmMessage: string;
-  cancelMessage: string;
+  cancelButtonLabel: string;
 }
 
 const useActionPopupProps = ({
@@ -121,7 +121,7 @@ const useActionPopupProps = ({
           : t("insightPage.generateInsight"),
       secondaryAction: t("insightPage.approveInsight"),
       confirmMessage: t("insightPage.regenerateDescription"),
-      cancelMessage: t("insightPage.no"),
+      cancelButtonLabel: t("insightPage.no"),
     };
   }, [data, getInsightValidity, getButtonLabelText]);
 

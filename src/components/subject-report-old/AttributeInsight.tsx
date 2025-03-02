@@ -84,7 +84,7 @@ export const AttributeInsight = memo(
 
     const getPrimaryActionText = (data: any, t: any) => {
       return data?.assessorInsight || data?.aiInsight
-        ? t("insightPage.regenerate")
+        ? t("insightPage.regenerateViaAI")
         : t("insightPage.generateInsightViaAI");
     };
 
@@ -168,7 +168,8 @@ export const AttributeInsight = memo(
                           confirmMessage: t(
                             "insightPage.regenerateViaAIDescription",
                           ),
-                          cancelMessage: t("insightPage.no"),
+                          confirmButtonLabel: t("insightPage.regenerate"),
+                          cancelButtonLabel: t("insightPage.no"),
                         }}
                       />
                     )}
