@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Button, IconButton, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
@@ -15,6 +15,8 @@ import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { LoadingButton } from "@mui/lab";
+import useCalculate from "@/hooks/useCalculate";
+import { ErrorCodes } from "@/types";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -185,6 +187,7 @@ const IssuesItem = (props: any) => {
   const link = originalName == "questions" && "questionnaires";
   const { service } = useServiceContext();
   const { assessmentId } = useParams();
+  const { calculate, calculateConfidence } = useCalculate();
 
   const approveInsights = useQuery({
     service: (args = { assessmentId }, config) =>
@@ -222,12 +225,23 @@ const IssuesItem = (props: any) => {
     try {
       await generateInsights.query();
       await fetchDashboard.query();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
+    } catch (e) {}
   };
 
+  useEffect(() => {
+    if (
+      generateInsights.errorObject?.response?.data?.code ==
+      ErrorCodes.CalculateNotValid
+    ) {
+      calculate(approvedGeneratedAll);
+    }
+    if (
+      generateInsights.errorObject?.response?.data?.code ==
+      ErrorCodes.ConfidenceCalculationNotValid
+    ) {
+      calculateConfidence(approvedGeneratedAll);
+    }
+  }, [generateInsights.errorObject]);
   return (
     <Box
       onClick={() => filteredQuestionnaire(name)}
