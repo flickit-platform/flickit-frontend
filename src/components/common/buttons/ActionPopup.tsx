@@ -33,7 +33,8 @@ interface ActionPopupProps {
     primaryAction: string;
     secondaryAction: string;
     confirmMessage: string;
-    cancelMessage: string;
+    confirmButtonLabel: string;
+    cancelButtonLabel: string;
   };
 }
 
@@ -218,7 +219,7 @@ const ConfirmDialog = ({
           fullWidth
           size="small"
         >
-          {texts.primaryAction}
+          {texts.confirmButtonLabel}
         </LoadingButton>
       </Grid>
       <Grid item xs={12} sm={4}>
@@ -230,7 +231,7 @@ const ConfirmDialog = ({
           sx={{ backgroundColor: "white" }}
           size="small"
         >
-          {texts.cancelMessage}
+          {texts.cancelButtonLabel}
         </Button>
       </Grid>
     </Grid>
