@@ -8,32 +8,25 @@ import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { AssessmentOverallStatus } from "./AssessmentOverallStatus";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import { IAssessmentReportModel, RolesType } from "@types";
+import { ErrorCodes, IAssessmentReportModel, RolesType } from "@types";
 import { AssessmentReportKit } from "./AssessmentReportKit";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../common/PermissionControl";
+import useCalculate from "@/hooks/useCalculate";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
+  const { calculate, calculateConfidence } = useCalculate();
 
   const queryData = useQuery<IAssessmentReportModel>({
     service: (args, config) =>
       service.fetchAssessment({ assessmentId }, config),
     toastError: false,
   });
-  const calculateMaturityLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateMaturityLevel(args, config),
-    runOnMount: false,
-  });
-  const calculateConfidenceLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateConfidenceLevel(args, config),
-    runOnMount: false,
-  });
+
   const assessmentTotalProgress = useQuery({
     service: (args, config) =>
       service.fetchAssessmentTotalProgress(
@@ -41,29 +34,26 @@ const AssessmentReportContainer = (props: any) => {
         config,
       ),
   });
-  const calculate = async () => {
+  const getQueryData = async () => {
     try {
-      await calculateMaturityLevelQuery.query();
-      await queryData.query();
-    } catch (e) {}
-  };
-  const calculateConfidenceLevel = async () => {
-    try {
-      await calculateConfidenceLevelQuery.query();
       await queryData.query();
     } catch (e) {}
   };
 
   useEffect(() => {
-    if (queryData.errorObject?.response?.data?.code == "CALCULATE_NOT_VALID") {
-      calculate();
+    if (
+      queryData.errorObject?.response?.data?.code ==
+      ErrorCodes.CalculateNotValid
+    ) {
+      calculate(getQueryData);
     }
     if (
       queryData.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
+      ErrorCodes.ConfidenceCalculationNotValid
     ) {
-      calculateConfidenceLevel();
+      calculateConfidence(getQueryData);
     }
+
     if (queryData?.errorObject?.response?.data?.code === "DEPRECATED") {
       service.migrateKitVersion({ assessmentId }).then(() => {
         queryData.query();
@@ -152,7 +142,12 @@ const AssessmentReportContainer = (props: any) => {
                 </Grid>
 
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Box display="flex" flexDirection="column" gap={1} height="100%">
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                    height="100%"
+                  >
                     <Typography
                       color="#73808C"
                       marginX={4}

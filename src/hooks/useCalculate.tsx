@@ -20,10 +20,12 @@ const useCalculate = () => {
   });
 
   const calculate = useCallback(
-    async (onSuccessCallback: () => void) => {
+    async (onSuccessCallback?: () => void) => {
       try {
         await calculateMaturityLevelQuery.query();
-        onSuccessCallback();
+        if (onSuccessCallback) {
+          onSuccessCallback();
+        }
       } catch (e) {
         console.error("Error in calculate:", e);
       }
@@ -32,10 +34,12 @@ const useCalculate = () => {
   );
 
   const calculateConfidence = useCallback(
-    async (onSuccessCallback: () => void) => {
+    async (onSuccessCallback?: () => void) => {
       try {
         await calculateConfidenceLevelQuery.query();
-        onSuccessCallback();
+        if (onSuccessCallback) {
+          onSuccessCallback();
+        }
       } catch (e) {
         console.error("Error in calculateConfidence:", e);
       }

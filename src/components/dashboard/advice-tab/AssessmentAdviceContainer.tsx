@@ -15,6 +15,8 @@ import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
 import { Divider, Typography } from "@mui/material";
 import AIGenerated from "@common/tags/AIGenerated";
+import { ErrorCodes } from "@/types";
+import useCalculate from "@/hooks/useCalculate";
 
 const AssessmentAdviceContainer = (props: any) => {
   const fetchPreAdviceInfo = useQuery<any>({
@@ -29,40 +31,18 @@ const AssessmentAdviceContainer = (props: any) => {
     toastError: false,
   });
 
-  const calculateMaturityLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateMaturityLevel(args, config),
-    runOnMount: false,
-  });
-
-  const calculateConfidenceLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateConfidenceLevel(args, config),
-    runOnMount: false,
-  });
+  const { calculate, calculateConfidence } = useCalculate();
   const [loading, setLoading] = useState<boolean>(false);
-
-  const calculateMaturityLevel = async () => {
-    try {
-      await calculateMaturityLevelQuery.query();
-    } catch (e) {}
-  };
-
-  const calculateConfidenceLevel = async () => {
-    try {
-      await calculateConfidenceLevelQuery.query();
-    } catch (e) {}
-  };
 
   const handleErrorResponse = async (errorCode: any) => {
     setLoading(true);
 
     switch (errorCode) {
-      case "CALCULATE_NOT_VALID":
-        await calculateMaturityLevel();
+      case ErrorCodes.CalculateNotValid:
+        await calculate();
         break;
-      case "CONFIDENCE_CALCULATION_NOT_VALID":
-        await calculateConfidenceLevel();
+      case ErrorCodes.ConfidenceCalculationNotValid:
+        await calculateConfidence();
         break;
       case "DEPRECATED":
         await service.migrateKitVersion({ assessmentId });

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import { ECustomErrorType } from "@types";
+import { ECustomErrorType, ErrorCodes } from "@types";
 import { ICustomError } from "@utils/CustomError";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";
@@ -99,11 +99,12 @@ export const defaultRenderError = (
   }
   if (Array.isArray(err)) {
     for (let index = 0; index < err.length; index++) {
-      if (err[index]?.response?.data?.code == "CALCULATE_NOT_VALID") {
+      if (err[index]?.response?.data?.code == ErrorCodes.CalculateNotValid) {
         return <ErrorRecalculating />;
       }
       if (
-        err[index]?.response?.data?.code == "CONFIDENCE_CALCULATION_NOT_VALID"
+        err[index]?.response?.data?.code ==
+        ErrorCodes.ConfidenceCalculationNotValid
       ) {
         return <ErrorRecalculating />;
       }
@@ -131,10 +132,10 @@ export const defaultRenderError = (
   ) {
     return <ErrorNotFoundOrAccessDenied />;
   }
-  if (err?.response?.data?.code == "CALCULATE_NOT_VALID") {
+  if (err?.response?.data?.code == ErrorCodes.CalculateNotValid) {
     return <ErrorRecalculating />;
   }
-  if (err?.response?.data?.code == "CONFIDENCE_CALCULATION_NOT_VALID") {
+  if (err?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid) {
     return <ErrorRecalculating />;
   }
 
