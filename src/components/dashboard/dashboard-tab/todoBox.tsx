@@ -14,6 +14,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { LoadingButton } from "@mui/lab";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -191,11 +192,11 @@ const IssuesItem = (props: any) => {
     runOnMount: false,
   });
 
-    const generateInsights = useQuery({
-        service: (args = { assessmentId }, config) =>
-            service.generateInsights(args, config),
-        runOnMount: false,
-    });
+  const generateInsights = useQuery({
+    service: (args = { assessmentId }, config) =>
+      service.generateInsights(args, config),
+    runOnMount: false,
+  });
 
   const filteredQuestionnaire = (name: string) => {
     let newName = name;
@@ -217,15 +218,15 @@ const IssuesItem = (props: any) => {
     }
   };
 
-    const approvedGeneratedAll= async () => {
-        try {
-            await generateInsights.query();
-            await fetchDashboard.query();
-        } catch (e) {
-            const err = e as ICustomError;
-            toastError(err);
-        }
-    };
+  const approvedGeneratedAll = async () => {
+    try {
+      await generateInsights.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
 
   return (
     <Box
@@ -265,7 +266,7 @@ const IssuesItem = (props: any) => {
           ) : (
             <Trans i18nKey={"needsForAnswer"} />
           ))}
-          {name == "unapprovedAnswers" &&
+        {name == "unapprovedAnswers" &&
           (value > 1 ? (
             <Trans i18nKey={"answersNeedApproval"} />
           ) : (
@@ -328,20 +329,29 @@ const IssuesItem = (props: any) => {
           </Typography>
         </Button>
       )}
-        {name == "notGenerated" && (
-        <Button
-          onClick={approvedGeneratedAll}
-          sx={{
-            padding: "4px 10px",
-            marginInlineStart: "auto",
-            color: theme.palette.primary.main,
-          }}
-          variant={"outlined"}
+      {name == "notGenerated" && (
+        <Tooltip
+          disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
+          title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
-          <Typography sx={{ ...theme.typography.labelMedium }}>
-            <Trans i18nKey={"GenerateAll"} />
-          </Typography>
-        </Button>
+          <div
+            style={{
+              marginInlineStart: "auto",
+              color: theme.palette.primary.main,
+            }}
+          >
+            <LoadingButton
+              onClick={approvedGeneratedAll}
+              variant={"outlined"}
+              disabled={fetchDashboard.data?.questions?.unanswered > 0}
+              loading={generateInsights.loading}
+            >
+              <Typography sx={{ ...theme.typography.labelMedium }}>
+                <Trans i18nKey={"GenerateAll"} />
+              </Typography>
+            </LoadingButton>
+          </div>
+        </Tooltip>
       )}
     </Box>
   );
