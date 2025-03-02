@@ -12,7 +12,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { SubjectAttributeList } from "./SubjectAttributeList";
 import SubjectOverallInsight from "./SubjectOverallInsight";
-import { ISubjectReportModel } from "@types";
+import { ErrorCodes, ISubjectReportModel } from "@types";
 import hasStatus from "@utils/hasStatus";
 import QuestionnairesNotCompleteAlert from "../questionnaires/QuestionnairesNotCompleteAlert";
 import Button from "@mui/material/Button";
@@ -22,6 +22,7 @@ import setDocumentTitle from "@utils/setDocumentTitle";
 import QueryBatchData from "@common/QueryBatchData";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
+import useCalculate from "@/hooks/useCalculate";
 
 const SubjectContainer = () => {
   const {
@@ -114,6 +115,8 @@ const SubjectContainer = () => {
 const useSubject = () => {
   const { service } = useServiceContext();
   const { subjectId = "", assessmentId } = useParams();
+  const { calculate, calculateConfidence } = useCalculate();
+
   const subjectQueryData = useQuery<ISubjectReportModel>({
     service: (args: { subjectId: string; assessmentId: string }, config) =>
       service.fetchSubject(args, config),
@@ -124,52 +127,36 @@ const useSubject = () => {
       service.fetchSubjectProgress(args, config),
     runOnMount: false,
   });
-  const calculateMaturityLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateMaturityLevel(args, config),
-    runOnMount: false,
-  });
-  const calculateConfidenceLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateConfidenceLevel(args, config),
-    runOnMount: false,
-  });
+
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.fetchPathInfo({ assessmentId, ...(args || {}) }, config),
     runOnMount: true,
   });
-  const calculate = async () => {
+
+  const getSubjectQueryData = async () => {
     try {
-      await calculateMaturityLevelQuery.query();
       await subjectQueryData.query({ subjectId, assessmentId });
       await subjectProgressQueryData.query({ subjectId, assessmentId });
     } catch (e) {}
   };
-  const calculateConfidence = async () => {
-    try {
-      await calculateConfidenceLevelQuery.query();
-      await subjectQueryData.query({ subjectId, assessmentId });
-      await subjectProgressQueryData.query({ subjectId, assessmentId });
-    } catch (e) {}
-  };
+
   useEffect(() => {
     if (
       subjectQueryData.errorObject?.response?.data?.code ==
-      "CALCULATE_NOT_VALID"
+      ErrorCodes.CalculateNotValid
     ) {
-      calculate();
+      calculate(getSubjectQueryData);
     }
     if (
       subjectQueryData.errorObject?.response?.data?.code ==
-      "CONFIDENCE_CALCULATION_NOT_VALID"
+      ErrorCodes.ConfidenceCalculationNotValid
     ) {
-      calculateConfidence();
+      calculateConfidence(getSubjectQueryData);
     }
   }, [subjectQueryData.errorObject]);
   useEffect(() => {
-    subjectQueryData.query({ subjectId, assessmentId });
-    subjectProgressQueryData.query({ subjectId, assessmentId });
+    getSubjectQueryData();
   }, []);
 
   useEffect(() => {

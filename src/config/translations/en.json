@@ -847,6 +847,7 @@
   "'email' format is not valid.": "'email' format is not valid.",
   "unapprovedAnswers": "Unapproved answers",
   "GenerateAll": "Generate all",
+  "allQuestonsMustBeAnsweredFirst": "All questions must be answered first.",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",
@@ -856,7 +857,8 @@
     "insightIsApproved": "Insight is Approved",
     "AIinsightIsApprovedDescription": "The current insight is up-to-date and approved, but can be regenerated with AI if you'd like.",
     "insightIsExpired": "Insight is expired",
-    "insightIsExpiredDescription": "This insight has expired due to new answers and must be approved, edited by an assessor, or regenerated with AI.",
+    "AIinsightIsExpiredDescription": "This insight has expired due to new answers and must be approved, edited by an assessor, or regenerated with AI.",
+    "insightIsExpiredDescription": "This insight has expired due to new answers and must be approved, edited by an assessor, or regenerated based on the latest results.",
     "generateInsightViaAI": "Generate insight via ai",
     "generateInsightViaAIDescription": "The attribute insight can be generated using AI based on answers to impactful questions.",
     "approveInsight": "Approve insight",

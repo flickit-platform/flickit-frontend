@@ -84,8 +84,8 @@ export const AttributeInsight = memo(
 
     const getPrimaryActionText = (data: any, t: any) => {
       return data?.assessorInsight || data?.aiInsight
-        ? t("generateInsights.regenerate")
-        : t("generateInsights.generateInsight");
+        ? t("generateInsights.regenerateViaAI")
+        : t("generateInsights.generateInsightViaAI");
     };
 
     const getStatusColorScheme: any = (data: any, theme: any) => {
@@ -168,7 +168,8 @@ export const AttributeInsight = memo(
                           confirmMessage: t(
                             "generateInsights.regenerateViaAIDescription",
                           ),
-                          cancelMessage: t("generateInsights.no"),
+                          confirmButtonLabel: t("generateInsights.regenerate"),
+                          cancelButtonLabel: t("generateInsights.no"),
                         }}
                       />
                     )}
