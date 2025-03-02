@@ -19,6 +19,7 @@ const DonutChart = (props: IGaugeProps) => {
     levelValue,
     text,
     displayTitle = true,
+    height = "110",
     ...rest
   } = props;
 
@@ -51,7 +52,7 @@ const DonutChart = (props: IGaugeProps) => {
               width: "fit-content",
             }}
           >
-            <CircleGaugeComponent colorCode={colorCode} value={levelValue} />
+            <CircleGaugeComponent colorCode={colorCode} value={levelValue} height={height}/>
           </Box>
           {displayTitle && (
             <Typography
