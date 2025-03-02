@@ -145,7 +145,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
         >
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
-        {type?.code !== spaceLevel.premium && (
+        {type?.code === spaceLevel.premium && (
           <img
             style={{ width: "32px", height: "32px" }}
             src={premium}
