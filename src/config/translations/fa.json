@@ -844,6 +844,7 @@
   "privateTitle": "اختصاصی",
   "'email' format is not valid.": "ایمیل وارد شده معتبر نمی‌باشد.",
   "unapprovedAnswers": "پاسخ‌های تاییدنشده",
+  "allQuestonsMustBeAnsweredFirst": "ابتدا باید همه سوالات پاسخ داده شوند.",
   "GenerateAll": "تولید همه",
   "insightPage": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
