@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import SubjectContainer from "@components/subject-report-old/SubjectContainer";
+import SubjectContainer from "@components/subject-report-old-deprecated/SubjectContainer";
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const SubjectReportScreen = () => {
