@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { theme } from "@/config/theme";
 import FormControl from "@mui/material/FormControl";
-import { InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { MenuItem, OutlinedInput } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useQuery } from "@utils/useQuery";
 import { ISpaceType } from "@types";
@@ -34,7 +34,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
   const [spaceType, setSpaceType] = useState<ISpaceType[]>([]);
-  const [selectedType, setSelectedType] = useState<string>("BASIC");
+  const [selectedType, setSelectedType] = useState<string>("");
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,
@@ -45,11 +45,20 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   } = props;
   const { type, data = {} } = context;
   const { id: spaceId } = data;
+  const {type: spaceDefaultType} = data
   const defaultValues =
     type === "update" ? data : { title: "", code: nanoid(5) };
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(!spaceDefaultType?.code){
+      setSelectedType("BASIC")
+    }else{
+      setSelectedType(spaceDefaultType?.code)
+    }
+  },[spaceDefaultType?.code])
 
   const close = () => {
     abortController.abort();
@@ -76,9 +85,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   }, []);
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
-    if (type !== "update") {
-      data = { ...data, type: selectedType };
-    }
+    data = { ...data, type: selectedType };
     setLoading(true);
     try {
       let createdSpaceId = 1;
@@ -170,7 +177,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     >
       <FormProviderWithForm formMethods={formMethods}>
         <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={type == "update" ? 12 : 9}>
+          <Grid item xs={9}>
             <InputFieldUC
               name="title"
               defaultValue={defaultValues.title || ""}
@@ -179,7 +186,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
               isFocused={isFocused}
             />
           </Grid>
-          {type !== "update" && (
             <Grid item xs={3}>
               <FormControl sx={{ width: "100%" }}>
                 <SelectField
@@ -187,7 +193,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
                   id="spaceType-name-label"
                   size="small"
                   label={<Trans i18nKey={"spaceType"} />}
-                  value={selectedType}
+                  value={selectedType || "BASIC"}
                   IconComponent={KeyboardArrowDownIcon}
                   displayEmpty
                   name={"spaceType-select"}
@@ -220,8 +226,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
                           type.code == "PREMIUM"
                             ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
                             : "unset",
-                        gap: 1,
-                        marginLeft: type.code != "PREMIUM" ? "24px" : "unset",
+                        marginInlineStart: type.code != "PREMIUM" ? "24px" : "unset",
                       }}
                       disabled={type.code == "PREMIUM"}
                       key={type}
@@ -231,7 +236,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
                         <img
                           src={premiumIcon}
                           alt={"premium"}
-                          style={{ width: "16px", height: "21px" }}
+                          style={{ width: "16px", height: "21px", marginInlineEnd: "8px" }}
                         />
                       )}
                       <Trans i18nKey={type.title} />
@@ -240,7 +245,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
                 </SelectField>
               </FormControl>
             </Grid>
-          )}
         </Grid>
         <CEDialogActions
           closeDialog={close}
