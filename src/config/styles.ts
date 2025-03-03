@@ -126,7 +126,7 @@ const buttons = {
       md: "translate(50%,calc(50% + 24px))",
     },
     width: { xs: "100%", sm: "110px" },
-    height: { xs: "46px", sm: "110px" },
+    height: { xs: "46px", sm: "100px" },
     zIndex: 1,
   }),
 };

@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
+import SubjectOverallStatusLevelChart from "./SubjectOverallStatusLevelChart";
 import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
@@ -9,13 +11,28 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
 import CircularProgress from "@mui/material/CircularProgress";
+import { format } from "date-fns";
+import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { t } from "i18next";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 const SubjectOverallInsight = (props: any) => {
-  const { subjectId } = props;
+  return (
+    <Box>
+      <Box display="flex" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
+        <OverallInsightText {...props} />
+        <Box sx={{ pl: { xs: 0, sm: 3, md: 6 }, mt: { xs: 4, sm: 0 } }}>
+          <SubjectOverallStatusLevelChart {...props} />
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const OverallInsightText = (props: any) => {
+  const { data = {}, loading } = props;
 
   const abortController = useRef(new AbortController());
 
@@ -26,7 +43,9 @@ const SubjectOverallInsight = (props: any) => {
 
   const { service } = useServiceContext();
 
-  const { assessmentId = "" } = useParams();
+  const { subject, attributes, maturityLevelsCount } = data;
+  const { title, maturityLevel, confidenceValue } = subject;
+  const { assessmentId = "", subjectId = "" } = useParams();
 
   const ApproveAISubject = useQuery({
     service: (
@@ -101,14 +120,66 @@ const SubjectOverallInsight = (props: any) => {
     approveLoading: ApproveAISubject.loading,
   });
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection={"column"} flex={1}>
+      <Typography variant="titleLarge" sx={{ opacity: 0.96 }}>
+        {loading ? (
+          <Skeleton height="60px" />
+        ) : (
+          <>
+            <Trans i18nKey="withConfidenceSubject" />{" "}
+            <Typography
+              component="span"
+              variant="titleLarge"
+              sx={{ color: "#3596A1" }}
+            >
+              <Trans
+                i18nKey={"clOf"}
+                values={{
+                  cl: Math.ceil(confidenceValue),
+                  clDivider: 100,
+                }}
+              />
+            </Typography>{" "}
+            <Trans i18nKey="wasEstimate" values={{ title }} />{" "}
+            <Typography
+              component="span"
+              variant="titleLarge"
+              sx={{ color: "#6035A1" }}
+            >
+              <Trans
+                i18nKey={"divider"}
+                values={{
+                  cl: Math.ceil(maturityLevel.index),
+                  clDivider: Math.ceil(maturityLevelsCount),
+                }}
+              />
+            </Typography>{" "}
+            <Trans i18nKey="meaning" values={{ title }} />{" "}
+            <Typography component="span" variant="titleLarge">
+              <Trans i18nKey={`${maturityLevel.title}`} />
+            </Typography>
+            <Trans i18nKey="is" />{" "}
+            <Box>
+              <Typography variant="body2">
+                <Trans
+                  i18nKey="attributesAreConsidered"
+                  values={{ length: attributes?.length }}
+                />
+              </Typography>
+            </Box>
+          </>
+        )}
+      </Typography>
       <Box
         sx={{
           ...styles.centerV,
+          mt: 4,
+          mb: 2,
+          marginInline: 3,
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="semiBoldLarge">
+        <Typography variant="headlineSmall">
           <Trans i18nKey="subjectBriefConclusion" />
         </Typography>
         {editable && (
@@ -124,7 +195,13 @@ const SubjectOverallInsight = (props: any) => {
           />
         )}
       </Box>
-      <Box display="flex" flexDirection="column" maxHeight="100%" gap={0.5}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        maxHeight="100%"
+        gap={0.5}
+        ml={3}
+      >
         {fetchSubjectInsight.loading ? (
           <Box
             display="flex"
@@ -157,6 +234,21 @@ const SubjectOverallInsight = (props: any) => {
                 }) ?? ""
               }
             />
+            {insight?.creationTime && (
+              <Typography variant="bodyMedium" mx={1}>
+                {format(
+                  new Date(
+                    new Date(insight?.creationTime).getTime() -
+                      new Date(insight?.creationTime).getTimezoneOffset() *
+                        60000,
+                  ),
+                  "yyyy/MM/dd HH:mm",
+                ) +
+                  " (" +
+                  t(convertToRelativeTime(insight?.creationTime)) +
+                  ")"}
+              </Typography>
+            )}
           </>
         )}
       </Box>{" "}

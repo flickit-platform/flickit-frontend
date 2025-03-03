@@ -740,6 +740,7 @@ export interface IOption {
 export interface IFlatGauge {
   colorCode: string;
   value: number;
+  height?: string;
 }
 
 export interface AdviceItem {

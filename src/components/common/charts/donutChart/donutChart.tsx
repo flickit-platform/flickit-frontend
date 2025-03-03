@@ -10,10 +10,18 @@ interface IGaugeProps extends BoxProps {
   maturityLevelNumber: number;
   levelValue: number;
   text: string;
+  displayTitle?: boolean;
 }
 
 const DonutChart = (props: IGaugeProps) => {
-  const { maturityLevelNumber, levelValue, text, ...rest } = props;
+  const {
+    maturityLevelNumber,
+    levelValue,
+    text,
+    displayTitle = true,
+    height = "110",
+    ...rest
+  } = props;
 
   if (maturityLevelNumber < levelValue) return null;
 
@@ -44,23 +52,25 @@ const DonutChart = (props: IGaugeProps) => {
               width: "fit-content",
             }}
           >
-            <CircleGaugeComponent colorCode={colorCode} value={levelValue} />
+            <CircleGaugeComponent colorCode={colorCode} value={levelValue} height={height}/>
           </Box>
-          <Typography
-            sx={{
-              display: "flex",
-              gap: "5px",
-              ...theme.typography.titleMedium,
-              fontWeight: "bold",
-              fontSize: "1.37rem",
-              color: colorCode,
-              fontFamily: languageDetector(text ?? "")
-                ? farsiFontFamily
-                : primaryFontFamily,
-            }}
-          >
-            {text}
-          </Typography>
+          {displayTitle && (
+            <Typography
+              sx={{
+                display: "flex",
+                gap: "5px",
+                ...theme.typography.titleMedium,
+                fontWeight: "bold",
+                fontSize: "1.37rem",
+                color: colorCode,
+                fontFamily: languageDetector(text ?? "")
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+            >
+              {text}
+            </Typography>
+          )}
         </Box>
       </Box>
     </Suspense>

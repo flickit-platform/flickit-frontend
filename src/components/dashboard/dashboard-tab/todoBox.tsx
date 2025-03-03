@@ -86,6 +86,8 @@ const TodoBox = (props: any) => {
                             name={key}
                             value={value}
                             fetchDashboard={fetchDashboard}
+                            py={1}
+                            px={2}
                           />
                         </Grid>
                       );
@@ -157,7 +159,7 @@ const TodoBox = (props: any) => {
                 <Grid container columns={12} spacing={2}>
                   {Object.entries(item)
                     .filter(([key]) => key !== "name")
-                    .map(([key, value], index: number) => {
+                    .map(([key, value]) => {
                       return (
                         <Grid key={uniqueId()} item xs={12} md={6}>
                           <IssuesItem
@@ -167,6 +169,13 @@ const TodoBox = (props: any) => {
                             next={next}
                             originalName={item.name}
                             fetchDashboard={fetchDashboard}
+                            color={
+                              now?.length > 0 && next?.length > 0
+                                ? "info"
+                                : "primary"
+                            }
+                            py={1}
+                            px={2}
                           />
                         </Grid>
                       );
@@ -181,10 +190,16 @@ const TodoBox = (props: any) => {
   );
 };
 
-const IssuesItem = (props: any) => {
-  const { name, value, now, next, originalName, fetchDashboard } = props;
+export const IssuesItem = ({
+  name,
+  value,
+  originalName,
+  fetchDashboard,
+  color = "primary",
+  textVariant = "semiBoldMedium",
+  ...rest
+}: any) => {
   const navigate = useNavigate();
-  const link = originalName == "questions" && "questionnaires";
   const { service } = useServiceContext();
   const { assessmentId } = useParams();
   const { calculate, calculateConfidence } = useCalculate();
@@ -201,27 +216,24 @@ const IssuesItem = (props: any) => {
     runOnMount: false,
   });
 
-  const filteredQuestionnaire = (name: string) => {
-    let newName = name;
-    if (name == "withoutEvidence") {
-      newName = "answeredWithoutEvidence";
-    }
-    if (originalName == "questions") {
-      navigate(`../${link}`, { state: newName });
+  const handleNavigation = () => {
+    if (originalName === "questions") {
+      navigate(`../questionnaires`, {
+        state: name === "withoutEvidence" ? "answeredWithoutEvidence" : name,
+      });
     }
   };
 
-  const approvedAllInsights = async () => {
+  const handleApproveAll = async () => {
     try {
       await approveInsights.query();
       await fetchDashboard.query();
     } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
+      toastError(e as ICustomError);
     }
   };
 
-  const approvedGeneratedAll = async () => {
+  const handleGenerateAll = async () => {
     try {
       await generateInsights.query();
       await fetchDashboard.query();
@@ -229,139 +241,102 @@ const IssuesItem = (props: any) => {
   };
 
   useEffect(() => {
-    if (
-      generateInsights.errorObject?.response?.data?.code ==
-      ErrorCodes.CalculateNotValid
-    ) {
-      calculate(approvedGeneratedAll);
-    }
-    if (
-      generateInsights.errorObject?.response?.data?.code ==
-      ErrorCodes.ConfidenceCalculationNotValid
-    ) {
-      calculateConfidence(approvedGeneratedAll);
-    }
+    const { errorObject } = generateInsights;
+    if (!errorObject) return;
+    const errorCode = errorObject?.response?.data?.code;
+
+    if (errorCode === ErrorCodes.CalculateNotValid)
+      calculate(handleGenerateAll);
+    if (errorCode === ErrorCodes.ConfidenceCalculationNotValid)
+      calculateConfidence(handleGenerateAll);
   }, [generateInsights.errorObject]);
+
+  const issueTextMap = {
+    unanswered: value > 1 ? "needForAnswers" : "needsForAnswer",
+    unapprovedAnswers:
+      value > 1 ? "answersNeedApproval" : "answerNeedsApproval",
+    answeredWithLowConfidence:
+      value > 1 ? "questionsConfidenceAnswers" : "questionConfidenceAnswer",
+    withoutEvidence: value > 1 ? "lackForEvidences" : "lackForEvidence",
+    unresolvedComments: value > 1 ? "UnresolvedComments" : "UnresolvedComment",
+    notGenerated: "insightsNeedToBeGenerated",
+    unapproved:
+      value > 1 ? "insightsNeedApprovement" : "insightNeedApprovement",
+    expired: value > 1 ? "expiredDueToNewAnswers" : "expiredDueToNewAnswer",
+    unprovidedMetadata:
+      value > 1 ? "metadataAreNotProvider" : "metadataIsNotProvider",
+    unpublished: "unpublishedReport",
+    total: "suggestAnyAdvicesSoFar",
+  } as any;
+
+  const colorPalette = (theme.palette as any)[color] || theme.palette.primary;
+
   return (
     <Box
-      onClick={() => filteredQuestionnaire(name)}
+      onClick={handleNavigation}
       sx={{
-        py: 1,
-        px: 2,
         borderRadius: 2,
-        border: "1px solid #C7CCD1",
-        background: now?.length > 0 && next?.length > 0 ? "#F3F5F6" : "#EAF2FB",
+        border: `0.1px solid ${colorPalette.main}`,
+        background: colorPalette.light,
         display: "flex",
         alignItems: "center",
         gap: 1,
         textDecoration: "none",
-        cursor: originalName == "questions" ? "pointer" : "unset",
+        cursor: originalName === "questions" ? "pointer" : "unset",
       }}
+      {...rest}
     >
       <ErrorOutlineIcon
-        style={
-          now?.length > 0 && next?.length > 0
-            ? { fill: "#8A0F24" }
-            : { fill: "#0072ea" }
-        }
+        style={{
+          fill: color === "info" ? theme.palette.error.main : colorPalette.main,
+        }}
       />
       <Typography
         sx={{
-          ...theme.typography.semiBoldMedium,
-          color: now?.length > 0 && next?.length > 0 ? "#6C8093" : "#2B333B",
+          color: colorPalette.dark,
           display: "flex",
           gap: 1,
         }}
+        variant={textVariant}
       >
-        {value != 0 ? <Box>{value}</Box> : null}
-        {name == "unanswered" &&
-          (value > 1 ? (
-            <Trans i18nKey={"needForAnswers"} />
-          ) : (
-            <Trans i18nKey={"needsForAnswer"} />
-          ))}
-        {name == "unapprovedAnswers" &&
-          (value > 1 ? (
-            <Trans i18nKey={"answersNeedApproval"} />
-          ) : (
-            <Trans i18nKey={"answerNeedsApproval"} />
-          ))}
-        {name == "answeredWithLowConfidence" &&
-          (value > 1 ? (
-            <Trans i18nKey={"questionsConfidenceAnswers"} />
-          ) : (
-            <Trans i18nKey={"questionConfidenceAnswer"} />
-          ))}
-        {name == "withoutEvidence" &&
-          (value > 1 ? (
-            <Trans i18nKey={"lackForEvidences"} />
-          ) : (
-            <Trans i18nKey={"lackForEvidence"} />
-          ))}
-        {name == "unresolvedComments" &&
-          (value > 1 ? (
-            <Trans i18nKey={"UnresolvedComments"} />
-          ) : (
-            <Trans i18nKey={"UnresolvedComment"} />
-          ))}
-        {name == "notGenerated" && (
-          <Trans i18nKey={"insightsNeedToBeGenerated"} />
-        )}
-        {name == "unapproved" &&
-          (value > 1 ? (
-            <Trans i18nKey={"insightsNeedApprovement"} />
-          ) : (
-            <Trans i18nKey={"insightNeedApprovement"} />
-          ))}
-        {name == "expired" &&
-          (value > 1 ? (
-            <Trans i18nKey={"expiredDueToNewAnswers"} />
-          ) : (
-            <Trans i18nKey={"expiredDueToNewAnswer"} />
-          ))}
-        {name == "unprovidedMetadata" &&
-          (value > 1 ? (
-            <Trans i18nKey={"metadataAreNotProvider"} />
-          ) : (
-            <Trans i18nKey={"metadataIsNotProvider"} />
-          ))}
-        {name == "unpublished" && <Trans i18nKey={"unpublishedReport"} />}
-        {name == "total" && <Trans i18nKey={"suggestAnyAdvicesSoFar"} />}
+        {value !== 0 && <Box>{value}</Box>}
+        {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
       </Typography>
-      {name == "unapproved" && (
+
+      {name === "unapproved" && (
         <Button
-          onClick={approvedAllInsights}
+          onClick={handleApproveAll}
           sx={{
             padding: "4px 10px",
             marginInlineStart: "auto",
-            color: theme.palette.primary.main,
           }}
-          variant={"outlined"}
+          color={color === "info" ? "primary" : color}
+          variant="outlined"
         >
           <Typography sx={{ ...theme.typography.labelMedium }}>
-            <Trans i18nKey={"approveAll"} />
+            <Trans i18nKey="approveAll" />
           </Typography>
         </Button>
       )}
-      {name == "notGenerated" && (
+
+      {name === "notGenerated" && (
         <Tooltip
           disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
-          <div
-            style={{
-              marginInlineStart: "auto",
-              color: theme.palette.primary.main,
-            }}
-          >
+          <div style={{ marginInlineStart: "auto" }}>
             <LoadingButton
-              onClick={approvedGeneratedAll}
-              variant={"outlined"}
+              onClick={handleGenerateAll}
+              variant="outlined"
               disabled={fetchDashboard.data?.questions?.unanswered > 0}
               loading={generateInsights.loading}
+              color={color}
+              sx={{
+                padding: "4px 10px",
+              }}
             >
               <Typography sx={{ ...theme.typography.labelMedium }}>
-                <Trans i18nKey={"GenerateAll"} />
+                <Trans i18nKey="GenerateAll" />
               </Typography>
             </LoadingButton>
           </div>

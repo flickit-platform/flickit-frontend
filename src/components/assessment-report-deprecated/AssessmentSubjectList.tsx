@@ -15,22 +15,24 @@ export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
 
   return (
     <Box mt={4}>
-      {isEmpty ? (
-        <ErrorEmptyData />
-      ) : (
-        <Grid container spacing={5}>
-          {subjects?.map((subject) => {
-            return (
-              <Grid item xs={12} sm={12} md={12} lg={12} key={subject?.id}>
-                <AssessmentSubjectAccordion
-                  {...subject}
-                  maturityLevelCount={maturityLevelCount}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-      )}
+      <Box mt={3}>
+        {isEmpty ? (
+          <ErrorEmptyData />
+        ) : (
+          <Grid container spacing={5}>
+            {subjects?.map((subject) => {
+              return (
+                <Grid item xs={12} sm={12} md={12} lg={12} key={subject?.id}>
+                  <AssessmentSubjectAccordion
+                    {...subject}
+                    maturityLevelCount={maturityLevelCount}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
+      </Box>
     </Box>
   );
 };

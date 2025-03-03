@@ -3,10 +3,8 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -15,17 +13,14 @@ import { Link, useParams } from "react-router-dom";
 import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { Gauge } from "../common/charts/Gauge";
-import { getNumberBaseOnScreen } from "@/utils/returnBasedOnScreen";
 import { getMaturityLevelColors, styles } from "@styles";
 import { ISubjectInfo, IMaturityLevel, TId } from "@types";
 import { ICustomError } from "@/utils/CustomError";
-import AssessmentSubjectRadarChart from "./AssessmenetSubjectRadarChart";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
-import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
-import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import DonutChart from "../common/charts/donutChart/donutChart";
+import SubjectContainer from "../subject-report-old/SubjectContainer";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -50,14 +45,12 @@ export const AssessmentSubjectAccordion = (
     maturityLevelCount,
     confidenceValue,
     id,
-    attributes,
     description = "",
   } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);
-  const [subjectAttributes, setSubjectAttributes] = useState<any>([]);
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );
@@ -81,12 +74,7 @@ export const AssessmentSubjectAccordion = (
 
   useEffect(() => {
     fetchProgress();
-    fetchAttributes();
   }, []);
-
-  const fetchAttributes = async () => {
-    setSubjectAttributes(attributes);
-  };
 
   const theme = useTheme();
 
@@ -95,9 +83,6 @@ export const AssessmentSubjectAccordion = (
     isExpanded: boolean,
   ) => {
     setExpanded(isExpanded);
-    if (isExpanded) {
-      fetchAttributes();
-    }
   };
 
   return (
@@ -119,8 +104,7 @@ export const AssessmentSubjectAccordion = (
           borderTopLeftRadius: "12px !important",
           borderTopRightRadius: "12px !important",
           textAlign: "center",
-          paddingBottom: 2,
-          backgroundColor: expanded ? "rgba(10, 35, 66, 0.07)" : "",
+          backgroundColor: expanded ? "#E9ECF0" : "",
           "& .MuiAccordionSummary-content": {
             maxHeight: { md: "160px", lg: "160px" },
             paddingLeft: { md: "1rem", lg: "1rem" },
@@ -130,50 +114,41 @@ export const AssessmentSubjectAccordion = (
         <Grid
           container
           alignItems="center"
-          onClick={(e) => e.stopPropagation()}
-          component={Link}
-          to={progress === 100 ? `./${id}#insight` : `./${id}`}
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <Grid
-            item
-            xs={12}
-            lg={description ? 2.4 : 3.4}
-            md={description ? 2.4 : 3.4}
-            sm={12}
-          >
-            <Box
-              sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                textAlign: "center",
-                width: "100%",
-              }}
-            >
-              <Typography
-                color="#243342"
+          <Grid item xs={12} lg={3.5} md={3.5} sm={12}>
+            <Box sx={{ ...styles.centerCVH }} gap={1}>
+              <Box
                 sx={{
-                  textTransform: "none",
-                  whiteSpace: "pre-wrap",
-                  fontFamily: languageDetector(title)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  textAlign: "center",
+                  width: "100%",
                 }}
-                variant="headlineMedium"
               >
-                {title}
+                <Typography
+                  color="#243342"
+                  sx={{
+                    textTransform: "none",
+                    whiteSpace: "pre-wrap",
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
+                  variant="headlineMedium"
+                >
+                  {title}
+                </Typography>
+              </Box>
+              <Typography variant="bodyMedium">
+                {"("}
+                <Trans i18nKey="weight" />: {maturityLevel?.value} {")"}
               </Typography>
             </Box>
           </Grid>
 
           {!isMobileScreen && (
-            <Grid
-              item
-              xs={12}
-              lg={description ? 5 : 4}
-              md={description ? 5 : 4}
-              sm={12}
-            >
+            <Grid item xs={12} lg={4.5} md={4.5} sm={12}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -201,34 +176,56 @@ export const AssessmentSubjectAccordion = (
               </Box>
             </Grid>
           )}
-
+          <Grid item xs={12} lg={1} md={1} sm={12}></Grid>
           {isMobileScreen && (
             <Grid item xs={12} lg={2} md={2} sm={12}>
               <SubjectStatus title={title} maturity_level={maturityLevel} />
             </Grid>
           )}
-          <Grid item xs={0} lg={0.2} md={0.2} sm={0}></Grid>
-          <Grid item xs={12} lg={1.7} md={1.7} sm={12}>
+          <Grid item xs={12} lg={1.5} md={1.5} sm={12}>
             <Box
               sx={{
                 ...styles.centerCVH,
-                gap: 2,
+                gap: 1,
                 width: "100%",
-                mt: { xs: "-52px", sm: "-52px", md: "0" },
               }}
             >
-              <Typography variant="titleMedium" color="#243342">
-                <Trans i18nKey="withPercentConfidence" />
+              <Typography
+                sx={{
+                  display: "flex",
+                  gap: "5px",
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  color: getMaturityLevelColors(maturityLevelCount ?? 5)[
+                    (maturityLevel?.value ?? 1) - 1
+                  ],
+                  fontFamily: languageDetector(maturityLevel?.title ?? "")
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                }}
+              >
+                {maturityLevel?.title}
               </Typography>
-              <ConfidenceLevel
-                inputNumber={confidenceValue}
-                displayNumber
-                variant="titleLarge"
-              />
+              <Box
+                sx={{
+                  ...styles.centerVH,
+                  gap: 0.1,
+                  width: "100%",
+                }}
+              >
+                <Typography variant="bodyMedium" color="#6C8093">
+                  <Trans i18nKey="confidence" />:
+                </Typography>
+                <ConfidenceLevel
+                  inputNumber={confidenceValue}
+                  displayNumber
+                  variant="titleSmall"
+                />
+              </Box>
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={6} lg={2.7} md={2.7} sm={12}>
+            <Grid item xs={6} lg={1.5} md={1.5} sm={12}>
               <SubjectStatus
                 title={title}
                 maturity_level={maturityLevel}
@@ -236,147 +233,10 @@ export const AssessmentSubjectAccordion = (
               />
             </Grid>
           )}
-          <Grid item xs={12} lg={12} md={12} sm={12} mb={2}>
-            <Typography variant="titleMedium" fontWeight={400}>
-              <Trans
-                i18nKey="subjectAccordionDetails"
-                values={{
-                  attributes: subjectAttributes.length,
-                  subjects: title,
-                }}
-              />
-            </Typography>
-          </Grid>
         </Grid>
       </AccordionSummary>
-      <AccordionDetails sx={{ padding: 0 }}>
-        <Grid container alignItems="center" padding={4}>
-          <Grid item xs={12} sm={12} md={12} lg={6.5}>
-            <Box
-              sx={{ display: { xs: "none", sm: "none", md: "block" } }}
-              height={subjectAttributes.length > 2 ? "400px" : "300px"}
-            >
-              {subjectAttributes.length > 2 ? (
-                <AssessmentSubjectRadarChart
-                  data={subjectAttributes}
-                  maturityLevelsCount={maturityLevelCount ?? 5}
-                  loading={false}
-                />
-              ) : (
-                <AssessmentSubjectRadialChart
-                  data={subjectAttributes}
-                  loading={false}
-                />
-              )}
-            </Box>
-          </Grid>
-          <Divider
-            orientation="vertical"
-            flexItem
-            sx={{ marginInline: { lg: 4 }, marginBlock: { lg: 10 } }}
-          />
-
-          <Grid item xs={12} sm={12} md={12} lg={4.6}>
-            <Box display="flex" flexDirection="column">
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                width="100%"
-                px="2rem"
-                marginBottom="10px"
-              >
-                <Typography variant="titleMedium" color="#73808C">
-                  <Trans i18nKey={"attribute"} />
-                </Typography>
-                <Typography variant="titleMedium" color="#73808C">
-                  <Trans i18nKey={"status"} />
-                </Typography>
-              </Box>
-              <Divider sx={{ width: "100%" }} />
-              <Box
-                maxHeight="400px"
-                overflow="auto"
-                gap="1.875rem"
-                paddingTop="1.875rem"
-                display="flex"
-                flexDirection="column"
-                paddingRight={2}
-                justifyContent="flex-start"
-              >
-                {subjectAttributes.map((element: any) => {
-                  return (
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      gap={1}
-                      key={element.id}
-                    >
-                      <Typography
-                        variant="titleMedium"
-                        color="#243342"
-                        sx={{
-                          fontFamily: languageDetector(element.title)
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                        }}
-                      >
-                        {element.title}
-                      </Typography>
-                      <Box display="flex" alignItems="center" gap={0.5}>
-                        <Typography
-                          sx={{
-                            color:
-                              getMaturityLevelColors(5)[
-                                element.maturityLevel.value - 1
-                              ],
-                            fontFamily: languageDetector(
-                              element.maturityLevel.title,
-                            )
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          }}
-                          variant="titleMedium"
-                        >
-                          {element.maturityLevel.title}{" "}
-                        </Typography>
-                        <ConfidenceLevel
-                          inputNumber={element.confidenceValue}
-                        />
-                      </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-        <Box mt="auto">
-          <Button
-            variant="outlined"
-            size="large"
-            fullWidth
-            component={Link}
-            to={progress === 100 ? `./${id}#insight` : `./${id}`}
-            sx={{
-              borderRadius: 0,
-              borderBottomRightRadius: "12px",
-              borderBottomLeftRadius: "12px",
-              padding: 2,
-              textTransform: "none",
-              backgroundColor: "#D0E4FF",
-              borderColor: "#D0E4FF",
-              color: "primary",
-              "&:hover": {
-                backgroundColor: "#D0E4FF",
-                borderColor: "#D0E4FF",
-              },
-              ...theme.typography.headlineMedium,
-            }}
-          >
-            <Trans i18nKey={"checkMoreDetails"} />
-          </Button>
-        </Box>
+      <AccordionDetails sx={{ padding: 4 }}>
+        {expanded && <SubjectContainer subjectId={id} />}{" "}
       </AccordionDetails>
     </Accordion>
   );
@@ -390,34 +250,22 @@ const SubjectStatus = (
 ) => {
   const { maturity_level, maturityLevelCount } = props;
   const hasStats = Boolean(maturity_level?.index);
-  const isMobileScreen = useMediaQuery((theme: any) =>
-    theme.breakpoints.down("md"),
-  );
+
   return (
-    <Box
-      sx={{
-        textAlign: "center",
-        marginBottom: isMobileScreen ? "unset" : -3,
-      }}
-    >
-      <Box>
-        {hasStats ? (
-          <Gauge
-            maturity_level_number={maturityLevelCount ?? 5}
-            isMobileScreen={isMobileScreen ? false : true}
-            maturity_level_status={maturity_level?.title ?? ""}
-            level_value={maturity_level?.index ?? 0}
-            hideGuidance={true}
-            height={getNumberBaseOnScreen(240, 240, 160, 160, 160)}
-            maturity_status_guide={t("subjectMaturityLevelIs")}
-            maturity_status_guide_variant="titleSmall"
-          />
-        ) : (
-          <Typography>
-            <Trans i18nKey="notEvaluated" />
-          </Typography>
-        )}
-      </Box>
+    <Box>
+      {hasStats ? (
+        <DonutChart
+          maturityLevelNumber={maturityLevelCount ?? 5}
+          levelValue={maturity_level?.value ?? 1}
+          text={maturity_level?.title ?? ""}
+          displayTitle={false}
+          height="100"
+        />
+      ) : (
+        <Typography>
+          <Trans i18nKey="notEvaluated" />
+        </Typography>
+      )}
     </Box>
   );
 };

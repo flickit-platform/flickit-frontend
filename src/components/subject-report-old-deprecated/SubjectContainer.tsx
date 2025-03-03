@@ -14,6 +14,7 @@ import { SubjectAttributeList } from "./SubjectAttributeList";
 import SubjectOverallInsight from "./SubjectOverallInsight";
 import { ErrorCodes, ISubjectReportModel } from "@types";
 import hasStatus from "@utils/hasStatus";
+import QuestionnairesNotCompleteAlert from "../questionnaires/QuestionnairesNotCompleteAlert";
 import Button from "@mui/material/Button";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";
@@ -23,16 +24,16 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
 import useCalculate from "@/hooks/useCalculate";
 
-const SubjectContainer = (props: any) => {
-  const { subjectId } = props;
+const SubjectContainer = () => {
   const {
     loading,
     loaded,
     hasError,
     subjectQueryData,
+    subjectId,
     subjectProgressQueryData,
     fetchPathInfo,
-  } = useSubject({ subjectId });
+  } = useSubject();
   return (
     <QueryBatchData
       queryBatchData={[
@@ -47,10 +48,27 @@ const SubjectContainer = (props: any) => {
         const { subject } = data;
         const { isConfidenceValid, isCalculateValid, title } = subject;
         const { answerCount, questionCount } = subjectProgress;
+        const isComplete = questionCount === answerCount;
         const progress = ((answerCount || 0) / (questionCount || 1)) * 100;
 
         return (
           <Box>
+            <SubjectTitle
+              {...subjectQueryData}
+              loading={loading}
+              pathInfo={pathInfo}
+            />
+            {!isComplete && loaded && (
+              <Box mt={2} mb={1}>
+                <QuestionnairesNotCompleteAlert
+                  subjectName={subject?.title}
+                  to={`./../../questionnaires?subject_pk=${subjectId}`}
+                  q={questionCount}
+                  a={answerCount}
+                  progress={progress}
+                />
+              </Box>
+            )}
             {loading ? (
               <Box sx={{ ...styles.centerVH }} py={6} mt={5}>
                 <GettingThingsReadyLoading color="gray" />
@@ -59,20 +77,32 @@ const SubjectContainer = (props: any) => {
               <NoInsightYetMessage
                 title={title}
                 no_insight_yet_message={!isCalculateValid || !isConfidenceValid}
-                subjectId={subjectId}
               />
             ) : (
-              <Box>
-                <SubjectOverallInsight
-                  {...subjectQueryData}
-                  subjectId={subjectId}
-                  loading={loading}
-                />
-                <SubjectAttributeList
-                  {...subjectQueryData}
-                  loading={loading}
-                  progress={progress}
-                />
+              <Box sx={{ px: 0.5 }}>
+                <Box
+                  mt={3}
+                  sx={{
+                    background: "white",
+                    borderRadius: 2,
+                    py: 4,
+                    px: { xs: 1, sm: 2, md: 3 },
+                  }}
+                >
+                  <Box>
+                    <SubjectOverallInsight
+                      {...subjectQueryData}
+                      loading={loading}
+                    />
+                  </Box>
+                </Box>
+                <Box>
+                  <SubjectAttributeList
+                    {...subjectQueryData}
+                    loading={loading}
+                    progress={progress}
+                  />
+                </Box>
               </Box>
             )}
           </Box>
@@ -82,10 +112,9 @@ const SubjectContainer = (props: any) => {
   );
 };
 
-export const useSubject = (props: any) => {
-  const { subjectId } = props;
+const useSubject = () => {
   const { service } = useServiceContext();
-  const { assessmentId } = useParams();
+  const { subjectId = "", assessmentId } = useParams();
   const { calculate, calculateConfidence } = useCalculate();
 
   const subjectQueryData = useQuery<ISubjectReportModel>({
@@ -102,7 +131,7 @@ export const useSubject = (props: any) => {
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.fetchPathInfo({ assessmentId, ...(args || {}) }, config),
-    runOnMount: false,
+    runOnMount: true,
   });
 
   const getSubjectQueryData = async () => {
@@ -146,6 +175,7 @@ export const useSubject = (props: any) => {
     loading,
     loaded,
     hasError,
+    subjectId,
     subjectQueryData,
     subjectProgressQueryData,
     fetchPathInfo,
@@ -212,9 +242,8 @@ const SubjectTitle = (props: {
 const NoInsightYetMessage = (props: {
   title: string;
   no_insight_yet_message: boolean;
-  subjectId: any;
 }) => {
-  const { subjectId } = props;
+  const { subjectId } = useParams();
   const { title, no_insight_yet_message } = props;
   return (
     <Box mt={2}>

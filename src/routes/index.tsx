@@ -25,12 +25,11 @@ const DashboardScreen = lazy(() => import("../screens/DashboardScreen"));
 const AssessmentReportScreen = lazy(
   () => import("../screens/AssessmentReportScreen"),
 );
-const AdviceScreen = lazy(
-  () => import("../screens/AdviceScreen"),
+const AssessmentReportScreenV2 = lazy(
+  () => import("../screens/AssessmentReportScreenV2"),
 );
-const ReportScreen = lazy(
-  () => import("../screens/ReportScreen"),
-);
+const AdviceScreen = lazy(() => import("../screens/AdviceScreen"));
+const ReportScreen = lazy(() => import("../screens/ReportScreen"));
 const AssessmentAdviceScreen = lazy(
   () => import("../screens/AssessmentAdviceScreen"),
 );
@@ -119,34 +118,17 @@ const Routes = () => {
             path="/:spaceId/assessments/:page/:assessmentId/"
             element={<DashboardScreen />}
           >
-            <Route
-              path="dashboard/"
-              element={<AssessmentDashboardScreen />}
-            />
-            <Route
-              path="settings/"
-              element={<AssessmentSettingScreen />}
-            />
-            <Route
-              path="insights/"
-              element={<AssessmentReportScreen />}
-            />
-            <Route
-              path="advice/"
-              element={<AdviceScreen />}
-            />
-            <Route
-                path="report/"
-                element={<ReportScreen />}
-            />
+            <Route path="dashboard/" element={<AssessmentDashboardScreen />} />
+            <Route path="settings/" element={<AssessmentSettingScreen />} />
+            <Route path="insights/" element={<AssessmentReportScreen />} />
+            <Route path="insightsV2/" element={<AssessmentReportScreenV2 />} />
+            <Route path="advice/" element={<AdviceScreen />} />
+            <Route path="report/" element={<ReportScreen />} />
             <Route
               path="questionnaires/:questionIndex"
               element={<QuestionnairesScreen />}
             />
-            <Route
-              path="questionnaires/"
-              element={<QuestionnairesScreen />}
-            />
+            <Route path="questionnaires/" element={<QuestionnairesScreen />} />
             <Route
               path="questionnaires/:questionnaireId/review"
               element={<QuestionsReviewScreen />}
@@ -160,9 +142,9 @@ const Routes = () => {
             </Route>
           </Route>
           <Route
-              path="/:spaceId/assessments/:page/:assessmentId/insights/:subjectId"
-              element={<SubjectReportScreen />}
-            />
+            path="/:spaceId/assessments/:page/:assessmentId/insights/:subjectId"
+            element={<SubjectReportScreen />}
+          />
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/advice"
             element={<AssessmentAdviceScreen />}

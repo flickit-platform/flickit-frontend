@@ -135,6 +135,12 @@ const palette = createPalette({
     dark: "#2E6B2E",
     light: "#EFF6EF",
   },
+  info: {
+    main: "#6C8093",
+    contrastText: "#fff",
+    dark: "#6C8093",
+    light: "#F3F5F6",
+  },
   warning: { main: "#CC7400", contrastText: "#fff", light: "#F4E7D7" },
 });
 const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
