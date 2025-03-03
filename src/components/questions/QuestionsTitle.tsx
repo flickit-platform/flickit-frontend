@@ -27,6 +27,10 @@ const itemNames = [
     original: "isUnanswered",
   },
   {
+    translate: t("unapprovedAnswer"),
+    original: "hasUnapprovedAnswer",
+  },
+  {
     translate: t("lowConfidenceAnswers"),
     original: "isAnsweredWithLowConfidence",
   },
