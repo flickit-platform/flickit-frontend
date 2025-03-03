@@ -796,6 +796,7 @@
   "highlightQuestionsWithIssues": "نمایش برحسب مشکل:",
   "unansweredQuestions": "پاسخ داده‌نشده",
   "answersWithNoEvidence": "پاسخ بدون شاهد",
+  "unapprovedAnswer": "پاسخ تاییدنشده",
   "lowConfidenceAnswers": "پاسخ با سطح اطمینان پایین",
   "unresolvedComments": "یادداشت حل‌نشده",
   "unresolvedComment": "یادداشت‌ حل‌نشده",

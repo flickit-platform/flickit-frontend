@@ -795,6 +795,7 @@
   "highlightQuestionsWithIssues": "Highlight by issues:",
   "unansweredQuestions": "Unanswered questions",
   "answersWithNoEvidence": "Answered with no evidence",
+  "unapprovedAnswer": "Unapproved answer",
   "lowConfidenceAnswers": "Answered with low confidence",
   "unresolvedComments": "Unresolved comments",
   "unresolvedComment": "Unresolved comment",

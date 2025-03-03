@@ -57,6 +57,7 @@ export interface IQuestionInfo {
   answerRangeId?: number;
   issues?: {
     isUnanswered?: boolean;
+    hasUnapprovedAnswer?: boolean;
     isAnsweredWithLowConfidence?: boolean;
     isAnsweredWithoutEvidences?: boolean;
     unresolvedCommentsCount?: number;
@@ -438,6 +439,7 @@ export interface IQuestionnairesInfo {
     unanswered?: number;
     unresolvedComments?: number;
     unapprovedAnswers?: number;
+    unapprovedAnswer?: number;
   };
 }
 export interface IQuestionnairesModel extends ITotalProgress {
