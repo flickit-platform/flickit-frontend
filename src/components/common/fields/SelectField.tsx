@@ -63,7 +63,7 @@ interface ISelectField extends SelectProps {
   sx?: any;
   value?: string;
   IconComponent?: any;
-  onChange:(e: any)=> void;
+  onChange?:(e: any)=> void;
 }
 
 export const SelectField = (props: ISelectField) => {
