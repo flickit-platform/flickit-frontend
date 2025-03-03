@@ -111,7 +111,7 @@ const palette = createPalette({
   primary: {
     main: "#2466A8",
     contrastText: "#FFFFFF",
-    light: "#2D80D2",
+    light: "#EDF3F8",
     dark: "#1B4D7E",
   },
   secondary: {
@@ -127,13 +127,13 @@ const palette = createPalette({
     main: "#8A0F24",
     contrastText: "#fff",
     dark: "#5C0A18",
-    light: "#f68b9d",
+    light: "#F6ECED",
   },
   success: {
     main: "#3D8F3D",
     contrastText: "#fff",
     dark: "#2E6B2E",
-    light: "#4CB24C",
+    light: "#EFF6EF",
   },
   warning: { main: "#CC7400", contrastText: "#fff", light: "#F4E7D7" },
 });
@@ -236,10 +236,9 @@ export const theme = createTheme({
       letterSpacing: is_farsi ? "0px" : "0",
     },
     bodySmall: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: "normal",
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+      fontWeight: "400",
       fontSize: "0.75rem",
-      lineHeight: "1rem",
       letterSpacing: is_farsi ? "0px" : "0.4px",
     },
     bodyMedium: {

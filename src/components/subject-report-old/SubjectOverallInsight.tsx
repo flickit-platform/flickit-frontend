@@ -3,7 +3,6 @@ import { Trans } from "react-i18next";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SubjectOverallStatusLevelChart from "./SubjectOverallStatusLevelChart";
-import { LoadingButton } from "@mui/lab";
 import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
@@ -12,12 +11,12 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
 import CircularProgress from "@mui/material/CircularProgress";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
-import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
+import ActionPopup from "../common/buttons/ActionPopup";
+import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 const SubjectOverallInsight = (props: any) => {
   return (
@@ -34,12 +33,13 @@ const SubjectOverallInsight = (props: any) => {
 
 const OverallInsightText = (props: any) => {
   const { data = {}, loading } = props;
+
   const abortController = useRef(new AbortController());
 
   const [isApproved, setIsApproved] = useState(true);
   const [insight, setInsight] = useState<any>(null);
   const [editable, setEditable] = useState(false);
-  const [isSystemic, setIsSystemic] = useState(true);
+  const [isExpired, setIsExpired] = useState(false);
 
   const { service } = useServiceContext();
 
@@ -89,14 +89,36 @@ const OverallInsightText = (props: any) => {
   useEffect(() => {
     const data = fetchSubjectInsight.data;
     const selectedInsight = data?.assessorInsight || data?.defaultInsight;
+    setIsExpired(
+      (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
+    );
 
     if (selectedInsight) {
-      setIsSystemic(data?.defaultInsight ?? false);
       setInsight(selectedInsight);
       setIsApproved(data?.approved);
     }
     setEditable(data?.editable ?? false);
   }, [fetchSubjectInsight.data]);
+
+  const {
+    status,
+    hidePrimaryButton,
+    onPrimaryAction,
+    loadingPrimary,
+    onSecondaryAction,
+    loadingSecondary,
+    colorScheme,
+    texts,
+  } = useInsightPopup({
+    insight,
+    isExpired,
+    isApproved,
+    initQuery: InitInsight.query,
+    fetchQuery: fetchSubjectInsight.query,
+    approveAction: ApproveSubject,
+    initLoading: InitInsight.loading,
+    approveLoading: ApproveAISubject.loading,
+  });
   return (
     <Box display="flex" flexDirection={"column"} flex={1}>
       <Typography variant="titleLarge" sx={{ opacity: 0.96 }}>
@@ -160,31 +182,18 @@ const OverallInsightText = (props: any) => {
         <Typography variant="headlineSmall">
           <Trans i18nKey="subjectBriefConclusion" />
         </Typography>
-        <Box sx={{ ...styles.centerV, gap: 1 }}>
-          {(!isApproved || (!insight?.isValid && insight)) && editable && (
-            <LoadingButton
-              variant={"contained"}
-              onClick={(event) => ApproveSubject(event)}
-              loading={ApproveAISubject.loading}
-              size="small"
-            >
-              <Trans i18nKey={"approve"} />
-            </LoadingButton>
-          )}
-          {editable && (
-            <LoadingButton
-              onClick={(event) => {
-                event.stopPropagation();
-                InitInsight.query().then(() => fetchSubjectInsight.query());
-              }}
-              variant={"contained"}
-              loading={InitInsight.loading}
-              size="small"
-            >
-              <Trans i18nKey={!insight ? "generate" : "regenerate"} />
-            </LoadingButton>
-          )}
-        </Box>
+        {editable && (
+          <ActionPopup
+            status={status}
+            hidePrimaryButton={hidePrimaryButton}
+            onPrimaryAction={onPrimaryAction}
+            loadingPrimary={loadingPrimary}
+            onSecondaryAction={onSecondaryAction}
+            loadingSecondary={loadingSecondary}
+            colorScheme={colorScheme}
+            texts={texts}
+          />
+        )}
       </Box>
       <Box
         display="flex"
@@ -239,60 +248,6 @@ const OverallInsightText = (props: any) => {
                   t(convertToRelativeTime(insight?.creationTime)) +
                   ")"}
               </Typography>
-            )}
-            {(!isApproved || (!insight?.isValid && insight)) && (
-              <Box sx={{ ...styles.centerV }} gap={2} my={1}>
-                <Box
-                  sx={{
-                    zIndex: 1,
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    ml: { xs: 0.75, sm: 0.75, md: 1 },
-                  }}
-                >
-                  <Typography
-                    variant="labelSmall"
-                    sx={{
-                      backgroundColor: "#d85e1e",
-                      color: "white",
-                      padding: "0.35rem 0.35rem",
-                      borderRadius: "4px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Trans i18nKey={isSystemic ? "note" : "outdated"} />
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    backgroundColor: "rgba(255, 249, 196, 0.31)",
-                    padding: 1,
-                    borderRadius: 2,
-                    maxWidth: "100%",
-                  }}
-                >
-                  <InfoOutlined
-                    color="primary"
-                    sx={{
-                      marginRight: theme.direction === "ltr" ? 1 : "unset",
-                      marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                    }}
-                  />
-                  <Typography
-                    variant="titleMedium"
-                    fontWeight={400}
-                    textAlign="left"
-                  >
-                    <Trans
-                      i18nKey={
-                        isSystemic ? "defaultInsightTemplate" : "invalidInsight"
-                      }
-                    />
-                  </Typography>
-                </Box>
-              </Box>
             )}
           </>
         )}

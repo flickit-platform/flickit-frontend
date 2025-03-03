@@ -786,3 +786,8 @@ export interface ILangs {
   code: string;
   title: string;
 }
+
+export enum ErrorCodes {
+  CalculateNotValid = "CALCULATE_NOT_VALID",
+  ConfidenceCalculationNotValid = "CONFIDENCE_CALCULATION_NOT_VALID",
+}

@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import { ECustomErrorType, TQueryFunction, TQueryProps } from "@types";
+import { ECustomErrorType, ErrorCodes, TQueryFunction, TQueryProps } from "@types";
 import { ICustomError } from "@utils/CustomError";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";
@@ -142,10 +142,10 @@ export const defaultRenderError = (
   ) {
     return <ErrorNotFoundOrAccessDenied />;
   }
-  if (err?.response?.data?.code == "CALCULATE_NOT_VALID") {
+  if (err?.response?.data?.code == ErrorCodes.CalculateNotValid) {
     return <ErrorRecalculating />;
   }
-  if (err?.response?.data?.code == "CONFIDENCE_CALCULATION_NOT_VALID") {
+  if (err?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid) {
     return <ErrorRecalculating />;
   }
   return errorComponent;
