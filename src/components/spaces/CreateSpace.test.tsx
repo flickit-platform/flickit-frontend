@@ -66,7 +66,7 @@ describe("CreateSpaceDialog", () => {
       expect((axios as any).default.post).toHaveBeenCalledTimes(1);
       expect((axios as any).default.post).toHaveBeenCalledWith(
         "/api/v1/spaces/",
-        { title: "New Space" },
+        { title: "New Space", type: "BASIC" },
         expect.anything(),
       );
     });
@@ -154,7 +154,7 @@ describe("CreateSpaceDialog", () => {
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalledWith(
         `/api/v1/spaces/${mockContext.data.id}/`,
-        { title: "Updated Space" },
+        { title: "Updated Space", type: "BASIC"  },
         expect.anything(),
       );
       expect(axios.put).toHaveBeenCalled();

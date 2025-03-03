@@ -65,7 +65,7 @@ const SpaceContainer = () => {
                       sx={{ marginInlineStart: 1, marginInlineEnd: 0 }}
                     />
                   }
-                  onClick={dialogProps.openDialog}
+                  onClick={()=>dialogProps.openDialog({ type: "create" })}
                   shouldAnimate={data?.length === 0}
                   text="createSpace"
                 />
@@ -153,7 +153,7 @@ const SpaceContainer = () => {
                     <Button
                       startIcon={<AddRoundedIcon />}
                       variant="contained"
-                      onClick={dialogProps.openDialog}
+                      onClick={()=>dialogProps.openDialog({ type: "create" })}
                       sx={{
                         animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
                         "&:hover": {

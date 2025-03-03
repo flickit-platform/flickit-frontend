@@ -844,6 +844,7 @@
   "approveAll": "Approve all",
   "answerNeedApprove": "The selected answer needs approval from an assessor.",
   "privateTitle": "Private",
+  "spaceType": "Space type",
   "'email' format is not valid.": "'email' format is not valid.",
   "unapprovedAnswers": "Unapproved answers",
   "GenerateAll": "Generate all",

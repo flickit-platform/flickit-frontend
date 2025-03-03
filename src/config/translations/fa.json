@@ -842,6 +842,7 @@
   "approveAll": "تایید همه",
   "answerNeedApprove": "پاسخ داده‌شده نیاز به تایید یک ارزیاب دارد.",
   "privateTitle": "اختصاصی",
+  "spaceType": "نوع فضای کاری",
   "'email' format is not valid.": "ایمیل وارد شده معتبر نمی‌باشد.",
   "unapprovedAnswers": "پاسخ‌های تاییدنشده",
   "allQuestonsMustBeAnsweredFirst": "ابتدا باید همه سوالات پاسخ داده شوند.",
