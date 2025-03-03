@@ -1,23 +1,17 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { ICustomError } from "@/utils/CustomError";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { format } from "date-fns";
-import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { styles } from "@styles";
 import { t } from "i18next";
-import formatDate from "@utils/formatDate";
-import languageDetector from "@/utils/languageDetector";
 import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import QueryData from "../common/QueryData";
-import { LoadingSkeletonKitCard } from "../common/loadings/LoadingSkeletonKitCard";
 import { Skeleton } from "@mui/material";
 import { Trans } from "react-i18next";
 

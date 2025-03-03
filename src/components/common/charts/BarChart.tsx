@@ -13,14 +13,12 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { useMediaQuery } from "@mui/material";
 
-interface AssessmentSubjectRadialChartProps {
+interface CustomBarChartProps {
   loading: boolean;
   data: any[];
 }
 
-const AssessmentSubjectRadialChart: React.FC<
-  AssessmentSubjectRadialChartProps
-> = ({ loading, data }) => {
+const CustomBarChart: React.FC<CustomBarChartProps> = ({ loading, data }) => {
   return loading ? (
     <Skeleton
       height={"620px"}
@@ -71,4 +69,4 @@ const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
   );
 };
 
-export default AssessmentSubjectRadialChart;
+export default CustomBarChart;

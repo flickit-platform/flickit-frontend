@@ -15,7 +15,7 @@ import { useTheme } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
-interface AssessmentSubjectRadarChartProps {
+interface RadarChartProps {
   loading: boolean;
   data: any[];
   maturityLevelsCount: number;
@@ -23,8 +23,8 @@ interface AssessmentSubjectRadarChartProps {
   lng?: string;
 }
 
-const AssessmentSubjectRadarChart: React.FC<
-  AssessmentSubjectRadarChartProps
+const CustomRadarChart: React.FC<
+  RadarChartProps
 > = ({ loading, data, maturityLevelsCount, chartHeight, lng }) => {
   return loading ? (
     <Skeleton
@@ -143,4 +143,4 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
   );
 };
 
-export default AssessmentSubjectRadarChart;
+export default CustomRadarChart;

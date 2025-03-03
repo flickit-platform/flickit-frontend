@@ -14,7 +14,6 @@ import { SubjectAttributeList } from "./SubjectAttributeList";
 import SubjectOverallInsight from "./SubjectOverallInsight";
 import { ErrorCodes, ISubjectReportModel } from "@types";
 import hasStatus from "@utils/hasStatus";
-import QuestionnairesNotCompleteAlert from "../questionnaires/QuestionnairesNotCompleteAlert";
 import Button from "@mui/material/Button";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";

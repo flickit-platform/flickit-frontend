@@ -45,14 +45,12 @@ export const AssessmentSubjectAccordion = (
     maturityLevelCount,
     confidenceValue,
     id,
-    attributes,
     description = "",
   } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const [progress, setProgress] = useState<number>(0);
   const [expanded, setExpanded] = useState<boolean>(false);
-  const [subjectAttributes, setSubjectAttributes] = useState<any>([]);
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );
@@ -76,12 +74,7 @@ export const AssessmentSubjectAccordion = (
 
   useEffect(() => {
     fetchProgress();
-    fetchAttributes();
   }, []);
-
-  const fetchAttributes = async () => {
-    setSubjectAttributes(attributes);
-  };
 
   const theme = useTheme();
 
@@ -90,9 +83,6 @@ export const AssessmentSubjectAccordion = (
     isExpanded: boolean,
   ) => {
     setExpanded(isExpanded);
-    if (isExpanded) {
-      fetchAttributes();
-    }
   };
 
   return (
