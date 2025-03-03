@@ -24,6 +24,7 @@ import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import DonutChart from "../common/charts/donutChart/donutChart";
+import SubjectContainer from "../subject-report-old/SubjectContainer";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;
@@ -156,7 +157,7 @@ export const AssessmentSubjectAccordion = (
                   {title}
                 </Typography>
               </Box>
-              <Typography variant="bodyMedium" color="#6C8093">
+              <Typography variant="bodyMedium">
                 {"("}
                 <Trans i18nKey="weight" />: {maturityLevel?.value} {")"}
               </Typography>
@@ -250,134 +251,8 @@ export const AssessmentSubjectAccordion = (
           )}
         </Grid>
       </AccordionSummary>
-      <AccordionDetails sx={{ padding: 0 }}>
-        <Grid container alignItems="center" padding={4}>
-          <Grid item xs={12} sm={12} md={12} lg={6.5}>
-            <Box
-              sx={{ display: { xs: "none", sm: "none", md: "block" } }}
-              height={subjectAttributes.length > 2 ? "400px" : "300px"}
-            >
-              {subjectAttributes.length > 2 ? (
-                <AssessmentSubjectRadarChart
-                  data={subjectAttributes}
-                  maturityLevelsCount={maturityLevelCount ?? 5}
-                  loading={false}
-                />
-              ) : (
-                <AssessmentSubjectRadialChart
-                  data={subjectAttributes}
-                  loading={false}
-                />
-              )}
-            </Box>
-          </Grid>
-          <Divider
-            orientation="vertical"
-            flexItem
-            sx={{ marginInline: { lg: 4 }, marginBlock: { lg: 10 } }}
-          />
-
-          <Grid item xs={12} sm={12} md={12} lg={4.6}>
-            <Box display="flex" flexDirection="column">
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                width="100%"
-                px="2rem"
-                marginBottom="10px"
-              >
-                <Typography variant="titleMedium" color="#73808C">
-                  <Trans i18nKey={"attribute"} />
-                </Typography>
-                <Typography variant="titleMedium" color="#73808C">
-                  <Trans i18nKey={"status"} />
-                </Typography>
-              </Box>
-              <Divider sx={{ width: "100%" }} />
-              <Box
-                maxHeight="400px"
-                overflow="auto"
-                gap="1.875rem"
-                paddingTop="1.875rem"
-                display="flex"
-                flexDirection="column"
-                paddingRight={2}
-                justifyContent="flex-start"
-              >
-                {subjectAttributes.map((element: any) => {
-                  return (
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      gap={1}
-                      key={element.id}
-                    >
-                      <Typography
-                        variant="titleMedium"
-                        color="#243342"
-                        sx={{
-                          fontFamily: languageDetector(element.title)
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                        }}
-                      >
-                        {element.title}
-                      </Typography>
-                      <Box display="flex" alignItems="center" gap={0.5}>
-                        <Typography
-                          sx={{
-                            color:
-                              getMaturityLevelColors(5)[
-                                element.maturityLevel.value - 1
-                              ],
-                            fontFamily: languageDetector(
-                              element.maturityLevel.title,
-                            )
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          }}
-                          variant="titleMedium"
-                        >
-                          {element.maturityLevel.title}{" "}
-                        </Typography>
-                        <ConfidenceLevel
-                          inputNumber={element.confidenceValue}
-                        />
-                      </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-        <Box mt="auto">
-          <Button
-            variant="outlined"
-            size="large"
-            fullWidth
-            component={Link}
-            to={progress === 100 ? `./${id}#insight` : `./${id}`}
-            sx={{
-              borderRadius: 0,
-              borderBottomRightRadius: "12px",
-              borderBottomLeftRadius: "12px",
-              padding: 2,
-              textTransform: "none",
-              backgroundColor: "#D0E4FF",
-              borderColor: "#D0E4FF",
-              color: "primary",
-              "&:hover": {
-                backgroundColor: "#D0E4FF",
-                borderColor: "#D0E4FF",
-              },
-              ...theme.typography.headlineMedium,
-            }}
-          >
-            <Trans i18nKey={"checkMoreDetails"} />
-          </Button>
-        </Box>
+      <AccordionDetails sx={{ padding: 4 }}>
+        {expanded && <SubjectContainer subjectId={id} />}{" "}
       </AccordionDetails>
     </Accordion>
   );

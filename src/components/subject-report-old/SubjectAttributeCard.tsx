@@ -120,7 +120,7 @@ const SUbjectAttributeCard = (props: any) => {
       sx={{
         borderRadius: "16px !important",
         py: { xs: 3, sm: 4 },
-        mb: 5,
+        mb: 2,
         padding: "0px !important",
       }}
     >
@@ -185,12 +185,22 @@ const SUbjectAttributeCard = (props: any) => {
                 >
                   {title}
                 </Typography>
+                <Typography
+                  sx={{
+                    ...theme.typography.bodyMedium,
+                    textTransform: "none",
+                  }}
+                  marginX={2}
+                >
+                  {"("}
+                  <Trans i18nKey="weight" />: {maturityLevel?.value}{")"}
+                </Typography>
               </Title>
               <Typography
                 sx={{
                   ...theme.typography.bodyMedium,
                   color: "#6C8093",
-                  mb: 2,
+                  mt: 1,
                   fontFamily: languageDetector(description)
                     ? farsiFontFamily
                     : primaryFontFamily,
@@ -198,7 +208,6 @@ const SUbjectAttributeCard = (props: any) => {
               >
                 {description}
               </Typography>
-              <AttributeInsight progress={progress} id={id} />
             </Grid>
             <Grid item xs={12} sm={3}>
               <Box
@@ -274,6 +283,10 @@ const SUbjectAttributeCard = (props: any) => {
               padding: 2,
             }}
           >
+            {expandedAttribute && (
+              <AttributeInsight progress={progress} id={id} />
+            )}
+
             <Box
               sx={{
                 background: "#E2E5E9",

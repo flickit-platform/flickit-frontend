@@ -155,38 +155,7 @@ export const AssessmentInsight = () => {
                 }) ?? ""
               }
             />
-            {insight?.creationTime && (
-              <Typography variant="bodyMedium" mx={1}>
-                {languageDetector(insight)
-                  ? formatDate(
-                      format(
-                        new Date(
-                          new Date(insight?.creationTime).getTime() -
-                            new Date(
-                              insight?.creationTime,
-                            ).getTimezoneOffset() *
-                              60000,
-                        ),
-                        "yyyy/MM/dd HH:mm",
-                      ),
-                      "Shamsi",
-                    ) +
-                    " (" +
-                    t(convertToRelativeTime(insight?.creationTime)) +
-                    ")"
-                  : format(
-                      new Date(
-                        new Date(insight?.creationTime).getTime() -
-                          new Date(insight?.creationTime).getTimezoneOffset() *
-                            60000,
-                      ),
-                      "yyyy/MM/dd HH:mm",
-                    ) +
-                    " (" +
-                    t(convertToRelativeTime(insight?.creationTime)) +
-                    ")"}
-              </Typography>
-            )}
+    
           </Box>
         );
       }}
