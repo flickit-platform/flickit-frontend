@@ -95,14 +95,14 @@ const AssessmentReportContainer = (props: any) => {
 
           return (
             <Box m="auto">
-              <Grid container spacing={1}>
+              <Grid container spacing={1} mt="32px">
                 {Object.entries({
                   notGenerated: 2,
                   unapproved: 1,
                   expired: 0,
                 }).map(([key, value]) => {
                   return (
-                    <Grid key={uniqueId()} item xs={4} md={4}>
+                    <Grid key={uniqueId()} item xs={12} md={4}>
                       <IssuesItem
                         name={key}
                         value={value}
