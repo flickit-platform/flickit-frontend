@@ -9,12 +9,12 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/assessmentReportNarrator";
-import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
-import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
 import { Divider, Typography } from "@mui/material";
 import AIGenerated from "@common/tags/AIGenerated";
+import AdviceItems from "../advice-tab/advice-items/AdviceItems";
+import AdviceDialog from "../advice-tab/AdviceDialog";
 
 const AssessmentAdviceContainer = (props: any) => {
   const fetchPreAdviceInfo = useQuery<any>({
