@@ -3,10 +3,8 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -18,9 +16,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { getMaturityLevelColors, styles } from "@styles";
 import { ISubjectInfo, IMaturityLevel, TId } from "@types";
 import { ICustomError } from "@/utils/CustomError";
-import AssessmentSubjectRadarChart from "./AssessmenetSubjectRadarChart";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
-import AssessmentSubjectRadialChart from "./AssessmenetSubjectRadial";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import DonutChart from "../common/charts/donutChart/donutChart";
@@ -211,7 +207,8 @@ export const AssessmentSubjectAccordion = (
                 sx={{
                   display: "flex",
                   gap: "5px",
-                  ...theme.typography.titleLarge,
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
                   color: getMaturityLevelColors(maturityLevelCount ?? 5)[
                     (maturityLevel?.value ?? 1) - 1
                   ],

@@ -83,7 +83,6 @@ const FlatGauge = (props: IGaugeProps) => {
           {textPosition === "top" && (
             <Typography
               sx={{
-                ...theme.typography.semiBoldLarge,
                 color: colorCode,
                 fontSize: "1.25rem",
                 fontWeight: "bold",

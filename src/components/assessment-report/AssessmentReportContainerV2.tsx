@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import QueryBatchData from "@common/QueryBatchData";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
@@ -13,6 +13,8 @@ import PermissionControl from "../common/PermissionControl";
 import { t } from "i18next";
 import { Gauge } from "../common/charts/Gauge";
 import { Trans } from "react-i18next";
+import { IssuesItem } from "../dashboard/dashboard-tab/todoBox";
+import { uniqueId } from "lodash";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -93,7 +95,29 @@ const AssessmentReportContainer = (props: any) => {
 
           return (
             <Box m="auto">
-              <Box gap={2} sx={{ ...styles.boxStyle }} display="flex">
+              <Grid container spacing={1}>
+                {Object.entries({
+                  notGenerated: 2,
+                  unapproved: 1,
+                  expired: 0,
+                }).map(([key, value]) => {
+                  return (
+                    <Grid key={uniqueId()} item xs={4} md={4}>
+                      <IssuesItem
+                        name={key}
+                        value={value}
+                        originalName={key}
+                        fetchDashboard={queryData}
+                        color="error"
+                        textVariant="semiBoldSmall"
+                        py={0.5}
+                        px={1}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+              <Box gap={2} sx={{ ...styles.boxStyle }} display="flex" mt={2}>
                 <AssessmentInsight />
                 <Gauge
                   maturity_level_number={assessmentKit?.maturityLevelCount}
@@ -104,7 +128,6 @@ const AssessmentReportContainer = (props: any) => {
                   confidence_text={t("confidence") + ":"}
                   hideGuidance={true}
                   maxWidth="180px"
-                  // status_font_variant="headlineLarge"
                   maturity_status_guide_variant="bodyMedium"
                   m="auto"
                 />
