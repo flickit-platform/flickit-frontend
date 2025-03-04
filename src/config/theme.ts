@@ -248,10 +248,10 @@ export const theme = createTheme({
       letterSpacing: is_farsi ? "0px" : "0.4px",
     },
     bodyMedium: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 200,
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+      fontWeight: 300,
       fontSize: "0.875rem",
-      lineHeight: "1.125rem",
+      lineHeight: "1.5rem",
       letterSpacing: is_farsi ? "0px" : "0.25px",
     },
     bodyLarge: {

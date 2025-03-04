@@ -192,6 +192,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
+              variant="bodyMedium"
               dangerouslySetInnerHTML={{
                 __html:
                   tempData ||
@@ -221,7 +222,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
             )}
           </Box>
           {showBtn && (
-            <Button variant="text" onClick={toggleShowMore}>
+            <Button
+              variant="text"
+              onClick={toggleShowMore}
+              sx={{ textTransform: "none" }}
+            >
               {showMore ? t("showLess") : t("showMore")}
             </Button>
           )}
