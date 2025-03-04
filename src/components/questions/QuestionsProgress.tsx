@@ -74,6 +74,7 @@ export const QuestionProgressItem = (props: any) => {
 
   const hasIssue =
     question?.issues?.isUnanswered ||
+    question?.issues?.hasUnapprovedAnswer ||
     question?.issues?.isAnsweredWithLowConfidence ||
     question?.issues?.isAnsweredWithoutEvidences ||
     question?.issues?.unresolvedCommentsCount;
@@ -117,6 +118,9 @@ export const QuestionProgressItem = (props: any) => {
               {[
                 question?.issues.isUnanswered && (
                   <Trans i18nKey="unansweredQuestions" />
+                ),
+                question?.issues.hasUnapprovedAnswer && (
+                  <Trans i18nKey="unapprovedAnswer" />
                 ),
                 question?.issues.isAnsweredWithLowConfidence && (
                   <Trans i18nKey="lowConfidenceAnswers" />

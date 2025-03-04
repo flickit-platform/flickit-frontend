@@ -57,6 +57,7 @@ export interface IQuestionInfo {
   answerRangeId?: number;
   issues?: {
     isUnanswered?: boolean;
+    hasUnapprovedAnswer?: boolean;
     isAnsweredWithLowConfidence?: boolean;
     isAnsweredWithoutEvidences?: boolean;
     unresolvedCommentsCount?: number;
@@ -438,6 +439,7 @@ export interface IQuestionnairesInfo {
     unanswered?: number;
     unresolvedComments?: number;
     unapprovedAnswers?: number;
+    unapprovedAnswer?: number;
   };
 }
 export interface IQuestionnairesModel extends ITotalProgress {
@@ -740,6 +742,7 @@ export interface IOption {
 export interface IFlatGauge {
   colorCode: string;
   value: number;
+  height?: string;
 }
 
 export interface AdviceItem {
@@ -775,6 +778,11 @@ export interface IGraphicalReport {
     participant: string;
   };
   lang: { code: string };
+}
+
+export interface ISpaceType {
+  code: string;
+  title: string
 }
 
 export interface ILangs {

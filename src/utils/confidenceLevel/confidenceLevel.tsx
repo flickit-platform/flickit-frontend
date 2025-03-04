@@ -64,35 +64,20 @@ const calculate = (inputNumber: any) => {
   colorText = confidenceColor[newNum];
 
   switch (number >= 0) {
-    case number < 10:
-      id = 10;
-      break;
     case number < 20:
       id = 20;
-      break;
-    case number < 30:
-      id = 30;
       break;
     case number < 40:
       id = 40;
       break;
-    case number < 50:
-      id = 50;
-      break;
     case number < 60:
       id = 60;
-      break;
-    case number < 70:
-      id = 70;
       break;
     case number < 80:
       id = 80;
       break;
-    case number < 90:
-      id = 90;
-      break;
     case number <= 100:
-      id = 100;
+      id = 90;
       break;
     default:
       id = 100;

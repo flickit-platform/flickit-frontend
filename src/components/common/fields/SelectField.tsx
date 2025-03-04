@@ -44,7 +44,7 @@ interface ISelectField extends SelectProps {
   renderOption?: (option: any) => JSX.Element;
   InputLabelProps?: InputLabelProps;
   helperText?: string | JSX.Element | Element;
-  options: any[];
+  options?: any[];
   nullable?: boolean;
   name: string;
   size?: "small" | "medium";
@@ -59,6 +59,11 @@ interface ISelectField extends SelectProps {
   loadMoreHandler?: any;
   getTotalHandler?: any;
   totalItem?: number;
+  children?: any;
+  sx?: any;
+  value?: string;
+  IconComponent?: any;
+  onChange?:(e: any)=> void;
 }
 
 export const SelectField = (props: ISelectField) => {
@@ -84,6 +89,7 @@ export const SelectField = (props: ISelectField) => {
     loadMoreHandler,
     getTotalHandler,
     totalItem,
+    children,
     ...rest
   } = props;
 
@@ -120,19 +126,20 @@ export const SelectField = (props: ISelectField) => {
       <Select
         {...rest}
         {...(register ? register(name, { required }) : {})}
-        defaultValue={defaultValue ? defaultValue : defaultOption.id}
+        defaultValue={defaultValue ? defaultValue : defaultOption?.id}
         labelId={`select_label_id_${name}`}
         sx={{
           ...(rest?.sx || {}),
           "& .MuiSelect-select": { display: "flex", alignItems: "center" },
         }}
       >
-        {loading
+        {!!children && children}
+        {!children && loading
           ? renderLoading()
           : selectOptions.map((option: any) => {
               return renderOption(option);
             })}
-        {loadMore && (
+        {!children && loadMore && (
           <ListItemButton
             onClick={() => loadMoreHandler((prev: number) => prev + 1)}
             sx={{ display: "flex", justifyContent: "center" }}

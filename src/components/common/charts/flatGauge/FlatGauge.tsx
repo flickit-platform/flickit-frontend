@@ -40,7 +40,7 @@ const FlatGauge = (props: IGaugeProps) => {
     text,
     textPosition,
     confidenceLevelNum = 0,
-    confidenceText = t("confidenceLevel"),
+    confidenceText = t("confidence") + ":",
     lng,
     ...rest
   } = props;
@@ -83,7 +83,6 @@ const FlatGauge = (props: IGaugeProps) => {
           {textPosition === "top" && (
             <Typography
               sx={{
-                ...theme.typography.semiBoldLarge,
                 color: colorCode,
                 fontSize: "1.25rem",
                 fontWeight: "bold",
