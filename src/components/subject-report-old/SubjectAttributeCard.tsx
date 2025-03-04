@@ -295,9 +295,9 @@ const SUbjectAttributeCard = (props: any) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                 my: 2,
-                paddingBlock: 2,
+                paddingBlock: 0.5,
+                pt: 1,
               }}
             >
               <Tabs
@@ -326,14 +326,13 @@ const SUbjectAttributeCard = (props: any) => {
                         mr: 1,
                         border: "none",
                         textTransform: "none",
-                        paddingY: 1.5,
                         color:
                           maturityLevelOfScores?.value > maturityLevel?.value
                             ? "#6C8093"
                             : "#2B333B",
                         "&.Mui-selected": {
                           boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                          borderRadius: 1,
+                          borderRadius: "8px !important",
                           color: theme.palette.primary.main,
                           background: "#fff",
                           "&:hover": {
