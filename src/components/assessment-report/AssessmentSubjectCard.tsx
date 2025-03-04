@@ -147,7 +147,7 @@ export const AssessmentSubjectAccordion = (
           <Grid item xs={12} lg={0.25} md={0.25} sm={12}></Grid>
 
           {!isMobileScreen && (
-            <Grid item xs={12} lg={4} md={4} sm={12}>
+            <Grid item xs={12} lg={3.7} md={3.7} sm={12}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -182,7 +182,7 @@ export const AssessmentSubjectAccordion = (
               <SubjectStatus title={title} maturity_level={maturityLevel} />
             </Grid>
           )}
-          <Grid item xs={12} lg={1.65} md={1.65} sm={12}>
+          <Grid item xs={12} lg={2} md={2} sm={12}>
             <Box
               sx={{
                 ...styles.centerCVH,
@@ -206,13 +206,7 @@ export const AssessmentSubjectAccordion = (
               >
                 {maturityLevel?.title}
               </Typography>
-              <Box
-                sx={{
-                  ...styles.centerVH,
-                  gap: 0.1,
-                  width: "100%",
-                }}
-              >
+              <Box display="flex" sx={{ marginInlineStart: 1 }}>
                 <Typography variant="bodyMedium" color="#6C8093">
                   <Trans i18nKey="confidence" />:
                 </Typography>
@@ -225,7 +219,7 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={6} lg={1.2} md={1.2} sm={12}>
+            <Grid item xs={6} lg={1} md={1} sm={12}>
               <SubjectStatus
                 title={title}
                 maturity_level={maturityLevel}

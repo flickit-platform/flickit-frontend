@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import Paper from "@mui/material/Paper";
-import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoading";
-import Title from "@common/Title";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
@@ -15,12 +13,7 @@ import SubjectOverallInsight from "./SubjectOverallInsight";
 import { ErrorCodes, ISubjectReportModel } from "@types";
 import hasStatus from "@utils/hasStatus";
 import Button from "@mui/material/Button";
-import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
-import { t } from "i18next";
-import setDocumentTitle from "@utils/setDocumentTitle";
 import QueryBatchData from "@common/QueryBatchData";
-import { useConfigContext } from "@/providers/ConfgProvider";
-import { theme } from "@/config/theme";
 import useCalculate from "@/hooks/useCalculate";
 
 const SubjectContainer = (props: any) => {
@@ -150,63 +143,6 @@ export const useSubject = (props: any) => {
     subjectProgressQueryData,
     fetchPathInfo,
   };
-};
-
-const SubjectTitle = (props: {
-  data: ISubjectReportModel;
-  loading: boolean;
-  pathInfo: any;
-}) => {
-  const { data, loading, pathInfo } = props;
-  const { subject } = data || {};
-  const { title } = subject;
-  const { spaceId, assessmentId, page } = useParams();
-  const { space, assessment } = pathInfo;
-  const { config } = useConfigContext();
-
-  useEffect(() => {
-    setDocumentTitle(`${title} ${t("insight")}`, config.appTitle);
-  }, [title]);
-  return (
-    <Title
-      size="large"
-      letterSpacing=".08em"
-      backLink={"/"}
-      id="insight"
-      inPageLink="insight"
-      sup={
-        <SupTitleBreadcrumb
-          routes={[
-            {
-              title: space?.title,
-              to: `/${spaceId}/assessments/${page}`,
-            },
-            {
-              title: t("insightsWithTitle", { title: assessment?.title }),
-              to: `/${spaceId}/assessments/${page}/${assessmentId}/insights`,
-            },
-            {
-              title: title || t("technicalDueDiligence"),
-            },
-          ]}
-        />
-      }
-    >
-      <Box sx={{ ...styles.centerV, unicodeBidi: "plaintext" }}>
-        {loading && (
-          <Skeleton
-            width={"84px"}
-            sx={{
-              marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-              marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
-              display: "inline-block",
-            }}
-          />
-        )}{" "}
-        {t("insightsWithTitle", { title: assessment?.title })}{" "}
-      </Box>
-    </Title>
-  );
 };
 
 const NoInsightYetMessage = (props: {
