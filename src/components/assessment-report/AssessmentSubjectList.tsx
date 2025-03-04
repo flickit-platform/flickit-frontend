@@ -18,7 +18,7 @@ export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
       {isEmpty ? (
         <ErrorEmptyData />
       ) : (
-        <Grid container spacing={5}>
+        <Grid container spacing={4}>
           {subjects?.map((subject) => {
             return (
               <Grid item xs={12} sm={12} md={12} lg={12} key={subject?.id}>
