@@ -216,6 +216,12 @@ export const IssuesItem = ({
     runOnMount: false,
   });
 
+  const reGenerateInsights = useQuery({
+    service: (args = { assessmentId }, config) =>
+      service.reGenerateInsights(args, config),
+    runOnMount: false,
+  });
+  
   const handleNavigation = () => {
     if (originalName === "questions") {
       navigate(`../questionnaires`, {
@@ -238,6 +244,16 @@ export const IssuesItem = ({
       await generateInsights.query();
       await fetchDashboard.query();
     } catch (e) {}
+  };
+
+  const reGeneratedAll = async () => {
+    try {
+      await reGenerateInsights.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
 
   useEffect(() => {
@@ -337,6 +353,33 @@ export const IssuesItem = ({
             >
               <Typography sx={{ ...theme.typography.labelMedium }}>
                 <Trans i18nKey="GenerateAll" />
+              </Typography>
+            </LoadingButton>
+          </div>
+        </Tooltip>
+      )}
+      {name == "expired" && (
+        <Tooltip
+          disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
+          title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
+        >
+          <div
+            style={{
+              marginInlineStart: "auto",
+              color: theme.palette.primary.main,
+            }}
+          >
+            <LoadingButton
+              onClick={reGeneratedAll}
+              variant={"outlined"}
+              disabled={fetchDashboard.data?.questions?.unanswered > 0}
+              loading={reGenerateInsights.loading}
+              sx={{
+                padding: "4px 10px",
+              }}
+            >
+              <Typography sx={{ ...theme.typography.labelMedium }}>
+                <Trans i18nKey={"reGenerateAll"} />
               </Typography>
             </LoadingButton>
           </div>
