@@ -221,6 +221,12 @@ export const IssuesItem = ({
       service.reGenerateInsights(args, config),
     runOnMount: false,
   });
+
+  const approveExpiredInsights = useQuery({
+    service: (args = { assessmentId }, config) =>
+        service.approveExpiredInsights(args, config),
+    runOnMount: false,
+  });
   
   const handleNavigation = () => {
     if (originalName === "questions") {
@@ -253,6 +259,15 @@ export const IssuesItem = ({
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
+    }
+  };
+
+  const handleApproveAllExpired = async () => {
+    try {
+      await approveExpiredInsights.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      toastError(e as ICustomError);
     }
   };
 
@@ -359,28 +374,46 @@ export const IssuesItem = ({
         </Tooltip>
       )}
       {name == "expired" && (
-        <Tooltip
-          disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
-          title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
-        >
-          <div
-            style={{
-              marginInlineStart: "auto",
-              color: theme.palette.primary.main,
-            }}
-          >
-            <LoadingButton
-              onClick={reGeneratedAll}
-              variant={"outlined"}
-              disabled={fetchDashboard.data?.questions?.unanswered > 0}
-              loading={reGenerateInsights.loading}
+          <>
+            <Tooltip
+                disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
+                title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
             >
-              <Typography sx={{ ...theme.typography.labelMedium }}>
-                <Trans i18nKey={"reGenerateAll"} />
-              </Typography>
-            </LoadingButton>
-          </div>
-        </Tooltip>
+              <div
+                  style={{
+                    marginInlineStart: "auto",
+                    color: theme.palette.primary.main,
+                  }}
+              >
+                <LoadingButton
+                    onClick={reGeneratedAll}
+                    variant={"outlined"}
+                    disabled={fetchDashboard.data?.questions?.unanswered > 0}
+                    loading={reGenerateInsights.loading}
+                >
+                  <Typography sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap"  }}>
+                    <Trans i18nKey={"reGenerateAll"} />
+                  </Typography>
+                </LoadingButton>
+              </div>
+            </Tooltip>
+            <Box>
+              <LoadingButton
+                  onClick={handleApproveAllExpired}
+                  loading={approveExpiredInsights.loading}
+                  sx={{
+                    padding: "4px 10px",
+                    marginInlineStart: "auto",
+                  }}
+                  color={color === "info" ? "primary" : color}
+                  variant="outlined"
+              >
+                <Typography sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}>
+                  <Trans i18nKey="approveAll" />
+                </Typography>
+              </LoadingButton>
+            </Box>
+          </>
       )}
     </Box>
   );
