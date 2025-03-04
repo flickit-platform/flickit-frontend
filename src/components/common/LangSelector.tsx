@@ -17,7 +17,7 @@ const LanguageSelector = () => {
                 <Typography
                     onClick={() => handleLanguageChange('en')}
                     sx={{cursor: "pointer", fontWeight: "bold", ...theme.typography.titleMedium }}
-                    color="primary"
+                    color="white"
                 >
                     فا
                 </Typography>
@@ -25,7 +25,7 @@ const LanguageSelector = () => {
                 <Typography
                     onClick={() => handleLanguageChange('fa')}
                     sx={{cursor: "pointer", fontWeight: "bold", ...theme.typography.titleMedium }}
-                    color="primary"
+                    color="white"
                 >
                     EN
                 </Typography>
