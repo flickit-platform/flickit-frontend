@@ -848,6 +848,7 @@
   "unapprovedAnswers": "Unapproved answers",
   "GenerateAll": "Generate all",
   "allQuestonsMustBeAnsweredFirst": "All questions must be answered first.",
+  "reGenerateAll": "regenerate all",
   "insightPage": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",

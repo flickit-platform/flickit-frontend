@@ -1546,6 +1546,15 @@ export const createService = (
         { ...config },
       );
     },
+    reGenerateInsights(
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+        `/api/v1/assessments/${assessmentId}/regenerate-expired-insights/`,
+        { ...config },
+      );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config?: AxiosRequestConfig<any>,

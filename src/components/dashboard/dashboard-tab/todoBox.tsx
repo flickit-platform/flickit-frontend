@@ -201,6 +201,12 @@ const IssuesItem = (props: any) => {
     runOnMount: false,
   });
 
+  const reGenerateInsights = useQuery({
+    service: (args = { assessmentId }, config) =>
+      service.reGenerateInsights(args, config),
+    runOnMount: false,
+  });
+
   const filteredQuestionnaire = (name: string) => {
     let newName = name;
     if (name == "withoutEvidence") {
@@ -226,6 +232,16 @@ const IssuesItem = (props: any) => {
       await generateInsights.query();
       await fetchDashboard.query();
     } catch (e) {}
+  };
+
+  const reGeneratedAll = async () => {
+    try {
+      await reGenerateInsights.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
   };
 
   useEffect(() => {
@@ -362,6 +378,30 @@ const IssuesItem = (props: any) => {
             >
               <Typography sx={{ ...theme.typography.labelMedium }}>
                 <Trans i18nKey={"GenerateAll"} />
+              </Typography>
+            </LoadingButton>
+          </div>
+        </Tooltip>
+      )}
+      {name == "expired" && (
+        <Tooltip
+          disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
+          title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
+        >
+          <div
+            style={{
+              marginInlineStart: "auto",
+              color: theme.palette.primary.main,
+            }}
+          >
+            <LoadingButton
+              onClick={reGeneratedAll}
+              variant={"outlined"}
+              disabled={fetchDashboard.data?.questions?.unanswered > 0}
+              loading={reGenerateInsights.loading}
+            >
+              <Typography sx={{ ...theme.typography.labelMedium }}>
+                <Trans i18nKey={"reGenerateAll"} />
               </Typography>
             </LoadingButton>
           </div>
