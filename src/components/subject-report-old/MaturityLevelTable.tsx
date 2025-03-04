@@ -245,7 +245,13 @@ const MaturityLevelTable = ({
       questionnaire: (
         <Chip
           label={item?.questionnaire?.title}
-          style={{ backgroundColor: color.backgroundColor, color: color.color }}
+          style={{
+            backgroundColor: color.backgroundColor,
+            color: color.color,
+            fontFamily: languageDetector(item?.questionnaire?.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
         />
       ),
       question: item.question.index

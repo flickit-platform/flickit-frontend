@@ -101,7 +101,7 @@ const SubjectOverallInsight = (props: any) => {
     approveLoading: ApproveAISubject.loading,
   });
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" px={4}>
       <Box
         sx={{
           ...styles.centerV,
