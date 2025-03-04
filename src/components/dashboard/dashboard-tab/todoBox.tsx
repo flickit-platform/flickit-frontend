@@ -374,6 +374,9 @@ export const IssuesItem = ({
               variant={"outlined"}
               disabled={fetchDashboard.data?.questions?.unanswered > 0}
               loading={reGenerateInsights.loading}
+              sx={{
+                padding: "4px 10px",
+              }}
             >
               <Typography sx={{ ...theme.typography.labelMedium }}>
                 <Trans i18nKey={"reGenerateAll"} />
