@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -6,16 +6,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
-import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
 import { getMaturityLevelColors, styles } from "@styles";
-import { ISubjectInfo, IMaturityLevel, TId } from "@types";
-import { ICustomError } from "@/utils/CustomError";
+import { ISubjectInfo, IMaturityLevel } from "@types";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -29,13 +23,6 @@ interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturityLevelCount?: number;
 }
 
-interface IAssessmentSubjectProgress {
-  id: TId;
-  title: string;
-  questionCount: number;
-  answerCount: number;
-}
-
 export const AssessmentSubjectAccordion = (
   props: IAssessmentSubjectCardProps,
 ) => {
@@ -47,34 +34,12 @@ export const AssessmentSubjectAccordion = (
     id,
     description = "",
   } = props;
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+
   const [expanded, setExpanded] = useState<boolean>(false);
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );
-  const subjectProgressQueryData = useQuery<IAssessmentSubjectProgress>({
-    service: (args = { subjectId: id, assessmentId }, config) =>
-      service.fetchSubjectProgress(args, config),
-    runOnMount: false,
-  });
 
-  const fetchProgress = async () => {
-    try {
-      const data = await subjectProgressQueryData.query();
-      const { answerCount, questionCount } = data;
-      const total_progress = ((answerCount ?? 0) / (questionCount ?? 1)) * 100;
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchProgress();
-  }, []);
-
-  const theme = useTheme();
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
