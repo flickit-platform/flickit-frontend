@@ -8,7 +8,6 @@ import { Trans } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@utils/useMenu";
@@ -16,15 +15,17 @@ import IconButton from "@mui/material/IconButton";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
-import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
 import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
+import peopleIcon from "@/assets/svg/peopleIcon.svg";
+import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
+import settingsIcon from "@/assets/svg/settingsIcon.svg";
+
 interface ISpaceListProps {
   dialogProps: TDialogProps;
   data: any[];
@@ -35,7 +36,7 @@ const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
 
   return (
-    <Box sx={{ overflowX: "hidden", pb: 1 }}>
+    <Box sx={{ overflowX: "hidden", pb: 1, px: "6px" }}>
       <Box sx={{ minWidth: { xs: "320px", sm: "440px" } }}>
         {data.map((item: any) => {
           return (
@@ -146,11 +147,13 @@ const SpaceCard = (props: ISpaceCardProps) => {
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
         {type?.code === spaceLevel.premium && (
-          <img
-            style={{ width: "32px", height: "32px" }}
-            src={premium}
-            alt={"premium-sign"}
-          />
+          <Tooltip title={"spacePremium"}>
+            <img
+              style={{ width: "32px", height: "32px" }}
+              src={premium}
+              alt={"premium-sign"}
+            />
+          </Tooltip>
         )}
       </Box>
       <Box sx={{ display: "flex", gap: { xs: 1, sm: 2, md: 4 } }}>
@@ -161,6 +164,9 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 color: `${isOwner ? theme.palette.primary.main : "#2B333B"}`,
                 borderColor: `${isOwner ? theme.palette.primary.main : "#C7CCD1"}`,
                 width: { xs: "80px", sm: "120px", md: "auto" },
+                height: "34px",
+                display: "flex",
+                alignItems: "center",
               }}
               label={
                 <>
@@ -187,12 +193,13 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 width: { sm: "52px" },
               }}
             >
-              <PeopleOutlineRoundedIcon
-                sx={{
+              <img
+                style={{
                   marginInlineStart: 0.5,
-                  fill: "#2B333B",
+                  width: "24px",
+                  height: "24px",
                 }}
-                fontSize="small"
+                src={peopleIcon}
               />
               <Typography color="#2B333B" fontWeight={"bold"}>
                 {membersCount}
@@ -210,12 +217,13 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 width: { sm: "52px" },
               }}
             >
-              <DescriptionOutlinedIcon
-                sx={{
+              <img
+                style={{
                   marginInlineStart: 0.5,
-                  fill: "#2B333B",
+                  width: "24px",
+                  height: "24px",
                 }}
-                fontSize="small"
+                src={descriptionIcon}
               />
               <Typography color="#2B333B" fontWeight={"bold"}>
                 {assessmentsCount}
@@ -249,7 +257,14 @@ const SpaceCard = (props: ISpaceCardProps) => {
                   to={`/${spaceId}/setting`}
                   sx={{ width: "24px", height: "24px" }}
                 >
-                  <SettingsOutlinedIcon sx={{ fill: "#2B333B" }} />
+                  <img
+                    style={{
+                      marginInlineStart: 0.5,
+                      width: "24px",
+                      height: "24px",
+                    }}
+                    src={settingsIcon}
+                  />
                 </IconButton>
               </Box>
             </Tooltip>
