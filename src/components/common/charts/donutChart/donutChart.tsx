@@ -35,7 +35,7 @@ const DonutChart = (props: IGaugeProps) => {
 
   return (
     <Suspense fallback={<Trans i18nKey={"loading"} />}>
-      <Box sx={{ width: "100%", height: "100%", ...styles.centerVH }} {...rest}>
+      <Box sx={{ height: "100%" }} {...rest}>
         <Box
           sx={{
             ...styles.centerCVH,
@@ -52,7 +52,11 @@ const DonutChart = (props: IGaugeProps) => {
               width: "fit-content",
             }}
           >
-            <CircleGaugeComponent colorCode={colorCode} value={levelValue} height={height}/>
+            <CircleGaugeComponent
+              colorCode={colorCode}
+              value={levelValue}
+              height={height}
+            />
           </Box>
           {displayTitle && (
             <Typography
