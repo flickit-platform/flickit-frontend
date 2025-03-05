@@ -9,7 +9,7 @@ export const SubjectAttributeList = (props: any) => {
   const { attributes, maturityLevelsCount } = data;
   const { permissions }: { permissions: IPermissions } = data;
   return (
-    <Box mt={2} id="attributes">
+    <Box mt={5} id="attributes">
       <Typography color="#73808C" variant="semiBoldMedium">
         <Trans i18nKey="attributes" />
       </Typography>

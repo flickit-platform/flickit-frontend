@@ -75,7 +75,7 @@
   "answers": "پاسخ‌ها",
   "anyChangesInTheNumberOfOptionsForAPreExistingQuestion": "هر تغییر در تعداد گزینه‌ها برای یک پرسش موجود",
   "areYouSureYouWantDeleteThisAttachment": "آیا مطمئن هستید که می خواهید این پیوست را حذف کنید؟",
-  "areYouSureYouWantDeleteThisEvidence": "آیا مطمئن هستید می‌خواهید این شاهد را حذف کنید؟",
+  "areYouSureYouWantDeleteThisItem": "آیا مطمئن هستید می‌خواهید این ایتم را حذف کنید؟",
   "areYouSureYouWantSkipThisQuestion": "تغییرات شما از دست خواهد رفت. آیا می‌خواهید ادامه دهید؟",
   "areYouSureYouWantDeleteThisMember": "آیا مطمئنید که میخواهید {{name}} را از {{assessment}} حذف کنید؟",
   "areYouSureYouWantDeleteThisMemberInvited": "آیا مطمئنید که می‌خواهید دعوت‌نامه {{name}} به این ارزیابی لغو کنید؟",
@@ -849,6 +849,7 @@
   "allQuestonsMustBeAnsweredFirst": "ابتدا باید همه سوالات پاسخ داده شوند.",
   "GenerateAll": "تولید همه",
   "reGenerateAll": "باز‌تولید همه",
+  "spacePremium": "فضای کاری حرفه‌ای",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",

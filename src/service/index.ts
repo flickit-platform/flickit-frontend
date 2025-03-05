@@ -2161,6 +2161,22 @@ export const createService = (
         },
       });
     },
+    fetchComments(
+      args: { questionId: TId; assessmentId: TId; page: number; size: number },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      const { questionId, assessmentId, page, size } = args ?? {};
+
+      return axios.get(`/api/v1/comments/`, {
+        ...(config ?? {}),
+        params: {
+          questionId: questionId,
+          assessmentId: assessmentId,
+          page,
+          size,
+        },
+      });
+    },
     loadEvidences(args: { evidenceID: TId }, config?: AxiosRequestConfig<any>) {
       const { evidenceID } = args ?? {};
       return axios.get(`/api/v1/evidences/${evidenceID}/`, {

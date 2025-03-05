@@ -553,14 +553,14 @@ const Navbar = () => {
         component="nav"
         sx={{
           borderRadius: "0px",
-          background: "white",
+          backgroundColor: theme.palette.primary.main,
           position: "sticky",
         }}
         data-cy="nav-bar"
       >
         <Toolbar
           variant="dense"
-          sx={{ backgroundColor: "white", borderRadius: 1 }}
+          sx={{ backgroundColor: theme.palette.primary.main, borderRadius: 1 }}
         >
           <IconButton
             color="primary"
@@ -571,6 +571,7 @@ const Navbar = () => {
               marginRight: theme.direction === "ltr" ? 1 : "unset",
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
               display: { md: "none" },
+              color: "#fff"
             }}
           >
             <MenuIcon />
@@ -611,6 +612,7 @@ const Navbar = () => {
                 ...styles.activeNavbarLink,
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
+                color: "#fff"
               }}
               size="small"
             >
@@ -623,6 +625,7 @@ const Navbar = () => {
                 ...styles.activeNavbarLink,
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
+                color: "#fff"
               }}
               size="small"
               startIcon={
@@ -662,7 +665,7 @@ const Navbar = () => {
                   },
                 }}
               >
-                <FaBell size={20} color="grey" />
+                <FaBell size={20} color="white" />
               </Badge>
             </IconButton>
 
@@ -753,6 +756,7 @@ const SpacesButton = () => {
           "&:hover .MuiButton-endIcon > div": {
             borderLeftColor: "#8080802b",
           },
+          color: "#fff"
         }}
         startIcon={
           <FolderRoundedIcon
@@ -864,6 +868,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           ...styles.activeNavbarLink,
           marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
           marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
+          color:"#fff"
         }}
         size="small"
         endIcon={

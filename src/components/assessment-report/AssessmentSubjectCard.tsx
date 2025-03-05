@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -6,16 +6,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
-import { useQuery } from "@utils/useQuery";
-import { useServiceContext } from "@providers/ServiceProvider";
 import { getMaturityLevelColors, styles } from "@styles";
-import { ISubjectInfo, IMaturityLevel, TId } from "@types";
-import { ICustomError } from "@/utils/CustomError";
+import { ISubjectInfo, IMaturityLevel } from "@types";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -29,13 +23,6 @@ interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturityLevelCount?: number;
 }
 
-interface IAssessmentSubjectProgress {
-  id: TId;
-  title: string;
-  questionCount: number;
-  answerCount: number;
-}
-
 export const AssessmentSubjectAccordion = (
   props: IAssessmentSubjectCardProps,
 ) => {
@@ -47,36 +34,12 @@ export const AssessmentSubjectAccordion = (
     id,
     description = "",
   } = props;
-  const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
-  const [progress, setProgress] = useState<number>(0);
+
   const [expanded, setExpanded] = useState<boolean>(false);
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md"),
   );
-  const subjectProgressQueryData = useQuery<IAssessmentSubjectProgress>({
-    service: (args = { subjectId: id, assessmentId }, config) =>
-      service.fetchSubjectProgress(args, config),
-    runOnMount: false,
-  });
 
-  const fetchProgress = async () => {
-    try {
-      const data = await subjectProgressQueryData.query();
-      const { answerCount, questionCount } = data;
-      const total_progress = ((answerCount ?? 0) / (questionCount ?? 1)) * 100;
-      setProgress(total_progress);
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchProgress();
-  }, []);
-
-  const theme = useTheme();
 
   const handleAccordionChange = (
     event: React.SyntheticEvent,
@@ -116,7 +79,7 @@ export const AssessmentSubjectAccordion = (
           alignItems="center"
           sx={{ textDecoration: "none", color: "inherit" }}
         >
-          <Grid item xs={12} lg={3.5} md={3.5} sm={12}>
+          <Grid item xs={12} lg={3.75} md={3.75} sm={12}>
             <Box sx={{ ...styles.centerCVH }} gap={1}>
               <Box
                 sx={{
@@ -142,13 +105,14 @@ export const AssessmentSubjectAccordion = (
               </Box>
               <Typography variant="bodyMedium">
                 {"("}
-                <Trans i18nKey="weight" />: {maturityLevel?.value} {")"}
+                <Trans i18nKey="weight" />:{maturityLevel?.value} {")"}
               </Typography>
             </Box>
           </Grid>
+          <Grid item xs={12} lg={0.25} md={0.25} sm={12}></Grid>
 
           {!isMobileScreen && (
-            <Grid item xs={12} lg={4.5} md={4.5} sm={12}>
+            <Grid item xs={12} lg={3.7} md={3.7} sm={12}>
               <Box
                 sx={{
                   maxHeight: "100px",
@@ -160,7 +124,7 @@ export const AssessmentSubjectAccordion = (
                 }}
               >
                 <Typography
-                  variant="titleMedium"
+                  variant="bodyMedium"
                   fontWeight={400}
                   color="#243342"
                   sx={{
@@ -169,6 +133,7 @@ export const AssessmentSubjectAccordion = (
                     fontFamily: languageDetector(description)
                       ? farsiFontFamily
                       : primaryFontFamily,
+                    textAlign: "justify",
                   }}
                 >
                   {description}
@@ -182,7 +147,7 @@ export const AssessmentSubjectAccordion = (
               <SubjectStatus title={title} maturity_level={maturityLevel} />
             </Grid>
           )}
-          <Grid item xs={12} lg={1.5} md={1.5} sm={12}>
+          <Grid item xs={12} lg={2} md={2} sm={12}>
             <Box
               sx={{
                 ...styles.centerCVH,
@@ -206,13 +171,7 @@ export const AssessmentSubjectAccordion = (
               >
                 {maturityLevel?.title}
               </Typography>
-              <Box
-                sx={{
-                  ...styles.centerVH,
-                  gap: 0.1,
-                  width: "100%",
-                }}
-              >
+              <Box display="flex" sx={{ marginInlineStart: 1 }}>
                 <Typography variant="bodyMedium" color="#6C8093">
                   <Trans i18nKey="confidence" />:
                 </Typography>
@@ -225,7 +184,7 @@ export const AssessmentSubjectAccordion = (
             </Box>
           </Grid>
           {!isMobileScreen && (
-            <Grid item xs={6} lg={1.5} md={1.5} sm={12}>
+            <Grid item xs={6} lg={1} md={1} sm={12}>
               <SubjectStatus
                 title={title}
                 maturity_level={maturityLevel}

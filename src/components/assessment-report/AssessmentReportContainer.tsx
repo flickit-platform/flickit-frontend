@@ -117,7 +117,12 @@ const AssessmentReportContainer = (props: any) => {
                   );
                 })}
               </Grid>
-              <Box gap={2} sx={{ ...styles.boxStyle }} display="flex" mt={2}>
+              <Box
+                gap={2}
+                sx={{ ...styles.boxStyle, paddingBottom: 3 }}
+                display="flex"
+                mt={2}
+              >
                 <AssessmentInsight />
                 <Gauge
                   maturity_level_number={assessmentKit?.maturityLevelCount}

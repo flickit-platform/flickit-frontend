@@ -126,7 +126,7 @@ const SUbjectAttributeCard = (props: any) => {
     >
       <Accordion
         sx={{
-          boxShadow: "none !important",
+          boxShadow: "0 0 8px 0 #0A234240",
           borderRadius: "16px !important",
           "& .MuiAccordionSummary-content": {
             margin: "0px !important",
@@ -145,13 +145,13 @@ const SUbjectAttributeCard = (props: any) => {
           id="panel1a-header"
           sx={{
             borderRadius: "16px",
-            boxShadow: "inset 0 0 0 1px #C7CCD1",
+            boxShadow: "none",
             margin: "0 !important",
             padding: "0 !important",
             alignItems: "flex-start",
             "&.Mui-expanded": {
               backgroundColor: "#EDF0F3",
-              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              boxShadow: "none",
             },
             "&.Mui-focusVisible": {
               background: "#fff",
@@ -168,7 +168,6 @@ const SUbjectAttributeCard = (props: any) => {
             sx={{
               width: "100%",
               direction: theme.direction,
-              boxShadow: "inset 0 0 0 1px #C7CCD1",
               borderRadius: "16px",
             }}
           >
@@ -193,7 +192,8 @@ const SUbjectAttributeCard = (props: any) => {
                   marginX={2}
                 >
                   {"("}
-                  <Trans i18nKey="weight" />: {maturityLevel?.value}{")"}
+                  <Trans i18nKey="weight" />:{maturityLevel?.value}
+                  {")"}
                 </Typography>
               </Title>
               <Typography
@@ -231,7 +231,7 @@ const SUbjectAttributeCard = (props: any) => {
                     sm: 0,
                     xs: "16px",
                   },
-                  boxShadow: "inset 0 0 0 1px #C7CCD1",
+                  boxShadow: "0 0 4px 0 #0A234240",
                 }}
               >
                 <FlatGauge
@@ -270,7 +270,7 @@ const SUbjectAttributeCard = (props: any) => {
         <AccordionDetails
           sx={{
             padding: "0 !important",
-            backgroundColor: "#F9FAFB",
+            backgroundColor: "#fff",
             borderRadius: "16px",
           }}
         >
@@ -280,7 +280,7 @@ const SUbjectAttributeCard = (props: any) => {
               justifyContent: "center",
               justifyItems: "center",
               flexDirection: "column",
-              padding: 2,
+              padding: 5,
             }}
           >
             {expandedAttribute && (
@@ -295,9 +295,9 @@ const SUbjectAttributeCard = (props: any) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 4px 4px rgba(0,0,0,25%)",
                 my: 2,
-                paddingBlock: 2,
+                paddingBlock: 0.5,
+                pt: 1,
               }}
             >
               <Tabs
@@ -326,14 +326,13 @@ const SUbjectAttributeCard = (props: any) => {
                         mr: 1,
                         border: "none",
                         textTransform: "none",
-                        paddingY: 1.5,
                         color:
                           maturityLevelOfScores?.value > maturityLevel?.value
                             ? "#6C8093"
                             : "#2B333B",
                         "&.Mui-selected": {
                           boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                          borderRadius: 1,
+                          borderRadius: "8px !important",
                           color: theme.palette.primary.main,
                           background: "#fff",
                           "&:hover": {
@@ -349,6 +348,11 @@ const SUbjectAttributeCard = (props: any) => {
                             alignItems: "center",
                             justifyContent: "center",
                             gap: 1,
+                            fontFamily: languageDetector(
+                              maturityLevelOfScores.title,
+                            )
+                              ? farsiFontFamily
+                              : primaryFontFamily,
                           }}
                         >
                           {maturityLevelOfScores?.value ==

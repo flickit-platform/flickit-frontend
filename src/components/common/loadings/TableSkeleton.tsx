@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 const MaturityLevelTableSkeleton = ({
-  rows = 10,
+  rows = 5,
   columns = 7,
 }: {
   rows?: number;
