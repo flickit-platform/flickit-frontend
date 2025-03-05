@@ -130,7 +130,7 @@ export const AttributeInsight = memo(
                   sx={{ display: "flex", justifyContent: "space-between" }}
                   onClick={(event) => event.stopPropagation()}
                 >
-                  <Typography color="#2466A8" variant="titleSmall">
+                  <Typography variant="semiBoldLarge">
                     <Trans i18nKey="insight" />
                   </Typography>
                   <Box sx={{ display: "flex", gap: 2 }}>
@@ -179,7 +179,6 @@ export const AttributeInsight = memo(
                   display="flex"
                   alignItems="center"
                   onClick={(event) => event.stopPropagation()}
-                  mt={1}
                 >
                   <EditableRichEditor
                     defaultValue={

@@ -84,6 +84,8 @@ const SubjectReport = ({
                   maturityLevelNumber={maturityLevelCount}
                   levelValue={maturityLevel.value}
                   text={maturityLevel.title}
+                  sx={{ ...styles.centerCVH }}
+                  width="100%"
                 />
               </Grid>
             </Grid>
