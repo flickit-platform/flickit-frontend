@@ -283,7 +283,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       return toast(t("max100characters"), { type: "error" });
     }
 
-    if (dropZoneData[0].size > MAX_SIZE) {
+    if ((dropZoneData[0] as any).size > MAX_SIZE) {
       return toast(t("uploadAcceptableSize"), { type: "error" });
     }
     if (expanded.count >= 5) {
