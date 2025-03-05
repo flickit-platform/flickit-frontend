@@ -848,6 +848,7 @@
   "unapprovedAnswers": "پاسخ‌های تاییدنشده",
   "allQuestonsMustBeAnsweredFirst": "ابتدا باید همه سوالات پاسخ داده شوند.",
   "GenerateAll": "تولید همه",
+  "reGenerateAll": "باز‌تولید همه",
   "spacePremium": "فضای کاری حرفه‌ای",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",

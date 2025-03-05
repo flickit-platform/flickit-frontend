@@ -850,6 +850,7 @@
   "unapprovedAnswers": "Unapproved answers",
   "GenerateAll": "Generate all",
   "allQuestonsMustBeAnsweredFirst": "All questions must be answered first.",
+  "reGenerateAll": "regenerate all",
   "spacePremium": "Space premium",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
