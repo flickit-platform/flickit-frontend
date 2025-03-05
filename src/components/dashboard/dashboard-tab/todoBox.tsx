@@ -216,9 +216,9 @@ export const IssuesItem = ({
     runOnMount: false,
   });
 
-  const reGenerateInsights = useQuery({
+  const regenerateInsights = useQuery({
     service: (args = { assessmentId }, config) =>
-      service.reGenerateInsights(args, config),
+      service.regenerateInsights(args, config),
     runOnMount: false,
   });
   
@@ -246,9 +246,9 @@ export const IssuesItem = ({
     } catch (e) {}
   };
 
-  const reGeneratedAll = async () => {
+  const regeneratedAll = async () => {
     try {
-      await reGenerateInsights.query();
+      await regenerateInsights.query();
       await fetchDashboard.query();
     } catch (e) {
       const err = e as ICustomError;
@@ -370,10 +370,10 @@ export const IssuesItem = ({
             }}
           >
             <LoadingButton
-              onClick={reGeneratedAll}
+              onClick={regeneratedAll}
               variant={"outlined"}
               disabled={fetchDashboard.data?.questions?.unanswered > 0}
-              loading={reGenerateInsights.loading}
+              loading={regenerateInsights.loading}
               sx={{
                 padding: "4px 10px",
               }}
