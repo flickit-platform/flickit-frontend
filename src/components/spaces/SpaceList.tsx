@@ -200,6 +200,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
                   height: "24px",
                 }}
                 src={peopleIcon}
+                alt={"peopleIcon"}
               />
               <Typography color="#2B333B" fontWeight={"bold"}>
                 {membersCount}
@@ -224,6 +225,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
                   height: "24px",
                 }}
                 src={descriptionIcon}
+                alt={"descriptionIcon"}
               />
               <Typography color="#2B333B" fontWeight={"bold"}>
                 {assessmentsCount}
@@ -264,6 +266,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
                       height: "24px",
                     }}
                     src={settingsIcon}
+                    alt={"settingsIcon"}
                   />
                 </IconButton>
               </Box>
