@@ -571,7 +571,7 @@ const Navbar = () => {
               marginRight: theme.direction === "ltr" ? 1 : "unset",
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
               display: { md: "none" },
-              color: "#fff"
+              color: "#fff",
             }}
           >
             <MenuIcon />
@@ -590,7 +590,11 @@ const Navbar = () => {
             }}
             to={`/spaces/1`}
           >
-            <img src={config.appLogoUrl} alt={"logo"} />
+            <img
+              src={config.appLogoUrl}
+              alt={"logo"}
+              style={{ maxWidth: "120px" }}
+            />
           </Typography>
           <Box
             sx={{
@@ -612,7 +616,7 @@ const Navbar = () => {
                 ...styles.activeNavbarLink,
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff"
+                color: "#fff",
               }}
               size="small"
             >
@@ -625,7 +629,7 @@ const Navbar = () => {
                 ...styles.activeNavbarLink,
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff"
+                color: "#fff",
               }}
               size="small"
               startIcon={
@@ -756,7 +760,7 @@ const SpacesButton = () => {
           "&:hover .MuiButton-endIcon > div": {
             borderLeftColor: "#8080802b",
           },
-          color: "#fff"
+          color: "#fff",
         }}
         startIcon={
           <FolderRoundedIcon
@@ -868,7 +872,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           ...styles.activeNavbarLink,
           marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
           marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
-          color:"#fff"
+          color: "#fff",
         }}
         size="small"
         endIcon={
