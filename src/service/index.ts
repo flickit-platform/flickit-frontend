@@ -1552,7 +1552,7 @@ export const createService = (
         { ...config },
       );
     },
-    reGenerateInsights(
+    regenerateInsights(
       { assessmentId }: { assessmentId: TId },
       config?: AxiosRequestConfig<any>,
     ) {
