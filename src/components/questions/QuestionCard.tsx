@@ -8,17 +8,6 @@ import Typography from "@mui/material/Typography";
 import { useNavigate, useParams } from "react-router-dom";
 import QASvg from "@assets/svg/qa.svg";
 import AnswerSvg from "@assets/svg/answer.svg";
-import zip from "@assets/svg/ZIP.svg";
-import txt from "@assets/svg/TXT.svg";
-import gif from "@assets/svg/GIF.svg";
-import png from "@assets/svg/PNG.svg";
-import bpm from "@assets/svg/BMP.svg";
-import jpeg from "@assets/svg/JPEG.svg";
-import doc from "@assets/svg/DOC.svg";
-import docx from "@assets/svg/DOCX.svg";
-import xls from "@assets/svg/XSL.svg";
-import rar from "@assets/svg/RAR.svg";
-import xtar from "@assets/svg/TAR.svg";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
@@ -40,13 +29,10 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import useDialog from "@utils/useDialog";
-import Collapse from "@mui/material/Collapse";
-import DialogTitle from "@mui/material/DialogTitle";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import { FormProvider, useForm } from "react-hook-form";
 import { styles } from "@styles";
-import Title from "@common/Title";
 import { InputFieldUC } from "@common/fields/InputField";
 import toastError from "@utils/toastError";
 import setDocumentTitle from "@utils/setDocumentTitle";
@@ -55,7 +41,6 @@ import { useQuery } from "@utils/useQuery";
 import formatDate from "@utils/formatDate";
 import { SubmitOnSelectCheckBox } from "./QuestionContainer";
 import QueryData from "../common/QueryData";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import languageDetector from "@utils/languageDetector";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import Rating from "@mui/material/Rating";
@@ -69,24 +54,16 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useTheme } from "@mui/material/styles";
 import arrowBtn from "../../assets/svg/arrow.svg";
-import UploadIcon from "../../assets/svg/UploadIcon.svg";
 import PreAttachment from "@components/questions/iconFiles/preAttachments";
 import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
-import TextField from "@mui/material/TextField";
-import Dropzone from "react-dropzone";
-import { toast } from "react-toastify";
 import Skeleton from "@mui/material/Skeleton";
-import FileType from "@components/questions/iconFiles/fileType";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { AcceptFile } from "@utils/acceptFile";
 import { format } from "date-fns";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { evidenceAttachmentType } from "@utils/enumType";
@@ -104,6 +81,8 @@ import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
 import { useQuestions } from "@components/questions/QuestionsContainer";
 import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
+import { QuestionGuide } from "./QuestionCard/QuestionGuide";
+import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -433,12 +412,6 @@ export const QuestionTabsTemplate = (props: any) => {
     setCounts((prev) => ({ ...prev, [type]: count }));
   };
 
-  const handleTabFallback = () => {
-    if (value === "evidences" && isExpanded && counts.evidences === 0) {
-      setValue(counts.history ? "history" : counts.comment ? "comment" : null);
-    }
-  };
-
   // Queries
   const queryData = useQuery({
     service: (
@@ -457,11 +430,21 @@ export const QuestionTabsTemplate = (props: any) => {
     runOnMount: true,
   });
 
+  const commentesQueryData = useQuery({
+    service: (
+      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 100 },
+      config,
+    ) => service.fetchComments(args, config),
+    toastError: true,
+    runOnMount: true,
+  });
+
   // Effects
   useEffect(() => {
     if (questionsInfo?.permissions?.readonly) {
       setIsExpanded(false);
       evidencesQueryData.query();
+      commentesQueryData.query();
     }
   }, [questionsInfo?.permissions?.readonly, questionInfo]);
 
@@ -481,25 +464,13 @@ export const QuestionTabsTemplate = (props: any) => {
     if (queryData.data?.items) {
       updateCount("history", queryData.data.total || 0);
     }
-  }, [queryData.data]);
-
-  useEffect(() => {
     if (evidencesQueryData.data?.items) {
-      const evidenceItems = evidencesQueryData.data.items;
-      const evidenceCount = evidenceItems.filter(
-        (item: any) => item?.type !== null,
-      ).length;
-      const commentCount = evidenceItems.filter(
-        (item: any) => item?.type === null,
-      ).length;
-
-      updateCount("evidences", evidenceCount);
-      updateCount("comment", commentCount);
-      if (questionsInfo.permissions.readonly) {
-        handleTabFallback();
-      }
+      updateCount("evidences", evidencesQueryData.data.total || 0);
     }
-  }, [evidencesQueryData.data]);
+    if (commentesQueryData.data?.items) {
+      updateCount("comment", commentesQueryData.data.total || 0);
+    }
+  }, [queryData.data, evidencesQueryData.data, commentesQueryData.data]);
 
   useEffect(() => {
     if (!isExpanded && questionsInfo.permissions.readonly) {
@@ -603,7 +574,7 @@ export const QuestionTabsTemplate = (props: any) => {
                 questionInfo={questionInfo}
                 type="comment"
                 permissions={questionsInfo?.permissions}
-                queryData={evidencesQueryData}
+                queryData={commentesQueryData}
               />
             </Box>
           </TabPanel>
@@ -1167,7 +1138,6 @@ const AnswerDetails = ({
   const [page, setPage] = useState(0);
   const [data, setData] = useState<IAnswerHistory[]>([]);
   const dialogProps = useDialog();
-  const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
   useEffect(() => {
@@ -1450,8 +1420,7 @@ const Evidence = (props: any) => {
         borderColor: "#205F94",
         borderHover: "#117476",
       });
-    }
-    if (value === "NEGATIVE") {
+    } else if (value === "NEGATIVE") {
       setEvidenceBG({
         background: "rgba(139, 0, 53, 0.08)",
         borderColor: "#8B0035",
@@ -1817,12 +1786,7 @@ const Evidence = (props: any) => {
           evidencesData &&
           permissions?.viewEvidenceList && (
             <>
-              {!evidencesData.filter((item: any) => {
-                if (type === "comment") {
-                  return item?.type === null;
-                }
-                return item?.type !== null;
-              }).length && permissions?.readonly ? (
+              {!evidencesData.length && permissions?.readonly ? (
                 <Box
                   sx={{
                     display: "flex",
@@ -1838,41 +1802,34 @@ const Evidence = (props: any) => {
                 </Box>
               ) : (
                 <>
-                  {evidencesData
-                    .filter((item: any) => {
-                      if (type === "comment") {
-                        return item?.type === null;
+                  {evidencesData.map((item: any, index: number) => (
+                    <EvidenceDetail
+                      key={item?.id}
+                      setValue={setValue}
+                      item={item}
+                      setLoadingEvidence={setLoadingEvidence}
+                      evidencesData={evidencesData}
+                      setEvidencesData={setEvidencesData}
+                      setExpandedDeleteDialog={setExpandedDeleteDialog}
+                      setExpandedDeleteAttachmentDialog={
+                        setExpandedDeleteAttachmentDialog
                       }
-                      return item?.type !== null;
-                    })
-                    .map((item: any, index: number) => (
-                      <EvidenceDetail
-                        key={item?.id}
-                        setValue={setValue}
-                        item={item}
-                        setLoadingEvidence={setLoadingEvidence}
-                        evidencesData={evidencesData}
-                        setEvidencesData={setEvidencesData}
-                        setExpandedDeleteDialog={setExpandedDeleteDialog}
-                        setExpandedDeleteAttachmentDialog={
-                          setExpandedDeleteAttachmentDialog
-                        }
-                        setExpandedAttachmentsDialogs={
-                          setExpandedAttachmentsDialogs
-                        }
-                        expandedAttachmentsDialogs={expandedAttachmentsDialogs}
-                        setEvidenceId={setEvidenceId}
-                        evidenceId={evidenceId}
-                        evidencesQueryData={evidencesQueryData}
-                        questionInfo={questionInfo}
-                        assessmentId={assessmentId}
-                        fetchAttachments={fetchAttachments}
-                        attachmentData={attachmentData}
-                        setAttachmentData={setAttachmentData}
-                        deleteAttachment={deleteAttachment}
-                        permissions={permissions}
-                      />
-                    ))}
+                      setExpandedAttachmentsDialogs={
+                        setExpandedAttachmentsDialogs
+                      }
+                      expandedAttachmentsDialogs={expandedAttachmentsDialogs}
+                      setEvidenceId={setEvidenceId}
+                      evidenceId={evidenceId}
+                      evidencesQueryData={evidencesQueryData}
+                      questionInfo={questionInfo}
+                      assessmentId={assessmentId}
+                      fetchAttachments={fetchAttachments}
+                      attachmentData={attachmentData}
+                      setAttachmentData={setAttachmentData}
+                      deleteAttachment={deleteAttachment}
+                      permissions={permissions}
+                    />
+                  ))}
                 </>
               )}
             </>
@@ -1902,7 +1859,7 @@ const Evidence = (props: any) => {
           onClose={() => setExpandedDeleteDialog(false)}
           onConfirm={deleteItem}
           title="warning"
-          content="areYouSureYouWantDeleteThisEvidence"
+          content="areYouSureYouWantDeleteThisItem"
         />
         <DeleteConfirmationDialog
           open={expandedDeleteAttachmentDialog.expended}
@@ -1921,95 +1878,6 @@ const Evidence = (props: any) => {
       </Box>
     </Box>
   );
-};
-
-const DropZoneArea = (props: any) => {
-  const { setDropZone, MAX_SIZE, children } = props;
-  return (
-    <Dropzone
-      accept={{
-        ...AcceptFile,
-      }}
-      onDrop={(acceptedFiles) => {
-        if (acceptedFiles[0]?.size && acceptedFiles[0]?.size > MAX_SIZE) {
-          return toast(t("uploadAcceptableSize"), { type: "error" });
-        }
-        if (acceptedFiles?.length && acceptedFiles.length >= 1) {
-          setDropZone(acceptedFiles);
-        } else {
-          return toast(t("thisFileNotAcceptable"), { type: "error" });
-        }
-      }}
-    >
-      {children}
-    </Dropzone>
-  );
-};
-
-const checkTypeUpload = (
-  dropZoneData: any,
-  setDisplayFile: any,
-  setTypeFile: any,
-) => {
-  if (dropZoneData) {
-    const file = URL.createObjectURL(dropZoneData[0]);
-    setDisplayFile(file && dropZoneData[0].type);
-    if (dropZoneData[0].type.startsWith("image")) {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (dropZoneData[0].type === "application/pdf") {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (dropZoneData[0].type === "application/zip") {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (dropZoneData[0].type === "text/plain") {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (
-      dropZoneData[0].type ===
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ) {
-      setTypeFile("docx");
-    }
-    if (dropZoneData[0].type === "application/msword") {
-      setTypeFile("doc");
-    }
-
-    if (
-      dropZoneData[0].type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      setTypeFile("xlsx");
-    }
-    if (
-      dropZoneData[0].type === "application/vnd.oasis.opendocument.spreadsheet"
-    ) {
-      setTypeFile("ods");
-    }
-    if (dropZoneData[0].type === "x-rar-compressed") {
-      setTypeFile("xrar");
-    }
-    if (dropZoneData[0].type === "application/x-tar") {
-      setTypeFile("xtar");
-    }
-  }
 };
 
 const EvidenceDetail = (props: any) => {
@@ -2162,25 +2030,24 @@ const EvidenceDetail = (props: any) => {
   };
 
   useEffect(() => {
-    if (type === null) {
-      setEvidenceBG({
-        background: "rgba(25, 28, 31, 0.08)",
-        borderColor: "#191C1F",
-        borderHover: "#061528",
-      });
-    }
     if (type === "Positive") {
       setEvidenceBG({
         background: "rgba(32, 95, 148, 0.08)",
         borderColor: "#205F94",
         borderHover: "#117476",
       });
-    }
-    if (type === "Negative") {
+    } else if (type === "Negative") {
       setEvidenceBG({
         background: "rgba(139, 0, 53, 0.08)",
         borderColor: "#8B0035",
         borderHover: "#821237",
+      });
+    } else {
+      setValue(null)
+      setEvidenceBG({
+        background: "rgba(25, 28, 31, 0.08)",
+        borderColor: "#191C1F",
+        borderHover: "#061528",
       });
     }
   }, [type]);
@@ -2709,555 +2576,5 @@ const FileIcon = (props: any): any => {
         )}
       </Box>
     </Tooltip>
-  );
-};
-
-const MyDropzone = (props: any) => {
-  const { setDropZone, dropZoneData } = props;
-  const [dispalyFile, setDisplayFile] = useState<any>(null);
-  const [typeFile, setTypeFile] = useState<any>(null);
-  const MAX_SIZE = 2097152;
-
-  useEffect(() => {
-    checkTypeUpload(dropZoneData, setDisplayFile, setTypeFile);
-  }, [dropZoneData]);
-  const theme = useTheme();
-  return (
-    <DropZoneArea setDropZone={setDropZone} MAX_SIZE={MAX_SIZE}>
-      {({ getRootProps, getInputProps }: any) =>
-        dropZoneData ? (
-          <Box
-            sx={{
-              height: "199px",
-              maxWidth: "280px",
-              mx: "auto",
-              width: "100%",
-              border: "1px solid #C4C7C9",
-              borderRadius: "32px",
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <Button
-              sx={{
-                position: "absolute",
-                top: "3px",
-                right: "3px",
-                cursor: "pointer",
-                fontSize: "13px",
-              }}
-              onClick={() => setDropZone(null)}
-            >
-              <Trans i18nKey={"remove"} />
-            </Button>
-            {typeFile == "gif" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${gif}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "png" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${png}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "bpm" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${bpm}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {(typeFile == "jpeg" || typeFile == "jpg") && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${jpeg}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "pdf" && (
-              <section style={{ width: "50%", height: "70%" }}>
-                <FileType />{" "}
-              </section>
-            )}
-            {typeFile == "zip" && (
-              <img
-                style={{ width: "50%", height: "70%" }}
-                src={dispalyFile ? `${zip}` : "#"}
-              />
-            )}
-            {typeFile == "plain" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${txt}` : "#"}
-                alt="txt file"
-              />
-            )}
-            {typeFile == "xrar" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${rar}` : "#"}
-                alt="rar file"
-              />
-            )}
-            {typeFile == "docx" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${docx}` : "#"}
-                alt="docx file"
-              />
-            )}
-            {typeFile == "doc" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${doc}` : "#"}
-                alt="doc file"
-              />
-            )}
-            {(typeFile == "xlsx" || typeFile == "ods") && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${xls}` : "#"}
-                alt="xls file"
-              />
-            )}
-            {typeFile == "xtar" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${xtar}` : "#"}
-                alt="xtar file"
-              />
-            )}
-            <Typography sx={{ ...theme.typography.titleMedium }}>
-              {dropZoneData[0]?.name?.length > 14
-                ? dropZoneData[0]?.name?.substring(0, 10) +
-                  "..." +
-                  dropZoneData[0]?.name?.substring(
-                    dropZoneData[0]?.name?.lastIndexOf("."),
-                  )
-                : dropZoneData[0]?.name}
-            </Typography>
-          </Box>
-        ) : (
-          <section style={{ cursor: "pointer" }}>
-            <Box
-              sx={{
-                height: "199px",
-                maxWidth: "280px",
-                mx: "auto",
-                width: "100%",
-                border: "1px solid #C4C7C9",
-                borderRadius: "12px",
-              }}
-            >
-              <div
-                {...getRootProps()}
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  padding: "20px 0px",
-                }}
-              >
-                <input {...getInputProps()} />
-                <img
-                  src={UploadIcon}
-                  style={{ width: "80px", height: "80px" }}
-                />
-                <Typography
-                  sx={{
-                    ...theme.typography.titleMedium,
-                    color: "#243342",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "5px",
-                  }}
-                >
-                  <Trans i18nKey={"dragYourFile"} />
-                  <Typography
-                    sx={{ ...theme.typography.titleMedium, color: "#205F94" }}
-                  >
-                    <Trans i18nKey={"locateIt"} />
-                  </Typography>
-                </Typography>
-              </div>
-            </Box>
-          </section>
-        )
-      }
-    </DropZoneArea>
-  );
-};
-
-const EvidenceAttachmentsDialogs = (props: any) => {
-  const {
-    expanded,
-    onClose,
-    uploadAttachment,
-    uploadAnother,
-    evidenceId,
-    evidencesQueryData,
-    setAttachmentData,
-    setEvidencesData,
-    createAttachment,
-  } = props;
-  const MAX_DESC_TEXT = 100;
-  const MAX_SIZE = 2097152;
-
-  const { service } = useServiceContext();
-  const abortController = useMemo(() => new AbortController(), [evidenceId]);
-  const [description, setDescription] = useState("");
-  const [error, setError] = useState(false);
-  const [dropZoneData, setDropZone] = useState<any>(null);
-  const [btnState, setBtnState] = useState("");
-  const addEvidenceAttachments = useQuery({
-    service: (args, config) =>
-      service.addEvidenceAttachments(args, { signal: abortController.signal }),
-    runOnMount: false,
-  });
-  useEffect(() => {
-    if (dropZoneData) {
-      if (dropZoneData[0]?.size && dropZoneData[0]?.size > 2097152) {
-        toast(t("uploadAcceptableSize"), { type: "error" });
-      }
-    }
-  }, [dropZoneData]);
-
-  const handelDescription = (e: any) => {
-    if (e.target.value.length < MAX_DESC_TEXT) {
-      setDescription(e.target.value);
-      setError(false);
-    } else {
-      setError(true);
-    }
-  };
-
-  const handelSendFile = async (recognize: any) => {
-    if (description.length > 1 && description.length < 3) {
-      return setError(true);
-    }
-    if (!dropZoneData) {
-      return toast(t("attachmentRequired"), { type: "error" });
-    }
-    if (error && description.length >= 100) {
-      return toast(t("max100characters"), { type: "error" });
-    }
-
-    if (dropZoneData[0].size > MAX_SIZE) {
-      return toast(t("uploadAcceptableSize"), { type: "error" });
-    }
-    if (expanded.count >= 5) {
-      return toast("Each evidence can have up to 5 attachments.", {
-        type: "error",
-      });
-    }
-    try {
-      if (dropZoneData && !error) {
-        const data = {
-          id: evidenceId,
-          attachment: dropZoneData[0],
-          description: description,
-        };
-        setBtnState(recognize);
-        await addEvidenceAttachments.query({ evidenceId, data });
-        if (!createAttachment) {
-          const { items } = await evidencesQueryData.query();
-          setEvidencesData(items);
-        }
-        setAttachmentData(true);
-        setDropZone(null);
-        setDescription("");
-        if (recognize == "self") {
-          onClose();
-        }
-      }
-    } catch (e: any) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  const closeDialog = () => {
-    onClose();
-    setDropZone(null);
-    setDescription("");
-  };
-
-  const theme = useTheme();
-  return (
-    <Dialog
-      open={expanded.expended}
-      onClose={closeDialog}
-      maxWidth={"sm"}
-      fullWidth
-      sx={{
-        ".MuiDialog-paper::-webkit-scrollbar": {
-          display: "none",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        },
-      }}
-    >
-      <DialogTitle textTransform="uppercase">
-        <Trans i18nKey="uploadAttachment" />
-      </DialogTitle>
-      <DialogContent
-        sx={{
-          padding: "unset",
-          background: "#fff",
-          overflowX: "hidden",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            width: "100%",
-          }}
-        >
-          <Box sx={{ width: "100%", height: "auto" }}>
-            <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-                mx: "auto",
-                display: "flex",
-                justifyContent: "center",
-                paddingBottom: "24px",
-                gap: "5px",
-              }}
-            >
-              <Trans i18nKey={"uploadAttachment"} />
-              <Typography sx={{ ...theme.typography.headlineSmall }}>
-                {expanded.count} <Trans i18nKey={"of"} /> 5{" "}
-              </Typography>
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "11px",
-                color: "#73808C",
-                maxWidth: "300px",
-                textAlign: theme.direction == "rtl" ? "right" : "left",
-                mx: "auto",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "2px", mx: "auto" }}>
-                <InfoOutlinedIcon
-                  style={{ color: "#73808C" }}
-                  sx={{
-                    marginRight: theme.direction === "ltr" ? 1 : "unset",
-                    marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                    width: "12px",
-                    height: "12px",
-                    fontSize: "11px",
-                    lineHeight: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "11px",
-                    lineHeight: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  <Trans i18nKey="uploadAcceptable" />
-                </Typography>
-              </Box>
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "11px",
-                color: "#73808C",
-                maxWidth: "300px",
-                textAlign: "left",
-                paddingBottom: "1rem",
-                mx: "auto",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "2px" }}>
-                <InfoOutlinedIcon
-                  style={{ color: "#73808C" }}
-                  sx={{
-                    marginRight: theme.direction === "ltr" ? 1 : "unset",
-                    marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                    width: "12px",
-                    height: "12px",
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "11px",
-                    lineHeight: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  <Trans i18nKey="uploadAcceptableSize" />
-                </Typography>
-              </Box>
-            </Typography>
-            <MyDropzone setDropZone={setDropZone} dropZoneData={dropZoneData} />
-          </Box>
-          <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
-            <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-                color: "#243342",
-                paddingBottom: "1rem",
-              }}
-            >
-              <Trans i18nKey={"additionalInfo"} />
-            </Typography>
-            <TextField
-              sx={{
-                overflow: "auto",
-                "&::placeholder": {
-                  ...theme.typography.bodySmall,
-                  color: "#000",
-                },
-              }}
-              rows={3}
-              id="outlined-multiline-static"
-              multiline
-              fullWidth
-              value={description}
-              onChange={(e) => handelDescription(e)}
-              variant="standard"
-              inputProps={{
-                sx: {
-                  fontSize: "13px",
-                  marginTop: "4px",
-                  background: "rgba(0,0,0,0.06)",
-                  padding: "5px",
-                },
-              }}
-              placeholder={t(`addDescriptionToAttachment`) as string}
-              error={error}
-              helperText={
-                description.length >= 1 && error && description.length <= 3
-                  ? "Please enter at least 3 characters"
-                  : description.length >= 1 && error && "maximum 100 characters"
-              }
-            />
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            gap: 2,
-            padding: "16px",
-          }}
-          justifyContent="center"
-        >
-          <LoadingButton
-            onClick={() => handelSendFile("another")}
-            value={"another"}
-            loading={addEvidenceAttachments.loading && btnState == "another"}
-          >
-            {uploadAnother}
-          </LoadingButton>
-          <LoadingButton
-            variant="contained"
-            onClick={() => handelSendFile("self")}
-            value={"self"}
-            loading={addEvidenceAttachments.loading && btnState == "self"}
-          >
-            {uploadAttachment}
-          </LoadingButton>
-        </Box>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-const QuestionGuide = (props: any) => {
-  const [collapse, setCollapse] = useState<boolean>(false);
-  const { hint } = props;
-  const is_farsi = languageDetector(hint);
-  return (
-    <Box>
-      <Box mt={1} width="100%">
-        <Title
-          sup={
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "white",
-              }}
-            >
-              <InfoRoundedIcon
-                sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
-                }}
-              />
-              <Trans i18nKey="hint" />
-            </Box>
-          }
-          size="small"
-          sx={{ cursor: "pointer", userSelect: "none" }}
-          onClick={() => setCollapse(!collapse)}
-          mb={1}
-        ></Title>
-        <Collapse in={collapse}>
-          <Box
-            sx={{
-              flex: 1,
-              mr: { xs: 0, md: 4 },
-              position: "relative",
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              border: "1px dashed #ffffff99",
-              borderRadius: "8px",
-              direction: `${is_farsi ? "rtl" : "ltr"}`,
-            }}
-          >
-            <Box
-              display="flex"
-              alignItems={"baseline"}
-              sx={{
-                p: 2,
-                width: "100%",
-              }}
-            >
-              <Typography variant="body2">
-                {hint.startsWith("\n")
-                  ? hint
-                      .substring(1)
-                      .split("\n")
-                      .map((line: string) => (
-                        <React.Fragment key={line}>
-                          {line}
-                          <br />
-                        </React.Fragment>
-                      ))
-                  : hint.split("\n").map((line: string) => (
-                      <React.Fragment key={line}>
-                        {line}
-                        <br />
-                      </React.Fragment>
-                    ))}
-              </Typography>
-            </Box>
-          </Box>
-        </Collapse>
-      </Box>
-    </Box>
   );
 };

@@ -75,7 +75,7 @@
   "answers": "Answers",
   "anyChangesInTheNumberOfOptionsForAPreExistingQuestion": "Any changes in the number of options for a pre-existing question",
   "areYouSureYouWantDeleteThisAttachment": "Are you sure you want to remove this attachment?",
-  "areYouSureYouWantDeleteThisEvidence": "Are you sure you want to remove this evidence?",
+  "areYouSureYouWantDeleteThisItem": "Are you sure you want to remove this item?",
   "areYouSureYouWantSkipThisQuestion": "Your changes will be lost. Do you want to continue?",
   "areYouSureYouWantDeleteThisMember": "Are you sure you want to remove {{name}} from {{assessment}}?",
   "areYouSureYouWantDeleteThisMemberInvited": "Are you sure about canceling the invitation sent to {{name}} for a role in this assessment?",
