@@ -37,64 +37,29 @@ const checkTypeUpload = (
   setDisplayFile: any,
   setTypeFile: any,
 ) => {
-  if (dropZoneData) {
-    const file = URL.createObjectURL(dropZoneData[0]);
-    setDisplayFile(file && dropZoneData[0].type);
-    if (dropZoneData[0].type.startsWith("image")) {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (dropZoneData[0].type === "application/pdf") {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (dropZoneData[0].type === "application/zip") {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (dropZoneData[0].type === "text/plain") {
-      setTypeFile(
-        dropZoneData[0].type
-          ?.substring(dropZoneData[0].type.indexOf("/"))
-          ?.replace("/", ""),
-      );
-    }
-    if (
-      dropZoneData[0].type ===
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ) {
-      setTypeFile("docx");
-    }
-    if (dropZoneData[0].type === "application/msword") {
-      setTypeFile("doc");
-    }
+  if (!dropZoneData || dropZoneData.length === 0) return;
 
-    if (
-      dropZoneData[0].type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      setTypeFile("xlsx");
-    }
-    if (
-      dropZoneData[0].type === "application/vnd.oasis.opendocument.spreadsheet"
-    ) {
-      setTypeFile("ods");
-    }
-    if (dropZoneData[0].type === "x-rar-compressed") {
-      setTypeFile("xrar");
-    }
-    if (dropZoneData[0].type === "application/x-tar") {
-      setTypeFile("xtar");
-    }
+  const file = dropZoneData[0];
+  const fileType = file.type;
+  setDisplayFile(URL.createObjectURL(file) && fileType);
+
+  const typeMapping = {
+    "application/pdf": "pdf",
+    "application/zip": "zip",
+    "text/plain": "txt",
+    "application/msword": "doc",
+    "application/x-rar-compressed": "xrar",
+    "application/x-tar": "xtar",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      "docx",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+    "application/vnd.oasis.opendocument.spreadsheet": "ods",
+  } as any;
+
+  if (fileType.startsWith("image")) {
+    setTypeFile(fileType.split("/")[1]);
+  } else if (typeMapping[fileType]) {
+    setTypeFile(typeMapping[fileType]);
   }
 };
 
@@ -123,14 +88,33 @@ const DropZoneArea = (props: any) => {
 
 const MyDropzone = (props: any) => {
   const { setDropZone, dropZoneData } = props;
-  const [dispalyFile, setDisplayFile] = useState<any>(null);
-  const [typeFile, setTypeFile] = useState<any>(null);
+  const [displayFile, setDisplayFile] = useState<string | null>(null);
+  const [typeFile, setTypeFile] = useState<string | null>(null);
   const MAX_SIZE = 2097152;
 
   useEffect(() => {
     checkTypeUpload(dropZoneData, setDisplayFile, setTypeFile);
   }, [dropZoneData]);
+
   const theme = useTheme();
+
+  const fileTypeImages: Record<string, string> = {
+    gif: gif,
+    png: png,
+    bpm: bpm,
+    jpeg: jpeg,
+    jpg: jpeg,
+    pdf: "",
+    zip: zip,
+    plain: txt,
+    xrar: rar,
+    docx: docx,
+    doc: doc,
+    xlsx: xls,
+    ods: xls,
+    xtar: xtar,
+  };
+
   return (
     <DropZoneArea setDropZone={setDropZone} MAX_SIZE={MAX_SIZE}>
       {({ getRootProps, getInputProps }: any) =>
@@ -162,87 +146,21 @@ const MyDropzone = (props: any) => {
             >
               <Trans i18nKey={"remove"} />
             </Button>
-            {typeFile == "gif" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${gif}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "png" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${png}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "bpm" && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${bpm}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {(typeFile == "jpeg" || typeFile == "jpg") && (
-              <img
-                style={{ width: "25%", height: "50%" }}
-                src={dispalyFile ? `${jpeg}` : "#"}
-                alt={"gif"}
-              />
-            )}
-            {typeFile == "pdf" && (
+
+            {typeFile === "pdf" ? (
               <section style={{ width: "50%", height: "70%" }}>
-                <FileType />{" "}
+                <FileType />
               </section>
+            ) : (
+              fileTypeImages[typeFile || ""] && (
+                <img
+                  style={{ width: "40%", height: "60%" }}
+                  src={displayFile ? fileTypeImages[typeFile || ""] : "#"}
+                  alt={`${typeFile} file`}
+                />
+              )
             )}
-            {typeFile == "zip" && (
-              <img
-                style={{ width: "50%", height: "70%" }}
-                src={dispalyFile ? `${zip}` : "#"}
-              />
-            )}
-            {typeFile == "plain" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${txt}` : "#"}
-                alt="txt file"
-              />
-            )}
-            {typeFile == "xrar" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${rar}` : "#"}
-                alt="rar file"
-              />
-            )}
-            {typeFile == "docx" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${docx}` : "#"}
-                alt="docx file"
-              />
-            )}
-            {typeFile == "doc" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${doc}` : "#"}
-                alt="doc file"
-              />
-            )}
-            {(typeFile == "xlsx" || typeFile == "ods") && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${xls}` : "#"}
-                alt="xls file"
-              />
-            )}
-            {typeFile == "xtar" && (
-              <img
-                style={{ width: "40%", height: "60%" }}
-                src={dispalyFile ? `${xtar}` : "#"}
-                alt="xtar file"
-              />
-            )}
+
             <Typography sx={{ ...theme.typography.titleMedium }}>
               {dropZoneData[0]?.name?.length > 14
                 ? dropZoneData[0]?.name?.substring(0, 10) +
@@ -278,6 +196,7 @@ const MyDropzone = (props: any) => {
               >
                 <input {...getInputProps()} />
                 <img
+                  alt="upload"
                   src={UploadIcon}
                   style={{ width: "80px", height: "80px" }}
                 />
@@ -306,6 +225,7 @@ const MyDropzone = (props: any) => {
     </DropZoneArea>
   );
 };
+
 export const EvidenceAttachmentsDialogs = (props: any) => {
   const {
     expanded,
