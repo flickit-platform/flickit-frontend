@@ -75,7 +75,7 @@
   "answers": "پاسخ‌ها",
   "anyChangesInTheNumberOfOptionsForAPreExistingQuestion": "هر تغییر در تعداد گزینه‌ها برای یک پرسش موجود",
   "areYouSureYouWantDeleteThisAttachment": "آیا مطمئن هستید که می خواهید این پیوست را حذف کنید؟",
-  "areYouSureYouWantDeleteThisEvidence": "آیا مطمئن هستید می‌خواهید این شاهد را حذف کنید؟",
+  "areYouSureYouWantDeleteThisItem": "آیا مطمئن هستید می‌خواهید این ایتم را حذف کنید؟",
   "areYouSureYouWantSkipThisQuestion": "تغییرات شما از دست خواهد رفت. آیا می‌خواهید ادامه دهید؟",
   "areYouSureYouWantDeleteThisMember": "آیا مطمئنید که میخواهید {{name}} را از {{assessment}} حذف کنید؟",
   "areYouSureYouWantDeleteThisMemberInvited": "آیا مطمئنید که می‌خواهید دعوت‌نامه {{name}} به این ارزیابی لغو کنید؟",
