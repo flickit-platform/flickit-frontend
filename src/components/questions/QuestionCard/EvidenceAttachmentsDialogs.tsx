@@ -245,7 +245,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   const abortController = useMemo(() => new AbortController(), [evidenceId]);
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
-  const [dropZoneData, setDropZone] = useState<any>(null);
+  const [dropZoneData, setDropZone] = useState(null);
   const [btnState, setBtnState] = useState("");
   const addEvidenceAttachments = useQuery({
     service: (args, config) =>
@@ -254,7 +254,10 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   });
   useEffect(() => {
     if (dropZoneData) {
-      if (dropZoneData[0]?.size && dropZoneData[0]?.size > 2097152) {
+      if (
+        (dropZoneData[0] as any)?.size &&
+        (dropZoneData[0] as any)?.size > 2097152
+      ) {
         toast(t("uploadAcceptableSize"), { type: "error" });
       }
     }
