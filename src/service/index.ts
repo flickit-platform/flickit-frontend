@@ -1561,6 +1561,15 @@ export const createService = (
         { ...config },
       );
     },
+    approveExpiredInsights(
+        { assessmentId }: { assessmentId: TId },
+        config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+          `/api/v1/assessments/${assessmentId}/approve-expired-insights/`,
+          { ...config },
+      );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config?: AxiosRequestConfig<any>,
