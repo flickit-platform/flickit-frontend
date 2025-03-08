@@ -608,6 +608,14 @@ export const theme = createTheme({
         },
       },
     },
+    MuiFormControlLabel:{
+      styleOverrides:{
+        root:{
+          marginLeft: is_farsi ? "-10px" : "-10px",
+          marginRight: !is_farsi ? "-10px" : "-11px",
+        }
+      }
+    },
     //@ts-expect-error
     MuiTabPanel: {
       styleOverrides: {

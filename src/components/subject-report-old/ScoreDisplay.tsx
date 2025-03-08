@@ -15,18 +15,22 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
     setIsHovered(false);
   };
 
-  const absGainedScore = Math.abs(gainedScore);
-  const absMissedScore = Math.abs(missedScore);
-  const totalScore = absGainedScore + absMissedScore;
+  const minWidthPerUnit = 20; 
+  const maxWidthPerUnit = 40;
 
-  const minWidth = 20;
-  const maxWidth = 200;
-  const width = Math.min(maxWidth, Math.max(minWidth, totalScore * 10));
+  const missedWidth = Math.min(
+    maxWidthPerUnit * Math.abs(missedScore),
+    Math.max(minWidthPerUnit * Math.abs(missedScore), 0)
+  );
+
+  const gainedWidth = Math.min(
+    maxWidthPerUnit * Math.abs(gainedScore),
+    Math.max(minWidthPerUnit * Math.abs(gainedScore), 0)
+  );
+
+  const width = missedWidth + gainedWidth;
 
   const height = 12;
-
-  const missedWidth = totalScore > 0 ? (absMissedScore / totalScore) * 50 : 0;
-  const gainedWidth = totalScore > 0 ? (absGainedScore / totalScore) * 50 : 0;
 
   return (
     <Tooltip
@@ -45,13 +49,14 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              direction: "ltr",
             }}
           >
             <Box sx={{ ...styles.centerCVH }}>
               <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
                 {missedScore}
               </Typography>
-              <Typography variant="labelSmall" sx={{ color: "white" }}>
+              <Typography variant="bodySmall" sx={{ color: "white" }}>
                 <Trans i18nKey="missedScore" />
               </Typography>
             </Box>
@@ -64,7 +69,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
               <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
                 {gainedScore}
               </Typography>
-              <Typography variant="labelSmall" sx={{ color: "white" }}>
+              <Typography variant="bodySmall" sx={{ color: "white" }}>
                 <Trans i18nKey="gainedScore" />
               </Typography>
             </Box>
@@ -79,7 +84,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: isHovered ? `${width + 10}px` : `${width}px`,
+          width: `${width + 2}px` , 
           height: `${height}px`,
           borderRadius: "16px",
           overflow: "hidden",
@@ -89,11 +94,11 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
       >
         <Box
           sx={{
-            width: `${missedWidth}%`,
+            width: `${missedWidth}px`, 
             height: "100%",
             backgroundColor: theme.palette.secondary.main,
             position: "absolute",
-            left: `calc(50% - ${missedWidth}%)`,
+            left: 0, 
             top: 0,
             borderTopLeftRadius: "16px",
             borderBottomLeftRadius: "16px",
@@ -101,11 +106,11 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
         />
         <Box
           sx={{
-            width: `${gainedWidth}%`,
+            width: `${gainedWidth}px`, 
             height: "100%",
             backgroundColor: theme.palette.primary.main,
             position: "absolute",
-            right: `calc(50% - ${gainedWidth}%)`,
+            right: 0, 
             top: 0,
             borderTopRightRadius: "16px",
             borderBottomRightRadius: "16px",
