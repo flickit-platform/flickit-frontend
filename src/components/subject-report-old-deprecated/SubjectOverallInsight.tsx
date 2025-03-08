@@ -179,8 +179,8 @@ const OverallInsightText = (props: any) => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="headlineSmall">
-          <Trans i18nKey="subjectBriefConclusion" />
+        <Typography variant="semiBoldLarge">
+          <Trans i18nKey="insight" />
         </Typography>
         {editable && (
           <ActionPopup
@@ -201,6 +201,7 @@ const OverallInsightText = (props: any) => {
         maxHeight="100%"
         gap={0.5}
         ml={3}
+        mt={1}
       >
         {fetchSubjectInsight.loading ? (
           <Box

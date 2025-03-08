@@ -40,7 +40,6 @@ export const AssessmentSubjectAccordion = (
     theme.breakpoints.down("md"),
   );
 
-
   const handleAccordionChange = (
     event: React.SyntheticEvent,
     isExpanded: boolean,
@@ -105,7 +104,8 @@ export const AssessmentSubjectAccordion = (
               </Box>
               <Typography variant="bodyMedium">
                 {"("}
-                <Trans i18nKey="weight" />:{maturityLevel?.value} {")"}
+                <Trans i18nKey="weight" />: {maturityLevel?.value}
+                {")"}
               </Typography>
             </Box>
           </Grid>
@@ -171,7 +171,9 @@ export const AssessmentSubjectAccordion = (
               >
                 {maturityLevel?.title}
               </Typography>
-              <Box display="flex" sx={{ marginInlineStart: 1 }}>
+              <Box
+                sx={{ ...styles.centerVH, marginInlineStart: 1 }}
+              >
                 <Typography variant="bodyMedium" color="#6C8093">
                   <Trans i18nKey="confidence" />:
                 </Typography>

@@ -14,7 +14,7 @@ export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
   const isEmpty = subjects.length === 0;
 
   return (
-    <Box mt={4}>
+    <Box mt={2}>
       {isEmpty ? (
         <ErrorEmptyData />
       ) : (

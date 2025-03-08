@@ -150,7 +150,6 @@ const Gauge = ({
             color={colorCode}
             fontSize={status_font_variant ? "2rem" : fontSize}
             mt={maturity_status_guide ? "0.5rem" : "0px"}
-            mb={maturity_status_guide ? "-0.5rem" : 0}
           >
             {maturity_level_status}
           </Typography>

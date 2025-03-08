@@ -109,7 +109,7 @@ const SubjectOverallInsight = (props: any) => {
         }}
       >
         <Typography variant="semiBoldLarge">
-          <Trans i18nKey="subjectBriefConclusion" />
+          <Trans i18nKey="insight" />
         </Typography>
         {editable && (
           <ActionPopup

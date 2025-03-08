@@ -135,6 +135,7 @@ const AssessmentReportContainer = (props: any) => {
                   maxWidth="180px"
                   maturity_status_guide_variant="bodyMedium"
                   m="auto"
+                  maturity_status_guide={t("overallStatus")}
                 />
               </Box>
               <Typography color="#73808C" variant="semiBoldMedium">

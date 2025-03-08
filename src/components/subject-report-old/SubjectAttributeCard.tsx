@@ -192,7 +192,7 @@ const SUbjectAttributeCard = (props: any) => {
                   marginX={2}
                 >
                   {"("}
-                  <Trans i18nKey="weight" />:{maturityLevel?.value}
+                  <Trans i18nKey="weight" />: {maturityLevel?.value}
                   {")"}
                 </Typography>
               </Title>
