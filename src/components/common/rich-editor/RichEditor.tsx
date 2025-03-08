@@ -7,12 +7,13 @@ import Link from "@tiptap/extension-link";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
-import { primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Placeholder from "@tiptap/extension-placeholder";
+import languageDetector from "@/utils/languageDetector";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -189,7 +190,12 @@ const RichEditor = (props: IRichEditorProps) => {
       {editor && isEditable && <RichEditorMenuBar editor={editor} />}
       <EditorContent
         editor={editor}
-        style={{ ...theme.typography.bodyMedium }}
+        style={{
+          ...theme.typography.bodyMedium,
+          fontFamily: languageDetector(editor?.getText())
+            ? farsiFontFamily
+            : primaryFontFamily,
+        }}
       />
     </Box>
   );
