@@ -14,12 +14,7 @@ import {
   Chip,
   Grid,
   TablePagination,
-  Tooltip,
-  Divider,
   Popover,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -30,10 +25,9 @@ import { uniqueId } from "lodash";
 import { t } from "i18next";
 import useDialog from "@/utils/useDialog";
 import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";
-import { styles } from "@styles";
-import usePopover from "@/utils/usePopover";
 import PopoverContent from "./PopoverContent";
 import ScoreDisplay from "./ScoreDisplay";
+import usePopover from "@/hooks/usePopover";
 
 interface TableData {
   items: Item[];
