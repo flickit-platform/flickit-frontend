@@ -30,6 +30,7 @@ const ConfidenceLevel = ({
           justifyContent: "center",
           alignItems: "center",
           gap: "2px",
+          marginInlineStart: 0.5,
         }}
       >
         {displayNumber && (

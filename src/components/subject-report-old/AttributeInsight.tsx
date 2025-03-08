@@ -179,6 +179,7 @@ export const AttributeInsight = memo(
                   display="flex"
                   alignItems="center"
                   onClick={(event) => event.stopPropagation()}
+                  mt={1}
                 >
                   <EditableRichEditor
                     defaultValue={

@@ -25,7 +25,7 @@ interface IRichEditorProps {
   checkLang?: boolean;
   placeholder?: any;
   type?: string;
-  showEditorMenu?: boolean
+  showEditorMenu?: boolean;
 }
 
 const RichEditor = (props: IRichEditorProps) => {
@@ -40,7 +40,7 @@ const RichEditor = (props: IRichEditorProps) => {
     checkLang,
     placeholder,
     type,
-    showEditorMenu
+    showEditorMenu,
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
@@ -48,7 +48,7 @@ const RichEditor = (props: IRichEditorProps) => {
   useEffect(() => {
     setIsFarsi(checkLang);
   }, [checkLang]);
-  
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -148,12 +148,13 @@ const RichEditor = (props: IRichEditorProps) => {
               "&:hover .ProseMirror": {
                 borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.87)"}`,
               },
-              "& .rich-editor--menu": editor?.isFocused || showEditorMenu
-                ? {
-                    opacity: 1,
-                    zIndex: 10,
-                  }
-                : {},
+              "& .rich-editor--menu":
+                editor?.isFocused || showEditorMenu
+                  ? {
+                      opacity: 1,
+                      zIndex: 10,
+                    }
+                  : {},
               "&:hover .rich-editor--menu": {
                 opacity: 1,
                 zIndex: 10,
@@ -186,7 +187,10 @@ const RichEditor = (props: IRichEditorProps) => {
       }
     >
       {editor && isEditable && <RichEditorMenuBar editor={editor} />}
-      <EditorContent editor={editor} />
+      <EditorContent
+        editor={editor}
+        style={{ ...theme.typography.bodyMedium }}
+      />
     </Box>
   );
 };
