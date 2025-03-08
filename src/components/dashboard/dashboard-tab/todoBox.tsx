@@ -227,6 +227,12 @@ export const IssuesItem = ({
         service.approveExpiredInsights(args, config),
     runOnMount: false,
   });
+
+  const resolvedAllComments = useQuery({
+    service: (args = { assessmentId }, config) =>
+        service.resolvedAllComments(args, config),
+    runOnMount: false,
+  });
   
   const handleNavigation = () => {
     if (originalName === "questions") {
@@ -265,6 +271,16 @@ export const IssuesItem = ({
   const handleApproveAllExpired = async () => {
     try {
       await approveExpiredInsights.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      toastError(e as ICustomError);
+    }
+  };
+  const handleSolvedComments = async (event: any) => {
+    try {
+      event.stopPropagation()
+      event.preventDefault()
+      await resolvedAllComments.query();
       await fetchDashboard.query();
     } catch (e) {
       toastError(e as ICustomError);
@@ -414,6 +430,21 @@ export const IssuesItem = ({
               </LoadingButton>
             </Box>
           </>
+      )}
+      {name === "unresolvedComments" && (
+          <Button
+              onClick={(event)=>handleSolvedComments(event)}
+              sx={{
+                padding: "4px 10px",
+                marginInlineStart: "auto",
+              }}
+              color={color === "info" ? "primary" : color}
+              variant="outlined"
+          >
+            <Typography sx={{ ...theme.typography.labelMedium }}>
+              <Trans i18nKey="resolveAll" />
+            </Typography>
+          </Button>
       )}
     </Box>
   );
