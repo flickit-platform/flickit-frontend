@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -28,15 +28,6 @@ import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsCo
 import PopoverContent from "./PopoverContent";
 import ScoreDisplay from "./ScoreDisplay";
 import usePopover from "@/hooks/usePopover";
-
-interface TableData {
-  items: Item[];
-  page: number;
-  size: number;
-  sort: string;
-  order: "asc" | "desc";
-  total: number;
-}
 
 interface Item {
   questionnaire: { id: string; title: string };
@@ -75,7 +66,7 @@ interface ItemServerFieldsColumnMapping {
   question: string;
   answer: string;
   weight: number;
-  gainedScore: number;
+  gained_score: number;
   missedScore: number;
   weighted_score: number;
   confidence: number;
@@ -126,9 +117,9 @@ const columns: TableColumn[] = [
   },
   {
     field: "gainedScore",
-    serverKey: "gainedScore",
-    label: "gainedScore",
-    sortable: false,
+    serverKey: "gained_score",
+    label: "score",
+    sortable: true,
     align: "center",
     width: "60px",
   },
@@ -168,8 +159,17 @@ const MaturityLevelTable = ({
   setRowsPerPage: any;
 }) => {
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number | null>(null);
-  const { anchorEl, handlePopoverOpen, handlePopoverClose, open } = usePopover();
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
+    number | null
+  >(null);
+  const { anchorEl, handlePopoverOpen, handlePopoverClose, open } =
+    usePopover();
+  const [sortBy, setSortBy] = useState<
+    keyof ItemServerFieldsColumnMapping | null
+  >(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | undefined | null>(
+    null,
+  );
 
   const handleQuestionClick = (index: number) => {
     setSelectedQuestionIndex(index);
@@ -195,7 +195,10 @@ const MaturityLevelTable = ({
   };
 
   const navigateToNextQuestion = () => {
-    if (selectedQuestionIndex !== null && selectedQuestionIndex < tempData.items.length - 1) {
+    if (
+      selectedQuestionIndex !== null &&
+      selectedQuestionIndex < tempData.items.length - 1
+    ) {
       const newIndex = selectedQuestionIndex + 1;
       setSelectedQuestionIndex(newIndex);
       dialogProps.openDialog({
@@ -208,7 +211,12 @@ const MaturityLevelTable = ({
   };
 
   const dialogProps = useDialog();
-  const handleSort = (field: keyof ItemServerFieldsColumnMapping, order?: string) => {
+  const handleSort = (
+    field: keyof ItemServerFieldsColumnMapping,
+    order?: "asc" | "desc",
+  ) => {
+    setSortBy(field);
+    setSortOrder(order);
     updateSortOrder(field, order);
   };
 
@@ -216,7 +224,9 @@ const MaturityLevelTable = ({
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -227,6 +237,18 @@ const MaturityLevelTable = ({
     } else {
       return num;
     }
+  };
+
+  useEffect(() => {
+    setSortBy(tempData.sort);
+    setSortOrder(tempData.order);
+  }, [tempData]);
+
+  const handleSortChange = (sortBy: any, sortOrder: any) => {
+    setSortBy(sortBy);
+    setSortOrder(sortOrder);
+    updateSortOrder(sortBy, sortOrder);
+    handlePopoverClose();
   };
 
   const mapItemToRow = (item: Item): ItemColumnMapping => {
@@ -257,7 +279,9 @@ const MaturityLevelTable = ({
       gainedScore: item?.answer?.gainedScore,
       missedScore: item?.answer?.missedScore,
       weightedScore: item.answer.weightedScore?.toString()
-        ? parseFloat(parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2))
+        ? parseFloat(
+            parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2),
+          )
         : "",
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
@@ -367,7 +391,9 @@ const MaturityLevelTable = ({
                   align={column.align ?? "left"}
                   sx={{
                     color:
-                      tempData.sort === column.field
+                      tempData.sort === column.field ||
+                      (tempData.sort === "missedScore" &&
+                        column.field === "gainedScore")
                         ? theme.palette.primary.main + " !important"
                         : "#939393 !important",
                     width: column.width ?? "auto",
@@ -393,33 +419,50 @@ const MaturityLevelTable = ({
                 >
                   {column.sortable ? (
                     <TableSortLabel
-                      active={tempData.sort === column.field}
+                      active={
+                        tempData.sort === column.field ||
+                        (tempData.sort === "missedScore" &&
+                          column.field === "gainedScore")
+                      }
                       direction={
-                        tempData.sort === column.field ? tempData.order : "asc"
+                        tempData.sort === column.field ||
+                        (tempData.sort === "missedScore" &&
+                          column.field === "gainedScore")
+                          ? tempData.order
+                          : "asc"
                       }
                       onClick={() =>
-                        handleSort(
-                          column.serverKey,
-                          tempData.sort === column.field &&
-                            tempData.order === "asc"
-                            ? "desc"
-                            : "asc",
-                        )
+                        column.field === "gainedScore"
+                          ? handlePopoverOpen
+                          : handleSort(
+                              column.serverKey,
+                              tempData.sort === column.field &&
+                                tempData.order === "asc"
+                                ? "desc"
+                                : "asc",
+                            )
                       }
                       sx={{
                         color:
-                          tempData.sort === column.field
+                          tempData.sort === column.field ||
+                          (tempData.sort === "missedScore" &&
+                            column.field === "gainedScore")
                             ? theme.palette.primary.main + " !important"
                             : "#939393 !important",
                         "& .MuiTableSortLabel-icon": {
                           opacity: 1,
                           color:
-                            tempData.sort === column.field
+                            tempData.sort === column.field ||
+                            (tempData.sort === "missedScore" &&
+                              column.field === "gainedScore")
                               ? theme.palette.primary.main + " !important"
                               : "#939393 !important",
                           transform:
-                            tempData.sort === column.field &&
-                            tempData.order === "asc"
+                            (tempData.sort === column.field &&
+                              tempData.order === "asc") ||
+                            (tempData.sort === "missedScore" &&
+                              column.field === "gainedScore" &&
+                              tempData.order === "asc")
                               ? "scaleY(-1)"
                               : "none",
                         },
@@ -447,7 +490,11 @@ const MaturityLevelTable = ({
                 horizontal: "center",
               }}
             >
-              <PopoverContent />
+              <PopoverContent
+                onSortChange={handleSortChange}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+              />{" "}
             </Popover>
           </TableHead>
           <TableBody>
@@ -587,6 +634,5 @@ export const CircleRating = (props: any) => {
     />
   );
 };
-
 
 export default MaturityLevelTable;
