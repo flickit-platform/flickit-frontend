@@ -1570,6 +1570,15 @@ export const createService = (
           { ...config },
       );
     },
+    resolvedAllComments(
+        { assessmentId }: { assessmentId: TId },
+        config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+          `/api/v1/assessments/${assessmentId}/resolve-comments/`,
+          { ...config },
+      );
+    },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },
       config?: AxiosRequestConfig<any>,
