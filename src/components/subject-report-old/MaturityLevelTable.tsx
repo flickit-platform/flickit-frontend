@@ -252,6 +252,20 @@ const MaturityLevelTable = ({
     return row[column.field];
   };
 
+  const getCellDirection = (column: TableColumn, row: ItemColumnMapping) => {
+    if (column.serverKey === "question" || column.serverKey === "answer") {
+      return languageDetector(row[column.field]?.toString()) ? "rtl" : "ltr";
+    }
+    return "unset";
+  };
+
+  const getCellTextAlign = (column: TableColumn, row: ItemColumnMapping) => {
+    if (column.serverKey === "question" || column.serverKey === "answer") {
+      return languageDetector(row[column.field]?.toString()) ? "right" : "left";
+    }
+    return column.align;
+  };
+
   const handleSort = (
     field: keyof ItemServerFieldsColumnMapping,
     order?: "asc" | "desc",
@@ -351,7 +365,7 @@ const MaturityLevelTable = ({
           xs={12}
           sm={4}
           md={2}
-          key={index}
+          key={uniqueId()}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -492,20 +506,8 @@ const MaturityLevelTable = ({
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     maxWidth: column.width ?? "100%",
-                    textAlign:
-                      column.serverKey === "question" ||
-                      column.serverKey === "answer"
-                        ? languageDetector(row[column.field]?.toString())
-                          ? "right"
-                          : "left"
-                        : column.align,
-                    direction:
-                      column.serverKey === "question" ||
-                      column.serverKey === "answer"
-                        ? languageDetector(row[column.field]?.toString())
-                          ? "rtl"
-                          : "ltr"
-                        : "unset",
+                    textAlign: getCellTextAlign(column, row),
+                    direction: getCellDirection(column, row),
                     fontFamily: languageDetector(row[column.field]?.toString())
                       ? farsiFontFamily
                       : primaryFontFamily,
