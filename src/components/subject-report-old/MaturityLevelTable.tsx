@@ -14,6 +14,12 @@ import {
   Chip,
   Grid,
   TablePagination,
+  Tooltip,
+  Divider,
+  Popover,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -24,6 +30,10 @@ import { uniqueId } from "lodash";
 import { t } from "i18next";
 import useDialog from "@/utils/useDialog";
 import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";
+import { styles } from "@styles";
+import usePopover from "@/utils/usePopover";
+import PopoverContent from "./PopoverContent";
+import ScoreDisplay from "./ScoreDisplay";
 
 interface TableData {
   items: Item[];
@@ -51,9 +61,10 @@ interface Answer {
   index: number;
   title: string;
   isNotApplicable: boolean | null;
-  score: number;
+  missedScore: number;
+  gainedScore: number;
   weightedScore: number;
-  confidenceLevel: number; // 1 to 5
+  confidenceLevel: number;
 }
 
 interface TableColumn {
@@ -70,7 +81,8 @@ interface ItemServerFieldsColumnMapping {
   question: string;
   answer: string;
   weight: number;
-  score: number;
+  gainedScore: number;
+  missedScore: number;
   weighted_score: number;
   confidence: number;
   evidence_count: number;
@@ -81,7 +93,8 @@ interface ItemColumnMapping {
   question: string;
   answer: string;
   weight: number;
-  score: number;
+  gainedScore: number;
+  missedScore: number;
   weightedScore: string | number;
   confidence: number;
   evidenceCount: number;
@@ -100,14 +113,14 @@ const columns: TableColumn[] = [
     serverKey: "question",
     label: "question",
     sortable: false,
-    width: "260px",
+    width: "250px",
   },
   {
     field: "answer",
     serverKey: "answer",
     label: "answer",
     sortable: false,
-    width: "200px",
+    width: "180px",
   },
   {
     field: "weight",
@@ -115,21 +128,13 @@ const columns: TableColumn[] = [
     label: "weight",
     sortable: true,
     align: "center",
-    width: "60px",
+    width: "50px",
   },
   {
-    field: "score",
-    serverKey: "score",
-    label: "score",
-    sortable: true,
-    align: "center",
-    width: "60px",
-  },
-  {
-    field: "weightedScore",
-    serverKey: "weighted_score",
-    label: "weightedScore",
-    sortable: true,
+    field: "gainedScore",
+    serverKey: "gainedScore",
+    label: "gainedScore",
+    sortable: false,
     align: "center",
     width: "60px",
   },
@@ -139,7 +144,7 @@ const columns: TableColumn[] = [
     label: "confidence",
     sortable: true,
     align: "center",
-    width: "60px",
+    width: "50px",
   },
   {
     field: "evidenceCount",
@@ -147,7 +152,7 @@ const columns: TableColumn[] = [
     label: "evidence",
     sortable: true,
     align: "center",
-    width: "60px",
+    width: "50px",
   },
 ];
 
@@ -169,9 +174,8 @@ const MaturityLevelTable = ({
   setRowsPerPage: any;
 }) => {
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
-    number | null
-  >(null);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number | null>(null);
+  const { anchorEl, handlePopoverOpen, handlePopoverClose, open } = usePopover();
 
   const handleQuestionClick = (index: number) => {
     setSelectedQuestionIndex(index);
@@ -197,10 +201,7 @@ const MaturityLevelTable = ({
   };
 
   const navigateToNextQuestion = () => {
-    if (
-      selectedQuestionIndex !== null &&
-      selectedQuestionIndex < tempData.items.length - 1
-    ) {
+    if (selectedQuestionIndex !== null && selectedQuestionIndex < tempData.items.length - 1) {
       const newIndex = selectedQuestionIndex + 1;
       setSelectedQuestionIndex(newIndex);
       dialogProps.openDialog({
@@ -211,11 +212,9 @@ const MaturityLevelTable = ({
       });
     }
   };
+
   const dialogProps = useDialog();
-  const handleSort = (
-    field: keyof ItemServerFieldsColumnMapping,
-    order?: string,
-  ) => {
+  const handleSort = (field: keyof ItemServerFieldsColumnMapping, order?: string) => {
     updateSortOrder(field, order);
   };
 
@@ -223,9 +222,7 @@ const MaturityLevelTable = ({
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -263,16 +260,16 @@ const MaturityLevelTable = ({
           ? t("notApplicable")
           : "-",
       weight: item.question.weight,
-      score: item.answer.score,
+      gainedScore: item?.answer?.gainedScore,
+      missedScore: item?.answer?.missedScore,
       weightedScore: item.answer.weightedScore?.toString()
-        ? parseFloat(
-            parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2),
-          )
+        ? parseFloat(parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2))
         : "",
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
     };
   };
+
   return (
     <Box>
       <Grid
@@ -365,7 +362,6 @@ const MaturityLevelTable = ({
             sx={{
               ...theme.typography.semiBoldMedium,
               backgroundColor: theme.palette.grey[100],
-
               width: "100%",
             }}
           >
@@ -385,7 +381,7 @@ const MaturityLevelTable = ({
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
                     boxShadow:
-                      "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1", // Set boxShadow for top and bottom only
+                      "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1",
                     "&:first-child": {
                       borderEndStartRadius: "16px !important",
                       borderStartStartRadius: "16px !important",
@@ -395,6 +391,11 @@ const MaturityLevelTable = ({
                       borderEndEndRadius: "16px !important",
                     },
                   }}
+                  onClick={
+                    column.field === "gainedScore"
+                      ? handlePopoverOpen
+                      : undefined
+                  }
                 >
                   {column.sortable ? (
                     <TableSortLabel
@@ -439,71 +440,91 @@ const MaturityLevelTable = ({
                 </TableCell>
               ))}
             </TableRow>
+            <Popover
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handlePopoverClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <PopoverContent />
+            </Popover>
           </TableHead>
           <TableBody>
             {tempData?.items.length > 0 ? (
               <>
-                {tempData?.items
-                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item: any, index: number) => {
-                    const row = mapItemToRow(item);
-                    return (
-                      <TableRow
-                        key={uniqueId()}
-                        component="div"
-                        onClick={() => handleQuestionClick(index)}
-                        data-testid="open-question-details-dialog"
-                      >
-                        {columns.map((column) => (
-                          <TableCell
-                            key={column.field}
-                            align={column.align ?? "left"}
-                            title={
-                              column.field === "questionnaire"
-                                ? item.questionnaire
+                {tempData?.items.map((item: any, index: number) => {
+                  const row = mapItemToRow(item);
+                  return (
+                    <TableRow
+                      key={uniqueId()}
+                      component="div"
+                      onClick={() => handleQuestionClick(index)}
+                      data-testid="open-question-details-dialog"
+                    >
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.field}
+                          align={column.align ?? "left"}
+                          title={
+                            column.field === "questionnaire"
+                              ? item.questionnaire
+                              : column.field === "gainedScore"
+                                ? ""
                                 : row[column.field]?.toString()
-                            }
-                            sx={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              maxWidth: column.width ?? "100%",
-                              textAlign:
-                                column.serverKey === "question" ||
-                                column.serverKey === "answer"
-                                  ? languageDetector(
-                                      row[column.field]?.toString(),
-                                    )
-                                    ? "right"
-                                    : "left"
-                                  : column.align,
-                              direction:
-                                column.serverKey === "question" ||
-                                column.serverKey === "answer"
-                                  ? languageDetector(
-                                      row[column.field]?.toString(),
-                                    )
-                                    ? "rtl"
-                                    : "ltr"
-                                  : "unset",
-                              fontFamily: languageDetector(
-                                row[column.field]?.toString(),
-                              )
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                              cursor: "pointer",
-                            }}
-                          >
-                            {column.field === "confidence" ? (
-                              <CircleRating value={row.confidence} />
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    );
-                  })}
+                          }
+                          sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            maxWidth: column.width ?? "100%",
+                            textAlign:
+                              column.serverKey === "question" ||
+                              column.serverKey === "answer"
+                                ? languageDetector(
+                                    row[column.field]?.toString(),
+                                  )
+                                  ? "right"
+                                  : "left"
+                                : column.align,
+                            direction:
+                              column.serverKey === "question" ||
+                              column.serverKey === "answer"
+                                ? languageDetector(
+                                    row[column.field]?.toString(),
+                                  )
+                                  ? "rtl"
+                                  : "ltr"
+                                : "unset",
+                            fontFamily: languageDetector(
+                              row[column.field]?.toString(),
+                            )
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                            cursor: "pointer",
+                          }}
+                        >
+                          {column.field === "confidence" ? (
+                            <CircleRating value={row.confidence} />
+                          ) : column.field === "gainedScore" ? (
+                            <ScoreDisplay
+                              missedScore={row.missedScore}
+                              gainedScore={row.gainedScore}
+                            />
+                          ) : (
+                            row[column.field]
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
               </>
             ) : (
               <TableCell
@@ -572,5 +593,6 @@ export const CircleRating = (props: any) => {
     />
   );
 };
+
 
 export default MaturityLevelTable;
