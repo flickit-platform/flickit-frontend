@@ -15,17 +15,17 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
     setIsHovered(false);
   };
 
-  const minWidthPerUnit = 20; 
+  const minWidthPerUnit = 20;
   const maxWidthPerUnit = 40;
 
   const missedWidth = Math.min(
     maxWidthPerUnit * Math.abs(missedScore),
-    Math.max(minWidthPerUnit * Math.abs(missedScore), 0)
+    Math.max(minWidthPerUnit * Math.abs(missedScore), 0),
   );
 
   const gainedWidth = Math.min(
     maxWidthPerUnit * Math.abs(gainedScore),
-    Math.max(minWidthPerUnit * Math.abs(gainedScore), 0)
+    Math.max(minWidthPerUnit * Math.abs(gainedScore), 0),
   );
 
   const width = missedWidth + gainedWidth;
@@ -84,7 +84,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: `${width + 2}px` , 
+          width: gainedWidth && missedWidth ? `${width}px` : `${width + 10}px`,
           height: `${height}px`,
           borderRadius: "16px",
           overflow: "hidden",
@@ -94,11 +94,11 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
       >
         <Box
           sx={{
-            width: `${missedWidth}px`, 
+            width: `${missedWidth}px`,
             height: "100%",
             backgroundColor: theme.palette.secondary.main,
             position: "absolute",
-            left: 0, 
+            left: 0,
             top: 0,
             borderTopLeftRadius: "16px",
             borderBottomLeftRadius: "16px",
@@ -106,11 +106,11 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
         />
         <Box
           sx={{
-            width: `${gainedWidth}px`, 
+            width: `${gainedWidth}px`,
             height: "100%",
             backgroundColor: theme.palette.primary.main,
             position: "absolute",
-            right: 0, 
+            right: 0,
             top: 0,
             borderTopRightRadius: "16px",
             borderBottomRightRadius: "16px",

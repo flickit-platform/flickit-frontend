@@ -373,9 +373,7 @@ const MaturityLevelTable = ({
             gap: 1,
           }}
         >
-          <Typography
-            sx={{ ...theme.typography.bodyMedium, textAlign: "center" }}
-          >
+          <Typography sx={{ textAlign: "center" }} variant="bodyMedium">
             <Trans i18nKey={item.label} />:
           </Typography>
           <Typography sx={{ ...theme.typography.semiBoldMedium }}>
