@@ -171,6 +171,8 @@ const MaturityLevelTable = ({
     null,
   );
 
+  const dialogProps = useDialog();
+
   const handleQuestionClick = (index: number) => {
     setSelectedQuestionIndex(index);
     dialogProps.openDialog({
@@ -210,7 +212,46 @@ const MaturityLevelTable = ({
     }
   };
 
-  const dialogProps = useDialog();
+  const getSortOrder = (
+    currentSort: string,
+    currentOrder: string,
+    columnField: string,
+  ) => {
+    if (currentSort === columnField && currentOrder === "asc") {
+      return "desc";
+    }
+    return "asc";
+  };
+
+  const getCellTitle = (
+    column: TableColumn,
+    item: any,
+    row: ItemColumnMapping,
+  ) => {
+    if (column.field === "questionnaire") {
+      return item.questionnaire;
+    }
+    if (column.field === "gainedScore") {
+      return "";
+    }
+    return row[column.field]?.toString();
+  };
+
+  const getCellContent = (column: TableColumn, row: ItemColumnMapping) => {
+    if (column.field === "confidence") {
+      return <CircleRating value={row.confidence} />;
+    }
+    if (column.field === "gainedScore") {
+      return (
+        <ScoreDisplay
+          missedScore={row.missedScore}
+          gainedScore={row.gainedScore}
+        />
+      );
+    }
+    return row[column.field];
+  };
+
   const handleSort = (
     field: keyof ItemServerFieldsColumnMapping,
     order?: "asc" | "desc",
@@ -288,297 +329,216 @@ const MaturityLevelTable = ({
     };
   };
 
-  return (
-    <Box>
-      <Grid
-        container
-        sx={{
-          direction: theme.direction,
-          mb: 2,
-          whiteSpace: "nowrap",
-          display: "flex",
-          justifyContent: "center",
-          px: 1,
-        }}
+  const renderGridHeader = () => (
+    <Grid
+      container
+      sx={{
+        direction: theme.direction,
+        mb: 2,
+        whiteSpace: "nowrap",
+        display: "flex",
+        justifyContent: "center",
+        px: 1,
+      }}
+    >
+      {[
+        { label: "maxPossibleScore", value: maxPossibleScore },
+        { label: "gainedScore", value: gainedScore },
+        { label: "questionsCount", value: questionsCount },
+      ].map((item, index) => (
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          md={2}
+          key={index}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Typography
+            sx={{ ...theme.typography.bodyMedium, textAlign: "center" }}
+          >
+            <Trans i18nKey={item.label} />:
+          </Typography>
+          <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+            {formatMaturityNumber(item.value)}
+          </Typography>
+        </Grid>
+      ))}
+    </Grid>
+  );
+
+  // Extracted Table Header
+  const renderTableHeader = () => (
+    <TableHead
+      sx={{
+        ...theme.typography.semiBoldMedium,
+        backgroundColor: theme.palette.grey[100],
+        width: "100%",
+      }}
+    >
+      <TableRow>
+        {columns.map((column) => {
+          const isActive =
+            tempData.sort === column.field ||
+            (tempData.sort === "missedScore" && column.field === "gainedScore");
+          const direction = isActive ? tempData.order : "asc";
+
+          return (
+            <TableCell
+              key={column.field}
+              align={column.align ?? "left"}
+              sx={{
+                color: isActive
+                  ? theme.palette.primary.main + " !important"
+                  : "#939393 !important",
+                width: column.width ?? "auto",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                boxShadow: "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1",
+                "&:first-child": {
+                  borderEndStartRadius: "16px !important",
+                  borderStartStartRadius: "16px !important",
+                },
+                "&:last-child": {
+                  borderStartEndRadius: "16px !important",
+                  borderEndEndRadius: "16px !important",
+                },
+              }}
+              onClick={
+                column.field === "gainedScore" ? handlePopoverOpen : undefined
+              }
+            >
+              {column.sortable ? (
+                <TableSortLabel
+                  active={isActive}
+                  direction={direction}
+                  onClick={() =>
+                    column.field === "gainedScore"
+                      ? handlePopoverOpen
+                      : handleSort(
+                          column.serverKey,
+                          getSortOrder(
+                            tempData.sort,
+                            tempData.order,
+                            column.field,
+                          ),
+                        )
+                  }
+                  sx={{
+                    color: isActive
+                      ? theme.palette.primary.main + " !important"
+                      : "#939393 !important",
+                    "& .MuiTableSortLabel-icon": {
+                      opacity: 1,
+                      color: isActive
+                        ? theme.palette.primary.main + " !important"
+                        : "#939393 !important",
+                      transform: direction === "asc" ? "scaleY(-1)" : "none",
+                    },
+                  }}
+                  IconComponent={FilterListIcon}
+                >
+                  <Trans i18nKey={column.label} />
+                </TableSortLabel>
+              ) : (
+                <Trans i18nKey={column.label} />
+              )}
+            </TableCell>
+          );
+        })}
+      </TableRow>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Grid
-          item
-          xs={12}
-          sm={4}
-          md={2}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Typography
-            sx={{
-              ...theme.typography.bodyMedium,
-              textAlign: "center",
-            }}
-          >
-            <Trans i18nKey={"maxPossibleScore"} />:
-          </Typography>{" "}
-          <Typography sx={{ ...theme.typography.semiBoldMedium }}>
-            {formatMaturityNumber(maxPossibleScore)}
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={4}
-          md={2}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Typography
-            sx={{
-              ...theme.typography.bodyMedium,
-              textAlign: "center",
-            }}
-          >
-            <Trans i18nKey={"gainedScore"} />:
-          </Typography>{" "}
-          <Typography sx={{ ...theme.typography.semiBoldMedium }}>
-            {formatMaturityNumber(gainedScore)}
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={4}
-          md={2}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Typography
-            sx={{
-              ...theme.typography.bodyMedium,
-              textAlign: "center",
-            }}
-          >
-            <Trans i18nKey={"questionsCount"} />:
-          </Typography>{" "}
-          <Typography sx={{ ...theme.typography.semiBoldMedium }}>
-            {formatMaturityNumber(questionsCount)}
-          </Typography>
-        </Grid>
-      </Grid>
-      <TableContainer>
-        <Table>
-          <TableHead
-            sx={{
-              ...theme.typography.semiBoldMedium,
-              backgroundColor: theme.palette.grey[100],
-              width: "100%",
-            }}
-          >
-            {" "}
-            <TableRow>
+        <PopoverContent
+          onSortChange={handleSortChange}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+        />
+      </Popover>
+    </TableHead>
+  );
+
+  // Extracted Table Body
+  const renderTableBody = () => (
+    <TableBody>
+      {tempData?.items.length > 0 ? (
+        tempData.items.map((item: any, index: number) => {
+          const row = mapItemToRow(item);
+          return (
+            <TableRow
+              key={uniqueId()}
+              component="div"
+              onClick={() => handleQuestionClick(index)}
+              data-testid="open-question-details-dialog"
+            >
               {columns.map((column) => (
                 <TableCell
                   key={column.field}
                   align={column.align ?? "left"}
+                  title={getCellTitle(column, item, row)}
                   sx={{
-                    color:
-                      tempData.sort === column.field ||
-                      (tempData.sort === "missedScore" &&
-                        column.field === "gainedScore")
-                        ? theme.palette.primary.main + " !important"
-                        : "#939393 !important",
-                    width: column.width ?? "auto",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                    boxShadow:
-                      "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1",
-                    "&:first-child": {
-                      borderEndStartRadius: "16px !important",
-                      borderStartStartRadius: "16px !important",
-                    },
-                    "&:last-child": {
-                      borderStartEndRadius: "16px !important",
-                      borderEndEndRadius: "16px !important",
-                    },
+                    maxWidth: column.width ?? "100%",
+                    textAlign:
+                      column.serverKey === "question" ||
+                      column.serverKey === "answer"
+                        ? languageDetector(row[column.field]?.toString())
+                          ? "right"
+                          : "left"
+                        : column.align,
+                    direction:
+                      column.serverKey === "question" ||
+                      column.serverKey === "answer"
+                        ? languageDetector(row[column.field]?.toString())
+                          ? "rtl"
+                          : "ltr"
+                        : "unset",
+                    fontFamily: languageDetector(row[column.field]?.toString())
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                    cursor: "pointer",
                   }}
-                  onClick={
-                    column.field === "gainedScore"
-                      ? handlePopoverOpen
-                      : undefined
-                  }
                 >
-                  {column.sortable ? (
-                    <TableSortLabel
-                      active={
-                        tempData.sort === column.field ||
-                        (tempData.sort === "missedScore" &&
-                          column.field === "gainedScore")
-                      }
-                      direction={
-                        tempData.sort === column.field ||
-                        (tempData.sort === "missedScore" &&
-                          column.field === "gainedScore")
-                          ? tempData.order
-                          : "asc"
-                      }
-                      onClick={() =>
-                        column.field === "gainedScore"
-                          ? handlePopoverOpen
-                          : handleSort(
-                              column.serverKey,
-                              tempData.sort === column.field &&
-                                tempData.order === "asc"
-                                ? "desc"
-                                : "asc",
-                            )
-                      }
-                      sx={{
-                        color:
-                          tempData.sort === column.field ||
-                          (tempData.sort === "missedScore" &&
-                            column.field === "gainedScore")
-                            ? theme.palette.primary.main + " !important"
-                            : "#939393 !important",
-                        "& .MuiTableSortLabel-icon": {
-                          opacity: 1,
-                          color:
-                            tempData.sort === column.field ||
-                            (tempData.sort === "missedScore" &&
-                              column.field === "gainedScore")
-                              ? theme.palette.primary.main + " !important"
-                              : "#939393 !important",
-                          transform:
-                            (tempData.sort === column.field &&
-                              tempData.order === "asc") ||
-                            (tempData.sort === "missedScore" &&
-                              column.field === "gainedScore" &&
-                              tempData.order === "asc")
-                              ? "scaleY(-1)"
-                              : "none",
-                        },
-                      }}
-                      IconComponent={FilterListIcon}
-                    >
-                      <Trans i18nKey={column.label} />
-                    </TableSortLabel>
-                  ) : (
-                    <Trans i18nKey={column.label} />
-                  )}
+                  {getCellContent(column, row)}
                 </TableCell>
               ))}
             </TableRow>
-            <Popover
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handlePopoverClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <PopoverContent
-                onSortChange={handleSortChange}
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-              />{" "}
-            </Popover>
-          </TableHead>
-          <TableBody>
-            {tempData?.items.length > 0 ? (
-              <>
-                {tempData?.items.map((item: any, index: number) => {
-                  const row = mapItemToRow(item);
-                  return (
-                    <TableRow
-                      key={uniqueId()}
-                      component="div"
-                      onClick={() => handleQuestionClick(index)}
-                      data-testid="open-question-details-dialog"
-                    >
-                      {columns.map((column) => (
-                        <TableCell
-                          key={column.field}
-                          align={column.align ?? "left"}
-                          title={
-                            column.field === "questionnaire"
-                              ? item.questionnaire
-                              : column.field === "gainedScore"
-                                ? ""
-                                : row[column.field]?.toString()
-                          }
-                          sx={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            maxWidth: column.width ?? "100%",
-                            textAlign:
-                              column.serverKey === "question" ||
-                              column.serverKey === "answer"
-                                ? languageDetector(
-                                    row[column.field]?.toString(),
-                                  )
-                                  ? "right"
-                                  : "left"
-                                : column.align,
-                            direction:
-                              column.serverKey === "question" ||
-                              column.serverKey === "answer"
-                                ? languageDetector(
-                                    row[column.field]?.toString(),
-                                  )
-                                  ? "rtl"
-                                  : "ltr"
-                                : "unset",
-                            fontFamily: languageDetector(
-                              row[column.field]?.toString(),
-                            )
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                            cursor: "pointer",
-                          }}
-                        >
-                          {column.field === "confidence" ? (
-                            <CircleRating value={row.confidence} />
-                          ) : column.field === "gainedScore" ? (
-                            <ScoreDisplay
-                              missedScore={row.missedScore}
-                              gainedScore={row.gainedScore}
-                            />
-                          ) : (
-                            row[column.field]
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  );
-                })}
-              </>
-            ) : (
-              <TableCell
-                colSpan={columns.length}
-                align="center"
-                sx={{ textAlign: "center" }}
-              >
-                <Typography>
-                  <Trans i18nKey="noQuestionAvailableForThisMaturity" />
-                </Typography>
-              </TableCell>
-            )}
-          </TableBody>
+          );
+        })
+      ) : (
+        <TableCell
+          colSpan={columns.length}
+          align="center"
+          sx={{ textAlign: "center" }}
+        >
+          <Typography>
+            <Trans i18nKey="noQuestionAvailableForThisMaturity" />
+          </Typography>
+        </TableCell>
+      )}
+    </TableBody>
+  );
+
+  return (
+    <Box>
+      {renderGridHeader()}
+      <TableContainer>
+        <Table>
+          {renderTableHeader()}
+          {renderTableBody()}
         </Table>
         <TablePagination
           component="div"
