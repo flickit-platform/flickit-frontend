@@ -98,14 +98,14 @@ const columns: TableColumn[] = [
     serverKey: "question",
     label: "question",
     sortable: false,
-    width: "250px",
+    width: "230px",
   },
   {
     field: "answer",
     serverKey: "answer",
     label: "answer",
     sortable: false,
-    width: "180px",
+    width: "170px",
   },
   {
     field: "weight",
@@ -113,7 +113,7 @@ const columns: TableColumn[] = [
     label: "weight",
     sortable: true,
     align: "center",
-    width: "50px",
+    width: "30px",
   },
   {
     field: "gainedScore",
@@ -121,7 +121,7 @@ const columns: TableColumn[] = [
     label: "score",
     sortable: true,
     align: "center",
-    width: "60px",
+    width: "170px",
   },
   {
     field: "confidence",
@@ -129,7 +129,7 @@ const columns: TableColumn[] = [
     label: "confidence",
     sortable: true,
     align: "center",
-    width: "50px",
+    width: "30px",
   },
   {
     field: "evidenceCount",
@@ -137,7 +137,7 @@ const columns: TableColumn[] = [
     label: "evidence",
     sortable: true,
     align: "center",
-    width: "50px",
+    width: "30px",
   },
 ];
 
@@ -373,9 +373,7 @@ const MaturityLevelTable = ({
             gap: 1,
           }}
         >
-          <Typography
-            sx={{ ...theme.typography.bodyMedium, textAlign: "center" }}
-          >
+          <Typography sx={{ textAlign: "center" }} variant="bodyMedium">
             <Trans i18nKey={item.label} />:
           </Typography>
           <Typography sx={{ ...theme.typography.semiBoldMedium }}>
