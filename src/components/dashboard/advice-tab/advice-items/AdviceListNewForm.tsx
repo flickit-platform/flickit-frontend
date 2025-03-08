@@ -124,10 +124,6 @@ const AdviceListNewForm = ({
   };
 
   useEffect(() => {
-    console.log(newAdvice);
-  }, [newAdvice]);
-
-  useEffect(() => {
     setNewAdvice((prevState: any) => ({
       ...prevState,
       description: formMethods.getValues()["advice-description"],

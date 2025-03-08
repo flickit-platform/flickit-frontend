@@ -16,17 +16,17 @@ const PopoverContent = ({
   sortOrder,
 }: {
   onSortChange: (sortBy: string, sortOrder: string) => void;
-  sortBy: string | null;
-  sortOrder: string | null | undefined;
+  sortBy: any;
+  sortOrder: any;
 }) => {
   const getSelectedValue = () => {
-    if (sortBy === "gainedScore" && sortOrder === "desc") {
+    if (sortBy === "gained_score" && sortOrder === "desc") {
       return "gainedScoreHighToLow";
-    } else if (sortBy === "gainedScore" && sortOrder === "asc") {
+    } else if (sortBy === "gained_score" && sortOrder === "asc") {
       return "gainedScoreLowToHigh";
-    } else if (sortBy === "missedScore" && sortOrder === "desc") {
+    } else if (sortBy === "missed_score" && sortOrder === "desc") {
       return "missedScoreHighToLow";
-    } else if (sortBy === "missedScore" && sortOrder === "asc") {
+    } else if (sortBy === "missed_score" && sortOrder === "asc") {
       return "missedScoreLowToHigh";
     }
     return "";

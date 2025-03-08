@@ -61,7 +61,7 @@ interface TableColumn {
   width?: string;
 }
 
-interface ItemServerFieldsColumnMapping {
+export interface ItemServerFieldsColumnMapping {
   questionnaire: string;
   question: string;
   answer: string;
@@ -91,7 +91,7 @@ const columns: TableColumn[] = [
     serverKey: "questionnaire",
     label: "questionnaire",
     sortable: true,
-    width: "20px",
+    width: "50px",
   },
   {
     field: "question",
@@ -137,7 +137,7 @@ const columns: TableColumn[] = [
     label: "evidence",
     sortable: true,
     align: "center",
-    width: "30px",
+    width: "20px",
   },
 ];
 
@@ -149,6 +149,10 @@ const MaturityLevelTable = ({
   page,
   rowsPerPage,
   setRowsPerPage,
+  sortBy,
+  setSortBy,
+  sortOrder,
+  setSortOrder,
 }: {
   tempData: any;
   updateSortOrder: any;
@@ -157,6 +161,10 @@ const MaturityLevelTable = ({
   page: number;
   rowsPerPage: number;
   setRowsPerPage: any;
+  sortBy: any;
+  setSortBy: any;
+  sortOrder: any;
+  setSortOrder: any;
 }) => {
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
@@ -164,12 +172,6 @@ const MaturityLevelTable = ({
   >(null);
   const { anchorEl, handlePopoverOpen, handlePopoverClose, open } =
     usePopover();
-  const [sortBy, setSortBy] = useState<
-    keyof ItemServerFieldsColumnMapping | null
-  >(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | undefined | null>(
-    null,
-  );
 
   const dialogProps = useDialog();
 
@@ -229,7 +231,7 @@ const MaturityLevelTable = ({
     row: ItemColumnMapping,
   ) => {
     if (column.field === "questionnaire") {
-      return item.questionnaire;
+      return item.questionnaire.title;
     }
     if (column.field === "gainedScore") {
       return "";
@@ -294,11 +296,6 @@ const MaturityLevelTable = ({
     }
   };
 
-  useEffect(() => {
-    setSortBy(tempData.sort);
-    setSortOrder(tempData.order);
-  }, [tempData]);
-
   const handleSortChange = (sortBy: any, sortOrder: any) => {
     setSortBy(sortBy);
     setSortOrder(sortOrder);
@@ -357,7 +354,7 @@ const MaturityLevelTable = ({
     >
       {[
         { label: "maxPossibleScore", value: maxPossibleScore },
-        { label: "gainedScore", value: gainedScore },
+        { label: "gainedScores", value: gainedScore },
         { label: "questionsCount", value: questionsCount },
       ].map((item, index) => (
         <Grid
@@ -405,6 +402,7 @@ const MaturityLevelTable = ({
               key={column.field}
               align={column.align ?? "left"}
               sx={{
+                py: "4px !important",
                 color: isActive
                   ? theme.palette.primary.main + " !important"
                   : "#939393 !important",
@@ -414,13 +412,15 @@ const MaturityLevelTable = ({
                 whiteSpace: "nowrap",
                 boxShadow: "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1",
                 "&:first-child": {
-                  borderEndStartRadius: "16px !important",
-                  borderStartStartRadius: "16px !important",
+                  borderEndStartRadius: "8px !important",
+                  borderStartStartRadius: "8px !important",
                 },
                 "&:last-child": {
-                  borderStartEndRadius: "16px !important",
-                  borderEndEndRadius: "16px !important",
+                  borderStartEndRadius: "8px !important",
+                  borderEndEndRadius: "8px !important",
                 },
+                textAlign: "center",
+                borderBottom: "none",
               }}
               onClick={
                 column.field === "gainedScore" ? handlePopoverOpen : undefined
