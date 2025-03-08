@@ -73,7 +73,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           justifyContent: "center",
           width: gainedWidth && missedWidth ? `${width}px` : `${width + 10}px`,
           height: `${height}px`,
-          borderRadius: "16px",
+          borderRadius: "4px",
           overflow: "hidden",
           transition: "all 0.3s ease",
           position: "relative",
@@ -87,8 +87,8 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
             position: "absolute",
             left: 0,
             top: 0,
-            borderTopLeftRadius: "16px",
-            borderBottomLeftRadius: "16px",
+            borderTopLeftRadius: "4px",
+            borderBottomLeftRadius: "4px",
           }}
         />
         <Box
@@ -99,8 +99,8 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
             position: "absolute",
             right: 0,
             top: 0,
-            borderTopRightRadius: "16px",
-            borderBottomRightRadius: "16px",
+            borderTopRightRadius: "4px",
+            borderBottomRightRadius: "4px",
           }}
         />
       </Box>

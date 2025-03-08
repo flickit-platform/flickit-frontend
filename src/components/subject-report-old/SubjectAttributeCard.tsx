@@ -21,7 +21,9 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import MaturityLevelTable from "./MaturityLevelTable";
+import MaturityLevelTable, {
+  ItemServerFieldsColumnMapping,
+} from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import { uniqueId } from "lodash";
 import QueryBatchData from "../common/QueryBatchData";
@@ -53,14 +55,20 @@ const SUbjectAttributeCard = (props: any) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { service } = useServiceContext();
 
+  const [sortBy, setSortBy] = useState<
+    keyof ItemServerFieldsColumnMapping | null
+  >(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | undefined | null>(
+    null,
+  );
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
     service: (
       args = {
         assessmentId,
         attributeId: expandedAttribute,
         levelId: selectedMaturityLevel,
-        sort: "questionnaire",
-        order: "asc",
+        sort: sortBy,
+        order: sortOrder,
         page,
         size: rowsPerPage,
       },
@@ -97,6 +105,7 @@ const SUbjectAttributeCard = (props: any) => {
   };
 
   const updateSortOrder = (newSort: string, newOrder: string) => {
+    setPage(0);
     fetchAffectedQuestionsOnAttributeQueryData.query({
       assessmentId,
       attributeId: expandedAttribute,
@@ -390,6 +399,10 @@ const SUbjectAttributeCard = (props: any) => {
                     page={page}
                     rowsPerPage={rowsPerPage}
                     setRowsPerPage={setRowsPerPage}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
+                    sortOrder={sortOrder}
+                    setSortOrder={setSortOrder}
                   />
                 );
               }}
