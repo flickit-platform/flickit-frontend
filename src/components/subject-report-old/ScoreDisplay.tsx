@@ -1,20 +1,9 @@
-import { useState } from "react";
 import { Box, Divider, Tooltip, Typography } from "@mui/material";
 import { theme } from "@/config/theme";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 
 const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
   const minWidthPerUnit = 20;
   const maxWidthPerUnit = 40;
 
@@ -78,8 +67,6 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
       }
     >
       <Box
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         sx={{
           display: "flex",
           alignItems: "center",
