@@ -8,12 +8,12 @@ import {
   EAssessmentStatus,
   useQuestionContext,
 } from "@/providers/QuestionProvider";
-import usePopover from "@utils/usePopover";
 import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
 import { Tooltip } from "@mui/material";
 import { uniqueId } from "lodash";
+import usePopover from "@/hooks/usePopover";
 
 const QuestionsProgress = () => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
@@ -70,7 +70,7 @@ export const QuestionProgressItem = (props: any) => {
   const { question, to, questionsInfo } = props;
 
   const { questionIndex } = useParams();
-  const { handleClick, ...popoverProps } = usePopover();
+  const { handlePopoverOpen, ...popoverProps } = usePopover();
 
   const hasIssue =
     question?.issues?.isUnanswered ||
@@ -154,7 +154,7 @@ export const QuestionProgressItem = (props: any) => {
         <Box
           sx={{ zIndex: 1, width: "100%", height: "100%" }}
           onClick={(e: any) => {
-            questionIndex != question.index && handleClick(e);
+            questionIndex != question.index && handlePopoverOpen(e);
           }}
         >
           <Typography
@@ -180,7 +180,7 @@ export const QuestionProgressItem = (props: any) => {
       <QuestionPopover {...popoverProps}>
         <QuestionThumb
           {...props}
-          onClose={popoverProps.onClose}
+          onClose={popoverProps.handlePopoverClose}
           questionIndex={question.index}
           link={to || `${question.index}`}
         />
