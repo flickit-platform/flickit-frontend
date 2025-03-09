@@ -16,10 +16,12 @@ interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
   title: JSX.Element;
   style?: any;
+  titleStyle?: any;
+  contentStyle?: any;
 }
 
 export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
-  const { closeDialog, title, children, style, ...rest } = props;
+  const { closeDialog, title, children, style, titleStyle, contentStyle, ...rest } = props;
   const fullScreen = useScreenResize("sm");
 
   return (
@@ -31,12 +33,12 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       fullScreen={fullScreen}
       {...rest}
     >
-      <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV }}>
+      <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV, ...titleStyle }}>
         {title}
       </DialogTitle>
       <DialogContent
         style={style}
-        sx={{ display: "flex", flexDirection: "column" }}
+        sx={{ display: "flex", flexDirection: "column",...contentStyle }}
       >
         {children}
       </DialogContent>

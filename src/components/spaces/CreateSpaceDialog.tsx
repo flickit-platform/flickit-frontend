@@ -28,6 +28,8 @@ interface ICreateSpaceDialogProps extends DialogProps {
   onSubmitForm: () => void;
   openDialog?: any;
   context?: any;
+  titleStyle?: any;
+  contentStyle?: any;
 }
 
 const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
@@ -175,86 +177,88 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
         </>
       }
     >
-      <FormProviderWithForm formMethods={formMethods}>
-        <Grid container spacing={2} sx={styles.formGrid}>
-          <Grid item xs={9}>
-            <InputFieldUC
-              name="title"
-              defaultValue={defaultValues.title || ""}
-              required={true}
-              label={<Trans i18nKey="title" />}
-              isFocused={isFocused}
-            />
-          </Grid>
-            <Grid item xs={3}>
-              <FormControl sx={{ width: "100%" }}>
-                <SelectField
-                  // disabled={editable != undefined ? !editable : false}
-                  id="spaceType-name-label"
-                  size="small"
-                  label={<Trans i18nKey={"spaceType"} />}
-                  value={selectedType || "BASIC"}
-                  IconComponent={KeyboardArrowDownIcon}
-                  displayEmpty
-                  name={"spaceType-select"}
-                  defaultValue={spaceType[0]?.title}
-                  required={true}
-                  nullable={false}
-                  input={<OutlinedInput label="spaceType" />}
-                  onChange={(e) => handleChange(e)}
-                  sx={{
-                    fontSize: "14px",
-                    background: "#fff",
-                    px: "0px",
-                    height: "40px",
-                    "& .MuiSelect-select": {
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "12px !important",
-                      gap: 1,
-                    },
-                  }}
-                >
-                  {spaceType?.map((type: any) => (
-                    <MenuItem
-                      sx={{
-                        color: "#2B333B",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor:
-                          type.code == "PREMIUM" ? "transparent" : "unset",
-                        backgroundImage:
-                          type.code == "PREMIUM"
-                            ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
-                            : "unset",
-                        marginInlineStart: type.code != "PREMIUM" ? "24px" : "unset",
-                      }}
-                      disabled={type.code == "PREMIUM"}
-                      key={type}
-                      value={type.code}
-                    >
-                      {type.code == "PREMIUM" && (
-                        <img
-                          src={premiumIcon}
-                          alt={"premium"}
-                          style={{ width: "16px", height: "21px", marginInlineEnd: "8px" }}
-                        />
-                      )}
-                      <Trans i18nKey={type.title} />
-                    </MenuItem>
-                  ))}
-                </SelectField>
-              </FormControl>
-            </Grid>
-        </Grid>
-        <CEDialogActions
-          closeDialog={close}
-          loading={loading}
-          type={type}
-          onSubmit={(...args) =>
-            formMethods.handleSubmit((data) => onSubmit(data, ...args))
-          }
-        />
-      </FormProviderWithForm>
+
+
+      {/*<FormProviderWithForm formMethods={formMethods}>*/}
+      {/*  <Grid container spacing={2} sx={styles.formGrid}>*/}
+      {/*    <Grid item xs={9}>*/}
+      {/*      <InputFieldUC*/}
+      {/*        name="title"*/}
+      {/*        defaultValue={defaultValues.title || ""}*/}
+      {/*        required={true}*/}
+      {/*        label={<Trans i18nKey="title" />}*/}
+      {/*        isFocused={isFocused}*/}
+      {/*      />*/}
+      {/*    </Grid>*/}
+      {/*      <Grid item xs={3}>*/}
+      {/*        <FormControl sx={{ width: "100%" }}>*/}
+      {/*          <SelectField*/}
+      {/*            // disabled={editable != undefined ? !editable : false}*/}
+      {/*            id="spaceType-name-label"*/}
+      {/*            size="small"*/}
+      {/*            label={<Trans i18nKey={"spaceType"} />}*/}
+      {/*            value={selectedType || "BASIC"}*/}
+      {/*            IconComponent={KeyboardArrowDownIcon}*/}
+      {/*            displayEmpty*/}
+      {/*            name={"spaceType-select"}*/}
+      {/*            defaultValue={spaceType[0]?.title}*/}
+      {/*            required={true}*/}
+      {/*            nullable={false}*/}
+      {/*            input={<OutlinedInput label="spaceType" />}*/}
+      {/*            onChange={(e) => handleChange(e)}*/}
+      {/*            sx={{*/}
+      {/*              fontSize: "14px",*/}
+      {/*              background: "#fff",*/}
+      {/*              px: "0px",*/}
+      {/*              height: "40px",*/}
+      {/*              "& .MuiSelect-select": {*/}
+      {/*                display: "flex",*/}
+      {/*                alignItems: "center",*/}
+      {/*                padding: "12px !important",*/}
+      {/*                gap: 1,*/}
+      {/*              },*/}
+      {/*            }}*/}
+      {/*          >*/}
+      {/*            {spaceType?.map((type: any) => (*/}
+      {/*              <MenuItem*/}
+      {/*                sx={{*/}
+      {/*                  color: "#2B333B",*/}
+      {/*                  WebkitBackgroundClip: "text",*/}
+      {/*                  WebkitTextFillColor:*/}
+      {/*                    type.code == "PREMIUM" ? "transparent" : "unset",*/}
+      {/*                  backgroundImage:*/}
+      {/*                    type.code == "PREMIUM"*/}
+      {/*                      ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"*/}
+      {/*                      : "unset",*/}
+      {/*                  marginInlineStart: type.code != "PREMIUM" ? "24px" : "unset",*/}
+      {/*                }}*/}
+      {/*                disabled={type.code == "PREMIUM"}*/}
+      {/*                key={type}*/}
+      {/*                value={type.code}*/}
+      {/*              >*/}
+      {/*                {type.code == "PREMIUM" && (*/}
+      {/*                  <img*/}
+      {/*                    src={premiumIcon}*/}
+      {/*                    alt={"premium"}*/}
+      {/*                    style={{ width: "16px", height: "21px", marginInlineEnd: "8px" }}*/}
+      {/*                  />*/}
+      {/*                )}*/}
+      {/*                <Trans i18nKey={type.title} />*/}
+      {/*              </MenuItem>*/}
+      {/*            ))}*/}
+      {/*          </SelectField>*/}
+      {/*        </FormControl>*/}
+      {/*      </Grid>*/}
+      {/*  </Grid>*/}
+      {/*  <CEDialogActions*/}
+      {/*    closeDialog={close}*/}
+      {/*    loading={loading}*/}
+      {/*    type={type}*/}
+      {/*    onSubmit={(...args) =>*/}
+      {/*      formMethods.handleSubmit((data) => onSubmit(data, ...args))*/}
+      {/*    }*/}
+      {/*  />*/}
+      {/*</FormProviderWithForm>*/}
     </CEDialog>
   );
 };

@@ -196,7 +196,7 @@ const SpaceContainer = () => {
           />
         </Stack>
       )}
-      <CreateSpaceDialog {...dialogProps} onSubmitForm={fetchSpace} />
+      <CreateSpaceDialog {...dialogProps} onSubmitForm={fetchSpace} titleStyle={{mb: 0}} contentStyle={{p:0}} />
     </SpaceLayout>
   );
 };
