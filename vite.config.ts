@@ -11,7 +11,12 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   plugins: [
     react(),
-    visualizer() as PluginOption,
+    visualizer({
+      open: true, 
+      filename: "bundle-analysis.html",
+      gzipSize: true,
+      brotliSize: true,
+    }),
     sentryVitePlugin({
       org: "flickit",
       project: "front-end-test",

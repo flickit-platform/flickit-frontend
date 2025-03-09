@@ -14,7 +14,7 @@ import AlertBox from "@common/AlertBox";
 import forLoopComponent from "@utils/forLoopComponent";
 import Skeleton from "@mui/material/Skeleton";
 import { theme } from "@config/theme";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const CompareParts = () => {
   const { assessmentIds, assessment_kit, loading } = useCompareContext();

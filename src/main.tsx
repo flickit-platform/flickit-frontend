@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { toastDefaultConfig } from "@config/toastConfigs";
 import { ServiceProvider } from "./providers/ServiceProvider";
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "@config/theme";
 import { AppProvider } from "./providers/AppProvider";
 import { AuthProvider, useAuthContext } from "./providers/AuthProvider";

@@ -11,7 +11,7 @@ import {
   TooltipProps,
 } from "recharts";
 import { theme } from "@config/theme";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 interface CompareBarProps {
   data: any[];

@@ -1,10 +1,12 @@
-import { Box, Typography, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { getMaturityLevelColors, styles } from "@/config/styles";
 import { IGraphicalReport, ISubject } from "@/types";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const sectionStyle = {
   marginTop: "16px",

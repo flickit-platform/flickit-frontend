@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import SubjectAttributeCard from "./SubjectAttributeCard";
 import { IPermissions } from "@/types";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 export const SubjectAttributeList = (props: any) => {
   const { data, progress } = props;

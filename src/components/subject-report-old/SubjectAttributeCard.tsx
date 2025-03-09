@@ -25,7 +25,7 @@ import MaturityLevelTable, {
   ItemServerFieldsColumnMapping,
 } from "./MaturityLevelTable";
 import TableSkeleton from "../common/loadings/TableSkeleton";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import QueryBatchData from "../common/QueryBatchData";
 import { AttributeInsight } from "./AttributeInsight";
 

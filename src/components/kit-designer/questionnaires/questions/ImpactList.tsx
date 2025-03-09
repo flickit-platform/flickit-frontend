@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Add } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";

@@ -40,11 +40,12 @@ interface IAssessmentCardProps {
 }
 import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
-import { Chip } from "@mui/material";
+import Chip from "@mui/material/Chip";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { Assessment } from "@mui/icons-material";
+import Assessment from "@mui/icons-material/Assessment";
+
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();

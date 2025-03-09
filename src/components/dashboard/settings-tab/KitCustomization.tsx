@@ -19,7 +19,7 @@ import { theme } from "@config/theme";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";

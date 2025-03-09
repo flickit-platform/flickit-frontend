@@ -1,4 +1,8 @@
-import { Box, Divider, Tooltip, Typography, useTheme } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { theme as customTheme } from "@/config/theme";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";

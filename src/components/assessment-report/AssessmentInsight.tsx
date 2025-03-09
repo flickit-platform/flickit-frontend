@@ -12,7 +12,7 @@ import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import QueryData from "../common/QueryData";
-import { Skeleton } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
 import { Trans } from "react-i18next";
 
 export const AssessmentInsight = () => {
@@ -114,7 +114,7 @@ export const AssessmentInsight = () => {
               }}
             >
               <Typography variant="semiBoldLarge">
-                <Trans i18nKey="insightsTab.assessmentOverallInsights"/>
+                <Trans i18nKey="insightsTab.assessmentOverallInsights" />
               </Typography>
               {editable && (
                 <ActionPopup
@@ -149,7 +149,6 @@ export const AssessmentInsight = () => {
                 }) ?? ""
               }
             />
-    
           </Box>
         );
       }}

@@ -16,14 +16,17 @@ import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
-import {DeleteConfirmationDialog} from "@common/dialogs/DeleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-  const [openDeleteDialog,setOpenDeleteDialog] = useState<{status:boolean,id:string}>({status:false,id:""})
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
   const maturityLevels = useQuery({
     service: (args = { kitVersionId }, config) =>
       service.getMaturityLevels(args, config),
@@ -119,7 +122,7 @@ const MaturityLevelsContent = () => {
       value: maturityLevels.data.items.length + 1 || 1,
       id: null,
     });
-    setOpenDeleteDialog({status:false,id:""})
+    setOpenDeleteDialog({ status: false, id: "" });
   };
 
   const handleEdit = async (maturityLevel: any) => {
@@ -156,7 +159,7 @@ const MaturityLevelsContent = () => {
 
   const handleDelete = async () => {
     try {
-      let maturityLevelId = openDeleteDialog.id
+      let maturityLevelId = openDeleteDialog.id;
       await service.deleteMaturityLevel({ kitVersionId, maturityLevelId });
       maturityLevels.query();
       maturityLevelsCompetences.query();
@@ -273,11 +276,13 @@ const MaturityLevelsContent = () => {
         ) : null}
       </Box>
       <DeleteConfirmationDialog
-            open={openDeleteDialog.status}
-            onClose={() => setOpenDeleteDialog({...openDeleteDialog,status:false})}
-            onConfirm={handleDelete}
-            title="warning"
-            content="deleteMaturityLevel"
+        open={openDeleteDialog.status}
+        onClose={() =>
+          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+        }
+        onConfirm={handleDelete}
+        title="warning"
+        content="deleteMaturityLevel"
       />
     </PermissionControl>
   );

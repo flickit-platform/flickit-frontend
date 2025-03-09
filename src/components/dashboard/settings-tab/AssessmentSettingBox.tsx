@@ -42,9 +42,9 @@ import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
-import { TablePagination } from "@mui/material";
+import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 
 export const AssessmentSettingGeneralBox = (props: {

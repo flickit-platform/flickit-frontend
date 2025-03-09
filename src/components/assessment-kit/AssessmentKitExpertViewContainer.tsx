@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, Button, Typography, Alert } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
@@ -36,8 +39,8 @@ import { AssessmentKitDetailsType } from "@types";
 import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { primaryFontFamily, theme } from "@/config/theme";
-import { LoadingButton } from "@mui/lab";
-import { uniqueId } from "lodash";
+import LoadingButton from "@mui/lab/LoadingButton";
+import uniqueId from "@/utils/uniqueId";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =

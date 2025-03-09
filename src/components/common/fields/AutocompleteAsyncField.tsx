@@ -18,10 +18,10 @@ import { styles } from "@styles";
 import { TQueryProps } from "@types";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 

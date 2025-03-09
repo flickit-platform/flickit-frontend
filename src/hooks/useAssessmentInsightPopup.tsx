@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { FaWandMagicSparkles } from "react-icons/fa6";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";

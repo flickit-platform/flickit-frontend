@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 
 interface TreeMapNode {

@@ -11,8 +11,8 @@ import {
 import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
-import { Tooltip } from "@mui/material";
-import { uniqueId } from "lodash";
+import Tooltip from "@mui/material/Tooltip";
+import uniqueId from "@/utils/uniqueId";
 import usePopover from "@/hooks/usePopover";
 
 const QuestionsProgress = () => {
