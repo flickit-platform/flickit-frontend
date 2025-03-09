@@ -1,9 +1,10 @@
-import { Box, Divider, Tooltip, Typography } from "@mui/material";
-import { theme } from "@/config/theme";
+import { Box, Divider, Tooltip, Typography, useTheme } from "@mui/material";
+import { theme as customTheme } from "@/config/theme";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 
 const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
+  const theme = useTheme();
   const minWidthPerUnit = 20;
   const maxWidthPerUnit = 40;
 
@@ -18,7 +19,6 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
   );
 
   const width = missedWidth + gainedWidth;
-
   const height = 12;
 
   return (
@@ -38,7 +38,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              direction: "ltr",
+              direction: 'ltr',
             }}
           >
             <Box sx={{ ...styles.centerCVH }}>
@@ -77,13 +77,14 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           overflow: "hidden",
           transition: "all 0.3s ease",
           position: "relative",
+          margin: "0 auto",
         }}
       >
         <Box
           sx={{
             width: `${missedWidth}px`,
             height: "100%",
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: customTheme.palette.secondary.main,
             position: "absolute",
             left: 0,
             top: 0,
@@ -95,7 +96,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           sx={{
             width: `${gainedWidth}px`,
             height: "100%",
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: customTheme.palette.primary.main,
             position: "absolute",
             right: 0,
             top: 0,
