@@ -25,9 +25,6 @@ const DashboardScreen = lazy(() => import("../screens/DashboardScreen"));
 const AssessmentReportScreen = lazy(
   () => import("../screens/AssessmentReportScreen"),
 );
-const AssessmentReportScreenV2 = lazy(
-  () => import("../screens/AssessmentReportScreenV2"),
-);
 const AdviceScreen = lazy(() => import("../screens/AdviceScreen"));
 const ReportScreen = lazy(() => import("../screens/ReportScreen"));
 const AssessmentAdviceScreen = lazy(
@@ -121,7 +118,6 @@ const Routes = () => {
             <Route path="dashboard/" element={<AssessmentDashboardScreen />} />
             <Route path="settings/" element={<AssessmentSettingScreen />} />
             <Route path="insights/" element={<AssessmentReportScreen />} />
-            <Route path="insightsV2/" element={<AssessmentReportScreenV2 />} />
             <Route path="advice/" element={<AdviceScreen />} />
             <Route path="report/" element={<ReportScreen />} />
             <Route
