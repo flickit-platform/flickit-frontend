@@ -124,7 +124,13 @@ const SubjectOverallInsight = (props: any) => {
           />
         )}
       </Box>
-      <Box display="flex" flexDirection="column" maxHeight="100%" gap={0.5}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        maxHeight="100%"
+        gap={0.5}
+        mt={1}
+      >
         {fetchSubjectInsight.loading ? (
           <Box
             display="flex"
