@@ -1,8 +1,14 @@
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import { FaWandMagicSparkles } from "react-icons/fa6";
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
+import { lazy } from "react";
+
+const FaWandMagicSparkles = lazy(() =>
+  import("react-icons/fa6").then((module) => ({
+    default: module.FaWandMagicSparkles,
+  })),
+);
 
 const AIGenerated = ({ type, title, icon }: any) => {
   return (

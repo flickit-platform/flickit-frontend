@@ -362,6 +362,7 @@ export const theme = createTheme({
         }
         html {
           scroll-behavior: smooth;
+          font-display: swap;
           font-size: ${fontSize[4]};
         }
         @media (max-width: 1600px) {

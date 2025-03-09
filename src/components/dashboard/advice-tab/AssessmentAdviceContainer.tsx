@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,7 +7,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { FaWandMagicSparkles } from "react-icons/fa6";
 import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/assessmentReportNarrator";
 import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
@@ -18,6 +17,12 @@ import Divider from "@mui/material/Divider";
 import AIGenerated from "@common/tags/AIGenerated";
 import { ErrorCodes } from "@/types";
 import useCalculate from "@/hooks/useCalculate";
+
+const FaWandMagicSparkles = lazy(() =>
+  import("react-icons/fa6").then((module) => ({
+    default: module.FaWandMagicSparkles,
+  })),
+);
 
 const AssessmentAdviceContainer = (props: any) => {
   const fetchPreAdviceInfo = useQuery<any>({

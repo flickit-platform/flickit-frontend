@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [
     react(),
     visualizer({
-      open: true, 
+      open: true,
       filename: "bundle-analysis.html",
       gzipSize: true,
       brotliSize: true,
@@ -107,8 +107,10 @@ export default defineConfig({
         rpc(),
         terser(),
       ],
+      treeshake: true,
     },
 
-    sourcemap: true,
+    sourcemap: false,
+    minify: "esbuild",
   },
 });

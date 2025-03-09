@@ -1,10 +1,14 @@
-import { useCallback } from "react";
-import { FaWandMagicSparkles } from "react-icons/fa6";
+import { lazy, useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
+const FaWandMagicSparkles = lazy(() =>
+  import("react-icons/fa6").then((module) => ({
+    default: module.FaWandMagicSparkles,
+  })),
+);
 
 interface InsightStatus {
   status: "default" | "expired" | "approved" | "pending";
