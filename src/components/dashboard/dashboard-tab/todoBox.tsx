@@ -88,6 +88,7 @@ const TodoBox = (props: any) => {
                             fetchDashboard={fetchDashboard}
                             py={1}
                             px={2}
+                            issues={fetchDashboard.data?.questions}
                           />
                         </Grid>
                       );
@@ -176,6 +177,7 @@ const TodoBox = (props: any) => {
                             }
                             py={1}
                             px={2}
+                            issues={fetchDashboard.data?.questions}
                           />
                         </Grid>
                       );
@@ -197,6 +199,8 @@ export const IssuesItem = ({
   fetchDashboard,
   color = "primary",
   textVariant = "semiBoldMedium",
+  issues,
+  disableGenerateButtons,
   ...rest
 }: any) => {
   const navigate = useNavigate();
@@ -224,16 +228,16 @@ export const IssuesItem = ({
 
   const approveExpiredInsights = useQuery({
     service: (args = { assessmentId }, config) =>
-        service.approveExpiredInsights(args, config),
+      service.approveExpiredInsights(args, config),
     runOnMount: false,
   });
 
   const resolvedAllComments = useQuery({
     service: (args = { assessmentId }, config) =>
-        service.resolvedAllComments(args, config),
+      service.resolvedAllComments(args, config),
     runOnMount: false,
   });
-  
+
   const handleNavigation = () => {
     if (originalName === "questions") {
       navigate(`../questionnaires`, {
@@ -278,8 +282,8 @@ export const IssuesItem = ({
   };
   const handleSolvedComments = async (event: any) => {
     try {
-      event.stopPropagation()
-      event.preventDefault()
+      event.stopPropagation();
+      event.preventDefault();
       await resolvedAllComments.query();
       await fetchDashboard.query();
     } catch (e) {
@@ -368,14 +372,16 @@ export const IssuesItem = ({
 
       {name === "notGenerated" && (
         <Tooltip
-          disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
+          disableHoverListener={
+            issues?.unanswered < 1 || !disableGenerateButtons
+          }
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
           <div style={{ marginInlineStart: "auto" }}>
             <LoadingButton
               onClick={handleGenerateAll}
               variant="outlined"
-              disabled={fetchDashboard.data?.questions?.unanswered > 0}
+              disabled={issues?.unanswered > 0 || disableGenerateButtons}
               loading={generateInsights.loading}
               color={color}
               sx={{
@@ -390,61 +396,68 @@ export const IssuesItem = ({
         </Tooltip>
       )}
       {name == "expired" && (
-          <>
-            <Tooltip
-                disableHoverListener={fetchDashboard.data?.questions?.unanswered < 1}
-                title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
+        <>
+          <Tooltip
+            disableHoverListener={
+              issues?.unanswered < 1 || !disableGenerateButtons
+            }
+            title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
+          >
+            <div
+              style={{
+                marginInlineStart: "auto",
+                color: theme.palette.primary.main,
+              }}
             >
-              <div
-                  style={{
-                    marginInlineStart: "auto",
-                    color: theme.palette.primary.main,
-                  }}
-              >
-                <LoadingButton
-                    onClick={regeneratedAll}
-                    variant={"outlined"}
-                    disabled={fetchDashboard.data?.questions?.unanswered > 0}
-                    loading={regenerateInsights.loading}
-                >
-                  <Typography sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap"  }}>
-                    <Trans i18nKey={"reGenerateAll"} />
-                  </Typography>
-                </LoadingButton>
-              </div>
-            </Tooltip>
-            <Box>
               <LoadingButton
-                  onClick={handleApproveAllExpired}
-                  loading={approveExpiredInsights.loading}
-                  sx={{
-                    padding: "4px 10px",
-                    marginInlineStart: "auto",
-                  }}
-                  color={color === "info" ? "primary" : color}
-                  variant="outlined"
+                onClick={regeneratedAll}
+                variant={"outlined"}
+                disabled={issues?.unanswered > 0 || disableGenerateButtons}
+                loading={regenerateInsights.loading}
+                color={color === "info" ? "primary" : color}
               >
-                <Typography sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}>
-                  <Trans i18nKey="approveAll" />
+                <Typography
+                  sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
+                >
+                  <Trans i18nKey={"reGenerateAll"} />
                 </Typography>
               </LoadingButton>
-            </Box>
-          </>
-      )}
-      {name === "unresolvedComments" && (
-          <Button
-              onClick={(event)=>handleSolvedComments(event)}
+            </div>
+          </Tooltip>
+          <Box>
+            <LoadingButton
+              onClick={handleApproveAllExpired}
+              loading={approveExpiredInsights.loading}
               sx={{
                 padding: "4px 10px",
                 marginInlineStart: "auto",
               }}
               color={color === "info" ? "primary" : color}
               variant="outlined"
-          >
-            <Typography sx={{ ...theme.typography.labelMedium }}>
-              <Trans i18nKey="resolveAll" />
-            </Typography>
-          </Button>
+            >
+              <Typography
+                sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
+              >
+                <Trans i18nKey="approveAll" />
+              </Typography>
+            </LoadingButton>
+          </Box>
+        </>
+      )}
+      {name === "unresolvedComments" && (
+        <Button
+          onClick={(event) => handleSolvedComments(event)}
+          sx={{
+            padding: "4px 10px",
+            marginInlineStart: "auto",
+          }}
+          color={color === "info" ? "primary" : color}
+          variant="outlined"
+        >
+          <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Trans i18nKey="resolveAll" />
+          </Typography>
+        </Button>
       )}
     </Box>
   );
