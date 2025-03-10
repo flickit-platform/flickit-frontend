@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -17,12 +17,7 @@ import Divider from "@mui/material/Divider";
 import AIGenerated from "@common/tags/AIGenerated";
 import { ErrorCodes } from "@/types";
 import useCalculate from "@/hooks/useCalculate";
-
-const FaWandMagicSparkles = lazy(() =>
-  import("react-icons/fa6").then((module) => ({
-    default: module.FaWandMagicSparkles,
-  })),
-);
+import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
 
 const AssessmentAdviceContainer = (props: any) => {
   const fetchPreAdviceInfo = useQuery<any>({

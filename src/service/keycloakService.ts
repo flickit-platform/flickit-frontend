@@ -1,5 +1,4 @@
 import Keycloak, { KeycloakInstance } from "keycloak-js";
-
 const _kc: KeycloakInstance = new Keycloak({
   url: import.meta.env.VITE_SSO_URL,
   realm: import.meta.env.VITE_SSO_REALM,
@@ -18,6 +17,8 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
         return;
       }
 
+      const previousUser = localStorage.getItem("previousUser");
+      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
       const currentUser =
         _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
 
@@ -27,29 +28,26 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
         const space = location.pathname.split("/")[1];
         const id = location.pathname.split("/")[4];
         window.location.href = `/${space}/assessments/${id}/graphical-report/`;
-        return;
       }
 
       const hasRedirected = localStorage.getItem("hasRedirected");
-      const previousUser = localStorage.getItem("previousUser");
-      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
-
       if (!hasRedirected) {
         localStorage.setItem("hasRedirected", "true");
-
         if (previousUser && previousUser !== currentUser) {
-          localStorage.removeItem("hasRedirected"); 
           window.location.href = "/spaces/1";
           return;
         } else if (lastVisitedPage) {
           localStorage.removeItem("lastVisitedPage");
-          localStorage.removeItem("hasRedirected"); 
           window.location.href = lastVisitedPage;
           return;
         }
-      }
+      } else {
+        const currentUser =
+          _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
 
-      onAuthenticatedCallback();
+        sessionStorage.setItem("currentUser", currentUser || "");
+        onAuthenticatedCallback();
+      }
     })
     .catch(console.error);
 };
@@ -65,7 +63,6 @@ const doLogout = async () => {
 
   await _kc.logout();
 };
-
 const isTokenExpired = _kc.isTokenExpired;
 const doLogin = _kc.login;
 

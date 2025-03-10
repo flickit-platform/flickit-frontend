@@ -1,14 +1,10 @@
-import { lazy, useCallback } from "react";
+import {  useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
-const FaWandMagicSparkles = lazy(() =>
-  import("react-icons/fa6").then((module) => ({
-    default: module.FaWandMagicSparkles,
-  })),
-);
+import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
 
 interface InsightStatus {
   status: "default" | "expired" | "approved" | "pending";
@@ -95,12 +91,16 @@ const useInsightPopup = ({
 
   const getButtonLabelText = useCallback(() => {
     if (!insight)
-      return t("generateInsights.insightIsNotGenerated", { title: config.appTitle });
+      return t("generateInsights.insightIsNotGenerated", {
+        title: config.appTitle,
+      });
 
     if (isExpired)
       return t("generateInsights.insightIsExpired", { title: config.appTitle });
     if (isApproved)
-      return t("generateInsights.insightIsApproved", { title: config.appTitle });
+      return t("generateInsights.insightIsApproved", {
+        title: config.appTitle,
+      });
 
     return t("generateInsights.generatedByAppNeedsApproval", {
       title: config.appTitle,

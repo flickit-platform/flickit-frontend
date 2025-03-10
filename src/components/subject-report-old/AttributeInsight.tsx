@@ -1,5 +1,5 @@
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { lazy, memo } from "react";
+import { memo } from "react";
 import { useParams } from "react-router-dom";
 import QueryData from "../common/QueryData";
 import Box from "@mui/material/Box";
@@ -12,11 +12,7 @@ import { styles } from "@styles";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import { t } from "i18next";
 import useAttributeInsight from "@/hooks/useAttributeInsight";
-const FaWandMagicSparkles = lazy(() =>
-  import("react-icons/fa6").then((module) => ({
-    default: module.FaWandMagicSparkles,
-  })),
-);
+import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
 
 export const AttributeInsight = memo(
   ({ id, progress }: { id: string; progress: any }) => {
