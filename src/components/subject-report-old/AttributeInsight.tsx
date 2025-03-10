@@ -12,7 +12,7 @@ import { styles } from "@styles";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import { t } from "i18next";
 import useAttributeInsight from "@/hooks/useAttributeInsight";
-import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
+import FaWandMagicSparkles from "../common/icons/FaWandMagicSparkles";
 
 export const AttributeInsight = memo(
   ({ id, progress }: { id: string; progress: any }) => {
@@ -160,7 +160,11 @@ export const AttributeInsight = memo(
                               variant="labelMedium"
                               sx={{ ...styles.centerVH, gap: 1 }}
                             >
-                              <FaWandMagicSparkles />{" "}
+                              <FaWandMagicSparkles
+                                styles={{
+                                  color: getStatusColorScheme(data, theme).main,
+                                }}
+                              />{" "}
                               {getPrimaryButtonText(data, t)}
                             </Typography>
                           ),

@@ -17,7 +17,8 @@ import Divider from "@mui/material/Divider";
 import AIGenerated from "@common/tags/AIGenerated";
 import { ErrorCodes } from "@/types";
 import useCalculate from "@/hooks/useCalculate";
-import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
+import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
+import { theme } from "@/config/theme";
 
 const AssessmentAdviceContainer = (props: any) => {
   const fetchPreAdviceInfo = useQuery<any>({
@@ -146,7 +147,11 @@ const AssessmentAdviceContainer = (props: any) => {
                               : "generateAdvicesViaAI"
                           }
                         />
-                        <FaWandMagicSparkles />
+                        <FaWandMagicSparkles
+                          styles={{
+                            color: "white",
+                          }}
+                        />
                       </Button>
                     </div>
                   </Tooltip>
