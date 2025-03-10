@@ -14,7 +14,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Trans } from "react-i18next";
 import { useEffect } from "react";
 import { theme } from "@/config/theme";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const selectField = () => {
   return <div>selectField</div>;

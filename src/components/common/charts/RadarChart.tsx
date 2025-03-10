@@ -11,7 +11,7 @@ import {
 import Skeleton from "@mui/material/Skeleton";
 import { t } from "i18next";
 import convertToAssessmentChartData from "@/utils/convertToAssessmentChartData";
-import { useTheme } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 

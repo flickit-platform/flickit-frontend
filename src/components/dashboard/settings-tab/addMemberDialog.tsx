@@ -22,10 +22,10 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import useScreenResize from "@/utils/useScreenResize";
 import { styles } from "@styles";
-import { Settings } from "@mui/icons-material";
+import Settings from "@mui/icons-material/Settings";
 import { theme } from "@/config/theme";
 
 export enum EUserInfo {

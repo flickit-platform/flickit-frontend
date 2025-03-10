@@ -7,16 +7,17 @@ import Tooltip from "@mui/material/Tooltip";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { FaWandMagicSparkles } from "react-icons/fa6";
 import { AssessmentReportNarrator } from "@/components/dashboard/advice-tab/assessmentReportNarrator";
 import AdviceDialog from "./AdviceDialog";
 import QueryBatchData from "@common/QueryBatchData";
 import AdviceItems from "./advice-items/AdviceItems";
 import { styles } from "@styles";
-import { Divider, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import AIGenerated from "@common/tags/AIGenerated";
 import { ErrorCodes } from "@/types";
 import useCalculate from "@/hooks/useCalculate";
+import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
 
 const AssessmentAdviceContainer = (props: any) => {
   const fetchPreAdviceInfo = useQuery<any>({

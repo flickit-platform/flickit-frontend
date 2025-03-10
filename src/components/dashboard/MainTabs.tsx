@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import { theme } from "@config/theme";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";

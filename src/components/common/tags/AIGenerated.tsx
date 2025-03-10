@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import { FaWandMagicSparkles } from "react-icons/fa6";
 import { Trans } from "react-i18next";
 import { theme } from "@/config/theme";
+import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
 
 const AIGenerated = ({ type, title, icon }: any) => {
   return (
@@ -15,7 +15,7 @@ const AIGenerated = ({ type, title, icon }: any) => {
             paddingBlock: 1,
           }}
         >
-          {icon ?? <FaWandMagicSparkles width="16px" />}
+          {icon ?? <FaWandMagicSparkles />}
           <Trans i18nKey={title ?? "AIGenerated"} />
         </Box>
       }

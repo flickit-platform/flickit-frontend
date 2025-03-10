@@ -18,7 +18,9 @@ import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
 import CheckmarkGif from "../common/success/Checkmark";
-import { Box, Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {

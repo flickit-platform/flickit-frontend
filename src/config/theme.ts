@@ -1,5 +1,5 @@
 import createPalette from "@mui/material/styles/createPalette";
-import { createTheme } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
 export const primaryFontFamily = "NotoSans";
 export const secondaryFontFamily = "OpenSans";
@@ -362,6 +362,7 @@ export const theme = createTheme({
         }
         html {
           scroll-behavior: smooth;
+          font-display: swap;
           font-size: ${fontSize[4]};
         }
         @media (max-width: 1600px) {

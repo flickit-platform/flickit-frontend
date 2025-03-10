@@ -2,15 +2,17 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { memo } from "react";
 import { useParams } from "react-router-dom";
 import QueryData from "../common/QueryData";
-import { Box, Skeleton, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import ActionPopup from "../common/buttons/ActionPopup";
 import { theme } from "@/config/theme";
-import { FaWandMagicSparkles } from "react-icons/fa6";
 import { styles } from "@styles";
 import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import { t } from "i18next";
 import useAttributeInsight from "@/hooks/useAttributeInsight";
+import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
 
 export const AttributeInsight = memo(
   ({ id, progress }: { id: string; progress: any }) => {

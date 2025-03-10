@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { lazy, useEffect, useRef, useState } from "react";
 import { Trans } from "react-i18next";
 import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { styles } from "@styles";
@@ -35,12 +35,8 @@ import { ISpacesModel } from "@types";
 import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import {
-  ButtonTypeEnum,
-  IMessage,
-  NotificationCenter,
-} from "@novu/notification-center";
-import { FaBell } from "react-icons/fa";
+import { IMessage } from "@novu/notification-center";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
@@ -50,6 +46,12 @@ import { farsiFontFamily, secondaryFontFamily, theme } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
+
+const NotificationCenter = lazy(() =>
+  import("@novu/notification-center").then((module) => ({
+    default: module.NotificationCenter,
+  })),
+);
 
 const drawerWidth = 240;
 
@@ -355,7 +357,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
           }
           listItem={(
             message: IMessage,
-            onActionButtonClick: (actionButtonType: ButtonTypeEnum) => void,
+            onActionButtonClick: (actionButtonType: any) => void,
             onNotificationClick: () => void,
           ) => {
             return (
@@ -669,7 +671,7 @@ const Navbar = () => {
                   },
                 }}
               >
-                <FaBell size={20} color="white" />
+                <NotificationsIcon sx={{ fontSize: 20, color: "white" }} />{" "}
               </Badge>
             </IconButton>
 

@@ -6,8 +6,12 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
 import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
-import { Chip, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -25,10 +29,11 @@ import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
 import { ShareDialog } from "./ShareDialog";
-import { LoadingButton } from "@mui/lab";
-import { ArrowForward, Share } from "@mui/icons-material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import Share from "@mui/icons-material/Share";
 import { Trans } from "react-i18next";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const AssessmentExportContainer = () => {
   const { assessmentId = "", spaceId = "" } = useParams();

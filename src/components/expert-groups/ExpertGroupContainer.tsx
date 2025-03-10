@@ -62,7 +62,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import {useConfigContext} from "@providers/ConfgProvider";
 

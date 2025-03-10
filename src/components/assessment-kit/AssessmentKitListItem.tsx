@@ -14,8 +14,8 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import formatDate from "@utils/formatDate";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
-import { Tooltip } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import Tooltip from "@mui/material/Tooltip";
+import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 interface IAssessmentKitListItemProps {
   data: {

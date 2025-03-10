@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { styles } from "@styles";
 import Box from "@mui/material/Box";
 import { theme } from "@config/theme";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 interface IInfoItems {
   renderMap?: Record<string, (...args: any) => JSX.Element>;

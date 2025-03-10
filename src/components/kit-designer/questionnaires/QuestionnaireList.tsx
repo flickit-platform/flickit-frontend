@@ -23,10 +23,12 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
-import { alpha, Button, CircularProgress } from "@mui/material";
-import { debounce } from "lodash";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import { alpha } from "@mui/material/styles";
+import debounce from "lodash/debounce";
 import EmptyStateQuestion from "@components/kit-designer/questionnaires/questions/EmptyStateQuestion";
-import { Add } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
 import QuestionForm from "./questions/QuestionForm";
 
 interface ListOfItemsProps {
