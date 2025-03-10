@@ -17,12 +17,15 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { theme } from "@/config/theme";
 import FormControl from "@mui/material/FormControl";
-import { MenuItem, OutlinedInput } from "@mui/material";
+import {MenuItem, OutlinedInput, Typography} from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useQuery } from "@utils/useQuery";
 import { ISpaceType } from "@types";
 import premiumIcon from "@/assets/svg/premium-icon.svg";
 import {SelectField} from "@common/fields/SelectField";
+import basicIconSmall from "@/assets/svg/BasicIcon.svg"
+import premiumIconSmall from "@/assets/svg/PremiumIcon.svg"
+import Box from "@mui/material/Box";
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
   onSubmitForm: () => void;
@@ -177,6 +180,34 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
         </>
       }
     >
+      <Box sx={{pt: 4, px: 4, pb: 0}}>
+        <Typography sx={{...theme.typography.semiBoldLarge, color: "#2B333B"}}>
+          <Trans i18nKey={"selectYourSpaceType"} />
+        </Typography>
+        <Box sx={{py: 2}}>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Box
+                  sx={{
+                    borderRadius: "8px",
+                    border: "1px solid #C7CCD1",
+                    height: "100%",
+                    p: 2,
+                  }}
+              >
+                <Box sx={{ display: "flex",justifyContent:"flex-start",alignItems: "center" , gap:.5}} >
+                  <img src={basicIconSmall} alt={"BasicIcon"} />
+                  <Typography sx={{...theme.typography.semiBoldMedium}}><Trans i18nKey={"basicSpace"}/></Typography>
+                </Box>
+                <Typography sx={{...theme.typography.labelSmall, color: "#6C8093"}}><Trans i18nKey={"gettingKnowWithFlickit"} /></Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box sx={{ background: "blue" }}>xs=4</Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
 
 
       {/*<FormProviderWithForm formMethods={formMethods}>*/}
