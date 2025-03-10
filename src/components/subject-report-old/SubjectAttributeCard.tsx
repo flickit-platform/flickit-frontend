@@ -94,7 +94,7 @@ const SUbjectAttributeCard = (props: any) => {
       fetchAffectedQuestionsOnAttributeQueryData.query();
       fetchScoreState.query();
     }
-  }, [expandedAttribute, selectedMaturityLevel, page]);
+  }, [expandedAttribute, selectedMaturityLevel, page, rowsPerPage]);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
