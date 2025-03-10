@@ -1,10 +1,10 @@
-import {  useCallback } from "react";
+import { useCallback } from "react";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import FaWandMagicSparkles from "@/assets/svg/FaWandMagicSparkles.svg";
+import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 
 interface InsightStatus {
   status: "default" | "expired" | "approved" | "pending";
@@ -110,7 +110,11 @@ const useInsightPopup = ({
   const getPopupTexts = useCallback((): PopupTexts => {
     const buttonLabel = (
       <Typography variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
-        <FaWandMagicSparkles />
+        <FaWandMagicSparkles
+          styles={{
+            color: getColorScheme().main,
+          }}
+        />{" "}
         {getButtonLabelText()}
       </Typography>
     );
