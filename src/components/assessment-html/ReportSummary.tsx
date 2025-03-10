@@ -263,7 +263,7 @@ const ReportCard = ({
       </Section>
 
       <Section
-        title={t("evaluationSteps", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentSteps", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
         {assessmentProcess.steps ? (
