@@ -42,7 +42,7 @@ const commonStyles = {
   }),
   activeNavbarLink: style({
     "&.active": {
-      color: (theme) => theme.palette.primary.dark,
+      color: "#c8d8e9",
     },
   }),
   circularProgressBackgroundStroke: style({

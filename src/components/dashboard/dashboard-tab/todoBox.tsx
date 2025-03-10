@@ -375,7 +375,7 @@ export const IssuesItem = ({
       {name === "notGenerated" && (
         <Tooltip
           disableHoverListener={
-            issues?.unanswered < 1 || !disableGenerateButtons
+            issues?.unanswered < 1 ?? !disableGenerateButtons
           }
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
@@ -401,7 +401,7 @@ export const IssuesItem = ({
         <>
           <Tooltip
             disableHoverListener={
-              issues?.unanswered < 1 || !disableGenerateButtons
+              issues?.unanswered < 1 ?? !disableGenerateButtons
             }
             title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
           >
