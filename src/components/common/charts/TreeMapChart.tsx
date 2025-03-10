@@ -3,6 +3,7 @@ import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 interface TreeMapNode {
   name: string;
@@ -43,7 +44,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 const CustomNode: any = (props: any) => {
   const { x, y, width, height, name, color, label, levels } = props;
 
-  if (width <= 20 || height <= 20) return null;
+  if (width <= 10 || height <= 20) return null;
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -51,7 +52,7 @@ const CustomNode: any = (props: any) => {
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
 
   const truncatedName =
-    name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 12)}...` : name;
+    name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 11)}...` : name;
 
   return (
     <g>
@@ -64,7 +65,8 @@ const CustomNode: any = (props: any) => {
             textAnchor="middle"
             fill="#fff"
             fontSize={adjustedFontSize}
-            fontWeight={50}
+            fontWeight={9}
+            letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
           >
             {truncatedName}
           </text>
@@ -73,7 +75,8 @@ const CustomNode: any = (props: any) => {
             y={y + height / 2 + 10}
             textAnchor="middle"
             fill="#fff"
-            fontWeight={50}
+            fontWeight={9}
+            letterSpacing={0.5}
             fontSize={adjustedFontSize}
           >
             {`${label}/${levels}`}
