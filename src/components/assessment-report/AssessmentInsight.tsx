@@ -144,9 +144,7 @@ export const AssessmentInsight = () => {
               }}
               infoQuery={fetchAssessmentInsight.query}
               placeholder={
-                t("writeHere", {
-                  title: t("insight").toLowerCase(),
-                }) ?? ""
+                t("writeYourInsightsOfTheAssessmentResultsHere") ?? ""
               }
             />
           </Box>
