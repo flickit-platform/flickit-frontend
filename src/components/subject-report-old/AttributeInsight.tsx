@@ -19,7 +19,7 @@ const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
   const { assessmentId = "" } = useParams();
 
   const [insight, setInsight] = useState<any>(
-    defaultInsight?.assessorInsight || defaultInsight?.defaultInsight,
+    defaultInsight?.assessorInsight || defaultInsight?.aiInsight,
   );
   const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
   const [isApproved, setIsApproved] = useState(
@@ -63,7 +63,7 @@ const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
   useEffect(() => {
     if (fetchSubjectInsight.data) {
       const data = fetchSubjectInsight.data;
-      const selected = data?.assessorInsight || data?.defaultInsight;
+      const selected = data?.assessorInsight || data?.aiInsight;
       setInsight(selected);
       setEditable(data?.editable ?? false);
       setIsApproved(data?.approved ?? true);
@@ -91,6 +91,7 @@ const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
     approveAction: ApproveSubject,
     initLoading: InitInsight.loading,
     approveLoading: ApproveAISubject.loading,
+    AIEnabled: true,
   });
 
   return (
