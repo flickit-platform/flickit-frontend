@@ -8,7 +8,7 @@ import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import { IAssessmentReportModel, RolesType } from "@types";
+import { RolesType } from "@types";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../common/PermissionControl";
@@ -22,7 +22,7 @@ const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
-  const fetchAssessmentInsight = useQuery<IAssessmentReportModel>({
+  const fetchAssessmentInsight = useQuery({
     service: (args, config) =>
       service.fetchAssessment({ assessmentId }, config),
     toastError: false,
@@ -137,7 +137,11 @@ const AssessmentReportContainer = (props: any) => {
                 display="flex"
                 mt={2}
               >
-                <AssessmentInsight />
+                <AssessmentInsight
+                  defaultInsight={
+                    fetchAssessmentInsight.data.assessment.insight
+                  }
+                />
                 <Gauge
                   maturity_level_number={assessmentKit?.maturityLevelCount}
                   isMobileScreen={true}

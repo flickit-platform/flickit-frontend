@@ -18,9 +18,11 @@ import AIGenerated from "@common/tags/AIGenerated";
 import { ErrorCodes } from "@/types";
 import useCalculate from "@/hooks/useCalculate";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
-import { theme } from "@/config/theme";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
 
 const AssessmentAdviceContainer = (props: any) => {
+  const { permissions } = useAssessmentContext();
+
   const fetchPreAdviceInfo = useQuery<any>({
     service: (args, config) =>
       service.fetchPreAdviceInfo({ assessmentId }, config),
@@ -87,21 +89,11 @@ const AssessmentAdviceContainer = (props: any) => {
     setIsAIGenerated(!!fetchAdviceNarration.data?.aiNarration);
   }, [fetchAdviceNarration.data]);
 
-  const fetchAssessmentPermissions = useQuery({
-    service: (args, config) =>
-      service.fetchAssessmentPermissions(
-        { assessmentId, ...(args || {}) },
-        config,
-      ),
-    runOnMount: true,
-  });
-
   return (
     <QueryBatchData
-      queryBatchData={[fetchAdviceNarration, fetchAssessmentPermissions]}
+      queryBatchData={[fetchAdviceNarration]}
       renderLoading={() => <Skeleton height={160} />}
-      render={([narrationComponent, permissionsData]) => {
-        const { permissions } = permissionsData;
+      render={([narrationComponent]) => {
 
         return (
           <Box mt={4}>

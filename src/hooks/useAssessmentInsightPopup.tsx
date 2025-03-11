@@ -35,6 +35,7 @@ interface UseInsightPopupProps {
   approveAction: (event: React.SyntheticEvent) => Promise<void>;
   initLoading: boolean;
   approveLoading: boolean;
+  AIEnabled?: boolean;
 }
 
 const useInsightPopup = ({
@@ -46,6 +47,7 @@ const useInsightPopup = ({
   approveAction,
   initLoading,
   approveLoading,
+  AIEnabled,
 }: UseInsightPopupProps) => {
   const { config } = useConfigContext();
 
@@ -87,25 +89,65 @@ const useInsightPopup = ({
       main: theme.palette.error.main,
       light: theme.palette.error.light,
     };
-  }, [insight, isApproved, isExpired, theme]); // Extract the logic for determining the button label
+  }, [insight, isApproved, isExpired, theme]);
 
   const getButtonLabelText = useCallback(() => {
-    if (!insight)
-      return t("generateInsights.insightIsNotGenerated", {
-        title: config.appTitle,
-      });
+    if (!insight) return t("generateInsights.insightIsNotGenerated");
 
-    if (isExpired)
-      return t("generateInsights.insightIsExpired", { title: config.appTitle });
-    if (isApproved)
-      return t("generateInsights.insightIsApproved", {
-        title: config.appTitle,
-      });
+    if (isExpired) return t("generateInsights.insightIsExpired");
+    if (isApproved) return t("generateInsights.insightIsApproved");
 
+    if (AIEnabled) return t("generateInsights.AIGeneratedNeedsApproval");
     return t("generateInsights.generatedByAppNeedsApproval", {
       title: config.appTitle,
     });
-  }, [insight, isExpired, isApproved, config, t]);
+  }, [insight, isExpired, isApproved]);
+
+  const getDescription = () => {
+    if (isExpired) {
+      return AIEnabled
+        ? t("generateInsights.AIinsightIsExpiredDescription")
+        : t("generateInsights.insightIsExpiredDescription");
+    }
+
+    if (insight) {
+      if (isApproved) {
+        return AIEnabled
+          ? t("generateInsights.AIinsightIsApprovedDescription")
+          : t("generateInsights.insightIsApprovedDescription", {
+              title: config.appTitle,
+            });
+      }
+      return AIEnabled
+        ? t("generateInsights.AIGeneratedNeedsApprovalDescription")
+        : t("generateInsights.generatedByAppNeedsApprovalDescription", {
+            title: config.appTitle,
+          });
+    }
+
+    return AIEnabled
+      ? t("generateInsights.generateInsightViaAIDescription")
+      : t("generateInsights.generateInsightDescription", {
+          title: config.appTitle,
+        });
+  };
+
+  const getPrimaryAction = () => {
+    if (insight) {
+      return AIEnabled
+        ? t("generateInsights.regenerateViaAI")
+        : t("generateInsights.regenerate");
+    }
+    return AIEnabled
+      ? t("generateInsights.generateInsightViaAI")
+      : t("generateInsights.generateInsight");
+  };
+
+  const getConfirmMessage = () => {
+    return AIEnabled
+      ? t("generateInsights.regenerateViaAIDescription")
+      : t("generateInsights.regenerateDescription");
+  };
 
   const getPopupTexts = useCallback((): PopupTexts => {
     const buttonLabel = (
@@ -119,28 +161,12 @@ const useInsightPopup = ({
       </Typography>
     );
 
-    const description = isExpired
-      ? t("generateInsights.insightIsExpiredDescription")
-      : insight
-        ? isApproved
-          ? t("generateInsights.insightIsApprovedDescription", {
-              title: config.appTitle,
-            })
-          : t("generateInsights.generatedByAppNeedsApprovalDescription", {
-              title: config.appTitle,
-            })
-        : t("generateInsights.generateInsightDescription", {
-            title: config.appTitle,
-          });
-
     return {
       buttonLabel,
-      description,
-      primaryAction: insight
-        ? t("generateInsights.regenerate")
-        : t("generateInsights.generateInsight"),
+      description: getDescription(),
+      primaryAction: getPrimaryAction(),
       secondaryAction: t("generateInsights.approveInsight"),
-      confirmMessage: t("generateInsights.regenerateDescription"),
+      confirmMessage: getConfirmMessage(),
       confirmButtonLabel: t("generateInsights.regenerate"),
       cancelButtonLabel: t("generateInsights.no"),
     };

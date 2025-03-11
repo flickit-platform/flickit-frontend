@@ -15,7 +15,6 @@ import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
-import { IPermissions } from "@/types";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";
@@ -27,7 +26,8 @@ import MaturityLevelTable, {
 import TableSkeleton from "../common/loadings/TableSkeleton";
 import uniqueId from "@/utils/uniqueId";
 import QueryBatchData from "../common/QueryBatchData";
-import { AttributeInsight } from "./AttributeInsight";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import AttributeInsight from "./AttributeInsight";
 
 const SUbjectAttributeCard = (props: any) => {
   const {
@@ -35,17 +35,18 @@ const SUbjectAttributeCard = (props: any) => {
     title,
     maturityLevel,
     maturity_levels_count,
-    maturityScores,
+    maturityScoreModels,
     confidenceValue,
     id,
     progress,
+    insight,
   } = props;
+  const { permissions } = useAssessmentContext();
 
-  const { permissions }: { permissions: IPermissions } = props;
   const { assessmentId = "" } = useParams();
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
-    maturityScores[0].maturityLevel.id,
+    maturityScoreModels[0].maturityLevel.id,
   );
 
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
@@ -293,7 +294,11 @@ const SUbjectAttributeCard = (props: any) => {
             }}
           >
             {expandedAttribute && (
-              <AttributeInsight progress={progress} id={id} />
+              <AttributeInsight
+                progress={progress}
+                attributeId={id}
+                defaultInsight={insight}
+              />
             )}
 
             <Box
@@ -322,7 +327,7 @@ const SUbjectAttributeCard = (props: any) => {
                   },
                 }}
               >
-                {maturityScores.map((item: any) => {
+                {maturityScoreModels.map((item: any) => {
                   const { maturityLevel: maturityLevelOfScores, score } = item;
                   return (
                     <Tab

@@ -196,7 +196,7 @@ export const AssessmentSubjectAccordion = (
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 4 }}>
         <Box sx={{ display: expanded ? "block" : "none" }}>
-          <SubjectContainer subjectId={id} />
+          <SubjectContainer {...props} />
         </Box>
       </AccordionDetails>
     </Accordion>

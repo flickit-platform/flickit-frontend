@@ -1,217 +1,163 @@
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { memo } from "react";
-import { useParams } from "react-router-dom";
-import QueryData from "../common/QueryData";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import ActionPopup from "../common/buttons/ActionPopup";
-import { theme } from "@/config/theme";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
+import { useParams } from "react-router-dom";
 import { styles } from "@styles";
-import { EditableRichEditor } from "../common/fields/EditableRichEditor";
+import CircularProgress from "@mui/material/CircularProgress";
 import { t } from "i18next";
-import useAttributeInsight from "@/hooks/useAttributeInsight";
-import FaWandMagicSparkles from "../common/icons/FaWandMagicSparkles";
+import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
+import ActionPopup from "@/components/common/buttons/ActionPopup";
+import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 
-export const AttributeInsight = memo(
-  ({ id, progress }: { id: string; progress: any }) => {
-    const { service } = useServiceContext();
-    const { assessmentId = "" } = useParams();
+const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
 
-    const {
-      ApprovedAIAttribute,
-      loadAttributeInsight,
-      generateAIInsight,
-      approveAttribute,
-    } = useAttributeInsight({ id });
+  const [insight, setInsight] = useState<any>(
+    defaultInsight?.assessorInsight || defaultInsight?.aiInsight,
+  );
+  const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
+  const [isApproved, setIsApproved] = useState(
+    defaultInsight?.approved ?? true,
+  );
+  const [isExpired, setIsExpired] = useState(
+    (defaultInsight?.assessorInsight &&
+      !defaultInsight?.assessorInsight?.isValid) ??
+      false,
+  );
 
-    const isInsightExpired = (data: any) => {
-      const hasAssessorInsight = data?.assessorInsight;
-      const hasAIInsight = data?.aiInsight;
-      return (
-        (hasAssessorInsight && !hasAssessorInsight?.isValid) ||
-        (hasAIInsight && !hasAIInsight?.isValid)
+  const fetchSubjectInsight = useQuery<any>({
+    service: (args, config) =>
+      service.loadAttributeInsight({ assessmentId, attributeId }, config),
+    toastError: false,
+    runOnMount: false,
+  });
+
+  const ApproveAISubject = useQuery({
+    service: (args = { assessmentId, attributeId }, config) =>
+      service.ApprovedAIAttribute(args, config),
+    runOnMount: false,
+  });
+
+  const InitInsight = useQuery({
+    service: (args = { assessmentId, attributeId }, config) =>
+      service.generateAIInsight(args, config),
+    runOnMount: false,
+  });
+
+  const ApproveSubject = async (event: React.SyntheticEvent) => {
+    try {
+      event.stopPropagation();
+      await ApproveAISubject.query();
+      await fetchSubjectInsight.query();
+    } catch (e) {
+      toastError(e as ICustomError);
+    }
+  };
+
+  useEffect(() => {
+    if (fetchSubjectInsight.data) {
+      const data = fetchSubjectInsight.data;
+      const selected = data?.assessorInsight || data?.aiInsight;
+      setInsight(selected);
+      setEditable(data?.editable ?? false);
+      setIsApproved(data?.approved ?? true);
+      setIsExpired(
+        (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
       );
-    };
+    }
+  }, [fetchSubjectInsight.data]);
 
-    const isInsightApproved = (data: any) => {
-      const hasAssessorInsight = data?.assessorInsight;
-      const hasAIInsight = data?.aiInsight;
-      return !(
-        (hasAssessorInsight && !hasAssessorInsight?.isValid) ||
-        (hasAIInsight && !hasAIInsight?.isValid) ||
-        ((hasAIInsight || hasAssessorInsight) && !data.approved)
-      );
-    };
+  const {
+    status,
+    hidePrimaryButton,
+    onPrimaryAction,
+    loadingPrimary,
+    onSecondaryAction,
+    loadingSecondary,
+    colorScheme,
+    texts,
+  } = useInsightPopup({
+    insight,
+    isExpired,
+    isApproved,
+    initQuery: InitInsight.query,
+    fetchQuery: fetchSubjectInsight.query,
+    approveAction: ApproveSubject,
+    initLoading: InitInsight.loading,
+    approveLoading: ApproveAISubject.loading,
+    AIEnabled: true,
+  });
 
-    const getInsightStatus = (data: any) => {
-      if (data?.assessorInsight || data?.aiInsight) {
-        if (isInsightExpired(data)) {
-          return "expired";
-        }
-        if (isInsightApproved(data)) {
-          return "approved";
-        }
-        return "pending";
-      }
-      return "default";
-    };
-
-    const getPrimaryButtonText = (data: any, t: any) => {
-      if (data?.assessorInsight || data?.aiInsight) {
-        if (isInsightExpired(data)) {
-          return t("generateInsights.insightIsExpired");
-        }
-        if (isInsightApproved(data)) {
-          return t("generateInsights.insightIsApproved");
-        }
-        return t("generateInsights.AIGeneratedNeedsApproval");
-      }
-      return t("generateInsights.insightIsNotGenerated");
-    };
-
-    const getDescriptionText = (data: any, t: any) => {
-      if (data?.assessorInsight || data?.aiInsight) {
-        if (isInsightExpired(data)) {
-          return t("generateInsights.insightIsExpiredDescription");
-        }
-        if (isInsightApproved(data)) {
-          return t("generateInsights.AIinsightIsApprovedDescription");
-        }
-        return t("generateInsights.AIGeneratedNeedsApprovalDescription");
-      }
-      return t("generateInsights.generateInsightViaAIDescription");
-    };
-
-    const getPrimaryActionText = (data: any, t: any) => {
-      return data?.assessorInsight || data?.aiInsight
-        ? t("generateInsights.regenerateViaAI")
-        : t("generateInsights.generateInsightViaAI");
-    };
-
-    const getStatusColorScheme: any = (data: any, theme: any) => {
-      if (!(data?.assessorInsight || data?.aiInsight)) {
-        return {
-          muiColor: "primary",
-          main: theme.palette.primary.main,
-          light: theme.palette.primary.light,
-        };
-      }
-      if (isInsightApproved(data)) {
-        return {
-          muiColor: "success",
-          main: theme.palette.success.main,
-          light: theme.palette.success.light,
-        };
-      }
-      return {
-        muiColor: "error",
-        main: theme.palette.error.main,
-        light: theme.palette.error.light,
-      };
-    };
-
-    return (
-      <QueryData
-        {...loadAttributeInsight}
-        renderLoading={() => (
-          <Skeleton
-            variant="rectangular"
-            sx={{ borderRadius: 2, height: "60px", mb: 1 }}
+  return (
+    <Box display="flex" flexDirection="column" px={4}>
+      <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
+        <Typography variant="semiBoldLarge">
+          <Trans i18nKey="insight" />
+        </Typography>
+        {editable && (
+          <ActionPopup
+            status={status}
+            hidePrimaryButton={hidePrimaryButton}
+            onPrimaryAction={onPrimaryAction}
+            loadingPrimary={loadingPrimary}
+            onSecondaryAction={onSecondaryAction}
+            loadingSecondary={loadingSecondary}
+            colorScheme={colorScheme}
+            texts={texts}
+            disablePrimaryButton={progress !== 100}
+            disablePrimaryButtonText={
+              t("generateInsights.questionsArentCompleteSoAICantBeGenerated") ??
+              ""
+            }
           />
         )}
-        errorComponent={<></>}
-        render={(data) => (
-          <>
-            {(data.editable ||
-              data?.assessorInsight?.insight ||
-              data?.aiInsight?.insight) && (
-              <>
-                <Box
-                  sx={{ display: "flex", justifyContent: "space-between" }}
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  <Typography variant="semiBoldLarge">
-                    <Trans i18nKey="insight" />
-                  </Typography>
-                  <Box sx={{ display: "flex", gap: 2 }}>
-                    {data?.editable && (
-                      <ActionPopup
-                        disablePrimaryButton={progress !== 100}
-                        disablePrimaryButtonText={
-                          t(
-                            "generateInsights.questionsArentCompleteSoAICantBeGenerated",
-                          ) ?? ""
-                        }
-                        status={getInsightStatus(data)}
-                        onPrimaryAction={() => {
-                          generateAIInsight
-                            .query()
-                            .then(() => loadAttributeInsight.query());
-                        }}
-                        loadingPrimary={generateAIInsight.loading}
-                        onSecondaryAction={approveAttribute}
-                        loadingSecondary={ApprovedAIAttribute.loading}
-                        colorScheme={getStatusColorScheme(data, theme)}
-                        texts={{
-                          buttonLabel: (
-                            <Typography
-                              variant="labelMedium"
-                              sx={{ ...styles.centerVH, gap: 1 }}
-                            >
-                              <FaWandMagicSparkles
-                                styles={{
-                                  color: getStatusColorScheme(data, theme).main,
-                                }}
-                              />{" "}
-                              {getPrimaryButtonText(data, t)}
-                            </Typography>
-                          ),
-                          description: getDescriptionText(data, t),
-                          primaryAction: getPrimaryActionText(data, t),
-                          secondaryAction: t("generateInsights.approveInsight"),
-                          confirmMessage: t(
-                            "generateInsights.regenerateViaAIDescription",
-                          ),
-                          confirmButtonLabel: t("generateInsights.regenerate"),
-                          cancelButtonLabel: t("generateInsights.no"),
-                        }}
-                      />
-                    )}
-                  </Box>
-                </Box>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  onClick={(event) => event.stopPropagation()}
-                  mt={1}
-                >
-                  <EditableRichEditor
-                    defaultValue={
-                      data?.assessorInsight?.insight || data?.aiInsight?.insight
-                    }
-                    editable={data?.editable}
-                    fieldName="title"
-                    onSubmit={async (payload: any) => {
-                      await service.createAttributeInsight({
-                        assessmentId,
-                        attributeId: id,
-                        data: { assessorInsight: payload.title },
-                      });
-                    }}
-                    infoQuery={loadAttributeInsight.query}
-                    placeholder={
-                      t("writeHere", { title: t("insight").toLowerCase() }) ??
-                      ""
-                    }
-                  />
-                </Box>
-              </>
-            )}
-          </>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        maxHeight="100%"
+        gap={0.5}
+        mt={1}
+      >
+        {fetchSubjectInsight.loading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <EditableRichEditor
+            defaultValue={insight?.insight}
+            editable={editable}
+            fieldName="insight"
+            onSubmit={async (payload: any) => {
+              await service.createAttributeInsight({
+                assessmentId,
+                attributeId,
+                data: { assessorInsight: payload.insight },
+              });
+            }}
+            infoQuery={fetchSubjectInsight.query}
+            placeholder={
+              t("writeHere", {
+                title: t("insight").toLowerCase(),
+              }) ?? ""
+            }
+          />
         )}
-      />
-    );
-  },
-);
+      </Box>
+    </Box>
+  );
+};
+
+export default AttributeInsight;
