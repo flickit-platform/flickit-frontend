@@ -39,7 +39,7 @@ const useAttributeInsight = ({ id }: UseAttributeInsightProps): UseAttributeInsi
   const loadAttributeInsight = useQuery({
     service: (args = queryArgs, config) =>
       service.loadAttributeInsight(args, config),
-    runOnMount: true,
+    runOnMount: false,
   });
 
   const generateAIInsight = useQuery({

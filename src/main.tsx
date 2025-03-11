@@ -14,6 +14,7 @@ import { createRoot } from "react-dom/client";
 import keycloakService from "@/service/keycloakService";
 import "./assets/font/fonts.css";
 import "@utils/richEditorStyles.css";
+import { AssessmentProvider } from "./providers/AssessmentProvider";
 
 // Lazy load non-critical components
 const ToastContainer = lazy(() =>
@@ -82,17 +83,19 @@ const renderApp = () => {
       <BrowserRouter>
         <Suspense fallback="loading...">
           <AppProvider>
-            <AuthProvider>
-              <ServiceProvider>
-                <ConfigProvider>
-                  <CssBaseline />
-                  <Suspense fallback={null}>
-                    <ToastContainer {...toastDefaultConfig} />
-                  </Suspense>
-                  <AppWithNovu />
-                </ConfigProvider>
-              </ServiceProvider>
-            </AuthProvider>
+            <AssessmentProvider>
+              <AuthProvider>
+                <ServiceProvider>
+                  <ConfigProvider>
+                    <CssBaseline />
+                    <Suspense fallback={null}>
+                      <ToastContainer {...toastDefaultConfig} />
+                    </Suspense>
+                    <AppWithNovu />
+                  </ConfigProvider>
+                </ServiceProvider>
+              </AuthProvider>
+            </AssessmentProvider>
           </AppProvider>
         </Suspense>
       </BrowserRouter>

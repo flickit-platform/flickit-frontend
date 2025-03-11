@@ -1,40 +1,26 @@
 import { useEffect } from "react";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Trans } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoading";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { SubjectAttributeList } from "./SubjectAttributeList";
 import SubjectOverallInsight from "./SubjectOverallInsight";
-import { ErrorCodes, ISubjectReportModel } from "@types";
-import hasStatus from "@utils/hasStatus";
-import Button from "@mui/material/Button";
 import QueryBatchData from "@common/QueryBatchData";
-import useCalculate from "@/hooks/useCalculate";
 
 const SubjectContainer = (props: any) => {
   const { id } = props;
-  const {
-    loading,
-    loaded,
-    hasError,
-    subjectQueryData,
-    subjectProgressQueryData,
-  } = useSubject({ id });
-  console.log(props);
+  const { loading, loaded, hasError, subjectProgressQueryData } = useSubject({
+    id,
+  });
   return (
     <QueryBatchData
-      queryBatchData={[subjectQueryData, subjectProgressQueryData]}
+      queryBatchData={[subjectProgressQueryData]}
       error={hasError}
       loading={loading}
       loaded={loaded}
-      render={([data = {}, subjectProgress = {}]) => {
-        const { subject } = data;
-        const { isConfidenceValid, isCalculateValid, title } = subject;
+      render={([subjectProgress = {}]) => {
         const { answerCount, questionCount } = subjectProgress;
         const progress = ((answerCount || 0) / (questionCount || 1)) * 100;
 
@@ -44,23 +30,16 @@ const SubjectContainer = (props: any) => {
               <Box sx={{ ...styles.centerVH }} py={6} mt={5}>
                 <GettingThingsReadyLoading color="gray" />
               </Box>
-            ) : !loaded ? null : !isCalculateValid || !isConfidenceValid ? (
-              <NoInsightYetMessage
-                title={title}
-                no_insight_yet_message={!isCalculateValid || !isConfidenceValid}
-                subjectId={id}
-              />
             ) : (
               <Box>
                 <SubjectOverallInsight
-                  {...subjectQueryData}
+                  {...props}
                   defaultInsight={props.insight}
                   subjectId={id}
                   loading={loading}
                 />
                 <SubjectAttributeList
-                  {...subjectQueryData}
-                  subjAtt={props.attributes}
+                  {...props}
                   loading={loading}
                   progress={progress}
                 />
@@ -77,13 +56,7 @@ export const useSubject = (props: any) => {
   const { id } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const { calculate, calculateConfidence } = useCalculate();
 
-  const subjectQueryData = useQuery<ISubjectReportModel>({
-    service: (args, config) =>
-      service.fetchSubject({ assessmentId, subjectId: id }, config),
-    runOnMount: false,
-  });
   const subjectProgressQueryData = useQuery<any>({
     service: (args, config) =>
       service.fetchSubjectProgress({ assessmentId, subjectId: id }, config),
@@ -92,25 +65,10 @@ export const useSubject = (props: any) => {
 
   const getSubjectQueryData = async () => {
     try {
-      await subjectQueryData.query({ assessmentId, subjectId: id });
       await subjectProgressQueryData.query({ assessmentId, subjectId: id });
     } catch (e) {}
   };
 
-  useEffect(() => {
-    if (
-      subjectQueryData.errorObject?.response?.data?.code ==
-      ErrorCodes.CalculateNotValid
-    ) {
-      calculate(getSubjectQueryData);
-    }
-    if (
-      subjectQueryData.errorObject?.response?.data?.code ==
-      ErrorCodes.ConfidenceCalculationNotValid
-    ) {
-      calculateConfidence(getSubjectQueryData);
-    }
-  }, [subjectQueryData.errorObject]);
   useEffect(() => {
     getSubjectQueryData();
   }, []);
@@ -119,73 +77,17 @@ export const useSubject = (props: any) => {
     window.scrollTo(0, 0);
   }, []);
 
-  const hasError = subjectQueryData.error || subjectProgressQueryData.error;
+  const hasError = subjectProgressQueryData.error;
 
-  const loading = subjectQueryData.loading || subjectProgressQueryData.loading;
-  const loaded = subjectQueryData.loaded || subjectProgressQueryData.loaded;
-
-  const noStatus = !hasStatus(subjectQueryData.data?.status);
+  const loading = subjectProgressQueryData.loading;
+  const loaded = subjectProgressQueryData.loaded;
 
   return {
-    noStatus,
     loading,
     loaded,
     hasError,
-    subjectQueryData,
     subjectProgressQueryData,
   };
-};
-
-const NoInsightYetMessage = (props: {
-  title: string;
-  no_insight_yet_message: boolean;
-  subjectId: any;
-}) => {
-  const { subjectId } = props;
-  const { title, no_insight_yet_message } = props;
-  return (
-    <Box mt={2}>
-      <Paper
-        sx={{
-          ...styles.centerCVH,
-          background: "gray",
-          color: "white",
-          p: 3,
-          py: 8,
-          borderRadius: 2,
-          textAlign: "center",
-        }}
-      >
-        {no_insight_yet_message ? (
-          <Typography variant="h4" fontFamily={"Roboto"}>
-            {no_insight_yet_message}
-          </Typography>
-        ) : (
-          <>
-            <Typography variant="h4" fontFamily={"Roboto"}>
-              <Trans i18nKey="moreQuestionsNeedToBeAnswered" />
-            </Typography>
-            <Typography
-              variant="h5"
-              fontFamily={"Roboto"}
-              fontWeight="300"
-              sx={{ mt: 2 }}
-            >
-              <Trans i18nKey="completeSomeOfQuestionnaires" />
-            </Typography>
-          </>
-        )}
-        <Button
-          sx={{ mt: 3 }}
-          variant="contained"
-          component={Link}
-          to={`./../../questionnaires?subject_pk=${subjectId}`}
-        >
-          {title} <Trans i18nKey="questionnaires" />
-        </Button>
-      </Paper>
-    </Box>
-  );
 };
 
 export default SubjectContainer;

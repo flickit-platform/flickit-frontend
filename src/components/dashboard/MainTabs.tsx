@@ -60,7 +60,7 @@ const MainTabs = (props: any) => {
     const permissionsData = fetchAssessmentPermissions.data?.permissions;
     dispatch({
       type: ASSESSMENT_ACTIONS_TYPE.SET_PERMISSIONS,
-      payload: fetchAssessmentPermissions.data,
+      payload: fetchAssessmentPermissions.data?.permissions,
     });
     if (permissionsData) {
       const updatedTabList = tabListTitle.filter((tab) => {
