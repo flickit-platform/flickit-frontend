@@ -1,7 +1,7 @@
 {
     "name": "Flickit",
     "private": true,
-    "version": "1.52.1",
+    "version": "1.53.0-SNAPSHOT",
     "type": "module",
     "scripts": {
         "start": "vite",
