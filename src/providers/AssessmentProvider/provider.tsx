@@ -4,6 +4,7 @@ import React, {
   useContext,
   Dispatch,
   createContext,
+  useMemo,
 } from "react";
 import assessmentReducer from "./reducer";
 
@@ -23,13 +24,20 @@ export const AssessmentContext = createContext<IAssessmentContext>({
 
 const AssessmentDispatchContext = createContext<Dispatch<any>>(() => {});
 
-export const AssessmentProvider: FC<IAssessmentProviderProps> = ({ children }) => {
+export const AssessmentProvider: FC<IAssessmentProviderProps> = ({
+  children,
+}) => {
   const [state, dispatch] = useReducer(assessmentReducer, {
     permissions: {},
   });
 
+  const contextValue = useMemo(
+    () => ({ ...state, dispatch }),
+    [state, dispatch],
+  );
+
   return (
-    <AssessmentContext.Provider value={{ ...state, dispatch }}>
+    <AssessmentContext.Provider value={contextValue}>
       <AssessmentDispatchContext.Provider value={dispatch}>
         {children}
       </AssessmentDispatchContext.Provider>
@@ -40,7 +48,9 @@ export const AssessmentProvider: FC<IAssessmentProviderProps> = ({ children }) =
 export const useAssessmentContext = () => {
   const context = useContext(AssessmentContext);
   if (context === undefined) {
-    throw new Error("useAssessmentContext must be used within an AssessmentProvider");
+    throw new Error(
+      "useAssessmentContext must be used within an AssessmentProvider",
+    );
   }
   return context;
 };
@@ -48,7 +58,9 @@ export const useAssessmentContext = () => {
 export const useAssessmentDispatch = () => {
   const context = useContext(AssessmentDispatchContext);
   if (context === undefined) {
-    throw new Error("useAssessmentDispatch must be used within an AssessmentProvider");
+    throw new Error(
+      "useAssessmentDispatch must be used within an AssessmentProvider",
+    );
   }
   return context;
 };

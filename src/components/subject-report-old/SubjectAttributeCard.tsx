@@ -15,7 +15,6 @@ import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
-import { IPermissions } from "@/types";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import DoneIcon from "@mui/icons-material/Done";

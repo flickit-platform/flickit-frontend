@@ -103,6 +103,52 @@ const useInsightPopup = ({
     });
   }, [insight, isExpired, isApproved]);
 
+  const getDescription = () => {
+    if (isExpired) {
+      return AIEnabled
+        ? t("generateInsights.AIinsightIsExpiredDescription")
+        : t("generateInsights.insightIsExpiredDescription");
+    }
+
+    if (insight) {
+      if (isApproved) {
+        return AIEnabled
+          ? t("generateInsights.AIinsightIsApprovedDescription")
+          : t("generateInsights.insightIsApprovedDescription", {
+              title: config.appTitle,
+            });
+      }
+      return AIEnabled
+        ? t("generateInsights.AIGeneratedNeedsApprovalDescription")
+        : t("generateInsights.generatedByAppNeedsApprovalDescription", {
+            title: config.appTitle,
+          });
+    }
+
+    return AIEnabled
+      ? t("generateInsights.generateInsightViaAIDescription")
+      : t("generateInsights.generateInsightDescription", {
+          title: config.appTitle,
+        });
+  };
+
+  const getPrimaryAction = () => {
+    if (insight) {
+      return AIEnabled
+        ? t("generateInsights.regenerateViaAI")
+        : t("generateInsights.regenerate");
+    }
+    return AIEnabled
+      ? t("generateInsights.generateInsightViaAI")
+      : t("generateInsights.generateInsight");
+  };
+
+  const getConfirmMessage = () => {
+    return AIEnabled
+      ? t("generateInsights.regenerateViaAIDescription")
+      : t("generateInsights.regenerateDescription");
+  };
+
   const getPopupTexts = useCallback((): PopupTexts => {
     const buttonLabel = (
       <Typography variant="labelMedium" sx={{ ...styles.centerVH, gap: 1 }}>
@@ -115,42 +161,12 @@ const useInsightPopup = ({
       </Typography>
     );
 
-    const description = isExpired
-      ? AIEnabled
-        ? t("generateInsights.AIinsightIsExpiredDescription")
-        : t("generateInsights.insightIsExpiredDescription")
-      : insight
-        ? isApproved
-          ? AIEnabled
-            ? t("generateInsights.AIinsightIsApprovedDescription")
-            : t("generateInsights.insightIsApprovedDescription", {
-                title: config.appTitle,
-              })
-          : AIEnabled
-            ? t("generateInsights.AIGeneratedNeedsApprovalDescription")
-            : t("generateInsights.generatedByAppNeedsApprovalDescription", {
-                title: config.appTitle,
-              })
-        : AIEnabled
-          ? t("generateInsights.generateInsightViaAIDescription")
-          : t("generateInsights.generateInsightDescription", {
-              title: config.appTitle,
-            });
-
     return {
       buttonLabel,
-      description,
-      primaryAction: insight
-        ? AIEnabled
-          ? t("generateInsights.regenerateViaAI")
-          : t("generateInsights.regenerate")
-        : AIEnabled
-          ? t("generateInsights.generateInsightViaAI")
-          : t("generateInsights.generateInsight"),
+      description: getDescription(),
+      primaryAction: getPrimaryAction(),
       secondaryAction: t("generateInsights.approveInsight"),
-      confirmMessage: AIEnabled
-        ? t("generateInsights.regenerateViaAIDescription")
-        : t("generateInsights.regenerateDescription"),
+      confirmMessage: getConfirmMessage(),
       confirmButtonLabel: t("generateInsights.regenerate"),
       cancelButtonLabel: t("generateInsights.no"),
     };

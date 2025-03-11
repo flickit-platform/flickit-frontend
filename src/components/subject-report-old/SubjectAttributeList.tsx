@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import SubjectAttributeCard from "./SubjectAttributeCard";
 import Typography from "@mui/material/Typography";
-import { useAssessmentContext } from "@/providers/AssessmentProvider";
 
 export const SubjectAttributeList = (props: any) => {
   const { attributes, progress } = props;
