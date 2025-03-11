@@ -17,26 +17,22 @@ import QueryBatchData from "@common/QueryBatchData";
 import useCalculate from "@/hooks/useCalculate";
 
 const SubjectContainer = (props: any) => {
-  const { subjectId } = props;
+  const { id } = props;
   const {
     loading,
     loaded,
     hasError,
     subjectQueryData,
     subjectProgressQueryData,
-    fetchPathInfo,
-  } = useSubject({ subjectId });
+  } = useSubject({ id });
+  console.log(props);
   return (
     <QueryBatchData
-      queryBatchData={[
-        subjectQueryData,
-        subjectProgressQueryData,
-        fetchPathInfo,
-      ]}
+      queryBatchData={[subjectQueryData, subjectProgressQueryData]}
       error={hasError}
       loading={loading}
       loaded={loaded}
-      render={([data = {}, subjectProgress = {}, pathInfo = {}]) => {
+      render={([data = {}, subjectProgress = {}]) => {
         const { subject } = data;
         const { isConfidenceValid, isCalculateValid, title } = subject;
         const { answerCount, questionCount } = subjectProgress;
@@ -52,17 +48,19 @@ const SubjectContainer = (props: any) => {
               <NoInsightYetMessage
                 title={title}
                 no_insight_yet_message={!isCalculateValid || !isConfidenceValid}
-                subjectId={subjectId}
+                subjectId={id}
               />
             ) : (
               <Box>
                 <SubjectOverallInsight
                   {...subjectQueryData}
-                  subjectId={subjectId}
+                  defaultInsight={props.insight}
+                  subjectId={id}
                   loading={loading}
                 />
                 <SubjectAttributeList
                   {...subjectQueryData}
+                  subjAtt={props.attributes}
                   loading={loading}
                   progress={progress}
                 />
@@ -76,32 +74,26 @@ const SubjectContainer = (props: any) => {
 };
 
 export const useSubject = (props: any) => {
-  const { subjectId } = props;
+  const { id } = props;
   const { service } = useServiceContext();
-  const { assessmentId } = useParams();
+  const { assessmentId = "" } = useParams();
   const { calculate, calculateConfidence } = useCalculate();
 
   const subjectQueryData = useQuery<ISubjectReportModel>({
-    service: (args: { subjectId: string; assessmentId: string }, config) =>
-      service.fetchSubject(args, config),
+    service: (args, config) =>
+      service.fetchSubject({ assessmentId, subjectId: id }, config),
     runOnMount: false,
   });
   const subjectProgressQueryData = useQuery<any>({
-    service: (args: { subjectId: string; assessmentId: string }, config) =>
-      service.fetchSubjectProgress(args, config),
-    runOnMount: false,
-  });
-
-  const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args || {}) }, config),
+      service.fetchSubjectProgress({ assessmentId, subjectId: id }, config),
     runOnMount: false,
   });
 
   const getSubjectQueryData = async () => {
     try {
-      await subjectQueryData.query({ subjectId, assessmentId });
-      await subjectProgressQueryData.query({ subjectId, assessmentId });
+      await subjectQueryData.query({ assessmentId, subjectId: id });
+      await subjectProgressQueryData.query({ assessmentId, subjectId: id });
     } catch (e) {}
   };
 
@@ -141,7 +133,6 @@ export const useSubject = (props: any) => {
     hasError,
     subjectQueryData,
     subjectProgressQueryData,
-    fetchPathInfo,
   };
 };
 
