@@ -33,13 +33,12 @@ import firstCharDetector from "@/utils/firstCharDetector";
 import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
-
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;

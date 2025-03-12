@@ -2,25 +2,21 @@ import { useState } from "react";
 import { DialogProps } from "@mui/material/Dialog";
 import { Trans } from "react-i18next";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import {
-  AlertTitle,
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Typography,
-} from "@mui/material";
+import AlertTitle from "@mui/material/AlertTitle";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import { CircleRating } from "../MaturityLevelTable";
 import { styles, generateColorFromString } from "@styles";
-import {
-  ArrowBackIos,
-  ArrowForwardIos,
-  QuestionAnswer,
-} from "@mui/icons-material";
+import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
+import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Link } from "react-router-dom";
 import AlertBox from "@/components/common/AlertBox";
 
@@ -32,7 +28,6 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
 }
 
 const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
-
   const {
     onClose: closeDialog,
     onPreviousQuestion,
@@ -54,7 +49,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const renderNavigation = () => (
     <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
       <Button
-        data-testid = "question-modal-previous-question"
+        data-testid="question-modal-previous-question"
         onClick={onPreviousQuestion}
         disabled={index - 1 < 0}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
@@ -74,7 +69,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Typography>
       </Button>
       <Button
-        data-testid = "question-modal-next-question"
+        data-testid="question-modal-next-question"
         onClick={onNextQuestion}
         disabled={index + 2 > questionsInfo?.length}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}

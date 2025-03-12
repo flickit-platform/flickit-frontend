@@ -14,71 +14,64 @@ import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
-const SubjectOverallInsight = (props: any) => {
-  const { subjectId } = props;
-
+const SubjectOverallInsight = ({ subjectId, defaultInsight }: any) => {
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
   const abortController = useRef(new AbortController());
 
-  const [isApproved, setIsApproved] = useState(true);
-  const [insight, setInsight] = useState<any>(null);
-  const [editable, setEditable] = useState(false);
-  const [isExpired, setIsExpired] = useState(false);
+  const [insight, setInsight] = useState<any>(
+    defaultInsight?.assessorInsight || defaultInsight?.defaultInsight,
+  );
+  const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
+  const [isApproved, setIsApproved] = useState(
+    defaultInsight?.approved ?? true,
+  );
+  const [isExpired, setIsExpired] = useState(
+    (defaultInsight?.assessorInsight &&
+      !defaultInsight?.assessorInsight?.isValid) ??
+      false,
+  );
 
-  const { service } = useServiceContext();
-
-  const { assessmentId = "" } = useParams();
+  const fetchSubjectInsight = useQuery<any>({
+    service: (args, config) =>
+      service.fetchSubjectInsight({ assessmentId, subjectId }, config),
+    toastError: false,
+    runOnMount: false,
+  });
 
   const ApproveAISubject = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        subjectId,
-      },
-      config,
-    ) => service.ApproveAISubject(args, config),
+    service: (args = { assessmentId, subjectId }, config) =>
+      service.ApproveAISubject(args, config),
     runOnMount: false,
   });
 
   const InitInsight = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        subjectId,
-      },
-      config,
-    ) => service.InitInsight(args, config),
+    service: (args = { assessmentId, subjectId }, config) =>
+      service.InitInsight(args, config),
     runOnMount: false,
-  });
-
-  const fetchSubjectInsight = useQuery<any>({
-    service: (args, config) =>
-      service.fetchSubjectInsight({ assessmentId, subjectId }, {}),
-    toastError: false,
   });
 
   const ApproveSubject = async (event: React.SyntheticEvent) => {
     try {
       event.stopPropagation();
       await ApproveAISubject.query();
-      fetchSubjectInsight.query();
+      await fetchSubjectInsight.query();
     } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
+      toastError(e as ICustomError);
     }
   };
 
   useEffect(() => {
-    const data = fetchSubjectInsight.data;
-    const selectedInsight = data?.assessorInsight || data?.defaultInsight;
-    setIsExpired(
-      (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
-    );
-
-    if (selectedInsight) {
-      setInsight(selectedInsight);
-      setIsApproved(data?.approved);
+    if (fetchSubjectInsight.data) {
+      const data = fetchSubjectInsight.data;
+      const selected = data?.assessorInsight || data?.defaultInsight;
+      setInsight(selected);
+      setEditable(data?.editable ?? false);
+      setIsApproved(data?.approved ?? true);
+      setIsExpired(
+        (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
+      );
     }
-    setEditable(data?.editable ?? false);
   }, [fetchSubjectInsight.data]);
 
   const {
@@ -100,14 +93,10 @@ const SubjectOverallInsight = (props: any) => {
     initLoading: InitInsight.loading,
     approveLoading: ApproveAISubject.loading,
   });
+
   return (
     <Box display="flex" flexDirection="column" px={4}>
-      <Box
-        sx={{
-          ...styles.centerV,
-          justifyContent: "space-between",
-        }}
-      >
+      <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
           <Trans i18nKey="insight" />
         </Typography>
@@ -124,6 +113,7 @@ const SubjectOverallInsight = (props: any) => {
           />
         )}
       </Box>
+
       <Box
         display="flex"
         flexDirection="column"
@@ -141,32 +131,31 @@ const SubjectOverallInsight = (props: any) => {
             <CircularProgress />
           </Box>
         ) : (
-          <>
-            <EditableRichEditor
-              defaultValue={insight?.insight}
-              editable={editable}
-              fieldName="insight"
-              onSubmit={async (payload: any, event: any) => {
-                await service.updateSubjectInsight(
-                  {
-                    assessmentId,
-                    data: { insight: payload?.insight },
-                    subjectId,
-                  },
-                  { signal: abortController.current.signal },
-                );
-              }}
-              infoQuery={fetchSubjectInsight.query}
-              placeholder={
-                t("writeHere", {
-                  title: t("insight").toLowerCase(),
-                }) ?? ""
-              }
-            />
-          </>
+          <EditableRichEditor
+            defaultValue={insight?.insight}
+            editable={editable}
+            fieldName="insight"
+            onSubmit={async (payload: any, event: any) => {
+              await service.updateSubjectInsight(
+                {
+                  assessmentId,
+                  subjectId,
+                  data: { insight: payload?.insight },
+                },
+                { signal: abortController.current.signal },
+              );
+            }}
+            infoQuery={fetchSubjectInsight.query}
+            placeholder={
+              t("writeHere", {
+                title: t("insight").toLowerCase(),
+              }) ?? ""
+            }
+          />
         )}
-      </Box>{" "}
+      </Box>
     </Box>
   );
 };
+
 export default SubjectOverallInsight;

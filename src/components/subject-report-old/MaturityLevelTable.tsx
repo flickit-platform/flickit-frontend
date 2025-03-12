@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Rating,
-  styled,
-  Typography,
-  Box,
-  Chip,
-  Grid,
-  TablePagination,
-  Popover,
-} from "@mui/material";
+import React, { useState } from "react";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Rating from "@mui/material/Rating";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import TablePagination from "@mui/material/TablePagination";
+import Popover from "@mui/material/Popover";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import { t } from "i18next";
 import useDialog from "@/utils/useDialog";
 import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsContainer";

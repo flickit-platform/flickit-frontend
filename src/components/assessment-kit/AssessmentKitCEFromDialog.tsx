@@ -18,15 +18,18 @@ import AutocompleteAsyncField, {
 } from "@common/fields/AutocompleteAsyncField";
 import UploadField from "@common/fields/UploadField";
 import RichEditorField from "@common/fields/RichEditorField";
-import { Box, Button, Typography, Alert } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
 import { keyframes } from "@emotion/react";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { theme } from "@/config/theme";
 import SelectLanguage from "@utils/selectLanguage";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;

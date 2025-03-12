@@ -1,6 +1,8 @@
-import React from "react";
 import FormControl from "@mui/material/FormControl";
-import { InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select from "@mui/material/Select";
 import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 

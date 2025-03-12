@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/material/styles";
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const getNumberBaseOnScreen = (
   xs: number,

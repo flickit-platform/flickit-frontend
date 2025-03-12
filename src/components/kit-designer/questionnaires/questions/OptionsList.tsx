@@ -14,7 +14,7 @@ import { IOption } from "@/types";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
 import OptionForm from "./OptionForm";
-import { Add } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
 
 interface OptionListProps {
   Options: Array<IOption>;

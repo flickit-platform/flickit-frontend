@@ -2,7 +2,7 @@ import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { getMaturityLevelColors, styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 
@@ -35,7 +35,7 @@ const DonutChart = (props: IGaugeProps) => {
 
   return (
     <Suspense fallback={<Trans i18nKey={"loading"} />}>
-      <Box sx={{  height: "100%"}} {...rest}>
+      <Box sx={{ height: "100%" }} {...rest}>
         <Box
           sx={{
             ...styles.centerCVH,
@@ -52,7 +52,11 @@ const DonutChart = (props: IGaugeProps) => {
               width: "fit-content",
             }}
           >
-            <CircleGaugeComponent colorCode={colorCode} value={levelValue} height={height}/>
+            <CircleGaugeComponent
+              colorCode={colorCode}
+              value={levelValue}
+              height={height}
+            />
           </Box>
           {displayTitle && (
             <Typography

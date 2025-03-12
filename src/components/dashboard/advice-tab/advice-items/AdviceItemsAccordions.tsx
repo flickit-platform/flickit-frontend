@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-  Chip,
-  Box,
-  IconButton,
-  Divider,
-  Grid,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Grid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
+import DeleteRounded from "@mui/icons-material/DeleteRounded";
+import EditRounded from "@mui/icons-material/EditRounded";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import { AdviceItem } from "@types";
 import i18next, { t } from "i18next";

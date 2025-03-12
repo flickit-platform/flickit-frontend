@@ -1,12 +1,10 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Divider,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
 

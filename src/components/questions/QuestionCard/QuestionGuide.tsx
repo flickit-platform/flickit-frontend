@@ -1,6 +1,8 @@
 import languageDetector from "@/utils/languageDetector";
-import { InfoRounded } from "@mui/icons-material";
-import { Box, Collapse, Typography } from "@mui/material";
+import InfoRounded from "@mui/icons-material/InfoRounded";
+import Collapse from "@mui/material/Collapse";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import Title from "@common/Title";
 import { theme } from "@/config/theme";

@@ -11,7 +11,7 @@ import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectTable from "./SubjectTable";

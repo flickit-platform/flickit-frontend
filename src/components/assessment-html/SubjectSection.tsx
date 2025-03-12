@@ -11,7 +11,7 @@ import AssessmentSubjectRadialChart from "@/components/common/charts/BarChart";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const SubjectReport = ({
   graphicalReport,

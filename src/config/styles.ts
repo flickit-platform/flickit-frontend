@@ -1,4 +1,4 @@
-import { keyframes, SxProps, Theme } from "@mui/material";
+import { keyframes, SxProps, Theme } from "@mui/material/styles";
 import { TStatus } from "@types";
 import hasStatus from "@utils/hasStatus";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
@@ -42,7 +42,7 @@ const commonStyles = {
   }),
   activeNavbarLink: style({
     "&.active": {
-      color: (theme) => theme.palette.primary.dark,
+      color: "#c8d8e9",
     },
   }),
   circularProgressBackgroundStroke: style({

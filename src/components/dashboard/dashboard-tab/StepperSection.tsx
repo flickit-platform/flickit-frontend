@@ -1,12 +1,15 @@
 import Box from "@mui/material/Box";
-import { Step, StepLabel, Stepper, Typography } from "@mui/material";
+import Step from "@mui/material/Step";
+import Typography from "@mui/material/Typography";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import { styles } from "@styles";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
 import MLink from "@mui/material/Link";
 

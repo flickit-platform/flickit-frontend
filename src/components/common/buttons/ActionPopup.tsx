@@ -1,16 +1,15 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Popper,
-  Paper,
-  ClickAwayListener,
-  Tooltip,
-  Grid,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { ExpandLessOutlined, ExpandMoreOutlined } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Popper from "@mui/material/Popper";
+import Paper from "@mui/material/Paper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
+import LoadingButton from "@mui/lab/LoadingButton";
+import ExpandMoreOutlined from "@mui/icons-material/ExpandMoreOutlined";
+import ExpandLessOutlined from "@mui/icons-material/ExpandLessOutlined";
 import { theme } from "@/config/theme";
 
 interface ActionPopupProps {

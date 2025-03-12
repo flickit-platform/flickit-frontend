@@ -1,17 +1,23 @@
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import { theme } from "@config/theme";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { useEffect, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
+import {
+  ASSESSMENT_ACTIONS_TYPE,
+  useAssessmentDispatch,
+} from "@/providers/AssessmentProvider";
 
 const MainTabs = (props: any) => {
+  const dispatch = useAssessmentDispatch();
+
   const { onTabChange, selectedTab } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -25,11 +31,6 @@ const MainTabs = (props: any) => {
     {
       label: "insights",
       address: "insights",
-      permission: "viewAssessmentReport",
-    },
-    {
-      label: "insights",
-      address: "insightsV2",
       permission: true,
     },
     { label: "advice", address: "advice", permission: "createAdvice" },
@@ -57,7 +58,10 @@ const MainTabs = (props: any) => {
 
   useEffect(() => {
     const permissionsData = fetchAssessmentPermissions.data?.permissions;
-
+    dispatch({
+      type: ASSESSMENT_ACTIONS_TYPE.SET_PERMISSIONS,
+      payload: fetchAssessmentPermissions.data?.permissions,
+    });
     if (permissionsData) {
       const updatedTabList = tabListTitle.filter((tab) => {
         if (typeof tab.permission === "boolean") {

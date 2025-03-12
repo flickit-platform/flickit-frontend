@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
-import { Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { ReactElement } from "react";
 
 interface EmptyStateProps {

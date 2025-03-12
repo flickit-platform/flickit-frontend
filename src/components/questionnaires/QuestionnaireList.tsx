@@ -6,7 +6,8 @@ import LoadingSkeletonOfQuestionnaires from "@common/loadings/LoadingSkeletonOfQ
 import Box from "@mui/material/Box";
 import QANumberIndicator from "@common/QANumberIndicator";
 import Divider from "@mui/material/Divider";
-import { MenuItem, Typography } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";

@@ -15,6 +15,11 @@ import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRound
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
 import { Button, Typography } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
 import { useQuery } from "@utils/useQuery";
 import { ISpaceType } from "@types";
 import basicSmallIcon from "@/assets/svg/basicSmallIcon.svg";
