@@ -66,7 +66,6 @@ const BasicBox = [
 const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
-  const [spaceType, setSpaceType] = useState<ISpaceType[]>([]);
   const [selectedType, setSelectedType] = useState<string>("");
   const [spaceIdNum, setSpaceIdNum] = useState<number>();
   const [step, setStep] = useState(1);
@@ -108,17 +107,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     runOnMount: false,
   });
 
-  const allSpacesType = async () => {
-    let data = await fetchSpaceType.query();
-    if (data) {
-      const { spaceTypes: getSpaceType } = data;
-      setSpaceType(getSpaceType);
-    }
-  };
-
-  useEffect(() => {
-    allSpacesType().then();
-  }, []);
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     data = { ...data, type: selectedType };
@@ -179,8 +167,8 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
 
 
   const goToSpace = () => {
-    return type !== "update" && navigate(`/${spaceIdNum}/assessments/1`);
-    close();
+     type !== "update" && navigate(`/${spaceIdNum}/assessments/1`)  ;
+      close();
   };
 
   if (step == 3) {

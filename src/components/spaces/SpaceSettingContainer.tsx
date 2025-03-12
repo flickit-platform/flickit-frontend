@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import Title from "@common/Title";
