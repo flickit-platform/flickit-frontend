@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
-import { Button, IconButton, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useParams } from "react-router-dom";
 import { styles } from "@styles";
@@ -14,7 +16,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
 import { ErrorCodes } from "@/types";
 
@@ -373,7 +375,7 @@ export const IssuesItem = ({
       {name === "notGenerated" && (
         <Tooltip
           disableHoverListener={
-            issues?.unanswered < 1 || !disableGenerateButtons
+            issues?.unanswered < 1 ?? !disableGenerateButtons
           }
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
@@ -399,7 +401,7 @@ export const IssuesItem = ({
         <>
           <Tooltip
             disableHoverListener={
-              issues?.unanswered < 1 || !disableGenerateButtons
+              issues?.unanswered < 1 ?? !disableGenerateButtons
             }
             title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
           >

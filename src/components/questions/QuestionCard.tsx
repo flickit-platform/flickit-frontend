@@ -70,13 +70,11 @@ import { evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
-import {
-  ArrowBack,
-  ArrowForward,
-  CheckOutlined,
-  ExpandLess,
-  ExpandMore,
-} from "@mui/icons-material";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import CheckOutlined from "@mui/icons-material/CheckOutlined";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
 import { useQuestions } from "@components/questions/QuestionsContainer";

@@ -1,5 +1,6 @@
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import { Grid, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { getMaturityLevelColors, styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";

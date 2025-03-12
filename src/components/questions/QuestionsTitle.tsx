@@ -18,8 +18,9 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionsFilteringDropdown } from "../questionnaires/QuestionnaireList";
-import { IconButton } from "@mui/material";
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import ArrowForward from "@mui/icons-material/ArrowForward";
 
 const itemNames = [
   {

@@ -1,19 +1,18 @@
 import React, { useMemo } from "react";
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-  Collapse,
-  useTheme,
-} from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
+import Collapse from "@mui/material/Collapse";
+import useTheme from "@mui/material/styles/useTheme";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
 import { IAttribute, IGraphicalReport, ISubject } from "@/types";
 import { styles } from "@styles";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 // Define the type for the state to track open items
 interface OpenItemsState {

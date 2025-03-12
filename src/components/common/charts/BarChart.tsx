@@ -11,7 +11,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { convertToRadialChartData } from "@/utils/convertToAssessmentChartData";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface CustomBarChartProps {
   loading: boolean;

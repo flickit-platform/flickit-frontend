@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import QueryBatchData from "@common/QueryBatchData";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import { IAssessmentReportModel, RolesType } from "@types";
+import { RolesType } from "@types";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../common/PermissionControl";
@@ -14,13 +16,13 @@ import { t } from "i18next";
 import { Gauge } from "../common/charts/Gauge";
 import { Trans } from "react-i18next";
 import { IssuesItem } from "../dashboard/dashboard-tab/todoBox";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
-  const fetchAssessmentInsight = useQuery<IAssessmentReportModel>({
+  const fetchAssessmentInsight = useQuery({
     service: (args, config) =>
       service.fetchAssessment({ assessmentId }, config),
     toastError: false,
@@ -56,7 +58,10 @@ const AssessmentReportContainer = (props: any) => {
   };
 
   useEffect(() => {
-    if (fetchAssessmentInsight.errorObject?.response?.data?.code == "CALCULATE_NOT_VALID") {
+    if (
+      fetchAssessmentInsight.errorObject?.response?.data?.code ==
+      "CALCULATE_NOT_VALID"
+    ) {
       calculate();
     }
     if (
@@ -65,7 +70,9 @@ const AssessmentReportContainer = (props: any) => {
     ) {
       calculateConfidenceLevel();
     }
-    if (fetchAssessmentInsight?.errorObject?.response?.data?.code === "DEPRECATED") {
+    if (
+      fetchAssessmentInsight?.errorObject?.response?.data?.code === "DEPRECATED"
+    ) {
       service.migrateKitVersion({ assessmentId }).then(() => {
         fetchAssessmentInsight.query();
       });
@@ -78,7 +85,9 @@ const AssessmentReportContainer = (props: any) => {
   });
 
   return (
-    <PermissionControl error={[fetchAssessmentInsight.errorObject?.response?.data]}>
+    <PermissionControl
+      error={[fetchAssessmentInsight.errorObject?.response?.data]}
+    >
       <QueryBatchData
         queryBatchData={[
           fetchAssessmentInsight,
@@ -128,7 +137,11 @@ const AssessmentReportContainer = (props: any) => {
                 display="flex"
                 mt={2}
               >
-                <AssessmentInsight />
+                <AssessmentInsight
+                  defaultInsight={
+                    fetchAssessmentInsight.data.assessment.insight
+                  }
+                />
                 <Gauge
                   maturity_level_number={assessmentKit?.maturityLevelCount}
                   isMobileScreen={true}

@@ -1,8 +1,8 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { Trans } from "react-i18next";
-import { Typography, useMediaQuery } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { confidenceColor, getMaturityLevelColors } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
