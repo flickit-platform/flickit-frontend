@@ -35,7 +35,7 @@ interface ICreateSpaceDialogProps extends DialogProps {
   context?: any;
   titleStyle?: any;
   contentStyle?: any;
-  allowCreateBasic: boolean;
+  allowCreateBasic?: boolean;
 }
 
 const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
