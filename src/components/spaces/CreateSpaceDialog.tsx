@@ -15,8 +15,6 @@ import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRound
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
 import { Button, Typography } from "@mui/material";
-import { useQuery } from "@utils/useQuery";
-import { ISpaceType } from "@types";
 import greenCheckmark from "@/assets/svg/greenCheckmark.svg";
 import Box from "@mui/material/Box";
 import Check from "@components/spaces/Icons/check";
@@ -25,6 +23,7 @@ import { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
+import UniqueId from "@utils/uniqueId";
 
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
@@ -102,12 +101,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     setStep(1);
   };
 
-  const fetchSpaceType = useQuery({
-    service: (args, config) => service.fetchSpaceType(args, config),
-    runOnMount: false,
-  });
-
-
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     data = { ...data, type: selectedType };
     setLoading(true);
@@ -165,10 +158,9 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     }
   }, [openDialog, formMethods, abortController]);
 
-
   const goToSpace = () => {
-     type !== "update" && navigate(`/${spaceIdNum}/assessments/1`)  ;
-      close();
+    type !== "update" && navigate(`/${spaceIdNum}/assessments/1`);
+    close();
   };
 
   if (step == 3) {
@@ -300,7 +292,11 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "end" }}>
-              <Button data-testid={"next-step-modal"} variant={"contained"} onClick={() => setStep(2)}>
+              <Button
+                data-testid={"next-step-modal"}
+                variant={"contained"}
+                onClick={() => setStep(2)}
+              >
                 <Typography>
                   <Trans i18nKey={"next"} />
                 </Typography>
@@ -391,34 +387,59 @@ const BoxTypes = (props: any) => {
     }
   };
 
+  const borderStyle = () => {
+    if (selectedType == type && type == "PREMIUM") {
+      return "1px solid #2466A8";
+    } else if (selectedType == type && type == "BASIC") {
+      return "1px solid #668099";
+    } else {
+      return "1px solid #C7CCD1";
+    }
+  };
+
+  const bgStyle = () => {
+    if (selectedType == type && type == "PREMIUM") {
+      return "#2466A814";
+    } else if (selectedType == type && type == "BASIC") {
+      return "#6680991f";
+    } else {
+      return "unset";
+    }
+  };
+
+  const hoverBorderColor = () => {
+    if (type == "PREMIUM") {
+      return "#2D80D2";
+    } else if (type == "BASIC" && !allowCreateBasic) {
+      return "#C7CCD1";
+    } else {
+      return "#73808C";
+    }
+  };
+
+  const TypographyColor = () => {
+      if(type == "BASIC" && allowCreateBasic){
+          return "#2B333B"
+      }else if(type == "BASIC" && !allowCreateBasic){
+          return "#3D4D5C80"
+      }else {
+          return "unset"
+      }
+  };
+
   return (
     <Box
       sx={{
         borderRadius: "8px",
-        border:
-          selectedType == type && type == "PREMIUM"
-            ? "1px solid #2466A8"
-            : selectedType == type && type == "BASIC"
-              ? "1px solid #668099"
-              : "1px solid #C7CCD1",
+        border: borderStyle(),
         height: "100%",
         p: 2,
         cursor: allowCreateBasic ? "pointer" : "unset",
-        background:
-          selectedType == type && type == "PREMIUM"
-            ? "#2466A814"
-            : selectedType == type && type == "BASIC"
-              ? "#6680991f"
-              : "unset",
+        background: bgStyle(),
         "&:hover": {
           borderWidth: "1px",
           borderStyle: "solid",
-          borderColor:
-            type == "PREMIUM"
-              ? "#2D80D2"
-              : type == "BASIC" && !allowCreateBasic
-                ? "#C7CCD1"
-                : "#73808C",
+          borderColor: hoverBorderColor(),
         },
         position: "relative",
       }}
@@ -443,12 +464,7 @@ const BoxTypes = (props: any) => {
                 type == "PREMIUM"
                   ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
                   : "unset",
-              color:
-                type == "BASIC" && allowCreateBasic
-                  ? "#2B333B"
-                  : type == "BASIC" && !allowCreateBasic
-                    ? "#3D4D5C80"
-                    : "unset",
+              color: TypographyColor()
             }}
           >
             <Trans i18nKey={title} />
@@ -485,17 +501,13 @@ const BoxTypes = (props: any) => {
                 gap: 1,
                 mb: 1,
               }}
+              key={UniqueId()}
             >
               <Check type={type} allowCreateBasic={allowCreateBasic} />
               <Typography
                 sx={{
                   ...theme.typography.labelSmall,
-                  color:
-                    type == "BASIC" && allowCreateBasic
-                      ? "#2B333B"
-                      : type == "BASIC" && !allowCreateBasic
-                        ? "#3D4D5C80"
-                        : "unset",
+                  color: TypographyColor()
                 }}
               >
                 <Trans i18nKey={text} />
