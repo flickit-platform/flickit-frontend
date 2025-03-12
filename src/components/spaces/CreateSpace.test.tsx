@@ -36,6 +36,9 @@ describe("CreateSpaceDialog", () => {
             open={true}
             onClose={mockOnClose}
             onSubmitForm={mockOnSubmitForm}
+            allowCreateBasic={true}
+            titleStyle={{ mb: 0 }}
+            contentStyle={{ p: 0 }}
           />
         </ServiceProvider>
         <ToastContainer />
@@ -85,6 +88,9 @@ describe("CreateSpaceDialog", () => {
             open={true}
             onClose={mockOnClose}
             onSubmitForm={mockOnSubmitForm}
+            allowCreateBasic={true}
+            titleStyle={{ mb: 0 }}
+            contentStyle={{ p: 0 }}
           />
         </ServiceProvider>
         <ToastContainer />
@@ -123,6 +129,9 @@ describe("CreateSpaceDialog", () => {
             onClose={mockOnClose}
             onSubmitForm={mockOnSubmitForm}
             context={mockContext}
+            allowCreateBasic={true}
+            titleStyle={{ mb: 0 }}
+            contentStyle={{ p: 0 }}
           />
         </ServiceProvider>
         <ToastContainer />

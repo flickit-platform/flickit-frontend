@@ -14,7 +14,7 @@ import { t } from "i18next";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
-  title: JSX.Element;
+  title: JSX.Element | null;
   style?: any;
   titleStyle?: any;
   contentStyle?: any;
@@ -33,9 +33,9 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       fullScreen={fullScreen}
       {...rest}
     >
-      <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV, ...titleStyle }}>
+      {title &&  <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV, ...titleStyle }}>
         {title}
-      </DialogTitle>
+      </DialogTitle>}
       <DialogContent
         style={style}
         sx={{ display: "flex", flexDirection: "column",...contentStyle }}
@@ -59,6 +59,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   onSubmit?: (e: any, shouldView?: boolean) => any;
   onBack?: () => void;
   hasBackBtn?: boolean;
+  backType?: any;
   cancelLabel?: string | null;
 }
 
@@ -77,6 +78,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     submitButtonLabel = type === "update" ? t("update") : t("create"),
     cancelLabel = "cancel",
     submitAndViewButtonLabel,
+    backType = "contained",
     children,
   } = props;
   const fullScreen = useScreenResize("sm");
@@ -99,7 +101,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
         )}
         {hasBackBtn && (
           <Grid item>
-            <Button data-cy="back" variant="contained" onClick={onBack}>
+            <Button data-cy="back" variant={backType} onClick={onBack}>
               <Trans i18nKey="back" />
             </Button>
           </Grid>
