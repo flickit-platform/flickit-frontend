@@ -177,10 +177,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     }
   }, [openDialog, formMethods, abortController]);
 
-  const handleChange = (e: any) => {
-    const { value } = e.target;
-    setSelectedType(value);
-  };
 
   const goToSpace = () => {
     return type !== "update" && navigate(`/${spaceIdNum}/assessments/1`);
@@ -269,6 +265,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
           <IconButton
             sx={{ color: "#fff", marginInlineStart: "auto" }}
             onClick={close}
+            data-testid={"close-btn"}
           >
             <CloseIcon style={{ width: "24px", height: "24px" }} />
           </IconButton>
@@ -315,7 +312,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "end" }}>
-              <Button variant={"contained"} onClick={() => setStep(2)}>
+              <Button data-testid={"next-step-modal"} variant={"contained"} onClick={() => setStep(2)}>
                 <Typography>
                   <Trans i18nKey={"next"} />
                 </Typography>
@@ -426,7 +423,6 @@ const BoxTypes = (props: any) => {
               ? "#6680991f"
               : "unset",
         "&:hover": {
-          // border : type == "b" ? "1px solid #73808C" : "1px solid linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
           borderWidth: "1px",
           borderStyle: "solid",
           borderColor:
@@ -483,9 +479,6 @@ const BoxTypes = (props: any) => {
       </Box>
       <Box
         sx={{
-          // ...styles.centerVH,
-          // justifyContent: "flex-start",
-          // gap: "8px",
           WebkitBackgroundClip: type == "PREMIUM" ? "text" : "unset",
           WebkitTextFillColor: type == "PREMIUM" ? "transparent" : "unset",
           backgroundImage:
