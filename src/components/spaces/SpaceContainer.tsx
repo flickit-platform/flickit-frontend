@@ -29,7 +29,7 @@ const SpaceContainer = () => {
   const { page } = useParams();
   const pageNumber = Number(page);
   const { fetchSpace, ...rest } = useFetchSpace();
-  const { data, size, total } = rest;
+  const { data, size, total, allowCreateBasic } = rest;
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
@@ -65,7 +65,7 @@ const SpaceContainer = () => {
                       sx={{ marginInlineStart: 1, marginInlineEnd: 0 }}
                     />
                   }
-                  onClick={()=>dialogProps.openDialog({ type: "create" })}
+                  onClick={() => dialogProps.openDialog({ type: "create" })}
                   shouldAnimate={data?.length === 0}
                   text="createSpace"
                 />
@@ -153,7 +153,7 @@ const SpaceContainer = () => {
                     <Button
                       startIcon={<AddRoundedIcon />}
                       variant="contained"
-                      onClick={()=>dialogProps.openDialog({ type: "create" })}
+                      onClick={() => dialogProps.openDialog({ type: "create" })}
                       sx={{
                         animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
                         "&:hover": {
@@ -196,13 +196,20 @@ const SpaceContainer = () => {
           />
         </Stack>
       )}
-      <CreateSpaceDialog {...dialogProps} onSubmitForm={fetchSpace} />
+      <CreateSpaceDialog
+        {...dialogProps}
+        allowCreateBasic={allowCreateBasic}
+        onSubmitForm={fetchSpace}
+        titleStyle={{ mb: 0 }}
+        contentStyle={{ p: 0 }}
+      />
     </SpaceLayout>
   );
 };
 
 const useFetchSpace = () => {
   const [data, setData] = useState<any>({});
+  const [allowCreateBasic, setAllowCreateBasic] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
@@ -218,10 +225,23 @@ const useFetchSpace = () => {
     fetchSpace();
   }, [pageNumber]);
 
+  const checkLimitExceeded = async () => {
+    try {
+      const { data : {allowCreateBasic} } = await service.checkCreateSpace(
+        {},
+        { signal: abortController.current.signal },
+      );
+      setAllowCreateBasic(allowCreateBasic)
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err, { filterByStatus: [404] });
+    }
+  };
   const fetchSpace = async () => {
     setLoading(true);
     setErrorObject(undefined);
     try {
+      checkLimitExceeded();
       const { data: res } = await service.fetchSpaces(
         { size: PAGESIZE, page: pageNumber },
         { signal: abortController.current.signal },
@@ -254,6 +274,7 @@ const useFetchSpace = () => {
     loaded: !!data,
     error,
     errorObject,
+    allowCreateBasic,
     fetchSpace,
   };
 };

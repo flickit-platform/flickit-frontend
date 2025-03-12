@@ -117,6 +117,12 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/spaces/${spaceId}/`, config);
     },
+    checkCreateSpace(
+        arg: any,
+        config?: AxiosRequestConfig<any>,
+    ){
+      return axios.get(`/api/v1/check-create-space/`, config);
+    },
     seenSpaceList(
       { spaceId }: { spaceId: TId },
       config?: AxiosRequestConfig<any>,

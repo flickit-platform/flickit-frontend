@@ -24,9 +24,16 @@ import { theme } from "@/config/theme";
 const SpaceSettingContainer = () => {
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
-  const { loading, data, query } = useQuery<ISpaceModel>({
+
+    const { loading, data, query } = useQuery<ISpaceModel>({
     service: (args, config) => service.fetchSpace({ spaceId }, config),
   });
+
+   const checkCreateSpace = useQuery({
+        service: (args, config) => service.checkCreateSpace({}, config),
+       runOnMount: true
+    });
+
 
   const { title, editable } = data || {};
 
@@ -45,7 +52,7 @@ const SpaceSettingContainer = () => {
             ]}
           />
         }
-        toolbar={editable ? <EditSpaceButton fetchSpace={query} /> : <div />}
+        toolbar={editable ? <EditSpaceButton allowCreateBasic={checkCreateSpace?.data?.allowCreateBasic} fetchSpace={query} /> : <div />}
         backLink={"/"}
       >
         <Box sx={{ ...styles.centerV, opacity: 0.9, unicodeBidi: "plaintext" }}>
@@ -70,7 +77,7 @@ const SpaceSettingContainer = () => {
 };
 
 const EditSpaceButton = (props: any) => {
-  const { fetchSpace } = props;
+  const { fetchSpace, allowCreateBasic } = props;
   const { service } = useServiceContext();
   const { spaceId } = useParams();
   const queryData = useQuery({
@@ -97,7 +104,13 @@ const EditSpaceButton = (props: any) => {
       >
         <Trans i18nKey="editSpace" />
       </LoadingButton>
-      <CreateSpaceDialog {...dialogProps} onSubmitForm={fetchSpace} />
+      <CreateSpaceDialog
+        {...dialogProps}
+        onSubmitForm={fetchSpace}
+        allowCreateBasic={allowCreateBasic}
+        titleStyle={{ mb: 0 }}
+        contentStyle={{ p: 0 }}
+      />
     </>
   );
 };
