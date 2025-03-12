@@ -225,7 +225,7 @@ const useFetchSpace = () => {
     fetchSpace();
   }, [pageNumber]);
 
-  const checkLimit = async () => {
+  const checkLimitExceeded = async () => {
     try {
       const { data : {allowCreateBasic} } = await service.checkCreateSpace(
         {},
@@ -241,7 +241,7 @@ const useFetchSpace = () => {
     setLoading(true);
     setErrorObject(undefined);
     try {
-      checkLimit();
+      checkLimitExceeded();
       const { data: res } = await service.fetchSpaces(
         { size: PAGESIZE, page: pageNumber },
         { signal: abortController.current.signal },

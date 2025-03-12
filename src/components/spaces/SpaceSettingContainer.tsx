@@ -24,22 +24,16 @@ import { theme } from "@/config/theme";
 const SpaceSettingContainer = () => {
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
-  const [allowCreateBasic, setAllowCreateBasic] = useState<boolean>(false);
+
     const { loading, data, query } = useQuery<ISpaceModel>({
     service: (args, config) => service.fetchSpace({ spaceId }, config),
   });
 
-   const checkCreateSpace = useQuery<ISpaceModel>({
+   const checkCreateSpace = useQuery({
         service: (args, config) => service.checkCreateSpace({}, config),
+       runOnMount: true
     });
 
-   useEffect(()=>{
-       const checkSpace = async () =>{
-           const {data : {allowCreateBasic}} = await checkCreateSpace.query()
-           setAllowCreateBasic(allowCreateBasic)
-       }
-
-   },[])
 
   const { title, editable } = data || {};
 
@@ -58,7 +52,7 @@ const SpaceSettingContainer = () => {
             ]}
           />
         }
-        toolbar={editable ? <EditSpaceButton allowCreateBasic={allowCreateBasic} fetchSpace={query} /> : <div />}
+        toolbar={editable ? <EditSpaceButton allowCreateBasic={checkCreateSpace?.data?.allowCreateBasic} fetchSpace={query} /> : <div />}
         backLink={"/"}
       >
         <Box sx={{ ...styles.centerV, opacity: 0.9, unicodeBidi: "plaintext" }}>

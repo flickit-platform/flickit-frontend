@@ -15,16 +15,8 @@ import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRound
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
 import { Button, Typography } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
 import { useQuery } from "@utils/useQuery";
 import { ISpaceType } from "@types";
-import basicSmallIcon from "@/assets/svg/basicSmallIcon.svg";
-import premiumSmallIcon from "@/assets/svg/premiumSmallIcon.svg";
-import disableSpaceTypeIcon from "@/assets/svg/disableSpaceTypeIcon.svg";
 import greenCheckmark from "@/assets/svg/greenCheckmark.svg";
 import Box from "@mui/material/Box";
 import Check from "@components/spaces/Icons/check";
@@ -32,6 +24,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
 
 interface ICreateSpaceDialogProps extends DialogProps {
   onClose: () => void;
@@ -42,6 +35,33 @@ interface ICreateSpaceDialogProps extends DialogProps {
   contentStyle?: any;
   allowCreateBasic?: boolean;
 }
+
+const PremiumBox = [
+  {
+    type: "PREMIUM",
+    title: "premiumSpace",
+    subTitle: "limitlessSpace",
+    bullets: [
+      "paidVariesByPlan",
+      "unlimitedPremiumSpace",
+      "unlimitedAssessmentPerSpace",
+      "fullAccessToCommercialAssessmentKits",
+    ],
+  },
+];
+const BasicBox = [
+  {
+    type: "BASIC",
+    title: "basicSpace",
+    subTitle: "simpleStart",
+    bullets: [
+      "freeToUse",
+      "veryLimitedNumberOfSpaces",
+      "createLimitedAssessments",
+      "noCommercialAssessmentKits",
+    ],
+  },
+];
 
 const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
   const [loading, setLoading] = useState(false);
@@ -161,32 +181,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
     const { value } = e.target;
     setSelectedType(value);
   };
-  const PremiumBox = [
-    {
-      type: "PREMIUM",
-      title: "premiumSpace",
-      subTitle: "limitlessSpace",
-      bullets: [
-        "paidVariesByPlan",
-        "unlimitedPremiumSpace",
-        "unlimitedAssessmentPerSpace",
-        "fullAccessToCommercialAssessmentKits",
-      ],
-    },
-  ];
-  const BasicBox = [
-    {
-      type: "BASIC",
-      title: "basicSpace",
-      subTitle: "simpleStart",
-      bullets: [
-        "freeToUse",
-        "veryLimitedNumberOfSpaces",
-        "createLimitedAssessments",
-        "noCommercialAssessmentKits",
-      ],
-    },
-  ];
 
   const goToSpace = () => {
     return type !== "update" && navigate(`/${spaceIdNum}/assessments/1`);
@@ -223,11 +217,13 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
               <Trans i18nKey={"congratulation"} />
             </Typography>
             <Typography sx={{ ...theme.typography.bodyLarge }}>
-              {selectedType == "PREMIUM" ? (
-                <Trans i18nKey={"createPremiumSpaceCongratulation"} />
-              ) : (
-                <Trans i18nKey={"createBasicSpaceCongratulation"} />
-              )}
+              <Trans
+                i18nKey={
+                  selectedType == "PREMIUM"
+                    ? "createPremiumSpaceCongratulation"
+                    : "createBasicSpaceCongratulation"
+                }
+              />
             </Typography>
           </Box>
         </Box>
@@ -240,89 +236,6 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
             gap: 2,
           }}
         >
-
-            {/*<FormProviderWithForm formMethods={formMethods}>*/}
-            {/*  <Grid container spacing={2} sx={styles.formGrid}>*/}
-            {/*    <Grid item xs={9}>*/}
-            {/*      <InputFieldUC*/}
-            {/*        name="title"*/}
-            {/*        defaultValue={defaultValues.title || ""}*/}
-            {/*        required={true}*/}
-            {/*        label={<Trans i18nKey="title" />}*/}
-            {/*        isFocused={isFocused}*/}
-            {/*      />*/}
-            {/*    </Grid>*/}
-            {/*      <Grid item xs={3}>*/}
-            {/*        <FormControl sx={{ width: "100%" }}>*/}
-            {/*          <SelectField*/}
-            {/*            // disabled={editable != undefined ? !editable : false}*/}
-            {/*            id="spaceType-name-label"*/}
-            {/*            size="small"*/}
-            {/*            label={<Trans i18nKey={"spaceType"} />}*/}
-            {/*            value={selectedType || "BASIC"}*/}
-            {/*            IconComponent={KeyboardArrowDownIcon}*/}
-            {/*            displayEmpty*/}
-            {/*            name={"spaceType-select"}*/}
-            {/*            defaultValue={spaceType[0]?.title}*/}
-            {/*            required={true}*/}
-            {/*            nullable={false}*/}
-            {/*            input={<OutlinedInput label="spaceType" />}*/}
-            {/*            onChange={(e) => handleChange(e)}*/}
-            {/*            sx={{*/}
-            {/*              fontSize: "14px",*/}
-            {/*              background: "#fff",*/}
-            {/*              px: "0px",*/}
-            {/*              height: "40px",*/}
-            {/*              "& .MuiSelect-select": {*/}
-            {/*                display: "flex",*/}
-            {/*                alignItems: "center",*/}
-            {/*                padding: "12px !important",*/}
-            {/*                gap: 1,*/}
-            {/*              },*/}
-            {/*            }}*/}
-            {/*          >*/}
-            {/*            {spaceType?.map((type: any) => (*/}
-            {/*              <MenuItem*/}
-            {/*                sx={{*/}
-            {/*                  color: "#2B333B",*/}
-            {/*                  WebkitBackgroundClip: "text",*/}
-            {/*                  WebkitTextFillColor:*/}
-            {/*                    type.code == "PREMIUM" ? "transparent" : "unset",*/}
-            {/*                  backgroundImage:*/}
-            {/*                    type.code == "PREMIUM"*/}
-            {/*                      ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"*/}
-            {/*                      : "unset",*/}
-            {/*                  marginInlineStart: type.code != "PREMIUM" ? "24px" : "unset",*/}
-            {/*                }}*/}
-            {/*                disabled={type.code == "PREMIUM"}*/}
-            {/*                key={type}*/}
-            {/*                value={type.code}*/}
-            {/*              >*/}
-            {/*                {type.code == "PREMIUM" && (*/}
-            {/*                  <img*/}
-            {/*                    src={premiumIcon}*/}
-            {/*                    alt={"premium"}*/}
-            {/*                    style={{ width: "16px", height: "21px", marginInlineEnd: "8px" }}*/}
-            {/*                  />*/}
-            {/*                )}*/}
-            {/*                <Trans i18nKey={type.title} />*/}
-            {/*              </MenuItem>*/}
-            {/*            ))}*/}
-            {/*          </SelectField>*/}
-            {/*        </FormControl>*/}
-            {/*      </Grid>*/}
-            {/*  </Grid>*/}
-            {/*  <CEDialogActions*/}
-            {/*    closeDialog={close}*/}
-            {/*    loading={loading}*/}
-            {/*    type={type}*/}
-            {/*    onSubmit={(...args) =>*/}
-            {/*      formMethods.handleSubmit((data) => onSubmit(data, ...args))*/}
-            {/*    }*/}
-            {/*  />*/}
-            {/*</FormProviderWithForm>*/}
-
-
           <Button onClick={close}>
             <Trans i18nKey={"close"} />
           </Button>
@@ -536,17 +449,7 @@ const BoxTypes = (props: any) => {
             gap: 0.5,
           }}
         >
-          <img
-            style={{ width: "20px", height: "20px" }}
-            src={
-              type == "PREMIUM"
-                ? premiumSmallIcon
-                : type == "BASIC" && !allowCreateBasic
-                  ? disableSpaceTypeIcon
-                  : basicSmallIcon
-            }
-            alt={"SpaceTypeIcon"}
-          />
+          <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
             sx={{
               ...theme.typography.semiBoldMedium,
@@ -591,7 +494,7 @@ const BoxTypes = (props: any) => {
               : "unset",
         }}
       >
-        {bullets.map((i: string, index: number) => {
+        {bullets.map((text: string, index: number) => {
           return (
             <Box
               sx={{
@@ -614,7 +517,7 @@ const BoxTypes = (props: any) => {
                         : "unset",
                 }}
               >
-                <Trans i18nKey={i} />
+                <Trans i18nKey={text} />
                 {!allowCreateBasic && type == "BASIC" && index == 1 && (
                   <Typography
                     sx={{
