@@ -31,7 +31,6 @@ export const AssessmentSubjectAccordion = (
     maturityLevel,
     maturityLevelCount,
     confidenceValue,
-    id,
     description = "",
   } = props;
 

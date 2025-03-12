@@ -536,7 +536,7 @@ const BoxTypes = (props: any) => {
             justifyContent: "center",
             alignItems: "center",
             gap: "8px",
-            bottom: "-40px",
+            bottom: "-54px",
           }}
         >
           <InfoOutlinedIcon fontSize={"small"} />
