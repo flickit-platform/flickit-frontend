@@ -240,6 +240,12 @@ export const IssuesItem = ({
     runOnMount: false,
   });
 
+  const approveAllAnswers = useQuery({
+    service: (args = { assessmentId }, config) =>
+        service.approveAllAnswers(args, config),
+    runOnMount: false,
+  });
+
   const handleNavigation = () => {
     if (originalName === "questions") {
       navigate(`../questionnaires`, {
@@ -273,6 +279,17 @@ export const IssuesItem = ({
       toastError(err);
     }
   };
+
+  const handleApproveAllAnswers = async (event: any) =>{
+    try {
+      event.stopPropagation();
+      event.preventDefault();
+      await approveAllAnswers.query();
+      await fetchDashboard.query();
+    } catch (e) {
+      toastError(e as ICustomError);
+    }
+  }
 
   const handleApproveAllExpired = async () => {
     try {
@@ -460,6 +477,23 @@ export const IssuesItem = ({
             <Trans i18nKey="resolveAll" />
           </Typography>
         </Button>
+      )}
+      {name === "unapprovedAnswers" && (
+          <Box style={{ marginInlineStart: "auto" }}>
+            <LoadingButton
+                onClick={(event)=>handleApproveAllAnswers(event)}
+                variant="outlined"
+                loading={approveAllAnswers.loading}
+                color={color}
+                sx={{
+                  padding: "4px 10px",
+                }}
+            >
+              <Typography sx={{ ...theme.typography.labelMedium }}>
+                <Trans i18nKey="approveAll" />
+              </Typography>
+            </LoadingButton>
+          </Box>
       )}
     </Box>
   );
