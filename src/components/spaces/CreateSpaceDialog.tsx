@@ -310,7 +310,7 @@ const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
           <Typography
             sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
           >
-            <Trans i18nKey={"selectYourSpaceType"} />
+            <Trans i18nKey={"nameYourSpace"} />
           </Typography>
           <FormProviderWithForm
             style={{ height: "calc(100% - 24px)" }}
@@ -519,7 +519,7 @@ const BoxTypes = (props: any) => {
                       display: "inline-block",
                     }}
                   >
-                    (<Trans i18nKey={"reachedLimit"} />)
+                    (<Trans i18nKey={"reachedLimit"} />).
                   </Typography>
                 )}
               </Typography>
