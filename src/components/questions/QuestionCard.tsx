@@ -505,11 +505,11 @@ export const QuestionTabsTemplate = (props: any) => {
         return Math.ceil(counts[value] / 10);
     }, [value, counts]);
 
-    // useEffect(()=>{
-    //     if(currentPage > total && currentPage > 1){
-    //         setCurrentPage(currentPage - 1)
-    //     }
-    // },[total])
+    useEffect(()=>{
+        if(currentPage > total && currentPage > 1){
+            setCurrentPage(currentPage - 1)
+        }
+    },[total])
 
   useEffect(()=>{
       if(value == "evidences"){
