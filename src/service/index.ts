@@ -1421,7 +1421,7 @@ export const createService = (
         {
           ...(config ?? {}),
           params: {
-            page: page,
+            page: page - 1,
             size: size,
           },
         },
@@ -2180,7 +2180,7 @@ export const createService = (
         params: {
           questionId: questionId,
           assessmentId: assessmentId,
-          page,
+          page: page - 1,
           size,
         },
       });
@@ -2196,7 +2196,7 @@ export const createService = (
         params: {
           questionId: questionId,
           assessmentId: assessmentId,
-          page,
+          page: page - 1,
           size,
         },
       });
