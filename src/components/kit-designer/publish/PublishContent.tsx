@@ -11,7 +11,7 @@ import toastError from "@/utils/toastError";
 import { IKitVersion } from "@/types";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
-import { Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { useQuery } from "@/utils/useQuery";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";

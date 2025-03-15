@@ -12,49 +12,47 @@ import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectForm from "./SubjectForm";
-import {DeleteConfirmationDialog} from "@common/dialogs/DeleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 const SubjectsContent = () => {
   const { service } = useServiceContext();
-  const {  kitVersionId = "" } = useParams();
-  const [openDeleteDialog,setOpenDeleteDialog] = useState<{status:boolean,id:string}>({status:false,id:""})
+  const { kitVersionId = "" } = useParams();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
 
   const fetchSubjectKit = useQuery({
     service: (args = { kitVersionId }, config) =>
-      service.fetchSubjectKit(args , config)
+      service.fetchSubjectKit(args, config),
   });
   const postSubjectKit = useQuery({
-    service: (args , config) =>
-      service.postSubjectKit(args, config),
-      runOnMount: false,
+    service: (args, config) => service.postSubjectKit(args, config),
+    runOnMount: false,
   });
 
   const deleteSubjectKit = useQuery({
-    service: (args , config) =>
-        service.deleteSubjectKit(args, config),
+    service: (args, config) => service.deleteSubjectKit(args, config),
     runOnMount: false,
   });
 
   const updateKitSubject = useQuery({
-    service: (args,config) =>
-        service.updateKitSubject(args,config),
+    service: (args, config) => service.updateKitSubject(args, config),
     runOnMount: false,
-  })
+  });
 
-
-  const [showNewSubjectForm, setShowNewSubjectForm] =
-    useState(false);
+  const [showNewSubjectForm, setShowNewSubjectForm] = useState(false);
   const [newSubject, setNewSubject] = useState({
     title: "",
     description: "",
     index: 1,
     value: 1,
     id: null,
-    weight: 1
+    weight: 1,
   });
 
   useEffect(() => {
@@ -93,11 +91,13 @@ const SubjectsContent = () => {
         description: newSubject.description,
       };
       if (newSubject.id) {
-        await service.updateKitSubject(
-            { kitVersionId, subjectId: newSubject.id, data },
-        );
+        await service.updateKitSubject({
+          kitVersionId,
+          subjectId: newSubject.id,
+          data,
+        });
       } else {
-        await postSubjectKit.query({kitVersionId, data})
+        await postSubjectKit.query({ kitVersionId, data });
       }
 
       // Reset form and re-fetch data after saving
@@ -129,7 +129,7 @@ const SubjectsContent = () => {
       weight: 0,
       id: null,
     });
-    setOpenDeleteDialog({status:false,id:""})
+    setOpenDeleteDialog({ status: false, id: "" });
   };
 
   const handleEdit = async (subjectItem: any) => {
@@ -142,9 +142,11 @@ const SubjectsContent = () => {
         weight: subjectItem.weight,
         description: subjectItem.description,
       };
-      await updateKitSubject.query(
-        { kitVersionId, subjectId: subjectItem.id, data },
-      );
+      await updateKitSubject.query({
+        kitVersionId,
+        subjectId: subjectItem.id,
+        data,
+      });
 
       setShowNewSubjectForm(false);
       fetchSubjectKit.query();
@@ -165,7 +167,7 @@ const SubjectsContent = () => {
 
   const handleDelete = async () => {
     try {
-      let subjectId = openDeleteDialog.id
+      let subjectId = openDeleteDialog.id;
       await deleteSubjectKit.query({ kitVersionId, subjectId });
       await fetchSubjectKit.query();
       handleCancel();
@@ -199,12 +201,14 @@ const SubjectsContent = () => {
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
         <KitDHeader
-            onAddNewRow={handleAddNewRow}
-            hasBtn={fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0}
-            mainTitle={"subjects"}
-            btnTitle={"newSubject"}
-            description={"subjectsKitDesignerDescription"}
-            />
+          onAddNewRow={handleAddNewRow}
+          hasBtn={
+            fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0
+          }
+          mainTitle={"subjects"}
+          btnTitle={"newSubject"}
+          description={"subjectsKitDesignerDescription"}
+        />
         {fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
             <Trans i18nKey="changeOrderHelper" />
@@ -219,31 +223,31 @@ const SubjectsContent = () => {
             return (
               <>
                 {subjectData?.items?.length > 0 ? (
-                    <Box maxHeight={500} overflow="auto">
-                      <ListOfItems
-                        items={subjectData?.items}
-                        onEdit={handleEdit}
-                        deleteBtn={false}
-                        onReorder={handleReorder}
-                        name={"subject"}
-                        setOpenDeleteDialog={setOpenDeleteDialog}
-                      />
-                    </Box>
+                  <Box maxHeight={500} overflow="auto">
+                    <ListOfItems
+                      items={subjectData?.items}
+                      onEdit={handleEdit}
+                      deleteBtn={false}
+                      onReorder={handleReorder}
+                      name={"subject"}
+                      setOpenDeleteDialog={setOpenDeleteDialog}
+                    />
+                  </Box>
                 ) : (
-                      <EmptyState
-                        btnTitle={"newSubject"}
-                        title={"subjectsListEmptyState"}
-                        SubTitle={"subjectEmptyStateDetailed"}
-                        onAddNewRow={handleAddNewRow}
-                      />
+                  <EmptyState
+                    btnTitle={"newSubject"}
+                    title={"subjectsListEmptyState"}
+                    SubTitle={"subjectEmptyStateDetailed"}
+                    onAddNewRow={handleAddNewRow}
+                  />
                 )}
                 {showNewSubjectForm && (
-                    <SubjectForm
-                        newSubject={newSubject}
-                        handleInputChange={handleInputChange}
-                        handleSave={handleSave}
-                        handleCancel={handleCancel}
-                    />
+                  <SubjectForm
+                    newSubject={newSubject}
+                    handleInputChange={handleInputChange}
+                    handleSave={handleSave}
+                    handleCancel={handleCancel}
+                  />
                 )}
               </>
             );
@@ -251,11 +255,13 @@ const SubjectsContent = () => {
         />
       </Box>
       <DeleteConfirmationDialog
-          open={openDeleteDialog.status}
-          onClose={() => setOpenDeleteDialog({...openDeleteDialog,status:false})}
-          onConfirm={handleDelete}
-          title="warning"
-          content="deleteSubject"
+        open={openDeleteDialog.status}
+        onClose={() =>
+          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+        }
+        onConfirm={handleDelete}
+        title="warning"
+        content="deleteSubject"
       />
     </PermissionControl>
   );

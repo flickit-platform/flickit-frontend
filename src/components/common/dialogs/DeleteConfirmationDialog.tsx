@@ -1,7 +1,7 @@
 import { Trans, useTranslation } from "react-i18next";
 import { CEDialog, CEDialogActions } from "./CEDialog";
-import { Typography } from "@mui/material";
-import { Warning } from "@mui/icons-material";
+import Typography from "@mui/material/Typography";
+import Warning from "@mui/icons-material/Warning";
 
 interface IDeleteConfirmationDialogProps {
   open: boolean;

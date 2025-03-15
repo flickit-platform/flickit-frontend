@@ -9,7 +9,7 @@ import EmptyState from "../common/EmptyState";
 import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import KitDHeader from "@components/kit-designer/common/KitHeader";
 import AnswerRangeForm from "./AnswerRangeForm";
 

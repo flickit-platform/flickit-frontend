@@ -6,9 +6,9 @@ import Box from "@mui/material/Box";
 import { LoadingSkeleton } from "./loadings/LoadingSkeleton";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import { Chip } from "@mui/material";
+import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 

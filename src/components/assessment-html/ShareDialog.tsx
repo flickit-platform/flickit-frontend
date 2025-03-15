@@ -1,20 +1,19 @@
 import { Trans, useTranslation } from "react-i18next";
-import {
-  Avatar,
-  Box,
-  Grid,
-  Skeleton,
-  TextField,
-  Snackbar,
-  Divider,
-  Typography,
-  Chip,
-} from "@mui/material";
-import { Share, Link as LinkIcon } from "@mui/icons-material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Skeleton from "@mui/material/Skeleton";
+import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import Share from "@mui/icons-material/Share";
+import LinkIcon from "@mui/icons-material/Link";
 import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
 import { useEffect, useState } from "react";
 import { styles } from "@/config/styles";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/stringAvatar";
 import { useQuery } from "@/utils/useQuery";
 import { useParams } from "react-router-dom";

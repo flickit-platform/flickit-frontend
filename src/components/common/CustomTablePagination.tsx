@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Box, Divider, TablePagination } from "@mui/material";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 
 interface CustomTablePaginationProps {

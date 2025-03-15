@@ -117,6 +117,12 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/spaces/${spaceId}/`, config);
     },
+    checkCreateSpace(
+        arg: any,
+        config?: AxiosRequestConfig<any>,
+    ){
+      return axios.get(`/api/v1/check-create-space/`, config);
+    },
     seenSpaceList(
       { spaceId }: { spaceId: TId },
       config?: AxiosRequestConfig<any>,
@@ -962,7 +968,7 @@ export const createService = (
       { assessmentId }: { assessmentId: string },
       config?: AxiosRequestConfig<any>,
     ) {
-      return axios.get(`/api/v2/assessments/${assessmentId}/report/`, config);
+      return axios.get(`/api/v1/assessments/${assessmentId}/insights/`, config);
     },
     fetchSubject(
       { subjectId, assessmentId }: { subjectId: string; assessmentId: string },

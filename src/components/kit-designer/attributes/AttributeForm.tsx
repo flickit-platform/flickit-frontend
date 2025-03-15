@@ -4,8 +4,11 @@ import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import { Link, TableCell, TableRow, Typography } from "@mui/material";
-import { SwapVertRounded } from "@mui/icons-material";
+import Link from "@mui/material/Link";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import Typography from "@mui/material/Typography";
+import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
 
 interface AttributeFormProps {
   newAttribute: any;

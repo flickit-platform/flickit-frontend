@@ -5,9 +5,9 @@ import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import CustomTablePagination from "@components/common/CustomTablePagination";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 
 const AdviceQuestionTable = ({ adviceResult }: any) => {
   const [currentPage, setCurrentPage] = useState<number>(0);

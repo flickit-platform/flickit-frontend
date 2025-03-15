@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  TextField,
-  Typography,
-  Switch,
-  Box,
-  Divider,
-  Select,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
+import Divider from "@mui/material/Divider";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";

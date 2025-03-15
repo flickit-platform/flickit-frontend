@@ -1,4 +1,4 @@
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";

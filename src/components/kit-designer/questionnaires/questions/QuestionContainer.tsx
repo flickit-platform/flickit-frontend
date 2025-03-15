@@ -4,7 +4,8 @@ import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import QuestionDialog from "./QuestionDialog";
-import { Divider, Typography } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
 
 const QuestionContain = (props: any) => {

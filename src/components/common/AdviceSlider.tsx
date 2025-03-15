@@ -5,7 +5,7 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 const AdviceSlider = (props: any) => {
   const {
     defaultValue,

@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import MainCard from "@utils/MainCard";
-import { Button, Divider, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
 import { theme } from "@config/theme";
 import React from "react";
@@ -9,7 +11,7 @@ import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
-import { uniqueId } from "lodash";
+import uniqueId from "@/utils/uniqueId";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";

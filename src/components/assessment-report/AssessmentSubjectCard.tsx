@@ -31,7 +31,6 @@ export const AssessmentSubjectAccordion = (
     maturityLevel,
     maturityLevelCount,
     confidenceValue,
-    id,
     description = "",
   } = props;
 
@@ -171,9 +170,7 @@ export const AssessmentSubjectAccordion = (
               >
                 {maturityLevel?.title}
               </Typography>
-              <Box
-                sx={{ ...styles.centerVH, marginInlineStart: 1 }}
-              >
+              <Box sx={{ ...styles.centerVH, marginInlineStart: 1 }}>
                 <Typography variant="bodyMedium" color="#6C8093">
                   <Trans i18nKey="confidence" />:
                 </Typography>
@@ -197,7 +194,9 @@ export const AssessmentSubjectAccordion = (
         </Grid>
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 4 }}>
-        {expanded && <SubjectContainer subjectId={id} />}{" "}
+        <Box sx={{ display: expanded ? "block" : "none" }}>
+          <SubjectContainer {...props} />
+        </Box>
       </AccordionDetails>
     </Accordion>
   );
