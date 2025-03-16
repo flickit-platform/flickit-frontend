@@ -4,7 +4,7 @@ import SubjectAttributeCard from "./SubjectAttributeCard";
 import Typography from "@mui/material/Typography";
 
 export const SubjectAttributeList = (props: any) => {
-  const { attributes, progress } = props;
+  const { attributes, progress, reloadQuery } = props;
   return (
     <Box mt={5} id="attributes">
       <Typography color="#73808C" variant="semiBoldMedium">
@@ -18,6 +18,7 @@ export const SubjectAttributeList = (props: any) => {
               maturity_levels_count={attribute.maturityScoreModels.length}
               key={attribute.id}
               progress={progress}
+              reloadQuery={reloadQuery}
             />
           );
         })}

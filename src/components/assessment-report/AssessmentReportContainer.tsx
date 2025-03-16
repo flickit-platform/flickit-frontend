@@ -17,6 +17,7 @@ import { Gauge } from "../common/charts/Gauge";
 import { Trans } from "react-i18next";
 import { IssuesItem } from "../dashboard/dashboard-tab/todoBox";
 import uniqueId from "@/utils/uniqueId";
+import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -48,12 +49,14 @@ const AssessmentReportContainer = (props: any) => {
     try {
       await calculateMaturityLevelQuery.query();
       await fetchAssessmentInsight.query();
+      await fetchInsightsIssues.query();
     } catch (e) {}
   };
   const calculateConfidenceLevel = async () => {
     try {
       await calculateConfidenceLevelQuery.query();
       await fetchAssessmentInsight.query();
+      await fetchInsightsIssues.query();
     } catch (e) {}
   };
 
@@ -78,30 +81,29 @@ const AssessmentReportContainer = (props: any) => {
       });
     }
   }, [fetchAssessmentInsight.errorObject]);
-  const fetchAssessmentsRoles = useQuery<RolesType>({
-    service: (args, config) => service.fetchAssessmentsRoles(args, config),
+
+  const fetchInsightsIssues = useQuery<RolesType>({
+    service: (args, config) =>
+      service.fetchInsightsIssues({ assessmentId }, config),
     toastError: false,
-    toastErrorOptions: { filterByStatus: [404] },
   });
+
+  const reloadQuery = () => {
+    fetchInsightsIssues.query();
+    fetchAssessmentInsight.query();
+  };
 
   return (
     <PermissionControl
       error={[fetchAssessmentInsight.errorObject?.response?.data]}
     >
       <QueryBatchData
-        queryBatchData={[
-          fetchAssessmentInsight,
-          assessmentTotalProgress,
-          fetchAssessmentsRoles,
-        ]}
-        renderLoading={() => <LoadingSkeletonOfAssessmentReport />}
-        render={([data = {}, progress]) => {
-          const { assessment, subjects, issues } = data || {};
-          const { answersCount, questionsCount } = progress || {};
-
-          const colorCode = assessment?.color?.code || "#101c32";
-          const { assessmentKit, maturityLevel, confidenceValue } =
-            assessment || {};
+        queryBatchData={[fetchInsightsIssues]}
+        renderLoading={() => <LoadingSkeleton />}
+        loading={!fetchInsightsIssues.loaded || assessmentTotalProgress.loading}
+        render={([issues]) => {
+          const { answersCount, questionsCount } =
+            assessmentTotalProgress.data || {};
 
           return (
             <Box m="auto">
@@ -119,7 +121,7 @@ const AssessmentReportContainer = (props: any) => {
                         name={key}
                         value={value}
                         originalName={key}
-                        fetchDashboard={fetchAssessmentInsight}
+                        fetchDashboard={reloadQuery}
                         color="error"
                         textVariant="semiBoldSmall"
                         py={0.5}
@@ -131,6 +133,26 @@ const AssessmentReportContainer = (props: any) => {
                   );
                 })}
               </Grid>
+            </Box>
+          );
+        }}
+      />
+
+      <QueryBatchData
+        queryBatchData={[fetchAssessmentInsight]}
+        renderLoading={() => <LoadingSkeletonOfAssessmentReport />}
+        loading={
+          !fetchAssessmentInsight.loaded || assessmentTotalProgress.loading
+        }
+        render={([data = {}]) => {
+          const { assessment, subjects } = data || {};
+
+          const colorCode = assessment?.color?.code || "#101c32";
+          const { assessmentKit, maturityLevel, confidenceValue } =
+            assessment || {};
+
+          return (
+            <Box m="auto">
               <Box
                 gap={2}
                 sx={{ ...styles.boxStyle, paddingBottom: 3 }}
@@ -138,9 +160,8 @@ const AssessmentReportContainer = (props: any) => {
                 mt={2}
               >
                 <AssessmentInsight
-                  defaultInsight={
-                    fetchAssessmentInsight.data.assessment.insight
-                  }
+                  defaultInsight={assessment?.insight}
+                  reloadQuery={fetchInsightsIssues.query}
                 />
                 <Gauge
                   maturity_level_number={assessmentKit?.maturityLevelCount}
@@ -163,6 +184,7 @@ const AssessmentReportContainer = (props: any) => {
                 maturityLevelCount={assessmentKit?.maturityLevelCount ?? 5}
                 subjects={subjects}
                 colorCode={colorCode}
+                reloadQuery={fetchInsightsIssues.query}
               />
             </Box>
           );

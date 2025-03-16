@@ -14,7 +14,11 @@ import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
-const SubjectOverallInsight = ({ subjectId, defaultInsight }: any) => {
+const SubjectOverallInsight = ({
+  subjectId,
+  defaultInsight,
+  reloadQuery,
+}: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const abortController = useRef(new AbortController());
@@ -27,8 +31,10 @@ const SubjectOverallInsight = ({ subjectId, defaultInsight }: any) => {
     defaultInsight?.approved ?? true,
   );
   const [isExpired, setIsExpired] = useState(
-    (defaultInsight?.assessorInsight &&
-      !defaultInsight?.assessorInsight?.isValid) ??
+    ((defaultInsight?.assessorInsight &&
+      !defaultInsight?.assessorInsight?.isValid) ||
+      (defaultInsight?.defaultInsight &&
+        !defaultInsight?.defaultInsight?.isValid)) ??
       false,
   );
 
@@ -56,6 +62,7 @@ const SubjectOverallInsight = ({ subjectId, defaultInsight }: any) => {
       event.stopPropagation();
       await ApproveAISubject.query();
       await fetchSubjectInsight.query();
+      await reloadQuery();
     } catch (e) {
       toastError(e as ICustomError);
     }
@@ -71,6 +78,7 @@ const SubjectOverallInsight = ({ subjectId, defaultInsight }: any) => {
       setIsExpired(
         (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
       );
+      reloadQuery();
     }
   }, [fetchSubjectInsight.data]);
 

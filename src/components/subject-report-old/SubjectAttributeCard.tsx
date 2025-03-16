@@ -40,6 +40,7 @@ const SUbjectAttributeCard = (props: any) => {
     id,
     progress,
     insight,
+    reloadQuery,
   } = props;
   const { permissions } = useAssessmentContext();
 
@@ -298,6 +299,7 @@ const SUbjectAttributeCard = (props: any) => {
                 progress={progress}
                 attributeId={id}
                 defaultInsight={insight}
+                reloadQuery={reloadQuery}
               />
             )}
 
