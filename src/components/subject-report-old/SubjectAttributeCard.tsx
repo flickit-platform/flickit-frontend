@@ -28,8 +28,9 @@ import uniqueId from "@/utils/uniqueId";
 import QueryBatchData from "../common/QueryBatchData";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import AttributeInsight from "./AttributeInsight";
+import { t } from "i18next";
 
-const SUbjectAttributeCard = (props: any) => {
+const SubjectAttributeCard = (props: any) => {
   const {
     description,
     title,
@@ -42,26 +43,26 @@ const SUbjectAttributeCard = (props: any) => {
     insight,
   } = props;
   const { permissions } = useAssessmentContext();
-
   const { assessmentId = "" } = useParams();
+
+  const [topTab, setTopTab] = useState(0);
   const [TopNavValue, setTopNavValue] = React.useState<number>(0);
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
     maturityScoreModels[0].maturityLevel.id,
   );
-
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { service } = useServiceContext();
-
   const [sortBy, setSortBy] = useState<
     keyof ItemServerFieldsColumnMapping | null
   >(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | undefined | null>(
     null,
   );
+
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
     service: (
       args = {
@@ -120,6 +121,10 @@ const SUbjectAttributeCard = (props: any) => {
 
   const maturityHandelClick = (id: number) => {
     setSelectedMaturityLevel(id);
+  };
+
+  const handleTopTabChange = (event: any, newValue: any) => {
+    setTopTab(newValue);
   };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count, true);
@@ -300,118 +305,155 @@ const SUbjectAttributeCard = (props: any) => {
                 defaultInsight={insight}
               />
             )}
-
-            <Box
-              sx={{
-                background: "#E2E5E9",
-                width: "100%",
-                borderRadius: "16px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                my: 2,
-                paddingBlock: 0.5,
-                pt: 1,
-              }}
-            >
+            <Box>
               <Tabs
-                value={TopNavValue}
-                onChange={(event, newValue) => handleChangeTab(event, newValue)}
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
+                value={topTab}
+                onChange={handleTopTabChange}
+   
                 sx={{
-                  border: "none",
+                  color: "rgba(0, 0, 0, 0.6)", // Default text color
+
+                  "& .Mui-selected": {
+                    color: "#2466A8 !important",
+                  },
+
                   "& .MuiTabs-indicator": {
-                    display: "none",
+                    backgroundColor: "primary.main",
                   },
                 }}
               >
-                {maturityScoreModels.map((item: any) => {
-                  const { maturityLevel: maturityLevelOfScores, score } = item;
-                  return (
-                    <Tab
-                      onClick={() =>
-                        maturityHandelClick(maturityLevelOfScores.id)
+                <Tab label={t("impactTable")} />
+                <Tab label={t("measureTable")} />
+              </Tabs>
+
+              {topTab === 0 && (
+                <Box>
+                  <Box
+                    sx={{
+                      background: "#E2E5E9",
+                      width: "100%",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      my: 2,
+                      paddingBlock: 0.5,
+                      pt: 1,
+                    }}
+                  >
+                    <Tabs
+                      value={TopNavValue}
+                      onChange={(event, newValue) =>
+                        handleChangeTab(event, newValue)
                       }
-                      key={uniqueId()}
+                      variant="scrollable"
+                      scrollButtons="auto"
+                      aria-label="scrollable auto tabs example"
                       sx={{
-                        ...theme.typography.semiBoldLarge,
-                        mr: 1,
                         border: "none",
-                        textTransform: "none",
-                        color:
-                          maturityLevelOfScores?.value > maturityLevel?.value
-                            ? "#6C8093"
-                            : "#2B333B",
-                        "&.Mui-selected": {
-                          boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                          borderRadius: "8px !important",
-                          color: theme.palette.primary.main,
-                          background: "#fff",
-                          "&:hover": {
-                            background: "#fff",
-                            border: "none",
-                          },
+                        "& .MuiTabs-indicator": {
+                          display: "none",
                         },
                       }}
-                      label={
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 1,
-                            fontFamily: languageDetector(
-                              maturityLevelOfScores.title,
-                            )
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          }}
-                        >
-                          {maturityLevelOfScores?.value ==
-                            maturityLevel?.value && (
-                            <WorkspacePremiumIcon fontSize={"small"} />
-                          )}
-                          {maturityLevelOfScores?.value <
-                            maturityLevel?.value && (
-                            <DoneIcon fontSize={"small"} />
-                          )}
-                          {maturityLevelOfScores.title} ({Math.ceil(score)}%)
-                        </Box>
-                      }
-                    />
-                  );
-                })}
-              </Tabs>
-            </Box>
-            <QueryBatchData
-              queryBatchData={[
-                fetchAffectedQuestionsOnAttributeQueryData,
-                fetchScoreState,
-              ]}
-              loadingComponent={<TableSkeleton />}
-              render={([
-                affectedQuestionsOnAttribute = {},
-                scoreState = {},
-              ]) => {
-                return (
-                  <MaturityLevelTable
-                    tempData={affectedQuestionsOnAttribute}
-                    scoreState={scoreState}
-                    updateSortOrder={updateSortOrder}
-                    setPage={setPage}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    setRowsPerPage={setRowsPerPage}
-                    sortBy={sortBy}
-                    setSortBy={setSortBy}
-                    sortOrder={sortOrder}
-                    setSortOrder={setSortOrder}
+                    >
+                      {maturityScoreModels.map((item: any) => {
+                        const { maturityLevel: maturityLevelOfScores, score } =
+                          item;
+                        return (
+                          <Tab
+                            onClick={() =>
+                              maturityHandelClick(maturityLevelOfScores.id)
+                            }
+                            key={uniqueId()}
+                            sx={{
+                              ...theme.typography.semiBoldLarge,
+                              mr: 1,
+                              border: "none",
+                              textTransform: "none",
+                              color:
+                                maturityLevelOfScores?.value >
+                                maturityLevel?.value
+                                  ? "#6C8093"
+                                  : "#2B333B",
+                              "&.Mui-selected": {
+                                boxShadow:
+                                  "0 1px 4px rgba(0,0,0,25%) !important",
+                                borderRadius: "8px !important",
+                                color: theme.palette.primary.main,
+                                background: "#fff",
+                                "&:hover": {
+                                  background: "#fff",
+                                  border: "none",
+                                },
+                              },
+                            }}
+                            label={
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  gap: 1,
+                                  fontFamily: languageDetector(
+                                    maturityLevelOfScores.title,
+                                  )
+                                    ? farsiFontFamily
+                                    : primaryFontFamily,
+                                }}
+                              >
+                                {maturityLevelOfScores?.value ==
+                                  maturityLevel?.value && (
+                                  <WorkspacePremiumIcon fontSize={"small"} />
+                                )}
+                                {maturityLevelOfScores?.value <
+                                  maturityLevel?.value && (
+                                  <DoneIcon fontSize={"small"} />
+                                )}
+                                {maturityLevelOfScores.title} (
+                                {Math.ceil(score)}%)
+                              </Box>
+                            }
+                          />
+                        );
+                      })}
+                    </Tabs>
+                  </Box>
+                  <QueryBatchData
+                    queryBatchData={[
+                      fetchAffectedQuestionsOnAttributeQueryData,
+                      fetchScoreState,
+                    ]}
+                    loadingComponent={<TableSkeleton />}
+                    render={([
+                      affectedQuestionsOnAttribute = {},
+                      scoreState = {},
+                    ]) => {
+                      return (
+                        <MaturityLevelTable
+                          tempData={affectedQuestionsOnAttribute}
+                          scoreState={scoreState}
+                          updateSortOrder={updateSortOrder}
+                          setPage={setPage}
+                          page={page}
+                          rowsPerPage={rowsPerPage}
+                          setRowsPerPage={setRowsPerPage}
+                          sortBy={sortBy}
+                          setSortBy={setSortBy}
+                          sortOrder={sortOrder}
+                          setSortOrder={setSortOrder}
+                        />
+                      );
+                    }}
                   />
-                );
-              }}
-            />
+                </Box>
+              )}
+
+              {topTab === 1 && (
+                <Box>
+                  <p>محتوای تب دوم</p>
+                </Box>
+              )}
+            </Box>
           </Box>
         </AccordionDetails>
       </Accordion>
@@ -590,4 +632,4 @@ export const MaturityLevelDetailsBar = (props: any) => {
   );
 };
 
-export default SUbjectAttributeCard;
+export default SubjectAttributeCard;
