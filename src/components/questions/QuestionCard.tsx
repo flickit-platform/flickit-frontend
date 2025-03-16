@@ -1221,12 +1221,7 @@ const AnswerDetails = ({
     });
   };
 
-  return queryData.loading ? (
-    <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
-      <CircularProgress />
-    </Box>
-  ) : (
-    <Box mt={2} width="100%" my={4}>
+  return <Box mt={2} width="100%" my={4}>
       {type === "evidence" || type === "comment" ? (
         <Box
           display="flex"
@@ -1282,7 +1277,7 @@ const AnswerDetails = ({
         </Box>
       )}
     </Box>
-  );
+
 };
 
 const AnswerHistoryItem = (props: any) => {
@@ -1495,7 +1490,7 @@ const Evidence = (props: any) => {
   const onSubmit = async (data: any) => {
     try {
       if (data.evidence.length <= LIMITED) {
-        await addEvidence.query({
+       let {id} = await addEvidence.query({
           description: data.evidence,
           questionId: questionInfo.id,
           assessmentId,
@@ -1503,6 +1498,7 @@ const Evidence = (props: any) => {
         });
         if (createAttachment) {
           setExpandedAttachmentsDialogs({ count: 0, expended: true });
+          setEvidenceId(id)
         }
         setCreateAttachment(false);
         const { items } = await evidencesQueryData.query();
@@ -2137,10 +2133,6 @@ const EvidenceDetail = (props: any) => {
       setLoadingFile(false);
     }
   };
-
-  useEffect(() => {
-    setEvidenceId(id);
-  }, [id]);
 
   const skeleton = Array.from(Array(attachmentsCount).keys());
   return (
