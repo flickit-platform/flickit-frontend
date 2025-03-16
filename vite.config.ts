@@ -13,7 +13,6 @@ export default defineConfig({
     react(),
     visualizer({
       open: true,
-      filename: "bundle-analysis.html",
       gzipSize: true,
       brotliSize: true,
     }),
