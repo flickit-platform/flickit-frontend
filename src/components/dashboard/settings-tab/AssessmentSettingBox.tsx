@@ -693,7 +693,7 @@ export const AssessmentSettingMemberBox = (props: {
                 >
                   <TableRow
                     sx={{
-                      display: "inline",
+                      display: "inline-flex",
                       justifyContent: "center",
                       width: "100%",
                     }}
