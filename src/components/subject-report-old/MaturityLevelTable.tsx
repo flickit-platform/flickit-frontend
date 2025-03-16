@@ -62,8 +62,6 @@ interface TableColumn {
 export interface ItemServerFieldsColumnMapping {
   questionnaire: string;
   question: string;
-  answer: string;
-  weight: number;
   gained_score: number;
   missedScore: number;
   weighted_score: number;
@@ -74,8 +72,6 @@ export interface ItemServerFieldsColumnMapping {
 interface ItemColumnMapping {
   questionnaire: JSX.Element;
   question: string;
-  answer: string;
-  weight: number;
   gainedScore: number;
   missedScore: number;
   weightedScore: string | number;
@@ -89,29 +85,14 @@ const columns: TableColumn[] = [
     serverKey: "questionnaire",
     label: "questionnaire",
     sortable: true,
-    width: "50px",
+    width: "200px",
   },
   {
     field: "question",
     serverKey: "question",
     label: "question",
     sortable: false,
-    width: "230px",
-  },
-  {
-    field: "answer",
-    serverKey: "answer",
-    label: "answer",
-    sortable: false,
-    width: "170px",
-  },
-  {
-    field: "weight",
-    serverKey: "weight",
-    label: "weight",
-    sortable: true,
-    align: "center",
-    width: "30px",
+    width: "300px",
   },
   {
     field: "gainedScore",
@@ -119,7 +100,7 @@ const columns: TableColumn[] = [
     label: "score",
     sortable: true,
     align: "center",
-    width: "170px",
+    width: "400px",
   },
   {
     field: "confidence",
@@ -127,7 +108,7 @@ const columns: TableColumn[] = [
     label: "confidence",
     sortable: true,
     align: "center",
-    width: "30px",
+    width: "20px",
   },
   {
     field: "evidenceCount",
@@ -253,14 +234,14 @@ const MaturityLevelTable = ({
   };
 
   const getCellDirection = (column: TableColumn, row: ItemColumnMapping) => {
-    if (column.serverKey === "question" || column.serverKey === "answer") {
+    if (column.serverKey === "question") {
       return languageDetector(row[column.field]?.toString()) ? "rtl" : "ltr";
     }
     return "unset";
   };
 
   const getCellTextAlign = (column: TableColumn, row: ItemColumnMapping) => {
-    if (column.serverKey === "question" || column.serverKey === "answer") {
+    if (column.serverKey === "question") {
       return languageDetector(row[column.field]?.toString()) ? "right" : "left";
     }
     return column.align;
@@ -320,12 +301,6 @@ const MaturityLevelTable = ({
       question: item.question.index
         ? item.question.index + ". " + item.question.title
         : "-",
-      answer: item.answer.index
-        ? item.answer.index + ". " + item.answer.title
-        : item.answer.isNotApplicable
-          ? t("notApplicable")
-          : "-",
-      weight: item.question.weight,
       gainedScore: item?.answer?.gainedScore,
       missedScore: item?.answer?.missedScore,
       weightedScore: item.answer.weightedScore?.toString()
@@ -491,6 +466,12 @@ const MaturityLevelTable = ({
               component="div"
               onClick={() => handleQuestionClick(index)}
               data-testid="open-question-details-dialog"
+              sx={{
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+                cursor: "pointer",
+              }}
             >
               {columns.map((column) => (
                 <TableCell
