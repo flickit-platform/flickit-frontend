@@ -21,6 +21,7 @@ interface IAssessmentSubjectCardProps extends ISubjectInfo {
   confidenceValue?: number;
   attributes?: any;
   maturityLevelCount?: number;
+  reloadQuery?: any;
 }
 
 export const AssessmentSubjectAccordion = (
@@ -32,6 +33,7 @@ export const AssessmentSubjectAccordion = (
     maturityLevelCount,
     confidenceValue,
     description = "",
+    reloadQuery,
   } = props;
 
   const [expanded, setExpanded] = useState<boolean>(false);

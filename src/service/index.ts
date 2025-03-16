@@ -970,6 +970,12 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/assessments/${assessmentId}/insights/`, config);
     },
+    fetchInsightsIssues(
+      { assessmentId }: { assessmentId: string },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/insights-issues/`, config);
+    },
     fetchSubject(
       { subjectId, assessmentId }: { subjectId: string; assessmentId: string },
       config: AxiosRequestConfig<any> | undefined = {},

@@ -7,10 +7,11 @@ interface IAssessmentSubjectListProps {
   subjects: ISubjectInfo[];
   colorCode: string;
   maturityLevelCount?: number;
+  reloadQuery?: any;
 }
 
 export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
-  const { subjects = [], maturityLevelCount } = props;
+  const { subjects = [], maturityLevelCount, reloadQuery } = props;
   const isEmpty = subjects.length === 0;
 
   return (
@@ -25,6 +26,7 @@ export const AssessmentSubjectList = (props: IAssessmentSubjectListProps) => {
                 <AssessmentSubjectAccordion
                   {...subject}
                   maturityLevelCount={maturityLevelCount}
+                  reloadQuery={reloadQuery}
                 />
               </Grid>
             );

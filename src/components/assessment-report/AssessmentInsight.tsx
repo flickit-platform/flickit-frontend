@@ -14,25 +14,29 @@ import { EditableRichEditor } from "../common/fields/EditableRichEditor";
 import ActionPopup from "../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
-export const AssessmentInsight = ({ defaultInsight }: any) => {
+export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const abortController = useRef(new AbortController());
 
   const [insight, setInsight] = useState<any>(
-    defaultInsight?.assessorInsight || defaultInsight?.defaultInsight
+    defaultInsight?.assessorInsight || defaultInsight?.defaultInsight,
   );
   const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
-  const [isApproved, setIsApproved] = useState(defaultInsight?.approved ?? true);
+  const [isApproved, setIsApproved] = useState(
+    defaultInsight?.approved ?? true,
+  );
   const [isExpired, setIsExpired] = useState(
-    (defaultInsight?.assessorInsight && !defaultInsight?.assessorInsight?.isValid) ?? false
+    (defaultInsight?.assessorInsight &&
+      !defaultInsight?.assessorInsight?.isValid) ??
+      false,
   );
 
   const fetchAssessmentInsight = useQuery<any>({
     service: (args, config) =>
       service.fetchAssessmentInsight({ assessmentId }, config),
     toastError: false,
-    runOnMount: false, 
+    runOnMount: false,
   });
 
   const ApproveAssessmentInsight = useQuery({
@@ -52,6 +56,7 @@ export const AssessmentInsight = ({ defaultInsight }: any) => {
       event.stopPropagation();
       await ApproveAssessmentInsight.query();
       await fetchAssessmentInsight.query();
+      await reloadQuery();
     } catch (e) {
       toastError(e as ICustomError);
     }
@@ -65,8 +70,9 @@ export const AssessmentInsight = ({ defaultInsight }: any) => {
       setEditable(data?.editable ?? false);
       setIsApproved(data?.approved ?? true);
       setIsExpired(
-        (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false
+        (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
       );
+      reloadQuery();
     }
   }, [fetchAssessmentInsight.data]);
 
@@ -91,7 +97,13 @@ export const AssessmentInsight = ({ defaultInsight }: any) => {
   });
 
   return (
-    <Box display="flex" flexDirection="column" gap={2} height="100%" width="100%">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      height="100%"
+      width="100%"
+    >
       <Box
         sx={{
           ...styles.centerV,
@@ -127,7 +139,7 @@ export const AssessmentInsight = ({ defaultInsight }: any) => {
           onSubmit={async (payload: any, event: any) => {
             await service.updateAssessmentInsight(
               { assessmentId, data: { insight: payload?.insight } },
-              { signal: abortController.current.signal }
+              { signal: abortController.current.signal },
             );
           }}
           infoQuery={fetchAssessmentInsight.query}

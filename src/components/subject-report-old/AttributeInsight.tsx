@@ -14,12 +14,19 @@ import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 
-const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
+const AttributeInsight = ({
+  attributeId,
+  defaultInsight,
+  progress,
+  reloadQuery,
+}: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
   const [insight, setInsight] = useState<any>(
-    defaultInsight?.assessorInsight || defaultInsight?.aiInsight,
+    defaultInsight?.assessorInsight ||
+      defaultInsight?.aiInsight ||
+      defaultInsight?.defaultInsight,
   );
   const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
   const [isApproved, setIsApproved] = useState(
@@ -55,6 +62,7 @@ const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
       event.stopPropagation();
       await ApproveAISubject.query();
       await fetchSubjectInsight.query();
+      await reloadQuery();
     } catch (e) {
       toastError(e as ICustomError);
     }
@@ -70,6 +78,7 @@ const AttributeInsight = ({ attributeId, defaultInsight, progress }: any) => {
       setIsExpired(
         (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
       );
+      reloadQuery();
     }
   }, [fetchSubjectInsight.data]);
 
