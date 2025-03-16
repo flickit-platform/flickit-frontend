@@ -1,6 +1,5 @@
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
-import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { theme as customTheme } from "@/config/theme";
@@ -8,8 +7,7 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 
 const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
-  const theme = useTheme();
-  const minWidthPerUnit = 20;
+  const minWidthPerUnit = 40;
   const maxWidthPerUnit = 40;
 
   const missedWidth = Math.min(
@@ -42,7 +40,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              direction: 'ltr',
+              direction: "ltr",
             }}
           >
             <Box sx={{ ...styles.centerCVH }}>
@@ -75,7 +73,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: gainedWidth && missedWidth ? `${width}px` : `${width + 10}px`,
+          width: `${width}px`,
           height: `${height}px`,
           borderRadius: "4px",
           overflow: "hidden",
@@ -86,23 +84,35 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
       >
         <Box
           sx={{
+            width: "2px",
+            height: "100%",
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1,
+          }}
+        />
+
+        <Box
+          sx={{
             width: `${missedWidth}px`,
             height: "100%",
             backgroundColor: customTheme.palette.secondary.main,
             position: "absolute",
-            left: 0,
+            right: "50%",
             top: 0,
             borderTopLeftRadius: "4px",
             borderBottomLeftRadius: "4px",
           }}
         />
+
         <Box
           sx={{
             width: `${gainedWidth}px`,
             height: "100%",
             backgroundColor: customTheme.palette.primary.main,
             position: "absolute",
-            right: 0,
+            left: "50%",
             top: 0,
             borderTopRightRadius: "4px",
             borderBottomRightRadius: "4px",
