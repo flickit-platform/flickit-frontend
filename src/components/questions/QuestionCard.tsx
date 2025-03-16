@@ -501,25 +501,25 @@ export const QuestionTabsTemplate = (props: any) => {
     setCurrentPage(value);
   };
 
-    const total = useMemo(() => {
-        return Math.ceil(counts[value] / 10);
-    }, [value, counts]);
+  const total = useMemo(() => {
+    return Math.ceil(counts[value] / 10);
+  }, [value, counts]);
 
-    useEffect(()=>{
-        if(currentPage > total && currentPage > 1){
-            setCurrentPage(currentPage - 1)
-        }
-    },[total])
+  useEffect(() => {
+    if (currentPage > total && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [total]);
 
-  useEffect(()=>{
-      if(value == "evidences"){
-          evidencesQueryData.query()
-      }else if(value == "comments"){
-          commentesQueryData.query()
-      }else if(value == "history"){
-          queryData.query()
-      }
-  },[currentPage])
+  useEffect(() => {
+    if (value == "evidences") {
+      evidencesQueryData.query();
+    } else if (value == "comments") {
+      commentesQueryData.query();
+    } else if (value == "history") {
+      queryData.query();
+    }
+  }, [currentPage]);
 
   return (
     <TabContext value={value}>
@@ -620,23 +620,23 @@ export const QuestionTabsTemplate = (props: any) => {
               />
             </Box>
           </TabPanel>
-            {total > 1 && <Stack
-                spacing={2}
-                sx={{
-                    mt: 3,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <Pagination
-                    variant="outlined"
-                    color="primary"
-                    count={total}
-                    onChange={handleChangePage}
-                    page={currentPage}
-                />
-            </Stack>}
+          <Stack
+            spacing={2}
+            sx={{
+              mt: 3,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Pagination
+              variant="outlined"
+              color="primary"
+              count={total}
+              onChange={handleChangePage}
+              page={currentPage}
+            />
+          </Stack>
         </>
       )}
     </TabContext>
