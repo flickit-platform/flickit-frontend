@@ -2073,10 +2073,6 @@ const EvidenceDetail = (props: any) => {
     }
   };
 
-  // useEffect(() => {
-  //   setEvidenceId(id);
-  // }, [id]);
-
   const skeleton = Array.from(Array(attachmentsCount).keys());
   return (
     <Box display="flex" flexDirection="column" width="100%">
