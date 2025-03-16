@@ -33,8 +33,10 @@ const AttributeInsight = ({
     defaultInsight?.approved ?? true,
   );
   const [isExpired, setIsExpired] = useState(
-    (defaultInsight?.assessorInsight &&
-      !defaultInsight?.assessorInsight?.isValid) ??
+    ((defaultInsight?.assessorInsight &&
+      !defaultInsight?.assessorInsight?.isValid) ||
+      (defaultInsight?.defaultInsight &&
+        !defaultInsight?.defaultInsight?.isValid)) ??
       false,
   );
 

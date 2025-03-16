@@ -92,16 +92,18 @@ const AssessmentReportContainer = (props: any) => {
     fetchInsightsIssues.query();
     fetchAssessmentInsight.query();
   };
+
   return (
     <PermissionControl
       error={[fetchAssessmentInsight.errorObject?.response?.data]}
     >
       <QueryBatchData
-        queryBatchData={[assessmentTotalProgress, fetchInsightsIssues]}
+        queryBatchData={[fetchInsightsIssues]}
         renderLoading={() => <LoadingSkeleton />}
-        loading={!fetchInsightsIssues.loaded && !fetchAssessmentInsight.loading}
-        render={([progress, issues]) => {
-          const { answersCount, questionsCount } = progress || {};
+        loading={!fetchInsightsIssues.loaded || assessmentTotalProgress.loading}
+        render={([issues]) => {
+          const { answersCount, questionsCount } =
+            assessmentTotalProgress.data || {};
 
           return (
             <Box m="auto">
@@ -135,9 +137,13 @@ const AssessmentReportContainer = (props: any) => {
           );
         }}
       />
+
       <QueryBatchData
         queryBatchData={[fetchAssessmentInsight]}
         renderLoading={() => <LoadingSkeletonOfAssessmentReport />}
+        loading={
+          !fetchAssessmentInsight.loaded || assessmentTotalProgress.loading
+        }
         render={([data = {}]) => {
           const { assessment, subjects } = data || {};
 
@@ -154,9 +160,7 @@ const AssessmentReportContainer = (props: any) => {
                 mt={2}
               >
                 <AssessmentInsight
-                  defaultInsight={
-                    fetchAssessmentInsight.data.assessment.insight
-                  }
+                  defaultInsight={assessment?.insight}
                   reloadQuery={fetchInsightsIssues.query}
                 />
                 <Gauge

@@ -10,7 +10,7 @@ import SubjectOverallInsight from "./SubjectOverallInsight";
 import QueryBatchData from "@common/QueryBatchData";
 
 const SubjectContainer = (props: any) => {
-  const { id } = props;
+  const { id, reloadQuery } = props;
   const { loading, loaded, hasError, subjectProgressQueryData } = useSubject({
     id,
   });
@@ -42,6 +42,7 @@ const SubjectContainer = (props: any) => {
                   {...props}
                   loading={loading}
                   progress={progress}
+                  reloadQuery={reloadQuery}
                 />
               </Box>
             )}

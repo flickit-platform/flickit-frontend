@@ -31,8 +31,10 @@ const SubjectOverallInsight = ({
     defaultInsight?.approved ?? true,
   );
   const [isExpired, setIsExpired] = useState(
-    (defaultInsight?.assessorInsight &&
-      !defaultInsight?.assessorInsight?.isValid) ??
+    ((defaultInsight?.assessorInsight &&
+      !defaultInsight?.assessorInsight?.isValid) ||
+      (defaultInsight?.defaultInsight &&
+        !defaultInsight?.defaultInsight?.isValid)) ??
       false,
   );
 
@@ -76,7 +78,7 @@ const SubjectOverallInsight = ({
       setIsExpired(
         (data?.assessorInsight && !data?.assessorInsight?.isValid) ?? false,
       );
-      reloadQuery()
+      reloadQuery();
     }
   }, [fetchSubjectInsight.data]);
 
