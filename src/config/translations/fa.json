@@ -865,7 +865,7 @@
   "unlimitedAssessmentPerSpace": "امکان ایجاد پروژه ارزیابی به صورت <strong>نامحدود<strong/>",
   "fullAccessToCommercialAssessmentKits": "<strong>دسترسی کامل </strong>به کیت‌های ارزیابی تجاری",
   "freeToUse": "<strong>رایگان</strong>.",
-  "veryLimitedNumberOfSpaces": "تعداد بسیار <strong> محدود<strong/>.",
+  "veryLimitedNumberOfSpaces": "تعداد بسیار <strong> محدود<strong/> ",
   "createLimitedAssessments": "امکان ایجاد ارزیابی به تعداد <strong>محدود<strong/>",
   "noCommercialAssessmentKits": "  <strong>عدم دسترسی </strong>به کیت‌های ارزیابی تجاری",
   "reachedLimit": "ظرفیت شما تکمیل شده است",
@@ -875,6 +875,7 @@
   "createBasicSpaceCongratulation": "اسپیس شما آماده است! می\u200Cتوانید اعضای تیم\u200Cتان را دعوت کنید و فرایند ارزیابی\u200C را آغاز کنید.",
   "createPremiumSpaceCongratulation": "فضای کاری جدید با موفقیت ایجاد شد. توجه داشته باشید که اسپیس پریمیوم شما به\u200Cطور موقت فعال است. در کوتاه\u200Cترین زمان با شما تماس خواهیم گرفت. لطفا ایمیل خود را برای دریافت جزئیات بیشتر بررسی کنید.",
   "spacePremiumInfo": "اسپیس شما رایگان ایجاد شده و به‌صورت موقت فعال خواهد بود. جزئیات پرداخت از طریق ایمیل ارسال می‌شود و در صورت عدم توافق، غیرفعال می‌شود.",
+  "nameYourSpace": "تعیین نام فضای کاری",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",
