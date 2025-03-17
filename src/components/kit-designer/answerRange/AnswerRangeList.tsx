@@ -242,6 +242,7 @@ const ListOfItems = ({
             }}
           >
             <AccordionSummary
+              data-testid="accordion-summary-answer-range"
               sx={{
                 backgroundColor:
                   editMode === item.id
@@ -400,6 +401,7 @@ const ListOfItems = ({
               </Box>
             </AccordionSummary>
             <AccordionDetails
+              data-testid="accordion-details-answer-range"
               sx={{
                 margin: 0,
                 padding: 0,
