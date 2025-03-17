@@ -41,6 +41,7 @@ const SubjectAttributeCard = (props: any) => {
     id,
     progress,
     insight,
+    reloadQuery,
   } = props;
   const { permissions } = useAssessmentContext();
   const { assessmentId = "" } = useParams();
@@ -303,6 +304,7 @@ const SubjectAttributeCard = (props: any) => {
                 progress={progress}
                 attributeId={id}
                 defaultInsight={insight}
+                reloadQuery={reloadQuery}
               />
             )}
             <Box>

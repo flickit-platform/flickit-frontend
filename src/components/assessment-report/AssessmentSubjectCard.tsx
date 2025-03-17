@@ -21,6 +21,7 @@ interface IAssessmentSubjectCardProps extends ISubjectInfo {
   confidenceValue?: number;
   attributes?: any;
   maturityLevelCount?: number;
+  reloadQuery?: any;
 }
 
 export const AssessmentSubjectAccordion = (
@@ -32,6 +33,7 @@ export const AssessmentSubjectAccordion = (
     maturityLevelCount,
     confidenceValue,
     description = "",
+    reloadQuery,
   } = props;
 
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -195,7 +197,7 @@ export const AssessmentSubjectAccordion = (
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 4 }}>
         <Box sx={{ display: expanded ? "block" : "none" }}>
-          <SubjectContainer {...props} />
+          <SubjectContainer {...props} reloadQuery={reloadQuery} />
         </Box>
       </AccordionDetails>
     </Accordion>

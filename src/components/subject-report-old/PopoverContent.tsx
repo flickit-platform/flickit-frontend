@@ -26,6 +26,9 @@ const PopoverContent = ({
       return "missedScoreHighToLow";
     } else if (sortBy === "missed_score" && sortOrder === "asc") {
       return "missedScoreLowToHigh";
+    } else if(sortBy === "weight" && sortOrder === "desc"){
+      return "weight";
+
     }
     return "";
   };
@@ -40,6 +43,9 @@ const PopoverContent = ({
       onSortChange("missed_score", "desc");
     } else if (value === "missedScoreLowToHigh") {
       onSortChange("missed_score", "asc");
+    } else if (value==="weight"){
+      onSortChange("weight", "desc");
+
     }
   };
 
@@ -50,39 +56,46 @@ const PopoverContent = ({
       </Typography>
       <RadioGroup value={getSelectedValue()} onChange={handleSortChange}>
         <FormControlLabel
-          value="gainedScoreHighToLow"
+          value="weight"
           control={<Radio sx={{ padding: "4px" }} />}
-          label={
-            <Typography variant="bodySmall">
-              {t("gainedScore")} ({t("highToLow")})
-            </Typography>
-          }
+          label={<Typography variant="bodySmall">{t("impact")}</Typography>}
         />
+        <Divider sx={{ my: 1 }} />
+
         <FormControlLabel
           value="gainedScoreLowToHigh"
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("gainedScore")} ({t("lowToHigh")})
+              {t("gainedScore")} ({t("ascending")})
+            </Typography>
+          }
+        />
+        <FormControlLabel
+          value="gainedScoreHighToLow"
+          control={<Radio sx={{ padding: "4px" }} />}
+          label={
+            <Typography variant="bodySmall">
+              {t("gainedScore")} ({t("descending")})
             </Typography>
           }
         />
         <Divider sx={{ my: 1 }} />
         <FormControlLabel
-          value="missedScoreHighToLow"
-          control={<Radio sx={{ padding: "4px" }} />}
-          label={
-            <Typography variant="bodySmall">
-              {t("missedScore")} ({t("highToLow")})
-            </Typography>
-          }
-        />
-        <FormControlLabel
           value="missedScoreLowToHigh"
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("missedScore")} ({t("lowToHigh")})
+              {t("missedScore")} ({t("ascending")})
+            </Typography>
+          }
+        />
+        <FormControlLabel
+          value="missedScoreHighToLow"
+          control={<Radio sx={{ padding: "4px" }} />}
+          label={
+            <Typography variant="bodySmall">
+              {t("missedScore")} ({t("descending")})
             </Typography>
           }
         />

@@ -970,6 +970,12 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/assessments/${assessmentId}/insights/`, config);
     },
+    fetchInsightsIssues(
+      { assessmentId }: { assessmentId: string },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.get(`/api/v1/assessments/${assessmentId}/insights-issues/`, config);
+    },
     fetchSubject(
       { subjectId, assessmentId }: { subjectId: string; assessmentId: string },
       config: AxiosRequestConfig<any> | undefined = {},
@@ -1421,7 +1427,7 @@ export const createService = (
         {
           ...(config ?? {}),
           params: {
-            page: page,
+            page: page - 1,
             size: size,
           },
         },
@@ -1582,6 +1588,15 @@ export const createService = (
     ) {
       return axios.put(
           `/api/v1/assessments/${assessmentId}/resolve-comments/`,
+          { ...config },
+      );
+    },
+    approveAllAnswers(
+        { assessmentId }: { assessmentId: TId },
+        config?: AxiosRequestConfig<any>,
+    ) {
+      return axios.put(
+          `/api/v1/assessments/${assessmentId}/approve-answers/`,
           { ...config },
       );
     },
@@ -2180,7 +2195,7 @@ export const createService = (
         params: {
           questionId: questionId,
           assessmentId: assessmentId,
-          page,
+          page: page - 1,
           size,
         },
       });
@@ -2196,7 +2211,7 @@ export const createService = (
         params: {
           questionId: questionId,
           assessmentId: assessmentId,
-          page,
+          page: page - 1,
           size,
         },
       });

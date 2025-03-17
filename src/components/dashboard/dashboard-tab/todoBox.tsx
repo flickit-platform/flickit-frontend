@@ -87,7 +87,7 @@ const TodoBox = (props: any) => {
                             key={key}
                             name={key}
                             value={value}
-                            fetchDashboard={fetchDashboard}
+                            fetchDashboard={fetchDashboard.query}
                             py={1}
                             px={2}
                             issues={fetchDashboard.data?.questions}
@@ -240,6 +240,12 @@ export const IssuesItem = ({
     runOnMount: false,
   });
 
+  const approveAllAnswers = useQuery({
+    service: (args = { assessmentId }, config) =>
+        service.approveAllAnswers(args, config),
+    runOnMount: false,
+  });
+
   const handleNavigation = () => {
     if (originalName === "questions") {
       navigate(`../questionnaires`, {
@@ -251,7 +257,7 @@ export const IssuesItem = ({
   const handleApproveAll = async () => {
     try {
       await approveInsights.query();
-      await fetchDashboard.query();
+      await fetchDashboard();
     } catch (e) {
       toastError(e as ICustomError);
     }
@@ -260,24 +266,35 @@ export const IssuesItem = ({
   const handleGenerateAll = async () => {
     try {
       await generateInsights.query();
-      await fetchDashboard.query();
+      await fetchDashboard();
     } catch (e) {}
   };
 
   const regeneratedAll = async () => {
     try {
       await regenerateInsights.query();
-      await fetchDashboard.query();
+      await fetchDashboard();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
     }
   };
 
+  const handleApproveAllAnswers = async (event: any) =>{
+    try {
+      event.stopPropagation();
+      event.preventDefault();
+      await approveAllAnswers.query();
+      await fetchDashboard();
+    } catch (e) {
+      toastError(e as ICustomError);
+    }
+  }
+
   const handleApproveAllExpired = async () => {
     try {
       await approveExpiredInsights.query();
-      await fetchDashboard.query();
+      await fetchDashboard();
     } catch (e) {
       toastError(e as ICustomError);
     }
@@ -287,7 +304,7 @@ export const IssuesItem = ({
       event.stopPropagation();
       event.preventDefault();
       await resolvedAllComments.query();
-      await fetchDashboard.query();
+      await fetchDashboard();
     } catch (e) {
       toastError(e as ICustomError);
     }
@@ -460,6 +477,23 @@ export const IssuesItem = ({
             <Trans i18nKey="resolveAll" />
           </Typography>
         </Button>
+      )}
+      {name === "unapprovedAnswers" && (
+          <Box style={{ marginInlineStart: "auto" }}>
+            <LoadingButton
+                onClick={(event)=>handleApproveAllAnswers(event)}
+                variant="outlined"
+                loading={approveAllAnswers.loading}
+                color={color}
+                sx={{
+                  padding: "4px 10px",
+                }}
+            >
+              <Typography sx={{ ...theme.typography.labelMedium }}>
+                <Trans i18nKey="approveAll" />
+              </Typography>
+            </LoadingButton>
+          </Box>
       )}
     </Box>
   );

@@ -81,6 +81,8 @@ import { useQuestions } from "@components/questions/QuestionsContainer";
 import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
 import { QuestionGuide } from "./QuestionCard/QuestionGuide";
 import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -385,10 +387,11 @@ export const QuestionTabsTemplate = (props: any) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [counts, setCounts] = useState({
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [counts, setCounts] = useState<any>({
     evidences: 0,
     history: 0,
-    comment: 0,
+    comments: 0,
   });
 
   const toggleTabs = () => {
@@ -399,21 +402,26 @@ export const QuestionTabsTemplate = (props: any) => {
           ? "evidences"
           : counts.history
             ? "history"
-            : counts.comment
-              ? "comment"
+            : counts.comments
+              ? "comments"
               : null,
       );
     }
   };
 
   const updateCount = (type: string, count: number) => {
-    setCounts((prev) => ({ ...prev, [type]: count }));
+    setCounts((prev: any) => ({ ...prev, [type]: count }));
   };
 
   // Queries
   const queryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 10 },
+      args = {
+        questionId: questionInfo.id,
+        assessmentId,
+        page: currentPage,
+        size: 10,
+      },
       config,
     ) => service.fetchAnswersHistory(args, config),
     toastError: true,
@@ -421,7 +429,12 @@ export const QuestionTabsTemplate = (props: any) => {
   });
   const evidencesQueryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 100 },
+      args = {
+        questionId: questionInfo.id,
+        assessmentId,
+        page: currentPage,
+        size: 10,
+      },
       config,
     ) => service.fetchEvidences(args, config),
     toastError: true,
@@ -430,7 +443,12 @@ export const QuestionTabsTemplate = (props: any) => {
 
   const commentesQueryData = useQuery({
     service: (
-      args = { questionId: questionInfo.id, assessmentId, page: 0, size: 100 },
+      args = {
+        questionId: questionInfo.id,
+        assessmentId,
+        page: currentPage,
+        size: 10,
+      },
       config,
     ) => service.fetchComments(args, config),
     toastError: true,
@@ -466,7 +484,7 @@ export const QuestionTabsTemplate = (props: any) => {
       updateCount("evidences", evidencesQueryData.data.total || 0);
     }
     if (commentesQueryData.data?.items) {
-      updateCount("comment", commentesQueryData.data.total || 0);
+      updateCount("comments", commentesQueryData.data.total || 0);
     }
   }, [queryData.data, evidencesQueryData.data, commentesQueryData.data]);
 
@@ -475,6 +493,33 @@ export const QuestionTabsTemplate = (props: any) => {
       setValue(null);
     }
   }, [isExpanded]);
+
+  const handleChangePage = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setCurrentPage(value);
+  };
+
+  const total = useMemo(() => {
+    return Math.ceil(counts[value] / 10);
+  }, [value, counts]);
+
+  useEffect(() => {
+    if (currentPage > total && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [total]);
+
+  useEffect(() => {
+    if (value == "evidences") {
+      evidencesQueryData.query();
+    } else if (value == "comments") {
+      commentesQueryData.query();
+    } else if (value == "history") {
+      queryData.query();
+    }
+  }, [currentPage]);
 
   return (
     <TabContext value={value}>
@@ -514,11 +559,11 @@ export const QuestionTabsTemplate = (props: any) => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Trans i18nKey="comments" />
-                {` (${counts.comment})`}
+                {` (${counts.comments})`}
               </Box>
             }
-            value="comment"
-            disabled={questionsInfo.permissions.readonly && !counts.comment}
+            value="comments"
+            disabled={questionsInfo.permissions.readonly && !counts.comments}
           />
           <IconButton
             onClick={toggleTabs}
@@ -530,7 +575,7 @@ export const QuestionTabsTemplate = (props: any) => {
             }}
             disabled={
               questionsInfo.permissions.readonly &&
-              !counts.comment &&
+              !counts.comments &&
               !counts.evidences &&
               !counts.history
             }
@@ -545,7 +590,6 @@ export const QuestionTabsTemplate = (props: any) => {
       </Box>
       {isExpanded && (
         <>
-          {/*todo*/}
           <TabPanel value="evidences" sx={{ width: "100%" }}>
             <Box mt={2} width="100%">
               <AnswerDetails
@@ -566,7 +610,7 @@ export const QuestionTabsTemplate = (props: any) => {
               />
             </Box>
           </TabPanel>
-          <TabPanel value="comment" sx={{ width: "100%" }}>
+          <TabPanel value="comments" sx={{ width: "100%" }}>
             <Box mt={2} width="100%">
               <AnswerDetails
                 questionInfo={questionInfo}
@@ -576,6 +620,23 @@ export const QuestionTabsTemplate = (props: any) => {
               />
             </Box>
           </TabPanel>
+          <Stack
+            spacing={2}
+            sx={{
+              mt: 3,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Pagination
+              variant="outlined"
+              color="primary"
+              count={total}
+              onChange={handleChangePage}
+              page={currentPage}
+            />
+          </Stack>
         </>
       )}
     </TabContext>
@@ -1160,12 +1221,7 @@ const AnswerDetails = ({
     });
   };
 
-  return queryData.loading ? (
-    <Box sx={{ ...styles.centerVH }} height="10vh" width="100%">
-      <CircularProgress />
-    </Box>
-  ) : (
-    <Box mt={2} width="100%" my={4}>
+  return <Box mt={2} width="100%" my={4}>
       {type === "evidence" || type === "comment" ? (
         <Box
           display="flex"
@@ -1221,7 +1277,7 @@ const AnswerDetails = ({
         </Box>
       )}
     </Box>
-  );
+
 };
 
 const AnswerHistoryItem = (props: any) => {
@@ -1434,7 +1490,7 @@ const Evidence = (props: any) => {
   const onSubmit = async (data: any) => {
     try {
       if (data.evidence.length <= LIMITED) {
-        await addEvidence.query({
+       let {id} = await addEvidence.query({
           description: data.evidence,
           questionId: questionInfo.id,
           assessmentId,
@@ -1442,6 +1498,7 @@ const Evidence = (props: any) => {
         });
         if (createAttachment) {
           setExpandedAttachmentsDialogs({ count: 0, expended: true });
+          setEvidenceId(id)
         }
         setCreateAttachment(false);
         const { items } = await evidencesQueryData.query();
@@ -2041,7 +2098,7 @@ const EvidenceDetail = (props: any) => {
         borderHover: "#821237",
       });
     } else {
-      setValue(null)
+      setValue(null);
       setEvidenceBG({
         background: "rgba(25, 28, 31, 0.08)",
         borderColor: "#191C1F",
@@ -2076,10 +2133,6 @@ const EvidenceDetail = (props: any) => {
       setLoadingFile(false);
     }
   };
-
-  useEffect(() => {
-    setEvidenceId(id);
-  }, [id]);
 
   const skeleton = Array.from(Array(attachmentsCount).keys());
   return (
