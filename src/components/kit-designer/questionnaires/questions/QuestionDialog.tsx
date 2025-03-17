@@ -83,6 +83,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   });
   const [showNewOptionForm, setShowNewOptionForm] = useState(false);
   const [showNewImpactForm, setShowNewImpactForm] = useState(false);
+  const [disableAddOption, setDisableAddOption] = useState(false);
   const formMethods = useForm({ shouldUnregister: true });
 
   const { service } = useServiceContext();
@@ -273,12 +274,8 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       (answerRange: any) => answerRange.id === question?.answerRangeId,
     );
 
-    setSelectedAnswerRange(item?.id);
+    setDisableAddOption(Boolean(item));
   }, [fetchAnswerRanges?.data?.items]);
-
-  useEffect(() => {
-    console.log(selectedAnswerRange);
-  }, [selectedAnswerRange]);
 
   const handleAnswerRangeChange = async (event: any) => {
     const requestData = {
@@ -415,7 +412,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                     onAdd={handleAddOption}
                     isAddingNew={showNewOptionForm}
                     setIsAddingNew={setShowNewOptionForm}
-                    disableAddOption={selectedAnswerRange !== undefined}
+                    disableAddOption={disableAddOption}
                   />
                 </Box>
               </>
