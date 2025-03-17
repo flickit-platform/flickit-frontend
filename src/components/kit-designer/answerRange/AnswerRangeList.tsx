@@ -178,9 +178,10 @@ const ListOfItems = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    const parsedValue = name === "value" ? parseFloat(value) || 1 : value;
     setNewOptions((prev) => ({
       ...prev,
-      [name]: value || 1,
+      [name]: parsedValue,
     }));
   };
 
