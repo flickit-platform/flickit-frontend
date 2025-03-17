@@ -45,7 +45,7 @@ const OptionForm = ({
           onChange={handleInputChange}
           fullWidth
           inputProps={{
-            "data-testid": "questionnaires-title",
+            "data-testid": "answer-range-option-title",
           }}
           margin="normal"
           sx={{
@@ -73,7 +73,7 @@ const OptionForm = ({
           variant="outlined"
           size="small"
           inputProps={{
-            "data-testid": "question-value",
+            "data-testid": "answer-range-option-value",
             style: { textAlign: "center", width: "100%" },
           }}
           sx={{

@@ -80,6 +80,7 @@ const ListOfItems = ({
     id: null,
   });
   const [questionData, setQuestionData] = useState<IQuestion[]>([]);
+  const [expanded, setExpanded] = useState<TId | null>(null);
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
@@ -117,6 +118,7 @@ const ListOfItems = ({
   const handelChangeAccordion =
     ({ id }: { id: TId }) =>
     async (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? id : null);
       try {
         if (isExpanded) {
           setNewOptions({
@@ -230,6 +232,7 @@ const ListOfItems = ({
         >
           <Accordion
             onChange={handelChangeAccordion(item)}
+            expanded={expanded === item?.id}
             sx={{
               boxShadow: "none",
               "&:before": {
