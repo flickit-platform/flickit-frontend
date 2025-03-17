@@ -1,3 +1,4 @@
+import {useRef} from "react";
 let counter = 0;
 
 /**
@@ -5,6 +6,8 @@ let counter = 0;
  * @param {string} prefix - Optional prefix for the ID.
  * @returns {string} - A unique ID.
  */
-const uniqueId = (prefix = "") => `${prefix}${++counter}`;
+const uniqueId = (prefix = "") => {
+  return useRef(`${prefix}${++counter}`).current
+};
 
 export default uniqueId;
