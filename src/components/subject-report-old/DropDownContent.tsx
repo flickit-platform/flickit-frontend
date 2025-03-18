@@ -6,7 +6,7 @@ import { OutlinedInput, InputLabel, FormControl } from "@mui/material";
 import { theme } from "@/config/theme";
 
 const sortOptions = [
-  { value: "weight", label: t("impact") },
+  { value: "impact_percentage", label: t("impact") },
   { value: "gainedScoreLowToHigh", label: `${t("gainedScore")} (${t("ascending")})` },
   { value: "gainedScoreHighToLow", label: `${t("gainedScore")} (${t("descending")})` },
   { value: "missedScoreLowToHigh", label: `${t("missedScore")} (${t("ascending")})` },
@@ -29,7 +29,7 @@ const DropdownContent = ({
     if (sortBy === "gained_score" && sortOrder === "asc") return "gainedScoreLowToHigh";
     if (sortBy === "missed_score" && sortOrder === "desc") return "missedScoreHighToLow";
     if (sortBy === "missed_score" && sortOrder === "asc") return "missedScoreLowToHigh";
-    if (sortBy === "weight" && sortOrder === "desc") return "weight";
+    if (sortBy === "impact_percentage" && sortOrder === "desc") return "impact_percentage";
     return "";
   };
 
@@ -39,7 +39,7 @@ const DropdownContent = ({
     else if (value === "gainedScoreLowToHigh") onSortChange("gained_score", "asc");
     else if (value === "missedScoreHighToLow") onSortChange("missed_score", "desc");
     else if (value === "missedScoreLowToHigh") onSortChange("missed_score", "asc");
-    else if (value === "weight") onSortChange("weight", "desc");
+    else if (value === "impact_percentage") onSortChange("impact_percentage", "desc");
   };
 
   return (
