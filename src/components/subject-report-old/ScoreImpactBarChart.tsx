@@ -21,8 +21,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const missedScore = payload[0].payload.missedScore;
     const gainedScore = payload[0].payload.gainedScore;
-    const missedScorePercentage = Math.abs(payload[0].payload.pv);
-    const gainedScorePercentage = payload[0].payload.uv;
 
     return (
       <Box
@@ -49,7 +47,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
               variant="body1"
               sx={{ color: "white", fontWeight: "bold" }}
             >
-              {missedScore} ({missedScorePercentage}%)
+              {missedScore}
             </Typography>
             <Typography variant="body2" sx={{ color: "white" }}>
               <Trans i18nKey="missedScore" />
@@ -61,7 +59,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
               variant="body1"
               sx={{ color: "white", fontWeight: "bold" }}
             >
-              {gainedScore} ({gainedScorePercentage}%)
+              {gainedScore}
             </Typography>
             <Typography variant="body2" sx={{ color: "white" }}>
               <Trans i18nKey="gainedScore" />
@@ -115,7 +113,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
             )}
           />
 
-          <ReferenceLine x={0} stroke="#000" />
+          <ReferenceLine x={0} strokeDasharray="3 3" />
 
           <XAxis
             type="number"
@@ -160,7 +158,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
               dataKey="uv"
               position="right"
               fill="#2466A8"
-              formatter={(v: any) => `${v}%`}
+              formatter={(v: any) => (v !== 0 ? `${v}%` : "")}
               style={{
                 textAnchor: "end",
                 fontSize: 14,
@@ -178,7 +176,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
               dataKey="pv"
               position="right"
               fill="#B8144B"
-              formatter={(v: any) => `${Math.abs(v)}%`}
+              formatter={(v: any) => (v !== 0 ? `${Math.abs(v)}%` : "")}
               style={{
                 textAnchor: "start",
                 fontSize: 14,
