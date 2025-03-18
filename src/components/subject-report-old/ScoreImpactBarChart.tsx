@@ -18,7 +18,7 @@ import { styles } from "@styles";
 import { Trans } from "react-i18next";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
+  if (active && payload?.length) {
     const missedScore = payload[0].payload.missedScore;
     const gainedScore = payload[0].payload.gainedScore;
 
