@@ -1,21 +1,12 @@
 import React, { useMemo } from "react";
-import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
+import { CEDialog } from "@common/dialogs/CEDialog";
 import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import FormProviderWithForm from "@common/FormProviderWithForm";
-import Grid from "@mui/material/Grid";
-import { styles } from "@styles";
-import { InputFieldUC } from "@common/fields/InputField";
 import Box from "@mui/material/Box";
-import CheckmarkGif from "@common/success/Checkmark";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
 import AssessmentError from "@/assets/svg/AssessmentError.svg";
 import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
-import MenuItem from "@mui/material/MenuItem";
-import ListItem from "@mui/material/ListItem";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -96,7 +87,14 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
           );
         })}
       </Box>
-      <Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "center", p: 2}}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          p: 2,
+        }}
+      >
         <Button onClick={close} variant="contained">
           <Trans i18nKey="okGotIt" />
         </Button>
