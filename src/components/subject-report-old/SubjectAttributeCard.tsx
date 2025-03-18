@@ -29,6 +29,8 @@ import QueryBatchData from "../common/QueryBatchData";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import AttributeInsight from "./AttributeInsight";
 import { t } from "i18next";
+import ScoreImpactBarChart from "./ScoreImpactBarChart";
+import DropDownContent from "./DropDownContent";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -92,6 +94,19 @@ const SubjectAttributeCard = (props: any) => {
     runOnMount: false,
   });
 
+  const fetchMeasures = useQuery({
+    service: (
+      args = {
+        assessmentId,
+        attributeId: expandedAttribute,
+        sort: sortBy,
+        order: sortOrder,
+      },
+      config,
+    ) => service.fetchMeasures(args, config), // تغییر به fetchMeasures
+    runOnMount: false,
+  });
+
   useEffect(() => {
     if (expandedAttribute && selectedMaturityLevel) {
       fetchAffectedQuestionsOnAttributeQueryData.query();
@@ -99,10 +114,22 @@ const SubjectAttributeCard = (props: any) => {
     }
   }, [expandedAttribute, selectedMaturityLevel, page, rowsPerPage]);
 
+  useEffect(() => {
+    if (expandedAttribute) {
+      fetchMeasures.query({
+        assessmentId,
+        attributeId: expandedAttribute,
+        sort: sortBy,
+        order: sortOrder,
+      });
+    }
+  }, [expandedAttribute, sortBy, sortOrder]);
+
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedAttribute(isExpanded ? panel : false);
     };
+
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setTopNavValue(newValue);
   };
@@ -126,10 +153,23 @@ const SubjectAttributeCard = (props: any) => {
 
   const handleTopTabChange = (event: any, newValue: any) => {
     setTopTab(newValue);
+    setSortBy(null);
+    setSortOrder(null);
   };
 
   const colorPallet = getMaturityLevelColors(maturity_levels_count, true);
   const backgroundColor = colorPallet[maturityLevel.value - 1];
+
+  const handleSortChange = (sortBy: any, sortOrder: any) => {
+    setSortBy(sortBy);
+    setSortOrder(sortOrder);
+    fetchMeasures.query({
+      assessmentId,
+      attributeId: expandedAttribute,
+      sort: sortBy,
+      order: sortOrder,
+    });
+  };
 
   return (
     <Box
@@ -311,7 +351,6 @@ const SubjectAttributeCard = (props: any) => {
               <Tabs
                 value={topTab}
                 onChange={handleTopTabChange}
-   
                 sx={{
                   color: "rgba(0, 0, 0, 0.6)", // Default text color
 
@@ -325,7 +364,10 @@ const SubjectAttributeCard = (props: any) => {
                 }}
               >
                 <Tab label={t("impactTable")} />
-                <Tab label={t("measureTable")} />
+                <Tab
+                  label={t("measureChart")}
+                  disabled={!fetchMeasures?.data?.measures?.length}
+                />
               </Tabs>
 
               {topTab === 0 && (
@@ -451,9 +493,20 @@ const SubjectAttributeCard = (props: any) => {
               )}
 
               {topTab === 1 && (
-                <Box>
-                  <p>محتوای تب دوم</p>
-                </Box>
+                <Grid container>
+                  <Grid item xs={12} sm={8.7}>
+                    <ScoreImpactBarChart
+                      measures={fetchMeasures.data.measures}
+                    />{" "}
+                  </Grid>
+                  <Grid item xs={12} sm={3.3}>
+                    <DropDownContent
+                      onSortChange={handleSortChange}
+                      sortBy={sortBy}
+                      sortOrder={sortOrder}
+                    />
+                  </Grid>
+                </Grid>
               )}
             </Box>
           </Box>
