@@ -617,6 +617,14 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        icon: {
+          right: !is_farsi ? "7px" : "unset",
+          left: is_farsi ? "7px" : "unset",
+        },
+      },
+    },
     //@ts-expect-error
     MuiTabPanel: {
       styleOverrides: {
