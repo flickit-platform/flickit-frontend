@@ -65,7 +65,7 @@ const AssessmentContainer = () => {
                 >
                   {!spaceData?.canCreateAssessment && (
                     <Typography
-                        onClick={()=> infoDialogProps.openDialog({ })}
+                      onClick={() => infoDialogProps.openDialog({})}
                       sx={{
                         position: "absolute",
                         top: "-25px",
@@ -74,7 +74,7 @@ const AssessmentContainer = () => {
                         ...theme.typography.bodySmall,
                         color: theme.palette.primary.main,
                         textDecoration: "underline",
-                        cursor: "pointer"
+                        cursor: "pointer",
                       }}
                     >
                       <Trans i18nKey={"learnWhyThisIsUnavailable"} />
@@ -87,8 +87,7 @@ const AssessmentContainer = () => {
                         sx={{
                           width: "24px",
                           height: "24px",
-                          marginInlineStart: 1,
-                          marginInlineEnd: 0,
+                          marginRight: theme.direction === "rtl" ? 1 : 0,
                         }}
                       >
                         <SettingIcon color={`${theme.palette.primary.main}`} />
@@ -260,9 +259,9 @@ const AssessmentContainer = () => {
           onSubmitForm={fetchAssessments}
         />
         <AssessmenetInfoDialog
-            {...infoDialogProps}
-            titleStyle={{ mb: 0 }}
-            contentStyle={{ p: 0 }}
+          {...infoDialogProps}
+          titleStyle={{ mb: 0 }}
+          contentStyle={{ p: 0 }}
         />
       </Box>
     </PermissionControl>
