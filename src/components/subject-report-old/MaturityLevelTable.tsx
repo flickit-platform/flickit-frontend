@@ -46,6 +46,8 @@ interface Answer {
   isNotApplicable: boolean | null;
   missedScore: number;
   gainedScore: number;
+  gainedScorePercentage: number;
+  missedScorePercentage: number;
   weightedScore: number;
   confidenceLevel: number;
 }
@@ -74,9 +76,12 @@ interface ItemColumnMapping {
   question: string;
   gainedScore: number;
   missedScore: number;
+  gainedScorePercentage: number;
+  missedScorePercentage: number;
   weightedScore: string | number;
   confidence: number;
   evidenceCount: number;
+  isNotApplicable: boolean | null;
 }
 
 const columns: TableColumn[] = [
@@ -223,12 +228,11 @@ const MaturityLevelTable = ({
       return <CircleRating value={row.confidence} />;
     }
     if (column.field === "gainedScore") {
-      return (
-        <ScoreDisplay
-          missedScore={row.missedScore}
-          gainedScore={row.gainedScore}
-        />
-      );
+      if (row.isNotApplicable) {
+        return <p>NA</p>;
+      } else {
+        return <ScoreDisplay data={row} />;
+      }
     }
     return row[column.field];
   };
@@ -310,6 +314,9 @@ const MaturityLevelTable = ({
         : "",
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
+      isNotApplicable: item.answer.isNotApplicable,
+      missedScorePercentage: item?.answer?.missedScorePercentage,
+      gainedScorePercentage: item.answer.gainedScorePercentage,
     };
   };
 
