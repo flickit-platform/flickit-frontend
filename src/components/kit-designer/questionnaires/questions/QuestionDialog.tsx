@@ -83,20 +83,23 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   });
   const [showNewOptionForm, setShowNewOptionForm] = useState(false);
   const [showNewImpactForm, setShowNewImpactForm] = useState(false);
+  const [disableAddOption, setDisableAddOption] = useState(false);
   const formMethods = useForm({ shouldUnregister: true });
 
   const { service } = useServiceContext();
 
   useEffect(() => {
-    (async ()=>{
+    (async () => {
       if (open && question.id) {
-      Promise.all([
-        fetchImpacts.query(),
-        fetchAttributeKit.query(),
-        fetchMaturityLevels.query(),
-        fetchOptions.query(),
-        fetchAnswerRanges.query(),
-        ]).then().catch()
+        Promise.all([
+          fetchImpacts.query(),
+          fetchAttributeKit.query(),
+          fetchMaturityLevels.query(),
+          fetchOptions.query(),
+          fetchAnswerRanges.query(),
+        ])
+          .then()
+          .catch();
         formMethods.reset({
           title: question?.title || "",
           hint: question?.hint || "",
@@ -106,8 +109,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         });
         setSelectedAnswerRange(question?.answerRangeId);
       }
-    })()
-
+    })();
   }, [open, question, formMethods]);
 
   const onSubmit = async (data: any) => {
@@ -267,6 +269,14 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     number | undefined
   >(question?.answerRangeId);
 
+  useEffect(() => {
+    const item = fetchAnswerRanges?.data?.items.find(
+      (answerRange: any) => answerRange.id === question?.answerRangeId,
+    );
+
+    setDisableAddOption(Boolean(item));
+  }, [fetchAnswerRanges?.data?.items]);
+
   const handleAnswerRangeChange = async (event: any) => {
     const requestData = {
       ...question,
@@ -402,7 +412,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                     onAdd={handleAddOption}
                     isAddingNew={showNewOptionForm}
                     setIsAddingNew={setShowNewOptionForm}
-                    disableAddOption={selectedAnswerRange !== null}
+                    disableAddOption={disableAddOption}
                   />
                 </Box>
               </>

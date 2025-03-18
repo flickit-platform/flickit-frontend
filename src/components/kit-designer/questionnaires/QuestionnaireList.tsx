@@ -76,6 +76,7 @@ const ListOfItems = ({
   const [showNewQuestionForm, setShowNewQuestionForm] = useState<{
     [key: string]: boolean;
   }>({});
+  const [expandedId, setExpandedId] = useState<TId | null>(null); 
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
@@ -138,6 +139,7 @@ const ListOfItems = ({
   const handelChangeAccordion =
     ({ id }: { id: TId }) =>
     async (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpandedId(id);
       setExpanded(isExpanded);
       setQuestionnaireId(id as any);
       try {
@@ -154,6 +156,7 @@ const ListOfItems = ({
           });
           setQuestionData(data?.items);
         } else {
+          setExpandedId(null);
           handleCancel(id);
         }
       } catch (e) {
@@ -279,7 +282,7 @@ const ListOfItems = ({
                 key={item.id}
                 draggableId={item?.id?.toString()}
                 index={index}
-                isDragDisabled={expanded}
+                isDragDisabled={expandedId !== null} 
               >
                 {(provided: any) => (
                   <Box
@@ -298,6 +301,7 @@ const ListOfItems = ({
                   >
                     <Accordion
                       onChange={handelChangeAccordion(item)}
+                      expanded={expandedId === item.id}
                       sx={{
                         boxShadow: "none",
                         "&:before": {

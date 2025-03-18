@@ -88,7 +88,7 @@ const ReportTab = () => {
                   <MainCard
                     key={uniqueId()}
                     style={{
-                      minHeight: "180px",
+                      minHeight: "190px",
                       // mt: name == "intro" ? 4 : 5,
                       width:
                         name == "intro" ? { xs: "100%", md: "68%" } : "100%",
@@ -140,7 +140,7 @@ const ReportTab = () => {
                   {name == "intro" && (
                     <MainCard
                       style={{
-                        minHeight: "180px",
+                        minHeight: "190px",
                         width: { xs: "100%", md: "30%" },
                         display: "flex",
                         justifyContent: "center",
@@ -151,7 +151,6 @@ const ReportTab = () => {
                         sx={{
                           display: "flex",
                           flexDirection: "column",
-                          justifyContent: "space-between",
                           alignItems: "center",
                           width: "100%",
                         }}
@@ -167,7 +166,7 @@ const ReportTab = () => {
                           </Typography>
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
-                        <Divider sx={{ width: "100%" }} />
+                        <Divider sx={{ width: "100%",my:2 }} />
                         <Box
                           sx={{
                             display: "flex",
@@ -207,7 +206,7 @@ const ReportTab = () => {
                                   alignItems: "center",
                                   ...theme.typography.semiBoldSmall,
                                   color: theme.palette.error.main,
-                                  py: 1,
+                                  mt: 2,
                                   px: 2,
                                   gap: 1,
                                 }}
