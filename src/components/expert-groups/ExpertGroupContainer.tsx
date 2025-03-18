@@ -96,7 +96,7 @@ const ExpertGroupContainer = () => {
 
   const setDocTitle = useDocumentTitle(t("expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
-    context: { type: "create", data: { expertGroupId } },
+    context: { type: "create", data: { expertGroupId, languages  } },
   });
 
   const excelToDslDialogProps = useDialog({
