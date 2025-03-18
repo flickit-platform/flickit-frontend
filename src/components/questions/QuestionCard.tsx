@@ -2383,38 +2383,38 @@ const EvidenceDetail = (props: any) => {
                       <Box
                         sx={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}
                       >
-                        {permissions?.viewEvidenceAttachment ||
-                          (permissions.readonly && (
-                            <>
-                              {loadingFile
-                                ? skeleton.map((item) => {
-                                    return (
-                                      <Skeleton
-                                        key={item}
-                                        animation="wave"
-                                        variant="rounded"
-                                        width={40}
-                                        height={40}
-                                      />
-                                    );
-                                  })
-                                : attachments.map((item) => {
-                                    return (
-                                      <FileIcon
-                                        evidenceId={id}
-                                        setEvidenceId={setEvidenceId}
-                                        item={item}
-                                        setExpandedDeleteAttachmentDialog={
-                                          setExpandedDeleteAttachmentDialog
-                                        }
-                                        evidenceBG={evidenceBG}
-                                        downloadFile={downloadFile}
-                                        key={item?.id}
-                                      />
-                                    );
-                                  })}
-                            </>
-                          ))}
+                        {(permissions?.viewEvidenceAttachment ||
+                          permissions.readonly) && (
+                          <>
+                            {loadingFile
+                              ? skeleton.map((item) => {
+                                  return (
+                                    <Skeleton
+                                      key={item}
+                                      animation="wave"
+                                      variant="rounded"
+                                      width={40}
+                                      height={40}
+                                    />
+                                  );
+                                })
+                              : attachments.map((item) => {
+                                  return (
+                                    <FileIcon
+                                      evidenceId={id}
+                                      setEvidenceId={setEvidenceId}
+                                      item={item}
+                                      setExpandedDeleteAttachmentDialog={
+                                        setExpandedDeleteAttachmentDialog
+                                      }
+                                      evidenceBG={evidenceBG}
+                                      downloadFile={downloadFile}
+                                      key={item?.id}
+                                    />
+                                  );
+                                })}
+                          </>
+                        )}
                         {attachments.length < 5 &&
                           permissions?.addEvidenceAttachment && (
                             <>
