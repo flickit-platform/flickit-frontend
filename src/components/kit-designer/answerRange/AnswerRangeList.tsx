@@ -219,9 +219,9 @@ const ListOfItems = ({
   };
   return (
     <>
-      {items?.map((item: any) => (
+      {items?.map((item: any, index: number) => (
         <Box
-          key={uniqueId()}
+          key={index}
           mt={1.5}
           sx={{
             backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",
