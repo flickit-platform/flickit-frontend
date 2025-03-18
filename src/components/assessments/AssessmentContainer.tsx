@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ICustomError } from "@utils/CustomError";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import toastError from "@utils/toastError";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";

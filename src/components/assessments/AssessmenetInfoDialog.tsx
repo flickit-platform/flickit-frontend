@@ -60,6 +60,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         {listOfText.map((text: string, index: number) => {
           return (
             <Box
+              key={index}
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -70,7 +71,6 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             >
               <Typography
                 component={index >= 2 ? "li" : "p"}
-                key={index}
                 sx={{ ...theme.typography.bodyLarge }}
               >
                 <Trans i18nKey={text} />
