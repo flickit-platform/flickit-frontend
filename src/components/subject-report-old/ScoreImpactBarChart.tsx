@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
@@ -88,6 +89,8 @@ export default function ScoreImpactBarChart({ measures }: any) {
             fill="#2466A8"
             stackId="stack"
             radius={[0, 10, 10, 0]}
+            isAnimationActive={false}
+
           >
             <LabelList
               dataKey="uv"
@@ -105,6 +108,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
             fill="#B8144B"
             stackId="stack"
             radius={[0, 10, 10, 0]}
+            isAnimationActive={false}
           >
             <LabelList
               dataKey="pv"
