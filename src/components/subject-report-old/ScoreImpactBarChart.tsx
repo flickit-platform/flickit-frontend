@@ -1,4 +1,5 @@
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
 import {
   BarChart,
@@ -19,6 +20,8 @@ export default function ScoreImpactBarChart({ measures }: any) {
     uv: measure.gainedScorePercentage,
   }));
 
+  const barSize = Math.min(24, Math.max(14, 240 / (chartData?.length || 1)));
+
   return (
     <div style={{ width: "100%", height: "500px", direction: "rtl" }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -26,16 +29,26 @@ export default function ScoreImpactBarChart({ measures }: any) {
           layout="vertical"
           data={chartData}
           stackOffset="sign"
-          margin={{ top: 40, right: 20, left: 20, bottom: 40 }}
-          barSize={24}
+          margin={{
+            top: 0,
+            right: theme.direction === "ltr" ? 80 : 10,
+            left: theme.direction === "ltr" ? 10 : 80,
+            bottom: 0,
+          }}
+          barSize={barSize}
         >
           <CartesianGrid strokeDasharray="3 3" horizontal />
           <Legend
             verticalAlign="top"
-            formatter={(value) =>
-              value === "uv" ? t("gainedScore") : t("missedScore")
-            }
+            formatter={(value) => (
+              <span
+                style={{ marginInlineStart: theme.direction === "ltr" ? 8 : 0 }}
+              >
+                {value === "uv" ? t("gainedScore") : t("missedScore")}
+              </span>
+            )}
           />
+
           <ReferenceLine x={0} stroke="#000" />
 
           <XAxis
@@ -52,17 +65,25 @@ export default function ScoreImpactBarChart({ measures }: any) {
             dataKey="name"
             axisLine={false}
             tickLine={false}
-            width={100}
-            tick={{
-              fontSize: 12,
-              fill: "#333",
+            width={160}
+            tick={({ x, y, payload }) => {
+              const isFarsi = languageDetector(payload.value);
+              return (
+                <text
+                  x={x}
+                  y={y + 5}
+                  textAnchor={theme.direction === "rtl" ? "end" : "start"}
+                  fontSize={14}
+                  fontFamily={isFarsi ? farsiFontFamily : primaryFontFamily}
+                  fill="#333"
+                >
+                  {payload.value}
+                </text>
+              );
             }}
             orientation={theme.direction === "rtl" ? "right" : "left"}
-            style={{
-              textAnchor: theme.direction === "rtl" ? "end" : "start",
-            }}
           />
-  <Bar
+          <Bar
             dataKey="uv"
             fill="#2466A8"
             stackId="stack"
@@ -75,6 +96,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
               formatter={(v: any) => `${v}%`}
               style={{
                 textAnchor: "end",
+                fontSize: 14,
               }}
             />
           </Bar>
@@ -91,11 +113,10 @@ export default function ScoreImpactBarChart({ measures }: any) {
               formatter={(v: any) => `${Math.abs(v)}%`}
               style={{
                 textAnchor: "start",
+                fontSize: 14,
               }}
             />
           </Bar>
-
-        
         </BarChart>
       </ResponsiveContainer>
     </div>

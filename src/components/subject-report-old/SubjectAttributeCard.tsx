@@ -494,17 +494,18 @@ const SubjectAttributeCard = (props: any) => {
 
               {topTab === 1 && (
                 <Grid container>
-                  <Grid item xs={12} sm={8.7}>
-                    <ScoreImpactBarChart
-                      measures={fetchMeasures.data.measures}
-                    />{" "}
-                  </Grid>
+                  <Grid item xs={12} sm={8.7}></Grid>
                   <Grid item xs={12} sm={3.3}>
                     <DropDownContent
                       onSortChange={handleSortChange}
                       sortBy={sortBy}
                       sortOrder={sortOrder}
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <ScoreImpactBarChart
+                      measures={fetchMeasures.data.measures}
+                    />{" "}
                   </Grid>
                 </Grid>
               )}
