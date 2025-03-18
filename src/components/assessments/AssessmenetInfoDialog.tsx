@@ -34,7 +34,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
   };
   const listOfText = [
     "reachedNumberOfAssessments",
-    "youCan",
+    "youCanT",
     "deleteExistingAssessments",
     "upgradeToPremiumSpace",
   ];
@@ -51,7 +51,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             alt={"AssessmentError"}
           />
           <Typography sx={{ ...theme.typography.semiBoldXLarge }}>
-            <Trans i18nKey="updateAssessment" />
+            <Trans i18nKey="assessmentLimitExceeded" />
           </Typography>
         </>
       }
@@ -60,6 +60,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         {listOfText.map((text: string, index: number) => {
           return (
             <Box
+              key={index}
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -70,15 +71,12 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             >
               <Typography
                 component={index >= 2 ? "li" : "p"}
-                key={index}
-                sx={{ ...theme.typography.bodyLarge }}
+                sx={{ ...theme.typography.semiBoldLarge }}
               >
-                <Trans i18nKey={text} />
+                <Trans i18nKey={text} />{text == "youCanT" && ":" }
               </Typography>
               {text == "upgradeToPremiumSpace" && (
-                <Typography
-                  sx={{ ...theme.typography.bodyLarge, fontWeight: "bold" }}
-                >
+                <Typography sx={{ ...theme.typography.semiBoldLarge }}>
                   (<Trans i18nKey={"comingSoon"} />
                   !)
                 </Typography>
