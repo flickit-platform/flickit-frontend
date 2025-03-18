@@ -7,12 +7,21 @@ interface IToolbarCreateItemBtnProps extends ButtonProps {
   icon?: JSX.Element;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   shouldAnimate?: boolean;
-  text: `create${string}`;
+  text: string | JSX.Element;
   minWidth?: string;
+  variantType?: "text" | "outlined" | "contained" | undefined;
 }
 
 export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
-  const { icon, shouldAnimate, onClick, text, minWidth, ...rest } = props;
+  const {
+    icon,
+    shouldAnimate,
+    onClick,
+    text,
+    minWidth,
+    variantType = "contained",
+    ...rest
+  } = props;
   const isSmallScreen = useScreenResize("sm");
 
   return (
@@ -21,7 +30,7 @@ export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
       size="small"
       endIcon={icon}
       onClick={onClick}
-      variant="contained"
+      variant={variantType}
       sx={{
         mb: "1px",
         minWidth: isSmallScreen ? undefined : minWidth,
@@ -33,7 +42,7 @@ export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
         },
       }}
     >
-      <Trans i18nKey={text} />
+      {typeof text === "string" ? <Trans i18nKey={text} /> : text}
     </Button>
   );
 };
