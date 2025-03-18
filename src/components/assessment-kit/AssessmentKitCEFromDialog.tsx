@@ -88,7 +88,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setDropNewFile(null);
     setConvertData(null);
     setIsValid(false);
-    setLang(languages[0].title);
+    setLang(languages[0]?.title);
   };
   const fetchSampleExecl = useQuery({
     service: (args, config) => service.fetchExcelToDSLSampleFile(args, config),
@@ -103,7 +103,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
 
   useEffect(() => {
     if (languages) {
-      setLang(languages[0].title);
+      setLang(languages[0]?.title);
     }
   }, [languages]);
 

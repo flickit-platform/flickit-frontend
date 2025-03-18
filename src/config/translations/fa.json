@@ -884,6 +884,8 @@
   "upgradeToPremiumSpace": "می‌توانید فضای کاری را به حرفه‌ای ارتقا دهید و به تعداد بیشتری ارزیابی دسترسی داشته باشید.",
   "comingSoon": "به‌زودی",
   "okGotIt": "متوجه شدم",
+  "measureChart": "نمودار سنجه‌ها",
+  "impactTable": "جدول تاثیرگذاری",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",

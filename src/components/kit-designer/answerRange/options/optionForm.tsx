@@ -45,7 +45,7 @@ const OptionForm = ({
           onChange={handleInputChange}
           fullWidth
           inputProps={{
-            "data-testid": "questionnaires-title",
+            "data-testid": "answer-range-option-title",
           }}
           margin="normal"
           sx={{
@@ -66,14 +66,14 @@ const OptionForm = ({
       <Box sx={{ width: { xs: "20%", md: "10%" } }}>
         <TextField
           required
-          id="new-maturity"
+          label={<Trans i18nKey="value" />}
           name="value"
           value={newItem.value}
           onChange={handleInputChange}
           variant="outlined"
           size="small"
           inputProps={{
-            "data-testid": "question-value",
+            "data-testid": "answer-range-option-value",
             style: { textAlign: "center", width: "100%" },
           }}
           sx={{
@@ -84,7 +84,6 @@ const OptionForm = ({
             background: "#fff",
             width: "100%",
           }}
-          label={<Trans i18nKey="value" />}
         />
       </Box>
       {/* Check and Close Buttons */}
@@ -110,7 +109,7 @@ const OptionForm = ({
           <IconButton
             size="small"
             color="primary"
-            data-testid="questionnaires-check-icon"
+            data-testid="answer-range-check-icon"
             onClick={handleSave}
           >
             <CheckIcon />
@@ -118,7 +117,7 @@ const OptionForm = ({
           <IconButton
             size="small"
             color="secondary"
-            data-testid="questionnaires-close-icon"
+            data-testid="answer-option-close-icon"
             onClick={handleCancel}
           >
             <CloseIcon />

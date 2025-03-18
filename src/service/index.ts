@@ -117,10 +117,7 @@ export const createService = (
     ) {
       return axios.get(`/api/v1/spaces/${spaceId}/`, config);
     },
-    checkCreateSpace(
-        arg: any,
-        config?: AxiosRequestConfig<any>,
-    ){
+    checkCreateSpace(arg: any, config?: AxiosRequestConfig<any>) {
       return axios.get(`/api/v1/check-create-space/`, config);
     },
     seenSpaceList(
@@ -138,10 +135,7 @@ export const createService = (
     createSpace(data: any, config: AxiosRequestConfig<any> | undefined) {
       return axios.post(`/api/v1/spaces/`, data, config);
     },
-    fetchSpaceType(
-        arg: any,
-        config: AxiosRequestConfig<any> | undefined
-    ) {
+    fetchSpaceType(arg: any, config: AxiosRequestConfig<any> | undefined) {
       return axios.get(`/api/v1/space-types/`, config);
     },
     updateSpace(
@@ -681,6 +675,29 @@ export const createService = (
         },
       );
     },
+
+    fetchMeasures(
+      args: {
+        assessmentId: TId;
+        attributeId: TId;
+        sort: any;
+        order: any;
+      },
+      config?: AxiosRequestConfig<any>,
+    ) {
+      const { assessmentId, attributeId, sort, order } = args ?? {};
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/attributes/${attributeId}/measures/
+`,
+        {
+          ...(config ?? {}),
+          params: {
+            sort: sort,
+            order: order,
+          },
+        },
+      );
+    },
     ApprovedAIAttribute(
       args: {
         assessmentId: TId;
@@ -974,7 +991,10 @@ export const createService = (
       { assessmentId }: { assessmentId: string },
       config?: AxiosRequestConfig<any>,
     ) {
-      return axios.get(`/api/v1/assessments/${assessmentId}/insights-issues/`, config);
+      return axios.get(
+        `/api/v1/assessments/${assessmentId}/insights-issues/`,
+        config,
+      );
     },
     fetchSubject(
       { subjectId, assessmentId }: { subjectId: string; assessmentId: string },
@@ -1574,31 +1594,30 @@ export const createService = (
       );
     },
     approveExpiredInsights(
-        { assessmentId }: { assessmentId: TId },
-        config?: AxiosRequestConfig<any>,
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
     ) {
       return axios.put(
-          `/api/v1/assessments/${assessmentId}/approve-expired-insights/`,
-          { ...config },
+        `/api/v1/assessments/${assessmentId}/approve-expired-insights/`,
+        { ...config },
       );
     },
     resolvedAllComments(
-        { assessmentId }: { assessmentId: TId },
-        config?: AxiosRequestConfig<any>,
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
     ) {
       return axios.put(
-          `/api/v1/assessments/${assessmentId}/resolve-comments/`,
-          { ...config },
+        `/api/v1/assessments/${assessmentId}/resolve-comments/`,
+        { ...config },
       );
     },
     approveAllAnswers(
-        { assessmentId }: { assessmentId: TId },
-        config?: AxiosRequestConfig<any>,
+      { assessmentId }: { assessmentId: TId },
+      config?: AxiosRequestConfig<any>,
     ) {
-      return axios.put(
-          `/api/v1/assessments/${assessmentId}/approve-answers/`,
-          { ...config },
-      );
+      return axios.put(`/api/v1/assessments/${assessmentId}/approve-answers/`, {
+        ...config,
+      });
     },
     saveCompareItem(
       { assessmentId }: { assessmentId: TId },

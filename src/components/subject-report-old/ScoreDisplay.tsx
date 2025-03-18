@@ -6,7 +6,13 @@ import { theme as customTheme } from "@/config/theme";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 
-const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
+const ScoreDisplay = ({ data }: any) => {
+  const {
+    missedScore,
+    gainedScore,
+    missedScorePercentage,
+    gainedScorePercentage,
+  } = data;
   const minWidthPerUnit = 40;
   const maxWidthPerUnit = 40;
 
@@ -23,6 +29,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
   const width = missedWidth + gainedWidth;
   const height = 12;
 
+  console.log(data);
   return (
     <Tooltip
       title={
@@ -45,7 +52,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
           >
             <Box sx={{ ...styles.centerCVH }}>
               <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
-                {missedScore}
+                {missedScore} ({missedScorePercentage}%)
               </Typography>
               <Typography variant="bodySmall" sx={{ color: "white" }}>
                 <Trans i18nKey="missedScore" />
@@ -58,7 +65,7 @@ const ScoreDisplay = ({ gainedScore, missedScore }: any) => {
             />
             <Box sx={{ ...styles.centerCVH }}>
               <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
-                {gainedScore}
+                {gainedScore} ({gainedScorePercentage}%)
               </Typography>
               <Typography variant="bodySmall" sx={{ color: "white" }}>
                 <Trans i18nKey="gainedScore" />
