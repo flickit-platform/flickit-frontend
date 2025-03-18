@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { Box, Divider, Typography } from "@mui/material";
 import { t } from "i18next";
 import {
   BarChart,
@@ -12,13 +12,76 @@ import {
   ReferenceLine,
   ResponsiveContainer,
   LabelList,
+  Tooltip,
 } from "recharts";
+import { styles } from "@styles";
+import { Trans } from "react-i18next";
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const missedScore = payload[0].payload.missedScore;
+    const gainedScore = payload[0].payload.gainedScore;
+    const missedScorePercentage = Math.abs(payload[0].payload.pv);
+    const gainedScorePercentage = payload[0].payload.uv;
+
+    return (
+      <Box
+        sx={{
+          textAlign: "center",
+          backgroundColor: "#5F6E7C",
+          color: "white",
+          borderRadius: "4px",
+          p: 1,
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            direction: "ltr",
+            gap: 2,
+          }}
+        >
+          <Box sx={{ ...styles.centerCVH }}>
+            <Typography
+              variant="body1"
+              sx={{ color: "white", fontWeight: "bold" }}
+            >
+              {missedScore} ({missedScorePercentage}%)
+            </Typography>
+            <Typography variant="body2" sx={{ color: "white" }}>
+              <Trans i18nKey="missedScore" />
+            </Typography>
+          </Box>
+
+          <Box sx={{ ...styles.centerCVH }}>
+            <Typography
+              variant="body1"
+              sx={{ color: "white", fontWeight: "bold" }}
+            >
+              {gainedScore} ({gainedScorePercentage}%)
+            </Typography>
+            <Typography variant="body2" sx={{ color: "white" }}>
+              <Trans i18nKey="gainedScore" />
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
+
+  return null;
+};
 
 export default function ScoreImpactBarChart({ measures }: any) {
   const chartData = measures?.map((measure: any) => ({
     name: measure.title,
     pv: -Math.abs(measure.missedScorePercentage),
     uv: measure.gainedScorePercentage,
+    missedScore: measure.missedScore,
+    gainedScore: measure.gainedScore,
   }));
 
   const barSize = Math.min(24, Math.max(14, 240 / (chartData?.length || 1)));
@@ -39,6 +102,8 @@ export default function ScoreImpactBarChart({ measures }: any) {
           barSize={barSize}
         >
           <CartesianGrid strokeDasharray="3 3" horizontal />
+          <Tooltip content={<CustomTooltip />} />
+
           <Legend
             verticalAlign="top"
             formatter={(value) => (
@@ -90,7 +155,6 @@ export default function ScoreImpactBarChart({ measures }: any) {
             stackId="stack"
             radius={[0, 10, 10, 0]}
             isAnimationActive={false}
-
           >
             <LabelList
               dataKey="uv"
