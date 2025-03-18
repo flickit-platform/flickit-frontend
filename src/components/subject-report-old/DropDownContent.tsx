@@ -1,11 +1,8 @@
-import React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { t } from "i18next";
 import { OutlinedInput, InputLabel, FormControl } from "@mui/material";
-import i18next from "i18next";
 import { theme } from "@/config/theme";
 
 const sortOptions = [
