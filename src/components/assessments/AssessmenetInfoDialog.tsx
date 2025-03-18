@@ -71,14 +71,12 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             >
               <Typography
                 component={index >= 2 ? "li" : "p"}
-                sx={{ ...theme.typography.bodyLarge }}
+                sx={{ ...theme.typography.semiBoldLarge }}
               >
                 <Trans i18nKey={text} />{text == "youCanT" && ":" }
               </Typography>
               {text == "upgradeToPremiumSpace" && (
-                <Typography
-                  sx={{ ...theme.typography.bodyLarge, fontWeight: "bold" }}
-                >
+                <Typography sx={{ ...theme.typography.semiBoldLarge }}>
                   (<Trans i18nKey={"comingSoon"} />
                   !)
                 </Typography>

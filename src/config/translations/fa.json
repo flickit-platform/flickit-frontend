@@ -692,7 +692,7 @@
   "yesterday": "دیروز",
   "you": "شما",
   "youAnsweredQuestionOf": "{{answeredQuestions}} از {{totalQuestions}} سوال برای پرسشنامه‌ی <style>{{questionnaire}}</style> پاسخ داده شده است",
-  "youCan": "شما می‌توانید",
+  "youCan": " برای ایجاد یک ارزیابی جدید می‌توانید:",
   "youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces": "تنها می‌توانید به ارزیابی‌هایی که در فضاهای کاریی شما هستند دسترسی داشته باشید.",
   "youDontHaveCorrectPermissions": ".شما دسترسی‌های لازم را ندارید.",
   "youFinishedQuestionnaire": "شما این پرسشنامه را به اتمام رسانده‌اید.",
