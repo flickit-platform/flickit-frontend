@@ -42,10 +42,16 @@ import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { format } from "date-fns";
-import { farsiFontFamily, secondaryFontFamily, theme } from "@/config/theme";
+import {
+  farsiFontFamily,
+  primaryFontFamily,
+  secondaryFontFamily,
+  theme,
+} from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
+import languageDetector from "@utils/languageDetector";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -875,6 +881,9 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
           marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
           color: "#fff",
+          fontFamily: languageDetector(userInfo.displayName)
+            ? farsiFontFamily
+            : primaryFontFamily,
         }}
         size="small"
         endIcon={
