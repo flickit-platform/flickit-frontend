@@ -34,7 +34,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
   };
   const listOfText = [
     "reachedNumberOfAssessments",
-    "youCan",
+    "youCanT",
     "deleteExistingAssessments",
     "upgradeToPremiumSpace",
   ];
@@ -73,7 +73,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                 component={index >= 2 ? "li" : "p"}
                 sx={{ ...theme.typography.bodyLarge }}
               >
-                <Trans i18nKey={text} />
+                <Trans i18nKey={text} />{text == "youCanT" && ":" }
               </Typography>
               {text == "upgradeToPremiumSpace" && (
                 <Typography
