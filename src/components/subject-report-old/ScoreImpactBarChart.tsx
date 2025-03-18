@@ -1,7 +1,5 @@
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
-import languageDetector from "@/utils/languageDetector";
+import { theme } from "@/config/theme";
 import { t } from "i18next";
-import React from "react";
 import {
   BarChart,
   Bar,
