@@ -59,6 +59,23 @@ describe("AnswerRangeList Component", () => {
     );
   });
 
+  it("Accordion opens when clicked", () => {
+
+    const accordionSummary = screen.getAllByTestId("accordion-summary-answer-range")[0];
+    const accordionDetails = screen.getAllByTestId("accordion-details-answer-range")[0];
+
+    // Initially, details should not be visible
+    expect(accordionDetails).not.toBeVisible();
+
+    // Click to open
+    fireEvent.click(accordionSummary);
+
+    // Now, details should be visible
+    expect(accordionDetails).toBeVisible();
+  });
+
+
+
   it("renders Answer Range correctly", () => {
     expect(screen.getByText("title 1")).toBeInTheDocument();
     expect(screen.getByText("title 2")).toBeInTheDocument();

@@ -80,6 +80,7 @@ const ListOfItems = ({
     id: null,
   });
   const [questionData, setQuestionData] = useState<IQuestion[]>([]);
+  const [expanded, setExpanded] = useState<TId | null>(null);
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
@@ -117,6 +118,7 @@ const ListOfItems = ({
   const handelChangeAccordion =
     ({ id }: { id: TId }) =>
     async (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? id : null);
       try {
         if (isExpanded) {
           setNewOptions({
@@ -176,9 +178,10 @@ const ListOfItems = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    const parsedValue = name === "value" ? parseFloat(value) || 1 : value;
     setNewOptions((prev) => ({
       ...prev,
-      [name]: value || 1,
+      [name]: parsedValue,
     }));
   };
 
@@ -216,9 +219,9 @@ const ListOfItems = ({
   };
   return (
     <>
-      {items?.map((item: any) => (
+      {items?.map((item: any, index: number) => (
         <Box
-          key={uniqueId()}
+          key={index}
           mt={1.5}
           sx={{
             backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",
@@ -230,6 +233,7 @@ const ListOfItems = ({
         >
           <Accordion
             onChange={handelChangeAccordion(item)}
+            expanded={expanded === item?.id}
             sx={{
               boxShadow: "none",
               "&:before": {
@@ -238,6 +242,7 @@ const ListOfItems = ({
             }}
           >
             <AccordionSummary
+              data-testid="accordion-summary-answer-range"
               sx={{
                 backgroundColor:
                   editMode === item.id
@@ -396,6 +401,7 @@ const ListOfItems = ({
               </Box>
             </AccordionSummary>
             <AccordionDetails
+              data-testid="accordion-details-answer-range"
               sx={{
                 margin: 0,
                 padding: 0,
