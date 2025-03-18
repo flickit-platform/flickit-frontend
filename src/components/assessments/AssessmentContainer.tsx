@@ -30,9 +30,11 @@ import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutl
 import settingsIcon from "@/assets/svg/settingsIcon.svg";
 import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
+import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
 
 const AssessmentContainer = () => {
   const dialogProps = useDialog();
+  const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
@@ -57,44 +59,90 @@ const AssessmentContainer = () => {
         <AssessmentTitle data={currentSpace} />
         <Box sx={{ ...styles.centerVH, mb: "40px" }}>
           <Title
-              borderBottom={true}
-              size="large"
-              sx={{ width: "100%" }}
-              toolbarProps={{ whiteSpace: "nowrap" }}
-              toolbar={
-                data?.length !== 0 ? (
-                    <Box sx={{...styles.centerVH, gap: "9px"}}>
-                      <ToolbarCreateItemBtn
-                          icon={
-                            <Box
-                                sx={{ width: "24px", height: "24px"}}
-                            >
-                              <SettingIcon color={`${theme.palette.primary.main}`} />
-                            </Box>
+            borderBottom={true}
+            size="large"
+            sx={{ width: "100%" }}
+            toolbarProps={{ whiteSpace: "nowrap" }}
+            toolbar={
+              data?.length !== 0 ? (
+                <Box
+                  sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
+                >
+                  {!spaceData?.canCreateAssessment && (
+                    <Typography
+                        onClick={()=> infoDialogProps.openDialog({ })}
+                      sx={{
+                        position: "absolute",
+                        top: "-25px",
+                        left: theme.direction == "ltr" ? "unset" : 0,
+                        right: theme.direction == "rtl" ? "unset" : 0,
+                        ...theme.typography.bodySmall,
+                        color: theme.palette.primary.main,
+                        textDecoration: "underline",
+                        cursor: "pointer"
+                      }}
+                    >
+                      <Trans i18nKey={"learnWhyThisIsUnavailable"} />
+                    </Typography>
+                  )}
+
+                  <ToolbarCreateItemBtn
+                    icon={
+                      <Box
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                          marginInlineStart: 1,
+                          marginInlineEnd: 0,
+                        }}
+                      >
+                        <SettingIcon color={`${theme.palette.primary.main}`} />
+                      </Box>
+                    }
+                    onClick={() => navigate(`/${spaceId}/setting`)}
+                    shouldAnimate={data?.length === 0}
+                    variantType="outlined"
+                    text="setting"
+                  />
+                  <ToolbarCreateItemBtn
+                    icon={
+                      <Box
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                          marginInlineStart: 1,
+                          marginInlineEnd: 0,
+                        }}
+                      >
+                        <NewAssessmentIcon
+                          color={
+                            !spaceData?.canCreateAssessment
+                              ? "#3D4D5C80"
+                              : "#fff"
                           }
-                          onClick={() => navigate(`/${spaceId}/setting`)}
-                          shouldAnimate={data?.length === 0}
-                          variantType="outlined"
-                          text="setting"
-                      />
-                      <ToolbarCreateItemBtn
-                          icon={
-                            <NewAssessmentIcon color={!spaceData?.canCreateAssessment ? "#3D4D5C80" : "#fff"}/>
-                          }
-                          onClick={() => dialogProps.openDialog({ type: "create" })}
-                          shouldAnimate={data?.length === 0}
-                          disabled={!spaceData?.canCreateAssessment}
-                          text={
-                            <Typography sx={{color: !spaceData?.canCreateAssessment ? "#3D4D5C80" : "#fff"}} >
-                              <Trans i18nKey={"createAssessment"}/>
-                            </Typography>
-                          }
-                      />
-                    </Box>
-                ) : (
-                    <></>
-                )
-              }
+                        />
+                      </Box>
+                    }
+                    onClick={() => dialogProps.openDialog({ type: "create" })}
+                    shouldAnimate={data?.length === 0}
+                    disabled={!spaceData?.canCreateAssessment}
+                    text={
+                      <Typography
+                        sx={{
+                          color: !spaceData?.canCreateAssessment
+                            ? "#3D4D5C80"
+                            : "#fff",
+                        }}
+                      >
+                        <Trans i18nKey={"createAssessment"} />
+                      </Typography>
+                    }
+                  />
+                </Box>
+              ) : (
+                <></>
+              )
+            }
           >
             <Trans i18nKey="assessments" />
           </Title>
@@ -216,6 +264,11 @@ const AssessmentContainer = () => {
           {...dialogProps}
           onSubmitForm={fetchAssessments}
         />
+        <AssessmenetInfoDialog
+            {...infoDialogProps}
+            titleStyle={{ mb: 0 }}
+            contentStyle={{ p: 0 }}
+        />
       </Box>
     </PermissionControl>
   );
@@ -240,10 +293,7 @@ const useFetchAssessments = () => {
 
   const fetchSpace = async () => {
     try {
-      const { data: res } = await service.fetchSpace(
-          { spaceId },
-          {},
-      );
+      const { data: res } = await service.fetchSpace({ spaceId }, {});
       if (res) {
         setSpaceData(res);
         setError(false);
@@ -251,14 +301,14 @@ const useFetchAssessments = () => {
         setSpaceData({});
         setError(true);
       }
-    }catch (e){
+    } catch (e) {
       const err = e as ICustomError;
       toastError(err, { filterByStatus: [404] });
       setLoading(false);
       setError(true);
       setErrorObject(err);
     }
-  }
+  };
 
   const fetchAssessments = async () => {
     setLoading(true);
