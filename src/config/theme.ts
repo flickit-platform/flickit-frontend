@@ -456,6 +456,10 @@ export const theme = createTheme({
           marginRight: is_farsi ? "-2px !important" : "8px !important",
           marginLeft: !is_farsi ? "-2px !important" : "8px !important",
         },
+        endIcon: {
+          marginRight: !is_farsi ? "-2px !important" : "8px !important",
+          marginLeft: is_farsi ? "-2px !important" : "8px !important",
+        },
       },
     },
     MuiTypography: {

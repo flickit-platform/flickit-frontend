@@ -326,7 +326,7 @@ const AutocompleteBaseField = (
         setOpen(false);
       }}
       onChange={(event: any, newValue: any) => {
-        if (newValue && newValue.inputValue) {
+        if (newValue?.inputValue) {
           // handle the case where the "Add" button is clicked
           onChange({ [filterFields[0]]: newValue.inputValue });
         } else {

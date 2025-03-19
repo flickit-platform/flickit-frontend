@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ICustomError } from "@utils/CustomError";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import toastError from "@utils/toastError";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
@@ -26,14 +26,16 @@ import PermissionControl from "../common/PermissionControl";
 import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
+import { useQuery } from "@/utils/useQuery";
 
 const AssessmentContainer = () => {
+  const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, spaceData, ...rest } = useFetchAssessments();
+  const { fetchAssessments, ...rest } = useFetchAssessments();
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -48,10 +50,33 @@ const AssessmentContainer = () => {
   if (Math.ceil(total / size) < Number(page) && pageCount) {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
+
+  const fetchSpaceInfo = useQuery({
+    service: (args = { spaceId }, config) => service.fetchSpace(args, config),
+    runOnMount: true,
+  });
+
+  useEffect(() => {
+    fetchSpaceInfo.query();
+  }, [data]);
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
         <AssessmentTitle data={currentSpace} />
+        {!fetchSpaceInfo.data?.canCreateAssessment && (
+          <Typography
+            onClick={() => infoDialogProps.openDialog({})}
+            sx={{
+              ...theme.typography.semiBoldSmall,
+              textDecoration: "underline",
+              cursor: "pointer",
+              textAlign: "end",
+            }}
+            color="primary"
+          >
+            <Trans i18nKey={"learnWhyThisIsUnavailable"} />
+          </Typography>
+        )}
         <Box sx={{ ...styles.centerVH, mb: "40px" }}>
           <Title
             borderBottom={true}
@@ -63,75 +88,42 @@ const AssessmentContainer = () => {
                 <Box
                   sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
                 >
-                  {!spaceData?.canCreateAssessment && (
-                    <Typography
-                        onClick={()=> infoDialogProps.openDialog({ })}
-                      sx={{
-                        position: "absolute",
-                        top: "-25px",
-                        left: theme.direction == "ltr" ? "unset" : 0,
-                        right: theme.direction == "rtl" ? "unset" : 0,
-                        ...theme.typography.bodySmall,
-                        color: theme.palette.primary.main,
-                        textDecoration: "underline",
-                        cursor: "pointer"
-                      }}
-                    >
-                      <Trans i18nKey={"learnWhyThisIsUnavailable"} />
-                    </Typography>
-                  )}
-
                   <ToolbarCreateItemBtn
                     icon={
-                      <Box
-                        sx={{
-                          width: "24px",
-                          height: "24px",
-                          marginInlineStart: 1,
-                          marginInlineEnd: 0,
-                        }}
-                      >
-                        <SettingIcon color={`${theme.palette.primary.main}`} />
-                      </Box>
+                      <SettingIcon
+                        width="20px"
+                        height="20px"
+                        color={`${theme.palette.primary.main}`}
+                      />
                     }
                     onClick={() => navigate(`/${spaceId}/setting`)}
                     shouldAnimate={data?.length === 0}
                     variantType="outlined"
-                    text="setting"
+                    text="settings"
                   />
                   <ToolbarCreateItemBtn
                     icon={
-                      <Box
-                        sx={{
-                          width: "24px",
-                          height: "24px",
-                          marginInlineStart: 1,
-                          marginInlineEnd: 0,
-                        }}
-                      >
-                        <NewAssessmentIcon
-                          color={
-                            !spaceData?.canCreateAssessment
-                              ? "#3D4D5C80"
-                              : "#fff"
-                          }
-                        />
-                      </Box>
-                    }
-                    onClick={() => dialogProps.openDialog({ type: "create" })}
-                    shouldAnimate={data?.length === 0}
-                    disabled={!spaceData?.canCreateAssessment}
-                    text={
-                      <Typography
-                        sx={{
-                          color: !spaceData?.canCreateAssessment
+                      <NewAssessmentIcon
+                        width="20px"
+                        height="20px"
+                        color={
+                          !fetchSpaceInfo.data?.canCreateAssessment
                             ? "#3D4D5C80"
-                            : "#fff",
-                        }}
-                      >
-                        <Trans i18nKey={"createAssessment"} />
-                      </Typography>
+                            : "#fff"
+                        }
+                      />
                     }
+                    onClick={() =>
+                      dialogProps.openDialog({
+                        type: "create",
+                        data: {
+                          space: { id: spaceId, title: currentSpace?.title },
+                        },
+                      })
+                    }
+                    shouldAnimate={data?.length === 0}
+                    disabled={!fetchSpaceInfo.data?.canCreateAssessment}
+                    text={"createAssessment"}
                   />
                 </Box>
               ) : (
@@ -263,9 +255,9 @@ const AssessmentContainer = () => {
           onSubmitForm={fetchAssessments}
         />
         <AssessmenetInfoDialog
-            {...infoDialogProps}
-            titleStyle={{ mb: 0 }}
-            contentStyle={{ p: 0 }}
+          {...infoDialogProps}
+          titleStyle={{ mb: 0 }}
+          contentStyle={{ p: 0 }}
         />
       </Box>
     </PermissionControl>
@@ -274,40 +266,18 @@ const AssessmentContainer = () => {
 
 const useFetchAssessments = () => {
   const [data, setData] = useState<any>({});
-  const [spaceData, setSpaceData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { spaceId = "", page } = useParams();
+  const { spaceId, page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
   useEffect(() => {
     fetchAssessments();
-    fetchSpace();
   }, [page, spaceId]);
-
-  const fetchSpace = async () => {
-    try {
-      const { data: res } = await service.fetchSpace({ spaceId }, {});
-      if (res) {
-        setSpaceData(res);
-        setError(false);
-      } else {
-        setSpaceData({});
-        setError(true);
-      }
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err, { filterByStatus: [404] });
-      setLoading(false);
-      setError(true);
-      setErrorObject(err);
-    }
-  };
-
   const fetchAssessments = async () => {
     setLoading(true);
     setErrorObject(undefined);
@@ -352,7 +322,6 @@ const useFetchAssessments = () => {
 
   return {
     data: data.items || [],
-    spaceData: spaceData || {},
     page: data.page || 0,
     size: data.size || 0,
     total: data.total || 0,

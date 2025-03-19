@@ -1177,10 +1177,7 @@ const OnHoverInputTitleSetting = (props: any) => {
       setHasError(true);
       if (Array.isArray(err.response?.data?.message)) {
         toastError(err.response?.data?.message[0]);
-      } else if (
-        err.response?.data &&
-        err.response?.data.hasOwnProperty("message")
-      ) {
+      } else if (err.response?.data?.hasOwnProperty("message")) {
         toastError(err.response?.data?.message);
       }
     }

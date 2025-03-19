@@ -64,7 +64,7 @@ const checkTypeUpload = (
 };
 
 const DropZoneArea = (props: any) => {
-  const { setDropZone, MAX_SIZE, children } = props;
+  const { setDropZoneData, MAX_SIZE, children } = props;
   return (
     <Dropzone
       accept={{
@@ -75,7 +75,7 @@ const DropZoneArea = (props: any) => {
           return toast(t("uploadAcceptableSize"), { type: "error" });
         }
         if (acceptedFiles?.length && acceptedFiles.length >= 1) {
-          setDropZone(acceptedFiles);
+          setDropZoneData(acceptedFiles);
         } else {
           return toast(t("thisFileNotAcceptable"), { type: "error" });
         }
@@ -87,7 +87,7 @@ const DropZoneArea = (props: any) => {
 };
 
 const MyDropzone = (props: any) => {
-  const { setDropZone, dropZoneData } = props;
+  const { setDropZoneData, dropZoneData } = props;
   const [displayFile, setDisplayFile] = useState<string | null>(null);
   const [typeFile, setTypeFile] = useState<string | null>(null);
   const MAX_SIZE = 2097152;
@@ -116,7 +116,7 @@ const MyDropzone = (props: any) => {
   };
 
   return (
-    <DropZoneArea setDropZone={setDropZone} MAX_SIZE={MAX_SIZE}>
+    <DropZoneArea setDropZoneData={setDropZoneData} MAX_SIZE={MAX_SIZE}>
       {({ getRootProps, getInputProps }: any) =>
         dropZoneData ? (
           <Box
@@ -142,7 +142,7 @@ const MyDropzone = (props: any) => {
                 cursor: "pointer",
                 fontSize: "13px",
               }}
-              onClick={() => setDropZone(null)}
+              onClick={() => setDropZoneData(null)}
             >
               <Trans i18nKey={"remove"} />
             </Button>
@@ -245,7 +245,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   const abortController = useMemo(() => new AbortController(), [evidenceId]);
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
-  const [dropZoneData, setDropZone] = useState(null);
+  const [dropZoneData, setDropZoneData] = useState(null);
   const [btnState, setBtnState] = useState("");
   const addEvidenceAttachments = useQuery({
     service: (args, config) =>
@@ -305,7 +305,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
           setEvidencesData(items);
         }
         setAttachmentData(true);
-        setDropZone(null);
+        setDropZoneData(null);
         setDescription("");
         if (recognize == "self") {
           onClose();
@@ -319,7 +319,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
 
   const closeDialog = () => {
     onClose();
-    setDropZone(null);
+    setDropZoneData(null);
     setDescription("");
   };
 
@@ -438,7 +438,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 </Typography>
               </Box>
             </Typography>
-            <MyDropzone setDropZone={setDropZone} dropZoneData={dropZoneData} />
+            <MyDropzone setDropZoneData={setDropZoneData} dropZoneData={dropZoneData} />
           </Box>
           <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
             <Typography

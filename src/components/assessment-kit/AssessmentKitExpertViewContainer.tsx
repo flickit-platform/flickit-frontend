@@ -47,7 +47,7 @@ const AssessmentKitExpertViewContainer = () => {
     useAssessmentKit();
   const dialogProps = useDialog();
   const { config } = useConfigContext();
-  const [update, setForceUpdate] = useState<boolean>(false);
+  const [forceUpdate, setForceUpdate] = useState<boolean>(false);
   const { expertGroupId, assessmentKitId = "" } = useParams();
   const [details, setDetails] = useState<AssessmentKitDetailsType>();
   const [expertGroup, setExpertGroup] = useState<any>();
@@ -108,7 +108,7 @@ const AssessmentKitExpertViewContainer = () => {
     if (!loaded) {
       AssessmentKitDetails();
     }
-  }, [loaded, update, hasActiveVersion]);
+  }, [loaded, forceUpdate, hasActiveVersion]);
   useEffect(() => {
     setDocumentTitle(
       `${t("assessmentKit")}: ${assessmentKitTitle || ""}`,
@@ -200,7 +200,7 @@ const AssessmentKitExpertViewContainer = () => {
             loaded={loaded}
             {...dialogProps}
           />
-          <AssessmentKitSectionsTabs update={update} details={details} />
+          <AssessmentKitSectionsTabs update={forceUpdate} details={details} />
         </Box>
       </Box>
     </Box>
@@ -878,50 +878,48 @@ const UpdateAssessmentKitDialog = (props: any) => {
       )}
       <Divider />
       <Box mt={4} sx={{ maxHeight: "260px", overflow: "scroll" }}>
-        {syntaxErrorObject &&
-          syntaxErrorObject.map((e: any) => {
-            return (
-              <Box key={uniqueId()} sx={{ ml: 1 }}>
-                <Alert severity="error" sx={{ my: 2 }}>
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <Typography variant="subtitle2" color="error">
-                      <Trans
-                        i18nKey="errorAtLine"
-                        values={{
-                          message: e.message,
-                          fileName: e.fileName,
-                          line: e.line,
-                          column: e.column,
-                        }}
-                      />
-                    </Typography>
-                    <Typography variant="subtitle2" color="error">
-                      <Trans
-                        i18nKey="errorLine"
-                        values={{
-                          errorLine: e.errorLine,
-                        }}
-                      />
-                    </Typography>
-                  </Box>
-                </Alert>
-              </Box>
-            );
-          })}
-        {updateErrorObject &&
-          updateErrorObject.map((e: any) => {
-            return (
-              <Box key={uniqueId()} sx={{ ml: 1 }}>
-                <Alert severity="error" sx={{ my: 2 }}>
-                  <Box sx={{ display: "flex" }}>
-                    <Typography variant="subtitle2" color="error">
-                      {e}
-                    </Typography>
-                  </Box>
-                </Alert>
-              </Box>
-            );
-          })}
+        {syntaxErrorObject?.map((e: any) => {
+          return (
+            <Box key={uniqueId()} sx={{ ml: 1 }}>
+              <Alert severity="error" sx={{ my: 2 }}>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Typography variant="subtitle2" color="error">
+                    <Trans
+                      i18nKey="errorAtLine"
+                      values={{
+                        message: e.message,
+                        fileName: e.fileName,
+                        line: e.line,
+                        column: e.column,
+                      }}
+                    />
+                  </Typography>
+                  <Typography variant="subtitle2" color="error">
+                    <Trans
+                      i18nKey="errorLine"
+                      values={{
+                        errorLine: e.errorLine,
+                      }}
+                    />
+                  </Typography>
+                </Box>
+              </Alert>
+            </Box>
+          );
+        })}
+        {updateErrorObject?.map((e: any) => {
+          return (
+            <Box key={uniqueId()} sx={{ ml: 1 }}>
+              <Alert severity="error" sx={{ my: 2 }}>
+                <Box sx={{ display: "flex" }}>
+                  <Typography variant="subtitle2" color="error">
+                    {e}
+                  </Typography>
+                </Box>
+              </Alert>
+            </Box>
+          );
+        })}
       </Box>
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
         <Grid item>
@@ -962,8 +960,6 @@ const SubjectQuestionList = (props: any) => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const handleChange =
     (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      if (isExpanded) {
-      }
       setExpanded(isExpanded ? panel?.title : false);
     };
   return (
@@ -1507,71 +1503,70 @@ const MaturityLevelsDetails = (props: any) => {
       <Typography fontWeight={900} fontSize="1.5rem" mb={8}>
         <Trans i18nKey="maturityLevels" />
       </Typography>
-      {maturity_levels &&
-        maturity_levels
-          .map((maturity_level: any, key: number) => {
-            const { title, competences, index } = maturity_level;
-            return (
+      {maturity_levels
+        ?.map((maturity_level: any, key: number) => {
+          const { title, competences, index } = maturity_level;
+          return (
+            <Box
+              sx={{
+                transform: "skew(-30deg);",
+                background: colorPallet[key],
+                borderRadius: "8px",
+                py: "4px",
+                paddingLeft: theme.direction === "ltr" ? 2 : "unset",
+                paddingRight: theme.direction === "rtl" ? 2 : "unset",
+                margin: "16px",
+                width: { xs: "90%", sm: `${90 - 10 * key}%` },
+              }}
+              key={key}
+            >
+              <Typography
+                sx={{ transform: "skew(30deg);" }}
+                fontSize="1.5rem"
+                fontWeight={900}
+                color="#fff"
+              >
+                {index}.{title}
+              </Typography>
               <Box
                 sx={{
-                  transform: "skew(-30deg);",
-                  background: colorPallet[key],
-                  borderRadius: "8px",
-                  py: "4px",
-                  paddingLeft: theme.direction === "ltr" ? 2 : "unset",
-                  paddingRight: theme.direction === "rtl" ? 2 : "unset",
-                  margin: "16px",
-                  width: { xs: "90%", sm: `${90 - 10 * key}%` },
+                  display: "flex",
+                  ml: "64px",
+                  flexWrap: "wrap",
+                  alignItems: "center",
                 }}
-                key={key}
               >
                 <Typography
-                  sx={{ transform: "skew(30deg);" }}
-                  fontSize="1.5rem"
-                  fontWeight={900}
+                  sx={{ transform: "skew(30deg)" }}
+                  fontSize=".875rem"
                   color="#fff"
+                  fontWeight={900}
+                  mr={"4px"}
                 >
-                  {index}.{title}
+                  <Trans i18nKey="competences" />:
                 </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    ml: "64px",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{ transform: "skew(30deg)" }}
-                    fontSize=".875rem"
-                    color="#fff"
-                    fontWeight={900}
-                    mr={"4px"}
-                  >
-                    <Trans i18nKey="competences" />:
-                  </Typography>
-                  {competences.map((comp: any, key: number) => {
-                    const { title, value } = comp;
-                    return (
-                      <Typography
-                        key={uniqueId()}
-                        sx={{ transform: "skew(30deg)" }}
-                        fontSize=".75rem"
-                        color="#fff"
-                      >
-                        {theme.direction == "ltr" && key != 0 && "   ,"} {title}
-                        : {value}%{" "}
-                        {competences.length - 1 !== key &&
-                          theme.direction == "rtl" &&
-                          ",   "}{" "}
-                      </Typography>
-                    );
-                  })}
-                </Box>
+                {competences.map((comp: any, key: number) => {
+                  const { title, value } = comp;
+                  return (
+                    <Typography
+                      key={uniqueId()}
+                      sx={{ transform: "skew(30deg)" }}
+                      fontSize=".75rem"
+                      color="#fff"
+                    >
+                      {theme.direction == "ltr" && key != 0 && "   ,"} {title}:{" "}
+                      {value}%{" "}
+                      {competences.length - 1 !== key &&
+                        theme.direction == "rtl" &&
+                        ",   "}{" "}
+                    </Typography>
+                  );
+                })}
               </Box>
-            );
-          })
-          .reverse()}
+            </Box>
+          );
+        })
+        .reverse()}
     </Box>
   );
 };

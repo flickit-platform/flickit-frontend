@@ -101,12 +101,9 @@ const QuestionnairesContent = () => {
         await postQuestionnairesKit.query({ kitVersionId, data });
       }
 
-      // Reset form and re-fetch data after saving
-      // setShowQuestionnairesForm(false);
-      await fetchQuestionnairesKit.query();
-      // maturityLevelsCompetences.query();
 
-      // Reset the form values
+      await fetchQuestionnairesKit.query();
+
       setNewQuestionnaires({
         title: "",
         description: "",
@@ -152,7 +149,6 @@ const QuestionnairesContent = () => {
 
       setShowNewQuestionnairesForm(false);
       fetchQuestionnairesKit.query();
-      // maturityLevelsCompetences.query();
 
       setNewQuestionnaires({
         title: "",

@@ -95,13 +95,12 @@ export const defaultRenderError = (
     return errorComponent;
   }
   if (Array.isArray(err)) {
-    for (let index = 0; index < err.length; index++) {
-      if (err[index]?.response?.data?.code == ErrorCodes.CalculateNotValid) {
+    for (const item of err) {
+      if (item?.response?.data?.code == ErrorCodes.CalculateNotValid) {
         return <ErrorRecalculating />;
       }
       if (
-        err[index]?.response?.data?.code ==
-        ErrorCodes.ConfidenceCalculationNotValid
+        item?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid
       ) {
         return <ErrorRecalculating />;
       }
@@ -146,26 +145,35 @@ const reduceData = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
 const reduceLoadings = <T extends any = any>(
   queryBatchData: IQueryData<T>[],
 ) => {
-  return queryBatchData.reduce((prevQuery, currentQuery) => ({
-    ...currentQuery,
-    loading: !!(prevQuery.loading || currentQuery.loading),
-  })).loading;
+  return queryBatchData.reduce(
+    (prevQuery, currentQuery) => ({
+      ...currentQuery,
+      loading: !!(prevQuery.loading || currentQuery.loading),
+    }),
+    { loading: false } as IQueryData<T>,
+  ).loading;
 };
 
 const reduceLoaded = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
-  return queryBatchData.reduce((prevQuery, currentQuery) => {
-    return {
-      ...currentQuery,
-      loaded: !!(prevQuery.loaded && currentQuery.loaded),
-    };
-  })?.loaded;
+  return queryBatchData.reduce(
+    (prevQuery, currentQuery) => {
+      return {
+        ...currentQuery,
+        loaded: !!(prevQuery.loaded && currentQuery.loaded),
+      };
+    },
+    { loaded: true } as IQueryData<T>,
+  ).loaded;
 };
 
 const reduceError = <T extends any = any>(queryBatchData: IQueryData<T>[]) => {
-  return queryBatchData.reduce((prevQuery, currentQuery) => ({
-    ...currentQuery,
-    error: !!(prevQuery.error || currentQuery.error),
-  })).error;
+  return queryBatchData.reduce(
+    (prevQuery, currentQuery) => ({
+      ...currentQuery,
+      error: !!(prevQuery.error || currentQuery.error),
+    }),
+    { error: false } as IQueryData<T>,
+  ).error;
 };
 
 const reduceErrorObject = <T extends any = any>(

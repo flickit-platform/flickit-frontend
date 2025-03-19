@@ -71,10 +71,7 @@ const MoreActions = (props: IMoreActionsProps) => {
           {loading ? (
             <CircularProgress size="1.25rem" />
           ) : (
-            <MoreVertIcon
-              sx={{ fill: color }}
-              fontSize={fontSize ? fontSize : "small"}
-            />
+            <MoreVertIcon sx={{ fill: color }} fontSize={fontSize ?? "small"} />
           )}
         </IconButton>
       )}

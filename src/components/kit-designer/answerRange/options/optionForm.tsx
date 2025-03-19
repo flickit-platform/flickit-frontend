@@ -35,7 +35,6 @@ const OptionForm = ({
         position: "relative",
       }}
     >
-
       <Box sx={{ width: { xs: "65%", md: "70%" } }} mx={1}>
         <TextField
           required

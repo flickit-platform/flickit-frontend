@@ -76,7 +76,7 @@ const SpaceSettingContainer = () => {
           ) : (
             title
           )}{" "}
-          <Trans i18nKey="setting" />
+          <Trans i18nKey="settings" />
         </Box>
       </Title>
       <Box pt={3}>{!loading && <SpaceSettings editable={editable} />}</Box>

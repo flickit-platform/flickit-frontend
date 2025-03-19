@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton"; 
+import IconButton from "@mui/material/IconButton";
 import CancelRounded from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
 import EditRounded from "@mui/icons-material/EditRounded";
@@ -11,9 +11,10 @@ import { ICustomError } from "@utils/CustomError";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
+import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
 
 interface EditableRichEditorProps {
   defaultValue: string;
@@ -35,12 +36,15 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     placeholder,
     required = true,
   } = props;
+
   const { t } = useTranslation();
   const [isHovering, setIsHovering] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
   const paragraphRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
   const formMethods = useForm({
     defaultValues: { [fieldName]: defaultValue || "" },
   });
@@ -85,6 +89,32 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     setShowMore((prev) => !prev);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        showEditor &&
+        editorRef.current &&
+        !editorRef.current.contains(event.target as Node)
+      ) {
+        setShowUnsavedDialog(true);
+      }
+    };
+
+    if (showEditor) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEditor]);
+
+  const cancelLeaveEditor = () => {
+    setShowUnsavedDialog(false);
+  };
+
   return (
     <Box
       sx={{
@@ -101,6 +131,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           style={{ height: "100%", width: "100%" }}
         >
           <Box
+            ref={editorRef}
             sx={{
               width: "100%",
               height: "100%",
@@ -197,7 +228,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               dangerouslySetInnerHTML={{
                 __html:
                   tempData ||
-                  (editable ? placeholder || t("writeHere") : t("unavailable")),
+                  (editable
+                    ? (placeholder ?? t("writeHere"))
+                    : t("unavailable")),
               }}
               ref={paragraphRef}
             />
@@ -233,6 +266,31 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           )}
         </Box>
       )}
+
+      <CEDialog
+        open={showUnsavedDialog}
+        onClose={cancelLeaveEditor}
+        title={<Trans i18nKey="warning" />}
+        maxWidth="sm"
+      >
+        <Typography sx={{ color: "#0A2342" }}>
+          <Trans
+            i18nKey="editorActionRestriction"
+            components={{
+              title: <span style={{ fontWeight: "bold", color: "#B86A77" }} />,
+            }}
+          />
+        </Typography>
+
+        <CEDialogActions
+          type="delete"
+          loading={false}
+          submitButtonLabel={t("okGotIt")}
+          onSubmit={cancelLeaveEditor}
+          closeDialog={cancelLeaveEditor}
+          hideCancelButton={true}
+        />
+      </CEDialog>
     </Box>
   );
 };

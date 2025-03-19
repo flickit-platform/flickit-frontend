@@ -553,10 +553,7 @@ const OnHoverInput = (props: any) => {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
         toastError(err.response?.data?.message[0]);
-      } else if (
-        err.response?.data &&
-        err.response?.data.hasOwnProperty("message")
-      ) {
+      } else if (err.response?.data?.hasOwnProperty("message")) {
         toastError(error);
       }
       setError(err);
@@ -719,7 +716,7 @@ const OnHoverStatus = (props: any) => {
       service.updateAssessmentKitStats(
         args ?? {
           assessmentKitId: assessmentKitId,
-          data: { published: data ? false : true },
+          data: { published: !data },
         },
         config,
       ),
@@ -822,6 +819,7 @@ const OnHoverVisibilityStatus = (props: any) => {
     }
   };
   const updateAssessmentKitQuery = useQuery({
+<<<<<<< HEAD
     service: (args, config) =>
       service.updateAssessmentKitStats(
         args ?? {
@@ -830,6 +828,15 @@ const OnHoverVisibilityStatus = (props: any) => {
         },
         config,
       ),
+=======
+    service: (
+      args = {
+        assessmentKitId: assessmentKitId,
+        data: { isPrivate: !data },
+      },
+      config,
+    ) => service.updateAssessmentKitStats(args, config),
+>>>>>>> main
     runOnMount: false,
     toastError: true,
   });

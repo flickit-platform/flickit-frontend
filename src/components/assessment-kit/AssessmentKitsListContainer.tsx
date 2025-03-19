@@ -199,18 +199,16 @@ const AssessmentKitsListContainer = () => {
           <QueryData
             {...publicAssessmentKitsQueryData}
             renderLoading={() => (
-              <>
-                <Grid container spacing={2}>
-                  {forLoopComponent(5, (index) => (
-                    <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
-                      <LoadingSkeleton
-                        key={uniqueId()}
-                        sx={{ height: "340px", mb: 1 }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </>
+              <Grid container spacing={2}>
+                {forLoopComponent(5, (index) => (
+                  <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
+                    <LoadingSkeleton
+                      key={uniqueId()}
+                      sx={{ height: "340px", mb: 1 }}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
             )}
             render={(data) => {
               const { items = [] } = data;
@@ -236,20 +234,18 @@ const AssessmentKitsListContainer = () => {
           <QueryData
             {...privateAssessmentKitsQueryData}
             renderLoading={() => (
-              <>
-                <Box mt={`2`}>
-                  <Grid container spacing={2}>
-                    {forLoopComponent(5, () => (
-                      <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
-                        <LoadingSkeleton
-                          key={uniqueId()}
-                          sx={{ height: "340px", mb: 1 }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-              </>
+              <Box mt={`2`}>
+                <Grid container spacing={2}>
+                  {forLoopComponent(5, () => (
+                    <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
+                      <LoadingSkeleton
+                        key={uniqueId()}
+                        sx={{ height: "340px", mb: 1 }}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
             )}
             render={(data) => {
               const { items = [] } = data;

@@ -60,7 +60,7 @@ const RichEditorFieldBase = (props: any) => {
     formState: { errors },
   } = useFormContext();
   const { hasError, errorMessage } = getFieldError(errors, name);
-  const show_label = disable_label ? false : true;
+  const show_label = !disable_label;
   return (
     <FormControl
       fullWidth
@@ -106,7 +106,7 @@ const RichEditorFieldBase = (props: any) => {
         }
         defaultValue={defaultValue}
         field={field}
-        checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
+        checkLang={firstCharDetector(defaultValue.replace(/<[^<>]+>/g, ""))}
         placeholder={placeholder}
         type={type}
         showEditorMenu={showEditorMenu}

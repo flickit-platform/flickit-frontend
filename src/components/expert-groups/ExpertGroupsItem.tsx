@@ -50,7 +50,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
       await seenExpertGroupQuery.query();
     } catch (e) {
       const err = e as ICustomError;
-      if (err.response?.data && err.response?.data.hasOwnProperty("message")) {
+      if (err.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(err.response?.data?.message)) {
           toastError(err.response?.data?.message[0]);
         } else {
@@ -134,16 +134,14 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             {members.map((user: any, index: number) => {
               return (
                 <Tooltip key={user?.id} title={user?.displayName}>
-                  <>
-                    <Avatar
-                      key={user.id}
-                      sx={{ width: 28, height: 28, fontSize: ".8rem" }}
-                      alt={user.displayName}
-                      title={user.displayName}
-                    >
-                      {user?.displayName.split("")[0].toUpperCase()}
-                    </Avatar>
-                  </>
+                  <Avatar
+                    key={user.id}
+                    sx={{ width: 28, height: 28, fontSize: ".8rem" }}
+                    alt={user.displayName}
+                    title={user.displayName}
+                  >
+                    {user?.displayName.split("")[0].toUpperCase()}
+                  </Avatar>
                 </Tooltip>
               );
             })}
@@ -185,7 +183,7 @@ const Actions = (props: any) => {
       await fetchExpertGroups();
     } catch (e) {
       const err = e as ICustomError;
-      if (err.response?.data && err.response?.data.hasOwnProperty("message")) {
+      if (err.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(err.response?.data?.message)) {
           toastError(err.response?.data?.message[0]);
         } else {

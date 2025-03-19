@@ -42,11 +42,11 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 };
 
 const CustomNode: any = (props: any) => {
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { x, y, width, height, name, color, label, levels } = props;
 
   if (width <= 10 || height <= 20) return null;
-
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const fontSize = width / (isSmallScreen ? 10 : 8);
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
@@ -88,7 +88,7 @@ const CustomNode: any = (props: any) => {
 };
 
 const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
+  if (active && payload?.length) {
     const { name } = payload[0].payload;
     return (
       <div

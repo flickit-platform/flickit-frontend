@@ -241,8 +241,13 @@ export const IssuesItem = ({
   });
 
   const approveAllAnswers = useQuery({
+<<<<<<< HEAD
     service: (args, config) =>
       service.approveAllAnswers(args ?? { assessmentId }, config),
+=======
+    service: (args = { assessmentId }, config) =>
+      service.approveAllAnswers(args, config),
+>>>>>>> main
     runOnMount: false,
   });
 
@@ -392,7 +397,7 @@ export const IssuesItem = ({
       {name === "notGenerated" && (
         <Tooltip
           disableHoverListener={
-            issues?.unanswered < 1 ?? !disableGenerateButtons
+            issues?.unanswered < 1 || !disableGenerateButtons
           }
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
@@ -418,7 +423,7 @@ export const IssuesItem = ({
         <>
           <Tooltip
             disableHoverListener={
-              issues?.unanswered < 1 ?? !disableGenerateButtons
+              issues?.unanswered < 1 || !disableGenerateButtons
             }
             title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
           >

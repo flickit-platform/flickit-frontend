@@ -1,5 +1,5 @@
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import { defineConfig, type PluginOption } from "vite";
+import { defineConfig } from "vite";
 import { visualizer } from "rollup-plugin-visualizer";
 import path from "path";
 import rpr from "rollup-plugin-replace";

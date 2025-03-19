@@ -21,7 +21,6 @@ import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
-import uniqueId from "@/utils/uniqueId";
 import debounce from "lodash/debounce";
 import Add from "@mui/icons-material/Add";
 import EmptyStateOptions from "@components/kit-designer/answerRange/options/emptyStateOptions";
@@ -138,17 +137,6 @@ const ListOfItems = ({
       }
     };
 
-  const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
-    try {
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  }, 2000);
-
-  const handleReorder = (newOrder: any[]) => {
-    debouncedHandleReorder(newOrder);
-  };
   const handleQuestionDragEnd = (result: any) => {
     if (!result.destination) return;
     const updatedQuestions = Array.from(questionData);
@@ -159,7 +147,6 @@ const ListOfItems = ({
       ...question,
       index: idx + 1,
     }));
-    handleReorder(reorderedQuestions);
     setQuestionData(reorderedQuestions);
   };
 
@@ -178,10 +165,9 @@ const ListOfItems = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseFloat(value) || 1 : value;
     setNewOptions((prev) => ({
       ...prev,
-      [name]: parsedValue,
+      [name]: value,
     }));
   };
 

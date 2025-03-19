@@ -128,13 +128,13 @@ const renderInfo = (
     bg,
   } = config;
   const { title, item, type, action } = info;
-  const key = useTitleAsFallbackType ? type || title : type;
+  const key = useTitleAsFallbackType ? (type ?? title) : type;
 
   return key && renderMap[key] ? (
     renderMap[key](title, item, { bg, action })
   ) : (
     <Component title={title} bg={bg} action={action}>
-      {item ? item : "-"}
+      {item ?? "-"}
     </Component>
   );
 };

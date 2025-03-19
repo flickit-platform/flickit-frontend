@@ -34,7 +34,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
   };
   const listOfText = [
     "reachedNumberOfAssessments",
-    "youCan",
+    "youCanT",
     "deleteExistingAssessments",
     "upgradeToPremiumSpace",
   ];
@@ -51,7 +51,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             alt={"AssessmentError"}
           />
           <Typography sx={{ ...theme.typography.semiBoldXLarge }}>
-            <Trans i18nKey="updateAssessment" />
+            <Trans i18nKey="assessmentLimitExceeded" />
           </Typography>
         </>
       }
@@ -60,27 +60,35 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         {listOfText.map((text: string, index: number) => {
           return (
             <Box
+              key={index}
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
                 listStyleType: "disc",
                 fontSize: "1.2rem",
+                gap: "2px",
+                color: "#2B333B",
               }}
             >
               <Typography
                 component={index >= 2 ? "li" : "p"}
-                key={index}
-                sx={{ ...theme.typography.bodyLarge }}
+                variant="semiBoldLarge"
               >
+                {text == "upgradeToPremiumSpace" &&
+                  theme.direction == "rtl" && (
+                    <Typography variant="semiBoldLarge">
+                      (<Trans i18nKey={"comingSoon"} />
+                      !)
+                    </Typography>
+                  )}
                 <Trans i18nKey={text} />
+                {text == "youCanT" && ":"}
               </Typography>
-              {text == "upgradeToPremiumSpace" && (
-                <Typography
-                  sx={{ ...theme.typography.bodyLarge, fontWeight: "bold" }}
-                >
+              {text == "upgradeToPremiumSpace" && theme.direction == "ltr" && (
+                <Typography variant="semiBoldLarge">
                   (<Trans i18nKey={"comingSoon"} />
-                  !)
+                  ).
                 </Typography>
               )}
             </Box>

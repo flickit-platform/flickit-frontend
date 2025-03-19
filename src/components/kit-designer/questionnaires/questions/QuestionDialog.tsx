@@ -226,33 +226,27 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     service: (args, config) => service.updateQuestionImpactsKit(args, config),
     runOnMount: false,
   });
-  const handleDeleteImpact = (item: any) => {
+  const handleDeleteImpact = async (item: any) => {
     try {
-      deleteQuestionImpactsKit
-        .query({
-          kitVersionId: kitVersionId,
-          questionImpactId: item.questionImpactId,
-        })
-        .then(() => {
-          fetchImpacts.query();
-        });
+      await deleteQuestionImpactsKit.query({
+        kitVersionId: kitVersionId,
+        questionImpactId: item.questionImpactId,
+      });
+      fetchImpacts.query();
     } catch (err) {
       const error = err as ICustomError;
       toastError(error);
     }
   };
 
-  const handleEditImpact = (tempValues: any, item: any) => {
+  const handleEditImpact = async (tempValues: any, item: any) => {
     try {
-      updateQuestionImpactsKit
-        .query({
-          kitVersionId: kitVersionId,
-          questionImpactId: item.questionImpactId,
-          data: tempValues,
-        })
-        .then(() => {
-          fetchImpacts.query();
-        });
+      await updateQuestionImpactsKit.query({
+        kitVersionId: kitVersionId,
+        questionImpactId: item.questionImpactId,
+        data: tempValues,
+      });
+      fetchImpacts.query();
     } catch (err) {
       const error = err as ICustomError;
       toastError(error);
@@ -408,20 +402,18 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               </Tooltip>
             </Box>
             {fetchOptions?.data?.answerOptions?.length > 0 ? (
-              <>
-                <Box maxHeight={500} overflow="auto">
-                  <OptionList
-                    Options={fetchOptions?.data?.answerOptions}
-                    onEdit={handleAddNewRow}
-                    onDelete={handleAddNewRow}
-                    onReorder={handleAddNewRow}
-                    onAdd={handleAddOption}
-                    isAddingNew={showNewOptionForm}
-                    setIsAddingNew={setShowNewOptionForm}
-                    disableAddOption={disableAddOption}
-                  />
-                </Box>
-              </>
+              <Box maxHeight={500} overflow="auto">
+                <OptionList
+                  Options={fetchOptions?.data?.answerOptions}
+                  onEdit={handleAddNewRow}
+                  onDelete={handleAddNewRow}
+                  onReorder={handleAddNewRow}
+                  onAdd={handleAddOption}
+                  isAddingNew={showNewOptionForm}
+                  setIsAddingNew={setShowNewOptionForm}
+                  disableAddOption={disableAddOption}
+                />
+              </Box>
             ) : (
               <>
                 {showNewOptionForm ? (

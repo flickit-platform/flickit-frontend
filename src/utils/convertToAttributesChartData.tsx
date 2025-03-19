@@ -1,5 +1,5 @@
 export const convertToAttributesChartData = (data: any, assessments?: any) => {
-  if (!data || !data.attributes) {
+  if (!data?.attributes) {
     return [];
   }
 
@@ -32,7 +32,7 @@ export const convertToAttributesChartData = (data: any, assessments?: any) => {
 };
 
 export const convertToAssessmentsChartData = (data: any, assessments?: any) => {
-  if (!data || !data.subjects) {
+  if (!data?.subjects) {
     return [];
   }
 

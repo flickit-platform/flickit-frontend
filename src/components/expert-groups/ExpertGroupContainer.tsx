@@ -920,10 +920,7 @@ const MemberActions = (props: any) => {
       inviteeQuery();
     } catch (e) {
       const error = e as ICustomError;
-      if (
-        error.response?.data &&
-        error.response?.data.hasOwnProperty("message")
-      ) {
+      if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
           toastError(error.response?.data?.message[0]);
         } else {
@@ -1010,10 +1007,7 @@ const AddMember = (props: any) => {
       query();
     } catch (e) {
       const error = e as ICustomError;
-      if (
-        error.response?.data &&
-        error.response?.data.hasOwnProperty("message")
-      ) {
+      if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
           toastError(error.response?.data?.message[0]);
         } else {

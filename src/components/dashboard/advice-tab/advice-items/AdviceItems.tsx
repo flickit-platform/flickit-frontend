@@ -23,7 +23,7 @@ const AdviceItems = () => {
   const { assessmentId = "" } = useParams();
 
   const [page, setPage] = useState(0);
-  const [errormessage, setErrorMessage] = useState({});
+  const [errorMessage, setErrorMessage] = useState({});
   const [displayedItems, setDisplayedItems] = useState<any[]>([]);
 
   const fetchAdviceItems = useQuery<any>({
@@ -213,7 +213,7 @@ const AdviceItems = () => {
                 setNewAdvice={setNewAdvice}
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 postAdviceItem={postAdviceItem}
-                errormessage={errormessage}
+                errormessage={errorMessage}
               />
             )}
             {displayedItems.length ? (

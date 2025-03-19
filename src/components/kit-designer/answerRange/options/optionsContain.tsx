@@ -23,7 +23,7 @@ const OptionContain = (props: any) => {
   const { answerOption, setChangeData } = props;
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
-  const [isEditMode, setEditMode] = useState<any>(null);
+  const [editMode, setEditMode] = useState<any>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",
     value: 0,
@@ -85,7 +85,7 @@ const OptionContain = (props: any) => {
             width: { xs: "50%", md: "60%" },
           }}
         >
-          {isEditMode === answerOption.id ? (
+          {editMode === answerOption.id ? (
             <TextField
               required
               value={tempValues.title}
@@ -122,7 +122,7 @@ const OptionContain = (props: any) => {
             <Box sx={{ width: "90%" }}>{answerOption?.title}</Box>
           )}
         </Box>
-        {isEditMode === answerOption.id ? (
+        {editMode === answerOption.id ? (
           <TextField
             required
             value={tempValues.value}
@@ -168,7 +168,7 @@ const OptionContain = (props: any) => {
             marginLeft: "auto",
           }}
         >
-          {isEditMode === answerOption.id ? (
+          {editMode === answerOption.id ? (
             <>
               <IconButton
                 size="small"
