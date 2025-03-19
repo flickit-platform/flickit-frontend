@@ -35,7 +35,6 @@ const OptionForm = ({
         position: "relative",
       }}
     >
-
       <Box sx={{ width: { xs: "65%", md: "70%" } }} mx={1}>
         <TextField
           required
@@ -72,6 +71,7 @@ const OptionForm = ({
           onChange={handleInputChange}
           variant="outlined"
           size="small"
+          type="number"
           inputProps={{
             "data-testid": "answer-range-option-value",
             style: { textAlign: "center", width: "100%" },
