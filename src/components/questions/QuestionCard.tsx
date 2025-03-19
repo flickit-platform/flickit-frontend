@@ -2555,10 +2555,10 @@ const FileIcon = (props: any): any => {
   const [hover, setHover] = useState(false);
 
   const { link } = item;
-  const reg = /\/([^\/?]+)\?/;
+  const reg = /\/([^/?]+)\?/;
   const match = link?.match(reg);
   const name = match ? match[1] : null;
-  const exp = name?.substring(name.lastIndexOf("."));  
+  const exp = name?.substring(name.lastIndexOf("."));
   return (
     <Tooltip
       title={

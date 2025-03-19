@@ -79,13 +79,9 @@ interface Measure {
   gainedScore: number;
 }
 
-interface ScoreImpactBarChartProps {
-  measures: Measure[];
-}
-
 export default function ScoreImpactBarChart({
   measures,
-}: ScoreImpactBarChartProps) {
+}: Readonly<{ measures: Measure[] }>) {
   const chartData = measures?.map((measure) => ({
     name: measure.title,
     pv: -Math.abs(measure.missedScorePercentage),
