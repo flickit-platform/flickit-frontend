@@ -101,6 +101,7 @@ const Gauge = ({
           />
         ) : (
           <img
+            alt="empty"
             width="100%"
             height={height}
             src="/assets/svg/maturityNull.svg"

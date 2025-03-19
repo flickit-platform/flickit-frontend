@@ -71,12 +71,8 @@ export default function FileSvg({
       </svg>
       {hover && (
         <div
+          role="button"
           onClick={() => downloadFile(item)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              downloadFile(item);
-            }
-          }}
           style={{
             position: "absolute",
             top: "7px",
@@ -102,11 +98,7 @@ export default function FileSvg({
       )}
       {hover && (
         <div
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              downloadFile(item);
-            }
-          }}
+          role="button"
           onClick={() => {
             setEvidenceId(evidenceId);
             setExpandedDeleteAttachmentDialog({ expended: true, id: item.id });

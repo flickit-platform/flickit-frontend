@@ -163,11 +163,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
         <Box>
           <Typography
             variant="subLarge"
-            sx={
-              is_farsi
-                ? { color: "white", opacity: 0.65, px: 6 }
-                : { color: "white", opacity: 0.65, px: 6 }
-            }
+            sx={{ color: "white", opacity: 0.65, px: 6 }}
           >
             <Trans i18nKey="question" />
           </Typography>

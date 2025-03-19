@@ -23,12 +23,12 @@ const DonutChart = (props: IGaugeProps) => {
     ...rest
   } = props;
 
-  if (maturityLevelNumber < levelValue) return null;
-
   const CircleGaugeComponent = useMemo(
     () => lazy(() => import(`./donutChart${maturityLevelNumber}.tsx`)),
     [maturityLevelNumber],
   );
+
+  if (maturityLevelNumber < levelValue) return null;
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
   const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";

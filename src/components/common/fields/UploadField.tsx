@@ -32,24 +32,6 @@ import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { theme } from "@/config/theme";
 
-// interface IUploadFieldProps {
-//   name: string;
-//   label: string | JSX.Element;
-//   required?: boolean;
-//   defaultValue?: any;
-//   accept?: Accept;
-//   maxSize?: number;
-//   uploadService?: TQueryServiceFunction<any, any>;
-//   deleteService?: TQueryServiceFunction<any, any>;
-//   hideDropText?: boolean;
-//   shouldFetchFileInfo?: boolean;
-//   defaultValueType?: string;
-//   param?: string;
-//   setSyntaxErrorObject?: any;
-//   setShowErrorLog?: any;
-//   setIsValid?: any;
-// }
-
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
 

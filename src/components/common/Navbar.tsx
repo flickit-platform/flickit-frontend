@@ -272,46 +272,13 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   }}
                   gap={1}
                 >
-                  {/* <Avatar sx={{ width: 24, height: 24 }}></Avatar> */}
                   <Typography
                     variant="bodyMedium"
                     dangerouslySetInnerHTML={{
                       __html: (selectedMessage as any)?.content,
                     }}
-                  >
-                    {/* <Typography
-                      variant="titleSmall"
-                      component="span"
-                      sx={{ fontWeight: "bold", color: "#2D80D2" }}
-                    >
-                      {
-                        (selectedMessage?.payload?.data as any)?.assigner
-                          ?.displayName
-                      }
-                    </Typography>{" "}
-                    just added you to the assessment{" "}
-                    <Typography
-                      variant="titleSmall"
-                      component="span"
-                      sx={{ fontWeight: "bold", color: "#2D80D2" }}
-                    >
-                      {
-                        (selectedMessage?.payload?.data as any)?.assessment
-                          ?.title
-                      }
-                    </Typography>{" "}
-                    as{" "}
-                    <Typography
-                      variant="titleSmall"
-                      component="span"
-                      sx={{ fontWeight: "bold", color: "#2D80D2" }}
-                    >
-                      {(selectedMessage?.payload?.data as any)?.role?.title}
-                    </Typography>{" "}
-                    on the space! */}
-                  </Typography>
+                  ></Typography>
                 </Box>
-                {/* Relative Time Ago */}
                 <Typography
                   variant="labelSmall"
                   sx={{
