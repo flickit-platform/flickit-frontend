@@ -56,6 +56,9 @@ const AssessmentContainer = () => {
     runOnMount: true,
   });
 
+  useEffect(() => {
+    fetchSpaceInfo.query();
+  }, [data]);
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
