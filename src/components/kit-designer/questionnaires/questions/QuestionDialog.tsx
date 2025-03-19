@@ -396,20 +396,18 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               </Tooltip>
             </Box>
             {fetchOptions?.data?.answerOptions?.length > 0 ? (
-              <>
-                <Box maxHeight={500} overflow="auto">
-                  <OptionList
-                    Options={fetchOptions?.data?.answerOptions}
-                    onEdit={handleAddNewRow}
-                    onDelete={handleAddNewRow}
-                    onReorder={handleAddNewRow}
-                    onAdd={handleAddOption}
-                    isAddingNew={showNewOptionForm}
-                    setIsAddingNew={setShowNewOptionForm}
-                    disableAddOption={disableAddOption}
-                  />
-                </Box>
-              </>
+              <Box maxHeight={500} overflow="auto">
+                <OptionList
+                  Options={fetchOptions?.data?.answerOptions}
+                  onEdit={handleAddNewRow}
+                  onDelete={handleAddNewRow}
+                  onReorder={handleAddNewRow}
+                  onAdd={handleAddOption}
+                  isAddingNew={showNewOptionForm}
+                  setIsAddingNew={setShowNewOptionForm}
+                  disableAddOption={disableAddOption}
+                />
+              </Box>
             ) : (
               <>
                 {showNewOptionForm ? (

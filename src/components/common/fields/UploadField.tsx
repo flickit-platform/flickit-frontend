@@ -129,7 +129,7 @@ const Uploader = (props: IUploadProps) => {
         {
           src: defaultValue,
           name: getFileNameFromSrc(defaultValue),
-          type: defaultValueType || "",
+          type: defaultValueType ?? "",
         },
       ] as { src: string; name: string; type: string }[];
     }

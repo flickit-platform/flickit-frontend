@@ -126,7 +126,7 @@ export const SelectField = (props: ISelectField) => {
       <Select
         {...rest}
         {...(register ? register(name, { required }) : {})}
-        defaultValue={defaultValue ? defaultValue : defaultOption?.id}
+        defaultValue={defaultValue ?? defaultOption?.id}
         labelId={`select_label_id_${name}`}
         sx={{
           ...(rest?.sx || {}),

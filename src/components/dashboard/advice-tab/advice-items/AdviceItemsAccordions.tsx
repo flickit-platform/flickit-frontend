@@ -186,7 +186,7 @@ const AdviceItemAccordion: React.FC<{
 }) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const isFarsi = i18next.language === "fa";
   const [errorMessage, setErrorMessage] = useState({});
 
@@ -425,7 +425,7 @@ const AdviceItemAccordion: React.FC<{
                     color="primary"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setDeleteDialogOpen(true);
+                      setIsDeleteDialogOpen(true);
                     }}
                   >
                     <DeleteRounded fontSize="small" />
@@ -455,7 +455,7 @@ const AdviceItemAccordion: React.FC<{
 
       <DeleteConfirmationDialog
         open={isDeleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
+        onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
           onDelete(item.id);
           const updatedItems = items.filter(
