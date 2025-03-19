@@ -90,14 +90,14 @@ const columns: TableColumn[] = [
     serverKey: "questionnaire",
     label: "questionnaire",
     sortable: true,
-    width: "160px",
+    width: "130px",
   },
   {
     field: "question",
     serverKey: "question",
     label: "question",
     sortable: false,
-    width: "250px",
+    width: "300px",
   },
   {
     field: "gainedScore",
@@ -105,7 +105,7 @@ const columns: TableColumn[] = [
     label: "score",
     sortable: true,
     align: "center",
-    width: "300px",
+    width: "285px",
   },
   {
     field: "confidence",
