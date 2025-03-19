@@ -34,8 +34,8 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   };
 
   const validateKitVersion = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.validateKitVersion(args, config),
+    service: (args, config) =>
+      service.validateKitVersion(args ?? { kitVersionId }, config),
   });
 
   const handleDeleteDraft = async () => {

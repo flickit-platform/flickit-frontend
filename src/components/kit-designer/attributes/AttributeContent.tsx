@@ -15,24 +15,27 @@ import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectTable from "./SubjectTable";
-import {DeleteConfirmationDialog} from "@common/dialogs/DeleteConfirmationDialog";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 const AttributesContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
-  const [openDeleteDialog,setOpenDeleteDialog] = useState<{status:boolean,id:string}>({status:false,id:""})
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
 
   const [subjects, setSubjects] = useState([]);
 
   const fetchSubjectKit = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.fetchSubjectKit(args, config),
+    service: (args, config) =>
+      service.fetchSubjectKit(args ?? { kitVersionId }, config),
   });
 
   const fetchAttributeKit = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.fetchAttributeKit(args, config),
+    service: (args, config) =>
+      service.fetchAttributeKit(args ?? { kitVersionId }, config),
   });
 
   const postAttributeKit = useQuery({
@@ -135,7 +138,7 @@ const AttributesContent = () => {
       weight: 0,
       id: null,
     });
-    setOpenDeleteDialog({status:false,id:""})
+    setOpenDeleteDialog({ status: false, id: "" });
   };
 
   const handleEdit = async (AttributeItem: any) => {
@@ -174,8 +177,8 @@ const AttributesContent = () => {
 
   const handleDelete = async () => {
     try {
-      let attributeId = openDeleteDialog.id
-      await deleteAttributeKit.query({ kitVersionId, attributeId  });
+      let attributeId = openDeleteDialog.id;
+      await deleteAttributeKit.query({ kitVersionId, attributeId });
       await fetchAttributeKit.query();
       handleCancel();
     } catch (e) {
@@ -259,7 +262,9 @@ const AttributesContent = () => {
                     SubTitle={"AttributeEmptyStateDetailed"}
                     onAddNewRow={handleAddNewRow}
                     disabled={subjects.length === 0}
-                    disableTextBox={<Trans i18nKey={"disableAttributeMessage"}/>}
+                    disableTextBox={
+                      <Trans i18nKey={"disableAttributeMessage"} />
+                    }
                   />
                 )
               )}
@@ -268,11 +273,13 @@ const AttributesContent = () => {
         />
       </Box>
       <DeleteConfirmationDialog
-          open={openDeleteDialog.status}
-          onClose={() => setOpenDeleteDialog({...openDeleteDialog,status:false})}
-          onConfirm={handleDelete}
-          title="warning"
-          content="deleteAttribute"
+        open={openDeleteDialog.status}
+        onClose={() =>
+          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+        }
+        onConfirm={handleDelete}
+        title="warning"
+        content="deleteAttribute"
       />
     </PermissionControl>
   );

@@ -19,8 +19,8 @@ const DashboardTab = () => {
   const { service } = useServiceContext();
 
   const fetchDashboard = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.fetchDashboard(args, config),
+    service: (args, config) =>
+      service.fetchDashboard(args ?? { assessmentId }, config),
     runOnMount: true,
   });
 
@@ -34,8 +34,8 @@ const DashboardTab = () => {
             const data = fetchDashboard.data;
             const { unpublished, ...rest } = data.report;
             const updateReport = { ...rest, unpublished };
-            const {unanswered,unapprovedAnswers, ...others} = data.questions
-            const updateQuestion = { unanswered,unapprovedAnswers, ...others };
+            const { unanswered, unapprovedAnswers, ...others } = data.questions;
+            const updateQuestion = { unanswered, unapprovedAnswers, ...others };
             const mappedData = [
               { category: "questions", metrics: updateQuestion },
               { category: "insights", metrics: data.insights },
@@ -123,7 +123,11 @@ const DashboardTab = () => {
                 activeStep={activeStep}
                 stepData={stepData}
               />
-              <TodoBox activeStep={activeStep} todoBoxData={todoBoxData} fetchDashboard={fetchDashboard} />
+              <TodoBox
+                activeStep={activeStep}
+                todoBoxData={todoBoxData}
+                fetchDashboard={fetchDashboard}
+              />
             </Box>
           );
         }}

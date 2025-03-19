@@ -15,12 +15,12 @@ const AssessmentKitPermissionsContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const assessmentKitUsersListQueryData = useQuery({
-    service: (args = { assessmentKitId: assessmentKitId }, config) =>
-      service.assessmentKitUsersList(args, config),
+    service: (args, config) =>
+      service.assessmentKitUsersList(args ?? { assessmentKitId }, config),
   });
   const assessmentKitMinInfoQueryData = useQuery({
-    service: (args = { assessmentKitId: assessmentKitId }, config) =>
-      service.assessmentKitMinInfo(args, config),
+    service: (args, config) =>
+      service.assessmentKitMinInfo(args ?? { assessmentKitId }, config),
   });
 
   const { config } = useConfigContext();

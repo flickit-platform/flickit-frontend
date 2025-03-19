@@ -211,38 +211,38 @@ export const IssuesItem = ({
   const { calculate, calculateConfidence } = useCalculate();
 
   const approveInsights = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.approveInsights(args, config),
+    service: (args, config) =>
+      service.approveInsights(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const generateInsights = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.generateInsights(args, config),
+    service: (args, config) =>
+      service.generateInsights(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const regenerateInsights = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.regenerateInsights(args, config),
+    service: (args, config) =>
+      service.regenerateInsights(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const approveExpiredInsights = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.approveExpiredInsights(args, config),
+    service: (args, config) =>
+      service.approveExpiredInsights(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const resolvedAllComments = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.resolvedAllComments(args, config),
+    service: (args, config) =>
+      service.resolvedAllComments(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const approveAllAnswers = useQuery({
-    service: (args = { assessmentId }, config) =>
-        service.approveAllAnswers(args, config),
+    service: (args, config) =>
+      service.approveAllAnswers(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
@@ -280,7 +280,7 @@ export const IssuesItem = ({
     }
   };
 
-  const handleApproveAllAnswers = async (event: any) =>{
+  const handleApproveAllAnswers = async (event: any) => {
     try {
       event.stopPropagation();
       event.preventDefault();
@@ -289,7 +289,7 @@ export const IssuesItem = ({
     } catch (e) {
       toastError(e as ICustomError);
     }
-  }
+  };
 
   const handleApproveAllExpired = async () => {
     try {
@@ -479,21 +479,21 @@ export const IssuesItem = ({
         </Button>
       )}
       {name === "unapprovedAnswers" && (
-          <Box style={{ marginInlineStart: "auto" }}>
-            <LoadingButton
-                onClick={(event)=>handleApproveAllAnswers(event)}
-                variant="outlined"
-                loading={approveAllAnswers.loading}
-                color={color}
-                sx={{
-                  padding: "4px 10px",
-                }}
-            >
-              <Typography sx={{ ...theme.typography.labelMedium }}>
-                <Trans i18nKey="approveAll" />
-              </Typography>
-            </LoadingButton>
-          </Box>
+        <Box style={{ marginInlineStart: "auto" }}>
+          <LoadingButton
+            onClick={(event) => handleApproveAllAnswers(event)}
+            variant="outlined"
+            loading={approveAllAnswers.loading}
+            color={color}
+            sx={{
+              padding: "4px 10px",
+            }}
+          >
+            <Typography sx={{ ...theme.typography.labelMedium }}>
+              <Trans i18nKey="approveAll" />
+            </Typography>
+          </LoadingButton>
+        </Box>
       )}
     </Box>
   );

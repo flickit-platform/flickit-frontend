@@ -21,7 +21,9 @@ interface UseAttributeInsightReturn {
   approveAttribute: (event: React.SyntheticEvent) => Promise<void>;
 }
 
-const useAttributeInsight = ({ id }: UseAttributeInsightProps): UseAttributeInsightReturn => {
+const useAttributeInsight = ({
+  id,
+}: UseAttributeInsightProps): UseAttributeInsightReturn => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
@@ -31,20 +33,20 @@ const useAttributeInsight = ({ id }: UseAttributeInsightProps): UseAttributeInsi
   );
 
   const ApprovedAIAttribute = useQuery({
-    service: (args = queryArgs, config) =>
-      service.ApprovedAIAttribute(args, config),
+    service: (args, config) =>
+      service.ApprovedAIAttribute(args ?? queryArgs, config),
     runOnMount: false,
   });
 
   const loadAttributeInsight = useQuery({
-    service: (args = queryArgs, config) =>
-      service.loadAttributeInsight(args, config),
+    service: (args, config) =>
+      service.loadAttributeInsight(args ?? queryArgs, config),
     runOnMount: false,
   });
 
   const generateAIInsight = useQuery({
-    service: (args = queryArgs, config) =>
-      service.generateAIInsight(args, config),
+    service: (args, config) =>
+      service.generateAIInsight(args ?? queryArgs, config),
     runOnMount: false,
   });
 

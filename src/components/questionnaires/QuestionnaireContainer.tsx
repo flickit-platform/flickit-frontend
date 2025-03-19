@@ -56,9 +56,13 @@ export const useQuestionnaire = () => {
   const subjectIdParam = searchParams.get("subject_pk");
 
   const questionnaireQueryData = useQuery<IQuestionnairesModel>({
-    service: (args = { subject_pk: subjectIdParam }, config) =>
-      service.fetchQuestionnaires({ assessmentId, ...(args || {}) }, config),
+    service: (args, config) =>
+      service.fetchQuestionnaires(
+        { assessmentId, ...(args ?? { subject_pk: subjectIdParam }) },
+        config,
+      ),
   });
+
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
       service.fetchAssessmentTotalProgress(

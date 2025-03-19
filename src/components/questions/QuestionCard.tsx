@@ -126,8 +126,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   }, [title, answer?.confidenceLevel]);
 
   const ConfidenceListQueryData = useQuery({
-    service: (args = {}, config) =>
-      service.fetchConfidenceLevelsList(args, config),
+    service: (args, config) =>
+      service.fetchConfidenceLevelsList(args ?? {}, config),
     toastError: false,
   });
 
@@ -415,42 +415,45 @@ export const QuestionTabsTemplate = (props: any) => {
 
   // Queries
   const queryData = useQuery({
-    service: (
-      args = {
-        questionId: questionInfo.id,
-        assessmentId,
-        page: currentPage,
-        size: 10,
-      },
-      config,
-    ) => service.fetchAnswersHistory(args, config),
+    service: (args, config) =>
+      service.fetchAnswersHistory(
+        args ?? {
+          questionId: questionInfo.id,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        },
+        config,
+      ),
     toastError: true,
     runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
   });
   const evidencesQueryData = useQuery({
-    service: (
-      args = {
-        questionId: questionInfo.id,
-        assessmentId,
-        page: currentPage,
-        size: 10,
-      },
-      config,
-    ) => service.fetchEvidences(args, config),
+    service: (args, config) =>
+      service.fetchEvidences(
+        args ?? {
+          questionId: questionInfo.id,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        },
+        config,
+      ),
     toastError: true,
     runOnMount: true,
   });
 
   const commentesQueryData = useQuery({
-    service: (
-      args = {
-        questionId: questionInfo.id,
-        assessmentId,
-        page: currentPage,
-        size: 10,
-      },
-      config,
-    ) => service.fetchComments(args, config),
+    service: (args, config) =>
+      service.fetchComments(
+        args ?? {
+          questionId: questionInfo.id,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        },
+        config,
+      ),
     toastError: true,
     runOnMount: true,
   });
@@ -752,10 +755,11 @@ const AnswerTemplate = (props: {
   }, [answer, value]);
 
   const approveAnswer = useQuery({
-    service: (
-      args = { assessmentId, data: { questionId: questionInfo.id } },
-      config,
-    ) => service.approveAnswer(args, config),
+    service: (args, config) =>
+      service.approveAnswer(
+        args ?? { assessmentId, data: { questionId: questionInfo.id } },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -1221,7 +1225,8 @@ const AnswerDetails = ({
     });
   };
 
-  return <Box mt={2} width="100%" my={4}>
+  return (
+    <Box mt={2} width="100%" my={4}>
       {type === "evidence" || type === "comment" ? (
         <Box
           display="flex"
@@ -1277,7 +1282,7 @@ const AnswerDetails = ({
         </Box>
       )}
     </Box>
-
+  );
 };
 
 const AnswerHistoryItem = (props: any) => {
@@ -1490,7 +1495,7 @@ const Evidence = (props: any) => {
   const onSubmit = async (data: any) => {
     try {
       if (data.evidence.length <= LIMITED) {
-       let {id} = await addEvidence.query({
+        let { id } = await addEvidence.query({
           description: data.evidence,
           questionId: questionInfo.id,
           assessmentId,
@@ -1498,7 +1503,7 @@ const Evidence = (props: any) => {
         });
         if (createAttachment) {
           setExpandedAttachmentsDialogs({ count: 0, expended: true });
-          setEvidenceId(id)
+          setEvidenceId(id);
         }
         setCreateAttachment(false);
         const { items } = await evidencesQueryData.query();
@@ -1532,8 +1537,8 @@ const Evidence = (props: any) => {
   };
 
   const deleteEvidence = useQuery({
-    service: (args = { id: evidenceId }, config) =>
-      service.deleteEvidence(args, config),
+    service: (args, config) =>
+      service.deleteEvidence(args ?? { id: evidenceId }, config),
     runOnMount: false,
   });
 
