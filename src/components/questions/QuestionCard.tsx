@@ -421,7 +421,7 @@ export const QuestionTabsTemplate = (props: any) => {
       config,
     ) => service.fetchAnswersHistory(args, config),
     toastError: true,
-    runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
+    runOnMount: Boolean(questionsInfo?.permissions?.viewAnswerHistory),
   });
   const evidencesQueryData = useQuery({
     service: (
@@ -758,7 +758,7 @@ const AnswerTemplate = (props: {
   const submitQuestion = async () => {
     dispatch(questionActions.setIsSubmitting(true));
     try {
-      if (permissions && permissions?.answerQuestion) {
+      if (permissions?.answerQuestion) {
         await service.submitAnswer(
           {
             assessmentId,
@@ -2408,22 +2408,20 @@ const EvidenceDetail = (props: any) => {
                         )}
                         {attachments.length < 5 &&
                           permissions?.addEvidenceAttachment && (
-                            <>
-                              <Grid
-                                item
-                                onClick={() => {
-                                  setExpandedAttachmentsDialogs({
-                                    expended: true,
-                                    count: attachments.length,
-                                  });
-                                  setEvidenceId(id);
-                                }}
-                              >
-                                <PreAttachment
-                                  mainColor={evidenceBG?.borderColor}
-                                />
-                              </Grid>
-                            </>
+                            <Grid
+                              item
+                              onClick={() => {
+                                setExpandedAttachmentsDialogs({
+                                  expended: true,
+                                  count: attachments.length,
+                                });
+                                setEvidenceId(id);
+                              }}
+                            >
+                              <PreAttachment
+                                mainColor={evidenceBG?.borderColor}
+                              />
+                            </Grid>
                           )}
                       </Box>
                       {attachments.length == 5 && (

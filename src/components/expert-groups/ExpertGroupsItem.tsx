@@ -134,16 +134,14 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             {members.map((user: any, index: number) => {
               return (
                 <Tooltip key={user?.id} title={user?.displayName}>
-                  <>
-                    <Avatar
-                      key={user.id}
-                      sx={{ width: 28, height: 28, fontSize: ".8rem" }}
-                      alt={user.displayName}
-                      title={user.displayName}
-                    >
-                      {user?.displayName.split("")[0].toUpperCase()}
-                    </Avatar>
-                  </>
+                  <Avatar
+                    key={user.id}
+                    sx={{ width: 28, height: 28, fontSize: ".8rem" }}
+                    alt={user.displayName}
+                    title={user.displayName}
+                  >
+                    {user?.displayName.split("")[0].toUpperCase()}
+                  </Avatar>
                 </Tooltip>
               );
             })}

@@ -137,17 +137,6 @@ const ListOfItems = ({
       }
     };
 
-  const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
-    try {
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  }, 2000);
-
-  const handleReorder = (newOrder: any[]) => {
-    debouncedHandleReorder(newOrder);
-  };
   const handleQuestionDragEnd = (result: any) => {
     if (!result.destination) return;
     const updatedQuestions = Array.from(questionData);
@@ -158,7 +147,6 @@ const ListOfItems = ({
       ...question,
       index: idx + 1,
     }));
-    handleReorder(reorderedQuestions);
     setQuestionData(reorderedQuestions);
   };
 
