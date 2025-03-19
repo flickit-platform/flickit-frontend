@@ -55,7 +55,7 @@ export const QuestionThumb = (props: any) => {
           </Typography>
         </Box>
       )}
-      {question.answer && question.answer.isNotApplicable && (
+      {question.answer?.isNotApplicable && (
         <Box mt={3}>
           <Typography variant="subMedium" textTransform="uppercase">
             <Trans i18nKey={"yourAnswer"} />
@@ -81,7 +81,7 @@ export const QuestionThumb = (props: any) => {
         >
           {question.answer ||
           !permissions.answerQuestion ||
-          (question.answer && question.answer.isNotApplicable) ? (
+          question.answer?.isNotApplicable ? (
             <Trans i18nKey="edit" />
           ) : (
             <Trans i18nKey="submitAnAnswer" />

@@ -139,11 +139,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
       }}
     >
       <Typography sx={{ ...theme.typography.semiBoldLarge }}>
-        {dropdownLabel ? (
-          dropdownLabel
-        ) : (
-          <Trans i18nKey={"filterQuestionsWithIssues"} />
-        )}
+        {dropdownLabel ?? <Trans i18nKey={"filterQuestionsWithIssues"} />}
       </Typography>
       <FormControl sx={{ m: 1, width: 250 }}>
         <Select

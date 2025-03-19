@@ -39,13 +39,13 @@ const CompareParts = () => {
                 return (
                   <Grid item xs={12} md={6} key={uniqueId()}>
                     <ComparePartItem
-                      data={assessment_kit && assessment_kit[index]}
+                      data={assessment_kit?.[index]}
                       index={index}
                       disabled={
-                        (assessmentIds && assessmentIds?.length >= index) ||
-                        (assessment_kit && assessment_kit.length >= index)
-                          ? false
-                          : true
+                        !(
+                          assessmentIds?.length >= index ||
+                          assessment_kit?.length >= index
+                        )
                       }
                     />
                   </Grid>

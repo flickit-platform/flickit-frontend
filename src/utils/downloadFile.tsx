@@ -3,19 +3,28 @@ import toastError from "@utils/toastError";
 
 export const downloadFile = async ({ link }: { link: string }) => {
   try {
-    if (link) {
-      const response = await fetch(link);
-      const blob = await response.blob();
-      const reg = new RegExp("\\/([^\\/?]+)\\?");
-      const name: any = link?.match(reg);
-      const a = document.createElement("a");
-      const urlBlob = URL.createObjectURL(blob);
-      a.download = name[1];
-      a.href = urlBlob;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    }
+    if (!link) return;
+
+    const response = await fetch(link);
+    if (!response.ok)
+      throw new Error(`Failed to fetch file: ${response.statusText}`);
+
+    const blob = await response.blob();
+
+    const reg = /\/([^\/?]+)\?/;
+    const match = link.match(reg);
+    const fileName = match?.[1] || "download";
+
+    const a = document.createElement("a");
+    const urlBlob = URL.createObjectURL(blob);
+
+    a.href = urlBlob;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(urlBlob);
   } catch (e) {
     const err = e as ICustomError;
     toastError(err);

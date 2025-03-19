@@ -4,7 +4,7 @@ const DonutChart6 = (props: IFlatGauge) => {
   const { colorCode, value, height } = props;
   return (
     <svg
-      height={height ? height : "110"}
+      height={height ?? "110"}
       viewBox= "0 0 110 110"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

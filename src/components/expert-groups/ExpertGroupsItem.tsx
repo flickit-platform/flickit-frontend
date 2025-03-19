@@ -50,7 +50,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
       await seenExpertGroupQuery.query();
     } catch (e) {
       const err = e as ICustomError;
-      if (err.response?.data && err.response?.data.hasOwnProperty("message")) {
+      if (err.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(err.response?.data?.message)) {
           toastError(err.response?.data?.message[0]);
         } else {
@@ -185,7 +185,7 @@ const Actions = (props: any) => {
       await fetchExpertGroups();
     } catch (e) {
       const err = e as ICustomError;
-      if (err.response?.data && err.response?.data.hasOwnProperty("message")) {
+      if (err.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(err.response?.data?.message)) {
           toastError(err.response?.data?.message[0]);
         } else {

@@ -188,7 +188,7 @@ const AdviceItemAccordion: React.FC<{
   const { assessmentId = "" } = useParams();
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const isFarsi = i18next.language === "fa";
-  const [errormessage, setErrorMessage] = useState({});
+  const [errorMessage, setErrorMessage] = useState({});
 
   const [newAdvice, setNewAdvice] = useState({
     title: "",
@@ -283,7 +283,7 @@ const AdviceItemAccordion: React.FC<{
         setNewAdvice={setNewAdvice}
         removeDescriptionAdvice={removeDescriptionAdvice}
         postAdviceItem={updateAdviceItem}
-        errormessage={errormessage}
+        errormessage={errorMessage}
       />
     );
   }

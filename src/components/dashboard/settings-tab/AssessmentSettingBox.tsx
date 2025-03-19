@@ -75,7 +75,7 @@ export const AssessmentSettingGeneralBox = (props: {
   return (
     <Box
       sx={{
-          ...styles.boxStyle,
+        ...styles.boxStyle,
       }}
       gap={2}
     >
@@ -125,7 +125,7 @@ export const AssessmentSettingGeneralBox = (props: {
               sx={{
                 ...styles.centerVH,
                 width: { md: "350px" },
-                  justifyContent:"flex-start"
+                justifyContent: "flex-start",
               }}
             >
               <OnHoverInputTitleSetting
@@ -213,76 +213,75 @@ export const AssessmentSettingGeneralBox = (props: {
         <Divider
           sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
         />
-          <Grid container spacing={2} sx={{ ...styles.centerH }}>
-                {title.map((itemList: string, index: number) => {
-                  return (
-                    <Grid
-                      key={uniqueId()}
+        <Grid container spacing={2} sx={{ ...styles.centerH }}>
+          {title.map((itemList: string, index: number) => {
+            return (
+              <Grid
+                key={uniqueId()}
+                item
+                xs={12}
+                md={6}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: "10px",
+                }}
+              >
+                <Typography
+                  color="#78818b"
+                  fontWeight={500}
+                  whiteSpace={"nowrap"}
+                  sx={{
+                    width: "250px",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    fontSize: { xs: "1rem", md: "1.375rem" },
+                  }}
+                  lineHeight={"normal"}
+                >
+                  <Trans i18nKey={`${itemList}`} />:
+                </Typography>
 
-                      item
-                      xs={12}
-                      md={6}
-                      sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          mb: "10px",
+                <Typography
+                  color="#0A2342"
+                  fontWeight={500}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    fontSize: { xs: "1rem", md: "1.375rem" },
+                    width: { md: "350px" },
+                  }}
+                  lineHeight={"normal"}
+                >
+                  {index == 0 && displayName}
+                  {index == 1 && (
+                    <Link
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                        fontFamily: languageDetector(kit.title)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
                       }}
+                      to={`/assessment-kits/${kit.id}`}
                     >
-                      <Typography
-                        color="#78818b"
-                        fontWeight={500}
-                        whiteSpace={"nowrap"}
-                        sx={{
-                          width: "250px",
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          fontSize: { xs: "1rem", md: "1.375rem" },
-                        }}
-                        lineHeight={"normal"}
-                      >
-                        <Trans i18nKey={`${itemList}`} />:
-                      </Typography>
-
-                      <Typography
-                        color="#0A2342"
-                        fontWeight={500}
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          fontSize: { xs: "1rem", md: "1.375rem" },
-                          width: { md: "350px" },
-                        }}
-                        lineHeight={"normal"}
-                      >
-                        {index == 0 && displayName}
-                        {index == 1 && (
-                          <Link
-                            style={{
-                              textDecoration: "none",
-                              color: "inherit",
-                              fontFamily: languageDetector(kit.title)
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                            }}
-                            to={`/assessment-kits/${kit.id}`}
-                          >
-                            {kit.title}
-                          </Link>
-                        )}
-                        {index == 2 &&
-                          (theme.direction == "rtl"
-                            ? formatDate(creationTime, "Shamsi")
-                            : formatDate(creationTime, "Miladi"))}
-                        {index == 3 &&
-                          (theme.direction == "rtl"
-                            ? formatDate(lastModificationTime, "Shamsi")
-                            : formatDate(lastModificationTime, "Miladi"))}
-                      </Typography>
-                    </Grid>
-                  );
-                })}
-          </Grid>
+                      {kit.title}
+                    </Link>
+                  )}
+                  {index == 2 &&
+                    (theme.direction == "rtl"
+                      ? formatDate(creationTime, "Shamsi")
+                      : formatDate(creationTime, "Miladi"))}
+                  {index == 3 &&
+                    (theme.direction == "rtl"
+                      ? formatDate(lastModificationTime, "Shamsi")
+                      : formatDate(lastModificationTime, "Miladi"))}
+                </Typography>
+              </Grid>
+            );
+          })}
+        </Grid>
       </Box>
     </Box>
   );
@@ -393,8 +392,8 @@ export const AssessmentSettingMemberBox = (props: {
   return (
     <Box
       sx={{
-          ...styles.boxStyle,
-          minHeight:"350px",
+        ...styles.boxStyle,
+        minHeight: "350px",
       }}
       gap={2}
     >
@@ -453,8 +452,8 @@ export const AssessmentSettingMemberBox = (props: {
                   display: "flex",
                   justifyContent: "space-between",
                   width: "100%",
-                    px:"1rem",
-                    gap: { xs: "0px", md: "1.3rem" },
+                  px: "1rem",
+                  gap: { xs: "0px", md: "1.3rem" },
                 }}
               >
                 {columns.map((column) => (
@@ -462,8 +461,7 @@ export const AssessmentSettingMemberBox = (props: {
                     key={column.id}
                     align={column.align}
                     sx={{
-
-                        px:0,
+                      px: 0,
                       minWidth: {
                         xs: "8.1rem",
                         sm: "12rem",
@@ -492,7 +490,7 @@ export const AssessmentSettingMemberBox = (props: {
                   <TableRow
                     tabIndex={-1}
                     key={row.id}
-                    sx={{ background: !row.editable ? "#ebe8e85c" : "",p:0 }}
+                    sx={{ background: !row.editable ? "#ebe8e85c" : "", p: 0 }}
                   >
                     <TableCell
                       sx={{
@@ -1178,10 +1176,7 @@ const OnHoverInputTitleSetting = (props: any) => {
       setHasError(true);
       if (Array.isArray(err.response?.data?.message)) {
         toastError(err.response?.data?.message[0]);
-      } else if (
-        err.response?.data &&
-        err.response?.data.hasOwnProperty("message")
-      ) {
+      } else if (err.response?.data?.hasOwnProperty("message")) {
         toastError(err.response?.data?.message);
       }
     }
@@ -1258,7 +1253,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                 <InputAdornment position="end">
                   <IconButton
                     title="Submit Edit"
-                    edge= {theme.direction == "rtl" ? "start" : "end"}
+                    edge={theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#49CED0",
                       borderRadius: "2px",
@@ -1272,7 +1267,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
-                    edge= {theme.direction == "rtl" ? "start" : "end"}
+                    edge={theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#E04B7C",
                       borderRadius: "2px",

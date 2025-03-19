@@ -229,7 +229,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               dangerouslySetInnerHTML={{
                 __html:
                   tempData ||
-                  (editable ? placeholder || t("writeHere") : t("unavailable")),
+                  (editable
+                    ? (placeholder ?? t("writeHere"))
+                    : t("unavailable")),
               }}
               ref={paragraphRef}
             />
