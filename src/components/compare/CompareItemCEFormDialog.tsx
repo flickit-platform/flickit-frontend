@@ -143,7 +143,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
             {...useConnectSelectField({
               url: "/api/v1/comparable-assessments/",
               searchParams: {
-                kitId: assessment_kit && assessment_kit[0]?.kit?.id,
+                kitId: assessment_kit?.[0]?.kit?.id,
                 size: PAGE_SIZE,
                 page: PageCount,
               },
@@ -152,7 +152,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
             required={true}
             autoFocus={true}
             name="assessment"
-            defaultValue={defaultValues || ""}
+            defaultValue={defaultValues ?? ""}
             label={<Trans i18nKey="assessment" />}
             size="medium"
             selectedOptions={assessment_kit}

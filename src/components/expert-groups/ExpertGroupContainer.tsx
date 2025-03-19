@@ -64,7 +64,7 @@ import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
-import {useConfigContext} from "@providers/ConfgProvider";
+import { useConfigContext } from "@providers/ConfgProvider";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -73,7 +73,9 @@ const ExpertGroupContainer = () => {
   const { assessmentKitQuery, handleChangePage, ...rest } =
     useFetchAssessmentKit();
   const { size, total, page } = rest;
-  const {config: {languages}} = useConfigContext();
+  const {
+    config: { languages },
+  } = useConfigContext();
   const pageCount = size === 0 ? 1 : Math.ceil(total / size);
   const queryData = useQuery({
     service: (args = { id: expertGroupId }, config) =>
@@ -93,10 +95,9 @@ const ExpertGroupContainer = () => {
     runOnMount: false,
   });
 
-
   const setDocTitle = useDocumentTitle(t("expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
-    context: { type: "create", data: { expertGroupId, languages  } },
+    context: { type: "create", data: { expertGroupId, languages } },
   });
 
   const excelToDslDialogProps = useDialog({
@@ -913,10 +914,7 @@ const MemberActions = (props: any) => {
       inviteeQuery();
     } catch (e) {
       const error = e as ICustomError;
-      if (
-        error.response?.data &&
-        error.response?.data.hasOwnProperty("message")
-      ) {
+      if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
           toastError(error.response?.data?.message[0]);
         } else {
@@ -1003,10 +1001,7 @@ const AddMember = (props: any) => {
       query();
     } catch (e) {
       const error = e as ICustomError;
-      if (
-        error.response?.data &&
-        error.response?.data.hasOwnProperty("message")
-      ) {
+      if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
           toastError(error.response?.data?.message[0]);
         } else {
@@ -1074,7 +1069,7 @@ const AssessmentKitsList = (props: any) => {
     is_member,
     excelToDslDialogProps,
     assessmentKitQuery,
-    languages
+    languages,
   } = props;
   const { expertGroupId } = useParams();
   const kitDesignerDialogProps = useDialog({

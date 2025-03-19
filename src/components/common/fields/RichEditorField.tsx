@@ -106,7 +106,7 @@ const RichEditorFieldBase = (props: any) => {
         }
         defaultValue={defaultValue}
         field={field}
-        checkLang={firstCharDetector(defaultValue.replace(/<[^>]*>/g, ""))}
+        checkLang={firstCharDetector(defaultValue.replace(/<[^<>]+>/g, ""))}
         placeholder={placeholder}
         type={type}
         showEditorMenu={showEditorMenu}

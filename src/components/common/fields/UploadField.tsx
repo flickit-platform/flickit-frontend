@@ -257,6 +257,8 @@ const Uploader = (props: IUploadProps) => {
   const loading = uploadQueryProps.loading || deleteQueryProps.loading;
   const { errorMessage, hasError } = getFieldError(errors, fieldProps.name);
 
+  const selectedFile = dropNewFile?.[0] ?? acceptedFiles?.[0] ?? file;
+
   return (
     <FormControl sx={{ width: "100%" }} error={hasError}>
       <Box
@@ -308,27 +310,6 @@ const Uploader = (props: IUploadProps) => {
                           setButtonStep(0);
                           setZippedData(null);
                           setConvertData(null);
-                          // }
-                          // if (uploadQueryProps.error) {
-                          //   setMyFiles([]);
-                          //   return;
-                          // }
-                          // const id =
-                          //   uploadQueryProps.data?.id ||
-                          //   fieldProps.value?.[0]?.id;
-                          // if (!id) {
-                          //   toastError(true);
-                          //   return;
-                          // }
-                          // try {
-                          //   await deleteQueryProps.query({
-                          //     id,
-                          //   });
-                          //   setMyFiles([]);
-                          //   fieldProps.onChange("");
-                          // } catch (e) {
-                          //   toastError(e as ICustomError);
-                          // }
                         }}
                       >
                         <DeleteRoundedIcon fontSize="small" />
@@ -366,45 +347,15 @@ const Uploader = (props: IUploadProps) => {
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  title={`${((dropNewFile && dropNewFile[0]) || acceptedFiles[0] || file)?.name} - ${
-                    (
-                      (dropNewFile && dropNewFile[0]) ||
-                      acceptedFiles[0] ||
-                      file
-                    )?.size
-                      ? formatBytes((acceptedFiles[0] || file)?.size)
-                      : ""
+                  title={`${selectedFile} - ${
+                    selectedFile?.size ? formatBytes(selectedFile?.size) : ""
                   }`}
                   primaryTypographyProps={{
                     sx: { ...styles.ellipsis, width: "95%" },
                   }}
-                  primary={
-                    <>
-                      {
-                        (
-                          (dropNewFile && dropNewFile[0]) ||
-                          acceptedFiles[0] ||
-                          file
-                        )?.name
-                      }
-                    </>
-                  }
+                  primary={<>{selectedFile?.name}</>}
                   secondary={
-                    <>
-                      {(
-                        (dropNewFile && dropNewFile[0]) ||
-                        acceptedFiles[0] ||
-                        file
-                      )?.size
-                        ? formatBytes(
-                            (
-                              (dropNewFile && dropNewFile[0]) ||
-                              acceptedFiles[0] ||
-                              file
-                            )?.size,
-                          )
-                        : null}
-                    </>
+                    selectedFile?.size ? formatBytes(selectedFile.size) : null
                   }
                 />
               </ListItem>
