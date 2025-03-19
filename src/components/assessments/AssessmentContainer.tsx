@@ -120,17 +120,7 @@ const AssessmentContainer = () => {
                     onClick={() => dialogProps.openDialog({ type: "create" })}
                     shouldAnimate={data?.length === 0}
                     disabled={!spaceData?.canCreateAssessment}
-                    text={
-                      <Typography
-                        sx={{
-                          color: !spaceData?.canCreateAssessment
-                            ? "#3D4D5C80"
-                            : "#fff",
-                        }}
-                      >
-                        <Trans i18nKey={"createAssessment"} />
-                      </Typography>
-                    }
+                    text={"createAssessment"}
                   />
                 </Box>
               ) : (
