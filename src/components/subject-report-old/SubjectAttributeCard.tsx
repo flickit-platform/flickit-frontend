@@ -49,10 +49,14 @@ const SubjectAttributeCard = (props: any) => {
   const { assessmentId = "" } = useParams();
 
   const [topTab, setTopTab] = useState(0);
-  const [TopNavValue, setTopNavValue] = React.useState<number>(0);
-  const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
-    maturityScoreModels[0].maturityLevel.id,
+  const [TopNavValue, setTopNavValue] = React.useState<number>(
+    maturityScoreModels.findIndex((item: any) => item.score !== null) || 0,
   );
+  const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
+    maturityScoreModels.find((item: any) => item.score !== null)?.maturityLevel
+      .id || null,
+  );
+
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
     false,
   );
@@ -103,7 +107,7 @@ const SubjectAttributeCard = (props: any) => {
         order: sortOrder,
       },
       config,
-    ) => service.fetchMeasures(args, config), // تغییر به fetchMeasures
+    ) => service.fetchMeasures(args, config),
     runOnMount: false,
   });
 
@@ -414,11 +418,7 @@ const SubjectAttributeCard = (props: any) => {
                               mr: 1,
                               border: "none",
                               textTransform: "none",
-                              color:
-                                maturityLevelOfScores?.value >
-                                maturityLevel?.value
-                                  ? "#6C8093"
-                                  : "#2B333B",
+                              color: "#2B333B",
                               "&.Mui-selected": {
                                 boxShadow:
                                   "0 1px 4px rgba(0,0,0,25%) !important",
@@ -431,6 +431,7 @@ const SubjectAttributeCard = (props: any) => {
                                 },
                               },
                             }}
+                            disabled={score === null}
                             label={
                               <Box
                                 sx={{
