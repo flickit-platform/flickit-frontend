@@ -26,14 +26,16 @@ import PermissionControl from "../common/PermissionControl";
 import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
+import { useQuery } from "@/utils/useQuery";
 
 const AssessmentContainer = () => {
+  const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, spaceData, ...rest } = useFetchAssessments();
+  const { fetchAssessments, ...rest } = useFetchAssessments();
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -48,6 +50,12 @@ const AssessmentContainer = () => {
   if (Math.ceil(total / size) < Number(page) && pageCount) {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
+
+  const fetchSpaceInfo = useQuery({
+    service: (args = { spaceId }, config) => service.fetchSpace(args, config),
+    runOnMount: true,
+  });
+
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
@@ -63,7 +71,7 @@ const AssessmentContainer = () => {
                 <Box
                   sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
                 >
-                  {!spaceData?.canCreateAssessment && (
+                  {!fetchSpaceInfo.data?.canCreateAssessment && (
                     <Typography
                       onClick={() => infoDialogProps.openDialog({})}
                       sx={{
@@ -110,16 +118,23 @@ const AssessmentContainer = () => {
                       >
                         <NewAssessmentIcon
                           color={
-                            !spaceData?.canCreateAssessment
+                            !fetchSpaceInfo.data?.canCreateAssessment
                               ? "#3D4D5C80"
                               : "#fff"
                           }
                         />
                       </Box>
                     }
-                    onClick={() => dialogProps.openDialog({ type: "create" })}
+                    onClick={() =>
+                      dialogProps.openDialog({
+                        type: "create",
+                        data: {
+                          space: { id: spaceId, title: currentSpace?.title },
+                        },
+                      })
+                    }
                     shouldAnimate={data?.length === 0}
-                    disabled={!spaceData?.canCreateAssessment}
+                    disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                     text={"createAssessment"}
                   />
                 </Box>
@@ -260,40 +275,18 @@ const AssessmentContainer = () => {
 
 const useFetchAssessments = () => {
   const [data, setData] = useState<any>({});
-  const [spaceData, setSpaceData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { spaceId = "", page } = useParams();
+  const { spaceId, page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
   useEffect(() => {
     fetchAssessments();
-    fetchSpace();
   }, [page, spaceId]);
-
-  const fetchSpace = async () => {
-    try {
-      const { data: res } = await service.fetchSpace({ spaceId }, {});
-      if (res) {
-        setSpaceData(res);
-        setError(false);
-      } else {
-        setSpaceData({});
-        setError(true);
-      }
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err, { filterByStatus: [404] });
-      setLoading(false);
-      setError(true);
-      setErrorObject(err);
-    }
-  };
-
   const fetchAssessments = async () => {
     setLoading(true);
     setErrorObject(undefined);
@@ -338,7 +331,6 @@ const useFetchAssessments = () => {
 
   return {
     data: data.items || [],
-    spaceData: spaceData || {},
     page: data.page || 0,
     size: data.size || 0,
     total: data.total || 0,
