@@ -63,6 +63,20 @@ const AssessmentContainer = () => {
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
         <AssessmentTitle data={currentSpace} />
+        {!fetchSpaceInfo.data?.canCreateAssessment && (
+          <Typography
+            onClick={() => infoDialogProps.openDialog({})}
+            sx={{
+              ...theme.typography.semiBoldSmall,
+              textDecoration: "underline",
+              cursor: "pointer",
+              textAlign: "end",
+            }}
+            color="primary"
+          >
+            <Trans i18nKey={"learnWhyThisIsUnavailable"} />
+          </Typography>
+        )}
         <Box sx={{ ...styles.centerVH, mb: "40px" }}>
           <Title
             borderBottom={true}
@@ -74,59 +88,30 @@ const AssessmentContainer = () => {
                 <Box
                   sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
                 >
-                  {!fetchSpaceInfo.data?.canCreateAssessment && (
-                    <Typography
-                      onClick={() => infoDialogProps.openDialog({})}
-                      sx={{
-                        position: "absolute",
-                        top: "-25px",
-                        left: theme.direction == "ltr" ? "unset" : 0,
-                        right: theme.direction == "rtl" ? "unset" : 0,
-                        ...theme.typography.bodySmall,
-                        color: theme.palette.primary.main,
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Trans i18nKey={"learnWhyThisIsUnavailable"} />
-                    </Typography>
-                  )}
-
                   <ToolbarCreateItemBtn
                     icon={
-                      <Box
-                        sx={{
-                          width: "24px",
-                          height: "24px",
-                          marginRight: theme.direction === "rtl" ? 1 : 0,
-                        }}
-                      >
-                        <SettingIcon color={`${theme.palette.primary.main}`} />
-                      </Box>
+                      <SettingIcon
+                        width="20px"
+                        height="20px"
+                        color={`${theme.palette.primary.main}`}
+                      />
                     }
                     onClick={() => navigate(`/${spaceId}/setting`)}
                     shouldAnimate={data?.length === 0}
                     variantType="outlined"
-                    text="setting"
+                    text="settings"
                   />
                   <ToolbarCreateItemBtn
                     icon={
-                      <Box
-                        sx={{
-                          width: "24px",
-                          height: "24px",
-                          marginInlineStart: 1,
-                          marginInlineEnd: 0,
-                        }}
-                      >
-                        <NewAssessmentIcon
-                          color={
-                            !fetchSpaceInfo.data?.canCreateAssessment
-                              ? "#3D4D5C80"
-                              : "#fff"
-                          }
-                        />
-                      </Box>
+                      <NewAssessmentIcon
+                        width="20px"
+                        height="20px"
+                        color={
+                          !fetchSpaceInfo.data?.canCreateAssessment
+                            ? "#3D4D5C80"
+                            : "#fff"
+                        }
+                      />
                     }
                     onClick={() =>
                       dialogProps.openDialog({

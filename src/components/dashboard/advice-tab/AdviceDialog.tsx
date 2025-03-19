@@ -102,7 +102,7 @@ const AdviceDialog = ({
         <>
           <img
             src={Setting}
-            alt="setting"
+            alt="settings"
             width="24px"
             style={{
               marginRight: theme.direction === "ltr" ? "6px" : "unset",

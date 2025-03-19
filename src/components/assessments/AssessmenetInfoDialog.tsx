@@ -68,23 +68,27 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                 listStyleType: "disc",
                 fontSize: "1.2rem",
                 gap: "2px",
-                color: "#2B333B"
+                color: "#2B333B",
               }}
             >
               <Typography
                 component={index >= 2 ? "li" : "p"}
-                sx={{ ...theme.typography.bodyLarge, fontWeight: "semi-bold" }}
+                variant="semiBoldLarge"
               >
-                {text == "upgradeToPremiumSpace" && theme.direction == "rtl"  &&(
-                    <Typography sx={{ ...theme.typography.semiBoldLarge,fontWeight: "bold", display: "inline-block", marginInlineEnd: "2px" }}>
-                      (<Trans i18nKey={"comingSoon"} />!)
+                {text == "upgradeToPremiumSpace" &&
+                  theme.direction == "rtl" && (
+                    <Typography variant="semiBoldLarge">
+                      (<Trans i18nKey={"comingSoon"} />
+                      !)
                     </Typography>
-                )}
-                <Trans i18nKey={text} />{text == "youCanT" && ":" }
+                  )}
+                <Trans i18nKey={text} />
+                {text == "youCanT" && ":"}
               </Typography>
-              {text == "upgradeToPremiumSpace" && theme.direction == "ltr"  &&(
-                <Typography sx={{ ...theme.typography.bodyLarge, fontWeight: "semi-bold" }}>
-                  (<Trans i18nKey={"comingSoon"} />).
+              {text == "upgradeToPremiumSpace" && theme.direction == "ltr" && (
+                <Typography variant="semiBoldLarge">
+                  (<Trans i18nKey={"comingSoon"} />
+                  ).
                 </Typography>
               )}
             </Box>
