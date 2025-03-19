@@ -241,13 +241,8 @@ export const IssuesItem = ({
   });
 
   const approveAllAnswers = useQuery({
-<<<<<<< HEAD
     service: (args, config) =>
       service.approveAllAnswers(args ?? { assessmentId }, config),
-=======
-    service: (args = { assessmentId }, config) =>
-      service.approveAllAnswers(args, config),
->>>>>>> main
     runOnMount: false,
   });
 
