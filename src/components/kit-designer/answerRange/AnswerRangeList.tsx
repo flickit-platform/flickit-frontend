@@ -21,7 +21,6 @@ import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
-import debounce from "lodash/debounce";
 import Add from "@mui/icons-material/Add";
 import EmptyStateOptions from "@components/kit-designer/answerRange/options/emptyStateOptions";
 import Divider from "@mui/material/Divider";
