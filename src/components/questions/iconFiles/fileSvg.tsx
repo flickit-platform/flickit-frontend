@@ -70,10 +70,10 @@ export default function FileSvg({
         />
       </svg>
       {hover && (
-        <div
-          role="button"
+        <button
           onClick={() => downloadFile(item)}
           style={{
+            all: "unset",
             position: "absolute",
             top: "7px",
             left: theme.direction === "ltr" ? "7px" : "unset",
@@ -94,16 +94,16 @@ export default function FileSvg({
               fill="white"
             />
           </svg>
-        </div>
+        </button>
       )}
       {hover && (
-        <div
-          role="button"
+        <button
           onClick={() => {
             setEvidenceId(evidenceId);
             setExpandedDeleteAttachmentDialog({ expended: true, id: item.id });
           }}
           style={{
+            all: "unset",
             position: "absolute",
             width: "20px",
             height: "20px",
@@ -139,7 +139,7 @@ export default function FileSvg({
               />
             </svg>
           </div>
-        </div>
+        </button>
       )}
       <p
         style={{
