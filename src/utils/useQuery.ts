@@ -129,10 +129,9 @@ export const useQuery = <T extends any = any, A extends any = any>(
       setErrorObject(err);
       setLoading(false);
       setError(true);
-      if (!(err instanceof Error)) {
-        return Promise.reject(new Error(String(err)));
+      if (typeof err != "string") {
+        return Promise.reject(err);
       }
-      return Promise.reject(err);
     }
   };
 
