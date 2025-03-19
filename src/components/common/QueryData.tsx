@@ -1,7 +1,12 @@
 import { createContext, useContext } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import { ECustomErrorType, ErrorCodes, TQueryFunction, TQueryProps } from "@types";
+import {
+  ECustomErrorType,
+  ErrorCodes,
+  TQueryFunction,
+  TQueryProps,
+} from "@types";
 import { ICustomError } from "@utils/CustomError";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";
@@ -39,7 +44,7 @@ const QueryDataContext = createContext<TQueryProps>({
   loaded: false,
   query: async () => null,
   errorObject: undefined,
-  abortController: undefined as any,
+  abortController: undefined,
 });
 
 /**

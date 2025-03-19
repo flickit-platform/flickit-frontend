@@ -242,7 +242,7 @@ export const IssuesItem = ({
 
   const approveAllAnswers = useQuery({
     service: (args = { assessmentId }, config) =>
-        service.approveAllAnswers(args, config),
+      service.approveAllAnswers(args, config),
     runOnMount: false,
   });
 
@@ -280,7 +280,7 @@ export const IssuesItem = ({
     }
   };
 
-  const handleApproveAllAnswers = async (event: any) =>{
+  const handleApproveAllAnswers = async (event: any) => {
     try {
       event.stopPropagation();
       event.preventDefault();
@@ -289,7 +289,7 @@ export const IssuesItem = ({
     } catch (e) {
       toastError(e as ICustomError);
     }
-  }
+  };
 
   const handleApproveAllExpired = async () => {
     try {
@@ -392,7 +392,7 @@ export const IssuesItem = ({
       {name === "notGenerated" && (
         <Tooltip
           disableHoverListener={
-            issues?.unanswered < 1 ?? !disableGenerateButtons
+            issues?.unanswered < 1 || !disableGenerateButtons
           }
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
@@ -418,7 +418,7 @@ export const IssuesItem = ({
         <>
           <Tooltip
             disableHoverListener={
-              issues?.unanswered < 1 ?? !disableGenerateButtons
+              issues?.unanswered < 1 || !disableGenerateButtons
             }
             title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
           >
@@ -479,21 +479,21 @@ export const IssuesItem = ({
         </Button>
       )}
       {name === "unapprovedAnswers" && (
-          <Box style={{ marginInlineStart: "auto" }}>
-            <LoadingButton
-                onClick={(event)=>handleApproveAllAnswers(event)}
-                variant="outlined"
-                loading={approveAllAnswers.loading}
-                color={color}
-                sx={{
-                  padding: "4px 10px",
-                }}
-            >
-              <Typography sx={{ ...theme.typography.labelMedium }}>
-                <Trans i18nKey="approveAll" />
-              </Typography>
-            </LoadingButton>
-          </Box>
+        <Box style={{ marginInlineStart: "auto" }}>
+          <LoadingButton
+            onClick={(event) => handleApproveAllAnswers(event)}
+            variant="outlined"
+            loading={approveAllAnswers.loading}
+            color={color}
+            sx={{
+              padding: "4px 10px",
+            }}
+          >
+            <Typography sx={{ ...theme.typography.labelMedium }}>
+              <Trans i18nKey="approveAll" />
+            </Typography>
+          </LoadingButton>
+        </Box>
       )}
     </Box>
   );

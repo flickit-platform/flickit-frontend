@@ -30,7 +30,7 @@ export const createService = (
     req.headers["Accept-Language"] = currentLocale;
     document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
     if (!hasTenantInUrl) {
-      (req as any).headers["Authorization"] = `Bearer ${accessToken}`;
+      req.headers["Authorization"] = `Bearer ${accessToken}`;
     }
 
     localStorage.setItem("accessToken", JSON.stringify(accessToken));
@@ -38,14 +38,14 @@ export const createService = (
       try {
         await keycloakService._kc.updateToken(-1);
         const newAccessToken = keycloakService.getToken();
-        (req as any).headers["Authorization"] = `Bearer ${newAccessToken}`;
+        req.headers["Authorization"] = `Bearer ${newAccessToken}`;
         localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
       } catch (error) {
         console.error("Failed to update token:", error);
       }
     }
     if (!hasTenantInUrl && !req.headers?.["Authorization"] && accessToken) {
-      (req as any).headers["Authorization"] = `Bearer ${accessToken}`;
+      req.headers["Authorization"] = `Bearer ${accessToken}`;
     }
 
     return req;
@@ -2417,7 +2417,7 @@ const fetchNewAccessToken = async (refresh: string) => {
     { isRefreshTokenReq: true },
   );
 
-  const { access } = data as any;
+  const { access } = data;
 
   return access;
 };

@@ -93,8 +93,7 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
               direction: languageDetector(data.summary) ? "rtl" : "ltr",
             }}
           >
-            {`${data.summary?.substring(0, 55)} ${data?.summary.length > 55 ? "..." : ""}` ||
-              ""}
+            {`${data.summary?.substring(0, 55)} ${data?.summary.length > 55 ? "..." : ""}`}
           </Typography>
         </Tooltip>
       </Box>
