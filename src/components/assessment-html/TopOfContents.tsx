@@ -35,7 +35,7 @@ export const AssessmentTOC = ({
       [itemKey]: !prevState[itemKey],
     }));
   };
-  const { lang } = graphicalReport as IGraphicalReport;
+  const { lang } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
 
   const subjects: any = useMemo(() => {

@@ -717,7 +717,7 @@ const OnHoverStatus = (props: any) => {
     service: (
       args = {
         assessmentKitId: assessmentKitId,
-        data: { published: data ? false : true },
+        data: { published: !Boolean(data) },
       },
       config,
     ) => service.updateAssessmentKitStats(args, config),
@@ -823,7 +823,7 @@ const OnHoverVisibilityStatus = (props: any) => {
     service: (
       args = {
         assessmentKitId: assessmentKitId,
-        data: { isPrivate: data ? false : true },
+        data: { isPrivate: !Boolean(data) },
       },
       config,
     ) => service.updateAssessmentKitStats(args, config),

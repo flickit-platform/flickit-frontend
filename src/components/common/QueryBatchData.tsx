@@ -98,13 +98,12 @@ export const defaultRenderError = (
     return errorComponent;
   }
   if (Array.isArray(err)) {
-    for (let index = 0; index < err.length; index++) {
-      if (err[index]?.response?.data?.code == ErrorCodes.CalculateNotValid) {
+    for (const item of err) {
+      if (item?.response?.data?.code == ErrorCodes.CalculateNotValid) {
         return <ErrorRecalculating />;
       }
       if (
-        err[index]?.response?.data?.code ==
-        ErrorCodes.ConfidenceCalculationNotValid
+        item?.response?.data?.code == ErrorCodes.ConfidenceCalculationNotValid
       ) {
         return <ErrorRecalculating />;
       }

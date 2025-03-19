@@ -134,7 +134,7 @@ const renderInfo = (
     renderMap[key](title, item, { bg, action })
   ) : (
     <Component title={title} bg={bg} action={action}>
-      {item ? item : "-"}
+      {item ?? "-"}
     </Component>
   );
 };
