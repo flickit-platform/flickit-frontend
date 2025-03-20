@@ -1,6 +1,7 @@
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import {
   BarChart,

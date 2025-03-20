@@ -2,7 +2,9 @@ import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { t } from "i18next";
-import { OutlinedInput, InputLabel, FormControl } from "@mui/material";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import { theme } from "@/config/theme";
 
 const sortOptions = [
