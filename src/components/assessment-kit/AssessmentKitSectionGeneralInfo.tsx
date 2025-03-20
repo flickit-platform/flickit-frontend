@@ -56,13 +56,13 @@ const AssessmentKitSectionGeneralInfo = (
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
   const fetchAssessmentKitInfoQuery = useQuery({
-    service: (args = { assessmentKitId }, config) =>
-      service.fetchAssessmentKitInfo(args, config),
+    service: (args, config) =>
+      service.fetchAssessmentKitInfo(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
   const fetchAssessmentKitStatsQuery = useQuery({
-    service: (args = { assessmentKitId }, config) =>
-      service.fetchAssessmentKitStats(args, config),
+    service: (args, config) =>
+      service.fetchAssessmentKitStats(args ?? { id: assessmentKitId }, config),
     runOnMount: true,
   });
 
@@ -534,13 +534,14 @@ const OnHoverInput = (props: any) => {
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const updateAssessmentKitQuery = useQuery({
-    service: (
-      args = {
-        assessmentKitId: assessmentKitId,
-        data: { [type]: inputData },
-      },
-      config,
-    ) => service.updateAssessmentKitStats(args, config),
+    service: (args, config) =>
+      service.updateAssessmentKitStats(
+        args ?? {
+          assessmentKitId: assessmentKitId,
+          data: { [type]: inputData },
+        },
+        config,
+      ),
     runOnMount: false,
   });
   const updateAssessmentKit = async () => {
@@ -711,13 +712,14 @@ const OnHoverStatus = (props: any) => {
     }
   };
   const updateAssessmentKitQuery = useQuery({
-    service: (
-      args = {
-        assessmentKitId: assessmentKitId,
-        data: { published: !data },
-      },
-      config,
-    ) => service.updateAssessmentKitStats(args, config),
+    service: (args, config) =>
+      service.updateAssessmentKitStats(
+        args ?? {
+          assessmentKitId: assessmentKitId,
+          data: { published: !data },
+        },
+        config,
+      ),
     runOnMount: false,
     toastError: true,
   });
@@ -817,13 +819,14 @@ const OnHoverVisibilityStatus = (props: any) => {
     }
   };
   const updateAssessmentKitQuery = useQuery({
-    service: (
-      args = {
-        assessmentKitId: assessmentKitId,
-        data: { isPrivate: !data },
-      },
-      config,
-    ) => service.updateAssessmentKitStats(args, config),
+    service: (args, config) =>
+      service.updateAssessmentKitStats(
+        args ?? {
+          assessmentKitId: assessmentKitId,
+          data: { isPrivate: !data },
+        },
+        config,
+      ),
     runOnMount: false,
     toastError: true,
   });

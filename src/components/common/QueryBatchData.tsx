@@ -88,10 +88,7 @@ const QueryBatchData = <T extends any = any>(
 };
 
 export const defaultRenderError = (
-  err:
-    | ICustomError
-    | (ICustomError | any | ICustomError[] | undefined)[]
-    | undefined,
+  err: ICustomError | any[] | undefined,
   errorComponent: JSX.Element = <ErrorDataLoading />,
 ): any => {
   if (!err) {

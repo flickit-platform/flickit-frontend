@@ -71,43 +71,46 @@ const SubjectAttributeCard = (props: any) => {
   );
 
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: expandedAttribute,
-        levelId: selectedMaturityLevel,
-        sort: sortBy,
-        order: sortOrder,
-        page,
-        size: rowsPerPage,
-      },
-      config,
-    ) => service.fetchAffectedQuestionsOnAttribute(args, config),
+    service: (args, config) =>
+      service.fetchAffectedQuestionsOnAttribute(
+        args ?? {
+          assessmentId,
+          attributeId: expandedAttribute,
+          levelId: selectedMaturityLevel,
+          sort: sortBy,
+          order: sortOrder,
+          page,
+          size: rowsPerPage,
+        },
+        config,
+      ),
     runOnMount: false,
   });
 
   const fetchScoreState = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: expandedAttribute,
-        levelId: selectedMaturityLevel,
-      },
-      config,
-    ) => service.fetchScoreState(args, config),
+    service: (args, config) =>
+      service.fetchScoreState(
+        args ?? {
+          assessmentId,
+          attributeId: expandedAttribute,
+          levelId: selectedMaturityLevel,
+        },
+        config,
+      ),
     runOnMount: false,
   });
 
   const fetchMeasures = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        attributeId: expandedAttribute,
-        sort: sortBy,
-        order: sortOrder,
-      },
-      config,
-    ) => service.fetchMeasures(args, config),
+    service: (args, config) =>
+      service.fetchMeasures(
+        args ?? {
+          assessmentId,
+          attributeId: expandedAttribute,
+          sort: sortBy,
+          order: sortOrder,
+        },
+        config,
+      ),
     runOnMount: false,
   });
 

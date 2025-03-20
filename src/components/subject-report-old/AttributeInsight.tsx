@@ -42,20 +42,26 @@ const AttributeInsight = ({
 
   const fetchSubjectInsight = useQuery<any>({
     service: (args, config) =>
-      service.loadAttributeInsight({ assessmentId, attributeId }, config),
+      service.loadAttributeInsight(
+        args ?? { assessmentId, attributeId },
+        config,
+      ),
     toastError: false,
     runOnMount: false,
   });
 
   const ApproveAISubject = useQuery({
-    service: (args = { assessmentId, attributeId }, config) =>
-      service.ApprovedAIAttribute(args, config),
+    service: (args, config) =>
+      service.ApprovedAIAttribute(
+        args ?? { assessmentId, attributeId },
+        config,
+      ),
     runOnMount: false,
   });
 
   const InitInsight = useQuery({
-    service: (args = { assessmentId, attributeId }, config) =>
-      service.generateAIInsight(args, config),
+    service: (args, config) =>
+      service.generateAIInsight(args ?? { assessmentId, attributeId }, config),
     runOnMount: false,
   });
 

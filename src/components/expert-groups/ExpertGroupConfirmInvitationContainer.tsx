@@ -17,18 +17,21 @@ const ExpertGroupConfirmInvitationContainer = () => {
   const { expertGroupId, token } = useParams();
   const navigate = useNavigate();
   const expertGroupQueryData = useQuery({
-    service: (args = { id: expertGroupId }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
   });
   const confirmInvitationQueryData = useQuery({
-    service: (args = { token, expert_group_id: expertGroupId }, config) =>
-      service.confirmExpertGroupInvitation(args, config),
+    service: (args, config) =>
+      service.confirmExpertGroupInvitation(
+        args ?? { token, expert_group_id: expertGroupId },
+        config,
+      ),
     runOnMount: false,
   });
 
   const declineInvitationQueryData = useQuery({
-    service: (args = { expertGroupId }, config) =>
-        service.declineInvitationQueryData(args, config),
+    service: (args, config) =>
+      service.declineInvitationQueryData(args ?? { expertGroupId }, config),
     runOnMount: false,
   });
 
@@ -53,9 +56,9 @@ const ExpertGroupConfirmInvitationContainer = () => {
 
   const decline = async () => {
     try {
-      await declineInvitationQueryData.query()
+      await declineInvitationQueryData.query();
       navigate("/spaces/1", { replace: true });
-    }catch (e){
+    } catch (e) {
       const err = e as ICustomError;
       toastError(err);
     }

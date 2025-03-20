@@ -158,8 +158,8 @@ const Actions = (props: any) => {
   const { service } = useServiceContext();
   const { id } = expertGroup;
   const { query: fetchExpertGroup, loading } = useQuery({
-    service: (args = { id }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id }, config),
     runOnMount: false,
   });
   const deleteExpertGroupQuery = useQuery({

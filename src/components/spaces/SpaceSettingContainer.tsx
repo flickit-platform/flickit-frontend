@@ -25,15 +25,14 @@ const SpaceSettingContainer = () => {
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
 
-    const { loading, data, query } = useQuery<ISpaceModel>({
+  const { loading, data, query } = useQuery<ISpaceModel>({
     service: (args, config) => service.fetchSpace({ spaceId }, config),
   });
 
-   const checkCreateSpace = useQuery({
-        service: (args, config) => service.checkCreateSpace({}, config),
-       runOnMount: true
-    });
-
+  const checkCreateSpace = useQuery({
+    service: (args, config) => service.checkCreateSpace({}, config),
+    runOnMount: true,
+  });
 
   const { title, editable } = data || {};
 
@@ -52,7 +51,16 @@ const SpaceSettingContainer = () => {
             ]}
           />
         }
-        toolbar={editable ? <EditSpaceButton allowCreateBasic={checkCreateSpace?.data?.allowCreateBasic} fetchSpace={query} /> : <div />}
+        toolbar={
+          editable ? (
+            <EditSpaceButton
+              allowCreateBasic={checkCreateSpace?.data?.allowCreateBasic}
+              fetchSpace={query}
+            />
+          ) : (
+            <div />
+          )
+        }
         backLink={"/"}
       >
         <Box sx={{ ...styles.centerV, opacity: 0.9, unicodeBidi: "plaintext" }}>
@@ -81,7 +89,7 @@ const EditSpaceButton = (props: any) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
   const queryData = useQuery({
-    service: (args = { spaceId }, config) => service.fetchSpace(args, config),
+    service: (args, config) => service.fetchSpace(args ?? { spaceId }, config),
     runOnMount: false,
   });
   const dialogProps = useDialog();
