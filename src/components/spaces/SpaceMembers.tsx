@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import {useEffect, useMemo, useRef, useState} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Title from "@common/Title";
 import QueryData from "@common/QueryData";
@@ -93,14 +93,16 @@ export const SpaceMembers = (props: any) => {
     setPage(page);
   };
 
-  const totalPages = useMemo(()=>
+  const totalPages = useMemo(
+    () =>
       !spaceMembersQueryData.data || spaceMembersQueryData?.data?.size === 0
-          ? 1
-          : Math.ceil(
-              spaceMembersQueryData?.data?.total / spaceMembersQueryData.data?.size,
-          )
-      ,[spaceMembersQueryData?.data?.size])
-
+        ? 1
+        : Math.ceil(
+            spaceMembersQueryData?.data?.total /
+              spaceMembersQueryData.data?.size,
+          ),
+    [spaceMembersQueryData?.data?.size],
+  );
 
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
@@ -496,8 +498,11 @@ const Actions = (props: any) => {
     toastError: false,
   });
   const inviteMemberQueryData = useQuery({
-    service: (args = { id: spaceId, data: { email } }, config) =>
-      service.inviteSpaceMember(args, config),
+    service: (args, config) =>
+      service.inviteSpaceMember(
+        args ?? { id: spaceId, data: { email } },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -578,8 +583,11 @@ const InviteSpaceMemberDialog = (
   const { spaceId } = useParams();
   const { service } = useServiceContext();
   const { query: inviteMemberQuery, loading } = useQuery({
-    service: (args = { id: spaceId, data: rest.context?.data || {} }, config) =>
-      service.inviteSpaceMember(args, config),
+    service: (args, config) =>
+      service.inviteSpaceMember(
+        args ?? { id: spaceId, data: rest.context?.data || {} },
+        config,
+      ),
     runOnMount: false,
   });
 

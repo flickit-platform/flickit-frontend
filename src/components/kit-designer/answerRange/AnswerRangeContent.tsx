@@ -19,8 +19,8 @@ const AnaweRangeContent = () => {
   const [data, setData] = useState<any>([]);
   const [changeData, setChangeData] = useState(false);
   const fetchAnswerRangeKit = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.fetchAnswerRangeKit(args, config),
+    service: (args, config) =>
+      service.fetchAnswerRangeKit(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const postKitAnswerRange = useQuery({

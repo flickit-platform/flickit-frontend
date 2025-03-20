@@ -12,7 +12,7 @@ export const downloadFile = async ({ link }: { link: string }) => {
     const blob = await response.blob();
 
     const reg = /\/([^/?]+)\?/;
-    const match = link.match(reg);
+    const match = reg.exec(link);
     const fileName = match?.[1] ?? "download";
 
     const a = document.createElement("a");

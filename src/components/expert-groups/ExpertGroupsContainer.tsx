@@ -35,8 +35,11 @@ const ExpertGroupsContainer = () => {
   };
 
   const queryData = useQuery({
-    service: (args = { id, size: pageSize, page: pageNumber }, config) =>
-      service.fetchExpertGroups(args, config),
+    service: (args, config) =>
+      service.fetchExpertGroups(
+        args ?? { id, size: pageSize, page: pageNumber },
+        config,
+      ),
   });
 
   useEffect(() => {

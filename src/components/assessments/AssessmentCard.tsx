@@ -46,7 +46,6 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
 
-
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
   const [calculatePercentage, setCalculatePercentage] = useState<any>();
@@ -68,8 +67,8 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const location = useLocation();
   const { service } = useServiceContext();
   const calculateMaturityLevelQuery = useQuery({
-    service: (args = { assessmentId: id }, config) =>
-      service.calculateMaturityLevel(args, config),
+    service: (args, config) =>
+      service.calculateMaturityLevel(args ?? { assessmentId: id }, config),
     runOnMount: false,
   });
 

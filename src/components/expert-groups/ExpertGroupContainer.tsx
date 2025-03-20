@@ -78,17 +78,23 @@ const ExpertGroupContainer = () => {
   } = useConfigContext();
   const pageCount = size === 0 ? 1 : Math.ceil(total / size);
   const queryData = useQuery({
-    service: (args = { id: expertGroupId }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
   });
 
   const expertGroupMembersQueryData = useQuery({
-    service: (args = { id: expertGroupId, status: "ACTIVE" }, config) =>
-      service.fetchExpertGroupMembers(args, config),
+    service: (args, config) =>
+      service.fetchExpertGroupMembers(
+        args ?? { id: expertGroupId, status: "ACTIVE" },
+        config,
+      ),
   });
   const expertGroupMembersInviteeQueryData = useQuery({
-    service: (args = { id: expertGroupId, status: "PENDING" }, config) =>
-      service.fetchExpertGroupMembers(args, config),
+    service: (args, config) =>
+      service.fetchExpertGroupMembers(
+        args ?? { id: expertGroupId, status: "PENDING" },
+        config,
+      ),
   });
   const removeExpertGroupMembers = useQuery({
     service: (args, config) => service.removeExpertGroupMembers(args, config),
@@ -542,8 +548,8 @@ const AvatarComponent = (props: any) => {
   };
 
   const handleDelete = useQuery({
-    service: (args = { expertGroupId }, config) =>
-      service.deleteExpertGroupImage(args, config),
+    service: (args, config) =>
+      service.deleteExpertGroupImage(args ?? { expertGroupId }, config),
     runOnMount: false,
   });
 
@@ -677,8 +683,8 @@ const EditExpertGroupButton = (props: any) => {
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const queryData = useQuery({
-    service: (args = { id: expertGroupId }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
     runOnMount: false,
   });
   const dialogProps = useDialog();

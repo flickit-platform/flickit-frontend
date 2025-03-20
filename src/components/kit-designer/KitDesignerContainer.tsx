@@ -53,8 +53,8 @@ const KitDesignerContainer = () => {
   }, []);
 
   const kitVersionQuery = useQuery<IKitVersion>({
-    service: (args = { kitVersionId }, config) =>
-      service.loadKitVersion(args, config),
+    service: (args, config) =>
+      service.loadKitVersion(args ?? { kitVersionId }, config),
     runOnMount: true,
   });
 

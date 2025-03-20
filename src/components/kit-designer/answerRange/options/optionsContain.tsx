@@ -189,16 +189,14 @@ const OptionContain = (props: any) => {
               </IconButton>
             </>
           ) : (
-            <>
-              <IconButton
-                size="small"
-                data-testid="item-edit-option-icon"
-                onClick={() => handleEditClick(answerOption)}
-                sx={{ ml: 1 }}
-              >
-                <ModeEditOutlineOutlinedIcon fontSize="small" />
-              </IconButton>
-            </>
+            <IconButton
+              size="small"
+              data-testid="item-edit-option-icon"
+              onClick={() => handleEditClick(answerOption)}
+              sx={{ ml: 1 }}
+            >
+              <ModeEditOutlineOutlinedIcon fontSize="small" />
+            </IconButton>
           )}
         </Box>
       </Box>

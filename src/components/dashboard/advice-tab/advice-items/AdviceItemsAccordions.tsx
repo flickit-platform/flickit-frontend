@@ -199,8 +199,11 @@ const AdviceItemAccordion: React.FC<{
   });
 
   const updateAdviceItem = useQuery({
-    service: (args = { adviceItemId: item.id, data: newAdvice }, config) =>
-      service.updateAdviceItem(args, config),
+    service: (args, config) =>
+      service.updateAdviceItem(
+        args ?? { adviceItemId: item.id, data: newAdvice },
+        config,
+      ),
     runOnMount: false,
   });
 

@@ -113,10 +113,11 @@ const Uploader = (props: IUploadProps) => {
 
   const { service } = useServiceContext();
   const defaultValueQuery = useQuery({
-    service: (
-      args = { url: defaultValue?.replace("https://flickit.org", "") },
-      config,
-    ) => service.fetchImage(args, config),
+    service: (args, config) =>
+      service.fetchImage(
+        args ?? { url: defaultValue?.replace("https://flickit.org", "") },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -241,7 +242,7 @@ const Uploader = (props: IUploadProps) => {
             }) as string,
           };
         } else if (rejectedFiles.length == 1 && error[0]?.message) {
-          toastError((error as any)?.pop()?.message as string);
+          toastError(error?.pop()?.message as string);
         } else {
           toastError(t("oneFileOnly") as string);
         }

@@ -8,14 +8,14 @@ const useCalculate = () => {
   const { assessmentId } = useParams();
 
   const calculateMaturityLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateMaturityLevel(args, config),
+    service: (args, config) =>
+      service.calculateMaturityLevel(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const calculateConfidenceLevelQuery = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.calculateConfidenceLevel(args, config),
+    service: (args, config) =>
+      service.calculateConfidenceLevel(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 

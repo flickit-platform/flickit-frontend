@@ -19,8 +19,8 @@ const DashboardTab = () => {
   const { service } = useServiceContext();
 
   const fetchDashboard = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.fetchDashboard(args, config),
+    service: (args, config) =>
+      service.fetchDashboard(args ?? { assessmentId }, config),
     runOnMount: true,
   });
 

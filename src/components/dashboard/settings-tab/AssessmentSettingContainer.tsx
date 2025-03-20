@@ -55,8 +55,8 @@ const AssessmentSettingContainer = () => {
   });
 
   const AssessmentInfo = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.AssessmentsLoad(args, config),
+    service: (args, config) =>
+      service.AssessmentsLoad(args ?? { assessmentId }, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });

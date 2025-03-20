@@ -1152,17 +1152,18 @@ const OnHoverInputTitleSetting = (props: any) => {
   const { assessmentId } = useParams();
   const { service } = useServiceContext();
   const updateAssessmentQuery = useQuery({
-    service: (
-      args = {
-        id: assessmentId,
-        data: {
-          title: inputData,
-          shortTitle: inputDataShortTitle === "" ? null : inputDataShortTitle,
-          colorId: color?.id || 6,
+    service: (args, config) =>
+      service.updateAssessment(
+        args ?? {
+          id: assessmentId,
+          data: {
+            title: inputData,
+            shortTitle: inputDataShortTitle === "" ? null : inputDataShortTitle,
+            colorId: color?.id || 6,
+          },
         },
-      },
-      config,
-    ) => service.updateAssessment(args, config),
+        config,
+      ),
     runOnMount: false,
   });
   const updateAssessmentTitle = async () => {

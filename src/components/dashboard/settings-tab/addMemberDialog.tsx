@@ -83,14 +83,15 @@ const AddMemberDialog = (props: {
   });
 
   const addRoleMemberQueryData = useQuery({
-    service: (
-      args = {
-        assessmentId,
-        userId: memberSelectedId,
-        roleId: roleSelected.id,
-      },
-      config,
-    ) => service.addRoleMember(args, config),
+    service: (args, config) =>
+      service.addRoleMember(
+        args ?? {
+          assessmentId,
+          userId: memberSelectedId,
+          roleId: roleSelected.id,
+        },
+        config,
+      ),
     runOnMount: false,
   });
 

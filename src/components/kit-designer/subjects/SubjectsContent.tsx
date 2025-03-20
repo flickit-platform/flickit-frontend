@@ -27,8 +27,8 @@ const SubjectsContent = () => {
   }>({ status: false, id: "" });
 
   const fetchSubjectKit = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.fetchSubjectKit(args, config),
+    service: (args, config) =>
+      service.fetchSubjectKit(args ?? { kitVersionId }, config),
   });
   const postSubjectKit = useQuery({
     service: (args, config) => service.postSubjectKit(args, config),

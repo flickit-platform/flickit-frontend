@@ -44,23 +44,29 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   fetchQuery,
 }) => {
   const fetchAttributeKit = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.fetchAttributeKit(args, config),
+    service: (args, config) =>
+      service.fetchAttributeKit(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const fetchMaturityLevels = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.getMaturityLevels(args, config),
+    service: (args, config) =>
+      service.getMaturityLevels(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const fetchImpacts = useQuery({
-    service: (args = { kitVersionId, questionId: question.id }, config) =>
-      service.loadQuestionImpactsList(args, config),
+    service: (args, config) =>
+      service.loadQuestionImpactsList(
+        args ?? { kitVersionId, questionId: question.id },
+        config,
+      ),
     runOnMount: false,
   });
   const fetchOptions = useQuery({
-    service: (args = { kitVersionId, questionId: question.id }, config) =>
-      service.loadAnswerOptionsList(args, config),
+    service: (args, config) =>
+      service.loadAnswerOptionsList(
+        args ?? { kitVersionId, questionId: question.id },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -248,14 +254,14 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   };
 
   const fetchAnswerRanges = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.loadAnswerRangesList(args, config),
+    service: (args, config) =>
+      service.loadAnswerRangesList(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
 
   const postAnswerOptionsKit = useQuery({
-    service: (args = { kitVersionId, data: {} }, config) =>
-      service.postAnswerOptionsKit(args, config),
+    service: (args, config) =>
+      service.postAnswerOptionsKit(args ?? { kitVersionId, data: {} }, config),
     runOnMount: false,
   });
 

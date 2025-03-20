@@ -28,12 +28,12 @@ const MaturityLevelsContent = () => {
     id: string;
   }>({ status: false, id: "" });
   const maturityLevels = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.getMaturityLevels(args, config),
+    service: (args, config) =>
+      service.getMaturityLevels(args ?? { kitVersionId }, config),
   });
   const maturityLevelsCompetences = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.getMaturityLevelsCompetences(args, config),
+    service: (args, config) =>
+      service.getMaturityLevelsCompetences(args ?? { kitVersionId }, config),
   });
 
   const [showNewMaturityLevelForm, setShowNewMaturityLevelForm] =

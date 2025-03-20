@@ -73,8 +73,8 @@ const AdviceItems = () => {
   };
 
   const postAdviceItem = useQuery({
-    service: (args = { assessmentId, data: newAdvice }, config) =>
-      service.postAdviceItem(args, config),
+    service: (args, config) =>
+      service.postAdviceItem(args ?? { assessmentId, data: newAdvice }, config),
     runOnMount: false,
   });
 
