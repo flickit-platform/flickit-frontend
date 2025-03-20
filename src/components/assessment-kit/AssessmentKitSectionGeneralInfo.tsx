@@ -819,24 +819,14 @@ const OnHoverVisibilityStatus = (props: any) => {
     }
   };
   const updateAssessmentKitQuery = useQuery({
-<<<<<<< HEAD
     service: (args, config) =>
       service.updateAssessmentKitStats(
         args ?? {
           assessmentKitId: assessmentKitId,
-          data: { isPrivate: data ? false : true },
+          data: { isPrivate: !data },
         },
         config,
       ),
-=======
-    service: (
-      args = {
-        assessmentKitId: assessmentKitId,
-        data: { isPrivate: !data },
-      },
-      config,
-    ) => service.updateAssessmentKitStats(args, config),
->>>>>>> main
     runOnMount: false,
     toastError: true,
   });
