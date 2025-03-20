@@ -2,7 +2,7 @@ import LoadingSkeletonOfAssessmentRoles from "@/components/common/loadings/Loadi
 import StepperSection from "./StepperSection";
 import QueryData from "@/components/common/QueryData";
 import PermissionControl from "@/components/common/PermissionControl";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import TodoBox from "./todoBox";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";

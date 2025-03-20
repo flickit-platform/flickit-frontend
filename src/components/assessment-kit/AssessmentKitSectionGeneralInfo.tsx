@@ -62,7 +62,7 @@ const AssessmentKitSectionGeneralInfo = (
   });
   const fetchAssessmentKitStatsQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitStats(args ?? { id: assessmentKitId }, config),
+      service.fetchAssessmentKitStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
 
