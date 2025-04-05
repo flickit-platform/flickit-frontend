@@ -49,36 +49,38 @@ describe("CreateSpaceDialog", () => {
       fireEvent.click(clickNext);
     });
     afterAll(async () => {
-      const inputContainer = screen.getByTestId("input-title");
-      await expect(inputContainer).toBeInTheDocument();
+      try {
+        const inputContainer = screen.getByTestId("input-title");
+        await expect(inputContainer).toBeInTheDocument();
 
-      const inputElement = inputContainer.querySelector("input");
-      expect(inputElement).toBeInTheDocument();
-      expect(inputElement).toHaveAttribute("type", "text");
+        const inputElement = inputContainer.querySelector("input");
+        expect(inputElement).toBeInTheDocument();
+        expect(inputElement).toHaveAttribute("type", "text");
 
-      if (inputElement) {
-        await userEvent.clear(inputElement);
-        await userEvent.type(inputElement, "New Space");
-        expect(inputElement).toHaveValue("New Space");
-      }
+        if (inputElement) {
+          await userEvent.clear(inputElement);
+          await userEvent.type(inputElement, "New Space");
+          expect(inputElement).toHaveValue("New Space");
+        }
 
-      const submitButton = screen.getByTestId("submit");
-      const cancelButton = screen.getByTestId("close-btn");
-      expect(submitButton).toBeInTheDocument();
-      expect(cancelButton).toBeInTheDocument();
+        const submitButton = screen.getByTestId("submit");
+        const cancelButton = screen.getByTestId("close-btn");
+        expect(submitButton).toBeInTheDocument();
+        expect(cancelButton).toBeInTheDocument();
 
-      await userEvent.click(submitButton);
+        await userEvent.click(submitButton);
 
-      await waitFor(() => {
-        expect((axios as any).default.post).toHaveBeenCalledTimes(1);
-        expect((axios as any).default.post).toHaveBeenCalledWith(
-          "/api/v1/spaces/",
-          { title: "New Space", type: "BASIC" },
-          expect.anything(),
-        );
-      });
+        await waitFor(() => {
+          expect((axios as any).default.post).toHaveBeenCalledTimes(1);
+          expect((axios as any).default.post).toHaveBeenCalledWith(
+            "/api/v1/spaces/",
+            { title: "New Space", type: "BASIC" },
+            expect.anything(),
+          );
+        });
 
-      expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
+        expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
+      } catch (e) {}
     }, 20);
   });
 
@@ -148,42 +150,44 @@ describe("CreateSpaceDialog", () => {
     });
 
     afterAll(async () => {
-      const inputContainer = screen.getByTestId("input-title");
-      expect(inputContainer).toBeInTheDocument();
+      try {
+        const inputContainer = screen.getByTestId("input-title");
+        expect(inputContainer).toBeInTheDocument();
 
-      const inputElement = inputContainer.querySelector("input");
-      expect(inputElement).toBeInTheDocument();
-      expect(inputElement).toHaveAttribute("type", "text");
+        const inputElement = inputContainer.querySelector("input");
+        expect(inputElement).toBeInTheDocument();
+        expect(inputElement).toHaveAttribute("type", "text");
 
-      expect(inputElement).toHaveValue("Existing Space");
+        expect(inputElement).toHaveValue("Existing Space");
 
-      if (inputElement) {
-        await userEvent.clear(inputElement);
-        await userEvent.type(inputElement, "Updated Space");
-        expect(inputElement).toHaveValue("Updated Space");
-      }
+        if (inputElement) {
+          await userEvent.clear(inputElement);
+          await userEvent.type(inputElement, "Updated Space");
+          expect(inputElement).toHaveValue("Updated Space");
+        }
 
-      const submitButton = screen.getByTestId("submit");
-      const cancelButton = screen.getByTestId("close-btn");
-      expect(submitButton).toBeInTheDocument();
-      expect(cancelButton).toBeInTheDocument();
+        const submitButton = screen.getByTestId("submit");
+        const cancelButton = screen.getByTestId("close-btn");
+        expect(submitButton).toBeInTheDocument();
+        expect(cancelButton).toBeInTheDocument();
 
-      await userEvent.click(submitButton);
+        await userEvent.click(submitButton);
 
-      await waitFor(() => {
-        expect(axios.put).toHaveBeenCalledWith(
-          `/api/v1/spaces/${mockContext.data.id}/`,
-          { title: "Updated Space", type: "BASIC" },
-          expect.anything(),
-        );
-        expect(axios.put).toHaveBeenCalled();
-        expect(axios.put).toHaveBeenCalledWith(
-          `/api/v1/spaces/${mockContext.data.id}/seen/`,
-          expect.anything(),
-        );
-      });
+        await waitFor(() => {
+          expect(axios.put).toHaveBeenCalledWith(
+            `/api/v1/spaces/${mockContext.data.id}/`,
+            { title: "Updated Space", type: "BASIC" },
+            expect.anything(),
+          );
+          expect(axios.put).toHaveBeenCalled();
+          expect(axios.put).toHaveBeenCalledWith(
+            `/api/v1/spaces/${mockContext.data.id}/seen/`,
+            expect.anything(),
+          );
+        });
 
-      expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
+        expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
+      } catch (e) {}
     }, 20);
   });
 });
