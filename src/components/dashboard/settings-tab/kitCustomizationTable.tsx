@@ -97,7 +97,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
       const targetArray =
         updatedData.customData?.[
           type === "subject" ? "subjects" : "attributes"
-        ] || [];
+        ] ?? [];
       const targetIndex = targetArray.findIndex((item: any) => item.id === id);
 
       if (targetIndex >= 0) {
