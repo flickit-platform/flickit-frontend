@@ -135,7 +135,7 @@ const StepBox = (props: IStepBox) => {
               >{`  ${calcOfIssues()}  `}</Typography>
               <Typography sx={{ ...theme.typography.labelSmall }}>
                 {t(
-                  (calcOfIssues() || 0) > 1 ? "issues" : "issue",
+                  (calcOfIssues() ?? 0) > 1 ? "issues" : "issue",
                 ).toUpperCase()}
               </Typography>
             </Box>

@@ -23,9 +23,13 @@ interface RadarChartProps {
   lng?: string;
 }
 
-const CustomRadarChart: React.FC<
-  RadarChartProps
-> = ({ loading, data, maturityLevelsCount, chartHeight, lng }) => {
+const CustomRadarChart: React.FC<RadarChartProps> = ({
+  loading,
+  data,
+  maturityLevelsCount,
+  chartHeight,
+  lng,
+}) => {
   return loading ? (
     <Skeleton
       height={"620px"}
@@ -78,7 +82,7 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
   const maxLineLength = 24;
 
   return (
-    <ResponsiveContainer width="100%" height={chartHeight ? chartHeight : 400}>
+    <ResponsiveContainer width="100%" height={chartHeight ?? 400}>
       <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
         <PolarGrid />
         <PolarAngleAxis
@@ -94,13 +98,17 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
                     y={
                       y +
                       (y - cy) /
-                        ((theme.direction === "rtl" && !lng) || lng === "fa" ? 7 : 15) +
+                        ((theme.direction === "rtl" && !lng) || lng === "fa"
+                          ? 7
+                          : 15) +
                       index * 12
                     }
                     x={
                       x +
                       (x - cx) /
-                        ((theme.direction === "rtl" && !lng) || lng === "fa" ? 7 : 15)
+                        ((theme.direction === "rtl" && !lng) || lng === "fa"
+                          ? 7
+                          : 15)
                     }
                     style={{
                       fontFamily: languageDetector(line ?? "")

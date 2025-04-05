@@ -14,7 +14,6 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans, useTranslation } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
-import useDialog from "@/utils/useDialog";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
 
 interface EditableRichEditorProps {
@@ -229,7 +228,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               dangerouslySetInnerHTML={{
                 __html:
                   tempData ||
-                  (editable ? placeholder || t("writeHere") : t("unavailable")),
+                  (editable
+                    ? (placeholder ?? t("writeHere"))
+                    : t("unavailable")),
               }}
               ref={paragraphRef}
             />
@@ -269,11 +270,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
       <CEDialog
         open={showUnsavedDialog}
         onClose={cancelLeaveEditor}
-        title={
-          <>
-            <Trans i18nKey="warning" />
-          </>
-        }
+        title={<Trans i18nKey="warning" />}
         maxWidth="sm"
       >
         <Typography sx={{ color: "#0A2342" }}>

@@ -152,9 +152,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
           (attr) => Number(destinationSubjectId) === attr.subject.id,
         ).length;
         movedAttribute.index = destAttrLength + 1;
-        updatedAttributes.filter(
-          (attr) => String(attr.id) !== movedAttributeId,
-        );
         handleEdit(movedAttribute);
       }
       setAttributes(reorderedAttributes);

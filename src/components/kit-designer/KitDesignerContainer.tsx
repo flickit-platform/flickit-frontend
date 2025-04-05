@@ -30,8 +30,8 @@ const KitDesignerContainer = () => {
 
   useEffect(() => {
     let currentHash = window.location.hash.replace("#", "");
-    const regex = /^new/;
-    if (!currentHash || regex.test(currentHash)) {
+
+    if (!currentHash || currentHash.startsWith("new")) {
       window.location.hash = "Maturity-Levels";
       setSelectedTab(0);
     }
@@ -44,6 +44,7 @@ const KitDesignerContainer = () => {
       { title: "Questionnaires", index: 4 },
       { title: "Release", index: 5 },
     ];
+
     tabEl.forEach((item) => {
       if (item.title === currentHash) {
         setSelectedTab(item.index);
@@ -52,8 +53,8 @@ const KitDesignerContainer = () => {
   }, []);
 
   const kitVersionQuery = useQuery<IKitVersion>({
-    service: (args = { kitVersionId }, config) =>
-      service.loadKitVersion(args, config),
+    service: (args, config) =>
+      service.loadKitVersion(args ?? { kitVersionId }, config),
     runOnMount: true,
   });
 

@@ -27,8 +27,8 @@ const QuestionnairesContent = () => {
   }>({ status: false, id: "" });
 
   const fetchQuestionnairesKit = useQuery({
-    service: (args = { kitVersionId }, config) =>
-      service.fetchQuestionnairesKit(args, config),
+    service: (args, config) =>
+      service.fetchQuestionnairesKit(args ?? { kitVersionId }, config),
   });
   const postQuestionnairesKit = useQuery({
     service: (args, config) => service.postQuestionnairesKit(args, config),
@@ -101,12 +101,9 @@ const QuestionnairesContent = () => {
         await postQuestionnairesKit.query({ kitVersionId, data });
       }
 
-      // Reset form and re-fetch data after saving
-      // setShowQuestionnairesForm(false);
-      await fetchQuestionnairesKit.query();
-      // maturityLevelsCompetences.query();
 
-      // Reset the form values
+      await fetchQuestionnairesKit.query();
+
       setNewQuestionnaires({
         title: "",
         description: "",
@@ -152,7 +149,6 @@ const QuestionnairesContent = () => {
 
       setShowNewQuestionnairesForm(false);
       fetchQuestionnairesKit.query();
-      // maturityLevelsCompetences.query();
 
       setNewQuestionnaires({
         title: "",

@@ -64,7 +64,7 @@ import Pagination from "@mui/material/Pagination";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
-import {useConfigContext} from "@providers/ConfgProvider";
+import { useConfigContext } from "@providers/ConfgProvider";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -73,30 +73,37 @@ const ExpertGroupContainer = () => {
   const { assessmentKitQuery, handleChangePage, ...rest } =
     useFetchAssessmentKit();
   const { size, total, page } = rest;
-  const {config: {languages}} = useConfigContext();
+  const {
+    config: { languages },
+  } = useConfigContext();
   const pageCount = size === 0 ? 1 : Math.ceil(total / size);
   const queryData = useQuery({
-    service: (args = { id: expertGroupId }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
   });
 
   const expertGroupMembersQueryData = useQuery({
-    service: (args = { id: expertGroupId, status: "ACTIVE" }, config) =>
-      service.fetchExpertGroupMembers(args, config),
+    service: (args, config) =>
+      service.fetchExpertGroupMembers(
+        args ?? { id: expertGroupId, status: "ACTIVE" },
+        config,
+      ),
   });
   const expertGroupMembersInviteeQueryData = useQuery({
-    service: (args = { id: expertGroupId, status: "PENDING" }, config) =>
-      service.fetchExpertGroupMembers(args, config),
+    service: (args, config) =>
+      service.fetchExpertGroupMembers(
+        args ?? { id: expertGroupId, status: "PENDING" },
+        config,
+      ),
   });
   const removeExpertGroupMembers = useQuery({
     service: (args, config) => service.removeExpertGroupMembers(args, config),
     runOnMount: false,
   });
 
-
   const setDocTitle = useDocumentTitle(t("expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
-    context: { type: "create", data: { expertGroupId, languages  } },
+    context: { type: "create", data: { expertGroupId, languages } },
   });
 
   const excelToDslDialogProps = useDialog({
@@ -541,8 +548,8 @@ const AvatarComponent = (props: any) => {
   };
 
   const handleDelete = useQuery({
-    service: (args = { expertGroupId }, config) =>
-      service.deleteExpertGroupImage(args, config),
+    service: (args, config) =>
+      service.deleteExpertGroupImage(args ?? { expertGroupId }, config),
     runOnMount: false,
   });
 
@@ -676,8 +683,8 @@ const EditExpertGroupButton = (props: any) => {
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const queryData = useQuery({
-    service: (args = { id: expertGroupId }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
     runOnMount: false,
   });
   const dialogProps = useDialog();
@@ -913,10 +920,7 @@ const MemberActions = (props: any) => {
       inviteeQuery();
     } catch (e) {
       const error = e as ICustomError;
-      if (
-        error.response?.data &&
-        error.response?.data.hasOwnProperty("message")
-      ) {
+      if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
           toastError(error.response?.data?.message[0]);
         } else {
@@ -1003,10 +1007,7 @@ const AddMember = (props: any) => {
       query();
     } catch (e) {
       const error = e as ICustomError;
-      if (
-        error.response?.data &&
-        error.response?.data.hasOwnProperty("message")
-      ) {
+      if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
           toastError(error.response?.data?.message[0]);
         } else {
@@ -1074,7 +1075,7 @@ const AssessmentKitsList = (props: any) => {
     is_member,
     excelToDslDialogProps,
     assessmentKitQuery,
-    languages
+    languages,
   } = props;
   const { expertGroupId } = useParams();
   const kitDesignerDialogProps = useDialog({

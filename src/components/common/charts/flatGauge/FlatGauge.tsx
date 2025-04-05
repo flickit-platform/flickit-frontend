@@ -44,13 +44,14 @@ const FlatGauge = (props: IGaugeProps) => {
     lng,
     ...rest
   } = props;
-
-  if (maturityLevelNumber < levelValue) return null;
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const FlatGaugeComponent = useMemo(
     () => lazy(() => import(`./flatGauge${maturityLevelNumber}.tsx`)),
     [maturityLevelNumber],
   );
+
+  if (maturityLevelNumber < levelValue) return null;
 
   const checkColor = (num: number): string => {
     if (num == 100) {
@@ -63,7 +64,6 @@ const FlatGauge = (props: IGaugeProps) => {
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
   const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isFarsi = languageDetector(text ?? "");
 
   return (

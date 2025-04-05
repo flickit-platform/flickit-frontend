@@ -46,14 +46,14 @@ const SubjectOverallInsight = ({
   });
 
   const ApproveAISubject = useQuery({
-    service: (args = { assessmentId, subjectId }, config) =>
-      service.ApproveAISubject(args, config),
+    service: (args, config) =>
+      service.ApproveAISubject(args ?? { assessmentId, subjectId }, config),
     runOnMount: false,
   });
 
   const InitInsight = useQuery({
-    service: (args = { assessmentId, subjectId }, config) =>
-      service.InitInsight(args, config),
+    service: (args, config) =>
+      service.InitInsight(args ?? { assessmentId, subjectId }, config),
     runOnMount: false,
   });
 

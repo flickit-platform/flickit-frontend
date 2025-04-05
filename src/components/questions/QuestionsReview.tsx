@@ -35,8 +35,8 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
   const { assessmentId = "", questionnaireId = "" } = useParams();
 
   const AssessmentInfo = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.AssessmentsLoad(args, config),
+    service: (args, config) =>
+      service.AssessmentsLoad(args ?? { assessmentId }, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -159,7 +159,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                             display: "inline",
                             color: theme.palette.secondary.main,
                             cursor: "pointer",
-                            textDecoration: "none"
+                            textDecoration: "none",
                           }}
                         />
                       ),
@@ -266,16 +266,20 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                           questionsInfo?.total_number_of_questions,
                         questionnaire: questionnaireTitle,
                       }}
-                      components={{style: <Box
+                      components={{
+                        style: (
+                          <Box
                             component={Link}
                             to={"../questionnaires"}
                             style={{
                               display: "inline",
                               color: theme.palette.secondary.main,
                               cursor: "pointer",
-                              textDecoration: "none"
+                              textDecoration: "none",
                             }}
-                        />}}
+                          />
+                        ),
+                      }}
                     />
                   </Typography>
                   <Typography

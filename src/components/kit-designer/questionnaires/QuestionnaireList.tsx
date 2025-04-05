@@ -48,7 +48,7 @@ interface ITempValues {
 }
 interface IQuestion {
   advisable: boolean;
-  hint: null | any;
+  hint: any;
   id: number;
   index: number;
   mayNotBeApplicable: boolean;
@@ -76,7 +76,7 @@ const ListOfItems = ({
   const [showNewQuestionForm, setShowNewQuestionForm] = useState<{
     [key: string]: boolean;
   }>({});
-  const [expandedId, setExpandedId] = useState<TId | null>(null); 
+  const [expandedId, setExpandedId] = useState<TId | null>(null);
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
@@ -282,7 +282,7 @@ const ListOfItems = ({
                 key={item.id}
                 draggableId={item?.id?.toString()}
                 index={index}
-                isDragDisabled={expandedId !== null} 
+                isDragDisabled={expandedId !== null}
               >
                 {(provided: any) => (
                   <Box

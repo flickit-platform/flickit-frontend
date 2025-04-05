@@ -101,6 +101,7 @@ const Gauge = ({
           />
         ) : (
           <img
+            alt="empty"
             width="100%"
             height={height}
             src="/assets/svg/maturityNull.svg"
@@ -146,7 +147,7 @@ const Gauge = ({
                 ? farsiFontFamily
                 : primaryFontFamily,
             }}
-            variant={status_font_variant ? status_font_variant : "h6"}
+            variant={status_font_variant ?? "h6"}
             color={colorCode}
             fontSize={status_font_variant ? "2rem" : fontSize}
             mt={maturity_status_guide ? "0.5rem" : "0px"}

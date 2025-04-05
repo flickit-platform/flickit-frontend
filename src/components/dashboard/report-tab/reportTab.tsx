@@ -23,8 +23,8 @@ const ReportTab = () => {
   const { service } = useServiceContext();
 
   const fetchReportFields = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.fetchReportFields(args, config),
+    service: (args, config) =>
+      service.fetchReportFields(args ?? { assessmentId }, config),
     runOnMount: true,
   });
 
@@ -166,7 +166,7 @@ const ReportTab = () => {
                           </Typography>
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
-                        <Divider sx={{ width: "100%",my:2 }} />
+                        <Divider sx={{ width: "100%", my: 2 }} />
                         <Box
                           sx={{
                             display: "flex",

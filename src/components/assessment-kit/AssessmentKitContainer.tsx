@@ -33,8 +33,8 @@ const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const assessmentKitQueryData = useQuery({
-    service: (args = { id: assessmentKitId }, config) =>
-      service.fetchAssessmentKit(args, config),
+    service: (args, config) =>
+      service.fetchAssessmentKit(args ?? { id: assessmentKitId }, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -84,8 +84,8 @@ const AssessmentKit = (props: any) => {
   } = data || {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
-    service: (args = { id: expertGroupId }, config) =>
-      service.fetchUserExpertGroup(args, config),
+    service: (args, config) =>
+      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
   });
   const colorPallet = getMaturityLevelColors(
     maturityLevels ? maturityLevels?.length : 5,
@@ -529,70 +529,69 @@ const AssessmentKit = (props: any) => {
                       >
                         <Trans i18nKey="relatedAttributes" />
                       </Typography>
-                      {subject?.attributes &&
-                        subject?.attributes?.map((att: any, index: number) => (
-                          <Box
+                      {subject?.attributes?.map((att: any, index: number) => (
+                        <Box
+                          sx={{
+                            mt: 1,
+                            ml: 4,
+                            position: "relative",
+                            "&:before": {
+                              content: '"•"',
+                              position: "absolute",
+                              left:
+                                theme.direction === "ltr" ? "-1em" : "unset",
+                              right:
+                                theme.direction === "rtl" ? "-1em" : "unset",
+                              top: 0,
+                            },
+                          }}
+                          component="div"
+                          key={att?.id}
+                        >
+                          <Typography
+                            variant="body2"
                             sx={{
-                              mt: 1,
-                              ml: 4,
-                              position: "relative",
-                              "&:before": {
-                                content: '"•"',
-                                position: "absolute",
-                                left:
-                                  theme.direction === "ltr" ? "-1em" : "unset",
-                                right:
-                                  theme.direction === "rtl" ? "-1em" : "unset",
-                                top: 0,
-                              },
+                              my: 2,
+                              textAlign: "start",
+                              textJustify: "inter-word",
+                              display: "inline",
                             }}
-                            component="div"
-                            key={att?.id}
                           >
-                            <Typography
-                              variant="body2"
+                            <Box
+                              component="span"
+                              fontSize="1rem"
+                              fontWeight="bold"
                               sx={{
-                                my: 2,
-                                textAlign: "start",
-                                textJustify: "inter-word",
-                                display: "inline",
+                                unicodeBidi: "plaintext",
+                                fontFamily: languageDetector(att.title)
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
+                                direction: languageDetector(att.title)
+                                  ? "rtl"
+                                  : "ltr",
                               }}
                             >
-                              <Box
-                                component="span"
-                                fontSize="1rem"
-                                fontWeight="bold"
-                                sx={{
-                                  unicodeBidi: "plaintext",
-                                  fontFamily: languageDetector(att.title)
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                                  direction: languageDetector(att.title)
-                                    ? "rtl"
-                                    : "ltr",
-                                }}
-                              >
-                                {att.title}
-                              </Box>
-                              :{" "}
-                              <Box
-                                sx={{
-                                  unicodeBidi: "plaintext",
-                                  fontFamily: languageDetector(att.description)
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                                  direction: languageDetector(att.description)
-                                    ? "rtl"
-                                    : "ltr",
-                                }}
-                                component="span"
-                                fontSize="1rem"
-                              >
-                                {att.description}
-                              </Box>
-                            </Typography>
-                          </Box>
-                        ))}
+                              {att.title}
+                            </Box>
+                            :{" "}
+                            <Box
+                              sx={{
+                                unicodeBidi: "plaintext",
+                                fontFamily: languageDetector(att.description)
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
+                                direction: languageDetector(att.description)
+                                  ? "rtl"
+                                  : "ltr",
+                              }}
+                              component="span"
+                              fontSize="1rem"
+                            >
+                              {att.description}
+                            </Box>
+                          </Typography>
+                        </Box>
+                      ))}
                     </Box>
                   );
                 })}
@@ -670,8 +669,8 @@ const LikeAssessmentKit = ({ likes }: any) => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const likeQueryData = useQuery({
-    service: (args = { id: assessmentKitId }, config) =>
-      service.likeAssessmentKit(args, config),
+    service: (args, config) =>
+      service.likeAssessmentKit(args ?? { id: assessmentKitId }, config),
     runOnMount: false,
   });
 

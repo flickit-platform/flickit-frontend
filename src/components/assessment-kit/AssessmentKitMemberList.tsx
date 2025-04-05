@@ -33,10 +33,50 @@ import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
 import { theme } from "@config/theme";
 
+const tableCellStyles = {
+  minWidth: {
+    xs: "12rem",
+    sm: "16rem",
+    md: "20vw",
+  },
+  textAlign: { xs: "left", md: "center" },
+  display: { xs: "none", md: "inline-block" },
+  color: "#9DA7B3",
+  fontSize: "1rem",
+};
+
+const avatarStyles = {
+  width: 40,
+  height: 40,
+  display: { xs: "none", sm: "flex" },
+};
+
+const chipStyles = {
+  marginRight: theme.direction === "ltr" ? 1 : "unset",
+  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+  opacity: 0.7,
+  color: "#9A003C",
+  borderColor: "#9A003C",
+};
+
+const textStyles = {
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  fontSize: "0.875rem",
+  color: "#1B1B1E",
+  fontWeight: 500,
+};
+
+const deleteButtonStyles = {
+  "&:hover": { color: "#d32f2f" },
+};
+
 export default function MemberList(props: any) {
   const { title, btnLabel, listOfUser, columns, query, hasBtn } = props;
   const { openEGModal, setOpenEGModal, deleteEGMember, onCloseEGModal } =
     useEGPermision({ query });
+
   return (
     <Box
       sx={{
@@ -45,17 +85,17 @@ export default function MemberList(props: any) {
         alignItems: "flex-start",
         px: { xs: "15px", sm: "51px" },
         mb: "2rem",
+        gap: 2,
+        textAlign: "center",
+        height: "auto",
+        minHeight: "350px",
+        width: "100%",
+        bgcolor: "#FFF",
+        borderRadius: 2,
+        py: "32px",
       }}
-      gap={2}
-      textAlign="center"
-      height={"auto"}
-      minHeight={"350px"}
-      width={"100%"}
-      bgcolor={"#FFF"}
-      borderRadius={2}
-      py={"32px"}
     >
-      <Box height={"100%"} width={"100%"}>
+      <Box height="100%" width="100%">
         <Box
           sx={{
             display: "flex",
@@ -109,17 +149,13 @@ export default function MemberList(props: any) {
         </Box>
         <Divider sx={{ width: "100%", marginTop: "24px" }} />
         <TableContainer
-          sx={{
-            maxHeight: 840,
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-          }}
+          sx={{ maxHeight: 840, "&::-webkit-scrollbar": { display: "none" } }}
         >
           <Table stickyHeader aria-label="sticky table">
             <TableHead
-              sx={{ width: "100%", overflow: "hidden" }}
-              style={{
+              sx={{
+                width: "100%",
+                overflow: "hidden",
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
@@ -137,38 +173,19 @@ export default function MemberList(props: any) {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    sx={{
-                      minWidth: {
-                        xs: "12rem",
-                        sm: "16rem",
-                        md: column.minWidth,
-                      },
-                      textAlign: { xs: column.position, lg: "center" },
-                      display: {
-                        xs: column.display,
-                        md: "inline-block",
-                        color: "#9DA7B3",
-                        border: "none",
-                        fontSize: "1rem",
-                      },
-                    }}
+                    sx={tableCellStyles}
                   >
                     <Trans i18nKey={`${column.label}`} />
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
-
-            {/* Move the Divider outside the TableHead */}
             <TableBody>
               {listOfUser.length > 0 &&
                 listOfUser.map((row: any) => (
                   <TableRow
-                    tabIndex={-1}
                     key={row.id}
-                    sx={{
-                      background: !row.editable ? "#ebe8e85c" : "",
-                    }}
+                    sx={{ background: !row.editable ? "#ebe8e85c" : "" }}
                   >
                     <TableCell
                       sx={{
@@ -180,152 +197,29 @@ export default function MemberList(props: any) {
                         paddingX: { xs: "0px", md: "1rem" },
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          minWidth: {
-                            xs: "10rem",
-                            sm: "14rem",
-                            md: "20vm",
-                          },
-                          width: {
-                            xs: "10rem",
-                            sm: "14rem",
-                            md: "20vw",
-                          },
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: { xs: "flex-start" },
-                            alignItems: "center",
-                            gap: ".5rem",
-                            paddingLeft: { lg: "30%" },
-                          }}
-                        >
-                          <Avatar
-                            {...stringAvatar(
-                              row?.displayName
-                                ? row?.displayName.toUpperCase()
-                                : row?.name.toUpperCase(),
-                            )}
-                            src={row.pictureLink}
-                            sx={{
-                              width: 40,
-                              height: 40,
-                              display: { xs: "none", sm: "flex" },
-                            }}
-                          />
-                          <Typography
-                            sx={{
-                              textOverflow: "ellipsis",
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              fontSize: "0.875rem",
-                              color: "#1B1B1E",
-                              fontWeight: 500,
-                            }}
-                          >
-                            {row.displayName || row.name}
-                          </Typography>
-                          {!row.editable && (
-                            <Chip
-                              sx={{
-                                marginRight:
-                                  theme.direction === "ltr" ? 1 : "unset",
-                                marginLeft:
-                                  theme.direction === "rtl" ? 1 : "unset",
-                                opacity: 0.7,
-                                color: "#9A003C",
-                                borderColor: "#9A003C",
-                              }}
-                              label={<Trans i18nKey={"owner"} />}
-                              size="small"
-                              variant="outlined"
-                            />
-                          )}
-                        </Box>
-                      </Box>
+                      <UserInfoCell row={row} />
                       <Box
                         sx={{
                           display: { xs: "none", md: "flex" },
                           justifyContent: "center",
-                          minWidth: {
-                            xs: "10rem",
-                            sm: "14rem",
-                            md: "20vm",
-                          },
-                          width: {
-                            xs: "10rem",
-                            sm: "14rem",
-                            md: "20vw",
-                          },
+                          minWidth: { xs: "10rem", sm: "14rem", md: "20vw" },
+                          width: { xs: "10rem", sm: "14rem", md: "20vw" },
                         }}
                       >
-                        <Typography
-                          sx={{
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            color: "#1B1B1E",
-                            fontSize: "0.875",
-                            wight: 300,
-                          }}
-                        >
-                          {row.email}
-                        </Typography>
+                        <Typography sx={textStyles}>{row.email}</Typography>
                       </Box>
                       <Box
                         sx={{
                           display: "flex",
                           justifyContent: "center",
-                          minWidth: {
-                            xs: "10rem",
-                            sm: "14rem",
-                            md: "20vm",
-                          },
-                          width: {
-                            xs: "10rem",
-                            sm: "14rem",
-                            md: "20vw",
-                          },
+                          minWidth: { xs: "10rem", sm: "14rem", md: "20vw" },
+                          width: { xs: "10rem", sm: "14rem", md: "20vw" },
                         }}
                       >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            alignItems: "center",
-                            gap: { xs: "0px", md: ".7rem" },
-                          }}
-                        >
-                          <Tooltip
-                            disableHoverListener={row.editable}
-                            title={
-                              <Trans i18nKey="spaceOwnerRoleIsNotEditable" />
-                            }
-                          >
-                            <Box
-                              width="30%"
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                            >
-                              <IconButton
-                                sx={{ "&:hover": { color: "#d32f2f" } }}
-                                size="small"
-                                disabled={!row.editable}
-                                onClick={() => {
-                                  deleteEGMember(row.id);
-                                }}
-                              >
-                                <DeleteRoundedIcon />
-                              </IconButton>
-                            </Box>
-                          </Tooltip>
-                        </Box>
+                        <DeleteActionCell
+                          row={row}
+                          deleteEGMember={deleteEGMember}
+                        />
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -345,6 +239,80 @@ export default function MemberList(props: any) {
     </Box>
   );
 }
+
+const UserInfoCell = ({ row }: any) => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "flex-start",
+      minWidth: { xs: "10rem", sm: "14rem", md: "20vw" },
+      width: { xs: "10rem", sm: "14rem", md: "20vw" },
+    }}
+  >
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: ".5rem",
+        paddingLeft: { lg: "30%" },
+      }}
+    >
+      <Avatar
+        {...stringAvatar(
+          row?.displayName
+            ? row?.displayName.toUpperCase()
+            : row?.name.toUpperCase(),
+        )}
+        src={row.pictureLink}
+        sx={avatarStyles}
+      />
+      <Typography sx={textStyles}>{row.displayName || row.name}</Typography>
+      {!row.editable && (
+        <Chip
+          sx={chipStyles}
+          label={<Trans i18nKey={"owner"} />}
+          size="small"
+          variant="outlined"
+        />
+      )}
+    </Box>
+  </Box>
+);
+
+const DeleteActionCell = ({ row, deleteEGMember }: any) => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      gap: { xs: "0px", md: ".7rem" },
+    }}
+  >
+    <Tooltip
+      disableHoverListener={row.editable}
+      title={<Trans i18nKey="spaceOwnerRoleIsNotEditable" />}
+    >
+      <Box
+        sx={{
+          width: "30%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <IconButton
+          sx={deleteButtonStyles}
+          size="small"
+          disabled={!row.editable}
+          onClick={() => deleteEGMember(row.id)}
+        >
+          <DeleteRoundedIcon />
+        </IconButton>
+      </Box>
+    </Tooltip>
+  </Box>
+);
 
 const useEGPermision = (props: any) => {
   const { query } = props;

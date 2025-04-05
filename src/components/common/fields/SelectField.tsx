@@ -63,7 +63,7 @@ interface ISelectField extends SelectProps {
   sx?: any;
   value?: string;
   IconComponent?: any;
-  onChange?:(e: any)=> void;
+  onChange?: (e: any) => void;
 }
 
 export const SelectField = (props: ISelectField) => {
@@ -126,7 +126,7 @@ export const SelectField = (props: ISelectField) => {
       <Select
         {...rest}
         {...(register ? register(name, { required }) : {})}
-        defaultValue={defaultValue ? defaultValue : defaultOption?.id}
+        defaultValue={defaultValue ?? defaultOption?.id}
         labelId={`select_label_id_${name}`}
         sx={{
           ...(rest?.sx || {}),
@@ -174,9 +174,9 @@ const defaultRenderOption = (option: any) => {
       {option.code ? <ColorOption value={option.code} /> : null}
       <Box
         sx={{
-          background: option.code && option.code,
+          background: option.code,
           width: "100%",
-          color: option.code && option.code,
+          color: option.code,
         }}
       >
         {option.title}

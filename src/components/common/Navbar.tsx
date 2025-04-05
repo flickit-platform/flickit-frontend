@@ -42,10 +42,16 @@ import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { format } from "date-fns";
-import { farsiFontFamily, secondaryFontFamily, theme } from "@/config/theme";
+import {
+  farsiFontFamily,
+  primaryFontFamily,
+  secondaryFontFamily,
+  theme,
+} from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
+import languageDetector from "@utils/languageDetector";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -272,46 +278,13 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   }}
                   gap={1}
                 >
-                  {/* <Avatar sx={{ width: 24, height: 24 }}></Avatar> */}
                   <Typography
                     variant="bodyMedium"
                     dangerouslySetInnerHTML={{
                       __html: (selectedMessage as any)?.content,
                     }}
-                  >
-                    {/* <Typography
-                      variant="titleSmall"
-                      component="span"
-                      sx={{ fontWeight: "bold", color: "#2D80D2" }}
-                    >
-                      {
-                        (selectedMessage?.payload?.data as any)?.assigner
-                          ?.displayName
-                      }
-                    </Typography>{" "}
-                    just added you to the assessment{" "}
-                    <Typography
-                      variant="titleSmall"
-                      component="span"
-                      sx={{ fontWeight: "bold", color: "#2D80D2" }}
-                    >
-                      {
-                        (selectedMessage?.payload?.data as any)?.assessment
-                          ?.title
-                      }
-                    </Typography>{" "}
-                    as{" "}
-                    <Typography
-                      variant="titleSmall"
-                      component="span"
-                      sx={{ fontWeight: "bold", color: "#2D80D2" }}
-                    >
-                      {(selectedMessage?.payload?.data as any)?.role?.title}
-                    </Typography>{" "}
-                    on the space! */}
-                  </Typography>
+                  ></Typography>
                 </Box>
-                {/* Relative Time Ago */}
                 <Typography
                   variant="labelSmall"
                   sx={{
@@ -875,6 +848,9 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
           marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
           color: "#fff",
+          fontFamily: languageDetector(userInfo.displayName)
+            ? farsiFontFamily
+            : primaryFontFamily,
         }}
         size="small"
         endIcon={

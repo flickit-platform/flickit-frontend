@@ -1,6 +1,7 @@
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import {
   BarChart,
@@ -17,64 +18,72 @@ import {
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload?.length) {
-    const missedScore = payload[0].payload.missedScore;
-    const gainedScore = payload[0].payload.gainedScore;
+const CustomTooltip = ({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: any[];
+}) => {
+  if (!active || !payload?.length) return null;
 
-    return (
+  const { missedScore, gainedScore } = payload[0].payload;
+
+  return (
+    <Box
+      sx={{
+        textAlign: "center",
+        backgroundColor: "#5F6E7C",
+        color: "white",
+        borderRadius: "4px",
+        p: 1,
+      }}
+    >
       <Box
         sx={{
-          textAlign: "center",
-          backgroundColor: "#5F6E7C",
-          color: "white",
-          borderRadius: "4px",
-          p: 1,
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          direction: "ltr",
+          gap: 2,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            direction: "ltr",
-            gap: 2,
-          }}
-        >
-          <Box sx={{ ...styles.centerCVH }}>
-            <Typography
-              variant="body1"
-              sx={{ color: "white", fontWeight: "bold" }}
-            >
-              {missedScore}
+        {[
+          { score: missedScore, label: "missedScore" },
+          { score: gainedScore, label: "gainedScore" },
+        ].map(({ score, label }) => (
+          <Box key={label} sx={{ ...styles.centerCVH }}>
+            <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
+              {Math.abs(score)}
             </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              <Trans i18nKey="missedScore" />
+            <Typography variant="bodySmall" sx={{ color: "white" }}>
+              <Trans i18nKey={label} />
             </Typography>
           </Box>
-
-          <Box sx={{ ...styles.centerCVH }}>
-            <Typography
-              variant="body1"
-              sx={{ color: "white", fontWeight: "bold" }}
-            >
-              {gainedScore}
-            </Typography>
-            <Typography variant="body2" sx={{ color: "white" }}>
-              <Trans i18nKey="gainedScore" />
-            </Typography>
-          </Box>
-        </Box>
+        ))}
       </Box>
-    );
-  }
-
-  return null;
+    </Box>
+  );
 };
 
-export default function ScoreImpactBarChart({ measures }: any) {
-  const chartData = measures?.map((measure: any) => ({
+const legendFormatter = (value: string) => (
+  <span style={{ marginInlineStart: theme.direction === "ltr" ? 8 : 0 }}>
+    {value === "uv" ? t("gainedScore") : t("missedScore")}
+  </span>
+);
+
+interface Measure {
+  title: string;
+  missedScorePercentage: number;
+  gainedScorePercentage: number;
+  missedScore: number;
+  gainedScore: number;
+}
+
+export default function ScoreImpactBarChart({
+  measures,
+}: Readonly<{ measures: Measure[] }>) {
+  const chartData = measures?.map((measure) => ({
     name: measure.title,
     pv: -Math.abs(measure.missedScorePercentage),
     uv: measure.gainedScorePercentage,
@@ -101,20 +110,8 @@ export default function ScoreImpactBarChart({ measures }: any) {
         >
           <CartesianGrid strokeDasharray="3 3" horizontal />
           <Tooltip content={<CustomTooltip />} />
-
-          <Legend
-            verticalAlign="top"
-            formatter={(value) => (
-              <span
-                style={{ marginInlineStart: theme.direction === "ltr" ? 8 : 0 }}
-              >
-                {value === "uv" ? t("gainedScore") : t("missedScore")}
-              </span>
-            )}
-          />
-
+          <Legend verticalAlign="top" formatter={legendFormatter} />
           <ReferenceLine x={0} strokeDasharray="3 3" />
-
           <XAxis
             type="number"
             domain={[-100, 100]}
@@ -123,7 +120,6 @@ export default function ScoreImpactBarChart({ measures }: any) {
             tickLine={false}
             tick={{ textAnchor: "middle", fontSize: 12 }}
           />
-
           <YAxis
             type="category"
             dataKey="name"
@@ -159,10 +155,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
               position="right"
               fill="#2466A8"
               formatter={(v: any) => (v !== 0 ? `${v}%` : "")}
-              style={{
-                textAnchor: "end",
-                fontSize: 14,
-              }}
+              style={{ textAnchor: "end", fontSize: 14 }}
             />
           </Bar>
           <Bar
@@ -177,10 +170,7 @@ export default function ScoreImpactBarChart({ measures }: any) {
               position="right"
               fill="#B8144B"
               formatter={(v: any) => (v !== 0 ? `${Math.abs(v)}%` : "")}
-              style={{
-                textAnchor: "start",
-                fontSize: 14,
-              }}
+              style={{ textAnchor: "start", fontSize: 14 }}
             />
           </Bar>
         </BarChart>

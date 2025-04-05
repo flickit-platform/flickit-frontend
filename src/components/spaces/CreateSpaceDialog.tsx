@@ -14,7 +14,8 @@ import toastError from "@utils/toastError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
-import { Button, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import greenCheckmark from "@/assets/svg/greenCheckmark.svg";
 import Box from "@mui/material/Box";
 import Check from "@components/spaces/Icons/check";
@@ -418,13 +419,13 @@ const BoxTypes = (props: any) => {
   };
 
   const TypographyColor = () => {
-      if(type == "BASIC" && allowCreateBasic){
-          return "#2B333B"
-      }else if(type == "BASIC" && !allowCreateBasic){
-          return "#3D4D5C80"
-      }else {
-          return "unset"
-      }
+    if (type == "BASIC" && allowCreateBasic) {
+      return "#2B333B";
+    } else if (type == "BASIC" && !allowCreateBasic) {
+      return "#3D4D5C80";
+    } else {
+      return "unset";
+    }
   };
 
   return (
@@ -464,7 +465,7 @@ const BoxTypes = (props: any) => {
                 type == "PREMIUM"
                   ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
                   : "unset",
-              color: TypographyColor()
+              color: TypographyColor(),
             }}
           >
             <Trans i18nKey={title} />
@@ -507,7 +508,7 @@ const BoxTypes = (props: any) => {
               <Typography
                 sx={{
                   ...theme.typography.labelSmall,
-                  color: TypographyColor()
+                  color: TypographyColor(),
                 }}
               >
                 <Trans i18nKey={text} />
@@ -519,7 +520,8 @@ const BoxTypes = (props: any) => {
                       display: "inline-block",
                     }}
                   >
-                    (<Trans i18nKey={"reachedLimit"} />).
+                    (<Trans i18nKey={"reachedLimit"} />
+                    ).
                   </Typography>
                 )}
               </Typography>

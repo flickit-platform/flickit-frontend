@@ -4,7 +4,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Skeleton from "@mui/material/Skeleton";
-
+import uniqueId from "@/utils/uniqueId";
 
 const MaturityLevelTableSkeleton = ({
   rows = 5,
@@ -17,10 +17,10 @@ const MaturityLevelTableSkeleton = ({
     <TableContainer>
       <Table>
         <TableBody>
-          {Array.from({ length: rows }).map((_, rowIndex) => (
-            <TableRow key={rowIndex}>
-              {Array.from({ length: columns }).map((_, colIndex) => (
-                <TableCell key={colIndex} align="center">
+          {Array.from({ length: rows }).map((_) => (
+            <TableRow key={uniqueId()}>
+              {Array.from({ length: columns }).map((_) => (
+                <TableCell key={uniqueId()} align="center">
                   <Skeleton width="90%" height="20px" />
                 </TableCell>
               ))}

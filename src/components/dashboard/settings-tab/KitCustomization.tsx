@@ -23,7 +23,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";
-import {styles} from "@styles";
+import { styles } from "@styles";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -41,8 +41,8 @@ const KitCustomization = (props: any) => {
     runOnMount: false,
   });
   const fetchKitCustomTitle = useQuery({
-    service: (args = { kitInfo }, config) =>
-      service.fetchKitCustomTitle(args, config),
+    service: (args, config) =>
+      service.fetchKitCustomTitle(args ?? { kitInfo }, config),
     runOnMount: false,
   });
   const sendKitCustomization = useQuery({
@@ -190,7 +190,7 @@ const KitCustomization = (props: any) => {
         <Box
           sx={{
             ...styles.boxStyle,
-            minHeight: "350px"
+            minHeight: "350px",
           }}
           gap={2}
         >
@@ -429,7 +429,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                 <InputAdornment position="end">
                   <IconButton
                     title="Submit Edit"
-                    edge= {theme.direction == "rtl" ? "start" : "end"}
+                    edge={theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#49CED0",
                       borderRadius: "2px",
@@ -443,7 +443,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
-                    edge= {theme.direction == "rtl" ? "start" : "end"}
+                    edge={theme.direction == "rtl" ? "start" : "end"}
                     sx={{
                       background: "#E04B7C",
                       borderRadius: "2px",

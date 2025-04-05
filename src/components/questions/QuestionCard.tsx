@@ -126,8 +126,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   }, [title, answer?.confidenceLevel]);
 
   const ConfidenceListQueryData = useQuery({
-    service: (args = {}, config) =>
-      service.fetchConfidenceLevelsList(args, config),
+    service: (args, config) =>
+      service.fetchConfidenceLevelsList(args ?? {}, config),
     toastError: false,
   });
 
@@ -163,11 +163,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
         <Box>
           <Typography
             variant="subLarge"
-            sx={
-              is_farsi
-                ? { color: "white", opacity: 0.65, px: 6 }
-                : { color: "white", opacity: 0.65, px: 6 }
-            }
+            sx={{ color: "white", opacity: 0.65, px: 6 }}
           >
             <Trans i18nKey="question" />
           </Typography>
@@ -415,42 +411,45 @@ export const QuestionTabsTemplate = (props: any) => {
 
   // Queries
   const queryData = useQuery({
-    service: (
-      args = {
-        questionId: questionInfo.id,
-        assessmentId,
-        page: currentPage,
-        size: 10,
-      },
-      config,
-    ) => service.fetchAnswersHistory(args, config),
+    service: (args, config) =>
+      service.fetchAnswersHistory(
+        args ?? {
+          questionId: questionInfo.id,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        },
+        config,
+      ),
     toastError: true,
-    runOnMount: questionsInfo?.permissions?.viewAnswerHistory ? true : false,
+    runOnMount: Boolean(questionsInfo?.permissions?.viewAnswerHistory),
   });
   const evidencesQueryData = useQuery({
-    service: (
-      args = {
-        questionId: questionInfo.id,
-        assessmentId,
-        page: currentPage,
-        size: 10,
-      },
-      config,
-    ) => service.fetchEvidences(args, config),
+    service: (args, config) =>
+      service.fetchEvidences(
+        args ?? {
+          questionId: questionInfo.id,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        },
+        config,
+      ),
     toastError: true,
     runOnMount: true,
   });
 
   const commentesQueryData = useQuery({
-    service: (
-      args = {
-        questionId: questionInfo.id,
-        assessmentId,
-        page: currentPage,
-        size: 10,
-      },
-      config,
-    ) => service.fetchComments(args, config),
+    service: (args, config) =>
+      service.fetchComments(
+        args ?? {
+          questionId: questionInfo.id,
+          assessmentId,
+          page: currentPage,
+          size: 10,
+        },
+        config,
+      ),
     toastError: true,
     runOnMount: true,
   });
@@ -743,7 +742,7 @@ const AnswerTemplate = (props: {
     }
   }, [notApplicable]);
   useEffect(() => {
-    if (answer && answer?.selectedOption) {
+    if (answer?.selectedOption) {
       setDisabledConfidence(false);
     }
     if (value == null && !notApplicable) {
@@ -752,17 +751,18 @@ const AnswerTemplate = (props: {
   }, [answer, value]);
 
   const approveAnswer = useQuery({
-    service: (
-      args = { assessmentId, data: { questionId: questionInfo.id } },
-      config,
-    ) => service.approveAnswer(args, config),
+    service: (args, config) =>
+      service.approveAnswer(
+        args ?? { assessmentId, data: { questionId: questionInfo.id } },
+        config,
+      ),
     runOnMount: false,
   });
 
   const submitQuestion = async () => {
     dispatch(questionActions.setIsSubmitting(true));
     try {
-      if (permissions && permissions?.answerQuestion) {
+      if (permissions?.answerQuestion) {
         await service.submitAnswer(
           {
             assessmentId,
@@ -909,14 +909,11 @@ const AnswerTemplate = (props: {
         if (isLastQuestion) {
           dispatch(questionActions.setAssessmentStatus(EAssessmentStatus.DONE));
           navigate(`../completed`, { replace: true });
-          return;
         } else {
           const newQuestionIndex = questionIndex + 1;
           if (submitOnAnswerSelection) {
             dispatch(questionActions.goToQuestion(newQuestionIndex));
-            navigate(`../${newQuestionIndex}`, {
-              replace: true,
-            });
+            navigate(`../${newQuestionIndex}`, { replace: true });
           }
         }
       });
@@ -982,8 +979,7 @@ const AnswerTemplate = (props: {
                     justifyContent: "flex-start",
                     boxShadow: `0 0 2px ${
                       answer?.selectedOption?.index === defaultSelectedIndex
-                        ? answer?.approved == false &&
-                          permissions?.approveAnswer
+                        ? !answer?.approved && permissions?.approveAnswer
                           ? "#CC7400"
                           : "#0acb89"
                         : "white"
@@ -997,15 +993,13 @@ const AnswerTemplate = (props: {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
                           ? "#0ec586"
-                          : answer?.approved == false &&
-                              permissions?.approveAnswer
+                          : !answer?.approved && permissions?.approveAnswer
                             ? "#CC7400"
                             : "#0ec586",
                       },
                       backgroundImage: !isSelectedValueTheSameAsAnswer
                         ? "#0ec586"
-                        : answer?.approved == false &&
-                            permissions?.approveAnswer
+                        : !answer?.approved && permissions?.approveAnswer
                           ? null
                           : `url(${AnswerSvg})`,
                       backgroundRepeat: "no-repeat",
@@ -1013,8 +1007,7 @@ const AnswerTemplate = (props: {
                       color: "white",
                       backgroundColor: !isSelectedValueTheSameAsAnswer
                         ? "#0ec586"
-                        : answer?.approved == false &&
-                            permissions?.approveAnswer
+                        : !answer?.approved && permissions?.approveAnswer
                           ? "#CC7400"
                           : "#0acb89",
                       borderColor: "transparent",
@@ -1112,7 +1105,7 @@ const AnswerTemplate = (props: {
           </LoadingButton>{" "}
         </Box>
         {isSelectedValueTheSameAsAnswer &&
-          answer?.approved == false &&
+          !answer?.approved &&
           permissions?.approveAnswer && (
             <Box
               sx={{
@@ -1221,7 +1214,8 @@ const AnswerDetails = ({
     });
   };
 
-  return <Box mt={2} width="100%" my={4}>
+  return (
+    <Box mt={2} width="100%" my={4}>
       {type === "evidence" || type === "comment" ? (
         <Box
           display="flex"
@@ -1277,7 +1271,7 @@ const AnswerDetails = ({
         </Box>
       )}
     </Box>
-
+  );
 };
 
 const AnswerHistoryItem = (props: any) => {
@@ -1490,7 +1484,7 @@ const Evidence = (props: any) => {
   const onSubmit = async (data: any) => {
     try {
       if (data.evidence.length <= LIMITED) {
-       let {id} = await addEvidence.query({
+        let { id } = await addEvidence.query({
           description: data.evidence,
           questionId: questionInfo.id,
           assessmentId,
@@ -1498,7 +1492,7 @@ const Evidence = (props: any) => {
         });
         if (createAttachment) {
           setExpandedAttachmentsDialogs({ count: 0, expended: true });
-          setEvidenceId(id)
+          setEvidenceId(id);
         }
         setCreateAttachment(false);
         const { items } = await evidencesQueryData.query();
@@ -1532,8 +1526,8 @@ const Evidence = (props: any) => {
   };
 
   const deleteEvidence = useQuery({
-    service: (args = { id: evidenceId }, config) =>
-      service.deleteEvidence(args, config),
+    service: (args, config) =>
+      service.deleteEvidence(args ?? { id: evidenceId }, config),
     runOnMount: false,
   });
 
@@ -2360,6 +2354,7 @@ const EvidenceDetail = (props: any) => {
                               : { rotate: "0deg", transition: "all .2s ease" }
                           }
                           src={arrowBtn}
+                          alt="arrow"
                         />
                       </Box>
                     )}
@@ -2417,22 +2412,20 @@ const EvidenceDetail = (props: any) => {
                         )}
                         {attachments.length < 5 &&
                           permissions?.addEvidenceAttachment && (
-                            <>
-                              <Grid
-                                item
-                                onClick={() => {
-                                  setExpandedAttachmentsDialogs({
-                                    expended: true,
-                                    count: attachments.length,
-                                  });
-                                  setEvidenceId(id);
-                                }}
-                              >
-                                <PreAttachment
-                                  mainColor={evidenceBG?.borderColor}
-                                />
-                              </Grid>
-                            </>
+                            <Grid
+                              item
+                              onClick={() => {
+                                setExpandedAttachmentsDialogs({
+                                  expended: true,
+                                  count: attachments.length,
+                                });
+                                setEvidenceId(id);
+                              }}
+                            >
+                              <PreAttachment
+                                mainColor={evidenceBG?.borderColor}
+                              />
+                            </Grid>
                           )}
                       </Box>
                       {attachments.length == 5 && (
@@ -2564,8 +2557,9 @@ const FileIcon = (props: any): any => {
   const [hover, setHover] = useState(false);
 
   const { link } = item;
-  const reg = new RegExp("\\/([^\\/?]+)\\?");
-  const name = link?.match(reg)[1];
+  const reg = /\/([^/?]+)\?/;
+  const match = link?.match(reg);
+  const name = match ? match[1] : null;
   const exp = name?.substring(name.lastIndexOf("."));
   return (
     <Tooltip

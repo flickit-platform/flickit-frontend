@@ -499,7 +499,7 @@ export interface IDialogProps extends DialogProps {
 }
 
 export interface IDialogContext {
-  type: TDialogContextType | string;
+  type: string;
   data?: any;
   staticData?: any;
   onSubmit?: (...args: any) => any;
@@ -782,7 +782,7 @@ export interface IGraphicalReport {
 
 export interface ISpaceType {
   code: string;
-  title: string
+  title: string;
 }
 
 export interface ILangs {

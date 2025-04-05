@@ -42,14 +42,14 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   });
 
   const ApproveAssessmentInsight = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.approveAssessmentInsight(args, config),
+    service: (args, config) =>
+      service.approveAssessmentInsight(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const InitAssessmentInsight = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.initAssessmentInsight(args, config),
+    service: (args, config) =>
+      service.initAssessmentInsight(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 

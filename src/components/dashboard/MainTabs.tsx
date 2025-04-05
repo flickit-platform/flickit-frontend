@@ -31,7 +31,7 @@ const MainTabs = (props: any) => {
     {
       label: "insights",
       address: "insights",
-      permission: true,
+      permission: "viewAssessmentInsights",
     },
     { label: "advice", address: "advice", permission: "createAdvice" },
     {
