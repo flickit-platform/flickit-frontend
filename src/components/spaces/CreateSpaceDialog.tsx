@@ -26,16 +26,6 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
 import UniqueId from "@utils/uniqueId";
 
-interface ICreateSpaceDialogProps extends DialogProps {
-  onClose: () => void;
-  onSubmitForm: () => void;
-  openDialog?: boolean;
-  context?: any;
-  titleStyle?: any;
-  contentStyle?: any;
-  allowCreateBasic?: boolean;
-}
-
 const PremiumBox = [
   {
     type: "PREMIUM",
@@ -63,7 +53,7 @@ const BasicBox = [
   },
 ];
 
-const CreateSpaceDialog = (props: ICreateSpaceDialogProps) => {
+const CreateSpaceDialog = (props: any) => {
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
   const [selectedType, setSelectedType] = useState<string>("");
