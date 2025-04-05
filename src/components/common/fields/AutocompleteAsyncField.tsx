@@ -120,7 +120,7 @@ const AutocompleteBaseField = (
       if (option) {
         return typeof option === "string"
           ? option
-          : option?.[filterFields[0]] || option.inputValue;
+          : (option?.[filterFields[0]] ?? option.inputValue);
       }
     },
     filterSelectedOption = (options: readonly any[], value: any): any[] =>
@@ -271,7 +271,7 @@ const AutocompleteBaseField = (
     <Autocomplete
       {...restFields}
       defaultValue={defaultValue}
-      value={value || (multiple ? undefined : null)}
+      value={value ?? (multiple ? undefined : null)}
       multiple={multiple}
       loading={loading}
       open={open}

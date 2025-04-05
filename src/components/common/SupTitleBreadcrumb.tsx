@@ -51,11 +51,7 @@ const SupTitleBreadcrumb = (
                 ...styles.centerV,
                 cursor: "pointer",
                 opacity: 0.8,
-                color: rest?.color
-                  ? rest.color
-                  : disabled
-                    ? "GrayText"
-                    : "primary.dark",
+                color: (rest?.color ?? disabled) ? "GrayText" : "primary.dark",
                 "&:hover": {
                   textDecoration: "none",
                 },

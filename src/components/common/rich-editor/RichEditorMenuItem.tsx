@@ -55,7 +55,7 @@ const RichEditorMenuItem = (props: IRichEditorMenuItemProps) => {
           e.stopPropagation();
         }}
       >
-        {icon || title}
+        {icon ?? title}
       </Button>
       {prompt && <PromptForm {...dialogProps} prompt={prompt} />}
     </>

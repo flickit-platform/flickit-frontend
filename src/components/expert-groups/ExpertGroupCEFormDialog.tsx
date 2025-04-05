@@ -64,7 +64,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
     const { picture, title, ...restOfData } = data;
     const formattedData = {
       ...restOfData,
-      picture: picture || null,
+      picture: picture ?? null,
       title: title,
     };
     const formattedUpdateData = {

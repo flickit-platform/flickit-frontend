@@ -93,7 +93,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
 
   const { closeDialog, context, index } = props;
   const { type, data } = context ?? {};
-  const defaultValues = type === "update" ? data ?? {} : {};
+  const defaultValues = type === "update" ? (data ?? {}) : {};
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentIds, assessment_kit } = useCompareContext();
   const dispatch = useCompareDispatch();
@@ -131,6 +131,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
         closeDialog();
       }
     } catch (e) {
+      console.error(e);
       closeDialog();
     }
   };

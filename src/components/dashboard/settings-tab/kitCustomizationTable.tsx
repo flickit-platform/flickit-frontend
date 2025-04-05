@@ -97,7 +97,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
       const targetArray =
         updatedData.customData?.[
           type === "subject" ? "subjects" : "attributes"
-        ] ?? [];
+        ] || [];
       const targetIndex = targetArray.findIndex((item: any) => item.id === id);
 
       if (targetIndex >= 0) {
@@ -125,7 +125,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         tempInputData?.customData?.[
           type === "subject" ? "subjects" : "attributes"
         ]?.find((item: any) => item.id === id) as any
-      )?.weight || value;
+      )?.weight ?? value;
 
     return (
       <TextField
@@ -184,7 +184,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                     renderEditableTextField(
                       "subject",
                       subject.id,
-                      subject.weight.customValue || subject.weight.defaultValue,
+                      subject.weight.customValue ?? subject.weight.defaultValue,
                     )
                   ) : (
                     <Box sx={{ display: "flex", gap: 1 }}>
@@ -243,7 +243,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                       renderEditableTextField(
                         "attribute",
                         attribute.id,
-                        attribute.weight.customValue ||
+                        attribute.weight.customValue ??
                           attribute.weight.defaultValue,
                       )
                     ) : (

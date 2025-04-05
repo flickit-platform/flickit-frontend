@@ -73,7 +73,7 @@ const AttributeImpactList = ({
         questionId,
         attributeId: attribute?.attributeId ?? undefined,
         maturityLevelId: item?.maturityLevel?.maturityLevelId ?? undefined,
-        weight: item.weight || 1,
+        weight: (item.weight ?? 0) + 1,
       });
     }
     setEditMode(id);

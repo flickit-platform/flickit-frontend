@@ -96,7 +96,7 @@ const AdviceSlider = (props: any) => {
           <Slider
             defaultValue={defaultValue}
             min={1}
-            max={maturityLevels?.length ? maturityLevels?.length : 5}
+            max={maturityLevels?.length ?? 5}
             onChange={handleSliderChange}
             value={value}
             marks
