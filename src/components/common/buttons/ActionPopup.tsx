@@ -116,7 +116,7 @@ const ActionPopup = ({
         onClick={togglePopup}
         sx={{
           display: "flex",
-          minWidth: "220px",
+          minWidth: "210px",
           justifyContent: "space-between",
           backgroundColor: colorScheme.light,
           borderRadius: borderRadiusValue,
@@ -139,7 +139,7 @@ const ActionPopup = ({
         sx={{
           zIndex: 1,
           width: anchorRef.current?.offsetWidth,
-          minWidth: "220px",
+          minWidth: "210px",
           position: "fixed",
           top: popperPosition.top,
           left: popperPosition.left,

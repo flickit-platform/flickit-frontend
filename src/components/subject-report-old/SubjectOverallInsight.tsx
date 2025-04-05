@@ -103,7 +103,7 @@ const SubjectOverallInsight = ({
   });
 
   return (
-    <Box display="flex" flexDirection="column" px={4}>
+    <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
           <Trans i18nKey="insight" />

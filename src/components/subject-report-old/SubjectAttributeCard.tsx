@@ -279,10 +279,7 @@ const SubjectAttributeCard = (props: any) => {
                     sm: "16px",
                     xs: 0,
                   },
-                  mt: {
-                    sm: 0,
-                    xs: 2,
-                  },
+                  mt: 0,
                   borderEndStartRadius: {
                     sm: 0,
                     xs: "16px",
@@ -336,7 +333,7 @@ const SubjectAttributeCard = (props: any) => {
               justifyContent: "center",
               justifyItems: "center",
               flexDirection: "column",
-              padding: 5,
+              padding: { xs: 2, sm: 5 },
             }}
           >
             {expandedAttribute && (
@@ -347,7 +344,7 @@ const SubjectAttributeCard = (props: any) => {
                 reloadQuery={reloadQuery}
               />
             )}
-            <Box>
+            <Box display={{ xs: "none", sm: "block" }}>
               <Tabs
                 value={topTab}
                 onChange={handleTopTabChange}

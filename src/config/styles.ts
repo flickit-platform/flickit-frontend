@@ -136,10 +136,10 @@ const box = {
     background: "#fff",
     borderRadius: "12px",
     width: "100%",
-    p: 4,
+    p: { xs: 2, sm: 4 },
     backgroundColor: "#fff",
     boxShadow: "0 0 8px 0 #0A234240",
-    mb: "40px",
+    mb: { xs: "10px", sm: "40px" },
   }),
 };
 const compare = {

@@ -154,29 +154,50 @@ const AssessmentReportContainer = (props: any) => {
           return (
             <Box m="auto">
               <Box
-                gap={2}
-                sx={{ ...styles.boxStyle, paddingBottom: 3 }}
-                display="flex"
-                mt={2}
+                sx={{
+                  ...styles.boxStyle,
+                  paddingBottom: 3,
+                  mt: 2,
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 2,
+                  flexWrap: "wrap",
+                  width: "100%",
+                }}
               >
-                <AssessmentInsight
-                  defaultInsight={assessment?.insight}
-                  reloadQuery={fetchInsightsIssues.query}
-                />
-                <Gauge
-                  maturity_level_number={assessmentKit?.maturityLevelCount}
-                  isMobileScreen={true}
-                  maturity_level_status={maturityLevel?.title}
-                  level_value={maturityLevel?.index ?? 0}
-                  confidence_value={confidenceValue}
-                  confidence_text={t("confidence") + ":"}
-                  hideGuidance={true}
-                  maxWidth="180px"
-                  maturity_status_guide_variant="bodyMedium"
-                  m="auto"
-                  maturity_status_guide={t("overallStatus")}
-                />
+                <Box sx={{ flex: 1, minWidth: "300px" }}>
+                  <AssessmentInsight
+                    defaultInsight={assessment?.insight}
+                    reloadQuery={fetchInsightsIssues.query}
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    width: "180px",
+                    minWidth: { xs: "100%", sm: "180px" },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mt: 1,
+                  }}
+                >
+                  <Gauge
+                    maturity_level_number={assessmentKit?.maturityLevelCount}
+                    isMobileScreen={true}
+                    maturity_level_status={maturityLevel?.title}
+                    level_value={maturityLevel?.index ?? 0}
+                    confidence_value={confidenceValue}
+                    confidence_text={t("confidence") + ":"}
+                    hideGuidance={true}
+                    maxWidth="180px"
+                    maturity_status_guide_variant="bodyMedium"
+                    m="auto"
+                    maturity_status_guide={t("overallStatus")}
+                  />
+                </Box>
               </Box>
+
               <Typography color="#73808C" variant="semiBoldMedium">
                 <Trans i18nKey="subjects" />
               </Typography>
