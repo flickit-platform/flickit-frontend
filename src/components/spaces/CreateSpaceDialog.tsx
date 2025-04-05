@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { DialogProps } from "@mui/material/Dialog";
 import { nanoid } from "nanoid";
 import { useForm } from "react-hook-form";
 import { Trans } from "react-i18next";
@@ -161,7 +160,7 @@ const CreateSpaceDialog = (props: any) => {
       <Box sx={{ py: 2 }}>
         <Grid container spacing={3}>
           {[PremiumBox, BasicBox].map((list, idx) => (
-            <Grid item xs={12} md={6} key={idx}>
+            <Grid item xs={12} md={6} key={UniqueId()}>
               {list.map((item) => (
                 <BoxType
                   key={item.type}
@@ -206,7 +205,7 @@ const CreateSpaceDialog = (props: any) => {
           <Grid sx={{ m: "32px" }} item>
             <InputFieldUC
               name="title"
-              defaultValue={defaultValues.title || ""}
+              defaultValue={defaultValues.title ?? ""}
               placeholder={t("spaceName") ?? ""}
               required
               label={<Trans i18nKey="name" />}
@@ -343,21 +342,50 @@ const BoxType = ({
   }, []);
 
   const isSelected = selectedType === type;
+  const isPremium = type === "PREMIUM";
+  const isBasic = type === "BASIC";
 
-  const border = isSelected
-    ? type === "PREMIUM"
-      ? "1px solid #2466A8"
-      : "1px solid #668099"
-    : "1px solid #C7CCD1";
-  const background = isSelected
-    ? type === "PREMIUM"
-      ? "#2466A814"
-      : "#6680991f"
-    : "unset";
-  const hoverBorder =
-    type === "PREMIUM" ? "#2D80D2" : !allowCreateBasic ? "#C7CCD1" : "#73808C";
-  const textColor =
-    type === "BASIC" ? (!allowCreateBasic ? "#3D4D5C80" : "#2B333B") : "unset";
+  let border;
+  if (isSelected) {
+    if (isPremium) {
+      border = "1px solid #2466A8";
+    } else {
+      border = "1px solid #668099";
+    }
+  } else {
+    border = "1px solid #C7CCD1";
+  }
+
+  let background;
+  if (isSelected) {
+    if (isPremium) {
+      background = "#2466A814";
+    } else {
+      background = "#6680991f";
+    }
+  } else {
+    background = "unset";
+  }
+
+  let hoverBorderColor;
+  if (isPremium) {
+    hoverBorderColor = "#2D80D2";
+  } else if (!allowCreateBasic) {
+    hoverBorderColor = "#C7CCD1";
+  } else {
+    hoverBorderColor = "#73808C";
+  }
+
+  let textColor = "unset";
+  if (isBasic) {
+    if (!allowCreateBasic) {
+      textColor = "#3D4D5C80";
+    } else {
+      textColor = "#2B333B";
+    }
+  } else {
+    textColor = "unset";
+  }
 
   const handleSelect = () => {
     if (!allowCreateBasic && type === "BASIC") return;
@@ -371,12 +399,12 @@ const BoxType = ({
         border,
         height: "100%",
         p: 2,
-        cursor: allowCreateBasic || type === "PREMIUM" ? "pointer" : "unset",
+        cursor: allowCreateBasic || isPremium ? "pointer" : "unset",
         background,
         "&:hover": {
           borderWidth: "1px",
           borderStyle: "solid",
-          borderColor: hoverBorder,
+          borderColor: hoverBorderColor,
         },
         position: "relative",
       }}
@@ -388,13 +416,11 @@ const BoxType = ({
           <Typography
             sx={{
               ...theme.typography.semiBoldMedium,
-              WebkitBackgroundClip: type === "PREMIUM" ? "text" : undefined,
-              WebkitTextFillColor:
-                type === "PREMIUM" ? "transparent" : undefined,
-              backgroundImage:
-                type === "PREMIUM"
-                  ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
-                  : undefined,
+              WebkitBackgroundClip: isPremium ? "text" : undefined,
+              WebkitTextFillColor: isPremium ? "transparent" : undefined,
+              backgroundImage: isPremium
+                ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
+                : undefined,
               color: textColor,
             }}
           >
@@ -423,18 +449,16 @@ const BoxType = ({
             <Typography
               sx={{
                 ...theme.typography.labelSmall,
-                WebkitBackgroundClip: type === "PREMIUM" ? "text" : undefined,
-                WebkitTextFillColor:
-                  type === "PREMIUM" ? "transparent" : undefined,
-                backgroundImage:
-                  type === "PREMIUM"
-                    ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
-                    : undefined,
+                WebkitBackgroundClip: isPremium ? "text" : undefined,
+                WebkitTextFillColor: isPremium ? "transparent" : undefined,
+                backgroundImage: isPremium
+                  ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
+                  : undefined,
                 color: textColor,
               }}
             >
               <Trans i18nKey={text} />
-              {!allowCreateBasic && type === "BASIC" && index === 1 && (
+              {!allowCreateBasic && isBasic && index === 1 && (
                 <Typography
                   sx={{
                     ...theme.typography.labelSmall,
@@ -442,8 +466,7 @@ const BoxType = ({
                     display: "inline-block",
                   }}
                 >
-                  (<Trans i18nKey="reachedLimit" />
-                  ).
+                  (<Trans i18nKey="reachedLimit" />)
                 </Typography>
               )}
             </Typography>
@@ -451,7 +474,7 @@ const BoxType = ({
         ))}
       </Box>
 
-      {isSelected && type === "PREMIUM" && (
+      {isSelected && isPremium && (
         <Box
           sx={{
             color: theme.palette.primary.main,

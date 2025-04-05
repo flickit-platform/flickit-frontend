@@ -11,13 +11,9 @@ declare module "axios" {
 }
 
 const getCurrentLocale = () =>
-  i18next.language || navigator.language || "en-US";
+  i18next.language ?? navigator.language ?? "en-US";
 
-export const createService = (
-  signOut: () => void,
-  accessToken: string,
-  setAccessToken: any,
-) => {
+export const createService = () => {
   axios.defaults.baseURL = BASE_URL;
   axios.defaults.withCredentials = true;
   axios.defaults.timeoutErrorMessage = t("checkNetworkConnection") as string;
@@ -210,9 +206,9 @@ export const createService = (
         kitCustomId,
       } = kitInfo;
       return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, {
-        ...(config || {}),
+        ...(config ?? {}),
         params: {
-          ...(customId || { kitCustomId } || {}),
+          ...(customId ?? { kitCustomId } ?? {}),
         },
       });
     },
@@ -1968,7 +1964,7 @@ export const createService = (
     ) {
       const { id, size, page } = args ?? {};
       return axios.get(`/api/v1/expert-groups/${id}/assessment-kits/`, {
-        ...(config || {}),
+        ...(config ?? {}),
         params: { size: size, page: page - 1 },
       });
     },

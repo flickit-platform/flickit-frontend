@@ -107,8 +107,8 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
           .then()
           .catch();
         formMethods.reset({
-          title: question?.title || "",
-          hint: question?.hint || "",
+          title: question?.title ?? "",
+          hint: question?.hint ?? "",
           options: question?.options || [{ text: "" }],
           mayNotBeApplicable: question?.mayNotBeApplicable || false,
           advisable: question?.advisable || false,
@@ -383,7 +383,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                 }
               >
                 <Select
-                  value={selectedAnswerRange || ""}
+                  value={selectedAnswerRange ?? ""}
                   onChange={handleAnswerRangeChange}
                   sx={dropdownStyle}
                   size="small"

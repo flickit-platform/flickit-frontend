@@ -16,7 +16,7 @@ const GettingThingsReadyLoading = (props: IGettingThingsReadyLoadingProps) => {
         minWidth: { xs: "120px", sm: "360px" },
         maxWidth: "400px",
         px: { xs: 0.5, sm: 2 },
-        ...(rest.sx || {}),
+        ...(rest.sx ?? {}),
       }}
     >
       <Typography variant="h5">

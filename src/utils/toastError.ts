@@ -36,7 +36,7 @@ const toastError = (
     filterByStatus = [],
     filterByType = [],
     filterIfHasData = true,
-  } = options || {};
+  } = options ?? {};
 
   if (!err) {
     return;
@@ -97,10 +97,10 @@ const toastError = (
   }
 
   toast.error(
-    data?.error ||
-      data?.message ||
-      data?.detail ||
-      data?.non_field_errors?.[0] ||
+    data?.error ??
+      data?.message ??
+      data?.detail ??
+      data?.non_field_errors?.[0] ??
       message,
   );
 };

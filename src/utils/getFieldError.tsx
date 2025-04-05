@@ -54,7 +54,7 @@ const getFieldError = (
     ),
   };
   const errorMessage =
-    errorMessagesBaseOnErrorTypes[error?.type as TErrorTypes] || error?.message;
+    errorMessagesBaseOnErrorTypes[error?.type as TErrorTypes] ?? error?.message;
 
   return { hasError, errorMessage };
 };

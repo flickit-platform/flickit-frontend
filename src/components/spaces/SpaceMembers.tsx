@@ -585,7 +585,7 @@ const InviteSpaceMemberDialog = (
   const { query: inviteMemberQuery, loading } = useQuery({
     service: (args, config) =>
       service.inviteSpaceMember(
-        args ?? { id: spaceId, data: rest.context?.data || {} },
+        args ?? { id: spaceId, data: rest.context?.data ?? {} },
         config,
       ),
     runOnMount: false,
@@ -615,7 +615,7 @@ const InviteSpaceMemberDialog = (
         <Trans
           i18nKey="emailIsNotOnAppTitleYet"
           values={{
-            email: rest.context?.data?.email || "This user",
+            email: rest.context?.data?.email ?? "This user",
             title: config.appTitle,
           }}
         />{" "}

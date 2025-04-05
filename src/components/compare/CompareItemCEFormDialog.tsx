@@ -92,8 +92,8 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
   };
 
   const { closeDialog, context, index } = props;
-  const { type, data } = context || {};
-  const defaultValues = type === "update" ? data || {} : {};
+  const { type, data } = context ?? {};
+  const defaultValues = type === "update" ? data ?? {} : {};
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentIds, assessment_kit } = useCompareContext();
   const dispatch = useCompareDispatch();
@@ -175,7 +175,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                       <Title
                         size="small"
                         sup={option?.space?.title}
-                        color={option?.color?.code || "#101c32"}
+                        color={option?.color?.code ?? "#101c32"}
                       >
                         {option.title}
                       </Title>

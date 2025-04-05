@@ -84,7 +84,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
     assessmentsCount = 0,
     is_default_space_for_current_user,
     type,
-  } = item || {};
+  } = item ?? {};
 
   const trackSeen = () => {
     service.seenSpaceList({ spaceId }, {});

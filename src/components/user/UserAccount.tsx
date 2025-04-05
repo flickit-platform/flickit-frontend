@@ -116,7 +116,7 @@ const UserAccount = () => {
               position: "relative",
             }}
             alt={userInfo?.displayName}
-            src={userInfo?.pictureLink || "/"}
+            src={userInfo?.pictureLink ?? "/"}
           ></Avatar>
           {isLoading && (
             <CircularProgress

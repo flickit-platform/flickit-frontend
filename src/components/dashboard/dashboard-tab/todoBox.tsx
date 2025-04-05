@@ -264,10 +264,8 @@ export const IssuesItem = ({
   };
 
   const handleGenerateAll = async () => {
-    try {
-      await generateInsights.query();
-      await fetchDashboard();
-    } catch (e) {}
+    await generateInsights.query();
+    await fetchDashboard();
   };
 
   const regeneratedAll = async () => {

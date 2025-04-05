@@ -20,9 +20,9 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       const previousUser = localStorage.getItem("previousUser");
       const lastVisitedPage = localStorage.getItem("lastVisitedPage");
       const currentUser =
-        _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
+        _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
 
-      sessionStorage.setItem("currentUser", currentUser || "");
+      sessionStorage.setItem("currentUser", currentUser ?? "");
 
       if (location.pathname.includes("html-document")) {
         const space = location.pathname.split("/")[1];
@@ -43,9 +43,9 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
         }
       } else {
         const currentUser =
-          _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
+          _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
 
-        sessionStorage.setItem("currentUser", currentUser || "");
+        sessionStorage.setItem("currentUser", currentUser ?? "");
         onAuthenticatedCallback();
       }
     })
@@ -54,9 +54,9 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
 
 const doLogout = async () => {
   const currentUser =
-    _kc.tokenParsed?.preferred_username || _kc.tokenParsed?.sub;
+    _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
 
-  localStorage.setItem("previousUser", currentUser || "");
+  localStorage.setItem("previousUser", currentUser ?? "");
   localStorage.setItem("lastVisitedPage", window.location.pathname);
   localStorage.removeItem("hasRedirected");
   sessionStorage.clear();

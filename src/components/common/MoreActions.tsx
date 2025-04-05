@@ -88,7 +88,7 @@ const MoreActions = (props: IMoreActionsProps) => {
             icon,
             text,
             menuItemProps = {},
-          } = item || {};
+          } = item ?? {};
           return (
             <MenuItem
               key={item.text.key}

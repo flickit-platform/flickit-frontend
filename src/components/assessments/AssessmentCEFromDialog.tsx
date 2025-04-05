@@ -86,10 +86,10 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             .createAssessment(
               {
                 data: {
-                  spaceId: spaceId || space?.id,
+                  spaceId: spaceId ?? space?.id,
                   assessmentKitId: assessment_kit?.id,
                   title: title,
-                  shortTitle: shortTitle === "" ? null : shortTitle || null,
+                  shortTitle: shortTitle === "" ? null : (shortTitle ?? null),
                   colorId: color,
                 },
               },
@@ -107,7 +107,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       if (type === "update") {
         close();
       }
-      setCreatedKitSpaceId(spaceId || space?.id);
+      setCreatedKitSpaceId(spaceId ?? space?.id);
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
@@ -175,7 +175,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             <Grid item xs={12} md={12}>
               <InputFieldUC
                 autoFocus={true}
-                defaultValue={defaultValues.title || ""}
+                defaultValue={defaultValues.title ?? ""}
                 name="title"
                 required={true}
                 label={<Trans i18nKey="title" />}
@@ -186,7 +186,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             <Grid item xs={12} md={12}>
               <InputFieldUC
                 autoFocus={false}
-                defaultValue={defaultValues.shortTitle || null}
+                defaultValue={defaultValues.shortTitle ?? null}
                 name="shortTitle"
                 required={false}
                 label={<Trans i18nKey="shortTitle" />}
@@ -195,7 +195,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <SpaceField defaultValue={defaultValues?.space || data?.space} />
+              <SpaceField defaultValue={defaultValues?.space ?? data?.space} />
             </Grid>
             <Grid item xs={12}>
               <AssessmentKitField
@@ -239,7 +239,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
           >
             <Link
               to={`/${
-                spaceId || data.space?.id
+                spaceId ?? data.space?.id
               }/assessments/1/${createdKitId}/settings/`}
               style={{ textDecoration: "none" }}
             >

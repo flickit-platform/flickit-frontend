@@ -1219,7 +1219,7 @@ const OnHoverInputTitleSetting = (props: any) => {
               error={hasError}
               fullWidth
               defaultValue={
-                type == "title" ? inputData : inputDataShortTitle || ""
+                type == "title" ? inputData : inputDataShortTitle ?? ""
               }
               onChange={(e) =>
                 type == "title"

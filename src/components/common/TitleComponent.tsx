@@ -58,7 +58,7 @@ const Title = (props: ITitle) => {
           typeof borderBottom === "boolean" && borderBottom
             ? (theme) => `1px solid ${theme.palette.grey[300]}`
             : (borderBottom as string),
-        ...(rest.sx || {}),
+        ...(rest.sx ?? {}),
         ...wrapperProps,
       }}
       {...wrapperProps}
@@ -141,7 +141,7 @@ const Title = (props: ITitle) => {
             sx={{
               ...styles.centerV,
               display: { xs: "block", sm: "flex" },
-              ...((titleProps?.sx || {}) as any),
+              ...((titleProps?.sx ?? {}) as any),
             }}
           >
             <Trans i18nKey={appTitle} />
@@ -159,7 +159,7 @@ const Title = (props: ITitle) => {
           sx={{
             ...styles.centerV,
             display: { xs: "block", sm: "flex" },
-            ...((titleProps?.sx || {}) as any),
+            ...((titleProps?.sx ?? {}) as any),
           }}
         >
           {children}

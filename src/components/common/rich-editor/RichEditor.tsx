@@ -98,9 +98,9 @@ const RichEditor = (props: IRichEditorProps) => {
       }
     },
     editorProps: {
-      ...(editorProps?.editorProps || {}),
+      ...(editorProps?.editorProps ?? {}),
       attributes: {
-        ...(editorProps?.editorProps?.attributes || {}),
+        ...(editorProps?.editorProps?.attributes ?? {}),
         id: "proseMirror",
       },
     },
@@ -115,7 +115,7 @@ const RichEditor = (props: IRichEditorProps) => {
       sx={
         isEditable
           ? {
-              ...(boxProps.sx || {}),
+              ...(boxProps.sx ?? {}),
               direction: `${isFarsi ? "rtl" : "ltr"}`,
               textAlign: `${isFarsi ? "right" : "left"}`,
               cursor: "text",
@@ -175,7 +175,7 @@ const RichEditor = (props: IRichEditorProps) => {
                     },
               },
             }
-          : { ...(boxProps.sx || {}) }
+          : { ...(boxProps.sx ?? {}) }
       }
     >
       {editor && isEditable && <RichEditorMenuBar editor={editor} />}

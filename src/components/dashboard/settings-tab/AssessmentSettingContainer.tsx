@@ -50,7 +50,7 @@ const AssessmentSettingContainer = () => {
   });
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args || {}) }, config),
+      service.fetchPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 

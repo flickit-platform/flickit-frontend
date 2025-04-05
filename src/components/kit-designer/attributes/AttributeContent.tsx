@@ -81,7 +81,7 @@ const AttributesContent = () => {
 
   useEffect(() => {
     if (fetchSubjectKit.data) {
-      setSubjects(fetchSubjectKit.data.items || []);
+      setSubjects(fetchSubjectKit.data.items ?? []);
     }
   }, [fetchSubjectKit.data]);
 

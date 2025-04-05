@@ -45,9 +45,9 @@ export const AssessmentTOC = ({
         subItems:
           subject?.attributes?.map(
             (attribute: IAttribute) => attribute.title,
-          ) || [],
+          ) ?? [],
         id: subject.title,
-      })) || []
+      })) ?? []
     );
   }, [graphicalReport]);
 

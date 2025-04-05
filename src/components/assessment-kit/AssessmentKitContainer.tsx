@@ -50,7 +50,7 @@ const AssessmentKitContainer = () => {
       {...assessmentKitQueryData}
       render={(data) => {
         setDocumentTitle(
-          `${t("assessmentKit")}: ${data.title || ""}`,
+          `${t("assessmentKit")}: ${data.title ?? ""}`,
           config.appTitle,
         );
         return (
@@ -81,7 +81,7 @@ const AssessmentKit = (props: any) => {
     questionnaires = [],
     maturityLevels,
     tags = [],
-  } = data || {};
+  } = data ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
@@ -337,7 +337,7 @@ const AssessmentKit = (props: any) => {
                     <Trans i18nKey="numberOfSubjects" />:
                   </Typography>
                   <Typography fontWeight={"bold"}>
-                    {subjectsCount || 0}
+                    {subjectsCount ?? 0}
                   </Typography>
                 </Box>
                 <Box
@@ -347,7 +347,7 @@ const AssessmentKit = (props: any) => {
                     <Trans i18nKey="numberOfQuestionnaires" />:
                   </Typography>
                   <Typography fontWeight={"bold"}>
-                    {questionnairesCount || 0}
+                    {questionnairesCount ?? 0}
                   </Typography>
                 </Box>
                 <Box
@@ -357,7 +357,7 @@ const AssessmentKit = (props: any) => {
                     <Trans i18nKey="numberOfMaturityLevels" />:
                   </Typography>
                   <Typography fontWeight={"bold"}>
-                    {maturityLevels?.length || 0}
+                    {maturityLevels?.length ?? 0}
                   </Typography>
                 </Box>
                 <Button

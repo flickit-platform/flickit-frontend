@@ -156,7 +156,7 @@ const AutocompleteBaseField = (
   const { hasError, errorMessage } = getFieldError(errors, name);
 
   const [inputValue, setInputValue] = useState(
-    () => getOptionLabel(defaultValue) || "",
+    () => getOptionLabel(defaultValue) ?? "",
   );
   const [options, setOptions] = useState<any[]>([]);
   useEffect(() => {

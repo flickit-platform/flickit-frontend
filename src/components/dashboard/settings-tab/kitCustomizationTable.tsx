@@ -97,7 +97,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
       const targetArray =
         updatedData.customData?.[
           type === "subject" ? "subjects" : "attributes"
-        ] || [];
+        ] ?? [];
       const targetIndex = targetArray.findIndex((item: any) => item.id === id);
 
       if (targetIndex >= 0) {
@@ -133,7 +133,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         label={<Trans i18nKey="weight" />}
         name="weight"
         type="number"
-        value={inputValue || ""}
+        value={inputValue ?? ""}
         onChange={(e: any) => handleInputChange(e, id, type)}
         fullWidth
         margin="normal"

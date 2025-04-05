@@ -32,7 +32,7 @@ const AssessmentKitPermissionsContainer = () => {
       ]}
       render={([data = {}, info = {}]) => {
         setDocumentTitle(
-          `${t("assessmentKit")}: ${info?.expertGroup?.title || ""}`,
+          `${t("assessmentKit")}: ${info?.expertGroup?.title ?? ""}`,
           config.appTitle,
         );
         return (

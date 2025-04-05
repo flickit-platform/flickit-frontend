@@ -18,7 +18,7 @@ const ErrorRecalculating = (props: IGettingThingsReadyLoadingProps) => {
         maxWidth: "400px",
         px: { xs: 0.5, sm: 2 },
         margin: "0 auto",
-        ...(rest.sx || {}),
+        ...(rest.sx ?? {}),
       }}
     >
       <Box sx={{ ...styles.centerCH }}>

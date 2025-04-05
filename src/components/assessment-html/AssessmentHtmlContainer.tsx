@@ -43,20 +43,20 @@ const AssessmentExportContainer = () => {
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args || {}) }, config),
+      service.fetchPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 
   const fetchGraphicalReport = useQuery({
     service: (args, config) =>
-      service.fetchGraphicalReport({ assessmentId, ...(args || {}) }, config),
+      service.fetchGraphicalReport({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 
   const fetchGraphicalReportUsers = useQuery<PathInfo>({
     service: (args, config) =>
       service.fetchGraphicalReportUsers(
-        { assessmentId, ...(args || {}) },
+        { assessmentId, ...(args ?? {}) },
         config,
       ),
     runOnMount: false,
