@@ -13,7 +13,11 @@ declare module "axios" {
 const getCurrentLocale = () =>
   i18next.language ?? navigator.language ?? "en-US";
 
-export const createService = () => {
+export const createService = (
+  signOut: () => void,
+  accessToken: string,
+  setAccessToken: any,
+) => {
   axios.defaults.baseURL = BASE_URL;
   axios.defaults.withCredentials = true;
   axios.defaults.timeoutErrorMessage = t("checkNetworkConnection") as string;
