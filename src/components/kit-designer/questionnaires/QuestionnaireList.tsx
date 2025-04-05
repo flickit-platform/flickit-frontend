@@ -247,8 +247,8 @@ const ListOfItems = ({
           };
           setNewQuestion({
             title: "",
-            index: (newQuestion.inde ?? 0) + 1,
-            value: (newQuestion.inde ?? 0) + 1,
+            index: (newQuestion.index ?? 0) + 1,
+            value: (newQuestion.index ?? 0) + 1,
             id: null,
           });
           setQuestionData((prev) => [...prev, newQuestionData]);
