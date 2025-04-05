@@ -253,9 +253,9 @@ const Uploader = (props: IUploadProps) => {
     },
   });
 
-  const file = myFiles?.[0] || fieldProps.value?.[0];
+  const file = myFiles?.[0] ?? fieldProps.value?.[0];
 
-  const loading = uploadQueryProps.loading || deleteQueryProps.loading;
+  const loading = uploadQueryProps.loading ?? deleteQueryProps.loading;
   const { errorMessage, hasError } = getFieldError(errors, fieldProps.name);
 
   const selectedFile = dropNewFile?.[0] ?? acceptedFiles?.[0] ?? file;
@@ -338,7 +338,7 @@ const Uploader = (props: IUploadProps) => {
                       }}
                       component="img"
                       src={
-                        (file as any).src || URL.createObjectURL(file as any)
+                        (file as any).src ?? URL.createObjectURL(file as any)
                       }
                       alt={file.name}
                       title={file.name}
@@ -397,7 +397,7 @@ const Uploader = (props: IUploadProps) => {
           )}
         </Box>
       </Box>
-      <FormHelperText>{limitGuide || (errorMessage as string)}</FormHelperText>
+      <FormHelperText>{limitGuide ?? (errorMessage as string)}</FormHelperText>
     </FormControl>
   );
 };

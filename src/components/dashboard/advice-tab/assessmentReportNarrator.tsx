@@ -22,7 +22,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
 
   useEffect(() => {
     setAboutSection(
-      fetchAdviceNarration.data?.aiNarration ||
+      fetchAdviceNarration.data?.aiNarration ??
         fetchAdviceNarration.data?.assessorNarration,
     );
     setEditable(fetchAdviceNarration.data.editable ?? false);

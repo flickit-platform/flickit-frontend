@@ -337,7 +337,7 @@ export const IssuesItem = ({
     total: "suggestAnyAdvicesSoFar",
   } as any;
 
-  const colorPalette = (theme.palette as any)[color] || theme.palette.primary;
+  const colorPalette = (theme.palette as any)[color] ?? theme.palette.primary;
 
   return (
     <Box

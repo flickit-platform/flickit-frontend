@@ -91,7 +91,10 @@ export default function ScoreImpactBarChart({
     gainedScore: measure.gainedScore,
   }));
 
-  const barSize = Math.min(24, Math.max(14, 240 / (chartData?.length || 1)));
+  const barSize = Math.min(
+    24,
+    Math.max(14, 240 / (chartData?.length ?? 0) + 1),
+  );
 
   return (
     <div style={{ width: "100%", height: "500px", direction: "rtl" }}>

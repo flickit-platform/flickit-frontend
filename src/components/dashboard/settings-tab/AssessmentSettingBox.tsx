@@ -1159,7 +1159,7 @@ const OnHoverInputTitleSetting = (props: any) => {
           data: {
             title: inputData,
             shortTitle: inputDataShortTitle === "" ? null : inputDataShortTitle,
-            colorId: color?.id || 6,
+            colorId: color?.id ?? 6,
           },
         },
         config,

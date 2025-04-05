@@ -4,11 +4,11 @@ import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
+import { t } from "i18next";
 
 interface QuestionnairesFormProps {
-    newItem: {
+  newItem: {
     title: string;
     description: string;
     index: number;
@@ -18,6 +18,43 @@ interface QuestionnairesFormProps {
   handleSave: () => void;
   handleCancel: () => void;
 }
+
+const renderTextField = (
+  label: string,
+  name: string,
+  value: string | number,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  required = true,
+  multiline = false,
+  inputProps?: any,
+) => (
+  <TextField
+    required={required}
+    label={label}
+    name={name}
+    value={value}
+    onChange={onChange}
+    fullWidth
+    margin="normal"
+    multiline={multiline}
+    minRows={multiline ? 2 : 1}
+    inputProps={inputProps}
+    sx={{
+      mt: 1,
+      fontSize: 14,
+      "& .MuiInputBase-root": {
+        fontSize: 14,
+        overflow: multiline ? "auto" : "unset",
+        height: multiline ? "unset" : 32,
+      },
+      "& .MuiFormLabel-root": {
+        fontSize: 14,
+      },
+      background: "#fff",
+      width: { xs: "100%", md: name === "description" ? "85%" : "60%" },
+    }}
+  />
+);
 
 const QuestionnairesForm = ({
   newItem,
@@ -61,70 +98,40 @@ const QuestionnairesForm = ({
           "& .MuiInputBase-root": {
             fontSize: 14,
           },
-          background:"#fff",
+          background: "#fff",
         }}
       />
     </Box>
 
     <Box width="100%" mx={1}>
-      <TextField
-        required
-        label={<Trans i18nKey="title" />}
-        name="title"
-        value={newItem.title}
-        onChange={handleInputChange}
-        fullWidth
-        inputProps={{
-            "data-testid": "questionnaires-title",
-        }}
-        margin="normal"
-        sx={{
-          mt: 0,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            height: 32,
-            fontSize: 14,
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-            background:"#fff",
-            width:{xs:"100%",md:"60%"},
-        }}
-      />
+      {renderTextField(
+        t("title"),
+        "title",
+        newItem.title,
+        handleInputChange,
+        true,
+        false,
+        { "data-testid": "questionnaires-title" },
+      )}
 
-      <TextField
-        label={<Trans i18nKey="description" />}
-        name="description"
-        required
-        value={newItem.description}
-        onChange={handleInputChange}
-        inputProps={{
-            "data-testid": "questionnaires-description",
-        }}
-        fullWidth
-        margin="normal"
-        multiline
-        minRows={2}
-        maxRows={3}
-        sx={{
-          mt: 1,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            fontSize: 14,
-            overflow: "auto",
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-            background:"#fff",
-            width:{xs:"100%",md:"85%"},
-        }}
-      />
+      {renderTextField(
+        t("description"),
+        "description",
+        newItem.description,
+        handleInputChange,
+        true,
+        true,
+        { "data-testid": "questionnaires-description" },
+      )}
     </Box>
 
     {/* Check and Close Buttons */}
-    <Box display="flex" alignItems="center" flexDirection={"column"} gap={"20px"}>
+    <Box
+      display="flex"
+      alignItems="center"
+      flexDirection={"column"}
+      gap={"20px"}
+    >
       <Link
         href="#subject-header"
         sx={{
@@ -133,14 +140,23 @@ const QuestionnairesForm = ({
           fontWeight: "bold",
           display: "flex",
           alignItems: "center",
-          gap:"20px"
+          gap: "20px",
         }}
       >
-        {" "}
-        <IconButton size="small" color="primary" data-testid="questionnaires-check-icon" onClick={handleSave}>
+        <IconButton
+          size="small"
+          color="primary"
+          data-testid="questionnaires-check-icon"
+          onClick={handleSave}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="questionnaires-close-icon" onClick={handleCancel}>
+        <IconButton
+          size="small"
+          color="secondary"
+          data-testid="questionnaires-close-icon"
+          onClick={handleCancel}
+        >
           <CloseIcon />
         </IconButton>
       </Link>

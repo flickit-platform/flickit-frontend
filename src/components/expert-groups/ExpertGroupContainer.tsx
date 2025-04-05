@@ -484,7 +484,7 @@ const useFetchAssessmentKit = () => {
     assessmentKitQuery.query({
       id: expertGroupId,
       size: PAGESIZE,
-      page: value || 1,
+      page: value ?? 1,
     });
   };
 
@@ -494,7 +494,7 @@ const useFetchAssessmentKit = () => {
     runOnMount: false,
   });
   return {
-    data: assessmentKitQuery?.data?.items || [],
+    data: assessmentKitQuery?.data?.items ?? [],
     page: assessmentKitQuery?.data?.page + 1 || 0,
     size: assessmentKitQuery?.data?.size ?? 0,
     total: assessmentKitQuery?.data?.total ?? 0,

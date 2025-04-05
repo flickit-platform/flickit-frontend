@@ -3,7 +3,7 @@ import { GridSize } from "@mui/material/Grid";
 export const calcGridSizeBasedOnTheLengthOfAssessments = (
   length: number,
 ): GridSize => {
-  const gridSize = 12 / (length || 1);
+  const gridSize = 12 / (length ?? 0) + 1;
   return gridSize;
 };
 

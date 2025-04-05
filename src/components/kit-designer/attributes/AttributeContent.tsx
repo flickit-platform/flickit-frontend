@@ -117,8 +117,8 @@ const AttributesContent = () => {
       setNewAttribute({
         title: "",
         description: "",
-        index: fetchAttributeKit.data?.items.length + 1 || 1,
-        value: fetchAttributeKit.data?.items.length + 1 || 1,
+        index: (fetchAttributeKit.data?.items.length ?? 0) + 1,
+        value: (fetchAttributeKit.data?.items.length ?? 0) + 1,
         weight: 1,
         id: null,
       });
@@ -133,8 +133,8 @@ const AttributesContent = () => {
     setNewAttribute({
       title: "",
       description: "",
-      index: fetchAttributeKit.data?.items.length + 1 || 1,
-      value: fetchAttributeKit.data?.items.length + 1 || 1,
+      index: (fetchAttributeKit.data?.items.length ?? 0) + 1,
+      value: (fetchAttributeKit.data?.items.length ?? 0) + 1,
       weight: 0,
       id: null,
     });
@@ -164,8 +164,8 @@ const AttributesContent = () => {
       setNewAttribute({
         title: "",
         description: "",
-        index: fetchAttributeKit.data?.items.length + 1 || 1,
-        value: fetchAttributeKit.data?.items.length + 1 || 1,
+        index: (fetchAttributeKit.data?.items.length ?? 0) + 1,
+        value: (fetchAttributeKit.data?.items.length ?? 0) + 1,
         weight: 0,
         id: null,
       });
