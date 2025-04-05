@@ -41,24 +41,20 @@ const AssessmentReportContainer = (props: any) => {
   const assessmentTotalProgress = useQuery({
     service: (args, config) =>
       service.fetchAssessmentTotalProgress(
-        { assessmentId, ...(args || {}) },
+        { assessmentId, ...(args ?? {}) },
         config,
       ),
   });
-  const calculate = async () => {
-    try {
-      await calculateMaturityLevelQuery.query();
-      await fetchAssessmentInsight.query();
-      await fetchInsightsIssues.query();
-    } catch (e) {}
+  const runCalculationWithRefresh = async (calculationQuery: any) => {
+    await calculationQuery.query();
+    await fetchAssessmentInsight.query();
+    await fetchInsightsIssues.query();
   };
-  const calculateConfidenceLevel = async () => {
-    try {
-      await calculateConfidenceLevelQuery.query();
-      await fetchAssessmentInsight.query();
-      await fetchInsightsIssues.query();
-    } catch (e) {}
-  };
+
+  const calculate = () =>
+    runCalculationWithRefresh(calculateMaturityLevelQuery);
+  const calculateConfidenceLevel = () =>
+    runCalculationWithRefresh(calculateConfidenceLevelQuery);
 
   useEffect(() => {
     if (
@@ -103,7 +99,7 @@ const AssessmentReportContainer = (props: any) => {
         loading={!fetchInsightsIssues.loaded || assessmentTotalProgress.loading}
         render={([issues]) => {
           const { answersCount, questionsCount } =
-            assessmentTotalProgress.data || {};
+            assessmentTotalProgress.data ?? {};
 
           return (
             <Box m="auto">
@@ -145,38 +141,59 @@ const AssessmentReportContainer = (props: any) => {
           !fetchAssessmentInsight.loaded || assessmentTotalProgress.loading
         }
         render={([data = {}]) => {
-          const { assessment, subjects } = data || {};
+          const { assessment, subjects } = data ?? {};
 
-          const colorCode = assessment?.color?.code || "#101c32";
+          const colorCode = assessment?.color?.code ?? "#101c32";
           const { assessmentKit, maturityLevel, confidenceValue } =
-            assessment || {};
+            assessment ?? {};
 
           return (
             <Box m="auto">
               <Box
-                gap={2}
-                sx={{ ...styles.boxStyle, paddingBottom: 3 }}
-                display="flex"
-                mt={2}
+                sx={{
+                  ...styles.boxStyle,
+                  paddingBottom: 3,
+                  mt: 2,
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 2,
+                  flexWrap: "wrap",
+                  width: "100%",
+                }}
               >
-                <AssessmentInsight
-                  defaultInsight={assessment?.insight}
-                  reloadQuery={fetchInsightsIssues.query}
-                />
-                <Gauge
-                  maturity_level_number={assessmentKit?.maturityLevelCount}
-                  isMobileScreen={true}
-                  maturity_level_status={maturityLevel?.title}
-                  level_value={maturityLevel?.index ?? 0}
-                  confidence_value={confidenceValue}
-                  confidence_text={t("confidence") + ":"}
-                  hideGuidance={true}
-                  maxWidth="180px"
-                  maturity_status_guide_variant="bodyMedium"
-                  m="auto"
-                  maturity_status_guide={t("overallStatus")}
-                />
+                <Box sx={{ flex: 1, minWidth: "300px" }}>
+                  <AssessmentInsight
+                    defaultInsight={assessment?.insight}
+                    reloadQuery={fetchInsightsIssues.query}
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    width: "180px",
+                    minWidth: { xs: "100%", sm: "180px" },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mt: 1,
+                  }}
+                >
+                  <Gauge
+                    maturity_level_number={assessmentKit?.maturityLevelCount}
+                    isMobileScreen={true}
+                    maturity_level_status={maturityLevel?.title}
+                    level_value={maturityLevel?.index ?? 0}
+                    confidence_value={confidenceValue}
+                    confidence_text={t("confidence") + ":"}
+                    hideGuidance={true}
+                    maxWidth="180px"
+                    maturity_status_guide_variant="bodyMedium"
+                    m="auto"
+                    maturity_status_guide={t("overallStatus")}
+                  />
+                </Box>
               </Box>
+
               <Typography color="#73808C" variant="semiBoldMedium">
                 <Trans i18nKey="subjects" />
               </Typography>

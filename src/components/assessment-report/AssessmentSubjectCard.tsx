@@ -195,7 +195,7 @@ export const AssessmentSubjectAccordion = (
           )}
         </Grid>
       </AccordionSummary>
-      <AccordionDetails sx={{ padding: 4 }}>
+      <AccordionDetails sx={{ padding: { xs: 2, sm: 4 } }}>
         <Box sx={{ display: expanded ? "block" : "none" }}>
           <SubjectContainer {...props} reloadQuery={reloadQuery} />
         </Box>

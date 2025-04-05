@@ -24,8 +24,8 @@ const AttributeInsight = ({
   const { assessmentId = "" } = useParams();
 
   const [insight, setInsight] = useState<any>(
-    defaultInsight?.assessorInsight ||
-      defaultInsight?.aiInsight ||
+    defaultInsight?.assessorInsight ??
+      defaultInsight?.aiInsight ??
       defaultInsight?.defaultInsight,
   );
   const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
@@ -79,7 +79,7 @@ const AttributeInsight = ({
   useEffect(() => {
     if (fetchSubjectInsight.data) {
       const data = fetchSubjectInsight.data;
-      const selected = data?.assessorInsight || data?.aiInsight;
+      const selected = data?.assessorInsight ?? data?.aiInsight;
       setInsight(selected);
       setEditable(data?.editable ?? false);
       setIsApproved(data?.approved ?? true);
@@ -112,7 +112,7 @@ const AttributeInsight = ({
   });
 
   return (
-    <Box display="flex" flexDirection="column" px={4}>
+    <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
           <Trans i18nKey="insight" />

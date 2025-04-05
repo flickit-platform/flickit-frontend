@@ -40,7 +40,6 @@ const DonutChart = (props: IGaugeProps) => {
           sx={{
             ...styles.centerCVH,
             textAlign: "center",
-            width: "fit-content",
             gap: "1rem",
           }}
         >
@@ -49,7 +48,6 @@ const DonutChart = (props: IGaugeProps) => {
               display: "flex",
               alignItems: "center",
               gap: "3px",
-              width: "fit-content",
             }}
           >
             <CircleGaugeComponent
