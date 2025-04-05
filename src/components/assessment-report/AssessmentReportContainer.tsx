@@ -41,20 +41,20 @@ const AssessmentReportContainer = (props: any) => {
   const assessmentTotalProgress = useQuery({
     service: (args, config) =>
       service.fetchAssessmentTotalProgress(
-        { assessmentId, ...(args || {}) },
+        { assessmentId, ...(args ?? {}) },
         config,
       ),
   });
-  const calculate = async () => {
-    await calculateMaturityLevelQuery.query();
+  const runCalculationWithRefresh = async (calculationQuery: any) => {
+    await calculationQuery.query();
     await fetchAssessmentInsight.query();
     await fetchInsightsIssues.query();
   };
-  const calculateConfidenceLevel = async () => {
-    await calculateConfidenceLevelQuery.query();
-    await fetchAssessmentInsight.query();
-    await fetchInsightsIssues.query();
-  };
+
+  const calculate = () =>
+    runCalculationWithRefresh(calculateMaturityLevelQuery);
+  const calculateConfidenceLevel = () =>
+    runCalculationWithRefresh(calculateConfidenceLevelQuery);
 
   useEffect(() => {
     if (
