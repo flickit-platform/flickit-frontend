@@ -9,7 +9,7 @@ const questionReducer = (
     case QUESTION_ACTIONS_TYPE.GO_TO_QUESTION:
       return {
         ...prevState,
-        questionIndex: action.payload || prevState.questionIndex,
+        questionIndex: action.payload ?? prevState.questionIndex,
       };
     case QUESTION_ACTIONS_TYPE.SET_ASSESSMENT_STATUS:
       return {

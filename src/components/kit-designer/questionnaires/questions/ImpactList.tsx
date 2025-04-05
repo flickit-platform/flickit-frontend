@@ -180,7 +180,7 @@ const ImpactDetails = ({
     {editMode === item.questionImpactId ? (
       <>
         <Select
-          value={tempValues.attributeId || ""}
+          value={tempValues.attributeId ?? ""}
           onChange={(e) => handleInputChange("attributeId", e.target.value)}
           variant="outlined"
           fullWidth
@@ -195,7 +195,7 @@ const ImpactDetails = ({
         </Select>
 
         <Select
-          value={tempValues.maturityLevelId || ""}
+          value={tempValues.maturityLevelId ?? ""}
           onChange={(e) => handleInputChange("maturityLevelId", e.target.value)}
           variant="outlined"
           size="small"

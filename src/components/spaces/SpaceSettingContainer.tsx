@@ -34,7 +34,7 @@ const SpaceSettingContainer = () => {
     runOnMount: true,
   });
 
-  const { title, editable } = data || {};
+  const { title, editable } = data ?? {};
 
   return (
     <Box maxWidth="1440px" m="auto">

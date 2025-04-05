@@ -20,7 +20,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   const abortController = useRef(new AbortController());
 
   const [insight, setInsight] = useState<any>(
-    defaultInsight?.assessorInsight || defaultInsight?.defaultInsight,
+    defaultInsight?.assessorInsight ?? defaultInsight?.defaultInsight,
   );
   const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
   const [isApproved, setIsApproved] = useState(
@@ -67,7 +67,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   useEffect(() => {
     if (fetchAssessmentInsight.data) {
       const data = fetchAssessmentInsight.data;
-      const selected = data?.assessorInsight || data?.defaultInsight;
+      const selected = data?.assessorInsight ?? data?.defaultInsight;
       setInsight(selected);
       setEditable(data?.editable ?? false);
       setIsApproved(data?.approved ?? true);

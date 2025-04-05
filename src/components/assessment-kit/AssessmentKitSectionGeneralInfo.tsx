@@ -85,7 +85,7 @@ const AssessmentKitSectionGeneralInfo = (
     try {
       await service.updateAssessmentKitStats(
         {
-          assessmentKitId: assessmentKitId || "",
+          assessmentKitId: assessmentKitId ?? "",
           data: { tags: data?.tags?.map((t: any) => t.id) },
         },
         { signal: abortController.current.signal },
@@ -108,7 +108,7 @@ const AssessmentKitSectionGeneralInfo = (
     try {
       await service.updateAssessmentKitStats(
         {
-          assessmentKitId: assessmentKitId || "",
+          assessmentKitId: assessmentKitId ?? "",
           data: { lang: adjustValue?.code },
         },
         { signal: abortController.current.signal },
@@ -596,7 +596,7 @@ const OnHoverInput = (props: any) => {
               error={hasError}
               fullWidth
               name={title}
-              defaultValue={data || ""}
+              defaultValue={data ?? ""}
               onChange={(e) => setInputData(e.target.value)}
               value={inputData}
               required={true}
@@ -724,11 +724,9 @@ const OnHoverStatus = (props: any) => {
     toastError: true,
   });
   const updateAssessmentKit = async () => {
-    try {
-      const res = await updateAssessmentKitQuery.query();
-      res.message && toast.success(res.message);
-      await infoQuery();
-    } catch (e) {}
+    const res = await updateAssessmentKitQuery.query();
+    res.message && toast.success(res.message);
+    await infoQuery();
   };
   return (
     <Box>
@@ -831,11 +829,9 @@ const OnHoverVisibilityStatus = (props: any) => {
     toastError: true,
   });
   const updateAssessmentKit = async () => {
-    try {
-      const res = await updateAssessmentKitQuery.query();
-      res.message && toast.success(res.message);
-      await infoQuery();
-    } catch (e) {}
+    const res = await updateAssessmentKitQuery.query();
+    res.message && toast.success(res.message);
+    await infoQuery();
   };
   return (
     <Box>
@@ -961,7 +957,7 @@ const OnHoverRichEditor = (props: any) => {
     event.preventDefault();
     try {
       await service.updateAssessmentKitStats(
-        { assessmentKitId: assessmentKitId || "", data: { about: data.about } },
+        { assessmentKitId: assessmentKitId ?? "", data: { about: data.about } },
         { signal: abortController.current.signal },
       );
       await infoQuery();
@@ -1000,7 +996,7 @@ const OnHoverRichEditor = (props: any) => {
                 label={<Box></Box>}
                 disable_label={true}
                 required={true}
-                defaultValue={data || ""}
+                defaultValue={data ?? ""}
               />
               <Box
                 sx={{

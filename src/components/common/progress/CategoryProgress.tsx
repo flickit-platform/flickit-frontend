@@ -39,7 +39,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
       <Box flex={1}>
         <LinearProgress
           value={progress}
-          color={progressToColorMap[progress] || "primary"}
+          color={progressToColorMap[progress] ?? "primary"}
           variant="determinate"
           sx={{
             borderRadius: is_farsi ? "8px 0 0 8px" : "0 8px 8px 0px",
@@ -55,9 +55,9 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
             fontWeight={"bold"}
             fontFamily={is_farsi ? "Vazirmatn" : secondaryFontFamily}
             textTransform="uppercase"
-            color={progressToColorMapColor[progress] || "#1976d2"}
+            color={progressToColorMapColor[progress] ?? "#1976d2"}
           >
-            <Trans i18nKey={progressToLabelMap[progress] || "inprogress"} />
+            <Trans i18nKey={progressToLabelMap[progress] ?? "inprogress"} />
           </Typography>
         )}
       </Box>

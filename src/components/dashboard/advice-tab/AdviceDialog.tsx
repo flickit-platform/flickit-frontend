@@ -174,7 +174,7 @@ const AdviceDialog = ({
                   fetchPreAdviceInfo.data?.maturityLevels.find(
                     (maturityLevel: any) =>
                       maturityLevel.id == attribute?.maturityLevel.id,
-                  )?.value || 0
+                  )?.value ?? 0
                 }
                 currentState={fetchPreAdviceInfo.data?.maturityLevels.find(
                   (maturityLevel: any) =>

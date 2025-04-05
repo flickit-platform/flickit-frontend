@@ -39,7 +39,7 @@ const DefaultInfoItemComponent = (
       variant="body2"
       sx={{
         ...styles.centerV,
-        background: bg || "#f5f2f2",
+        background: bg ?? "#f5f2f2",
         py: 0.6,
         px: 1,
         borderRadius: 1,
@@ -53,7 +53,7 @@ const DefaultInfoItemComponent = (
         sx={{
           py: 0.2,
           px: 0.6,
-          background: itemBg || "white",
+          background: itemBg ?? "white",
           ...styles.centerV,
           borderRadius: 1,
         }}

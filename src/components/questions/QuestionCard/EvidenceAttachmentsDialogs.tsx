@@ -152,10 +152,10 @@ const MyDropzone = (props: any) => {
                 <FileType />
               </section>
             ) : (
-              fileTypeImages[typeFile || ""] && (
+              fileTypeImages[typeFile ?? ""] && (
                 <img
                   style={{ width: "40%", height: "60%" }}
-                  src={displayFile ? fileTypeImages[typeFile || ""] : "#"}
+                  src={displayFile ? fileTypeImages[typeFile ?? ""] : "#"}
                   alt={`${typeFile} file`}
                 />
               )

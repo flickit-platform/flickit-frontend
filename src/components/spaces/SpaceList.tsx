@@ -84,7 +84,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
     assessmentsCount = 0,
     is_default_space_for_current_user,
     type,
-  } = item || {};
+  } = item ?? {};
 
   const trackSeen = () => {
     service.seenSpaceList({ spaceId }, {});
@@ -147,7 +147,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
         {type?.code === spaceLevel.premium && (
-          <Tooltip title={"spacePremium"}>
+          <Tooltip title={"premiumSpace"}>
             <img
               style={{ width: "32px", height: "32px" }}
               src={premium}

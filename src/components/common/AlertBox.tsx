@@ -14,7 +14,7 @@ const AlertBox = (props: IAlertBox) => {
       action={!isSmall ? action : undefined}
       sx={
         isSmall && action
-          ? { ...(rest.sx || {}), "& .MuiAlert-message": { width: "100%" } }
+          ? { ...(rest.sx ?? {}), "& .MuiAlert-message": { width: "100%" } }
           : rest.sx
       }
     >

@@ -365,14 +365,12 @@ const Navbar = () => {
   });
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo({ spaceId, ...(args || {}) }, config),
+      service.fetchPathInfo({ spaceId, ...(args ?? {}) }, config),
     runOnMount: false,
   });
   const fetchSpaceInfo = async () => {
-    try {
-      const res = await fetchPathInfo.query();
-      dispatch(authActions.setCurrentSpace(res?.space));
-    } catch (e) {}
+    const res = await fetchPathInfo.query();
+    dispatch(authActions.setCurrentSpace(res?.space));
   };
   useEffect(() => {
     if (spaceId) {
@@ -865,7 +863,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             marginLeft: theme.direction === "rtl" ? 1.3 : "unset",
           }}
           alt={userInfo.displayName}
-          src={userInfo.pictureLink || ""}
+          src={userInfo.pictureLink ?? ""}
         />
         {userInfo.displayName}
       </Button>

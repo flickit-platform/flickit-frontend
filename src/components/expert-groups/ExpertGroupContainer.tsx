@@ -142,14 +142,14 @@ const ExpertGroupContainer = () => {
             about = "",
             bio,
             editable,
-          } = data || {};
+          } = data ?? {};
           const is_member = expertGroupMembersQueryData.data?.items?.some(
             (res: any) => {
               return res.id === userInfo.id;
             },
           );
           const hasAccess = editable;
-          setDocTitle(`${t("expertGroup")}: ${title || ""}`);
+          setDocTitle(`${t("expertGroup")}: ${title ?? ""}`);
           return (
             <Box>
               <Title
@@ -496,8 +496,8 @@ const useFetchAssessmentKit = () => {
   return {
     data: assessmentKitQuery?.data?.items || [],
     page: assessmentKitQuery?.data?.page + 1 || 0,
-    size: assessmentKitQuery?.data?.size || 0,
-    total: assessmentKitQuery?.data?.total || 0,
+    size: assessmentKitQuery?.data?.size ?? 0,
+    total: assessmentKitQuery?.data?.total ?? 0,
     requested_space: assessmentKitQuery?.data?.requested_space,
     loaded: !!assessmentKitQuery?.data,
     assessmentKitQuery,
@@ -758,7 +758,7 @@ const ExpertGroupMembers = (props: any) => {
                         key={user.id}
                         alt={user.title}
                         title={user.title}
-                        src={user?.pictureLink || "/"}
+                        src={user?.pictureLink ?? "/"}
                       />
                     );
                   })}
@@ -1379,7 +1379,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                                       border: "4px solid white",
                                     }}
                                     alt={displayName}
-                                    src={pictureLink || "/"}
+                                    src={pictureLink ?? "/"}
                                   />
                                   <Title
                                     titleProps={{

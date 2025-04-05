@@ -38,7 +38,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
     members = [],
     publishedKitsCount,
     editable,
-  } = data || {};
+  } = data ?? {};
   const { service } = useServiceContext();
   const seenExpertGroupQuery = useQuery({
     service: (args, config) => service.seenExpertGroup({ id }, config),

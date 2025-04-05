@@ -5,7 +5,7 @@ export const LoadingSkeleton = (props: SkeletonProps) => {
     <Skeleton
       variant="rectangular"
       {...props}
-      sx={{ borderRadius: 2, ...(props?.sx || {}) }}
+      sx={{ borderRadius: 2, ...(props?.sx ?? {}) }}
     />
   );
 };

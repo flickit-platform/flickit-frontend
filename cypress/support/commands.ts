@@ -36,7 +36,6 @@
 //   }
 // }
 
-
 Cypress.Commands.add("ifElementExist", (selector, cb) => {
   cy.get("body").then(($body) => {
     const element = $body.find(selector);
@@ -46,9 +45,12 @@ Cypress.Commands.add("ifElementExist", (selector, cb) => {
   });
 });
 
-Cypress.Commands.add("runXTimesEveryYSeconds", (cb, iterationCount, timeBetweenEachIteration = 1000) => {
-  for (let i = 0; i < iterationCount; i++) {
-    cb();
-    cy.wait(timeBetweenEachIteration);
-  }
-});
+Cypress.Commands.add(
+  "runXTimesEveryYSeconds",
+  (cb, iterationCount, timeBetweenEachIteration = 1000) => {
+    for (let i = 0; i < iterationCount; i++) {
+      cb();
+      cy.wait(timeBetweenEachIteration);
+    }
+  },
+);

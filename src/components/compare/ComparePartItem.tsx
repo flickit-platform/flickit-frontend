@@ -58,7 +58,7 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
           borderRadius: 2,
           background: "white",
           border: `1.5px dashed ${
-            disabled ? "#101c324f" : data?.color?.code || "#101c32"
+            disabled ? "#101c324f" : data?.color?.code ?? "#101c32"
           }`,
           ...(data
             ? {

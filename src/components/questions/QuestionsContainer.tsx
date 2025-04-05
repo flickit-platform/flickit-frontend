@@ -139,7 +139,7 @@ export const useQuestions = () => {
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.fetchPathInfo(
-        { questionnaireId, assessmentId, ...(args || {}) },
+        { questionnaireId, assessmentId, ...(args ?? {}) },
         config,
       ),
     runOnMount: true,

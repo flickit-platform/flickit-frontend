@@ -64,7 +64,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
       {/* Attribute Dropdown */}
       <Select
         name="attributeId"
-        value={newItem.attributeId || ""}
+        value={newItem.attributeId ?? ""}
         onChange={handleSelectChange}
         sx={dropdownStyle}
         size="small"
@@ -84,7 +84,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
       {/* Maturity Level Dropdown */}
       <Select
         name="maturityLevelId"
-        value={newItem.maturityLevelId || ""}
+        value={newItem.maturityLevelId ?? ""}
         onChange={handleSelectChange}
         sx={dropdownStyle}
         size="small"

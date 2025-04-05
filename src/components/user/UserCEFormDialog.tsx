@@ -95,7 +95,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
           <Grid item xs={12} sm={12}>
             <InputFieldUC
               autoFocus={true}
-              defaultValue={defaultValues.displayName || ""}
+              defaultValue={defaultValues.displayName ?? ""}
               name="displayName"
               required={true}
               label={<Trans i18nKey="displayName" />}
@@ -104,14 +104,14 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
           <Grid item xs={12} sm={8}>
             <InputFieldUC
               multiline
-              defaultValue={defaultValues.bio || ""}
+              defaultValue={defaultValues.bio ?? ""}
               name="bio"
               label={<Trans i18nKey="bio" />}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
             <InputFieldUC
-              defaultValue={defaultValues.linkedin || ""}
+              defaultValue={defaultValues.linkedin ?? ""}
               name="linkedin"
               label={<Trans i18nKey="linkedin" />}
             />

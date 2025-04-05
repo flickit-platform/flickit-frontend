@@ -129,7 +129,7 @@ export const SelectField = (props: ISelectField) => {
         defaultValue={defaultValue ?? defaultOption?.id}
         labelId={`select_label_id_${name}`}
         sx={{
-          ...(rest?.sx || {}),
+          ...(rest?.sx ?? {}),
           "& .MuiSelect-select": { display: "flex", alignItems: "center" },
         }}
       >

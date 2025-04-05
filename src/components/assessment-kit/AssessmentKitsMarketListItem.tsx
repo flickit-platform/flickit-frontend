@@ -168,7 +168,7 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
                   pt: 0.2,
                 }}
               />
-              {data.likes || 0}
+              {data.likes ?? 0}
             </Box>
           </Box>
         </Box>
@@ -179,7 +179,7 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
             mr: theme.direction !== "rtl" ? "unset" : "auto",
           }}
         >
-          {data.price || "FREE"}
+          {data.price ?? "FREE"}
         </Typography>
       </Box>
     </Box>

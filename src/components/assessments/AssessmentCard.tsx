@@ -73,23 +73,21 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   });
 
   const fetchAssessments = async () => {
-    try {
-      setShow(isCalculateValid);
-      if (!isCalculateValid) {
-        const data = await calculateMaturityLevelQuery.query().catch(() => {
-          setShow(true);
-        });
-        setCalculateResault(data);
-        if (data?.id) {
-          setShow(true);
-        }
+    setShow(isCalculateValid);
+    if (!isCalculateValid) {
+      const data = await calculateMaturityLevelQuery.query().catch(() => {
+        setShow(true);
+      });
+      setCalculateResault(data);
+      if (data?.id) {
+        setShow(true);
       }
-    } catch (e) {}
+    }
   };
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
       service.fetchAssessmentTotalProgress(
-        { assessmentId: id, ...(args || {}) },
+        { assessmentId: id, ...(args ?? {}) },
         config,
       ),
   });
@@ -185,7 +183,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                   fontWeight: "bold",
                   pb: 0,
                   textAlign: "center",
-                  color: item.color?.code || "#101c32",
+                  color: item.color?.code ?? "#101c32",
                   maxWidth: "320px",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
@@ -449,7 +447,7 @@ const Actions = (props: {
 
   const assessmentSetting = (e: any) => {
     navigate(`${item.id}/settings/`, {
-      state: item?.color || { code: "#073B4C", id: 6 },
+      state: item?.color ?? { code: "#073B4C", id: 6 },
     });
   };
 

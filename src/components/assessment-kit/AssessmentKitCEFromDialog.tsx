@@ -197,17 +197,15 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   };
 
   const downloadTemplate = async () => {
-    try {
-      const { url } = await fetchSampleExecl.query();
-      if (url) {
-        const link = document.createElement("a");
-        link.href = url;
-        document.body.appendChild(link);
-        link.target = "_blank";
-        link.click();
-        link.remove();
-      }
-    } catch (e) {}
+    const { url } = await fetchSampleExecl.query();
+    if (url) {
+      const link = document.createElement("a");
+      link.href = url;
+      document.body.appendChild(link);
+      link.target = "_blank";
+      link.click();
+      link.remove();
+    }
   };
 
   const handleSelectedChange = (e: any) => {
@@ -325,7 +323,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             name="title"
             label={<Trans i18nKey="title" />}
             required
-            defaultValue={defaultValues.title || ""}
+            defaultValue={defaultValues.title ?? ""}
           />
         </Grid>
         <Grid
@@ -379,7 +377,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             name="summary"
             label={<Trans i18nKey="summary" />}
             required={true}
-            defaultValue={defaultValues.summary || ""}
+            defaultValue={defaultValues.summary ?? ""}
           />
         </Grid>
         <Grid
@@ -392,7 +390,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             name="about"
             label={<Trans i18nKey="about" />}
             required={true}
-            defaultValue={defaultValues.about || ""}
+            defaultValue={defaultValues.about ?? ""}
           />
         </Grid>
       </Grid>

@@ -51,7 +51,7 @@ function CustomError(props: ICustomError): ICustomError {
 
   const customError: ICustomError = {
     name: "CustomError",
-    message: formattedMessage || message || "An error occurred",
+    message: formattedMessage ?? message ?? "An error occurred",
     code,
     config,
     request,

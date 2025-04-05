@@ -477,13 +477,13 @@ export const QuestionTabsTemplate = (props: any) => {
 
   useEffect(() => {
     if (queryData.data?.items) {
-      updateCount("history", queryData.data.total || 0);
+      updateCount("history", queryData.data.total ?? 0);
     }
     if (evidencesQueryData.data?.items) {
-      updateCount("evidences", evidencesQueryData.data.total || 0);
+      updateCount("evidences", evidencesQueryData.data.total ?? 0);
     }
     if (commentesQueryData.data?.items) {
-      updateCount("comments", commentesQueryData.data.total || 0);
+      updateCount("comments", commentesQueryData.data.total ?? 0);
     }
   }, [queryData.data, evidencesQueryData.data, commentesQueryData.data]);
 
@@ -948,7 +948,7 @@ const AnswerTemplate = (props: {
           flexWrap={"wrap"}
         >
           {options?.map((option: any, index: number) => {
-            const { index: defaultSelectedIndex, title } = option || {};
+            const { index: defaultSelectedIndex, title } = option ?? {};
             return (
               <Box
                 key={option?.id}
@@ -1764,7 +1764,7 @@ const Evidence = (props: any) => {
                     color: valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
                   }}
                 >
-                  {valueCount.length || 0} / {LIMITED}
+                  {valueCount.length ?? 0} / {LIMITED}
                 </Typography>
                 <Grid
                   item
@@ -2198,7 +2198,7 @@ const EvidenceDetail = (props: any) => {
                           valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
                       }}
                     >
-                      {valueCount.length || 0} / {LIMITED}
+                      {valueCount.length ?? 0} / {LIMITED}
                     </Typography>
                     <Grid
                       item

@@ -239,7 +239,7 @@ const PromptLinkBody = (props: { editor: Editor; closePrompt: () => void }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const addLink = () => {
-    const { value } = inputRef.current || {};
+    const { value } = inputRef.current ?? {};
     if (!value) {
       toastError(t("pleaseEnterALink") as string);
       return;

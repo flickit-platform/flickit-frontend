@@ -22,7 +22,7 @@ const AssessmentTitle = (props: IAssessmentReportTitle) => {
         <SupTitleBreadcrumb
           routes={[
             {
-              title: title || "",
+              title: title ?? "",
               to: `/`,
             },
           ]}

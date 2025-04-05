@@ -265,10 +265,10 @@ const useFetchSpace = () => {
   };
 
   return {
-    data: data.items || [],
-    page: data.page || 0,
-    size: data.size || 0,
-    total: data.total || 0,
+    data: data.items ?? [],
+    page: data.page ?? 0,
+    size: data.size ?? 0,
+    total: data.total ?? 0,
     requested_space: data.requested_space,
     loading,
     loaded: !!data,

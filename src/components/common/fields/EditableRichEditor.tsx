@@ -46,9 +46,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const paragraphRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const formMethods = useForm({
-    defaultValues: { [fieldName]: defaultValue || "" },
+    defaultValues: { [fieldName]: defaultValue ?? "" },
   });
-  const [tempData, setTempData] = useState(defaultValue || "");
+  const [tempData, setTempData] = useState(defaultValue ?? "");
 
   useEffect(() => {
     setTempData(defaultValue);
@@ -59,7 +59,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
   const handleCancel = () => {
     setShowEditor(false);
-    formMethods.reset({ [fieldName]: defaultValue || "" });
+    formMethods.reset({ [fieldName]: defaultValue ?? "" });
   };
 
   const handleSubmit = async (data: any, event: any) => {
@@ -145,7 +145,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               label={<Box></Box>}
               disable_label={true}
               required={required}
-              defaultValue={defaultValue || ""}
+              defaultValue={defaultValue ?? ""}
               textAlign="justify"
             />
             <Box

@@ -23,7 +23,7 @@ import { theme } from "@/config/theme";
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
   const { userInfo } = useAuthContext();
-  const { id } = userInfo || {};
+  const { id } = userInfo ?? {};
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 20;
 

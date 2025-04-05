@@ -43,7 +43,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const { data, fetchAssessmentKits, hasAccess, link, is_member, is_active } =
     props;
   const { id, title, lastModificationTime, isPrivate, draftVersionId } =
-    data || {};
+    data ?? {};
   const draftClicked = () => {
     !draftVersionId &&
       cloneAssessmentKit.query({ assessmentKitId: id }).then((res: any) => {

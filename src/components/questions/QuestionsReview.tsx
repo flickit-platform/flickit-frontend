@@ -72,7 +72,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
   }, [questionnaireId]);
 
   const progress =
-    ((assessmentTotalProgress?.data?.answersCount || 0) /
+    ((assessmentTotalProgress?.data?.answersCount ?? 0) /
       (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
   return (

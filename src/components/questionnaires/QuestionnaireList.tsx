@@ -219,11 +219,11 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           }}
         >
           <QueryData
-            {...(assessmentTotalProgress || {})}
+            {...(assessmentTotalProgress ?? {})}
             errorComponent={<></>}
             renderLoading={() => <Skeleton width="60px" height="36px" />}
             render={(data) => {
-              const { questionsCount = 0, answersCount = 0 } = data || {};
+              const { questionsCount = 0, answersCount = 0 } = data ?? {};
               return (
                 <QANumberIndicator
                   color="white"
@@ -240,7 +240,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         <Divider sx={{ borderColor: "white", opacity: 0.4, mt: 1, mb: 1 }} />
         <Box pb={2}>
           <QueryData
-            {...(questionnaireQueryData || {})}
+            {...(questionnaireQueryData ?? {})}
             isDataEmpty={(data) => data.questionaries_info?.length === 0}
             renderLoading={() => <LoadingSkeletonOfQuestionnaires />}
             render={(data) => {

@@ -43,16 +43,14 @@ const Gauge = ({
   ...rest
 }: IGaugeProps) => {
   const colorPallet = getMaturityLevelColors(maturity_level_number);
-  const colorCode = colorPallet?.[level_value - 1] || "gray";
+  const colorCode = colorPallet?.[level_value - 1] ?? "gray";
 
   const gaugeComponentCache = useRef<any>({});
 
   const GaugeComponent = useMemo(() => {
-    if (!gaugeComponentCache.current[maturity_level_number]) {
-      gaugeComponentCache.current[maturity_level_number] = lazy(
-        () => import(`./GaugeComponent${maturity_level_number}.tsx`),
-      );
-    }
+    gaugeComponentCache.current[maturity_level_number] ??= lazy(
+      () => import(`./GaugeComponent${maturity_level_number}.tsx`),
+    );
     return gaugeComponentCache.current[maturity_level_number];
   }, [maturity_level_number]);
 
@@ -80,7 +78,7 @@ const Gauge = ({
     return `${fontSizeRem}rem`;
   };
 
-  const fontSize = calculateFontSize(maturity_level_status?.length || 0);
+  const fontSize = calculateFontSize(maturity_level_status?.length ?? 0);
 
   return (
     <Box

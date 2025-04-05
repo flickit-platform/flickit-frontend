@@ -267,7 +267,7 @@ const UserInfoCell = ({ row }: any) => (
         src={row.pictureLink}
         sx={avatarStyles}
       />
-      <Typography sx={textStyles}>{row.displayName || row.name}</Typography>
+      <Typography sx={textStyles}>{row.displayName ?? row.name}</Typography>
       {!row.editable && (
         <Chip
           sx={chipStyles}

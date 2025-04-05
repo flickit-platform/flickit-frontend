@@ -39,7 +39,7 @@ const AdviceItems = () => {
   });
 
   const { data } = fetchAdviceItems;
-  const totalItems = data?.total || 0;
+  const totalItems = data?.total ?? 0;
 
   useEffect(() => {
     if (data?.items?.length) {

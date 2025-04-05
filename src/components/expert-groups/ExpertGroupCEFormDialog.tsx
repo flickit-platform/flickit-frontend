@@ -138,7 +138,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           )}
           <Grid item xs={12} md={type === "update" ? 12 : 7}>
             <InputFieldUC
-              defaultValue={defaultValues.title || ""}
+              defaultValue={defaultValues.title ?? ""}
               name="title"
               label={<Trans i18nKey="title" />}
               required
@@ -148,7 +148,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
             <InputFieldUC
               name="bio"
               label={<Trans i18nKey="bio" />}
-              defaultValue={defaultValues.bio || ""}
+              defaultValue={defaultValues.bio ?? ""}
               required
             />
           </Grid>
@@ -157,14 +157,14 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
               name="website"
               label={<Trans i18nKey="website" />}
               placeholder="https://example.com"
-              defaultValue={defaultValues.website || ""}
+              defaultValue={defaultValues.website ?? ""}
             />
           </Grid>
           <Grid item xs={12}>
             <RichEditorField
               name="about"
               label={<Trans i18nKey="about" />}
-              defaultValue={defaultValues.about || ""}
+              defaultValue={defaultValues.about ?? ""}
               required
             />
           </Grid>

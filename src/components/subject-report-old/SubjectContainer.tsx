@@ -22,7 +22,7 @@ const SubjectContainer = (props: any) => {
       loaded={loaded}
       render={([subjectProgress = {}]) => {
         const { answerCount, questionCount } = subjectProgress;
-        const progress = ((answerCount || 0) / (questionCount || 1)) * 100;
+        const progress = ((answerCount ?? 0) / (questionCount || 1)) * 100;
 
         return (
           <Box>
@@ -65,9 +65,7 @@ export const useSubject = (props: any) => {
   });
 
   const getSubjectQueryData = async () => {
-    try {
-      await subjectProgressQueryData.query({ assessmentId, subjectId: id });
-    } catch (e) {}
+    await subjectProgressQueryData.query({ assessmentId, subjectId: id });
   };
 
   useEffect(() => {

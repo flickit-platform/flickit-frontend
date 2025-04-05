@@ -81,28 +81,26 @@ const AssessmentKitExpertViewContainer = () => {
     }
   };
   const handleExport = async () => {
-    try {
-      setLoadingExportBtn(true);
-      service
-        .fetchAssessmentKitExportUrl({ assessmentKitId }, {})
-        .then((res) => {
-          setLoadingExportBtn(false);
-          const { data } = res;
-          const zipFile = new Blob([data], { type: "application/zip" });
-          const blobUrl = URL.createObjectURL(zipFile);
-          const a = document.createElement("a");
-          a.href = blobUrl;
-          a.download = `export-${assessmentKitTitle}.zip`;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-        })
-        .catch((e) => {
-          setLoadingExportBtn(false);
-          const err = e as ICustomError;
-          toastError(err);
-        });
-    } catch (e) {}
+    setLoadingExportBtn(true);
+    service
+      .fetchAssessmentKitExportUrl({ assessmentKitId }, {})
+      .then((res) => {
+        setLoadingExportBtn(false);
+        const { data } = res;
+        const zipFile = new Blob([data], { type: "application/zip" });
+        const blobUrl = URL.createObjectURL(zipFile);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = `export-${assessmentKitTitle}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((e) => {
+        setLoadingExportBtn(false);
+        const err = e as ICustomError;
+        toastError(err);
+      });
   };
   useEffect(() => {
     if (!loaded) {
@@ -111,7 +109,7 @@ const AssessmentKitExpertViewContainer = () => {
   }, [loaded, forceUpdate, hasActiveVersion]);
   useEffect(() => {
     setDocumentTitle(
-      `${t("assessmentKit")}: ${assessmentKitTitle || ""}`,
+      `${t("assessmentKit")}: ${assessmentKitTitle ?? ""}`,
       config.appTitle,
     );
   }, [assessmentKitTitle]);
@@ -294,13 +292,11 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
     }
   }, [subjectId, update]);
   const fetchAssessmentKitSubjectDetail = async () => {
-    try {
-      const data = await fetchAssessmentKitSubjectDetailsQuery.query({
-        assessmentKitId: assessmentKitId,
-        subjectId: subjectId,
-      });
-      setAssessmentKitSubjectDetails(data);
-    } catch (e) {}
+    const data = await fetchAssessmentKitSubjectDetailsQuery.query({
+      assessmentKitId: assessmentKitId,
+      subjectId: subjectId,
+    });
+    setAssessmentKitSubjectDetails(data);
   };
 
   return (
@@ -453,13 +449,11 @@ const AssessmentKitQuestionnaires = (props: {
     }
   }, [questionnaireId, update]);
   const fetchAssessmentKitQuestionnaires = async () => {
-    try {
-      const data = await fetchAssessmentKitQuestionnairesQuery.query({
-        assessmentKitId: assessmentKitId,
-        questionnaireId: questionnaireId,
-      });
-      setQuestionnaireDetails(data);
-    } catch (e) {}
+    const data = await fetchAssessmentKitQuestionnairesQuery.query({
+      assessmentKitId: assessmentKitId,
+      questionnaireId: questionnaireId,
+    });
+    setQuestionnaireDetails(data);
   };
   return (
     <Box>
@@ -589,23 +583,19 @@ const AssessmentKitQuestionsList = (props: {
   const [maturityLevelQuestions, setMaturityLevelQuestions] = useState<any>();
 
   const fetchAttributesDetails = async () => {
-    try {
-      const data = await fetchAssessmentKitSubjectAttributesDetailsQuery.query({
-        assessmentKitId: assessmentKitId,
-        attributeId: attributeId,
-      });
-      setAttributesDetails(data);
-    } catch (e) {}
+    const data = await fetchAssessmentKitSubjectAttributesDetailsQuery.query({
+      assessmentKitId: assessmentKitId,
+      attributeId: attributeId,
+    });
+    setAttributesDetails(data);
   };
   const fetchMaturityLevelQuestions = async () => {
-    try {
-      const data = await fetchMaturityLevelQuestionsQuery.query({
-        assessmentKitId: assessmentKitId,
-        attributeId: attributeId,
-        maturityLevelId: value,
-      });
-      setMaturityLevelQuestions(data);
-    } catch (e) {}
+    const data = await fetchMaturityLevelQuestionsQuery.query({
+      assessmentKitId: assessmentKitId,
+      attributeId: attributeId,
+      maturityLevelId: value,
+    });
+    setMaturityLevelQuestions(data);
   };
   useEffect(() => {
     if (isExpanded && attributeId) {
@@ -697,7 +687,7 @@ const AssessmentKitQuestionsList = (props: {
               sx={{
                 "& .MuiTabs-indicator": {
                   backgroundColor: `${
-                    colorPallet[selectedTabIndex || 0]
+                    colorPallet[selectedTabIndex ?? 0]
                   } !important`,
                 },
               }}
@@ -1175,13 +1165,11 @@ const QuestionnairesQuestionList = (props: any) => {
     }
   }, [questionId]);
   const fetchAssessmentKitQuestionnaires = async () => {
-    try {
-      const data = await fetchAssessmentKitQuestionnairesQuestionsQuery.query({
-        assessmentKitId: assessmentKitId,
-        questionId: questionId,
-      });
-      setQuestionsDetails(data);
-    } catch (e) {}
+    const data = await fetchAssessmentKitQuestionnairesQuestionsQuery.query({
+      assessmentKitId: assessmentKitId,
+      questionId: questionId,
+    });
+    setQuestionsDetails(data);
   };
   function formatNumber(value: any) {
     if (Number.isInteger(value)) {

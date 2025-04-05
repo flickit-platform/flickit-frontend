@@ -50,7 +50,7 @@ const MainTabs = (props: any) => {
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
       service.fetchAssessmentPermissions(
-        { assessmentId, ...(args || {}) },
+        { assessmentId, ...(args ?? {}) },
         config,
       ),
     runOnMount: true,
