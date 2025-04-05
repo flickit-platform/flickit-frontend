@@ -46,18 +46,14 @@ const AssessmentReportContainer = (props: any) => {
       ),
   });
   const calculate = async () => {
-    try {
-      await calculateMaturityLevelQuery.query();
-      await fetchAssessmentInsight.query();
-      await fetchInsightsIssues.query();
-    } catch (e) {}
+    await calculateMaturityLevelQuery.query();
+    await fetchAssessmentInsight.query();
+    await fetchInsightsIssues.query();
   };
   const calculateConfidenceLevel = async () => {
-    try {
-      await calculateConfidenceLevelQuery.query();
-      await fetchAssessmentInsight.query();
-      await fetchInsightsIssues.query();
-    } catch (e) {}
+    await calculateConfidenceLevelQuery.query();
+    await fetchAssessmentInsight.query();
+    await fetchInsightsIssues.query();
   };
 
   useEffect(() => {
@@ -103,7 +99,7 @@ const AssessmentReportContainer = (props: any) => {
         loading={!fetchInsightsIssues.loaded || assessmentTotalProgress.loading}
         render={([issues]) => {
           const { answersCount, questionsCount } =
-            assessmentTotalProgress.data || {};
+            assessmentTotalProgress.data ?? {};
 
           return (
             <Box m="auto">
@@ -145,11 +141,11 @@ const AssessmentReportContainer = (props: any) => {
           !fetchAssessmentInsight.loaded || assessmentTotalProgress.loading
         }
         render={([data = {}]) => {
-          const { assessment, subjects } = data || {};
+          const { assessment, subjects } = data ?? {};
 
-          const colorCode = assessment?.color?.code || "#101c32";
+          const colorCode = assessment?.color?.code ?? "#101c32";
           const { assessmentKit, maturityLevel, confidenceValue } =
-            assessment || {};
+            assessment ?? {};
 
           return (
             <Box m="auto">

@@ -24,7 +24,7 @@ const SubjectOverallInsight = ({
   const abortController = useRef(new AbortController());
 
   const [insight, setInsight] = useState<any>(
-    defaultInsight?.assessorInsight || defaultInsight?.defaultInsight,
+    defaultInsight?.assessorInsight ?? defaultInsight?.defaultInsight,
   );
   const [editable, setEditable] = useState(defaultInsight?.editable ?? false);
   const [isApproved, setIsApproved] = useState(
@@ -71,7 +71,7 @@ const SubjectOverallInsight = ({
   useEffect(() => {
     if (fetchSubjectInsight.data) {
       const data = fetchSubjectInsight.data;
-      const selected = data?.assessorInsight || data?.defaultInsight;
+      const selected = data?.assessorInsight ?? data?.defaultInsight;
       setInsight(selected);
       setEditable(data?.editable ?? false);
       setIsApproved(data?.approved ?? true);

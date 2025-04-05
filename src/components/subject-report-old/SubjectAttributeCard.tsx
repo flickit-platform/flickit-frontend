@@ -50,11 +50,11 @@ const SubjectAttributeCard = (props: any) => {
 
   const [topTab, setTopTab] = useState(0);
   const [TopNavValue, setTopNavValue] = React.useState<number>(
-    maturityScoreModels.findIndex((item: any) => item.score !== null) || 0,
+    maturityScoreModels.findIndex((item: any) => item.score !== null) ?? 0,
   );
   const [selectedMaturityLevel, setSelectedMaturityLevel] = React.useState<any>(
     maturityScoreModels.find((item: any) => item.score !== null)?.maturityLevel
-      .id || null,
+      .id ?? null,
   );
 
   const [expandedAttribute, setExpandedAttribute] = useState<string | false>(
