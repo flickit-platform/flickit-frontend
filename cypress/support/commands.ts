@@ -36,19 +36,21 @@
 //   }
 // }
 
-
 Cypress.Commands.add("ifElementExist", (selector, cb) => {
   cy.get("body").then(($body) => {
     const element = $body.find(selector);
     if (element.length > 0) {
-      return cb(element) ?? cy.wrap(element);
+      return cb(element) || cy.wrap(element);
     }
   });
 });
 
-Cypress.Commands.add("runXTimesEveryYSeconds", (cb, iterationCount, timeBetweenEachIteration = 1000) => {
-  for (let i = 0; i < iterationCount; i++) {
-    cb();
-    cy.wait(timeBetweenEachIteration);
-  }
-});
+Cypress.Commands.add(
+  "runXTimesEveryYSeconds",
+  (cb, iterationCount, timeBetweenEachIteration = 1000) => {
+    for (let i = 0; i < iterationCount; i++) {
+      cb();
+      cy.wait(timeBetweenEachIteration);
+    }
+  },
+);
