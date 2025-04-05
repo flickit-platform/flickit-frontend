@@ -326,6 +326,44 @@ const CreateSpaceDialog = (props: any) => {
   );
 };
 
+const getBorderStyle = (
+  isSelected: boolean,
+  isPremium: boolean,
+  isBasic: boolean,
+) => {
+  if (isSelected) {
+    return isPremium ? "1px solid #2466A8" : "1px solid #668099";
+  }
+  return "1px solid #C7CCD1";
+};
+
+const getBackgroundStyle = (
+  isSelected: boolean,
+  isPremium: boolean,
+  isBasic: boolean,
+) => {
+  if (isSelected) {
+    return isPremium ? "#2466A814" : "#6680991f";
+  }
+  return "unset";
+};
+
+const getHoverBorderColor = (isPremium: boolean, allowCreateBasic: boolean) => {
+  if (isPremium) {
+    return "#2D80D2";
+  } else if (!allowCreateBasic) {
+    return "#C7CCD1";
+  }
+  return "#73808C";
+};
+
+const getTextColor = (isBasic: boolean, allowCreateBasic: boolean) => {
+  if (isBasic) {
+    return !allowCreateBasic ? "#3D4D5C80" : "#2B333B";
+  }
+  return "unset";
+};
+
 const BoxType = ({
   setSelectedType,
   selectedType,
@@ -345,50 +383,13 @@ const BoxType = ({
   const isPremium = type === "PREMIUM";
   const isBasic = type === "BASIC";
 
-  let border;
-  if (isSelected) {
-    if (isPremium) {
-      border = "1px solid #2466A8";
-    } else {
-      border = "1px solid #668099";
-    }
-  } else {
-    border = "1px solid #C7CCD1";
-  }
-
-  let background;
-  if (isSelected) {
-    if (isPremium) {
-      background = "#2466A814";
-    } else {
-      background = "#6680991f";
-    }
-  } else {
-    background = "unset";
-  }
-
-  let hoverBorderColor;
-  if (isPremium) {
-    hoverBorderColor = "#2D80D2";
-  } else if (!allowCreateBasic) {
-    hoverBorderColor = "#C7CCD1";
-  } else {
-    hoverBorderColor = "#73808C";
-  }
-
-  let textColor = "unset";
-  if (isBasic) {
-    if (!allowCreateBasic) {
-      textColor = "#3D4D5C80";
-    } else {
-      textColor = "#2B333B";
-    }
-  } else {
-    textColor = "unset";
-  }
+  const border = getBorderStyle(isSelected, isPremium, isBasic);
+  const background = getBackgroundStyle(isSelected, isPremium, isBasic);
+  const hoverBorderColor = getHoverBorderColor(isPremium, allowCreateBasic);
+  const textColor = getTextColor(isBasic, allowCreateBasic);
 
   const handleSelect = () => {
-    if (!allowCreateBasic && type === "BASIC") return;
+    if (!allowCreateBasic && isBasic) return;
     setSelectedType(type);
   };
 

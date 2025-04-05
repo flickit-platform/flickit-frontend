@@ -494,8 +494,8 @@ const useFetchAssessmentKit = () => {
     runOnMount: false,
   });
   return {
-    data: assessmentKitQuery?.data?.items ?? [],
-    page: assessmentKitQuery?.data?.page + 1 ?? 0,
+    data: assessmentKitQuery?.data?.items || [],
+    page: assessmentKitQuery?.data?.page + 1 || 0,
     size: assessmentKitQuery?.data?.size ?? 0,
     total: assessmentKitQuery?.data?.total ?? 0,
     requested_space: assessmentKitQuery?.data?.requested_space,

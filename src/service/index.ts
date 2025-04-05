@@ -212,7 +212,7 @@ export const createService = (
       return axios.get(`/api/v1/assessment-kits/${id}/custom-subjects/`, {
         ...(config ?? {}),
         params: {
-          ...(customId ?? { kitCustomId } ?? {}),
+          ...((customId || { kitCustomId }) ?? {}),
         },
       });
     },
