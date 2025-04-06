@@ -114,7 +114,6 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     <InfoRounded />
                   </IconButton>
                 )}
-
                 {!isSmallScreen && (
                   <Box
                     ref={boxRef}
@@ -153,6 +152,8 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             isSmallScreen={isSmallScreen}
           />
         </Box>
+
+        {/* Error Chips */}
         <Box
           sx={{
             display: "flex",
@@ -161,184 +162,44 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             my: originalItem.length >= 1 ? "15px" : "10px",
           }}
         >
-          {!!answeredWithLowConfidence &&
-            originalItem.includes("answeredWithLowConfidence") && (
-              <Chip
-                sx={{ background: "#8A0F240A" }}
-                label={
-                  <Grid>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <ErrorOutlineIcon
-                        fontSize={"small"}
-                        style={{ fill: theme.palette.error.main }}
-                      />
-                      <Typography
-                        style={{
-                          color: theme.palette.error.main,
-                          ...theme.typography.bodyMedium,
-                        }}
-                      >
-                        <Trans i18nKey={"answeredWithLowConfidence"} />:{" "}
-                        {answeredWithLowConfidence}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                }
-              />
-            )}
-          {!!answeredWithoutEvidence &&
-            originalItem.includes("answeredWithoutEvidence") && (
-              <Chip
-                sx={{ background: "#8A0F240A" }}
-                label={
-                  <Grid>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <ErrorOutlineIcon
-                        fontSize={"small"}
-                        style={{ fill: theme.palette.error.main }}
-                      />
-                      <Typography
-                        style={{
-                          color: theme.palette.error.main,
-                          ...theme.typography.bodyMedium,
-                        }}
-                      >
-                        <Trans i18nKey={"answeredWithoutEvidence"} />:{" "}
-                        {answeredWithoutEvidence}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                }
-              />
-            )}
-          {!!unapprovedAnswers &&
-              originalItem.includes("unapprovedAnswers") && (
-                  <Chip
-                      sx={{ background: "#8A0F240A" }}
-                      label={
-                        <Grid>
-                          <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 1,
-                              }}
-                          >
-                            <ErrorOutlineIcon
-                                fontSize={"small"}
-                                style={{ fill: theme.palette.error.main }}
-                            />
-                            <Typography
-                                style={{
-                                  color: theme.palette.error.main,
-                                  ...theme.typography.bodyMedium,
-                                }}
-                            >
-                              <Trans i18nKey={"unapprovedAnswers"} />:{" "}
-                              {unapprovedAnswers}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      }
-                  />
-              )}
-          {!!unanswered && originalItem.includes("unanswered") && (
-            <Chip
-              sx={{ background: "#8A0F240A" }}
-              label={
-                <Grid>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <ErrorOutlineIcon
-                      fontSize={"small"}
-                      style={{ fill: theme.palette.error.main }}
-                    />
-                    <Typography
-                      style={{
-                        color: theme.palette.error.main,
-                        ...theme.typography.bodyMedium,
-                      }}
-                    >
-                      <Trans i18nKey={"unanswered"} />: {unanswered}
-                    </Typography>
-                  </Box>
-                </Grid>
-              }
+          {originalItem.includes("answeredWithLowConfidence") && (
+            <ErrorChip
+              i18nKey="answeredWithLowConfidence"
+              value={answeredWithLowConfidence}
             />
           )}
-          {!!unresolvedComments &&
-            originalItem.includes("unresolvedComments") && (
-              <Chip
-                sx={{ background: "#8A0F240A" }}
-                label={
-                  <Grid>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <ErrorOutlineIcon
-                        fontSize={"small"}
-                        style={{ fill: theme.palette.error.main }}
-                      />
-                      <Typography
-                        style={{
-                          color: theme.palette.error.main,
-                          ...theme.typography.bodyMedium,
-                        }}
-                      >
-                        <Trans i18nKey={"unresolvedComments"} />:{" "}
-                        {unresolvedComments}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                }
-              />
-            )}
+          {originalItem.includes("answeredWithoutEvidence") && (
+            <ErrorChip
+              i18nKey="answeredWithoutEvidence"
+              value={answeredWithoutEvidence}
+            />
+          )}
+          {originalItem.includes("unapprovedAnswers") && (
+            <ErrorChip
+              i18nKey="unapprovedAnswers"
+              value={unapprovedAnswers}
+            />
+          )}
+          {originalItem.includes("unanswered") && (
+            <ErrorChip
+              i18nKey="unanswered"
+              value={unanswered}
+            />
+          )}
+          {originalItem.includes("unresolvedComments") && (
+            <ErrorChip
+              i18nKey="unresolvedComments"
+              value={unresolvedComments}
+            />
+          )}
         </Box>
+
+        {/* Subject Chips & Actions */}
         <Box display="flex" alignItems="end" justifyContent={"space-between"}>
           <Box>
-            {subjects?.map((subject) => {
-              const { title, id } = subject;
-              return (
-                <Chip
-                  label={title}
-                  size="small"
-                  sx={{
-                    marginInlineEnd: 0.3,
-                    mb: 0.1,
-                    fontFamily: languageDetector(title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                  }}
-                  key={id}
-                />
-              );
-            })}
+            {subjects?.map(({ title, id }) => (
+              <SubjectChip key={id} id={id} title={title} />
+            ))}
           </Box>
           {permissions.viewQuestionnaireQuestions && (
             <ActionButtons
@@ -355,8 +216,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   );
 };
 
-const QuestionDescription = (props: any) => {
-  const { description, collapse } = props;
+const QuestionDescription = ({ description, collapse }: any) => {
   const is_farsi = languageDetector(description);
   return (
     <Box>
@@ -376,13 +236,7 @@ const QuestionDescription = (props: any) => {
               fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
             }}
           >
-            <Box
-              display="flex"
-              alignItems={"baseline"}
-              sx={{
-                width: "100%",
-              }}
-            >
+            <Box display="flex" alignItems={"baseline"} sx={{ width: "100%" }}>
               <Typography variant="bodyLarge">{description}</Typography>
             </Box>
           </Box>
@@ -391,14 +245,20 @@ const QuestionDescription = (props: any) => {
     </Box>
   );
 };
-const ActionButtons = (props: {
+
+const ActionButtons = ({
+  id,
+  title,
+  progress,
+  number_of_answers,
+  nextQuestion,
+}: {
   id: TId;
   title: string;
   progress: number;
   number_of_answers: number;
   nextQuestion: number;
 }) => {
-  const { id, progress, number_of_answers, nextQuestion, title } = props;
   const is_farsi = localStorage.getItem("lang") === "fa";
   return (
     <Box display="flex">
@@ -465,26 +325,85 @@ const ActionButtons = (props: {
   );
 };
 
-const ActionButton = (props: {
+const ActionButton = ({
+  to,
+  text,
+  icon,
+  state = {},
+  ...rest
+}: {
   to: string;
   text: string;
   icon: JSX.Element;
   state?: any;
+}) => (
+  <Button
+    {...rest}
+    size="small"
+    component={Link}
+    state={state}
+    to={to}
+    startIcon={icon}
+    sx={{ ml: 0.5 }}
+  >
+    <Trans i18nKey={text} />
+  </Button>
+);
+
+const ErrorChip = ({
+  i18nKey,
+  value,
+}: {
+  i18nKey: string;
+  value?: number;
 }) => {
-  const { to, text, icon, state = {}, ...rest } = props;
+  if (!value) return null;
+
   return (
-    <Button
-      {...rest}
-      size="small"
-      component={Link}
-      state={state}
-      to={to}
-      startIcon={icon}
-      sx={{ ml: 0.5 }}
-    >
-      <Trans i18nKey={text} />
-    </Button>
+    <Chip
+      sx={{ background: "#8A0F240A" }}
+      label={
+        <Grid>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1,
+            }}
+          >
+            <ErrorOutlineIcon
+              fontSize={"small"}
+              style={{ fill: theme.palette.error.main }}
+            />
+            <Typography
+              style={{
+                color: theme.palette.error.main,
+                ...theme.typography.bodyMedium,
+              }}
+            >
+              <Trans i18nKey={i18nKey} />: {value}
+            </Typography>
+          </Box>
+        </Grid>
+      }
+    />
   );
 };
+
+const SubjectChip = ({ title, id }: { title: string; id: TId }) => (
+  <Chip
+    label={title}
+    size="small"
+    sx={{
+      marginInlineEnd: 0.3,
+      mb: 0.1,
+      fontFamily: languageDetector(title)
+        ? farsiFontFamily
+        : primaryFontFamily,
+    }}
+    key={id}
+  />
+);
 
 export { QuestionnaireCard };
