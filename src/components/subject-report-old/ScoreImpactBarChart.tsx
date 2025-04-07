@@ -16,14 +16,15 @@ import {
   Tooltip,
 } from "recharts";
 import { styles } from "@styles";
-import { Trans } from "react-i18next";
 
 const CustomTooltip = ({
   active,
   payload,
+  language,
 }: {
   active?: boolean;
   payload?: any[];
+  language?: string;
 }) => {
   if (!active || !payload?.length) return null;
 
@@ -53,11 +54,25 @@ const CustomTooltip = ({
           { score: gainedScore, label: "gainedScore" },
         ].map(({ score, label }) => (
           <Box key={label} sx={{ ...styles.centerCVH }}>
-            <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
+            <Typography
+              variant="semiBoldSmall"
+              sx={{
+                color: "white",
+                fontFamily:
+                  language === "fa" ? farsiFontFamily : primaryFontFamily,
+              }}
+            >
               {Math.abs(score)}
             </Typography>
-            <Typography variant="bodySmall" sx={{ color: "white" }}>
-              <Trans i18nKey={label} />
+            <Typography
+              variant="bodySmall"
+              sx={{
+                color: "white",
+                fontFamily:
+                  language === "fa" ? farsiFontFamily : primaryFontFamily,
+              }}
+            >
+              {t(label, { lng: language })}
             </Typography>
           </Box>
         ))}
@@ -66,9 +81,17 @@ const CustomTooltip = ({
   );
 };
 
-const legendFormatter = (value: string) => (
-  <span style={{ marginInlineStart: theme.direction === "ltr" ? 8 : 0 }}>
-    {value === "uv" ? t("gainedScore") : t("missedScore")}
+const legendFormatter = (value: string, language: string) => (
+  <span
+    style={{
+      ...theme.typography.labelSmall,
+      fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+      marginInline: 2,
+    }}
+  >
+    {value === "uv"
+      ? t("gainedScore", { lng: language })
+      : t("missedScore", { lng: language })}
   </span>
 );
 
@@ -82,7 +105,9 @@ interface Measure {
 
 export default function ScoreImpactBarChart({
   measures,
-}: Readonly<{ measures: Measure[] }>) {
+  language,
+  compact = false,
+}: Readonly<{ measures: Measure[]; language: string; compact?: boolean }>) {
   const chartData = measures?.map((measure) => ({
     name: measure.title,
     pv: -Math.abs(measure.missedScorePercentage),
@@ -91,13 +116,24 @@ export default function ScoreImpactBarChart({
     gainedScore: measure.gainedScore,
   }));
 
+  const baseBarSize = compact ? 16 : 24;
   const barSize = Math.min(
-    24,
-    Math.max(14, 240 / (chartData?.length ?? 0) + 1),
+    baseBarSize,
+    Math.max(compact ? 12 : 14, 220 / (chartData?.length ?? 1) + 1),
   );
 
+  const heightPerItem = compact ? 36 : 50;
+  const chartHeight = Math.max(240, measures.length * heightPerItem);
+
   return (
-    <div style={{ width: "100%", height: "500px", direction: "rtl" }}>
+    <div
+      style={{
+        width: "100%",
+        height: `${chartHeight}px`,
+        direction: "rtl",
+        transformOrigin: "top",
+      }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           layout="vertical"
@@ -105,19 +141,22 @@ export default function ScoreImpactBarChart({
           stackOffset="sign"
           margin={{
             top: 0,
-            right: theme.direction === "ltr" ? 80 : 10,
-            left: theme.direction === "ltr" ? 10 : 80,
             bottom: 0,
           }}
           barSize={barSize}
         >
-          <CartesianGrid strokeDasharray="3 3" horizontal />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend verticalAlign="top" formatter={legendFormatter} />
+          {!compact && <CartesianGrid strokeDasharray="3 3" horizontal />}
+
+          <Tooltip content={<CustomTooltip language={language} />} />
+          <Legend
+            verticalAlign="top"
+            formatter={(val) => legendFormatter(val, language)}
+          />
           <ReferenceLine x={0} strokeDasharray="3 3" />
           <XAxis
             type="number"
             domain={[-100, 100]}
+            display={compact ? "none" : "block"}
             ticks={[-100, -80, -60, -40, -20, 0, 20, 40, 60, 80, 100]}
             axisLine={false}
             tickLine={false}
@@ -128,29 +167,32 @@ export default function ScoreImpactBarChart({
             dataKey="name"
             axisLine={false}
             tickLine={false}
-            width={160}
+            width={200}
             tick={({ x, y, payload }) => {
-              const isFarsi = languageDetector(payload.value);
+              const isFarsi = language === "fa";
+              const isFarsiText = languageDetector(payload.value);
+              const adjustedX = isFarsi ? x + 190 : x - 190;
+
               return (
                 <text
-                  x={x}
+                  x={adjustedX}
                   y={y + 5}
-                  textAnchor={theme.direction === "rtl" ? "end" : "start"}
+                  textAnchor={isFarsi ? "start" : "end"}
                   fontSize={14}
-                  fontFamily={isFarsi ? farsiFontFamily : primaryFontFamily}
+                  fontFamily={isFarsiText ? farsiFontFamily : primaryFontFamily}
                   fill="#333"
                 >
                   {payload.value}
                 </text>
               );
             }}
-            orientation={theme.direction === "rtl" ? "right" : "left"}
+            orientation={language === "fa" ? "right" : "left"}
           />
           <Bar
             dataKey="uv"
             fill="#2466A8"
             stackId="stack"
-            radius={[0, 10, 10, 0]}
+            radius={[0, 4, 4, 0]}
             isAnimationActive={false}
           >
             <LabelList
@@ -158,14 +200,14 @@ export default function ScoreImpactBarChart({
               position="right"
               fill="#2466A8"
               formatter={(v: any) => (v !== 0 ? `${v}%` : "")}
-              style={{ textAnchor: "end", fontSize: 14 }}
+              style={{ textAnchor: "end", fontSize: compact ? 12 : 14 }}
             />
           </Bar>
           <Bar
             dataKey="pv"
             fill="#B8144B"
             stackId="stack"
-            radius={[0, 10, 10, 0]}
+            radius={[0, 4, 4, 0]}
             isAnimationActive={false}
           >
             <LabelList
@@ -173,7 +215,7 @@ export default function ScoreImpactBarChart({
               position="right"
               fill="#B8144B"
               formatter={(v: any) => (v !== 0 ? `${Math.abs(v)}%` : "")}
-              style={{ textAnchor: "start", fontSize: 14 }}
+              style={{ textAnchor: "start", fontSize: compact ? 12 : 14 }}
             />
           </Bar>
         </BarChart>
