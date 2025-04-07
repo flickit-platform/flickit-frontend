@@ -239,11 +239,10 @@ const BottomBox = ({
         <Typography
           sx={{
             color: "#2466A8",
-            fontWeight: 600,
             fontFamily,
             whiteSpace: "nowrap",
           }}
-          variant="labelMedium"
+          variant="labelSmall"
         >
           {t("reportDocument.showMeasures", { lng: language })}
         </Typography>
@@ -305,8 +304,8 @@ const BottomBox = ({
                   color: "#4A4A4A",
                   textAlign: "justify",
                   fontFamily,
+                  ...theme.typography.bodyMedium,
                 }}
-                variant="bodyMedium"
               >
                 {t("reportDocument.helpDescription", { lng: language })}
               </Typography>
