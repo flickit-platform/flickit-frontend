@@ -913,5 +913,11 @@
   },
   "insightsTab": {
     "assessmentOverallInsights": "Assessment overall insights "
+  },
+  "reportDocument": {
+    "showMeasures": "Show measures",
+    "measureTitle": "Measure title",
+    "guidance": "Guidance",
+    "helpDescription": "All the metrics that impact this attribute are listed in this table. The portion of the score that each metric has successfully gained is shown in blue as the gained score, and the remaining portion is shown in red as the missed score. The share of each gained or missed score from the total effective scores on this attribute is displayed as a percentage on both sides of its chart."
   }
 }

@@ -28,7 +28,7 @@ import uniqueId from "@/utils/uniqueId";
 import QueryBatchData from "../common/QueryBatchData";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import AttributeInsight from "./AttributeInsight";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import ScoreImpactBarChart from "./ScoreImpactBarChart";
 import DropDownContent from "./DropDownContent";
 
@@ -495,8 +495,8 @@ const SubjectAttributeCard = (props: any) => {
 
               {topTab === 1 && (
                 <Grid container>
-                  <Grid item xs={12} sm={8.7}></Grid>
-                  <Grid item xs={12} sm={3.3}>
+                  <Grid item xs={12} sm={9.5}></Grid>
+                  <Grid item xs={12} sm={2.5}>
                     <DropDownContent
                       onSortChange={handleSortChange}
                       sortBy={sortBy}
@@ -506,6 +506,7 @@ const SubjectAttributeCard = (props: any) => {
                   <Grid item xs={12} sm={12}>
                     <ScoreImpactBarChart
                       measures={fetchMeasures.data.measures}
+                      language={i18next.language}
                     />{" "}
                   </Grid>
                 </Grid>

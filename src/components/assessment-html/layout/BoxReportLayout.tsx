@@ -6,6 +6,13 @@ import Grid from "@mui/material/Grid";
 import lens from "@assets/svg/lens.svg";
 import { getMaturityLevelColors } from "@styles";
 import { t } from "i18next";
+import ScoreImpactBarChart from "@/components/subject-report-old/ScoreImpactBarChart";
+import ArrowDropUpRounded from "@mui/icons-material/ArrowDropUpRounded";
+import ArrowDropDownRounded from "@mui/icons-material/ArrowDropDownRounded";
+import { useState } from "react";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 
 interface IBoxReport {
   title: string;
@@ -20,6 +27,7 @@ interface IBoxReport {
     value: number;
     description: string;
   };
+  attributeMeasures: any;
   language: string;
 }
 
@@ -42,6 +50,7 @@ const BoxReportLayout = (props: IBoxReport) => {
     maturityLevel,
     maturityLevelCount,
     language,
+    attributeMeasures,
     ...rest
   } = props;
 
@@ -71,7 +80,11 @@ const BoxReportLayout = (props: IBoxReport) => {
         language={language}
         {...rest}
       />
-      <BottomBox insight={insight} language={language} />
+      <BottomBox
+        insight={insight}
+        language={language}
+        attributeMeasures={attributeMeasures}
+      />
     </Box>
   );
 };
@@ -134,8 +147,24 @@ const TopBox = (props: ITopBoxReport) => {
   );
 };
 
-const BottomBox = (props: any) => {
-  const { insight, language } = props;
+interface BottomBoxProps {
+  insight: string;
+  language: string;
+  attributeMeasures: any[];
+}
+
+const BottomBox = ({
+  insight,
+  language,
+  attributeMeasures,
+}: BottomBoxProps) => {
+  const [expanded, setExpanded] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
+
+  const isFarsi = language === "fa";
+  const fontFamily = isFarsi ? farsiFontFamily : primaryFontFamily;
+  const textAlign = isFarsi ? "right" : "left";
+
   return (
     <Box
       sx={{
@@ -144,14 +173,13 @@ const BottomBox = (props: any) => {
         borderRadius: "1rem",
         backgroundColor: "#2466A80A",
         py: "24px",
-        paddingInlineEnd: "24px",
-        paddingInlineStart: "32px",
+        px: { xs: "16px", sm: "32px" },
         position: "relative",
       }}
     >
       <img
         src={lens}
-        alt={lens}
+        alt="lens"
         style={{
           position: "absolute",
           right: "-20px",
@@ -160,18 +188,20 @@ const BottomBox = (props: any) => {
           height: "3rem",
         }}
       />
+
       <Typography
         sx={{
           ...theme.typography.labelMedium,
           color: "#2466A8",
           fontSize: "1rem",
-          direction: language === "fa" ? "rtl" : "ltr",
-          fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
-          textAlign: language === "fa" ? "right" : "left",
+          direction: isFarsi ? "rtl" : "ltr",
+          fontFamily,
+          textAlign,
         }}
       >
         {t("analysisResults", { lng: language })}
       </Typography>
+
       <Typography
         component="div"
         textAlign="justify"
@@ -179,13 +209,111 @@ const BottomBox = (props: any) => {
           ...theme.typography.extraLight,
           mt: 1,
           color: "#2B333B",
-          direction: language === "fa" ? "rtl" : "ltr",
-          fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+          direction: isFarsi ? "rtl" : "ltr",
+          fontFamily,
         }}
         dangerouslySetInnerHTML={{
           __html: insight ?? t("unavailable", { lng: language }),
         }}
-      ></Typography>
+      />
+
+      <Box
+        sx={{
+          display: { xs: "none", sm: "flex" },
+          alignItems: "center",
+          justifyContent: isFarsi ? "flex-end" : "flex-start",
+        }}
+      >
+        <Divider
+          sx={{ flexGrow: 1, borderColor: theme.palette.primary.main }}
+        />
+
+        <IconButton
+          onClick={() => setExpanded((prev) => !prev)}
+          size="small"
+          color="primary"
+        >
+          {expanded ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
+        </IconButton>
+
+        <Typography
+          sx={{
+            color: "#2466A8",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {t("reportDocument.showMeasures", { lng: language })}
+        </Typography>
+      </Box>
+
+      {expanded && (
+        <Box mt={1} display={{ xs: "none", sm: "block" }}>
+          <Typography
+            variant="labelMedium"
+            sx={{
+              color: "#6C8093",
+              whiteSpace: "nowrap",
+              fontFamily,
+            }}
+          >
+            {t("reportDocument.measureTitle", { lng: language })}
+          </Typography>
+
+          <Box mt={-3}>
+            <ScoreImpactBarChart
+              measures={attributeMeasures}
+              language={language}
+              compact
+            />
+          </Box>
+
+          <Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: isFarsi ? "flex-end" : "flex-start",
+              }}
+            >
+              <InfoOutlined fontSize="small" color="action" />
+              <Typography
+                variant="labelSmall"
+                sx={{
+                  fontFamily,
+                  color: "#6C8093",
+                  marginInlineStart: "4px",
+                }}
+              >
+                {t("hint", { lng: language })}
+              </Typography>
+              <IconButton
+                onClick={() => setShowGuide((prev) => !prev)}
+                size="small"
+              >
+                {showGuide ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
+              </IconButton>
+              <Divider sx={{ flexGrow: 1, borderColor: "#D6DEE5" }} />
+            </Box>
+
+            {showGuide && (
+              <Typography
+                mt={1}
+                sx={{
+                  fontSize: "0.85rem",
+                  color: "#4A4A4A",
+                  textAlign,
+                  fontFamily,
+                }}
+              >
+                {t("reportDocument.helpDescription", { lng: language })}
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
