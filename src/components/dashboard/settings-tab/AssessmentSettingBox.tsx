@@ -46,6 +46,7 @@ import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
+import {toastStyle} from "@utils/toastStyle";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -1169,7 +1170,7 @@ const OnHoverInputTitleSetting = (props: any) => {
   const updateAssessmentTitle = async () => {
     try {
       const res = await updateAssessmentQuery.query();
-      res.message && toast.success(res.message);
+      res.message && toast.success(res.message,{style: toastStyle()});
       await infoQuery();
       await AssessmentInfoQuery();
     } catch (e) {

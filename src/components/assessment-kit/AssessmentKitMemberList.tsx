@@ -32,6 +32,7 @@ import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
 import { theme } from "@config/theme";
+import {toastStyle} from "@utils/toastStyle";
 
 const tableCellStyles = {
   minWidth: {
@@ -364,7 +365,7 @@ const AddMemberModal = (props: any) => {
         assessmentKitId: assessmentKitId,
         email: inputRef.current?.value,
       });
-      res?.message && toast.success(res.message);
+      res?.message && toast.success(res.message,{style: toastStyle()});
       await query.query();
       close();
     } catch (e) {

@@ -24,6 +24,7 @@ import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";
 import { styles } from "@styles";
+import {toastStyle} from "@utils/toastStyle";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -156,6 +157,7 @@ const KitCustomization = (props: any) => {
               i18nKey="spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
+              {style: toastStyle()}
           );
         } else {
           const customData = inputData;
@@ -175,6 +177,7 @@ const KitCustomization = (props: any) => {
               i18nKey="spaceCreatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
+              {style: toastStyle()}
           );
         }
       } catch (e) {

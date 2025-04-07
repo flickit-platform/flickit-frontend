@@ -11,6 +11,7 @@ import QueryData from "@common/QueryData";
 import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import { theme } from "@/config/theme";
+import {toastStyle} from "@utils/toastStyle";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -41,7 +42,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
       navigate(`/user/expert-groups/${expertGroupId}`, {
         replace: true,
       });
-      toast.success("You have joined this expert group successfully.");
+      toast.success("You have joined this expert group successfully.",{style: toastStyle()});
     } catch (e) {
       const err = e as ICustomError;
       if (err?.response?.data?.code === "ALREADY_EXISTS") {
