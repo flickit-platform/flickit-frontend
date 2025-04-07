@@ -919,5 +919,8 @@
     "measureTitle": "Measure title",
     "guidance": "Guidance",
     "helpDescription": "This chart shows how much each measure contributes to a specific attribute. The length of each bar reflects its impact, and the sum of all bars equals 100%. The colors help visualize how much each measure has positively or negatively influenced the attribute. Hovering over a bar reveals the exact percentage of gained or missed score. This breakdown allows you to quickly identify strengths and opportunities for improvement within each area."
+  },
+  "kitDesignerTab":{
+    "measures": "Measures"
   }
 }
