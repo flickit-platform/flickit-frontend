@@ -1,4 +1,5 @@
 import Keycloak, { KeycloakInstance } from "keycloak-js";
+
 const _kc: KeycloakInstance = new Keycloak({
   url: import.meta.env.VITE_SSO_URL,
   realm: import.meta.env.VITE_SSO_REALM,
@@ -17,37 +18,44 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
         return;
       }
 
-      const previousUser = localStorage.getItem("previousUser");
-      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
       const currentUser =
         _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
 
       sessionStorage.setItem("currentUser", currentUser ?? "");
 
+      const previousUser = localStorage.getItem("previousUser");
+      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
+
+      // اگر آدرس شامل html-document بود، ریدایرکت کن
       if (location.pathname.includes("html-document")) {
         const space = location.pathname.split("/")[1];
         const id = location.pathname.split("/")[4];
+        onAuthenticatedCallback();
         window.location.href = `/${space}/assessments/${id}/graphical-report/`;
+        return;
       }
 
       const hasRedirected = localStorage.getItem("hasRedirected");
+
       if (!hasRedirected) {
         localStorage.setItem("hasRedirected", "true");
+
         if (previousUser && previousUser !== currentUser) {
+          onAuthenticatedCallback();
           window.location.href = "/spaces/1";
           return;
-        } else if (lastVisitedPage) {
+        }
+
+        if (lastVisitedPage) {
           localStorage.removeItem("lastVisitedPage");
+          onAuthenticatedCallback();
           window.location.href = lastVisitedPage;
           return;
         }
-      } else {
-        const currentUser =
-          _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
-
-        sessionStorage.setItem("currentUser", currentUser ?? "");
-        onAuthenticatedCallback();
       }
+
+      // در حالت عادی فقط callback اجرا کن
+      onAuthenticatedCallback();
     })
     .catch(console.error);
 };
@@ -63,6 +71,7 @@ const doLogout = async () => {
 
   await _kc.logout();
 };
+
 const isTokenExpired = _kc.isTokenExpired;
 const doLogin = _kc.login;
 
