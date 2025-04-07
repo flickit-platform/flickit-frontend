@@ -495,8 +495,8 @@ const SubjectAttributeCard = (props: any) => {
 
               {topTab === 1 && (
                 <Grid container>
-                  <Grid item xs={12} sm={8.7}></Grid>
-                  <Grid item xs={12} sm={3.3}>
+                  <Grid item xs={12} sm={9.5}></Grid>
+                  <Grid item xs={12} sm={2.5}>
                     <DropDownContent
                       onSortChange={handleSortChange}
                       sortBy={sortBy}

@@ -9,10 +9,22 @@ import { theme } from "@/config/theme";
 
 const sortOptions = [
   { value: "impact_percentage", label: t("impact") },
-  { value: "gainedScoreLowToHigh", label: `${t("gainedScore")} (${t("ascending")})` },
-  { value: "gainedScoreHighToLow", label: `${t("gainedScore")} (${t("descending")})` },
-  { value: "missedScoreLowToHigh", label: `${t("missedScore")} (${t("ascending")})` },
-  { value: "missedScoreHighToLow", label: `${t("missedScore")} (${t("descending")})` },
+  {
+    value: "gainedScoreLowToHigh",
+    label: `${t("gainedScore")} (${t("ascending")})`,
+  },
+  {
+    value: "gainedScoreHighToLow",
+    label: `${t("gainedScore")} (${t("descending")})`,
+  },
+  {
+    value: "missedScoreLowToHigh",
+    label: `${t("missedScore")} (${t("ascending")})`,
+  },
+  {
+    value: "missedScoreHighToLow",
+    label: `${t("missedScore")} (${t("descending")})`,
+  },
 ];
 
 const DropdownContent = ({
@@ -27,29 +39,41 @@ const DropdownContent = ({
   const isRTL = theme.direction === "rtl";
 
   const getSelectedValue = () => {
-    if (sortBy === "gained_score" && sortOrder === "desc") return "gainedScoreHighToLow";
-    if (sortBy === "gained_score" && sortOrder === "asc") return "gainedScoreLowToHigh";
-    if (sortBy === "missed_score" && sortOrder === "desc") return "missedScoreHighToLow";
-    if (sortBy === "missed_score" && sortOrder === "asc") return "missedScoreLowToHigh";
-    if (sortBy === "impact_percentage" && sortOrder === "desc") return "impact_percentage";
+    if (sortBy === "gained_score" && sortOrder === "desc")
+      return "gainedScoreHighToLow";
+    if (sortBy === "gained_score" && sortOrder === "asc")
+      return "gainedScoreLowToHigh";
+    if (sortBy === "missed_score" && sortOrder === "desc")
+      return "missedScoreHighToLow";
+    if (sortBy === "missed_score" && sortOrder === "asc")
+      return "missedScoreLowToHigh";
+    if (sortBy === "impact_percentage" && sortOrder === "desc")
+      return "impact_percentage";
     return "";
   };
 
   const handleSortChange = (event: any) => {
     const value = event.target.value;
     if (value === "gainedScoreHighToLow") onSortChange("gained_score", "desc");
-    else if (value === "gainedScoreLowToHigh") onSortChange("gained_score", "asc");
-    else if (value === "missedScoreHighToLow") onSortChange("missed_score", "desc");
-    else if (value === "missedScoreLowToHigh") onSortChange("missed_score", "asc");
-    else if (value === "impact_percentage") onSortChange("impact_percentage", "desc");
+    else if (value === "gainedScoreLowToHigh")
+      onSortChange("gained_score", "asc");
+    else if (value === "missedScoreHighToLow")
+      onSortChange("missed_score", "desc");
+    else if (value === "missedScoreLowToHigh")
+      onSortChange("missed_score", "asc");
+    else if (value === "impact_percentage")
+      onSortChange("impact_percentage", "desc");
   };
 
   return (
-    <Box px={2} py={1} dir={isRTL ? "rtl" : "ltr"}>
+    <Box mt={3} dir={isRTL ? "rtl" : "ltr"}>
       <FormControl fullWidth size="small">
         <InputLabel
           id="sort-select-label"
-          sx={{ textAlign: isRTL ? "right" : "left" }}
+          sx={{
+            textAlign: isRTL ? "right" : "left",
+            ...theme.typography.bodySmall,
+          }}
         >
           {t("orderBy")}
         </InputLabel>
@@ -61,13 +85,15 @@ const DropdownContent = ({
           displayEmpty
           renderValue={(selected) => {
             const selectedOption = sortOptions.find(
-              (opt) => opt.value === selected
+              (opt) => opt.value === selected,
             );
             return selectedOption ? selectedOption.label : "";
           }}
           sx={{
             textAlign: isRTL ? "right" : "left",
             direction: isRTL ? "rtl" : "ltr",
+            ...theme.typography.bodySmall,
+
             "& .MuiSelect-icon": {
               left: isRTL ? 7 : "unset",
               right: isRTL ? "unset" : 7,
@@ -78,7 +104,10 @@ const DropdownContent = ({
             <MenuItem
               key={option.value}
               value={option.value}
-              sx={{ textAlign: isRTL ? "right" : "left" }}
+              sx={{
+                textAlign: isRTL ? "right" : "left",
+                ...theme.typography.bodySmall,
+              }}
             >
               {option.label}
             </MenuItem>
