@@ -304,7 +304,7 @@ const BottomBox = ({
                 sx={{
                   fontSize: "0.85rem",
                   color: "#4A4A4A",
-                  textAlign,
+                  textAlign: "justify",
                   fontFamily,
                 }}
               >
