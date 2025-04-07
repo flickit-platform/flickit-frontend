@@ -627,11 +627,6 @@ export const theme = createTheme({
           right: !is_farsi ? "7px" : "unset",
           left: is_farsi ? "7px" : "unset",
         },
-        select: {
-          paddingRight: is_farsi ? "16px" : "32px",
-          paddingLeft: is_farsi ? "32px" : "16px",
-          textAlign: is_farsi ? "right" : "left",
-        },
       },
     },
     //@ts-expect-error

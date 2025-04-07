@@ -443,7 +443,7 @@ const AdviceItemAccordion: React.FC<{
           <Divider sx={{ marginBottom: "8px" }} />
           <Typography
             textAlign="justify"
-            variant={readOnly ? "extraLight" : "body1"}
+            variant={readOnly ? "bodyMedium" : "body1"}
             component="div"
             dangerouslySetInnerHTML={{ __html: item.description }}
             dir={languageDetector(item.description) ? "rtl" : "ltr"}
