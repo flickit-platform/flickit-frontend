@@ -303,8 +303,8 @@ const BottomBox = ({
                 sx={{
                   color: "#4A4A4A",
                   textAlign: "justify",
-                  fontFamily,
                   ...theme.typography.bodyMedium,
+                  fontFamily,
                 }}
               >
                 {t("reportDocument.helpDescription", { lng: language })}
