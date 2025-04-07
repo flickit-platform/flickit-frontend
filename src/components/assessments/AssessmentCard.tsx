@@ -45,7 +45,6 @@ import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
-import {toastStyle} from "@utils/toastStyle";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -350,7 +349,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 e.stopPropagation();
                 if (!hasML) {
                   e.preventDefault();
-                  toast.warn(t("inOrderToViewSomeInsight") as string,{style: toastStyle()});
+                  toast.warn(t("inOrderToViewSomeInsight") as string);
                 }
               }}
               component={Link}

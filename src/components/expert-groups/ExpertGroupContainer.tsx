@@ -65,7 +65,6 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
-import {toastStyle} from "@utils/toastStyle";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -916,7 +915,7 @@ const MemberActions = (props: any) => {
         id: expertGroupId,
         email,
       });
-      res?.message && toast.success(res.message,{style: toastStyle()});
+      res?.message && toast.success(res.message);
       query();
       inviteeQuery();
     } catch (e) {
@@ -1004,7 +1003,7 @@ const AddMember = (props: any) => {
         id: expertGroupId,
         email: inputRef.current?.value,
       });
-      res?.message && toast.success(res.message,{style: toastStyle()});
+      res?.message && toast.success(res.message);
       query();
     } catch (e) {
       const error = e as ICustomError;

@@ -3,7 +3,6 @@ import { AxiosError } from "axios";
 import { ECustomErrorType } from "@types";
 import { ICustomError } from "./CustomError";
 import { t } from "i18next";
-import {toastStyle} from "@utils/toastStyle";
 
 export interface IToastErrorOptions {
   /**
@@ -25,11 +24,11 @@ const toastError = (
   options?: IToastErrorOptions,
 ) => {
   if (typeof err === "boolean" && err) {
-    toast.error(t("someThingWentWrong") as string,{style:toastStyle()});
+    toast.error(t("someThingWentWrong") as string);
     return;
   }
   if (typeof err === "string") {
-    toast.error(err,{style:toastStyle()});
+    toast.error(err);
     return;
   }
 
@@ -102,7 +101,7 @@ const toastError = (
       data?.message ??
       data?.detail ??
       data?.non_field_errors?.[0] ??
-      message,{style: toastStyle()}
+      message
   );
 };
 

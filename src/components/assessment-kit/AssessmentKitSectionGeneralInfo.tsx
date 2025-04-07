@@ -39,7 +39,6 @@ import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
-import {toastStyle} from "@utils/toastStyle";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -548,7 +547,7 @@ const OnHoverInput = (props: any) => {
   const updateAssessmentKit = async () => {
     try {
       const res = await updateAssessmentKitQuery.query();
-      res.message && toast.success(res.message,{style: toastStyle()});
+      res.message && toast.success(res.message);
       await infoQuery();
     } catch (e) {
       const err = e as ICustomError;
@@ -726,7 +725,7 @@ const OnHoverStatus = (props: any) => {
   });
   const updateAssessmentKit = async () => {
     const res = await updateAssessmentKitQuery.query();
-    res.message && toast.success(res.message,{style: toastStyle()});
+    res.message && toast.success(res.message);
     await infoQuery();
   };
   return (
@@ -831,7 +830,7 @@ const OnHoverVisibilityStatus = (props: any) => {
   });
   const updateAssessmentKit = async () => {
     const res = await updateAssessmentKitQuery.query();
-    res.message && toast.success(res.message,{style: toastStyle()});
+    res.message && toast.success(res.message);
     await infoQuery();
   };
   return (

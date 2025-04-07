@@ -37,7 +37,6 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import { theme } from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import {toastStyle} from "@utils/toastStyle";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -124,7 +123,7 @@ export const SpaceMembers = (props: any) => {
           onSubmit={async (e) => {
             e.preventDefault();
             if (!user_id_ref.current?.value) {
-              toast.error(t("pleaseEnterEmailAddress") as string,{style: toastStyle()});
+              toast.error(t("pleaseEnterEmailAddress") as string);
             } else {
               try {
                 await addMember({
@@ -530,7 +529,7 @@ const Actions = (props: any) => {
   const inviteMember = async () => {
     try {
       await inviteMemberQueryData.query();
-      toast.success(t("invitationSentSuccessfully"),{style: toastStyle()});
+      toast.success(t("invitationSentSuccessfully"));
       fetchSpaceMembers();
     } catch (e) {
       toastError(e as ICustomError);
@@ -595,7 +594,7 @@ const InviteSpaceMemberDialog = (
   const onInvite = async () => {
     try {
       await inviteMemberQuery();
-      toast.success(t("invitationSentSuccessfully"),{style: toastStyle()});
+      toast.success(t("invitationSentSuccessfully"));
       resetForm();
       rest.onClose();
       spaceMembersQueryData.query();
