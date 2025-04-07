@@ -67,6 +67,7 @@ const CreateSpaceDialog = (props: any) => {
     allowCreateBasic,
     ...rest
   } = props;
+    console.log(context,"test context")
   const { type, data = {} } = context;
   const { id: spaceId } = data;
   const { type: spaceDefaultType } = data;
@@ -176,7 +177,7 @@ const CreateSpaceDialog = (props: any) => {
       </Box>
       <Box sx={{ py: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "end" }}>
-          <Button variant="contained"  data-testid={"next-step-modal"} onClick={() => setStep(2)}>
+          <Button variant="contained"  data-testid="next-step-modal" onClick={() => setStep(2)}>
             <Typography>
               <Trans i18nKey={"next"} />
             </Typography>
