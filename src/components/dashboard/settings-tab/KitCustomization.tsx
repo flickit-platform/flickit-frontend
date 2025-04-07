@@ -155,7 +155,7 @@ const KitCustomization = (props: any) => {
             <Trans
               i18nKey="spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
-            />,
+            />
           );
         } else {
           const customData = inputData;
@@ -174,7 +174,7 @@ const KitCustomization = (props: any) => {
             <Trans
               i18nKey="spaceCreatedSuccessMessage"
               values={{ title: inputData.title }}
-            />,
+            />
           );
         }
       } catch (e) {
