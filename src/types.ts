@@ -120,6 +120,7 @@ export type TAnswer = {
     index: number;
     title: string;
   };
+  approve?: boolean;
   id?: TId;
   index?: string | number;
   caption?: string;

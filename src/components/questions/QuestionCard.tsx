@@ -1105,6 +1105,7 @@ const AnswerTemplate = (props: {
           </LoadingButton>{" "}
         </Box>
         {isSelectedValueTheSameAsAnswer &&
+          answer?.hasOwnProperty("approved") &&
           !answer?.approved &&
           permissions?.approveAnswer && (
             <Box
