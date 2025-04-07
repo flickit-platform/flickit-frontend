@@ -259,7 +259,7 @@ const AssessmentExportContainer = () => {
                             component="div"
                             textAlign="justify"
                             sx={{
-                              ...theme.typography.extraLight,
+                              ...theme.typography.bodyMedium,
                               mt: 1,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -291,7 +291,7 @@ const AssessmentExportContainer = () => {
                             component="div"
                             textAlign="justify"
                             sx={{
-                              ...theme.typography.extraLight,
+                              ...theme.typography.bodyMedium,
                               mt: 1,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -404,7 +404,7 @@ const AssessmentExportContainer = () => {
                             component="div"
                             textAlign="justify"
                             sx={{
-                              ...theme.typography.extraLight,
+                              ...theme.typography.bodyMedium,
                               fontWeight: "light",
                               mt: 1,
                               ...styles.rtlStyle(rtlLanguage),
@@ -524,8 +524,7 @@ const AssessmentExportContainer = () => {
                         <Typography
                           textAlign="justify"
                           sx={{
-                            ...theme.typography.titleSmall,
-                            fontWeight: "light",
+                            ...theme.typography.bodyMedium,
                             my: 1,
                             ...styles.rtlStyle(rtlLanguage),
                           }}

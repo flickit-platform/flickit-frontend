@@ -125,7 +125,7 @@ const TopBox = (props: ITopBoxReport) => {
       <Grid xs={12} sm={4.5} item>
         <Typography
           sx={{
-            ...theme.typography.extraLight,
+            ...theme.typography.bodyMedium,
             direction: language === "fa" ? "rtl" : "ltr",
             fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
           }}
@@ -206,7 +206,7 @@ const BottomBox = ({
         component="div"
         textAlign="justify"
         sx={{
-          ...theme.typography.extraLight,
+          ...theme.typography.bodyMedium,
           mt: 1,
           color: "#2B333B",
           direction: isFarsi ? "rtl" : "ltr",
@@ -240,10 +240,10 @@ const BottomBox = ({
           sx={{
             color: "#2466A8",
             fontWeight: 600,
-            fontSize: "0.95rem",
             fontFamily,
             whiteSpace: "nowrap",
           }}
+          variant="labelMedium"
         >
           {t("reportDocument.showMeasures", { lng: language })}
         </Typography>
@@ -252,7 +252,7 @@ const BottomBox = ({
       {expanded && (
         <Box mt={1} display={{ xs: "none", sm: "block" }}>
           <Typography
-            variant="labelMedium"
+            variant="labelSmall"
             sx={{
               color: "#6C8093",
               whiteSpace: "nowrap",
@@ -302,11 +302,11 @@ const BottomBox = ({
               <Typography
                 mt={1}
                 sx={{
-                  fontSize: "0.85rem",
                   color: "#4A4A4A",
                   textAlign: "justify",
                   fontFamily,
                 }}
+                variant="bodyMedium"
               >
                 {t("reportDocument.helpDescription", { lng: language })}
               </Typography>
