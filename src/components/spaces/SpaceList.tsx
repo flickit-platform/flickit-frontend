@@ -167,7 +167,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 height: "34px",
                 display: "flex",
                 alignItems: "center",
-                fontFamily: languageDetector(owner?.displayName)
+                fontFamily: theme.direction == "rtl"
                   ? farsiFontFamily
                   : primaryFontFamily,
               }}
