@@ -73,7 +73,7 @@ const AttributeImpactList = ({
         questionId,
         attributeId: attribute?.attributeId ?? undefined,
         maturityLevelId: item?.maturityLevel?.maturityLevelId ?? undefined,
-        weight: (item.weight ?? 0) + 1,
+        weight: item.weight ?? 0,
       });
     }
     setEditMode(id);
@@ -172,11 +172,17 @@ const ImpactDetails = ({
   editMode,
   tempValues,
   handleInputChange,
-  toggleEditMode,
   attributes,
   maturityLevels,
 }: any) => (
-  <Box sx={{ display: "flex", alignItems: "center" }}>
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+    width="100%"
+  >
     {editMode === item.questionImpactId ? (
       <>
         <Select
@@ -221,12 +227,20 @@ const ImpactDetails = ({
       </>
     ) : (
       <>
-        <Typography variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
-          {attribute.title}
-        </Typography>
-        <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
-          {t("impactsOn") + " " + item.maturityLevel.title}
-        </Typography>
+        <Box display="flex">
+          <Typography variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
+            {attribute.title}
+          </Typography>
+          <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
+            {t("impactsOn") + " " + item.maturityLevel.title}
+          </Typography>
+        </Box>
+        <Chip
+          label={`${t("weight")}: ${item.weight}`}
+          color="primary"
+          size="small"
+          sx={{ ml: 2, fontSize: 12 }}
+        />
       </>
     )}
   </Box>
@@ -237,17 +251,10 @@ const ActionButtons = ({
   onSave,
   onCancel,
   onEdit,
-  item,
   onDelete,
 }: any) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Chip
-        label={`${t("weight")}: ${item.weight}`}
-        color="primary"
-        size="small"
-        sx={{ ml: 2, fontSize: 12 }}
-      />
       {editMode ? (
         <>
           <IconButton
