@@ -153,7 +153,7 @@ export default function ScoreImpactBarChart({
             formatter={(val) => legendFormatter(val, language)}
             wrapperStyle={{
               transform:
-                language === "fa" ? "translateX(-90px)" : "translateX(90px)",
+                language === "fa" ? "translateX(-90px)" : "translateX(113px)",
             }}
           />
           <ReferenceLine x={0} strokeDasharray="3 3" />
