@@ -4,7 +4,7 @@ import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import lens from "@assets/svg/lens.svg";
-import { getMaturityLevelColors } from "@styles";
+import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import ScoreImpactBarChart from "@/components/subject-report-old/ScoreImpactBarChart";
 import ArrowDropUpRounded from "@mui/icons-material/ArrowDropUpRounded";
@@ -115,8 +115,7 @@ const TopBox = (props: ITopBoxReport) => {
           sx={{
             ...theme.typography.titleLarge,
             color: `${ConfidenceColor}`,
-            direction: language === "fa" ? "rtl" : "ltr",
-            fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+            ...styles.rtlStyle(language === "fa"),
           }}
         >
           {title}
@@ -126,8 +125,7 @@ const TopBox = (props: ITopBoxReport) => {
         <Typography
           sx={{
             ...theme.typography.bodyMedium,
-            direction: language === "fa" ? "rtl" : "ltr",
-            fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+            ...styles.rtlStyle(language === "fa"),
           }}
         >
           {t(description, { lng: language })}
@@ -194,8 +192,7 @@ const BottomBox = ({
           ...theme.typography.labelMedium,
           color: "#2466A8",
           fontSize: "1rem",
-          direction: isFarsi ? "rtl" : "ltr",
-          fontFamily,
+          ...styles.rtlStyle(language === "fa"),
           textAlign,
         }}
       >
@@ -209,8 +206,7 @@ const BottomBox = ({
           ...theme.typography.bodyMedium,
           mt: 1,
           color: "#2B333B",
-          direction: isFarsi ? "rtl" : "ltr",
-          fontFamily,
+          ...styles.rtlStyle(language === "fa"),
         }}
         dangerouslySetInnerHTML={{
           __html: insight ?? t("unavailable", { lng: language }),

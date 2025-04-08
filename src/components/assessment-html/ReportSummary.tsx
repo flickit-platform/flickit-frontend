@@ -388,11 +388,7 @@ const ReportCard = ({
               component="span"
               sx={{
                 ...theme.typography.bodyMedium,
-                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                fontFamily:
-                  lang.code.toLowerCase() === "fa"
-                    ? farsiFontFamily
-                    : primaryFontFamily,
+                ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
               }}
             >
               {level.description}
