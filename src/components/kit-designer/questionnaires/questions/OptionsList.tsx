@@ -15,6 +15,8 @@ import { Trans } from "react-i18next";
 import { t } from "i18next";
 import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -180,7 +182,7 @@ const OptionList = ({
                             label={<Trans i18nKey="title" />}
                           />
                         ) : (
-                          <Typography variant="bodySmall" sx={{ ml: 2 }}>
+                          <Typography variant="bodySmall" sx={{ ml: 2, fontFamily: languageDetector(item?.title) ? farsiFontFamily : primaryFontFamily }}>
                             {item?.title}
                           </Typography>
                         )}

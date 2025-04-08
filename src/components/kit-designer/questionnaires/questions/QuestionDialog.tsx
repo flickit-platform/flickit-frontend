@@ -27,6 +27,8 @@ import OptionForm from "./OptionForm";
 import OptionList from "./OptionsList";
 import AttributeImpactList from "./ImpactList";
 import ImpactForm, { dropdownStyle } from "./ImpactForm";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface QuestionDialogProps {
   open: boolean;
@@ -351,6 +353,9 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               placeholder={t("questionPlaceholder")?.toString()}
               required
               multiline
+              inputProps={{
+                style: {fontFamily: languageDetector(question?.title) ? farsiFontFamily : primaryFontFamily }
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -360,6 +365,9 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               label="Hint"
               placeholder={t("hintPlaceholder")?.toString()}
               multiline
+              inputProps={{
+                style: {fontFamily: languageDetector(question?.hint) ? farsiFontFamily : primaryFontFamily }
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -386,7 +394,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                 <Select
                   value={selectedAnswerRange ?? ""}
                   onChange={handleAnswerRangeChange}
-                  sx={dropdownStyle}
+                  sx={{...dropdownStyle, fontFamily: farsiFontFamily }}
                   size="small"
                   displayEmpty
                   disabled={fetchAnswerRanges?.data?.items?.length === 0}
@@ -395,7 +403,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                     <Trans i18nKey="chooseAnswerRange" />
                   </MenuItem>
                   {fetchAnswerRanges?.data?.items?.map((range: any) => (
-                    <MenuItem key={range.id} value={range.id}>
+                    <MenuItem key={range.id} value={range.id} sx={{fontFamily: languageDetector(range.title) ? farsiFontFamily : primaryFontFamily}}>
                       {range.title}
                     </MenuItem>
                   ))}

@@ -1386,6 +1386,9 @@ const ExpertGroupMembersDetail = (props: any) => {
                                       sx: {
                                         textTransform: "none",
                                         justifyContent: "center",
+                                        fontFamily: languageDetector(displayName)
+                                              ? farsiFontFamily
+                                              : primaryFontFamily,
                                       },
                                     }}
                                     subProps={{
@@ -1416,6 +1419,11 @@ const ExpertGroupMembersDetail = (props: any) => {
                                   <Typography
                                     variant="body2"
                                     textAlign={"center"}
+                                    sx={{
+                                        fontFamily: languageDetector(bio)
+                                            ? farsiFontFamily
+                                            : primaryFontFamily,
+                                    }}
                                   >
                                     {bio}
                                   </Typography>

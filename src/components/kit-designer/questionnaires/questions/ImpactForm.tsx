@@ -8,6 +8,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { IAttribute, IMaturityLevel, TId } from "@/types";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface ImpactFormProps {
   newItem: {
@@ -66,7 +68,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         name="attributeId"
         value={newItem.attributeId ?? ""}
         onChange={handleSelectChange}
-        sx={dropdownStyle}
+        sx={{...dropdownStyle, fontFamily: farsiFontFamily}}
         size="small"
         fullWidth
         displayEmpty
@@ -75,7 +77,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           <Trans i18nKey="selectAttribute" />
         </MenuItem>
         {attributes.map((attr) => (
-          <MenuItem key={attr.id} value={attr.id}>
+          <MenuItem key={attr.id} value={attr.id} sx={{fontFamily: languageDetector(attr.title) ? farsiFontFamily : primaryFontFamily }}>
             {attr.title}
           </MenuItem>
         ))}
@@ -86,7 +88,8 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         name="maturityLevelId"
         value={newItem.maturityLevelId ?? ""}
         onChange={handleSelectChange}
-        sx={dropdownStyle}
+        sx={{...dropdownStyle, fontFamily: farsiFontFamily}}
+
         size="small"
         fullWidth
         displayEmpty
@@ -95,7 +98,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
           <Trans i18nKey="selectMaturityLevel" />
         </MenuItem>
         {maturityLevels.map((level) => (
-          <MenuItem key={level.id} value={level.id}>
+          <MenuItem key={level.id} value={level.id} sx={{fontFamily: languageDetector(level.title) ? farsiFontFamily : primaryFontFamily }}>
             {level.title}
           </MenuItem>
         ))}

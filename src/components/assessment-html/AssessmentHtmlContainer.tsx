@@ -387,7 +387,7 @@ const AssessmentExportContainer = () => {
                               ...theme.typography.titleSmall,
                               color: "#2B333B",
                               my: 1,
-                              ...styles.centerV,
+                              ...styles.centerV,               
                               direction: rtlLanguage ? "rtl" : "ltr",
                               fontFamily: rtlLanguage
                                 ? farsiFontFamily

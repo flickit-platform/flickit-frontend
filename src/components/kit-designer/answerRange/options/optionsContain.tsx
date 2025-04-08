@@ -13,6 +13,8 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface ITempValues {
   title: string;
@@ -96,6 +98,7 @@ const OptionContain = (props: any) => {
                 })
               }
               inputProps={{
+                style: {fontFamily: languageDetector(tempValues.title) ? farsiFontFamily : primaryFontFamily },
                 "data-testid": "items-option-title",
               }}
               variant="outlined"
@@ -119,7 +122,7 @@ const OptionContain = (props: any) => {
               label={<Trans i18nKey="title" />}
             />
           ) : (
-            <Box sx={{ width: "90%" }}>{answerOption?.title}</Box>
+            <Box sx={{ width: "90%", fontFamily: languageDetector(answerOption?.title) ? farsiFontFamily : primaryFontFamily }}>{answerOption?.title}</Box>
           )}
         </Box>
         {editMode === answerOption.id ? (

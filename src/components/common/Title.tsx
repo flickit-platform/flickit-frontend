@@ -7,7 +7,8 @@ import { SvgIconProps } from "@mui/material/SvgIcon";
 import AnchorRoundedIcon from "@mui/icons-material/AnchorRounded";
 import { styles } from "@styles";
 import HomeIcon from "@mui/icons-material/Home";
-import { theme } from "@/config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
+import languageDetector from "@utils/languageDetector";
 interface ITitle extends Omit<TypographyProps, "borderBottom"> {
   sup?: JSX.Element | string;
   sub?: JSX.Element | string;
@@ -145,6 +146,9 @@ const Title = (props: ITitle) => {
           sx={{
             ...styles.centerV,
             display: { xs: "block", sm: "flex" },
+            fontFamily: languageDetector(children as string)
+                ? farsiFontFamily
+                : primaryFontFamily,
             ...((titleProps?.sx ?? {}) as any),
             ...(rest.sx ?? {}),
           }}

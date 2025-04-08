@@ -7,7 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import Typography from "@mui/material/Typography";
-import {theme} from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import languageDetector from "@utils/languageDetector";
 
 interface SubjectFormProps {
     newSubject: {
@@ -76,6 +77,7 @@ const SubjectForm = ({
         name="title"
         inputProps={{
             "data-testid": "subject-title",
+            style: { fontFamily: languageDetector(newSubject.title) ? farsiFontFamily : primaryFontFamily }
         }}
         value={newSubject.title}
         onChange={handleInputChange}
@@ -101,6 +103,7 @@ const SubjectForm = ({
         name="description"
         inputProps={{
             "data-testid": "subject-description",
+            style: { fontFamily: languageDetector(newSubject.description) ? farsiFontFamily : primaryFontFamily }
         }}
         required
         value={newSubject.description}

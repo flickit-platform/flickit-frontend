@@ -815,6 +815,7 @@ const SpacesButton = () => {
                       component={NavLink}
                       to={`/${space?.id}/assessments/1`}
                       onClick={() => handleClickMenueItem(space)}
+                      sx={{fontFamily: languageDetector(space?.title) ? farsiFontFamily : primaryFontFamily }}
                     >
                       {space?.title}
                     </MenuItem>
