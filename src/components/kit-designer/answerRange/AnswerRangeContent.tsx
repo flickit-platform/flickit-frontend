@@ -89,7 +89,7 @@ const AnaweRangeContent = () => {
       setShowNewAnswerRangeForm(false);
       setNewAnswerRange({
         title: "",
-        index: fetchAnswerRangeKit.data?.items.length || 1,
+        index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
         id: null,
       });
       setChangeData((prev) => !prev);
@@ -103,7 +103,7 @@ const AnaweRangeContent = () => {
     setShowNewAnswerRangeForm(false);
     setNewAnswerRange({
       title: "",
-      index: fetchAnswerRangeKit.data?.items.length || 1,
+      index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
       id: null,
     });
   };
@@ -126,7 +126,7 @@ const AnaweRangeContent = () => {
 
       setNewAnswerRange({
         title: "",
-        index: fetchAnswerRangeKit.data?.items.length || 1,
+        index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
         id: null,
       });
       setChangeData((prev) => !prev);
@@ -204,7 +204,8 @@ const AnaweRangeContent = () => {
               />
             </Box>
           ) : (
-            data?.length == 0 && (
+            data?.length == 0 &&
+            !showNewAnswerRangeForm && (
               <EmptyState
                 btnTitle={"newAnswerRange"}
                 title={"answerRangeListEmptyState"}
