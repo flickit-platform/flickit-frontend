@@ -357,6 +357,7 @@ const AutocompleteBaseField = (
           }
           sx={{
             "& .MuiOutlinedInput-root": {
+              fontFamily: farsiFontFamily,
               "& .MuiAutocomplete-endAdornment": {
                 left: theme.direction == "rtl" ? "9px" : "unset",
                 right: theme.direction == "ltr" ? "9px" : "unset",
