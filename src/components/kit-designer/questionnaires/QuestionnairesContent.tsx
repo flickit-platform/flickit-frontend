@@ -102,6 +102,7 @@ const QuestionnairesContent = () => {
       }
 
       await fetchQuestionnairesKit.query();
+      setShowNewQuestionnairesForm(false);
 
       setNewQuestionnaires({
         title: "",
@@ -235,12 +236,14 @@ const QuestionnairesContent = () => {
                     />
                   </Box>
                 ) : (
-                  <EmptyState
-                    btnTitle={"newQuestionnaire"}
-                    title={"questionnairesListEmptyState"}
-                    SubTitle={"questionnairesEmptyStateDetailed"}
-                    onAddNewRow={handleAddNewRow}
-                  />
+                  !showNewQuestionnairesForm && (
+                    <EmptyState
+                      btnTitle={"newQuestionnaire"}
+                      title={"questionnairesListEmptyState"}
+                      SubTitle={"questionnairesEmptyStateDetailed"}
+                      onAddNewRow={handleAddNewRow}
+                    />
+                  )
                 )}
                 {showNewQuestionnairesForm && (
                   <QuestionnairesForm

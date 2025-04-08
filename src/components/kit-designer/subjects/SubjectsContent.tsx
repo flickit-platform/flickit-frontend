@@ -101,7 +101,7 @@ const SubjectsContent = () => {
       }
 
       // Reset form and re-fetch data after saving
-      // setShowSubjectForm(false);
+      setShowNewSubjectForm(false);
       await fetchSubjectKit.query();
 
       // Reset the form values
@@ -234,12 +234,14 @@ const SubjectsContent = () => {
                     />
                   </Box>
                 ) : (
-                  <EmptyState
-                    btnTitle={"newSubject"}
-                    title={"subjectsListEmptyState"}
-                    SubTitle={"subjectEmptyStateDetailed"}
-                    onAddNewRow={handleAddNewRow}
-                  />
+                  !showNewSubjectForm && (
+                    <EmptyState
+                      btnTitle={"newSubject"}
+                      title={"subjectsListEmptyState"}
+                      SubTitle={"subjectEmptyStateDetailed"}
+                      onAddNewRow={handleAddNewRow}
+                    />
+                  )
                 )}
                 {showNewSubjectForm && (
                   <SubjectForm
