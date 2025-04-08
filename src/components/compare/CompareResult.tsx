@@ -13,6 +13,8 @@ import Title from "@common/Title";
 import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import { useConfigContext } from "@/providers/ConfgProvider";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 interface ICompareResultProps {
   data: any;
 }
@@ -94,6 +96,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
           "& .MuiChip-label": {
             whiteSpace: "pre-wrap",
           },
+          fontFamily: languageDetector(assessmentKit.title) ? farsiFontFamily : primaryFontFamily
         }}
       />
       <Trans i18nKey={"whichHasNamed"} values={{ value: subjects.length }} />
@@ -106,7 +109,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
             cursor: "default",
             color: "#004F83",
             textDecorationColor: "#004F83",
-
+            fontFamily: languageDetector(assessmentKit.title) ? farsiFontFamily : primaryFontFamily,
             ":hover": {
               color: "#004F83",
               textDecorationColor: "#004F83",
