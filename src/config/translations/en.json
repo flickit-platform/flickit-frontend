@@ -278,7 +278,7 @@
   "haveAccount": "Already have an account?",
   "here": "here",
   "high": "High",
-  "hint": "hint",
+  "hint": "Hint",
   "hintPlaceholder": "Leave a hint for assessors",
   "hmmm": "Hmmm!",
   "howMyAnswerLook": "How my answer looks?",
@@ -875,7 +875,7 @@
   "createBasicSpaceCongratulation": "Your space is ready! You can now invite team members and start creating assessments right away.",
   "createPremiumSpaceCongratulation": "Your space has been successfully created. Please note that your premium space is temporarily active. We will contact you shortly. Kindly check your email for further details.",
   "spacePremiumInfo": "Your space will be created for free and remain active temporarily. Payment details will be sent via email; without agreement, it will be deactivated.",
-  "nameYourSpace": "Name your space",
+  "setAName": "Set a name",
   "learnWhyThisIsUnavailable": "Learn why this action is unavailable?",
   "assessmentLimitExceeded": "ASSESSMENT CREATION LIMIT EXCEEDED",
   "reachedNumberOfAssessments": "You’ve reached the maximum number of assessments allowed in the Basic space. To create a new assessment,",
@@ -918,6 +918,6 @@
     "showMeasures": "Show measures",
     "measureTitle": "Measure title",
     "guidance": "Guidance",
-    "helpDescription": "All the metrics that impact this attribute are listed in this table. The portion of the score that each metric has successfully gained is shown in blue as the gained score, and the remaining portion is shown in red as the missed score. The share of each gained or missed score from the total effective scores on this attribute is displayed as a percentage on both sides of its chart."
+    "helpDescription": "This chart shows how much each measure contributes to a specific attribute. The length of each bar reflects its impact, and the sum of all bars equals 100%. The colors help visualize how much each measure has positively or negatively influenced the attribute. Hovering over a bar reveals the exact percentage of gained or missed score. This breakdown allows you to quickly identify strengths and opportunities for improvement within each area."
   }
 }

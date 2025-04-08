@@ -13,7 +13,7 @@ const QuestionnaireContainer = () => {
 
   const progress =
     ((assessmentTotalProgress?.data?.answersCount ?? 0) /
-      ((assessmentTotalProgress?.data?.questionsCount ?? 0) + 1)) *
+      (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
 
   return (

@@ -142,10 +142,14 @@ const AssessmentReportContainer = (props: any) => {
         }
         render={([data = {}]) => {
           const { assessment, subjects } = data ?? {};
+          const { answersCount, questionsCount } =
+            assessmentTotalProgress.data ?? {};
 
           const colorCode = assessment?.color?.code ?? "#101c32";
           const { assessmentKit, maturityLevel, confidenceValue } =
             assessment ?? {};
+          const progress =
+            ((answersCount ?? 0) / (questionsCount || 1)) * 100;
 
           return (
             <Box m="auto">
@@ -202,6 +206,7 @@ const AssessmentReportContainer = (props: any) => {
                 subjects={subjects}
                 colorCode={colorCode}
                 reloadQuery={fetchInsightsIssues.query}
+                progress={progress}
               />
             </Box>
           );

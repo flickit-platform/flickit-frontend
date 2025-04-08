@@ -259,7 +259,7 @@ const AssessmentExportContainer = () => {
                             component="div"
                             textAlign="justify"
                             sx={{
-                              ...theme.typography.extraLight,
+                              ...theme.typography.bodyMedium,
                               mt: 1,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -291,7 +291,7 @@ const AssessmentExportContainer = () => {
                             component="div"
                             textAlign="justify"
                             sx={{
-                              ...theme.typography.extraLight,
+                              ...theme.typography.bodyMedium,
                               mt: 1,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -387,7 +387,7 @@ const AssessmentExportContainer = () => {
                               ...theme.typography.titleSmall,
                               color: "#2B333B",
                               my: 1,
-                              ...styles.centerV,
+                              ...styles.centerV,               
                               direction: rtlLanguage ? "rtl" : "ltr",
                               fontFamily: rtlLanguage
                                 ? farsiFontFamily
@@ -404,7 +404,7 @@ const AssessmentExportContainer = () => {
                             component="div"
                             textAlign="justify"
                             sx={{
-                              ...theme.typography.extraLight,
+                              ...theme.typography.bodyMedium,
                               fontWeight: "light",
                               mt: 1,
                               ...styles.rtlStyle(rtlLanguage),
@@ -524,8 +524,7 @@ const AssessmentExportContainer = () => {
                         <Typography
                           textAlign="justify"
                           sx={{
-                            ...theme.typography.titleSmall,
-                            fontWeight: "light",
+                            ...theme.typography.bodyMedium,
                             my: 1,
                             ...styles.rtlStyle(rtlLanguage),
                           }}

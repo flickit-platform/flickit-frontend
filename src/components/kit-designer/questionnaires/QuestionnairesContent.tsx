@@ -69,7 +69,7 @@ const QuestionnairesContent = () => {
   }, [fetchQuestionnairesKit.data]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewQuestionnaires((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -102,6 +102,7 @@ const QuestionnairesContent = () => {
       }
 
       await fetchQuestionnairesKit.query();
+      setShowNewQuestionnairesForm(false);
 
       setNewQuestionnaires({
         title: "",
@@ -235,12 +236,14 @@ const QuestionnairesContent = () => {
                     />
                   </Box>
                 ) : (
-                  <EmptyState
-                    btnTitle={"newQuestionnaire"}
-                    title={"questionnairesListEmptyState"}
-                    SubTitle={"questionnairesEmptyStateDetailed"}
-                    onAddNewRow={handleAddNewRow}
-                  />
+                  !showNewQuestionnairesForm && (
+                    <EmptyState
+                      btnTitle={"newQuestionnaire"}
+                      title={"questionnairesListEmptyState"}
+                      SubTitle={"questionnairesEmptyStateDetailed"}
+                      onAddNewRow={handleAddNewRow}
+                    />
+                  )
                 )}
                 {showNewQuestionnairesForm && (
                   <QuestionnairesForm

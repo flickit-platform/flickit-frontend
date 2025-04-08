@@ -154,7 +154,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewOption((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -295,6 +295,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         .then(() => {
           setSelectedAnswerRange(event.target.value);
           fetchOptions.query();
+          setDisableAddOption(true);
         });
     } catch (err) {
       const error = err as ICustomError;

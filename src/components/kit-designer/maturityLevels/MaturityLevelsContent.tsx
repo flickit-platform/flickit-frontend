@@ -59,7 +59,7 @@ const MaturityLevelsContent = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewMaturityLevel((prev) => ({
       ...prev,
       [name]: parsedValue,

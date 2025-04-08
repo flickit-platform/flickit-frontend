@@ -167,9 +167,6 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 height: "34px",
                 display: "flex",
                 alignItems: "center",
-                fontFamily: theme.direction == "rtl"
-                  ? farsiFontFamily
-                  : primaryFontFamily,
               }}
               label={
                 <>
@@ -177,7 +174,15 @@ const SpaceCard = (props: ISpaceCardProps) => {
                   {isOwner ? (
                     <Trans i18nKey={"you"} />
                   ) : (
-                    <Trans i18nKey={owner?.displayName} />
+                    <span
+                      style={{
+                        fontFamily: languageDetector(owner?.displayName)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                      }}
+                    >
+                      <Trans i18nKey={owner?.displayName} />
+                    </span>
                   )}
                 </>
               }

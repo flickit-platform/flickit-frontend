@@ -69,8 +69,7 @@ const Section = ({ title, children, rtlLanguage }: any) => (
         textAlign: "justify",
         ...styles.rtlStyle(rtlLanguage),
       }}
-      variant="extraLight"
-      fontWeight={300}
+      variant="bodyMedium"
     >
       {children}
     </Typography>
@@ -111,7 +110,7 @@ const TopicsList = ({
             }}
           >
             <Typography
-              variant="extraLight"
+              variant="bodyMedium"
               sx={{
                 fontWeight: "bold",
                 width: "20%",
@@ -165,7 +164,7 @@ const QuestionnaireList = ({
           }}
         >
           <Typography
-            variant="extraLight"
+            variant="bodyMedium"
             sx={{
               fontWeight: "bold",
               textAlign:
@@ -249,7 +248,7 @@ const ReportCard = ({
         rtlLanguage={rtlLanguage}
       >
         <Typography
-          variant="extraLight"
+          variant="bodyMedium"
           sx={{
             fontFamily:
               lang.code.toLowerCase() === "fa"
@@ -268,8 +267,7 @@ const ReportCard = ({
       >
         {assessmentProcess.steps ? (
           <Typography
-            variant="extraLight"
-            fontWeight={300}
+            variant="bodyMedium"
             sx={{
               fontFamily: languageDetector(assessmentProcess.steps)
                 ? farsiFontFamily
@@ -294,8 +292,7 @@ const ReportCard = ({
       >
         {assessmentProcess.participant ? (
           <Typography
-            variant="extraLight"
-            fontWeight={300}
+            variant="bodyMedium"
             sx={{
               fontFamily: languageDetector(assessmentProcess.participant)
                 ? farsiFontFamily
@@ -390,13 +387,8 @@ const ReportCard = ({
               textAlign="justify"
               component="span"
               sx={{
-                ...theme.typography.extraLight,
-                fontWeight: 300,
-                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                fontFamily:
-                  lang.code.toLowerCase() === "fa"
-                    ? farsiFontFamily
-                    : primaryFontFamily,
+                ...theme.typography.bodyMedium,
+                ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
               }}
             >
               {level.description}

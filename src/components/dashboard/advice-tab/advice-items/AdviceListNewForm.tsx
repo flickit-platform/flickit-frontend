@@ -18,7 +18,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Grid from "@mui/material/Grid";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { theme } from "@config/theme";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useEffect, useState } from "react";
@@ -171,12 +171,7 @@ const AdviceListNewForm = ({
                   fontSize: 14,
                   "& .MuiInputBase-root": {
                     fontSize: 14,
-                    fontFamily: languageDetector(newAdvice.title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                    direction: languageDetector(newAdvice.title)
-                      ? "rtl"
-                      : "ltr",
+                    ...styles.rtlStyle(languageDetector(newAdvice.title ?? "")),
                   },
                   "& .MuiFormLabel-root": {
                     fontSize: 14,

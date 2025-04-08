@@ -21,7 +21,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentTitle from "./AssessmentTitle";
-import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
+import { theme } from "@/config/theme";
 import PermissionControl from "../common/PermissionControl";
 import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
@@ -160,9 +160,6 @@ const AssessmentContainer = () => {
                 fontSize: "3rem",
                 fontWeight: "900",
                 width: "60%",
-                fontFamily: theme.direction === "rtl"
-                    ? farsiFontFamily
-                    : primaryFontFamily,
               }}
             >
               <Trans i18nKey="noAssesmentHere" />

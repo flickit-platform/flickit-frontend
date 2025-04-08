@@ -227,10 +227,7 @@ const AssessmentKit = (props: any) => {
               <Typography
                 variant="subtitle2"
                 sx={{
-                  fontFamily: languageDetector(summary)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                  direction: languageDetector(summary) ? "rtl" : "ltr",
+                  ...styles.rtlStyle(languageDetector(summary)),
                 }}
               >
                 {summary}
@@ -385,10 +382,7 @@ const AssessmentKit = (props: any) => {
                 <Box
                   mt={2}
                   sx={{
-                    fontFamily: languageDetector(summary)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                    direction: languageDetector(summary) ? "rtl" : "ltr",
+                    ...styles.rtlStyle(languageDetector(summary)),
                   }}
                 >
                   <RichEditor content={about} />
@@ -462,12 +456,9 @@ const AssessmentKit = (props: any) => {
                           <Box
                             sx={{
                               unicodeBidi: "plaintext",
-                              fontFamily: languageDetector(item.description)
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                              direction: languageDetector(item.description)
-                                ? "rtl"
-                                : "ltr",
+                              ...styles.rtlStyle(
+                                languageDetector(item.description ?? ""),
+                              ),
                             }}
                             component="span"
                             fontSize="1rem"
@@ -563,12 +554,9 @@ const AssessmentKit = (props: any) => {
                               fontWeight="bold"
                               sx={{
                                 unicodeBidi: "plaintext",
-                                fontFamily: languageDetector(att.title)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                                direction: languageDetector(att.title)
-                                  ? "rtl"
-                                  : "ltr",
+                                ...styles.rtlStyle(
+                                  languageDetector(att.title ?? ""),
+                                ),
                               }}
                             >
                               {att.title}
@@ -577,12 +565,9 @@ const AssessmentKit = (props: any) => {
                             <Box
                               sx={{
                                 unicodeBidi: "plaintext",
-                                fontFamily: languageDetector(att.description)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                                direction: languageDetector(att.description)
-                                  ? "rtl"
-                                  : "ltr",
+                                ...styles.rtlStyle(
+                                  languageDetector(att.description ?? ""),
+                                ),
                               }}
                               component="span"
                               fontSize="1rem"
