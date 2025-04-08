@@ -34,9 +34,10 @@ import formatDate from "@utils/formatDate";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { theme } from "@/config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import languageDetector from "@utils/languageDetector";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -240,6 +241,7 @@ export const SpaceMembers = (props: any) => {
                               width: "35%",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
+                              fontFamily: languageDetector(displayName) ? farsiFontFamily : primaryFontFamily
                             }}
                           >
                             {displayName}
