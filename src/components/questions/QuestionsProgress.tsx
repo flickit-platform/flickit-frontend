@@ -177,7 +177,11 @@ export const QuestionProgressItem = (props: any) => {
           </Typography>
         </Box>
       </Tooltip>
-      <QuestionPopover {...popoverProps}>
+      <QuestionPopover
+        open={popoverProps.open}
+        anchorEl={popoverProps.anchorEl}
+        onClose={popoverProps.handlePopoverClose}
+      >
         <QuestionThumb
           {...props}
           onClose={popoverProps.handlePopoverClose}
