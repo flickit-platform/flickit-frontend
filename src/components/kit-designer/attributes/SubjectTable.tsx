@@ -74,7 +74,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "weight" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "weight" ? parseInt(value) || 1 : value;
     setNewAttribute((prev: any) => ({
       ...prev,
       [name]: parsedValue,

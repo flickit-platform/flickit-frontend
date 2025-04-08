@@ -1330,15 +1330,6 @@ export const createService = (
         config,
       );
     },
-    fetchSubjectProgress(
-      { subjectId, assessmentId }: { subjectId: string; assessmentId: string },
-      config: AxiosRequestConfig<any> | undefined = {},
-    ) {
-      return axios.get(
-        `/api/v1/assessments/${assessmentId}/subjects/${subjectId}/progress/`,
-        config,
-      );
-    },
     migrateKitVersion(
       args: { assessmentId: TId },
       config?: AxiosRequestConfig<any> | undefined,

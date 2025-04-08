@@ -189,7 +189,7 @@ export interface ISubjectInfo {
   description: string;
   id: TId;
   image: string | null;
-  progress: number;
+  progress?: number;
   status: string;
   title: string;
   total_answered_question_number: number;

@@ -68,7 +68,7 @@ const SubjectsContent = () => {
   }, [fetchSubjectKit.data]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewSubject((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -108,8 +108,8 @@ const SubjectsContent = () => {
       setNewSubject({
         title: "",
         description: "",
-        index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
-        value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+        index: fetchSubjectKit.data?.items.length || 1,
+        value: fetchSubjectKit.data?.items.length || 1,
         weight: 0,
         id: null,
       });
@@ -124,8 +124,8 @@ const SubjectsContent = () => {
     setNewSubject({
       title: "",
       description: "",
-      index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
-      value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+      index: fetchSubjectKit.data?.items.length || 1,
+      value: fetchSubjectKit.data?.items.length || 1,
       weight: 0,
       id: null,
     });
@@ -154,8 +154,8 @@ const SubjectsContent = () => {
       setNewSubject({
         title: "",
         description: "",
-        index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
-        value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+        index: fetchSubjectKit.data?.items.length || 1,
+        value: fetchSubjectKit.data?.items.length || 1,
         weight: 0,
         id: null,
       });
