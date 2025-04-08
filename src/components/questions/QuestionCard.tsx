@@ -1298,7 +1298,7 @@ const AnswerHistoryItem = (props: any) => {
             height: 46,
           }}
         ></Avatar>
-        <Typography variant="titleMedium" color="#1B4D7E">
+        <Typography variant="titleMedium" color="#1B4D7E" sx={{fontFamily : languageDetector(item?.createdBy?.displayName) ? farsiFontFamily : primaryFontFamily }}>
           {item?.createdBy?.displayName}
         </Typography>
       </Grid>
@@ -1361,7 +1361,7 @@ const AnswerHistoryItem = (props: any) => {
             <Typography variant="titleSmall">
               <Trans i18nKey="selectedOption" />:
             </Typography>
-            <Typography variant="bodyMedium" maxWidth="400px">
+            <Typography variant="bodyMedium" maxWidth="400px" sx={{ fontFamily : languageDetector(item?.answer?.selectedOption?.title) ? farsiFontFamily : primaryFontFamily }}>
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
