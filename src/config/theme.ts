@@ -398,10 +398,10 @@ export const theme = createTheme({
         .nc-layout-wrapper {
           background: #F9FAFB;
           padding: 0;
-          direction:${is_farsi ? "rtl" : "ltr"};
         }
         .nc-header {
           font-family: ${is_farsi ? farsiFontFamily : primaryFontFamily};
+          direction:${is_farsi ? "rtl" : "ltr"};
           background: #E8EBEE;
           border-radius: 7px 7px 0px 0px;
           box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);

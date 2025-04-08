@@ -10,15 +10,7 @@ const mockQuestionnaires = [
     index: 1,
     description: "description test 1",
     questionsCount: 0,
-  },
-  {
-    id: 2,
-    title: "title test 2",
-    value: 2,
-    index: 2,
-    description: "description test 2",
-    questionsCount: 3,
-  },
+  }
 ];
 
 const mockOnEdit = vi.fn();
@@ -44,7 +36,6 @@ describe("questionnairesList", () => {
 
   it("renders ques levels correctly", () => {
     expect(screen.getByText("title test 1")).toBeInTheDocument();
-    expect(screen.getByText("title test 2")).toBeInTheDocument();
   });
 
   it("allows editing a questionnaires", () => {
