@@ -86,6 +86,7 @@ const AnaweRangeContent = () => {
       }
 
       // Reset the form values
+      setShowNewAnswerRangeForm(false);
       setNewAnswerRange({
         title: "",
         index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
