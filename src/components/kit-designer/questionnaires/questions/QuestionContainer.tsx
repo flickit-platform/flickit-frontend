@@ -7,6 +7,8 @@ import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 const QuestionContain = (props: any) => {
   const { question, fetchQuery } = props;
@@ -38,7 +40,7 @@ const QuestionContain = (props: any) => {
         >
           <Typography data-testid="question-index" variant="semiBoldLarge">{`Q. ${question?.index}`}</Typography>
         </Box>
-        <Box data-testid="question-title" sx={{ width: { xs: "80%", md: "90%" } }}>{question?.title}</Box>
+        <Box data-testid="question-title" sx={{ width: { xs: "80%", md: "90%", fontFamily: languageDetector(question?.title) ? farsiFontFamily :  primaryFontFamily } }}>{question?.title}</Box>
         <Box
           sx={{
             width: { xs: "20%", md: "10%" },

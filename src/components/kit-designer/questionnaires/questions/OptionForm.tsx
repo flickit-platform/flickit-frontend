@@ -7,6 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import { t } from "i18next";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface OptionFormProps {
   newItem: {
@@ -60,6 +62,7 @@ const OptionForm = ({
         onChange={handleInputChange}
         fullWidth
         inputProps={{
+          style: {fontFamily: languageDetector(newItem.title) ? farsiFontFamily : primaryFontFamily },
           "data-testid": "questionnaires-title",
         }}
         margin="normal"
