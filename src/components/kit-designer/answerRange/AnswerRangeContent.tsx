@@ -56,7 +56,7 @@ const AnaweRangeContent = () => {
   }, [fetchAnswerRangeKit.data]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseFloat(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseFloat(value) || 1 : value;
     setNewAnswerRange((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -89,7 +89,7 @@ const AnaweRangeContent = () => {
       setShowNewAnswerRangeForm(false);
       setNewAnswerRange({
         title: "",
-        index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
+        index: fetchAnswerRangeKit.data?.items.length || 1,
         id: null,
       });
       setChangeData((prev) => !prev);
@@ -103,7 +103,7 @@ const AnaweRangeContent = () => {
     setShowNewAnswerRangeForm(false);
     setNewAnswerRange({
       title: "",
-      index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
+      index: fetchAnswerRangeKit.data?.items.length || 1,
       id: null,
     });
   };
@@ -126,7 +126,7 @@ const AnaweRangeContent = () => {
 
       setNewAnswerRange({
         title: "",
-        index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
+        index: fetchAnswerRangeKit.data?.items.length || 1,
         id: null,
       });
       setChangeData((prev) => !prev);

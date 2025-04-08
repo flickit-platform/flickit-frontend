@@ -152,7 +152,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewOption((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -174,8 +174,8 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       setShowNewOptionForm(false);
       setNewOption({
         title: "",
-        index: (fetchOptions.data?.items.length ?? 0) + 1,
-        value: (fetchOptions.data?.items.length ?? 0) + 1,
+        index: fetchOptions.data?.items.length || 1,
+        value: fetchOptions.data?.items.length || 1,
         id: null,
       });
     } catch (e) {
@@ -188,8 +188,8 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     setShowNewOptionForm(false);
     setNewOption({
       title: "",
-      index: (fetchOptions.data?.items.length ?? 0) + 1,
-      value: (fetchOptions.data?.items.length ?? 0) + 1,
+      index: fetchOptions.data?.items.length || 1,
+      value: fetchOptions.data?.items.length || 1,
       id: null,
     });
   };

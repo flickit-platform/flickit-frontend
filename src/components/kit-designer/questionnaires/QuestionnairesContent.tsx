@@ -69,7 +69,7 @@ const QuestionnairesContent = () => {
   }, [fetchQuestionnairesKit.data]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewQuestionnaires((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -107,8 +107,8 @@ const QuestionnairesContent = () => {
       setNewQuestionnaires({
         title: "",
         description: "",
-        index: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
-        value: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
+        index: fetchQuestionnairesKit.data?.items.length || 1,
+        value: fetchQuestionnairesKit.data?.items.length || 1,
         weight: 1,
         id: null,
       });
@@ -123,8 +123,8 @@ const QuestionnairesContent = () => {
     setNewQuestionnaires({
       title: "",
       description: "",
-      index: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
-      value: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
+      index: fetchQuestionnairesKit.data?.items.length || 1,
+      value: fetchQuestionnairesKit.data?.items.length || 1,
       weight: 0,
       id: null,
     });
@@ -153,8 +153,8 @@ const QuestionnairesContent = () => {
       setNewQuestionnaires({
         title: "",
         description: "",
-        index: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
-        value: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
+        index: fetchQuestionnairesKit.data?.items.length || 1,
+        value: fetchQuestionnairesKit.data?.items.length || 1,
         weight: 0,
         id: null,
       });
