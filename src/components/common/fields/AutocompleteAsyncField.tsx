@@ -392,7 +392,9 @@ const AutocompleteBaseField = (
             </Box>
             {!!option?.[filterFields[1]] && (
               <Box
-                sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80" }}
+                sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80", fontFamily: languageDetector(option?.[filterFields[1]])
+                      ? farsiFontFamily
+                      : primaryFontFamily }}
               >
                 ({option?.[filterFields[1]]})
               </Box>
