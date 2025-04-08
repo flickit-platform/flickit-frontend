@@ -174,8 +174,8 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       setShowNewOptionForm(false);
       setNewOption({
         title: "",
-        index: fetchOptions.data?.items.length || 1,
-        value: fetchOptions.data?.items.length || 1,
+        index: (fetchOptions.data?.items.length ?? 0) + 1,
+        value: (fetchOptions.data?.items.length ?? 0) + 1,
         id: null,
       });
     } catch (e) {
@@ -188,8 +188,8 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     setShowNewOptionForm(false);
     setNewOption({
       title: "",
-      index: fetchOptions.data?.items.length || 1,
-      value: fetchOptions.data?.items.length || 1,
+      index: (fetchOptions.data?.items.length ?? 0) + 1,
+      value: (fetchOptions.data?.items.length ?? 0) + 1,
       id: null,
     });
   };

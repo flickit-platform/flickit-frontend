@@ -22,7 +22,7 @@ import { useRef, useState } from "react";
 import InfoRounded from "@mui/icons-material/InfoRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Grid from "@mui/material/Grid";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -38,7 +38,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
       answeredWithoutEvidence,
       unanswered,
       unresolvedComments,
-      unapprovedAnswers
+      unapprovedAnswers,
     },
   } = data;
   const { permissions }: { permissions: IPermissions } = props;
@@ -175,16 +175,10 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             />
           )}
           {originalItem.includes("unapprovedAnswers") && (
-            <ErrorChip
-              i18nKey="unapprovedAnswers"
-              value={unapprovedAnswers}
-            />
+            <ErrorChip i18nKey="unapprovedAnswers" value={unapprovedAnswers} />
           )}
           {originalItem.includes("unanswered") && (
-            <ErrorChip
-              i18nKey="unanswered"
-              value={unanswered}
-            />
+            <ErrorChip i18nKey="unanswered" value={unanswered} />
           )}
           {originalItem.includes("unresolvedComments") && (
             <ErrorChip
@@ -232,8 +226,7 @@ const QuestionDescription = ({ description, collapse }: any) => {
               width: "100%",
               border: "1px dashed #ffffff99",
               borderRadius: "8px",
-              direction: is_farsi ? "rtl" : "ltr",
-              fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+              ...styles.rtlStyle(is_farsi),
             }}
           >
             <Box display="flex" alignItems={"baseline"} sx={{ width: "100%" }}>
@@ -350,13 +343,7 @@ const ActionButton = ({
   </Button>
 );
 
-const ErrorChip = ({
-  i18nKey,
-  value,
-}: {
-  i18nKey: string;
-  value?: number;
-}) => {
+const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
   if (!value) return null;
 
   return (
@@ -398,9 +385,7 @@ const SubjectChip = ({ title, id }: { title: string; id: TId }) => (
     sx={{
       marginInlineEnd: 0.3,
       mb: 0.1,
-      fontFamily: languageDetector(title)
-        ? farsiFontFamily
-        : primaryFontFamily,
+      fontFamily: languageDetector(title) ? farsiFontFamily : primaryFontFamily,
     }}
     key={id}
   />

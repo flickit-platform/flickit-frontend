@@ -42,12 +42,7 @@ import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { format } from "date-fns";
-import {
-  farsiFontFamily,
-  primaryFontFamily,
-  secondaryFontFamily,
-  theme,
-} from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
@@ -245,10 +240,6 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 fontWeight: 700,
                 lineHeight: "24px",
                 textAlign: "left",
-                fontFamily:
-                  theme.direction === "rtl"
-                    ? farsiFontFamily
-                    : secondaryFontFamily,
               }}
             >
               <IconButton onClick={handleBackClick}>

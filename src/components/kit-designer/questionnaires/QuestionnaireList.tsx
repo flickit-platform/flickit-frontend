@@ -150,8 +150,8 @@ const ListOfItems = ({
           });
           setNewQuestion({
             title: "",
-            index: data?.items.length || 1,
-            value: data?.items.length || 1,
+            index: (data?.items.length ?? 0) + 1,
+            value: (data?.items.length ?? 0) + 1,
             id: null,
           });
           setQuestionData(data?.items);
@@ -247,8 +247,8 @@ const ListOfItems = ({
           };
           setNewQuestion({
             title: "",
-            index: newQuestion.index || 1,
-            value: newQuestion.index || 1,
+            index: (newQuestion.index ?? 0) + 1,
+            value: (newQuestion.index ?? 0) + 1,
             id: null,
           });
           setQuestionData((prev) => [...prev, newQuestionData]);

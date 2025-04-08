@@ -103,8 +103,8 @@ const MaturityLevelsContent = () => {
       setNewMaturityLevel({
         title: "",
         description: "",
-        index: maturityLevels.data?.items.length || 1,
-        value: maturityLevels.data?.items.length || 1,
+        index: (maturityLevels.data?.items.length ?? 0) + 1,
+        value: (maturityLevels.data?.items.length ?? 0) + 1,
         id: null,
       });
     } catch (e) {
@@ -118,8 +118,8 @@ const MaturityLevelsContent = () => {
     setNewMaturityLevel({
       title: "",
       description: "",
-      index: maturityLevels.data?.items.length || 1,
-      value: maturityLevels.data?.items.length || 1,
+      index: (maturityLevels.data?.items.length ?? 0) + 1,
+      value: (maturityLevels.data?.items.length ?? 0) + 1,
       id: null,
     });
     setOpenDeleteDialog({ status: false, id: "" });
@@ -147,8 +147,8 @@ const MaturityLevelsContent = () => {
       setNewMaturityLevel({
         title: "",
         description: "",
-        index: maturityLevels.data?.items.length || 1,
-        value: maturityLevels.data?.items.length || 1,
+        index: (maturityLevels.data?.items.length ?? 0) + 1,
+        value: (maturityLevels.data?.items.length ?? 0) + 1,
         id: null,
       });
     } catch (e) {

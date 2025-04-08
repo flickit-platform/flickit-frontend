@@ -107,12 +107,10 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           textAlign: languageDetector(questionInfo?.question?.title ?? "")
             ? "right"
             : "left",
-          direction: languageDetector(questionInfo?.question?.title ?? "")
-            ? "rtl"
-            : "ltr",
-          fontFamily: languageDetector(questionInfo?.question?.title)
-            ? farsiFontFamily
-            : primaryFontFamily,
+          ...styles.rtlStyle(
+            languageDetector(questionInfo?.question?.title ?? ""),
+          ),
+
           color: "#2B333B",
         }}
         data-testid={"question-detail-title"}
@@ -165,12 +163,9 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             <Typography
               sx={{
                 ...theme.typography.bodyMedium,
-                direction: languageDetector(questionInfo?.answer?.title)
-                  ? "rtl"
-                  : "ltr",
-                fontFamily: languageDetector(questionInfo?.answer?.title)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
+                ...styles.rtlStyle(
+                  languageDetector(questionInfo?.answer?.title),
+                ),
               }}
             >
               {questionInfo?.answer?.index + ". " + questionInfo?.answer?.title}
