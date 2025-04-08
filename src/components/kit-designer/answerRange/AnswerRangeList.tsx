@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { KitDesignListItems, TId } from "@types";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -28,6 +28,7 @@ import OptionContain from "@components/kit-designer/answerRange/options/optionsC
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import OptionForm from "@components/kit-designer/answerRange/options/optionForm";
+import languageDetector from "@utils/languageDetector";
 
 interface ListOfItemsProps {
   items: any;
@@ -289,6 +290,7 @@ const ListOfItems = ({
                         value={tempValues.title}
                         onChange={(e) => handelChange(e)}
                         inputProps={{
+                          style: { fontFamily: languageDetector(tempValues.title)? farsiFontFamily : primaryFontFamily },
                           "data-testid": "items-title",
                         }}
                         variant="outlined"
@@ -314,7 +316,7 @@ const ListOfItems = ({
                     ) : (
                       <Typography
                         variant="h6"
-                        sx={{ flexGrow: 1, width: "40%" }}
+                        sx={{ flexGrow: 1, width: "40%",  fontFamily: languageDetector(item.title)? farsiFontFamily : primaryFontFamily }}
                       >
                         {item.title}
                       </Typography>
