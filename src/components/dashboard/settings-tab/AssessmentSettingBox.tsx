@@ -528,6 +528,7 @@ export const AssessmentSettingMemberBox = (props: {
                               fontSize: "0.875rem",
                               color: "#1B1B1E",
                               fontWeight: 500,
+                              fontFamily: languageDetector(row.displayName) ? farsiFontFamily : primaryFontFamily
                             }}
                           >
                             {row.displayName}
