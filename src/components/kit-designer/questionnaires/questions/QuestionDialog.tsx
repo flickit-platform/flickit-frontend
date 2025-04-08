@@ -393,7 +393,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                 <Select
                   value={selectedAnswerRange ?? ""}
                   onChange={handleAnswerRangeChange}
-                  sx={dropdownStyle}
+                  sx={{...dropdownStyle, fontFamily: farsiFontFamily }}
                   size="small"
                   displayEmpty
                   disabled={fetchAnswerRanges?.data?.items?.length === 0}
@@ -402,7 +402,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                     <Trans i18nKey="chooseAnswerRange" />
                   </MenuItem>
                   {fetchAnswerRanges?.data?.items?.map((range: any) => (
-                    <MenuItem key={range.id} value={range.id}>
+                    <MenuItem key={range.id} value={range.id} sx={{fontFamily: languageDetector(range.title) ? farsiFontFamily : primaryFontFamily}}>
                       {range.title}
                     </MenuItem>
                   ))}
