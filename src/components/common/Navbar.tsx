@@ -191,10 +191,40 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
     setSelectedMessage(null);
   };
 
+  const getLinkedContent = (message: any): string => {
+    const { content, payload } = message;
+    const data = payload?.data;
+
+    let titleToLink = "";
+    let href = "";
+
+    if (data?.kit?.id && payload?.title === "New Assessment on Your Kit") {
+      titleToLink = data.kit.title;
+      href = `/assessment-kits/${data.kit.id}`;
+    } else if (
+      data?.assessment?.id &&
+      data?.assessment?.spaceId &&
+      data?.assessment?.title
+    ) {
+      titleToLink = data.assessment.title;
+      href = `/${data.assessment.spaceId}/assessments/1/${data.assessment.id}/dashboard`;
+    } else {
+      return content;
+    }
+
+    if (!titleToLink) return content;
+
+    const escapedTitle = titleToLink.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
+    const regex = new RegExp(escapedTitle, "g");
+
+    const link = `<a href="${href}" style="color: #1976d2; text-decoration: underline;">${titleToLink}</a>`;
+
+    return content.replace(regex, link);
+  };
+
   return (
     <Box>
       {selectedMessage ? (
-        // Full Message View
         <Box
           className="nc-layout-wrapper"
           sx={{
@@ -228,7 +258,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                       theme.direction === "rtl" ? "scaleX(-1)" : "none",
                     fontSize: "16px",
                   }}
-                />{" "}
+                />
               </IconButton>
               <Trans i18nKey="notificationDetails" />
             </Typography>
@@ -243,10 +273,10 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 justifyContent: "space-between",
                 padding: "12px 16px",
                 backgroundColor: "#FFFFFF",
-                position: "relative", // Keeps the relative positioning for absolute elements
+                position: "relative",
               }}
             >
-              {/* Blue Indicator for Unseen Messages */}
+              {/* Indicator */}
               <Box
                 sx={{
                   position: "absolute",
@@ -271,7 +301,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 <Typography variant="titleMedium">
                   {(selectedMessage as any)?.payload?.title}
                 </Typography>
-                {/* Added padding to make room for the indicator */}
+
                 <Box
                   sx={{
                     flexGrow: 1,
@@ -283,16 +313,12 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   <Typography
                     variant="bodyMedium"
                     dangerouslySetInnerHTML={{
-                      __html: (selectedMessage as any)?.content,
+                      __html: getLinkedContent(selectedMessage),
                     }}
-                  ></Typography>
+                  />
                 </Box>
-                <Typography
-                  variant="labelSmall"
-                  sx={{
-                    color: "#3D4D5C",
-                  }}
-                >
+
+                <Typography variant="labelSmall" sx={{ color: "#3D4D5C" }}>
                   {t(convertToRelativeTime(selectedMessage.createdAt)) +
                     " (" +
                     format(
@@ -312,9 +338,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
         </Box>
       ) : (
         <NotificationCenter
-          onUnseenCountChanged={(unseenCount: number) =>
-            handleUnseenCountChanged(unseenCount)
-          }
+          onUnseenCountChanged={handleUnseenCountChanged}
           showUserPreferences={false}
           colorScheme="light"
           emptyState={
@@ -334,16 +358,14 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
             message: IMessage,
             onActionButtonClick: (actionButtonType: any) => void,
             onNotificationClick: () => void,
-          ) => {
-            return (
-              <NotificationItem
-                message={message}
-                onNotificationClick={() =>
-                  handleNotificationClick(message, onNotificationClick)
-                }
-              />
-            );
-          }}
+          ) => (
+            <NotificationItem
+              message={message}
+              onNotificationClick={() =>
+                handleNotificationClick(message, onNotificationClick)
+              }
+            />
+          )}
         />
       )}
     </Box>
