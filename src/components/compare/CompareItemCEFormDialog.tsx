@@ -22,7 +22,8 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import AlertBox from "@common/AlertBox";
 import { useState } from "react";
-import { theme } from "@/config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
+import languageDetector from "@utils/languageDetector";
 
 interface ICompareItemCEFormDialog
   extends Omit<ICompareItemCEForm, "closeDialog"> {}
@@ -187,7 +188,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                           mr: theme.direction == "rtl" ? "auto" : "unset",
                         }}
                       >
-                        <Chip label={option?.kit?.title} size="small" />
+                        <Chip sx={{fontFamily: languageDetector(option?.kit?.title) ? farsiFontFamily : primaryFontFamily  }} label={option?.kit?.title} size="small" />
                       </Box>
                     </>
                   )}
