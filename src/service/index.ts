@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
 import i18next, { t } from "i18next";
-import { TId } from "@types";
 import { BASE_URL } from "@constants";
 import keycloakService from "@/service//keycloakService";
+import { TId } from "@/types/index";
 
 declare module "axios" {
   interface AxiosRequestConfig {

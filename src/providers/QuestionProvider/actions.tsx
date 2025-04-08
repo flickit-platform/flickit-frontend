@@ -1,4 +1,4 @@
-import { IQuestionInfo, TQuestionsInfo } from "@types";
+import { IQuestionInfo, TQuestionsInfo } from "@/types/index";
 import { EAssessmentStatus } from "./provider";
 
 export enum QUESTION_ACTIONS_TYPE {

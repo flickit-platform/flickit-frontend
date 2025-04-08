@@ -13,7 +13,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
-import { IAttribute, IMaturityLevel, TId } from "@/types";
+import { IAttribute, IMaturityLevel, TId } from "@/types/index";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";

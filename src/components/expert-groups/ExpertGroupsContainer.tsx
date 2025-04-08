@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useAuthContext } from "@providers/AuthProvider";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { TQueryFunction } from "@types";
+import { TQueryFunction } from "@/types/index";
 import forLoopComponent from "@utils/forLoopComponent";
 import useDialog from "@utils/useDialog";
 import useDocumentTitle from "@utils/useDocumentTitle";

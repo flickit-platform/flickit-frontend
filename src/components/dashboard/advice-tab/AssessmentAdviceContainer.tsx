@@ -15,7 +15,7 @@ import { styles } from "@styles";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import AIGenerated from "@common/tags/AIGenerated";
-import { ErrorCodes } from "@/types";
+import { ErrorCodes } from "@/types/index";
 import useCalculate from "@/hooks/useCalculate";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";

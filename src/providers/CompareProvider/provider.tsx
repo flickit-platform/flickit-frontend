@@ -1,6 +1,6 @@
 import React, { useReducer, FC, useContext, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { IAssessmentKit, TId } from "@types";
+import { IAssessmentKit, TId } from "@/types/index";
 import compareReducer from "./reducer";
 import { useServiceContext } from "../ServiceProvider";
 import { COMPARE_ACTIONS_TYPE } from "./actions";

@@ -25,7 +25,7 @@ import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
 import toastError from "@utils/toastError";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
-import { IDialogProps, IMemberModel, TQueryProps } from "@types";
+import { IDialogProps, IMemberModel, TQueryProps } from "@/types/index";
 import InviteMemberDialog from "@common/dialogs/InviteMemberDialog";
 import useDialog from "@utils/useDialog";
 import { ICustomError } from "@utils/CustomError";

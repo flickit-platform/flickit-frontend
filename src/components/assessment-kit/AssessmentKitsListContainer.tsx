@@ -23,7 +23,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useConfigContext } from "@providers/ConfgProvider";
 import Chip from "@mui/material/Chip";
-import { ILangs } from "@types";
+import { ILangs } from "@/types/index";
 
 const AssessmentKitsListContainer = () => {
   const { service } = useServiceContext();

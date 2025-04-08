@@ -21,7 +21,12 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { IAssessment, TId, IQuestionnairesModel, TQueryFunction } from "@types";
+import {
+  IAssessment,
+  TId,
+  IQuestionnairesModel,
+  TQueryFunction,
+} from "@/types/index";
 import { TDialogProps } from "@utils/useDialog";
 import Button from "@mui/material/Button";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";

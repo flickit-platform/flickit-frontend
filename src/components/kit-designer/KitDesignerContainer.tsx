@@ -12,7 +12,7 @@ import PublishContent from "./publish/PublishContent";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@/utils/useQuery";
-import { IKitVersion } from "@/types";
+import { IKitVersion } from "@/types/index";
 import QuestionnairesContent from "@components/kit-designer/questionnaires/QuestionnairesContent";
 import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "@components/kit-designer/answerRange/AnswerRangeContent";

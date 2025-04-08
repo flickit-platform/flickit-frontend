@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
-import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
+import { ISpaceModel, ISpacesModel, TQueryFunction } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";

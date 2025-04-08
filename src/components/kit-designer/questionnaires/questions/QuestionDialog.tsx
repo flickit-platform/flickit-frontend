@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { IQuestionInfo } from "@/types";
+import { IQuestionInfo } from "@/types/index";
 import { useQuery } from "@/utils/useQuery";
 import {
   CEDialog,

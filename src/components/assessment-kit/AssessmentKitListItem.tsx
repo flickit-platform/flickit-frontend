@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { TId, TQueryFunction } from "@types";
+import { TId, TQueryFunction } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import useMenu from "@utils/useMenu";

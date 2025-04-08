@@ -8,7 +8,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
-import { IKitVersion } from "@/types";
+import { IKitVersion } from "@/types/index";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";

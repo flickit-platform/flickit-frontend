@@ -5,7 +5,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
-import { RolesType } from "@types";
+import { RolesType } from "@/types/index";
 import {
   AssessmentSettingGeneralBox,
   AssessmentSettingMemberBox,

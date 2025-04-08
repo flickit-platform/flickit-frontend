@@ -31,7 +31,7 @@ import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import { ISpacesModel } from "@types";
+import { ISpacesModel } from "@/types/index";
 import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/ConfgProvider";

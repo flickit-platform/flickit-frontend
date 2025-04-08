@@ -3,7 +3,7 @@ import { QuestionnaireList } from "./QuestionnaireList";
 import { styles } from "@styles";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { IQuestionnairesModel } from "@types";
+import { IQuestionnairesModel } from "@/types/index";
 import { useParams, useSearchParams } from "react-router-dom";
 import PermissionControl from "@common/PermissionControl";
 

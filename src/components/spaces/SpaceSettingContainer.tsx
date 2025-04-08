@@ -13,7 +13,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 import { styles } from "@styles";
-import { ISpaceModel } from "@types";
+import { ISpaceModel } from "@/types/index";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";

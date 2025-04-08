@@ -18,7 +18,7 @@ import toastError from "@utils/toastError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
-import { ErrorCodes } from "@/types";
+import { ErrorCodes } from "@/types/index";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;

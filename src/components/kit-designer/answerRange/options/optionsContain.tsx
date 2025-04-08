@@ -6,7 +6,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import { IOption, KitDesignListItems } from "@types";
+import { IOption, KitDesignListItems } from "@/types/index";
 import TextField from "@mui/material/TextField";
 import { Trans } from "react-i18next";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";

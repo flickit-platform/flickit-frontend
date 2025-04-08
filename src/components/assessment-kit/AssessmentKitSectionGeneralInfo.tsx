@@ -33,7 +33,7 @@ import firstCharDetector from "@/utils/firstCharDetector";
 import {keyframes} from "@emotion/react";
 import {Link} from "react-router-dom";
 import {LoadingSkeleton} from "@common/loadings/LoadingSkeleton";
-import {AssessmentKitStatsType, AssessmentKitInfoType} from "@types";
+import {AssessmentKitStatsType, AssessmentKitInfoType} from "@/types/index";
 import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";

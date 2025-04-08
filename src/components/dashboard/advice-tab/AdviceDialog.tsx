@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuery } from "@/utils/useQuery";
-import { ISubjectReportModel } from "@/types";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
@@ -34,12 +33,12 @@ const AdviceDialog = ({
   const { service } = useServiceContext();
   const [target, setTarget] = useState<any>([]);
 
-  const createAdviceQueryData = useQuery<ISubjectReportModel>({
+  const createAdviceQueryData = useQuery<any>({
     service: (args, config) => service.createAdvice(args, config),
     runOnMount: false,
   });
 
-  const createAINarrationQueryData = useQuery<ISubjectReportModel>({
+  const createAINarrationQueryData = useQuery<any>({
     service: (args, config) => service.createAINarration(args, config),
     runOnMount: false,
   });

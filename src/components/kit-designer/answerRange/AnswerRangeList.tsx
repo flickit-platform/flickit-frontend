@@ -8,7 +8,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { KitDesignListItems, TId } from "@types";
+import { KitDesignListItems, TId } from "@/types/index";
 import { Trans } from "react-i18next";
 import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import Accordion from "@mui/material/Accordion";

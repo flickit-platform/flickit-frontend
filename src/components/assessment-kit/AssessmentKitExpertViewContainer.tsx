@@ -35,7 +35,7 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { useForm } from "react-hook-form";
 import UploadField from "@common/fields/UploadField";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { AssessmentKitDetailsType } from "@types";
+import { AssessmentKitDetailsType } from "@/types/index";
 import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { primaryFontFamily, theme } from "@/config/theme";

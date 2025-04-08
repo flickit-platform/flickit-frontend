@@ -22,7 +22,7 @@ import {
   IQuestionInfo,
   TAnswer,
   TQuestionsInfo,
-} from "@types";
+} from "@/types/index";
 import { Trans } from "react-i18next";
 import TabPanel from "@mui/lab/TabPanel";
 import LoadingButton from "@mui/lab/LoadingButton";

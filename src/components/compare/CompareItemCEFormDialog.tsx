@@ -1,5 +1,5 @@
 import { Trans } from "react-i18next";
-import { IDialogProps, TId } from "@types";
+import { IDialogProps, TId } from "@/types/index";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
