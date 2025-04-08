@@ -581,14 +581,83 @@ const OnHoverInput = (props: any) => {
                 <Typography
                     variant="body2"
                     mr={4}
-                    sx={{
-                        minWidth: "64px !important",
-                    }}
-                >
-                    {title}
-                </Typography>
-
-                {editable && show ? (
+                    sx={{ minWidth: "64px !important" }}
+                  >
+                    <Trans i18nKey="tags" />
+                  </Typography>
+                  {editable && show ? (
+                    <FormProviderWithForm formMethods={formMethods}>
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <AutocompleteAsyncField
+                          {...useConnectAutocompleteField({
+                            service: (args, config) =>
+                              service.fetchAssessmentKitTags(args, config),
+                          })}
+                          name="tags"
+                          multiple={true}
+                          defaultValue={tags}
+                          searchOnType={false}
+                          required={true}
+                          label={""}
+                          editable={true}
+                          sx={{ width: "100%" }}
+                        />
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                          }}
+                        >
+                          <IconButton
+                            edge="end"
+                            sx={{
+                              background: theme.palette.primary.main,
+                              "&:hover": {
+                                background: theme.palette.primary.dark,
+                              },
+                              borderRadius: "3px",
+                              height: "36px",
+                              marginBottom: "2px",
+                              marginRight:
+                                theme.direction === "ltr" ? "3px" : "unset",
+                              marginLeft:
+                                theme.direction === "rtl" ? "3px" : "unset",
+                            }}
+                            onClick={formMethods.handleSubmit(onSubmit)}
+                          >
+                            <CheckCircleOutlineRoundedIcon
+                              sx={{ color: "#fff" }}
+                            />
+                          </IconButton>
+                          <IconButton
+                            edge="end"
+                            sx={{
+                              background: theme.palette.primary.main,
+                              "&:hover": {
+                                background: theme.palette.primary.dark,
+                              },
+                              borderRadius: "4px",
+                              height: "36px",
+                              marginBottom: "2px",
+                            }}
+                            onClick={handleCancel}
+                          >
+                            <CancelRoundedIcon sx={{ color: "#fff" }} />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                    </FormProviderWithForm>
+                  ) : (
                     <Box
                         sx={{display: "flex", flexDirection: "column", width: "100% "}}
                     >

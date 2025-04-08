@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { toastDefaultConfig } from "@config/toastConfigs";
 import { ServiceProvider } from "./providers/ServiceProvider";
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import { AppProvider } from "./providers/AppProvider";
 import { AuthProvider, useAuthContext } from "./providers/AuthProvider";
 import { ConfigProvider } from "./providers/ConfgProvider";
@@ -15,6 +15,7 @@ import keycloakService from "@/service/keycloakService";
 import "./assets/font/fonts.css";
 import "@utils/richEditorStyles.css";
 import { AssessmentProvider } from "./providers/AssessmentProvider";
+import i18next from "i18next";
 
 // Lazy load non-critical components
 const ToastContainer = lazy(() =>
@@ -89,7 +90,17 @@ const renderApp = () => {
                   <ConfigProvider>
                     <CssBaseline />
                     <Suspense fallback={null}>
-                      <ToastContainer {...toastDefaultConfig} />
+                      <ToastContainer
+                          {...toastDefaultConfig}
+                          toastStyle={{
+                            fontFamily:
+                                i18next.language === "fa"
+                                    ? farsiFontFamily
+                                    : primaryFontFamily,
+                            direction: i18next.language === "fa" ? "rtl" : "ltr",
+                            textAlign: i18next.language === "fa" ? "right" : "left",
+                          }}
+                      />
                     </Suspense>
                     <AppWithNovu />
                   </ConfigProvider>

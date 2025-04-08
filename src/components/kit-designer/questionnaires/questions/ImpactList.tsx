@@ -16,6 +16,8 @@ import { t } from "i18next";
 import { IAttribute, IMaturityLevel, TId } from "@/types";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 
 interface OptionValue {
   optionId: number;
@@ -73,7 +75,7 @@ const AttributeImpactList = ({
         questionId,
         attributeId: attribute?.attributeId ?? undefined,
         maturityLevelId: item?.maturityLevel?.maturityLevelId ?? undefined,
-        weight: (item.weight ?? 0) + 1,
+        weight: item.weight ?? 0,
       });
     }
     setEditMode(id);
@@ -172,41 +174,56 @@ const ImpactDetails = ({
   editMode,
   tempValues,
   handleInputChange,
-  toggleEditMode,
   attributes,
   maturityLevels,
 }: any) => (
-  <Box sx={{ display: "flex", alignItems: "center" }}>
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+    width="100%"
+  >
     {editMode === item.questionImpactId ? (
       <>
-        <Select
-          value={tempValues.attributeId ?? ""}
-          onChange={(e) => handleInputChange("attributeId", e.target.value)}
-          variant="outlined"
-          fullWidth
-          size="small"
-          sx={textFieldStyle}
-        >
-          {attributes?.map((attr: IAttribute) => (
-            <MenuItem key={attr.id} value={attr.id}>
-              {attr.title}
-            </MenuItem>
-          ))}
-        </Select>
+        <FormControl fullWidth size="small" sx={textFieldStyle}>
+          <InputLabel id="attribute-label">
+            <Trans i18nKey="attribute" />
+          </InputLabel>
+          <Select
+            labelId="attribute-label"
+            value={tempValues.attributeId ?? ""}
+            onChange={(e) => handleInputChange("attributeId", e.target.value)}
+            label={<Trans i18nKey="attribute" />} // هنوز نیازه تا درون سلکت دیده بشه
+          >
+            {attributes?.map((attr: IAttribute) => (
+              <MenuItem key={attr.id} value={attr.id}>
+                {attr.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <Select
-          value={tempValues.maturityLevelId ?? ""}
-          onChange={(e) => handleInputChange("maturityLevelId", e.target.value)}
-          variant="outlined"
-          size="small"
-          sx={textFieldStyle}
-        >
-          {maturityLevels?.map((level: IMaturityLevel) => (
-            <MenuItem key={level.id} value={level.id}>
-              {level.title}
-            </MenuItem>
-          ))}
-        </Select>
+        <FormControl fullWidth size="small" sx={textFieldStyle}>
+          <InputLabel id="maturity-label">
+            <Trans i18nKey="maturityLevel" />
+          </InputLabel>
+          <Select
+            labelId="maturity-label"
+            value={tempValues.maturityLevelId ?? ""}
+            onChange={(e) =>
+              handleInputChange("maturityLevelId", e.target.value)
+            }
+            label={<Trans i18nKey="maturityLevel" />}
+          >
+            {maturityLevels?.map((level: IMaturityLevel) => (
+              <MenuItem key={level.id} value={level.id}>
+                {level.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <TextField
           type="number"
@@ -215,18 +232,26 @@ const ImpactDetails = ({
           onChange={(e) => handleInputChange("weight", e.target.value)}
           variant="outlined"
           size="small"
-          label={<Trans i18nKey="value" />}
+          label={<Trans i18nKey="weight" />}
           sx={textFieldStyle}
         />
       </>
     ) : (
       <>
-        <Typography variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
-          {attribute.title}
-        </Typography>
-        <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
-          {t("impactsOn") + " " + item.maturityLevel.title}
-        </Typography>
+        <Box display="flex">
+          <Typography variant="bodyLarge" sx={{ ml: 2, fontWeight: "bold" }}>
+            {attribute.title}
+          </Typography>
+          <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
+            {t("impactsOn") + " " + item.maturityLevel.title}
+          </Typography>
+        </Box>
+        <Chip
+          label={`${t("weight")}: ${item.weight}`}
+          color="primary"
+          size="small"
+          sx={{ ml: 2, fontSize: 12 }}
+        />
       </>
     )}
   </Box>
@@ -237,17 +262,10 @@ const ActionButtons = ({
   onSave,
   onCancel,
   onEdit,
-  item,
   onDelete,
 }: any) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Chip
-        label={`${t("weight")}: ${item.weight}`}
-        color="primary"
-        size="small"
-        sx={{ ml: 2, fontSize: 12 }}
-      />
       {editMode ? (
         <>
           <IconButton

@@ -145,12 +145,14 @@ export default function ScoreImpactBarChart({
           }}
           barSize={barSize}
         >
-          {!compact && <CartesianGrid strokeDasharray="3 3" horizontal />}
-
           <Tooltip content={<CustomTooltip language={language} />} />
           <Legend
             verticalAlign="top"
             formatter={(val) => legendFormatter(val, language)}
+            wrapperStyle={{
+              transform:
+                language === "fa" ? "translateX(-90px)" : "translateX(113px)",
+            }}
           />
           <ReferenceLine x={0} strokeDasharray="3 3" />
           <XAxis

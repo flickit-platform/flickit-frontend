@@ -87,7 +87,7 @@ const SubjectForm = ({
           mt: 0,
           fontSize: 14,
           "& .MuiInputBase-root": {
-            height: 32,
+            height: 40,
             fontSize: 14,
           },
           "& .MuiFormLabel-root": {

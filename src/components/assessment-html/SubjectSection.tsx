@@ -62,8 +62,7 @@ const SubjectReport = ({
                 <Typography
                   component="div"
                   sx={{
-                    ...theme.typography.extraLight,
-                    fontWeight: 300,
+                    ...theme.typography.bodyMedium,
                     direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
                     fontFamily:
                       lang.code.toLowerCase() === "fa"

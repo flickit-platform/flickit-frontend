@@ -295,6 +295,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         .then(() => {
           setSelectedAnswerRange(event.target.value);
           fetchOptions.query();
+          setDisableAddOption(true);
         });
     } catch (err) {
       const error = err as ICustomError;

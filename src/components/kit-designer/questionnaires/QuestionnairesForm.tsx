@@ -47,7 +47,7 @@ const renderTextField = (
       "& .MuiInputBase-root": {
         fontSize: 14,
         overflow: multiline ? "auto" : "unset",
-        height: multiline ? "unset" : 32,
+        height: multiline ? "unset" : 40,
       },
       "& .MuiFormLabel-root": {
         fontSize: 14,

@@ -189,7 +189,7 @@ const CreateSpaceDialog = (props: any) => {
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0 }}>
       <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
-        <Trans i18nKey="nameYourSpace" />
+        <Trans i18nKey="setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods}>
         <Box

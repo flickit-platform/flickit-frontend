@@ -28,7 +28,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
     <Grid container display="flex" alignItems="flex-start">
       <Grid item xs={6} sm={5} display="flex" alignItems="flex-start">
         <Typography
-          variant="extraLight"
+          variant="bodyMedium"
           fontWeight={400}
           sx={{
             direction: language === "fa" ? "rtl" : "ltr",

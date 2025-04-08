@@ -124,7 +124,7 @@ const FlatGauge = (props: IGaugeProps) => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "5px",
-                ...theme.typography.extraLight,
+                ...theme.typography.bodyMedium,
                 fontWeight: 300,
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily

@@ -224,6 +224,8 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               <IconButton onClick={handleBackClick}>
                 <ArrowBackIos
                   sx={{
+                    transform:
+                      theme.direction === "rtl" ? "scaleX(-1)" : "none",
                     fontSize: "16px",
                   }}
                 />{" "}
@@ -319,7 +321,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
             <Box
               width="100%"
               height="400px"
-              sx={{ ...styles.centerCVH }}
+              sx={{ ...styles.centerCVH, direction: theme.direction }}
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
