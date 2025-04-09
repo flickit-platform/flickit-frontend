@@ -8,7 +8,7 @@ import { useQuery } from "@utils/useQuery";
 import { AssessmentSubjectList } from "./AssessmentSubjectList";
 import { useServiceContext } from "@providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonOfAssessmentReport";
-import { RolesType } from "@types";
+import { RolesType } from "@/types/index";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
 import PermissionControl from "../common/PermissionControl";
@@ -25,22 +25,22 @@ const AssessmentReportContainer = (props: any) => {
 
   const fetchAssessmentInsight = useQuery({
     service: (args, config) =>
-      service.fetchAssessment({ assessmentId }, config),
+      service.assessments.insight.getList({ assessmentId }, config),
     toastError: false,
   });
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>
-      service.calculateMaturityLevel(args ?? { assessmentId }, config),
+      service.assessments.info.calculateMaturity(args ?? { assessmentId }, config),
     runOnMount: false,
   });
   const calculateConfidenceLevelQuery = useQuery({
     service: (args, config) =>
-      service.calculateConfidenceLevel(args ?? { assessmentId }, config),
+      service.assessments.info.calculateConfidence(args ?? { assessmentId }, config),
     runOnMount: false,
   });
   const assessmentTotalProgress = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentTotalProgress(
+      service.assessments.info.getProgress(
         { assessmentId, ...(args ?? {}) },
         config,
       ),
@@ -72,7 +72,7 @@ const AssessmentReportContainer = (props: any) => {
     if (
       fetchAssessmentInsight?.errorObject?.response?.data?.code === "DEPRECATED"
     ) {
-      service.migrateKitVersion({ assessmentId }).then(() => {
+      service.assessments.info.migrateKitVersion({ assessmentId }).then(() => {
         fetchAssessmentInsight.query();
       });
     }
@@ -80,7 +80,7 @@ const AssessmentReportContainer = (props: any) => {
 
   const fetchInsightsIssues = useQuery<RolesType>({
     service: (args, config) =>
-      service.fetchInsightsIssues({ assessmentId }, config),
+      service.assessments.insight.getIssues({ assessmentId }, config),
     toastError: false,
   });
 

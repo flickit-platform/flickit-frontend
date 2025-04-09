@@ -26,7 +26,7 @@ const useGetSignedInUserInfo = (
     dispatch(authActions.setUserInfoLoading(true));
     try {
       const accessToken = keycloakService.getToken();
-      const { data } = await service.getSignedInUser(undefined, {
+      const { data } = await service.user.getCurrent({
         signal: abortController.current.signal,
         //@ts-expect-error
         headers: accessToken
@@ -37,8 +37,8 @@ const useGetSignedInUserInfo = (
           : axios.defaults.headers,
       });
 
-      service
-        .getSubscriberHash(undefined, {
+      service.user
+        .getNotificationHash({
           signal: abortController.current.signal,
           //@ts-expect-error
           headers: accessToken
@@ -98,8 +98,7 @@ const useGetSignedInUserInfo = (
       });
     }
 
-    return () => {
-    };
+    return () => {};
   }, []);
 
   return { error, loading: loadingUserInfo, userInfo, getUser };

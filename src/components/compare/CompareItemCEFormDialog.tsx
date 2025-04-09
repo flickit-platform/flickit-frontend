@@ -1,5 +1,5 @@
 import { Trans } from "react-i18next";
-import { IDialogProps, TId } from "@types";
+import { IDialogProps, TId } from "@/types/index";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
@@ -102,11 +102,11 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
   const [PageCount, setPageCount] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const calculateMaturityLevelQuery = useQuery<any>({
-    service: (args, config) => service.calculateMaturityLevel(args, config),
+    service: (args, config) => service.assessments.info.calculateMaturity(args, config),
     runOnMount: false,
   });
   const calculateConfidenceLevelQuery = useQuery({
-    service: (args, config) => service.calculateConfidenceLevel(args, config),
+    service: (args, config) => service.assessments.info.calculateConfidence(args, config),
     runOnMount: false,
   });
   const onSubmit = (data: any) => {

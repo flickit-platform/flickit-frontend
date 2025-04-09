@@ -52,7 +52,7 @@ const AssessmentContainer = () => {
   }
 
   const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) => service.fetchSpace(args, config),
+    service: (args = { spaceId }, config) => service.space.getById(args, config),
     runOnMount: true,
   });
 
@@ -279,7 +279,7 @@ const useFetchAssessments = () => {
     setLoading(true);
     setErrorObject(undefined);
     try {
-      const { data: res } = await service.fetchAssessments(
+      const { data: res } = await service.assessments.info.getList(
         { spaceId: spaceId, size: 4, page: parseInt(page ?? "1", 10) - 1 },
         { signal: abortController.current.signal },
       );
@@ -304,7 +304,7 @@ const useFetchAssessments = () => {
   const deleteAssessment = async (id: any) => {
     setLoading(true);
     try {
-      await service.deleteAssessment(
+      await service.assessments.info.remove(
         { id },
         { signal: abortController.current.signal },
       );

@@ -10,7 +10,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { IOption } from "@/types";
+import { IOption } from "@/types/index";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
 import OptionForm from "./OptionForm";

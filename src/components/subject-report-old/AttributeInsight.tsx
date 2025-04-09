@@ -42,7 +42,7 @@ const AttributeInsight = ({
 
   const fetchSubjectInsight = useQuery<any>({
     service: (args, config) =>
-      service.loadAttributeInsight(
+      service.assessments.attribute.getAttributeInsight(
         args ?? { assessmentId, attributeId },
         config,
       ),
@@ -52,7 +52,7 @@ const AttributeInsight = ({
 
   const ApproveAISubject = useQuery({
     service: (args, config) =>
-      service.ApprovedAIAttribute(
+      service.assessments.attribute.approveAIInsight(
         args ?? { assessmentId, attributeId },
         config,
       ),
@@ -61,7 +61,7 @@ const AttributeInsight = ({
 
   const InitInsight = useQuery({
     service: (args, config) =>
-      service.generateAIInsight(args ?? { assessmentId, attributeId }, config),
+      service.assessments.attribute.generateAIInsight(args ?? { assessmentId, attributeId }, config),
     runOnMount: false,
   });
 
@@ -158,7 +158,7 @@ const AttributeInsight = ({
             editable={editable}
             fieldName="insight"
             onSubmit={async (payload: any) => {
-              await service.createAttributeInsight({
+              await service.assessments.attribute.createAttributeInsight({
                 assessmentId,
                 attributeId,
                 data: { assessorInsight: payload.insight },

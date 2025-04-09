@@ -72,7 +72,7 @@ const SubjectAttributeCard = (props: any) => {
 
   const fetchAffectedQuestionsOnAttributeQueryData = useQuery({
     service: (args, config) =>
-      service.fetchAffectedQuestionsOnAttribute(
+      service.assessments.attribute.getAffectedQuestions(
         args ?? {
           assessmentId,
           attributeId: expandedAttribute,
@@ -89,7 +89,7 @@ const SubjectAttributeCard = (props: any) => {
 
   const fetchScoreState = useQuery({
     service: (args, config) =>
-      service.fetchScoreState(
+      service.assessments.attribute.getScoreState(
         args ?? {
           assessmentId,
           attributeId: expandedAttribute,
@@ -102,7 +102,7 @@ const SubjectAttributeCard = (props: any) => {
 
   const fetchMeasures = useQuery({
     service: (args, config) =>
-      service.fetchMeasures(
+      service.assessments.attribute.getMeasures(
         args ?? {
           assessmentId,
           attributeId: expandedAttribute,

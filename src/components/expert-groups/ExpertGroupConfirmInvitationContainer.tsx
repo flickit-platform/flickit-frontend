@@ -18,11 +18,11 @@ const ExpertGroupConfirmInvitationContainer = () => {
   const navigate = useNavigate();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
+      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
   const confirmInvitationQueryData = useQuery({
     service: (args, config) =>
-      service.confirmExpertGroupInvitation(
+      service.expertGroups.member.confirmInvitation(
         args ?? { token, expert_group_id: expertGroupId },
         config,
       ),
@@ -31,7 +31,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
 
   const declineInvitationQueryData = useQuery({
     service: (args, config) =>
-      service.declineInvitationQueryData(args ?? { expertGroupId }, config),
+      service.expertGroups.member.declineInvitation(args ?? { expertGroupId }, config),
     runOnMount: false,
   });
 

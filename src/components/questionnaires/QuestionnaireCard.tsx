@@ -12,7 +12,7 @@ import StartRoundedIcon from "@mui/icons-material/StartRounded";
 import ModeEditOutlineRoundedIcon from "@mui/icons-material/ModeEditOutlineRounded";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
-import { IPermissions, IQuestionnairesInfo, TId } from "@types";
+import { IPermissions, IQuestionnairesInfo, TId } from "@/types/index";
 import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";

@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { ECustomErrorType } from "@types";
+import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import { ErrorNotFoundOrAccessDenied } from "./errors/ErrorNotFoundOrAccessDenied";
 

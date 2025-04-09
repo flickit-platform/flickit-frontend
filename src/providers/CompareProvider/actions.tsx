@@ -1,4 +1,4 @@
-import { IAssessmentKit, TId } from "@types";
+import { IAssessmentKit, TId } from "@/types/index";
 
 export enum COMPARE_ACTIONS_TYPE {
   SET_ASSESSMENT_KIT = "SET_ASSESSMENT_KIT",

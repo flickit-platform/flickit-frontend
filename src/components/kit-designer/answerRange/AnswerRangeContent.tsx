@@ -20,21 +20,21 @@ const AnaweRangeContent = () => {
   const [changeData, setChangeData] = useState(false);
   const fetchAnswerRangeKit = useQuery({
     service: (args, config) =>
-      service.fetchAnswerRangeKit(args ?? { kitVersionId }, config),
+      service.kitVersions.answerRanges.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const postKitAnswerRange = useQuery({
-    service: (args, config) => service.postKitAnswerRange(args, config),
+    service: (args, config) => service.kitVersions.answerRanges.create(args, config),
     runOnMount: false,
   });
 
   const deleteQuestionnairesKit = useQuery({
-    service: (args, config) => service.deleteQuestionnairesKit(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitAnswerRange = useQuery({
-    service: (args, config) => service.updateKitAnswerRange(args, config),
+    service: (args, config) => service.kitVersions.answerRanges.update(args, config),
     runOnMount: false,
   });
 
@@ -76,7 +76,7 @@ const AnaweRangeContent = () => {
         title: newAnswerRange.title,
       };
       if (newAnswerRange.id) {
-        await service.updateKitAnswerRange({
+        await service.kitVersions.answerRanges.update({
           kitVersionId,
           answerRangeId: newAnswerRange.id,
           data,
@@ -154,7 +154,7 @@ const AnaweRangeContent = () => {
         index: idx + 1,
       }));
 
-      await service.changeQuestionnairesOrder({ kitVersionId }, { orders });
+      await service.kitVersions.questionnaires.reorder({ kitVersionId }, { orders });
 
       handleCancel();
     } catch (e) {

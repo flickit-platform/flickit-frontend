@@ -39,7 +39,7 @@ const useConnectSelectField = (props: {
     try {
       const {
         data: { items, colors, default_color, total },
-      } = await service.fetchOptions({ url }, { signal, params: searchParams });
+      } = await service.questions.info.getOptions({ url }, { signal, params: searchParams });
       if (items) {
         setTotalItem(total);
         if (Array.isArray(items)) {

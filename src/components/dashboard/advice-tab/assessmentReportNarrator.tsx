@@ -54,7 +54,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
             editable={editable}
             fieldName="narration"
             onSubmit={async (payload, event) => {
-              await service.updateAdviceNarration(
+              await service.assessments.advice.updateNarration(
                 {
                   assessmentId,
                   data: { assessorNarration: payload.narration },

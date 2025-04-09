@@ -68,23 +68,25 @@ const AddMemberDialog = (props: {
   const { spaceId = "" } = useParams();
 
   const inviteMemberToAssessment = useQuery({
-    service: (args, config) => service.inviteMemberToAssessment(args, config),
+    service: (args, config) =>
+      service.assessments.member.inviteUser(args, config),
     runOnMount: false,
   });
 
   const spaceMembersQueryData = useQuery({
     service: (args, config) =>
-      service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
+      service.space.getMembers({ spaceId, page: 0, size: 100 }, config),
   });
   const fetchAssessmentMembers = useQuery({
-    service: (args, config) => service.fetchAssessmentMembers(args, config),
+    service: (args, config) =>
+      service.assessments.member.getUsers(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
 
   const addRoleMemberQueryData = useQuery({
     service: (args, config) =>
-      service.addRoleMember(
+      service.assessments.member.assignUserRole(
         args ?? {
           assessmentId,
           userId: memberSelectedId,
@@ -434,11 +436,11 @@ const EmailField = ({
   const { spaceId = "" } = useParams();
   const queryData = useConnectAutocompleteField({
     service: (args, config) =>
-      service.fetchSpaceMembers({ spaceId, page: 0, size: 100 }, config),
+      service.space.getMembers({ spaceId, page: 0, size: 100 }, config),
     accessor: "items",
   });
   const loadUserByEmail = useQuery({
-    service: (args, config) => service.loadUserByEmail(args, config),
+    service: (args, config) => service.user.getByEmail(args, config),
     runOnMount: false,
   });
 
@@ -473,7 +475,7 @@ const EmailField = ({
         data-cy={EUserInfo.EMAIL}
         hasAddBtn={true}
         filterFields={[EUserInfo.EMAIL, EUserInfo.NAME]}
-        filterOptionsByProperty={(option) =>
+        filterOptionsByProperty={(option: any) =>
           !option.isOwner &&
           !memberOfSpace.some(
             (userListItem: any) => option.id === userListItem.id,

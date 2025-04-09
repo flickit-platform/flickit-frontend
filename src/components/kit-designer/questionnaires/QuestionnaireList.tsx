@@ -10,7 +10,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
-import { KitDesignListItems, TId } from "@types";
+import { KitDesignListItems, TId } from "@/types/index";
 import { Trans } from "react-i18next";
 import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
@@ -65,11 +65,11 @@ const ListOfItems = ({
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
-    service: (args, config) => service.fetchQuestionListKit(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.getQuestions(args, config),
     runOnMount: false,
   });
   const postQuestionsKit = useQuery({
-    service: (args, config) => service.postQuestionsKit(args, config),
+    service: (args, config) => service.kitVersions.questions.create(args, config),
     runOnMount: false,
   });
 
@@ -172,7 +172,7 @@ const ListOfItems = ({
         index: idx + 1,
       }));
 
-      await service.changeQuestionsOrder(
+      await service.kitVersions.questions.reorder(
         { kitVersionId },
         { questionOrders: orders, questionnaireId: questionnaireId },
       );

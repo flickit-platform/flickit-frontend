@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
-import { IGraphicalReport, PathInfo } from "@/types";
+import { IGraphicalReport, PathInfo } from "@/types/index";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
 import QueryBatchData from "../common/QueryBatchData";
@@ -43,19 +43,19 @@ const AssessmentExportContainer = () => {
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args ?? {}) }, config),
+      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 
   const fetchGraphicalReport = useQuery({
     service: (args, config) =>
-      service.fetchGraphicalReport({ assessmentId, ...(args ?? {}) }, config),
+      service.assessments.report.getGraphical({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 
   const fetchGraphicalReportUsers = useQuery<PathInfo>({
     service: (args, config) =>
-      service.fetchGraphicalReportUsers(
+      service.assessments.member.getReportAccessUsers(
         { assessmentId, ...(args ?? {}) },
         config,
       ),

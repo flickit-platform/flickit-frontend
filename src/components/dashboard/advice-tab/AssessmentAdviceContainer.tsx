@@ -15,7 +15,7 @@ import { styles } from "@styles";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import AIGenerated from "@common/tags/AIGenerated";
-import { ErrorCodes } from "@/types";
+import { ErrorCodes } from "@/types/index";
 import useCalculate from "@/hooks/useCalculate";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
@@ -25,13 +25,13 @@ const AssessmentAdviceContainer = (props: any) => {
 
   const fetchPreAdviceInfo = useQuery<any>({
     service: (args, config) =>
-      service.fetchPreAdviceInfo({ assessmentId }, config),
+      service.assessments.advice.getPreInfo({ assessmentId }, config),
     toastError: false,
     runOnMount: false,
   });
   const fetchAdviceNarration = useQuery<any>({
     service: (args, config) =>
-      service.fetchAdviceNarration({ assessmentId }, config),
+      service.assessments.advice.getNarration({ assessmentId }, config),
     toastError: false,
   });
 
@@ -49,7 +49,7 @@ const AssessmentAdviceContainer = (props: any) => {
         await calculateConfidence();
         break;
       case "DEPRECATED":
-        await service.migrateKitVersion({ assessmentId });
+        await service.assessments.info.migrateKitVersion({ assessmentId });
         break;
       default:
         break;

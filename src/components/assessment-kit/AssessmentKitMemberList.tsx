@@ -324,7 +324,7 @@ const useEGPermision = (props: any) => {
 
   const deleteMemberToKitPermissionQueryData = useQuery({
     service: (args, config) =>
-      service.deleteMemberToKitPermission(args, config),
+      service.assessmentKit.member.remove(args, config),
     runOnMount: false,
   });
   const deleteEGMember = async (id: any) => {
@@ -355,7 +355,7 @@ const AddMemberModal = (props: any) => {
   const { assessmentKitId } = useParams();
 
   const addMemberQueryData = useQuery({
-    service: (args, config) => service.addMemberToKitPermission(args, config),
+    service: (args, config) => service.assessmentKit.member.add(args, config),
     runOnMount: false,
   });
   const onSubmit = async () => {

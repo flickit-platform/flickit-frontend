@@ -23,7 +23,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useConfigContext } from "@providers/ConfgProvider";
 import Chip from "@mui/material/Chip";
-import { ILangs } from "@types";
+import { IMapper } from "@/types/index";
 
 const AssessmentKitsListContainer = () => {
   const { service } = useServiceContext();
@@ -35,12 +35,8 @@ const AssessmentKitsListContainer = () => {
   const {
     config: { languages },
   }: any = useConfigContext();
-  const publicAssessmentKitsQueryData = useQuery({
-    service: (args, config) => service.fetchAssessmentKits(args, config),
-    runOnMount: false,
-  });
-  const privateAssessmentKitsQueryData = useQuery({
-    service: (args, config) => service.fetchAssessmentKits(args, config),
+  const assessmentKitsQueryData = useQuery({
+    service: (args, config) => service.assessmentKit.info.getAll(args, config),
     runOnMount: false,
   });
 
@@ -51,8 +47,8 @@ const AssessmentKitsListContainer = () => {
   const fetchData = async () => {
     const langs = langsCode.join(",");
     await Promise.all([
-      privateAssessmentKitsQueryData.query({ isPrivate: true, langs }),
-      publicAssessmentKitsQueryData.query({ isPrivate: false, langs }),
+      assessmentKitsQueryData.query({ isPrivate: true, langs }),
+      assessmentKitsQueryData.query({ isPrivate: false, langs }),
     ]);
   };
 
@@ -171,7 +167,7 @@ const AssessmentKitsListContainer = () => {
           <Box
             sx={{ ...styles.centerVH, justifyContent: "flex-start", gap: 1 }}
           >
-            {filtredLangs.map((lang: ILangs) => {
+            {filtredLangs.map((lang: IMapper) => {
               return (
                 <Chip
                   key={uniqueId()}
@@ -197,7 +193,7 @@ const AssessmentKitsListContainer = () => {
         </Box>
         <TabPanel value="public">
           <QueryData
-            {...publicAssessmentKitsQueryData}
+            {...assessmentKitsQueryData}
             renderLoading={() => (
               <Grid container spacing={2}>
                 {forLoopComponent(5, (index) => (
@@ -232,7 +228,7 @@ const AssessmentKitsListContainer = () => {
         </TabPanel>
         <TabPanel value="private">
           <QueryData
-            {...privateAssessmentKitsQueryData}
+            {...assessmentKitsQueryData}
             renderLoading={() => (
               <Box mt={`2`}>
                 <Grid container spacing={2}>

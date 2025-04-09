@@ -28,20 +28,20 @@ const SubjectsContent = () => {
 
   const fetchSubjectKit = useQuery({
     service: (args, config) =>
-      service.fetchSubjectKit(args ?? { kitVersionId }, config),
+      service.kitVersions.subjects.getAll(args ?? { kitVersionId }, config),
   });
   const postSubjectKit = useQuery({
-    service: (args, config) => service.postSubjectKit(args, config),
+    service: (args, config) => service.kitVersions.subjects.create(args, config),
     runOnMount: false,
   });
 
   const deleteSubjectKit = useQuery({
-    service: (args, config) => service.deleteSubjectKit(args, config),
+    service: (args, config) => service.kitVersions.subjects.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitSubject = useQuery({
-    service: (args, config) => service.updateKitSubject(args, config),
+    service: (args, config) => service.kitVersions.subjects.update(args, config),
     runOnMount: false,
   });
 
@@ -91,7 +91,7 @@ const SubjectsContent = () => {
         description: newSubject.description,
       };
       if (newSubject.id) {
-        await service.updateKitSubject({
+        await service.kitVersions.subjects.update({
           kitVersionId,
           subjectId: newSubject.id,
           data,
@@ -184,7 +184,7 @@ const SubjectsContent = () => {
         index: idx + 1,
       }));
 
-      await service.changeSubjectOrder({ kitVersionId }, { orders });
+      await service.kitVersions.subjects.reorder({ kitVersionId }, { orders });
 
       handleCancel();
     } catch (e) {

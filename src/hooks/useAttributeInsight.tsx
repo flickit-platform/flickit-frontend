@@ -34,19 +34,19 @@ const useAttributeInsight = ({
 
   const ApprovedAIAttribute = useQuery({
     service: (args, config) =>
-      service.ApprovedAIAttribute(args ?? queryArgs, config),
+      service.assessments.attribute.approveAIInsight(args ?? queryArgs, config),
     runOnMount: false,
   });
 
   const loadAttributeInsight = useQuery({
     service: (args, config) =>
-      service.loadAttributeInsight(args ?? queryArgs, config),
+      service.assessments.attribute.getAttributeInsight(args ?? queryArgs, config),
     runOnMount: false,
   });
 
   const generateAIInsight = useQuery({
     service: (args, config) =>
-      service.generateAIInsight(args ?? queryArgs, config),
+      service.assessments.attribute.generateAIInsight(args ?? queryArgs, config),
     runOnMount: false,
   });
 

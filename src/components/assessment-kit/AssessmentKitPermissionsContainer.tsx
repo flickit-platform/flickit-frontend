@@ -16,11 +16,11 @@ const AssessmentKitPermissionsContainer = () => {
   const { assessmentKitId } = useParams();
   const assessmentKitUsersListQueryData = useQuery({
     service: (args, config) =>
-      service.assessmentKitUsersList(args ?? { assessmentKitId }, config),
+      service.assessmentKit.member.getList(args ?? { assessmentKitId }, config),
   });
   const assessmentKitMinInfoQueryData = useQuery({
     service: (args, config) =>
-      service.assessmentKitMinInfo(args ?? { assessmentKitId }, config),
+      service.assessmentKit.info.getMinInfo(args ?? { assessmentKitId }, config),
   });
 
   const { config } = useConfigContext();

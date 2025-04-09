@@ -8,7 +8,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
-import { IKitVersion } from "@/types";
+import { IKitVersion } from "@/types/index";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
@@ -28,7 +28,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const handlePublish = async () => {
     try {
       const data = { kitVersionId };
-      await service.activateKit({ kitVersionId }, data, undefined);
+      await service.kitVersions.info.activate({ kitVersionId }, data, undefined);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -37,12 +37,12 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const validateKitVersion = useQuery({
     service: (args, config) =>
-      service.validateKitVersion(args ?? { kitVersionId }, config),
+      service.kitVersions.info.validate(args ?? { kitVersionId }, config),
   });
 
   const handleDeleteDraft = async () => {
     try {
-      await service.deleteKitVersion({ kitVersionId });
+      await service.kitVersions.info.remove({ kitVersionId });
       navigate(`/user/expert-groups/${expertGroupId}/`);
     } catch (e) {
       const err = e as ICustomError;

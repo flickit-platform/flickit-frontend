@@ -30,26 +30,26 @@ const AttributesContent = () => {
 
   const fetchSubjectKit = useQuery({
     service: (args, config) =>
-      service.fetchSubjectKit(args ?? { kitVersionId }, config),
+      service.kitVersions.subjects.getAll(args ?? { kitVersionId }, config),
   });
 
   const fetchAttributeKit = useQuery({
     service: (args, config) =>
-      service.fetchAttributeKit(args ?? { kitVersionId }, config),
+      service.kitVersions.attributes.getAll(args ?? { kitVersionId }, config),
   });
 
   const postAttributeKit = useQuery({
-    service: (args, config) => service.postAttributeKit(args, config),
+    service: (args, config) => service.kitVersions.attributes.create(args, config),
     runOnMount: false,
   });
 
   const deleteAttributeKit = useQuery({
-    service: (args, config) => service.deleteAttributeKit(args, config),
+    service: (args, config) => service.kitVersions.attributes.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitAttribute = useQuery({
-    service: (args, config) => service.updateKitAttribute(args, config),
+    service: (args, config) => service.kitVersions.attributes.update(args, config),
     runOnMount: false,
   });
 
@@ -102,7 +102,7 @@ const AttributesContent = () => {
         subjectId: subjectId,
       };
       if (newAttribute?.id) {
-        await service.updateKitAttribute({
+        await service.kitVersions.attributes.update({
           kitVersionId,
           attributeId: newAttribute?.id,
           data,
@@ -195,7 +195,7 @@ const AttributesContent = () => {
           index: idx + 1,
         }));
 
-        await service.changeAttributeOrder(
+        await service.kitVersions.attributes.reorder(
           { kitVersionId },
           { orders, subjectId: destinationSubjectId },
         );

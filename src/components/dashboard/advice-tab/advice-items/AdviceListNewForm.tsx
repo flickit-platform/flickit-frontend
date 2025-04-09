@@ -61,15 +61,15 @@ const AdviceListNewForm = ({
   });
 
   const fetchAdviceImpactList = useQuery<any>({
-    service: (args, config) => service.fetchAdviceImpactList(args, config),
+    service: (args, config) => service.advice.getImpactLevels(config),
     runOnMount: false,
   });
   const fetchAdvicePriorityList = useQuery<any>({
-    service: (args, config) => service.fetchAdvicePriorityList(args, config),
+    service: (args, config) => service.advice.getPriorityLevels(config),
     runOnMount: false,
   });
   const fetchCostList = useQuery<any>({
-    service: (args, config) => service.fetchCostList(args, config),
+    service: (args, config) => service.advice.getCostLevels(config),
     runOnMount: false,
   });
 

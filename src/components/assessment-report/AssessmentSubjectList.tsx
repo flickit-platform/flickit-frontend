@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import { AssessmentSubjectAccordion } from "./AssessmentSubjectCard";
 import Grid from "@mui/material/Grid";
-import { ISubjectInfo } from "@types";
+import { ISubjectInfo } from "@/types/index";
 interface IAssessmentSubjectListProps {
   subjects: ISubjectInfo[];
   colorCode: string;

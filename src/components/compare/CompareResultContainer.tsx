@@ -6,16 +6,15 @@ import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
 import Title from "@common/Title";
 import CompareResult from "./CompareResult";
-import { ICompareResultModel } from "@types";
 import Button from "@mui/material/Button";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 
 const CompareResultContainer = () => {
   const location = useLocation();
   const { service } = useServiceContext();
-  const compareResultQueryData = useQuery<ICompareResultModel>({
+  const compareResultQueryData = useQuery<any>({
     service: (args, config) =>
-      service.comparessessments({ data: location.search }, config),
+      service.common.compareAssessments({ data: location.search }, config),
   });
 
   const navigate = useNavigate();

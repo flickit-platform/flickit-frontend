@@ -28,20 +28,20 @@ const QuestionnairesContent = () => {
 
   const fetchQuestionnairesKit = useQuery({
     service: (args, config) =>
-      service.fetchQuestionnairesKit(args ?? { kitVersionId }, config),
+      service.kitVersions.questionnaires.getAll(args ?? { kitVersionId }, config),
   });
   const postQuestionnairesKit = useQuery({
-    service: (args, config) => service.postQuestionnairesKit(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.create(args, config),
     runOnMount: false,
   });
 
   const deleteQuestionnairesKit = useQuery({
-    service: (args, config) => service.deleteQuestionnairesKit(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitQuestionnaires = useQuery({
-    service: (args, config) => service.updateKitQuestionnaires(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.update(args, config),
     runOnMount: false,
   });
 
@@ -92,7 +92,7 @@ const QuestionnairesContent = () => {
         description: newQuestionnaires.description,
       };
       if (newQuestionnaires.id) {
-        await service.updateKitQuestionnaires({
+        await service.kitVersions.questionnaires.update({
           kitVersionId,
           questionnaireId: newQuestionnaires.id,
           data,
@@ -183,7 +183,7 @@ const QuestionnairesContent = () => {
         index: idx + 1,
       }));
 
-      await service.changeQuestionnairesOrder({ kitVersionId }, { orders });
+      await service.kitVersions.questionnaires.reorder({ kitVersionId }, { orders });
 
       handleCancel();
     } catch (e) {

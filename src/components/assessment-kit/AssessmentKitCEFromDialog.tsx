@@ -91,7 +91,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setLang(languages[0]?.title);
   };
   const fetchSampleExecl = useQuery({
-    service: (args, config) => service.fetchExcelToDSLSampleFile(args, config),
+    service: (args, config) => service.assessmentKit.dsl.getExcelSample(args, config),
     runOnMount: false,
   });
 
@@ -126,16 +126,16 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     try {
       const { data: res } =
         type === "update"
-          ? await service.updateAssessmentKit(
+          ? await service.assessmentKit.info.updateByDSL(
               { data: formattedData, assessmentKitId: id },
               { signal: abortController.signal },
             )
           : type === "create"
-            ? await service.createAssessmentKit(
+            ? await service.assessmentKit.dsl.createKitFromDsl(
                 { data: formattedData },
                 { signal: abortController.signal },
               )
-            : await service.createAssessmentKitByApplication(
+            : await service.assessmentKit.info.create(
                 { data: formattedData },
                 { signal: abortController.signal },
               );
@@ -179,7 +179,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       0,
       args?.file?.name.lastIndexOf("."),
     );
-    service.convertExcelToDSLFile(args, config).then((res: any) => {
+    service.assessmentKit.dsl.convertExcelToDsl(args, config).then((res: any) => {
       const { data } = res;
       const zipfile = new Blob([data], { type: "application/zip" });
       const file: any = new File([zipfile], `${fileName}.zip`, {
@@ -274,7 +274,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               }}
               uploadService={(args: any, config: any) => {
                 setConvertData({ args, config });
-                return service.convertExcelToDSLFile(args, config);
+                return service.assessmentKit.dsl.convertExcelToDsl(args, config);
               }}
               name="dsl_id"
               param={expertGroupId}
@@ -295,10 +295,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               <UploadField
                 accept={{ "application/zip": [".zip"] }}
                 uploadService={(args: any, config: any) =>
-                  service.uploadAssessmentKitDSLFile(args, config)
+                  service.assessmentKit.dsl.uploadFile(args, config)
                 }
                 deleteService={(args: any, config: any) =>
-                  service.deleteAssessmentKitDSL(args, config)
+                  service.assessmentKit.dsl.deleteLegacyDslFile(args, config)
                 }
                 name="dsl_id"
                 param={expertGroupId}
@@ -345,7 +345,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           <AutocompleteAsyncField
             {...useConnectAutocompleteField({
               service: (args, config) =>
-                service.fetchAssessmentKitTags(args, config),
+                service.assessmentKit.info.getTags(args, config),
             })}
             name="tags"
             multiple={true}

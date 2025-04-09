@@ -43,7 +43,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
   } = data ?? {};
   const { service } = useServiceContext();
   const seenExpertGroupQuery = useQuery({
-    service: (args, config) => service.seenExpertGroup({ id }, config),
+    service: (args, config) => service.expertGroups.info.markAsSeen({ id }, config),
     runOnMount: false,
     toastError: false,
   });
@@ -168,11 +168,11 @@ const Actions = (props: any) => {
   const { id } = expertGroup;
   const { query: fetchExpertGroup, loading } = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id }, config),
+      service.expertGroups.info.getById(args ?? { id }, config),
     runOnMount: false,
   });
   const deleteExpertGroupQuery = useQuery({
-    service: (args, config) => service.deleteExpertGroup({ id }, config),
+    service: (args, config) => service.expertGroups.info.remove({ id }, config),
     runOnMount: false,
     toastError: false,
   });

@@ -12,7 +12,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteRounded from "@mui/icons-material/DeleteRounded";
 import EditRounded from "@mui/icons-material/EditRounded";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
-import { AdviceItem } from "@types";
+import { AdviceItem } from "@/types/index";
 import i18next, { t } from "i18next";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import Impact from "@common/icons/Impact";
@@ -200,7 +200,7 @@ const AdviceItemAccordion: React.FC<{
 
   const updateAdviceItem = useQuery({
     service: (args, config) =>
-      service.updateAdviceItem(
+      service.advice.update(
         args ?? { adviceItemId: item.id, data: newAdvice },
         config,
       ),

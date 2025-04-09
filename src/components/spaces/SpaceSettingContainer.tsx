@@ -13,7 +13,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
 import { styles } from "@styles";
-import { ISpaceModel } from "@types";
+import { ISpaceModel } from "@/types/index";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
@@ -26,11 +26,11 @@ const SpaceSettingContainer = () => {
   const { service } = useServiceContext();
 
   const { loading, data, query } = useQuery<ISpaceModel>({
-    service: (args, config) => service.fetchSpace({ spaceId }, config),
+    service: (args, config) => service.space.getById({ spaceId }, config),
   });
 
   const checkCreateSpace = useQuery({
-    service: (args, config) => service.checkCreateSpace({}, config),
+    service: (args, config) => service.space.checkCreate(config),
     runOnMount: true,
   });
 
@@ -89,7 +89,8 @@ const EditSpaceButton = (props: any) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
   const queryData = useQuery({
-    service: (args, config) => service.fetchSpace(args ?? { spaceId }, config),
+    service: (args, config) =>
+      service.space.getById(args ?? { spaceId }, config),
     runOnMount: false,
   });
   const dialogProps = useDialog();

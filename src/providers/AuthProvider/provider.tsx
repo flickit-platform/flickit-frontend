@@ -1,5 +1,5 @@
 import { useReducer, FC, useContext, Dispatch, createContext } from "react";
-import { IUserInfo } from "@types";
+import { IUserInfo } from "@/types/index";
 import authReducer from "./reducer";
 
 interface IAuthProviderProps {

@@ -40,20 +40,20 @@ const SubjectOverallInsight = ({
 
   const fetchSubjectInsight = useQuery<any>({
     service: (args, config) =>
-      service.fetchSubjectInsight({ assessmentId, subjectId }, config),
+      service.assessments.subjects.getInsight({ assessmentId, subjectId }, config),
     toastError: false,
     runOnMount: false,
   });
 
   const ApproveAISubject = useQuery({
     service: (args, config) =>
-      service.ApproveAISubject(args ?? { assessmentId, subjectId }, config),
+      service.assessments.subjects.approveInsight(args ?? { assessmentId, subjectId }, config),
     runOnMount: false,
   });
 
   const InitInsight = useQuery({
     service: (args, config) =>
-      service.InitInsight(args ?? { assessmentId, subjectId }, config),
+      service.assessments.subjects.initInsight(args ?? { assessmentId, subjectId }, config),
     runOnMount: false,
   });
 
@@ -144,7 +144,7 @@ const SubjectOverallInsight = ({
             editable={editable}
             fieldName="insight"
             onSubmit={async (payload: any, event: any) => {
-              await service.updateSubjectInsight(
+              await service.assessments.subjects.updateInsight(
                 {
                   assessmentId,
                   subjectId,

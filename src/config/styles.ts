@@ -1,5 +1,5 @@
 import { keyframes, SxProps, Theme } from "@mui/material/styles";
-import { TStatus } from "@types";
+import { TStatus } from "@/types/index";
 import hasStatus from "@utils/hasStatus";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
 

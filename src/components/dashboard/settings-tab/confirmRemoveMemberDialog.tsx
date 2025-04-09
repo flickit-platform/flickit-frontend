@@ -27,13 +27,13 @@ const ConfirmRemoveMemberDialog = (props: any) => {
 
   const deleteUserRole = useQuery({
     service: (args, config) =>
-      service.deleteUserRole({ assessmentId, args }, config),
+      service.assessments.member.removeUserRole({ assessmentId, args }, config),
     runOnMount: false,
   });
 
   const RemoveMembersInvitees = useQuery({
     service: (args, config) =>
-      service.RemoveAssessmentMembersInvitees(
+      service.assessments.member.removeInvitee(
         args ?? { invitedId: "" },
         config,
       ),
