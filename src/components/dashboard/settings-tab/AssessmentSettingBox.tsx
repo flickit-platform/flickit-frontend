@@ -38,14 +38,14 @@ import formatDate from "@utils/formatDate";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@utils/selectHeight";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -1215,74 +1215,79 @@ const OnHoverInputTitleSetting = (props: any) => {
           <Box
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
-            <OutlinedInput
-              inputProps={inputProps}
-              error={hasError}
-              fullWidth
-              defaultValue={
-                type == "title" ? inputData : inputDataShortTitle ?? ""
-              }
-              onChange={(e) =>
-                type == "title"
-                  ? setInputData(e.target.value)
-                  : setInputDataShortTitle(e.target.value)
-              }
-              value={type == "title" ? inputData : inputDataShortTitle}
-              required={true}
-              multiline={true}
-              sx={{
-                minHeight: "38px",
-                borderRadius: "4px",
-                paddingRight: "12px;",
-                fontWeight: "700",
-                fontSize: "0.875rem",
-                "&.MuiOutlinedInput-notchedOutline": { border: 0 },
-                "&.MuiOutlinedInput-root:hover": {
-                  border: 0,
-                  outline: "none",
-                },
-                "& .MuiOutlinedInput-input:focused": {
-                  border: 0,
-                  outline: "none",
-                },
-                "&.MuiOutlinedInput-root.Mui-selected": {
-                  border: 0,
-                  outline: "none",
-                },
-                "&:hover": { border: "1px solid #79747E" },
-              }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    title="Submit Edit"
-                    edge={theme.direction == "rtl" ? "start" : "end"}
+              <OutlinedInput
+                  inputProps={inputProps}
+                  error={hasError}
+                  fullWidth
+                  name={type}
+                  defaultValue={type == "title" ? inputData : inputDataShortTitle ?? ""}
+                    onChange={(e) =>
+                      type == "title"
+                        ? setInputData(e.target.value)
+                        : setInputDataShortTitle(e.target.value)
+                    }
+                  value={type == "title" ? inputData : inputDataShortTitle}
+                  required={true}
+                  multiline={true}
                     sx={{
-                      background: "#49CED0",
-                      borderRadius: "2px",
-                      height: { xs: "26px", sm: "36px" },
-                      width: { xs: "26px", sm: "36px" },
-                      margin: "3px",
+                      minHeight: "38px",
+                      borderRadius: "4px",
+                      paddingRight: "12px;",
+                      fontWeight: "700",
+                      fontSize: "0.875rem",
+                      fontFamily: languageDetector(type == "title" ? inputData : inputDataShortTitle) ? farsiFontFamily  : primaryFontFamily ,
+                      "&.MuiOutlinedInput-notchedOutline": { border: 0 },
+                      "&.MuiOutlinedInput-root:hover": {
+                        border: 0,
+                        outline: "none",
+                      },
+                      "& .MuiOutlinedInput-input:focused": {
+                        border: 0,
+                        outline: "none",
+                      },
+                      "&.MuiOutlinedInput-root.Mui-selected": {
+                        border: 0,
+                        outline: "none",
+                      },
+                      "&:hover": { border: "1px solid #79747E" },
                     }}
-                    onClick={updateAssessmentTitle}
-                  >
-                    <DoneIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                  <IconButton
-                    title="Cancel Edit"
-                    edge={theme.direction == "rtl" ? "start" : "end"}
-                    sx={{
-                      background: "#E04B7C",
-                      borderRadius: "2px",
-                      height: { xs: "26px", sm: "36px" },
-                      width: { xs: "26px", sm: "36px" },
-                    }}
-                    onClick={handleCancel}
-                  >
-                    <CloseIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
+                  endAdornment={
+                      <InputAdornment position="end">
+                          <IconButton
+                              title="Submit Edit"
+                              edge={theme.direction == "rtl" ? "start" : "end"}
+                              sx={{
+                                  background: theme.palette.primary.main,
+                                  "&:hover": {
+                                      background: theme.palette.primary.dark,
+                                  },
+                                  borderRadius: "3px",
+                                  height: { xs: "26px", sm: "36px" },
+                                  width: { xs: "26px", sm: "36px" },
+                                  margin: "3px",
+                              }}
+                              onClick={updateAssessmentTitle}
+                          >
+                              <CheckCircleOutlineRoundedIcon sx={{color: "#fff"}}/>
+                          </IconButton>
+                          <IconButton
+                              title="Cancel Edit"
+                              edge={theme.direction == "rtl" ? "start" : "end"}
+                              sx={{
+                                  background: theme.palette.primary.main,
+                                  "&:hover": {
+                                      background: theme.palette.primary.dark,
+                                  },
+                                  borderRadius: "4px",
+                                  height: "36px",
+                              }}
+                              onClick={handleCancel}
+                          >
+                              <CancelRoundedIcon sx={{color: "#fff"}}/>
+                          </IconButton>
+                      </InputAdornment>
+                  }
+              />
           </Box>
         ) : (
           <Box
