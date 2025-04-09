@@ -205,7 +205,7 @@ const CreateSpaceDialog = (props: any) => {
           <Grid sx={{ m: "32px" }} item>
             <InputFieldUC
               name="title"
-              defaultValue={defaultValues.title || ""}
+              defaultValue={defaultValues.title ?? ""}
               placeholder={t("spaceName") ?? ""}
               required
               label={<Trans i18nKey="name" />}
