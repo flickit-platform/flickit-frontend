@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 import i18next, { t } from "i18next";
 import { BASE_URL } from "@constants";
 import keycloakService from "@/service//keycloakService";

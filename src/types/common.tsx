@@ -1,4 +1,3 @@
-import { ICustomError } from "./errors";
 import { AxiosRequestConfig } from "axios";
 
 type ModelValue = {
@@ -64,7 +63,7 @@ export interface PathInfo {
   assessment?: ModelValue;
 }
 
-export type TQueryProps<T extends any = any, A extends any = any> = {
+export type TQueryProps<T = any, A = any> = {
   data: T;
   loading: boolean;
   loaded: boolean;
@@ -74,7 +73,7 @@ export type TQueryProps<T extends any = any, A extends any = any> = {
   abortController?: AbortController;
 };
 
-export type TQueryFunction<T extends any = any, A extends any = any> = (
+export type TQueryFunction<T = any, A = any> = (
   args?: A,
   config?: AxiosRequestConfig<any>,
 ) => Promise<T>;
