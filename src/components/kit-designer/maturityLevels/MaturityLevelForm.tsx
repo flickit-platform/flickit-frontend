@@ -60,6 +60,7 @@ const MaturityLevelForm = ({
         }}
         sx={{
           fontSize: 14,
+          background: "#fff",
           "& .MuiInputBase-root": {
             fontSize: 14,
           },
