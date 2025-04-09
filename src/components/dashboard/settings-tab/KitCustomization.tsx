@@ -11,11 +11,9 @@ import firstCharDetector from "@utils/firstCharDetector";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
-import { theme } from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
@@ -24,6 +22,9 @@ import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";
 import { styles } from "@styles";
+import languageDetector from "@utils/languageDetector";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -395,67 +396,78 @@ const OnHoverInputCustomTitle = (props: any) => {
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
             <OutlinedInput
-              inputProps={inputProps}
-              error={hasError}
-              fullWidth
-              value={localInputData.title}
-              onChange={(e) => {
-                setLocalInputData((prev: any) => ({
-                  ...prev,
-                  title: e.target.value,
-                }));
-                setHasError(false);
-              }}
-              required={true}
-              multiline={true}
-              sx={{
-                minHeight: "38px",
-                borderRadius: "4px",
-                paddingRight: "12px;",
-                fontWeight: "700",
-                fontSize: "0.875rem",
-                "&.MuiOutlinedInput-notchedOutline": { border: 0 },
-                "&.MuiOutlinedInput-root:hover": {
-                  border: 0,
-                  outline: "none",
-                },
-                "& .MuiOutlinedInput-input:focused": {
-                  border: 0,
-                  outline: "none",
-                },
-                "&:hover": { border: "1px solid #79747E" },
-              }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    title="Submit Edit"
-                    edge={theme.direction == "rtl" ? "start" : "end"}
-                    sx={{
-                      background: "#49CED0",
-                      borderRadius: "2px",
-                      height: { xs: "26px", sm: "36px" },
-                      width: { xs: "26px", sm: "36px" },
-                      margin: "3px",
-                    }}
-                    onClick={handleSave}
-                  >
-                    <DoneIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                  <IconButton
-                    title="Cancel Edit"
-                    edge={theme.direction == "rtl" ? "start" : "end"}
-                    sx={{
-                      background: "#E04B7C",
-                      borderRadius: "2px",
-                      height: { xs: "26px", sm: "36px" },
-                      width: { xs: "26px", sm: "36px" },
-                    }}
-                    onClick={handleCancel}
-                  >
-                    <CloseIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                </InputAdornment>
-              }
+                inputProps={inputProps}
+                error={hasError}
+                fullWidth
+                name={type}
+                  onChange={(e) => {
+                    setLocalInputData((prev: any) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
+                    setHasError(false);
+                  }}
+                value={localInputData.title}
+                required={true}
+                multiline={true}
+                sx={{
+                  minHeight: "38px",
+                  borderRadius: "4px",
+                  paddingRight: "12px;",
+                  fontWeight: "700",
+                  fontSize: "0.875rem",
+                  fontFamily: languageDetector(localInputData.title) ? farsiFontFamily  : primaryFontFamily ,
+                  "&.MuiOutlinedInput-notchedOutline": { border: 0 },
+                  "&.MuiOutlinedInput-root:hover": {
+                    border: 0,
+                    outline: "none",
+                  },
+                  "& .MuiOutlinedInput-input:focused": {
+                    border: 0,
+                    outline: "none",
+                  },
+                  "&.MuiOutlinedInput-root.Mui-selected": {
+                    border: 0,
+                    outline: "none",
+                  },
+                  "&:hover": { border: "1px solid #79747E" },
+                }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                        title="Submit Edit"
+                        edge={theme.direction == "rtl" ? "start" : "end"}
+                        sx={{
+                          background: theme.palette.primary.main,
+                          "&:hover": {
+                            background: theme.palette.primary.dark,
+                          },
+                          borderRadius: "3px",
+                          height: { xs: "26px", sm: "36px" },
+                          width: { xs: "26px", sm: "36px" },
+                          margin: "3px",
+                        }}
+                        onClick={handleSave}
+                    >
+                      <CheckCircleOutlineRoundedIcon sx={{color: "#fff"}}/>
+                    </IconButton>
+                    <IconButton
+                        title="Cancel Edit"
+                        edge={theme.direction == "rtl" ? "start" : "end"}
+                        sx={{
+                          background: theme.palette.primary.main,
+                          "&:hover": {
+                            background: theme.palette.primary.dark,
+                          },
+                          borderRadius: "4px",
+                          height: "36px",
+                        }}
+                        onClick={handleCancel}
+                    >
+                      <CancelRoundedIcon sx={{color: "#fff"}}/>
+                    </IconButton>
+                  </InputAdornment>
+                }
             />
             {hasError && (
               <Typography
