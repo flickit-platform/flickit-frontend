@@ -34,12 +34,12 @@ const AdviceDialog = ({
   const [target, setTarget] = useState<any>([]);
 
   const createAdviceQueryData = useQuery<any>({
-    service: (args, config) => service.createAdvice(args, config),
+    service: (args, config) => service.assessments.advice.create(args, config),
     runOnMount: false,
   });
 
   const createAINarrationQueryData = useQuery<any>({
-    service: (args, config) => service.createAINarration(args, config),
+    service: (args, config) => service.assessments.advice.createAI(args, config),
     runOnMount: false,
   });
 

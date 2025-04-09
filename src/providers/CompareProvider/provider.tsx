@@ -47,7 +47,7 @@ export const CompareProvider: FC<ICompareProviderProps> = ({ children }) => {
       try {
         const assessments = await Promise.all(
           assessmentIdsParams.map(async (id) => {
-            const { data } = await service.AssessmentsLoad(
+            const { data } = await service.assessments.info.getById(
               { assessmentId: id },
               {},
             );

@@ -249,7 +249,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   const [btnState, setBtnState] = useState("");
   const addEvidenceAttachments = useQuery({
     service: (args, config) =>
-      service.addEvidenceAttachments(args, { signal: abortController.signal }),
+      service.questions.evidences.addAttachment(args, { signal: abortController.signal }),
     runOnMount: false,
   });
   useEffect(() => {

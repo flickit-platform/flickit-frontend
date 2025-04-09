@@ -49,7 +49,7 @@ const MainTabs = (props: any) => {
 
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentPermissions(
+      service.assessments.info.getPermissions(
         { assessmentId, ...(args ?? {}) },
         config,
       ),

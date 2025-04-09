@@ -31,7 +31,7 @@ const OptionContain = (props: any) => {
     value: 0,
   });
   const EditAnswerRangeOption = useQuery({
-    service: (args, config) => service.EditAnswerRangeOption(args, config),
+    service: (args, config) => service.kitVersions.answerOptions.updateOption(args, config),
     runOnMount: false,
   });
   const handleEditClick = (answerOption: KitDesignListItems) => {

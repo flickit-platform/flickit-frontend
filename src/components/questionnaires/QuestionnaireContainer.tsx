@@ -57,7 +57,7 @@ export const useQuestionnaire = () => {
 
   const questionnaireQueryData = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
-      service.fetchQuestionnaires(
+      service.assessments.questionnaire.getAll(
         { assessmentId, ...(args ?? { subject_pk: subjectIdParam }) },
         config,
       ),
@@ -65,14 +65,14 @@ export const useQuestionnaire = () => {
 
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
-      service.fetchAssessmentTotalProgress(
+      service.assessments.info.getProgress(
         { assessmentId, ...(args ?? {}) },
         config,
       ),
   });
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args ?? {}) }, config),
+      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
   return {

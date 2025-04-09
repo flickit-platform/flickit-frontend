@@ -332,7 +332,7 @@ export const AssessmentSettingMemberBox = (props: {
   }
 
   const editUserRoleInvited = useQuery({
-    service: (args, config) => service.editUserRoleInvited(args, config),
+    service: (args, config) => service.assessments.member.updateInviteeRole(args, config),
     runOnMount: false,
   });
 
@@ -971,7 +971,7 @@ const SelectionRole = (props: any) => {
 
   const editUserRole = useQuery({
     service: (args, config) =>
-      service.editUserRole({ assessmentId, ...args }, config),
+      service.assessments.member.updateUserRole({ assessmentId, ...args }, config),
     runOnMount: false,
   });
   return (
@@ -1154,7 +1154,7 @@ const OnHoverInputTitleSetting = (props: any) => {
   const { service } = useServiceContext();
   const updateAssessmentQuery = useQuery({
     service: (args, config) =>
-      service.updateAssessment(
+      service.assessments.info.update(
         args ?? {
           id: assessmentId,
           data: {

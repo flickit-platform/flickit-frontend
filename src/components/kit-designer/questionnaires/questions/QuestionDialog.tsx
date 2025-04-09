@@ -47,17 +47,17 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 }) => {
   const fetchAttributeKit = useQuery({
     service: (args, config) =>
-      service.fetchAttributeKit(args ?? { kitVersionId }, config),
+      service.kitVersions.attributes.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const fetchMaturityLevels = useQuery({
     service: (args, config) =>
-      service.getMaturityLevels(args ?? { kitVersionId }, config),
+      service.kitVersions.maturityLevel.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const fetchImpacts = useQuery({
     service: (args, config) =>
-      service.loadQuestionImpactsList(
+      service.kitVersions.questions.getImpacts(
         args ?? { kitVersionId, questionId: question.id },
         config,
       ),
@@ -65,7 +65,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   });
   const fetchOptions = useQuery({
     service: (args, config) =>
-      service.loadAnswerOptionsList(
+      service.kitVersions.questions.getOptions(
         args ?? { kitVersionId, questionId: question.id },
         config,
       ),
@@ -73,7 +73,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   });
 
   const postQuestionImpactsKit = useQuery({
-    service: (args, config) => service.postQuestionImpactsKit(args, config),
+    service: (args, config) => service.kitVersions.questionImpacts.create(args, config),
     runOnMount: false,
   });
 
@@ -127,7 +127,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         index: question.index,
         answerRangeId: selectedAnswerRange,
       };
-      await service.updateQuestionsKit({
+      await service.kitVersions.questions.update({
         kitVersionId,
         questionId: question?.id,
         data: requestData,
@@ -221,11 +221,11 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   };
 
   const deleteQuestionImpactsKit = useQuery({
-    service: (args, config) => service.deleteQuestionImpactsKit(args, config),
+    service: (args, config) => service.kitVersions.questionImpacts.remove(args, config),
     runOnMount: false,
   });
   const updateQuestionImpactsKit = useQuery({
-    service: (args, config) => service.updateQuestionImpactsKit(args, config),
+    service: (args, config) => service.kitVersions.questionImpacts.update(args, config),
     runOnMount: false,
   });
   const handleDeleteImpact = async (item: any) => {
@@ -257,13 +257,13 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 
   const fetchAnswerRanges = useQuery({
     service: (args, config) =>
-      service.loadAnswerRangesList(args ?? { kitVersionId }, config),
+      service.kitVersions.answerRanges.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
 
   const postAnswerOptionsKit = useQuery({
     service: (args, config) =>
-      service.postAnswerOptionsKit(args ?? { kitVersionId, data: {} }, config),
+      service.kitVersions.answerOptions.createOption(args ?? { kitVersionId, data: {} }, config),
     runOnMount: false,
   });
 
@@ -286,7 +286,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     };
     try {
       await service
-        .updateQuestionsKit({
+        .kitVersions.questions.update({
           ...question,
           kitVersionId,
           questionId: question?.id,

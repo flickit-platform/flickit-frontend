@@ -36,7 +36,7 @@ const ExpertGroupsContainer = () => {
 
   const queryData = useQuery({
     service: (args, config) =>
-      service.fetchExpertGroups(
+      service.expertGroups.info.list(
         args ?? { id, size: pageSize, page: pageNumber },
         config,
       ),

@@ -212,37 +212,37 @@ export const IssuesItem = ({
 
   const approveInsights = useQuery({
     service: (args, config) =>
-      service.approveInsights(args ?? { assessmentId }, config),
+      service.assessments.insight.approveAll(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const generateInsights = useQuery({
     service: (args, config) =>
-      service.generateInsights(args ?? { assessmentId }, config),
+      service.assessments.insight.generateAll(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const regenerateInsights = useQuery({
     service: (args, config) =>
-      service.regenerateInsights(args ?? { assessmentId }, config),
+      service.assessments.insight.regenerateExpired(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const approveExpiredInsights = useQuery({
     service: (args, config) =>
-      service.approveExpiredInsights(args ?? { assessmentId }, config),
+      service.assessments.insight.approveExpired(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const resolvedAllComments = useQuery({
     service: (args, config) =>
-      service.resolvedAllComments(args ?? { assessmentId }, config),
+      service.assessments.questionnaire.resolveAllComments(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const approveAllAnswers = useQuery({
     service: (args, config) =>
-      service.approveAllAnswers(args ?? { assessmentId }, config),
+      service.assessments.answer.approveAll(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 

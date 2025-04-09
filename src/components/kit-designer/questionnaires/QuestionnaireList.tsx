@@ -65,11 +65,11 @@ const ListOfItems = ({
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
-    service: (args, config) => service.fetchQuestionListKit(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.getQuestions(args, config),
     runOnMount: false,
   });
   const postQuestionsKit = useQuery({
-    service: (args, config) => service.postQuestionsKit(args, config),
+    service: (args, config) => service.kitVersions.questions.create(args, config),
     runOnMount: false,
   });
 
@@ -172,7 +172,7 @@ const ListOfItems = ({
         index: idx + 1,
       }));
 
-      await service.changeQuestionsOrder(
+      await service.kitVersions.questions.reorder(
         { kitVersionId },
         { questionOrders: orders, questionnaireId: questionnaireId },
       );

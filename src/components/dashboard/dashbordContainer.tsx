@@ -33,7 +33,7 @@ const DashbordContainer = () => {
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args ?? {}) }, config),
+      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 

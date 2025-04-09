@@ -89,7 +89,7 @@ export const useUpdateQuestionInfo = () => {
 
   const fetchQuestionIssues = useQuery<IQuestionsModel>({
     service: (args, config) =>
-      service.fetchQuestionIssues(
+      service.assessments.questionnaire.getQuestionIssues(
         { assessmentId, questionId: questionInfo?.id },
         config,
       ),
@@ -129,7 +129,7 @@ export const useQuestions = () => {
 
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
-      service.fetchQuestionsResult(
+      service.assessments.questionnaire.getQuestionnaireAnswers(
         { questionnaireId, assessmentId, page: args.page ?? 0, size: pageSize },
         config,
       ),
@@ -138,7 +138,7 @@ export const useQuestions = () => {
 
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo(
+      service.common.getPathInfo(
         { questionnaireId, assessmentId, ...(args ?? {}) },
         config,
       ),

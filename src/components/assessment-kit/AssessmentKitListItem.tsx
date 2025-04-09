@@ -37,7 +37,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
-    service: (args, config) => service.cloneAssessmentKit(args, config),
+    service: (args, config) => service.assessmentKit.info.clone(args, config),
     runOnMount: false,
   });
   const { data, fetchAssessmentKits, hasAccess, link, is_member, is_active } =
@@ -163,7 +163,8 @@ const Actions = (props: any) => {
   const { id } = assessment_kit;
   const { service } = useServiceContext();
   const deleteAssessmentKitQuery = useQuery({
-    service: (args, config) => service.deleteAssessmentKit({ id }, config),
+    service: (args, config) =>
+      service.assessmentKit.info.remove({ id }, config),
     runOnMount: false,
   });
 

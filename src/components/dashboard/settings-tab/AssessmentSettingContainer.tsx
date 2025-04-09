@@ -38,31 +38,31 @@ const AssessmentSettingContainer = () => {
   }>(null);
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
-    service: (args, config) => service.fetchAssessmentsRoles(args, config),
+    service: (args, config) => service.assessments.member.getRoles(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
 
   const fetchAssessmentMembers = useQuery({
-    service: (args, config) => service.fetchAssessmentMembers(args, config),
+    service: (args, config) => service.assessments.member.getUsers(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo({ assessmentId, ...(args ?? {}) }, config),
+      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
 
   const AssessmentInfo = useQuery({
     service: (args, config) =>
-      service.AssessmentsLoad(args ?? { assessmentId }, config),
+      service.assessments.info.getById(args ?? { assessmentId }, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
   const inviteesMemberList = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentMembersInvitees({ assessmentId }, config),
+      service.assessments.member.getInvitees({ assessmentId }, config),
     runOnMount: false,
   });
 

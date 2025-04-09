@@ -6,6 +6,14 @@ import { IQuestionnaire } from "./questionnaire";
 import { ISubject } from "./subject";
 import { IUserPermissions } from "./user";
 
+export interface IAssessmentKit {
+  code: string;
+  description: string;
+  id: TId;
+  title: string;
+  kit?: IAssessmentKit;
+}
+
 type LevelCompetence = {
   title: string;
   value: number;

@@ -73,7 +73,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const { service } = useServiceContext();
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>
-      service.calculateMaturityLevel(args ?? { assessmentId: id }, config),
+      service.assessments.info.calculateMaturity(args ?? { assessmentId: id }, config),
     runOnMount: false,
   });
 
@@ -91,7 +91,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   };
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
-      service.fetchAssessmentTotalProgress(
+      service.assessments.info.getProgress(
         { assessmentId: id, ...(args ?? {}) },
         config,
       ),

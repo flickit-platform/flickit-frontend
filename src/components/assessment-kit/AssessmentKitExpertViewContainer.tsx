@@ -83,7 +83,7 @@ const AssessmentKitExpertViewContainer = () => {
   const handleExport = async () => {
     setLoadingExportBtn(true);
     service
-      .fetchAssessmentKitExportUrl({ assessmentKitId }, {})
+      .assessmentKit.dsl.getExportUrl({ assessmentKitId }, {})
       .then((res) => {
         setLoadingExportBtn(false);
         const { data } = res;
@@ -775,7 +775,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
     };
     setLoaded(true);
     try {
-      await service.updateAssessmentKitDSL(
+      await service.assessmentKit.dsl.updateKitFromDsl(
         { data: formattedData, assessmentKitId: assessmentKitId },
         { signal: abortController.signal },
       );
@@ -829,10 +829,10 @@ const UpdateAssessmentKitDialog = (props: any) => {
           <UploadField
             accept={{ "application/zip": [".zip"] }}
             uploadService={(args: any, config: any) =>
-              service.uploadAssessmentKitDSLFile(args, config)
+              service.assessmentKit.dsl.uploadFile(args, config)
             }
             deleteService={(args: any, config: any) =>
-              service.deleteAssessmentKitDSL(args, config)
+              service.assessmentKit.dsl.deleteLegacyDslFile(args, config)
             }
             setIsValid={setIsValid}
             param={expertGroupId}
@@ -1563,37 +1563,37 @@ const useAssessmentKit = () => {
   const { assessmentKitId } = useParams();
   const fetchAssessmentKitDetailsQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitDetails(args ?? { assessmentKitId }, config),
+      service.assessmentKit.details.getKit(args ?? { assessmentKitId }, config),
     runOnMount: false,
   });
   const fetchAssessmentKitSubjectDetailsQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitSubjectDetails(args, config),
+      service.assessmentKit.details.getSubject(args, config),
     runOnMount: false,
   });
   const fetchAssessmentKitSubjectAttributesDetailsQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitSubjectAttributesDetails(args, config),
+      service.assessmentKit.details.getAttribute(args, config),
     runOnMount: false,
   });
   const fetchMaturityLevelQuestionsQuery = useQuery({
     service: (args, config) =>
-      service.fetchMaturityLevelQuestions(args, config),
+      service.assessmentKit.details.getMaturityLevelQuestions(args, config),
     runOnMount: false,
   });
   const fetchAssessmentKitQuestionnairesQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitQuestionnaires(args, config),
+      service.assessmentKit.details.getQuestionnaire(args, config),
     runOnMount: false,
   });
   const fetchAssessmentKitQuestionnairesQuestionsQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitQuestionnairesQuestions(args, config),
+      service.assessmentKit.details.getQuestion(args, config),
     runOnMount: false,
   });
   const fetchAssessmentKitDownloadUrlQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitDownloadUrl(
+      service.assessmentKit.dsl.getDownloadUrl(
         args ?? { assessmentKitId },
         config,
       ),

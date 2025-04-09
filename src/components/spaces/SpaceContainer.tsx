@@ -227,11 +227,12 @@ const useFetchSpace = () => {
 
   const checkLimitExceeded = async () => {
     try {
-      const { data : {allowCreateBasic} } = await service.checkCreateSpace(
-        {},
-        { signal: abortController.current.signal },
-      );
-      setAllowCreateBasic(allowCreateBasic)
+      const {
+        data: { allowCreateBasic },
+      } = await service.space.checkCreate({
+        signal: abortController.current.signal,
+      });
+      setAllowCreateBasic(allowCreateBasic);
     } catch (e) {
       const err = e as ICustomError;
       toastError(err, { filterByStatus: [404] });
@@ -242,7 +243,7 @@ const useFetchSpace = () => {
     setErrorObject(undefined);
     try {
       checkLimitExceeded();
-      const { data: res } = await service.fetchSpaces(
+      const { data: res } = await service.space.getList(
         { size: PAGESIZE, page: pageNumber },
         { signal: abortController.current.signal },
       );

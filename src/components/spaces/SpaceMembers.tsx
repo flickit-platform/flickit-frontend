@@ -34,7 +34,7 @@ import formatDate from "@utils/formatDate";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
@@ -49,11 +49,10 @@ export const SpaceMembers = (props: any) => {
   const [page, setPage] = useState(1);
   const spaceMembersQueryData = useQuery({
     service: (args, config) =>
-      service.fetchSpaceMembers({ spaceId, page: page - 1, size: 10 }, config),
+      service.space.getMembers({ spaceId, page: page - 1, size: 10 }, config),
   });
   const spaceMembersInviteeQueryData = useQuery<IMemberModel>({
-    service: (args, config) =>
-      service.fetchSpaceMembersInvitees({ spaceId }, config),
+    service: (args, config) => service.space.getInvitees({ spaceId }, config),
   });
   const dialogProps = useDialog();
   const {
@@ -64,7 +63,7 @@ export const SpaceMembers = (props: any) => {
     service: (
       { id = spaceId, value = user_id_ref.current?.value }: any,
       config,
-    ) => service.addMemberToSpace({ spaceId: id, email: value }, config),
+    ) => service.space.addMember({ spaceId: id, email: value }, config),
     runOnMount: false,
   });
   const resetForm = () => {
@@ -76,7 +75,7 @@ export const SpaceMembers = (props: any) => {
       controller = new AbortController();
       resetForm();
       spaceMembersQueryData.query();
-      service.getSignedInUser(undefined, { signal: controller.signal });
+      service.user.getCurrent({ signal: controller.signal });
     }
     return () => {
       controller?.abort();
@@ -241,7 +240,9 @@ export const SpaceMembers = (props: any) => {
                               width: "35%",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              fontFamily: languageDetector(displayName) ? farsiFontFamily : primaryFontFamily
+                              fontFamily: languageDetector(displayName)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
                             }}
                           >
                             {displayName}
@@ -490,18 +491,18 @@ const Actions = (props: any) => {
   const { service } = useServiceContext();
   const { query: deleteSpaceMember, loading } = useQuery({
     service: (arg, config) =>
-      service.deleteSpaceMember({ spaceId, memberId: member.id }, config),
+      service.space.removeMember({ spaceId, memberId: member.id }, config),
     runOnMount: false,
     toastError: false,
   });
   const { query: deleteSpaceInvite } = useQuery({
-    service: (config) => service.deleteSpaceInvite({ inviteId }, config),
+    service: (config) => service.space.removeInvite({ inviteId }, config),
     runOnMount: false,
     toastError: false,
   });
   const inviteMemberQueryData = useQuery({
     service: (args, config) =>
-      service.inviteSpaceMember(
+      service.space.inviteMember(
         args ?? { id: spaceId, data: { email } },
         config,
       ),
@@ -586,7 +587,7 @@ const InviteSpaceMemberDialog = (
   const { service } = useServiceContext();
   const { query: inviteMemberQuery, loading } = useQuery({
     service: (args, config) =>
-      service.inviteSpaceMember(
+      service.space.inviteMember(
         args ?? { id: spaceId, data: rest.context?.data ?? {} },
         config,
       ),

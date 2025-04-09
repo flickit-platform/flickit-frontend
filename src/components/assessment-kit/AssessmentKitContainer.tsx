@@ -34,7 +34,10 @@ const AssessmentKitContainer = () => {
   const { assessmentKitId } = useParams();
   const assessmentKitQueryData = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKit(args ?? { id: assessmentKitId }, config),
+      service.assessmentKit.info.getById(
+        args ?? { id: assessmentKitId },
+        config,
+      ),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -85,7 +88,7 @@ const AssessmentKit = (props: any) => {
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
+      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
   const colorPallet = getMaturityLevelColors(
     maturityLevels ? maturityLevels?.length : 5,
@@ -655,7 +658,7 @@ const LikeAssessmentKit = ({ likes }: any) => {
   const { assessmentKitId } = useParams();
   const likeQueryData = useQuery({
     service: (args, config) =>
-      service.likeAssessmentKit(args ?? { id: assessmentKitId }, config),
+      service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
     runOnMount: false,
   });
 

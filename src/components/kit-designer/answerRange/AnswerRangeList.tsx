@@ -61,7 +61,7 @@ const ListOfItems = ({
   setChangeData,
 }: ListOfItemsProps) => {
   const postOptionsKit = useQuery({
-    service: (args, config) => service.postOptionsKit(args, config),
+    service: (args, config) => service.kitVersions.answerOptions.createRangeOption(args, config),
     runOnMount: false,
   });
 

@@ -375,12 +375,12 @@ const Navbar = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args, config) => service.fetchSpaces(args, config),
+    service: (args, config) => service.space.getList(args, config),
     toastError: true,
   });
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.fetchPathInfo({ spaceId, ...(args ?? {}) }, config),
+      service.common.getPathInfo({ spaceId, ...(args ?? {}) }, config),
     runOnMount: false,
   });
   const fetchSpaceInfo = async () => {
@@ -732,7 +732,7 @@ const SpacesButton = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args, config) => service.fetchSpaces(args, config),
+    service: (args, config) => service.space.getList(args, config),
     toastError: true,
   });
 

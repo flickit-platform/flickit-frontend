@@ -200,7 +200,7 @@ const AdviceItemAccordion: React.FC<{
 
   const updateAdviceItem = useQuery({
     service: (args, config) =>
-      service.updateAdviceItem(
+      service.advice.update(
         args ?? { adviceItemId: item.id, data: newAdvice },
         config,
       ),

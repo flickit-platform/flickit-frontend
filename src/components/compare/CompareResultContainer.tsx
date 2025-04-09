@@ -14,7 +14,7 @@ const CompareResultContainer = () => {
   const { service } = useServiceContext();
   const compareResultQueryData = useQuery<any>({
     service: (args, config) =>
-      service.comparessessments({ data: location.search }, config),
+      service.common.compareAssessments({ data: location.search }, config),
   });
 
   const navigate = useNavigate();
