@@ -103,7 +103,6 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
       display="flex"
       flexDirection="column"
       gap={2}
-      height="100%"
       width="100%"
     >
       <Box
