@@ -30,6 +30,7 @@ const renderDialog = (mockContext: any) =>{
         <ServiceProvider>
           <CreateSpaceDialog
               open={true}
+              openDialog={true}
               onClose={mockOnClose}
               onSubmitForm={mockOnSubmitForm}
               context={mockContext}
@@ -44,74 +45,57 @@ const renderDialog = (mockContext: any) =>{
 }
 
 describe("CreateSpaceDialog", () => {
-  // it("renders input field, buttons and handles submission properly", async () => {
-  //
-  //   axios.post = vi.fn().mockResolvedValue({ data: { id: 1 } });
-  //       renderDialog({
-  //         type: "create"
-  //       })
-  //       const clickNext = screen.getByTestId("next-step-modal");
-  //       fireEvent.click(clickNext);
-  //       const inputContainer = screen.getByTestId("input-title");
-  //       await expect(inputContainer).toBeInTheDocument();
-  //
-  //       const inputElement = inputContainer.querySelector("input");
-  //       expect(inputElement).toBeInTheDocument();
-  //       expect(inputElement).toHaveAttribute("type", "text");
-  //
-  //       if (inputElement) {
-  //         await userEvent.clear(inputElement);
-  //         await userEvent.type(inputElement, "New Space");
-  //         expect(inputElement).toHaveValue("New Space");
-  //       }
-  //
-  //       // const submitButton = screen.getByTestId("submit");
-  //       // const cancelButton = screen.getByTestId("close-btn");
-  //       // expect(submitButton).toBeInTheDocument();
-  //       // expect(cancelButton).toBeInTheDocument();
-  //       //
-  //       // await userEvent.click(submitButton);
-  //       // await waitFor(() => {
-  //       //   expect((axios as any).default.post).toHaveBeenCalledTimes(1);
-  //       //   expect((axios as any).default.post).toHaveBeenCalledWith(
-  //       //     "/api/v1/spaces/",
-  //       //     { title: "New Space", type: "BASIC" },
-  //       //     expect.anything(),
-  //       //   );
-  //       // });
-  //       //
-  //       // expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
-  // });
-  //
-  // it("calls closeDialog when the cancel button is clicked", async () => {
-  //   const mockOnClose = vi.fn();
-  //   const mockOnSubmitForm = vi.fn();
-  //
-  //   render(
-  //     <MemoryRouter>
-  //       <ServiceProvider>
-  //         <CreateSpaceDialog
-  //           open={true}
-  //           onClose={mockOnClose}
-  //           onSubmitForm={mockOnSubmitForm}
-  //           allowCreateBasic={true}
-  //           titleStyle={{ mb: 0 }}
-  //           contentStyle={{ p: 0 }}
-  //         />
-  //       </ServiceProvider>
-  //       <ToastContainer />
-  //     </MemoryRouter>,
-  //   );
-  //
-  //   const cancelButton = screen.getByTestId("close-btn");
-  //   expect(cancelButton).toBeInTheDocument();
-  //
-  //   await userEvent.click(cancelButton);
-  //
-  //   await waitFor(() => {
-  //     expect(mockOnClose).toHaveBeenCalledTimes(1);
-  //   });
-  // });
+  it("renders input field, buttons and handles submission properly", async () => {
+
+    axios.post = vi.fn().mockResolvedValue({ data: { id: 1 } });
+        renderDialog({
+          type: "create"
+        })
+        const clickNext = screen.getByTestId("next-step-modal");
+        fireEvent.click(clickNext);
+        const inputContainer = screen.getByTestId("input-title");
+        await expect(inputContainer).toBeInTheDocument();
+
+        const inputElement = inputContainer.querySelector("input");
+        expect(inputElement).toBeInTheDocument();
+        expect(inputElement).toHaveAttribute("type", "text");
+
+        if (inputElement) {
+          await userEvent.clear(inputElement);
+          await userEvent.type(inputElement, "New Space");
+          expect(inputElement).toHaveValue("New Space");
+        }
+  });
+
+  it("calls closeDialog when the cancel button is clicked", async () => {
+    const mockOnClose = vi.fn();
+    const mockOnSubmitForm = vi.fn();
+
+    render(
+      <MemoryRouter>
+        <ServiceProvider>
+          <CreateSpaceDialog
+            open={true}
+            onClose={mockOnClose}
+            onSubmitForm={mockOnSubmitForm}
+            allowCreateBasic={true}
+            titleStyle={{ mb: 0 }}
+            contentStyle={{ p: 0 }}
+          />
+        </ServiceProvider>
+        <ToastContainer />
+      </MemoryRouter>,
+    );
+
+    const cancelButton = screen.getByTestId("close-btn");
+    expect(cancelButton).toBeInTheDocument();
+
+    await userEvent.click(cancelButton);
+
+    await waitFor(() => {
+      expect(mockOnClose).toHaveBeenCalledTimes(1);
+    });
+  });
 
   it("renders input field, pre-fills data for update, and handles submission properly", async () => {
     const mockContext = {
@@ -122,13 +106,11 @@ describe("CreateSpaceDialog", () => {
       },
     };
 
-    renderDialog(mockContext)
+
     // Mock axios.put for the update operation
-    axios.put = vi.fn().mockResolvedValue({ data: { id: 1 } });
+      axios.put = vi.fn().mockResolvedValue({ data: { id: 1 } });
+      renderDialog(mockContext)
 
-
-            const clickNext = screen.getByTestId("next-step-modal");
-            fireEvent.click(clickNext);
             const inputContainer = screen.getByTestId("input-title");
             expect(inputContainer).toBeInTheDocument();
 
@@ -151,18 +133,18 @@ describe("CreateSpaceDialog", () => {
 
         await userEvent.click(submitButton);
 
-        // await waitFor(() => {
-        //   expect(axios.put).toHaveBeenCalledWith(
-        //     `/api/v1/spaces/${mockContext.data.id}/`,
-        //     { title: "Updated Space", type: "BASIC" },
-        //     expect.anything(),
-        //   );
-        //   expect(axios.put).toHaveBeenCalled();
-        //   expect(axios.put).toHaveBeenCalledWith(
-        //     `/api/v1/spaces/${mockContext.data.id}/seen/`,
-        //     expect.anything(),
-        //   );
-        // });
-        // expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+          expect(axios.put).toHaveBeenCalledWith(
+            `/api/v1/spaces/${mockContext.data.id}/`,
+            { title: "Updated Space", type: "PREMIUM" },
+            expect.anything(),
+          );
+          expect(axios.put).toHaveBeenCalled();
+          expect(axios.put).toHaveBeenCalledWith(
+            `/api/v1/spaces/${mockContext.data.id}/seen/`,
+            expect.anything(),
+          );
+        });
+        expect(mockOnSubmitForm).toHaveBeenCalledTimes(1);
   });
 });

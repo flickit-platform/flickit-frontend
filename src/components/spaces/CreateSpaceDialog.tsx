@@ -67,7 +67,6 @@ const CreateSpaceDialog = (props: any) => {
     allowCreateBasic,
     ...rest
   } = props;
-    console.log(context,"test context")
   const { type, data = {} } = context;
   const { id: spaceId } = data;
   const { type: spaceDefaultType } = data;
