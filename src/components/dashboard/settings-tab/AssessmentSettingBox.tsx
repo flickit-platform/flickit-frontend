@@ -1235,7 +1235,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                       paddingRight: "12px;",
                       fontWeight: "700",
                       fontSize: "0.875rem",
-                      fontFamily: languageDetector(type == "title" ? inputData : inputDataShortTitle) ? farsiFontFamily  : primaryFontFamily ,
+                      fontFamily: languageDetector(inputData || inputDataShortTitle) ? farsiFontFamily  : primaryFontFamily ,
                       "&.MuiOutlinedInput-notchedOutline": { border: 0 },
                       "&.MuiOutlinedInput-root:hover": {
                         border: 0,
