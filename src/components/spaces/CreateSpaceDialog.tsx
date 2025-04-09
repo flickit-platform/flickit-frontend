@@ -228,7 +228,7 @@ const CreateSpaceDialog = (props: any) => {
               backType="text"
               type={type}
               onSubmit={(event) =>
-                formMethods.handleSubmit((data) => onSubmit(data, event))()
+                formMethods.handleSubmit((data) => onSubmit(data, event))
               }
             />
           </Box>
