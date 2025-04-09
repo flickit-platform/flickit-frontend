@@ -581,7 +581,7 @@ const Navbar = () => {
             <img
               src={config.appLogoUrl}
               alt={"logo"}
-              style={{ maxWidth: "120px" }}
+              style={{ maxWidth: "120px", height: "100%" }}
             />
           </Typography>
           <Box
