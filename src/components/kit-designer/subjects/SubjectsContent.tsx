@@ -21,27 +21,26 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 const SubjectsContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
-    status: boolean;
-    id: string;
-  }>({ status: false, id: "" });
 
   const fetchSubjectKit = useQuery({
     service: (args, config) =>
       service.kitVersions.subjects.getAll(args ?? { kitVersionId }, config),
   });
   const postSubjectKit = useQuery({
-    service: (args, config) => service.kitVersions.subjects.create(args, config),
+    service: (args, config) =>
+      service.kitVersions.subjects.create(args, config),
     runOnMount: false,
   });
 
   const deleteSubjectKit = useQuery({
-    service: (args, config) => service.kitVersions.subjects.remove(args, config),
+    service: (args, config) =>
+      service.kitVersions.subjects.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitSubject = useQuery({
-    service: (args, config) => service.kitVersions.subjects.update(args, config),
+    service: (args, config) =>
+      service.kitVersions.subjects.update(args, config),
     runOnMount: false,
   });
 
@@ -129,7 +128,6 @@ const SubjectsContent = () => {
       weight: 0,
       id: null,
     });
-    setOpenDeleteDialog({ status: false, id: "" });
   };
 
   const handleEdit = async (subjectItem: any) => {
@@ -159,18 +157,6 @@ const SubjectsContent = () => {
         weight: 0,
         id: null,
       });
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      let subjectId = openDeleteDialog.id;
-      await deleteSubjectKit.query({ kitVersionId, subjectId });
-      await fetchSubjectKit.query();
-      handleCancel();
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -229,7 +215,6 @@ const SubjectsContent = () => {
                       onEdit={handleEdit}
                       onReorder={handleReorder}
                       name={"subject"}
-                      setOpenDeleteDialog={setOpenDeleteDialog}
                     />
                   </Box>
                 ) : (
@@ -255,15 +240,6 @@ const SubjectsContent = () => {
           }}
         />
       </Box>
-      <DeleteConfirmationDialog
-        open={openDeleteDialog.status}
-        onClose={() =>
-          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
-        }
-        onConfirm={handleDelete}
-        title="warning"
-        content="deleteSubject"
-      />
     </PermissionControl>
   );
 };

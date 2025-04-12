@@ -37,7 +37,7 @@ interface ListOfItemsProps {
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
   name: string;
   fetchQuery?: any;
-  setOpenDeleteDialog: any;
+  setOpenDeleteDialog?: any;
 }
 interface ITempValues {
   title: string;
