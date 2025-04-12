@@ -143,10 +143,10 @@ const MeasureForm = ({
         }}
       >
         {" "}
-        <IconButton size="small" color="primary" data-testid="Measure-check-icon" onClick={handleSave}>
+        <IconButton size="small" color="primary" data-testid="measure-check-icon" onClick={handleSave}>
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="Measure-close-icon" onClick={handleCancel}>
+        <IconButton size="small" color="secondary" data-testid="measure-close-icon" onClick={handleCancel}>
           <CloseIcon />
         </IconButton>
       </Link>
