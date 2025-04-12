@@ -18,8 +18,6 @@ import {toast} from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import {useForm} from "react-hook-form";
 import {useState, useRef} from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import QueryBatchData from "@common/QueryBatchData";
@@ -39,6 +37,7 @@ import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import {useConfigContext} from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
+import InputCustomEditor from "@common/fields/InputCustomEditor";
 
 interface IAssessmentKitSectionAuthorInfo {
     setExpertGroup: any;
@@ -592,59 +591,16 @@ const OnHoverInput = (props: any) => {
                     <Box
                         sx={{display: "flex", flexDirection: "column", width: "100% "}}
                     >
-                        <OutlinedInput
-                            inputProps={inputProps}
-                            error={hasError}
-                            fullWidth
-                            name={title}
-                            defaultValue={data ?? ""}
-                            onChange={(e) => setInputData(e.target.value)}
-                            value={inputData}
-                            required={true}
-                            multiline={true}
-                            sx={{
-                                minHeight: "38px",
-                                borderRadius: "4px",
-                                paddingRight: "12px;",
-                                fontWeight: "700",
-                                fontSize: "0.875rem",
-                            }}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        title="Submit Edit"
-                                        edge="end"
-                                        sx={{
-                                            background: theme.palette.primary.main,
-                                            "&:hover": {
-                                                background: theme.palette.primary.dark,
-                                            },
-                                            borderRadius: "3px",
-                                            height: "36px",
-                                            margin: "3px",
-                                        }}
-                                        onClick={updateAssessmentKit}
-                                    >
-                                        <CheckCircleOutlineRoundedIcon sx={{color: "#fff"}}/>
-                                    </IconButton>
-                                    <IconButton
-                                        title="Cancel Edit"
-                                        edge="end"
-                                        sx={{
-                                            background: theme.palette.primary.main,
-                                            "&:hover": {
-                                                background: theme.palette.primary.dark,
-                                            },
-                                            borderRadius: "4px",
-                                            height: "36px",
-                                        }}
-                                        onClick={handleCancel}
-                                    >
-                                        <CancelRoundedIcon sx={{color: "#fff"}}/>
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
+                 <InputCustomEditor
+                     inputProps={inputProps}
+                     hasError={hasError}
+                     name={title}
+                     data={data}
+                     inputHandler={(e: any)=>setInputData(e.target.value)}
+                     value={inputData}
+                     handleDone={updateAssessmentKit}
+                     handleCancel={handleCancel}
+                 />
                         {hasError && (
                             <Typography color="#ba000d" variant="caption">
                                 {error?.data?.[type]}

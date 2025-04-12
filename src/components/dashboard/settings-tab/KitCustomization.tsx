@@ -22,9 +22,7 @@ import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
 import { toast } from "react-toastify";
 import { styles } from "@styles";
-import languageDetector from "@utils/languageDetector";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import InputCustomEditor from "@common/fields/InputCustomEditor";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -395,79 +393,20 @@ const OnHoverInputCustomTitle = (props: any) => {
           <Box
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
-            <OutlinedInput
+            <InputCustomEditor
                 inputProps={inputProps}
-                error={hasError}
-                fullWidth
+                hasError={hasError}
                 name={type}
-                  onChange={(e) => {
-                    setLocalInputData((prev: any) => ({
-                      ...prev,
-                      title: e.target.value,
-                    }));
-                    setHasError(false);
-                  }}
-                value={localInputData.title}
-                required={true}
-                multiline={true}
-                sx={{
-                  minHeight: "38px",
-                  borderRadius: "4px",
-                  paddingRight: "12px;",
-                  fontWeight: "700",
-                  fontSize: "0.875rem",
-                  fontFamily: languageDetector(localInputData.title) ? farsiFontFamily  : primaryFontFamily ,
-                  "&.MuiOutlinedInput-notchedOutline": { border: 0 },
-                  "&.MuiOutlinedInput-root:hover": {
-                    border: 0,
-                    outline: "none",
-                  },
-                  "& .MuiOutlinedInput-input:focused": {
-                    border: 0,
-                    outline: "none",
-                  },
-                  "&.MuiOutlinedInput-root.Mui-selected": {
-                    border: 0,
-                    outline: "none",
-                  },
-                  "&:hover": { border: "1px solid #79747E" },
+                inputHandler={(e:any)=>{
+                  setLocalInputData((prev: any) => ({
+                    ...prev,
+                    title: e.target.value,
+                  }));
+                  setHasError(false);
                 }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                        title="Submit Edit"
-                        edge={theme.direction == "rtl" ? "start" : "end"}
-                        sx={{
-                          background: theme.palette.primary.main,
-                          "&:hover": {
-                            background: theme.palette.primary.dark,
-                          },
-                          borderRadius: "3px",
-                          height: { xs: "26px", sm: "36px" },
-                          width: { xs: "26px", sm: "36px" },
-                          margin: "3px",
-                        }}
-                        onClick={handleSave}
-                    >
-                      <CheckCircleOutlineRoundedIcon sx={{color: "#fff"}}/>
-                    </IconButton>
-                    <IconButton
-                        title="Cancel Edit"
-                        edge={theme.direction == "rtl" ? "start" : "end"}
-                        sx={{
-                          background: theme.palette.primary.main,
-                          "&:hover": {
-                            background: theme.palette.primary.dark,
-                          },
-                          borderRadius: "4px",
-                          height: "36px",
-                        }}
-                        onClick={handleCancel}
-                    >
-                      <CancelRoundedIcon sx={{color: "#fff"}}/>
-                    </IconButton>
-                  </InputAdornment>
-                }
+                value={localInputData.title}
+                handleDone={handleSave}
+                handleCancel={handleCancel}
             />
             {hasError && (
               <Typography
