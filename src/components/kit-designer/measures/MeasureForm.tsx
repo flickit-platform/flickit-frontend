@@ -7,11 +7,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import Typography from "@mui/material/Typography";
-import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 
 interface MeasureFormProps {
-    newMeasure: {
+  newMeasure: {
     title: string;
     description: string;
     weight: number;
@@ -22,6 +22,17 @@ interface MeasureFormProps {
   handleSave: () => void;
   handleCancel: () => void;
 }
+
+const sharedTextFieldSx = {
+  fontSize: 14,
+  background: "#fff",
+  "& .MuiInputBase-root": {
+    fontSize: 14,
+  },
+  "& .MuiFormLabel-root": {
+    fontSize: 14,
+  },
+};
 
 const MeasureForm = ({
   newMeasure,
@@ -41,6 +52,7 @@ const MeasureForm = ({
       position: "relative",
     }}
   >
+    {/* Value field */}
     <Box
       sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
       borderRadius="0.5rem"
@@ -49,88 +61,76 @@ const MeasureForm = ({
     >
       <TextField
         required
-        id="new-maturity"
-        type="number"
         name="value"
+        type="number"
         value={newMeasure.value}
         onChange={handleInputChange}
-        variant="outlined"
         size="small"
         inputProps={{
           "data-testid": "measure-value",
           style: { textAlign: "center", width: "40px" },
         }}
-        sx={{
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            fontSize: 14,
-          },
-          background:"#fff",
-        }}
+        sx={sharedTextFieldSx}
       />
     </Box>
 
+    {/* Title & Description */}
     <Box width="100%" mx={1}>
       <TextField
         required
         label={<Trans i18nKey="title" />}
         name="title"
-        inputProps={{
-            "data-testid": "measure-title",
-            style: { fontFamily: languageDetector(newMeasure.title) ? farsiFontFamily : primaryFontFamily }
-        }}
         value={newMeasure.title}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        inputProps={{
+          "data-testid": "measure-title",
+          style: {
+            fontFamily: languageDetector(newMeasure.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
+        }}
         sx={{
+          ...sharedTextFieldSx,
           mt: 0,
-          fontSize: 14,
           "& .MuiInputBase-root": {
             height: 40,
-            fontSize: 14,
           },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-            background:"#fff",
-            width:{xs:"100%",md:"60%"},
+          width: { xs: "100%", md: "60%" },
         }}
       />
 
       <TextField
         label={<Trans i18nKey="description" />}
         name="description"
-        inputProps={{
-            "data-testid": "measure-description",
-            style: { fontFamily: languageDetector(newMeasure.description) ? farsiFontFamily : primaryFontFamily }
-        }}
-        required
         value={newMeasure.description}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        required
         multiline
         minRows={2}
         maxRows={3}
+        inputProps={{
+          "data-testid": "measure-description",
+          style: {
+            fontFamily: languageDetector(newMeasure.description)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
+        }}
         sx={{
+          ...sharedTextFieldSx,
           mt: 1,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            fontSize: 14,
-            overflow: "auto",
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-            background:"#fff",
-            width:{xs:"100%",md:"85%"},
+          width: { xs: "100%", md: "85%" },
         }}
       />
     </Box>
 
-    {/* Check and Close Buttons */}
-    <Box display="flex" alignItems="center" flexDirection={"column"} gap={"20px"}>
+    {/* Action buttons + weight */}
+    <Box display="flex" alignItems="center" flexDirection="column" gap="20px">
       <Link
         href="#Measure-header"
         sx={{
@@ -139,61 +139,66 @@ const MeasureForm = ({
           fontWeight: "bold",
           display: "flex",
           alignItems: "center",
-          gap:"20px"
+          gap: "20px",
         }}
       >
-        {" "}
-        <IconButton size="small" color="primary" data-testid="measure-check-icon" onClick={handleSave}>
+        <IconButton
+          size="small"
+          color="primary"
+          data-testid="measure-check-icon"
+          onClick={handleSave}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="measure-close-icon" onClick={handleCancel}>
+        <IconButton
+          size="small"
+          color="secondary"
+          data-testid="measure-close-icon"
+          onClick={handleCancel}
+        >
           <CloseIcon />
         </IconButton>
       </Link>
-        <Box sx={{
-            width:"fit-content",
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"flex-end",
-            flexDirection:"column",
-            gap:"0.5rem",
-            textAlign:"center"
-        }}>
 
-        <Typography sx={{
+      <Box
+        sx={{
+          width: "fit-content",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-end",
+          flexDirection: "column",
+          gap: "0.5rem",
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          sx={{
             ...theme.typography.labelCondensed,
-            color:"#6C8093",
-            width:"100%"
-        }}>
-            <Trans i18nKey={"weight"} />
+            color: "#6C8093",
+            width: "100%",
+          }}
+        >
+          <Trans i18nKey="weight" />
         </Typography>
+
         <TextField
-            required
-            value={newMeasure.weight}
-            onChange={handleInputChange}
-            name="weight"
-            variant="outlined"
-            fullWidth
-            size="small"
-            margin="normal"
-            type="number"
-            inputProps={{
-                style: { textAlign: "center", width: "40px" },
-            }}
-            sx={{
-                mb: 1,
-                mt: 1,
-                fontSize: 14,
-                "& .MuiInputBase-root": {
-                    fontSize: 14,
-                    overflow: "auto",
-                },
-                "& .MuiFormLabel-root": {
-                    fontSize: 14,
-                },
-                background:"#fff",
-                borderRadius:"8px",
-            }}
+          required
+          value={newMeasure.weight}
+          onChange={handleInputChange}
+          name="weight"
+          type="number"
+          fullWidth
+          size="small"
+          margin="normal"
+          inputProps={{
+            style: { textAlign: "center", width: "40px" },
+          }}
+          sx={{
+            ...sharedTextFieldSx,
+            mb: 1,
+            mt: 1,
+            borderRadius: "8px",
+          }}
         />
       </Box>
     </Box>

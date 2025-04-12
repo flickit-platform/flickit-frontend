@@ -18,7 +18,7 @@ const mockOnReorder = vi.fn();
 const mockSetOpenDeleteDialog = vi.fn();
 
 describe("ListOfItems (subject)", () => {
-  beforeEach(() => {
+  const setup = () => {
     render(
       <ListOfItems
         items={mockItems}
@@ -26,26 +26,42 @@ describe("ListOfItems (subject)", () => {
         onReorder={mockOnReorder}
         name="subject"
         setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      />
     );
-  });
+
+    return {
+      getTitle: () => screen.getByText("title test 1"),
+      getEditButton: () => screen.getAllByTestId("items-edit-icon")[0],
+      getDeleteButton: () => screen.getAllByTestId("items-delete-icon")[0],
+      getTitleInput: () => screen.getByTestId("items-title"),
+      getDescriptionInput: () => screen.getByTestId("items-description"),
+      getSubmitButton: () => screen.getByTestId("items-check-icon"),
+    };
+  };
 
   it("renders item titles correctly", () => {
-    expect(screen.getByText("title test 1")).toBeInTheDocument();
+    const { getTitle } = setup();
+    expect(getTitle()).toBeInTheDocument();
   });
 
   it("allows editing an item", () => {
-    const editButtons = screen.getAllByTestId("items-edit-icon");
-    fireEvent.click(editButtons[0]);
+    const {
+      getEditButton,
+      getTitleInput,
+      getDescriptionInput,
+      getSubmitButton,
+    } = setup();
 
-    fireEvent.change(screen.getByTestId("items-title"), {
+    fireEvent.click(getEditButton());
+
+    fireEvent.change(getTitleInput(), {
       target: { value: "Updated title 1" },
     });
-    fireEvent.change(screen.getByTestId("items-description"), {
+    fireEvent.change(getDescriptionInput(), {
       target: { value: "Updated Description 1" },
     });
 
-    fireEvent.click(screen.getByTestId("items-check-icon"));
+    fireEvent.click(getSubmitButton());
 
     expect(mockOnEdit).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -54,14 +70,13 @@ describe("ListOfItems (subject)", () => {
         value: 1,
         title: "Updated title 1",
         description: "Updated Description 1",
-      }),
+      })
     );
   });
 
   it("triggers delete dialog when delete icon is clicked", () => {
-    const deleteButtons = screen.getAllByTestId("items-delete-icon");
-    fireEvent.click(deleteButtons[0]);
-
+    const { getDeleteButton } = setup();
+    fireEvent.click(getDeleteButton());
     expect(mockSetOpenDeleteDialog).toHaveBeenCalledWith({
       status: true,
       id: 1,

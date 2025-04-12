@@ -185,7 +185,7 @@ const MeasuresContent = () => {
             fetchMeasureKit.loaded && fetchMeasureKit.data.items.length !== 0
           }
           mainTitle={"kitDesignerTab.measures"}
-          btnTitle={"newMeasure"}
+          btnTitle={"kitDesignerTab.newMeasure"}
           description={"kitDesignerTab.measuresKitDesignerDescription"}
         />
         {fetchMeasureKit.loaded && fetchMeasureKit.data.items.length !== 0 ? (
