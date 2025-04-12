@@ -6,10 +6,13 @@ export const answerRanges = {
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(
-      `/api/v1/kit-versions/${kitVersionId}/answer-ranges/`,
-      config,
-    );
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/answer-ranges/`, {
+      ...(config ?? {}),
+      params: {
+        page: 0,
+        size: 50,
+      },
+    });
   },
 
   create(

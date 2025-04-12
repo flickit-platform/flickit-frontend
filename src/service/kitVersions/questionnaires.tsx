@@ -6,10 +6,13 @@ export const questionnaires = {
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(
-      `/api/v1/kit-versions/${kitVersionId}/questionnaires/`,
-      config,
-    );
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/questionnaires/`, {
+      ...(config ?? {}),
+      params: {
+        page: 0,
+        size: 50,
+      },
+    });
   },
 
   create(
