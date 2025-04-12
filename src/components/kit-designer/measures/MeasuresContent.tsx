@@ -207,7 +207,8 @@ const MeasuresContent = () => {
                       items={measureData?.items}
                       onEdit={handleEdit}
                       onReorder={handleReorder}
-                      name={"measure"}
+                      editableFieldKey="questionsCount"
+                      editable={false}
                     />
                   </Box>
                 ) : (

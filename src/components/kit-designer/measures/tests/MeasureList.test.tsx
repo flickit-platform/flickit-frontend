@@ -24,7 +24,6 @@ describe("ListOfItems (measure)", () => {
         items={mockItems}
         onEdit={mockOnEdit}
         onReorder={mockOnReorder}
-        name="measure"
         setOpenDeleteDialog={mockSetOpenDeleteDialog}
       />
     );

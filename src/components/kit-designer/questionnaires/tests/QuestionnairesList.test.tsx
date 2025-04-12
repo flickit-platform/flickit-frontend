@@ -14,9 +14,7 @@ const mockQuestionnaires = [
 ];
 
 const mockOnEdit = vi.fn();
-const mockOnDelete = vi.fn();
 const mockOnReorder = vi.fn();
-const mockName = "questionnaires";
 const mockSetOpenDeleteDialog = vi.fn();
 
 describe("questionnairesList", () => {
@@ -26,7 +24,6 @@ describe("questionnairesList", () => {
         items={mockQuestionnaires}
         onEdit={mockOnEdit}
         onReorder={mockOnReorder}
-        name={mockName}
         setOpenDeleteDialog={mockSetOpenDeleteDialog}
       />,
     );

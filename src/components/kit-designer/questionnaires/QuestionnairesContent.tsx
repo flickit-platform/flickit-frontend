@@ -222,7 +222,6 @@ const QuestionnairesContent = () => {
                       fetchQuery={fetchQuestionnairesKit}
                       onEdit={handleEdit}
                       onReorder={handleReorder}
-                      name={"questionnaires"}
                     />
                   </Box>
                 ) : (

@@ -187,7 +187,6 @@ const AnaweRangeContent = () => {
                 onEdit={handleEdit}
                 onReorder={handleReorder}
                 setChangeData={setChangeData}
-                name={"answerRange"}
               />
             </Box>
           ) : (

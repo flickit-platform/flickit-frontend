@@ -35,7 +35,6 @@ interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
   onEdit: (id: any) => void;
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
-  name: string;
   fetchQuery?: any;
   setOpenDeleteDialog?: any;
 }
@@ -59,7 +58,6 @@ const ListOfItems = ({
   fetchQuery,
   onEdit,
   onReorder,
-  name,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({

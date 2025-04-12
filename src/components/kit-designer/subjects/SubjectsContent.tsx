@@ -214,7 +214,7 @@ const SubjectsContent = () => {
                       items={subjectData?.items}
                       onEdit={handleEdit}
                       onReorder={handleReorder}
-                      name={"subject"}
+                      editableFieldKey="weight"
                     />
                   </Box>
                 ) : (
