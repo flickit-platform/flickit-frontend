@@ -26,11 +26,11 @@ import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import OptionsSection from "./OptionsSection";
 import QuestionSubSection from "./QuestionSubSection";
 import { t } from "i18next";
+import { useParams } from "react-router-dom";
 
 interface Props {
   open: boolean;
   question: IQuestionInfo;
-  kitVersionId: string;
   onClose: () => void;
   fetchQuery: any;
 }
@@ -38,10 +38,11 @@ interface Props {
 const QuestionDialog: React.FC<Props> = ({
   open,
   question,
-  kitVersionId,
   onClose,
   fetchQuery,
 }) => {
+  const { kitVersionId = "" } = useParams();
+
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 

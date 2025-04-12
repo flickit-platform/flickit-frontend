@@ -12,7 +12,6 @@ import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 const QuestionContain = (props: any) => {
   const { question, fetchQuery } = props;
-  const { kitVersionId = "" } = useParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -59,7 +58,6 @@ const QuestionContain = (props: any) => {
         {isDialogOpen && <QuestionDialog
             open={isDialogOpen}
             question={question}
-            kitVersionId={kitVersionId}
             onClose={handleCloseDialog}
             fetchQuery={fetchQuery}
         /> }
