@@ -20,7 +20,7 @@ const DashboardTab = () => {
 
   const fetchDashboard = useQuery({
     service: (args, config) =>
-      service.fetchDashboard(args ?? { assessmentId }, config),
+      service.assessments.info.getDashboard(args ?? { assessmentId }, config),
     runOnMount: true,
   });
 

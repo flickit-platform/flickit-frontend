@@ -1,4 +1,4 @@
-import { IQuestionInfo } from "@types";
+import { IQuestionInfo } from "@/types/index";
 import { QUESTION_ACTIONS_TYPE } from "./actions";
 
 const questionReducer = (

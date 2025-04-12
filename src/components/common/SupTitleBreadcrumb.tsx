@@ -103,7 +103,7 @@ export const useSupTitleBreadcrumb = (
 
   const { loading, data } = useQuery({
     service: (args, config) =>
-      service.fetchBreadcrumbInfo(args ?? params, config),
+      service.common.getBreadcrumbInfo(args ?? params, config),
   });
 
   return {

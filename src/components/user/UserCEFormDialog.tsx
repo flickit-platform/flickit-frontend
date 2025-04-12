@@ -57,7 +57,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
       const tempData = { ...data };
       tempData.linkedin === "" && delete tempData.linkedin;
       tempData.bio === "" && delete tempData.bio;
-      await service.updateUserInfo(
+      await service.user.updateProfile(
         {
           id,
           data: tempData,

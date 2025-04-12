@@ -6,7 +6,7 @@ import {
   ErrorCodes,
   TQueryFunction,
   TQueryProps,
-} from "@types";
+} from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";

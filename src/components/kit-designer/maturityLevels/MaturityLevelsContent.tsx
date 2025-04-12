@@ -29,11 +29,11 @@ const MaturityLevelsContent = () => {
   }>({ status: false, id: "" });
   const maturityLevels = useQuery({
     service: (args, config) =>
-      service.getMaturityLevels(args ?? { kitVersionId }, config),
+      service.kitVersions.maturityLevel.getAll(args ?? { kitVersionId }, config),
   });
   const maturityLevelsCompetences = useQuery({
     service: (args, config) =>
-      service.getMaturityLevelsCompetences(args ?? { kitVersionId }, config),
+      service.kitVersions.levelsCompetences.getAll(args ?? { kitVersionId }, config),
   });
 
   const [showNewMaturityLevelForm, setShowNewMaturityLevelForm] =
@@ -81,13 +81,13 @@ const MaturityLevelsContent = () => {
         description: newMaturityLevel.description,
       };
       if (newMaturityLevel.id) {
-        await service.updateMaturityLevel(
+        await service.kitVersions.maturityLevel.update(
           { kitVersionId, maturityLevelId: newMaturityLevel.id },
           data,
           undefined,
         );
       } else {
-        await service.postMaturityLevel(
+        await service.kitVersions.maturityLevel.create(
           { kitVersionId: kitVersionId },
           data,
           undefined,
@@ -134,7 +134,7 @@ const MaturityLevelsContent = () => {
         title: maturityLevel.title,
         description: maturityLevel.description,
       };
-      await service.updateMaturityLevel(
+      await service.kitVersions.maturityLevel.update(
         { kitVersionId, maturityLevelId: maturityLevel.id },
         data,
         undefined,
@@ -160,7 +160,7 @@ const MaturityLevelsContent = () => {
   const handleDelete = async () => {
     try {
       let maturityLevelId = openDeleteDialog.id;
-      await service.deleteMaturityLevel({ kitVersionId, maturityLevelId });
+      await service.kitVersions.maturityLevel.remove({ kitVersionId, maturityLevelId });
       maturityLevels.query();
       maturityLevelsCompetences.query();
       handleCancel();
@@ -177,7 +177,7 @@ const MaturityLevelsContent = () => {
         index: idx + 1,
       }));
 
-      await service.changeMaturityLevelsOrder({ kitVersionId }, { orders });
+      await service.kitVersions.maturityLevel.changeOrder({ kitVersionId }, { orders });
       maturityLevelsCompetences.query();
 
       handleCancel();

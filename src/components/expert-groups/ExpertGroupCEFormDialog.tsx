@@ -56,7 +56,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
     };
   }, []);
   const seenExpertGroupQuery = useQuery({
-    service: (args, config) => service.seenExpertGroup({ id }, config),
+    service: (args, config) => service.expertGroups.info.markAsSeen({ id }, config),
     runOnMount: false,
     toastError: false,
   });
@@ -76,11 +76,11 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
     try {
       const { data } =
         type === "update"
-          ? await service.updateExpertGroup(
+          ? await service.expertGroups.info.update(
               { data: formattedUpdateData, id },
               { signal: abortController.signal },
             )
-          : await service.createExpertGroup(
+          : await service.expertGroups.info.create(
               { data: formattedData },
               { signal: abortController.signal },
             );

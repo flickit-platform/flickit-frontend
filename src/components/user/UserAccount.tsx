@@ -32,7 +32,7 @@ const UserAccount = () => {
   const { dispatch } = useAuthContext();
   const { service } = useServiceContext();
   const userQueryData = useQuery({
-    service: (args, config) => service.getUserProfile(args, config),
+    service: (args, config) => service.user.getProfile(config),
     runOnMount: true,
   });
   const [userInfo, setUserInfo] = useState({
@@ -73,7 +73,7 @@ const UserAccount = () => {
       setIsLoading(true);
       try {
         const pictureData = { pictureFile: file };
-        await service.updateUserProfilePicture(
+        await service.user.updatePicture(
           { data: pictureData },
           undefined,
         );

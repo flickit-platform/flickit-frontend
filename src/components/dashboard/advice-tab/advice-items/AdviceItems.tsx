@@ -28,12 +28,12 @@ const AdviceItems = () => {
 
   const fetchAdviceItems = useQuery<any>({
     service: (args, config) =>
-      service.fetchAdviceItems({ assessmentId, page, size: 50 }, config),
+      service.advice.getList({ assessmentId, page, size: 50 }, config),
     toastError: false,
   });
 
   const deleteAdviceItem = useQuery<any>({
-    service: (args, config) => service.deleteAdviceItem(args, config),
+    service: (args, config) => service.advice.remove(args, config),
     toastError: false,
     runOnMount: false,
   });
@@ -74,7 +74,7 @@ const AdviceItems = () => {
 
   const postAdviceItem = useQuery({
     service: (args, config) =>
-      service.postAdviceItem(args ?? { assessmentId, data: newAdvice }, config),
+      service.advice.create(args ?? { assessmentId, data: newAdvice }, config),
     runOnMount: false,
   });
 
