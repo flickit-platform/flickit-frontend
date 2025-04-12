@@ -71,7 +71,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     setLoading(true);
     try {
       type === "update"
-        ? await service.updateAssessment(
+        ? await service.assessments.info.update(
             {
               id: assessmentId,
               data: {
@@ -83,7 +83,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             { signal: abortController.signal },
           )
         : await service
-            .createAssessment(
+            .assessments.info.create(
               {
                 data: {
                   spaceId: spaceId ?? space?.id,
@@ -264,7 +264,7 @@ const AssessmentKitField = ({
   const { service } = useServiceContext();
 
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.fetchAssessmentKitsOptions(args, config),
+    service: (args, config) => service.assessmentKit.info.getOptions(args, config),
     accessor: "items",
   });
 
@@ -287,10 +287,10 @@ const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.fetchSpaces(args, config),
+    service: (args, config) => service.space.getList(args, config),
   });
   const createSpaceQueryData = useQuery({
-    service: (args, config) => service.createSpace(args, config),
+    service: (args, config) => service.space.create(args, config),
     runOnMount: false,
   });
 

@@ -96,14 +96,14 @@ const CreateSpaceDialog = (props: any) => {
     setLoading(true);
     try {
       if (type === "update") {
-        await service.updateSpace(
+        await service.space.update(
           { spaceId, data },
           { signal: abortController.signal },
         );
-        await service.seenSpaceList({ spaceId }, {});
+        await service.space.markAsSeen({ spaceId }, {});
         close();
       } else {
-        const res = await service.createSpace(data, {
+        const res = await service.space.create(data, {
           signal: abortController.signal,
         });
         setSpaceIdNum(res.data.id);
@@ -176,7 +176,7 @@ const CreateSpaceDialog = (props: any) => {
       </Box>
       <Box sx={{ py: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "end" }}>
-          <Button variant="contained" onClick={() => setStep(2)}>
+          <Button variant="contained"  data-testid="next-step-modal" onClick={() => setStep(2)}>
             <Typography>
               <Trans i18nKey={"next"} />
             </Typography>
@@ -205,7 +205,7 @@ const CreateSpaceDialog = (props: any) => {
           <Grid sx={{ m: "32px" }} item>
             <InputFieldUC
               name="title"
-              defaultValue={defaultValues.title || ""}
+              defaultValue={defaultValues.title ?? ""}
               placeholder={t("spaceName") ?? ""}
               required
               label={<Trans i18nKey="name" />}
@@ -228,7 +228,7 @@ const CreateSpaceDialog = (props: any) => {
               backType="text"
               type={type}
               onSubmit={(event) =>
-                formMethods.handleSubmit((data) => onSubmit(data, event))()
+                formMethods.handleSubmit((data) => onSubmit(data, event))
               }
             />
           </Box>

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { ITotalProgress, TStatus } from "@types";
+import { ITotalProgress, TStatus } from "@/types/index";
 import { getColorOfStatus, styles } from "@styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import CompareResultSubjectAttributesBarChart from "./CompareResultAttributesBarChart";

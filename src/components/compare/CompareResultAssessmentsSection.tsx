@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import { ICompareResultBaseInfo } from "@types";
+import { ICompareResultBaseInfo } from "@/types/index";
 import { Gauge } from "@common/charts/Gauge";
 import Title from "@common/Title";
 import { t } from "i18next";

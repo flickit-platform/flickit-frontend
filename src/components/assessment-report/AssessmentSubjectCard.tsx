@@ -9,7 +9,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Trans } from "react-i18next";
 import { getMaturityLevelColors, styles } from "@styles";
-import { ISubjectInfo, IMaturityLevel } from "@types";
+import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";

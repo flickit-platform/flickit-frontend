@@ -33,7 +33,7 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
   const { service } = useServiceContext();
 
   useEffect(() => {
-    service.fetchTenantInfo(undefined).then((res: any) => {
+    service.common.getTenantInfo(undefined).then((res: any) => {
       dispatch({
         type: ActionTypes.SET_APP_LOGO_URL,
         payload: res.data.logo.logoLink,
@@ -60,7 +60,7 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
       // Update title tag
       document.title = appTitle;
-      service.fetchKitLanguage({}).then((res: any)=>{
+      service.common.getKitLanguages({}).then((res: any)=>{
         dispatch({
           type: ActionTypes.App_Languages,
           payload: res.data.kitLanguages,

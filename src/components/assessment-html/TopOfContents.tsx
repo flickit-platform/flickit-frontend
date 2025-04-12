@@ -10,7 +10,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useTranslation } from "react-i18next";
-import { IAttribute, IGraphicalReport, ISubject } from "@/types";
+import { IAttribute, IGraphicalReport, ISubject } from "@/types/index";
 import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 

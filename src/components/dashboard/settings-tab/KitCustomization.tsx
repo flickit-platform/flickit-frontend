@@ -36,20 +36,20 @@ const KitCustomization = (props: any) => {
   const { assessmentId = "" } = useParams();
 
   const fetchKitCustomization = useQuery({
-    service: (args, config) => service.fetchKitCustomization(args, config),
+    service: (args, config) => service.assessmentKit.info.getCustomization(args, config),
     runOnMount: false,
   });
   const fetchKitCustomTitle = useQuery({
     service: (args, config) =>
-      service.fetchKitCustomTitle(args ?? { kitInfo }, config),
+      service.common.getKitCustomTitle(args ?? { kitInfo }, config),
     runOnMount: false,
   });
   const sendKitCustomization = useQuery({
-    service: (args, config) => service.sendKitCustomization(args, config),
+    service: (args, config) => service.assessments.info.assignKitCustomization(args, config),
     runOnMount: false,
   });
   const updateKitCustomization = useQuery({
-    service: (args, config) => service.updateKitCustomization(args, config),
+    service: (args, config) => service.common.updateKitCustom(args, config),
     runOnMount: false,
   });
 

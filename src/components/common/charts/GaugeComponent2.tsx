@@ -1,4 +1,4 @@
-import { IDynamicGaugeSVGProps } from "@/types";
+import { IDynamicGaugeSVGProps } from "@/types/index";
 import "./style.css";
 
 const GaugeComponent2 = (props: IDynamicGaugeSVGProps) => {

@@ -36,20 +36,20 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
 
   const fetchAssessmentInsight = useQuery<any>({
     service: (args, config) =>
-      service.fetchAssessmentInsight({ assessmentId }, config),
+      service.assessments.insight.getOverall({ assessmentId }, config),
     toastError: false,
     runOnMount: false,
   });
 
   const ApproveAssessmentInsight = useQuery({
     service: (args, config) =>
-      service.approveAssessmentInsight(args ?? { assessmentId }, config),
+      service.assessments.insight.approveOverall(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
   const InitAssessmentInsight = useQuery({
     service: (args, config) =>
-      service.initAssessmentInsight(args ?? { assessmentId }, config),
+      service.assessments.insight.initOverall(args ?? { assessmentId }, config),
     runOnMount: false,
   });
 
@@ -103,7 +103,6 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
       display="flex"
       flexDirection="column"
       gap={2}
-      height="100%"
       width="100%"
     >
       <Box
@@ -139,7 +138,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
           editable={editable}
           fieldName="insight"
           onSubmit={async (payload: any, event: any) => {
-            await service.updateAssessmentInsight(
+            await service.assessments.insight.updateOverall(
               { assessmentId, data: { insight: payload?.insight } },
               { signal: abortController.current.signal },
             );
