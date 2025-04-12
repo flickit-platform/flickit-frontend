@@ -18,6 +18,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import uniqueId from "@/utils/uniqueId";
 
 interface OptionValue {
   optionId: number;
@@ -192,7 +193,7 @@ const ImpactDetails = ({
     {editMode === item.questionImpactId ? (
       <>
         {fields.map((field: any, idx: number) => (
-          <FormControl key={idx} fullWidth size="small" sx={textFieldStyle}>
+          <FormControl key={uniqueId()} fullWidth size="small" sx={textFieldStyle}>
             <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
             <Select
               labelId={`${field.name}-label`}

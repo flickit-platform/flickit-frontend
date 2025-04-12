@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import uniqueId from "@/utils/uniqueId";
 
 interface ImpactFormProps {
   newItem: Record<string, any>;
@@ -63,7 +64,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
     >
       {fields.map((field, idx) => (
         <Select
-          key={idx}
+          key={uniqueId()}
           name={field.name}
           value={newItem[field.name] ?? ""}
           onChange={handleSelectChange}

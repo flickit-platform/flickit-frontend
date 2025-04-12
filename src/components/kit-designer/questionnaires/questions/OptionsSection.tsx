@@ -18,7 +18,6 @@ import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
-import { TId } from "@/types";
 
 const OptionsSection = ({
   question,

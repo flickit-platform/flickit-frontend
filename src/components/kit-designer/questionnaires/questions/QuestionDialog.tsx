@@ -112,11 +112,11 @@ const QuestionDialog: React.FC<Props> = ({
         fetchMeasures.query(),
       ]);
       formMethods.reset({
-        title: question.title || "",
-        hint: question.hint || "",
-        options: question.options || [{ text: "" }],
-        mayNotBeApplicable: question.mayNotBeApplicable || false,
-        advisable: question.advisable || false,
+        title: question.title ?? "",
+        hint: question.hint ?? "",
+        options: question.options ?? [{ text: "" }],
+        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
+        advisable: question.advisable ?? false,
       });
       setSelectedAnswerRange(question.answerRangeId);
     }
@@ -157,7 +157,7 @@ const QuestionDialog: React.FC<Props> = ({
       disabledCondition:
         fetchAttributeKit?.data?.items?.length === 0 ||
         fetchOptions.data?.answerOptions?.length === 0,
-      impacts: fetchList?.data?.attributeImpacts || [],
+      impacts: fetchList?.data?.attributeImpacts ?? [],
       fields: isImpact
         ? [
             {
