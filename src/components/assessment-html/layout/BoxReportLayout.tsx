@@ -214,21 +214,19 @@ const BottomBox = ({
       />
 
       <Box
+        onClick={() => setExpanded((prev) => !prev)}
         sx={{
           display: { xs: "none", sm: "flex" },
           alignItems: "center",
           justifyContent: isFarsi ? "flex-end" : "flex-start",
+          cursor: "pointer",
         }}
       >
         <Divider
           sx={{ flexGrow: 1, borderColor: theme.palette.primary.main }}
         />
 
-        <IconButton
-          onClick={() => setExpanded((prev) => !prev)}
-          size="small"
-          color="primary"
-        >
+        <IconButton size="small" color="primary">
           {expanded ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
         </IconButton>
 
@@ -240,7 +238,7 @@ const BottomBox = ({
           }}
           variant="labelSmall"
         >
-          {t("reportDocument.showMeasures", { lng: language })}
+          {t("reportDocument.measureStatus", { lng: language })}
         </Typography>
       </Box>
 
@@ -267,10 +265,12 @@ const BottomBox = ({
 
           <Box>
             <Box
+              onClick={() => setShowGuide((prev) => !prev)}
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: isFarsi ? "flex-end" : "flex-start",
+                cursor: "pointer",
               }}
             >
               <InfoOutlined fontSize="small" color="action" />
@@ -284,10 +284,7 @@ const BottomBox = ({
               >
                 {t("hint", { lng: language })}
               </Typography>
-              <IconButton
-                onClick={() => setShowGuide((prev) => !prev)}
-                size="small"
-              >
+              <IconButton size="small">
                 {showGuide ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
               </IconButton>
               <Divider sx={{ flexGrow: 1, borderColor: "#D6DEE5" }} />
