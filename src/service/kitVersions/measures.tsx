@@ -6,7 +6,13 @@ export const measures = {
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(`/api/v1/kit-versions/${kitVersionId}/measures/`, config);
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/measures/`, {
+      ...(config ?? {}),
+      params: {
+        page: 0,
+        size: 50,
+      },
+    });
   },
 
   create(
@@ -31,7 +37,7 @@ export const measures = {
       config,
     );
   },
-  
+
   update(
     {
       kitVersionId,

@@ -6,10 +6,13 @@ export const attributes = {
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(
-      `/api/v1/kit-versions/${kitVersionId}/attributes/`,
-      config,
-    );
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/attributes/`, {
+      ...(config ?? {}),
+      params: {
+        page: 0,
+        size: 50,
+      },
+    });
   },
 
   create(

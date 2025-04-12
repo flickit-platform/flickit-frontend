@@ -46,10 +46,13 @@ export const maturityLevel = {
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(
-      `/api/v1/kit-versions/${kitVersionId}/maturity-levels`,
-      config,
-    );
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/maturity-levels`, {
+      ...(config ?? {}),
+      params: {
+        page: 0,
+        size: 50,
+      },
+    });
   },
 
   changeOrder(

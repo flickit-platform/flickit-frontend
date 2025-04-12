@@ -46,7 +46,13 @@ export const questions = {
   ) {
     return axios.get(
       `/api/v1/kit-versions/${kitVersionId}/questions/${questionId}/impacts/`,
-      config,
+      {
+        ...(config ?? {}),
+        params: {
+          page: 0,
+          size: 50,
+        },
+      },
     );
   },
 
@@ -56,7 +62,13 @@ export const questions = {
   ) {
     return axios.get(
       `/api/v1/kit-versions/${kitVersionId}/questions/${questionId}/options/`,
-      config,
+      {
+        ...(config ?? {}),
+        params: {
+          page: 0,
+          size: 50,
+        },
+      },
     );
   },
 };

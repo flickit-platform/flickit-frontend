@@ -53,7 +53,6 @@ describe("AnswerRangeList Component", () => {
         onDelete={mockOnDelete}
         onReorder={mockOnReorder}
         setChangeData={setChangeData}
-        name="answerRange"
       />
     );
   });

@@ -35,7 +35,6 @@ interface ListOfItemsProps {
   onEdit: (id: any) => void;
   onDelete?: (id: any) => void;
   onReorder: any;
-  name: string;
   fetchQuery?: any;
   setChangeData: any;
 }

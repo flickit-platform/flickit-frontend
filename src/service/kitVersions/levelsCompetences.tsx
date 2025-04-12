@@ -46,9 +46,12 @@ export const levelsCompetences = {
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(
-      `/api/v1/kit-versions/${kitVersionId}/level-competences`,
-      config,
-    );
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/level-competences`, {
+      ...(config ?? {}),
+      params: {
+        page: 0,
+        size: 50,
+      },
+    });
   },
 };
