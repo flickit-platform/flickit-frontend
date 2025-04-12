@@ -51,7 +51,6 @@ describe("AnswerRangeList Component", () => {
         items={mockAnswerRange}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-        deleteBtn={false}
         onReorder={mockOnReorder}
         setChangeData={setChangeData}
         name="answerRange"

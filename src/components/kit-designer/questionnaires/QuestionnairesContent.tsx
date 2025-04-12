@@ -21,27 +21,29 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 const QuestionnairesContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
-    status: boolean;
-    id: string;
-  }>({ status: false, id: "" });
 
   const fetchQuestionnairesKit = useQuery({
     service: (args, config) =>
-      service.kitVersions.questionnaires.getAll(args ?? { kitVersionId }, config),
+      service.kitVersions.questionnaires.getAll(
+        args ?? { kitVersionId },
+        config,
+      ),
   });
   const postQuestionnairesKit = useQuery({
-    service: (args, config) => service.kitVersions.questionnaires.create(args, config),
+    service: (args, config) =>
+      service.kitVersions.questionnaires.create(args, config),
     runOnMount: false,
   });
 
   const deleteQuestionnairesKit = useQuery({
-    service: (args, config) => service.kitVersions.questionnaires.remove(args, config),
+    service: (args, config) =>
+      service.kitVersions.questionnaires.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitQuestionnaires = useQuery({
-    service: (args, config) => service.kitVersions.questionnaires.update(args, config),
+    service: (args, config) =>
+      service.kitVersions.questionnaires.update(args, config),
     runOnMount: false,
   });
 
@@ -128,7 +130,6 @@ const QuestionnairesContent = () => {
       weight: 0,
       id: null,
     });
-    setOpenDeleteDialog({ status: false, id: "" });
   };
 
   const handleEdit = async (QuestionnairesItem: any) => {
@@ -164,18 +165,6 @@ const QuestionnairesContent = () => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      let questionnaireId = openDeleteDialog.id;
-      await deleteQuestionnairesKit.query({ kitVersionId, questionnaireId });
-      await fetchQuestionnairesKit.query();
-      handleCancel();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
       const orders = newOrder.map((item, idx) => ({
@@ -183,7 +172,10 @@ const QuestionnairesContent = () => {
         index: idx + 1,
       }));
 
-      await service.kitVersions.questionnaires.reorder({ kitVersionId }, { orders });
+      await service.kitVersions.questionnaires.reorder(
+        { kitVersionId },
+        { orders },
+      );
 
       handleCancel();
     } catch (e) {
@@ -229,10 +221,8 @@ const QuestionnairesContent = () => {
                       items={QuestionnairesData?.items}
                       fetchQuery={fetchQuestionnairesKit}
                       onEdit={handleEdit}
-                      deleteBtn={false}
                       onReorder={handleReorder}
                       name={"questionnaires"}
-                      setOpenDeleteDialog={setOpenDeleteDialog}
                     />
                   </Box>
                 ) : (
@@ -258,15 +248,6 @@ const QuestionnairesContent = () => {
           }}
         />
       </Box>
-      <DeleteConfirmationDialog
-        open={openDeleteDialog.status}
-        onClose={() =>
-          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
-        }
-        onConfirm={handleDelete}
-        title="warning"
-        content="deleteQuestionnaires"
-      />
     </PermissionControl>
   );
 };

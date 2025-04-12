@@ -136,17 +136,6 @@ const AnaweRangeContent = () => {
     }
   };
 
-  const handleDelete = async (questionnaireId: number) => {
-    try {
-      await deleteQuestionnairesKit.query({ kitVersionId, questionnaireId });
-      await fetchAnswerRangeKit.query();
-      handleCancel();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
       const orders = newOrder.map((item, idx) => ({
@@ -196,8 +185,6 @@ const AnaweRangeContent = () => {
                 items={data}
                 fetchQuery={fetchAnswerRangeKit}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
-                deleteBtn={false}
                 onReorder={handleReorder}
                 setChangeData={setChangeData}
                 name={"answerRange"}

@@ -216,7 +216,7 @@ const MaturityLevelList = ({
                           margin="normal"
                           multiline
                           minRows={2}
-                          maxRows={3}
+                          maxRows={5}
                           sx={{
                             mb: 1,
                             mt: 1,

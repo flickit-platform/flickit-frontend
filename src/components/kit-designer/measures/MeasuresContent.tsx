@@ -15,37 +15,30 @@ import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDHeader from "@/components/kit-designer/common/KitHeader";
-import SubjectForm from "./SubjectForm";
-import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import MeasureForm from "./MeasureForm";
 
-const SubjectsContent = () => {
+const MeasuresContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
-  const fetchSubjectKit = useQuery({
+  const fetchMeasureKit = useQuery({
     service: (args, config) =>
-      service.kitVersions.subjects.getAll(args ?? { kitVersionId }, config),
+      service.kitVersions.measures.getAll(args ?? { kitVersionId }, config),
   });
-  const postSubjectKit = useQuery({
+  const postMeasureKit = useQuery({
     service: (args, config) =>
-      service.kitVersions.subjects.create(args, config),
+      service.kitVersions.measures.create(args, config),
     runOnMount: false,
   });
 
-  const deleteSubjectKit = useQuery({
+  const updateKitMeasure = useQuery({
     service: (args, config) =>
-      service.kitVersions.subjects.remove(args, config),
+      service.kitVersions.measures.update(args, config),
     runOnMount: false,
   });
 
-  const updateKitSubject = useQuery({
-    service: (args, config) =>
-      service.kitVersions.subjects.update(args, config),
-    runOnMount: false,
-  });
-
-  const [showNewSubjectForm, setShowNewSubjectForm] = useState(false);
-  const [newSubject, setNewSubject] = useState({
+  const [showNewMeasureForm, setShowNewMeasureForm] = useState(false);
+  const [newMeasure, setNewMeasure] = useState({
     title: "",
     description: "",
     index: 1,
@@ -55,20 +48,20 @@ const SubjectsContent = () => {
   });
 
   useEffect(() => {
-    if (fetchSubjectKit.data?.items?.length) {
-      setNewSubject((prev) => ({
+    if (fetchMeasureKit.data?.items?.length) {
+      setNewMeasure((prev) => ({
         ...prev,
-        index: fetchSubjectKit.data.items.length + 1,
-        value: fetchSubjectKit.data.items.length + 1,
+        index: fetchMeasureKit.data.items.length + 1,
+        value: fetchMeasureKit.data.items.length + 1,
         weight: 1,
         id: null,
       }));
     }
-  }, [fetchSubjectKit.data]);
+  }, [fetchMeasureKit.data]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewSubject((prev) => ({
+    setNewMeasure((prev) => ({
       ...prev,
       [name]: parsedValue,
     }));
@@ -76,39 +69,39 @@ const SubjectsContent = () => {
 
   const handleAddNewRow = () => {
     handleCancel();
-    setShowNewSubjectForm(true);
+    setShowNewMeasureForm(true);
   };
 
   const handleSave = async () => {
     try {
       const data = {
         kitVersionId,
-        index: newSubject.index,
-        value: newSubject.value,
-        title: newSubject.title,
-        weight: newSubject.weight,
-        description: newSubject.description,
+        index: newMeasure.index,
+        value: newMeasure.value,
+        title: newMeasure.title,
+        weight: newMeasure.weight,
+        description: newMeasure.description,
       };
-      if (newSubject.id) {
-        await service.kitVersions.subjects.update({
+      if (newMeasure.id) {
+        await service.kitVersions.measures.update({
           kitVersionId,
-          subjectId: newSubject.id,
+          measureId: newMeasure.id,
           data,
         });
       } else {
-        await postSubjectKit.query({ kitVersionId, data });
+        await postMeasureKit.query({ kitVersionId, data });
       }
 
       // Reset form and re-fetch data after saving
-      setShowNewSubjectForm(false);
-      await fetchSubjectKit.query();
+      setShowNewMeasureForm(false);
+      await fetchMeasureKit.query();
 
       // Reset the form values
-      setNewSubject({
+      setNewMeasure({
         title: "",
         description: "",
-        index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
-        value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+        index: (fetchMeasureKit.data?.items.length ?? 0) + 1,
+        value: (fetchMeasureKit.data?.items.length ?? 0) + 1,
         weight: 0,
         id: null,
       });
@@ -119,41 +112,41 @@ const SubjectsContent = () => {
   };
 
   const handleCancel = () => {
-    setShowNewSubjectForm(false);
-    setNewSubject({
+    setShowNewMeasureForm(false);
+    setNewMeasure({
       title: "",
       description: "",
-      index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
-      value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+      index: (fetchMeasureKit.data?.items.length ?? 0) + 1,
+      value: (fetchMeasureKit.data?.items.length ?? 0) + 1,
       weight: 0,
       id: null,
     });
   };
 
-  const handleEdit = async (subjectItem: any) => {
+  const handleEdit = async (measureItem: any) => {
     try {
       const data = {
         kitVersionId,
-        index: subjectItem.index,
-        value: subjectItem.value,
-        title: subjectItem.title,
-        weight: subjectItem.weight,
-        description: subjectItem.description,
+        index: measureItem.index,
+        value: measureItem.value,
+        title: measureItem.title,
+        weight: measureItem.weight,
+        description: measureItem.description,
       };
-      await updateKitSubject.query({
+      await updateKitMeasure.query({
         kitVersionId,
-        subjectId: subjectItem.id,
+        measureId: measureItem.id,
         data,
       });
 
-      setShowNewSubjectForm(false);
-      fetchSubjectKit.query();
+      setShowNewMeasureForm(false);
+      fetchMeasureKit.query();
 
-      setNewSubject({
+      setNewMeasure({
         title: "",
         description: "",
-        index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
-        value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+        index: (fetchMeasureKit.data?.items.length ?? 0) + 1,
+        value: (fetchMeasureKit.data?.items.length ?? 0) + 1,
         weight: 0,
         id: null,
       });
@@ -170,7 +163,7 @@ const SubjectsContent = () => {
         index: idx + 1,
       }));
 
-      await service.kitVersions.subjects.reorder({ kitVersionId }, { orders });
+      await service.kitVersions.measures.reorder({ kitVersionId }, { orders });
 
       handleCancel();
     } catch (e) {
@@ -189,13 +182,13 @@ const SubjectsContent = () => {
         <KitDHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={
-            fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0
+            fetchMeasureKit.loaded && fetchMeasureKit.data.items.length !== 0
           }
-          mainTitle={"subjects"}
-          btnTitle={"newSubject"}
-          description={"subjectsKitDesignerDescription"}
+          mainTitle={"kitDesignerTab.measures"}
+          btnTitle={"kitDesignerTab.newMeasure"}
+          description={"kitDesignerTab.measuresKitDesignerDescription"}
         />
-        {fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0 ? (
+        {fetchMeasureKit.loaded && fetchMeasureKit.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
             <Trans i18nKey="changeOrderHelper" />
           </Typography>
@@ -203,33 +196,33 @@ const SubjectsContent = () => {
         <Divider sx={{ my: 1 }} />
 
         <QueryBatchData
-          queryBatchData={[fetchSubjectKit]}
+          queryBatchData={[fetchMeasureKit]}
           renderLoading={() => <LoadingSkeletonKitCard />}
-          render={([subjectData]) => {
+          render={([measureData]) => {
             return (
               <>
-                {subjectData?.items?.length > 0 ? (
+                {measureData?.items?.length > 0 ? (
                   <Box maxHeight={500} overflow="auto">
                     <ListOfItems
-                      items={subjectData?.items}
+                      items={measureData?.items}
                       onEdit={handleEdit}
                       onReorder={handleReorder}
-                      name={"subject"}
+                      name={"measure"}
                     />
                   </Box>
                 ) : (
-                  !showNewSubjectForm && (
+                  !showNewMeasureForm && (
                     <EmptyState
-                      btnTitle={"newSubject"}
-                      title={"subjectsListEmptyState"}
-                      SubTitle={"subjectEmptyStateDetailed"}
+                      btnTitle={"newMeasure"}
+                      title={"measuresListEmptyState"}
+                      SubTitle={"measureEmptyStateDetailed"}
                       onAddNewRow={handleAddNewRow}
                     />
                   )
                 )}
-                {showNewSubjectForm && (
-                  <SubjectForm
-                    newSubject={newSubject}
+                {showNewMeasureForm && (
+                  <MeasureForm
+                    newMeasure={newMeasure}
                     handleInputChange={handleInputChange}
                     handleSave={handleSave}
                     handleCancel={handleCancel}
@@ -244,4 +237,4 @@ const SubjectsContent = () => {
   );
 };
 
-export default SubjectsContent;
+export default MeasuresContent;

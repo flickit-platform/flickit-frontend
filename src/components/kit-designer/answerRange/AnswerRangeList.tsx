@@ -33,9 +33,8 @@ import languageDetector from "@utils/languageDetector";
 interface ListOfItemsProps {
   items: any;
   onEdit: (id: any) => void;
-  onDelete: (id: any) => void;
+  onDelete?: (id: any) => void;
   onReorder: any;
-  deleteBtn: boolean;
   name: string;
   fetchQuery?: any;
   setChangeData: any;
@@ -57,7 +56,6 @@ const ListOfItems = ({
   fetchQuery,
   onEdit,
   onDelete,
-  deleteBtn,
   setChangeData,
 }: ListOfItemsProps) => {
   const postOptionsKit = useQuery({
@@ -370,7 +368,7 @@ const ListOfItems = ({
                         >
                           <EditRoundedIcon fontSize="small" />
                         </IconButton>
-                        {deleteBtn && (
+                        {onDelete && (
                           <IconButton
                             size="small"
                             onClick={() => onDelete(item.id)}
