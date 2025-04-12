@@ -10,7 +10,7 @@ import {
   Bar,
   TooltipProps,
 } from "recharts";
-import { theme } from "@config/theme";
+import {farsiFontFamily, theme} from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 
 interface CompareBarProps {
@@ -89,6 +89,7 @@ const CompareBarChart: React.FC<CompareBarProps> = ({
           left: 20,
           bottom: 160,
         }}
+        style={{fontFamily : farsiFontFamily}}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis

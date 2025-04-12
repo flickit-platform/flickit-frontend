@@ -11,7 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { IQuestionInfo } from "@/types";
+import { IQuestionInfo } from "@/types/index";
 import { useQuery } from "@/utils/useQuery";
 import {
   CEDialog,
@@ -27,6 +27,8 @@ import OptionForm from "./OptionForm";
 import OptionList from "./OptionsList";
 import AttributeImpactList from "./ImpactList";
 import ImpactForm, { dropdownStyle } from "./ImpactForm";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface QuestionDialogProps {
   open: boolean;
@@ -45,17 +47,17 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 }) => {
   const fetchAttributeKit = useQuery({
     service: (args, config) =>
-      service.fetchAttributeKit(args ?? { kitVersionId }, config),
+      service.kitVersions.attributes.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const fetchMaturityLevels = useQuery({
     service: (args, config) =>
-      service.getMaturityLevels(args ?? { kitVersionId }, config),
+      service.kitVersions.maturityLevel.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
   const fetchImpacts = useQuery({
     service: (args, config) =>
-      service.loadQuestionImpactsList(
+      service.kitVersions.questions.getImpacts(
         args ?? { kitVersionId, questionId: question.id },
         config,
       ),
@@ -63,7 +65,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   });
   const fetchOptions = useQuery({
     service: (args, config) =>
-      service.loadAnswerOptionsList(
+      service.kitVersions.questions.getOptions(
         args ?? { kitVersionId, questionId: question.id },
         config,
       ),
@@ -71,7 +73,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   });
 
   const postQuestionImpactsKit = useQuery({
-    service: (args, config) => service.postQuestionImpactsKit(args, config),
+    service: (args, config) => service.kitVersions.questionImpacts.create(args, config),
     runOnMount: false,
   });
 
@@ -125,7 +127,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         index: question.index,
         answerRangeId: selectedAnswerRange,
       };
-      await service.updateQuestionsKit({
+      await service.kitVersions.questions.update({
         kitVersionId,
         questionId: question?.id,
         data: requestData,
@@ -152,7 +154,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewOption((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -219,11 +221,11 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
   };
 
   const deleteQuestionImpactsKit = useQuery({
-    service: (args, config) => service.deleteQuestionImpactsKit(args, config),
+    service: (args, config) => service.kitVersions.questionImpacts.remove(args, config),
     runOnMount: false,
   });
   const updateQuestionImpactsKit = useQuery({
-    service: (args, config) => service.updateQuestionImpactsKit(args, config),
+    service: (args, config) => service.kitVersions.questionImpacts.update(args, config),
     runOnMount: false,
   });
   const handleDeleteImpact = async (item: any) => {
@@ -255,13 +257,13 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
 
   const fetchAnswerRanges = useQuery({
     service: (args, config) =>
-      service.loadAnswerRangesList(args ?? { kitVersionId }, config),
+      service.kitVersions.answerRanges.getAll(args ?? { kitVersionId }, config),
     runOnMount: false,
   });
 
   const postAnswerOptionsKit = useQuery({
     service: (args, config) =>
-      service.postAnswerOptionsKit(args ?? { kitVersionId, data: {} }, config),
+      service.kitVersions.answerOptions.createOption(args ?? { kitVersionId, data: {} }, config),
     runOnMount: false,
   });
 
@@ -284,7 +286,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
     };
     try {
       await service
-        .updateQuestionsKit({
+        .kitVersions.questions.update({
           ...question,
           kitVersionId,
           questionId: question?.id,
@@ -293,6 +295,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
         .then(() => {
           setSelectedAnswerRange(event.target.value);
           fetchOptions.query();
+          setDisableAddOption(true);
         });
     } catch (err) {
       const error = err as ICustomError;
@@ -350,6 +353,9 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               placeholder={t("questionPlaceholder")?.toString()}
               required
               multiline
+              inputProps={{
+                style: {fontFamily: languageDetector(question?.title) ? farsiFontFamily : primaryFontFamily }
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -359,6 +365,9 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               label="Hint"
               placeholder={t("hintPlaceholder")?.toString()}
               multiline
+              inputProps={{
+                style: {fontFamily: languageDetector(question?.hint) ? farsiFontFamily : primaryFontFamily }
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -385,7 +394,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                 <Select
                   value={selectedAnswerRange ?? ""}
                   onChange={handleAnswerRangeChange}
-                  sx={dropdownStyle}
+                  sx={{...dropdownStyle, fontFamily: farsiFontFamily }}
                   size="small"
                   displayEmpty
                   disabled={fetchAnswerRanges?.data?.items?.length === 0}
@@ -394,7 +403,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
                     <Trans i18nKey="chooseAnswerRange" />
                   </MenuItem>
                   {fetchAnswerRanges?.data?.items?.map((range: any) => (
-                    <MenuItem key={range.id} value={range.id}>
+                    <MenuItem key={range.id} value={range.id} sx={{fontFamily: languageDetector(range.title) ? farsiFontFamily : primaryFontFamily}}>
                       {range.title}
                     </MenuItem>
                   ))}

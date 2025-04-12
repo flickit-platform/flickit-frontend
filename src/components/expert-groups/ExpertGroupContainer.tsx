@@ -79,25 +79,25 @@ const ExpertGroupContainer = () => {
   const pageCount = size === 0 ? 1 : Math.ceil(total / size);
   const queryData = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
+      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
 
   const expertGroupMembersQueryData = useQuery({
     service: (args, config) =>
-      service.fetchExpertGroupMembers(
+      service.expertGroups.member.list(
         args ?? { id: expertGroupId, status: "ACTIVE" },
         config,
       ),
   });
   const expertGroupMembersInviteeQueryData = useQuery({
     service: (args, config) =>
-      service.fetchExpertGroupMembers(
+      service.expertGroups.member.list(
         args ?? { id: expertGroupId, status: "PENDING" },
         config,
       ),
   });
   const removeExpertGroupMembers = useQuery({
-    service: (args, config) => service.removeExpertGroupMembers(args, config),
+    service: (args, config) => service.expertGroups.member.remove(args, config),
     runOnMount: false,
   });
 
@@ -490,7 +490,7 @@ const useFetchAssessmentKit = () => {
 
   const assessmentKitQuery = useQuery({
     service: (args, config) =>
-      service.fetchExpertGroupAssessmentKits(args, config),
+      service.expertGroups.info.getAssessmentKits(args, config),
     runOnMount: false,
   });
   return {
@@ -534,7 +534,7 @@ const AvatarComponent = (props: any) => {
 
       try {
         const pictureData = { pictureFile: file };
-        const res = await service.updateExpertGroupPicture(
+        const res = await service.expertGroups.picture.update(
           { data: pictureData, id: expertGroupId },
           undefined,
         );
@@ -549,7 +549,7 @@ const AvatarComponent = (props: any) => {
 
   const handleDelete = useQuery({
     service: (args, config) =>
-      service.deleteExpertGroupImage(args ?? { expertGroupId }, config),
+      service.expertGroups.picture.remove(args ?? { expertGroupId }, config),
     runOnMount: false,
   });
 
@@ -684,7 +684,7 @@ const EditExpertGroupButton = (props: any) => {
   const { expertGroupId } = useParams();
   const queryData = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
+      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
     runOnMount: false,
   });
   const dialogProps = useDialog();
@@ -890,7 +890,7 @@ const MemberActions = (props: any) => {
   const { service } = useServiceContext();
   const { query: deleteExpertGroupMember, loading } = useQuery({
     service: (arg, config) =>
-      service.deleteExpertGroupMember(
+      service.expertGroups.info.removeMember(
         { id: expertGroupId, userId: userId },
         config,
       ),
@@ -899,7 +899,7 @@ const MemberActions = (props: any) => {
   });
 
   const addMemberQueryData = useQuery({
-    service: (args, config) => service.addMemberToExpertGroup(args, config),
+    service: (args, config) => service.expertGroups.member.invite(args, config),
     runOnMount: false,
   });
 
@@ -993,7 +993,7 @@ const AddMember = (props: any) => {
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const addMemberQueryData = useQuery({
-    service: (args, config) => service.addMemberToExpertGroup(args, config),
+    service: (args, config) => service.expertGroups.member.invite(args, config),
     runOnMount: false,
   });
 
@@ -1386,6 +1386,11 @@ const ExpertGroupMembersDetail = (props: any) => {
                                       sx: {
                                         textTransform: "none",
                                         justifyContent: "center",
+                                        fontFamily: languageDetector(
+                                          displayName,
+                                        )
+                                          ? farsiFontFamily
+                                          : primaryFontFamily,
                                       },
                                     }}
                                     subProps={{
@@ -1416,6 +1421,11 @@ const ExpertGroupMembersDetail = (props: any) => {
                                   <Typography
                                     variant="body2"
                                     textAlign={"center"}
+                                    sx={{
+                                      fontFamily: languageDetector(bio)
+                                        ? farsiFontFamily
+                                        : primaryFontFamily,
+                                    }}
                                   >
                                     {bio}
                                   </Typography>

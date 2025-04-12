@@ -10,9 +10,9 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
-import { KitDesignListItems, TId } from "@types";
+import { KitDesignListItems, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
 import Accordion from "@mui/material/Accordion";
@@ -65,11 +65,11 @@ const ListOfItems = ({
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
-    service: (args, config) => service.fetchQuestionListKit(args, config),
+    service: (args, config) => service.kitVersions.questionnaires.getQuestions(args, config),
     runOnMount: false,
   });
   const postQuestionsKit = useQuery({
-    service: (args, config) => service.postQuestionsKit(args, config),
+    service: (args, config) => service.kitVersions.questions.create(args, config),
     runOnMount: false,
   });
 
@@ -172,7 +172,7 @@ const ListOfItems = ({
         index: idx + 1,
       }));
 
-      await service.changeQuestionsOrder(
+      await service.kitVersions.questions.reorder(
         { kitVersionId },
         { questionOrders: orders, questionnaireId: questionnaireId },
       );
@@ -215,7 +215,7 @@ const ListOfItems = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "value" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
     setNewQuestion((prev) => ({
       ...prev,
       [name]: parsedValue,
@@ -399,6 +399,7 @@ const ListOfItems = ({
                                   onChange={(e) => handelChange(e)}
                                   inputProps={{
                                     "data-testid": "items-title",
+                                    style: { fontFamily: languageDetector(tempValues.title) ? farsiFontFamily : primaryFontFamily }
                                   }}
                                   variant="outlined"
                                   fullWidth
@@ -423,7 +424,7 @@ const ListOfItems = ({
                               ) : (
                                 <Typography
                                   variant="h6"
-                                  sx={{ flexGrow: 1, width: "80%" }}
+                                  sx={{ flexGrow: 1, width: "80%", fontFamily: languageDetector(item.title) ? farsiFontFamily : primaryFontFamily }}
                                 >
                                   {item.title}
                                 </Typography>
@@ -510,6 +511,7 @@ const ListOfItems = ({
                                   name="description"
                                   inputProps={{
                                     "data-testid": "items-description",
+                                    style: { fontFamily: languageDetector(tempValues.description) ? farsiFontFamily : primaryFontFamily }
                                   }}
                                   variant="outlined"
                                   fullWidth
@@ -539,11 +541,7 @@ const ListOfItems = ({
                                 <Typography
                                   sx={{
                                     wordBreak: "break-word",
-                                    textAlign: languageDetector(
-                                      item.description,
-                                    )
-                                      ? "right"
-                                      : "left",
+                                    fontFamily: languageDetector(item.description) ? farsiFontFamily : primaryFontFamily,
                                     width: "80%",
                                   }}
                                   variant="body2"

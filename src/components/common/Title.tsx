@@ -145,6 +145,7 @@ const Title = (props: ITitle) => {
           sx={{
             ...styles.centerV,
             display: { xs: "block", sm: "flex" },
+
             ...((titleProps?.sx ?? {}) as any),
             ...(rest.sx ?? {}),
           }}

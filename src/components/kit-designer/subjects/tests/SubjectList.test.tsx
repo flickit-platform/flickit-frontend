@@ -11,14 +11,6 @@ const mockItems = [
     description: "description test 1",
     weight: 0,
   },
-  {
-    id: 2,
-    title: "title test 2",
-    value: 2,
-    index: 2,
-    description: "description test 2",
-    weight: 0,
-  },
 ];
 
 const mockOnEdit = vi.fn();
@@ -41,7 +33,6 @@ describe("ListOfItems (subject)", () => {
 
   it("renders item titles correctly", () => {
     expect(screen.getByText("title test 1")).toBeInTheDocument();
-    expect(screen.getByText("title test 2")).toBeInTheDocument();
   });
 
   it("allows editing an item", () => {

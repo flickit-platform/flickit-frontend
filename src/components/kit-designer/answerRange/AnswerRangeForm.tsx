@@ -5,6 +5,8 @@ import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface QuestionnairesFormProps {
   newItem: {
@@ -43,6 +45,7 @@ const AnswerRangeForm = ({
         onChange={handleInputChange}
         fullWidth
         inputProps={{
+          style: { fontFamily: languageDetector(newItem.title) ? farsiFontFamily :  primaryFontFamily },
           "data-testid": "AnswerRange-title",
         }}
         margin="normal"

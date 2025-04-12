@@ -11,8 +11,10 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@/config/styles";
-import { IMaturityLevel } from "@/types";
+import { IMaturityLevel } from "@/types/index";
 import { Trans } from "react-i18next";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
@@ -141,7 +143,9 @@ const MaturityLevelList = ({
                             label={<Trans i18nKey="title" />}
                           />
                         ) : (
-                          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                          <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: languageDetector(item.title as string)
+                                ? farsiFontFamily
+                                : primaryFontFamily  }}>
                             {item.title}
                           </Typography>
                         )}
@@ -227,7 +231,9 @@ const MaturityLevelList = ({
                           }}
                         />
                       ) : (
-                        <Typography variant="body2" mt={1}>
+                        <Typography variant="body2" mt={1} sx={{fontFamily: languageDetector(item.description as string)
+                              ? farsiFontFamily
+                              : primaryFontFamily }}>
                           {item.description}
                         </Typography>
                       )}

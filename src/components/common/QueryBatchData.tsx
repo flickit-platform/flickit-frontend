@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
-import { ECustomErrorType, ErrorCodes } from "@types";
+import { ECustomErrorType, ErrorCodes } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import ErrorEmptyData from "./errors/ErrorEmptyData";
 import ErrorDataLoading from "./errors/ErrorDataLoading";

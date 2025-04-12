@@ -391,10 +391,17 @@ export const theme = createTheme({
           padding: 0;
         }
         .nc-header {
-          font-family: 'OpenSans';
+          font-family: ${is_farsi ? farsiFontFamily : primaryFontFamily};
+          direction:${is_farsi ? "rtl" : "ltr"};
           background: #E8EBEE;
           border-radius: 7px 7px 0px 0px;
           box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);
+        }
+        .nc-header-title {
+          font-family: ${is_farsi ? farsiFontFamily : primaryFontFamily};
+        }
+        .nc-header-mark-as-read {
+          font-family: ${is_farsi ? farsiFontFamily : primaryFontFamily};
         }
         .mantine-1avyp1d {
           stroke: rgba(0, 54, 92, 1);
@@ -617,6 +624,10 @@ export const theme = createTheme({
         icon: {
           right: !is_farsi ? "7px" : "unset",
           left: is_farsi ? "7px" : "unset",
+        },
+        select: {
+          paddingLeft: is_farsi ? "32px" : "16px",
+          paddingRight: !is_farsi ? "32px !important" : "16px !important",
         },
       },
     },

@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-const usePopover = () => {
+export default function usePopover() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handlePopoverOpen = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    },
+    [],
+  );
 
-  const handlePopoverClose = () => {
+  const handlePopoverClose = useCallback(() => {
     setAnchorEl(null);
+  }, []);
+
+  return {
+    anchorEl,
+    open: Boolean(anchorEl),
+    handlePopoverOpen,
+    handlePopoverClose,
   };
-
-  const open = Boolean(anchorEl);
-
-  return { anchorEl, handlePopoverOpen, handlePopoverClose, open };
-};
-
-export default usePopover;
+}

@@ -36,7 +36,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
 
   const AssessmentInfo = useQuery({
     service: (args, config) =>
-      service.AssessmentsLoad(args ?? { assessmentId }, config),
+      service.assessments.info.getById(args ?? { assessmentId }, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -73,7 +73,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
 
   const progress =
     ((assessmentTotalProgress?.data?.answersCount ?? 0) /
-      ((assessmentTotalProgress?.data?.questionsCount ?? 0) + 1)) *
+      (assessmentTotalProgress?.data?.questionsCount || 1)) *
     100;
   return (
     <Box

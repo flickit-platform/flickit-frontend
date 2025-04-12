@@ -8,7 +8,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Legend,
   ReferenceLine,
   ResponsiveContainer,

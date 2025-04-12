@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import { TDialogContextType } from "@types";
+import { TDialogContextType } from "@/types/index";
 import { t } from "i18next";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {

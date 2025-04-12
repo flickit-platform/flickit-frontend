@@ -10,9 +10,9 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
-import { KitDesignListItems } from "@types";
+import { KitDesignListItems } from "@/types/index";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 
 interface ListOfItemsProps {
@@ -164,6 +164,7 @@ const ListOfItems = ({
                             onChange={(e) => handelChange(e)}
                             inputProps={{
                               "data-testid": "items-title",
+                              style: { fontFamily: languageDetector(tempValues.title) ? farsiFontFamily : primaryFontFamily }
                             }}
                             variant="outlined"
                             fullWidth
@@ -188,7 +189,11 @@ const ListOfItems = ({
                         ) : (
                           <Typography
                             variant="h6"
-                            sx={{ flexGrow: 1, width: "80%" }}
+                            sx={{
+                              flexGrow: 1,
+                              width: "80%",
+                              fontFamily: languageDetector(item.title) ? farsiFontFamily : primaryFontFamily,
+                            }}
                           >
                             {item.title}
                           </Typography>
@@ -264,6 +269,7 @@ const ListOfItems = ({
                             name="description"
                             inputProps={{
                               "data-testid": "items-description",
+                              style: { fontFamily: languageDetector(tempValues.description) ? farsiFontFamily : primaryFontFamily }
                             }}
                             variant="outlined"
                             fullWidth
@@ -293,9 +299,9 @@ const ListOfItems = ({
                           <Typography
                             sx={{
                               wordBreak: "break-word",
-                              textAlign: languageDetector(item.description)
-                                ? "right"
-                                : "left",
+                              fontFamily: languageDetector(item.description)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
                               width: "80%",
                             }}
                             variant="body2"

@@ -6,6 +6,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { styles } from "@/config/styles";
 import { t } from "i18next";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import languageDetector from "@utils/languageDetector";
 
 interface QuestionnairesFormProps {
   newItem: {
@@ -45,7 +47,7 @@ const renderTextField = (
       "& .MuiInputBase-root": {
         fontSize: 14,
         overflow: multiline ? "auto" : "unset",
-        height: multiline ? "unset" : 32,
+        height: multiline ? "unset" : 40,
       },
       "& .MuiFormLabel-root": {
         fontSize: 14,
@@ -111,7 +113,7 @@ const QuestionnairesForm = ({
         handleInputChange,
         true,
         false,
-        { "data-testid": "questionnaires-title" },
+        { "data-testid": "questionnaires-title",style: {fontFamily: languageDetector(newItem.title) ? farsiFontFamily : primaryFontFamily } },
       )}
 
       {renderTextField(
@@ -121,7 +123,7 @@ const QuestionnairesForm = ({
         handleInputChange,
         true,
         true,
-        { "data-testid": "questionnaires-description" },
+        { "data-testid": "questionnaires-description", style: {fontFamily: languageDetector(newItem.title) ? farsiFontFamily : primaryFontFamily } },
       )}
     </Box>
 

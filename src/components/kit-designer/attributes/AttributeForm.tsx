@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface AttributeFormProps {
   newAttribute: any;
@@ -49,6 +51,11 @@ const AttributeForm = ({
         value={newAttribute.title}
         onChange={handleInputChange}
         inputProps={{
+            style : {
+                fontFamily: languageDetector(newAttribute.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+            },
             "data-testid": "attribute-from-title",
         }}
         fullWidth
@@ -74,6 +81,9 @@ const AttributeForm = ({
         name="description"
         value={newAttribute.description}
         inputProps={{
+            style: { fontFamily: languageDetector(newAttribute.description)
+                    ? farsiFontFamily
+                    : primaryFontFamily },
             "data-testid": "attribute-from-description",
         }}
         onChange={handleInputChange}

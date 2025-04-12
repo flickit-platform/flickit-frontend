@@ -33,8 +33,8 @@ import firstCharDetector from "@/utils/firstCharDetector";
 import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
-import { AssessmentKitStatsType, AssessmentKitInfoType } from "@types";
-import { theme } from "@/config/theme";
+import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
@@ -45,6 +45,7 @@ interface IAssessmentKitSectionAuthorInfo {
   setAssessmentKitTitle: any;
   setHasActiveVersion: any;
 }
+
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
@@ -57,12 +58,12 @@ const AssessmentKitSectionGeneralInfo = (
   const formMethods = useForm({ shouldUnregister: true });
   const fetchAssessmentKitInfoQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitInfo(args ?? { assessmentKitId }, config),
+      service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
   const fetchAssessmentKitStatsQuery = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKitStats(args ?? { assessmentKitId }, config),
+      service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
 
@@ -83,7 +84,7 @@ const AssessmentKitSectionGeneralInfo = (
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     event.preventDefault();
     try {
-      await service.updateAssessmentKitStats(
+      await service.assessmentKit.info.updateStats(
         {
           assessmentKitId: assessmentKitId ?? "",
           data: { tags: data?.tags?.map((t: any) => t.id) },
@@ -106,7 +107,7 @@ const AssessmentKitSectionGeneralInfo = (
     );
 
     try {
-      await service.updateAssessmentKitStats(
+      await service.assessmentKit.info.updateStats(
         {
           assessmentKitId: assessmentKitId ?? "",
           data: { lang: adjustValue?.code },
@@ -242,13 +243,13 @@ const AssessmentKitSectionGeneralInfo = (
                           width: "100%",
                           display: "flex",
                           justifyContent: "space-between",
-                          alignItems: "flex-start",
+                          alignItems: "center",
                         }}
                       >
                         <AutocompleteAsyncField
                           {...useConnectAutocompleteField({
                             service: (args, config) =>
-                              service.fetchAssessmentKitTags(args, config),
+                              service.assessmentKit.info.getTags(args, config),
                           })}
                           name="tags"
                           multiple={true}
@@ -535,7 +536,7 @@ const OnHoverInput = (props: any) => {
   const { service } = useServiceContext();
   const updateAssessmentKitQuery = useQuery({
     service: (args, config) =>
-      service.updateAssessmentKitStats(
+      service.assessmentKit.info.updateStats(
         args ?? {
           assessmentKitId: assessmentKitId,
           data: { [type]: inputData },
@@ -671,7 +672,15 @@ const OnHoverInput = (props: any) => {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            <Typography variant="body2" fontWeight="700">
+            <Typography
+              sx={{
+                fontFamily: languageDetector(data)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+              variant="body2"
+              fontWeight="700"
+            >
               {data?.replace(/<\/?p>/g, "")}
             </Typography>
             {isHovering && (
@@ -713,7 +722,7 @@ const OnHoverStatus = (props: any) => {
   };
   const updateAssessmentKitQuery = useQuery({
     service: (args, config) =>
-      service.updateAssessmentKitStats(
+      service.assessmentKit.info.updateStats(
         args ?? {
           assessmentKitId: assessmentKitId,
           data: { published: !data },
@@ -818,7 +827,7 @@ const OnHoverVisibilityStatus = (props: any) => {
   };
   const updateAssessmentKitQuery = useQuery({
     service: (args, config) =>
-      service.updateAssessmentKitStats(
+      service.assessmentKit.info.updateStats(
         args ?? {
           assessmentKitId: assessmentKitId,
           data: { isPrivate: !data },
@@ -956,7 +965,7 @@ const OnHoverRichEditor = (props: any) => {
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     event.preventDefault();
     try {
-      await service.updateAssessmentKitStats(
+      await service.assessmentKit.info.updateStats(
         { assessmentKitId: assessmentKitId ?? "", data: { about: data.about } },
         { signal: abortController.current.signal },
       );
@@ -1059,8 +1068,10 @@ const OnHoverRichEditor = (props: any) => {
               pl: languageDetector(data) ? 5 : 1,
               border: "1px solid #fff",
               "&:hover": {
-                border: editable ? "1px solid #1976d299" : "unset",
-                borderColor: editable ? theme.palette.primary.main : "unset",
+                border: editable ? "1px solid #1976d299" : "1px solid #fff",
+                borderColor: editable
+                  ? theme.palette.primary.main
+                  : "1px solid #fff",
               },
               position: "relative",
             }}
@@ -1071,6 +1082,11 @@ const OnHoverRichEditor = (props: any) => {
             <Typography
               variant="body2"
               fontWeight="700"
+              sx={{
+                fontFamily: languageDetector(data?.replace(/<\/?p>/g, ""))
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
               dangerouslySetInnerHTML={{ __html: data }}
             />
             {isHovering && (
@@ -1104,10 +1120,10 @@ const OnHoverRichEditor = (props: any) => {
 export default AssessmentKitSectionGeneralInfo;
 
 const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 `;

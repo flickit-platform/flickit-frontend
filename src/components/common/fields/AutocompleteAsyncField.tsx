@@ -15,7 +15,7 @@ import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
 import forLoopComponent from "@utils/forLoopComponent";
 import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
-import { TQueryProps } from "@types";
+import { TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
@@ -41,9 +41,7 @@ interface IAutocompleteAsyncFieldProps
   setError?: any;
 }
 
-const AutocompleteAsyncField = (
-  props: IAutocompleteAsyncFieldProps & Omit<TQueryProps, "data">,
-) => {
+const AutocompleteAsyncField = (props: any) => {
   const {
     name,
     rules = {},
@@ -357,6 +355,7 @@ const AutocompleteBaseField = (
           }
           sx={{
             "& .MuiOutlinedInput-root": {
+              fontFamily: farsiFontFamily,
               "& .MuiAutocomplete-endAdornment": {
                 left: theme.direction == "rtl" ? "9px" : "unset",
                 right: theme.direction == "ltr" ? "9px" : "unset",
@@ -392,7 +391,13 @@ const AutocompleteBaseField = (
             </Box>
             {!!option?.[filterFields[1]] && (
               <Box
-                sx={{ ...theme.typography.semiBoldSmall, color: "#3D4D5C80" }}
+                sx={{
+                  ...theme.typography.semiBoldSmall,
+                  color: "#3D4D5C80",
+                  fontFamily: languageDetector(option?.[filterFields[1]])
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                }}
               >
                 ({option?.[filterFields[1]]})
               </Box>

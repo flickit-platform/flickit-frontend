@@ -10,6 +10,8 @@ import TextField from "@mui/material/TextField";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useServiceContext } from "@/providers/ServiceProvider";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface CompetencesTableProps {
   data: Array<{ id: number; title: string; competences: any[] }>;
@@ -70,13 +72,13 @@ const CompetencesTable = ({
       };
 
       if (isOriginalValueEmpty && !isNewValueEmpty) {
-        await service.addCompetencyToMaturityLevel(
+        await service.kitVersions.levelsCompetences.create(
           { kitVersionId: kitVersionId },
           data,
           undefined,
         );
       } else if (!isOriginalValueEmpty && isNewValueEmpty && competenceId) {
-        await service.deleteCompetencyOfMaturityLevel({
+        await service.kitVersions.levelsCompetences.remove({
           kitVersionId: kitVersionId,
           levelCompetenceId: competenceId,
         });
@@ -86,7 +88,7 @@ const CompetencesTable = ({
         newValue !== originalValue &&
         competenceId
       ) {
-        await service.updateCompetencyOfMaturityLevel(
+        await service.kitVersions.levelsCompetences.update(
           { kitVersionId: kitVersionId, levelCompetenceId: competenceId },
           data,
           undefined,
@@ -114,7 +116,9 @@ const CompetencesTable = ({
             <TableCell></TableCell>
             {data.map((row) => (
               <TableCell sx={{ textAlign: "center" }} key={row.id}>
-                <Typography variant="semiBoldMedium">{row.title}</Typography>
+                <Typography  sx={{fontFamily: languageDetector(row.title as string)
+                      ? farsiFontFamily
+                      : primaryFontFamily }} variant="semiBoldMedium">{row.title}</Typography>
               </TableCell>
             ))}
           </TableRow>
@@ -128,7 +132,9 @@ const CompetencesTable = ({
               }}
             >
               <TableCell>
-                <Typography variant="semiBoldMedium">{row.title}</Typography>
+                <Typography variant="semiBoldMedium" sx={{fontFamily: languageDetector(row.title as string)
+                      ? farsiFontFamily
+                      : primaryFontFamily }} >{row.title}</Typography>
               </TableCell>
               {data.map((column, colIndex) => {
                 const competence = row.competences.find(

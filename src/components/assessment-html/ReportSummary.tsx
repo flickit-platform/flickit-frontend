@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { getMaturityLevelColors, styles } from "@/config/styles";
-import { IGraphicalReport, ISubject } from "@/types";
+import { IGraphicalReport, ISubject } from "@/types/index";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import uniqueId from "@/utils/uniqueId";
@@ -388,11 +388,7 @@ const ReportCard = ({
               component="span"
               sx={{
                 ...theme.typography.bodyMedium,
-                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                fontFamily:
-                  lang.code.toLowerCase() === "fa"
-                    ? farsiFontFamily
-                    : primaryFontFamily,
+                ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
               }}
             >
               {level.description}

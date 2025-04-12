@@ -6,6 +6,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import languageDetector from "@utils/languageDetector";
 
 interface MaturityLevelFormProps {
   newMaturityLevel: {
@@ -76,12 +78,15 @@ const MaturityLevelForm = ({
         margin="normal"
         inputProps={{
           "data-testid": "maturity-level-title",
+          style: { fontFamily: languageDetector(newMaturityLevel.title as string)
+                ? farsiFontFamily
+                : primaryFontFamily }
         }}
         sx={{
           mt: 0,
           fontSize: 14,
           "& .MuiInputBase-root": {
-            height: 32,
+            height: 40,
             fontSize: 14,
           },
           "& .MuiFormLabel-root": {
@@ -94,6 +99,9 @@ const MaturityLevelForm = ({
         label={<Trans i18nKey="description" />}
         inputProps={{
           "data-testid": "maturity-level-description",
+          style: { fontFamily: languageDetector(newMaturityLevel.description as string)
+                ? farsiFontFamily
+                : primaryFontFamily }
         }}
         name="description"
         required

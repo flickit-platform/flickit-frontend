@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { theme } from "@config/theme";
 import GeneralLayout from "./layout/GeneralLayout";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
@@ -10,7 +10,7 @@ import BoxReportLayout from "./layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@/components/common/charts/BarChart";
 import { styles } from "@styles";
 import { t } from "i18next";
-import { IGraphicalReport } from "@/types";
+import { IGraphicalReport } from "@/types/index";
 import uniqueId from "@/utils/uniqueId";
 
 const SubjectReport = ({
@@ -34,11 +34,7 @@ const SubjectReport = ({
               container
               key={item.index}
               sx={{
-                direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                fontFamily:
-                  lang.code.toLowerCase() === "fa"
-                    ? farsiFontFamily
-                    : primaryFontFamily,
+                ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
                 mb: "40px",
               }}
             >
@@ -48,11 +44,7 @@ const SubjectReport = ({
                     color: theme.palette.primary.main,
                     ...theme.typography.headlineSmall,
                     fontWeight: "bold",
-                    direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                    fontFamily:
-                      lang.code.toLowerCase() === "fa"
-                        ? farsiFontFamily
-                        : primaryFontFamily,
+                    ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
                   }}
                 >
                   {index + 1}
@@ -63,11 +55,7 @@ const SubjectReport = ({
                   component="div"
                   sx={{
                     ...theme.typography.bodyMedium,
-                    direction: lang.code.toLowerCase() === "fa" ? "rtl" : "ltr",
-                    fontFamily:
-                      lang.code.toLowerCase() === "fa"
-                        ? farsiFontFamily
-                        : primaryFontFamily,
+                    ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
                     mt: 2,
                   }}
                   textAlign="justify"

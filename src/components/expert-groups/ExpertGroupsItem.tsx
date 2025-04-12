@@ -21,6 +21,8 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -41,7 +43,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
   } = data ?? {};
   const { service } = useServiceContext();
   const seenExpertGroupQuery = useQuery({
-    service: (args, config) => service.seenExpertGroup({ id }, config),
+    service: (args, config) => service.expertGroups.info.markAsSeen({ id }, config),
     runOnMount: false,
     toastError: false,
   });
@@ -73,9 +75,9 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             <Avatar
               component={Link}
               to={`${id}`}
-              sx={(() => {
+              sx={((): any => {
                 return {
-                  bgcolor: (t) => t.palette.grey[800],
+                  bgcolor: (t: any) => t.palette.grey[800],
                   textDecoration: "none",
                   width: 50,
                   height: 50,
@@ -92,7 +94,11 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             )
           }
           title={
-            <Box component={"b"} color="GrayText" fontSize=".95rem">
+            <Box component={"b"} color="GrayText" fontSize=".95rem" sx={{
+              fontFamily: languageDetector(title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+            }}>
               {title}
             </Box>
           }
@@ -115,6 +121,9 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             display: "-webkit-box",
             webkitBoxOrient: "vertical",
             webkitLineClamp: "2",
+            fontFamily: languageDetector(bio)
+                ? farsiFontFamily
+                : primaryFontFamily,
           }}
         >
           {bio}
@@ -159,11 +168,11 @@ const Actions = (props: any) => {
   const { id } = expertGroup;
   const { query: fetchExpertGroup, loading } = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id }, config),
+      service.expertGroups.info.getById(args ?? { id }, config),
     runOnMount: false,
   });
   const deleteExpertGroupQuery = useQuery({
-    service: (args, config) => service.deleteExpertGroup({ id }, config),
+    service: (args, config) => service.expertGroups.info.remove({ id }, config),
     runOnMount: false,
     toastError: false,
   });

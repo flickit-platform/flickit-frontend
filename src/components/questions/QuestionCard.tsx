@@ -22,7 +22,7 @@ import {
   IQuestionInfo,
   TAnswer,
   TQuestionsInfo,
-} from "@types";
+} from "@/types/index";
 import { Trans } from "react-i18next";
 import TabPanel from "@mui/lab/TabPanel";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -127,7 +127,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 
   const ConfidenceListQueryData = useQuery({
     service: (args, config) =>
-      service.fetchConfidenceLevelsList(args ?? {}, config),
+      service.questions.info.getConfidenceLevels(args ?? {}, config),
     toastError: false,
   });
 
@@ -412,7 +412,7 @@ export const QuestionTabsTemplate = (props: any) => {
   // Queries
   const queryData = useQuery({
     service: (args, config) =>
-      service.fetchAnswersHistory(
+      service.assessments.answer.getHistory(
         args ?? {
           questionId: questionInfo.id,
           assessmentId,
@@ -426,7 +426,7 @@ export const QuestionTabsTemplate = (props: any) => {
   });
   const evidencesQueryData = useQuery({
     service: (args, config) =>
-      service.fetchEvidences(
+      service.questions.evidences.getAll(
         args ?? {
           questionId: questionInfo.id,
           assessmentId,
@@ -441,7 +441,7 @@ export const QuestionTabsTemplate = (props: any) => {
 
   const commentesQueryData = useQuery({
     service: (args, config) =>
-      service.fetchComments(
+      service.questions.comments.getAll(
         args ?? {
           questionId: questionInfo.id,
           assessmentId,
@@ -752,7 +752,7 @@ const AnswerTemplate = (props: {
 
   const approveAnswer = useQuery({
     service: (args, config) =>
-      service.approveAnswer(
+      service.assessments.answer.approve(
         args ?? { assessmentId, data: { questionId: questionInfo.id } },
         config,
       ),
@@ -763,7 +763,7 @@ const AnswerTemplate = (props: {
     dispatch(questionActions.setIsSubmitting(true));
     try {
       if (permissions?.answerQuestion) {
-        await service.submitAnswer(
+        await service.assessments.answer.submit(
           {
             assessmentId,
             data: {
@@ -783,7 +783,7 @@ const AnswerTemplate = (props: {
 
       if (questionsInfo.permissions?.viewAnswerHistory) {
         await service
-          .fetchQuestionIssues(
+          .assessments.questionnaire.getQuestionIssues(
             {
               assessmentId,
               questionId: questionInfo?.id,
@@ -1298,7 +1298,7 @@ const AnswerHistoryItem = (props: any) => {
             height: 46,
           }}
         ></Avatar>
-        <Typography variant="titleMedium" color="#1B4D7E">
+        <Typography variant="titleMedium" color="#1B4D7E" sx={{fontFamily : languageDetector(item?.createdBy?.displayName) ? farsiFontFamily : primaryFontFamily }}>
           {item?.createdBy?.displayName}
         </Typography>
       </Grid>
@@ -1361,7 +1361,7 @@ const AnswerHistoryItem = (props: any) => {
             <Typography variant="titleSmall">
               <Trans i18nKey="selectedOption" />:
             </Typography>
-            <Typography variant="bodyMedium" maxWidth="400px">
+            <Typography variant="bodyMedium" maxWidth="400px" sx={{ fontFamily : languageDetector(item?.answer?.selectedOption?.title) ? farsiFontFamily : primaryFontFamily }}>
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
@@ -1431,12 +1431,12 @@ const Evidence = (props: any) => {
   const formMethods = useForm({ shouldUnregister: true });
 
   const addEvidence = useQuery({
-    service: (args, config) => service.addEvidence(args, config),
+    service: (args, config) => service.questions.evidences.save(args, config),
     runOnMount: false,
   });
 
   const fetchEvidenceAttachments = useQuery({
-    service: (args, config) => service.fetchEvidenceAttachments(args, config),
+    service: (args, config) => service.questions.evidences.getAttachments(args, config),
     runOnMount: false,
   });
 
@@ -1501,7 +1501,7 @@ const Evidence = (props: any) => {
         setValueCount("");
         if (permissions?.viewDashboard) {
           service
-            .fetchQuestionIssues(
+            .assessments.questionnaire.getQuestionIssues(
               {
                 assessmentId,
                 questionId: questionInfo?.id,
@@ -1528,12 +1528,12 @@ const Evidence = (props: any) => {
 
   const deleteEvidence = useQuery({
     service: (args, config) =>
-      service.deleteEvidence(args ?? { id: evidenceId }, config),
+      service.questions.evidences.remove(args ?? { id: evidenceId }, config),
     runOnMount: false,
   });
 
   const RemoveEvidenceAttachments = useQuery({
-    service: (args, config) => service.RemoveEvidenceAttachments(args, {}),
+    service: (args, config) => service.questions.evidences.removeAttachment(args, {}),
     runOnMount: false,
   });
 
@@ -1545,7 +1545,7 @@ const Evidence = (props: any) => {
       setEvidencesData(items);
       if (permissions?.viewDashboard) {
         service
-          .fetchQuestionIssues(
+          .assessments.questionnaire.getQuestionIssues(
             {
               assessmentId,
               questionId: questionInfo?.id,
@@ -1798,7 +1798,7 @@ const Evidence = (props: any) => {
                   onClick={() =>
                     permissions?.viewDashboard &&
                     service
-                      .fetchQuestionIssues(
+                      .assessments.questionnaire.getQuestionIssues(
                         {
                           assessmentId,
                           questionId: questionInfo?.id,
@@ -1956,12 +1956,12 @@ const EvidenceDetail = (props: any) => {
   const [expandedEvidenceBox, setExpandedEvidenceBox] =
     useState<boolean>(false);
   const addEvidence = useQuery({
-    service: (args, config) => service.addEvidence(args, config),
+    service: (args, config) => service.questions.evidences.save(args, config),
     runOnMount: false,
   });
 
   const resolveComment = useQuery({
-    service: (args, config) => service.resolveComment(args, config),
+    service: (args, config) => service.questions.comments.resolve(args, config),
     runOnMount: false,
   });
 
@@ -2047,7 +2047,7 @@ const EvidenceDetail = (props: any) => {
       setValueCount("");
       if (permissions?.viewDashboard) {
         service
-          .fetchQuestionIssues(
+          .assessments.questionnaire.getQuestionIssues(
             {
               assessmentId,
               questionId: questionInfo?.id,

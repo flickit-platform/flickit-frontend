@@ -13,6 +13,7 @@ import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { theme } from "@/config/theme";
+import languageDetector from "@utils/languageDetector";
 
 interface IUserCEFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -56,7 +57,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
       const tempData = { ...data };
       tempData.linkedin === "" && delete tempData.linkedin;
       tempData.bio === "" && delete tempData.bio;
-      await service.updateUserInfo(
+      await service.user.updateProfile(
         {
           id,
           data: tempData,
@@ -99,6 +100,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               name="displayName"
               required={true}
               label={<Trans i18nKey="displayName" />}
+              isFarsi={languageDetector(defaultValues?.displayName)}
             />
           </Grid>
           <Grid item xs={12} sm={8}>
@@ -107,6 +109,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               defaultValue={defaultValues.bio ?? ""}
               name="bio"
               label={<Trans i18nKey="bio" />}
+              isFarsi={languageDetector(defaultValues?.bio)}
             />
           </Grid>
           <Grid item xs={12} sm={4}>

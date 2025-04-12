@@ -13,6 +13,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";
+import languageDetector from "@utils/languageDetector";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface Attribute {
   id: string | number;
@@ -74,7 +76,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const parsedValue = name === "weight" ? (parseInt(value) ?? 0) + 1 : value;
+    const parsedValue = name === "weight" ? parseInt(value) || 1 : value;
     setNewAttribute((prev: any) => ({
       ...prev,
       [name]: parsedValue,
@@ -189,8 +191,16 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                   <TableCell>
                     <Typography variant="semiBoldLarge">{index + 1}</Typography>
                   </TableCell>
-                  <TableCell>{subject.title}</TableCell>
-                  <TableCell>{subject.description}</TableCell>
+                  <TableCell sx={{
+                    fontFamily: languageDetector(subject.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                  }} >{subject.title}</TableCell>
+                  <TableCell sx={{
+                    fontFamily: languageDetector(subject.description)
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                  }} >{subject.description}</TableCell>
                   <TableCell>{subject.weight}</TableCell>
                   <TableCell />
                 </TableRow>
@@ -264,6 +274,9 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             width: "100%",
                                             flexGrow: 1,
                                             mt: 0.5,
+                                            fontFamily: languageDetector(attribute.title)
+                                              ? farsiFontFamily
+                                              : primaryFontFamily
                                           }}
                                           data-testid="display-attribute-title"
                                         >
@@ -274,6 +287,9 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             width: "100%",
                                             flexGrow: 1,
                                             mt: 0.5,
+                                            fontFamily: languageDetector(attribute.description)
+                                                ? farsiFontFamily
+                                                : primaryFontFamily
                                           }}
                                           data-testid="display-attribute-description"
                                         >

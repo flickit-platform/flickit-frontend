@@ -1,4 +1,4 @@
-import {IFlatGauge} from "@types";
+import {IFlatGauge} from "@/types/index";
 
 
 const FlatGauge2 =(props:IFlatGauge)=>{

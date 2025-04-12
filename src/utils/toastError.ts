@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import { ECustomErrorType } from "@types";
+import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "./CustomError";
 import { t } from "i18next";
 

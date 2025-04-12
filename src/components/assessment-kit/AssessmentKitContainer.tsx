@@ -24,7 +24,7 @@ import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { ECustomErrorType } from "@/types";
+import { ECustomErrorType } from "@/types/index";
 import { ErrorNotFoundOrAccessDenied } from "../common/errors/ErrorNotFoundOrAccessDenied";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
@@ -34,7 +34,10 @@ const AssessmentKitContainer = () => {
   const { assessmentKitId } = useParams();
   const assessmentKitQueryData = useQuery({
     service: (args, config) =>
-      service.fetchAssessmentKit(args ?? { id: assessmentKitId }, config),
+      service.assessmentKit.info.getById(
+        args ?? { id: assessmentKitId },
+        config,
+      ),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -85,7 +88,7 @@ const AssessmentKit = (props: any) => {
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
-      service.fetchUserExpertGroup(args ?? { id: expertGroupId }, config),
+      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
   const colorPallet = getMaturityLevelColors(
     maturityLevels ? maturityLevels?.length : 5,
@@ -227,10 +230,7 @@ const AssessmentKit = (props: any) => {
               <Typography
                 variant="subtitle2"
                 sx={{
-                  fontFamily: languageDetector(summary)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                  direction: languageDetector(summary) ? "rtl" : "ltr",
+                  ...styles.rtlStyle(languageDetector(summary)),
                 }}
               >
                 {summary}
@@ -385,10 +385,7 @@ const AssessmentKit = (props: any) => {
                 <Box
                   mt={2}
                   sx={{
-                    fontFamily: languageDetector(summary)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                    direction: languageDetector(summary) ? "rtl" : "ltr",
+                    ...styles.rtlStyle(languageDetector(summary)),
                   }}
                 >
                   <RichEditor content={about} />
@@ -462,12 +459,9 @@ const AssessmentKit = (props: any) => {
                           <Box
                             sx={{
                               unicodeBidi: "plaintext",
-                              fontFamily: languageDetector(item.description)
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                              direction: languageDetector(item.description)
-                                ? "rtl"
-                                : "ltr",
+                              ...styles.rtlStyle(
+                                languageDetector(item.description ?? ""),
+                              ),
                             }}
                             component="span"
                             fontSize="1rem"
@@ -563,12 +557,9 @@ const AssessmentKit = (props: any) => {
                               fontWeight="bold"
                               sx={{
                                 unicodeBidi: "plaintext",
-                                fontFamily: languageDetector(att.title)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                                direction: languageDetector(att.title)
-                                  ? "rtl"
-                                  : "ltr",
+                                ...styles.rtlStyle(
+                                  languageDetector(att.title ?? ""),
+                                ),
                               }}
                             >
                               {att.title}
@@ -577,12 +568,9 @@ const AssessmentKit = (props: any) => {
                             <Box
                               sx={{
                                 unicodeBidi: "plaintext",
-                                fontFamily: languageDetector(att.description)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                                direction: languageDetector(att.description)
-                                  ? "rtl"
-                                  : "ltr",
+                                ...styles.rtlStyle(
+                                  languageDetector(att.description ?? ""),
+                                ),
                               }}
                               component="span"
                               fontSize="1rem"
@@ -670,7 +658,7 @@ const LikeAssessmentKit = ({ likes }: any) => {
   const { assessmentKitId } = useParams();
   const likeQueryData = useQuery({
     service: (args, config) =>
-      service.likeAssessmentKit(args ?? { id: assessmentKitId }, config),
+      service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
     runOnMount: false,
   });
 

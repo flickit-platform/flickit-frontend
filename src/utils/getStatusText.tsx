@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { Trans } from "react-i18next";
-import { TStatus } from "@types";
+import { TStatus } from "@/types/index";
 import hasStatus from "./hasStatus";
 
 const getStatusText = (status: TStatus, onlyText: boolean = false) => {

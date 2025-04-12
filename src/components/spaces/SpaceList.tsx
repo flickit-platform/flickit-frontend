@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
-import { ISpaceModel, ISpacesModel, TQueryFunction } from "@types";
+import { ISpaceModel, ISpacesModel, TQueryFunction } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
@@ -73,7 +73,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
   const isOwner = owner?.isCurrentUserOwner;
   const navigate = useNavigate();
   const { loading, abortController } = useQuery({
-    service: (args, config) => service.setCurrentSpace({ spaceId }, config),
+    service: (args, config) => service.space.setCurrent({ spaceId }, config),
     runOnMount: false,
     toastError: true,
   });
@@ -87,13 +87,13 @@ const SpaceCard = (props: ISpaceCardProps) => {
   } = item ?? {};
 
   const trackSeen = () => {
-    service.seenSpaceList({ spaceId }, {});
+    service.space.markAsSeen({ spaceId }, {});
   };
   const changeCurrentSpaceAndNavigateToAssessments = async (e: any) => {
     e.preventDefault();
     trackSeen();
-    service
-      .getSignedInUser(undefined, { signal: abortController.signal })
+    service.user
+      .getCurrent({ signal: abortController.signal })
       .then(({ data }) => {
         navigate(`/${spaceId}/assessments/1`);
       })
@@ -167,9 +167,6 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 height: "34px",
                 display: "flex",
                 alignItems: "center",
-                fontFamily: languageDetector(owner?.displayName)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
               }}
               label={
                 <>
@@ -177,7 +174,15 @@ const SpaceCard = (props: ISpaceCardProps) => {
                   {isOwner ? (
                     <Trans i18nKey={"you"} />
                   ) : (
-                    <Trans i18nKey={owner?.displayName} />
+                    <span
+                      style={{
+                        fontFamily: languageDetector(owner?.displayName)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                      }}
+                    >
+                      <Trans i18nKey={owner?.displayName} />
+                    </span>
                   )}
                 </>
               }
@@ -322,17 +327,17 @@ const Actions = (props: any) => {
     loading,
     abortController,
   } = useQuery({
-    service: (args, config) => service.deleteSpace({ spaceId }, config),
+    service: (args, config) => service.space.remove({ spaceId }, config),
     runOnMount: false,
   });
   const leaveSpaceQuery = useQuery({
-    service: (args, config) => service.leaveSpace({ spaceId }, config),
+    service: (args, config) => service.space.leave({ spaceId }, config),
     runOnMount: false,
   });
   const openEditDialog = (e: any) => {
     setEditLoading(true);
-    service
-      .fetchSpace({ spaceId }, { signal: abortController.signal })
+    service.space
+      .getById({ spaceId }, { signal: abortController.signal })
       .then(({ data }) => {
         setEditLoading(false);
         dialogProps.openDialog({ data, type: "update" });
