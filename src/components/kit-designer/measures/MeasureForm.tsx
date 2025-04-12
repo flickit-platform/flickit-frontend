@@ -112,7 +112,7 @@ const MeasureForm = ({
         required
         multiline
         minRows={2}
-        maxRows={3}
+        maxRows={5}
         inputProps={{
           "data-testid": "measure-description",
           style: {
@@ -124,6 +124,9 @@ const MeasureForm = ({
         sx={{
           ...sharedTextFieldSx,
           mt: 1,
+          "& .MuiInputBase-root": {
+            overflow: "hidden",
+          },
           width: { xs: "100%", md: "85%" },
         }}
       />

@@ -111,7 +111,7 @@ const MaturityLevelForm = ({
         margin="normal"
         multiline
         minRows={2}
-        maxRows={3}
+        maxRows={5}
         sx={{
           mt: 1,
           fontSize: 14,
