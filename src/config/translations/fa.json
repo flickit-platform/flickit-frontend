@@ -124,7 +124,7 @@
   "cancel": "لغو",
   "cancelInvitation": "لغو دعوت‌نامه",
   "changeAssessment": "تغییر ارزیابی",
-  "changeOrderHelper": "برای تغییر دادن ترتیب لطفا هر مورد را بکشید(این ترتیب نزولی است)",
+  "changeOrderHelper": "برای تغییر دادن ترتیب لطفا هر مورد را بکشید(این ترتیب صعودی است)",
   "changeSelectedAssessment": "تغییر ارزیابی انتخاب‌شده",
   "checkMoreDetails": "جزئیات بیشتر",
   "checkNetworkConnection": "لطفا اتصال شبکه خود را بررسی کنید.",

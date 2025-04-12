@@ -60,6 +60,7 @@ const MeasureForm = ({
       p={0.25}
     >
       <TextField
+        id="new-maturity"
         required
         name="value"
         type="number"
@@ -127,7 +128,7 @@ const MeasureForm = ({
           "& .MuiInputBase-root": {
             overflow: "hidden",
           },
-          width: { xs: "100%", md: "85%" },
+          width: { xs: "100%", md: "100%" },
         }}
       />
     </Box>
@@ -162,48 +163,6 @@ const MeasureForm = ({
           <CloseIcon />
         </IconButton>
       </Link>
-
-      <Box
-        sx={{
-          width: "fit-content",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-end",
-          flexDirection: "column",
-          gap: "0.5rem",
-          textAlign: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            ...theme.typography.labelCondensed,
-            color: "#6C8093",
-            width: "100%",
-          }}
-        >
-          <Trans i18nKey="weight" />
-        </Typography>
-
-        <TextField
-          required
-          value={newMeasure.weight}
-          onChange={handleInputChange}
-          name="weight"
-          type="number"
-          fullWidth
-          size="small"
-          margin="normal"
-          inputProps={{
-            style: { textAlign: "center", width: "40px" },
-          }}
-          sx={{
-            ...sharedTextFieldSx,
-            mb: 1,
-            mt: 1,
-            borderRadius: "8px",
-          }}
-        />
-      </Box>
     </Box>
   </Box>
 );

@@ -7,11 +7,9 @@ import QueryBatchData from "../../common/QueryBatchData";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { LoadingSkeleton } from "../../common/loadings/LoadingSkeleton";
-import MaturityLevelsHeader from "./MaturityLevelsHeader";
 import MaturityLevelForm from "./MaturityLevelForm";
 import MaturityLevelList from "./MaturityLevelList";
 import CompetencesTable from "./CompetencesTable";
-import EmptyState from "./EmptyState";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
@@ -19,6 +17,8 @@ import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import KitDesignerHeader from "../common/KitHeader";
+import EmptyState from "../common/EmptyState";
 
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();
@@ -29,11 +29,17 @@ const MaturityLevelsContent = () => {
   }>({ status: false, id: "" });
   const maturityLevels = useQuery({
     service: (args, config) =>
-      service.kitVersions.maturityLevel.getAll(args ?? { kitVersionId }, config),
+      service.kitVersions.maturityLevel.getAll(
+        args ?? { kitVersionId },
+        config,
+      ),
   });
   const maturityLevelsCompetences = useQuery({
     service: (args, config) =>
-      service.kitVersions.levelsCompetences.getAll(args ?? { kitVersionId }, config),
+      service.kitVersions.levelsCompetences.getAll(
+        args ?? { kitVersionId },
+        config,
+      ),
   });
 
   const [showNewMaturityLevelForm, setShowNewMaturityLevelForm] =
@@ -160,7 +166,10 @@ const MaturityLevelsContent = () => {
   const handleDelete = async () => {
     try {
       let maturityLevelId = openDeleteDialog.id;
-      await service.kitVersions.maturityLevel.remove({ kitVersionId, maturityLevelId });
+      await service.kitVersions.maturityLevel.remove({
+        kitVersionId,
+        maturityLevelId,
+      });
       maturityLevels.query();
       maturityLevelsCompetences.query();
       handleCancel();
@@ -177,7 +186,10 @@ const MaturityLevelsContent = () => {
         index: idx + 1,
       }));
 
-      await service.kitVersions.maturityLevel.changeOrder({ kitVersionId }, { orders });
+      await service.kitVersions.maturityLevel.changeOrder(
+        { kitVersionId },
+        { orders },
+      );
       maturityLevelsCompetences.query();
 
       handleCancel();
@@ -193,11 +205,14 @@ const MaturityLevelsContent = () => {
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
-        <MaturityLevelsHeader
-          onNewMaturityLevelClick={handleNewMaturityLevelClick}
-          hasMaturityLevels={
+        <KitDesignerHeader
+          onAddNewRow={handleNewMaturityLevelClick}
+          hasBtn={
             maturityLevels.loaded && maturityLevels.data.items.length !== 0
           }
+          mainTitle={"maturityLevels"}
+          btnTitle={"newMaturityLevel"}
+          description={"maturityLevelsKitDesignerDescription"}
         />
         {maturityLevels.loaded && maturityLevels.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
@@ -243,7 +258,10 @@ const MaturityLevelsContent = () => {
                       />
                     ) : (
                       <EmptyState
-                        onNewMaturityLevelClick={handleNewMaturityLevelClick}
+                        btnTitle={"newMaturityLevel"}
+                        title={"maturityLevelsListEmptyState"}
+                        SubTitle={"maturityLevelsListEmptyStateDatailed"}
+                        onAddNewRow={handleNewMaturityLevelClick}
                       />
                     )}
                   </>

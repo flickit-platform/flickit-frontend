@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import Link from "@mui/material/Link";
 
-interface KItDHeaderProps {
+interface KitDesignerHeaderProps {
   onAddNewRow: () => void;
   mainTitle: string;
   description: string;
@@ -12,20 +12,20 @@ interface KItDHeaderProps {
   btnTitle: string;
 }
 
-const KitDHeader = ({
+const KitDesignerHeader = ({
   mainTitle,
   description,
   hasBtn,
   onAddNewRow,
   btnTitle,
-}: KItDHeaderProps) => (
+}: KitDesignerHeaderProps) => (
   <>
     <div id="maturity-header">
       <Typography variant="headlineSmall" fontWeight="bold">
         <Trans i18nKey={`${mainTitle}`} />
       </Typography>
       <br />
-      <Typography variant="bodyMedium">
+      <Typography component="div" variant="bodyMedium" textAlign="justify">
         <Trans i18nKey={`${description}`} />
       </Typography>
     </div>
@@ -44,7 +44,7 @@ const KitDHeader = ({
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
-            marginInlineStart: "auto"
+            marginInlineStart: "auto",
           }}
         >
           <Button variant="contained" onClick={onAddNewRow}>
@@ -56,4 +56,4 @@ const KitDHeader = ({
   </>
 );
 
-export default KitDHeader;
+export default KitDesignerHeader;

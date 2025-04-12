@@ -33,18 +33,18 @@ const KitDesignerContainer = () => {
     let currentHash = window.location.hash.replace("#", "");
 
     if (!currentHash || currentHash.startsWith("new")) {
-      window.location.hash = "Measures";
+      window.location.hash = "Maturity-Levels";
       setSelectedTab(0);
     }
 
     const tabEl = [
-      { title: "Measures", index: 0 },
-      { title: "Maturity-Levels", index: 1 },
+      { title: "Maturity-Levels", index: 0 },
       { title: "Subjects", index: 1 },
       { title: "Attributes", index: 2 },
       { title: "Answer-Ranges", index: 3 },
-      { title: "Questionnaires", index: 4 },
-      { title: "Release", index: 5 },
+      { title: "Measures", index: 4 },
+      { title: "Questionnaires", index: 5 },
+      { title: "Release", index: 6 },
     ];
 
     tabEl.forEach((item) => {
@@ -117,17 +117,6 @@ const KitDesignerContainer = () => {
                       }}
                       label={
                         <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="kitDesignerTab.measures" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
                           <Trans i18nKey="maturityLevels" />
                         </Typography>
                       }
@@ -172,6 +161,17 @@ const KitDesignerContainer = () => {
                       }}
                       label={
                         <Typography variant="semiBoldLarge">
+                          <Trans i18nKey="kitDesignerTab.measures" />
+                        </Typography>
+                      }
+                    />
+                    <Tab
+                      sx={{
+                        alignItems: "flex-start",
+                        textTransform: "none",
+                      }}
+                      label={
+                        <Typography variant="semiBoldLarge">
                           <Trans i18nKey="questionnaires" />
                         </Typography>
                       }
@@ -196,11 +196,11 @@ const KitDesignerContainer = () => {
                   xs={12}
                   sx={{ height: "100%", padding: 3, background: "white" }}
                 >
-                  {selectedTab === 0 && <MeasuresContent />}
-                  {selectedTab === 1 && <MaturityLevelsContent />}
-                  {selectedTab === 2 && <SubjectsContent />}
-                  {selectedTab === 3 && <AttributesContent />}
-                  {selectedTab === 4 && <AnaweRangeContent />}
+                  {selectedTab === 0 && <MaturityLevelsContent />}
+                  {selectedTab === 1 && <SubjectsContent />}
+                  {selectedTab === 2 && <AttributesContent />}
+                  {selectedTab === 3 && <AnaweRangeContent />}
+                  {selectedTab === 4 && <MeasuresContent />}
                   {selectedTab === 5 && <QuestionnairesContent />}
                   {selectedTab === 6 && (
                     <PublishContent kitVersion={kitVersion} />

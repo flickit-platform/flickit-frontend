@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
-import KitDHeader from "@components/kit-designer/common/KitHeader";
+import KitDesignerHeader from "@components/kit-designer/common/KitHeader";
 import AnswerRangeForm from "./AnswerRangeForm";
 
 const AnaweRangeContent = () => {
@@ -167,7 +167,7 @@ const AnaweRangeContent = () => {
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
-        <KitDHeader
+        <KitDesignerHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={
             fetchAnswerRangeKit.loaded &&

@@ -14,7 +14,7 @@ import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
-import KitDHeader from "@components/kit-designer/common/KitHeader";
+import KitDesignerHeader from "@components/kit-designer/common/KitHeader";
 import QuestionnairesForm from "./QuestionnairesForm";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
@@ -191,7 +191,7 @@ const QuestionnairesContent = () => {
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
-        <KitDHeader
+        <KitDesignerHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={
             fetchQuestionnairesKit.loaded &&
