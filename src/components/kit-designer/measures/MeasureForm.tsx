@@ -7,10 +7,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import Typography from "@mui/material/Typography";
-import {theme} from "@config/theme";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import languageDetector from "@utils/languageDetector";
 
-interface SubjectFormProps {
-    newSubject: {
+interface MeasureFormProps {
+    newMeasure: {
     title: string;
     description: string;
     weight: number;
@@ -22,12 +23,12 @@ interface SubjectFormProps {
   handleCancel: () => void;
 }
 
-const SubjectForm = ({
-  newSubject,
+const MeasureForm = ({
+  newMeasure,
   handleInputChange,
   handleSave,
   handleCancel,
-}: SubjectFormProps) => (
+}: MeasureFormProps) => (
   <Box
     mt={1.5}
     p={1.5}
@@ -51,12 +52,12 @@ const SubjectForm = ({
         id="new-maturity"
         type="number"
         name="value"
-        value={newSubject.value}
+        value={newMeasure.value}
         onChange={handleInputChange}
         variant="outlined"
         size="small"
         inputProps={{
-          "data-testid": "subject-value",
+          "data-testid": "measure-value",
           style: { textAlign: "center", width: "40px" },
         }}
         sx={{
@@ -75,9 +76,10 @@ const SubjectForm = ({
         label={<Trans i18nKey="title" />}
         name="title"
         inputProps={{
-            "data-testid": "subject-title",
+            "data-testid": "measure-title",
+            style: { fontFamily: languageDetector(newMeasure.title) ? farsiFontFamily : primaryFontFamily }
         }}
-        value={newSubject.title}
+        value={newMeasure.title}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -85,7 +87,7 @@ const SubjectForm = ({
           mt: 0,
           fontSize: 14,
           "& .MuiInputBase-root": {
-            height: 32,
+            height: 40,
             fontSize: 14,
           },
           "& .MuiFormLabel-root": {
@@ -100,10 +102,11 @@ const SubjectForm = ({
         label={<Trans i18nKey="description" />}
         name="description"
         inputProps={{
-            "data-testid": "subject-description",
+            "data-testid": "measure-description",
+            style: { fontFamily: languageDetector(newMeasure.description) ? farsiFontFamily : primaryFontFamily }
         }}
         required
-        value={newSubject.description}
+        value={newMeasure.description}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -129,7 +132,7 @@ const SubjectForm = ({
     {/* Check and Close Buttons */}
     <Box display="flex" alignItems="center" flexDirection={"column"} gap={"20px"}>
       <Link
-        href="#subject-header"
+        href="#Measure-header"
         sx={{
           textDecoration: "none",
           opacity: 0.9,
@@ -140,10 +143,10 @@ const SubjectForm = ({
         }}
       >
         {" "}
-        <IconButton size="small" color="primary" data-testid="subject-check-icon" onClick={handleSave}>
+        <IconButton size="small" color="primary" data-testid="Measure-check-icon" onClick={handleSave}>
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="subject-close-icon" onClick={handleCancel}>
+        <IconButton size="small" color="secondary" data-testid="Measure-close-icon" onClick={handleCancel}>
           <CloseIcon />
         </IconButton>
       </Link>
@@ -166,7 +169,7 @@ const SubjectForm = ({
         </Typography>
         <TextField
             required
-            value={newSubject.weight}
+            value={newMeasure.weight}
             onChange={handleInputChange}
             name="weight"
             variant="outlined"
@@ -197,4 +200,4 @@ const SubjectForm = ({
   </Box>
 );
 
-export default SubjectForm;
+export default MeasureForm;

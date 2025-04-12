@@ -35,7 +35,6 @@ interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
   onEdit: (id: any) => void;
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
-  deleteBtn: boolean;
   name: string;
   fetchQuery?: any;
   setOpenDeleteDialog: any;
@@ -60,7 +59,6 @@ const ListOfItems = ({
   fetchQuery,
   onEdit,
   onReorder,
-  deleteBtn,
   name,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
@@ -476,7 +474,7 @@ const ListOfItems = ({
                                   >
                                     <EditRoundedIcon fontSize="small" />
                                   </IconButton>
-                                  {deleteBtn && (
+                                  {setOpenDeleteDialog && (
                                     <IconButton
                                       size="small"
                                       onClick={() =>

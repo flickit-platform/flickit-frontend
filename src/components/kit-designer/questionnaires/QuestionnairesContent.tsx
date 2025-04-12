@@ -229,7 +229,6 @@ const QuestionnairesContent = () => {
                       items={QuestionnairesData?.items}
                       fetchQuery={fetchQuestionnairesKit}
                       onEdit={handleEdit}
-                      deleteBtn={false}
                       onReorder={handleReorder}
                       name={"questionnaires"}
                       setOpenDeleteDialog={setOpenDeleteDialog}

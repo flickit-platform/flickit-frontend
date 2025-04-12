@@ -227,7 +227,6 @@ const SubjectsContent = () => {
                     <ListOfItems
                       items={subjectData?.items}
                       onEdit={handleEdit}
-                      deleteBtn={false}
                       onReorder={handleReorder}
                       name={"subject"}
                       setOpenDeleteDialog={setOpenDeleteDialog}

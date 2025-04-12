@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import SubjectForm from "../SubjectForm";
+import MeasureForm from "../MeasureForm";
 import { describe, it, vi, expect } from "vitest";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
 
-describe("SubjectForm", ()=> {
+describe("MeasureForm", ()=> {
   const newItem = {
     title: "title test",
     description: "description test",
@@ -21,8 +21,8 @@ describe("SubjectForm", ()=> {
    const renderForm = () =>{
      render(
          <I18nextProvider i18n={i18n}>
-           <SubjectForm
-               newSubject={newItem}
+           <MeasureForm
+               newMeasure={newItem}
                handleInputChange={handleInputChange}
                handleSave={handleSave}
                handleCancel={handleCancel}
@@ -32,9 +32,9 @@ describe("SubjectForm", ()=> {
    }
    it("renders with initial values", async ()=>{
      renderForm();
-     const titleInput = screen.getByTestId("subject-title");
-     const descriptionInput = screen.getByTestId("subject-description");
-     const valueInput = screen.getByTestId("subject-value");
+     const titleInput = screen.getByTestId("measure-title");
+     const descriptionInput = screen.getByTestId("measure-description");
+     const valueInput = screen.getByTestId("measure-value");
 
      expect(titleInput).toBeInTheDocument();
      expect(titleInput).toHaveValue("title test")
@@ -49,14 +49,14 @@ describe("SubjectForm", ()=> {
     it("calls handleSave when clicking the save button", async ()=> {
         renderForm();
 
-        const saveButton = screen.getByTestId("subject-check-icon");
+        const saveButton = screen.getByTestId("measure-check-icon");
         await userEvent.click(saveButton);
         expect(handleSave).toHaveBeenCalled();
     })
     it("calls handleCancel when clicking the cancel button", async ()=> {
         renderForm()
 
-        const cancelButton = screen.getByTestId("subject-close-icon")
+        const cancelButton = screen.getByTestId("measure-close-icon")
         await userEvent.click(cancelButton);
         expect(handleCancel).toHaveBeenCalled();
 

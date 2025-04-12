@@ -197,7 +197,6 @@ const AnaweRangeContent = () => {
                 fetchQuery={fetchAnswerRangeKit}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                deleteBtn={false}
                 onReorder={handleReorder}
                 setChangeData={setChangeData}
                 name={"answerRange"}

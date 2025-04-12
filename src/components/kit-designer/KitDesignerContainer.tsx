@@ -17,7 +17,7 @@ import QuestionnairesContent from "@components/kit-designer/questionnaires/Quest
 import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "@components/kit-designer/answerRange/AnswerRangeContent";
 import QueryBatchData from "../common/QueryBatchData";
-import MeasuresContent from "./measures/SubjectsContent";
+import MeasuresContent from "./measures/MeasuresContent";
 
 const KitDesignerContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);

@@ -23,7 +23,6 @@ describe("ListOfItems (subject)", () => {
       <ListOfItems
         items={mockItems}
         onEdit={mockOnEdit}
-        deleteBtn={true}
         onReorder={mockOnReorder}
         name="subject"
         setOpenDeleteDialog={mockSetOpenDeleteDialog}
