@@ -21,7 +21,12 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { IAssessment, TId, IQuestionnairesModel, TQueryFunction } from "@types";
+import {
+  IAssessment,
+  TId,
+  IQuestionnairesModel,
+  TQueryFunction,
+} from "@/types/index";
 import { TDialogProps } from "@utils/useDialog";
 import Button from "@mui/material/Button";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
@@ -68,7 +73,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const { service } = useServiceContext();
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>
-      service.calculateMaturityLevel(args ?? { assessmentId: id }, config),
+      service.assessments.info.calculateMaturity(args ?? { assessmentId: id }, config),
     runOnMount: false,
   });
 
@@ -86,7 +91,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   };
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
-      service.fetchAssessmentTotalProgress(
+      service.assessments.info.getProgress(
         { assessmentId: id, ...(args ?? {}) },
         config,
       ),

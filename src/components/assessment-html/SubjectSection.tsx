@@ -10,7 +10,7 @@ import BoxReportLayout from "./layout/BoxReportLayout";
 import AssessmentSubjectRadialChart from "@/components/common/charts/BarChart";
 import { styles } from "@styles";
 import { t } from "i18next";
-import { IGraphicalReport } from "@/types";
+import { IGraphicalReport } from "@/types/index";
 import uniqueId from "@/utils/uniqueId";
 
 const SubjectReport = ({

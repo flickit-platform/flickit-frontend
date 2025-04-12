@@ -1,6 +1,6 @@
 import React, { useReducer, FC, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { TQuestionsInfo } from "@types";
+import { TQuestionsInfo } from "@/types/index";
 import { questionActions } from "./actions";
 import appReducer from "./reducer";
 

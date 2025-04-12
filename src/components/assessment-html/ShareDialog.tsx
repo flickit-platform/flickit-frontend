@@ -42,7 +42,7 @@ export const ShareDialog = ({
   const { service } = useServiceContext();
 
   const grantReportAccess = useQuery({
-    service: (args, config) => service.grantReportAccess(args, config),
+    service: (args, config) => service.assessments.member.grantReportAccess(args, config),
     runOnMount: false,
   });
 

@@ -24,12 +24,15 @@ const ReportTab = () => {
 
   const fetchReportFields = useQuery({
     service: (args, config) =>
-      service.fetchReportFields(args ?? { assessmentId }, config),
+      service.assessments.report.getMetadata(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: true,
   });
 
   const PublishReportStatus = useQuery({
-    service: (args, config) => service.PublishReportStatus(args, config),
+    service: (args, config) => service.assessments.report.updatePublishStatus(args, config),
     runOnMount: false,
   });
 
@@ -123,7 +126,7 @@ const ReportTab = () => {
                         editable={true}
                         fieldName={name}
                         onSubmit={async (payload: any, event: any) => {
-                          await service.patchUpdateReportFields(
+                          await service.assessments.report.updateMetadata(
                             {
                               assessmentId,
                               reportData: { [name]: payload[name] },

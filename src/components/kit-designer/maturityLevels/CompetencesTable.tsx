@@ -72,13 +72,13 @@ const CompetencesTable = ({
       };
 
       if (isOriginalValueEmpty && !isNewValueEmpty) {
-        await service.addCompetencyToMaturityLevel(
+        await service.kitVersions.levelsCompetences.create(
           { kitVersionId: kitVersionId },
           data,
           undefined,
         );
       } else if (!isOriginalValueEmpty && isNewValueEmpty && competenceId) {
-        await service.deleteCompetencyOfMaturityLevel({
+        await service.kitVersions.levelsCompetences.remove({
           kitVersionId: kitVersionId,
           levelCompetenceId: competenceId,
         });
@@ -88,7 +88,7 @@ const CompetencesTable = ({
         newValue !== originalValue &&
         competenceId
       ) {
-        await service.updateCompetencyOfMaturityLevel(
+        await service.kitVersions.levelsCompetences.update(
           { kitVersionId: kitVersionId, levelCompetenceId: competenceId },
           data,
           undefined,

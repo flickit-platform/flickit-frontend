@@ -114,7 +114,7 @@ const Uploader = (props: IUploadProps) => {
   const { service } = useServiceContext();
   const defaultValueQuery = useQuery({
     service: (args, config) =>
-      service.fetchImage(
+      service.common.getImageBlob(
         args ?? { url: defaultValue?.replace("https://flickit.org", "") },
         config,
       ),

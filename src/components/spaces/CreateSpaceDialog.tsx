@@ -96,14 +96,14 @@ const CreateSpaceDialog = (props: any) => {
     setLoading(true);
     try {
       if (type === "update") {
-        await service.updateSpace(
+        await service.space.update(
           { spaceId, data },
           { signal: abortController.signal },
         );
-        await service.seenSpaceList({ spaceId }, {});
+        await service.space.markAsSeen({ spaceId }, {});
         close();
       } else {
-        const res = await service.createSpace(data, {
+        const res = await service.space.create(data, {
           signal: abortController.signal,
         });
         setSpaceIdNum(res.data.id);

@@ -8,7 +8,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { KitDesignListItems, TId } from "@types";
+import { KitDesignListItems, TId } from "@/types/index";
 import { Trans } from "react-i18next";
 import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import Accordion from "@mui/material/Accordion";
@@ -61,7 +61,7 @@ const ListOfItems = ({
   setChangeData,
 }: ListOfItemsProps) => {
   const postOptionsKit = useQuery({
-    service: (args, config) => service.postOptionsKit(args, config),
+    service: (args, config) => service.kitVersions.answerOptions.createRangeOption(args, config),
     runOnMount: false,
   });
 
