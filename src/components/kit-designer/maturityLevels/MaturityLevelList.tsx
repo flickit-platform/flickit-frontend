@@ -82,7 +82,7 @@ const MaturityLevelList = ({
                     mt={1.5}
                     p={1.5}
                     sx={{
-                      backgroundColor: "gray.100",
+                      backgroundColor: editMode === item.id  ? "#F3F5F6"  : "#fff",
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
@@ -127,6 +127,7 @@ const MaturityLevelList = ({
                             size="small"
                             sx={{
                               mb: 1,
+                              background:"#fff",
                               fontSize: 14,
                               "& .MuiInputBase-root": {
                                 fontSize: 14,
@@ -221,6 +222,7 @@ const MaturityLevelList = ({
                             mb: 1,
                             mt: 1,
                             fontSize: 14,
+                            background:"#fff",
                             "& .MuiInputBase-root": {
                               fontSize: 14,
                               overflow: "auto",
