@@ -52,6 +52,8 @@ const QuestionDialog: React.FC<Props> = ({
     number | undefined
   >(question?.answerRangeId);
 
+  const [selectedMeasure, setSelectedMeasure] = useState<any>(null);
+
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
   });
@@ -64,12 +66,20 @@ const QuestionDialog: React.FC<Props> = ({
   });
 
   useEffect(() => {
+    const measureObject = fetchMeasures.data?.items?.find(
+      (m: any) => m.id === question.measureId,
+    );
+    setSelectedMeasure(measureObject);
+    formMethods.setValue("measure", measureObject);
+  }, [fetchMeasures?.data?.items]);
+
+  useEffect(() => {
     if (open && question.id) {
       Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+
       formMethods.reset({
         title: question.title ?? "",
         hint: question.hint ?? "",
-        measureId: question.measureId ?? null,
         options: question.options ?? [{ text: "" }],
         mayNotBeApplicable: question.mayNotBeApplicable ?? false,
         advisable: question.advisable ?? false,
@@ -87,7 +97,7 @@ const QuestionDialog: React.FC<Props> = ({
           ...data,
           index: question.index,
           answerRangeId: selectedAnswerRange,
-          measureId: data.measureId?.id ?? null,
+          measureId: data.measure?.id ?? null,
         },
       });
       fetchQuery.query();
@@ -162,10 +172,10 @@ const QuestionDialog: React.FC<Props> = ({
                 service: (args, config) =>
                   service.kitVersions.measures.getAll({ kitVersionId }),
               })}
-              name="measureId"
+              name="measure"
               label={<Trans i18nKey="kitDesignerTab.selectMeasure" />}
               getOptionLabel={(option: any) => option?.title ?? ""}
-              defaultValue={formMethods.watch("measureId")}
+              defaultValue={formMethods.watch("measure")}
               rules={{ required: false }}
               filterFields={["title"]}
             />
