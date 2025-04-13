@@ -7,29 +7,27 @@ import MenuItem from "@mui/material/MenuItem";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import { IAttribute, IMaturityLevel, TId } from "@/types/index";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import uniqueId from "@/utils/uniqueId";
 
 interface ImpactFormProps {
-  newItem: {
-    attributeId?: any;
-    maturityLevelId?: any;
-    weight: number;
-    questionId: TId;
-  };
-  handleInputChange: any;
+  newItem: Record<string, any>;
+  handleInputChange: (field: string, value: any) => void;
   handleSave: () => void;
   handleCancel: () => void;
-  attributes: IAttribute[];
-  maturityLevels: IMaturityLevel[];
+  fields: {
+    name: string;
+    label: string;
+    options?: Array<{ id: number; title: string }>;
+  }[];
 }
 
 export const dropdownStyle = {
   fullWidth: true,
   displayEmpty: true,
   backgroundColor: "#fff",
-  fontSize: "14px"
+  fontSize: "14px",
 };
 
 const ImpactForm: React.FC<ImpactFormProps> = ({
@@ -37,8 +35,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
   handleInputChange,
   handleSave,
   handleCancel,
-  attributes,
-  maturityLevels,
+  fields,
 }) => {
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
@@ -63,48 +60,36 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         gap: 2,
       }}
     >
-      {/* Attribute Dropdown */}
-      <Select
-        name="attributeId"
-        value={newItem.attributeId ?? ""}
-        onChange={handleSelectChange}
-        sx={{...dropdownStyle, fontFamily: farsiFontFamily}}
-        size="small"
-        fullWidth
-        displayEmpty
-      >
-        <MenuItem value="" disabled>
-          <Trans i18nKey="selectAttribute" />
-        </MenuItem>
-        {attributes.map((attr) => (
-          <MenuItem key={attr.id} value={attr.id} sx={{fontFamily: languageDetector(attr.title) ? farsiFontFamily : primaryFontFamily }}>
-            {attr.title}
+      {fields.map((field, idx) => (
+        <Select
+          key={uniqueId()}
+          name={field.name}
+          value={newItem[field.name] ?? ""}
+          onChange={handleSelectChange}
+          sx={{ ...dropdownStyle, fontFamily: farsiFontFamily }}
+          size="small"
+          fullWidth
+          displayEmpty
+        >
+          <MenuItem value="" disabled>
+            <Trans i18nKey={`select${field.label.replace(" ", "")}`} />
           </MenuItem>
-        ))}
-      </Select>
+          {field.options?.map((option) => (
+            <MenuItem
+              key={option.id}
+              value={option.id}
+              sx={{
+                fontFamily: languageDetector(option.title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+            >
+              {option.title}
+            </MenuItem>
+          ))}
+        </Select>
+      ))}
 
-      {/* Maturity Level Dropdown */}
-      <Select
-        name="maturityLevelId"
-        value={newItem.maturityLevelId ?? ""}
-        onChange={handleSelectChange}
-        sx={{...dropdownStyle, fontFamily: farsiFontFamily}}
-
-        size="small"
-        fullWidth
-        displayEmpty
-      >
-        <MenuItem value="" disabled>
-          <Trans i18nKey="selectMaturityLevel" />
-        </MenuItem>
-        {maturityLevels.map((level) => (
-          <MenuItem key={level.id} value={level.id} sx={{fontFamily: languageDetector(level.title) ? farsiFontFamily : primaryFontFamily }}>
-            {level.title}
-          </MenuItem>
-        ))}
-      </Select>
-
-      {/* Weight Text Field */}
       <TextField
         required
         name="weight"
@@ -117,7 +102,6 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         sx={{ mx: 1, backgroundColor: "#fff", textFieldStyle, width: "50%" }}
       />
 
-      {/* Action Buttons */}
       <Box display="flex" alignItems="center">
         <IconButton size="small" color="primary" onClick={handleSave}>
           <CheckIcon />

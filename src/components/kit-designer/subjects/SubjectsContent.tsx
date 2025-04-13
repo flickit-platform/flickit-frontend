@@ -16,7 +16,6 @@ import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectForm from "./SubjectForm";
-import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 const SubjectsContent = () => {
   const { service } = useServiceContext();
