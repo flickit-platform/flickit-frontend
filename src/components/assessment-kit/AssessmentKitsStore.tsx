@@ -1,10 +1,10 @@
 import React from 'react';
 import kitStore from "@assets/svg/kitStore1.svg"
-import AssessmentKitSStoreBanner from "@components/assessment-kit/AssessmentKitSStoreBanner";
+import AssessmentKitsStoreBanner from "@components/assessment-kit/AssessmentKitsStoreBanner";
 
 const AssessmentKitsStore = () => {
     return (
-        <AssessmentKitSStoreBanner/>
+        <AssessmentKitsStoreBanner/>
     )
 }
 

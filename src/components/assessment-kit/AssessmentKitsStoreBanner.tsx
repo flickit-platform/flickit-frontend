@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import ArrowBtn from "@utils/icons/arrow";
 import {theme} from "@config/theme";
 
-const AssessmentKitSStoreBanner = () => {
+const AssessmentKitsStoreBanner = () => {
 
     const images = [
         kitStore,
@@ -149,4 +149,4 @@ const AssessmentKitSStoreBanner = () => {
     );
 };
 
-export default AssessmentKitSStoreBanner;
+export default AssessmentKitsStoreBanner;
