@@ -87,6 +87,7 @@ const QuestionDialog: React.FC<Props> = ({
           ...data,
           index: question.index,
           answerRangeId: selectedAnswerRange,
+          measureId: data.measureId?.id ?? null,
         },
       });
       fetchQuery.query();
