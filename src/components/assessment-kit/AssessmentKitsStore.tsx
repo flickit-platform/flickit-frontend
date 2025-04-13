@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Box from "@mui/material/Box";
-import './Carousel.css';
 import ArrowBtn from "@utils/icons/arrow";
 import {theme} from "@config/theme";
 import Button from "@mui/material/Button";
 import kitStore from "@assets/svg/kitStore1.svg"
+import { styles } from "@styles";
 
 const images = [
     kitStore,
@@ -66,23 +66,28 @@ const AssessmentKitsStore = () => {
         startXRef.current = null;
     };
 
+
     return (
         <Box
-            className="carousel"
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
+            sx={{...styles.carousel}}
         >
             <Box
-                className="carousel-inner"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                sx={{...styles.carouselInner}}
             >
                 {images.map((src, i) => (
                     <img
                         key={i}
                         src={src}
-                        className="carousel-image"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'fill',
+                            flexShrink: 0
+                        }}
                         alt={`Slide ${i + 1}`}
-                        draggable="false"
                     />
                 ))}
             </Box>
@@ -95,7 +100,11 @@ const AssessmentKitsStore = () => {
             {/*      width:"7%",*/}
             {/*      height: "100%"*/}
             {/*}}/>*/}
-                <Button className="arrow left" onClick={prevImage}>
+                <Button sx={{
+                    ...styles.arrow,
+                    left: '15px',
+                    transform: 'rotate(90deg)'
+                }} onClick={prevImage}>
                     <ArrowBtn color={theme.palette.primary.dark} />
                 </Button>
             {/*<Box sx={{*/}
@@ -108,15 +117,29 @@ const AssessmentKitsStore = () => {
             {/*    height: "100%"*/}
             {/*}}/>*/}
 
-            <Button className="arrow right" onClick={nextImage}>
+            <Button sx={{
+                ...styles.arrow,
+                right: '15px',
+                transform: 'rotate(-90deg)',
+            }} onClick={nextImage}>
                <ArrowBtn color={theme.palette.primary.dark} height={"40px"} />
             </Button>
 
-            <Box className="dots">
+            <Box sx={{...styles.dots}}>
                 {images.map((_, i) => (
                     <Box
                         key={i}
                         className={`dot ${currentIndex === i ? 'active' : ''}`}
+                        sx={{
+                            width: currentIndex === i ? '32px' : '16px',
+                            height: '16px',
+                            backgroundColor: currentIndex === i ? '#6C8093' : '#668099',
+                            borderRadius: currentIndex === i ? '20px' : '50%',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            opacity: currentIndex === i ? 1 : 0.7,
+                            transform: currentIndex === i ? 'scale(1.3)' : 'scale(1)',
+                    }}
                         onClick={() => setCurrentIndex(i)}
                     />
                 ))}
