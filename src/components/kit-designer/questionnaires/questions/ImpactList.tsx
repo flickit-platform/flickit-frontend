@@ -75,7 +75,11 @@ const AttributeImpactList = ({
     weight: 1,
   });
 
-  const toggleEditMode = (id: number | null, item?: Impact, attribute?: any) => {
+  const toggleEditMode = (
+    id: number | null,
+    item?: Impact,
+    attribute?: any,
+  ) => {
     if (id !== null && item && attribute) {
       const newTemp: Record<string, any> = {
         questionId,
@@ -86,7 +90,7 @@ const AttributeImpactList = ({
         newTemp[key] =
           key === "attributeId"
             ? attribute?.attributeId
-            : item?.[key]?.id ?? item?.maturityLevel?.maturityLevelId;
+            : (item?.[key]?.id ?? item?.maturityLevel?.maturityLevelId);
       });
       setTempValues(newTemp);
     }
@@ -193,7 +197,12 @@ const ImpactDetails = ({
     {editMode === item.questionImpactId ? (
       <>
         {fields.map((field: any, idx: number) => (
-          <FormControl key={uniqueId()} fullWidth size="small" sx={textFieldStyle}>
+          <FormControl
+            key={uniqueId()}
+            fullWidth
+            size="small"
+            sx={textFieldStyle}
+          >
             <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
             <Select
               labelId={`${field.name}-label`}
@@ -230,7 +239,7 @@ const ImpactDetails = ({
             {attribute.title}
           </Typography>
           <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
-            {t("impactsOn") + " " + item.maturityLevel?.title ?? ""}
+            {t("impactsOn") + " " + item.maturityLevel?.title}
           </Typography>
         </Box>
         {hasWeight && (
@@ -257,10 +266,20 @@ const ActionButtons = ({
     <Box sx={{ display: "flex", alignItems: "center" }}>
       {editMode ? (
         <>
-          <IconButton size="small" onClick={onSave} sx={{ ml: 1 }} color="success">
+          <IconButton
+            size="small"
+            onClick={onSave}
+            sx={{ ml: 1 }}
+            color="success"
+          >
             <CheckRoundedIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" onClick={onCancel} sx={{ ml: 1 }} color="secondary">
+          <IconButton
+            size="small"
+            onClick={onCancel}
+            sx={{ ml: 1 }}
+            color="secondary"
+          >
             <CloseRoundedIcon fontSize="small" />
           </IconButton>
         </>

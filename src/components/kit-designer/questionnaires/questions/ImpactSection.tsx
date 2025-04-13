@@ -116,16 +116,16 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
     {
       name: "attributeId",
       label: t("attribute"),
-      options: fetchAttributeKit?.data?.items || [],
+      options: fetchAttributeKit?.data?.items ?? [],
     },
     {
       name: "maturityLevelId",
       label: t("maturityLevel"),
-      options: fetchMaturityLevels?.data?.items || [],
+      options: fetchMaturityLevels?.data?.items ?? [],
     },
   ];
 
-  const impacts = fetchImpacts?.data?.attributeImpacts || [];
+  const impacts = fetchImpacts?.data?.attributeImpacts ?? [];
   const disabled = fields.some((f) => f.options.length === 0);
 
   return (
@@ -139,8 +139,8 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
         </Typography>
       </Box>
 
-      {impacts.length > 0 ? (
-        <>
+      <>
+        {impacts?.length > 0 ? (
           <Box maxHeight={500} overflow="auto">
             <AttributeImpactList
               attributeImpacts={impacts}
@@ -153,34 +153,28 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
               hasWeight={true}
             />
           </Box>
-          {showForm && (
-            <ImpactForm
-              newItem={impact}
-              handleInputChange={handleInputChange}
-              handleSave={handleSave}
-              handleCancel={handleCancel}
-              fields={fields}
+        ) : (
+          !showForm && (
+            <EmptyState
+              btnTitle="newOptionImpact"
+              title="optionsImpactsEmptyState"
+              SubTitle="optionsImpactsEmptyStateDetailed"
+              onAddNewRow={() => setShowForm(true)}
+              disabled={disabled}
+              disableTextBox={<Trans i18nKey="optionsImpactsDisabled" />}
             />
-          )}
-        </>
-      ) : showForm ? (
-        <ImpactForm
-          newItem={impact}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-          fields={fields}
-        />
-      ) : (
-        <EmptyState
-          btnTitle="newOptionImpact"
-          title="optionsImpactsEmptyState"
-          SubTitle="optionsImpactsEmptyStateDetailed"
-          onAddNewRow={() => setShowForm(true)}
-          disabled={disabled}
-          disableTextBox={<Trans i18nKey="optionsImpactsDisabled" />}
-        />
-      )}
+          )
+        )}
+        {showForm && (
+          <ImpactForm
+            newItem={impact}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+            fields={fields}
+          />
+        )}
+      </>
     </>
   );
 };
