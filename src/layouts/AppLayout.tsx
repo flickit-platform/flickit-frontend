@@ -11,7 +11,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
       <Navbar />
       <Box
         sx={{
-          p: !location.pathname.startsWith("/assessment-kits/")
+          p: !location.pathname.startsWith("/assessment-kits")
             ? { xs: 1, sm: 1, md: 4 }
             : "0",
         }}
