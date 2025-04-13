@@ -377,7 +377,7 @@ const OnHoverInputCustomTitle = (props: any) => {
     const { name, value } = e.target;
     setLocalInputData((prev: any) => ({
       ...prev,
-      [name]: value,
+      title: value,
     }));
     setHasError(false);
   };
