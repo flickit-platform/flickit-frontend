@@ -1,18 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Box from "@mui/material/Box";
 import './Carousel.css';
-import arrow from "@assets/svg/arrow.svg";
 import ArrowBtn from "@utils/icons/arrow";
 import {theme} from "@config/theme";
 import Button from "@mui/material/Button";
+import kitStore from "@assets/svg/kitStore1.svg"
 
 const images = [
-    'https://fakeimg.pl/300/',
-    'https://fakeimg.pl/250x100/',
-    'https://fakeimg.pl/250x100/ff0000/',
+    kitStore,
+    kitStore
 ];
 
-const AssessmentKitsListContainerNew = () => {
+const AssessmentKitsStore = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const timeoutRef = useRef<any>(null);
     const startXRef = useRef(null);
@@ -87,25 +86,27 @@ const AssessmentKitsListContainerNew = () => {
                     />
                 ))}
             </Box>
-            <Box sx={{
-                  backgroundImage: "linear-gradient(to right, #0E2842, #1B4D7E4D )",
-                  position: "absolute",
-                  left : 0,
-                  top: 0,
-                  width:"10%",
-                  height: "100%"
-            }}/>
+            {/*<Box sx={{*/}
+            {/*      backgroundImage: "linear-gradient(to right, #0E2842, #1B4D7E4D )",*/}
+            {/*      opacity: "30%",*/}
+            {/*      position: "absolute",*/}
+            {/*      left : 0,*/}
+            {/*      top: 0,*/}
+            {/*      width:"7%",*/}
+            {/*      height: "100%"*/}
+            {/*}}/>*/}
                 <Button className="arrow left" onClick={prevImage}>
                     <ArrowBtn color={theme.palette.primary.dark} />
                 </Button>
-            <Box sx={{
-                backgroundImage: "linear-gradient(to right,#1B4D7E4D, #0E2842 )",
-                position: "absolute",
-                right : 0,
-                top: 0,
-                width:"10%",
-                height: "100%"
-            }}/>
+            {/*<Box sx={{*/}
+            {/*    backgroundImage: "linear-gradient(to right,#1B4D7E4D, #0E2842 )",*/}
+            {/*    opacity: "30%",*/}
+            {/*    position: "absolute",*/}
+            {/*    right : 0,*/}
+            {/*    top: 0,*/}
+            {/*    width:"7%",*/}
+            {/*    height: "100%"*/}
+            {/*}}/>*/}
 
             <Button className="arrow right" onClick={nextImage}>
                <ArrowBtn color={theme.palette.primary.dark} height={"40px"} />
@@ -124,4 +125,4 @@ const AssessmentKitsListContainerNew = () => {
     );
 };
 
-export default AssessmentKitsListContainerNew;
+export default AssessmentKitsStore;
