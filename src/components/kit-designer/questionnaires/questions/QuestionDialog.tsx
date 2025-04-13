@@ -1,322 +1,109 @@
-import React, { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Switch from "@mui/material/Switch";
-import Divider from "@mui/material/Divider";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
+import React, { useEffect, useState } from "react";
+import {
+  Grid,
+  TextField,
+  Box,
+  Typography,
+  Divider,
+  Switch,
+} from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { IQuestionInfo } from "@/types/index";
+import { ICustomError } from "@/utils/CustomError";
+import toastError from "@/utils/toastError";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { IQuestionInfo } from "@/types";
 import { useQuery } from "@/utils/useQuery";
+import { styles } from "@styles";
 import {
   CEDialog,
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
+import OptionsSection from "./OptionsSection";
 import { t } from "i18next";
-import { styles } from "@styles";
-import EmptyState from "../../common/EmptyState";
-import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
-import OptionForm from "./OptionForm";
-import OptionList from "./OptionsList";
-import AttributeImpactList from "./ImpactList";
-import ImpactForm, { dropdownStyle } from "./ImpactForm";
-import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { useParams } from "react-router-dom";
+import ImpactSection from "./ImpactSection";
+import AutocompleteAsyncField, {
+  useConnectAutocompleteField,
+} from "@/components/common/fields/AutocompleteAsyncField";
 
-interface QuestionDialogProps {
+interface Props {
   open: boolean;
   question: IQuestionInfo;
-  kitVersionId: string;
   onClose: () => void;
   fetchQuery: any;
 }
 
-const QuestionDialog: React.FC<QuestionDialogProps> = ({
+const QuestionDialog: React.FC<Props> = ({
   open,
   question,
-  kitVersionId,
   onClose,
   fetchQuery,
 }) => {
-  const fetchAttributeKit = useQuery({
-    service: (args, config) =>
-      service.kitVersions.attributes.getAll(args ?? { kitVersionId }, config),
-    runOnMount: false,
-  });
-  const fetchMaturityLevels = useQuery({
-    service: (args, config) =>
-      service.kitVersions.maturityLevel.getAll(args ?? { kitVersionId }, config),
-    runOnMount: false,
-  });
-  const fetchImpacts = useQuery({
-    service: (args, config) =>
-      service.kitVersions.questions.getImpacts(
-        args ?? { kitVersionId, questionId: question.id },
-        config,
-      ),
-    runOnMount: false,
-  });
-  const fetchOptions = useQuery({
-    service: (args, config) =>
-      service.kitVersions.questions.getOptions(
-        args ?? { kitVersionId, questionId: question.id },
-        config,
-      ),
-    runOnMount: false,
-  });
-
-  const postQuestionImpactsKit = useQuery({
-    service: (args, config) => service.kitVersions.questionImpacts.create(args, config),
-    runOnMount: false,
-  });
-
-  const [newOption, setNewOption] = useState({
-    title: "",
-    index: 1,
-    value: 1,
-    id: null,
-  });
-  const [newImpact, setnewImpact] = useState({
-    questionId: question.id,
-    attributeId: undefined,
-    maturityLevelId: undefined,
-    weight: 1,
-  });
-  const [showNewOptionForm, setShowNewOptionForm] = useState(false);
-  const [showNewImpactForm, setShowNewImpactForm] = useState(false);
-  const [disableAddOption, setDisableAddOption] = useState(false);
-  const formMethods = useForm({ shouldUnregister: true });
+  const { kitVersionId = "" } = useParams();
 
   const { service } = useServiceContext();
-
-  useEffect(() => {
-    (async () => {
-      if (open && question.id) {
-        Promise.all([
-          fetchImpacts.query(),
-          fetchAttributeKit.query(),
-          fetchMaturityLevels.query(),
-          fetchOptions.query(),
-          fetchAnswerRanges.query(),
-        ])
-          .then()
-          .catch();
-        formMethods.reset({
-          title: question?.title ?? "",
-          hint: question?.hint ?? "",
-          options: question?.options || [{ text: "" }],
-          mayNotBeApplicable: question?.mayNotBeApplicable || false,
-          advisable: question?.advisable || false,
-        });
-        setSelectedAnswerRange(question?.answerRangeId);
-      }
-    })();
-  }, [open, question, formMethods]);
-
-  const onSubmit = async (data: any) => {
-    try {
-      const requestData = {
-        ...data,
-        index: question.index,
-        answerRangeId: selectedAnswerRange,
-      };
-      await service.kitVersions.questions.update({
-        kitVersionId,
-        questionId: question?.id,
-        data: requestData,
-      });
-      fetchQuery.query();
-      onClose();
-    } catch (error) {
-      const err = error as ICustomError;
-      toastError(err);
-    }
-  };
-
-  const handleAddNewRow = () => {
-    setShowNewOptionForm(true);
-  };
-
-  const handleAddNewImpactRow = () => {
-    setShowNewImpactForm(true);
-  };
-
-  const handleImpactInputChange = (field: string, value: any) => {
-    setnewImpact((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewOption((prev) => ({
-      ...prev,
-      [name]: parsedValue,
-    }));
-  };
-
-  const handleSave = async () => {
-    try {
-      const data = {
-        kitVersionId,
-        index: newOption.index,
-        value: newOption.value,
-        title: newOption.title,
-        questionId: question.id,
-      };
-      await postAnswerOptionsKit.query({ kitVersionId, data }).then(() => {
-        fetchOptions.query();
-      });
-      setShowNewOptionForm(false);
-      setNewOption({
-        title: "",
-        index: (fetchOptions.data?.items.length ?? 0) + 1,
-        value: (fetchOptions.data?.items.length ?? 0) + 1,
-        id: null,
-      });
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
-  const handleCancel = () => {
-    setShowNewOptionForm(false);
-    setNewOption({
-      title: "",
-      index: (fetchOptions.data?.items.length ?? 0) + 1,
-      value: (fetchOptions.data?.items.length ?? 0) + 1,
-      id: null,
-    });
-  };
-
-  const handleSaveNewOption = async () => {
-    try {
-      await postQuestionImpactsKit
-        .query({ kitVersionId, data: newImpact })
-        .then(() => {
-          fetchImpacts.query();
-        });
-      handleCancelNewOption();
-    } catch (err) {
-      const error = err as ICustomError;
-      toastError(error);
-    }
-  };
-
-  const handleCancelNewOption = () => {
-    setShowNewImpactForm(false);
-    setnewImpact({
-      questionId: question.id,
-      attributeId: undefined,
-      maturityLevelId: undefined,
-      weight: 1,
-    });
-  };
-
-  const deleteQuestionImpactsKit = useQuery({
-    service: (args, config) => service.kitVersions.questionImpacts.remove(args, config),
-    runOnMount: false,
-  });
-  const updateQuestionImpactsKit = useQuery({
-    service: (args, config) => service.kitVersions.questionImpacts.update(args, config),
-    runOnMount: false,
-  });
-  const handleDeleteImpact = async (item: any) => {
-    try {
-      await deleteQuestionImpactsKit.query({
-        kitVersionId: kitVersionId,
-        questionImpactId: item.questionImpactId,
-      });
-      fetchImpacts.query();
-    } catch (err) {
-      const error = err as ICustomError;
-      toastError(error);
-    }
-  };
-
-  const handleEditImpact = async (tempValues: any, item: any) => {
-    try {
-      await updateQuestionImpactsKit.query({
-        kitVersionId: kitVersionId,
-        questionImpactId: item.questionImpactId,
-        data: tempValues,
-      });
-      fetchImpacts.query();
-    } catch (err) {
-      const error = err as ICustomError;
-      toastError(error);
-    }
-  };
-
-  const fetchAnswerRanges = useQuery({
-    service: (args, config) =>
-      service.kitVersions.answerRanges.getAll(args ?? { kitVersionId }, config),
-    runOnMount: false,
-  });
-
-  const postAnswerOptionsKit = useQuery({
-    service: (args, config) =>
-      service.kitVersions.answerOptions.createOption(args ?? { kitVersionId, data: {} }, config),
-    runOnMount: false,
-  });
+  const formMethods = useForm({ shouldUnregister: true });
 
   const [selectedAnswerRange, setSelectedAnswerRange] = useState<
     number | undefined
   >(question?.answerRangeId);
 
+  const [selectedMeasure, setSelectedMeasure] = useState<any>(null);
+
+  const fetchMeasures = useQuery({
+    service: () => service.kitVersions.measures.getAll({ kitVersionId }),
+  });
+  const fetchOptions = useQuery({
+    service: () =>
+      service.kitVersions.questions.getOptions({
+        kitVersionId,
+        questionId: question.id,
+      }),
+  });
+
   useEffect(() => {
-    const item = fetchAnswerRanges?.data?.items.find(
-      (answerRange: any) => answerRange.id === question?.answerRangeId,
+    const measureObject = fetchMeasures.data?.items?.find(
+      (m: any) => m.id === question.measureId,
     );
+    setSelectedMeasure(measureObject);
+    formMethods.setValue("measure", measureObject);
+  }, [fetchMeasures?.data?.items]);
 
-    setDisableAddOption(Boolean(item));
-  }, [fetchAnswerRanges?.data?.items]);
+  useEffect(() => {
+    if (open && question.id) {
+      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
 
-  const handleAnswerRangeChange = async (event: any) => {
-    const requestData = {
-      ...question,
-      answerRangeId: event.target.value,
-    };
-    try {
-      await service
-        .kitVersions.questions.update({
-          ...question,
-          kitVersionId,
-          questionId: question?.id,
-          data: requestData,
-        })
-        .then(() => {
-          setSelectedAnswerRange(event.target.value);
-          fetchOptions.query();
-          setDisableAddOption(true);
-        });
-    } catch (err) {
-      const error = err as ICustomError;
-      toastError(error);
+      formMethods.reset({
+        title: question.title ?? "",
+        hint: question.hint ?? "",
+        options: question.options ?? [{ text: "" }],
+        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
+        advisable: question.advisable ?? false,
+      });
+      setSelectedAnswerRange(question.answerRangeId);
     }
-  };
+  }, [open]);
 
-  const handleAddOption = async (item: any) => {
+  const handleSubmit = async (data: any) => {
     try {
-      await postAnswerOptionsKit
-        .query({
-          kitVersionId,
-          data: { ...item, questionId: question.id },
-        })
-        .then(() => {
-          fetchOptions.query();
-          setShowNewOptionForm(false);
-        });
+      await service.kitVersions.questions.update({
+        kitVersionId,
+        questionId: question.id,
+        data: {
+          ...data,
+          index: question.index,
+          answerRangeId: selectedAnswerRange,
+          measureId: data.measure?.id ?? null,
+        },
+      });
+      fetchQuery.query();
+      onClose();
     } catch (err) {
-      const error = err as ICustomError;
-      toastError(error);
+      toastError(err as ICustomError);
     }
   };
 
@@ -325,7 +112,6 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       open={open}
       onClose={onClose}
       title={<Trans i18nKey="editQuestion" />}
-      data-testid={"question-dialog"}
     >
       <FormProviderWithForm
         formMethods={formMethods}
@@ -344,6 +130,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
             <Trans i18nKey="questionAndOptionsDescription" />
           </Typography>
         </Box>
+
         <Grid container spacing={2} mt={2}>
           <Grid item xs={12}>
             <TextField
@@ -354,7 +141,11 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               required
               multiline
               inputProps={{
-                style: {fontFamily: languageDetector(question?.title) ? farsiFontFamily : primaryFontFamily }
+                style: {
+                  fontFamily: languageDetector(question.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                },
               }}
             />
           </Grid>
@@ -366,145 +157,43 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
               placeholder={t("hintPlaceholder")?.toString()}
               multiline
               inputProps={{
-                style: {fontFamily: languageDetector(question?.hint) ? farsiFontFamily : primaryFontFamily }
+                style: {
+                  fontFamily: languageDetector(question.hint)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                },
               }}
             />
           </Grid>
+
           <Grid item xs={12}>
-            <Box
-              mt={1.5}
-              p={1.5}
-              sx={{
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 2,
-              }}
-            >
-              <Typography variant="body2">
-                <Trans i18nKey="answerOptions" />
-              </Typography>
-              <Tooltip
-                title={
-                  fetchAnswerRanges?.data?.items.length === 0 &&
-                  t("emptyAnswerRange")
-                }
-              >
-                <Select
-                  value={selectedAnswerRange ?? ""}
-                  onChange={handleAnswerRangeChange}
-                  sx={{...dropdownStyle, fontFamily: farsiFontFamily }}
-                  size="small"
-                  displayEmpty
-                  disabled={fetchAnswerRanges?.data?.items?.length === 0}
-                >
-                  <MenuItem value="" disabled>
-                    <Trans i18nKey="chooseAnswerRange" />
-                  </MenuItem>
-                  {fetchAnswerRanges?.data?.items?.map((range: any) => (
-                    <MenuItem key={range.id} value={range.id} sx={{fontFamily: languageDetector(range.title) ? farsiFontFamily : primaryFontFamily}}>
-                      {range.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Tooltip>
-            </Box>
-            {fetchOptions?.data?.answerOptions?.length > 0 ? (
-              <Box maxHeight={500} overflow="auto">
-                <OptionList
-                  Options={fetchOptions?.data?.answerOptions}
-                  onEdit={handleAddNewRow}
-                  onDelete={handleAddNewRow}
-                  onReorder={handleAddNewRow}
-                  onAdd={handleAddOption}
-                  isAddingNew={showNewOptionForm}
-                  setIsAddingNew={setShowNewOptionForm}
-                  disableAddOption={disableAddOption}
-                />
-              </Box>
-            ) : (
-              <>
-                {showNewOptionForm ? (
-                  <OptionForm
-                    newItem={newOption}
-                    handleInputChange={handleInputChange}
-                    handleSave={handleSave}
-                    handleCancel={handleCancel}
-                  />
-                ) : (
-                  <EmptyState
-                    btnTitle={"newOption"}
-                    title={"optionsEmptyState"}
-                    SubTitle={"optionsEmptyStateDetailed"}
-                    onAddNewRow={handleAddNewRow}
-                  />
-                )}
-              </>
-            )}
+            <AutocompleteAsyncField
+              {...useConnectAutocompleteField({
+                service: (args, config) =>
+                  service.kitVersions.measures.getAll({ kitVersionId }),
+              })}
+              name="measure"
+              label={<Trans i18nKey="kitDesignerTab.selectMeasure" />}
+              getOptionLabel={(option: any) => option?.title ?? ""}
+              defaultValue={formMethods.watch("measure")}
+              rules={{ required: false }}
+              filterFields={["title"]}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <OptionsSection
+              question={question}
+              kitVersionId={kitVersionId}
+              fetchOptions={fetchOptions}
+              selectedAnswerRange={selectedAnswerRange}
+              setSelectedAnswerRange={setSelectedAnswerRange}
+            />
           </Grid>
         </Grid>
-        <Divider sx={{ my: 1, mt: 4 }} />
 
-        <Box display="flex" flexDirection="column" gap={1} mt={4}>
-          <Typography variant="semiBoldXLarge" gutterBottom>
-            <Trans i18nKey="questionImpacts" />
-          </Typography>
-          <Typography variant="bodyMedium" color="textSecondary">
-            <Trans i18nKey="optionsImpactsDescription" />
-          </Typography>
-        </Box>
-        {fetchImpacts?.data?.attributeImpacts?.length > 0 ? (
-          <>
-            <Box maxHeight={500} overflow="auto">
-              <AttributeImpactList
-                attributeImpacts={fetchImpacts?.data?.attributeImpacts}
-                attributes={fetchAttributeKit?.data?.items}
-                maturityLevels={fetchMaturityLevels?.data?.items}
-                questionId={question.id}
-                isAddingNew={showNewImpactForm}
-                setIsAddingNew={setShowNewImpactForm}
-                handleDeleteImpact={handleDeleteImpact}
-                handleEditImpact={handleEditImpact}
-              />
-            </Box>
-            {showNewImpactForm && (
-              <ImpactForm
-                newItem={newImpact}
-                handleInputChange={handleImpactInputChange}
-                handleSave={handleSaveNewOption}
-                handleCancel={handleCancelNewOption}
-                attributes={fetchAttributeKit?.data?.items}
-                maturityLevels={fetchMaturityLevels?.data?.items}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            {showNewImpactForm ? (
-              <ImpactForm
-                newItem={newImpact}
-                handleInputChange={handleImpactInputChange}
-                handleSave={handleSaveNewOption}
-                handleCancel={handleCancelNewOption}
-                attributes={fetchAttributeKit?.data?.items}
-                maturityLevels={fetchMaturityLevels?.data?.items}
-              />
-            ) : (
-              <EmptyState
-                btnTitle={"newOptionImpact"}
-                title={"optionsImpactsEmptyState"}
-                SubTitle={"optionsImpactsEmptyStateDetailed"}
-                onAddNewRow={handleAddNewImpactRow}
-                disabled={
-                  fetchAttributeKit?.data?.items?.length === 0 ||
-                  fetchOptions.data?.answerOptions?.length === 0
-                }
-                disableTextBox={<Trans i18nKey="optionsImpactsDisabled" />}
-              />
-            )}
-          </>
-        )}
+        <Divider sx={{ my: 1, mt: 4 }} />
+        <ImpactSection question={question} />
 
         <Divider sx={{ my: 1, mt: 4 }} />
 
@@ -516,9 +205,10 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
             <Trans i18nKey="advancedSettingsDescription" />
           </Typography>
         </Box>
+
         <Grid container spacing={2} alignItems="center" mt={1}>
           <Grid item xs={6}>
-            <Box sx={{ ...styles.centerVH }}>
+            <Box sx={styles.centerVH}>
               <Typography variant="semiBoldMedium">
                 <Trans i18nKey="notApplicable" />
               </Typography>
@@ -544,7 +234,7 @@ const QuestionDialog: React.FC<QuestionDialogProps> = ({
       <CEDialogActions
         loading={false}
         onClose={onClose}
-        onSubmit={formMethods.handleSubmit(onSubmit)}
+        onSubmit={formMethods.handleSubmit(handleSubmit)}
         submitButtonLabel="editQuestion"
         type="create"
       />

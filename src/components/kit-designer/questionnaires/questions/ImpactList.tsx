@@ -13,11 +13,12 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
-import { IAttribute, IMaturityLevel, TId } from "@/types/index";
+import { TId } from "@/types/index";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import uniqueId from "@/utils/uniqueId";
 
 interface OptionValue {
   optionId: number;
@@ -27,11 +28,12 @@ interface OptionValue {
 interface Impact {
   questionImpactId: number;
   weight: number;
-  maturityLevel: {
+  maturityLevel?: {
     maturityLevelId: number;
     title: string;
   };
-  optionValues: OptionValue[];
+  optionValues?: OptionValue[];
+  [key: string]: any;
 }
 
 interface AttributeImpact {
@@ -40,43 +42,57 @@ interface AttributeImpact {
   impacts: Impact[];
 }
 
+interface FieldConfig {
+  name: string;
+  label: string;
+  options?: Array<{ id: number; title: string }>;
+}
+
 interface AttributeImpactListProps {
   attributeImpacts: AttributeImpact[];
-  attributes: IAttribute[];
-  maturityLevels: IMaturityLevel[];
-  questionId: TId;
+  questionId?: TId;
   isAddingNew: boolean;
   setIsAddingNew: any;
   handleDeleteImpact: any;
   handleEditImpact: any;
+  fields: FieldConfig[];
+  hasWeight?: boolean;
 }
 
 const AttributeImpactList = ({
   attributeImpacts,
-  attributes,
-  maturityLevels,
   questionId,
   isAddingNew,
   setIsAddingNew,
   handleDeleteImpact,
   handleEditImpact,
+  fields,
+  hasWeight = true,
 }: AttributeImpactListProps) => {
   const [editMode, setEditMode] = useState<number | null>(null);
-  const [tempValues, setTempValues] = useState({
+  const [tempValues, setTempValues] = useState<Record<string, any>>({
     questionId,
-    attributeId: undefined,
-    maturityLevelId: undefined,
     weight: 1,
   });
 
-  const toggleEditMode = (id: number | null, item?: any, attribute?: any) => {
+  const toggleEditMode = (
+    id: number | null,
+    item?: Impact,
+    attribute?: any,
+  ) => {
     if (id !== null && item && attribute) {
-      setTempValues({
+      const newTemp: Record<string, any> = {
         questionId,
-        attributeId: attribute?.attributeId ?? undefined,
-        maturityLevelId: item?.maturityLevel?.maturityLevelId ?? undefined,
         weight: item.weight ?? 0,
+      };
+      fields.forEach((field) => {
+        const key = field.name;
+        newTemp[key] =
+          key === "attributeId"
+            ? attribute?.attributeId
+            : (item?.[key]?.id ?? item?.maturityLevel?.maturityLevelId);
       });
+      setTempValues(newTemp);
     }
     setEditMode(id);
   };
@@ -92,12 +108,7 @@ const AttributeImpactList = ({
 
   const handleCancelClick = () => {
     toggleEditMode(null);
-    setTempValues({
-      questionId,
-      attributeId: undefined,
-      maturityLevelId: undefined,
-      weight: 1,
-    });
+    setTempValues({ questionId, weight: 1 });
   };
 
   return (
@@ -129,8 +140,8 @@ const AttributeImpactList = ({
                 toggleEditMode={() =>
                   toggleEditMode(item.questionImpactId, item, attribute)
                 }
-                attributes={attributes}
-                maturityLevels={maturityLevels}
+                fields={fields}
+                hasWeight={hasWeight}
               />
 
               <ActionButtons
@@ -166,16 +177,14 @@ const AttributeImpactList = ({
   );
 };
 
-// Rest of your components here
-
 const ImpactDetails = ({
   attribute,
   item,
   editMode,
   tempValues,
   handleInputChange,
-  attributes,
-  maturityLevels,
+  fields,
+  hasWeight,
 }: any) => (
   <Box
     sx={{
@@ -187,54 +196,41 @@ const ImpactDetails = ({
   >
     {editMode === item.questionImpactId ? (
       <>
-        <FormControl fullWidth size="small" sx={textFieldStyle}>
-          <InputLabel id="attribute-label">
-            <Trans i18nKey="attribute" />
-          </InputLabel>
-          <Select
-            labelId="attribute-label"
-            value={tempValues.attributeId ?? ""}
-            onChange={(e) => handleInputChange("attributeId", e.target.value)}
-            label={<Trans i18nKey="attribute" />} // هنوز نیازه تا درون سلکت دیده بشه
+        {fields.map((field: any, idx: number) => (
+          <FormControl
+            key={uniqueId()}
+            fullWidth
+            size="small"
+            sx={textFieldStyle}
           >
-            {attributes?.map((attr: IAttribute) => (
-              <MenuItem key={attr.id} value={attr.id}>
-                {attr.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+            <Select
+              labelId={`${field.name}-label`}
+              value={tempValues[field.name] ?? ""}
+              onChange={(e) => handleInputChange(field.name, e.target.value)}
+              label={field.label}
+            >
+              {field.options?.map((option: any) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        ))}
 
-        <FormControl fullWidth size="small" sx={textFieldStyle}>
-          <InputLabel id="maturity-label">
-            <Trans i18nKey="maturityLevel" />
-          </InputLabel>
-          <Select
-            labelId="maturity-label"
-            value={tempValues.maturityLevelId ?? ""}
-            onChange={(e) =>
-              handleInputChange("maturityLevelId", e.target.value)
-            }
-            label={<Trans i18nKey="maturityLevel" />}
-          >
-            {maturityLevels?.map((level: IMaturityLevel) => (
-              <MenuItem key={level.id} value={level.id}>
-                {level.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <TextField
-          type="number"
-          required
-          value={tempValues.weight}
-          onChange={(e) => handleInputChange("weight", e.target.value)}
-          variant="outlined"
-          size="small"
-          label={<Trans i18nKey="weight" />}
-          sx={textFieldStyle}
-        />
+        {hasWeight && (
+          <TextField
+            type="number"
+            required
+            value={tempValues.weight}
+            onChange={(e) => handleInputChange("weight", e.target.value)}
+            variant="outlined"
+            size="small"
+            label={t("weight")}
+            sx={textFieldStyle}
+          />
+        )}
       </>
     ) : (
       <>
@@ -243,15 +239,17 @@ const ImpactDetails = ({
             {attribute.title}
           </Typography>
           <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
-            {t("impactsOn") + " " + item.maturityLevel.title}
+            {t("impactsOn") + " " + item.maturityLevel?.title}
           </Typography>
         </Box>
-        <Chip
-          label={`${t("weight")}: ${item.weight}`}
-          color="primary"
-          size="small"
-          sx={{ ml: 2, fontSize: 12 }}
-        />
+        {hasWeight && (
+          <Chip
+            label={`${t("weight")}: ${item.weight}`}
+            color="primary"
+            size="small"
+            sx={{ ml: 2, fontSize: 12 }}
+          />
+        )}
       </>
     )}
   </Box>

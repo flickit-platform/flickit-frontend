@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import MeasureForm from "../MeasureForm";
-import { describe, it, vi, expect, beforeEach } from "vitest";
+import { describe, it, vi, expect } from "vitest";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";

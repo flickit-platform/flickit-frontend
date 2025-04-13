@@ -31,7 +31,7 @@ const MaturityLevelForm = ({
     mt={1.5}
     p={1.5}
     sx={{
-      backgroundColor: "gray.100",
+      backgroundColor: "#F3F5F6",
       borderRadius: "8px",
       border: "0.3px solid #73808c30",
       display: "flex",
@@ -60,6 +60,7 @@ const MaturityLevelForm = ({
         }}
         sx={{
           fontSize: 14,
+          background: "#fff",
           "& .MuiInputBase-root": {
             fontSize: 14,
           },
@@ -85,6 +86,7 @@ const MaturityLevelForm = ({
         sx={{
           mt: 0,
           fontSize: 14,
+          background:"#fff",
           "& .MuiInputBase-root": {
             height: 40,
             fontSize: 14,
@@ -115,6 +117,7 @@ const MaturityLevelForm = ({
         sx={{
           mt: 1,
           fontSize: 14,
+          background:"#fff",
           "& .MuiInputBase-root": {
             fontSize: 14,
             overflow: "auto",
