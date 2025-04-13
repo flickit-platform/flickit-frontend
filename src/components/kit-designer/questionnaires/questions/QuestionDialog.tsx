@@ -1,4 +1,3 @@
-// ✅ کامپوننت ریفکتورشده با حفظ کامل منطق‌ها و جدا کردن بخش‌ها به شکل خوانا و استاندارد
 import React, { useEffect, useState } from "react";
 import {
   Grid,
@@ -24,9 +23,12 @@ import {
 } from "@/components/common/dialogs/CEDialog";
 import FormProviderWithForm from "@/components/common/FormProviderWithForm";
 import OptionsSection from "./OptionsSection";
-import QuestionSubSection from "./QuestionSubSection";
 import { t } from "i18next";
 import { useParams } from "react-router-dom";
+import ImpactSection from "./ImpactSection";
+import AutocompleteAsyncField, {
+  useConnectAutocompleteField,
+} from "@/components/common/fields/AutocompleteAsyncField";
 
 interface Props {
   open: boolean;
@@ -50,34 +52,6 @@ const QuestionDialog: React.FC<Props> = ({
     number | undefined
   >(question?.answerRangeId);
 
-  const [impactState, setImpactState] = useState<any>({
-    item: {
-      questionId: question.id,
-      attributeId: undefined,
-      maturityLevelId: undefined,
-      weight: 1,
-    },
-    showForm: false,
-  });
-
-  const [measureState, setMeasureState] = useState<any>({
-    item: { questionId: question.id, measureId: undefined },
-    showForm: false,
-  });
-
-  const fetchAttributeKit = useQuery({
-    service: () => service.kitVersions.attributes.getAll({ kitVersionId }),
-  });
-  const fetchMaturityLevels = useQuery({
-    service: () => service.kitVersions.maturityLevel.getAll({ kitVersionId }),
-  });
-  const fetchImpacts = useQuery({
-    service: () =>
-      service.kitVersions.questions.getImpacts({
-        kitVersionId,
-        questionId: question.id,
-      }),
-  });
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
   });
@@ -89,31 +63,13 @@ const QuestionDialog: React.FC<Props> = ({
       }),
   });
 
-  const createImpact = useQuery({
-    service: (args, config) =>
-      service.kitVersions.questionImpacts.create(args, config),
-  });
-  const updateImpact = useQuery({
-    service: (args, config) =>
-      service.kitVersions.questionImpacts.update(args, config),
-  });
-  const deleteImpact = useQuery({
-    service: (args, config) =>
-      service.kitVersions.questionImpacts.update(args, config),
-  });
-
   useEffect(() => {
     if (open && question.id) {
-      Promise.all([
-        fetchImpacts.query(),
-        fetchAttributeKit.query(),
-        fetchMaturityLevels.query(),
-        fetchOptions.query(),
-        fetchMeasures.query(),
-      ]);
+      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
       formMethods.reset({
         title: question.title ?? "",
         hint: question.hint ?? "",
+        measureId: question.measureId ?? null,
         options: question.options ?? [{ text: "" }],
         mayNotBeApplicable: question.mayNotBeApplicable ?? false,
         advisable: question.advisable ?? false,
@@ -138,114 +94,6 @@ const QuestionDialog: React.FC<Props> = ({
     } catch (err) {
       toastError(err as ICustomError);
     }
-  };
-
-  const sharedProps = (type: "impact" | "measure") => {
-    const isImpact = type === "impact";
-    const state = isImpact ? impactState : measureState;
-    const setState = isImpact ? setImpactState : setMeasureState;
-    const fetchList = isImpact ? fetchImpacts : fetchMeasures;
-
-    return {
-      title: isImpact ? "questionImpacts" : "questionMeasures",
-      description: isImpact
-        ? "optionsImpactsDescription"
-        : "questionMeasuresDescription",
-      emptyBtnTitle: "newOptionImpact",
-      emptyTitle: "optionsImpactsEmptyState",
-      emptySubtitle: "optionsImpactsEmptyStateDetailed",
-      disabledCondition:
-        fetchAttributeKit?.data?.items?.length === 0 ||
-        fetchOptions.data?.answerOptions?.length === 0,
-      impacts: fetchList?.data?.attributeImpacts ?? [],
-      fields: isImpact
-        ? [
-            {
-              name: "attributeId",
-              label: t("attribute"),
-              options: fetchAttributeKit?.data?.items,
-            },
-            {
-              name: "maturityLevelId",
-              label: t("maturityLevel"),
-              options: fetchMaturityLevels?.data?.items,
-            },
-          ]
-        : [
-            {
-              name: "measureId",
-              label: t("selectMeasure"),
-              options: fetchMeasures?.data?.items,
-            },
-          ],
-      hasWeight: isImpact,
-      isAddingNew: state.showForm,
-      setIsAddingNew: (val: boolean) =>
-        setState((prev: any) => ({ ...prev, showForm: val })),
-      newImpact: state.item,
-      handlers: {
-        onSave: async () => {
-          try {
-            await createImpact.query({ kitVersionId, data: state.item });
-            fetchList.query();
-            setState({
-              item: isImpact
-                ? {
-                    questionId: question.id,
-                    attributeId: undefined,
-                    maturityLevelId: undefined,
-                    weight: 1,
-                  }
-                : { questionId: question.id, measureId: undefined },
-              showForm: false,
-            });
-          } catch (err) {
-            toastError(err as ICustomError);
-          }
-        },
-        onCancel: () =>
-          setState({
-            item: isImpact
-              ? {
-                  questionId: question.id,
-                  attributeId: undefined,
-                  maturityLevelId: undefined,
-                  weight: 1,
-                }
-              : { questionId: question.id, measureId: undefined },
-            showForm: false,
-          }),
-        onInputChange: (field: string, value: any) =>
-          setState((prev: any) => ({
-            ...prev,
-            item: { ...prev.item, [field]: value },
-          })),
-        onDelete: async (item: any) => {
-          try {
-            await deleteImpact.query({
-              kitVersionId,
-              questionImpactId: item.questionImpactId,
-            });
-            fetchList.query();
-          } catch (err) {
-            toastError(err as ICustomError);
-          }
-        },
-        onEdit: async (values: any, item: any) => {
-          try {
-            await updateImpact.query({
-              kitVersionId,
-              questionImpactId: item.questionImpactId,
-              data: values,
-            });
-            fetchList.query();
-          } catch (err) {
-            toastError(err as ICustomError);
-          }
-        },
-        onAdd: () => setState((prev: any) => ({ ...prev, showForm: true })),
-      },
-    };
   };
 
   return (
@@ -306,6 +154,22 @@ const QuestionDialog: React.FC<Props> = ({
               }}
             />
           </Grid>
+
+          <Grid item xs={12}>
+            <AutocompleteAsyncField
+              {...useConnectAutocompleteField({
+                service: (args, config) =>
+                  service.kitVersions.measures.getAll({ kitVersionId }),
+              })}
+              name="measureId"
+              label={<Trans i18nKey="kitDesignerTab.selectMeasure" />}
+              getOptionLabel={(option: any) => option?.title ?? ""}
+              defaultValue={formMethods.watch("measureId")}
+              rules={{ required: false }}
+              filterFields={["title"]}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <OptionsSection
               question={question}
@@ -318,9 +182,9 @@ const QuestionDialog: React.FC<Props> = ({
         </Grid>
 
         <Divider sx={{ my: 1, mt: 4 }} />
-        <QuestionSubSection {...sharedProps("impact")} />
+        <ImpactSection question={question} />
+
         <Divider sx={{ my: 1, mt: 4 }} />
-        <QuestionSubSection {...sharedProps("measure")} />
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
           <Typography variant="semiBoldXLarge" gutterBottom>

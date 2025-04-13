@@ -21,7 +21,6 @@ interface ImpactFormProps {
     label: string;
     options?: Array<{ id: number; title: string }>;
   }[];
-  hasWeight?: boolean;
 }
 
 export const dropdownStyle = {
@@ -37,7 +36,6 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
   handleSave,
   handleCancel,
   fields,
-  hasWeight = true,
 }) => {
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
@@ -92,19 +90,17 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         </Select>
       ))}
 
-      {hasWeight && (
-        <TextField
-          required
-          name="weight"
-          label={<Trans i18nKey="weight" />}
-          value={newItem.weight}
-          onChange={handleTextFieldChange}
-          fullWidth
-          type="number"
-          size="small"
-          sx={{ mx: 1, backgroundColor: "#fff", textFieldStyle, width: "50%" }}
-        />
-      )}
+      <TextField
+        required
+        name="weight"
+        label={<Trans i18nKey="weight" />}
+        value={newItem.weight}
+        onChange={handleTextFieldChange}
+        fullWidth
+        type="number"
+        size="small"
+        sx={{ mx: 1, backgroundColor: "#fff", textFieldStyle, width: "50%" }}
+      />
 
       <Box display="flex" alignItems="center">
         <IconButton size="small" color="primary" onClick={handleSave}>

@@ -35,6 +35,7 @@ export interface IQuestionInfo {
   confidence_level?: any;
   advisable?: boolean;
   answerRangeId?: number;
+  measureId?: number;
   issues?: {
     isUnanswered?: boolean;
     hasUnapprovedAnswer?: boolean;

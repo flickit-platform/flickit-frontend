@@ -258,7 +258,7 @@ const AutocompleteBaseField = (
     if (
       inputValue &&
       hasAddBtn &&
-      !optionsData.some((opt) => getOptionLabel(opt) === inputValue)
+      !optionsData?.some((opt) => getOptionLabel(opt) === inputValue)
     ) {
       createSpaceQuery();
     }
@@ -299,7 +299,7 @@ const AutocompleteBaseField = (
       filterSelectedOptions={true}
       filterOptions={(options, params) => {
         const filtered = getFilteredOptions(options, params);
-        const exactMatch = optionsData.find(
+        const exactMatch = optionsData?.find(
           (option) =>
             getOptionLabel(option).toLowerCase() === inputValue.toLowerCase(),
         );
