@@ -1149,6 +1149,14 @@ const OnHoverInputTitleSetting = (props: any) => {
   };
   const { assessmentId } = useParams();
   const { service } = useServiceContext();
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        if (type === "title") setInputData(value);
+        else setInputDataShortTitle(value);
+    };
+
   const updateAssessmentQuery = useQuery({
     service: (args, config) =>
       service.assessments.info.update(
@@ -1216,11 +1224,7 @@ const OnHoverInputTitleSetting = (props: any) => {
                   inputProps={inputProps}
                   hasError={hasError}
                   name={type}
-                  inputHandler={(e:any)=>{
-                      type == "title"
-                          ? setInputData(e.target.value)
-                          : setInputDataShortTitle(e.target.value)
-                  }}
+                  inputHandler={(e: React.ChangeEvent<HTMLInputElement>)=>handleChange(e)}
                   value={type == "title" ? inputData : inputDataShortTitle}
                   handleDone={updateAssessmentTitle}
                   handleCancel={handleCancel}

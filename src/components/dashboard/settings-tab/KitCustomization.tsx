@@ -373,6 +373,15 @@ const OnHoverInputCustomTitle = (props: any) => {
     },
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLocalInputData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setHasError(false);
+  };
+
   return (
     <Box>
       <Box
@@ -394,13 +403,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                 inputProps={inputProps}
                 hasError={hasError}
                 name={type}
-                inputHandler={(e:any)=>{
-                  setLocalInputData((prev: any) => ({
-                    ...prev,
-                    title: e.target.value,
-                  }));
-                  setHasError(false);
-                }}
+                inputHandler={(e: React.ChangeEvent<HTMLInputElement>)=> handleChange(e)}
                 value={localInputData.title}
                 handleDone={handleSave}
                 handleCancel={handleCancel}

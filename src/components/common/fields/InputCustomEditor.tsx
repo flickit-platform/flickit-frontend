@@ -14,7 +14,6 @@ const InputCustomEditor = (props: any) => {
             error={hasError}
             fullWidth
             name={name}
-            defaultValue={data ?? ""}
             onChange={(e) => inputHandler(e)}
             value={value}
             required={true}
