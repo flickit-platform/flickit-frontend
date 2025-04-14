@@ -5,7 +5,7 @@ import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
 import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
-import {primaryFontFamily, theme} from "@/config/theme";
+import { primaryFontFamily, theme } from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
 import languageDetector from "@utils/languageDetector";
 
@@ -46,6 +46,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     isEditing,
     valueCount,
     rtl,
+    error,
     ...rest
   } = props;
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -87,9 +88,16 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     }
     if (type !== "password") {
       const isFarsi = languageDetector(event.target.value);
-      event.target.dir = event.target.value.length == 0 && rtl ? "rtl" :
-                         event.target.value.length == 0 && !rtl ? "ltr" :
-                         rtl && isFarsi ? "rtl"  : !rtl && isFarsi ? "rtl" : "ltr"
+      event.target.dir =
+        event.target.value.length == 0 && rtl
+          ? "rtl"
+          : event.target.value.length == 0 && !rtl
+            ? "ltr"
+            : rtl && isFarsi
+              ? "rtl"
+              : !rtl && isFarsi
+                ? "rtl"
+                : "ltr";
 
       event.target.style.fontFamily = isFarsi ? "VazirMatn" : primaryFontFamily;
     }
@@ -110,7 +118,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       inputRef={inputRef}
       onChange={handleInputChange}
       sx={{
-        "& ::placeholder": {...theme.typography.bodyMedium},
+        "& ::placeholder": { ...theme.typography.bodyMedium },
         background: pallet?.background,
         borderRadius: borderRadius,
         "& .MuiOutlinedInput-root": {
@@ -163,7 +171,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
                 : {},
             }
       }
-      error={hasError}
+      error={hasError || error}
       helperText={(errorMessage as ReactNode) || helperText}
     />
   );

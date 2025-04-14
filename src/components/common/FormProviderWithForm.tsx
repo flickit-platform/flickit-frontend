@@ -1,12 +1,13 @@
 import React, { PropsWithChildren } from "react";
 import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
+import { T } from "vitest/dist/types-aac763a5";
 
 interface IFormProviderWithFormProps
   extends React.DetailedHTMLProps<
     React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   > {
-  formMethods: UseFormReturn<FieldValues, any>;
+  formMethods: any;
 }
 
 const FormProviderWithForm = (

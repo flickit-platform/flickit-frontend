@@ -1,9 +1,15 @@
 import { PropsWithChildren } from "react";
-import AssessmentKitsStore from "@components/assessment-kit/AssessmentKitsStore";
+import Box from "@mui/material/Box";
+import AssessmentKitsStoreBanner from "./AssessmentKitsStoreBanner";
+import Button from "@mui/material/Button";
+import AssessmentKitsContactUs from "./AssessmentKitsContactUs";
 
 const AssessmentKitsContainer = (props: PropsWithChildren<{}>) => {
   return (
-        <AssessmentKitsStore />
+    <Box>
+      <AssessmentKitsStoreBanner />
+      <AssessmentKitsContactUs />
+    </Box>
   );
 };
 
