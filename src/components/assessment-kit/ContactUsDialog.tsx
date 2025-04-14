@@ -3,15 +3,14 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
-
 import Typography from "@mui/material/Typography";
-import { Box, Button } from "@mui/material";
-import AssessmentError from "@/assets/svg/AssessmentError.svg";
+import { Box } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -21,13 +20,15 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 
-  const [state, handleSubmitSpree] = useFormSpree("myzeoqrg");
+  const [state, handleSubmitSpree] = useFormSpree("xkgjejrv");
   const methods = useForm();
   const [emailError, setEmailError] = useState<any>("");
 
   const [dialogKey, setDialogKey] = useState(0);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const close = () => {
+    handleSubmitSpree({});
     abortController.abort();
     setEmailError("");
     methods.reset();
@@ -52,17 +53,20 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       {...rest}
       closeDialog={close}
       title={
-        <>
-          <Typography sx={theme.typography.semiBoldXLarge} textTransform="none">
-            <Trans i18nKey="contactUs" />
-          </Typography>
-        </>
+        <Typography sx={theme.typography.semiBoldXLarge} textTransform="none">
+          <Trans i18nKey="contactUs" />
+        </Typography>
       }
     >
       {state.succeeded ? (
-        <Box>
+        <Box
+          mt={2}
+          sx={{
+            minHeight: { xs: "calc(100vh - 100px)", sm: "unset" },
+          }}
+        >
           <Box
-            mt={2}
+            height="94%"
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -81,6 +85,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               <Trans i18nKey="weWillGetBackToYouSoon" />
             </Typography>
           </Box>
+
           <CEDialogActions
             hideCancelButton
             submitButtonLabel={t("okGotIt")}
@@ -115,25 +120,20 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                 required
               />
             </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: 2,
-                mt: 3,
-              }}
-            >
-              <Button onClick={close}>{t("cancel")}</Button>
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={state.submitting}
-              >
-                {t("confirm")}
-              </Button>
-            </Box>
           </form>
+
+          <CEDialogActions
+            cancelLabel={t("cancel")}
+            submitButtonLabel={t("confirm")}
+            onClose={close}
+            loading={state.submitting}
+            onSubmit={methods.handleSubmit(onSubmit)}
+            sx={{
+              flexDirection: { xs: "column-reverse", sm: "row" },
+              gap: 2,
+              mt: 2,
+            }}
+          />
         </FormProvider>
       )}
     </CEDialog>
