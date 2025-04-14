@@ -37,7 +37,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   };
 
   const onSubmit = (data: any) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(data.email)) {
       setEmailError(t("invalidEmail"));
       return;
