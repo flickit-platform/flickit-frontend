@@ -151,6 +151,75 @@ const compare = {
   }),
 };
 
+const carouselStyle ={
+    carousel: style({
+      position: 'relative',
+      width: '100%',
+      height: '400px',
+      overflow: 'hidden',
+      cursor: 'pointer',
+      mt: 4, // margin-top: 32px
+    }),
+    carouselInner: style({
+      display: 'flex',
+      width: '100%',
+      height: '100%',
+      transition: 'transform 0.5s ease-in-out',
+        }) ,
+    carouselImage: style({
+      width: '100%',
+      height: '100%',
+      objectFit: 'fill',
+      flexShrink: 0,
+        }),
+    arrow: style({
+       position: 'absolute',
+       top: '40%',
+       transform: 'translateY(-50%)',
+       fontSize: '24px',
+       color: 'white',
+       backgroundColor: 'transparent',
+       border: 'none',
+       padding: '10px',
+       cursor: 'pointer',
+       zIndex: 2,
+       borderRadius: '50%',
+        }) ,
+    arrowLeft: style({
+       left: '15px',
+       transform: 'rotate(90deg)',
+    }) ,
+    arrowRight: style({
+      right: '15px',
+      transform: 'rotate(-90deg)',
+    }) ,
+    dots: style({
+      position: 'absolute',
+      bottom: '15px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      display: 'flex',
+      gap: '10px',
+    }) ,
+    dot: style({
+      width: '16px',
+      height: '16px',
+      backgroundColor: '#ccc',
+      borderRadius: '50%',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      opacity: 0.7,
+    }) ,
+    dotActive: style({
+      width: '32px',
+      height: '16px',
+      borderRadius: '20px',
+      backgroundColor: '#333',
+      transform: 'scale(1.3)',
+      opacity: 1,
+    })
+}
+
 export const styles = {
   ...commonStyles,
   ...auth,
@@ -158,6 +227,7 @@ export const styles = {
   ...compare,
   ...sharedChipStyles,
   ...box,
+  ...carouselStyle,
   cards,
 };
 
