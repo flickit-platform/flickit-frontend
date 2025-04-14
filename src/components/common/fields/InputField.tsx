@@ -67,10 +67,10 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   );
 
   useEffect(() => {
-    if (isFocused && inputRef?.current) {
-      inputRef?.current?.focus();
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
     } else {
-      inputRef?.current?.blur();
+      inputRef.current?.blur();
     }
   }, [isFocused]);
 
@@ -112,6 +112,14 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       inputRef.current.focus();
     }
   };
+
+  let inputStyle: React.CSSProperties = {};
+  if (hasCounter) {
+    inputStyle =
+      isFarsi || rtl
+        ? { paddingLeft: 80, minHeight: "110px" }
+        : { paddingRight: 80, minHeight: "110px" };
+  }
 
   return (
     <TextField
@@ -165,17 +173,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               ),
             }
           : {
-              style: hasCounter
-                ? (isFarsi || rtl
-                    ? {
-                        paddingLeft: 80,
-                        minHeight: "110px",
-                      }
-                    : {
-                        paddingRight: 80,
-                        minHeight: "110px",
-                      })
-                : {},
+              style: inputStyle,
             }
       }
       error={hasError || error}

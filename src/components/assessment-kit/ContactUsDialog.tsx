@@ -10,7 +10,6 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
