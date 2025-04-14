@@ -25,7 +25,6 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   const [emailError, setEmailError] = useState<any>("");
 
   const [dialogKey, setDialogKey] = useState(0);
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const close = () => {
     handleSubmitSpree({});
