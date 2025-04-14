@@ -95,7 +95,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       const isFarsiText = languageDetector(value);
       const valueIsEmpty = value.length === 0;
 
-      let direction: "rtl" | "ltr" = "ltr";
+      let direction;
       if (valueIsEmpty) {
         direction = rtl ? "rtl" : "ltr";
       } else {
