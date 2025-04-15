@@ -894,6 +894,7 @@
   "weWillGetBackToYouSoon": "We’ll get back to you as soon as possible.",
   "contactUs":"Contact us",
   "invalidEmail": "Please enter a valid email address.",
+  "kitLibrary": "Kit Library",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",
