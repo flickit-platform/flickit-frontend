@@ -39,6 +39,7 @@ import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
+import InputCustomEditor from "@common/fields/InputCustomEditor";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -220,7 +221,6 @@ const AssessmentKitSectionGeneralInfo = (
                     <Trans i18nKey={"free"} />
                   </Typography>
                 </Box>
-
                 <Box
                   my={1.5}
                   sx={{

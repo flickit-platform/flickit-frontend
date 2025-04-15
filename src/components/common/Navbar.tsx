@@ -19,7 +19,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
@@ -27,12 +26,10 @@ import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { ISpacesModel } from "@/types/index";
-import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IMessage } from "@novu/notification-center";
@@ -375,7 +372,8 @@ const Navbar = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args, config) => service.space.getList(args, config),
+      service: (args?: { page?: number; size?: number }, config?: any) =>
+         service.space.getList({ page: 1, size: 20, ...args }, config),
     toastError: true,
   });
   const fetchPathInfo = useQuery({
@@ -528,7 +526,7 @@ const Navbar = () => {
             component={NavLink}
             to={`/assessment-kits`}
           >
-            <ListItemText primary={<Trans i18nKey="assessmentKits" />} />
+            <ListItemText primary={<Trans i18nKey="kitLibrary" />} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -587,21 +585,17 @@ const Navbar = () => {
           <Box
             sx={{
               display: { xs: "none", md: "block" },
-              mr: theme.direction === "rtl" ? 3 : 0,
-              ml: theme.direction === "ltr" ? 3 : 0,
+              mr: theme.direction === "rtl" ? 20 : 0,
+              ml: theme.direction === "ltr" ? 20 : 0,
             }}
           >
             <SpacesButton />
             <Button
               component={NavLink}
               to={`/compare`}
-              startIcon={
-                <CompareRoundedIcon
-                  sx={{ opacity: 0.8, fontSize: "1.125rem !important" }}
-                />
-              }
               sx={{
                 ...styles.activeNavbarLink,
+                textTransform: "capitalize",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
                 color: "#fff",
@@ -615,18 +609,14 @@ const Navbar = () => {
               to={`/assessment-kits`}
               sx={{
                 ...styles.activeNavbarLink,
+                textTransform: "capitalize",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
                 color: "#fff",
               }}
               size="small"
-              startIcon={
-                <AssessmentRoundedIcon
-                  sx={{ opacity: 0.8, fontSize: "18px !important" }}
-                />
-              }
             >
-              <Trans i18nKey="assessmentKits" />
+              <Trans i18nKey="kitLibrary" />
             </Button>
           </Box>
           <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
@@ -732,9 +722,12 @@ const SpacesButton = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args, config) => service.space.getList(args, config),
-    toastError: true,
+      service: (args?: { page?: number; size?: number }, config?: any) =>
+          service.space.getList({page: 1, size: 20, ...args}, config),
+      toastError: true,
   });
+
+  const isActive = location.pathname.startsWith("/spaces/1");
 
   return (
     <>
@@ -742,19 +735,27 @@ const SpacesButton = () => {
         data-cy="spaces"
         onClick={() => navigate("/spaces/1")}
         sx={{
-          ...styles.activeNavbarLink,
+          textTransform: "capitalize",
           marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
           marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
           "&:hover .MuiButton-endIcon > div": {
             borderLeftColor: "#8080802b",
           },
+            ...(isActive && {
+                "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    bottom: 0,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "90%", // 👈 smaller underline
+                    height: "2px",
+                    backgroundColor: "#fff",
+                    borderRadius: 1,
+                }
+            }),
           color: "#fff",
         }}
-        startIcon={
-          <FolderRoundedIcon
-            sx={{ opacity: 0.8, fontSize: "18px !important" }}
-          />
-        }
         size="small"
         endIcon={
           <Box

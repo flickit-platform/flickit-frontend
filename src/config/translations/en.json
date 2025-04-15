@@ -896,6 +896,7 @@
   "invalidEmail": "Please enter a valid email address.",
   "designedBy": "by",
   "createNewAssessment": "Create assessment",
+  "kitLibrary": "Kit Library",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",

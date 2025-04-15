@@ -20,8 +20,6 @@ import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import firstCharDetector from "@utils/firstCharDetector";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
 import Grid from "@mui/material/Grid";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -38,14 +36,13 @@ import formatDate from "@utils/formatDate";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@utils/selectHeight";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
+import InputCustomEditor from "@common/fields/InputCustomEditor";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -1152,6 +1149,14 @@ const OnHoverInputTitleSetting = (props: any) => {
   };
   const { assessmentId } = useParams();
   const { service } = useServiceContext();
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        if (type === "title") setInputData(value);
+        else setInputDataShortTitle(value);
+    };
+
   const updateAssessmentQuery = useQuery({
     service: (args, config) =>
       service.assessments.info.update(
@@ -1215,74 +1220,15 @@ const OnHoverInputTitleSetting = (props: any) => {
           <Box
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
-            <OutlinedInput
-              inputProps={inputProps}
-              error={hasError}
-              fullWidth
-              defaultValue={
-                type == "title" ? inputData : inputDataShortTitle ?? ""
-              }
-              onChange={(e) =>
-                type == "title"
-                  ? setInputData(e.target.value)
-                  : setInputDataShortTitle(e.target.value)
-              }
-              value={type == "title" ? inputData : inputDataShortTitle}
-              required={true}
-              multiline={true}
-              sx={{
-                minHeight: "38px",
-                borderRadius: "4px",
-                paddingRight: "12px;",
-                fontWeight: "700",
-                fontSize: "0.875rem",
-                "&.MuiOutlinedInput-notchedOutline": { border: 0 },
-                "&.MuiOutlinedInput-root:hover": {
-                  border: 0,
-                  outline: "none",
-                },
-                "& .MuiOutlinedInput-input:focused": {
-                  border: 0,
-                  outline: "none",
-                },
-                "&.MuiOutlinedInput-root.Mui-selected": {
-                  border: 0,
-                  outline: "none",
-                },
-                "&:hover": { border: "1px solid #79747E" },
-              }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    title="Submit Edit"
-                    edge={theme.direction == "rtl" ? "start" : "end"}
-                    sx={{
-                      background: "#49CED0",
-                      borderRadius: "2px",
-                      height: { xs: "26px", sm: "36px" },
-                      width: { xs: "26px", sm: "36px" },
-                      margin: "3px",
-                    }}
-                    onClick={updateAssessmentTitle}
-                  >
-                    <DoneIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                  <IconButton
-                    title="Cancel Edit"
-                    edge={theme.direction == "rtl" ? "start" : "end"}
-                    sx={{
-                      background: "#E04B7C",
-                      borderRadius: "2px",
-                      height: { xs: "26px", sm: "36px" },
-                      width: { xs: "26px", sm: "36px" },
-                    }}
-                    onClick={handleCancel}
-                  >
-                    <CloseIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
+              <InputCustomEditor
+                  inputProps={inputProps}
+                  hasError={hasError}
+                  name={type}
+                  inputHandler={(e: React.ChangeEvent<HTMLInputElement>)=>handleChange(e)}
+                  value={type == "title" ? inputData : inputDataShortTitle}
+                  handleDone={updateAssessmentTitle}
+                  handleCancel={handleCancel}
+              />
           </Box>
         ) : (
           <Box

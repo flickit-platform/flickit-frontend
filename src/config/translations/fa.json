@@ -894,6 +894,7 @@
   "invalidEmail": "لطفاً یک ایمیل معتبر وارد کنید.",
   "designedBy": "طراحی شده توسط",
   "createNewAssessment": "ساخت ارزیابی",
+  "kitLibrary": "کیت\u200Cهای ارزیابی",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",
