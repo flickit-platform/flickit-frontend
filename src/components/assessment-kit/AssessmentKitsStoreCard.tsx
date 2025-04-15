@@ -30,6 +30,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                 width: "100%",
                 borderRadius: "8px",
                 background: "#fff",
+                height: "100%",
                 p:{xs: 1, sm: 4},
                 boxShadow: "0 0 8px 0 #0A234240",
                 borderLeft: `4px solid ${isPrivate ? theme.palette.secondary.main : theme.palette.primary.main}`,
@@ -99,7 +100,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                         borderRadius: "8px",
                         py: 1,
                         px: {xs:1, sm: 2},
-                        gap: {xs:"10px", sm: "20px", lg: "50px"},
+                        gap: {xs:"10px", sm: "30px",  md: "50px"},
                         width: "fit-content"
                     }}>
                         <Box sx={{...styles.centerVH, gap: 1}}>
