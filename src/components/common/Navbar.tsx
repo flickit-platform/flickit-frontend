@@ -375,7 +375,8 @@ const Navbar = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args, config) => service.space.getList(args, config),
+      service: (args?: { page?: number; size?: number }, config?: any) =>
+         service.space.getList({ page: 1, size: 20, ...args }, config),
     toastError: true,
   });
   const fetchPathInfo = useQuery({
@@ -732,8 +733,9 @@ const SpacesButton = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args, config) => service.space.getList(args, config),
-    toastError: true,
+      service: (args?: { page?: number; size?: number }, config?: any) =>
+          service.space.getList({page: 1, size: 20, ...args}, config),
+      toastError: true,
   });
 
   return (
