@@ -5,7 +5,7 @@ import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
 import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
-import {primaryFontFamily, theme} from "@/config/theme";
+import { primaryFontFamily, theme } from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
 import languageDetector from "@utils/languageDetector";
 
@@ -26,6 +26,7 @@ interface IInputFieldUCProps extends Omit<OutlinedTextFieldProps, "variant"> {
   isEditing?: boolean;
   valueCount?: string;
   rtl?: boolean;
+  error?: boolean;
 }
 
 const InputFieldUC = (props: IInputFieldUCProps) => {
@@ -46,13 +47,17 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     isEditing,
     valueCount,
     rtl,
+    error,
     ...rest
   } = props;
+
   const inputRef = useRef<HTMLInputElement | null>(null);
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
+
   const [showPassword, toggleShowPassword] = usePasswordFieldAdornment();
   const { hasError, errorMessage } = getFieldError(
     errors,
@@ -60,43 +65,61 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     minLength,
     maxLength,
   );
+
   useEffect(() => {
-    if (isFocused && inputRef?.current) {
-      inputRef?.current?.focus();
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
     } else {
-      inputRef?.current?.blur();
+      inputRef.current?.blur();
     }
   }, [isFocused]);
+
   useEffect(() => {
-    if (inputRef.current && isFocused) {
-      const inputValue = inputRef.current?.value;
-      const isFarsi = languageDetector(inputValue);
-      inputRef.current.style.fontFamily = isFarsi
-        ? "VazirMatn"
-        : primaryFontFamily;
-    }
-    if (inputRef.current && !isFocused) {
-      inputRef.current.style.fontFamily = isFarsi
+    if (inputRef.current) {
+      const inputValue = inputRef.current.value;
+      const isFarsiText = languageDetector(inputValue);
+      inputRef.current.style.fontFamily = isFarsiText
         ? "VazirMatn"
         : primaryFontFamily;
     }
   }, [inputRef.current?.value, isFocused]);
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (setValueCount) {
-      setValueCount(event.target.value);
-    }
-    if (type !== "password") {
-      const isFarsi = languageDetector(event.target.value);
-      event.target.dir = event.target.value.length == 0 && rtl ? "rtl" :
-                         event.target.value.length == 0 && !rtl ? "ltr" :
-                         rtl && isFarsi ? "rtl"  : !rtl && isFarsi ? "rtl" : "ltr"
 
-      event.target.style.fontFamily = isFarsi ? "VazirMatn" : primaryFontFamily;
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (setValueCount) {
+      setValueCount(value);
     }
+
+    if (type !== "password") {
+      const isFarsiText = languageDetector(value);
+      const valueIsEmpty = value.length === 0;
+
+      let direction;
+      if (valueIsEmpty) {
+        direction = rtl ? "rtl" : "ltr";
+      } else {
+        direction = isFarsiText ? "rtl" : "ltr";
+      }
+
+      event.target.dir = direction;
+      event.target.style.fontFamily = isFarsiText
+        ? "VazirMatn"
+        : primaryFontFamily;
+    }
+
     if (type === "password" && inputRef.current) {
-      inputRef?.current?.focus();
+      inputRef.current.focus();
     }
   };
+
+  let inputStyle: React.CSSProperties = {};
+  if (hasCounter) {
+    inputStyle =
+      isFarsi || rtl
+        ? { paddingLeft: 80, minHeight: "110px" }
+        : { paddingRight: 80, minHeight: "110px" };
+  }
 
   return (
     <TextField
@@ -110,7 +133,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       inputRef={inputRef}
       onChange={handleInputChange}
       sx={{
-        "& ::placeholder": {...theme.typography.bodyMedium},
+        "& ::placeholder": { ...theme.typography.bodyMedium },
         background: pallet?.background,
         borderRadius: borderRadius,
         "& .MuiOutlinedInput-root": {
@@ -125,11 +148,11 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
             borderColor: pallet?.borderColor,
           },
           paddingTop:
-            isEditing && name == "evidenceDetail"
+            isEditing && name === "evidenceDetail"
               ? evidenceAttachmentInput.paddingTop
               : "",
           paddingBottom:
-            name == "evidence" ? evidenceAttachmentInput.paddingBottom : "",
+            name === "evidence" ? evidenceAttachmentInput.paddingBottom : "",
         },
       }}
       InputLabelProps={{ ...InputLabelProps, required }}
@@ -150,20 +173,10 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               ),
             }
           : {
-              style: hasCounter
-                ? isFarsi || rtl
-                  ? {
-                      paddingLeft: 80,
-                      minHeight: "110px",
-                    }
-                  : {
-                      paddingRight: 80,
-                      minHeight: "110px",
-                    }
-                : {},
+              style: inputStyle,
             }
       }
-      error={hasError}
+      error={hasError || error}
       helperText={(errorMessage as ReactNode) || helperText}
     />
   );
@@ -171,11 +184,9 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
 
 export const usePasswordFieldAdornment: () => [boolean, () => void] = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const toggleShowPassword = () => {
     setShowPassword((state) => !state);
   };
-
   return [showPassword, toggleShowPassword];
 };
 

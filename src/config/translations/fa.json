@@ -885,6 +885,13 @@
   "measureChart": "نمودار سنجه‌ها",
   "impactTable": "جدول تاثیرگذاری",
   "editorActionRestriction": "تا زمانی که ادیتور فعال است، نمی‌توانید کار دیگری انجام دهید. باید ابتدا اقدام جاری را با ذخیره یا لغو کردن تکمیل کنید.",
+  "yourEmail": "ایمیل شما",
+  "yourMessage": "پیام شما",
+  "contactUsIntroText": "اگر کیتی پیدا نکردید که متناسب با نیازتان باشد، لطفاً به ما اطلاع دهید تا در بهبود خدمات کمک کنید.",
+  "thankYouForYourMessage": "پیام شما با موفقیت ارسال شد!",
+  "weWillGetBackToYouSoon": "به‌زودی با شما تماس خواهیم گرفت.",
+  "contactUs":"تماس با ما",
+  "invalidEmail": "لطفاً یک ایمیل معتبر وارد کنید.",
   "designedBy": "طراحی شده توسط",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",

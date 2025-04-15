@@ -47,7 +47,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
 };
 
 interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
-  loading: boolean;
+  loading?: boolean;
   closeDialog?: () => void;
   onClose?: () => void;
   type?: {} | TDialogContextType;

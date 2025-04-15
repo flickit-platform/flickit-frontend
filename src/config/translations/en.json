@@ -887,6 +887,13 @@
   "measureChart": "Measure Chart",
   "impactTable": "Impact Table",
   "editorActionRestriction": "You cannot perform any other actions while the editor is active. You must complete the current action by either saving or canceling it first.",
+  "yourEmail": "Your Email",
+  "yourMessage": "Your Message",
+  "contactUsIntroText": "We’re here to help. If you didn’t find a kit that fits your needs, let us know what you're looking for...",
+  "thankYouForYourMessage": "Thank you for your message!",
+  "weWillGetBackToYouSoon": "We’ll get back to you as soon as possible.",
+  "contactUs":"Contact us",
+  "invalidEmail": "Please enter a valid email address.",
   "designedBy": "by",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
