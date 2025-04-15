@@ -178,8 +178,8 @@ export const theme = createTheme({
       color: "GrayText",
     },
     headlineSmall: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 600,
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
+      fontWeight: "bold",
       fontSize: "1.5rem",
       lineHeight: "2rem",
       letterSpacing: is_farsi ? "0px" : "-3%",
@@ -253,7 +253,7 @@ export const theme = createTheme({
     },
     bodyLarge: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: is_farsi ? "light" : "lighter",
+      fontWeight: 400,
       fontSize: "1rem",
       letterSpacing: is_farsi ? "0px" : "0.5px",
     },
