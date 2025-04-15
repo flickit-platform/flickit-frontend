@@ -287,7 +287,8 @@ const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.space.getList(args, config),
+    service: (args?: { page?: number; size?: number }, config?: any) =>
+        service.space.getList({ page: 1, size: 20, ...args }, config),
   });
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
