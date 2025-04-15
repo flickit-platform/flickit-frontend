@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
-import KitDHeader from "@components/kit-designer/common/KitHeader";
+import KitDesignerHeader from "@components/kit-designer/common/KitHeader";
 import AnswerRangeForm from "./AnswerRangeForm";
 
 const AnaweRangeContent = () => {
@@ -136,17 +136,6 @@ const AnaweRangeContent = () => {
     }
   };
 
-  const handleDelete = async (questionnaireId: number) => {
-    try {
-      await deleteQuestionnairesKit.query({ kitVersionId, questionnaireId });
-      await fetchAnswerRangeKit.query();
-      handleCancel();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
       const orders = newOrder.map((item, idx) => ({
@@ -178,7 +167,7 @@ const AnaweRangeContent = () => {
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
-        <KitDHeader
+        <KitDesignerHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={
             fetchAnswerRangeKit.loaded &&
@@ -196,11 +185,8 @@ const AnaweRangeContent = () => {
                 items={data}
                 fetchQuery={fetchAnswerRangeKit}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
-                deleteBtn={false}
                 onReorder={handleReorder}
                 setChangeData={setChangeData}
-                name={"answerRange"}
               />
             </Box>
           ) : (

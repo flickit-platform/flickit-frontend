@@ -41,7 +41,6 @@ declare module "@mui/material/styles" {
     semiBoldLarge: React.CSSProperties;
     semiBoldMedium: React.CSSProperties;
     semiBoldSmall: React.CSSProperties;
-    extraLight: React.CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -68,7 +67,6 @@ declare module "@mui/material/styles" {
     semiBoldLarge?: React.CSSProperties;
     semiBoldMedium?: React.CSSProperties;
     semiBoldSmall?: React.CSSProperties;
-    extraLight?: React.CSSProperties;
   }
 
   interface Palette {
@@ -103,7 +101,6 @@ declare module "@mui/material/Typography" {
     semiBoldLarge?: true;
     semiBoldMedium?: true;
     semiBoldSmall?: true;
-    extraLight?: true;
   }
 }
 
@@ -287,12 +284,6 @@ export const theme = createTheme({
       fontSize: "0.75rem",
       lineHeight: "0.75rem",
       letterSpacing: "0.5px",
-    },
-    extraLight: {
-      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
-      fontWeight: "200",
-      fontSize: "0.875rem",
-      letterSpacing: "0.25px",
     },
     semiBoldSmall: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,

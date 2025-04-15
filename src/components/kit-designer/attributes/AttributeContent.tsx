@@ -13,7 +13,7 @@ import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
-import KitDHeader from "@/components/kit-designer/common/KitHeader";
+import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectTable from "./SubjectTable";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
@@ -215,7 +215,7 @@ const AttributesContent = () => {
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
-        <KitDHeader
+        <KitDesignerHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={
             fetchAttributeKit.loaded &&

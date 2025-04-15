@@ -124,7 +124,7 @@
   "cancel": "Cancel",
   "cancelInvitation": "Cancel invitation",
   "changeAssessment": "Change assessment",
-  "changeOrderHelper": "You can drag each item to change order (This order is descending)",
+  "changeOrderHelper": "You can drag each item to change order (This order is ascending)",
   "changeSelectedAssessment": "Change selected assessment",
   "checkMoreDetails": "Check for more details",
   "checkNetworkConnection": "Please check your network connection.",
@@ -496,7 +496,8 @@
   "questionOptions": "Question options",
   "questionPlaceholder": "Write the question here",
   "questions": "Questions",
-  "questionsCount": "Number of questions",
+  "questionsCount": "Questions",
+  "numberOfQuestions":  "Number of questions",
   "readAbout": "Read about",
   "recentSpaces": "Recent spaces",
   "recommendations": "Recommendations",
@@ -915,9 +916,15 @@
     "assessmentOverallInsights": "Assessment overall insights "
   },
   "reportDocument": {
-    "showMeasures": "Show measures",
+    "measureStatus": "Measure status",
     "measureTitle": "Measure title",
     "guidance": "Guidance",
     "helpDescription": "This chart shows how much each measure contributes to a specific attribute. The length of each bar reflects its impact, and the sum of all bars equals 100%. The colors help visualize how much each measure has positively or negatively influenced the attribute. Hovering over a bar reveals the exact percentage of gained or missed score. This breakdown allows you to quickly identify strengths and opportunities for improvement within each area."
+  },
+  "kitDesignerTab":{
+    "measures": "Measures",
+    "measuresKitDesignerDescription":" To begin the assessment process, you first need to define the measures that will be used to evaluate each attribute.  Measures represent specific indicators, criteria, or actions that contribute to the overall performance of an attribute. Defining them clearly ensures a structured and meaningful evaluation.  By setting up your measures:  You establish a consistent basis for scoring You align the evaluation with organizational goals or standards You enable accurate analysis and visualization of performance impact Once defined, these measures will be used in subsequent visualizations to highlight strengths, weaknesses, and areas for improvement.  Please start by creating and organizing the measures relevant to your context.",
+    "newMeasure": "New Measure",
+    "selectMeasure": "Select Measure"
   }
 }

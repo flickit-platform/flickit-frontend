@@ -17,6 +17,7 @@ import QuestionnairesContent from "@components/kit-designer/questionnaires/Quest
 import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "@components/kit-designer/answerRange/AnswerRangeContent";
 import QueryBatchData from "../common/QueryBatchData";
+import MeasuresContent from "./measures/MeasuresContent";
 
 const KitDesignerContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -41,8 +42,9 @@ const KitDesignerContainer = () => {
       { title: "Subjects", index: 1 },
       { title: "Attributes", index: 2 },
       { title: "Answer-Ranges", index: 3 },
-      { title: "Questionnaires", index: 4 },
-      { title: "Release", index: 5 },
+      { title: "Measures", index: 4 },
+      { title: "Questionnaires", index: 5 },
+      { title: "Release", index: 6 },
     ];
 
     tabEl.forEach((item) => {
@@ -159,6 +161,17 @@ const KitDesignerContainer = () => {
                       }}
                       label={
                         <Typography variant="semiBoldLarge">
+                          <Trans i18nKey="kitDesignerTab.measures" />
+                        </Typography>
+                      }
+                    />
+                    <Tab
+                      sx={{
+                        alignItems: "flex-start",
+                        textTransform: "none",
+                      }}
+                      label={
+                        <Typography variant="semiBoldLarge">
                           <Trans i18nKey="questionnaires" />
                         </Typography>
                       }
@@ -187,8 +200,9 @@ const KitDesignerContainer = () => {
                   {selectedTab === 1 && <SubjectsContent />}
                   {selectedTab === 2 && <AttributesContent />}
                   {selectedTab === 3 && <AnaweRangeContent />}
-                  {selectedTab === 4 && <QuestionnairesContent />}
-                  {selectedTab === 5 && (
+                  {selectedTab === 4 && <MeasuresContent />}
+                  {selectedTab === 5 && <QuestionnairesContent />}
+                  {selectedTab === 6 && (
                     <PublishContent kitVersion={kitVersion} />
                   )}
                 </Grid>

@@ -43,7 +43,7 @@ const OptionList = ({
   const [tempValues, setTempValues] = useState({
     title: "",
     value: 1,
-    index: reorderedItems.length + 1,
+    index: reorderedItems?.length + 1,
   });
 
   const handleDragEnd = (result: any) => {
@@ -67,18 +67,18 @@ const OptionList = ({
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({ title: "", value: 1, index: reorderedItems.length + 1 });
+    setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
   };
 
   const handleAddNewClick = () => {
     setIsAddingNew(true);
-    setTempValues({ title: "", value: 1, index: reorderedItems.length + 1 });
+    setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
   };
 
   const handleSaveNewOption = () => {
     onAdd({
-      index: reorderedItems.length + 1,
-      id: reorderedItems.length + 1,
+      index: reorderedItems?.length + 1,
+      id: reorderedItems?.length + 1,
       title: tempValues.title,
       value: tempValues.value,
     });
@@ -86,7 +86,7 @@ const OptionList = ({
 
   useEffect(() => {
     if (isAddingNew === false) {
-      setTempValues({ title: "", value: 1, index: reorderedItems.length + 1 });
+      setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
       setIsAddingNew(false);
     }
   }, [isAddingNew]);
@@ -97,7 +97,7 @@ const OptionList = ({
 
   const handleCancelNewOption = () => {
     setIsAddingNew(false);
-    setTempValues({ title: "", value: 1, index: reorderedItems.length + 1 });
+    setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
   };
 
   return (

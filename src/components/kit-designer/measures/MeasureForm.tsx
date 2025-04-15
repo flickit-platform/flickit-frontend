@@ -6,13 +6,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 
-interface MaturityLevelFormProps {
-  newMaturityLevel: {
+interface MeasureFormProps {
+  newMeasure: {
     title: string;
     description: string;
+    weight: number;
     index: number;
     value: number;
   };
@@ -21,12 +22,23 @@ interface MaturityLevelFormProps {
   handleCancel: () => void;
 }
 
-const MaturityLevelForm = ({
-  newMaturityLevel,
+const sharedTextFieldSx = {
+  fontSize: 14,
+  background: "#fff",
+  "& .MuiInputBase-root": {
+    fontSize: 14,
+  },
+  "& .MuiFormLabel-root": {
+    fontSize: 14,
+  },
+};
+
+const MeasureForm = ({
+  newMeasure,
   handleInputChange,
   handleSave,
   handleCancel,
-}: MaturityLevelFormProps) => (
+}: MeasureFormProps) => (
   <Box
     mt={1.5}
     p={1.5}
@@ -39,6 +51,7 @@ const MaturityLevelForm = ({
       position: "relative",
     }}
   >
+    {/* Value field */}
     <Box
       sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
       borderRadius="0.5rem"
@@ -46,106 +59,106 @@ const MaturityLevelForm = ({
       p={0.25}
     >
       <TextField
-        required
         id="new-maturity"
-        type="number"
+        required
         name="value"
-        value={newMaturityLevel.value}
+        type="number"
+        value={newMeasure.value}
         onChange={handleInputChange}
-        variant="outlined"
         size="small"
         inputProps={{
-          "data-testid": "maturity-level-value",
+          "data-testid": "measure-value",
           style: { textAlign: "center", width: "40px" },
         }}
-        sx={{
-          fontSize: 14,
-          background: "#fff",
-          "& .MuiInputBase-root": {
-            fontSize: 14,
-          },
-        }}
+        sx={sharedTextFieldSx}
       />
     </Box>
 
+    {/* Title & Description */}
     <Box width="100%" mx={1}>
       <TextField
         required
         label={<Trans i18nKey="title" />}
         name="title"
-        value={newMaturityLevel.title}
+        value={newMeasure.title}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
         inputProps={{
-          "data-testid": "maturity-level-title",
-          style: { fontFamily: languageDetector(newMaturityLevel.title as string)
-                ? farsiFontFamily
-                : primaryFontFamily }
+          "data-testid": "measure-title",
+          style: {
+            fontFamily: languageDetector(newMeasure.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
         }}
         sx={{
+          ...sharedTextFieldSx,
           mt: 0,
-          fontSize: 14,
-          background:"#fff",
           "& .MuiInputBase-root": {
             height: 40,
-            fontSize: 14,
           },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
+          width: { xs: "100%", md: "60%" },
         }}
       />
 
       <TextField
         label={<Trans i18nKey="description" />}
-        inputProps={{
-          "data-testid": "maturity-level-description",
-          style: { fontFamily: languageDetector(newMaturityLevel.description as string)
-                ? farsiFontFamily
-                : primaryFontFamily }
-        }}
         name="description"
-        required
-        value={newMaturityLevel.description}
+        value={newMeasure.description}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        required
         multiline
         minRows={2}
         maxRows={5}
+        inputProps={{
+          "data-testid": "measure-description",
+          style: {
+            fontFamily: languageDetector(newMeasure.description)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
+        }}
         sx={{
+          ...sharedTextFieldSx,
           mt: 1,
-          fontSize: 14,
-          background:"#fff",
           "& .MuiInputBase-root": {
-            fontSize: 14,
-            overflow: "auto",
+            overflow: "hidden",
           },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
+          width: { xs: "100%", md: "100%" },
         }}
       />
     </Box>
 
-    {/* Check and Close Buttons */}
-    <Box display="flex" alignItems="center">
+    {/* Action buttons + weight */}
+    <Box display="flex" alignItems="center" flexDirection="column" gap="20px">
       <Link
-        href="#maturity-header"
+        href="#Measure-header"
         sx={{
           textDecoration: "none",
           opacity: 0.9,
           fontWeight: "bold",
           display: "flex",
           alignItems: "center",
+          gap: "20px",
         }}
       >
-        {" "}
-        <IconButton size="small" color="primary" onClick={handleSave} data-testid="maturity-level-check-icon">
+        <IconButton
+          size="small"
+          color="primary"
+          data-testid="measure-check-icon"
+          onClick={handleSave}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" onClick={handleCancel} data-testid="maturity-level-close-icon">
+        <IconButton
+          size="small"
+          color="secondary"
+          data-testid="measure-close-icon"
+          onClick={handleCancel}
+        >
           <CloseIcon />
         </IconButton>
       </Link>
@@ -153,4 +166,4 @@ const MaturityLevelForm = ({
   </Box>
 );
 
-export default MaturityLevelForm;
+export default MeasureForm;

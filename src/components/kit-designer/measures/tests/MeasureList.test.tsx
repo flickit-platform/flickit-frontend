@@ -17,7 +17,7 @@ const mockOnEdit = vi.fn();
 const mockOnReorder = vi.fn();
 const mockSetOpenDeleteDialog = vi.fn();
 
-describe("ListOfItems (subject)", () => {
+describe("ListOfItems (measure)", () => {
   const setup = () => {
     render(
       <ListOfItems
@@ -75,7 +75,9 @@ describe("ListOfItems (subject)", () => {
 
   it("triggers delete dialog when delete icon is clicked", () => {
     const { getDeleteButton } = setup();
+
     fireEvent.click(getDeleteButton());
+
     expect(mockSetOpenDeleteDialog).toHaveBeenCalledWith({
       status: true,
       id: 1,

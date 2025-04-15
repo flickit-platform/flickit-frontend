@@ -350,7 +350,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                       }}
                     >
                       <Typography variant="body2">
-                        <Trans i18nKey="questionsCount" />:
+                        <Trans i18nKey="numberOfQuestions" />:
                       </Typography>
                       <Typography
                         variant="body2"
@@ -504,7 +504,7 @@ const AssessmentKitQuestionnaires = (props: {
                   }}
                 >
                   <Typography variant="body2">
-                    <Trans i18nKey="questionsCount" />:
+                    <Trans i18nKey="numberOfQuestions" />:
                   </Typography>
                   <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
                     {questionnaireDetails?.questionsCount}
@@ -635,7 +635,7 @@ const AssessmentKitQuestionsList = (props: {
           }}
         >
           <Typography variant="body2">
-            <Trans i18nKey="questionsCount" />:
+            <Trans i18nKey="numberOfQuestions" />:
           </Typography>
           <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
             {attributesDetails?.questionCount}

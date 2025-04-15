@@ -12,30 +12,33 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
 import { KitDesignListItems } from "@/types/index";
 import { Trans } from "react-i18next";
-import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
   onEdit: (id: any) => void;
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
-  deleteBtn: boolean;
-  name: string;
-  setOpenDeleteDialog: any;
+  setOpenDeleteDialog?: any;
+  editableFieldKey?: keyof KitDesignListItems;
+  editable?: boolean;
 }
+
 interface ITempValues {
   title: string;
   description: string;
   weight?: number;
   question?: number;
+  [key: string]: any;
 }
+
 const ListOfItems = ({
   items,
   onEdit,
   onReorder,
-  deleteBtn,
-  name,
   setOpenDeleteDialog,
+  editableFieldKey,
+  editable = true,
 }: ListOfItemsProps) => {
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
@@ -48,14 +51,13 @@ const ListOfItems = ({
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
-
     const newReorderedItems = Array.from(reorderedItems);
     const [movedItem] = newReorderedItems.splice(result.source.index, 1);
     newReorderedItems.splice(result.destination.index, 0, movedItem);
-
     setReorderedItems(newReorderedItems);
     onReorder(newReorderedItems);
   };
+
   const handleEditClick = (item: KitDesignListItems) => {
     setEditMode(Number(item.id));
     setTempValues({
@@ -81,7 +83,7 @@ const ListOfItems = ({
     setTempValues({ title: "", description: "", weight: 0, question: 0 });
   };
 
-  const handelChange = (e: any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setTempValues({
       ...tempValues,
@@ -131,7 +133,6 @@ const ListOfItems = ({
                       <Typography variant="semiBoldLarge">
                         {index + 1}
                       </Typography>
-
                       <IconButton
                         disableRipple
                         disableFocusRipple
@@ -155,16 +156,19 @@ const ListOfItems = ({
                         gap: "5px",
                       }}
                     >
-                      {/* Title and icons in the same row */}
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         {editMode === item.id ? (
                           <TextField
                             required
                             value={tempValues.title}
-                            onChange={(e) => handelChange(e)}
+                            onChange={handleChange}
                             inputProps={{
                               "data-testid": "items-title",
-                              style: { fontFamily: languageDetector(tempValues.title) ? farsiFontFamily : primaryFontFamily }
+                              style: {
+                                fontFamily: languageDetector(tempValues.title)
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
+                              },
                             }}
                             variant="outlined"
                             fullWidth
@@ -192,7 +196,9 @@ const ListOfItems = ({
                             sx={{
                               flexGrow: 1,
                               width: "80%",
-                              fontFamily: languageDetector(item.title) ? farsiFontFamily : primaryFontFamily,
+                              fontFamily: languageDetector(item.title)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
                             }}
                           >
                             {item.title}
@@ -235,7 +241,7 @@ const ListOfItems = ({
                             >
                               <EditRoundedIcon fontSize="small" />
                             </IconButton>
-                            {deleteBtn && (
+                            {setOpenDeleteDialog && (
                               <IconButton
                                 size="small"
                                 onClick={() =>
@@ -254,6 +260,7 @@ const ListOfItems = ({
                           </>
                         )}
                       </Box>
+
                       <Box
                         sx={{
                           display: "flex",
@@ -265,11 +272,17 @@ const ListOfItems = ({
                           <TextField
                             required
                             value={tempValues.description}
-                            onChange={(e) => handelChange(e)}
+                            onChange={handleChange}
                             name="description"
                             inputProps={{
                               "data-testid": "items-description",
-                              style: { fontFamily: languageDetector(tempValues.description) ? farsiFontFamily : primaryFontFamily }
+                              style: {
+                                fontFamily: languageDetector(
+                                  tempValues.description,
+                                )
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
+                              },
                             }}
                             variant="outlined"
                             fullWidth
@@ -278,7 +291,7 @@ const ListOfItems = ({
                             margin="normal"
                             multiline
                             minRows={2}
-                            maxRows={3}
+                            maxRows={5}
                             sx={{
                               mb: 1,
                               mt: 1,
@@ -300,8 +313,8 @@ const ListOfItems = ({
                             sx={{
                               wordBreak: "break-word",
                               fontFamily: languageDetector(item.description)
-                              ? farsiFontFamily
-                              : primaryFontFamily,
+                                ? farsiFontFamily
+                                : primaryFontFamily,
                               width: "80%",
                             }}
                             variant="body2"
@@ -310,76 +323,93 @@ const ListOfItems = ({
                             {item.description}
                           </Typography>
                         )}
-                        {name === "subject" && (
-                          <Box
-                            sx={{
-                              width: "fit-content",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "flex-end",
-                              flexDirection: "column",
-                              gap: "0.5rem",
-                              textAlign: editMode ? "end" : "center",
-                            }}
-                          >
-                            <Typography
+                        {editableFieldKey &&
+                          typeof item[editableFieldKey] === "number" && (
+                            <Box
                               sx={{
-                                ...theme.typography.labelCondensed,
-                                color: "#6C8093",
-                                width: "100%",
+                                width: "fit-content",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "flex-end",
+                                flexDirection: "column",
+                                gap: "0.5rem",
+                                textAlign: editable
+                                  ? editMode === item.id
+                                    ? "end"
+                                    : "center"
+                                  : "center",
                               }}
                             >
-                              <Trans i18nKey={"weight"} />
-                            </Typography>
-
-                            {editMode === item.id ? (
-                              <TextField
-                                required
-                                value={tempValues.weight}
-                                onChange={(e) => handelChange(e)}
-                                name="weight"
-                                variant="outlined"
-                                fullWidth
-                                size="small"
-                                margin="normal"
-                                type="number"
-                                inputProps={{
-                                  style: { textAlign: "center", width: "40px" },
-                                }}
+                              <Typography
                                 sx={{
-                                  mb: 1,
-                                  mt: 1,
-                                  fontSize: 14,
-                                  "& .MuiInputBase-root": {
-                                    fontSize: 14,
-                                    overflow: "auto",
-                                  },
-                                  "& .MuiFormLabel-root": {
-                                    fontSize: 14,
-                                  },
-                                  background: "#fff",
-                                  borderRadius: "8px",
-                                }}
-                              />
-                            ) : (
-                              <Box
-                                aria-label="weight"
-                                style={{
-                                  width: "3.75rem",
-                                  height: "3.75rem",
-                                  borderRadius: "50%", // برای دایره‌ای کردن دکمه
-                                  backgroundColor: "#E2E5E9", // رنگ پس‌زمینه
-                                  color: "#2B333B",
-                                  display: "flex",
-                                  alignItems: " center",
-                                  justifyContent: "center",
+                                  ...theme.typography.labelCondensed,
+                                  color: "#6C8093",
+                                  width: "100%",
                                 }}
                               >
-                                {item.weight}
-                              </Box>
-                            )}
-                          </Box>
-                        )}
+                                <Trans i18nKey={editableFieldKey} />
+                              </Typography>
+
+                              {editable && editMode === item.id ? (
+                                <TextField
+                                  required
+                                  value={
+                                    tempValues?.[editableFieldKey] as number
+                                  }
+                                  onChange={(e) =>
+                                    setTempValues?.({
+                                      ...tempValues,
+                                      [editableFieldKey]: Number(
+                                        e.target.value,
+                                      ),
+                                    })
+                                  }
+                                  name={editableFieldKey}
+                                  variant="outlined"
+                                  fullWidth
+                                  size="small"
+                                  margin="normal"
+                                  type="number"
+                                  inputProps={{
+                                    style: {
+                                      textAlign: "center",
+                                      width: "40px",
+                                    },
+                                  }}
+                                  sx={{
+                                    mb: 1,
+                                    mt: 1,
+                                    fontSize: 14,
+                                    "& .MuiInputBase-root": {
+                                      fontSize: 14,
+                                      overflow: "auto",
+                                    },
+                                    "& .MuiFormLabel-root": {
+                                      fontSize: 14,
+                                    },
+                                    background: "#fff",
+                                    borderRadius: "8px",
+                                  }}
+                                />
+                              ) : (
+                                <Box
+                                  aria-label={editableFieldKey}
+                                  sx={{
+                                    width: "3.75rem",
+                                    height: "3.75rem",
+                                    borderRadius: "50%",
+                                    backgroundColor: "#E2E5E9",
+                                    color: "#2B333B",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  {item[editableFieldKey]}
+                                </Box>
+                              )}
+                            </Box>
+                          )}
                       </Box>
                     </Box>
                   </Box>

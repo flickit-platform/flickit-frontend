@@ -35,10 +35,8 @@ interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
   onEdit: (id: any) => void;
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
-  deleteBtn: boolean;
-  name: string;
   fetchQuery?: any;
-  setOpenDeleteDialog: any;
+  setOpenDeleteDialog?: any;
 }
 interface ITempValues {
   title: string;
@@ -60,8 +58,6 @@ const ListOfItems = ({
   fetchQuery,
   onEdit,
   onReorder,
-  deleteBtn,
-  name,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
@@ -476,7 +472,7 @@ const ListOfItems = ({
                                   >
                                     <EditRoundedIcon fontSize="small" />
                                   </IconButton>
-                                  {deleteBtn && (
+                                  {setOpenDeleteDialog && (
                                     <IconButton
                                       size="small"
                                       onClick={() =>
@@ -520,7 +516,7 @@ const ListOfItems = ({
                                   margin="normal"
                                   multiline
                                   minRows={2}
-                                  maxRows={3}
+                                  maxRows={5}
                                   sx={{
                                     mb: 1,
                                     mt: 1,

@@ -1,12 +1,12 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { TId } from "@/types";
 
-export const subjects = {
+export const measures = {
   getAll(
     { kitVersionId }: { kitVersionId: TId },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.get(`/api/v1/kit-versions/${kitVersionId}/subjects/`, {
+    return axios.get(`/api/v1/kit-versions/${kitVersionId}/measures/`, {
       ...(config ?? {}),
       params: {
         page: 0,
@@ -20,7 +20,7 @@ export const subjects = {
     config?: AxiosRequestConfig<any>,
   ) {
     return axios.post(
-      `/api/v1/kit-versions/${kitVersionId}/subjects/`,
+      `/api/v1/kit-versions/${kitVersionId}/measures/`,
       data,
       config,
     );
@@ -32,18 +32,8 @@ export const subjects = {
     config?: AxiosRequestConfig<any>,
   ) {
     return axios.put(
-      `/api/v1/kit-versions/${kitVersionId}/subjects-change-order/`,
+      `/api/v1/kit-versions/${kitVersionId}/measures-change-order/`,
       data,
-      config,
-    );
-  },
-
-  remove(
-    { kitVersionId, subjectId }: { kitVersionId: TId; subjectId: TId },
-    config?: AxiosRequestConfig<any>,
-  ) {
-    return axios.delete(
-      `/api/v1/kit-versions/${kitVersionId}/subjects/${subjectId}/`,
       config,
     );
   },
@@ -51,13 +41,13 @@ export const subjects = {
   update(
     {
       kitVersionId,
-      subjectId,
+      measureId,
       data,
-    }: { kitVersionId: TId; subjectId: TId; data: any },
+    }: { kitVersionId: TId; measureId: TId; data: any },
     config?: AxiosRequestConfig<any>,
   ) {
     return axios.put(
-      `/api/v1/kit-versions/${kitVersionId}/subjects/${subjectId}/`,
+      `/api/v1/kit-versions/${kitVersionId}/measures/${measureId}/`,
       data,
       config,
     );
