@@ -65,7 +65,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                                 mt: 1,
                                 display: "inline-block"
                             }}>
-                    <Trans i18nKey={"by"}/>{" "}
+                    <Trans i18nKey={"designedBy"}/>{" "}
                     {expertGroup.title}
                 </Typography>
                 <Typography sx={{py: 4, height: "150px", ...theme.typography.bodyLarge, color: "#2B333B"}}>

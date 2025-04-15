@@ -886,7 +886,7 @@
   "measureChart": "Measure Chart",
   "impactTable": "Impact Table",
   "editorActionRestriction": "You cannot perform any other actions while the editor is active. You must complete the current action by either saving or canceling it first.",
-  "by": "by",
+  "designedBy": "by",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",
