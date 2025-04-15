@@ -25,6 +25,7 @@ const AssessmentKitsContactUs = () => {
         src={ContactUs}
         alt="Contact Us"
         sx={{ width: "100%", display: "block" }}
+        onClick={() => dialogProps.openDialog({})}
       />
 
       <Button
@@ -35,7 +36,7 @@ const AssessmentKitsContactUs = () => {
           mt: { xs: 0, md: 0 },
           position: { sm: "static", md: "absolute" },
           bottom: { sm: "92px" },
-          left: { sm: "48px" },
+          left: { sm: "4%" },
           alignSelf: { sm: "center", md: "flex-start" },
           backgroundColor: "primary.main",
           "&:hover": {
