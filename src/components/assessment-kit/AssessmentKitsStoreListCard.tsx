@@ -32,7 +32,6 @@ const AssessmentKitsStoreListCard = () => {
                         }
                         <AssessmentCEFromDialog
                             {...dialogProps}
-                            onSubmitForm={undefined}
                         />
                     </Grid>
                 )
