@@ -8,7 +8,7 @@ import Chip from "@mui/material/Chip";
 import {styles} from "@styles";
 import {Link} from "react-router-dom";
 import PriceIcon from "@utils/icons/priceIcon";
-import LanguageIcon from "@utils/icons/languageIcon";
+import LanguageIcon from '@mui/icons-material/Language';
 import Button from "@mui/material/Button";
 
 const AssessmentKitsStoreCard = (props: any) => {
@@ -91,8 +91,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                             <Typography sx={{...theme.typography.titleSmall, color: "#2B333B"}}>
                                 {languages.join(",")}
                             </Typography>
-                            <LanguageIcon
-                                color={isPrivate ? theme.palette.secondary.main : theme.palette.primary.main}/>
+                            <LanguageIcon sx={{color: isPrivate ? theme.palette.secondary.main : theme.palette.primary.main, fontSize: "32px"}}  />
                         </Box>
                     </Box>
                     <Button onClick={() => createAssessment(id, title)} variant="contained" sx={{
