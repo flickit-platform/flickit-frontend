@@ -892,6 +892,7 @@
   "weWillGetBackToYouSoon": "به‌زودی با شما تماس خواهیم گرفت.",
   "contactUs":"تماس با ما",
   "invalidEmail": "لطفاً یک ایمیل معتبر وارد کنید.",
+  "kitLibrary": "کیت\u200Cهای ارزیابی",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",

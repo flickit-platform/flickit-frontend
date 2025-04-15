@@ -529,7 +529,7 @@ const Navbar = () => {
             component={NavLink}
             to={`/assessment-kits`}
           >
-            <ListItemText primary={<Trans i18nKey="assessmentKits" />} />
+            <ListItemText primary={<Trans i18nKey="kitLibrary" />} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -588,21 +588,17 @@ const Navbar = () => {
           <Box
             sx={{
               display: { xs: "none", md: "block" },
-              mr: theme.direction === "rtl" ? 3 : 0,
-              ml: theme.direction === "ltr" ? 3 : 0,
+              mr: theme.direction === "rtl" ? 20 : 0,
+              ml: theme.direction === "ltr" ? 20 : 0,
             }}
           >
             <SpacesButton />
             <Button
               component={NavLink}
               to={`/compare`}
-              startIcon={
-                <CompareRoundedIcon
-                  sx={{ opacity: 0.8, fontSize: "1.125rem !important" }}
-                />
-              }
               sx={{
                 ...styles.activeNavbarLink,
+                textTransform: "capitalize",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
                 color: "#fff",
@@ -616,18 +612,14 @@ const Navbar = () => {
               to={`/assessment-kits`}
               sx={{
                 ...styles.activeNavbarLink,
+                textTransform: "capitalize",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
                 color: "#fff",
               }}
               size="small"
-              startIcon={
-                <AssessmentRoundedIcon
-                  sx={{ opacity: 0.8, fontSize: "18px !important" }}
-                />
-              }
             >
-              <Trans i18nKey="assessmentKits" />
+              <Trans i18nKey="kitLibrary" />
             </Button>
           </Box>
           <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
@@ -738,25 +730,35 @@ const SpacesButton = () => {
       toastError: true,
   });
 
+  const isActive = location.pathname.startsWith("/spaces/1");
+
   return (
     <>
       <Button
         data-cy="spaces"
         onClick={() => navigate("/spaces/1")}
         sx={{
-          ...styles.activeNavbarLink,
+          textTransform: "capitalize",
           marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
           marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
           "&:hover .MuiButton-endIcon > div": {
             borderLeftColor: "#8080802b",
           },
+            ...(isActive && {
+                "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    bottom: 0,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "90%", // 👈 smaller underline
+                    height: "2px",
+                    backgroundColor: "#fff",
+                    borderRadius: 1,
+                }
+            }),
           color: "#fff",
         }}
-        startIcon={
-          <FolderRoundedIcon
-            sx={{ opacity: 0.8, fontSize: "18px !important" }}
-          />
-        }
         size="small"
         endIcon={
           <Box

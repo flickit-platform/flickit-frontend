@@ -42,7 +42,18 @@ const commonStyles = {
   }),
   activeNavbarLink: style({
     "&.active": {
-      color: "#c8d8e9",
+      color: "#fff",
+    },
+    "&.active::after": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "90%",
+      height: "2px",
+      backgroundColor: "#fff",
+      borderRadius: 1,
     },
   }),
   circularProgressBackgroundStroke: style({
