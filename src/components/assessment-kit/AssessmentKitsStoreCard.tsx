@@ -6,7 +6,7 @@ import {Trans, useTranslation} from "react-i18next";
 import {farsiFontFamily, secondaryFontFamily, theme} from "@config/theme";
 import Chip from "@mui/material/Chip";
 import {styles} from "@styles";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from '@mui/icons-material/Language';
 import Button from "@mui/material/Button";
@@ -16,12 +16,18 @@ const AssessmentKitsStoreCard = (props: any) => {
     const {id, title, isPrivate, expertGroup, summary, languages, openDialog} = props
 
     const {i18n} = useTranslation();
-
+    const navigate = useNavigate();
     const createAssessment = (id: any, title: any) => {
         openDialog.openDialog({
             type: "create",
             staticData: {assessment_kit: {id, title}},
         })
+    }
+
+    const goToKit = (e: any ,id: number) =>{
+        e.preventDefault();
+        e.stopPropagation();
+        navigate(`${id}/`)
     }
     return (
         <Grid key={id} item xs={12} md={6} xl={4} justifyItems={"center"}>
@@ -34,8 +40,11 @@ const AssessmentKitsStoreCard = (props: any) => {
                 p:{xs: 1, sm: 4},
                 boxShadow: "0 0 8px 0 #0A234240",
                 borderLeft: `4px solid ${isPrivate ? theme.palette.secondary.main : theme.palette.primary.main}`,
-                direction: i18n.language === 'fa' ? "rtl" : "ltr"
-            }}>
+                direction: i18n.language === 'fa' ? "rtl" : "ltr",
+                cursor: "pointer"
+            }}
+            onClick={(e)=>goToKit(e,id)}
+            >
                 <Box sx={{...styles.centerVH, justifyContent: "space-between",}}>
                     <Typography sx={{
                         ...theme.typography.headlineSmall,
@@ -103,7 +112,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                         gap: {xs:"10px", sm: "30px",  md: "50px"},
                         width: "fit-content"
                     }}>
-                        <Box sx={{...styles.centerVH, gap: 1}}>
+                        <Box sx={{...styles.centerVH, gap: 1, direction: i18n.language === 'fa' ? "ltr" : "rtl" }}>
                             <Typography sx={{...theme.typography.titleSmall, color: "#2B333B",
                                 fontFamily: i18n.language === 'fa'
                                     ? farsiFontFamily
@@ -113,7 +122,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                             </Typography>
                             <PriceIcon color={isPrivate ? theme.palette.secondary.main : theme.palette.primary.main}/>
                         </Box>
-                        <Box sx={{...styles.centerVH, gap: 1}}>
+                        <Box sx={{...styles.centerVH, gap: 1, direction: i18n.language === 'fa' ? "ltr" : "rtl"}}>
                             <Typography sx={{...theme.typography.titleSmall, color: "#2B333B",
                                 fontFamily: i18n.language === 'fa'
                                     ? farsiFontFamily
@@ -134,7 +143,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                             background: isPrivate ? theme.palette.secondary.dark : theme.palette.primary.dark
                         }
                     }}>
-                        <Trans i18nKey={"createAssessment"}/>
+                        <Trans i18nKey={"createNewAssessment"}/>
                     </Button>
                 </Box>
             </Box>
