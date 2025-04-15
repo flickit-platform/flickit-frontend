@@ -88,7 +88,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                                 textDecoration: "none",
                                 mt: 1,
                                 display: "inline-block",
-                                fontFamily: languageDetector(expertGroup.title)
+                                fontFamily: i18n.language === "fa"
                                     ? farsiFontFamily
                                     : secondaryFontFamily,
                             }}>
