@@ -4,7 +4,7 @@ import AssessmentKitsStoreBanner from "./AssessmentKitsStoreBanner";
 import AssessmentKitsContactUs from "./AssessmentKitsContactUs";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 
-const AssessmentKitsContainer = (props: PropsWithChildren<{}>) => {
+const AssessmentKitsContainer = () => {
   return (
     <Box>
       <AssessmentKitsStoreBanner />

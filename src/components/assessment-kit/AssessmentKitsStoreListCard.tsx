@@ -6,6 +6,9 @@ import {useServiceContext} from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
 import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDialog";
 import useDialog from "@utils/useDialog";
+import forLoopComponent from "@utils/forLoopComponent";
+import uniqueId from "@utils/uniqueId";
+import {LoadingSkeleton} from "@common/loadings/LoadingSkeleton";
 
 
 const AssessmentKitsStoreListCard = () => {
@@ -20,6 +23,18 @@ const AssessmentKitsStoreListCard = () => {
     return (
         <QueryData
             {...assessmentKitsQueryData}
+            loadingComponent={
+                <Grid container spacing={"30px"} sx={{px: 8, py: 4}}>
+                    {forLoopComponent(6, (index) => (
+                        <Grid item xs={12} md={6} lg={4} key={uniqueId()}>
+                            <LoadingSkeleton
+                                key={uniqueId()}
+                                sx={{ height: "340px", mb: 1 }}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+            }
             render={(data) => {
                 const {items = []} = data;
                 return (
