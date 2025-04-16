@@ -15,7 +15,6 @@ const AssessmentKitsContactUs = () => {
 
   return (
     <Box
-      mt={10}
       sx={{
         position: "relative",
         width: "100%",
