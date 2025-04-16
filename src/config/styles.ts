@@ -168,7 +168,7 @@ const carouselStyle = {
     width: "100%",
     overflow: "hidden",
     cursor: "pointer",
-    mt: 4, // margin-top: 32px
+    mt: 4,
   }),
   carouselInner: style({
     display: "flex",
