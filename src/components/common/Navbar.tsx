@@ -582,8 +582,7 @@ const Navbar = () => {
           <Box
             sx={{
               display: { xs: "none", md: "block" },
-              mr: theme.direction === "rtl" ? 20 : 0,
-              ml: theme.direction === "ltr" ? 20 : 0,
+              mx: "auto"
             }}
           >
             <SpacesButton />
@@ -592,7 +591,7 @@ const Navbar = () => {
               to={`/compare`}
               sx={{
                 ...styles.activeNavbarLink,
-                textTransform: "capitalize",
+                textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
                 color: "#fff",
@@ -606,7 +605,7 @@ const Navbar = () => {
               to={`/assessment-kits`}
               sx={{
                 ...styles.activeNavbarLink,
-                textTransform: "capitalize",
+                textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
                 color: "#fff",
@@ -624,8 +623,6 @@ const Navbar = () => {
               display: "flex",
               alignItems: "center",
               gap: ".7rem",
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
             }}
           >
             {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
@@ -733,7 +730,7 @@ const SpacesButton = () => {
         data-cy="spaces"
         onClick={() => navigate("/spaces/1")}
         sx={{
-          textTransform: "capitalize",
+          textTransform: "uppercase",
           marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
           marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
           "&:hover .MuiButton-endIcon > div": {
@@ -759,9 +756,6 @@ const SpacesButton = () => {
           <Box
             sx={{
               minWidth: "8px",
-              ml: theme.direction === "rtl" ? "unset" : 0.6,
-              mr: theme.direction === "rtl" ? 0.6 : "unset",
-              px: 0.2,
               borderLeft: "1px solid #80808000",
               transition: "border .1s ease",
               display: "flex",
@@ -785,12 +779,9 @@ const SpacesButton = () => {
         onClose={handleClose}
         PaperProps={{
           sx: {
-            left:
-              theme.direction === "ltr"
-                ? "165px !important"
-                : "unset !important",
-            right: theme.direction === "rtl" ? "130px !important" : "unset",
-            minWidth: "260px",
+              marginTop: 0,
+              marginLeft: theme.direction === "rtl" ?  10 : -10,
+              minWidth: "260px",
           },
         }}
       >
