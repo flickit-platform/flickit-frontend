@@ -51,7 +51,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       {...rest}
       closeDialog={close}
       title={
-        <Typography sx={theme.typography.semiBoldXLarge} textTransform="none">
+        <Typography sx={theme.typography.semiBoldXLarge} textTransform={"uppercase"}>
           <Trans i18nKey="contactUs" />
         </Typography>
       }
