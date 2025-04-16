@@ -1,25 +1,73 @@
 import React, { useEffect, useRef, useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Skeleton from "@mui/material/Skeleton";
+import { Box, Button, Skeleton } from "@mui/material";
+import ArrowForwardIosRounded from "@mui/icons-material/ArrowForwardIosRounded";
+import ArrowBackIosRounded from "@mui/icons-material/ArrowBackIosRounded";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import ArrowBtn from "@utils/icons/arrow";
 import { styles } from "@styles";
 import { theme } from "@config/theme";
-import i18next from "i18next";
 import { useNavigate } from "react-router-dom";
+import i18next from "i18next";
 import uniqueId from "@/utils/uniqueId";
 
-const AssessmentKitsStoreBanner = () => {
+const DIRECTION = theme.direction === "rtl" ? "+" : "-";
+const ARROW_COLOR = "#1B4D7E";
+
+interface Banner {
+  kitId: number;
+  banner: string;
+}
+
+interface GradientArrowProps {
+  onClick: () => void;
+  side: "left" | "right";
+  Icon: React.ReactNode;
+}
+
+const GradientArrow: React.FC<GradientArrowProps> = ({
+  onClick,
+  side,
+  Icon,
+}) => (
+  <Button
+    onClick={onClick}
+    sx={{
+      position: "absolute",
+      top: 0,
+      [side]: 0,
+      width: "10%",
+      height: "100%",
+      background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(27, 77, 126, 0.3), transparent)`,
+      zIndex: 2,
+      borderRadius: 0,
+      "&:hover": {
+        background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(27, 77, 126, 0.4), transparent)`,
+      },
+      display: "flex",
+      alignItems: "center",
+      justifyContent:
+        (side === "left" && i18next.language === "en") ||
+        (side === "right" && i18next.language === "fa")
+          ? "flex-start"
+          : "flex-end",
+      color: ARROW_COLOR,
+    }}
+  >
+    {Icon}
+  </Button>
+);
+
+// کامپوننت اصلی بنر
+const AssessmentKitsStoreBanner: React.FC = () => {
   const { service } = useServiceContext();
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const timeoutRef = useRef<any>(null);
+
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const startXRef = useRef<number | null>(null);
   const delay = 10000;
 
-  const bannersQuery = useQuery({
+  const { data = [], loading } = useQuery<Banner[]>({
     service: (args, config) =>
       service.assessmentKit.info.getAllBanners(
         args ?? { lang: i18next.language.toUpperCase() },
@@ -27,46 +75,54 @@ const AssessmentKitsStoreBanner = () => {
       ),
   });
 
-  const banners: { kitId: number; banner: string }[] = bannersQuery.data ?? [];
+  const banners = data;
 
   const resetTimeout = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
-  const goPrev = () =>
-    setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
-  const goNext = () =>
-    setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+  const goTo = (index: number) => {
+    const last = banners.length - 1;
+    setCurrentIndex(index < 0 ? last : index > last ? 0 : index);
+  };
+
+  const goNext = () => goTo(currentIndex + 1);
+  const goPrev = () => goTo(currentIndex - 1);
 
   useEffect(() => {
     if (!banners.length) return;
     resetTimeout();
     timeoutRef.current = setTimeout(goNext, delay);
-    return () => resetTimeout();
+    return resetTimeout;
   }, [currentIndex, banners]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") goPrev();
-      else if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowRight") goNext();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [banners]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleSwipe = (startX: number, endX: number) => {
+    const diff = endX - startX;
+    if (diff > 50) goPrev();
+    else if (diff < -50) goNext();
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     startXRef.current = e.clientX;
   };
 
-  const handleMouseUp = (e: React.MouseEvent) => {
-    if (startXRef.current === null) return;
-    const diff = e.clientX - startXRef.current;
-    if (diff > 50) goPrev();
-    else if (diff < -50) goNext();
-    startXRef.current = null;
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (startXRef.current !== null) {
+      handleSwipe(startXRef.current, e.clientX);
+      startXRef.current = null;
+    }
   };
 
-  if (bannersQuery.loading) {
+  if (loading) {
     return (
       <Skeleton
         variant="rectangular"
@@ -83,7 +139,7 @@ const AssessmentKitsStoreBanner = () => {
     <Box
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      sx={{ ...styles.carousel }}
+      sx={styles.carousel}
     >
       <Box
         sx={{
@@ -91,7 +147,7 @@ const AssessmentKitsStoreBanner = () => {
           width: `${banners.length * 100}%`,
           height: "100%",
           transition: "transform 0.5s ease-in-out",
-          transform: `translateX(${theme.direction === "rtl" ? "+" : "-"}${currentIndex * (100 / banners.length)}%)`,
+          transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
         }}
       >
         {banners.map((item, i) => (
@@ -122,35 +178,24 @@ const AssessmentKitsStoreBanner = () => {
         ))}
       </Box>
 
-      <Button
-        sx={{
-          ...styles.arrow,
-          left: "15px",
-          transform: "rotate(90deg)",
-        }}
+      <GradientArrow
         onClick={goPrev}
-      >
-        <ArrowBtn color={theme.palette.primary.dark} />
-      </Button>
-
-      <Button
-        sx={{
-          ...styles.arrow,
-          right: "15px",
-          transform: "rotate(-90deg)",
-        }}
+        side="left"
+        Icon={<ArrowBackIosRounded fontSize="large" />}
+      />
+      <GradientArrow
         onClick={goNext}
-      >
-        <ArrowBtn color={theme.palette.primary.dark} />
-      </Button>
+        side="right"
+        Icon={<ArrowForwardIosRounded fontSize="large" />}
+      />
 
-      <Box sx={{ ...styles.dots }}>
+      <Box sx={styles.dots}>
         {banners.map((_, i) => (
           <Box
             key={i}
             sx={{
               width: currentIndex === i ? "2rem" : "1rem",
-              height: "1rem",
+              height: "0.75rem",
               backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
               borderRadius: currentIndex === i ? "20px" : "50%",
               cursor: "pointer",
