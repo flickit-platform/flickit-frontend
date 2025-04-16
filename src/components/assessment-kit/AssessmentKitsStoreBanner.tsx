@@ -57,12 +57,12 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
   </Button>
 );
 
-// کامپوننت اصلی بنر
 const AssessmentKitsStoreBanner: React.FC = () => {
   const { service } = useServiceContext();
   const navigate = useNavigate();
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const startXRef = useRef<number | null>(null);
   const delay = 10000;
@@ -76,6 +76,10 @@ const AssessmentKitsStoreBanner: React.FC = () => {
   });
 
   const banners = data;
+
+  useEffect(() => {
+    setLoadedImages(new Array(banners.length).fill(false));
+  }, [banners]);
 
   const resetTimeout = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -122,18 +126,13 @@ const AssessmentKitsStoreBanner: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <Skeleton
-        variant="rectangular"
-        width="100%"
-        height="400px"
-        sx={{ borderRadius: 2 }}
-      />
-    );
-  }
-
-  if (!banners.length) return null;
+  const handleImageLoad = (index: number) => {
+    setLoadedImages((prev) => {
+      const newLoaded = [...prev];
+      newLoaded[index] = true;
+      return newLoaded;
+    });
+  };
 
   return (
     <Box
@@ -141,6 +140,18 @@ const AssessmentKitsStoreBanner: React.FC = () => {
       onMouseUp={handleMouseUp}
       sx={styles.carousel}
     >
+      {loading ||
+      !banners.length ||
+      (loadedImages.length > 0 && !loadedImages[currentIndex]) ? (
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="34vh"
+          sx={{ borderRadius: 2 }}
+        />
+      ) : (
+        <></>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -167,11 +178,12 @@ const AssessmentKitsStoreBanner: React.FC = () => {
             <img
               src={item.banner}
               alt={`Slide ${i + 1}`}
+              onLoad={() => handleImageLoad(i)}
               style={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                display: "block",
+                display: loadedImages[i] ? "block" : "none",
               }}
             />
           </Box>
