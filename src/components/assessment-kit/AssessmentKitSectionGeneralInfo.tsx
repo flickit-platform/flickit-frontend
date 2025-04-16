@@ -145,7 +145,7 @@ const AssessmentKitSectionGeneralInfo = (
           tags,
           editable,
           hasActiveVersion,
-          lang,
+          mainLanguage,
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -396,7 +396,7 @@ const AssessmentKitSectionGeneralInfo = (
                   </Typography>
                   <SelectLanguage
                     handleChange={handleLanguageChange}
-                    lang={lang}
+                    mainLanguage={mainLanguage}
                     languages={languages}
                     editable={editable}
                   />

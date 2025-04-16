@@ -7,7 +7,7 @@ import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const SelectLanguage = (props: any) => {
-  const { lang, handleChange, languages, editable } = props;
+  const { mainLanguage, handleChange, languages, editable } = props;
 
   return (
     <FormControl sx={{ width: "100%" }}>
@@ -19,7 +19,7 @@ const SelectLanguage = (props: any) => {
         disabled={editable != undefined ? !editable : false}
         size="small"
         labelId={`language-name-label`}
-        value={lang}
+        value={mainLanguage.title}
         IconComponent={KeyboardArrowDownIcon}
         displayEmpty
         required={true}

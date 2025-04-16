@@ -199,7 +199,7 @@ export interface AssessmentKitInfoType {
   tags: [];
   editable?: boolean;
   hasActiveVersion?: boolean;
-  lang?: string;
+  mainLanguage?: {code:string, title: string };
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
