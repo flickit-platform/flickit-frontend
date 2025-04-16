@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { farsiFontFamily, secondaryFontFamily, theme } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
@@ -16,7 +16,6 @@ const AssessmentKitsStoreCard = (props: any) => {
   const { id, title, isPrivate, expertGroup, summary, languages, openDialog } =
     props;
 
-  const { i18n } = useTranslation();
   const navigate = useNavigate();
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();

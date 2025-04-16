@@ -5,8 +5,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
 import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDialog";
 import useDialog from "@utils/useDialog";
-import forLoopComponent from "@/utils/forLoopComponent";
-import uniqueId from "@/utils/uniqueId";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 
 const AssessmentKitsStoreListCard = () => {
@@ -17,30 +15,32 @@ const AssessmentKitsStoreListCard = () => {
     service: (args, config) => service.assessmentKit.info.getAll(args, config),
   });
 
+  const renderSkeletons = () =>
+    Array.from({ length: 6 }).map((_, index) => (
+      <Grid item xs={12} md={6} key={index}>
+        <LoadingSkeleton sx={{ height: "340px", mb: 1 }} />
+      </Grid>
+    ));
+
   return (
     <QueryData
       {...assessmentKitsQueryData}
       loadingComponent={
         <Grid container spacing={4}>
-          {forLoopComponent(6, () => (
-            <Grid item xs={12} md={6} key={uniqueId()}>
-              <LoadingSkeleton
-                key={uniqueId()}
-                sx={{ height: "340px", mb: 1 }}
-              />
-            </Grid>
-          ))}
+          {renderSkeletons()}
         </Grid>
       }
       render={(data) => {
         const { items = [] } = data;
         return (
           <Grid container spacing={4}>
-            {items.map((item: any) => {
-              return (
-                <AssessmentKitsStoreCard openDialog={dialogProps} {...item} />
-              );
-            })}
+            {items.map((item: any) => (
+              <AssessmentKitsStoreCard
+                key={item.id}
+                openDialog={dialogProps}
+                {...item}
+              />
+            ))}
             <AssessmentCEFromDialog {...dialogProps} />
           </Grid>
         );

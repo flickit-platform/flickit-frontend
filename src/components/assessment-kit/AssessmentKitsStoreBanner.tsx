@@ -80,9 +80,6 @@ const AssessmentKitsStoreBanner = () => {
 
   return (
     <Box
-      component="div"
-      role="presentation"
-      tabIndex={0}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       sx={{ ...styles.carousel }}
@@ -98,11 +95,19 @@ const AssessmentKitsStoreBanner = () => {
       >
         {banners.map((item, i) => (
           <Box
-            key={i}
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                navigate(`/assessment-kits/${item.kitId}/`);
+              }
+            }}
             sx={{
-              width: `${100 / banners.length}%`,
+              width: "100%",
               height: "100%",
-              flexShrink: 0,
+              cursor: "pointer",
+              outline: "none",
             }}
           >
             <img
@@ -113,9 +118,7 @@ const AssessmentKitsStoreBanner = () => {
                 height: "100%",
                 objectFit: "cover",
                 display: "block",
-                cursor: "pointer",
               }}
-              onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
             />
           </Box>
         ))}
