@@ -6,6 +6,7 @@ import useDialog from "@/utils/useDialog";
 import ContactUsDialog from "./ContactUsDialog";
 import i18next, { t } from "i18next";
 import { useMediaQuery } from "@mui/material";
+import { theme } from "@/config/theme";
 
 const AssessmentKitsContactUs = () => {
   const dialogProps = useDialog();
@@ -36,7 +37,7 @@ const AssessmentKitsContactUs = () => {
           mt: { xs: 0, md: 0 },
           position: { sm: "static", md: "absolute" },
           bottom: { sm: "62px" },
-          left: { sm: "3.8%" },
+          [theme.direction === "rtl" ? "right" : "left"]: { sm: "3.8%" },
           alignSelf: { sm: "center", md: "flex-start" },
           backgroundColor: "primary.main",
           "&:hover": {
