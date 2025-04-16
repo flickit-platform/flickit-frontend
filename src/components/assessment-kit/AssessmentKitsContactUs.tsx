@@ -36,14 +36,12 @@ const AssessmentKitsContactUs = () => {
           mt: { xs: 0, md: 0 },
           position: { sm: "static", md: "absolute" },
           bottom: { sm: "62px" },
-          left: { sm: i18next.language === "fa" ? "unset" : "3.8%" },
-          right: { sm: i18next.language === "fa" ? "3.8%"  : "unset" },
+          left: { sm: "3.8%" },
           alignSelf: { sm: "center", md: "flex-start" },
           backgroundColor: "primary.main",
           "&:hover": {
             backgroundColor: "primary.dark",
           },
-          textTransform: "capitalize"
         }}
         size="large"
       >

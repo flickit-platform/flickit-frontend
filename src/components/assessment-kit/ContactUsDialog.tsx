@@ -122,7 +122,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
 
           <CEDialogActions
             cancelLabel={t("cancel")}
-            submitButtonLabel={t("approve")}
+            submitButtonLabel={t("confirm")}
             onClose={close}
             loading={state.submitting}
             onSubmit={methods.handleSubmit(onSubmit)}
