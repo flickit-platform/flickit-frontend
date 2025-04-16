@@ -6,7 +6,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 
 interface MaturityLevelFormProps {
@@ -79,14 +79,16 @@ const MaturityLevelForm = ({
         margin="normal"
         inputProps={{
           "data-testid": "maturity-level-title",
-          style: { fontFamily: languageDetector(newMaturityLevel.title as string)
-                ? farsiFontFamily
-                : primaryFontFamily }
+          style: {
+            fontFamily: languageDetector(newMaturityLevel.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
         }}
         sx={{
           mt: 0,
           fontSize: 14,
-          background:"#fff",
+          background: "#fff",
           "& .MuiInputBase-root": {
             height: 40,
             fontSize: 14,
@@ -101,9 +103,11 @@ const MaturityLevelForm = ({
         label={<Trans i18nKey="description" />}
         inputProps={{
           "data-testid": "maturity-level-description",
-          style: { fontFamily: languageDetector(newMaturityLevel.description as string)
-                ? farsiFontFamily
-                : primaryFontFamily }
+          style: {
+            fontFamily: languageDetector(newMaturityLevel.description)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
         }}
         name="description"
         required
@@ -117,7 +121,7 @@ const MaturityLevelForm = ({
         sx={{
           mt: 1,
           fontSize: 14,
-          background:"#fff",
+          background: "#fff",
           "& .MuiInputBase-root": {
             fontSize: 14,
             overflow: "auto",
@@ -142,10 +146,20 @@ const MaturityLevelForm = ({
         }}
       >
         {" "}
-        <IconButton size="small" color="primary" onClick={handleSave} data-testid="maturity-level-check-icon">
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={handleSave}
+          data-testid="maturity-level-check-icon"
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" onClick={handleCancel} data-testid="maturity-level-close-icon">
+        <IconButton
+          size="small"
+          color="secondary"
+          onClick={handleCancel}
+          data-testid="maturity-level-close-icon"
+        >
           <CloseIcon />
         </IconButton>
       </Link>

@@ -10,7 +10,7 @@ import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
 import languageDetector from "@utils/languageDetector";
-import i18next, { t } from "i18next";
+import i18next from "i18next";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const { id, title, isPrivate, expertGroup, summary, languages, openDialog } =
@@ -181,7 +181,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                 }}
               />
               <Typography variant="titleSmall">
-                {languages.join(", ")}
+                {languages.join(i18next.language === "fa" ? "،" : ", ")}
               </Typography>
             </Box>
           </Box>
