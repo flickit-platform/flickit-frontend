@@ -186,10 +186,10 @@ const carouselStyle = {
     position: "absolute",
     top: { xs: "20%", sm: "40%" },
     transform: "translateY(-50%)",
-    fontSize: { xs: "8px", sm: "24px" }, 
+    fontSize: { xs: "8px", sm: "24px" },
     backgroundColor: "transparent",
     border: "none",
-    padding: { xs: 0.2, sm: 1.5 }, 
+    padding: { xs: 0.2, sm: 1.5 },
     cursor: "pointer",
     zIndex: 2,
     borderRadius: "50%",
@@ -206,11 +206,12 @@ const carouselStyle = {
   }),
 
   dots: style({
+    display: { xs: "none", sm: "flex" },
+
     position: "absolute",
-    bottom: { xs: "10px", sm: "15px" },
+    bottom: "8px",
     left: "50%",
     transform: "translateX(-50%)",
-    display: "flex",
     gap: { xs: "6px", sm: "10px" },
     zIndex: 3,
   }),
