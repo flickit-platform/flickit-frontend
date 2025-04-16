@@ -372,8 +372,8 @@ const Navbar = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-      service: (args?: { page?: number; size?: number }, config?: any) =>
-         service.space.getList({ page: 1, size: 20, ...args }, config),
+    service: (args?: { page?: number; size?: number }, config?: any) =>
+      service.space.getList({ page: 1, size: 20, ...args }, config),
     toastError: true,
   });
   const fetchPathInfo = useQuery({
@@ -433,7 +433,12 @@ const Navbar = () => {
       {/* Drawer content */}
       <Typography
         variant="h6"
-        sx={{  height: "56px", width: "100%", ...styles.centerVH, background: theme.palette.primary.main }}
+        sx={{
+          height: "56px",
+          width: "100%",
+          ...styles.centerVH,
+          background: theme.palette.primary.main,
+        }}
         component={NavLink}
         to={spaceId ? `/${spaceId}/assessments/1` : `/spaces/1`}
       >
@@ -543,7 +548,11 @@ const Navbar = () => {
       >
         <Toolbar
           variant="dense"
-          sx={{ backgroundColor: theme.palette.primary.main, borderRadius: 1 }}
+          sx={{
+            backgroundColor: theme.palette.primary.main,
+            borderRadius: 1,
+            justifyContent: "space-between",
+          }}
         >
           <IconButton
             color="primary"
@@ -582,7 +591,7 @@ const Navbar = () => {
           <Box
             sx={{
               display: { xs: "none", md: "block" },
-              mx: "auto"
+              mx: "auto",
             }}
           >
             <SpacesButton />
@@ -658,7 +667,7 @@ const Navbar = () => {
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
-          anchor={i18n. language == "fa" ? "right" : "left"}
+          anchor={i18n.language == "fa" ? "right" : "left"}
           sx={{
             display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": {
@@ -717,9 +726,9 @@ const SpacesButton = () => {
   const { service } = useServiceContext();
 
   const spacesQueryData = useQuery<ISpacesModel>({
-      service: (args?: { page?: number; size?: number }, config?: any) =>
-          service.space.getList({page: 1, size: 20, ...args}, config),
-      toastError: true,
+    service: (args?: { page?: number; size?: number }, config?: any) =>
+      service.space.getList({ page: 1, size: 20, ...args }, config),
+    toastError: true,
   });
 
   const isActive = location.pathname.startsWith("/spaces/1");
@@ -736,19 +745,19 @@ const SpacesButton = () => {
           "&:hover .MuiButton-endIcon > div": {
             borderLeftColor: "#8080802b",
           },
-            ...(isActive && {
-                "&::after": {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "90%", // 👈 smaller underline
-                    height: "2px",
-                    backgroundColor: "#fff",
-                    borderRadius: 1,
-                }
-            }),
+          ...(isActive && {
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              bottom: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: "90%", // 👈 smaller underline
+              height: "2px",
+              backgroundColor: "#fff",
+              borderRadius: 1,
+            },
+          }),
           color: "#fff",
         }}
         size="small"
@@ -779,9 +788,9 @@ const SpacesButton = () => {
         onClose={handleClose}
         PaperProps={{
           sx: {
-              marginTop: 0,
-              marginLeft: theme.direction === "rtl" ?  10 : -10,
-              minWidth: "260px",
+            marginTop: 0,
+            marginLeft: theme.direction === "rtl" ? 10 : -10,
+            minWidth: "260px",
           },
         }}
       >
@@ -805,7 +814,11 @@ const SpacesButton = () => {
                       component={NavLink}
                       to={`/${space?.id}/assessments/1`}
                       onClick={() => handleClickMenueItem(space)}
-                      sx={{fontFamily: languageDetector(space?.title) ? farsiFontFamily : primaryFontFamily }}
+                      sx={{
+                        fontFamily: languageDetector(space?.title)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                      }}
                     >
                       {space?.title}
                     </MenuItem>
