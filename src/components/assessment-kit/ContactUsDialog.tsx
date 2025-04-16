@@ -51,7 +51,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       {...rest}
       closeDialog={close}
       title={
-        <Typography sx={theme.typography.semiBoldXLarge} textTransform="none">
+        <Typography sx={theme.typography.semiBoldXLarge} textTransform={"uppercase"}>
           <Trans i18nKey="contactUs" />
         </Typography>
       }
@@ -122,7 +122,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
 
           <CEDialogActions
             cancelLabel={t("cancel")}
-            submitButtonLabel={t("confirm")}
+            submitButtonLabel={t("approve")}
             onClose={close}
             loading={state.submitting}
             onSubmit={methods.handleSubmit(onSubmit)}
