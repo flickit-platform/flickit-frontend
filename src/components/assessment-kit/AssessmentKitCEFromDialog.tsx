@@ -30,6 +30,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { theme } from "@/config/theme";
 import SelectLanguage from "@utils/selectLanguage";
 import uniqueId from "@/utils/uniqueId";
+import i18n from "i18next";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -67,7 +68,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const { type, data = {} } = context;
   const { expertGroupId: fallbackExpertGroupId } = useParams();
   const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
-  const [lang, setLang] = useState("");
+  const [lang, setLang] = useState({code: "", title: ""});
   const defaultValues = type === "update" ? data : {};
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -88,7 +89,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setDropNewFile(null);
     setConvertData(null);
     setIsValid(false);
-    setLang(languages[0]?.title);
+    setLang(languages[0]);
   };
   const fetchSampleExecl = useQuery({
     service: (args, config) => service.assessmentKit.dsl.getExcelSample(args, config),
@@ -103,7 +104,9 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
 
   useEffect(() => {
     if (languages) {
-      setLang(languages[0]?.title);
+      let appLang = languages.find(
+          (item: { code: string; title: string }) => item.code == i18n.language.toUpperCase())
+      setLang(appLang);
     }
   }, [languages]);
 
@@ -114,8 +117,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       isPrivate: isPrivate,
       tagIds: tags.map((t: any) => t.id),
       expertGroupId: expertGroupId,
-      lang:
-        lang == languages[0]?.title ? languages[0]?.code : languages[1]?.code,
+      lang: lang.code,
       ...restOfData,
     };
     if (type !== "draft") {
@@ -210,7 +212,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
 
   const handleSelectedChange = (e: any) => {
     const { value } = e.target;
-    setLang(value);
+    let adjustValue = languages.find(
+        (item: { code: string; title: string }) => item.title == value,
+    );
+    setLang(adjustValue);
   };
 
   const formContent = (
@@ -363,7 +368,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         >
           <SelectLanguage
             handleChange={handleSelectedChange}
-            lang={lang}
+            mainLanguage={lang}
             languages={languages}
           />
         </Grid>
