@@ -118,4 +118,17 @@ export const info = {
       ...(config ?? {}),
     });
   },
+
+  getAllBanners(args: { lang: string }, config?: AxiosRequestConfig<any>) {
+    const { lang } = args ?? {};
+
+    return axios.get(`/api/v1/assessment-kits-banners/`, {
+      ...(config ?? {}),
+      params: {
+        lang,
+      },
+    });
+  },
+
+  banner() {},
 };

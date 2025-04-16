@@ -162,74 +162,76 @@ const compare = {
   }),
 };
 
-const carouselStyle ={
-    carousel: style({
-      position: 'relative',
-      width: '100%',
-      height: '400px',
-      overflow: 'hidden',
-      cursor: 'pointer',
-      mt: 4, // margin-top: 32px
-    }),
-    carouselInner: style({
-      display: 'flex',
-      width: '100%',
-      height: '100%',
-      transition: 'transform 0.5s ease-in-out',
-        }) ,
-    carouselImage: style({
-      width: '100%',
-      height: '100%',
-      objectFit: 'fill',
-      flexShrink: 0,
-        }),
-    arrow: style({
-       position: 'absolute',
-       top: '40%',
-       transform: 'translateY(-50%)',
-       fontSize: '24px',
-       color: 'white',
-       backgroundColor: 'transparent',
-       border: 'none',
-       padding: '10px',
-       cursor: 'pointer',
-       zIndex: 2,
-       borderRadius: '50%',
-        }) ,
-    arrowLeft: style({
-       left: '15px',
-       transform: 'rotate(90deg)',
-    }) ,
-    arrowRight: style({
-      right: '15px',
-      transform: 'rotate(-90deg)',
-    }) ,
-    dots: style({
-      position: 'absolute',
-      bottom: '15px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      display: 'flex',
-      gap: '10px',
-    }) ,
-    dot: style({
-      width: '16px',
-      height: '16px',
-      backgroundColor: '#ccc',
-      borderRadius: '50%',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      opacity: 0.7,
-    }) ,
-    dotActive: style({
-      width: '32px',
-      height: '16px',
-      borderRadius: '20px',
-      backgroundColor: '#333',
-      transform: 'scale(1.3)',
-      opacity: 1,
-    })
-}
+const carouselStyle = {
+  carousel: style({
+    position: "relative",
+    width: "100%",
+    overflow: "hidden",
+    cursor: "pointer",
+    mt: 4, // margin-top: 32px
+  }),
+  carouselInner: style({
+    display: "flex",
+    width: "100%",
+    height: "100%",
+    transition: "transform 0.5s ease-in-out",
+  }),
+  carouselImage: style({
+    width: "100%",
+    height: "100%",
+    objectFit: "fill",
+    flexShrink: 0,
+  }),
+  arrow: style({
+    position: "absolute",
+    top: { xs: "20%", sm: "40%" },
+    transform: "translateY(-50%)",
+    fontSize: { xs: "8px", sm: "24px" }, 
+    backgroundColor: "transparent",
+    border: "none",
+    padding: { xs: 0.2, sm: 1.5 }, 
+    cursor: "pointer",
+    zIndex: 2,
+    borderRadius: "50%",
+  }),
+
+  arrowLeft: style({
+    left: { xs: "8px", sm: "15px" },
+    transform: "rotate(90deg)",
+  }),
+
+  arrowRight: style({
+    right: { xs: "8px", sm: "15px" },
+    transform: "rotate(-90deg)",
+  }),
+
+  dots: style({
+    position: "absolute",
+    bottom: { xs: "10px", sm: "15px" },
+    left: "50%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    gap: { xs: "6px", sm: "10px" },
+    zIndex: 3,
+  }),
+
+  dot: style({
+    width: { xs: "4px", sm: "16px" },
+    height: { xs: "4px", sm: "16px" },
+    borderRadius: "50%",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    opacity: 0.7,
+  }),
+
+  dotActive: style({
+    width: { xs: "10px", sm: "32px" },
+    height: { xs: "5px", sm: "16px" },
+    borderRadius: "20px",
+    transform: "scale(1.3)",
+    opacity: 1,
+  }),
+};
 
 export const styles = {
   ...commonStyles,

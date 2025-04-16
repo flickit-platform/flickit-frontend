@@ -1,63 +1,83 @@
 import React, { useEffect, useRef, useState } from "react";
-import kitStore from "@assets/svg/kitStore1.svg";
 import Box from "@mui/material/Box";
-import { styles } from "@styles";
 import Button from "@mui/material/Button";
+import Skeleton from "@mui/material/Skeleton";
+import { useServiceContext } from "@providers/ServiceProvider";
+import { useQuery } from "@utils/useQuery";
 import ArrowBtn from "@utils/icons/arrow";
+import { styles } from "@styles";
 import { theme } from "@config/theme";
+import i18next from "i18next";
+import { useNavigate } from "react-router-dom";
+import uniqueId from "@/utils/uniqueId";
 
 const AssessmentKitsStoreBanner = () => {
-  const images = [kitStore, kitStore];
-
+  const { service } = useServiceContext();
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const timeoutRef = useRef<any>(null);
-  const startXRef = useRef(null);
-
+  const startXRef = useRef<number | null>(null);
   const delay = 10000;
+
+  const bannersQuery = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.getAllBanners(
+        args ?? { lang: i18next.language.toUpperCase() },
+        config,
+      ),
+  });
+
+  const banners: { kitId: number; banner: string }[] = bannersQuery.data ?? [];
 
   const resetTimeout = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
+  const goPrev = () =>
+    setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+  const goNext = () =>
+    setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+
   useEffect(() => {
+    if (!banners.length) return;
     resetTimeout();
-    timeoutRef.current = setTimeout(() => {
-      nextImage();
-    }, delay);
-
+    timeoutRef.current = setTimeout(goNext, delay);
     return () => resetTimeout();
-  }, [currentIndex]);
+  }, [currentIndex, banners]);
 
-  // Keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e: any) => {
-      if (e.key === "ArrowLeft") prevImage();
-      else if (e.key === "ArrowRight") nextImage();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") goPrev();
+      else if (e.key === "ArrowRight") goNext();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [banners]);
 
-  const prevImage = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-  // Mouse drag/swipe support
-  const handleMouseDown = (e: any) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     startXRef.current = e.clientX;
   };
 
-  const handleMouseUp = (e: any) => {
+  const handleMouseUp = (e: React.MouseEvent) => {
     if (startXRef.current === null) return;
     const diff = e.clientX - startXRef.current;
-    if (diff > 50) prevImage();
-    else if (diff < -50) nextImage();
+    if (diff > 50) goPrev();
+    else if (diff < -50) goNext();
     startXRef.current = null;
   };
+
+  if (bannersQuery.loading) {
+    return (
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height="400px"
+        sx={{ borderRadius: 2 }}
+      />
+    );
+  }
+
+  if (!banners.length) return null;
 
   return (
     <Box
@@ -66,21 +86,39 @@ const AssessmentKitsStoreBanner = () => {
       sx={{ ...styles.carousel }}
     >
       <Box
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        sx={{ ...styles.carouselInner }}
+        sx={{
+          display: "flex",
+          width: `${banners.length * 100}%`,
+          height: "100%",
+          transition: "transform 0.5s ease-in-out",
+          transform: `translateX(${theme.direction === "rtl" ? "+" : "-"}${currentIndex * (100 / banners.length)}%)`,
+        }}
       >
-        {images.map((src, i) => (
-          <img
-            key={i}
-            src={src}
-            style={{
+        {banners.map((item, i) => (
+          <Box
+            key={uniqueId()}
+            component="button"
+            type="button"
+            onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
+            sx={{
+              all: "unset",
               width: "100%",
               height: "100%",
-              objectFit: "fill",
-              flexShrink: 0,
+              cursor: "pointer",
+              display: "block",
             }}
-            alt={`Slide ${i + 1}`}
-          />
+          >
+            <img
+              src={item.banner}
+              alt={`Slide ${i + 1}`}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
+            />
+          </Box>
         ))}
       </Box>
 
@@ -90,7 +128,7 @@ const AssessmentKitsStoreBanner = () => {
           left: "15px",
           transform: "rotate(90deg)",
         }}
-        onClick={prevImage}
+        onClick={goPrev}
       >
         <ArrowBtn color={theme.palette.primary.dark} />
       </Button>
@@ -101,19 +139,18 @@ const AssessmentKitsStoreBanner = () => {
           right: "15px",
           transform: "rotate(-90deg)",
         }}
-        onClick={nextImage}
+        onClick={goNext}
       >
-        <ArrowBtn color={theme.palette.primary.dark} height={"40px"} />
+        <ArrowBtn color={theme.palette.primary.dark} />
       </Button>
 
       <Box sx={{ ...styles.dots }}>
-        {images.map((_, i) => (
+        {banners.map((_, i) => (
           <Box
             key={i}
-            className={`dot ${currentIndex === i ? "active" : ""}`}
             sx={{
-              width: currentIndex === i ? "32px" : "16px",
-              height: "16px",
+              width: currentIndex === i ? "2rem" : "1rem",
+              height: "1rem",
               backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
               borderRadius: currentIndex === i ? "20px" : "50%",
               cursor: "pointer",
