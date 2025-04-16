@@ -41,7 +41,7 @@ import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { format } from "date-fns";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
-import { t } from "i18next";
+import i18n, { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
 
@@ -427,16 +427,13 @@ const Navbar = () => {
     <Box
       onClick={handleDrawerToggle}
       sx={{
-        paddingLeft: theme.direction === "ltr" ? 2 : "unset",
-        paddingRight: theme.direction === "rtl" ? 2 : "unset",
-        pr: 1,
         textAlign: "center",
       }}
     >
       {/* Drawer content */}
       <Typography
         variant="h6"
-        sx={{ my: 1, height: "40px", width: "100%", ...styles.centerVH }}
+        sx={{  height: "56px", width: "100%", ...styles.centerVH, background: theme.palette.primary.main }}
         component={NavLink}
         to={spaceId ? `/${spaceId}/assessments/1` : `/spaces/1`}
       >
@@ -664,6 +661,7 @@ const Navbar = () => {
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
+          anchor={i18n. language == "fa" ? "right" : "left"}
           sx={{
             display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": {
