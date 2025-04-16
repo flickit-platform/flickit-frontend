@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
-import { IGraphicalReport, PathInfo } from "@/types/index";
+import { ErrorCodes, IGraphicalReport, PathInfo } from "@/types/index";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
 import QueryBatchData from "../common/QueryBatchData";
@@ -34,8 +34,12 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import Share from "@mui/icons-material/Share";
 import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
+import useCalculate from "@/hooks/useCalculate";
+import { useEffect } from "react";
 
 const AssessmentExportContainer = () => {
+  const { calculate, calculateConfidence } = useCalculate();
+
   const { assessmentId = "", spaceId = "" } = useParams();
   const { service } = useServiceContext();
 
@@ -49,7 +53,10 @@ const AssessmentExportContainer = () => {
 
   const fetchGraphicalReport = useQuery({
     service: (args, config) =>
-      service.assessments.report.getGraphical({ assessmentId, ...(args ?? {}) }, config),
+      service.assessments.report.getGraphical(
+        { assessmentId, ...(args ?? {}) },
+        config,
+      ),
     runOnMount: true,
   });
 
@@ -61,6 +68,32 @@ const AssessmentExportContainer = () => {
       ),
     runOnMount: false,
   });
+
+  const handleErrorResponse = async (errorCode: any) => {
+    console.log(errorCode);
+    switch (errorCode) {
+      case ErrorCodes.CalculateNotValid:
+        await calculate();
+        break;
+      case ErrorCodes.ConfidenceCalculationNotValid:
+        await calculateConfidence();
+        break;
+      case "DEPRECATED":
+        await service.assessments.info.migrateKitVersion({ assessmentId });
+        break;
+      default:
+        break;
+    }
+    fetchGraphicalReport.query();
+  };
+
+  useEffect(() => {
+    const errorCode = fetchGraphicalReport.errorObject?.response?.data?.code;
+
+    if (errorCode) {
+      handleErrorResponse(errorCode);
+    }
+  }, [fetchGraphicalReport.errorObject]);
 
   const renderChip = (icon: any, label: any, language: string) => (
     <Chip
@@ -387,7 +420,7 @@ const AssessmentExportContainer = () => {
                               ...theme.typography.titleSmall,
                               color: "#2B333B",
                               my: 1,
-                              ...styles.centerV,               
+                              ...styles.centerV,
                               direction: rtlLanguage ? "rtl" : "ltr",
                               fontFamily: rtlLanguage
                                 ? farsiFontFamily
