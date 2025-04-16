@@ -22,7 +22,7 @@ const AssessmentKitsStoreListCard = () => {
       {...assessmentKitsQueryData}
       loadingComponent={
         <Grid container spacing={4}>
-          {forLoopComponent(6, (index) => (
+          {forLoopComponent(6, () => (
             <Grid item xs={12} md={6} key={uniqueId()}>
               <LoadingSkeleton
                 key={uniqueId()}

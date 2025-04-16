@@ -10,6 +10,7 @@ import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
 import languageDetector from "@utils/languageDetector";
+import i18next from "i18next";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const { id, title, isPrivate, expertGroup, summary, languages, openDialog } =
@@ -98,7 +99,17 @@ const AssessmentKitsStoreCard = (props: any) => {
                   : secondaryFontFamily,
               }}
             >
-              <Trans i18nKey="designedBy" /> {expertGroup.title}
+              <span
+                style={{
+                  fontFamily:
+                    i18next.language === "fa"
+                      ? farsiFontFamily
+                      : secondaryFontFamily,
+                }}
+              >
+                <Trans i18nKey="designedBy" />
+              </span>{" "}
+              {expertGroup.title}
             </Typography>
           </Box>
           <Box

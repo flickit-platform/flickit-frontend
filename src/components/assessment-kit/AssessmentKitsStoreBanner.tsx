@@ -32,28 +32,22 @@ const AssessmentKitsStoreBanner = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
+  const goPrev = () =>
+    setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+  const goNext = () =>
+    setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+
   useEffect(() => {
     if (!banners.length) return;
     resetTimeout();
-    timeoutRef.current = setTimeout(() => {
-      setCurrentIndex((prev) =>
-        prev === banners.length - 1 ? 0 : prev + 1,
-      );
-    }, delay);
+    timeoutRef.current = setTimeout(goNext, delay);
     return () => resetTimeout();
   }, [currentIndex, banners]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setCurrentIndex((prev) =>
-          prev === 0 ? banners.length - 1 : prev - 1,
-        );
-      } else if (e.key === "ArrowRight") {
-        setCurrentIndex((prev) =>
-          prev === banners.length - 1 ? 0 : prev + 1,
-        );
-      }
+      if (e.key === "ArrowLeft") goPrev();
+      else if (e.key === "ArrowRight") goNext();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -66,19 +60,12 @@ const AssessmentKitsStoreBanner = () => {
   const handleMouseUp = (e: React.MouseEvent) => {
     if (startXRef.current === null) return;
     const diff = e.clientX - startXRef.current;
-    if (diff > 50) {
-      setCurrentIndex((prev) =>
-        prev === 0 ? banners.length - 1 : prev - 1,
-      );
-    } else if (diff < -50) {
-      setCurrentIndex((prev) =>
-        prev === banners.length - 1 ? 0 : prev + 1,
-      );
-    }
+    if (diff > 50) goPrev();
+    else if (diff < -50) goNext();
     startXRef.current = null;
   };
 
-  if (bannersQuery?.loading) {
+  if (bannersQuery.loading) {
     return (
       <Skeleton
         variant="rectangular"
@@ -102,24 +89,35 @@ const AssessmentKitsStoreBanner = () => {
     >
       <Box
         sx={{
-          ...styles.carouselInner,
-          transform: `translateX(-${currentIndex * 100}%)`,
+          display: "flex",
+          width: `${banners.length * 100}%`,
+          height: "100%",
+          transition: "transform 0.5s ease-in-out",
+          transform: `translateX(${theme.direction === "rtl" ? "+" : "-"}${currentIndex * (100 / banners.length)}%)`,
         }}
       >
         {banners.map((item, i) => (
-          <img
+          <Box
             key={i}
-            src={item.banner}
-            style={{
-              width: "100%",
+            sx={{
+              width: `${100 / banners.length}%`,
               height: "100%",
-              objectFit: "fill",
               flexShrink: 0,
-              cursor: "pointer",
             }}
-            alt={`Slide ${i + 1}`}
-            onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
-          />
+          >
+            <img
+              src={item.banner}
+              alt={`Slide ${i + 1}`}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+                cursor: "pointer",
+              }}
+              onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
+            />
+          </Box>
         ))}
       </Box>
 
@@ -129,11 +127,7 @@ const AssessmentKitsStoreBanner = () => {
           left: "15px",
           transform: "rotate(90deg)",
         }}
-        onClick={() =>
-          setCurrentIndex((prev) =>
-            prev === 0 ? banners.length - 1 : prev - 1,
-          )
-        }
+        onClick={goPrev}
       >
         <ArrowBtn color={theme.palette.primary.dark} />
       </Button>
@@ -144,11 +138,7 @@ const AssessmentKitsStoreBanner = () => {
           right: "15px",
           transform: "rotate(-90deg)",
         }}
-        onClick={() =>
-          setCurrentIndex((prev) =>
-            prev === banners.length - 1 ? 0 : prev + 1,
-          )
-        }
+        onClick={goNext}
       >
         <ArrowBtn color={theme.palette.primary.dark} />
       </Button>
@@ -157,7 +147,6 @@ const AssessmentKitsStoreBanner = () => {
         {banners.map((_, i) => (
           <Box
             key={i}
-            className={`dot ${currentIndex === i ? "active" : ""}`}
             sx={{
               width: currentIndex === i ? "2rem" : "1rem",
               height: "1rem",
