@@ -181,7 +181,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                 }}
               />
               <Typography variant="titleSmall">
-                {languages.join(i18next.language === "fa" ? "،" : ", ")}
+                {languages.join(i18next.language === "fa" ? "، " : ", ")}
               </Typography>
             </Box>
           </Box>
