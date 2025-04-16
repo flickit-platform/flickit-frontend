@@ -9,6 +9,7 @@ import { styles } from "@styles";
 import { theme } from "@config/theme";
 import i18next from "i18next";
 import { useNavigate } from "react-router-dom";
+import uniqueId from "@/utils/uniqueId";
 
 const AssessmentKitsStoreBanner = () => {
   const { service } = useServiceContext();
@@ -95,19 +96,16 @@ const AssessmentKitsStoreBanner = () => {
       >
         {banners.map((item, i) => (
           <Box
-            role="button"
-            tabIndex={0}
+            key={uniqueId()}
+            component="button"
+            type="button"
             onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                navigate(`/assessment-kits/${item.kitId}/`);
-              }
-            }}
             sx={{
+              all: "unset",
               width: "100%",
               height: "100%",
               cursor: "pointer",
-              outline: "none",
+              display: "block",
             }}
           >
             <img

@@ -6,6 +6,7 @@ import QueryData from "@common/QueryData";
 import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDialog";
 import useDialog from "@utils/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
+import uniqueId from "@/utils/uniqueId";
 
 const AssessmentKitsStoreListCard = () => {
   const { service } = useServiceContext();
@@ -16,8 +17,8 @@ const AssessmentKitsStoreListCard = () => {
   });
 
   const renderSkeletons = () =>
-    Array.from({ length: 6 }).map((_, index) => (
-      <Grid item xs={12} md={6} key={index}>
+    Array.from({ length: 6 }).map((_) => (
+      <Grid item xs={12} md={6} key={uniqueId()}>
         <LoadingSkeleton sx={{ height: "340px", mb: 1 }} />
       </Grid>
     ));
