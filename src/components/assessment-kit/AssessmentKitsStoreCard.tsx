@@ -10,7 +10,7 @@ import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
 import languageDetector from "@utils/languageDetector";
-import i18next from "i18next";
+import i18next, { t } from "i18next";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const { id, title, isPrivate, expertGroup, summary, languages, openDialog } =
@@ -112,36 +112,20 @@ const AssessmentKitsStoreCard = (props: any) => {
               {expertGroup.title}
             </Typography>
           </Box>
-          <Box
-            mt={4}
-            sx={{
-              display: "flex",
-              textAlign: "justify",
-              fontFamily: languageDetector(summary)
-                ? farsiFontFamily
-                : secondaryFontFamily,
-              overflow: "hidden",
-              minHeight: {
-                xs: `calc(1em * 4)`,
-                sm: `calc(1em * 4)`,
-              },
-            }}
-          >
+          <Box mt={4}>
             <Typography
+              component="div"
+              textAlign="justify"
               sx={{
                 ...theme.typography.bodyLarge,
                 fontFamily: languageDetector(summary)
                   ? farsiFontFamily
                   : secondaryFontFamily,
-                WebkitLineClamp: 4,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
               }}
-              textAlign="justify"
-            >
-              {summary}
-            </Typography>
+              dangerouslySetInnerHTML={{
+                __html: `${summary.substring(0, 297)}${summary.length > 297 ? "..." : ""}`,
+              }}
+            />
           </Box>
         </Box>
         <Box

@@ -8,6 +8,7 @@ const AssessmentKitsContainer = (props: PropsWithChildren<{}>) => {
   return (
     <Box
       m="auto"
+      my={4}
       pb={3}
       sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}
       gap="40px"
