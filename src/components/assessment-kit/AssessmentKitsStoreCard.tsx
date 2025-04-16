@@ -37,6 +37,7 @@ const AssessmentKitsStoreCard = (props: any) => {
       <Box
         sx={{
           ...styles.boxStyle,
+          borderRadius: 1,
           height: "100%",
           borderLeft: `4px solid ${
             isPrivate

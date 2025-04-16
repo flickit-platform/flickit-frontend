@@ -43,6 +43,7 @@ const AssessmentKitsContactUs = () => {
             backgroundColor: "primary.dark",
           },
         }}
+        size="large"
       >
         {t("contactUs")}
       </Button>
