@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { toastDefaultConfig } from "@config/toastConfigs";
 import { ServiceProvider } from "./providers/ServiceProvider";
 import { ThemeProvider } from "@mui/material/styles";
-import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { AppProvider } from "./providers/AppProvider";
 import { AuthProvider, useAuthContext } from "./providers/AuthProvider";
 import { ConfigProvider } from "./providers/ConfgProvider";
@@ -82,33 +82,31 @@ const renderApp = () => {
   return createRoot(document.getElementById("root") as HTMLElement).render(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Suspense fallback="loading...">
-          <AppProvider>
-            <AssessmentProvider>
-              <AuthProvider>
-                <ServiceProvider>
-                  <ConfigProvider>
-                    <CssBaseline />
-                    <Suspense fallback={null}>
-                      <ToastContainer
-                          {...toastDefaultConfig}
-                          toastStyle={{
-                            fontFamily:
-                                i18next.language === "fa"
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                            direction: i18next.language === "fa" ? "rtl" : "ltr",
-                            textAlign: i18next.language === "fa" ? "right" : "left",
-                          }}
-                      />
-                    </Suspense>
-                    <AppWithNovu />
-                  </ConfigProvider>
-                </ServiceProvider>
-              </AuthProvider>
-            </AssessmentProvider>
-          </AppProvider>
-        </Suspense>
+        <AppProvider>
+          <AssessmentProvider>
+            <AuthProvider>
+              <ServiceProvider>
+                <ConfigProvider>
+                  <CssBaseline />
+                  <Suspense fallback={null}>
+                    <ToastContainer
+                      {...toastDefaultConfig}
+                      toastStyle={{
+                        fontFamily:
+                          i18next.language === "fa"
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        direction: i18next.language === "fa" ? "rtl" : "ltr",
+                        textAlign: i18next.language === "fa" ? "right" : "left",
+                      }}
+                    />
+                  </Suspense>
+                  <AppWithNovu />
+                </ConfigProvider>
+              </ServiceProvider>
+            </AuthProvider>
+          </AssessmentProvider>
+        </AppProvider>
       </BrowserRouter>
     </ThemeProvider>,
   );
