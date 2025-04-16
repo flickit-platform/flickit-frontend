@@ -44,6 +44,9 @@ import LanguageSelector from "./LangSelector";
 import i18n, { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
+import CompareRounded from "@mui/icons-material/CompareRounded";
+import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
+import FolderRounded from "@mui/icons-material/FolderRounded";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -598,6 +601,11 @@ const Navbar = () => {
             <Button
               component={NavLink}
               to={`/compare`}
+              startIcon={
+                <CompareRounded
+                  sx={{ opacity: 0.8, fontSize: "1.125rem !important" }}
+                />
+              }
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
@@ -612,6 +620,11 @@ const Navbar = () => {
             <Button
               component={NavLink}
               to={`/assessment-kits`}
+              startIcon={
+                <AssessmentRounded
+                  sx={{ opacity: 0.8, fontSize: "18px !important" }}
+                />
+              }
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
@@ -738,6 +751,11 @@ const SpacesButton = () => {
       <Button
         data-cy="spaces"
         onClick={() => navigate("/spaces/1")}
+        startIcon={
+          <FolderRounded
+            sx={{ opacity: 0.8, fontSize: "18px !important" }}
+          />
+        }
         sx={{
           textTransform: "uppercase",
           marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
