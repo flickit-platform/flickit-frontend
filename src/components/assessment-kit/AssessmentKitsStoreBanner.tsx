@@ -163,7 +163,7 @@ const AssessmentKitsStoreBanner: React.FC = () => {
       >
         {banners.map((item, i) => (
           <Box
-            key={uniqueId()}
+            key={item.kitId}
             component="button"
             type="button"
             onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
