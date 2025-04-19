@@ -16,7 +16,7 @@ interface MaturityLevelFormProps {
     description: string;
     index: number;
     value: number;
-    translations: any;
+    translations?: any;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;

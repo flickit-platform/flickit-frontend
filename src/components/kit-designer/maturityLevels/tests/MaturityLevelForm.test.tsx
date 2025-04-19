@@ -16,12 +16,14 @@ describe("MaturityLevelForm", () => {
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
   const handleCancel = vi.fn();
+  const setNewMaturityLevel = vi.fn();
 
   const renderForm = () =>
     render(
       <I18nextProvider i18n={i18n}>
         <MaturityLevelForm
           newMaturityLevel={newMaturityLevel}
+          setNewMaturityLevel={setNewMaturityLevel}
           handleInputChange={handleInputChange}
           handleSave={handleSave}
           handleCancel={handleCancel}
