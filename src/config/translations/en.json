@@ -934,6 +934,7 @@
     "measures": "Measures",
     "measuresKitDesignerDescription":" To begin the assessment process, you first need to define the measures that will be used to evaluate each attribute.  Measures represent specific indicators, criteria, or actions that contribute to the overall performance of an attribute. Defining them clearly ensures a structured and meaningful evaluation.  By setting up your measures:  You establish a consistent basis for scoring You align the evaluation with organizational goals or standards You enable accurate analysis and visualization of performance impact Once defined, these measures will be used in subsequent visualizations to highlight strengths, weaknesses, and areas for improvement.  Please start by creating and organizing the measures relevant to your context.",
     "newMeasure": "New Measure",
-    "selectMeasure": "Select Measure"
+    "selectMeasure": "Select Measure",
+    "generalDescription": "Welcome to the Kit Designer. This section is your first step towards creating a software assessment kit. By completing the required information in this section, your kit will be created, and you can then proceed to customize the details of your kit, such as defining maturity levels, setting up subjects, creating questionnaires, and more."
   }
 }
