@@ -77,6 +77,8 @@ const AssessmentKitsStoreBanner: React.FC = () => {
 
   const banners = data;
 
+  if (!banners.length) return <></>;
+  
   useEffect(() => {
     setLoadedImages(new Array(banners.length).fill(false));
   }, [banners]);
@@ -94,7 +96,6 @@ const AssessmentKitsStoreBanner: React.FC = () => {
   const goPrev = () => goTo(currentIndex - 1);
 
   useEffect(() => {
-    if (!banners.length) return;
     resetTimeout();
     timeoutRef.current = setTimeout(goNext, delay);
     return resetTimeout;
