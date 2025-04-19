@@ -17,7 +17,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { service } = useServiceContext();
@@ -28,7 +28,11 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const handlePublish = async () => {
     try {
       const data = { kitVersionId };
-      await service.kitVersions.info.activate({ kitVersionId }, data, undefined);
+      await service.kitVersions.info.activate(
+        { kitVersionId },
+        data,
+        undefined,
+      );
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -133,7 +137,16 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               <ul>
                 {validateKitVersion?.data?.errors.map((error: string) => (
                   <li key={error}>
-                    <Typography variant="bodyMedium" sx={{fontFamily: languageDetector(error)? farsiFontFamily : primaryFontFamily }} >{error}</Typography>
+                    <Typography
+                      variant="bodyMedium"
+                      sx={{
+                        fontFamily: languageDetector(error)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                      }}
+                    >
+                      {error}
+                    </Typography>
                   </li>
                 ))}
               </ul>

@@ -87,6 +87,18 @@ export const info = {
     );
   },
 
+  addLanguage(
+    args: { assessmentKitId: TId; data: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    const { assessmentKitId, data } = args ?? {};
+    return axios.post(
+      `/api/v1/assessment-kits/${assessmentKitId}/add-language/`,
+      data,
+      config,
+    );
+  },
+
   getStats(args: { assessmentKitId: TId }, config?: AxiosRequestConfig<any>) {
     const { assessmentKitId } = args ?? {};
     return axios.get(

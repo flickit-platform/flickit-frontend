@@ -209,7 +209,9 @@ const KitDesignerContainer = () => {
                   xs={12}
                   sx={{ height: "100%", padding: 3, background: "white" }}
                 >
-                  {selectedTab === 0 && <GeneralContent />}
+                  {selectedTab === 0 && (
+                    <GeneralContent kitVersion={kitVersion} />
+                  )}
                   {selectedTab === 1 && <MaturityLevelsContent />}
                   {selectedTab === 2 && <SubjectsContent />}
                   {selectedTab === 3 && <AttributesContent />}

@@ -22,3 +22,8 @@ export interface IKitVersion {
     };
   };
 }
+
+export interface ILanguage {
+  code: string;
+  title: string;
+}
