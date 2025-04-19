@@ -37,7 +37,7 @@ const MaturityLevelList = ({
     description: "",
     value: 1,
     index: 1,
-    translations: { FA: { title: "", description: "" } },
+    translations: null,
   });
 
   const handleDragEnd = (result: any) => {
@@ -53,7 +53,7 @@ const MaturityLevelList = ({
     setEditMode(item.id as number);
     setTempValues({
       ...item,
-      translations: item.translations ?? { FA: { title: "", description: "" } },
+      translations: item.translations,
     });
   };
 
@@ -64,8 +64,8 @@ const MaturityLevelList = ({
       description: tempValues.description,
       translations: {
         FA: {
-          title: tempValues.translations?.FA?.title ?? "",
-          description: tempValues.translations?.FA?.description ?? "",
+          title: tempValues.translations?.FA?.title,
+          description: tempValues.translations?.FA?.description,
         },
       },
     };
@@ -81,7 +81,7 @@ const MaturityLevelList = ({
       description: "",
       value: 1,
       index: 1,
-      translations: { FA: { title: "", description: "" } },
+      translations: null,
     });
   };
 
@@ -93,7 +93,11 @@ const MaturityLevelList = ({
         {(provided: any) => (
           <Box {...provided.droppableProps} ref={provided.innerRef}>
             {reorderedItems.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id!.toString()} index={index}>
+              <Draggable
+                key={item.id}
+                draggableId={item.id!.toString()}
+                index={index}
+              >
                 {(provided: any) => (
                   <Box
                     ref={provided.innerRef}
@@ -102,7 +106,8 @@ const MaturityLevelList = ({
                     mt={1.5}
                     p={1.5}
                     sx={{
-                      backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",
+                      backgroundColor:
+                        editMode === item.id ? "#F3F5F6" : "#fff",
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
@@ -111,15 +116,33 @@ const MaturityLevelList = ({
                       position: "relative",
                     }}
                   >
-                    <Box sx={{ ...styles.centerCVH, background: "#F3F5F6" }} borderRadius="0.5rem" mr={2} p={0.25}>
-                      <Typography variant="semiBoldLarge">{index + 1}</Typography>
-                      <Divider orientation="horizontal" flexItem sx={{ mx: 1 }} />
+                    <Box
+                      sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+                      borderRadius="0.5rem"
+                      mr={2}
+                      p={0.25}
+                    >
+                      <Typography variant="semiBoldLarge">
+                        {index + 1}
+                      </Typography>
+                      <Divider
+                        orientation="horizontal"
+                        flexItem
+                        sx={{ mx: 1 }}
+                      />
                       <IconButton size="small">
                         <SwapVertRoundedIcon fontSize="small" />
                       </IconButton>
                     </Box>
 
-                    <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                      }}
+                    >
                       {/* Title with Actions */}
                       <Box
                         sx={{
@@ -136,9 +159,14 @@ const MaturityLevelList = ({
                               name="title"
                               value={tempValues.title}
                               onChange={(e) =>
-                                setTempValues((prev) => ({ ...prev, title: e.target.value }))
+                                setTempValues((prev) => ({
+                                  ...prev,
+                                  title: e.target.value,
+                                }))
                               }
-                              translationValue={tempValues.translations?.FA?.title ?? ""}
+                              translationValue={
+                                tempValues.translations?.FA?.title ?? ""
+                              }
                               onTranslationChange={(e) =>
                                 setTempValues((prev) => ({
                                   ...prev,
@@ -170,21 +198,38 @@ const MaturityLevelList = ({
                         <Box display="flex" gap={1} mt={0.5}>
                           {editMode === item.id ? (
                             <>
-                              <IconButton size="small" onClick={() => handleSaveClick(item)} color="success">
+                              <IconButton
+                                size="small"
+                                onClick={() => handleSaveClick(item)}
+                                color="success"
+                              >
                                 <CheckRoundedIcon fontSize="small" />
                               </IconButton>
-                              <IconButton size="small" onClick={handleCancelClick} color="secondary">
+                              <IconButton
+                                size="small"
+                                onClick={handleCancelClick}
+                                color="secondary"
+                              >
                                 <CloseRoundedIcon fontSize="small" />
                               </IconButton>
                             </>
                           ) : (
                             <>
-                              <IconButton size="small" onClick={() => handleEditClick(item)} color="success">
+                              <IconButton
+                                size="small"
+                                onClick={() => handleEditClick(item)}
+                                color="success"
+                              >
                                 <EditRoundedIcon fontSize="small" />
                               </IconButton>
                               <IconButton
                                 size="small"
-                                onClick={() => setOpenDeleteDialog({ status: true, id: item.id })}
+                                onClick={() =>
+                                  setOpenDeleteDialog({
+                                    status: true,
+                                    id: item.id,
+                                  })
+                                }
                                 color="secondary"
                               >
                                 <DeleteRoundedIcon fontSize="small" />
@@ -200,9 +245,14 @@ const MaturityLevelList = ({
                           name="description"
                           value={tempValues.description}
                           onChange={(e) =>
-                            setTempValues((prev) => ({ ...prev, description: e.target.value }))
+                            setTempValues((prev) => ({
+                              ...prev,
+                              description: e.target.value,
+                            }))
                           }
-                          translationValue={tempValues.translations?.FA?.description ?? ""}
+                          translationValue={
+                            tempValues.translations?.FA?.description ?? ""
+                          }
                           onTranslationChange={(e) =>
                             setTempValues((prev) => ({
                               ...prev,

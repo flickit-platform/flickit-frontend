@@ -10,7 +10,7 @@ import GlobePlus from "@/assets/svg/globePlus.svg";
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
   translationValue?: string;
-  onTranslationChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onTranslationChange?: (e: { target: { value: string | undefined } }) => void;
   translationLabel?: string;
   showTranslation?: boolean;
   setShowTranslation?: (val: boolean) => void;
@@ -110,7 +110,7 @@ const MultiLangTextField = ({
               minWidth: 40,
             }}
           >
-            <LanguageIcon fontSize="small" color="info"/>
+            <LanguageIcon fontSize="small" color="info" />
             <Typography variant="caption" fontSize={10}>
               FA
             </Typography>
@@ -149,8 +149,8 @@ const MultiLangTextField = ({
             onClick={() => {
               setShowTranslation(false);
               onTranslationChange?.({
-                target: { value: "" },
-              } as React.ChangeEvent<HTMLInputElement>);
+                target: { value: undefined },
+              });
             }}
             sx={{ mt: multiline ? 1 : 0 }}
           >

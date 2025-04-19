@@ -16,12 +16,7 @@ interface MaturityLevelFormProps {
     description: string;
     index: number;
     value: number;
-    translations?: {
-      FA?: {
-        title?: string;
-        description?: string;
-      };
-    };
+    translations: any;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
@@ -44,8 +39,6 @@ const MaturityLevelForm = ({
   const [showDescriptionTranslation, setShowDescriptionTranslation] = useState(
     Boolean(newMaturityLevel.translations?.FA?.description),
   );
-
-  const isRTL = theme.direction === "rtl";
 
   return (
     <Box

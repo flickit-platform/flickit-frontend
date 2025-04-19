@@ -54,12 +54,7 @@ const MaturityLevelsContent = () => {
     index: 1,
     value: 1,
     id: null,
-    translations: {
-      FA: {
-        title: "",
-        description: "",
-      },
-    },
+    translations: null,
   };
 
   const [newMaturityLevel, setNewMaturityLevel] =
@@ -98,7 +93,7 @@ const MaturityLevelsContent = () => {
         value: newMaturityLevel.value,
         title: newMaturityLevel.title,
         description: newMaturityLevel.description,
-        // translations: newMaturityLevel.translations,
+        translations: newMaturityLevel.translations,
       };
 
       if (newMaturityLevel.id) {
@@ -141,7 +136,7 @@ const MaturityLevelsContent = () => {
         value: maturityLevel.value,
         title: maturityLevel.title,
         description: maturityLevel.description,
-        // translations: maturityLevel.translations,
+        translations: maturityLevel.translations,
       };
       await service.kitVersions.maturityLevel.update(
         { kitVersionId, maturityLevelId: maturityLevel.id },
