@@ -82,8 +82,8 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             },
             { signal: abortController.signal },
           )
-        : await service
-            .assessments.info.create(
+        : await service.assessments.info
+            .create(
               {
                 data: {
                   spaceId: spaceId ?? space?.id,
@@ -264,7 +264,8 @@ const AssessmentKitField = ({
   const { service } = useServiceContext();
 
   const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.assessmentKit.info.getOptions(args, config),
+    service: (args, config) =>
+      service.assessmentKit.info.getOptions(args, config),
     accessor: "items",
   });
 
@@ -288,7 +289,7 @@ const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
   const { spaceId } = useParams();
   const queryData = useConnectAutocompleteField({
     service: (args?: { page?: number; size?: number }, config?: any) =>
-        service.space.getList({ page: 1, size: 20, ...args }, config),
+      service.space.getList({ page: 1, size: 20, ...args }, config),
   });
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
@@ -296,7 +297,10 @@ const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
   });
 
   const createItemQuery = async (inputValue: any) => {
-    const response = await createSpaceQueryData.query({ title: inputValue });
+    const response = await createSpaceQueryData.query({
+      title: inputValue,
+      type: "BASIC",
+    });
     const newOption = { title: inputValue, id: response.id };
     return newOption;
   };
