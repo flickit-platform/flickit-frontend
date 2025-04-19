@@ -213,6 +213,7 @@ const AnaweRangeContent = () => {
               handleInputChange={handleInputChange}
               handleSave={handleSave}
               handleCancel={handleCancel}
+              setNewAnswerRange={setNewAnswerRange}
             />
           )}
         </>

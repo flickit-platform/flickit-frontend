@@ -7,13 +7,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
+import React from "react";
 
 interface QuestionnairesFormProps {
   newItem: {
+    translations: any;
     title: string;
     id: any;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setNewAnswerRange: ([key] : any)=> void;
   handleSave: () => void;
   handleCancel: () => void;
 }
@@ -23,6 +27,7 @@ const AnswerRangeForm = ({
   handleInputChange,
   handleSave,
   handleCancel,
+  setNewAnswerRange
 }: QuestionnairesFormProps) => (
   <Box
     mt={1.5}
@@ -37,31 +42,35 @@ const AnswerRangeForm = ({
     }}
   >
     <Box width="100%" mx={1}>
-      <TextField
-        required
-        label={<Trans i18nKey="title" />}
-        name="title"
-        value={newItem.title}
-        onChange={handleInputChange}
-        fullWidth
-        inputProps={{
-          style: { fontFamily: languageDetector(newItem.title) ? farsiFontFamily :  primaryFontFamily },
-          "data-testid": "AnswerRange-title",
-        }}
-        margin="normal"
-        sx={{
-          mt: 0.3,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            height: 36,
-            fontSize: 14,
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-          background: "#fff",
-        }}
-      />
+        <MultiLangTextField
+            name="title"
+            value={newItem.title}
+            onChange={(e:  React.ChangeEvent<HTMLInputElement>) => handleInputChange(e)}
+            inputProps={{
+                "data-testid": "AnswerRange-title",
+                style: {
+                    fontFamily: languageDetector(newItem.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                },
+            }}
+            translationValue={
+                newItem.translations?.FA?.title ?? ""
+            }
+            onTranslationChange={(e) =>
+                setNewAnswerRange((prev: any) => ({
+                    ...prev,
+                    translations: {
+                        ...prev.translations,
+                        FA: {
+                            ...prev.translations?.FA,
+                            title: e.target.value,
+                        },
+                    },
+                }))
+            }
+            label={<Trans i18nKey="title" />}
+        />
     </Box>
 
     {/* Check and Close Buttons */}
