@@ -23,12 +23,10 @@ import EmptyState from "../common/EmptyState";
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
-
-  const [openDeleteDialog, setOpenDeleteDialog] = useState({
-    status: false,
-    id: "",
-  });
-
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
   const maturityLevels = useQuery({
     service: (args, config) =>
       service.kitVersions.maturityLevel.getAll(
@@ -36,7 +34,6 @@ const MaturityLevelsContent = () => {
         config,
       ),
   });
-
   const maturityLevelsCompetences = useQuery({
     service: (args, config) =>
       service.kitVersions.levelsCompetences.getAll(
@@ -47,18 +44,13 @@ const MaturityLevelsContent = () => {
 
   const [showNewMaturityLevelForm, setShowNewMaturityLevelForm] =
     useState(false);
-
-  const initialMaturityLevel = {
+  const [newMaturityLevel, setNewMaturityLevel] = useState({
     title: "",
     description: "",
     index: 1,
     value: 1,
     id: null,
-    translations: null,
-  };
-
-  const [newMaturityLevel, setNewMaturityLevel] =
-    useState(initialMaturityLevel);
+  });
 
   useEffect(() => {
     if (maturityLevels.data?.items?.length) {
@@ -93,37 +85,48 @@ const MaturityLevelsContent = () => {
         value: newMaturityLevel.value,
         title: newMaturityLevel.title,
         description: newMaturityLevel.description,
-        translations: newMaturityLevel.translations,
       };
-
       if (newMaturityLevel.id) {
         await service.kitVersions.maturityLevel.update(
           { kitVersionId, maturityLevelId: newMaturityLevel.id },
           data,
+          undefined,
         );
       } else {
-        await service.kitVersions.maturityLevel.create({ kitVersionId }, data);
+        await service.kitVersions.maturityLevel.create(
+          { kitVersionId: kitVersionId },
+          data,
+          undefined,
+        );
       }
 
+      // Reset form and re-fetch data after saving
       setShowNewMaturityLevelForm(false);
       maturityLevels.query();
       maturityLevelsCompetences.query();
+
+      // Reset the form values
       setNewMaturityLevel({
-        ...initialMaturityLevel,
+        title: "",
+        description: "",
         index: (maturityLevels.data?.items.length ?? 0) + 1,
         value: (maturityLevels.data?.items.length ?? 0) + 1,
+        id: null,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      const err = e as ICustomError;
+      toastError(err);
     }
   };
 
   const handleCancel = () => {
     setShowNewMaturityLevelForm(false);
     setNewMaturityLevel({
-      ...initialMaturityLevel,
+      title: "",
+      description: "",
       index: (maturityLevels.data?.items.length ?? 0) + 1,
       value: (maturityLevels.data?.items.length ?? 0) + 1,
+      id: null,
     });
     setOpenDeleteDialog({ status: false, id: "" });
   };
@@ -136,11 +139,11 @@ const MaturityLevelsContent = () => {
         value: maturityLevel.value,
         title: maturityLevel.title,
         description: maturityLevel.description,
-        translations: maturityLevel.translations,
       };
       await service.kitVersions.maturityLevel.update(
         { kitVersionId, maturityLevelId: maturityLevel.id },
         data,
+        undefined,
       );
 
       setShowNewMaturityLevelForm(false);
@@ -148,26 +151,31 @@ const MaturityLevelsContent = () => {
       maturityLevelsCompetences.query();
 
       setNewMaturityLevel({
-        ...initialMaturityLevel,
+        title: "",
+        description: "",
         index: (maturityLevels.data?.items.length ?? 0) + 1,
         value: (maturityLevels.data?.items.length ?? 0) + 1,
+        id: null,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      const err = e as ICustomError;
+      toastError(err);
     }
   };
 
   const handleDelete = async () => {
     try {
+      let maturityLevelId = openDeleteDialog.id;
       await service.kitVersions.maturityLevel.remove({
         kitVersionId,
-        maturityLevelId: openDeleteDialog.id,
+        maturityLevelId,
       });
       maturityLevels.query();
       maturityLevelsCompetences.query();
       handleCancel();
     } catch (e) {
-      toastError(e as ICustomError);
+      const err = e as ICustomError;
+      toastError(err);
     }
   };
 
@@ -186,14 +194,14 @@ const MaturityLevelsContent = () => {
 
       handleCancel();
     } catch (e) {
-      toastError(e as ICustomError);
+      const err = e as ICustomError;
+      toastError(err);
     }
   }, 2000);
 
   const handleReorder = (newOrder: any[]) => {
     debouncedHandleReorder(newOrder);
   };
-
   return (
     <PermissionControl scopes={["edit-assessment-kit"]}>
       <Box width="100%">
@@ -202,15 +210,15 @@ const MaturityLevelsContent = () => {
           hasBtn={
             maturityLevels.loaded && maturityLevels.data.items.length !== 0
           }
-          mainTitle="maturityLevels"
-          btnTitle="newMaturityLevel"
-          description="maturityLevelsKitDesignerDescription"
+          mainTitle={"maturityLevels"}
+          btnTitle={"newMaturityLevel"}
+          description={"maturityLevelsKitDesignerDescription"}
         />
-        {maturityLevels.loaded && maturityLevels.data.items.length !== 0 && (
+        {maturityLevels.loaded && maturityLevels.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
             <Trans i18nKey="changeOrderHelper" />
           </Typography>
-        )}
+        ) : null}
         <Divider sx={{ my: 1 }} />
 
         <QueryBatchData
@@ -223,7 +231,7 @@ const MaturityLevelsContent = () => {
                   <>
                     <Box maxHeight={500} overflow="auto">
                       <MaturityLevelList
-                        maturityLevels={maturityLevelsData.items}
+                        maturityLevels={maturityLevelsData?.items}
                         onEdit={handleEdit}
                         onReorder={handleReorder}
                         setOpenDeleteDialog={setOpenDeleteDialog}
@@ -233,7 +241,6 @@ const MaturityLevelsContent = () => {
                     {showNewMaturityLevelForm && (
                       <MaturityLevelForm
                         newMaturityLevel={newMaturityLevel}
-                        setNewMaturityLevel={setNewMaturityLevel as any}
                         handleInputChange={handleInputChange}
                         handleSave={handleSave}
                         handleCancel={handleCancel}
@@ -245,16 +252,15 @@ const MaturityLevelsContent = () => {
                     {showNewMaturityLevelForm ? (
                       <MaturityLevelForm
                         newMaturityLevel={newMaturityLevel}
-                        setNewMaturityLevel={setNewMaturityLevel as any}
                         handleInputChange={handleInputChange}
                         handleSave={handleSave}
                         handleCancel={handleCancel}
                       />
                     ) : (
                       <EmptyState
-                        btnTitle="newMaturityLevel"
-                        title="maturityLevelsListEmptyState"
-                        SubTitle="maturityLevelsListEmptyStateDatailed"
+                        btnTitle={"newMaturityLevel"}
+                        title={"maturityLevelsListEmptyState"}
+                        SubTitle={"maturityLevelsListEmptyStateDatailed"}
                         onAddNewRow={handleNewMaturityLevelClick}
                       />
                     )}
@@ -264,28 +270,29 @@ const MaturityLevelsContent = () => {
             );
           }}
         />
-
-        {maturityLevels.loaded && maturityLevels.data.items.length !== 0 && (
+        {maturityLevels.loaded && maturityLevels.data.items.length !== 0 ? (
           <Box mt={4}>
             <Typography variant="headlineSmall" fontWeight="bold">
               <Trans i18nKey="competences" />
             </Typography>
             <Divider sx={{ my: 1 }} />
+            {/* Separate Query for Maturity Level Competences */}
             <QueryBatchData
               queryBatchData={[maturityLevelsCompetences]}
               renderLoading={() => <LoadingSkeleton height={200} />}
-              render={([maturityLevelsCompetencesData]) => (
-                <CompetencesTable
-                  data={maturityLevelsCompetencesData?.items}
-                  maturityLevelsCompetences={maturityLevelsCompetences}
-                  kitVersionId={kitVersionId}
-                />
-              )}
-            />
+              render={([maturityLevelsCompetencesData]) => {
+                return (
+                  <CompetencesTable
+                    data={maturityLevelsCompetencesData?.items}
+                    maturityLevelsCompetences={maturityLevelsCompetences}
+                    kitVersionId={kitVersionId}
+                  />
+                );
+              }}
+            />{" "}
           </Box>
-        )}
+        ) : null}
       </Box>
-
       <DeleteConfirmationDialog
         open={openDeleteDialog.status}
         onClose={() =>

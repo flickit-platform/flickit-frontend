@@ -8,13 +8,13 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@/config/styles";
 import { IMaturityLevel } from "@/types/index";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 
 interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
@@ -27,75 +27,51 @@ const MaturityLevelList = ({
   maturityLevels,
   onEdit,
   onReorder,
-  setOpenDeleteDialog,
+  setOpenDeleteDialog
 }: MaturityLevelListProps) => {
   const [reorderedItems, setReorderedItems] = useState(maturityLevels);
   const [editMode, setEditMode] = useState<number | null>(null);
-  const [tempValues, setTempValues] = useState<IMaturityLevel>({
-    id: null,
-    title: "",
-    description: "",
-    value: 1,
-    index: 1,
-    translations: null,
-  });
+  const [tempValues, setTempValues] = useState({ title: "", description: "" });
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
-    const newItems = Array.from(reorderedItems);
-    const [moved] = newItems.splice(result.source.index, 1);
-    newItems.splice(result.destination.index, 0, moved);
-    setReorderedItems(newItems);
-    onReorder(newItems);
+
+    const newReorderedItems = Array.from(reorderedItems);
+    const [movedItem] = newReorderedItems.splice(result.source.index, 1);
+    newReorderedItems.splice(result.destination.index, 0, movedItem);
+
+    setReorderedItems(newReorderedItems);
+    onReorder(newReorderedItems);
   };
 
   const handleEditClick = (item: IMaturityLevel) => {
-    setEditMode(item.id as number);
-    setTempValues({
-      ...item,
-      translations: item.translations,
-    });
+    setEditMode(Number(item.id));
+    setTempValues({ title: item.title, description: item.description });
   };
 
   const handleSaveClick = (item: IMaturityLevel) => {
-    const payload = {
+    onEdit({
       ...item,
       title: tempValues.title,
       description: tempValues.description,
-      translations: {
-        FA: {
-          title: tempValues.translations?.FA?.title,
-          description: tempValues.translations?.FA?.description,
-        },
-      },
-    };
-    onEdit(payload);
+    });
     setEditMode(null);
   };
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({
-      id: null,
-      title: "",
-      description: "",
-      value: 1,
-      index: 1,
-      translations: null,
-    });
+    setTempValues({ title: "", description: "" });
   };
-
-  const isRTL = theme.direction === "rtl";
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="maturityLevels">
         {(provided: any) => (
           <Box {...provided.droppableProps} ref={provided.innerRef}>
-            {reorderedItems.map((item, index) => (
+            {reorderedItems?.map((item, index) => (
               <Draggable
                 key={item.id}
-                draggableId={item.id!.toString()}
+                draggableId={item.id.toString()}
                 index={index}
               >
                 {(provided: any) => (
@@ -106,13 +82,11 @@ const MaturityLevelList = ({
                     mt={1.5}
                     p={1.5}
                     sx={{
-                      backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
+                      backgroundColor: editMode === item.id  ? "#F3F5F6"  : "#fff",
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
                       alignItems: "flex-start",
-                      gap: 2,
                       position: "relative",
                     }}
                   >
@@ -135,173 +109,133 @@ const MaturityLevelList = ({
                       </IconButton>
                     </Box>
 
-                    <Box
-                      sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 2,
-                      }}
-                    >
-                      {/* Title with Actions */}
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          justifyContent: "space-between",
-                          flexDirection: isRTL ? "row-reverse" : "row",
-                          gap: 1,
-                        }}
-                      >
-                        <Box sx={{ flexGrow: 1 }}>
-                          {editMode === item.id ? (
-                            <MultiLangTextField
-                              name="title"
-                              value={tempValues.title}
-                              onChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  title: e.target.value,
-                                }))
-                              }
-                              inputProps={{
-                                "data-testid": "maturity-level-title",
-                                style: {
-                                  fontFamily: languageDetector(tempValues.title)
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                                },
-                              }}
-                              translationValue={
-                                tempValues.translations?.FA?.title ?? ""
-                              }
-                              onTranslationChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  translations: {
-                                    ...prev.translations,
-                                    FA: {
-                                      ...prev.translations?.FA,
-                                      title: e.target.value,
-                                    },
-                                  },
-                                }))
-                              }
-                              label={<Trans i18nKey="title" />}
-                            />
-                          ) : (
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontFamily: languageDetector(item.title)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                              }}
-                            >
-                              {item.title}
-                            </Typography>
-                          )}
-                        </Box>
+                    <Box sx={{ flexGrow: 1 }}>
+                      {/* Title and icons in the same row */}
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        {editMode === item.id ? (
+                          <TextField
+                            required
+                            value={tempValues.title}
+                            onChange={(e) =>
+                              setTempValues({
+                                ...tempValues,
+                                title: e.target.value,
+                              })
+                            }
+                            variant="outlined"
+                            fullWidth
+                            size="small"
+                            sx={{
+                              mb: 1,
+                              background:"#fff",
+                              fontSize: 14,
+                              "& .MuiInputBase-root": {
+                                fontSize: 14,
+                                overflow: "auto",
+                              },
+                              "& .MuiFormLabel-root": {
+                                fontSize: 14,
+                              },
+                            }}
+                            name="title"
+                            inputProps={{
+                              "data-testid": "maturity-level-title",
+                            }}
+                            label={<Trans i18nKey="title" />}
+                          />
+                        ) : (
+                          <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: languageDetector(item.title as string)
+                                ? farsiFontFamily
+                                : primaryFontFamily  }}>
+                            {item.title}
+                          </Typography>
+                        )}
 
-                        <Box display="flex" gap={1} mt={0.5}>
-                          {editMode === item.id ? (
-                            <>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleSaveClick(item)}
-                                color="success"
-                                data-testid="maturity-level-check-icon"
-                              >
-                                <CheckRoundedIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                onClick={handleCancelClick}
-                                color="secondary"
-                                data-testid="maturity-level-close-icon"
-                              >
-                                <CloseRoundedIcon fontSize="small" />
-                              </IconButton>
-                            </>
-                          ) : (
-                            <>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleEditClick(item)}
-                                color="success"
-                                data-testid="maturity-level-edit-icon"
-                              >
-                                <EditRoundedIcon fontSize="small" />
-                              </IconButton>
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  setOpenDeleteDialog({
-                                    status: true,
-                                    id: item.id,
-                                  })
-                                }
-                                color="secondary"
-                                data-testid="maturity-level-delete-icon"
-                              >
-                                <DeleteRoundedIcon fontSize="small" />
-                              </IconButton>
-                            </>
-                          )}
-                        </Box>
+                        {/* Icons (Edit/Delete or Check/Close) */}
+                        {editMode === item.id ? (
+                          <>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleSaveClick(item)}
+                              sx={{ ml: 1 }}
+                              color="success"
+                              data-testid="maturity-level-check-icon"
+                            >
+                              <CheckRoundedIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              onClick={handleCancelClick}
+                              sx={{ ml: 1 }}
+                              color="secondary"
+                            >
+                              <CloseRoundedIcon fontSize="small" />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleEditClick(item)}
+                              sx={{ ml: 1 }}
+                              color="success"
+                              data-testid="maturity-level-edit-icon"
+                            >
+                              <EditRoundedIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton
+                              size="small"
+                              onClick={() =>setOpenDeleteDialog({status:true,id: item.id})}
+                              sx={{ ml: 1 }}
+                              color="secondary"
+                              data-testid="maturity-level-delete-icon"
+                            >
+                              <DeleteRoundedIcon fontSize="small" />
+                            </IconButton>
+                          </>
+                        )}
                       </Box>
 
-                      {/* Description */}
                       {editMode === item.id ? (
-                        <MultiLangTextField
-                          name="description"
+                        <TextField
+                          required
                           value={tempValues.description}
                           onChange={(e) =>
-                            setTempValues((prev) => ({
-                              ...prev,
+                            setTempValues({
+                              ...tempValues,
                               description: e.target.value,
-                            }))
+                            })
                           }
                           inputProps={{
                             "data-testid": "maturity-level-description",
-                            style: {
-                              fontFamily: languageDetector(
-                                tempValues.description,
-                              )
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                            },
                           }}
-                          translationValue={
-                            tempValues.translations?.FA?.description ?? ""
-                          }
-                          onTranslationChange={(e) =>
-                            setTempValues((prev) => ({
-                              ...prev,
-                              translations: {
-                                ...prev.translations,
-                                FA: {
-                                  ...prev.translations?.FA,
-                                  description: e.target.value,
-                                },
-                              },
-                            }))
-                          }
+                          name="description"
+                          variant="outlined"
+                          fullWidth
+                          size="small"
                           label={<Trans i18nKey="description" />}
+                          margin="normal"
                           multiline
                           minRows={2}
                           maxRows={5}
+                          sx={{
+                            mb: 1,
+                            mt: 1,
+                            fontSize: 14,
+                            background:"#fff",
+                            "& .MuiInputBase-root": {
+                              fontSize: 14,
+                              overflow: "auto",
+                            },
+                            "& .MuiFormLabel-root": {
+                              fontSize: 14,
+                            },
+                          }}
                         />
                       ) : (
-                        <Typography
-                          variant="body2"
-                          mt={1}
-                          sx={{
-                            fontFamily: languageDetector(item.description)
+                        <Typography variant="body2" mt={1} sx={{fontFamily: languageDetector(item.description as string)
                               ? farsiFontFamily
-                              : primaryFontFamily,
-                          }}
-                        >
+                              : primaryFontFamily }}>
                           {item.description}
                         </Typography>
                       )}
