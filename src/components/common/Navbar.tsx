@@ -516,7 +516,7 @@ const Navbar = () => {
             }}
           />
         )}
-        <ListItem disablePadding>
+        {/* <ListItem disablePadding>
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
             component={NavLink}
@@ -524,7 +524,7 @@ const Navbar = () => {
           >
             <ListItemText primary={<Trans i18nKey="compare" />} />
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
         <ListItem disablePadding>
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
@@ -598,7 +598,7 @@ const Navbar = () => {
             }}
           >
             <SpacesButton />
-            <Button
+            {/* <Button
               component={NavLink}
               to={`/compare`}
               startIcon={
@@ -616,7 +616,7 @@ const Navbar = () => {
               size="small"
             >
               <Trans i18nKey="compare" />
-            </Button>
+            </Button> */}
             <Button
               component={NavLink}
               to={`/assessment-kits`}
