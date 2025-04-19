@@ -29,6 +29,7 @@ import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import OptionForm from "@components/kit-designer/answerRange/options/optionForm";
 import languageDetector from "@utils/languageDetector";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface ListOfItemsProps {
   items: any;
@@ -40,6 +41,7 @@ interface ListOfItemsProps {
 }
 interface ITempValues {
   title: string;
+  translations?: any;
 }
 interface IQuestion {
   advisable: boolean;
@@ -68,6 +70,7 @@ const ListOfItems = ({
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",
+    translations: null
   });
   const [newOptions, setNewOptions] = useState({
     title: "",
@@ -85,6 +88,7 @@ const ListOfItems = ({
     setEditMode(Number(item.id));
     setTempValues({
       title: item.title,
+      translations: item.translations
     });
   };
 
@@ -93,6 +97,7 @@ const ListOfItems = ({
     onEdit({
       ...item,
       title: tempValues.title,
+      translations: tempValues.translations
     });
     setEditMode(null);
   };
@@ -100,7 +105,7 @@ const ListOfItems = ({
   const handleCancelClick = (e: any) => {
     e.stopPropagation();
     setEditMode(null);
-    setTempValues({ title: "" });
+    setTempValues({ title: "", translations: null });
   };
 
   const handelChange = (e: any) => {
@@ -281,35 +286,35 @@ const ListOfItems = ({
                     }}
                   >
                     {editMode === item.id ? (
-                      <TextField
-                        onClick={(e) => e.stopPropagation()}
-                        required
-                        value={tempValues.title}
-                        onChange={(e) => handelChange(e)}
-                        inputProps={{
-                          style: { fontFamily: languageDetector(tempValues.title)? farsiFontFamily : primaryFontFamily },
-                          "data-testid": "items-title",
-                        }}
-                        variant="outlined"
-                        fullWidth
-                        size="small"
-                        sx={{
-                          mb: 1,
-                          fontSize: 14,
-                          "& .MuiInputBase-root": {
-                            fontSize: 14,
-                            overflow: "auto",
-                          },
-                          "& .MuiFormLabel-root": {
-                            fontSize: 14,
-                          },
-                          width: { sx: "100%", md: "40%" },
-                          background: "#fff",
-                          borderRadius: "8px",
-                        }}
-                        name="title"
-                        label={<Trans i18nKey="title" />}
-                      />
+                        <MultiLangTextField
+                            name="title"
+                            value={tempValues.title}
+                            onChange={(e) => handelChange(e)}
+                            inputProps={{
+                              "data-testid": "items-title",
+                              style: {
+                                fontFamily: languageDetector(tempValues.title)
+                                    ? farsiFontFamily
+                                    : primaryFontFamily,
+                              },
+                            }}
+                            translationValue={
+                                tempValues.translations?.FA?.title ?? ""
+                            }
+                            onTranslationChange={(e) =>
+                                setTempValues((prev) => ({
+                                  ...prev,
+                                  translations: {
+                                    ...prev.translations,
+                                    FA: {
+                                      ...prev.translations?.FA,
+                                      title: e.target.value,
+                                    },
+                                  },
+                                }))
+                            }
+                            label={<Trans i18nKey="title" />}
+                        />
                     ) : (
                       <Typography
                         variant="h6"
