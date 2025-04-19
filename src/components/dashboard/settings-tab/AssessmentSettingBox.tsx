@@ -257,13 +257,13 @@ export const AssessmentSettingGeneralBox = (props: {
                       style={{
                         textDecoration: "none",
                         color: "inherit",
-                        fontFamily: languageDetector(kit.title)
+                        fontFamily: languageDetector(kit?.title)
                           ? farsiFontFamily
                           : primaryFontFamily,
                       }}
-                      to={`/assessment-kits/${kit.id}`}
+                      to={`/assessment-kits/${kit?.id}`}
                     >
-                      {kit.title}
+                      {kit?.title}
                     </Link>
                   )}
                   {index == 2 &&
@@ -329,7 +329,8 @@ export const AssessmentSettingMemberBox = (props: {
   }
 
   const editUserRoleInvited = useQuery({
-    service: (args, config) => service.assessments.member.updateInviteeRole(args, config),
+    service: (args, config) =>
+      service.assessments.member.updateInviteeRole(args, config),
     runOnMount: false,
   });
 
@@ -525,7 +526,9 @@ export const AssessmentSettingMemberBox = (props: {
                               fontSize: "0.875rem",
                               color: "#1B1B1E",
                               fontWeight: 500,
-                              fontFamily: languageDetector(row.displayName) ? farsiFontFamily : primaryFontFamily
+                              fontFamily: languageDetector(row.displayName)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
                             }}
                           >
                             {row.displayName}
@@ -968,7 +971,10 @@ const SelectionRole = (props: any) => {
 
   const editUserRole = useQuery({
     service: (args, config) =>
-      service.assessments.member.updateUserRole({ assessmentId, ...args }, config),
+      service.assessments.member.updateUserRole(
+        { assessmentId, ...args },
+        config,
+      ),
     runOnMount: false,
   });
   return (
@@ -1147,15 +1153,14 @@ const OnHoverInputTitleSetting = (props: any) => {
     setInputData(data);
     setHasError(false);
   };
-  const { assessmentId } = useParams();
+  const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
 
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        if (type === "title") setInputData(value);
-        else setInputDataShortTitle(value);
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (type === "title") setInputData(value);
+    else setInputDataShortTitle(value);
+  };
 
   const updateAssessmentQuery = useQuery({
     service: (args, config) =>
@@ -1220,15 +1225,17 @@ const OnHoverInputTitleSetting = (props: any) => {
           <Box
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
-              <InputCustomEditor
-                  inputProps={inputProps}
-                  hasError={hasError}
-                  name={type}
-                  inputHandler={(e: React.ChangeEvent<HTMLInputElement>)=>handleChange(e)}
-                  value={type == "title" ? inputData : inputDataShortTitle}
-                  handleDone={updateAssessmentTitle}
-                  handleCancel={handleCancel}
-              />
+            <InputCustomEditor
+              inputProps={inputProps}
+              hasError={hasError}
+              name={type}
+              inputHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(e)
+              }
+              value={type == "title" ? inputData : inputDataShortTitle}
+              handleDone={updateAssessmentTitle}
+              handleCancel={handleCancel}
+            />
           </Box>
         ) : (
           <Box

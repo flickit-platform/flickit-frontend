@@ -207,7 +207,7 @@ export const IssuesItem = ({
 }: any) => {
   const navigate = useNavigate();
   const { service } = useServiceContext();
-  const { assessmentId } = useParams();
+  const { assessmentId = "" } = useParams();
   const { calculate, calculateConfidence } = useCalculate();
 
   const approveInsights = useQuery({
