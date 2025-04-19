@@ -6,14 +6,7 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 
 // Mock data for maturity levels
 const mockMaturityLevels: IMaturityLevel[] = [
-  {
-    id: 1,
-    title: "Level 1",
-    description: "Description 1",
-    value: 1,
-    index: 1,
-    translations: { FA: { title: "فارسی", description: "فارسی" } },
-  },
+  { id: 1, title: "Level 1", description: "Description 1", value: 1, index: 1 },
   { id: 2, title: "Level 2", description: "Description 2", value: 2, index: 2 },
 ];
 
@@ -30,7 +23,7 @@ describe("MaturityLevelList", () => {
         onEdit={mockOnEdit}
         onReorder={mockOnReorder}
         setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      />
     );
 
     expect(screen.getByText("Level 1")).toBeInTheDocument();
@@ -44,7 +37,7 @@ describe("MaturityLevelList", () => {
         onEdit={mockOnEdit}
         onReorder={mockOnReorder}
         setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      />
     );
 
     // Click edit button for Level 1
@@ -68,7 +61,6 @@ describe("MaturityLevelList", () => {
       value: 1,
       title: "Updated Level 1",
       description: "Updated Description 1",
-      translations: { FA: { title: "فارسی", description: "فارسی" } },
     });
   });
 
@@ -89,11 +81,12 @@ describe("MaturityLevelList", () => {
           title="Warning"
           content="Are you sure you want to delete this maturity level?"
         />
-      </>,
+      </>
     );
 
     // Click delete button for Level 1
     fireEvent.click(screen.getAllByTestId("maturity-level-delete-icon")[0]);
+
 
     // Confirm delete action
     fireEvent.click(screen.getByTestId("submit"));
