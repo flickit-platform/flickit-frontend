@@ -78,10 +78,20 @@ const AssessmentSettingContainer = () => {
 
   useEffect(() => {
     (async () => {
-      const { kit, kitCustomId } = await AssessmentInfo.query();
-      setKitInfo({ kit, kitCustomId });
+      try {
+        const res = await AssessmentInfo.query();
+        if (res) {
+          const { kit, kitCustomId } = res;
+          setKitInfo({ kit, kitCustomId });
+        } else {
+          console.warn("AssessmentInfo.query returned null or undefined");
+        }
+      } catch (err) {
+        console.error("Failed to fetch assessment info:", err);
+      }
     })();
   }, [assessmentId]);
+
   useEffect(() => {
     (async () => {
       const { items = [], total = 0 } =
