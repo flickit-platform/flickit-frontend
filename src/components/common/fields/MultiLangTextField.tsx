@@ -40,7 +40,7 @@ const MultiLangTextField = ({
   const setShowTranslation = isControlled ? controlledSetter : setInternalShow;
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "85%" }}>
       <Box sx={{ display: "flex", gap: 1 }}>
         <Box sx={{ flexGrow: 1 }}>
           <TextField
