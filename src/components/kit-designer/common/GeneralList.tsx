@@ -30,6 +30,7 @@ interface ITempValues {
   description: string;
   weight?: number;
   question?: number;
+  translations?: any;
   [key: string]: any;
 }
 
@@ -48,6 +49,7 @@ const ListOfItems = ({
     description: "",
     weight: 0,
     question: 0,
+    translations: null,
   });
 
   const handleDragEnd = (result: any) => {
@@ -66,6 +68,7 @@ const ListOfItems = ({
       description: item.description,
       weight: item.weight,
       question: item.questionsCount,
+      translations: item.translations,
     });
   };
 
@@ -75,13 +78,19 @@ const ListOfItems = ({
       title: tempValues.title,
       description: tempValues.description,
       weight: tempValues?.weight,
+      translations: {
+        FA: {
+          title: tempValues.translations?.FA?.title,
+          description: tempValues.translations?.FA?.description,
+        },
+      },
     });
     setEditMode(null);
   };
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({ title: "", description: "", weight: 0, question: 0 });
+    setTempValues({ title: "", description: "", weight: 0, question: 0, translations: null });
   };
 
   const handleChange = (e: any) => {
