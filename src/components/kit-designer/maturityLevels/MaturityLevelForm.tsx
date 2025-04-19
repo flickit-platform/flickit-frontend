@@ -6,7 +6,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 
@@ -99,7 +99,7 @@ const MaturityLevelForm = ({
                 : primaryFontFamily,
             },
           }}
-          translationValue={newMaturityLevel.translations?.FA?.title || ""}
+          translationValue={newMaturityLevel.translations?.FA?.title}
           onTranslationChange={(e) =>
             setNewMaturityLevel((prev) => ({
               ...prev,
@@ -132,9 +132,7 @@ const MaturityLevelForm = ({
                 : primaryFontFamily,
             },
           }}
-          translationValue={
-            newMaturityLevel.translations?.FA?.description || ""
-          }
+          translationValue={newMaturityLevel.translations?.FA?.description}
           onTranslationChange={(e) =>
             setNewMaturityLevel((prev) => ({
               ...prev,
