@@ -77,8 +77,6 @@ const AssessmentKitsStoreBanner: React.FC = () => {
 
   const banners = data;
 
-  if (!banners.length) return <></>;
-  
   useEffect(() => {
     setLoadedImages(new Array(banners.length).fill(false));
   }, [banners]);
@@ -135,93 +133,95 @@ const AssessmentKitsStoreBanner: React.FC = () => {
     });
   };
 
-  return (
-    <Box
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      sx={styles.carousel}
-    >
-      {loading ||
-      !banners.length ||
-      (loadedImages.length > 0 && !loadedImages[currentIndex]) ? (
-        <Skeleton
-          variant="rectangular"
-          width="100%"
-          height="34vh"
-          sx={{ borderRadius: 2 }}
-        />
-      ) : (
-        <></>
-      )}
+  if (!banners.length) return <></>;
+  else
+    return (
       <Box
-        sx={{
-          display: "flex",
-          width: `${banners.length * 100}%`,
-          height: "100%",
-          transition: "transform 0.5s ease-in-out",
-          transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
-        }}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        sx={styles.carousel}
       >
-        {banners.map((item, i) => (
-          <Box
-            key={item.kitId}
-            component="button"
-            type="button"
-            onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
-            sx={{
-              all: "unset",
-              width: "100%",
-              height: "100%",
-              cursor: "pointer",
-              display: "block",
-            }}
-          >
-            <img
-              src={item.banner}
-              alt={`Slide ${i + 1}`}
-              onLoad={() => handleImageLoad(i)}
-              style={{
+        {loading ||
+        !banners.length ||
+        (loadedImages.length > 0 && !loadedImages[currentIndex]) ? (
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height="34vh"
+            sx={{ borderRadius: 2 }}
+          />
+        ) : (
+          <></>
+        )}
+        <Box
+          sx={{
+            display: "flex",
+            width: `${banners.length * 100}%`,
+            height: "100%",
+            transition: "transform 0.5s ease-in-out",
+            transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
+          }}
+        >
+          {banners.map((item, i) => (
+            <Box
+              key={item.kitId}
+              component="button"
+              type="button"
+              onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
+              sx={{
+                all: "unset",
                 width: "100%",
                 height: "100%",
-                objectFit: "cover",
-                display: loadedImages[i] ? "block" : "none",
+                cursor: "pointer",
+                display: "block",
               }}
+            >
+              <img
+                src={item.banner}
+                alt={`Slide ${i + 1}`}
+                onLoad={() => handleImageLoad(i)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: loadedImages[i] ? "block" : "none",
+                }}
+              />
+            </Box>
+          ))}
+        </Box>
+
+        <GradientArrow
+          onClick={goPrev}
+          side="left"
+          Icon={<ArrowBackIosRounded fontSize="large" />}
+        />
+        <GradientArrow
+          onClick={goNext}
+          side="right"
+          Icon={<ArrowForwardIosRounded fontSize="large" />}
+        />
+
+        <Box sx={styles.dots}>
+          {banners.map((_, i) => (
+            <Box
+              key={i}
+              sx={{
+                width: currentIndex === i ? "2rem" : "1rem",
+                height: "0.75rem",
+                backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
+                borderRadius: currentIndex === i ? "20px" : "50%",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                opacity: currentIndex === i ? 1 : 0.7,
+                transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
+              }}
+              onClick={() => setCurrentIndex(i)}
             />
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
-
-      <GradientArrow
-        onClick={goPrev}
-        side="left"
-        Icon={<ArrowBackIosRounded fontSize="large" />}
-      />
-      <GradientArrow
-        onClick={goNext}
-        side="right"
-        Icon={<ArrowForwardIosRounded fontSize="large" />}
-      />
-
-      <Box sx={styles.dots}>
-        {banners.map((_, i) => (
-          <Box
-            key={i}
-            sx={{
-              width: currentIndex === i ? "2rem" : "1rem",
-              height: "0.75rem",
-              backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
-              borderRadius: currentIndex === i ? "20px" : "50%",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              opacity: currentIndex === i ? 1 : 0.7,
-              transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
-            }}
-            onClick={() => setCurrentIndex(i)}
-          />
-        ))}
-      </Box>
-    </Box>
-  );
+    );
 };
 
 export default AssessmentKitsStoreBanner;
