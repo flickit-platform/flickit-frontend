@@ -238,6 +238,7 @@ const SubjectsContent = () => {
                     handleInputChange={handleInputChange}
                     handleSave={handleSave}
                     handleCancel={handleCancel}
+                    setNewSubject={setNewSubject}
                   />
                 )}
               </>
