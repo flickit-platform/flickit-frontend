@@ -74,6 +74,7 @@ const ListOfItems = ({
   });
   const [newOptions, setNewOptions] = useState({
     title: "",
+    translations: null,
     index: 1,
     value: 1,
     id: null,
@@ -124,6 +125,7 @@ const ListOfItems = ({
         if (isExpanded) {
           setNewOptions({
             title: "",
+            translations: null,
             index:
               items.find((item: any) => item.id === id).answerOptions.length +
               1,
@@ -159,6 +161,7 @@ const ListOfItems = ({
     }));
     setNewOptions({
       title: "",
+      translations: null,
       index: items.find((item: any) => item.id === id).answerOptions.length + 1,
       value: 1,
       id: null,
@@ -180,6 +183,7 @@ const ListOfItems = ({
         index: newOptions.index,
         value: newOptions.value,
         title: newOptions.title,
+        translations: newOptions.translations,
         answerRangeId: id,
       };
       handleCancel(id);
@@ -200,6 +204,7 @@ const ListOfItems = ({
     }));
     setNewOptions({
       title: "",
+      translations: null,
       index: 1,
       value: 1,
       id: null,
@@ -513,6 +518,7 @@ const ListOfItems = ({
                   <OptionForm
                     newItem={newOptions}
                     handleInputChange={handleInputChange}
+                    setNewOptions={setNewOptions}
                     handleSave={() => handleSave(item.id)}
                     handleCancel={() => handleCancel(item.id)}
                   />

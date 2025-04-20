@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import IconButton from "@mui/material/IconButton";
@@ -15,9 +15,11 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface ITempValues {
   title: string;
+  translations: any;
   value: any;
 }
 
@@ -28,6 +30,7 @@ const OptionContain = (props: any) => {
   const [editMode, setEditMode] = useState<any>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",
+    translations: null,
     value: 0,
   });
   const EditAnswerRangeOption = useQuery({
@@ -35,10 +38,11 @@ const OptionContain = (props: any) => {
     runOnMount: false,
   });
   const handleEditClick = (answerOption: KitDesignListItems) => {
-    const { id, title, value } = answerOption;
+    const { id, title, value, translations } = answerOption;
     setEditMode(id);
     setTempValues({
       title: title,
+      translations: translations,
       value: value,
     });
   };
@@ -48,6 +52,7 @@ const OptionContain = (props: any) => {
     const data = {
       ...item,
       title: tempValues.title,
+      translations: tempValues.translations,
       value: tempValues.value,
     };
     let answerOptionId = item.id;
@@ -62,12 +67,12 @@ const OptionContain = (props: any) => {
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({ title: "", value: 0 });
+    setTempValues({ title: "", translations: null, value: 0 });
   };
-
+  console.log(tempValues,"tempValuestempValues")
   return (
     <>
-      <Box sx={{ display: "flex", py: ".5rem", px: "1rem" }}>
+      <Box sx={{ display: "flex", py: ".8rem", px: "1rem" }}>
         <Box
           sx={{
             ...styles.centerVH,
@@ -88,39 +93,40 @@ const OptionContain = (props: any) => {
           }}
         >
           {editMode === answerOption.id ? (
-            <TextField
-              required
-              value={tempValues.title}
-              onChange={(e) =>
-                setTempValues({
-                  ...tempValues,
-                  title: e.target.value,
-                })
-              }
-              inputProps={{
-                style: {fontFamily: languageDetector(tempValues.title) ? farsiFontFamily : primaryFontFamily },
-                "data-testid": "items-option-title",
-              }}
-              variant="outlined"
-              fullWidth
-              size="small"
-              sx={{
-                mb: 1,
-                fontSize: 14,
-                "& .MuiInputBase-root": {
-                  fontSize: 14,
-                  overflow: "auto",
-                },
-                "& .MuiFormLabel-root": {
-                  fontSize: 14,
-                },
-                width: "90%",
-                background: "#fff",
-                borderRadius: "8px",
-              }}
-              name="title"
-              label={<Trans i18nKey="title" />}
-            />
+              <MultiLangTextField
+                  name="title"
+                  value={tempValues.title}
+                  onChange={(e) =>
+                      setTempValues({
+                        ...tempValues,
+                        title: e.target.value,
+                      })
+                  }
+                  inputProps={{
+                    "data-testid": "items-option-title",
+                    style: {
+                      fontFamily: languageDetector(tempValues.title)
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                    },
+                  }}
+                  translationValue={
+                      tempValues.translations?.FA?.title ?? ""
+                  }
+                  onTranslationChange={(e) =>
+                      setTempValues((prev) => ({
+                        ...prev,
+                        translations: {
+                          ...prev.translations,
+                          FA: {
+                            ...prev.translations?.FA,
+                            title: e.target.value,
+                          },
+                        },
+                      }))
+                  }
+                  label={<Trans i18nKey="title" />}
+              />
           ) : (
             <Box sx={{ width: "90%", fontFamily: languageDetector(answerOption?.title) ? farsiFontFamily : primaryFontFamily }}>{answerOption?.title}</Box>
           )}
