@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {ChangeEvent, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -7,10 +7,9 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import TextField from "@mui/material/TextField";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
-import { KitDesignListItems, TId } from "@/types/index";
+import {KitDesignListItems, MultiLangs, TId} from "@/types/index";
 import { Trans } from "react-i18next";
 import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
@@ -30,6 +29,7 @@ import debounce from "lodash/debounce";
 import EmptyStateQuestion from "@components/kit-designer/questionnaires/questions/EmptyStateQuestion";
 import Add from "@mui/icons-material/Add";
 import QuestionForm from "./questions/QuestionForm";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -43,6 +43,7 @@ interface ITempValues {
   description: string;
   weight?: number;
   question?: number;
+  translations: MultiLangs | null;
 }
 interface IQuestion {
   advisable: boolean;
@@ -78,6 +79,7 @@ const ListOfItems = ({
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",
     description: "",
+    translations: null,
     weight: 0,
     question: 0,
   });
@@ -102,6 +104,7 @@ const ListOfItems = ({
     setTempValues({
       title: item.title,
       description: item.description,
+      translations: item.translations,
       weight: item.weight,
       question: item.questionsCount,
     });
@@ -114,6 +117,7 @@ const ListOfItems = ({
       title: tempValues.title,
       description: tempValues.description,
       weight: tempValues?.weight,
+      translations: tempValues?.translations
     });
     setEditMode(null);
   };
@@ -121,7 +125,7 @@ const ListOfItems = ({
   const handleCancelClick = (e: any) => {
     e.stopPropagation();
     setEditMode(null);
-    setTempValues({ title: "", description: "", weight: 0, question: 0 });
+    setTempValues({ title: "", description: "", translations: null, weight: 0, question: 0 });
   };
 
   const handelChange = (e: any) => {
@@ -267,7 +271,7 @@ const ListOfItems = ({
       id: null,
     });
   };
-
+  const isRTL = theme.direction === "rtl";
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="subjects">
@@ -378,45 +382,53 @@ const ListOfItems = ({
                             </IconButton>
                           </Box>
                           <Box
-                            sx={{
-                              flexGrow: 1,
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "5px",
-                            }}
+                              sx={{
+                                flexGrow: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 2,
+                              }}
                           >
-                            {/* Title and icons in the same row */}
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "flex-start",
+                                  justifyContent: "space-between",
+                                  flexDirection: isRTL ? "row-reverse" : "row",
+                                  gap: 1,
+                                }}
+                            >
+                            <Box sx={{ flexGrow: 1 }}>
                               {editMode === item.id ? (
-                                <TextField
-                                  onClick={(e) => e.stopPropagation()}
-                                  required
-                                  value={tempValues.title}
-                                  onChange={(e) => handelChange(e)}
-                                  inputProps={{
-                                    "data-testid": "items-title",
-                                    style: { fontFamily: languageDetector(tempValues.title) ? farsiFontFamily : primaryFontFamily }
-                                  }}
-                                  variant="outlined"
-                                  fullWidth
-                                  size="small"
-                                  sx={{
-                                    mb: 1,
-                                    fontSize: 14,
-                                    "& .MuiInputBase-root": {
-                                      fontSize: 14,
-                                      overflow: "auto",
-                                    },
-                                    "& .MuiFormLabel-root": {
-                                      fontSize: 14,
-                                    },
-                                    width: { sx: "100%", md: "60%" },
-                                    background: "#fff",
-                                    borderRadius: "8px",
-                                  }}
-                                  name="title"
-                                  label={<Trans i18nKey="title" />}
-                                />
+                                  <MultiLangTextField
+                                      name="title"
+                                      value={tempValues.title}
+                                      onChange={(e: ChangeEvent<HTMLInputElement>) =>handelChange(e)}
+                                      inputProps={{
+                                        "data-testid": "items-title",
+                                        style: {
+                                          fontFamily: languageDetector(tempValues.title)
+                                              ? farsiFontFamily
+                                              : primaryFontFamily,
+                                        },
+                                      }}
+                                      translationValue={
+                                          tempValues.translations?.FA?.title ?? ""
+                                      }
+                                      onTranslationChange={(e) =>
+                                          setTempValues((prev) => ({
+                                            ...prev,
+                                            translations: {
+                                              ...prev.translations,
+                                              FA: {
+                                                ...prev.translations?.FA,
+                                                title: e.target.value,
+                                              },
+                                            },
+                                          }))
+                                      }
+                                      label={<Trans i18nKey="title" />}
+                                  />
                               ) : (
                                 <Typography
                                   variant="h6"
@@ -425,6 +437,7 @@ const ListOfItems = ({
                                   {item.title}
                                 </Typography>
                               )}
+                            </Box>
                               {/* Icons (Edit/Delete or Check/Close) */}
                               {editMode === item.id ? (
                                 <Box
@@ -499,40 +512,45 @@ const ListOfItems = ({
                               }}
                             >
                               {editMode === item.id ? (
-                                <TextField
-                                  required
-                                  value={tempValues.description}
-                                  onClick={(e) => e.stopPropagation()}
-                                  onChange={(e) => handelChange(e)}
-                                  name="description"
-                                  inputProps={{
-                                    "data-testid": "items-description",
-                                    style: { fontFamily: languageDetector(tempValues.description) ? farsiFontFamily : primaryFontFamily }
-                                  }}
-                                  variant="outlined"
-                                  fullWidth
-                                  size="small"
-                                  label={<Trans i18nKey="description" />}
-                                  margin="normal"
-                                  multiline
-                                  minRows={2}
-                                  maxRows={5}
-                                  sx={{
-                                    mb: 1,
-                                    mt: 1,
-                                    fontSize: 14,
-                                    "& .MuiInputBase-root": {
-                                      fontSize: 14,
-                                      overflow: "auto",
-                                    },
-                                    "& .MuiFormLabel-root": {
-                                      fontSize: 14,
-                                    },
-                                    background: "#fff",
-                                    borderRadius: "8px",
-                                    width: { xs: "100%", md: "85%" },
-                                  }}
-                                />
+                                  <MultiLangTextField
+                                      name="description"
+                                      value={tempValues.description}
+                                      onChange={(e) =>
+                                          setTempValues((prev) => ({
+                                            ...prev,
+                                            description: e.target.value,
+                                          }))
+                                      }
+                                      inputProps={{
+                                        "data-testid": "items-description",
+                                        style: {
+                                          fontFamily: languageDetector(
+                                              tempValues.description,
+                                          )
+                                              ? farsiFontFamily
+                                              : primaryFontFamily,
+                                        },
+                                      }}
+                                      translationValue={
+                                          tempValues.translations?.FA?.description ?? ""
+                                      }
+                                      onTranslationChange={(e) =>
+                                          setTempValues((prev) => ({
+                                            ...prev,
+                                            translations: {
+                                              ...prev.translations,
+                                              FA: {
+                                                ...prev.translations?.FA,
+                                                description: e.target.value,
+                                              },
+                                            },
+                                          }))
+                                      }
+                                      label={<Trans i18nKey="description" />}
+                                      multiline
+                                      minRows={2}
+                                      maxRows={5}
+                                  />
                               ) : (
                                 <Typography
                                   sx={{
