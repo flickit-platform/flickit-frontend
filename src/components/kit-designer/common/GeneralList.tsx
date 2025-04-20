@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {ChangeEvent, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -95,10 +95,10 @@ const ListOfItems = ({
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setTempValues({
-      ...tempValues,
+    setTempValues((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }))
   };
   const isRTL = theme.direction === "rtl";
   return (
@@ -180,12 +180,7 @@ const ListOfItems = ({
                             <MultiLangTextField
                                 name="title"
                                 value={tempValues.title}
-                                onChange={(e) =>
-                                    setTempValues((prev) => ({
-                                      ...prev,
-                                      title: e.target.value,
-                                    }))
-                                }
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>handleChange(e)}
                                 inputProps={{
                                   "data-testid": "items-title",
                                   style: {
