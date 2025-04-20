@@ -11,6 +11,7 @@ import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import {useState} from "react";
+import {MultiLangs} from "@/types";
 
 interface SubjectFormProps {
     newSubject: {
@@ -19,7 +20,7 @@ interface SubjectFormProps {
     weight: number;
     index: number;
     value: number;
-    translations?: any;
+    translations?: MultiLangs | null;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
