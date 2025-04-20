@@ -7,10 +7,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 interface QuestionFormProps {
-    newItem: {
+  newItem: {
     title: string;
     index: number;
     value: number;
@@ -62,7 +62,7 @@ const QuestionForm = ({
           "& .MuiInputBase-root": {
             fontSize: 14,
           },
-          background:"#fff",
+          background: "#fff",
         }}
       />
     </Box>
@@ -76,8 +76,12 @@ const QuestionForm = ({
         onChange={handleInputChange}
         fullWidth
         inputProps={{
-            "data-testid": "questionnaires-title",
-            style: { fontFamily : languageDetector(newItem.title) ? farsiFontFamily : primaryFontFamily }
+          "data-testid": "question-title",
+          style: {
+            fontFamily: languageDetector(newItem.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
         }}
         margin="normal"
         sx={{
@@ -90,13 +94,18 @@ const QuestionForm = ({
           "& .MuiFormLabel-root": {
             fontSize: 14,
           },
-            background:"#fff",
+          background: "#fff",
         }}
       />
     </Box>
 
     {/* Check and Close Buttons */}
-    <Box display="flex" alignItems="center" flexDirection={"column"} gap={"20px"}>
+    <Box
+      display="flex"
+      alignItems="center"
+      flexDirection={"column"}
+      gap={"20px"}
+    >
       <Link
         href="#subject-header"
         sx={{
@@ -105,14 +114,24 @@ const QuestionForm = ({
           fontWeight: "bold",
           display: "flex",
           alignItems: "center",
-          gap:"20px"
+          gap: "20px",
         }}
       >
         {" "}
-        <IconButton size="small" color="primary" data-testid="questionnaires-check-icon" onClick={handleSave}>
+        <IconButton
+          size="small"
+          color="primary"
+          data-testid="check-icon-id"
+          onClick={handleSave}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton size="small" color="secondary" data-testid="questionnaires-close-icon" onClick={handleCancel}>
+        <IconButton
+          size="small"
+          color="secondary"
+          data-testid="close-icon-id"
+          onClick={handleCancel}
+        >
           <CloseIcon />
         </IconButton>
       </Link>

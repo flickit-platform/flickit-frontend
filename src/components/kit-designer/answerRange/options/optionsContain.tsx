@@ -6,7 +6,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import {IOption, KitDesignListItems, MultiLangs} from "@/types/index";
+import { IOption, KitDesignListItems, MultiLangs } from "@/types/index";
 import TextField from "@mui/material/TextField";
 import { Trans } from "react-i18next";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
@@ -14,7 +14,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface ITempValues {
@@ -34,7 +34,8 @@ const OptionContain = (props: any) => {
     value: 0,
   });
   const EditAnswerRangeOption = useQuery({
-    service: (args, config) => service.kitVersions.answerOptions.updateOption(args, config),
+    service: (args, config) =>
+      service.kitVersions.answerOptions.updateOption(args, config),
     runOnMount: false,
   });
   const handleEditClick = (answerOption: KitDesignListItems) => {
@@ -92,42 +93,48 @@ const OptionContain = (props: any) => {
           }}
         >
           {editMode === answerOption.id ? (
-              <MultiLangTextField
-                  name="title"
-                  value={tempValues.title}
-                  onChange={(e) =>
-                      setTempValues({
-                        ...tempValues,
-                        title: e.target.value,
-                      })
-                  }
-                  inputProps={{
-                    "data-testid": "items-option-title",
-                    style: {
-                      fontFamily: languageDetector(tempValues.title)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
+            <MultiLangTextField
+              name="title"
+              value={tempValues.title}
+              onChange={(e) =>
+                setTempValues({
+                  ...tempValues,
+                  title: e.target.value,
+                })
+              }
+              inputProps={{
+                style: {
+                  fontFamily: languageDetector(tempValues.title)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                },
+              }}
+              translationValue={tempValues.translations?.FA?.title ?? ""}
+              onTranslationChange={(e) =>
+                setTempValues((prev) => ({
+                  ...prev,
+                  translations: {
+                    ...prev.translations,
+                    FA: {
+                      ...prev.translations?.FA,
+                      title: e.target.value,
                     },
-                  }}
-                  translationValue={
-                      tempValues.translations?.FA?.title ?? ""
-                  }
-                  onTranslationChange={(e) =>
-                      setTempValues((prev) => ({
-                        ...prev,
-                        translations: {
-                          ...prev.translations,
-                          FA: {
-                            ...prev.translations?.FA,
-                            title: e.target.value,
-                          },
-                        },
-                      }))
-                  }
-                  label={<Trans i18nKey="title" />}
-              />
+                  },
+                }))
+              }
+              label={<Trans i18nKey="title" />}
+            />
           ) : (
-            <Box sx={{ width: "90%", fontFamily: languageDetector(answerOption?.title) ? farsiFontFamily : primaryFontFamily }}>{answerOption?.title}</Box>
+            <Box
+              sx={{
+                width: "90%",
+                fontFamily: languageDetector(answerOption?.title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+            >
+              {answerOption?.title}
+            </Box>
           )}
         </Box>
         {editMode === answerOption.id ? (
@@ -140,9 +147,6 @@ const OptionContain = (props: any) => {
                 value: e.target.value,
               })
             }
-            inputProps={{
-              "data-testid": "items-option-value",
-            }}
             variant="outlined"
             fullWidth
             size="small"

@@ -34,9 +34,9 @@ describe("QuestionnairesForm", ()=> {
    }
    it("renders with initial values", async ()=>{
      renderForm();
-     const titleInput = screen.getByTestId("questionnaires-title");
-     const descriptionInput = screen.getByTestId("questionnaires-description");
-     const valueInput = screen.getByTestId("questionnaires-value");
+     const titleInput = screen.getByTestId("title-id");
+     const descriptionInput = screen.getByTestId("description-id");
+     const valueInput = screen.getByTestId("value-id");
 
      expect(titleInput).toBeInTheDocument();
      expect(titleInput).toHaveValue("title test")
@@ -51,14 +51,14 @@ describe("QuestionnairesForm", ()=> {
     it("calls handleSave when clicking the save button", async ()=> {
         renderForm();
 
-        const saveButton = screen.getByTestId("questionnaires-check-icon");
+        const saveButton = screen.getByTestId("check-icon-id");
         await userEvent.click(saveButton);
         expect(handleSave).toHaveBeenCalled();
     })
     it("calls handleCancel when clicking the cancel button", async ()=> {
         renderForm()
 
-        const cancelButton = screen.getByTestId("questionnaires-close-icon")
+        const cancelButton = screen.getByTestId("close-icon-id")
         await userEvent.click(cancelButton);
         expect(handleCancel).toHaveBeenCalled();
 

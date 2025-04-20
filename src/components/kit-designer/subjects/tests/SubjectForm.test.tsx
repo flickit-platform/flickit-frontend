@@ -34,11 +34,11 @@ describe("SubjectForm", () => {
     );
 
     return {
-      getTitleInput: () => screen.getByTestId("subject-title"),
-      getDescriptionInput: () => screen.getByTestId("subject-description"),
-      getValueInput: () => screen.getByTestId("subject-value"),
-      getSaveButton: () => screen.getByTestId("subject-check-icon"),
-      getCancelButton: () => screen.getByTestId("subject-close-icon"),
+      getTitleInput: () => screen.getByTestId("title-id"),
+      getDescriptionInput: () => screen.getByTestId("description-id"),
+      getValueInput: () => screen.getByTestId("value-id"),
+      getSaveButton: () => screen.getByTestId("check-icon-id"),
+      getCancelButton: () => screen.getByTestId("close-icon-id"),
     };
   };
 

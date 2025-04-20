@@ -10,7 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 
 interface AttributeFormProps {
   newAttribute: any;
@@ -51,12 +51,12 @@ const AttributeForm = ({
         value={newAttribute.title}
         onChange={handleInputChange}
         inputProps={{
-            style : {
-                fontFamily: languageDetector(newAttribute.title)
-                    ? farsiFontFamily
-                    : primaryFontFamily
-            },
-            "data-testid": "attribute-from-title",
+          style: {
+            fontFamily: languageDetector(newAttribute.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
+          "data-testid": "title-id",
         }}
         fullWidth
         margin="normal"
@@ -81,10 +81,12 @@ const AttributeForm = ({
         name="description"
         value={newAttribute.description}
         inputProps={{
-            style: { fontFamily: languageDetector(newAttribute.description)
-                    ? farsiFontFamily
-                    : primaryFontFamily },
-            "data-testid": "attribute-from-description",
+          style: {
+            fontFamily: languageDetector(newAttribute.description)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
+          "data-testid": "description-id",
         }}
         onChange={handleInputChange}
         fullWidth
@@ -111,7 +113,7 @@ const AttributeForm = ({
         type="number"
         value={newAttribute.weight}
         inputProps={{
-            "data-testid": "attribute-from-weight",
+          "data-testid": "weight-id",
         }}
         onChange={handleInputChange}
         fullWidth
@@ -141,10 +143,18 @@ const AttributeForm = ({
           alignItems: "center",
         }}
       >
-        <IconButton color="primary" data-testid={"attribute-save-icon"} onClick={handleSave}>
+        <IconButton
+          color="primary"
+          data-testid={"attribute-save-icon"}
+          onClick={handleSave}
+        >
           <CheckIcon />
         </IconButton>
-        <IconButton color="secondary" data-testid={"attribute-close-icon"} onClick={handleCancel}>
+        <IconButton
+          color="secondary"
+          data-testid={"attribute-close-icon"}
+          onClick={handleCancel}
+        >
           <CloseIcon />
         </IconButton>
       </Link>

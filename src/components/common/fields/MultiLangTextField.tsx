@@ -15,9 +15,9 @@ import firstCharDetector from "@utils/firstCharDetector";
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
   value?: string;
-  onChange?: (e: any) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   translationValue?: string;
-  onTranslationChange?: (e: { target: { value: string | undefined } }) => void;
+  onTranslationChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   translationLabel?: string;
   showTranslation?: boolean;
   setShowTranslation?: (val: boolean) => void;
@@ -36,29 +36,39 @@ const MultiLangTextField = ({
   showTranslation: controlledShow,
   setShowTranslation: controlledSetter,
   useRichEditor = false,
+  multiline = false,
+  minRows,
+  maxRows,
   ...rest
 }: MultiLangTextFieldProps) => {
   const [internalShow, setInternalShow] = useState(false);
   const showTranslation = controlledShow ?? internalShow;
   const setShowTranslation = controlledSetter ?? setInternalShow;
 
-  const handleChange = (e: any) => {
-    const newValue = e.target.value === "" ? undefined : e.target.value;
-    onChange?.({ target: { value: newValue } });
+  const handleShowTranslation = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    state: boolean,
+  ) => {
+    e.stopPropagation();
+    setShowTranslation(state);
   };
 
   const renderInput = (
     val: string | undefined,
-    handleChange: any,
+    handleChange:
+      | ((e: React.ChangeEvent<HTMLInputElement>) => void)
+      | undefined,
     labelText?: React.ReactNode,
+    testId?: string,
   ) =>
     useRichEditor ? (
       <RichEditor
         isEditable
         field={{
           name,
-          value: val,
-          onChange: (v: string) => handleChange?.({ target: { value: v } }),
+          value: val ?? "",
+          onChange: (v: string) =>
+            handleChange?.({ target: { name, value: v } } as any),
           onBlur: () => {},
           ref: () => {},
         }}
@@ -70,35 +80,41 @@ const MultiLangTextField = ({
     ) : (
       <TextField
         {...rest}
-        fullWidth
-        value={val}
+        name={name}
+        value={val ?? ""}
         onChange={handleChange}
         label={labelText}
-        inputProps={inputProps}
+        inputProps={{
+          ...inputProps,
+          "data-testid": testId,
+        }}
+        multiline={multiline}
+        minRows={minRows}
+        maxRows={maxRows}
+        fullWidth
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
             backgroundColor: "#fff",
             fontSize: 14,
-            height: useRichEditor || rest.multiline ? "auto" : 40,
+            ...(multiline ? {} : { height: 40 }),
           },
-          "& .MuiFormLabel-root": { fontSize: 14 },
+          "& .MuiFormLabel-root": {
+            fontSize: 14,
+          },
           ...rest.sx,
         }}
       />
     );
 
-  const handleShowTranslation = (e: any, state: boolean) => {
-    e.stopPropagation();
-    setShowTranslation(state);
-  };
-
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
+    >
       {/* Original Field */}
-      <Box sx={{ display: "flex", gap: 1 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          {renderInput(value, handleChange, label)}
+      <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
+        <Box sx={{ flexGrow: 1, width: "100%" }}>
+          {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
 
         <IconButton
@@ -113,7 +129,7 @@ const MultiLangTextField = ({
           <Box
             component="img"
             src={showTranslation ? GlobeSub : GlobePlus}
-            alt="Add Translation"
+            alt="Toggle Translation"
             sx={{ width: "100%", height: "100%", objectFit: "contain" }}
           />
         </IconButton>
@@ -121,7 +137,7 @@ const MultiLangTextField = ({
 
       {/* Translation Field */}
       {showTranslation && (
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
           <Box
             sx={{
               backgroundColor: "#F3F5F6",
@@ -141,11 +157,12 @@ const MultiLangTextField = ({
             </Typography>
           </Box>
 
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, width: "100%" }}>
             {renderInput(
               translationValue,
               onTranslationChange,
               translationLabel,
+              `${name}-translation-id`,
             )}
           </Box>
         </Box>
