@@ -303,7 +303,7 @@ const ListOfItems = ({
                                     }))
                                 }
                                 inputProps={{
-                                  "data-testid": "maturity-level-description",
+                                  "data-testid": "items-description",
                                   style: {
                                     fontFamily: languageDetector(
                                         tempValues.description,
@@ -332,45 +332,6 @@ const ListOfItems = ({
                                 minRows={2}
                                 maxRows={5}
                             />
-                          // <TextField
-                          //   required
-                          //   value={tempValues.description}
-                          //   onChange={handleChange}
-                          //   name="description"
-                          //   inputProps={{
-                          //     "data-testid": "items-description",
-                          //     style: {
-                          //       fontFamily: languageDetector(
-                          //         tempValues.description,
-                          //       )
-                          //         ? farsiFontFamily
-                          //         : primaryFontFamily,
-                          //     },
-                          //   }}
-                          //   variant="outlined"
-                          //   fullWidth
-                          //   size="small"
-                          //   label={<Trans i18nKey="description" />}
-                          //   margin="normal"
-                          //   multiline
-                          //   minRows={2}
-                          //   maxRows={5}
-                          //   sx={{
-                          //     mb: 1,
-                          //     mt: 1,
-                          //     fontSize: 14,
-                          //     "& .MuiInputBase-root": {
-                          //       fontSize: 14,
-                          //       overflow: "auto",
-                          //     },
-                          //     "& .MuiFormLabel-root": {
-                          //       fontSize: 14,
-                          //     },
-                          //     background: "#fff",
-                          //     borderRadius: "8px",
-                          //     width: { xs: "100%", md: "85%" },
-                          //   }}
-                          // />
                         ) : (
                           <Typography
                             sx={{
