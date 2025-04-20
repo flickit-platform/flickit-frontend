@@ -6,6 +6,7 @@ const mockItems = [
   {
     id: 1,
     title: "title test 1",
+    translations: {FA:{title: "test translation title", description: "test translation description"}},
     value: 1,
     index: 1,
     description: "description test 1",

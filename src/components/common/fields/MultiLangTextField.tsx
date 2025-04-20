@@ -122,7 +122,6 @@ const MultiLangTextField = ({
             onChange={onTranslationChange}
             label={translationLabel}
             inputProps={{
-              ...inputProps,
               style: {
                 ...inputProps?.style,
                 paddingLeft: 10,
