@@ -9,6 +9,7 @@ describe("QuestionnairesForm", ()=> {
   const newItem = {
     title: "title test",
     description: "description test",
+    translations: {FA: {title: "title test translation", description: "description test translation"} },
     index: 1,
     value: 2,
   };
@@ -16,6 +17,7 @@ describe("QuestionnairesForm", ()=> {
    const handleInputChange = vi.fn();
    const handleSave= vi.fn();
    const handleCancel= vi.fn();
+   const setNewQuestionnaires= vi.fn();
 
    const renderForm = () =>{
      render(
@@ -25,6 +27,7 @@ describe("QuestionnairesForm", ()=> {
                handleInputChange={handleInputChange}
                handleSave={handleSave}
                handleCancel={handleCancel}
+               setNewQuestionnaires={setNewQuestionnaires}
            />
          </I18nextProvider>
      )
