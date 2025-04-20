@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 const useCalculate = () => {
   const { service } = useServiceContext();
-  const { assessmentId } = useParams();
+  const { assessmentId = "" } = useParams();
 
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>

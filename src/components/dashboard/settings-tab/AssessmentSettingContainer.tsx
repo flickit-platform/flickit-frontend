@@ -38,16 +38,26 @@ const AssessmentSettingContainer = () => {
   }>(null);
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
-    service: (args, config) => service.assessments.member.getRoles(args, config),
+    service: (args, config) =>
+      service.assessments.member.getRoles(args, config),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
 
   const fetchAssessmentMembers = useQuery({
-    service: (args, config) => service.assessments.member.getUsers(args, config),
+    service: (args: { page?: number; size?: number } = {}, config) =>
+      service.assessments.member.getUsers(
+        {
+          assessmentId,
+          page: args.page ?? 0,
+          size: args.size ?? 10,
+        },
+        config,
+      ),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
+
   const fetchPathInfo = useQuery({
     service: (args, config) =>
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
@@ -68,17 +78,24 @@ const AssessmentSettingContainer = () => {
 
   useEffect(() => {
     (async () => {
-      const { kit, kitCustomId } = await AssessmentInfo.query();
-      setKitInfo({ kit, kitCustomId });
+      try {
+        const res = await AssessmentInfo.query();
+        if (res) {
+          const { kit, kitCustomId } = res;
+          setKitInfo({ kit, kitCustomId });
+        } else {
+          console.warn("AssessmentInfo.query returned null or undefined");
+        }
+      } catch (err) {
+        console.error("Failed to fetch assessment info:", err);
+      }
     })();
   }, [assessmentId]);
+
   useEffect(() => {
     (async () => {
-      const { items, total } = await fetchAssessmentMembers.query({
-        assessmentId,
-        page,
-        size: rowsPerPage,
-      });
+      const { items = [], total = 0 } =
+        (await fetchAssessmentMembers.query({ page, size: rowsPerPage })) || {};
       setListOfUser(items);
       setTotalUser(total);
     })();

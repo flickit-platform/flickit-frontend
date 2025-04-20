@@ -52,7 +52,7 @@ const QuestionnaireContainer = () => {
 export const useQuestionnaire = () => {
   const { service } = useServiceContext();
   const [searchParams] = useSearchParams();
-  const { assessmentId } = useParams();
+  const { assessmentId = "" } = useParams();
   const subjectIdParam = searchParams.get("subject_pk");
 
   const questionnaireQueryData = useQuery<IQuestionnairesModel>({

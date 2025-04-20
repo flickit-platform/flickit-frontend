@@ -26,14 +26,11 @@ const AssessmentKitsStoreCard = (props: any) => {
     });
   };
 
-  const goToKit = (e: any, id: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`${id}/`);
-  };
   return (
     <Grid key={id} item xs={12} md={6}>
       <Box
+        to={`${id}/`}
+        component={Link}
         sx={{
           ...styles.boxStyle,
           borderRadius: 1,
@@ -47,8 +44,9 @@ const AssessmentKitsStoreCard = (props: any) => {
           flexDirection: "column",
           justifyContent: "space-between",
           cursor: "pointer",
+          textDecoration: "unset",
+          color: "inherit",
         }}
-        onClick={(e) => goToKit(e, id)}
       >
         <Box>
           <Box>
