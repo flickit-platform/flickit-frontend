@@ -65,7 +65,7 @@ const MultiLangTextField = ({
         }}
         defaultValue={val}
         placeholder={typeof labelText === "string" ? labelText : undefined}
-        checkLang={firstCharDetector(val?.replace(/<[^<>]+>/g, "") || "")}
+        checkLang={firstCharDetector(val?.replace(/<[^<>]+>/g, "") ?? "")}
         showEditorMenu={false}
       />
     ) : (

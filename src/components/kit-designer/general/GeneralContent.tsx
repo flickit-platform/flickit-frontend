@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { ICustomError, IKitVersion, ILanguage } from "@/types/index";
+import { IKitVersion, ILanguage } from "@/types/index";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useQuery } from "@/utils/useQuery";
 import QueryData from "@/components/common/QueryData";
@@ -110,8 +110,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           FA: {
             ...prev.translations.FA,
             [field]:
-              fetchAssessmentKitInfoQuery.data?.translations?.FA?.[field] ||
-              undefined,
+              fetchAssessmentKitInfoQuery.data?.translations?.FA?.[field],
           },
         },
       }));
