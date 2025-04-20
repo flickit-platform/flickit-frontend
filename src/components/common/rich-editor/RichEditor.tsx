@@ -123,7 +123,6 @@ const RichEditor = (props: IRichEditorProps) => {
               position: "relative",
               marginTop: "0px !important",
               width: "100%",
-              mt: 1.5,
               "&.Mui-focused .ProseMirror": {
                 borderColor: `${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "#1976d2"}`,
                 borderWidth: "2px",
