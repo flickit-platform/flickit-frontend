@@ -1,12 +1,9 @@
 import { useState } from "react";
-import {
-  Box,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
@@ -99,7 +96,9 @@ const MaturityLevelForm = ({
         />
       </Box>
 
-      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box
+        sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
+      >
         {(["title", "description"] as const).map((field) => (
           <MultiLangTextField
             key={field}
@@ -107,7 +106,9 @@ const MaturityLevelForm = ({
             label={<Trans i18nKey={field} />}
             value={newMaturityLevel[field]}
             onChange={handleInputChange}
-            translationValue={newMaturityLevel.translations?.[langCode]?.[field] ?? ""}
+            translationValue={
+              newMaturityLevel.translations?.[langCode]?.[field] ?? ""
+            }
             onTranslationChange={(e) =>
               handleTranslationChange(field, e.target.value)
             }
@@ -135,19 +136,18 @@ const MaturityLevelForm = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          gap: 1,
+          gap: 0.5,
           mt: 0.5,
         }}
       >
         <IconButton
           size="small"
-          color="primary"
+          color="success"
           onClick={handleSave}
           data-testid="check-icon-id"
         >
-          <CheckIcon />
+          <CheckRoundedIcon fontSize="small" />
         </IconButton>
         <IconButton
           size="small"
@@ -155,7 +155,7 @@ const MaturityLevelForm = ({
           onClick={handleCancel}
           data-testid="close-icon-id"
         >
-          <CloseIcon />
+          <CloseRoundedIcon fontSize="small" />
         </IconButton>
       </Box>
     </Box>

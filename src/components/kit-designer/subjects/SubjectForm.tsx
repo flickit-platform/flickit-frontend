@@ -1,16 +1,13 @@
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
+import { useState } from "react";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import { styles } from "@/config/styles";
-import Typography from "@mui/material/Typography";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
-import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { useState } from "react";
+import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
+import { styles } from "@/config/styles";
+import { useKitLanguageContext } from "@/providers/KitProvider";
 import { MultiLangs } from "@/types";
 
 interface SubjectFormProps {
@@ -25,7 +22,9 @@ interface SubjectFormProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
   handleCancel: () => void;
-  setNewSubject: any;
+  setNewSubject: React.Dispatch<
+    React.SetStateAction<SubjectFormProps["newSubject"]>
+  >;
 }
 
 const SubjectForm = ({
@@ -35,12 +34,64 @@ const SubjectForm = ({
   handleCancel,
   setNewSubject,
 }: SubjectFormProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
   const [showTitleTranslation, setShowTitleTranslation] = useState(
-    Boolean(newSubject.translations?.FA?.title),
+    Boolean(newSubject.translations?.[langCode]?.title),
   );
   const [showDescriptionTranslation, setShowDescriptionTranslation] = useState(
-    Boolean(newSubject.translations?.FA?.description),
+    Boolean(newSubject.translations?.[langCode]?.description),
   );
+
+  const handleTranslationChange = (
+    field: "title" | "description",
+    value?: string,
+  ) => {
+    if (!langCode) return;
+    setNewSubject((prev) => ({
+      ...prev,
+      translations: {
+        ...prev.translations,
+        [langCode]: {
+          ...prev.translations?.[langCode],
+          [field]: value === "" ? undefined : value,
+        },
+      },
+    }));
+  };
+
+  const renderNumericField = (
+    name: "value" | "weight",
+    value: number,
+    testId?: string,
+    label?: string,
+  ) => (
+    <Box display="flex" flexDirection="column" alignItems="center" gap={0.5}>
+      {label && (
+        <Typography variant="caption" color="textSecondary">
+          <Trans i18nKey={label} />
+        </Typography>
+      )}
+      <TextField
+        name={name}
+        type="number"
+        value={value}
+        onChange={handleInputChange}
+        size="small"
+        variant="outlined"
+        inputProps={{
+          style: { textAlign: "center", width: 40 },
+          ...(testId ? { "data-testid": testId } : {}),
+        }}
+        sx={{
+          background: "#fff",
+          borderRadius: "8px",
+        }}
+      />
+    </Box>
+  );
+
   return (
     <Box
       mt={1.5}
@@ -51,43 +102,23 @@ const SubjectForm = ({
         border: "0.3px solid #73808c30",
         display: "flex",
         alignItems: "flex-start",
-        position: "relative",
         gap: 2,
       }}
     >
+      {/* Index Number */}
       <Box
         sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
         borderRadius="0.5rem"
-        mr={2}
-        p={0.25}
       >
-        <TextField
-          required
-          id="new-maturity"
-          type="number"
-          name="value"
-          value={newSubject.value}
-          onChange={handleInputChange}
-          variant="outlined"
-          size="small"
-          inputProps={{
-            "data-testid": "value-id",
-            style: { textAlign: "center", width: "40px" },
-          }}
-          sx={{
-            fontSize: 14,
-            "& .MuiInputBase-root": {
-              fontSize: 14,
-            },
-            background: "#fff",
-          }}
-        />
+        {renderNumericField("value", newSubject.value, "value-id")}
       </Box>
 
+      {/* Multilingual Texts */}
       <Box
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
       >
         <MultiLangTextField
+          id="new-maturity"
           label={<Trans i18nKey="title" />}
           name="title"
           value={newSubject.title}
@@ -99,22 +130,14 @@ const SubjectForm = ({
                 : primaryFontFamily,
             },
           }}
-          translationValue={newSubject.translations?.FA?.title}
+          translationValue={newSubject.translations?.[langCode]?.title}
           onTranslationChange={(e) =>
-            setNewSubject((prev: any) => ({
-              ...prev,
-              translations: {
-                ...prev.translations,
-                FA: {
-                  ...prev.translations?.FA,
-                  title: e.target.value,
-                },
-              },
-            }))
+            handleTranslationChange("title", e.target.value)
           }
           showTranslation={showTitleTranslation}
           setShowTranslation={setShowTitleTranslation}
         />
+
         <MultiLangTextField
           label={<Trans i18nKey="description" />}
           name="description"
@@ -124,116 +147,49 @@ const SubjectForm = ({
           minRows={2}
           maxRows={5}
           inputProps={{
-            "data-testid": "description-id",
             style: {
               fontFamily: languageDetector(newSubject.description)
                 ? farsiFontFamily
                 : primaryFontFamily,
             },
           }}
-          translationValue={newSubject.translations?.FA?.description}
+          translationValue={newSubject.translations?.[langCode]?.description}
           onTranslationChange={(e) =>
-            setNewSubject((prev: any) => ({
-              ...prev,
-              translations: {
-                ...prev.translations,
-                FA: {
-                  ...prev.translations?.FA,
-                  description: e.target.value,
-                },
-              },
-            }))
+            handleTranslationChange("description", e.target.value)
           }
           showTranslation={showDescriptionTranslation}
           setShowTranslation={setShowDescriptionTranslation}
         />
       </Box>
 
-      {/* Check and Close Buttons */}
+      {/* Save, Cancel, and Weight */}
       <Box
         display="flex"
+        flexDirection="column"
         alignItems="center"
-        flexDirection={"column"}
-        gap={"20px"}
+        justifyContent="flex-start"
+        gap={1.5}
+        mt={0.5}
       >
-        <Link
-          href="#subject-header"
-          sx={{
-            textDecoration: "none",
-            opacity: 0.9,
-            fontWeight: "bold",
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-          }}
-        >
-          {" "}
+        <Box display="flex">
           <IconButton
             size="small"
             color="primary"
-            data-testid="check-icon-id"
             onClick={handleSave}
+            data-testid="check-icon-id"
           >
             <CheckIcon />
           </IconButton>
           <IconButton
             size="small"
             color="secondary"
-            data-testid="close-icon-id"
             onClick={handleCancel}
+            data-testid="close-icon-id"
           >
             <CloseIcon />
           </IconButton>
-        </Link>
-        <Box
-          sx={{
-            width: "fit-content",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-            flexDirection: "column",
-            gap: "0.5rem",
-            textAlign: "center",
-          }}
-        >
-          <Typography
-            sx={{
-              ...theme.typography.labelCondensed,
-              color: "#6C8093",
-              width: "100%",
-            }}
-          >
-            <Trans i18nKey={"weight"} />
-          </Typography>
-          <TextField
-            required
-            value={newSubject.weight}
-            onChange={handleInputChange}
-            name="weight"
-            variant="outlined"
-            fullWidth
-            size="small"
-            margin="normal"
-            type="number"
-            inputProps={{
-              style: { textAlign: "center", width: "40px" },
-            }}
-            sx={{
-              mb: 1,
-              mt: 1,
-              fontSize: 14,
-              "& .MuiInputBase-root": {
-                fontSize: 14,
-                overflow: "auto",
-              },
-              "& .MuiFormLabel-root": {
-                fontSize: 14,
-              },
-              background: "#fff",
-              borderRadius: "8px",
-            }}
-          />
         </Box>
+        {renderNumericField("weight", newSubject.weight, undefined, "weight")}
       </Box>
     </Box>
   );
