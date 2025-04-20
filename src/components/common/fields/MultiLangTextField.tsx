@@ -39,13 +39,13 @@ const MultiLangTextField = ({
   const showTranslation = isControlled ? controlledShow : internalShow;
   const setShowTranslation = isControlled ? controlledSetter : setInternalShow;
 
-  const handleShowTranslation = (e: any, state: boolean) =>{
-       e.stopPropagation()
-       setShowTranslation(state)
-  }
+  const handleShowTranslation = (e: any, state: boolean) => {
+    e.stopPropagation();
+    setShowTranslation(state);
+  };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "85%" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box sx={{ display: "flex", gap: 1 }}>
         <Box sx={{ flexGrow: 1 }}>
           <TextField
@@ -76,7 +76,7 @@ const MultiLangTextField = ({
 
         {!showTranslation && (
           <IconButton
-            onClick={(e) => handleShowTranslation(e,true)}
+            onClick={(e) => handleShowTranslation(e, true)}
             sx={{
               width: 40,
               height: 40,
@@ -153,7 +153,7 @@ const MultiLangTextField = ({
           <IconButton
             size="small"
             onClick={(e) => {
-              handleShowTranslation(e,false);
+              handleShowTranslation(e, false);
               onTranslationChange?.({
                 target: { value: undefined },
               });
