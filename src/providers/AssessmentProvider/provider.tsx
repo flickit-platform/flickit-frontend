@@ -1,11 +1,4 @@
-import React, {
-  useReducer,
-  FC,
-  useContext,
-  Dispatch,
-  createContext,
-  useMemo,
-} from "react";
+import { useReducer, FC, useContext, Dispatch, createContext, useMemo } from "react";
 import assessmentReducer from "./reducer";
 
 interface IAssessmentProviderProps {

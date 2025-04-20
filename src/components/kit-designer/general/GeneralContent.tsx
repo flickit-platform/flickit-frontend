@@ -18,6 +18,11 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import toastError from "@/utils/toastError";
+import {
+  kitActions,
+  setMainLanguage,
+  useKitLanguageContext,
+} from "@/providers/KitProvider";
 
 type TranslationFields = "title" | "summary" | "about";
 
@@ -29,6 +34,7 @@ interface UpdatedValues {
 }
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
+  const { dispatch } = useKitLanguageContext();
   const { service } = useServiceContext();
   const {
     config: { languages },
@@ -157,6 +163,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       );
       setTranslatedLang(defaultTranslatedLanguage);
 
+      dispatch(kitActions.setMainLanguage(data.mainLanguage));
+      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
       const currentTranslation = translations[firstTranslationKey] || {};
 
       setShowTranslations({
@@ -320,7 +328,13 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         />
       </PermissionControl>
 
-      <Box display="flex" justifyContent="end" alignItems="center" gap={2} mt={2}>
+      <Box
+        display="flex"
+        justifyContent="end"
+        alignItems="center"
+        gap={2}
+        mt={2}
+      >
         <Button
           variant="outlined"
           onClick={handleCancelEdit}

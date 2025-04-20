@@ -12,17 +12,24 @@ import PublishContent from "./publish/PublishContent";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@/utils/useQuery";
-import { IKitVersion } from "@/types/index";
+import { IKitVersion, ILanguage } from "@/types/index";
 import QuestionnairesContent from "@components/kit-designer/questionnaires/QuestionnairesContent";
 import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "@components/kit-designer/answerRange/AnswerRangeContent";
 import QueryBatchData from "../common/QueryBatchData";
 import MeasuresContent from "./measures/MeasuresContent";
 import GeneralContent from "./general/GeneralContent";
+import {
+  setMainLanguage,
+  setTranslatedLanguage,
+  useKitLanguageContext,
+  kitActions,
+} from "@/providers/KitProvider";
 
 const KitDesignerContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const { service } = useServiceContext();
+  const { dispatch } = useKitLanguageContext();
   const { kitVersionId = "" } = useParams();
 
   const handleTabChange = (event: any, newValue: any) => {
@@ -66,6 +73,28 @@ const KitDesignerContainer = () => {
     <QueryBatchData
       queryBatchData={[kitVersionQuery]}
       render={([kitVersion]) => {
+        const fetchAssessmentKitInfoQuery = useQuery({
+          service: (args, config) =>
+            service.assessmentKit.info.getInfo(
+              args ?? { assessmentKitId: kitVersion.assessmentKit.id },
+              config,
+            ),
+          runOnMount: selectedTab !== 0,
+        });
+        const data = fetchAssessmentKitInfoQuery.data;
+        useEffect(() => {
+          if (data) {
+            const defaultTranslatedLanguage = data.languages?.find(
+              (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
+            );
+
+            console.log(data.mainLanguage);
+            dispatch(kitActions.setMainLanguage(data.mainLanguage));
+            dispatch(
+              kitActions.setTranslatedLanguage(defaultTranslatedLanguage),
+            );
+          }
+        }, [data]);
         return (
           <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
             <KitDesignerTitle kitVersion={kitVersion} />

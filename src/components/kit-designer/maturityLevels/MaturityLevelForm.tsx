@@ -1,7 +1,10 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
+import {
+  Box,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
@@ -9,6 +12,7 @@ import { styles } from "@/config/styles";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
+import { useKitLanguageContext } from "@/providers/KitProvider";
 
 interface MaturityLevelFormProps {
   newMaturityLevel: {
@@ -33,12 +37,32 @@ const MaturityLevelForm = ({
   handleCancel,
   setNewMaturityLevel,
 }: MaturityLevelFormProps) => {
-  const [showTitleTranslation, setShowTitleTranslation] = useState(
-    Boolean(newMaturityLevel.translations?.FA?.title),
-  );
-  const [showDescriptionTranslation, setShowDescriptionTranslation] = useState(
-    Boolean(newMaturityLevel.translations?.FA?.description),
-  );
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const [showTranslation, setShowTranslation] = useState({
+    title: !!newMaturityLevel.translations?.[langCode]?.title,
+    description: !!newMaturityLevel.translations?.[langCode]?.description,
+  });
+
+  const handleTranslationChange = (
+    field: "title" | "description",
+    value: string,
+  ) => {
+    if (!langCode) return;
+
+    const trimmed = value.trim();
+    setNewMaturityLevel((prev) => ({
+      ...prev,
+      translations: {
+        ...prev.translations,
+        [langCode]: {
+          ...prev.translations?.[langCode],
+          [field]: trimmed === "" ? undefined : trimmed,
+        },
+      },
+    }));
+  };
 
   return (
     <Box
@@ -46,114 +70,72 @@ const MaturityLevelForm = ({
       p={1.5}
       sx={{
         backgroundColor: "#F3F5F6",
-        borderRadius: "8px",
+        borderRadius: 2,
         border: "0.3px solid #73808c30",
         display: "flex",
-        flexDirection: "row",
         alignItems: "flex-start",
         gap: 2,
       }}
     >
-      {/* Number field */}
       <Box
         sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
         borderRadius="0.5rem"
       >
         <TextField
-          required
-          id="new-maturity"
           type="number"
           name="value"
+          required
           value={newMaturityLevel.value}
           onChange={handleInputChange}
-          variant="outlined"
           size="small"
           inputProps={{
             "data-testid": "value-id",
-            style: { textAlign: "center", width: "40px" },
+            style: { textAlign: "center", width: 40 },
           }}
           sx={{
-            fontSize: 14,
-            background: "#fff",
-            "& .MuiInputBase-root": {
-              fontSize: 14,
-            },
+            backgroundColor: "#fff",
+            "& .MuiInputBase-root": { fontSize: 14 },
           }}
         />
       </Box>
 
-      {/* Inputs */}
-      <Box
-        sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
-      >
-        <MultiLangTextField
-          label={<Trans i18nKey="title" />}
-          name="title"
-          value={newMaturityLevel.title}
-          onChange={handleInputChange}
-          inputProps={{
-            style: {
-              fontFamily: languageDetector(newMaturityLevel.title)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            },
-          }}
-          translationValue={newMaturityLevel.translations?.FA?.title}
-          onTranslationChange={(e) =>
-            setNewMaturityLevel((prev) => ({
-              ...prev,
-              translations: {
-                ...prev.translations,
-                FA: {
-                  ...prev.translations?.FA,
-                  title: e.target.value,
-                },
+      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+        {(["title", "description"] as const).map((field) => (
+          <MultiLangTextField
+            key={field}
+            name={field}
+            label={<Trans i18nKey={field} />}
+            value={newMaturityLevel[field]}
+            onChange={handleInputChange}
+            translationValue={newMaturityLevel.translations?.[langCode]?.[field] ?? ""}
+            onTranslationChange={(e) =>
+              handleTranslationChange(field, e.target.value)
+            }
+            showTranslation={showTranslation[field]}
+            setShowTranslation={(val) =>
+              setShowTranslation((prev) => ({
+                ...prev,
+                [field]: val,
+              }))
+            }
+            multiline={field === "description"}
+            minRows={field === "description" ? 2 : undefined}
+            maxRows={field === "description" ? 5 : undefined}
+            inputProps={{
+              style: {
+                fontFamily: languageDetector(newMaturityLevel[field])
+                  ? farsiFontFamily
+                  : primaryFontFamily,
               },
-            }))
-          }
-          showTranslation={showTitleTranslation}
-          setShowTranslation={setShowTitleTranslation}
-        />
-
-        <MultiLangTextField
-          label={<Trans i18nKey="description" />}
-          name="description"
-          value={newMaturityLevel.description}
-          onChange={handleInputChange}
-          multiline
-          minRows={2}
-          maxRows={5}
-          inputProps={{
-            style: {
-              fontFamily: languageDetector(newMaturityLevel.description)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            },
-          }}
-          translationValue={newMaturityLevel.translations?.FA?.description}
-          onTranslationChange={(e) =>
-            setNewMaturityLevel((prev) => ({
-              ...prev,
-              translations: {
-                ...prev.translations,
-                FA: {
-                  ...prev.translations?.FA,
-                  description: e.target.value,
-                },
-              },
-            }))
-          }
-          showTranslation={showDescriptionTranslation}
-          setShowTranslation={setShowDescriptionTranslation}
-        />
+            }}
+          />
+        ))}
       </Box>
 
-      {/* Actions */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-start",
           alignItems: "center",
           gap: 1,
           mt: 0.5,

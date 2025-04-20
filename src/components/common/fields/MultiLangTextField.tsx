@@ -66,7 +66,7 @@ const MultiLangTextField = ({
         isEditable
         field={{
           name,
-          value: val ?? "",
+          value: val,
           onChange: (v: string) =>
             handleChange?.({ target: { name, value: v } } as any),
           onBlur: () => {},
@@ -81,7 +81,7 @@ const MultiLangTextField = ({
       <TextField
         {...rest}
         name={name}
-        value={val ?? ""}
+        value={val}
         onChange={handleChange}
         label={labelText}
         inputProps={{

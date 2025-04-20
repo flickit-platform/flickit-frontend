@@ -140,6 +140,11 @@ const buttons = {
     height: { xs: "46px", sm: "100px" },
     zIndex: 1,
   }),
+  fixedIconButtonStyle: style({
+    width: "2rem",
+    height: "2rem",
+    flexShrink: 0,
+  }),
 };
 
 const box = {

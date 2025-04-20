@@ -3,6 +3,7 @@ import MaturityLevelList from "../MaturityLevelList";
 import { IMaturityLevel } from "@/types/index";
 import { vi } from "vitest";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 // Mock data for maturity levels
 const mockMaturityLevels: IMaturityLevel[] = [
@@ -12,7 +13,7 @@ const mockMaturityLevels: IMaturityLevel[] = [
     description: "Description 1",
     value: 1,
     index: 1,
-    translations: { FA: { title: "فارسی", description: "فارسی" } },
+    translations: { FA: { title: "fa", description: "fa" } },
   },
   { id: 2, title: "Level 2", description: "Description 2", value: 2, index: 2 },
 ];
@@ -25,12 +26,14 @@ const mockOnReorder = vi.fn();
 describe("MaturityLevelList", () => {
   it("renders maturity levels correctly", () => {
     render(
-      <MaturityLevelList
-        maturityLevels={mockMaturityLevels}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <MaturityLevelList
+          maturityLevels={mockMaturityLevels}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
 
     expect(screen.getByText("Level 1")).toBeInTheDocument();
@@ -39,12 +42,14 @@ describe("MaturityLevelList", () => {
 
   it("allows editing a maturity level", () => {
     render(
-      <MaturityLevelList
-        maturityLevels={mockMaturityLevels}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <MaturityLevelList
+          maturityLevels={mockMaturityLevels}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
 
     // Click edit button for Level 1
@@ -68,14 +73,13 @@ describe("MaturityLevelList", () => {
       value: 1,
       title: "Updated Level 1",
       description: "Updated Description 1",
-      translations: { FA: { title: "فارسی", description: "فارسی" } },
+      translations: undefined,
     });
   });
 
   it("allows deleting a maturity level", () => {
-    // Render the list and delete confirmation dialog together
     render(
-      <>
+      <KitLanguageProvider>
         <MaturityLevelList
           maturityLevels={mockMaturityLevels}
           onEdit={mockOnEdit}
@@ -89,7 +93,7 @@ describe("MaturityLevelList", () => {
           title="Warning"
           content="Are you sure you want to delete this maturity level?"
         />
-      </>,
+      </KitLanguageProvider>,
     );
 
     // Click delete button for Level 1
