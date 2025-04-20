@@ -6,92 +6,85 @@ import userEvent from "@testing-library/user-event";
 import AttributeForm from "@components/kit-designer/attributes/AttributeForm";
 
 describe("AttributeForm", () => {
-    const newAttributeForm = {
-        title: "Test attribute title",
-        description: "Test attribute description",
-        weight:3,
-        index: 1,
-        value: 5,
-    };
+  const newAttributeForm = {
+    title: "Test attribute title",
+    description: "Test attribute description",
+    weight: 3,
+    index: 1,
+    value: 5,
+  };
 
+  const handleInputChange = vi.fn();
+  const handleSave = vi.fn();
+  const handleCancel = vi.fn();
 
+  const renderForm = () =>
+    render(
+      <I18nextProvider i18n={i18n}>
+        <AttributeForm
+          newAttribute={newAttributeForm}
+          handleCancel={handleCancel}
+          handleSave={handleSave}
+          handleInputChange={handleInputChange}
+        />
+      </I18nextProvider>,
+    );
 
-    const handleInputChange = vi.fn();
-    const handleSave = vi.fn();
-    const handleCancel = vi.fn();
+  it("renders with initial values", async () => {
+    renderForm();
+    let titleInput: any = screen.getByTestId("title-id");
+    let descriptionInput: any = screen.getByTestId("description-id");
+    let weightInput: any = screen.getByTestId("weight-id");
 
-    const renderForm = () =>
-        render(
-            <I18nextProvider i18n={i18n}>
-                <AttributeForm
-                    newAttribute={newAttributeForm}
-                    handleCancel={handleCancel}
-                    handleSave={handleSave}
-                    handleInputChange={handleInputChange}
-                />
-            </I18nextProvider>
-        );
+    expect(titleInput).toBeInTheDocument();
+    expect(titleInput).toHaveValue("Test attribute title");
 
+    expect(descriptionInput).toBeInTheDocument();
+    expect(descriptionInput).toHaveValue("Test attribute description");
 
+    expect(weightInput).toBeInTheDocument();
+    expect(weightInput).toHaveValue(3);
+  });
 
-    it("renders with initial values", async () => {
-        renderForm();
-        let titleInput : any = screen.getByTestId("attribute-from-title");
-        let descriptionInput : any = screen.getByTestId("attribute-from-description");
-        let weightInput : any = screen.getByTestId("attribute-from-weight");
+  it("calls handleSave when clicking the save button", async () => {
+    renderForm();
 
-        expect(titleInput).toBeInTheDocument();
-        expect(titleInput).toHaveValue("Test attribute title");
+    const saveButton = screen.getByTestId("attribute-save-icon");
+    expect(saveButton).toBeInTheDocument();
+    await userEvent.click(saveButton);
 
-        expect(descriptionInput).toBeInTheDocument();
-        expect(descriptionInput).toHaveValue("Test attribute description");
+    expect(handleSave).toHaveBeenCalled();
+  });
 
-        expect(weightInput).toBeInTheDocument();
-        expect(weightInput).toHaveValue(3);
+  it("calls handleCancel when clicking the cancel button", async () => {
+    renderForm();
 
+    const cancelButton = screen.getByTestId("attribute-close-icon");
+    expect(cancelButton).toBeInTheDocument();
+    await userEvent.click(cancelButton);
+
+    expect(handleCancel).toHaveBeenCalled();
+  });
+
+  it("calls handel change when clicking the edit button", async () => {
+    await renderForm();
+
+    fireEvent.change(screen.getByTestId("title-id"), {
+      target: { value: "Updated Test attribute title" },
     });
 
-    it("calls handleSave when clicking the save button", async () => {
-        renderForm();
-
-        const saveButton = screen.getByTestId("attribute-save-icon");
-        expect(saveButton).toBeInTheDocument()
-        await userEvent.click(saveButton);
-
-        expect(handleSave).toHaveBeenCalled();
+    fireEvent.change(screen.getByTestId("description-id"), {
+      target: { value: "Updated Test attribute description" },
     });
 
-    it("calls handleCancel when clicking the cancel button", async () => {
-        renderForm();
-
-        const cancelButton =  screen.getByTestId("attribute-close-icon");
-        expect(cancelButton).toBeInTheDocument()
-        await userEvent.click(cancelButton);
-
-        expect(handleCancel).toHaveBeenCalled();
+    fireEvent.change(screen.getByTestId("weight-id"), {
+      target: { value: "Updated Test attribute weight" },
     });
 
-    it("calls handel change when clicking the edit button", async () => {
+    const saveButton = screen.getByTestId("attribute-save-icon");
+    fireEvent.click(saveButton);
 
-       await  renderForm();
-
-       fireEvent.change(screen.getByTestId("attribute-from-title") ,{
-            target: { value: "Updated Test attribute title" },
-        })
-
-        fireEvent.change(screen.getByTestId("attribute-from-description") ,{
-            target: { value: "Updated Test attribute description" },
-        })
-
-        fireEvent.change(screen.getByTestId("attribute-from-weight") ,{
-            target: { value: "Updated Test attribute weight" },
-        })
-
-        const saveButton = screen.getByTestId("attribute-save-icon");
-         fireEvent.click(saveButton);
-
-        expect(handleInputChange).toHaveBeenCalled()
-        expect(handleInputChange).toHaveBeenCalledTimes(3)
-
-    });
+    expect(handleInputChange).toHaveBeenCalled();
+    expect(handleInputChange).toHaveBeenCalledTimes(3);
+  });
 });

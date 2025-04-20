@@ -63,7 +63,7 @@ const OptionForm = ({
         fullWidth
         inputProps={{
           style: {fontFamily: languageDetector(newItem.title) ? farsiFontFamily : primaryFontFamily },
-          "data-testid": "questionnaires-title",
+          "data-testid": "title-id",
         }}
         margin="normal"
         sx={{
@@ -89,7 +89,7 @@ const OptionForm = ({
         onChange={handleInputChange}
         fullWidth
         inputProps={{
-          "data-testid": "questionnaires-title",
+          "data-testid": "title-id",
         }}
         margin="normal"
         sx={{
@@ -128,7 +128,7 @@ const OptionForm = ({
         <IconButton
           size="small"
           color="primary"
-          data-testid="questionnaires-check-icon"
+          data-testid="check-icon-id"
           onClick={handleSave}
         >
           <CheckIcon />
@@ -136,7 +136,7 @@ const OptionForm = ({
         <IconButton
           size="small"
           color="secondary"
-          data-testid="questionnaires-close-icon"
+          data-testid="close-icon-id"
           onClick={handleCancel}
         >
           <CloseIcon />

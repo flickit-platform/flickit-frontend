@@ -7,9 +7,9 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import {KitDesignListItems, MultiLangs, TId} from "@/types/index";
+import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -59,7 +59,8 @@ const ListOfItems = ({
   setChangeData,
 }: ListOfItemsProps) => {
   const postOptionsKit = useQuery({
-    service: (args, config) => service.kitVersions.answerOptions.createRangeOption(args, config),
+    service: (args, config) =>
+      service.kitVersions.answerOptions.createRangeOption(args, config),
     runOnMount: false,
   });
 
@@ -69,7 +70,7 @@ const ListOfItems = ({
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
     title: "",
-    translations: null
+    translations: null,
   });
   const [newOptions, setNewOptions] = useState({
     title: "",
@@ -88,7 +89,7 @@ const ListOfItems = ({
     setEditMode(Number(item.id));
     setTempValues({
       title: item.title,
-      translations: item.translations
+      translations: item.translations,
     });
   };
 
@@ -97,7 +98,7 @@ const ListOfItems = ({
     onEdit({
       ...item,
       title: tempValues.title,
-      translations: tempValues.translations
+      translations: tempValues.translations,
     });
     setEditMode(null);
   };
@@ -290,39 +291,44 @@ const ListOfItems = ({
                     }}
                   >
                     {editMode === item.id ? (
-                        <MultiLangTextField
-                            name="title"
-                            value={tempValues.title}
-                            onChange={(e) => handelChange(e)}
-                            inputProps={{
-                              "data-testid": "items-title",
-                              style: {
-                                fontFamily: languageDetector(tempValues.title)
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
+                      <MultiLangTextField
+                        name="title"
+                        value={tempValues.title}
+                        onChange={(e) => handelChange(e)}
+                        inputProps={{
+                          style: {
+                            fontFamily: languageDetector(tempValues.title)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          },
+                        }}
+                        translationValue={
+                          tempValues.translations?.FA?.title ?? ""
+                        }
+                        onTranslationChange={(e) =>
+                          setTempValues((prev) => ({
+                            ...prev,
+                            translations: {
+                              ...prev.translations,
+                              FA: {
+                                ...prev.translations?.FA,
+                                title: e.target.value,
                               },
-                            }}
-                            translationValue={
-                                tempValues.translations?.FA?.title ?? ""
-                            }
-                            onTranslationChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  translations: {
-                                    ...prev.translations,
-                                    FA: {
-                                      ...prev.translations?.FA,
-                                      title: e.target.value,
-                                    },
-                                  },
-                                }))
-                            }
-                            label={<Trans i18nKey="title" />}
-                        />
+                            },
+                          }))
+                        }
+                        label={<Trans i18nKey="title" />}
+                      />
                     ) : (
                       <Typography
                         variant="h6"
-                        sx={{ flexGrow: 1, width: "40%",  fontFamily: languageDetector(item.title)? farsiFontFamily : primaryFontFamily }}
+                        sx={{
+                          flexGrow: 1,
+                          width: "40%",
+                          fontFamily: languageDetector(item.title)
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        }}
                       >
                         {item.title}
                       </Typography>
@@ -352,7 +358,7 @@ const ListOfItems = ({
                           onClick={(e) => handleSaveClick(e, item)}
                           sx={{ mx: 1 }}
                           color="success"
-                          data-testid="items-check-icon"
+                          data-testid="check-icon-id"
                         >
                           <CheckRoundedIcon fontSize="small" />
                         </IconButton>
@@ -372,7 +378,7 @@ const ListOfItems = ({
                           onClick={(e) => handleEditClick(e, item)}
                           sx={{ mx: 1 }}
                           color={item.questionsCount == 0 ? "error" : "success"}
-                          data-testid="items-edit-icon"
+                          data-testid="edit-icon-id"
                         >
                           <EditRoundedIcon fontSize="small" />
                         </IconButton>
@@ -382,7 +388,7 @@ const ListOfItems = ({
                             onClick={() => onDelete(item.id)}
                             sx={{ mx: 1 }}
                             color="secondary"
-                            data-testid="items-delete-icon"
+                            data-testid="delete-icon-id"
                           >
                             <DeleteRoundedIcon fontSize="small" />
                           </IconButton>
@@ -435,6 +441,7 @@ const ListOfItems = ({
                   >
                     <Trans i18nKey={"value"} />
                   </Box>
+                  
                 </Box>
               )}
               <Divider />

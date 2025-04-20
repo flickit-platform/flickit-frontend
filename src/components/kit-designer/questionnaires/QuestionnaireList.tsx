@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, { ChangeEvent, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -9,9 +9,9 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
-import {KitDesignListItems, MultiLangs, TId} from "@/types/index";
+import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
 import Accordion from "@mui/material/Accordion";
@@ -62,11 +62,13 @@ const ListOfItems = ({
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
   const fetchQuestionListKit = useQuery({
-    service: (args, config) => service.kitVersions.questionnaires.getQuestions(args, config),
+    service: (args, config) =>
+      service.kitVersions.questionnaires.getQuestions(args, config),
     runOnMount: false,
   });
   const postQuestionsKit = useQuery({
-    service: (args, config) => service.kitVersions.questions.create(args, config),
+    service: (args, config) =>
+      service.kitVersions.questions.create(args, config),
     runOnMount: false,
   });
 
@@ -117,7 +119,7 @@ const ListOfItems = ({
       title: tempValues.title,
       description: tempValues.description,
       weight: tempValues?.weight,
-      translations: tempValues?.translations
+      translations: tempValues?.translations,
     });
     setEditMode(null);
   };
@@ -125,7 +127,13 @@ const ListOfItems = ({
   const handleCancelClick = (e: any) => {
     e.stopPropagation();
     setEditMode(null);
-    setTempValues({ title: "", description: "", translations: null, weight: 0, question: 0 });
+    setTempValues({
+      title: "",
+      description: "",
+      translations: null,
+      weight: 0,
+      question: 0,
+    });
   };
 
   const handelChange = (e: any) => {
@@ -382,62 +390,71 @@ const ListOfItems = ({
                             </IconButton>
                           </Box>
                           <Box
-                              sx={{
-                                flexGrow: 1,
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: 2,
-                              }}
+                            sx={{
+                              flexGrow: 1,
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                            }}
                           >
                             <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "flex-start",
-                                  justifyContent: "space-between",
-                                  flexDirection: isRTL ? "row-reverse" : "row",
-                                  gap: 1,
-                                }}
+                              sx={{
+                                display: "flex",
+                                alignItems: "flex-start",
+                                justifyContent: "space-between",
+                                flexDirection: isRTL ? "row-reverse" : "row",
+                                gap: 1,
+                              }}
                             >
-                            <Box sx={{ flexGrow: 1 }}>
-                              {editMode === item.id ? (
+                              <Box sx={{ flexGrow: 1 }}>
+                                {editMode === item.id ? (
                                   <MultiLangTextField
-                                      name="title"
-                                      value={tempValues.title}
-                                      onChange={(e: ChangeEvent<HTMLInputElement>) =>handelChange(e)}
-                                      inputProps={{
-                                        "data-testid": "items-title",
-                                        style: {
-                                          fontFamily: languageDetector(tempValues.title)
-                                              ? farsiFontFamily
-                                              : primaryFontFamily,
+                                    name="title"
+                                    value={tempValues.title}
+                                    onChange={(
+                                      e: ChangeEvent<HTMLInputElement>,
+                                    ) => handelChange(e)}
+                                    inputProps={{
+                                      style: {
+                                        fontFamily: languageDetector(
+                                          tempValues.title,
+                                        )
+                                          ? farsiFontFamily
+                                          : primaryFontFamily,
+                                      },
+                                    }}
+                                    translationValue={
+                                      tempValues.translations?.FA?.title ?? ""
+                                    }
+                                    onTranslationChange={(e) =>
+                                      setTempValues((prev) => ({
+                                        ...prev,
+                                        translations: {
+                                          ...prev.translations,
+                                          FA: {
+                                            ...prev.translations?.FA,
+                                            title: e.target.value,
+                                          },
                                         },
-                                      }}
-                                      translationValue={
-                                          tempValues.translations?.FA?.title ?? ""
-                                      }
-                                      onTranslationChange={(e) =>
-                                          setTempValues((prev) => ({
-                                            ...prev,
-                                            translations: {
-                                              ...prev.translations,
-                                              FA: {
-                                                ...prev.translations?.FA,
-                                                title: e.target.value,
-                                              },
-                                            },
-                                          }))
-                                      }
-                                      label={<Trans i18nKey="title" />}
+                                      }))
+                                    }
+                                    label={<Trans i18nKey="title" />}
                                   />
-                              ) : (
-                                <Typography
-                                  variant="h6"
-                                  sx={{ flexGrow: 1, width: "80%", fontFamily: languageDetector(item.title) ? farsiFontFamily : primaryFontFamily }}
-                                >
-                                  {item.title}
-                                </Typography>
-                              )}
-                            </Box>
+                                ) : (
+                                  <Typography
+                                    variant="h6"
+                                    sx={{
+                                      flexGrow: 1,
+                                      width: "80%",
+                                      fontFamily: languageDetector(item.title)
+                                        ? farsiFontFamily
+                                        : primaryFontFamily,
+                                    }}
+                                  >
+                                    {item.title}
+                                  </Typography>
+                                )}
+                              </Box>
                               {/* Icons (Edit/Delete or Check/Close) */}
                               {editMode === item.id ? (
                                 <Box
@@ -512,50 +529,54 @@ const ListOfItems = ({
                               }}
                             >
                               {editMode === item.id ? (
-                                  <MultiLangTextField
-                                      name="description"
-                                      value={tempValues.description}
-                                      onChange={(e) =>
-                                          setTempValues((prev) => ({
-                                            ...prev,
-                                            description: e.target.value,
-                                          }))
-                                      }
-                                      inputProps={{
-                                        "data-testid": "items-description",
-                                        style: {
-                                          fontFamily: languageDetector(
-                                              tempValues.description,
-                                          )
-                                              ? farsiFontFamily
-                                              : primaryFontFamily,
+                                <MultiLangTextField
+                                  name="description"
+                                  value={tempValues.description}
+                                  onChange={(e) =>
+                                    setTempValues((prev) => ({
+                                      ...prev,
+                                      description: e.target.value,
+                                    }))
+                                  }
+                                  inputProps={{
+                                    style: {
+                                      fontFamily: languageDetector(
+                                        tempValues.description,
+                                      )
+                                        ? farsiFontFamily
+                                        : primaryFontFamily,
+                                    },
+                                  }}
+                                  translationValue={
+                                    tempValues.translations?.FA?.description ??
+                                    ""
+                                  }
+                                  onTranslationChange={(e) =>
+                                    setTempValues((prev) => ({
+                                      ...prev,
+                                      translations: {
+                                        ...prev.translations,
+                                        FA: {
+                                          ...prev.translations?.FA,
+                                          description: e.target.value,
                                         },
-                                      }}
-                                      translationValue={
-                                          tempValues.translations?.FA?.description ?? ""
-                                      }
-                                      onTranslationChange={(e) =>
-                                          setTempValues((prev) => ({
-                                            ...prev,
-                                            translations: {
-                                              ...prev.translations,
-                                              FA: {
-                                                ...prev.translations?.FA,
-                                                description: e.target.value,
-                                              },
-                                            },
-                                          }))
-                                      }
-                                      label={<Trans i18nKey="description" />}
-                                      multiline
-                                      minRows={2}
-                                      maxRows={5}
-                                  />
+                                      },
+                                    }))
+                                  }
+                                  label={<Trans i18nKey="description" />}
+                                  multiline
+                                  minRows={2}
+                                  maxRows={5}
+                                />
                               ) : (
                                 <Typography
                                   sx={{
                                     wordBreak: "break-word",
-                                    fontFamily: languageDetector(item.description) ? farsiFontFamily : primaryFontFamily,
+                                    fontFamily: languageDetector(
+                                      item.description,
+                                    )
+                                      ? farsiFontFamily
+                                      : primaryFontFamily,
                                     width: "80%",
                                   }}
                                   variant="body2"

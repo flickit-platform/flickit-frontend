@@ -165,7 +165,6 @@ const MaturityLevelList = ({
                                 }))
                               }
                               inputProps={{
-                                "data-testid": "maturity-level-title",
                                 style: {
                                   fontFamily: languageDetector(tempValues.title)
                                     ? farsiFontFamily
@@ -210,7 +209,7 @@ const MaturityLevelList = ({
                                 size="small"
                                 onClick={() => handleSaveClick(item)}
                                 color="success"
-                                data-testid="maturity-level-check-icon"
+                                data-testid="check-icon-id"
                               >
                                 <CheckRoundedIcon fontSize="small" />
                               </IconButton>
@@ -218,7 +217,7 @@ const MaturityLevelList = ({
                                 size="small"
                                 onClick={handleCancelClick}
                                 color="secondary"
-                                data-testid="maturity-level-close-icon"
+                                data-testid="close-icon-id"
                               >
                                 <CloseRoundedIcon fontSize="small" />
                               </IconButton>
@@ -229,7 +228,7 @@ const MaturityLevelList = ({
                                 size="small"
                                 onClick={() => handleEditClick(item)}
                                 color="success"
-                                data-testid="maturity-level-edit-icon"
+                                data-testid="edit-icon-id"
                               >
                                 <EditRoundedIcon fontSize="small" />
                               </IconButton>
@@ -242,7 +241,7 @@ const MaturityLevelList = ({
                                   })
                                 }
                                 color="secondary"
-                                data-testid="maturity-level-delete-icon"
+                                data-testid="delete-icon-id"
                               >
                                 <DeleteRoundedIcon fontSize="small" />
                               </IconButton>
@@ -263,7 +262,6 @@ const MaturityLevelList = ({
                             }))
                           }
                           inputProps={{
-                            "data-testid": "maturity-level-description",
                             style: {
                               fontFamily: languageDetector(
                                 tempValues.description,

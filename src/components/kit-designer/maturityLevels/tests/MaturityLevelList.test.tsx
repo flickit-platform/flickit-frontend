@@ -48,18 +48,18 @@ describe("MaturityLevelList", () => {
     );
 
     // Click edit button for Level 1
-    fireEvent.click(screen.getAllByTestId("maturity-level-edit-icon")[0]);
+    fireEvent.click(screen.getAllByTestId("edit-icon-id")[0]);
 
     // Change title and description
-    fireEvent.change(screen.getByTestId("maturity-level-title"), {
+    fireEvent.change(screen.getByTestId("title-id"), {
       target: { value: "Updated Level 1" },
     });
-    fireEvent.change(screen.getByTestId("maturity-level-description"), {
+    fireEvent.change(screen.getByTestId("description-id"), {
       target: { value: "Updated Description 1" },
     });
 
     // Save the changes
-    fireEvent.click(screen.getByTestId("maturity-level-check-icon"));
+    fireEvent.click(screen.getByTestId("check-icon-id"));
 
     // Check if onEdit was called with the updated values
     expect(mockOnEdit).toHaveBeenCalledWith({
@@ -93,7 +93,7 @@ describe("MaturityLevelList", () => {
     );
 
     // Click delete button for Level 1
-    fireEvent.click(screen.getAllByTestId("maturity-level-delete-icon")[0]);
+    fireEvent.click(screen.getAllByTestId("delete-icon-id")[0]);
 
     // Confirm delete action
     fireEvent.click(screen.getByTestId("submit"));

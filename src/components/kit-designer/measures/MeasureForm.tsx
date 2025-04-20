@@ -67,7 +67,7 @@ const MeasureForm = ({
         onChange={handleInputChange}
         size="small"
         inputProps={{
-          "data-testid": "measure-value",
+          "data-testid": "value-id",
           style: { textAlign: "center", width: "40px" },
         }}
         sx={sharedTextFieldSx}
@@ -85,7 +85,7 @@ const MeasureForm = ({
         fullWidth
         margin="normal"
         inputProps={{
-          "data-testid": "measure-title",
+          "data-testid": "title-id",
           style: {
             fontFamily: languageDetector(newMeasure.title)
               ? farsiFontFamily
@@ -114,7 +114,7 @@ const MeasureForm = ({
         minRows={2}
         maxRows={5}
         inputProps={{
-          "data-testid": "measure-description",
+          "data-testid": "description-id",
           style: {
             fontFamily: languageDetector(newMeasure.description)
               ? farsiFontFamily
@@ -135,7 +135,7 @@ const MeasureForm = ({
     {/* Action buttons + weight */}
     <Box display="flex" alignItems="center" flexDirection="column" gap="20px">
       <Link
-        href="#Measure-header"
+        href="#header"
         sx={{
           textDecoration: "none",
           opacity: 0.9,
@@ -148,7 +148,7 @@ const MeasureForm = ({
         <IconButton
           size="small"
           color="primary"
-          data-testid="measure-check-icon"
+          data-testid="check-icon-id"
           onClick={handleSave}
         >
           <CheckIcon />
@@ -156,7 +156,7 @@ const MeasureForm = ({
         <IconButton
           size="small"
           color="secondary"
-          data-testid="measure-close-icon"
+          data-testid="close-icon-id"
           onClick={handleCancel}
         >
           <CloseIcon />

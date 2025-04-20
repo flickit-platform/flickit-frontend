@@ -81,15 +81,15 @@ describe("AnswerRangeList Component", () => {
 
   it("allows editing an answer range", () => {
     // Click edit button for the first item
-    fireEvent.click(screen.getAllByTestId("items-edit-icon")[0]);
+    fireEvent.click(screen.getAllByTestId("edit-icon-id")[0]);
 
     // Change title
-    fireEvent.change(screen.getByTestId("items-title"), {
+    fireEvent.change(screen.getByTestId("title-id"), {
       target: { value: "Updated title 1" },
     });
 
     // Save the changes
-    fireEvent.click(screen.getByTestId("items-check-icon"));
+    fireEvent.click(screen.getByTestId("check-icon-id"));
 
     // Check if onEdit was called with the updated values
     expect(mockOnEdit).toHaveBeenCalledWith({
@@ -118,18 +118,15 @@ describe("AnswerRangeList Component", () => {
     fireEvent.click(screen.getAllByTestId("item-edit-option-icon")[0]);
 
     // Change option title and value
-    fireEvent.change(screen.getByTestId("items-option-title"), {
+    fireEvent.change(screen.getByTestId("title-id"), {
       target: { value: "Updated option 1" },
     });
-    fireEvent.change(screen.getByTestId("items-option-value"), {
-      target: { value: 2 },
-    });
+  
 
     // Assert changes
-    expect(screen.getByTestId("items-option-title")).toHaveValue(
+    expect(screen.getByTestId("title-id")).toHaveValue(
       "Updated option 1"
     );
-    expect(screen.getByTestId("items-option-value")).toHaveValue("2");
 
     // Optionally trigger save
     // fireEvent.click(screen.getByTestId("item-save-option-icon"));

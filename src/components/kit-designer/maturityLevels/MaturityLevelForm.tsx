@@ -69,7 +69,7 @@ const MaturityLevelForm = ({
           variant="outlined"
           size="small"
           inputProps={{
-            "data-testid": "maturity-level-value",
+            "data-testid": "value-id",
             style: { textAlign: "center", width: "40px" },
           }}
           sx={{
@@ -92,7 +92,6 @@ const MaturityLevelForm = ({
           value={newMaturityLevel.title}
           onChange={handleInputChange}
           inputProps={{
-            "data-testid": "maturity-level-title",
             style: {
               fontFamily: languageDetector(newMaturityLevel.title)
                 ? farsiFontFamily
@@ -125,7 +124,6 @@ const MaturityLevelForm = ({
           minRows={2}
           maxRows={5}
           inputProps={{
-            "data-testid": "maturity-level-description",
             style: {
               fontFamily: languageDetector(newMaturityLevel.description)
                 ? farsiFontFamily
@@ -165,7 +163,7 @@ const MaturityLevelForm = ({
           size="small"
           color="primary"
           onClick={handleSave}
-          data-testid="maturity-level-check-icon"
+          data-testid="check-icon-id"
         >
           <CheckIcon />
         </IconButton>
@@ -173,7 +171,7 @@ const MaturityLevelForm = ({
           size="small"
           color="secondary"
           onClick={handleCancel}
-          data-testid="maturity-level-close-icon"
+          data-testid="close-icon-id"
         >
           <CloseIcon />
         </IconButton>

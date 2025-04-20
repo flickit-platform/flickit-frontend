@@ -33,8 +33,8 @@ describe("ListOfItems (subject)", () => {
       getTitle: () => screen.getByText("title test 1"),
       getEditButton: () => screen.getAllByTestId("items-edit-icon")[0],
       getDeleteButton: () => screen.getAllByTestId("items-delete-icon")[0],
-      getTitleInput: () => screen.getByTestId("items-title"),
-      getDescriptionInput: () => screen.getByTestId("items-description"),
+      getTitleInput: () => screen.getByTestId("title-id"),
+      getDescriptionInput: () => screen.getByTestId("description-id"),
       getSubmitButton: () => screen.getByTestId("items-check-icon"),
     };
   };

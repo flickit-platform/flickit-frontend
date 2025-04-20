@@ -31,11 +31,11 @@ describe("MeasureForm", () => {
     );
 
     return {
-      titleInput: screen.getByTestId("measure-title"),
-      descriptionInput: screen.getByTestId("measure-description"),
-      valueInput: screen.getByTestId("measure-value"),
-      saveButton: screen.getByTestId("measure-check-icon"),
-      cancelButton: screen.getByTestId("measure-close-icon"),
+      titleInput: screen.getByTestId("title-id"),
+      descriptionInput: screen.getByTestId("description-id"),
+      valueInput: screen.getByTestId("value-id"),
+      saveButton: screen.getByTestId("check-icon-id"),
+      cancelButton: screen.getByTestId("close-icon-id"),
     };
   };
 

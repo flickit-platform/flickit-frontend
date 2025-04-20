@@ -17,6 +17,7 @@ import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
+import toastError from "@/utils/toastError";
 
 type TranslationFields = "title" | "summary" | "about";
 
@@ -109,8 +110,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           FA: {
             ...prev.translations.FA,
             [field]:
-              fetchAssessmentKitInfoQuery.data?.translations?.FA?.[field] ||
-              undefined,
+              fetchAssessmentKitInfoQuery.data?.translations?.FA?.[field],
           },
         },
       }));
@@ -127,6 +127,9 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       .then(() => {
         fetchAssessmentKitInfoQuery.query();
         setEditableFields(new Set());
+      })
+      .catch((e) => {
+        toastError(e);
       });
   }, [kitVersion.assessmentKit.id, updatedValues]);
 
@@ -181,13 +184,18 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   }, [fetchAssessmentKitInfoQuery.data]);
 
   const renderEditableField = useCallback(
-    (field: TranslationFields, value: string, multiline = false) => {
+    (
+      field: TranslationFields,
+      value: string,
+      multiline = false,
+      useRichEditor = false,
+    ) => {
       if (editableFields.has(field)) {
         return (
           <Box sx={{ flexGrow: 1 }}>
             <MultiLangTextField
               name={field}
-              value={updatedValues[field] || ""}
+              value={updatedValues[field]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setUpdatedValues((prev) => ({
                   ...prev,
@@ -198,12 +206,18 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               translationValue={updatedValues.translations.FA?.[field]}
               onTranslationChange={(e: {
                 target: { value: string | undefined };
-              }) => handleTranslationChange(field, e.target.value)}
+              }) =>
+                handleTranslationChange(
+                  field,
+                  e.target.value === "" ? undefined : e.target.value,
+                )
+              }
               showTranslation={showTranslations[field]}
               setShowTranslation={() => toggleTranslation(field)}
               fullWidth
               multiline={multiline}
               minRows={multiline ? 3 : undefined}
+              useRichEditor={useRichEditor}
             />
           </Box>
         );
@@ -214,12 +228,20 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             <Typography
               sx={{ flexGrow: 1, mb: 0 }}
               textAlign="justify"
-              dangerouslySetInnerHTML={{ __html: value || "" }}
+              dangerouslySetInnerHTML={{ __html: value }}
             />
           ) : (
             <Typography sx={{ flexGrow: 1 }}>{value}</Typography>
           )}
-          <IconButton onClick={() => handleFieldEdit(field)}>
+          <IconButton
+            onClick={() => handleFieldEdit(field)}
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              p: 0,
+            }}
+          >
             <EditIcon />
           </IconButton>
         </>
@@ -300,22 +322,37 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               </Box>
 
               {/* About field */}
-              <Box sx={{ ...styles.centerV, width: "100%" }} gap={1}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: !editableFields.has("about")
+                    ? "center"
+                    : "flex-start",
+                  width: "100%",
+                }}
+                gap={1}
+              >
                 <Typography variant="semiBoldLarge">
                   <Trans i18nKey="about" />:
                 </Typography>
-                {renderEditableField("about", data.about, true)}
+                {renderEditableField("about", data.about, true, true)}
               </Box>
             </Stack>
           )}
         />
       </PermissionControl>
 
-      <Box display="flex" justifyContent="end" alignItems="center" gap={2}>
+      <Box
+        display="flex"
+        justifyContent="end"
+        alignItems="center"
+        gap={2}
+        mt={2}
+      >
         <Button
           variant="outlined"
           onClick={handleCancelEdit}
-          disabled={updateKitInfoQuery.loading}
+          disabled={updateKitInfoQuery.loading || editableFields.size === 0}
         >
           <Trans i18nKey="cancel" />
         </Button>

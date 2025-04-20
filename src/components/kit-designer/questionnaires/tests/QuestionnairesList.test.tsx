@@ -38,10 +38,10 @@ describe("questionnairesList", () => {
     fireEvent.click(screen.getAllByTestId("items-edit-icon")[0]);
 
     // Change title and description
-    fireEvent.change(screen.getByTestId("items-title"), {
+    fireEvent.change(screen.getByTestId("title-id"), {
       target: { value: "Updated title 1" },
     });
-    fireEvent.change(screen.getByTestId("items-description"), {
+    fireEvent.change(screen.getByTestId("description-id"), {
       target: { value: "Updated Description 1" },
     });
 
