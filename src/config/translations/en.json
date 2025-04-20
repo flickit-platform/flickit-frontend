@@ -497,7 +497,7 @@
   "questionPlaceholder": "Write the question here",
   "questions": "Questions",
   "questionsCount": "Questions",
-  "numberOfQuestions":  "Number of questions",
+  "numberOfQuestions": "Number of questions",
   "readAbout": "Read about",
   "recentSpaces": "Recent spaces",
   "recommendations": "Recommendations",
@@ -892,7 +892,7 @@
   "contactUsIntroText": "We’re here to help. If you didn’t find a kit that fits your needs, let us know what you're looking for...",
   "thankYouForYourMessage": "Thank you for your message!",
   "weWillGetBackToYouSoon": "We’ll get back to you as soon as possible.",
-  "contactUs":"Contact us",
+  "contactUs": "Contact us",
   "invalidEmail": "Please enter a valid email address.",
   "designedBy": "By",
   "createNewAssessment": "Create assessment",
@@ -930,10 +930,15 @@
     "guidance": "Guidance",
     "helpDescription": "This chart shows how much each measure contributes to a specific attribute. The length of each bar reflects its impact, and the sum of all bars equals 100%. The colors help visualize how much each measure has positively or negatively influenced the attribute. Hovering over a bar reveals the exact percentage of gained or missed score. This breakdown allows you to quickly identify strengths and opportunities for improvement within each area."
   },
-  "kitDesignerTab":{
+  "kitDesignerTab": {
     "measures": "Measures",
-    "measuresKitDesignerDescription":" To begin the assessment process, you first need to define the measures that will be used to evaluate each attribute.  Measures represent specific indicators, criteria, or actions that contribute to the overall performance of an attribute. Defining them clearly ensures a structured and meaningful evaluation.  By setting up your measures:  You establish a consistent basis for scoring You align the evaluation with organizational goals or standards You enable accurate analysis and visualization of performance impact Once defined, these measures will be used in subsequent visualizations to highlight strengths, weaknesses, and areas for improvement.  Please start by creating and organizing the measures relevant to your context.",
+    "measuresKitDesignerDescription": " To begin the assessment process, you first need to define the measures that will be used to evaluate each attribute.  Measures represent specific indicators, criteria, or actions that contribute to the overall performance of an attribute. Defining them clearly ensures a structured and meaningful evaluation.  By setting up your measures:  You establish a consistent basis for scoring You align the evaluation with organizational goals or standards You enable accurate analysis and visualization of performance impact Once defined, these measures will be used in subsequent visualizations to highlight strengths, weaknesses, and areas for improvement.  Please start by creating and organizing the measures relevant to your context.",
     "newMeasure": "New Measure",
-    "selectMeasure": "Select Measure"
+    "selectMeasure": "Select Measure",
+    "generalDescription": "Welcome to the Kit Designer. This section is your first step towards creating a software assessment kit. By completing the required information in this section, your kit will be created, and you can then proceed to customize the details of your kit, such as defining maturity levels, setting up subjects, creating questionnaires, and more.",
+    "mainLanguage": "Main language: {{lang}}",
+    "translatedLanguage": "Translated language: {{lang}}",
+    "availableLanguages": "Avaliable languages",
+    "addLanguage": "Add language"
   }
 }

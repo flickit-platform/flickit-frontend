@@ -18,6 +18,7 @@ import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "@components/kit-designer/answerRange/AnswerRangeContent";
 import QueryBatchData from "../common/QueryBatchData";
 import MeasuresContent from "./measures/MeasuresContent";
+import GeneralContent from "./general/GeneralContent";
 
 const KitDesignerContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -33,18 +34,19 @@ const KitDesignerContainer = () => {
     let currentHash = window.location.hash.replace("#", "");
 
     if (!currentHash || currentHash.startsWith("new")) {
-      window.location.hash = "Maturity-Levels";
+      window.location.hash = "General";
       setSelectedTab(0);
     }
 
     const tabEl = [
-      { title: "Maturity-Levels", index: 0 },
-      { title: "Subjects", index: 1 },
-      { title: "Attributes", index: 2 },
-      { title: "Answer-Ranges", index: 3 },
-      { title: "Measures", index: 4 },
-      { title: "Questionnaires", index: 5 },
-      { title: "Release", index: 6 },
+      { title: "General", index: 0 },
+      { title: "Maturity-Levels", index: 1 },
+      { title: "Subjects", index: 2 },
+      { title: "Attributes", index: 3 },
+      { title: "Answer-Ranges", index: 4 },
+      { title: "Measures", index: 5 },
+      { title: "Questionnaires", index: 6 },
+      { title: "Release", index: 7 },
     ];
 
     tabEl.forEach((item) => {
@@ -110,6 +112,17 @@ const KitDesignerContainer = () => {
                       },
                     }}
                   >
+                    <Tab
+                      sx={{
+                        alignItems: "flex-start",
+                        textTransform: "none",
+                      }}
+                      label={
+                        <Typography variant="semiBoldLarge">
+                          <Trans i18nKey="general" />
+                        </Typography>
+                      }
+                    />
                     <Tab
                       sx={{
                         alignItems: "flex-start",
@@ -196,13 +209,16 @@ const KitDesignerContainer = () => {
                   xs={12}
                   sx={{ height: "100%", padding: 3, background: "white" }}
                 >
-                  {selectedTab === 0 && <MaturityLevelsContent />}
-                  {selectedTab === 1 && <SubjectsContent />}
-                  {selectedTab === 2 && <AttributesContent />}
-                  {selectedTab === 3 && <AnaweRangeContent />}
-                  {selectedTab === 4 && <MeasuresContent />}
-                  {selectedTab === 5 && <QuestionnairesContent />}
-                  {selectedTab === 6 && (
+                  {selectedTab === 0 && (
+                    <GeneralContent kitVersion={kitVersion} />
+                  )}
+                  {selectedTab === 1 && <MaturityLevelsContent />}
+                  {selectedTab === 2 && <SubjectsContent />}
+                  {selectedTab === 3 && <AttributesContent />}
+                  {selectedTab === 4 && <AnaweRangeContent />}
+                  {selectedTab === 5 && <MeasuresContent />}
+                  {selectedTab === 6 && <QuestionnairesContent />}
+                  {selectedTab === 7 && (
                     <PublishContent kitVersion={kitVersion} />
                   )}
                 </Grid>

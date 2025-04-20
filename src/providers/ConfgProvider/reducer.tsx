@@ -3,13 +3,13 @@ import { ActionTypes } from "./actions";
 export interface AppState {
   appTitle: string;
   appLogoUrl: string;
-  languages: []
+  languages: any[];
 }
 
 export const initialState: AppState = {
   appTitle: "",
   appLogoUrl: "",
-  languages: []
+  languages: [],
 };
 
 const reducer = (state: AppState, action: any): AppState => {
