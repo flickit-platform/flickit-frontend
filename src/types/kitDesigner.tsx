@@ -10,7 +10,7 @@ export interface KitDesignListItems {
   description: string;
   weight?: number;
   questionsCount?: number;
-  translations?: MultiLangs | null;
+  translations?: any;
 }
 
 export interface IKitVersion {
