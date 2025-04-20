@@ -51,6 +51,7 @@ const SubjectsContent = () => {
     value: 1,
     id: null,
     weight: 1,
+    translations: null,
   });
 
   useEffect(() => {
@@ -87,6 +88,7 @@ const SubjectsContent = () => {
         title: newSubject.title,
         weight: newSubject.weight,
         description: newSubject.description,
+        translations: newSubject.translations,
       };
       if (newSubject.id) {
         await service.kitVersions.subjects.update({
@@ -108,6 +110,7 @@ const SubjectsContent = () => {
         description: "",
         index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
         value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+        translations: null,
         weight: 0,
         id: null,
       });
@@ -124,6 +127,7 @@ const SubjectsContent = () => {
       description: "",
       index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
       value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+      translations: null,
       weight: 0,
       id: null,
     });
@@ -138,6 +142,7 @@ const SubjectsContent = () => {
         title: subjectItem.title,
         weight: subjectItem.weight,
         description: subjectItem.description,
+        translations: subjectItem.translations
       };
       await updateKitSubject.query({
         kitVersionId,
@@ -153,6 +158,7 @@ const SubjectsContent = () => {
         description: "",
         index: (fetchSubjectKit.data?.items.length ?? 0) + 1,
         value: (fetchSubjectKit.data?.items.length ?? 0) + 1,
+        translations: null,
         weight: 0,
         id: null,
       });
@@ -232,6 +238,7 @@ const SubjectsContent = () => {
                     handleInputChange={handleInputChange}
                     handleSave={handleSave}
                     handleCancel={handleCancel}
+                    setNewSubject={setNewSubject}
                   />
                 )}
               </>

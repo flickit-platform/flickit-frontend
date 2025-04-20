@@ -44,7 +44,6 @@ const MultiLangTextField = ({
 
   const handleChange = (e: any) => {
     const newValue = e.target.value === "" ? undefined : e.target.value;
-    console.log(newValue)
     onChange?.({ target: { value: newValue } });
   };
 
@@ -76,6 +75,7 @@ const MultiLangTextField = ({
         onChange={handleChange}
         label={labelText}
         inputProps={inputProps}
+        onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
             backgroundColor: "#fff",
@@ -88,14 +88,21 @@ const MultiLangTextField = ({
       />
     );
 
+  const handleShowTranslation = (e: any, state: boolean) => {
+    e.stopPropagation();
+    setShowTranslation(state);
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       {/* Original Field */}
       <Box sx={{ display: "flex", gap: 1 }}>
-        <Box sx={{ flexGrow: 1 }}>{renderInput(value, handleChange, label)}</Box>
+        <Box sx={{ flexGrow: 1 }}>
+          {renderInput(value, handleChange, label)}
+        </Box>
 
         <IconButton
-          onClick={() => setShowTranslation(true)}
+          onClick={(e) => handleShowTranslation(e, !showTranslation)}
           sx={{
             width: 40,
             height: 40,

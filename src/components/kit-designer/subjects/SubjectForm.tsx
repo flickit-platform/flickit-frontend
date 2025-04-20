@@ -9,6 +9,9 @@ import { styles } from "@/config/styles";
 import Typography from "@mui/material/Typography";
 import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
+import {useState} from "react";
+import {MultiLangs} from "@/types";
 
 interface SubjectFormProps {
     newSubject: {
@@ -17,10 +20,12 @@ interface SubjectFormProps {
     weight: number;
     index: number;
     value: number;
+    translations?: MultiLangs | null;
   };
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
   handleCancel: () => void;
+  setNewSubject: any;
 }
 
 const SubjectForm = ({
@@ -28,7 +33,16 @@ const SubjectForm = ({
   handleInputChange,
   handleSave,
   handleCancel,
-}: SubjectFormProps) => (
+  setNewSubject
+}: SubjectFormProps) => {
+
+    const [showTitleTranslation, setShowTitleTranslation] = useState(
+        Boolean(newSubject.translations?.FA?.title),
+    );
+    const [showDescriptionTranslation, setShowDescriptionTranslation] = useState(
+        Boolean(newSubject.translations?.FA?.description),
+    );
+    return (
   <Box
     mt={1.5}
     p={1.5}
@@ -39,6 +53,7 @@ const SubjectForm = ({
       display: "flex",
       alignItems: "flex-start",
       position: "relative",
+      gap: 2,
     }}
   >
     <Box
@@ -70,63 +85,68 @@ const SubjectForm = ({
       />
     </Box>
 
-    <Box width="100%" mx={1}>
-      <TextField
-        required
-        label={<Trans i18nKey="title" />}
-        name="title"
-        inputProps={{
-            "data-testid": "subject-title",
-            style: { fontFamily: languageDetector(newSubject.title) ? farsiFontFamily : primaryFontFamily }
-        }}
-        value={newSubject.title}
-        onChange={handleInputChange}
-        fullWidth
-        margin="normal"
-        sx={{
-          mt: 0,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            height: 40,
-            fontSize: 14,
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-            background:"#fff",
-            width:{xs:"100%",md:"60%"},
-        }}
-      />
-
-      <TextField
-        label={<Trans i18nKey="description" />}
-        name="description"
-        inputProps={{
-            "data-testid": "subject-description",
-            style: { fontFamily: languageDetector(newSubject.description) ? farsiFontFamily : primaryFontFamily }
-        }}
-        required
-        value={newSubject.description}
-        onChange={handleInputChange}
-        fullWidth
-        margin="normal"
-        multiline
-        minRows={2}
-        maxRows={5}
-        sx={{
-          mt: 1,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            fontSize: 14,
-            overflow: "auto",
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-            background:"#fff",
-            width:{xs:"100%",md:"85%"},
-        }}
-      />
+    <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+        <MultiLangTextField
+            label={<Trans i18nKey="title" />}
+            name="title"
+            value={newSubject.title}
+            onChange={handleInputChange}
+            inputProps={{
+                "data-testid": "subject-title",
+                style: {
+                    fontFamily: languageDetector(newSubject.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                },
+            }}
+            translationValue={newSubject.translations?.FA?.title}
+            onTranslationChange={(e) =>
+                setNewSubject((prev: any) => ({
+                    ...prev,
+                    translations: {
+                        ...prev.translations,
+                        FA: {
+                            ...prev.translations?.FA,
+                            title: e.target.value,
+                        },
+                    },
+                }))
+            }
+            showTranslation={showTitleTranslation}
+            setShowTranslation={setShowTitleTranslation}
+        />
+        <MultiLangTextField
+            label={<Trans i18nKey="description" />}
+            name="description"
+            value={newSubject.description}
+            onChange={handleInputChange}
+            multiline
+            minRows={2}
+            maxRows={5}
+            inputProps={{
+                "data-testid": "subject-description",
+                style: {
+                    fontFamily: languageDetector(newSubject.description)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                },
+            }}
+            translationValue={newSubject.translations?.FA?.description}
+            onTranslationChange={(e) =>
+                setNewSubject((prev: any) => ({
+                    ...prev,
+                    translations: {
+                        ...prev.translations,
+                        FA: {
+                            ...prev.translations?.FA,
+                            description: e.target.value,
+                        },
+                    },
+                }))
+            }
+            showTranslation={showDescriptionTranslation}
+            setShowTranslation={setShowDescriptionTranslation}
+        />
     </Box>
 
     {/* Check and Close Buttons */}
@@ -198,6 +218,7 @@ const SubjectForm = ({
       </Box>
     </Box>
   </Box>
-);
+ )
+};
 
 export default SubjectForm;

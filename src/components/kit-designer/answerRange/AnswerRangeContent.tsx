@@ -41,6 +41,7 @@ const AnaweRangeContent = () => {
   const [showNewAnswerRangeForm, setShowNewAnswerRangeForm] = useState(false);
   const [newAnswerRange, setNewAnswerRange] = useState({
     title: "",
+    translations: null,
     index: 1,
     id: null,
   });
@@ -74,6 +75,7 @@ const AnaweRangeContent = () => {
         kitVersionId,
         answerRangeId: newAnswerRange.index,
         title: newAnswerRange.title,
+        translations: newAnswerRange.translations,
       };
       if (newAnswerRange.id) {
         await service.kitVersions.answerRanges.update({
@@ -89,6 +91,7 @@ const AnaweRangeContent = () => {
       setShowNewAnswerRangeForm(false);
       setNewAnswerRange({
         title: "",
+        translations: null,
         index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
         id: null,
       });
@@ -103,6 +106,7 @@ const AnaweRangeContent = () => {
     setShowNewAnswerRangeForm(false);
     setNewAnswerRange({
       title: "",
+      translations: null,
       index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
       id: null,
     });
@@ -114,6 +118,7 @@ const AnaweRangeContent = () => {
         kitVersionId,
         index: AnswerRangeItem.index,
         title: AnswerRangeItem.title,
+        translations: AnswerRangeItem.translations,
         reusable: true,
       };
       await updateKitAnswerRange.query({
@@ -126,6 +131,7 @@ const AnaweRangeContent = () => {
 
       setNewAnswerRange({
         title: "",
+        translations: null,
         index: (fetchAnswerRangeKit.data?.items.length ?? 0) + 1,
         id: null,
       });
@@ -207,6 +213,7 @@ const AnaweRangeContent = () => {
               handleInputChange={handleInputChange}
               handleSave={handleSave}
               handleCancel={handleCancel}
+              setNewAnswerRange={setNewAnswerRange}
             />
           )}
         </>

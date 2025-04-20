@@ -10,8 +10,11 @@ describe("answer range test form",()=>{
     const mockHandleInputChange= vi.fn()
     const mockHandleSave= vi.fn()
     const mockHandleCancel= vi.fn()
+    const setNewAnswerRange= vi.fn()
+
     const mockNewAnswerRange = {
         title: "title 1",
+        translations: { FA:{title: "translation title test", description: "translation description test"} },
         index: 1,
         id: null,
     }
@@ -24,6 +27,7 @@ describe("answer range test form",()=>{
                         handleInputChange={mockHandleInputChange}
                         handleSave={mockHandleSave}
                         handleCancel={mockHandleCancel}
+                        setNewAnswerRange={setNewAnswerRange}
                     />
                 </I18nextProvider>
         )

@@ -1,5 +1,7 @@
 import { TId } from "./common";
 
+export interface MultiLangs {[key : string]: {title?: string, description?: string}}
+
 export interface KitDesignListItems {
   id: TId;
   title: string;
@@ -8,6 +10,7 @@ export interface KitDesignListItems {
   description: string;
   weight?: number;
   questionsCount?: number;
+  translations?: any;
 }
 
 export interface IKitVersion {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {ChangeEvent, useState} from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -8,89 +8,99 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import TextField from "@mui/material/TextField";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { styles } from "@styles";
-import { KitDesignListItems } from "@/types/index";
-import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
+import {styles} from "@styles";
+import {KitDesignListItems} from "@/types/index";
+import {Trans} from "react-i18next";
+import {farsiFontFamily, primaryFontFamily, theme} from "@config/theme";
 import languageDetector from "@utils/languageDetector";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface ListOfItemsProps {
-  items: Array<KitDesignListItems>;
-  onEdit: (id: any) => void;
-  onReorder: (reorderedItems: KitDesignListItems[]) => void;
-  setOpenDeleteDialog?: any;
-  editableFieldKey?: keyof KitDesignListItems;
-  editable?: boolean;
+    items: Array<KitDesignListItems>;
+    onEdit: (id: any) => void;
+    onReorder: (reorderedItems: KitDesignListItems[]) => void;
+    setOpenDeleteDialog?: any;
+    editableFieldKey?: keyof KitDesignListItems;
+    editable?: boolean;
 }
 
 interface ITempValues {
-  title: string;
-  description: string;
-  weight?: number;
-  question?: number;
-  [key: string]: any;
+    title: string;
+    description: string;
+    weight?: number;
+    question?: number;
+    translations?: any;
+    [key: string]: any;
 }
 
 const ListOfItems = ({
-  items,
-  onEdit,
-  onReorder,
-  setOpenDeleteDialog,
-  editableFieldKey,
-  editable = true,
-}: ListOfItemsProps) => {
-  const [reorderedItems, setReorderedItems] = useState(items);
-  const [editMode, setEditMode] = useState<number | null>(null);
-  const [tempValues, setTempValues] = useState<ITempValues>({
-    title: "",
-    description: "",
-    weight: 0,
-    question: 0,
-  });
-
-  const handleDragEnd = (result: any) => {
-    if (!result.destination) return;
-    const newReorderedItems = Array.from(reorderedItems);
-    const [movedItem] = newReorderedItems.splice(result.source.index, 1);
-    newReorderedItems.splice(result.destination.index, 0, movedItem);
-    setReorderedItems(newReorderedItems);
-    onReorder(newReorderedItems);
-  };
-
-  const handleEditClick = (item: KitDesignListItems) => {
-    setEditMode(Number(item.id));
-    setTempValues({
-      title: item.title,
-      description: item.description,
-      weight: item.weight,
-      question: item.questionsCount,
+                         items,
+                         onEdit,
+                         onReorder,
+                         setOpenDeleteDialog,
+                         editableFieldKey,
+                         editable = true,
+                     }: ListOfItemsProps) => {
+    const [reorderedItems, setReorderedItems] = useState(items);
+    const [editMode, setEditMode] = useState<number | null>(null);
+    const [tempValues, setTempValues] = useState<ITempValues>({
+        title: "",
+        description: "",
+        weight: 0,
+        question: 0,
+        translations: null,
     });
-  };
 
-  const handleSaveClick = (item: KitDesignListItems) => {
-    onEdit({
-      ...item,
-      title: tempValues.title,
-      description: tempValues.description,
-      weight: tempValues?.weight,
-    });
-    setEditMode(null);
-  };
+    const handleDragEnd = (result: any) => {
+        if (!result.destination) return;
+        const newReorderedItems = Array.from(reorderedItems);
+        const [movedItem] = newReorderedItems.splice(result.source.index, 1);
+        newReorderedItems.splice(result.destination.index, 0, movedItem);
+        setReorderedItems(newReorderedItems);
+        onReorder(newReorderedItems);
+    };
 
-  const handleCancelClick = () => {
-    setEditMode(null);
-    setTempValues({ title: "", description: "", weight: 0, question: 0 });
-  };
+    const handleEditClick = (item: KitDesignListItems) => {
+        setEditMode(Number(item.id));
+        setTempValues({
+            title: item.title,
+            description: item.description,
+            weight: item.weight,
+            question: item.questionsCount,
+            translations: item.translations,
+        });
+    };
+
+    const handleSaveClick = (item: KitDesignListItems) => {
+        onEdit({
+            ...item,
+            title: tempValues.title,
+            description: tempValues.description,
+            weight: tempValues?.weight,
+            translations: {
+                FA: {
+                    title: tempValues.translations?.FA?.title,
+                    description: tempValues.translations?.FA?.description,
+                },
+            },
+        });
+        setEditMode(null);
+    };
+
+    const handleCancelClick = () => {
+        setEditMode(null);
+        setTempValues({title: "", description: "", weight: 0, question: 0, translations: null});
+    };
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setTempValues({
-      ...tempValues,
+    setTempValues((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }))
   };
-
+  const isRTL = theme.direction === "rtl";
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="subjects">
@@ -149,47 +159,53 @@ const ListOfItems = ({
                     </Box>
 
                     <Box
-                      sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "5px",
-                      }}
+                        sx={{
+                          flexGrow: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 2,
+                        }}
                     >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            justifyContent: "space-between",
+                            flexDirection: isRTL ? "row-reverse" : "row",
+                            gap: 1,
+                          }}
+                      >
+                        <Box sx={{ flexGrow: 1 }}>
                         {editMode === item.id ? (
-                          <TextField
-                            required
-                            value={tempValues.title}
-                            onChange={handleChange}
-                            inputProps={{
-                              "data-testid": "items-title",
-                              style: {
-                                fontFamily: languageDetector(tempValues.title)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                              },
-                            }}
-                            variant="outlined"
-                            fullWidth
-                            size="small"
-                            sx={{
-                              mb: 1,
-                              fontSize: 14,
-                              "& .MuiInputBase-root": {
-                                fontSize: 14,
-                                overflow: "auto",
-                              },
-                              "& .MuiFormLabel-root": {
-                                fontSize: 14,
-                              },
-                              width: { sx: "100%", md: "60%" },
-                              background: "#fff",
-                              borderRadius: "8px",
-                            }}
-                            name="title"
-                            label={<Trans i18nKey="title" />}
-                          />
+                            <MultiLangTextField
+                                name="title"
+                                value={tempValues.title}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>handleChange(e)}
+                                inputProps={{
+                                  "data-testid": "items-title",
+                                  style: {
+                                    fontFamily: languageDetector(tempValues.title)
+                                        ? farsiFontFamily
+                                        : primaryFontFamily,
+                                  },
+                                }}
+                                translationValue={
+                                    tempValues.translations?.FA?.title ?? ""
+                                }
+                                onTranslationChange={(e) =>
+                                    setTempValues((prev) => ({
+                                      ...prev,
+                                      translations: {
+                                        ...prev.translations,
+                                        FA: {
+                                          ...prev.translations?.FA,
+                                          title: e.target.value,
+                                        },
+                                      },
+                                    }))
+                                }
+                                label={<Trans i18nKey="title" />}
+                            />
                         ) : (
                           <Typography
                             variant="h6"
@@ -204,7 +220,7 @@ const ListOfItems = ({
                             {item.title}
                           </Typography>
                         )}
-
+                        </Box>
                         {editMode === item.id ? (
                           <Box
                             sx={{
@@ -259,6 +275,7 @@ const ListOfItems = ({
                             )}
                           </>
                         )}
+
                       </Box>
 
                       <Box
@@ -266,48 +283,50 @@ const ListOfItems = ({
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "space-between",
+                          gap: 3
                         }}
                       >
+                        <Box sx={{ flexGrow: 1 }}>
                         {editMode === item.id ? (
-                          <TextField
-                            required
-                            value={tempValues.description}
-                            onChange={handleChange}
-                            name="description"
-                            inputProps={{
-                              "data-testid": "items-description",
-                              style: {
-                                fontFamily: languageDetector(
-                                  tempValues.description,
-                                )
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                              },
-                            }}
-                            variant="outlined"
-                            fullWidth
-                            size="small"
-                            label={<Trans i18nKey="description" />}
-                            margin="normal"
-                            multiline
-                            minRows={2}
-                            maxRows={5}
-                            sx={{
-                              mb: 1,
-                              mt: 1,
-                              fontSize: 14,
-                              "& .MuiInputBase-root": {
-                                fontSize: 14,
-                                overflow: "auto",
-                              },
-                              "& .MuiFormLabel-root": {
-                                fontSize: 14,
-                              },
-                              background: "#fff",
-                              borderRadius: "8px",
-                              width: { xs: "100%", md: "85%" },
-                            }}
-                          />
+                            <MultiLangTextField
+                                name="description"
+                                value={tempValues.description}
+                                onChange={(e) =>
+                                    setTempValues((prev) => ({
+                                      ...prev,
+                                      description: e.target.value,
+                                    }))
+                                }
+                                inputProps={{
+                                  "data-testid": "items-description",
+                                  style: {
+                                    fontFamily: languageDetector(
+                                        tempValues.description,
+                                    )
+                                        ? farsiFontFamily
+                                        : primaryFontFamily,
+                                  },
+                                }}
+                                translationValue={
+                                    tempValues.translations?.FA?.description ?? ""
+                                }
+                                onTranslationChange={(e) =>
+                                    setTempValues((prev) => ({
+                                      ...prev,
+                                      translations: {
+                                        ...prev.translations,
+                                        FA: {
+                                          ...prev.translations?.FA,
+                                          description: e.target.value,
+                                        },
+                                      },
+                                    }))
+                                }
+                                label={<Trans i18nKey="description" />}
+                                multiline
+                                minRows={2}
+                                maxRows={5}
+                            />
                         ) : (
                           <Typography
                             sx={{
@@ -323,6 +342,7 @@ const ListOfItems = ({
                             {item.description}
                           </Typography>
                         )}
+                        </Box>
                         {editableFieldKey &&
                           typeof item[editableFieldKey] === "number" && (
                             <Box
@@ -350,78 +370,78 @@ const ListOfItems = ({
                                 <Trans i18nKey={editableFieldKey} />
                               </Typography>
 
-                              {editable && editMode === item.id ? (
-                                <TextField
-                                  required
-                                  value={
-                                    tempValues?.[editableFieldKey] as number
-                                  }
-                                  onChange={(e) =>
-                                    setTempValues?.({
-                                      ...tempValues,
-                                      [editableFieldKey]: Number(
-                                        e.target.value,
-                                      ),
-                                    })
-                                  }
-                                  name={editableFieldKey}
-                                  variant="outlined"
-                                  fullWidth
-                                  size="small"
-                                  margin="normal"
-                                  type="number"
-                                  inputProps={{
-                                    style: {
-                                      textAlign: "center",
-                                      width: "40px",
-                                    },
-                                  }}
-                                  sx={{
-                                    mb: 1,
-                                    mt: 1,
-                                    fontSize: 14,
-                                    "& .MuiInputBase-root": {
-                                      fontSize: 14,
-                                      overflow: "auto",
-                                    },
-                                    "& .MuiFormLabel-root": {
-                                      fontSize: 14,
-                                    },
-                                    background: "#fff",
-                                    borderRadius: "8px",
-                                  }}
-                                />
-                              ) : (
-                                <Box
-                                  aria-label={editableFieldKey}
-                                  sx={{
-                                    width: "3.75rem",
-                                    height: "3.75rem",
-                                    borderRadius: "50%",
-                                    backgroundColor: "#E2E5E9",
-                                    color: "#2B333B",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                  }}
-                                >
-                                  {item[editableFieldKey]}
-                                </Box>
-                              )}
-                            </Box>
-                          )}
-                      </Box>
+                                                            {editable && editMode === item.id ? (
+                                                                <TextField
+                                                                    required
+                                                                    value={
+                                                                        tempValues?.[editableFieldKey] as number
+                                                                    }
+                                                                    onChange={(e) =>
+                                                                        setTempValues?.({
+                                                                            ...tempValues,
+                                                                            [editableFieldKey]: Number(
+                                                                                e.target.value,
+                                                                            ),
+                                                                        })
+                                                                    }
+                                                                    name={editableFieldKey}
+                                                                    variant="outlined"
+                                                                    fullWidth
+                                                                    size="small"
+                                                                    margin="normal"
+                                                                    type="number"
+                                                                    inputProps={{
+                                                                        style: {
+                                                                            textAlign: "center",
+                                                                            width: "40px",
+                                                                        },
+                                                                    }}
+                                                                    sx={{
+                                                                        mb: 1,
+                                                                        mt: 1,
+                                                                        fontSize: 14,
+                                                                        "& .MuiInputBase-root": {
+                                                                            fontSize: 14,
+                                                                            overflow: "auto",
+                                                                        },
+                                                                        "& .MuiFormLabel-root": {
+                                                                            fontSize: 14,
+                                                                        },
+                                                                        background: "#fff",
+                                                                        borderRadius: "8px",
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                <Box
+                                                                    aria-label={editableFieldKey}
+                                                                    sx={{
+                                                                        width: "3.75rem",
+                                                                        height: "3.75rem",
+                                                                        borderRadius: "50%",
+                                                                        backgroundColor: "#E2E5E9",
+                                                                        color: "#2B333B",
+                                                                        display: "flex",
+                                                                        alignItems: "center",
+                                                                        justifyContent: "center",
+                                                                    }}
+                                                                >
+                                                                    {item[editableFieldKey]}
+                                                                </Box>
+                                                            )}
+                                                        </Box>
+                                                    )}
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
                     </Box>
-                  </Box>
                 )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Box>
-        )}
-      </Droppable>
-    </DragDropContext>
-  );
+            </Droppable>
+        </DragDropContext>
+    );
 };
 
 export default ListOfItems;
