@@ -9,6 +9,7 @@ describe("SubjectForm", () => {
   const newItem = {
     title: "title test",
     description: "description test",
+    translations: {FA:{title: "title-translations-test", description:"descriptions-translations-test"}},
     index: 1,
     value: 2,
     weight: 3,
@@ -17,6 +18,7 @@ describe("SubjectForm", () => {
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
   const handleCancel = vi.fn();
+  const  setNewSubject = vi.fn();
 
   const setup = () => {
     render(
@@ -26,6 +28,7 @@ describe("SubjectForm", () => {
           handleInputChange={handleInputChange}
           handleSave={handleSave}
           handleCancel={handleCancel}
+          setNewSubject={setNewSubject}
         />
       </I18nextProvider>,
     );
