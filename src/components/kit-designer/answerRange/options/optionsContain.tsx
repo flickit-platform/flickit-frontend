@@ -6,7 +6,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import { IOption, KitDesignListItems } from "@/types/index";
+import {IOption, KitDesignListItems, MultiLangs} from "@/types/index";
 import TextField from "@mui/material/TextField";
 import { Trans } from "react-i18next";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
@@ -19,7 +19,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface ITempValues {
   title: string;
-  translations: any;
+  translations?: MultiLangs | null;
   value: any;
 }
 
@@ -69,7 +69,6 @@ const OptionContain = (props: any) => {
     setEditMode(null);
     setTempValues({ title: "", translations: null, value: 0 });
   };
-  console.log(tempValues,"tempValuestempValues")
   return (
     <>
       <Box sx={{ display: "flex", py: ".8rem", px: "1rem" }}>

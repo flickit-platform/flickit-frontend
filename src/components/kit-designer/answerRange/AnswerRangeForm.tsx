@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import CheckIcon from "@mui/icons-material/Check";
@@ -9,10 +8,11 @@ import languageDetector from "@utils/languageDetector";
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import React from "react";
+import {MultiLangs} from "@/types";
 
 interface QuestionnairesFormProps {
   newItem: {
-    translations: any;
+    translations: MultiLangs | null;
     title: string;
     id: any;
   };
