@@ -188,7 +188,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             <MultiLangTextField
               name={field}
               value={updatedValues[field] || ""}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setUpdatedValues((prev) => ({
                   ...prev,
                   [field]: e.target.value,
@@ -196,9 +196,9 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               }
               label={field.charAt(0).toUpperCase() + field.slice(1)}
               translationValue={updatedValues.translations.FA?.[field]}
-              onTranslationChange={(e) =>
-                handleTranslationChange(field, e.target.value)
-              }
+              onTranslationChange={(e: {
+                target: { value: string | undefined };
+              }) => handleTranslationChange(field, e.target.value)}
               showTranslation={showTranslations[field]}
               setShowTranslation={() => toggleTranslation(field)}
               fullWidth
