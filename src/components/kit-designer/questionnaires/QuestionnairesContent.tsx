@@ -51,6 +51,7 @@ const QuestionnairesContent = () => {
   const [newQuestionnaires, setNewQuestionnaires] = useState({
     title: "",
     description: "",
+    translations: null,
     index: 1,
     value: 1,
     id: null,
@@ -91,6 +92,7 @@ const QuestionnairesContent = () => {
         title: newQuestionnaires.title,
         weight: newQuestionnaires.weight,
         description: newQuestionnaires.description,
+        translations: newQuestionnaires.translations
       };
       if (newQuestionnaires.id) {
         await service.kitVersions.questionnaires.update({
@@ -108,6 +110,7 @@ const QuestionnairesContent = () => {
       setNewQuestionnaires({
         title: "",
         description: "",
+        translations: null,
         index: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
         value: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
         weight: 1,
@@ -124,6 +127,7 @@ const QuestionnairesContent = () => {
     setNewQuestionnaires({
       title: "",
       description: "",
+      translations: null,
       index: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
       value: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
       weight: 0,
@@ -140,6 +144,7 @@ const QuestionnairesContent = () => {
         title: QuestionnairesItem.title,
         weight: QuestionnairesItem.weight,
         description: QuestionnairesItem.description,
+        translations: QuestionnairesItem.translations,
       };
       await updateKitQuestionnaires.query({
         kitVersionId,
@@ -153,6 +158,7 @@ const QuestionnairesContent = () => {
       setNewQuestionnaires({
         title: "",
         description: "",
+        translations: null,
         index: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
         value: (fetchQuestionnairesKit.data?.items.length ?? 0) + 1,
         weight: 0,
@@ -239,6 +245,7 @@ const QuestionnairesContent = () => {
                     handleInputChange={handleInputChange}
                     handleSave={handleSave}
                     handleCancel={handleCancel}
+                    setNewQuestionnaires={setNewQuestionnaires}
                   />
                 )}
               </>
