@@ -286,8 +286,8 @@ const ListOfItems = ({
                           gap: 3
                         }}
                       >
+                        <Box sx={{ flexGrow: 1 }}>
                         {editMode === item.id ? (
-
                             <MultiLangTextField
                                 name="description"
                                 value={tempValues.description}
@@ -342,6 +342,7 @@ const ListOfItems = ({
                             {item.description}
                           </Typography>
                         )}
+                        </Box>
                         {editableFieldKey &&
                           typeof item[editableFieldKey] === "number" && (
                             <Box
