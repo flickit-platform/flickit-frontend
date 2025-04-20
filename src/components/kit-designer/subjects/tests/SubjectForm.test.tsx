@@ -28,7 +28,7 @@ describe("SubjectForm", () => {
           handleInputChange={handleInputChange}
           handleSave={handleSave}
           handleCancel={handleCancel}
-          setNewSubject={ setNewSubject}
+          setNewSubject={setNewSubject}
         />
       </I18nextProvider>,
     );
