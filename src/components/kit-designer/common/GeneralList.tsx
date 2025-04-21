@@ -85,12 +85,14 @@ const ListOfItems = ({
       title: tempValues.title,
       description: tempValues.description,
       weight: tempValues?.weight,
-      translations: {
-        FA: {
-          title: tempValues.translations?.FA?.title,
-          description: tempValues.translations?.FA?.description,
-        },
-      },
+      translations: langCode
+        ? {
+            [langCode]: {
+              title: tempValues.translations?.[langCode]?.title,
+              description: tempValues.translations?.[langCode]?.description,
+            },
+          }
+        : undefined,
     });
     setEditMode(null);
   };
