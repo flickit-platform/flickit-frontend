@@ -5,7 +5,7 @@ export const useTranslationUpdater = (langCode?: string) => {
     field: string,
     setState: React.Dispatch<React.SetStateAction<any>>
   ) => (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     if (!langCode) return;
 
     setState((prev: any) => {
