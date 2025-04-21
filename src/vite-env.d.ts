@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   VITE_NOVU_SOCKET_URL: string;
   VITE_NOVU_APPLICATION_IDENTIFIER: string;
   VITE_MULTILINGUALITY: string;
+  VITE_FLAGSMITH_ENVIRONMENT_KEY: string;
+  VITE_FLAGSMITH_API_KEY: string;
 }
 interface ImportMeta {
   readonly env: ImportMetaEnv;

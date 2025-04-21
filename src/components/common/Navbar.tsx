@@ -47,6 +47,7 @@ import languageDetector from "@utils/languageDetector";
 import CompareRounded from "@mui/icons-material/CompareRounded";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
+import { useFlagsmith } from "@/hooks/useFlagSmith";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -752,9 +753,7 @@ const SpacesButton = () => {
         data-cy="spaces"
         onClick={() => navigate("/spaces/1")}
         startIcon={
-          <FolderRounded
-            sx={{ opacity: 0.8, fontSize: "18px !important" }}
-          />
+          <FolderRounded sx={{ opacity: 0.8, fontSize: "18px !important" }} />
         }
         sx={{
           textTransform: "uppercase",
@@ -861,6 +860,8 @@ const SpacesButton = () => {
 };
 
 const AccountDropDownButton = ({ userInfo }: any) => {
+  const { isEnabled } = useFlagsmith();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -925,20 +926,23 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <Trans i18nKey={"account"} />
           </ListItemText>
         </MenuItem>
-        <MenuItem
-          dense
-          onClick={handleClose}
-          component={NavLink}
-          to={`/user/expert-groups`}
-        >
-          <ListItemIcon>
-            <EngineeringIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            {" "}
-            <Trans i18nKey={"expertGroups"} />
-          </ListItemText>
-        </MenuItem>
+        {isEnabled("display_expert_groups") && (
+          <MenuItem
+            dense
+            onClick={handleClose}
+            component={NavLink}
+            to={`/user/expert-groups`}
+          >
+            <ListItemIcon>
+              <EngineeringIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>
+              {" "}
+              <Trans i18nKey={"expertGroups"} />
+            </ListItemText>
+          </MenuItem>
+        )}
+
         <Divider />
         <MenuItem
           dense
