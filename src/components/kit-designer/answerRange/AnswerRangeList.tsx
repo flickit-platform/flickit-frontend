@@ -29,6 +29,8 @@ import { t } from "i18next";
 import OptionForm from "@components/kit-designer/answerRange/options/optionForm";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
+import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface ListOfItemsProps {
   items: any;
@@ -58,6 +60,11 @@ const ListOfItems = ({
   onDelete,
   setChangeData,
 }: ListOfItemsProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const postOptionsKit = useQuery({
     service: (args, config) =>
       service.kitVersions.answerOptions.createRangeOption(args, config),
@@ -303,20 +310,14 @@ const ListOfItems = ({
                           },
                         }}
                         translationValue={
-                          tempValues.translations?.FA?.title ?? ""
+                          langCode
+                            ? (tempValues.translations?.[langCode]?.title ?? "")
+                            : ""
                         }
-                        onTranslationChange={(e) =>
-                          setTempValues((prev) => ({
-                            ...prev,
-                            translations: {
-                              ...prev.translations,
-                              FA: {
-                                ...prev.translations?.FA,
-                                title: e.target.value,
-                              },
-                            },
-                          }))
-                        }
+                        onTranslationChange={updateTranslation(
+                          "title",
+                          setTempValues,
+                        )}
                         label={<Trans i18nKey="title" />}
                       />
                     ) : (
@@ -441,7 +442,6 @@ const ListOfItems = ({
                   >
                     <Trans i18nKey={"value"} />
                   </Box>
-                  
                 </Box>
               )}
               <Divider />

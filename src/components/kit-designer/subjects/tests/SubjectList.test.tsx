@@ -1,12 +1,18 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import ListOfItems from "../../common/GeneralList";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 const mockItems = [
   {
     id: 1,
     title: "title test 1",
-    translations: {FA:{title: "test translation title", description: "test translation description"}},
+    translations: {
+      FA: {
+        title: "test translation title",
+        description: "test translation description",
+      },
+    },
     value: 1,
     index: 1,
     description: "description test 1",
@@ -21,12 +27,14 @@ const mockSetOpenDeleteDialog = vi.fn();
 describe("ListOfItems (subject)", () => {
   const setup = () => {
     render(
-      <ListOfItems
-        items={mockItems}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />
+      <KitLanguageProvider>
+        <ListOfItems
+          items={mockItems}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
 
     return {
@@ -70,7 +78,7 @@ describe("ListOfItems (subject)", () => {
         value: 1,
         title: "Updated title 1",
         description: "Updated Description 1",
-      })
+      }),
     );
   });
 

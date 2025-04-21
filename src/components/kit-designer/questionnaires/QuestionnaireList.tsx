@@ -30,6 +30,8 @@ import EmptyStateQuestion from "@components/kit-designer/questionnaires/question
 import Add from "@mui/icons-material/Add";
 import QuestionForm from "./questions/QuestionForm";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { useKitLanguageContext } from "@/providers/KitProvider";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -61,6 +63,11 @@ const ListOfItems = ({
   onReorder,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const fetchQuestionListKit = useQuery({
     service: (args, config) =>
       service.kitVersions.questionnaires.getQuestions(args, config),
@@ -85,7 +92,6 @@ const ListOfItems = ({
     weight: 0,
     question: 0,
   });
-  const [expanded, setExpanded] = useState(false);
   const [questionnaireId, setQuestionnaireId] = useState(null);
   const [questionData, setQuestionData] = useState<IQuestion[]>([]);
   const { service } = useServiceContext();
@@ -148,7 +154,6 @@ const ListOfItems = ({
     ({ id }: { id: TId }) =>
     async (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpandedId(id);
-      setExpanded(isExpanded);
       setQuestionnaireId(id as any);
       try {
         if (isExpanded) {
@@ -414,30 +419,16 @@ const ListOfItems = ({
                                     onChange={(
                                       e: ChangeEvent<HTMLInputElement>,
                                     ) => handelChange(e)}
-                                    inputProps={{
-                                      style: {
-                                        fontFamily: languageDetector(
-                                          tempValues.title,
-                                        )
-                                          ? farsiFontFamily
-                                          : primaryFontFamily,
-                                      },
-                                    }}
                                     translationValue={
-                                      tempValues.translations?.FA?.title ?? ""
+                                      langCode
+                                        ? (tempValues.translations?.[langCode]
+                                            ?.title ?? "")
+                                        : ""
                                     }
-                                    onTranslationChange={(e) =>
-                                      setTempValues((prev) => ({
-                                        ...prev,
-                                        translations: {
-                                          ...prev.translations,
-                                          FA: {
-                                            ...prev.translations?.FA,
-                                            title: e.target.value,
-                                          },
-                                        },
-                                      }))
-                                    }
+                                    onTranslationChange={updateTranslation(
+                                      "title",
+                                      setTempValues,
+                                    )}
                                     label={<Trans i18nKey="title" />}
                                   />
                                 ) : (
@@ -538,31 +529,16 @@ const ListOfItems = ({
                                       description: e.target.value,
                                     }))
                                   }
-                                  inputProps={{
-                                    style: {
-                                      fontFamily: languageDetector(
-                                        tempValues.description,
-                                      )
-                                        ? farsiFontFamily
-                                        : primaryFontFamily,
-                                    },
-                                  }}
                                   translationValue={
-                                    tempValues.translations?.FA?.description ??
-                                    ""
+                                    langCode
+                                      ? (tempValues.translations?.[langCode]
+                                          ?.description ?? "")
+                                      : ""
                                   }
-                                  onTranslationChange={(e) =>
-                                    setTempValues((prev) => ({
-                                      ...prev,
-                                      translations: {
-                                        ...prev.translations,
-                                        FA: {
-                                          ...prev.translations?.FA,
-                                          description: e.target.value,
-                                        },
-                                      },
-                                    }))
-                                  }
+                                  onTranslationChange={updateTranslation(
+                                    "description",
+                                    setTempValues,
+                                  )}
                                   label={<Trans i18nKey="description" />}
                                   multiline
                                   minRows={2}

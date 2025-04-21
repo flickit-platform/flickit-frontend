@@ -3,6 +3,7 @@ import ListOfItems from "../AnswerRangeList";
 import { vi } from "vitest";
 import OptionContain from "@components/kit-designer/answerRange/options/optionsContain";
 import { ServiceProvider } from "@providers/ServiceProvider";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 // Mock Data
 const mockAnswerRange = [
@@ -47,20 +48,25 @@ vi.mock("axios");
 describe("AnswerRangeList Component", () => {
   beforeEach(() => {
     render(
-      <ListOfItems
-        items={mockAnswerRange}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onReorder={mockOnReorder}
-        setChangeData={setChangeData}
-      />
+      <KitLanguageProvider>
+        <ListOfItems
+          items={mockAnswerRange}
+          onEdit={mockOnEdit}
+          onDelete={mockOnDelete}
+          onReorder={mockOnReorder}
+          setChangeData={setChangeData}
+        />
+      </KitLanguageProvider>,
     );
   });
 
   it("Accordion opens when clicked", () => {
-
-    const accordionSummary = screen.getAllByTestId("accordion-summary-answer-range")[0];
-    const accordionDetails = screen.getAllByTestId("accordion-details-answer-range")[0];
+    const accordionSummary = screen.getAllByTestId(
+      "accordion-summary-answer-range",
+    )[0];
+    const accordionDetails = screen.getAllByTestId(
+      "accordion-details-answer-range",
+    )[0];
 
     // Initially, details should not be visible
     expect(accordionDetails).not.toBeVisible();
@@ -71,8 +77,6 @@ describe("AnswerRangeList Component", () => {
     // Now, details should be visible
     expect(accordionDetails).toBeVisible();
   });
-
-
 
   it("renders Answer Range correctly", () => {
     expect(screen.getByText("title 1")).toBeInTheDocument();
@@ -104,14 +108,15 @@ describe("AnswerRangeList Component", () => {
     render(
       <MockServiceProvider>
         {mockAnswerRange.map((answer) => (
-          <OptionContain
-            key={answer.id}
-            answerOption={answer.answerOptions}
-            fetchQuery={fetchQuery}
-            setChangeData={setChangeData}
-          />
+          <KitLanguageProvider key={answer.id}>
+            <OptionContain
+              answerOption={answer.answerOptions}
+              fetchQuery={fetchQuery}
+              setChangeData={setChangeData}
+            />
+          </KitLanguageProvider>
         ))}
-      </MockServiceProvider>
+      </MockServiceProvider>,
     );
 
     // Click edit button for the first option
@@ -121,12 +126,9 @@ describe("AnswerRangeList Component", () => {
     fireEvent.change(screen.getByTestId("title-id"), {
       target: { value: "Updated option 1" },
     });
-  
 
     // Assert changes
-    expect(screen.getByTestId("title-id")).toHaveValue(
-      "Updated option 1"
-    );
+    expect(screen.getByTestId("title-id")).toHaveValue("Updated option 1");
 
     // Optionally trigger save
     // fireEvent.click(screen.getByTestId("item-save-option-icon"));

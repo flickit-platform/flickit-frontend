@@ -9,6 +9,8 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import React from "react";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
+import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface OptionFormProps {
   newItem: {
@@ -30,6 +32,11 @@ const OptionForm = ({
   handleSave,
   handleCancel,
 }: OptionFormProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   return (
     <Box
       p={1.5}
@@ -56,19 +63,10 @@ const OptionForm = ({
                 : primaryFontFamily,
             },
           }}
-          translationValue={newItem.translations?.FA?.title ?? ""}
-          onTranslationChange={(e) =>
-            setNewOptions((prev: any) => ({
-              ...prev,
-              translations: {
-                ...prev.translations,
-                FA: {
-                  ...prev.translations?.FA,
-                  title: e.target.value,
-                },
-              },
-            }))
+          translationValue={
+            langCode ? (newItem.translations?.[langCode]?.title ?? "") : ""
           }
+          onTranslationChange={updateTranslation("title", setNewOptions)}
           label={<Trans i18nKey="title" />}
         />
       </Box>

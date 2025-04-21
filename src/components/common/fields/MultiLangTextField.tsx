@@ -11,6 +11,9 @@ import GlobePlus from "@/assets/svg/globePlus.svg";
 import GlobeSub from "@/assets/svg/globeSub.svg";
 import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
+import { useKitLanguageContext } from "@/providers/KitProvider";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
@@ -41,6 +44,10 @@ const MultiLangTextField = ({
   maxRows,
   ...rest
 }: MultiLangTextFieldProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+  const mainLangCode = kitState.mainLanguage?.code;
+
   const [internalShow, setInternalShow] = useState(false);
   const showTranslation = controlledShow ?? internalShow;
   const setShowTranslation = controlledSetter ?? setInternalShow;
@@ -60,13 +67,14 @@ const MultiLangTextField = ({
       | undefined,
     labelText?: React.ReactNode,
     testId?: string,
+    align: "left" | "right" = "right",
   ) =>
     useRichEditor ? (
       <RichEditor
         isEditable
         field={{
           name,
-          value: val ?? "",
+          value: val,
           onChange: (v: string) =>
             handleChange?.({ target: { name, value: v } } as any),
           onBlur: () => {},
@@ -81,12 +89,18 @@ const MultiLangTextField = ({
       <TextField
         {...rest}
         name={name}
-        value={val ?? ""}
+        value={val}
         onChange={handleChange}
         label={labelText}
         inputProps={{
           ...inputProps,
           "data-testid": testId,
+          style: {
+            textAlign: align,
+            fontFamily: languageDetector(val)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          },
         }}
         multiline={multiline}
         minRows={minRows}
@@ -114,29 +128,37 @@ const MultiLangTextField = ({
       {/* Original Field */}
       <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
         <Box sx={{ flexGrow: 1, width: "100%" }}>
-          {renderInput(value, onChange, label, `${name}-id`)}
+          {renderInput(
+            value,
+            onChange,
+            label,
+            `${name}-id`,
+            mainLangCode?.toLowerCase() === "fa" ? "right" : "left",
+          )}
         </Box>
 
-        <IconButton
-          onClick={(e) => handleShowTranslation(e, !showTranslation)}
-          sx={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            p: showTranslation ? 1 : 0,
-          }}
-        >
-          <Box
-            component="img"
-            src={showTranslation ? GlobeSub : GlobePlus}
-            alt="Toggle Translation"
-            sx={{ width: "100%", height: "100%", objectFit: "contain" }}
-          />
-        </IconButton>
+        {!!langCode && (
+          <IconButton
+            onClick={(e) => handleShowTranslation(e, !showTranslation)}
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              p: showTranslation ? 1 : 0,
+            }}
+          >
+            <Box
+              component="img"
+              src={showTranslation ? GlobeSub : GlobePlus}
+              alt="Toggle Translation"
+              sx={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          </IconButton>
+        )}
       </Box>
 
       {/* Translation Field */}
-      {showTranslation && (
+      {!!langCode && showTranslation && (
         <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
           <Box
             sx={{
@@ -153,7 +175,7 @@ const MultiLangTextField = ({
           >
             <LanguageIcon fontSize="small" color="info" />
             <Typography variant="caption" fontSize={10}>
-              FA
+              {langCode.toUpperCase()}
             </Typography>
           </Box>
 
@@ -163,6 +185,7 @@ const MultiLangTextField = ({
               onTranslationChange,
               translationLabel,
               `${name}-translation-id`,
+              langCode.toLowerCase() === "fa" ? "right" : "left",
             )}
           </Box>
         </Box>

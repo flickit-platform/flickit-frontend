@@ -15,6 +15,8 @@ import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { useKitLanguageContext } from "@/providers/KitProvider";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -42,6 +44,11 @@ const ListOfItems = ({
   editableFieldKey,
   editable = true,
 }: ListOfItemsProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState<ITempValues>({
@@ -197,20 +204,15 @@ const ListOfItems = ({
                                 },
                               }}
                               translationValue={
-                                tempValues.translations?.FA?.title ?? ""
+                                langCode
+                                  ? (tempValues.translations?.[langCode]
+                                      ?.title ?? "")
+                                  : ""
                               }
-                              onTranslationChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  translations: {
-                                    ...prev.translations,
-                                    FA: {
-                                      ...prev.translations?.FA,
-                                      title: e.target.value,
-                                    },
-                                  },
-                                }))
-                              }
+                              onTranslationChange={updateTranslation(
+                                "title",
+                                setTempValues,
+                              )}
                               label={<Trans i18nKey="title" />}
                             />
                           ) : (
@@ -313,20 +315,15 @@ const ListOfItems = ({
                                 },
                               }}
                               translationValue={
-                                tempValues.translations?.FA?.description ?? ""
+                                langCode
+                                  ? (tempValues.translations?.[langCode]
+                                      ?.title ?? "")
+                                  : ""
                               }
-                              onTranslationChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  translations: {
-                                    ...prev.translations,
-                                    FA: {
-                                      ...prev.translations?.FA,
-                                      description: e.target.value,
-                                    },
-                                  },
-                                }))
-                              }
+                              onTranslationChange={updateTranslation(
+                                "title",
+                                setTempValues,
+                              )}
                               label={<Trans i18nKey="description" />}
                               multiline
                               minRows={2}

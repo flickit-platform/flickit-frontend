@@ -1,23 +1,23 @@
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
+import React, { ChangeEvent } from "react";
+import { Box, IconButton, Link } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import React from "react";
 import { MultiLangs } from "@/types";
+import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
-interface QuestionnairesFormProps {
+interface AnswerRangeFormProps {
   newItem: {
-    translations: MultiLangs | null;
     title: string;
     id: any;
+    translations: MultiLangs | null;
   };
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setNewAnswerRange: ([key]: any) => void;
+  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  setNewAnswerRange: React.Dispatch<React.SetStateAction<any>>;
   handleSave: () => void;
   handleCancel: () => void;
 }
@@ -28,89 +28,82 @@ const AnswerRangeForm = ({
   handleSave,
   handleCancel,
   setNewAnswerRange,
-}: QuestionnairesFormProps) => (
-  <Box
-    mt={1.5}
-    p={1.5}
-    sx={{
-      backgroundColor: "#F3F5F6",
-      borderRadius: "8px",
-      border: "0.3px solid #73808c30",
-      display: "flex",
-      alignItems: "flex-start",
-      position: "relative",
-    }}
-  >
-    <Box width="100%" mx={1}>
-      <MultiLangTextField
-        id="new-maturity"
-        name="title"
-        value={newItem.title}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleInputChange(e)
-        }
-        inputProps={{
-          style: {
-            fontFamily: languageDetector(newItem.title)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          },
-        }}
-        translationValue={newItem.translations?.FA?.title ?? ""}
-        onTranslationChange={(e) =>
-          setNewAnswerRange((prev: any) => ({
-            ...prev,
-            translations: {
-              ...prev.translations,
-              FA: {
-                ...prev.translations?.FA,
-                title: e.target.value,
-              },
-            },
-          }))
-        }
-        label={<Trans i18nKey="title" />}
-      />
-    </Box>
+}: AnswerRangeFormProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
 
-    {/* Check and Close Buttons */}
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
+  return (
     <Box
-      display="flex"
-      alignItems="center"
-      flexDirection={"column"}
-      gap={"20px"}
+      mt={1.5}
+      p={1.5}
+      sx={{
+        backgroundColor: "#F3F5F6",
+        borderRadius: "8px",
+        border: "0.3px solid #73808c30",
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 2,
+      }}
     >
-      <Link
-        href="#subject-header"
-        sx={{
-          textDecoration: "none",
-          opacity: 0.9,
-          fontWeight: "bold",
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-        }}
+      <Box flexGrow={1}>
+        <MultiLangTextField
+          name="title"
+          value={newItem.title}
+          onChange={handleInputChange}
+          inputProps={{
+            style: {
+              fontFamily: languageDetector(newItem.title)
+                ? farsiFontFamily
+                : primaryFontFamily,
+            },
+          }}
+          translationValue={
+            langCode ? newItem.translations?.[langCode]?.title ?? "" : ""
+          }
+          onTranslationChange={updateTranslation("title", setNewAnswerRange)}
+          label={<Trans i18nKey="title" />}
+        />
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={1.5}
+        mt={0.5}
       >
-        {" "}
-        <IconButton
-          size="small"
-          color="primary"
-          data-testid="check-icon"
-          onClick={handleSave}
+        <Link
+          href="#answer-range-header"
+          sx={{
+            textDecoration: "none",
+            opacity: 0.9,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+          }}
         >
-          <CheckIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          color="secondary"
-          data-testid="close-icon"
-          onClick={handleCancel}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Link>
+          <IconButton
+            size="small"
+            color="primary"
+            onClick={handleSave}
+            data-testid="check-icon"
+          >
+            <CheckIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            color="secondary"
+            onClick={handleCancel}
+            data-testid="close-icon"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Link>
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export default AnswerRangeForm;
