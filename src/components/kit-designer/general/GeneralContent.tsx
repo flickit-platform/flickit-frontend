@@ -88,10 +88,14 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         languages.find((l) => l.code === lang.code)
       ) {
         setTranslatedLang(lang);
-        addLanguageQuery.query({
-          assessmentKitId: kitVersion.assessmentKit.id,
-          data: { lang: lang.code },
-        });
+        addLanguageQuery
+          .query({
+            assessmentKitId: kitVersion.assessmentKit.id,
+            data: { lang: lang.code },
+          })
+          .then(() => {
+            fetchAssessmentKitInfoQuery.query();
+          });
       }
     },
     [data?.mainLanguage?.code, languages, kitVersion.assessmentKit.id],
