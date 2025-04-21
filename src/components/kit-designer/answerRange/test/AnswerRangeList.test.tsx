@@ -108,9 +108,8 @@ describe("AnswerRangeList Component", () => {
     render(
       <MockServiceProvider>
         {mockAnswerRange.map((answer) => (
-          <KitLanguageProvider>
+          <KitLanguageProvider key={answer.id}>
             <OptionContain
-              key={answer.id}
               answerOption={answer.answerOptions}
               fetchQuery={fetchQuery}
               setChangeData={setChangeData}

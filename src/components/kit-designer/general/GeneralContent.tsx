@@ -154,7 +154,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
       dispatch(kitActions.setMainLanguage(data.mainLanguage));
       dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
-      const currentTranslation = translations[firstTranslationKey] || {};
+      const currentTranslation = translations[firstTranslationKey] ?? {};
 
       setShowTranslations({
         title: !!currentTranslation.title,

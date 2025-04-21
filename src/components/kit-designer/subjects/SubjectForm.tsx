@@ -3,8 +3,6 @@ import { Box, IconButton, TextField, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { styles } from "@/config/styles";
 import { useKitLanguageContext } from "@/providers/KitProvider";
@@ -44,23 +42,6 @@ const SubjectForm = ({
   const [showDescriptionTranslation, setShowDescriptionTranslation] = useState(
     Boolean(newSubject.translations?.[langCode]?.description),
   );
-
-  const handleTranslationChange = (
-    field: "title" | "description",
-    value?: string,
-  ) => {
-    if (!langCode) return;
-    setNewSubject((prev: any) => ({
-      ...prev,
-      translations: {
-        ...prev.translations,
-        [langCode]: {
-          ...prev.translations?.[langCode],
-          [field]: value === "" ? undefined : value,
-        },
-      },
-    }));
-  };
 
   const renderNumericField = (
     name: "value" | "weight",
