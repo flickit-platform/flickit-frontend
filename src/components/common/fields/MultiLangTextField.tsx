@@ -67,7 +67,6 @@ const MultiLangTextField = ({
       | undefined,
     labelText?: React.ReactNode,
     testId?: string,
-    align: "left" | "right" = "right",
   ) =>
     useRichEditor ? (
       <RichEditor
@@ -96,7 +95,7 @@ const MultiLangTextField = ({
           ...inputProps,
           "data-testid": testId,
           style: {
-            textAlign: align,
+            textAlign: languageDetector(val) ? "right" : "left",
             fontFamily: languageDetector(val)
               ? farsiFontFamily
               : primaryFontFamily,
@@ -128,13 +127,7 @@ const MultiLangTextField = ({
       {/* Original Field */}
       <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
         <Box sx={{ flexGrow: 1, width: "100%" }}>
-          {renderInput(
-            value,
-            onChange,
-            label,
-            `${name}-id`,
-            mainLangCode?.toLowerCase() === "fa" ? "right" : "left",
-          )}
+          {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
 
         {!!langCode && (
@@ -185,7 +178,6 @@ const MultiLangTextField = ({
               onTranslationChange,
               translationLabel,
               `${name}-translation-id`,
-              langCode.toLowerCase() === "fa" ? "right" : "left",
             )}
           </Box>
         </Box>
