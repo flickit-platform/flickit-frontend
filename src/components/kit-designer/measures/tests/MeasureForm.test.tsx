@@ -17,6 +17,7 @@ describe("MeasureForm", () => {
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
   const handleCancel = vi.fn();
+  const setNewMeasure = vi.fn();
 
   const setup = () => {
     render(
@@ -26,8 +27,9 @@ describe("MeasureForm", () => {
           handleInputChange={handleInputChange}
           handleSave={handleSave}
           handleCancel={handleCancel}
+          setNewMeasure={setNewMeasure}
         />
-      </I18nextProvider>
+      </I18nextProvider>,
     );
 
     return {
