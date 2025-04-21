@@ -184,6 +184,8 @@ const MaturityLevelList = ({
                         size="small"
                         onClick={() => handleSave(item)}
                         color="success"
+                        sx={{ ...styles.fixedIconButtonStyle }}
+                        data-testid="check-icon-id"
                       >
                         <CheckRoundedIcon fontSize="small" />
                       </IconButton>
@@ -191,6 +193,8 @@ const MaturityLevelList = ({
                         size="small"
                         onClick={handleCancel}
                         color="secondary"
+                        sx={{ ...styles.fixedIconButtonStyle }}
+                        data-testid="close-icon-id"
                       >
                         <CloseRoundedIcon fontSize="small" />
                       </IconButton>
@@ -201,6 +205,7 @@ const MaturityLevelList = ({
                         size="small"
                         onClick={() => handleEdit(item)}
                         color="success"
+                        data-testid="edit-icon-id"
                       >
                         <EditRoundedIcon fontSize="small" />
                       </IconButton>
@@ -210,6 +215,7 @@ const MaturityLevelList = ({
                           setOpenDeleteDialog({ status: true, id: item.id })
                         }
                         color="secondary"
+                        data-testid="delete-icon-id"
                       >
                         <DeleteRoundedIcon fontSize="small" />
                       </IconButton>

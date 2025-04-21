@@ -39,28 +39,24 @@ const KitDesignerContainer = () => {
 
   useEffect(() => {
     let currentHash = window.location.hash.replace("#", "");
-
     if (!currentHash || currentHash.startsWith("new")) {
       window.location.hash = "General";
       setSelectedTab(0);
     }
 
     const tabEl = [
-      { title: "General", index: 0 },
-      { title: "Maturity-Levels", index: 1 },
-      { title: "Subjects", index: 2 },
-      { title: "Attributes", index: 3 },
-      { title: "Answer-Ranges", index: 4 },
-      { title: "Measures", index: 5 },
-      { title: "Questionnaires", index: 6 },
-      { title: "Release", index: 7 },
+      "General",
+      "Maturity-Levels",
+      "Subjects",
+      "Attributes",
+      "Answer-Ranges",
+      "Measures",
+      "Questionnaires",
+      "Release",
     ];
 
-    tabEl.forEach((item) => {
-      if (item.title === currentHash) {
-        setSelectedTab(item.index);
-      }
-    });
+    const index = tabEl.findIndex((item) => item === currentHash);
+    if (index >= 0) setSelectedTab(index);
   }, []);
 
   const kitVersionQuery = useQuery<IKitVersion>({
@@ -69,194 +65,112 @@ const KitDesignerContainer = () => {
     runOnMount: true,
   });
 
+  const kitVersion = kitVersionQuery.data;
+
+  const assessmentKitQuery = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.getInfo(
+        args ?? { assessmentKitId: kitVersion?.assessmentKit.id },
+        config,
+      ),
+    runOnMount: !!kitVersion && selectedTab !== 0,
+  });
+
+  useEffect(() => {
+    if (assessmentKitQuery.data) {
+      const data = assessmentKitQuery.data;
+      const defaultTranslatedLanguage = data.languages?.find(
+        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
+      );
+      dispatch(kitActions.setMainLanguage(data.mainLanguage));
+      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
+    }
+  }, [assessmentKitQuery.data]);
+
+  if (!kitVersionQuery.loaded) return null;
+
   return (
-    <QueryBatchData
-      queryBatchData={[kitVersionQuery]}
-      render={([kitVersion]) => {
-        const fetchAssessmentKitInfoQuery = useQuery({
-          service: (args, config) =>
-            service.assessmentKit.info.getInfo(
-              args ?? { assessmentKitId: kitVersion.assessmentKit.id },
-              config,
-            ),
-          runOnMount: selectedTab !== 0,
-        });
-        const data = fetchAssessmentKitInfoQuery.data;
-        useEffect(() => {
-          if (data) {
-            const defaultTranslatedLanguage = data.languages?.find(
-              (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
-            );
+    <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
+      <KitDesignerTitle kitVersion={kitVersion!} />
+      <Grid container spacing={1} columns={12}>
+        <Grid item sm={12} xs={12} mt={1}>
+          <Typography color="primary" textAlign="left" variant="headlineLarge">
+            <Trans i18nKey="kitDesigner" />
+          </Typography>
+        </Grid>
+        <Grid container sm={12} xs={12} mt={6}>
+          <Grid
+            item
+            sm={3}
+            xs={12}
+            sx={{ display: "flex", flexDirection: "column" }}
+          >
+            <Tabs
+              textColor="primary"
+              indicatorColor="primary"
+              orientation="vertical"
+              variant="scrollable"
+              value={selectedTab}
+              onChange={handleTabChange}
+              aria-label="Vertical tabs"
+              sx={{
+                borderRight: 1,
+                borderColor: "divider",
+                flexGrow: 1,
+                backgroundColor: "rgba(36, 102, 168, 0.04)",
+                padding: 0,
+                color: "rgba(0, 0, 0, 0.6)",
+                "& .Mui-selected": {
+                  color: "#2466A8 !important",
+                  fontWeight: "bold",
+                },
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "primary.main",
+                },
+              }}
+            >
+              {[
+                "general",
+                "maturityLevels",
+                "subjects",
+                "attributes",
+                "answerRanges",
+                "kitDesignerTab.measures",
+                "questionnaires",
+                "release",
+              ].map((key) => (
+                <Tab
+                  key={key}
+                  sx={{ alignItems: "flex-start", textTransform: "none" }}
+                  label={
+                    <Typography variant="semiBoldLarge">
+                      <Trans i18nKey={key} />
+                    </Typography>
+                  }
+                />
+              ))}
+            </Tabs>
+          </Grid>
 
-            console.log(data.mainLanguage);
-            dispatch(kitActions.setMainLanguage(data.mainLanguage));
-            dispatch(
-              kitActions.setTranslatedLanguage(defaultTranslatedLanguage),
-            );
-          }
-        }, [data]);
-        return (
-          <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-            <KitDesignerTitle kitVersion={kitVersion} />
-            <Grid container spacing={1} columns={12}>
-              <Grid item sm={12} xs={12} mt={1}>
-                <Typography
-                  color="primary"
-                  textAlign="left"
-                  variant="headlineLarge"
-                >
-                  <Trans i18nKey="kitDesigner" />
-                </Typography>
-              </Grid>
-              <Grid container sm={12} xs={12} mt={6}>
-                <Grid
-                  item
-                  sm={3}
-                  xs={12}
-                  sx={{ display: "flex", flexDirection: "column" }}
-                >
-                  <Tabs
-                    textColor="primary"
-                    indicatorColor="primary"
-                    orientation="vertical"
-                    variant="scrollable"
-                    value={selectedTab}
-                    onChange={handleTabChange}
-                    aria-label="Vertical tabs"
-                    sx={{
-                      borderRight: 1,
-                      borderColor: "divider",
-                      flexGrow: 1,
-                      backgroundColor: "rgba(36, 102, 168, 0.04)",
-                      padding: 0,
-                      color: "rgba(0, 0, 0, 0.6)", // Default text color
-
-                      "& .Mui-selected": {
-                        color: "#2466A8 !important",
-                        fontWeight: "bold",
-                      },
-
-                      "& .MuiTabs-indicator": {
-                        backgroundColor: "primary.main",
-                      },
-                    }}
-                  >
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="general" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="maturityLevels" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="subjects" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="attributes" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="answerRanges" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="kitDesignerTab.measures" />
-                        </Typography>
-                      }
-                    />
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="questionnaires" />
-                        </Typography>
-                      }
-                    />{" "}
-                    <Tab
-                      sx={{
-                        alignItems: "flex-start",
-                        textTransform: "none",
-                      }}
-                      label={
-                        <Typography variant="semiBoldLarge">
-                          <Trans i18nKey="release" />
-                        </Typography>
-                      }
-                    />
-                  </Tabs>
-                </Grid>
-
-                <Grid
-                  item
-                  sm={9}
-                  xs={12}
-                  sx={{ height: "100%", padding: 3, background: "white" }}
-                >
-                  {selectedTab === 0 && (
-                    <GeneralContent kitVersion={kitVersion} />
-                  )}
-                  {selectedTab === 1 && <MaturityLevelsContent />}
-                  {selectedTab === 2 && <SubjectsContent />}
-                  {selectedTab === 3 && <AttributesContent />}
-                  {selectedTab === 4 && <AnaweRangeContent />}
-                  {selectedTab === 5 && <MeasuresContent />}
-                  {selectedTab === 6 && <QuestionnairesContent />}
-                  {selectedTab === 7 && (
-                    <PublishContent kitVersion={kitVersion} />
-                  )}
-                </Grid>
-              </Grid>
-            </Grid>
-          </Box>
-        );
-      }}
-    />
+          <Grid
+            item
+            sm={9}
+            xs={12}
+            sx={{ height: "100%", padding: 3, background: "white" }}
+          >
+            {selectedTab === 0 && <GeneralContent kitVersion={kitVersion!} />}
+            {selectedTab === 1 && <MaturityLevelsContent />}
+            {selectedTab === 2 && <SubjectsContent />}
+            {selectedTab === 3 && <AttributesContent />}
+            {selectedTab === 4 && <AnaweRangeContent />}
+            {selectedTab === 5 && <MeasuresContent />}
+            {selectedTab === 6 && <QuestionnairesContent />}
+            {selectedTab === 7 && <PublishContent kitVersion={kitVersion!} />}
+          </Grid>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
+
 export default KitDesignerContainer;
