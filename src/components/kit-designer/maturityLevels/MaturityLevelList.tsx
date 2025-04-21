@@ -62,9 +62,8 @@ const MaturityLevelList = ({
     const translations = langCode
       ? {
           [langCode]: {
-            title: tempValues.translations?.[langCode]?.title || undefined,
-            description:
-              tempValues.translations?.[langCode]?.description || undefined,
+            title: tempValues.translations?.[langCode]?.title,
+            description: tempValues.translations?.[langCode]?.description,
           },
         }
       : undefined;

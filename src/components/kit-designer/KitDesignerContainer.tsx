@@ -16,15 +16,9 @@ import { IKitVersion, ILanguage } from "@/types/index";
 import QuestionnairesContent from "@components/kit-designer/questionnaires/QuestionnairesContent";
 import AttributesContent from "./attributes/AttributeContent";
 import AnaweRangeContent from "@components/kit-designer/answerRange/AnswerRangeContent";
-import QueryBatchData from "../common/QueryBatchData";
 import MeasuresContent from "./measures/MeasuresContent";
 import GeneralContent from "./general/GeneralContent";
-import {
-  setMainLanguage,
-  setTranslatedLanguage,
-  useKitLanguageContext,
-  kitActions,
-} from "@/providers/KitProvider";
+import { useKitLanguageContext, kitActions } from "@/providers/KitProvider";
 
 const KitDesignerContainer = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -91,7 +85,7 @@ const KitDesignerContainer = () => {
 
   return (
     <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
-      <KitDesignerTitle kitVersion={kitVersion!} />
+      <KitDesignerTitle kitVersion={kitVersion} />
       <Grid container spacing={1} columns={12}>
         <Grid item sm={12} xs={12} mt={1}>
           <Typography color="primary" textAlign="left" variant="headlineLarge">
@@ -158,14 +152,14 @@ const KitDesignerContainer = () => {
             xs={12}
             sx={{ height: "100%", padding: 3, background: "white" }}
           >
-            {selectedTab === 0 && <GeneralContent kitVersion={kitVersion!} />}
+            {selectedTab === 0 && <GeneralContent kitVersion={kitVersion} />}
             {selectedTab === 1 && <MaturityLevelsContent />}
             {selectedTab === 2 && <SubjectsContent />}
             {selectedTab === 3 && <AttributesContent />}
             {selectedTab === 4 && <AnaweRangeContent />}
             {selectedTab === 5 && <MeasuresContent />}
             {selectedTab === 6 && <QuestionnairesContent />}
-            {selectedTab === 7 && <PublishContent kitVersion={kitVersion!} />}
+            {selectedTab === 7 && <PublishContent kitVersion={kitVersion} />}
           </Grid>
         </Grid>
       </Grid>

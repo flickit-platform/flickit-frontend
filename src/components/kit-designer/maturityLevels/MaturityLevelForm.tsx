@@ -6,8 +6,6 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
