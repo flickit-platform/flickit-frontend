@@ -16,164 +16,159 @@ import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import MeasureForm from "./MeasureForm";
+import { MultiLangs } from "@/types";
 
 const MeasuresContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
 
-  const fetchMeasureKit = useQuery({
+  const fetchMeasures = useQuery({
     service: (args, config) =>
       service.kitVersions.measures.getAll(args ?? { kitVersionId }, config),
   });
-  const postMeasureKit = useQuery({
+
+  const createMeasure = useQuery({
     service: (args, config) =>
       service.kitVersions.measures.create(args, config),
     runOnMount: false,
   });
 
-  const updateKitMeasure = useQuery({
+  const updateMeasure = useQuery({
     service: (args, config) =>
       service.kitVersions.measures.update(args, config),
     runOnMount: false,
   });
 
-  const [showNewMeasureForm, setShowNewMeasureForm] = useState(false);
+  const [showNewForm, setShowNewForm] = useState(false);
   const [newMeasure, setNewMeasure] = useState({
     title: "",
     description: "",
     index: 1,
     value: 1,
-    id: null,
     weight: 1,
+    id: null,
+    translations: null as MultiLangs | null,
   });
 
   useEffect(() => {
-    if (fetchMeasureKit.data?.items?.length) {
-      setNewMeasure((prev) => ({
-        ...prev,
-        index: fetchMeasureKit.data.items.length + 1,
-        value: fetchMeasureKit.data.items.length + 1,
-        weight: 1,
-        id: null,
-      }));
-    }
-  }, [fetchMeasureKit.data]);
+    const count = fetchMeasures.data?.items?.length ?? 0;
+    setNewMeasure((prev) => ({
+      ...prev,
+      index: count + 1,
+      value: count + 1,
+      weight: 1,
+      id: null,
+    }));
+  }, [fetchMeasures.data]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const parsedValue = name === "value" ? parseInt(value) || 1 : value;
-    setNewMeasure((prev) => ({
-      ...prev,
-      [name]: parsedValue,
-    }));
+    setNewMeasure((prev) => ({ ...prev, [name]: parsedValue }));
   };
 
   const handleAddNewRow = () => {
     handleCancel();
-    setShowNewMeasureForm(true);
+    setShowNewForm(true);
   };
 
   const handleSave = async () => {
     try {
       const data = {
         kitVersionId,
-        index: newMeasure.index,
-        value: newMeasure.value,
         title: newMeasure.title,
-        weight: newMeasure.weight,
         description: newMeasure.description,
+        value: newMeasure.value,
+        index: newMeasure.index,
+        weight: newMeasure.weight,
+        translations: newMeasure.translations,
       };
+
       if (newMeasure.id) {
-        await service.kitVersions.measures.update({
+        await updateMeasure.query({
           kitVersionId,
           measureId: newMeasure.id,
           data,
         });
       } else {
-        await postMeasureKit.query({ kitVersionId, data });
+        await createMeasure.query({ kitVersionId, data });
       }
 
-      // Reset form and re-fetch data after saving
-      setShowNewMeasureForm(false);
-      await fetchMeasureKit.query();
+      setShowNewForm(false);
+      await fetchMeasures.query();
 
-      // Reset the form values
       setNewMeasure({
         title: "",
         description: "",
-        index: (fetchMeasureKit.data?.items.length ?? 0) + 1,
-        value: (fetchMeasureKit.data?.items.length ?? 0) + 1,
-        weight: 0,
+        index: (fetchMeasures.data?.items.length ?? 0) + 1,
+        value: (fetchMeasures.data?.items.length ?? 0) + 1,
+        weight: 1,
         id: null,
+        translations: null,
       });
     } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
+      toastError(e as ICustomError);
     }
   };
 
   const handleCancel = () => {
-    setShowNewMeasureForm(false);
+    setShowNewForm(false);
     setNewMeasure({
       title: "",
       description: "",
-      index: (fetchMeasureKit.data?.items.length ?? 0) + 1,
-      value: (fetchMeasureKit.data?.items.length ?? 0) + 1,
-      weight: 0,
+      index: (fetchMeasures.data?.items.length ?? 0) + 1,
+      value: (fetchMeasures.data?.items.length ?? 0) + 1,
+      weight: 1,
       id: null,
+      translations: null,
     });
   };
 
-  const handleEdit = async (measureItem: any) => {
+  const handleEdit = async (item: any) => {
     try {
       const data = {
         kitVersionId,
-        index: measureItem.index,
-        value: measureItem.value,
-        title: measureItem.title,
-        weight: measureItem.weight,
-        description: measureItem.description,
+        title: item.title,
+        description: item.description,
+        value: item.value,
+        index: item.index,
+        weight: item.weight,
+        translations: item.translations,
       };
-      await updateKitMeasure.query({
+
+      await updateMeasure.query({
         kitVersionId,
-        measureId: measureItem.id,
+        measureId: item.id,
         data,
       });
 
-      setShowNewMeasureForm(false);
-      fetchMeasureKit.query();
-
-      setNewMeasure({
-        title: "",
-        description: "",
-        index: (fetchMeasureKit.data?.items.length ?? 0) + 1,
-        value: (fetchMeasureKit.data?.items.length ?? 0) + 1,
-        weight: 0,
-        id: null,
-      });
+      setShowNewForm(false);
+      await fetchMeasures.query();
+      handleCancel();
     } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
+      toastError(e as ICustomError);
     }
   };
 
-  const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
+  const debouncedReorder = debounce(async (newOrder: any[]) => {
     try {
       const orders = newOrder.map((item, idx) => ({
         id: item.id,
         index: idx + 1,
       }));
 
-      await service.kitVersions.measures.reorder({ kitVersionId }, { orders });
-
+      await service.kitVersions.measures.reorder(
+        { kitVersionId },
+        { orders },
+      );
       handleCancel();
     } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
+      toastError(e as ICustomError);
     }
   }, 2000);
 
   const handleReorder = (newOrder: any[]) => {
-    debouncedHandleReorder(newOrder);
+    debouncedReorder(newOrder);
   };
 
   return (
@@ -181,57 +176,53 @@ const MeasuresContent = () => {
       <Box width="100%">
         <KitDesignerHeader
           onAddNewRow={handleAddNewRow}
-          hasBtn={
-            fetchMeasureKit.loaded && fetchMeasureKit.data.items.length !== 0
-          }
-          mainTitle={"kitDesignerTab.measures"}
-          btnTitle={"kitDesignerTab.newMeasure"}
-          description={"kitDesignerTab.measuresKitDesignerDescription"}
+          hasBtn={fetchMeasures.loaded && fetchMeasures.data.items.length !== 0}
+          mainTitle="kitDesignerTab.measures"
+          btnTitle="kitDesignerTab.newMeasure"
+          description="kitDesignerTab.measuresKitDesignerDescription"
         />
-        {fetchMeasureKit.loaded && fetchMeasureKit.data.items.length !== 0 ? (
+        {fetchMeasures.loaded && fetchMeasures.data.items.length !== 0 && (
           <Typography variant="bodyMedium" mt={1}>
             <Trans i18nKey="changeOrderHelper" />
           </Typography>
-        ) : null}
+        )}
         <Divider sx={{ my: 1 }} />
 
         <QueryBatchData
-          queryBatchData={[fetchMeasureKit]}
+          queryBatchData={[fetchMeasures]}
           renderLoading={() => <LoadingSkeletonKitCard />}
-          render={([measureData]) => {
-            return (
-              <>
-                {measureData?.items?.length > 0 ? (
-                  <Box maxHeight={500} overflow="auto">
-                    <ListOfItems
-                      items={measureData?.items}
-                      onEdit={handleEdit}
-                      onReorder={handleReorder}
-                      editableFieldKey="questionsCount"
-                      editable={false}
-                    />
-                  </Box>
-                ) : (
-                  !showNewMeasureForm && (
-                    <EmptyState
-                      btnTitle={"newMeasure"}
-                      title={"measuresListEmptyState"}
-                      SubTitle={"measureEmptyStateDetailed"}
-                      onAddNewRow={handleAddNewRow}
-                    />
-                  )
-                )}
-                {showNewMeasureForm && (
-                  <MeasureForm
-                    newMeasure={newMeasure}
-                    handleInputChange={handleInputChange}
-                    handleSave={handleSave}
-                    handleCancel={handleCancel}
+          render={([data]) => (
+            <>
+              {data?.items?.length > 0 ? (
+                <Box maxHeight={500} overflow="auto">
+                  <ListOfItems
+                    items={data.items}
+                    onEdit={handleEdit}
+                    onReorder={handleReorder}
+                    editableFieldKey="weight"
                   />
-                )}
-              </>
-            );
-          }}
+                </Box>
+              ) : (
+                !showNewForm && (
+                  <EmptyState
+                    btnTitle="newMeasure"
+                    title="measuresListEmptyState"
+                    SubTitle="measureEmptyStateDetailed"
+                    onAddNewRow={handleAddNewRow}
+                  />
+                )
+              )}
+              {showNewForm && (
+                <MeasureForm
+                  newMeasure={newMeasure}
+                  handleInputChange={handleInputChange}
+                  handleSave={handleSave}
+                  handleCancel={handleCancel}
+                  setNewMeasure={setNewMeasure}
+                />
+              )}
+            </>
+          )}
         />
       </Box>
     </PermissionControl>
