@@ -1,6 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import ListOfItems from "@/components/kit-designer/questionnaires/QuestionnaireList";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 const mockQuestionnaires = [
   {
@@ -10,7 +11,7 @@ const mockQuestionnaires = [
     index: 1,
     description: "description test 1",
     questionsCount: 0,
-  }
+  },
 ];
 
 const mockOnEdit = vi.fn();
@@ -20,12 +21,14 @@ const mockSetOpenDeleteDialog = vi.fn();
 describe("questionnairesList", () => {
   beforeEach(() => {
     render(
-      <ListOfItems
-        items={mockQuestionnaires}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <ListOfItems
+          items={mockQuestionnaires}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
   });
 

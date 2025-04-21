@@ -16,6 +16,8 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { useKitLanguageContext } from "@/providers/KitProvider";
 
 interface ITempValues {
   title: string;
@@ -24,6 +26,11 @@ interface ITempValues {
 }
 
 const OptionContain = (props: any) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const { answerOption, setChangeData } = props;
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
@@ -109,19 +116,12 @@ const OptionContain = (props: any) => {
                     : primaryFontFamily,
                 },
               }}
-              translationValue={tempValues.translations?.FA?.title ?? ""}
-              onTranslationChange={(e) =>
-                setTempValues((prev) => ({
-                  ...prev,
-                  translations: {
-                    ...prev.translations,
-                    FA: {
-                      ...prev.translations?.FA,
-                      title: e.target.value,
-                    },
-                  },
-                }))
+              translationValue={
+                langCode
+                  ? (tempValues.translations?.[langCode]?.title ?? "")
+                  : ""
               }
+              onTranslationChange={updateTranslation("title", setTempValues)}
               label={<Trans i18nKey="title" />}
             />
           ) : (

@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 describe("answer range test form", () => {
   const mockHandleInputChange = vi.fn();
@@ -25,15 +26,17 @@ describe("answer range test form", () => {
 
   const renderForm = () => {
     render(
-      <I18nextProvider i18n={i18n}>
-        <AnswerRangeForm
-          newItem={mockNewAnswerRange}
-          handleInputChange={mockHandleInputChange}
-          handleSave={mockHandleSave}
-          handleCancel={mockHandleCancel}
-          setNewAnswerRange={setNewAnswerRange}
-        />
-      </I18nextProvider>,
+      <KitLanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <AnswerRangeForm
+            newItem={mockNewAnswerRange}
+            handleInputChange={mockHandleInputChange}
+            handleSave={mockHandleSave}
+            handleCancel={mockHandleCancel}
+            setNewAnswerRange={setNewAnswerRange}
+          />
+        </I18nextProvider>
+      </KitLanguageProvider>,
     );
   };
 

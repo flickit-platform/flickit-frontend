@@ -16,6 +16,7 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
@@ -36,13 +37,6 @@ const renderEditableTextField = (
     name={fieldName}
     value={value}
     onChange={onChange}
-    inputProps={{
-      style: {
-        fontFamily: languageDetector(value)
-          ? farsiFontFamily
-          : primaryFontFamily,
-      },
-    }}
     translationValue={translationValue}
     onTranslationChange={onTranslationChange}
     label={<Trans i18nKey={fieldName} />}
@@ -59,6 +53,10 @@ const MaturityLevelList = ({
   setOpenDeleteDialog,
 }: MaturityLevelListProps) => {
   const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const [reorderedItems, setReorderedItems] = useState(maturityLevels);
   const [editMode, setEditMode] = useState<TId | null | undefined>(null);
   const [tempValues, setTempValues] = useState<IMaturityLevel>({
@@ -202,19 +200,7 @@ const MaturityLevelList = ({
                                     title: e.target.value,
                                   })),
                                 tempValues.translations?.[langCode]?.title,
-                                (e) => {
-                                  if (!langCode) return;
-                                  setTempValues((prev) => ({
-                                    ...prev,
-                                    translations: {
-                                      ...prev.translations,
-                                      [langCode]: {
-                                        ...prev.translations?.[langCode],
-                                        title: e.target.value,
-                                      },
-                                    },
-                                  }));
-                                },
+                                updateTranslation("title", setTempValues),
                               )
                             ) : (
                               <Typography
@@ -293,19 +279,7 @@ const MaturityLevelList = ({
                                 description: e.target.value,
                               })),
                             tempValues.translations?.[langCode]?.description,
-                            (e) => {
-                              if (!langCode) return;
-                              setTempValues((prev) => ({
-                                ...prev,
-                                translations: {
-                                  ...prev.translations,
-                                  [langCode]: {
-                                    ...prev.translations?.[langCode],
-                                    description: e.target.value,
-                                  },
-                                },
-                              }));
-                            },
+                            updateTranslation("description", setTempValues),
                             true,
                           )
                         ) : (

@@ -1,37 +1,29 @@
 import { ChangeEvent, useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import TextField from "@mui/material/TextField";
+import { Box, Typography, IconButton, TextField } from "@mui/material";
+import {
+  EditRounded,
+  DeleteRounded,
+  CheckRounded,
+  CloseRounded,
+  SwapVertRounded,
+} from "@mui/icons-material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
-import { KitDesignListItems } from "@/types/index";
+import { KitDesignListItems, TId } from "@/types/index";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
+import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
-  onEdit: (id: any) => void;
+  onEdit: (item: KitDesignListItems) => void;
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
-  setOpenDeleteDialog?: any;
+  setOpenDeleteDialog?: (val: { status: boolean; id: TId }) => void;
   editableFieldKey?: keyof KitDesignListItems;
   editable?: boolean;
-}
-
-interface ITempValues {
-  title: string;
-  description: string;
-  weight?: number;
-  question?: number;
-  translations?: any;
-  [key: string]: any;
 }
 
 const ListOfItems = ({
@@ -42,291 +34,217 @@ const ListOfItems = ({
   editableFieldKey,
   editable = true,
 }: ListOfItemsProps) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const [reorderedItems, setReorderedItems] = useState(items);
   const [editMode, setEditMode] = useState<number | null>(null);
-  const [tempValues, setTempValues] = useState<ITempValues>({
-    title: "",
-    description: "",
-    weight: 0,
-    question: 0,
-    translations: null,
-  });
+  const [tempValues, setTempValues] = useState<Partial<KitDesignListItems>>({});
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
-    const newReorderedItems = Array.from(reorderedItems);
-    const [movedItem] = newReorderedItems.splice(result.source.index, 1);
-    newReorderedItems.splice(result.destination.index, 0, movedItem);
-    setReorderedItems(newReorderedItems);
-    onReorder(newReorderedItems);
+    const reordered = [...reorderedItems];
+    const [moved] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, moved);
+    setReorderedItems(reordered);
+    onReorder(reordered);
   };
 
   const handleEditClick = (item: KitDesignListItems) => {
     setEditMode(Number(item.id));
-    setTempValues({
-      title: item.title,
-      description: item.description,
-      weight: item.weight,
-      question: item.questionsCount,
-      translations: item.translations,
-    });
+    setTempValues(item);
   };
 
   const handleSaveClick = (item: KitDesignListItems) => {
     onEdit({
       ...item,
-      title: tempValues.title,
-      description: tempValues.description,
-      weight: tempValues?.weight,
-      translations: {
-        FA: {
-          title: tempValues.translations?.FA?.title,
-          description: tempValues.translations?.FA?.description,
-        },
-      },
+      ...tempValues,
+      translations: langCode
+        ? {
+            [langCode]: {
+              title: tempValues.translations?.[langCode]?.title,
+              description: tempValues.translations?.[langCode]?.description,
+            },
+          }
+        : undefined,
     });
     setEditMode(null);
+    setTempValues({});
   };
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({
-      title: "",
-      description: "",
-      weight: 0,
-      question: 0,
-      translations: null,
-    });
+    setTempValues({});
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setTempValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setTempValues((prev) => ({ ...prev, [name]: value }));
   };
+
   const isRTL = theme.direction === "rtl";
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="subjects">
-        {(provided: any) => (
+      <Droppable droppableId="kit-items">
+        {(provided) => (
           <Box {...provided.droppableProps} ref={provided.innerRef}>
-            {reorderedItems?.map((item, index) => (
-              <Draggable
-                key={item.id}
-                draggableId={item.id.toString()}
-                index={index}
-              >
-                {(provided: any) => (
-                  <Box
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    mt={1.5}
-                    p={1.5}
-                    sx={{
-                      backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
-                      borderRadius: "8px",
-                      border: "0.3px solid #73808c30",
-                      display: "flex",
-                      alignItems: "flex-start",
-                      position: "relative",
-                    }}
-                  >
+            {reorderedItems.map((item, index) => {
+              const isEditing = editMode === item.id;
+              return (
+                <Draggable
+                  key={item.id}
+                  draggableId={String(item.id)}
+                  index={index}
+                >
+                  {(provided) => (
                     <Box
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      mt={1.5}
+                      p={1.5}
                       sx={{
-                        ...styles.centerVH,
-                        background: "#F3F5F6",
-                        width: { xs: "50px", md: "64px" },
-                        justifyContent: "space-around",
-                      }}
-                      borderRadius="0.5rem"
-                      mr={2}
-                      px={1.5}
-                    >
-                      <Typography variant="semiBoldLarge">
-                        {index + 1}
-                      </Typography>
-                      <IconButton
-                        disableRipple
-                        disableFocusRipple
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "transparent",
-                            color: "inherit",
-                          },
-                        }}
-                        size="small"
-                      >
-                        <SwapVertRoundedIcon fontSize="small" />
-                      </IconButton>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        flexGrow: 1,
+                        backgroundColor: isEditing ? "#F3F5F6" : "#fff",
+                        borderRadius: "8px",
+                        border: "0.3px solid #73808c30",
                         display: "flex",
-                        flexDirection: "column",
                         gap: 2,
                       }}
                     >
+                      {/* Index and Drag Icon */}
                       <Box
                         sx={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          justifyContent: "space-between",
-                          flexDirection: isRTL ? "row-reverse" : "row",
-                          gap: 1,
+                          ...styles.centerVH,
+                          background: "#F3F5F6",
+                          width: { xs: "50px", md: "64px" },
+                          justifyContent: "space-around",
                         }}
+                        borderRadius="0.5rem"
+                        px={1.5}
                       >
-                        <Box sx={{ flexGrow: 1 }}>
-                          {editMode === item.id ? (
-                            <MultiLangTextField
-                              name="title"
-                              value={tempValues.title}
-                              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                handleChange(e)
-                              }
-                              inputProps={{
-                                style: {
-                                  fontFamily: languageDetector(tempValues.title)
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                                },
-                              }}
-                              translationValue={
-                                tempValues.translations?.FA?.title ?? ""
-                              }
-                              onTranslationChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  translations: {
-                                    ...prev.translations,
-                                    FA: {
-                                      ...prev.translations?.FA,
-                                      title: e.target.value,
-                                    },
-                                  },
-                                }))
-                              }
-                              label={<Trans i18nKey="title" />}
-                            />
-                          ) : (
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                flexGrow: 1,
-                                width: "80%",
-                                fontFamily: languageDetector(item.title)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                              }}
-                            >
-                              {item.title}
-                            </Typography>
-                          )}
-                        </Box>
-                        {editMode === item.id ? (
-                          <Box
-                            sx={{
-                              mr: theme.direction == "rtl" ? "auto" : "unset",
-                              ml: theme.direction == "ltr" ? "auto" : "unset",
-                            }}
-                          >
-                            <IconButton
-                              size="small"
-                              onClick={() => handleSaveClick(item)}
-                              sx={{ mx: 1 }}
-                              color="success"
-                              data-testid="items-check-icon"
-                            >
-                              <CheckRoundedIcon fontSize="small" />
-                            </IconButton>
-                            <IconButton
-                              size="small"
-                              onClick={handleCancelClick}
-                              sx={{ mx: 1 }}
-                              color="secondary"
-                            >
-                              <CloseRoundedIcon fontSize="small" />
-                            </IconButton>
-                          </Box>
-                        ) : (
-                          <>
-                            <IconButton
-                              size="small"
-                              onClick={() => handleEditClick(item)}
-                              sx={{ mx: 1 }}
-                              color="success"
-                              data-testid="items-edit-icon"
-                            >
-                              <EditRoundedIcon fontSize="small" />
-                            </IconButton>
-                            {setOpenDeleteDialog && (
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  setOpenDeleteDialog({
-                                    status: true,
-                                    id: item.id,
-                                  })
-                                }
-                                sx={{ mx: 1 }}
-                                color="secondary"
-                                data-testid="items-delete-icon"
-                              >
-                                <DeleteRoundedIcon fontSize="small" />
-                              </IconButton>
-                            )}
-                          </>
-                        )}
+                        <Typography variant="semiBoldLarge">
+                          {index + 1}
+                        </Typography>
+                        <IconButton size="small" disableRipple>
+                          <SwapVertRounded fontSize="small" />
+                        </IconButton>
                       </Box>
 
+                      {/* Main Content */}
                       <Box
                         sx={{
+                          flexGrow: 1,
                           display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: 3,
+                          flexDirection: "column",
+                          gap: 2,
                         }}
                       >
-                        <Box sx={{ flexGrow: 1 }}>
-                          {editMode === item.id ? (
-                            <MultiLangTextField
-                              name="description"
-                              value={tempValues.description}
-                              onChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  description: e.target.value,
-                                }))
-                              }
-                              inputProps={{
-                                style: {
-                                  fontFamily: languageDetector(
-                                    tempValues.description,
-                                  )
+                        {/* Title + Actions */}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            flexDirection: isRTL ? "row-reverse" : "row",
+                            gap: 1,
+                          }}
+                        >
+                          <Box sx={{ flexGrow: 1 }}>
+                            {isEditing ? (
+                              <MultiLangTextField
+                                name="title"
+                                value={tempValues.title ?? ""}
+                                onChange={handleChange}
+                                translationValue={
+                                  langCode
+                                    ? (tempValues.translations?.[langCode]
+                                        ?.title ?? "")
+                                    : ""
+                                }
+                                onTranslationChange={updateTranslation(
+                                  "title",
+                                  setTempValues,
+                                )}
+                                label={<Trans i18nKey="title" />}
+                              />
+                            ) : (
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontFamily: languageDetector(item.title)
                                     ? farsiFontFamily
                                     : primaryFontFamily,
-                                },
-                              }}
+                                }}
+                              >
+                                {item.title}
+                              </Typography>
+                            )}
+                          </Box>
+
+                          <Box display="flex" alignItems="center" gap={1}>
+                            {isEditing ? (
+                              <>
+                                <IconButton
+                                  onClick={() => handleSaveClick(item)}
+                                  color="success"
+                                  data-testid="items-check-icon"
+                                >
+                                  <CheckRounded />
+                                </IconButton>
+                                <IconButton
+                                  onClick={handleCancelClick}
+                                  color="secondary"
+                                >
+                                  <CloseRounded />
+                                </IconButton>
+                              </>
+                            ) : (
+                              <>
+                                <IconButton
+                                  onClick={() => handleEditClick(item)}
+                                  color="success"
+                                  data-testid="items-edit-icon"
+                                >
+                                  <EditRounded />
+                                </IconButton>
+                                {setOpenDeleteDialog && (
+                                  <IconButton
+                                    onClick={() =>
+                                      setOpenDeleteDialog({
+                                        status: true,
+                                        id: item.id,
+                                      })
+                                    }
+                                    color="secondary"
+                                    data-testid="items-delete-icon"
+                                  >
+                                    <DeleteRounded />
+                                  </IconButton>
+                                )}
+                              </>
+                            )}
+                          </Box>
+                        </Box>
+
+                        {/* Description */}
+                        <Box>
+                          {isEditing ? (
+                            <MultiLangTextField
+                              name="description"
+                              value={tempValues.description ?? ""}
+                              onChange={handleChange}
                               translationValue={
-                                tempValues.translations?.FA?.description ?? ""
+                                langCode
+                                  ? (tempValues.translations?.[langCode]
+                                      ?.description ?? "")
+                                  : ""
                               }
-                              onTranslationChange={(e) =>
-                                setTempValues((prev) => ({
-                                  ...prev,
-                                  translations: {
-                                    ...prev.translations,
-                                    FA: {
-                                      ...prev.translations?.FA,
-                                      description: e.target.value,
-                                    },
-                                  },
-                                }))
-                              }
+                              onTranslationChange={updateTranslation(
+                                "description",
+                                setTempValues,
+                              )}
                               label={<Trans i18nKey="description" />}
                               multiline
                               minRows={2}
@@ -334,97 +252,48 @@ const ListOfItems = ({
                             />
                           ) : (
                             <Typography
+                              variant="body2"
                               sx={{
-                                wordBreak: "break-word",
                                 fontFamily: languageDetector(item.description)
                                   ? farsiFontFamily
                                   : primaryFontFamily,
-                                width: "80%",
                               }}
-                              variant="body2"
-                              mt={1}
                             >
                               {item.description}
                             </Typography>
                           )}
                         </Box>
+
+                        {/* Editable Field like weight */}
                         {editableFieldKey &&
                           typeof item[editableFieldKey] === "number" && (
                             <Box
-                              sx={{
-                                width: "fit-content",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "flex-end",
-                                flexDirection: "column",
-                                gap: "0.5rem",
-                                textAlign: editable
-                                  ? editMode === item.id
-                                    ? "end"
-                                    : "center"
-                                  : "center",
-                              }}
+                              display="flex"
+                              flexDirection="column"
+                              alignItems="center"
                             >
-                              <Typography
-                                sx={{
-                                  ...theme.typography.labelCondensed,
-                                  color: "#6C8093",
-                                  width: "100%",
-                                }}
-                              >
+                              <Typography variant="caption">
                                 <Trans i18nKey={editableFieldKey} />
                               </Typography>
-
-                              {editable && editMode === item.id ? (
+                              {isEditing ? (
                                 <TextField
-                                  required
-                                  value={
-                                    tempValues?.[editableFieldKey] as number
-                                  }
-                                  onChange={(e) =>
-                                    setTempValues?.({
-                                      ...tempValues,
-                                      [editableFieldKey]: Number(
-                                        e.target.value,
-                                      ),
-                                    })
-                                  }
                                   name={editableFieldKey}
-                                  variant="outlined"
-                                  fullWidth
-                                  size="small"
-                                  margin="normal"
                                   type="number"
+                                  size="small"
+                                  value={tempValues?.[editableFieldKey] ?? ""}
+                                  onChange={handleChange}
+                                  sx={{ width: "60px", mt: 1 }}
                                   inputProps={{
-                                    style: {
-                                      textAlign: "center",
-                                      width: "40px",
-                                    },
-                                  }}
-                                  sx={{
-                                    mb: 1,
-                                    mt: 1,
-                                    fontSize: 14,
-                                    "& .MuiInputBase-root": {
-                                      fontSize: 14,
-                                      overflow: "auto",
-                                    },
-                                    "& .MuiFormLabel-root": {
-                                      fontSize: 14,
-                                    },
-                                    background: "#fff",
-                                    borderRadius: "8px",
+                                    style: { textAlign: "center" },
                                   }}
                                 />
                               ) : (
                                 <Box
-                                  aria-label={editableFieldKey}
                                   sx={{
-                                    width: "3.75rem",
-                                    height: "3.75rem",
+                                    width: 60,
+                                    height: 60,
                                     borderRadius: "50%",
                                     backgroundColor: "#E2E5E9",
-                                    color: "#2B333B",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
@@ -437,10 +306,10 @@ const ListOfItems = ({
                           )}
                       </Box>
                     </Box>
-                  </Box>
-                )}
-              </Draggable>
-            ))}
+                  )}
+                </Draggable>
+              );
+            })}
             {provided.placeholder}
           </Box>
         )}

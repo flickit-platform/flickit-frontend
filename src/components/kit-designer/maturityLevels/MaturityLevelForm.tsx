@@ -10,6 +10,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface MaturityLevelFormProps {
   newMaturityLevel: {
@@ -37,29 +38,12 @@ const MaturityLevelForm = ({
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const [showTranslation, setShowTranslation] = useState({
     title: !!newMaturityLevel.translations?.[langCode]?.title,
     description: !!newMaturityLevel.translations?.[langCode]?.description,
   });
-
-  const handleTranslationChange = (
-    field: "title" | "description",
-    value: string,
-  ) => {
-    if (!langCode) return;
-
-    const trimmed = value.trim();
-    setNewMaturityLevel((prev) => ({
-      ...prev,
-      translations: {
-        ...prev.translations,
-        [langCode]: {
-          ...prev.translations?.[langCode],
-          [field]: trimmed === "" ? undefined : trimmed,
-        },
-      },
-    }));
-  };
 
   return (
     <Box
@@ -107,11 +91,11 @@ const MaturityLevelForm = ({
             value={newMaturityLevel[field]}
             onChange={handleInputChange}
             translationValue={
-              newMaturityLevel.translations?.[langCode]?.[field] ?? ""
+              langCode
+                ? (newMaturityLevel.translations?.[langCode]?.[field] ?? "")
+                : ""
             }
-            onTranslationChange={(e) =>
-              handleTranslationChange(field, e.target.value)
-            }
+            onTranslationChange={updateTranslation(field, setNewMaturityLevel)}
             showTranslation={showTranslation[field]}
             setShowTranslation={(val) =>
               setShowTranslation((prev) => ({
@@ -122,13 +106,6 @@ const MaturityLevelForm = ({
             multiline={field === "description"}
             minRows={field === "description" ? 2 : undefined}
             maxRows={field === "description" ? 5 : undefined}
-            inputProps={{
-              style: {
-                fontFamily: languageDetector(newMaturityLevel[field])
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              },
-            }}
           />
         ))}
       </Box>

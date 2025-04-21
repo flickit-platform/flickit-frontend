@@ -11,6 +11,9 @@ import languageDetector from "@utils/languageDetector";
 import { MultiLangs } from "@/types";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useState } from "react";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { useKitLanguageContext } from "@/providers/KitProvider";
+import { Trans } from "react-i18next";
 
 interface QuestionnairesFormProps {
   newItem: {
@@ -26,47 +29,6 @@ interface QuestionnairesFormProps {
   setNewQuestionnaires: any;
 }
 
-const renderTextField = (
-  label: string,
-  name: string,
-  value?: string,
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  multiline = false,
-  inputProps?: any,
-  newItem?: any,
-  setNewQuestionnaires?: any,
-  show?: boolean,
-  setShow?: any,
-) => {
-  return (
-    <MultiLangTextField
-      label={label}
-      name={name}
-      value={value}
-      onChange={onChange}
-      multiline={multiline}
-      minRows={2}
-      maxRows={5}
-      inputProps={inputProps}
-      translationValue={newItem.translations?.FA?.[name]}
-      onTranslationChange={(e) =>
-        setNewQuestionnaires((prev: any) => ({
-          ...prev,
-          translations: {
-            ...prev.translations,
-            FA: {
-              ...prev.translations?.FA,
-              [name]: e.target.value,
-            },
-          },
-        }))
-      }
-      showTranslation={show}
-      setShowTranslation={setShow}
-    />
-  );
-};
-
 const QuestionnairesForm = ({
   newItem,
   handleInputChange,
@@ -74,12 +36,16 @@ const QuestionnairesForm = ({
   handleCancel,
   setNewQuestionnaires,
 }: QuestionnairesFormProps) => {
-  const [showTitleTranslation, setShowTitleTranslation] = useState(
-    Boolean(newItem.translations?.FA?.title),
-  );
-  const [showDescriptionTranslation, setShowDescriptionTranslation] = useState(
-    Boolean(newItem.translations?.FA?.description),
-  );
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
+  const [showTranslation, setShowTranslation] = useState({
+    title: !!newItem.translations?.[langCode]?.title,
+    description: !!newItem.translations?.[langCode]?.description,
+  });
+
   return (
     <Box
       mt={1.5}
@@ -125,44 +91,29 @@ const QuestionnairesForm = ({
       <Box
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
       >
-        {renderTextField(
-          t("title"),
-          "title",
-          newItem.title,
-          handleInputChange,
-          false,
-          {
-            "data-testid": "title-id",
-            style: {
-              fontFamily: languageDetector(newItem.title)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            },
-          },
-          newItem,
-          setNewQuestionnaires,
-          showTitleTranslation,
-          setShowTitleTranslation,
-        )}
-        {renderTextField(
-          t("description"),
-          "description",
-          newItem.description,
-          handleInputChange,
-          true,
-          {
-            "data-testid": "description-id",
-            style: {
-              fontFamily: languageDetector(newItem.title)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            },
-          },
-          newItem,
-          setNewQuestionnaires,
-          showDescriptionTranslation,
-          setShowDescriptionTranslation,
-        )}
+        {(["title", "description"] as const).map((field) => (
+          <MultiLangTextField
+            key={field}
+            name={field}
+            label={<Trans i18nKey={field} />}
+            value={newItem[field]}
+            onChange={handleInputChange}
+            translationValue={
+              langCode ? (newItem.translations?.[langCode]?.[field] ?? "") : ""
+            }
+            onTranslationChange={updateTranslation(field, setNewQuestionnaires)}
+            showTranslation={showTranslation[field]}
+            setShowTranslation={(val) =>
+              setShowTranslation((prev) => ({
+                ...prev,
+                [field]: val,
+              }))
+            }
+            multiline={field === "description"}
+            minRows={field === "description" ? 2 : undefined}
+            maxRows={field === "description" ? 5 : undefined}
+          />
+        ))}
       </Box>
 
       {/* Check and Close Buttons */}

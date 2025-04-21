@@ -18,11 +18,8 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import toastError from "@/utils/toastError";
-import {
-  kitActions,
-  setMainLanguage,
-  useKitLanguageContext,
-} from "@/providers/KitProvider";
+import { kitActions, useKitLanguageContext } from "@/providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 type TranslationFields = "title" | "summary" | "about";
 
@@ -34,6 +31,11 @@ interface UpdatedValues {
 }
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const { dispatch } = useKitLanguageContext();
   const { service } = useServiceContext();
   const {
@@ -71,7 +73,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     title: undefined,
     summary: undefined,
     about: undefined,
-    translations: { [firstTranslationKey]: {} },
+    translations: undefined,
   });
   const [showTranslations, setShowTranslations] = useState({
     title: false,
@@ -104,12 +106,14 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       setUpdatedValues((prev) => ({
         ...prev,
         [field]: data?.[field],
-        translations: {
-          [firstTranslationKey]: {
-            ...prev.translations?.[firstTranslationKey],
-            [field]: data?.translations?.[firstTranslationKey]?.[field],
-          },
-        },
+        translations: langCode
+          ? {
+              [langCode]: {
+                ...prev.translations?.[langCode],
+                [field]: data?.translations?.[langCode]?.[field],
+              },
+            }
+          : undefined,
       }));
     },
     [editableFields, data],
@@ -133,21 +137,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const handleCancelEdit = useCallback(() => {
     setEditableFields(new Set());
   }, []);
-
-  const handleTranslationChange = useCallback(
-    (field: TranslationFields, value?: string) => {
-      setUpdatedValues((prev) => ({
-        ...prev,
-        translations: {
-          [firstTranslationKey]: {
-            ...prev.translations?.[firstTranslationKey],
-            [field]: value,
-          },
-        },
-      }));
-    },
-    [firstTranslationKey],
-  );
 
   const toggleTranslation = useCallback((field: TranslationFields) => {
     setShowTranslations((prev) => ({
@@ -196,16 +185,11 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               }
               label={field.charAt(0).toUpperCase() + field.slice(1)}
               translationValue={
-                updatedValues.translations?.[firstTranslationKey]?.[field]
+                langCode
+                  ? (updatedValues.translations?.[langCode]?.[field] ?? "")
+                  : ""
               }
-              onTranslationChange={(e: {
-                target: { value: string | undefined };
-              }) =>
-                handleTranslationChange(
-                  field,
-                  e.target.value === "" ? undefined : e.target.value,
-                )
-              }
+              onTranslationChange={updateTranslation(field, setUpdatedValues)}
               showTranslation={showTranslations[field]}
               setShowTranslation={() => toggleTranslation(field)}
               fullWidth
@@ -241,7 +225,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       updatedValues,
       showTranslations,
       handleFieldEdit,
-      handleTranslationChange,
       toggleTranslation,
     ],
   );

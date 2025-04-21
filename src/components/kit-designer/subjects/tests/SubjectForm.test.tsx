@@ -4,12 +4,18 @@ import { describe, it, vi, expect } from "vitest";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 describe("SubjectForm", () => {
   const newItem = {
     title: "title test",
     description: "description test",
-    translations: {FA:{title: "title-translations-test", description:"descriptions-translations-test"}},
+    translations: {
+      FA: {
+        title: "title-translations-test",
+        description: "descriptions-translations-test",
+      },
+    },
     index: 1,
     value: 2,
     weight: 3,
@@ -18,19 +24,21 @@ describe("SubjectForm", () => {
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
   const handleCancel = vi.fn();
-  const  setNewSubject = vi.fn();
+  const setNewSubject = vi.fn();
 
   const setup = () => {
     render(
-      <I18nextProvider i18n={i18n}>
-        <SubjectForm
-          newSubject={newItem}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-          setNewSubject={setNewSubject}
-        />
-      </I18nextProvider>,
+      <KitLanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <SubjectForm
+            newSubject={newItem}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+            setNewSubject={setNewSubject}
+          />
+        </I18nextProvider>
+      </KitLanguageProvider>,
     );
 
     return {

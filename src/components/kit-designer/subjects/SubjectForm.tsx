@@ -9,6 +9,7 @@ import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { styles } from "@/config/styles";
 import { useKitLanguageContext } from "@/providers/KitProvider";
 import { MultiLangs } from "@/types";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface SubjectFormProps {
   newSubject: {
@@ -22,9 +23,7 @@ interface SubjectFormProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
   handleCancel: () => void;
-  setNewSubject: React.Dispatch<
-    React.SetStateAction<SubjectFormProps["newSubject"]>
-  >;
+  setNewSubject: any;
 }
 
 const SubjectForm = ({
@@ -36,6 +35,8 @@ const SubjectForm = ({
 }: SubjectFormProps) => {
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
 
   const [showTitleTranslation, setShowTitleTranslation] = useState(
     Boolean(newSubject.translations?.[langCode]?.title),
@@ -49,7 +50,7 @@ const SubjectForm = ({
     value?: string,
   ) => {
     if (!langCode) return;
-    setNewSubject((prev) => ({
+    setNewSubject((prev: any) => ({
       ...prev,
       translations: {
         ...prev.translations,
@@ -123,17 +124,10 @@ const SubjectForm = ({
           name="title"
           value={newSubject.title}
           onChange={handleInputChange}
-          inputProps={{
-            style: {
-              fontFamily: languageDetector(newSubject.title)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            },
-          }}
-          translationValue={newSubject.translations?.[langCode]?.title}
-          onTranslationChange={(e) =>
-            handleTranslationChange("title", e.target.value)
+          translationValue={
+            langCode ? (newSubject.translations?.[langCode]?.title ?? "") : ""
           }
+          onTranslationChange={updateTranslation("title", setNewSubject)}
           showTranslation={showTitleTranslation}
           setShowTranslation={setShowTitleTranslation}
         />
@@ -146,17 +140,12 @@ const SubjectForm = ({
           multiline
           minRows={2}
           maxRows={5}
-          inputProps={{
-            style: {
-              fontFamily: languageDetector(newSubject.description)
-                ? farsiFontFamily
-                : primaryFontFamily,
-            },
-          }}
-          translationValue={newSubject.translations?.[langCode]?.description}
-          onTranslationChange={(e) =>
-            handleTranslationChange("description", e.target.value)
+          translationValue={
+            langCode
+              ? (newSubject.translations?.[langCode]?.description ?? "")
+              : ""
           }
+          onTranslationChange={updateTranslation("description", setNewSubject)}
           showTranslation={showDescriptionTranslation}
           setShowTranslation={setShowDescriptionTranslation}
         />

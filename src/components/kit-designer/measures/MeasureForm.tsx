@@ -86,11 +86,6 @@ const MeasureForm = ({
         margin="normal"
         inputProps={{
           "data-testid": "title-id",
-          style: {
-            fontFamily: languageDetector(newMeasure.title)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          },
         }}
         sx={{
           ...sharedTextFieldSx,
@@ -115,11 +110,6 @@ const MeasureForm = ({
         maxRows={5}
         inputProps={{
           "data-testid": "description-id",
-          style: {
-            fontFamily: languageDetector(newMeasure.description)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          },
         }}
         sx={{
           ...sharedTextFieldSx,
