@@ -17,7 +17,6 @@ import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import languageDetector from "@utils/languageDetector";
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
-import log from "eslint-plugin-react/lib/util/log";
 import { useKitLanguageContext } from "@providers/KitProvider";
 
 interface OptionListProps {
@@ -31,15 +30,18 @@ interface OptionListProps {
   disableAddOption: boolean;
 }
 
-const OptionList = ({
-  Options,
-  onEdit,
-  onReorder,
-  onAdd,
-  isAddingNew,
-  setIsAddingNew,
-  disableAddOption,
-}: OptionListProps) => {
+const OptionList = (props: OptionListProps) => {
+
+  const {
+    Options,
+    onEdit,
+    onReorder,
+    onAdd,
+    isAddingNew,
+    setIsAddingNew,
+    disableAddOption,
+  } = props
+
   const [reorderedItems, setReorderedItems] = useState(Options);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState({
