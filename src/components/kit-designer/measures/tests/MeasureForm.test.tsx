@@ -4,6 +4,7 @@ import { describe, it, vi, expect } from "vitest";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 describe("MeasureForm", () => {
   const newItem = {
@@ -17,17 +18,21 @@ describe("MeasureForm", () => {
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
   const handleCancel = vi.fn();
+  const setNewMeasure = vi.fn();
 
   const setup = () => {
     render(
-      <I18nextProvider i18n={i18n}>
-        <MeasureForm
-          newMeasure={newItem}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-        />
-      </I18nextProvider>
+      <KitLanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <MeasureForm
+            newMeasure={newItem}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+            setNewMeasure={setNewMeasure}
+          />
+        </I18nextProvider>
+      </KitLanguageProvider>,
     );
 
     return {
