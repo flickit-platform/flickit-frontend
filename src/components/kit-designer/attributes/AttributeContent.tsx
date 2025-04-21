@@ -16,7 +16,17 @@ import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkel
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectTable from "./SubjectTable";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import { MultiLangs } from "@/types";
 
+interface INewAttribute {
+  title: string,
+  description: string,
+  index: number,
+  value: number,
+  id: number | null,
+  weight: number,
+  translations: MultiLangs | null,
+}
 const AttributesContent = () => {
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
@@ -54,13 +64,14 @@ const AttributesContent = () => {
   });
 
   const [showNewAttributeForm, setShowNewAttributeForm] = useState(false);
-  const [newAttribute, setNewAttribute] = useState({
+  const [newAttribute, setNewAttribute] = useState<INewAttribute>({
     title: "",
     description: "",
     index: 1,
     value: 1,
     id: null,
     weight: 1,
+    translations: null,
   });
 
   useEffect(() => {
@@ -99,7 +110,8 @@ const AttributesContent = () => {
         title: newAttribute.title,
         weight: newAttribute.weight,
         description: newAttribute.description,
-        subjectId: subjectId,
+        translations: newAttribute.translations,
+        subjectId: subjectId
       };
       if (newAttribute?.id) {
         await service.kitVersions.attributes.update({
@@ -117,6 +129,7 @@ const AttributesContent = () => {
       setNewAttribute({
         title: "",
         description: "",
+        translations: null,
         index: (fetchAttributeKit.data?.items.length ?? 0) + 1,
         value: (fetchAttributeKit.data?.items.length ?? 0) + 1,
         weight: 1,
@@ -133,6 +146,7 @@ const AttributesContent = () => {
     setNewAttribute({
       title: "",
       description: "",
+      translations: null,
       index: (fetchAttributeKit.data?.items.length ?? 0) + 1,
       value: (fetchAttributeKit.data?.items.length ?? 0) + 1,
       weight: 0,
@@ -151,6 +165,7 @@ const AttributesContent = () => {
         weight: AttributeItem.weight,
         description: AttributeItem.description,
         subjectId: AttributeItem.subject.id,
+        translations: AttributeItem.translations
       };
       await updateKitAttribute.query({
         kitVersionId,
@@ -164,6 +179,7 @@ const AttributesContent = () => {
       setNewAttribute({
         title: "",
         description: "",
+        translations: null,
         index: (fetchAttributeKit.data?.items.length ?? 0) + 1,
         value: (fetchAttributeKit.data?.items.length ?? 0) + 1,
         weight: 0,
@@ -236,40 +252,44 @@ const AttributesContent = () => {
         <QueryBatchData
           queryBatchData={[fetchAttributeKit]}
           renderLoading={() => <LoadingSkeletonKitCard />}
-          render={([AttributeData]) => (
-            <>
-              {AttributeData?.items?.length > 0 || showNewAttributeForm ? (
-                <Box>
-                  <SubjectTable
-                    subjects={subjects}
-                    initialAttributes={AttributeData?.items}
-                    onAddAttribute={handleAddNewRow}
-                    onReorder={handleReorder}
-                    showNewAttributeForm={showNewAttributeForm}
-                    handleCancel={handleCancel}
-                    handleSave={handleSave}
-                    newAttribute={newAttribute}
-                    setNewAttribute={setNewAttribute}
-                    handleEdit={handleEdit}
-                    setOpenDeleteDialog={setOpenDeleteDialog}
-                  />
-                </Box>
-              ) : (
-                !showNewAttributeForm && (
-                  <EmptyState
-                    btnTitle={"newAttribute"}
-                    title={"attributesListEmptyState"}
-                    SubTitle={"AttributeEmptyStateDetailed"}
-                    onAddNewRow={handleAddNewRow}
-                    disabled={subjects.length === 0}
-                    disableTextBox={
-                      <Trans i18nKey={"disableAttributeMessage"} />
-                    }
-                  />
-                )
-              )}
-            </>
-          )}
+          render={([AttributeData]) =>
+          {
+            console.log(AttributeData,"AttributeDataAttributeData");
+            return (
+              <>
+                {AttributeData?.items?.length > 0 || showNewAttributeForm ? (
+                  <Box>
+                    <SubjectTable
+                      subjects={subjects}
+                      initialAttributes={AttributeData?.items}
+                      onAddAttribute={handleAddNewRow}
+                      onReorder={handleReorder}
+                      showNewAttributeForm={showNewAttributeForm}
+                      handleCancel={handleCancel}
+                      handleSave={handleSave}
+                      newAttribute={newAttribute}
+                      setNewAttribute={setNewAttribute}
+                      handleEdit={handleEdit}
+                      setOpenDeleteDialog={setOpenDeleteDialog}
+                    />
+                  </Box>
+                ) : (
+                  !showNewAttributeForm && (
+                    <EmptyState
+                      btnTitle={"newAttribute"}
+                      title={"attributesListEmptyState"}
+                      SubTitle={"AttributeEmptyStateDetailed"}
+                      onAddNewRow={handleAddNewRow}
+                      disabled={subjects.length === 0}
+                      disableTextBox={
+                        <Trans i18nKey={"disableAttributeMessage"} />
+                      }
+                    />
+                  )
+                )}
+              </>
+            )
+          }}
         />
       </Box>
       <DeleteConfirmationDialog
