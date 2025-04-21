@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import flagsmith from "flagsmith";
 const FLAGSMITH_ENVIRONMENT_KEY = import.meta.env
   .VITE_FLAGSMITH_ENVIRONMENT_KEY;
-const FLAGSMITH_API_KEY = import.meta.env.VITE_FLAGSMITH_API_KEY;
+const FLAGSMITH_API_KEY = import.meta.env.VITE_FLAGSMITH_API;
 
 export const useFlagsmith = () => {
   const [ready, setReady] = useState(false);
