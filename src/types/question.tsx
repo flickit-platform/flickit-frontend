@@ -60,6 +60,7 @@ export interface IOption {
   index: number;
   value: number;
   questionId?: TId;
+  translations: any
 }
 
 export interface IQuestionsResultsModel
