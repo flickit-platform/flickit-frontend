@@ -1,6 +1,7 @@
 import { IDefaultModel, TId, TImages } from "./common";
 import { TAnswerTemplates, TAnswer } from "./answer";
 import { IPermissions } from "./permissions";
+import { MultiLangs } from "@/types/kitDesigner";
 
 export interface IAssessmentResult {
   assessment_project: string;
@@ -29,6 +30,7 @@ export interface IQuestionInfo {
   title: string;
   questionResultId?: string | number;
   options?: TAnswerTemplates;
+  translations: any;
   hint?: string;
   mayNotBeApplicable?: boolean;
   is_not_applicable?: boolean;

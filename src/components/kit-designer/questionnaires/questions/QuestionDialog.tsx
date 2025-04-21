@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
-  TextField,
   Box,
   Typography,
   Divider,
@@ -12,9 +11,7 @@ import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
-import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { IQuestionInfo, MultiLangs } from "@/types";
+import { IQuestionInfo } from "@/types";
 import { useQuery } from "@/utils/useQuery";
 import { styles } from "@styles";
 import {
@@ -42,9 +39,9 @@ interface Props {
 
 
 interface ITempValue {
-  question: string;
+  title: string;
   hint: string;
-  translations: {[key: string] : { question: string, hint: string }} | null;
+  translations: {[key: string] : { title: string, hint: string }} | null;
 }
 
 const QuestionDialog: React.FC<Props> = ({
@@ -71,7 +68,7 @@ const QuestionDialog: React.FC<Props> = ({
 
 
   const [tempValue, setTempValue] = useState<ITempValue>({
-    question: "",
+    title: "",
     hint: "",
     translations: null
   });
@@ -97,11 +94,16 @@ const QuestionDialog: React.FC<Props> = ({
 
   useEffect(() => {
     if (open && question.id) {
-      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+     Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+
+     setTempValue({
+       title: question.title ?? "",
+       hint: question.hint ?? "",
+       translations: question.translations ?? ""
+     })
 
       formMethods.reset({
-        title: question.title ?? "",
-        hint: question.hint ?? "",
+
         options: question.options ?? [{ text: "" }],
         mayNotBeApplicable: question.mayNotBeApplicable ?? false,
         advisable: question.advisable ?? false,
@@ -117,6 +119,7 @@ const QuestionDialog: React.FC<Props> = ({
         questionId: question.id,
         data: {
           ...data,
+          ...tempValue,
           index: question.index,
           answerRangeId: selectedAnswerRange,
           measureId: data.measure?.id ?? null,
@@ -166,31 +169,16 @@ const QuestionDialog: React.FC<Props> = ({
             <MultiLangTextField
               id="question-title"
               label={<Trans i18nKey="question" />}
-              name="question"
-              value={tempValue.question}
+              name="title"
+              value={tempValue.title}
               onChange={handleInputChange}
               translationValue={
-                langCode ? (tempValue.translations?.[langCode]?.question ?? "") : ""
+                langCode ? (tempValue.translations?.[langCode]?.title ?? "") : ""
               }
-              onTranslationChange={updateTranslation("question", setTempValue)}
+              onTranslationChange={updateTranslation("title", setTempValue)}
               placeholder={t("questionPlaceholder")?.toString()}
               multiline
             />
-            {/*<TextField*/}
-            {/*  {...formMethods.register("title", { required: true })}*/}
-            {/*  fullWidth*/}
-            {/*  label="Question"*/}
-            {/*  placeholder={t("questionPlaceholder")?.toString()}*/}
-            {/*  required*/}
-            {/*  multiline*/}
-            {/*  inputProps={{*/}
-            {/*    style: {*/}
-            {/*      fontFamily: languageDetector(question.title)*/}
-            {/*        ? farsiFontFamily*/}
-            {/*        : primaryFontFamily,*/}
-            {/*    },*/}
-            {/*  }}*/}
-            {/*/>*/}
           </Grid>
           <Grid item xs={12}>
             <MultiLangTextField
@@ -206,20 +194,6 @@ const QuestionDialog: React.FC<Props> = ({
               placeholder={t("hintPlaceholder")?.toString()}
               multiline
             />
-            {/*<TextField*/}
-            {/*  {...formMethods.register("hint")}*/}
-            {/*  fullWidth*/}
-            {/*  label="Hint"*/}
-            {/*  placeholder={t("hintPlaceholder")?.toString()}*/}
-            {/*  multiline*/}
-            {/*  inputProps={{*/}
-            {/*    style: {*/}
-            {/*      fontFamily: languageDetector(question.hint)*/}
-            {/*        ? farsiFontFamily*/}
-            {/*        : primaryFontFamily,*/}
-            {/*    },*/}
-            {/*  }}*/}
-            {/*/>*/}
           </Grid>
 
           <Grid item xs={12}>
