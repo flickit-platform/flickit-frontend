@@ -16,8 +16,6 @@ import "./assets/font/fonts.css";
 import "@utils/richEditorStyles.css";
 import { AssessmentProvider } from "./providers/AssessmentProvider";
 import i18next from "i18next";
-import { FlagsmithProvider } from "flagsmith/react";
-import flagsmith from "flagsmith";
 
 // Lazy load non-critical components
 const ToastContainer = lazy(() =>
@@ -89,28 +87,22 @@ const renderApp = () => {
             <AuthProvider>
               <ServiceProvider>
                 <ConfigProvider>
-                  <FlagsmithProvider
-                    options={{ environmentID: "VACYXaMWbqJKXQYD3JV6k2" }}
-                    flagsmith={flagsmith}
-                  >
-                    <CssBaseline />
-                    <Suspense fallback={null}>
-                      <ToastContainer
-                        {...toastDefaultConfig}
-                        toastStyle={{
-                          fontFamily:
-                            i18next.language === "fa"
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          direction: i18next.language === "fa" ? "rtl" : "ltr",
-                          textAlign:
-                            i18next.language === "fa" ? "right" : "left",
-                        }}
-                      />
-                    </Suspense>
+                  <CssBaseline />
+                  <Suspense fallback={null}>
+                    <ToastContainer
+                      {...toastDefaultConfig}
+                      toastStyle={{
+                        fontFamily:
+                          i18next.language === "fa"
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        direction: i18next.language === "fa" ? "rtl" : "ltr",
+                        textAlign: i18next.language === "fa" ? "right" : "left",
+                      }}
+                    />
+                  </Suspense>
 
-                    <AppWithNovu />
-                  </FlagsmithProvider>
+                  <AppWithNovu />
                 </ConfigProvider>
               </ServiceProvider>
             </AuthProvider>
