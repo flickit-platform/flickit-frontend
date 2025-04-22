@@ -111,7 +111,7 @@ const AttributeForm = ({
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
       >
         <MultiLangTextField
-          id="title-id"
+          id="new-item"
           label={<Trans i18nKey="title" />}
           name="title"
           value={newAttribute.title}
@@ -123,7 +123,6 @@ const AttributeForm = ({
         />
 
         <MultiLangTextField
-          id="description-id"
           label={<Trans i18nKey="description" />}
           name="description"
           value={newAttribute.description}

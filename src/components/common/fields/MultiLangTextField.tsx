@@ -99,6 +99,7 @@ const MultiLangTextField = ({
             fontFamily: languageDetector(val)
               ? farsiFontFamily
               : primaryFontFamily,
+            direction: languageDetector(val) ? "rtl" : "ltr",
           },
         }}
         multiline={multiline}
