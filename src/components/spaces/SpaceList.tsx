@@ -17,7 +17,7 @@ import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
-import { ISpaceModel, ISpacesModel, TQueryFunction } from "@/types/index";
+import { ISpaceModel, ISpacesModel, SPACE_LEVELS, TQueryFunction } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
@@ -61,9 +61,6 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
-}
-enum spaceLevel {
-  premium = "PREMIUM",
 }
 
 const SpaceCard = (props: ISpaceCardProps) => {
@@ -146,7 +143,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
         >
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
-        {type?.code === spaceLevel.premium && (
+        {type?.code === SPACE_LEVELS.PREMIUM && (
           <Tooltip title={"premiumSpace"}>
             <img
               style={{ width: "32px", height: "32px" }}

@@ -28,3 +28,8 @@ export interface ISpacesModel extends IDefaultModel<ISpaceModel> {
   size?: number;
   total?: number;
 }
+
+
+export enum SPACE_LEVELS {
+  PREMIUM = "PREMIUM",
+}

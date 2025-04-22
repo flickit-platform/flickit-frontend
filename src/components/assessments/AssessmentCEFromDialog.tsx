@@ -148,7 +148,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       };
     }
   }, [openDialog, formMethods, abortController]);
-
+console.log(data)
   return (
     <CEDialog
       {...rest}
@@ -239,7 +239,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
           >
             <Link
               to={`/${
-                spaceId ?? data.space?.id
+                spaceId ?? createdKitSpaceId
               }/assessments/1/${createdKitId}/settings/`}
               style={{ textDecoration: "none" }}
             >
