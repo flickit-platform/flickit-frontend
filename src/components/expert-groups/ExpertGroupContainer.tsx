@@ -65,11 +65,10 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
-import { useFlagsmith } from "@/hooks/useFlagSmith";
 import { FLAGS } from "@/types";
+import flagsmith from "flagsmith";
 
 const ExpertGroupContainer = () => {
-  const { isEnabled } = useFlagsmith();
   const { service } = useServiceContext();
   const { expertGroupId } = useParams();
   const { userInfo } = useAuthContext();
@@ -133,6 +132,8 @@ const ExpertGroupContainer = () => {
       setRemoveMemberDialog({ status: false, id: "" });
     }
   };
+
+  console.log(flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS))
   return (
     <>
       <QueryData
@@ -180,7 +181,8 @@ const ExpertGroupContainer = () => {
                   />
                 }
                 toolbar={
-                  editable && isEnabled(FLAGS.DISPLAY_EXPERT_GROUPS) ? (
+                  editable &&
+                  flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) ? (
                     <EditExpertGroupButton fetchExpertGroup={queryData.query} />
                   ) : (
                     <></>
@@ -720,7 +722,6 @@ const EditExpertGroupButton = (props: any) => {
 };
 
 const ExpertGroupMembers = (props: any) => {
-  const { isEnabled } = useFlagsmith();
   const { hasAccess, query, inviteeQuery } = props;
   const [openInvitees, setOpenInvitees] = useState(false);
   const [openAddMembers, setOpenAddMembers] = useState(false);
@@ -745,14 +746,15 @@ const ExpertGroupMembers = (props: any) => {
               >
                 <Trans i18nKey="members" />
               </Typography>
-              {hasAccess && isEnabled(FLAGS.DISPLAY_EXPERT_GROUPS) && (
-                <AddingNewMember
-                  queryData={query}
-                  inviteeQuery={inviteeQuery}
-                  setOpenAddMembers={setOpenAddMembers}
-                  openAddMembers={openAddMembers}
-                />
-              )}
+              {hasAccess &&
+                flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+                  <AddingNewMember
+                    queryData={query}
+                    inviteeQuery={inviteeQuery}
+                    setOpenAddMembers={setOpenAddMembers}
+                    openAddMembers={openAddMembers}
+                  />
+                )}
 
               <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1.5 }}>
                 <AvatarGroup>
@@ -1081,7 +1083,6 @@ const AssessmentKitsList = (props: any) => {
     assessmentKitQuery,
     languages,
   } = props;
-  const { isEnabled } = useFlagsmith();
   const { expertGroupId } = useParams();
   const kitDesignerDialogProps = useDialog({
     context: { type: "draft", data: { expertGroupId, dsl_id: 959, languages } },
@@ -1105,7 +1106,7 @@ const AssessmentKitsList = (props: any) => {
         size="small"
         toolbar={
           <Box sx={{ display: "flex", gap: "8px" }}>
-            {hasAccess && isEnabled(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+            {hasAccess && flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
               <>
                 <Button
                   variant="outlined"

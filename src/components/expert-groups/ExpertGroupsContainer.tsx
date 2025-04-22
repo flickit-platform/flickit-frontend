@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useAuthContext } from "@providers/AuthProvider";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { TQueryFunction } from "@/types/index";
+import { FLAGS, TQueryFunction } from "@/types/index";
 import forLoopComponent from "@utils/forLoopComponent";
 import useDialog from "@utils/useDialog";
 import useDocumentTitle from "@utils/useDocumentTitle";
@@ -19,6 +19,7 @@ import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import { theme } from "@/config/theme";
+import flagsmith from "flagsmith";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -54,26 +55,28 @@ const ExpertGroupsContainer = () => {
   useDocumentTitle(t("expertGroups") as string);
   return (
     <Box>
-      <Box
-        sx={{
-          background: "white",
-          py: 1,
-          px: 2,
-          ...styles.centerV,
-          borderRadius: 1,
-          mt: 2,
-        }}
-      >
-        <Box></Box>
+      {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
         <Box
           sx={{
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
+            background: "white",
+            py: 1,
+            px: 2,
+            ...styles.centerV,
+            borderRadius: 1,
+            mt: 2,
           }}
         >
-          {<CreateExpertGroupButton onSubmitForm={queryData.query} />}
+          <Box></Box>
+          <Box
+            sx={{
+              ml: theme.direction === "rtl" ? "unset" : "auto",
+              mr: theme.direction !== "rtl" ? "unset" : "auto",
+            }}
+          >
+            {<CreateExpertGroupButton onSubmitForm={queryData.query} />}
+          </Box>
         </Box>
-      </Box>
+      )}
 
       <QueryData
         {...queryData}

@@ -17,7 +17,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
-import { useFlagsmith } from "@/hooks/useFlagSmith";
+import flagsmith from "flagsmith";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -35,7 +35,6 @@ interface IAssessmentKitListItemProps {
 }
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
-  const { isEnabled } = useFlagsmith();
   const navigate = useNavigate();
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
@@ -133,20 +132,21 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             title={!draftVersionId && <Trans i18nKey="noDraftVersion" />}
           >
             <div>
-              {hasAccess && isEnabled(FLAGS.DISPLAY_EXPERT_GROUPS) && (
-                <LoadingButton
-                  variant="outlined"
-                  size="small"
-                  color={!draftVersionId ? "primary" : "inherit"}
-                  onClick={draftClicked}
-                  loading={cloneAssessmentKit.loading}
-                >
-                  <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
-                </LoadingButton>
-              )}
+              {hasAccess &&
+                flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+                  <LoadingButton
+                    variant="outlined"
+                    size="small"
+                    color={!draftVersionId ? "primary" : "inherit"}
+                    onClick={draftClicked}
+                    loading={cloneAssessmentKit.loading}
+                  >
+                    <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
+                  </LoadingButton>
+                )}
             </div>
           </Tooltip>
-          {isEnabled(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+          {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
             <Actions
               assessment_kit={data}
               fetchAssessmentKits={fetchAssessmentKits}

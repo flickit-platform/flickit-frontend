@@ -1,3 +1,4 @@
+import flagsmith from "flagsmith";
 import Keycloak, { KeycloakInstance } from "keycloak-js";
 
 const _kc: KeycloakInstance = new Keycloak({
@@ -22,6 +23,7 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
         _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
 
       sessionStorage.setItem("currentUser", currentUser ?? "");
+      flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
 
       const previousUser = localStorage.getItem("previousUser");
       const lastVisitedPage = localStorage.getItem("lastVisitedPage");

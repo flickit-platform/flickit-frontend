@@ -6,6 +6,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import keycloakService from "@/service//keycloakService";
 import toastError from "@utils/toastError";
+import flagsmith from "flagsmith";
 /**
  * Checks if any token is available and then checks if the user with the founded token is still authenticated or not.
  *
@@ -49,6 +50,8 @@ const useGetSignedInUserInfo = (
             : axios.defaults.headers,
         })
         .then((res) => {
+          flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
+
           sessionStorage.setItem("displayName", data.displayName);
           localStorage.setItem("loggedInUserId", data.id);
           dispatch(

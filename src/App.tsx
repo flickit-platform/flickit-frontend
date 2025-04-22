@@ -7,11 +7,14 @@ import ErrorDataLoading from "@common/errors/ErrorDataLoading";
 import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoading";
 import ErrorBoundary from "@common/errors/ErrorBoundry";
 import { useEffect } from "react";
+import flagsmith from "flagsmith";
 
 function App() {
   const { error, loading } = useGetSignedInUserInfo(); // Checks if the user is signed in
   useEffect(() => {
     const customId = sessionStorage.getItem("currentUser");
+    flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
+
     // @ts-ignore
     if (customId && window.clarity) {
       const script = document.createElement("script");
@@ -33,6 +36,14 @@ function App() {
 
     // @ts-ignore
   }, [window.clarity]);
+
+  useEffect(() => {
+    flagsmith.init({
+      environmentID: import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY,
+      api: import.meta.env.VITE_FLAGSMITH_API,
+    });
+    flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
+  }, []);
   return error ? (
     <Box sx={{ ...styles.centerVH }} height="100vh">
       <ErrorDataLoading />
