@@ -51,6 +51,7 @@ const OptionsSection = ({
 
   const [newOption, setNewOption] = useState({
     title: "",
+    translations: null,
     index: 1,
     value: 1,
     id: null,
@@ -96,11 +97,11 @@ const OptionsSection = ({
   };
 
   const handleSave = async () => {
-    console.log("object");
     try {
       const data = {
         kitVersionId,
         index: newOption.index,
+        translations: newOption.translations,
         value: newOption.value,
         title: newOption.title,
         questionId: question?.id,
@@ -110,6 +111,7 @@ const OptionsSection = ({
       setShowNewOptionForm(false);
       setNewOption({
         title: "",
+        translations: null,
         index: (fetchOptions.data?.items.length ?? 0) + 1,
         value: (fetchOptions.data?.items.length ?? 0) + 1,
         id: null,
@@ -123,6 +125,7 @@ const OptionsSection = ({
     setShowNewOptionForm(false);
     setNewOption({
       title: "",
+      translations: null,
       index: (fetchOptions.data?.items.length ?? 0) + 1,
       value: (fetchOptions.data?.items.length ?? 0) + 1,
       id: null,
@@ -211,6 +214,7 @@ const OptionsSection = ({
         <>
           {showNewOptionForm ? (
             <OptionForm
+              setNewItem={setNewOption}
               newItem={newOption}
               handleInputChange={handleInputChange}
               handleSave={handleSave}
