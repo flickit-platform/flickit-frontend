@@ -138,7 +138,7 @@ const MaturityLevelList = ({
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  flexDirection: isRTL ? "row-reverse" : "row",
+                  flexDirection:  "row",
                   gap: 1,
                 }}
               >
