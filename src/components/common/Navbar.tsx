@@ -29,7 +29,7 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import { ISpacesModel } from "@/types/index";
+import { FLAGS, ISpacesModel } from "@/types/index";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IMessage } from "@novu/notification-center";
@@ -926,7 +926,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <Trans i18nKey={"account"} />
           </ListItemText>
         </MenuItem>
-        {isEnabled("display_expert_groups") && (
+        {isEnabled(FLAGS.DISPLAY_EXPERT_GROUPS) && (
           <MenuItem
             dense
             onClick={handleClose}
