@@ -6,11 +6,13 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { useKitLanguageContext } from "@/providers/KitProvider";
 
 const QuestionContain = (props: any) => {
   const { question, fetchQuery } = props;
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -36,9 +38,16 @@ const QuestionContain = (props: any) => {
           mr={2}
           px={0.2}
         >
-          <Typography data-testid="question-index" variant="semiBoldLarge">{`Q. ${question?.index}`}</Typography>
+          <Typography
+            data-testid="question-index"
+            variant="semiBoldLarge"
+          >{`Q. ${question?.index}`}</Typography>
         </Box>
-        <Box data-testid="question-title" sx={{ width: { xs: "80%", md: "90%", fontFamily: languageDetector(question?.title) ? farsiFontFamily :  primaryFontFamily } }}>{question?.title}</Box>
+        <TitleWithTranslation
+          title={question.title}
+          translation={langCode ? question.translations?.[langCode]?.title : ""}
+          variant="semiBoldMedium"
+        />{" "}
         <Box
           sx={{
             width: { xs: "20%", md: "10%" },
@@ -46,7 +55,10 @@ const QuestionContain = (props: any) => {
             justifyContent: "center",
           }}
         >
-          <IconButton data-testid="question-handel-edit" onClick={handleEditClick}>
+          <IconButton
+            data-testid="question-handel-edit"
+            onClick={handleEditClick}
+          >
             <ModeEditOutlineOutlinedIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -54,13 +66,14 @@ const QuestionContain = (props: any) => {
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
-        {isDialogOpen && <QuestionDialog
-            open={isDialogOpen}
-            question={question}
-            onClose={handleCloseDialog}
-            fetchQuery={fetchQuery}
-        /> }
-
+      {isDialogOpen && (
+        <QuestionDialog
+          open={isDialogOpen}
+          question={question}
+          onClose={handleCloseDialog}
+          fetchQuery={fetchQuery}
+        />
+      )}
     </>
   );
 };

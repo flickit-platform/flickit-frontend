@@ -252,44 +252,39 @@ const AttributesContent = () => {
         <QueryBatchData
           queryBatchData={[fetchAttributeKit]}
           renderLoading={() => <LoadingSkeletonKitCard />}
-          render={([AttributeData]) =>
-          {
-            console.log(AttributeData,"AttributeDataAttributeData");
-            return (
-              <>
-                {AttributeData?.items?.length > 0 || showNewAttributeForm ? (
-                  <Box>
-                    <SubjectTable
-                      subjects={subjects}
-                      initialAttributes={AttributeData?.items}
-                      onAddAttribute={handleAddNewRow}
-                      onReorder={handleReorder}
-                      showNewAttributeForm={showNewAttributeForm}
-                      handleCancel={handleCancel}
-                      handleSave={handleSave}
-                      newAttribute={newAttribute}
-                      setNewAttribute={setNewAttribute}
-                      handleEdit={handleEdit}
-                      setOpenDeleteDialog={setOpenDeleteDialog}
-                    />
-                  </Box>
-                ) : (
-                  !showNewAttributeForm && (
-                    <EmptyState
-                      btnTitle={"newAttribute"}
-                      title={"attributesListEmptyState"}
-                      SubTitle={"AttributeEmptyStateDetailed"}
-                      onAddNewRow={handleAddNewRow}
-                      disabled={subjects.length === 0}
-                      disableTextBox={
-                        <Trans i18nKey={"disableAttributeMessage"} />
-                      }
-                    />
-                  )
-                )}
-              </>
-            )
-          }}
+          render={([AttributeData]) => (
+            <>
+              {AttributeData?.items?.length > 0 || showNewAttributeForm ? (
+                <Box>
+                  <SubjectTable
+                    subjects={subjects}
+                    initialAttributes={AttributeData?.items}
+                    onAddAttribute={handleAddNewRow}
+                    onReorder={handleReorder}
+                    showNewAttributeForm={showNewAttributeForm}
+                    handleCancel={handleCancel}
+                    handleSave={handleSave}
+                    newAttribute={newAttribute}
+                    setNewAttribute={setNewAttribute}
+                    handleEdit={handleEdit}
+                  />
+                </Box>
+              ) : (
+                !showNewAttributeForm && (
+                  <EmptyState
+                    btnTitle={"newAttribute"}
+                    title={"attributesListEmptyState"}
+                    SubTitle={"AttributeEmptyStateDetailed"}
+                    onAddNewRow={handleAddNewRow}
+                    disabled={subjects.length === 0}
+                    disableTextBox={
+                      <Trans i18nKey={"disableAttributeMessage"} />
+                    }
+                  />
+                )
+              )}
+            </>
+          )}
         />
       </Box>
       <DeleteConfirmationDialog

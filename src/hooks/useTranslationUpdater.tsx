@@ -10,16 +10,16 @@ export const useTranslationUpdater = (langCode?: string) => {
 
     setState((prev: any) => {
       const updatedTranslation =
-        value === "" ?
-          {
-            ...prev.translations?.[langCode],
-            [field]: undefined,
-          }
-          :
-          {
-            ...prev.translations?.[langCode],
-            [field]: value,
-          };
+         value === "" ?
+           {
+             ...prev.translations?.[langCode],
+             [field]: undefined,
+           }
+            :
+           {
+              ...prev.translations?.[langCode],
+              [field]: value,
+            };
       return {
         ...prev,
         translations: !Object.values(updatedTranslation).every(item => item === undefined)

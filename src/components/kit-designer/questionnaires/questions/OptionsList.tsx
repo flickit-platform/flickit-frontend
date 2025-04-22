@@ -17,6 +17,7 @@ import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import languageDetector from "@utils/languageDetector";
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { useKitLanguageContext } from "@providers/KitProvider";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -29,22 +30,29 @@ interface OptionListProps {
   disableAddOption: boolean;
 }
 
-const OptionList = ({
-  Options,
-  onEdit,
-  onReorder,
-  onAdd,
-  isAddingNew,
-  setIsAddingNew,
-  disableAddOption,
-}: OptionListProps) => {
+const OptionList = (props: OptionListProps) => {
+
+  const {
+    Options,
+    onEdit,
+    onReorder,
+    onAdd,
+    isAddingNew,
+    setIsAddingNew,
+    disableAddOption,
+  } = props
+
   const [reorderedItems, setReorderedItems] = useState(Options);
   const [editMode, setEditMode] = useState<number | null>(null);
   const [tempValues, setTempValues] = useState({
     title: "",
+    translations: null,
     value: 1,
     index: reorderedItems?.length + 1,
   });
+
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -61,18 +69,19 @@ const OptionList = ({
       ...item,
       title: tempValues.title,
       value: tempValues.value,
+      translations: tempValues.translations
     });
     setEditMode(null);
   };
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
+    setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
   };
 
   const handleAddNewClick = () => {
     setIsAddingNew(true);
-    setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
+    setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
   };
 
   const handleSaveNewOption = () => {
@@ -81,12 +90,13 @@ const OptionList = ({
       id: reorderedItems?.length + 1,
       title: tempValues.title,
       value: tempValues.value,
+      translations: tempValues.translations
     });
   };
 
   useEffect(() => {
     if (isAddingNew === false) {
-      setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
+      setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
       setIsAddingNew(false);
     }
   }, [isAddingNew]);
@@ -97,7 +107,7 @@ const OptionList = ({
 
   const handleCancelNewOption = () => {
     setIsAddingNew(false);
-    setTempValues({ title: "", value: 1, index: reorderedItems?.length + 1 });
+    setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
   };
 
   return (
@@ -182,9 +192,14 @@ const OptionList = ({
                             label={<Trans i18nKey="title" />}
                           />
                         ) : (
-                          <Typography variant="bodySmall" sx={{ ml: 2, fontFamily: languageDetector(item?.title) ? farsiFontFamily : primaryFontFamily }}>
-                            {item?.title}
-                          </Typography>
+                          <Box sx={{display:"flex", flexGrow: 1,}} >
+                            <Typography variant="bodySmall" sx={{ width: "40%", ml: 2, fontFamily: languageDetector(item?.title) ? farsiFontFamily : primaryFontFamily }}>
+                              {item?.title}
+                            </Typography>
+                            <Typography variant="bodySmall"  sx={{ width: "40%", ml: 2, fontFamily: languageDetector(item?.title) ? farsiFontFamily : primaryFontFamily }}>
+                              {item?.translations?.[langCode]?.title}
+                            </Typography>
+                          </Box>
                         )}
                       </Box>
 
@@ -257,6 +272,7 @@ const OptionList = ({
       {isAddingNew ? (
         <OptionForm
           newItem={tempValues}
+          setNewItem={setTempValues}
           handleInputChange={(e) =>
             setTempValues({
               ...tempValues,
@@ -265,6 +281,7 @@ const OptionList = ({
           }
           handleSave={handleSaveNewOption}
           handleCancel={handleCancelNewOption}
+
         />
       ) : (
         <Box

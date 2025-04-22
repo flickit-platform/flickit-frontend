@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
-  TextField,
   Box,
   Typography,
   Divider,
@@ -12,8 +11,6 @@ import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
-import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { IQuestionInfo } from "@/types";
 import { useQuery } from "@/utils/useQuery";
 import { styles } from "@styles";
@@ -29,12 +26,22 @@ import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
+import { useKitLanguageContext } from "@providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface Props {
   open: boolean;
   question: IQuestionInfo;
   onClose: () => void;
   fetchQuery: any;
+}
+
+
+interface ITempValue {
+  title: string;
+  hint: string;
+  translations: {[key: string] : { title: string, hint: string }} | null;
 }
 
 const QuestionDialog: React.FC<Props> = ({
@@ -48,11 +55,23 @@ const QuestionDialog: React.FC<Props> = ({
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
   const [selectedAnswerRange, setSelectedAnswerRange] = useState<
     number | undefined
   >(question?.answerRangeId);
 
   const [selectedMeasure, setSelectedMeasure] = useState<any>(null);
+
+
+  const [tempValue, setTempValue] = useState<ITempValue>({
+    title: "",
+    hint: "",
+    translations: null
+  });
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
@@ -75,11 +94,16 @@ const QuestionDialog: React.FC<Props> = ({
 
   useEffect(() => {
     if (open && question.id) {
-      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+     Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+
+     setTempValue({
+       title: question.title ?? "",
+       hint: question.hint ?? "",
+       translations: question.translations ?? ""
+     })
 
       formMethods.reset({
-        title: question.title ?? "",
-        hint: question.hint ?? "",
+
         options: question.options ?? [{ text: "" }],
         mayNotBeApplicable: question.mayNotBeApplicable ?? false,
         advisable: question.advisable ?? false,
@@ -95,6 +119,7 @@ const QuestionDialog: React.FC<Props> = ({
         questionId: question.id,
         data: {
           ...data,
+          ...tempValue,
           index: question.index,
           answerRangeId: selectedAnswerRange,
           measureId: data.measure?.id ?? null,
@@ -105,6 +130,14 @@ const QuestionDialog: React.FC<Props> = ({
     } catch (err) {
       toastError(err as ICustomError);
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTempValue((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -133,36 +166,33 @@ const QuestionDialog: React.FC<Props> = ({
 
         <Grid container spacing={2} mt={2}>
           <Grid item xs={12}>
-            <TextField
-              {...formMethods.register("title", { required: true })}
-              fullWidth
-              label="Question"
+            <MultiLangTextField
+              id="question-title"
+              label={<Trans i18nKey="question" />}
+              name="title"
+              value={tempValue.title}
+              onChange={handleInputChange}
+              translationValue={
+                langCode ? (tempValue.translations?.[langCode]?.title ?? "") : ""
+              }
+              onTranslationChange={updateTranslation("title", setTempValue)}
               placeholder={t("questionPlaceholder")?.toString()}
-              required
               multiline
-              inputProps={{
-                style: {
-                  fontFamily: languageDetector(question.title)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                },
-              }}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              {...formMethods.register("hint")}
-              fullWidth
-              label="Hint"
+            <MultiLangTextField
+              id="question-hint"
+              label={<Trans i18nKey="hint" />}
+              name="hint"
+              value={tempValue.hint}
+              onChange={handleInputChange}
+              translationValue={
+                langCode ? (tempValue.translations?.[langCode]?.hint ?? "") : ""
+              }
+              onTranslationChange={updateTranslation("hint", setTempValue)}
               placeholder={t("hintPlaceholder")?.toString()}
               multiline
-              inputProps={{
-                style: {
-                  fontFamily: languageDetector(question.hint)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                },
-              }}
             />
           </Grid>
 
