@@ -37,7 +37,7 @@ const KitDesignerHeader = ({
     >
       {hasBtn ? (
         <Link
-          href="#new-maturity"
+          href="#new-item"
           sx={{
             textDecoration: "none",
             opacity: 0.9,
