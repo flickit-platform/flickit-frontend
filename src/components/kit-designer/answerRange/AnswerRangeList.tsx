@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -31,6 +30,7 @@ import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {
   items: any;
@@ -321,18 +321,13 @@ const ListOfItems = ({
                         label={<Trans i18nKey="title" />}
                       />
                     ) : (
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          flexGrow: 1,
-                          width: "40%",
-                          fontFamily: languageDetector(item.title)
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                        }}
-                      >
-                        {item.title}
-                      </Typography>
+                      <TitleWithTranslation
+                        title={item.title}
+                        translation={
+                          langCode ? item.translations?.[langCode]?.title : ""
+                        }
+                        variant="semiBoldMedium"
+                      />
                     )}
                     <Box sx={{ width: "60%", px: 3 }}>
                       <Chip
