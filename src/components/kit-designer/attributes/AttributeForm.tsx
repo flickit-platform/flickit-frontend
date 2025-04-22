@@ -155,7 +155,7 @@ const AttributeForm = ({
             size="small"
             color="primary"
             onClick={handleSave}
-            data-testid="check-icon-id"
+            data-testid="attribute-save-icon"
           >
             <CheckIcon />
           </IconButton>
@@ -163,13 +163,13 @@ const AttributeForm = ({
             size="small"
             color="secondary"
             onClick={handleCancel}
-            data-testid="close-icon-id"
+            data-testid="attribute-close-icon"
           >
             <CloseIcon />
           </IconButton>
         </Box>
 
-        {renderNumericField("weight", newAttribute.weight, undefined, "weight")}
+        {renderNumericField("weight", newAttribute.weight, "weight-id", "weight")}
       </Box>
     </Box>
   );
