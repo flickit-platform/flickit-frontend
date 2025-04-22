@@ -1,18 +1,20 @@
 // hooks/useFlagsmith.ts
 import { useEffect, useState } from "react";
 import flagsmith from "flagsmith";
-const FLAGSMITH_ENVIRONMENT_KEY = import.meta.env
-  .VITE_FLAGSMITH_ENVIRONMENT_KEY;
-const FLAGSMITH_API_KEY = import.meta.env.VITE_FLAGSMITH_API;
 
 export const useFlagsmith = () => {
+  console.log(
+    "Loaded Environment Key:",
+    import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY,
+  );
+  console.log("Loaded API Key:", import.meta.env.VITE_FLAGSMITH_API);
   const [ready, setReady] = useState(false);
   const [features, setFeatures] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     flagsmith.init({
-      environmentID: FLAGSMITH_ENVIRONMENT_KEY,
-      api: FLAGSMITH_API_KEY,
+      environmentID: import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY,
+      api: import.meta.env.VITE_FLAGSMITH_API,
       onChange: () => {
         const allFlags = flagsmith.getAllFlags();
         const mapped = Object.fromEntries(
