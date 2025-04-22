@@ -16,7 +16,9 @@ const TitleWithTranslation = ({
   multiline = false,
 }: TitleWithTranslationProps) => {
   const isFarsiTitle = languageDetector(title);
-  const isFarsiTranslation = translation ? languageDetector(translation) : false;
+  const isFarsiTranslation = translation
+    ? languageDetector(translation)
+    : false;
 
   const renderText = ({
     text,
@@ -36,11 +38,7 @@ const TitleWithTranslation = ({
         mt: !multiline ? 0.5 : 0,
         color: color ?? "inherit",
         fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
-        textAlign: multiline
-          ? "justify"
-          : isFarsi
-          ? "right"
-          : "left",
+        textAlign: multiline ? "justify" : "unset",
       },
     };
 
