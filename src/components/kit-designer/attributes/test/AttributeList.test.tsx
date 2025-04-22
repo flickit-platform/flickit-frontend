@@ -48,7 +48,6 @@ describe("MaturityLevelList", () => {
         newAttribute={true}
         setNewAttribute={setNewAttribute}
         handleEdit={handleEdit}
-        setOpenDeleteDialog={setOpenDeleteDialog}
       />,
     );
   });
