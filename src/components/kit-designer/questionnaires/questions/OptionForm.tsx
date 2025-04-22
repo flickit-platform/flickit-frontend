@@ -26,14 +26,9 @@ interface OptionFormProps {
   setNewItem: any;
 }
 
-const OptionForm = ( props: OptionFormProps ) =>{
-const {
-  setNewItem,
-  newItem,
-  handleInputChange,
-  handleSave,
-  handleCancel,
-} = props
+const OptionForm = (props: OptionFormProps) => {
+  const { setNewItem, newItem, handleInputChange, handleSave, handleCancel } =
+    props;
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
@@ -78,31 +73,6 @@ const {
           onTranslationChange={updateTranslation("title", setNewItem)}
           placeholder={t("questionPlaceholder")?.toString()}
         />
-        {/*<TextField*/}
-        {/*  required*/}
-        {/*  label={<Trans i18nKey="title" />}*/}
-        {/*  name="title"*/}
-        {/*  value={newItem.title}*/}
-        {/*  onChange={handleInputChange}*/}
-        {/*  fullWidth*/}
-        {/*  inputProps={{*/}
-        {/*    style: {fontFamily: languageDetector(newItem.title) ? farsiFontFamily : primaryFontFamily },*/}
-        {/*    "data-testid": "title-id",*/}
-        {/*  }}*/}
-        {/*  margin="normal"*/}
-        {/*  sx={{*/}
-        {/*    mt: 0.3,*/}
-        {/*    fontSize: 14,*/}
-        {/*    "& .MuiInputBase-root": {*/}
-        {/*      height: 36,*/}
-        {/*      fontSize: 14,*/}
-        {/*    },*/}
-        {/*    "& .MuiFormLabel-root": {*/}
-        {/*      fontSize: 14,*/}
-        {/*    },*/}
-        {/*    background: "#fff",*/}
-        {/*  }}*/}
-        {/*/>*/}
       </Box>
       <Box width="20%" mx={1}>
         <TextField
@@ -168,7 +138,7 @@ const {
         </Link>
       </Box>
     </Box>
-  )
+  );
 };
 
 export default OptionForm;
