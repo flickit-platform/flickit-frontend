@@ -32,6 +32,7 @@ import QuestionForm from "./questions/QuestionForm";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitLanguageContext } from "@/providers/KitProvider";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -432,18 +433,15 @@ const ListOfItems = ({
                                     label={<Trans i18nKey="title" />}
                                   />
                                 ) : (
-                                  <Typography
-                                    variant="h6"
-                                    sx={{
-                                      flexGrow: 1,
-                                      width: "80%",
-                                      fontFamily: languageDetector(item.title)
-                                        ? farsiFontFamily
-                                        : primaryFontFamily,
-                                    }}
-                                  >
-                                    {item.title}
-                                  </Typography>
+                                  <TitleWithTranslation
+                                    title={item.title}
+                                    translation={
+                                      langCode
+                                        ? item.translations?.[langCode]?.title
+                                        : ""
+                                    }
+                                    variant="semiBoldMedium"
+                                  />
                                 )}
                               </Box>
                               {/* Icons (Edit/Delete or Check/Close) */}
@@ -545,21 +543,16 @@ const ListOfItems = ({
                                   maxRows={5}
                                 />
                               ) : (
-                                <Typography
-                                  sx={{
-                                    wordBreak: "break-word",
-                                    fontFamily: languageDetector(
-                                      item.description,
-                                    )
-                                      ? farsiFontFamily
-                                      : primaryFontFamily,
-                                    width: "80%",
-                                  }}
-                                  variant="body2"
-                                  mt={1}
-                                >
-                                  {item.description}
-                                </Typography>
+                                <TitleWithTranslation
+                                  title={item.description}
+                                  translation={
+                                    langCode
+                                      ? item.translations?.[langCode]
+                                          ?.description
+                                      : ""
+                                  }
+                                  variant="bodyMedium"
+                                />
                               )}
                               <Box
                                 sx={{

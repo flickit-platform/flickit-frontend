@@ -20,6 +20,7 @@ import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import toastError from "@/utils/toastError";
 import { kitActions, useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 type TranslationFields = "title" | "summary" | "about";
 
@@ -171,7 +172,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const renderEditableField = useCallback(
     (
       field: TranslationFields,
-      value: string,
+      data: any,
       multiline = false,
       useRichEditor = false,
     ) => {
@@ -206,15 +207,14 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       }
       return (
         <>
-          {multiline ? (
-            <Typography
-              sx={{ flexGrow: 1, mb: 0 }}
-              textAlign="justify"
-              dangerouslySetInnerHTML={{ __html: value }}
-            />
-          ) : (
-            <Typography sx={{ flexGrow: 1 }}>{value}</Typography>
-          )}
+          <TitleWithTranslation
+            title={data[field] ?? ""}
+            translation={
+              langCode ? (data.translations?.[langCode]?.[field] ?? "") : ""
+            }
+            variant="semiBoldMedium"
+            multiline
+          />
           <IconButton
             onClick={() => handleFieldEdit(field)}
             sx={{ width: 40, height: 40, borderRadius: "50%", p: 0 }}
@@ -285,30 +285,28 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                 <Typography variant="semiBoldLarge">
                   <Trans i18nKey="title" />:
                 </Typography>
-                {renderEditableField("title", data.title)}
+                {renderEditableField("title", data)}
               </Box>
 
               <Box sx={{ display: "flex", width: "100%" }} gap={2}>
                 <Typography variant="semiBoldLarge">
                   <Trans i18nKey="summary" />:
                 </Typography>
-                {renderEditableField("summary", data.summary)}
+                {renderEditableField("summary", data)}
               </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: !editableFields.has("about")
-                    ? "center"
-                    : "flex-start",
-                  width: "100%",
-                }}
-                gap={1}
-              >
+              <Box>
                 <Typography variant="semiBoldLarge">
                   <Trans i18nKey="about" />:
                 </Typography>
-                {renderEditableField("about", data.about, true, true)}
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                  }}
+                  gap={1}
+                >
+                  {renderEditableField("about", data, true, true)}
+                </Box>
               </Box>
             </Stack>
           )}

@@ -31,6 +31,7 @@ import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {
   items: any;
@@ -321,18 +322,13 @@ const ListOfItems = ({
                         label={<Trans i18nKey="title" />}
                       />
                     ) : (
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          flexGrow: 1,
-                          width: "40%",
-                          fontFamily: languageDetector(item.title)
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                        }}
-                      >
-                        {item.title}
-                      </Typography>
+                      <TitleWithTranslation
+                        title={item.title}
+                        translation={
+                          langCode ? item.translations?.[langCode]?.title : ""
+                        }
+                        variant="semiBoldMedium"
+                      />
                     )}
                     <Box sx={{ width: "60%", px: 3 }}>
                       <Chip
