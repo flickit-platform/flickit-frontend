@@ -187,7 +187,7 @@ const ListOfItems = ({
                           display: "flex",
                           alignItems: "flex-start",
                           justifyContent: "space-between",
-                          flexDirection: isRTL ? "row-reverse" : "row",
+                          flexDirection: "row",
                           gap: 1,
                         }}
                       >

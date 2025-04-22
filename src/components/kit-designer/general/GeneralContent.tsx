@@ -55,7 +55,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const data = fetchAssessmentKitInfoQuery.data;
   const translations = data?.translations ?? {};
-  const [firstTranslationKey] = Object.keys(translations);
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());

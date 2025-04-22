@@ -16,8 +16,9 @@ import { t } from "i18next";
 import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { useKitLanguageContext } from "@providers/KitProvider";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -31,7 +32,6 @@ interface OptionListProps {
 }
 
 const OptionList = (props: OptionListProps) => {
-
   const {
     Options,
     onEdit,
@@ -40,7 +40,7 @@ const OptionList = (props: OptionListProps) => {
     isAddingNew,
     setIsAddingNew,
     disableAddOption,
-  } = props
+  } = props;
 
   const [reorderedItems, setReorderedItems] = useState(Options);
   const [editMode, setEditMode] = useState<number | null>(null);
@@ -69,19 +69,29 @@ const OptionList = (props: OptionListProps) => {
       ...item,
       title: tempValues.title,
       value: tempValues.value,
-      translations: tempValues.translations
+      translations: tempValues.translations,
     });
     setEditMode(null);
   };
 
   const handleCancelClick = () => {
     setEditMode(null);
-    setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
+    setTempValues({
+      title: "",
+      translations: null,
+      value: 1,
+      index: reorderedItems?.length + 1,
+    });
   };
 
   const handleAddNewClick = () => {
     setIsAddingNew(true);
-    setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
+    setTempValues({
+      title: "",
+      translations: null,
+      value: 1,
+      index: reorderedItems?.length + 1,
+    });
   };
 
   const handleSaveNewOption = () => {
@@ -90,13 +100,18 @@ const OptionList = (props: OptionListProps) => {
       id: reorderedItems?.length + 1,
       title: tempValues.title,
       value: tempValues.value,
-      translations: tempValues.translations
+      translations: tempValues.translations,
     });
   };
 
   useEffect(() => {
     if (isAddingNew === false) {
-      setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
+      setTempValues({
+        title: "",
+        translations: null,
+        value: 1,
+        index: reorderedItems?.length + 1,
+      });
       setIsAddingNew(false);
     }
   }, [isAddingNew]);
@@ -107,7 +122,12 @@ const OptionList = (props: OptionListProps) => {
 
   const handleCancelNewOption = () => {
     setIsAddingNew(false);
-    setTempValues({ title: "", translations: null, value: 1, index: reorderedItems?.length + 1 });
+    setTempValues({
+      title: "",
+      translations: null,
+      value: 1,
+      index: reorderedItems?.length + 1,
+    });
   };
 
   return (
@@ -192,13 +212,16 @@ const OptionList = (props: OptionListProps) => {
                             label={<Trans i18nKey="title" />}
                           />
                         ) : (
-                          <Box sx={{display:"flex", flexGrow: 1,}} >
-                            <Typography variant="bodySmall" sx={{ width: "40%", ml: 2, fontFamily: languageDetector(item?.title) ? farsiFontFamily : primaryFontFamily }}>
-                              {item?.title}
-                            </Typography>
-                            <Typography variant="bodySmall"  sx={{ width: "40%", ml: 2, fontFamily: languageDetector(item?.title) ? farsiFontFamily : primaryFontFamily }}>
-                              {item?.translations?.[langCode]?.title}
-                            </Typography>
+                          <Box sx={{ display: "flex", flexGrow: 1 }}>
+                            <TitleWithTranslation
+                              title={item.title}
+                              translation={
+                                langCode
+                                  ? item.translations?.[langCode]?.title
+                                  : ""
+                              }
+                              variant="semiBoldMedium"
+                            />
                           </Box>
                         )}
                       </Box>
@@ -281,7 +304,6 @@ const OptionList = (props: OptionListProps) => {
           }
           handleSave={handleSaveNewOption}
           handleCancel={handleCancelNewOption}
-
         />
       ) : (
         <Box
