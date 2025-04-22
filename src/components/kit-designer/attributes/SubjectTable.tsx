@@ -69,7 +69,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
-
+  console.log(initialAttributes,"initialAttributes");
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
@@ -283,10 +283,24 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             </IconButton>
                                           </Box>
                                         </TableCell>
-                                        <Box sx={{display: "flex", flexDirection: "column", width:"100%"}}>
+                                      <span style={{display: "flex", flexDirection: "column", flexGrow: 1}}>
+                                        <TableCell
+                                          sx={{
+
+                                            width: "100%",
+                                            flexGrow: 1,
+                                            mt: 0.5,
+                                            fontFamily: languageDetector(attribute.title)
+                                              ? farsiFontFamily
+                                              : primaryFontFamily
+                                          }}
+                                          data-testid="display-attribute-title"
+                                        >
+                                          {attribute.title}
+                                        </TableCell>
+                                        { attribute.translations?.[langCode]?.title &&
                                           <TableCell
                                             sx={{
-                                              borderBottom: "none",
                                               width: "100%",
                                               flexGrow: 1,
                                               mt: 0.5,
@@ -296,9 +310,25 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             }}
                                             data-testid="display-attribute-title"
                                           >
-                                            {attribute.title}
+                                            {attribute.translations?.[langCode]?.title}
                                           </TableCell>
-                                          {attribute?.translations?.[langCode]?.title &&
+                                        }
+                                      </span>
+                                        <span style={{display: "flex", flexDirection: "column", flexGrow: 1}}>
+                                        <TableCell
+                                          sx={{
+                                            width: "100%",
+                                            flexGrow: 1,
+                                            mt: 0.5,
+                                            fontFamily: languageDetector(attribute.description)
+                                                ? farsiFontFamily
+                                                : primaryFontFamily,
+                                          }}
+                                          data-testid="display-attribute-description"
+                                        >
+                                          {attribute.description}
+                                        </TableCell>
+                                          { attribute.translations?.[langCode]?.description &&
                                             <TableCell
                                               sx={{
                                                 width: "100%",
@@ -310,41 +340,10 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                               }}
                                               data-testid="display-attribute-title"
                                             >
-                                              {attribute?.translations?.[langCode]?.title}
+                                              {attribute.translations?.[langCode]?.description}
                                             </TableCell>
                                           }
-                                        </Box>
-                                        <Box sx={{display: "flex", flexDirection: "column", width:"100%"}}>
-                                        <TableCell
-                                          sx={{
-                                            width: "100%",
-                                            flexGrow: 1,
-                                            mt: 0.5,
-                                            fontFamily: languageDetector(attribute.description)
-                                                ? farsiFontFamily
-                                                : primaryFontFamily,
-                                            borderBottom: "none",
-                                          }}
-                                          data-testid="display-attribute-description"
-                                        >
-                                          {attribute.description}
-                                        </TableCell>
-                                          {
-                                            attribute?.translations?.[langCode]?.description && <TableCell
-                                              sx={{
-                                                width: "100%",
-                                                flexGrow: 1,
-                                                mt: 0.5,
-                                                fontFamily: languageDetector(attribute.description)
-                                                  ? farsiFontFamily
-                                                  : primaryFontFamily
-                                              }}
-                                              data-testid="display-attribute-description"
-                                            >
-                                              {attribute?.translations?.[langCode]?.description}
-                                            </TableCell>
-                                          }
-                                        </Box>
+                                            </span>
                                         <TableCell  sx={{alignContent: "center"}} data-testid="display-attribute-weight">
                                           {attribute.weight}
                                         </TableCell>
