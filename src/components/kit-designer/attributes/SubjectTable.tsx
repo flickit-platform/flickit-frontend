@@ -71,7 +71,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
-  console.log(initialAttributes,"initialAttributes");
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
@@ -81,7 +80,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   useEffect(() => {
     setAttributes(initialAttributes);
   }, [initialAttributes]);
-  console.log(initialAttributes,"attributesattributes");
   useEffect(() => {
     setTargetSubjectId(Number(subjects[subjects?.length - 1]?.id));
   }, [subjects]);
@@ -258,7 +256,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                     {/* Conditionally render editable fields */}
                                     {editAttributeId ===
                                     String(attribute.id) ? (
-                                      <TableCell colSpan={5}>
+                                      <TableCell sx={{width: "100%"}}>
                                         <AttributeForm
                                           newAttribute={newAttribute}
                                           handleCancel={handleCancelEdit}
@@ -378,7 +376,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                 } // Place it after existing attributes
                               >
                                 {(provided) => (
-                                  <TableRow
+                                  <Box
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
@@ -387,9 +385,9 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                       borderColor: "white",
                                       borderRadius: "0.5rem",
                                       mb: 1,
+                                      width: "100%"
                                     }}
                                   >
-                                    <TableCell colSpan={4}>
                                       <AttributeForm
                                         newAttribute={newAttribute}
                                         handleInputChange={handleInputChange}
@@ -401,8 +399,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                         setNewAttribute={setNewAttribute}
                                         updateTranslation={updateTranslation}
                                       />
-                                    </TableCell>
-                                  </TableRow>
+                                  </Box>
                                 )}
                               </Draggable>
                             )}
