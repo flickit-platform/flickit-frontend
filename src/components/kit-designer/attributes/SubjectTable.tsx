@@ -67,8 +67,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   showNewAttributeForm,
   handleEdit,
 }) => {
-  const { kitState } = useKitLanguageContext();
-  const langCode = kitState.translatedLanguage?.code;
+
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
