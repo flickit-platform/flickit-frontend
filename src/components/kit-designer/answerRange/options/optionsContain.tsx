@@ -18,6 +18,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitLanguageContext } from "@/providers/KitProvider";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ITempValues {
   title: string;
@@ -125,16 +126,13 @@ const OptionContain = (props: any) => {
               label={<Trans i18nKey="title" />}
             />
           ) : (
-            <Box
-              sx={{
-                width: "90%",
-                fontFamily: languageDetector(answerOption?.title)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-            >
-              {answerOption?.title}
-            </Box>
+            <TitleWithTranslation
+              title={answerOption.title}
+              translation={
+                langCode ? answerOption.translations?.[langCode]?.title : ""
+              }
+              variant="semiBoldMedium"
+            />
           )}
         </Box>
         {editMode === answerOption.id ? (

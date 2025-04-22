@@ -29,7 +29,7 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import QueryData from "@common/QueryData";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import { ISpacesModel } from "@/types/index";
+import { FLAGS, ISpacesModel } from "@/types/index";
 import keycloakService from "@/service//keycloakService";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { IMessage } from "@novu/notification-center";
@@ -44,9 +44,9 @@ import LanguageSelector from "./LangSelector";
 import i18n, { t } from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
-import CompareRounded from "@mui/icons-material/CompareRounded";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
+import flagsmith from "flagsmith";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -752,9 +752,7 @@ const SpacesButton = () => {
         data-cy="spaces"
         onClick={() => navigate("/spaces/1")}
         startIcon={
-          <FolderRounded
-            sx={{ opacity: 0.8, fontSize: "18px !important" }}
-          />
+          <FolderRounded sx={{ opacity: 0.8, fontSize: "18px !important" }} />
         }
         sx={{
           textTransform: "uppercase",
@@ -861,6 +859,7 @@ const SpacesButton = () => {
 };
 
 const AccountDropDownButton = ({ userInfo }: any) => {
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -925,20 +924,23 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <Trans i18nKey={"account"} />
           </ListItemText>
         </MenuItem>
-        <MenuItem
-          dense
-          onClick={handleClose}
-          component={NavLink}
-          to={`/user/expert-groups`}
-        >
-          <ListItemIcon>
-            <EngineeringIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>
-            {" "}
-            <Trans i18nKey={"expertGroups"} />
-          </ListItemText>
-        </MenuItem>
+        {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+          <MenuItem
+            dense
+            onClick={handleClose}
+            component={NavLink}
+            to={`/user/expert-groups`}
+          >
+            <ListItemIcon>
+              <EngineeringIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>
+              {" "}
+              <Trans i18nKey={"expertGroups"} />
+            </ListItemText>
+          </MenuItem>
+        )}
+
         <Divider />
         <MenuItem
           dense

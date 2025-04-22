@@ -26,3 +26,7 @@ export interface IUserPermissions {
   canViewDashboard: boolean;
   canViewQuestionnaires: boolean;
 }
+
+export enum FLAGS {
+  DISPLAY_EXPERT_GROUPS = "display_expert_groups",
+}

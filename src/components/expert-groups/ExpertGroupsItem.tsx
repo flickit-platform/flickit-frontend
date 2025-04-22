@@ -22,7 +22,9 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import flagsmith from "flagsmith";
+import { FLAGS } from "@/types";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -43,7 +45,8 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
   } = data ?? {};
   const { service } = useServiceContext();
   const seenExpertGroupQuery = useQuery({
-    service: (args, config) => service.expertGroups.info.markAsSeen({ id }, config),
+    service: (args, config) =>
+      service.expertGroups.info.markAsSeen({ id }, config),
     runOnMount: false,
     toastError: false,
   });
@@ -94,11 +97,16 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             )
           }
           title={
-            <Box component={"b"} color="GrayText" fontSize=".95rem" sx={{
-              fontFamily: languageDetector(title)
+            <Box
+              component={"b"}
+              color="GrayText"
+              fontSize=".95rem"
+              sx={{
+                fontFamily: languageDetector(title)
                   ? farsiFontFamily
                   : primaryFontFamily,
-            }}>
+              }}
+            >
               {title}
             </Box>
           }
@@ -122,8 +130,8 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
             webkitBoxOrient: "vertical",
             webkitLineClamp: "2",
             fontFamily: languageDetector(bio)
-                ? farsiFontFamily
-                : primaryFontFamily,
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {bio}
@@ -202,7 +210,7 @@ const Actions = (props: any) => {
     }
   };
 
-  return editable ? (
+  return editable && flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) ? (
     <>
       <MoreActions
         {...useMenu()}

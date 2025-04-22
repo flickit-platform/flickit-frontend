@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { toastDefaultConfig } from "@config/toastConfigs";
 import { ServiceProvider } from "./providers/ServiceProvider";
@@ -16,7 +16,6 @@ import "./assets/font/fonts.css";
 import "@utils/richEditorStyles.css";
 import { AssessmentProvider } from "./providers/AssessmentProvider";
 import i18next from "i18next";
-import { FlagsmithProvider } from "flagsmith/react";
 import flagsmith from "flagsmith";
 
 // Lazy load non-critical components
@@ -89,28 +88,22 @@ const renderApp = () => {
             <AuthProvider>
               <ServiceProvider>
                 <ConfigProvider>
-                  <FlagsmithProvider
-                    options={{ environmentID: "VACYXaMWbqJKXQYD3JV6k2" }}
-                    flagsmith={flagsmith}
-                  >
-                    <CssBaseline />
-                    <Suspense fallback={null}>
-                      <ToastContainer
-                        {...toastDefaultConfig}
-                        toastStyle={{
-                          fontFamily:
-                            i18next.language === "fa"
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          direction: i18next.language === "fa" ? "rtl" : "ltr",
-                          textAlign:
-                            i18next.language === "fa" ? "right" : "left",
-                        }}
-                      />
-                    </Suspense>
+                  <CssBaseline />
+                  <Suspense fallback={null}>
+                    <ToastContainer
+                      {...toastDefaultConfig}
+                      toastStyle={{
+                        fontFamily:
+                          i18next.language === "fa"
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        direction: i18next.language === "fa" ? "rtl" : "ltr",
+                        textAlign: i18next.language === "fa" ? "right" : "left",
+                      }}
+                    />
+                  </Suspense>
 
-                    <AppWithNovu />
-                  </FlagsmithProvider>
+                  <AppWithNovu />
                 </ConfigProvider>
               </ServiceProvider>
             </AuthProvider>

@@ -64,7 +64,7 @@ const QuestionnairesForm = ({
       >
         <TextField
           required
-          id="new-maturity"
+          id="new-item"
           type="number"
           name="value"
           value={newItem.value}

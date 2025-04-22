@@ -9,11 +9,11 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@/config/styles";
 import { IMaturityLevel, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { theme } from "@config/theme";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
@@ -163,16 +163,13 @@ const MaturityLevelList = ({
                       label={<Trans i18nKey="title" />}
                     />
                   ) : (
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontFamily: languageDetector(item.title)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
+                    <TitleWithTranslation
+                      title={item.title}
+                      translation={
+                        langCode ? item.translations?.[langCode]?.title : ""
+                      }
+                      variant="semiBoldMedium"
+                    />
                   )}
                 </Box>
 
@@ -248,17 +245,13 @@ const MaturityLevelList = ({
                     maxRows={5}
                   />
                 ) : (
-                  <Typography
-                    variant="body2"
-                    mt={1}
-                    sx={{
-                      fontFamily: languageDetector(item.description)
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                    }}
-                  >
-                    {item.description}
-                  </Typography>
+                  <TitleWithTranslation
+                    title={item.description}
+                    translation={
+                      langCode ? item.translations?.[langCode]?.description : ""
+                    }
+                    variant="bodyMedium"
+                  />
                 )}
               </Box>
             </Box>

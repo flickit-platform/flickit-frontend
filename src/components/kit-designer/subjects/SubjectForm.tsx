@@ -100,7 +100,7 @@ const SubjectForm = ({
         sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}
       >
         <MultiLangTextField
-          id="new-maturity"
+          id="new-item"
           label={<Trans i18nKey="title" />}
           name="title"
           value={newSubject.title}

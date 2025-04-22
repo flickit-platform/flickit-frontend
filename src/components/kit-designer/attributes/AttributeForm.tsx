@@ -33,7 +33,7 @@ const AttributeForm = ({
   setNewAttribute,
   updateTranslation
 }: AttributeFormProps) => (
-  <TableRow id="new-maturity" sx={{ background: "#F9F9F9" }}>
+  <TableRow id="new-item" sx={{ background: "#F9F9F9" }}>
     <TableCell>
       <Box
         sx={{
