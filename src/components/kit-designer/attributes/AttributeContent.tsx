@@ -251,7 +251,6 @@ const AttributesContent = () => {
                     newAttribute={newAttribute}
                     setNewAttribute={setNewAttribute}
                     handleEdit={handleEdit}
-                    setOpenDeleteDialog={setOpenDeleteDialog}
                   />
                 </Box>
               ) : (
