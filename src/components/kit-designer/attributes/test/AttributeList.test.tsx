@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import SubjectTable from "@components/kit-designer/attributes/SubjectTable";
+import { KitLanguageProvider } from "@/providers/KitProvider";
 
 const mockAttributeList = [
   {
@@ -38,25 +39,27 @@ const setOpenDeleteDialog = vi.fn();
 describe("MaturityLevelList", () => {
   beforeEach(() => {
     render(
-      <SubjectTable
-        subjects={SubjectMock}
-        initialAttributes={mockAttributeList}
-        onAddAttribute={handleAddNewRow}
-        onReorder={handleReorder}
-        showNewAttributeForm={true}
-        handleCancel={handleCancel}
-        handleSave={handleSave}
-        newAttribute={true}
-        setNewAttribute={setNewAttribute}
-        handleEdit={handleEdit}
-        setOpenDeleteDialog={setOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <SubjectTable
+          subjects={SubjectMock}
+          initialAttributes={mockAttributeList}
+          onAddAttribute={handleAddNewRow}
+          onReorder={handleReorder}
+          showNewAttributeForm={true}
+          handleCancel={handleCancel}
+          handleSave={handleSave}
+          newAttribute={true}
+          setNewAttribute={setNewAttribute}
+          handleEdit={handleEdit}
+          setOpenDeleteDialog={setOpenDeleteDialog}
+        />
+      </KitLanguageProvider>
     );
   });
 
   it("renders attribute correctly", () => {
-    let title: any = screen.getByTestId("display-attribute-title");
-    let description: any = screen.getByTestId("display-attribute-description");
+    const title: any = screen.getByTestId("display-attribute-title");
+    const description: any = screen.getByTestId("display-attribute-description");
     expect(title).toBeInTheDocument();
     expect(description).toBeInTheDocument();
     expect(screen.getByTestId("display-attribute-title")).toHaveTextContent(
