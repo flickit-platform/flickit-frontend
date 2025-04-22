@@ -15,7 +15,7 @@ import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
 import forLoopComponent from "@utils/forLoopComponent";
 import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
-import { TQueryProps } from "@/types/index";
+import { SPACE_LEVELS, TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
@@ -24,6 +24,7 @@ import { t } from "i18next";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
+import { SxProps, Theme } from "@mui/material";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -50,7 +51,7 @@ const AutocompleteAsyncField = (props: any) => {
     required = false,
     hasAddBtn = false,
     editable = false,
-    filterFields = ["title", "lang", "isPrivate"],
+    filterFields = ["title", "lang"],
     createItemQuery,
     setError,
     searchable,
@@ -265,6 +266,23 @@ const AutocompleteBaseField = (
     setOpen(false);
   };
 
+  const getChipProps = (
+    label: React.ReactNode,
+    color?: "default" | "primary" | "secondary",
+    sx?: SxProps<Theme>,
+  ) => ({
+    size: "small",
+    sx: {
+      marginInlineStart: "auto",
+      ...sx,
+    },
+    color,
+    label: (
+      <Typography sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}>
+        {label}
+      </Typography>
+    ),
+  });
   return (
     <Autocomplete
       {...restFields}
@@ -402,19 +420,27 @@ const AutocompleteBaseField = (
                 ({option?.[filterFields[1]]})
               </Box>
             )}
-            {option?.[filterFields[2]] && (
+            {(option?.isPrivate ||
+              option?.type?.code === SPACE_LEVELS.PREMIUM) && (
               <Chip
                 size="small"
                 sx={{
-                  background:
-                    "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
                   marginInlineStart: "auto",
+                  ...(option?.type?.code === SPACE_LEVELS.PREMIUM && {
+                    background:
+                      "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
+                  }),
                 }}
+                color={option?.isPrivate ? "secondary" : "default"}
                 label={
                   <Typography
                     sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
                   >
-                    <Trans i18nKey={`privateTitle`} />
+                    {option?.isPrivate ? (
+                      <Trans i18nKey="privateTitle" />
+                    ) : (
+                      option?.type?.title
+                    )}
                   </Typography>
                 }
               />
