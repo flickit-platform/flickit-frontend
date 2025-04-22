@@ -9,10 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
-import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { ChangeEvent } from "react";
 
 interface AttributeFormProps {
   newAttribute: any;
