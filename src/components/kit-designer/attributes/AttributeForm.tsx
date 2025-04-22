@@ -9,14 +9,16 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import SwapVertRounded from "@mui/icons-material/SwapVertRounded";
-import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import MultiLangTextField from "@common/fields/MultiLangTextField";
 
 interface AttributeFormProps {
   newAttribute: any;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSave: () => void;
   handleCancel: () => void;
+  langCode: string,
+  setNewAttribute: any,
+  updateTranslation: any,
 }
 
 const AttributeForm = ({
@@ -24,6 +26,9 @@ const AttributeForm = ({
   handleInputChange,
   handleSave,
   handleCancel,
+  langCode,
+  setNewAttribute,
+  updateTranslation
 }: AttributeFormProps) => (
   <TableRow id="new-item" sx={{ background: "#F9F9F9" }}>
     <TableCell>
@@ -44,65 +49,29 @@ const AttributeForm = ({
       </Box>
     </TableCell>
     <TableCell sx={{ width: "30%" }}>
-      <TextField
-        required
+      <MultiLangTextField
+        id="title-id"
         label={<Trans i18nKey="title" />}
         name="title"
         value={newAttribute.title}
         onChange={handleInputChange}
-        inputProps={{
-          style: {
-            fontFamily: languageDetector(newAttribute.title)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          },
-          "data-testid": "title-id",
-        }}
-        fullWidth
-        margin="normal"
-        sx={{
-          mt: 1,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            height: 40,
-            fontSize: 14,
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-          background: "#fff",
-        }}
+        translationValue={
+          langCode ? (newAttribute.translations?.[langCode]?.title ?? "") : ""
+        }
+        onTranslationChange={updateTranslation("title", setNewAttribute)}
       />
     </TableCell>
     <TableCell sx={{ width: "50%" }}>
-      <TextField
-        required
+      <MultiLangTextField
+        id="description-id"
         label={<Trans i18nKey="description" />}
         name="description"
         value={newAttribute.description}
-        inputProps={{
-          style: {
-            fontFamily: languageDetector(newAttribute.description)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          },
-          "data-testid": "description-id",
-        }}
         onChange={handleInputChange}
-        fullWidth
-        margin="normal"
-        sx={{
-          mt: 1,
-          fontSize: 14,
-          "& .MuiInputBase-root": {
-            height: 40,
-            fontSize: 14,
-          },
-          "& .MuiFormLabel-root": {
-            fontSize: 14,
-          },
-          background: "#fff",
-        }}
+        translationValue={
+          langCode ? (newAttribute.translations?.[langCode]?.description ?? "") : ""
+        }
+        onTranslationChange={updateTranslation("description", setNewAttribute)}
       />
     </TableCell>
     <TableCell sx={{ width: "20%" }}>

@@ -14,9 +14,12 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+
+import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { useKitLanguageContext } from "@providers/KitProvider";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { MultiLangs } from "@/types";
+import TitleWithTranslation from "@common/fields/TranslationText";
 
 interface Attribute {
   id: string | number;
@@ -29,6 +32,7 @@ interface Attribute {
   weight: number;
   index: number;
   isEditing?: boolean;
+  translations: MultiLangs | null
 }
 
 interface Subject {
@@ -63,16 +67,21 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   showNewAttributeForm,
   handleEdit,
 }) => {
-  const { kitState } = useKitLanguageContext();
-  const langCode = kitState.translatedLanguage?.code;
+
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
+  console.log(initialAttributes,"initialAttributes");
+  const { kitState } = useKitLanguageContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
+
+  const { updateTranslation } = useTranslationUpdater(langCode);
+
 
   useEffect(() => {
     setAttributes(initialAttributes);
   }, [initialAttributes]);
-
+  console.log(initialAttributes,"attributesattributes");
   useEffect(() => {
     setTargetSubjectId(Number(subjects[subjects?.length - 1]?.id));
   }, [subjects]);
@@ -255,11 +264,14 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           handleCancel={handleCancelEdit}
                                           handleSave={handleSaveEdit}
                                           handleInputChange={handleInputChange}
+                                          langCode={langCode}
+                                          setNewAttribute={setNewAttribute}
+                                          updateTranslation={updateTranslation}
                                         />
                                       </TableCell>
                                     ) : (
                                       <>
-                                        <TableCell>
+                                        <TableCell sx={{alignContent: "center",  }}>
                                           <Box
                                             sx={{
                                               display: "flex",
@@ -269,6 +281,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                               width: { xs: "50px", md: "64px" },
                                               justifyContent: "space-around",
                                               px: 1.5,
+
                                             }}
                                           >
                                             <Typography variant="semiBoldLarge">
@@ -285,6 +298,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                         </TableCell>
                                         <TableCell
                                           sx={{
+
                                             width: "100%",
                                             flexGrow: 1,
                                             mt: 0.5,
@@ -296,7 +310,13 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           }}
                                           data-testid="display-attribute-title"
                                         >
-                                          {attribute.title}
+                                          <TitleWithTranslation
+                                            title={attribute.title}
+                                            translation={
+                                              langCode ? attribute.translations?.[langCode]?.title : ""
+                                            }
+                                            variant="semiBoldMedium"
+                                          />
                                         </TableCell>
                                         <TableCell
                                           sx={{
@@ -311,15 +331,21 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           }}
                                           data-testid="display-attribute-description"
                                         >
-                                          {attribute.description}
+                                          <TitleWithTranslation
+                                            title={attribute.description}
+                                            translation={
+                                              langCode ? attribute.translations?.[langCode]?.description : ""
+                                            }
+                                            variant="semiBoldMedium"
+                                          />
                                         </TableCell>
-                                        <TableCell data-testid="display-attribute-weight">
+                                        <TableCell  sx={{alignContent: "center"}} data-testid="display-attribute-weight">
                                           {attribute.weight}
                                         </TableCell>
                                         <TableCell
                                           sx={{
                                             display: "flex",
-                                            alignItems: "flex-start",
+                                            alignContent: "center"
                                           }}
                                         >
                                           <IconButton
@@ -371,6 +397,9 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           handleSave(subject.id)
                                         } // Pass the subject ID to add
                                         handleCancel={handleCancel}
+                                        langCode={langCode}
+                                        setNewAttribute={setNewAttribute}
+                                        updateTranslation={updateTranslation}
                                       />
                                     </TableCell>
                                   </TableRow>

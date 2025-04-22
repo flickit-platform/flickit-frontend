@@ -4,29 +4,42 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
 import userEvent from "@testing-library/user-event";
 import AttributeForm from "@components/kit-designer/attributes/AttributeForm";
+import { KitLanguageProvider } from "@providers/KitProvider";
 
 describe("AttributeForm", () => {
   const newAttributeForm = {
     title: "Test attribute title",
+    translations: {FA: {title: "translations Title", description: "translations description"}},
+    subject: { id: 1, title: "subject title" },
     description: "Test attribute description",
     weight: 3,
     index: 1,
     value: 5,
+    id: 11,
+    isEditing: false
   };
+
 
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
   const handleCancel = vi.fn();
+  const setNewAttribute = vi.fn();
+  const updateTranslation = vi.fn();
 
   const renderForm = () =>
     render(
       <I18nextProvider i18n={i18n}>
-        <AttributeForm
-          newAttribute={newAttributeForm}
-          handleCancel={handleCancel}
-          handleSave={handleSave}
-          handleInputChange={handleInputChange}
-        />
+        <KitLanguageProvider>
+          <AttributeForm
+            newAttribute={newAttributeForm}
+            handleCancel={handleCancel}
+            handleSave={handleSave}
+            handleInputChange={handleInputChange}
+            langCode={"FA"}
+            setNewAttribute={setNewAttribute}
+            updateTranslation={updateTranslation}
+          />
+        </KitLanguageProvider>
       </I18nextProvider>,
     );
 

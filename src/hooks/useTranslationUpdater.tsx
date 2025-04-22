@@ -24,9 +24,9 @@ export const useTranslationUpdater = (langCode?: string) => {
         ...prev,
         translations: !Object.values(updatedTranslation).every(item => item === undefined)
           ? {
-              ...prev.translations,
-              [langCode]: updatedTranslation,
-            }
+            ...prev.translations,
+            [langCode]: updatedTranslation,
+          }
           : undefined,
       };
     });

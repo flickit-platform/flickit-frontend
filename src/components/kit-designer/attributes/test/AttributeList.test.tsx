@@ -7,6 +7,7 @@ const mockAttributeList = [
   {
     id: 1,
     title: "attribute 1",
+    translations: {FA: {title: "translations title", description : "translations description"}},
     description: "description 1",
     subject: {
       id: 1,
@@ -56,8 +57,8 @@ describe("MaturityLevelList", () => {
   });
 
   it("renders attribute correctly", () => {
-    let title: any = screen.getByTestId("display-attribute-title");
-    let description: any = screen.getByTestId("display-attribute-description");
+    const title: any = screen.getByTestId("display-attribute-title");
+    const description: any = screen.getByTestId("display-attribute-description");
     expect(title).toBeInTheDocument();
     expect(description).toBeInTheDocument();
     expect(screen.getByTestId("display-attribute-title")).toHaveTextContent(
