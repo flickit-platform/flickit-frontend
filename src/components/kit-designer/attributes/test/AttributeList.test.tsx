@@ -6,6 +6,7 @@ const mockAttributeList = [
   {
     id: 1,
     title: "attribute 1",
+    translations: {FA: {title: "translations title", description : "translations description"}},
     description: "description 1",
     subject: {
       id: 1,
