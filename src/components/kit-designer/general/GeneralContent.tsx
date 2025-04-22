@@ -22,21 +22,10 @@ import { kitActions, useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
-type TranslationFields = "title" | "summary" | "about";
-
-interface UpdatedValues {
-  title?: string;
-  summary?: string;
-  about?: string;
-  translations: any;
-}
-
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { kitState } = useKitLanguageContext();
-  const langCode = kitState.translatedLanguage?.code;
-
+  const langCode = kitState.translatedLanguage?.code ?? "";
   const { updateTranslation } = useTranslationUpdater(langCode);
-
   const { dispatch } = useKitLanguageContext();
   const { service } = useServiceContext();
   const {
@@ -70,17 +59,40 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
-  const [updatedValues, setUpdatedValues] = useState<UpdatedValues>({
-    title: undefined,
-    summary: undefined,
-    about: undefined,
+  const [updatedValues, setUpdatedValues] = useState({
+    title: "",
+    summary: "",
+    about: "",
     translations: undefined,
   });
+
   const [showTranslations, setShowTranslations] = useState({
     title: false,
     summary: false,
     about: false,
   });
+
+  useEffect(() => {
+    if (data) {
+      const defaultTranslatedLanguage = data.languages?.find(
+        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
+      );
+      setTranslatedLang(defaultTranslatedLanguage);
+      dispatch(kitActions.setMainLanguage(data.mainLanguage));
+      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
+      setShowTranslations({
+        title: !!translations[langCode]?.title,
+        summary: !!translations[langCode]?.summary,
+        about: !!translations[langCode]?.about,
+      });
+      setUpdatedValues({
+        title: data.title ?? "",
+        summary: data.summary ?? "",
+        about: data.about ?? "",
+        translations: translations ?? {},
+      });
+    }
+  }, [data, dispatch, langCode, translations]);
 
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -94,34 +106,23 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             assessmentKitId: kitVersion.assessmentKit.id,
             data: { lang: lang.code },
           })
-          .then(() => {
-            fetchAssessmentKitInfoQuery.query();
-          });
+          .then(() => fetchAssessmentKitInfoQuery.query());
       }
     },
-    [data?.mainLanguage?.code, languages, kitVersion.assessmentKit.id],
+    [
+      data?.mainLanguage?.code,
+      languages,
+      kitVersion.assessmentKit.id,
+      addLanguageQuery,
+      fetchAssessmentKitInfoQuery,
+    ],
   );
 
   const handleFieldEdit = useCallback(
-    (field: TranslationFields) => {
-      const newEditableFields = new Set(editableFields);
-      newEditableFields.add(field);
-      setEditableFields(newEditableFields);
-
-      setUpdatedValues((prev) => ({
-        ...prev,
-        [field]: data?.[field],
-        translations: langCode
-          ? {
-              [langCode]: {
-                ...prev.translations?.[langCode],
-                [field]: data?.translations?.[langCode]?.[field],
-              },
-            }
-          : undefined,
-      }));
+    (field: "title" | "summary" | "about") => {
+      setEditableFields((prev) => new Set(prev).add(field));
     },
-    [editableFields, data],
+    [],
   );
 
   const handleSaveEdit = useCallback(() => {
@@ -134,78 +135,60 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         fetchAssessmentKitInfoQuery.query();
         setEditableFields(new Set());
       })
-      .catch((e) => {
-        toastError(e);
-      });
-  }, [kitVersion.assessmentKit.id, updatedValues]);
+      .catch((e) => toastError(e));
+  }, [
+    kitVersion.assessmentKit.id,
+    updatedValues,
+    updateKitInfoQuery,
+    fetchAssessmentKitInfoQuery,
+  ]);
 
   const handleCancelEdit = useCallback(() => {
     setEditableFields(new Set());
   }, []);
 
-  const toggleTranslation = useCallback((field: TranslationFields) => {
-    setShowTranslations((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
-  }, []);
-
-  useEffect(() => {
-    if (data) {
-      const defaultTranslatedLanguage = data.languages?.find(
-        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
-      );
-      setTranslatedLang(defaultTranslatedLanguage);
-
-      dispatch(kitActions.setMainLanguage(data.mainLanguage));
-      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
-      const currentTranslation = translations[firstTranslationKey] ?? {};
-
-      setShowTranslations({
-        title: !!currentTranslation.title,
-        summary: !!currentTranslation.summary,
-        about: !!currentTranslation.about,
-      });
-    }
-  }, [data]);
+  const toggleTranslation = useCallback(
+    (field: "title" | "summary" | "about") => {
+      setShowTranslations((prev) => ({
+        ...prev,
+        [field]: !prev[field],
+      }));
+    },
+    [],
+  );
 
   const renderEditableField = useCallback(
     (
-      field: TranslationFields,
+      field: "title" | "summary" | "about",
       data: any,
       multiline = false,
       useRichEditor = false,
     ) => {
-      if (editableFields.has(field)) {
-        return (
-          <Box sx={{ flexGrow: 1 }}>
-            <MultiLangTextField
-              name={field}
-              value={updatedValues[field]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setUpdatedValues((prev) => ({
-                  ...prev,
-                  [field]: e.target.value,
-                }))
-              }
-              label={field.charAt(0).toUpperCase() + field.slice(1)}
-              translationValue={
-                langCode
-                  ? (updatedValues.translations?.[langCode]?.[field] ?? "")
-                  : ""
-              }
-              onTranslationChange={updateTranslation(field, setUpdatedValues)}
-              showTranslation={showTranslations[field]}
-              setShowTranslation={() => toggleTranslation(field)}
-              fullWidth
-              multiline={multiline}
-              minRows={multiline ? 3 : undefined}
-              useRichEditor={useRichEditor}
-            />
-          </Box>
-        );
-      }
-      return (
+      const isEditing = editableFields.has(field);
+      return isEditing ? (
+        <Box sx={{ flexGrow: 1 }}>
+          <MultiLangTextField
+            name={field}
+            value={updatedValues[field] ?? ""}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUpdatedValues((prev) => ({ ...prev, [field]: e.target.value }))
+            }
+            label={field.charAt(0).toUpperCase() + field.slice(1)}
+            translationValue={
+              langCode
+                ? (updatedValues.translations?.[langCode]?.[field] ?? "")
+                : ""
+            }
+            onTranslationChange={updateTranslation(field, setUpdatedValues)}
+            showTranslation={showTranslations[field]}
+            setShowTranslation={() => toggleTranslation(field)}
+            fullWidth
+            multiline={multiline}
+            minRows={multiline ? 3 : undefined}
+            useRichEditor={useRichEditor}
+          />
+        </Box>
+      ) : (
         <>
           <TitleWithTranslation
             title={data[field] ?? ""}
@@ -228,8 +211,10 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       editableFields,
       updatedValues,
       showTranslations,
-      handleFieldEdit,
+      langCode,
+      updateTranslation,
       toggleTranslation,
+      handleFieldEdit,
     ],
   );
 
@@ -281,33 +266,23 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
               <Divider sx={{ my: 1 }} />
 
-              <Box sx={{ display: "flex", width: "100%" }} gap={2}>
-                <Typography variant="semiBoldLarge">
-                  <Trans i18nKey="title" />:
-                </Typography>
-                {renderEditableField("title", data)}
-              </Box>
-
-              <Box sx={{ display: "flex", width: "100%" }} gap={2}>
-                <Typography variant="semiBoldLarge">
-                  <Trans i18nKey="summary" />:
-                </Typography>
-                {renderEditableField("summary", data)}
-              </Box>
-              <Box>
-                <Typography variant="semiBoldLarge">
-                  <Trans i18nKey="about" />:
-                </Typography>
+              {["title", "summary", "about"].map((field) => (
                 <Box
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                  }}
-                  gap={1}
+                  key={field}
+                  sx={{ display: "flex", width: "100%" }}
+                  gap={2}
                 >
-                  {renderEditableField("about", data, true, true)}
+                  <Typography variant="semiBoldLarge">
+                    <Trans i18nKey={field} />:
+                  </Typography>
+                  {renderEditableField(
+                    field as any,
+                    data,
+                    field === "about",
+                    field === "about",
+                  )}
                 </Box>
-              </Box>
+              ))}
             </Stack>
           )}
         />
