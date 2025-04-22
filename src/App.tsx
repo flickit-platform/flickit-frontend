@@ -13,7 +13,6 @@ function App() {
   const { error, loading } = useGetSignedInUserInfo(); // Checks if the user is signed in
   useEffect(() => {
     const customId = sessionStorage.getItem("currentUser");
-    flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
 
     // @ts-ignore
     if (customId && window.clarity) {

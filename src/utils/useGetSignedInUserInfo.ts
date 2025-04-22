@@ -50,8 +50,6 @@ const useGetSignedInUserInfo = (
             : axios.defaults.headers,
         })
         .then((res) => {
-          flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
-
           sessionStorage.setItem("displayName", data.displayName);
           localStorage.setItem("loggedInUserId", data.id);
           dispatch(
