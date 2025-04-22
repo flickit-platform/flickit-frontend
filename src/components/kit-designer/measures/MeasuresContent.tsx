@@ -199,7 +199,8 @@ const MeasuresContent = () => {
                     items={data.items}
                     onEdit={handleEdit}
                     onReorder={handleReorder}
-                    editableFieldKey="weight"
+                    editableFieldKey="questionsCount"
+                    editable={false}
                   />
                 </Box>
               ) : (

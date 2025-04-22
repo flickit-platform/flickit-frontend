@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { TId, TQueryFunction } from "@/types/index";
+import { FLAGS, TId, TQueryFunction } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import useMenu from "@utils/useMenu";
@@ -17,6 +17,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
+import flagsmith from "flagsmith";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -131,26 +132,29 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             title={!draftVersionId && <Trans i18nKey="noDraftVersion" />}
           >
             <div>
-              {hasAccess && (
-                <LoadingButton
-                  variant="outlined"
-                  size="small"
-                  color={!draftVersionId ? "primary" : "inherit"}
-                  onClick={draftClicked}
-                  loading={cloneAssessmentKit.loading}
-                >
-                  <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
-                </LoadingButton>
-              )}
+              {hasAccess &&
+                flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+                  <LoadingButton
+                    variant="outlined"
+                    size="small"
+                    color={!draftVersionId ? "primary" : "inherit"}
+                    onClick={draftClicked}
+                    loading={cloneAssessmentKit.loading}
+                  >
+                    <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
+                  </LoadingButton>
+                )}
             </div>
           </Tooltip>
-          <Actions
-            assessment_kit={data}
-            fetchAssessmentKits={fetchAssessmentKits}
-            hasAccess={hasAccess}
-            is_member={is_member}
-            is_active={is_active}
-          />
+          {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+            <Actions
+              assessment_kit={data}
+              fetchAssessmentKits={fetchAssessmentKits}
+              hasAccess={hasAccess}
+              is_member={is_member}
+              is_active={is_active}
+            />
+          )}
         </Box>
       </Box>
     </Box>

@@ -65,6 +65,8 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
+import { FLAGS } from "@/types";
+import flagsmith from "flagsmith";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -130,6 +132,8 @@ const ExpertGroupContainer = () => {
       setRemoveMemberDialog({ status: false, id: "" });
     }
   };
+
+  console.log(flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS))
   return (
     <>
       <QueryData
@@ -177,7 +181,8 @@ const ExpertGroupContainer = () => {
                   />
                 }
                 toolbar={
-                  editable ? (
+                  editable &&
+                  flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) ? (
                     <EditExpertGroupButton fetchExpertGroup={queryData.query} />
                   ) : (
                     <></>
@@ -741,14 +746,15 @@ const ExpertGroupMembers = (props: any) => {
               >
                 <Trans i18nKey="members" />
               </Typography>
-              {hasAccess && (
-                <AddingNewMember
-                  queryData={query}
-                  inviteeQuery={inviteeQuery}
-                  setOpenAddMembers={setOpenAddMembers}
-                  openAddMembers={openAddMembers}
-                />
-              )}
+              {hasAccess &&
+                flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+                  <AddingNewMember
+                    queryData={query}
+                    inviteeQuery={inviteeQuery}
+                    setOpenAddMembers={setOpenAddMembers}
+                    openAddMembers={openAddMembers}
+                  />
+                )}
 
               <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1.5 }}>
                 <AvatarGroup>
@@ -1100,7 +1106,7 @@ const AssessmentKitsList = (props: any) => {
         size="small"
         toolbar={
           <Box sx={{ display: "flex", gap: "8px" }}>
-            {hasAccess && (
+            {hasAccess && flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
               <>
                 <Button
                   variant="outlined"

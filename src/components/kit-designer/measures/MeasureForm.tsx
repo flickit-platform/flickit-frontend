@@ -80,13 +80,14 @@ const MeasureForm = ({
       {/* Title & Description with translation */}
       <Box flexGrow={1} display="flex" flexDirection="column" gap={2}>
         <MultiLangTextField
+          id="new-item"
           name="title"
           value={newMeasure.title}
           onChange={handleInputChange}
           translationValue={
             langCode ? (newMeasure.translations?.[langCode]?.title ?? "") : ""
           }
-          onTranslationChange={updateTranslation("description", setNewMeasure)}
+          onTranslationChange={updateTranslation("title", setNewMeasure)}
           label={<Trans i18nKey="title" />}
         />
 
