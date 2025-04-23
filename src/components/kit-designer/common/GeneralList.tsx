@@ -116,7 +116,6 @@ const ListOfItems = ({
       [name]: value,
     }));
   };
-  const isRTL = theme.direction === "rtl";
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="subjects">

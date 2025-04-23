@@ -284,7 +284,6 @@ const ListOfItems = ({
       id: null,
     });
   };
-  const isRTL = theme.direction === "rtl";
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="subjects">

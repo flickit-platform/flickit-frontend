@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DialogProps } from "@mui/material/Dialog";
 import { Trans } from "react-i18next";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
@@ -10,8 +10,6 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { CircleRating } from "../MaturityLevelTable";
 import { styles, generateColorFromString } from "@styles";
-import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import QuestionAnswer from "@mui/icons-material/QuestionAnswer";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";

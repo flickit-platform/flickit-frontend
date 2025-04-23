@@ -30,7 +30,6 @@ const MaturityLevelList = ({
 }: MaturityLevelListProps) => {
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
-  const isRTL = theme.direction === "rtl";
   const { updateTranslation } = useTranslationUpdater(langCode);
 
   const [editMode, setEditMode] = useState<TId | null | undefined>(null);
