@@ -8,20 +8,55 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { useKitLanguageContext } from "@/providers/KitProvider";
+import useDialog from "@/utils/useDialog";
 
 const QuestionContain = (props: any) => {
-  const { question, fetchQuery } = props;
+  const { questions, fetchQuery, question, index } = props;
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
+    number | null
+  >(null);
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code;
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const dialogProps = useDialog();
 
-  const handleEditClick = () => {
-    setIsDialogOpen(true);
+  const handleQuestionClick = (index: number) => {
+    setSelectedQuestionIndex(index);
+    dialogProps.openDialog({
+      type: "details",
+      question: questions[index],
+      index: index,
+    });
   };
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    fetchQuery.query();
+  const navigateToPreviousQuestion = () => {
+    if (selectedQuestionIndex !== null && selectedQuestionIndex > 0) {
+      const newIndex = selectedQuestionIndex - 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        question: questions[newIndex],
+        index: selectedQuestionIndex - 1,
+        questionsLength: questions.length,
+        fetchQuery: fetchQuery,
+      });
+    }
+  };
+
+  const navigateToNextQuestion = () => {
+    if (
+      selectedQuestionIndex !== null &&
+      selectedQuestionIndex < questions.length - 1
+    ) {
+      const newIndex = selectedQuestionIndex + 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        question: questions[newIndex],
+        index: selectedQuestionIndex + 1,
+        questionsLength: questions.length,
+        fetchQuery: fetchQuery,
+      });
+    }
   };
 
   return (
@@ -57,7 +92,7 @@ const QuestionContain = (props: any) => {
         >
           <IconButton
             data-testid="question-handel-edit"
-            onClick={handleEditClick}
+            onClick={() => handleQuestionClick(index)}
           >
             <ModeEditOutlineOutlinedIcon fontSize="small" />
           </IconButton>
@@ -66,14 +101,14 @@ const QuestionContain = (props: any) => {
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
-      {isDialogOpen && (
-        <QuestionDialog
-          open={isDialogOpen}
-          question={question}
-          onClose={handleCloseDialog}
-          fetchQuery={fetchQuery}
-        />
-      )}
+      <QuestionDialog
+        {...dialogProps}
+        onClose={() => dialogProps.onClose()}
+        onPreviousQuestion={navigateToPreviousQuestion}
+        onNextQuestion={navigateToNextQuestion}
+        questionsLength={questions.length}
+        fetchQuery={fetchQuery}
+      />
     </>
   );
 };

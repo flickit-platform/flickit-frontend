@@ -29,7 +29,6 @@ const ScoreDisplay = ({ data }: any) => {
   const width = missedWidth + gainedWidth;
   const height = 12;
 
-  console.log(data);
   return (
     <Tooltip
       title={

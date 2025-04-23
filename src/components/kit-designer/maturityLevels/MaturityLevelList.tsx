@@ -9,7 +9,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@/config/styles";
 import { IMaturityLevel, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitLanguageContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
@@ -30,7 +29,6 @@ const MaturityLevelList = ({
 }: MaturityLevelListProps) => {
   const { kitState } = useKitLanguageContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
-  const isRTL = theme.direction === "rtl";
   const { updateTranslation } = useTranslationUpdater(langCode);
 
   const [editMode, setEditMode] = useState<TId | null | undefined>(null);

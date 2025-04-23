@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  Box,
-  Typography,
-  Divider,
-  Switch,
-} from "@mui/material";
+import { Grid, Box, Typography, Divider, Switch, DialogProps } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
-import { IQuestionInfo } from "@/types";
 import { useQuery } from "@/utils/useQuery";
 import { styles } from "@styles";
 import {
@@ -29,27 +22,36 @@ import AutocompleteAsyncField, {
 import { useKitLanguageContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-
-interface Props {
-  open: boolean;
-  question: IQuestionInfo;
-  onClose: () => void;
-  fetchQuery: any;
-}
-
+import { theme } from "@/config/theme";
+import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 
 interface ITempValue {
   title: string;
   hint: string;
-  translations: {[key: string] : { title: string, hint: string }} | null;
+  translations: { [key: string]: { title: string; hint: string } } | null;
 }
 
-const QuestionDialog: React.FC<Props> = ({
-  open,
-  question,
-  onClose,
-  fetchQuery,
-}) => {
+interface IQuestionDetailsDialogDialogProps extends DialogProps {
+  onClose: () => void;
+  onPreviousQuestion: () => void;
+  onNextQuestion: () => void;
+  context?: any;
+  questionsLength: number;
+  fetchQuery: any;
+}
+
+const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
+  const {
+    onClose: closeDialog,
+    onPreviousQuestion,
+    onNextQuestion,
+    context = {},
+    questionsLength,
+    fetchQuery,
+    ...rest
+  } = props;
+  const { question = {}, index } = context;
+
   const { kitVersionId = "" } = useParams();
 
   const { service } = useServiceContext();
@@ -64,13 +66,10 @@ const QuestionDialog: React.FC<Props> = ({
     number | undefined
   >(question?.answerRangeId);
 
-  const [selectedMeasure, setSelectedMeasure] = useState<any>(null);
-
-
   const [tempValue, setTempValue] = useState<ITempValue>({
     title: "",
     hint: "",
-    translations: null
+    translations: null,
   });
 
   const fetchMeasures = useQuery({
@@ -88,29 +87,27 @@ const QuestionDialog: React.FC<Props> = ({
     const measureObject = fetchMeasures.data?.items?.find(
       (m: any) => m.id === question.measureId,
     );
-    setSelectedMeasure(measureObject);
     formMethods.setValue("measure", measureObject);
   }, [fetchMeasures?.data?.items]);
 
   useEffect(() => {
-    if (open && question.id) {
-     Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+    if (rest.open && question.id) {
+      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
 
-     setTempValue({
-       title: question.title ?? "",
-       hint: question.hint ?? "",
-       translations: question.translations ?? ""
-     })
+      setTempValue({
+        title: question.title ?? "",
+        hint: question.hint ?? "",
+        translations: question.translations ?? "",
+      });
 
       formMethods.reset({
-
         options: question.options ?? [{ text: "" }],
         mayNotBeApplicable: question.mayNotBeApplicable ?? false,
         advisable: question.advisable ?? false,
       });
       setSelectedAnswerRange(question.answerRangeId);
     }
-  }, [open]);
+  }, [rest.open, question.id]);
 
   const handleSubmit = async (data: any) => {
     try {
@@ -126,7 +123,7 @@ const QuestionDialog: React.FC<Props> = ({
         },
       });
       fetchQuery.query();
-      onClose();
+      closeDialog();
     } catch (err) {
       toastError(err as ICustomError);
     }
@@ -142,10 +139,20 @@ const QuestionDialog: React.FC<Props> = ({
 
   return (
     <CEDialog
-      open={open}
-      onClose={onClose}
+      {...rest}
+      closeDialog={closeDialog}
+      sx={{ width: "100%", paddingInline: 4 }}
       title={<Trans i18nKey="editQuestion" />}
     >
+      <NavigationButtons
+        onPrevious={onPreviousQuestion}
+        onNext={onNextQuestion}
+        isPreviousDisabled={index - 1 < 0}
+        isNextDisabled={index + 2 > questionsLength}
+        direction={theme.direction} 
+        previousTextKey="previousQuestion"
+        nextTextKey="nextQuestion"
+      />{" "}
       <FormProviderWithForm
         formMethods={formMethods}
         style={{
@@ -173,7 +180,9 @@ const QuestionDialog: React.FC<Props> = ({
               value={tempValue.title}
               onChange={handleInputChange}
               translationValue={
-                langCode ? (tempValue.translations?.[langCode]?.title ?? "") : ""
+                langCode
+                  ? (tempValue.translations?.[langCode]?.title ?? "")
+                  : ""
               }
               onTranslationChange={updateTranslation("title", setTempValue)}
               placeholder={t("questionPlaceholder")?.toString()}
@@ -218,12 +227,13 @@ const QuestionDialog: React.FC<Props> = ({
               fetchOptions={fetchOptions}
               selectedAnswerRange={selectedAnswerRange}
               setSelectedAnswerRange={setSelectedAnswerRange}
+              key={question.id}
             />
           </Grid>
         </Grid>
 
         <Divider sx={{ my: 1, mt: 4 }} />
-        <ImpactSection question={question} />
+        <ImpactSection question={question} key={question.id} />
 
         <Divider sx={{ my: 1, mt: 4 }} />
 
@@ -260,10 +270,9 @@ const QuestionDialog: React.FC<Props> = ({
         </Grid>
         <Divider sx={{ mt: 4 }} />
       </FormProviderWithForm>
-
       <CEDialogActions
         loading={false}
-        onClose={onClose}
+        onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
         submitButtonLabel="editQuestion"
         type="create"
@@ -272,4 +281,4 @@ const QuestionDialog: React.FC<Props> = ({
   );
 };
 
-export default QuestionDialog;
+export default QuestionDetailsContainer;
