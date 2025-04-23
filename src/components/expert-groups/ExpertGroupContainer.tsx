@@ -133,7 +133,6 @@ const ExpertGroupContainer = () => {
     }
   };
 
-  console.log(flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS))
   return (
     <>
       <QueryData

@@ -148,7 +148,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       };
     }
   }, [openDialog, formMethods, abortController]);
-console.log(data)
   return (
     <CEDialog
       {...rest}

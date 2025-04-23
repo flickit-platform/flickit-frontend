@@ -11,8 +11,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
 import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import languageDetector from "@utils/languageDetector";
+import { theme } from "@config/theme";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -651,6 +650,8 @@ const ListOfItems = ({
                                                     fetchQuery={fetchQuery}
                                                     key={question.id}
                                                     question={question}
+                                                    questions={questionData}
+                                                    index={index}
                                                   />
                                                 </Box>
                                               )}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DialogProps } from "@mui/material/Dialog";
 import { Trans } from "react-i18next";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
@@ -19,6 +19,7 @@ import { QuestionTabsTemplate } from "@/components/questions/QuestionCard";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Link } from "react-router-dom";
 import AlertBox from "@/components/common/AlertBox";
+import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 
 interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onClose: () => void;
@@ -46,46 +47,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const close = () => {
     closeDialog();
   };
-  const renderNavigation = () => (
-    <Box sx={{ display: "flex", justifyContent: "space-between", my: 2 }}>
-      <Button
-        data-testid="question-modal-previous-question"
-        onClick={onPreviousQuestion}
-        disabled={index - 1 < 0}
-        sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
-      >
-        <ArrowBackIos
-          sx={{
-            fontSize: ".7rem",
-            transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
-          }}
-        />
-        <Typography
-          textTransform="uppercase"
-          variant={"semiBoldLarge"}
-          sx={{ fontSize: "12px" }}
-        >
-          <Trans i18nKey={"previousQuestion"} />
-        </Typography>
-      </Button>
-      <Button
-        data-testid="question-modal-next-question"
-        onClick={onNextQuestion}
-        disabled={index + 2 > questionsInfo?.length}
-        sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
-      >
-        <Typography variant={"semiBoldLarge"} sx={{ fontSize: "12px" }}>
-          <Trans i18nKey={"nextQuestion"} />
-        </Typography>
-        <ArrowForwardIos
-          sx={{
-            fontSize: ".7rem",
-            transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
-          }}
-        />
-      </Button>
-    </Box>
-  );
 
   const renderQuestionDetails = () => (
     <Box sx={{ ...styles.centerCV, gap: 2 }}>
@@ -208,6 +169,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       )}
 
       <QuestionTabsTemplate
+        key={questionInfo?.question?.id}
         value={value}
         setValue={setValue}
         handleChange={handleChange}
@@ -236,7 +198,15 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       title={<Trans i18nKey="questionDetails" />}
     >
       <Box overflow="auto" px={2}>
-        {renderNavigation()}
+        <NavigationButtons
+          onPrevious={onPreviousQuestion}
+          onNext={onNextQuestion}
+          isPreviousDisabled={index - 1 < 0}
+          isNextDisabled={index + 2 > questionsInfo?.length}
+          direction={theme.direction}
+          previousTextKey="previousQuestion"
+          nextTextKey="nextQuestion"
+        />
         {renderQuestionDetails()}
         <Divider sx={{ width: "100%", my: 2 }} />
         {renderAnswerDetails()}
