@@ -905,6 +905,10 @@
   "wednesday": "چهارشنبه",
   "thursday": "پنجشنبه",
   "friday": "جمعه",
+  "daysAgo": "روز قبل",
+  "daysLater": "روز بعد",
+  "tomorrow": "فردا",
+  "afterTomorrow": "پس‌فردا",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",

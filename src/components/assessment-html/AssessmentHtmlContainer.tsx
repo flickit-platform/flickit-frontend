@@ -23,7 +23,6 @@ import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import formatDate from "@utils/formatDate";
 import { getMaturityLevelColors, styles } from "@styles";
 import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
@@ -36,6 +35,7 @@ import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
 import { useEffect } from "react";
+import { getReadableDate } from "@utils/readableDate";
 
 const AssessmentExportContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
@@ -134,9 +134,7 @@ const AssessmentExportContainer = () => {
       )}
       {renderChip(
         <CalendarMonthIcon fontSize="small" color="primary" />,
-        language === "fa"
-          ? formatDate(graphicalReport?.assessment.creationTime, "Shamsi")
-          : formatDate(graphicalReport?.assessment.creationTime, "Miladi"),
+         getReadableDate(graphicalReport?.assessment?.creationTime) ,
         language,
       )}
     </>

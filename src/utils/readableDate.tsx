@@ -59,26 +59,41 @@ export const ShamsiCalender = (MiladiDate: any) => {
 
 export const getReadableDate = (time: any) => {
   const lang = i18next.language;
-
+  console.log(time,"test time");
   const lastDay = [t("today"),t("yesterday")]
-  const week = [t("saturday"),t("sunday"),t("monday"),t("tuesday"),t("wednesday"),t("thursday"),t("friday")]
-
-  const now = new Date().getTime();
+  const week = [t("sunday"),t("monday"),t("tuesday"),t("wednesday"),t("thursday"),t("friday"),t("saturday")]
+  const afterDay = [t("tomorrow"), t("afterTomorrow")]
+  const now = new Date();
   const date = new Date(time);
+  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dateMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-  const diffTime = now - date.getTime();
+  const diffTime = nowMidnight.getTime() - dateMidnight.getTime();
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
   const calender: string = MiladiCalender(date)
-
-  if (diffDays < 2) {
-    return lastDay[diffDays];
-  } else if(diffDays < 7)  {
-    const day: number =  time.getDay()
-    return week[day]
-  } else if( 7 <= diffDays && diffDays  < 15){
-    return `${diffDays} days ago`;
-  } else {
-    return  lang == "fa" ? ShamsiCalender(calender) : calender
+  if(now > date){
+    if (diffDays < 2) {
+      return lastDay[diffDays];
+    } else if(diffDays < 7)  {
+      const day: number =  date.getDay()
+      return week[day]
+    } else if( 7 <= diffDays && diffDays  < 15){
+      return `${diffDays} ${t("daysAgo")}`;
+    } else {
+      return  lang == "fa" ? ShamsiCalender(calender) : calender
+    }
+  }else{
+    if (diffDays < -2) {
+      return lastDay[diffDays];
+    } else if(diffDays < -7)  {
+      const day: number =  date.getDay()
+      return week[day]
+    } else if( -7 <= diffDays && diffDays  < -15){
+      return `${diffDays} ${t("daysLater")}`;
+    } else {
+      return  lang == "fa" ? ShamsiCalender(calender) : calender
+    }
   }
+
 }

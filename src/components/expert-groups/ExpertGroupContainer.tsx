@@ -67,6 +67,7 @@ import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import { FLAGS } from "@/types";
 import flagsmith from "flagsmith";
+import { getReadableDate } from "@utils/readableDate";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -859,9 +860,7 @@ const Invitees = (props: any) => {
                         }}
                       />
                       <Typography variant="body2">
-                        {theme.direction == "rtl"
-                          ? formatDate(inviteExpirationDate, "Shamsi")
-                          : formatDate(inviteExpirationDate, "Miladi")}
+                        {getReadableDate(inviteExpirationDate)}
                       </Typography>
                     </Box>
                   </Box>

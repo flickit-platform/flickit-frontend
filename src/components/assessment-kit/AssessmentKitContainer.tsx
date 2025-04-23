@@ -13,7 +13,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
-import formatDate from "@utils/formatDate";
 import { Trans } from "react-i18next";
 import RichEditor from "@common/rich-editor/RichEditor";
 import AssessmentCEFromDialog from "../assessments/AssessmentCEFromDialog";
@@ -28,6 +27,7 @@ import { ECustomErrorType } from "@/types/index";
 import { ErrorNotFoundOrAccessDenied } from "../common/errors/ErrorNotFoundOrAccessDenied";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { getReadableDate } from "@utils/readableDate";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -266,9 +266,7 @@ const AssessmentKit = (props: any) => {
               >
                 <Trans i18nKey="created" />:{" "}
                 <Box component="span" color="black">
-                  {theme.direction == "rtl"
-                    ? formatDate(creationTime, "Shamsi")
-                    : formatDate(creationTime, "Miladi")}
+                  {getReadableDate(creationTime)}
                 </Box>
               </Box>
               <Box
@@ -284,9 +282,7 @@ const AssessmentKit = (props: any) => {
               >
                 <Trans i18nKey="updated" />:{" "}
                 <Box component="span" color="black">
-                  {theme.direction == "rtl"
-                    ? formatDate(lastModificationTime, "Shamsi")
-                    : formatDate(lastModificationTime, "Miladi")}
+                  {getReadableDate(creationTime)}
                 </Box>
               </Box>
             </Box>
