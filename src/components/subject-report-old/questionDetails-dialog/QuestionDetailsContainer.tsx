@@ -220,7 +220,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           variant="outlined"
           color="primary"
           component={Link}
-          to={`./../../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
+          to={`./../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
           startIcon={<QuestionAnswer />}
           target="_blank"
         >
