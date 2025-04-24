@@ -82,8 +82,8 @@ const AssessmentKitExpertViewContainer = () => {
   };
   const handleExport = async () => {
     setLoadingExportBtn(true);
-    service
-      .assessmentKit.dsl.getExportUrl({ assessmentKitId }, {})
+    service.assessmentKit.dsl
+      .getExportUrl({ assessmentKitId }, {})
       .then((res) => {
         setLoadingExportBtn(false);
         const { data } = res;
@@ -1498,7 +1498,7 @@ const MaturityLevelsDetails = (props: any) => {
             <Box
               sx={{
                 transform: "skew(-30deg);",
-                background: colorPallet[key],
+                background: colorPallet[key ?? 0],
                 borderRadius: "8px",
                 py: "4px",
                 paddingLeft: theme.direction === "ltr" ? 2 : "unset",

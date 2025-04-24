@@ -285,6 +285,7 @@ export const C9BG = "#16834515";
 export const C10BG = "#0A5C2515";
 
 export const maturityLevelColorMap: any = {
+  ML1: [C1],
   ML2: [C1, C10],
   ML3: [C1, C6, C10],
   ML4: [C1, C5, C7, C10],
@@ -297,6 +298,7 @@ export const maturityLevelColorMap: any = {
 };
 
 export const maturityLevelBGColorMap: any = {
+  ML1: [C1BG],
   ML2: [C1BG, C10BG],
   ML3: [C1BG, C6BG, C10BG],
   ML4: [C1BG, C5BG, C7BG, C10BG],
@@ -318,6 +320,8 @@ export const getMaturityLevelColors = (
     maturityInstance = maturityLevelBGColorMap;
   }
   switch (maturity_level_number) {
+    case 1:
+      return maturityInstance.ML1;
     case 2:
       return maturityInstance.ML2;
     case 3:
