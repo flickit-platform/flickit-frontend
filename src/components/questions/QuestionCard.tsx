@@ -1103,7 +1103,6 @@ const AnswerTemplate = (props: {
             onClick={submitQuestion}
             disabled={
               isSelectedValueTheSameAsAnswer ||
-              !value ||
               ((value || notApplicable) && !selcetedConfidenceLevel)
             }
           >
@@ -1111,6 +1110,7 @@ const AnswerTemplate = (props: {
           </LoadingButton>{" "}
         </Box>
         {isSelectedValueTheSameAsAnswer &&
+          value &&
           answer?.hasOwnProperty("approved") &&
           !answer?.approved &&
           permissions?.approveAnswer && (
