@@ -20,7 +20,7 @@ export const ErrorNotFoundOrAccessDenied = () => {
           width="100%"
         />
       </Box>
-      <Button variant="contained" size="large" component={Link} to={"/"}>
+      <Button variant="contained" size="large" component={Link} to={"/spaces/1"}>
         <Trans i18nKey={"backToHome"} />
       </Button>
     </Box>

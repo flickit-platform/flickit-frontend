@@ -45,7 +45,7 @@ class ErrorBoundary extends Component {
                 variant="contained"
                 size="large"
                 component={Link}
-                to={"/"}
+                to={"/spaces/1"}
             >
                 <Trans i18nKey={"backToHome"} />
             </Button>

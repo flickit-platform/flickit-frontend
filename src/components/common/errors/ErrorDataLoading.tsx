@@ -16,7 +16,7 @@ const ErrorDataLoading = (props: IErrorDataLoadingProps) => {
       <Typography>
         <Trans i18nKey="someThingWentWrong" />
       </Typography >
-      <Button sx={{mt:"50px"}} variant="contained" size="small" component={Link} to={"/"}>
+      <Button sx={{mt:"50px"}} variant="contained" size="small" component={Link} to={"/spaces/1"}>
         <Trans i18nKey={"backToHome"} />
       </Button>
     </Box>
