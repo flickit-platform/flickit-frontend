@@ -72,7 +72,8 @@ export const getReadableDate = (time: any) => {
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
   const calender: string = MiladiCalender(date)
-  if(now > date){
+
+  if(diffDays >= 0){
     if (diffDays < 2) {
       return lastDay[diffDays];
     } else if(diffDays < 7)  {
@@ -84,13 +85,14 @@ export const getReadableDate = (time: any) => {
       return  lang == "fa" ? ShamsiCalender(calender) : calender
     }
   }else{
-    if (diffDays < -2) {
-      return lastDay[diffDays];
-    } else if(diffDays < -7)  {
+    const abs = Math.abs(diffDays)
+    if (diffDays > -2) {
+      return afterDay[abs];
+    } else if(diffDays > -7)  {
       const day: number =  date.getDay()
       return week[day]
-    } else if( -7 <= diffDays && diffDays  < -15){
-      return `${diffDays} ${t("daysLater")}`;
+    } else if( -7 >= diffDays && diffDays  > -15){
+      return `${abs} ${t("daysLater")}`;
     } else {
       return  lang == "fa" ? ShamsiCalender(calender) : calender
     }
