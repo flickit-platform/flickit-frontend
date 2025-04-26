@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import AssessmentKitContainer from "@/components/assessment-kit/AssessmentKitContainer";
+import AssessmentKitContainer from "@components/assessment-kit/AssessmentKitContainer";
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const AssessmentKitScreen = () => {
