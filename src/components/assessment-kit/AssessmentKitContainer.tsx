@@ -12,6 +12,7 @@ import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { Link, useParams } from "react-router-dom";
+import AssessmentKitAbout from "@components/assessment-kit/AssessmentKitAbout";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -41,7 +42,7 @@ const AssessmentKitContainer = () => {
           config.appTitle,
         );
         return (
-          <AssessmentKit data={data} query={assessmentKitQueryData.query} />
+            <AssessmentKit data={data} query={assessmentKitQueryData.query} />
         );
       }}
     />
@@ -53,10 +54,7 @@ export default AssessmentKitContainer;
 const AssessmentKit = (props: any) => {
   const { data } = props;
 
-  const {
-    title: assessmentTitle,
-    expertGroupId,
-  } = data ?? {};
+  const { title: assessmentTitle, expertGroupId } = data ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
@@ -69,7 +67,14 @@ const AssessmentKit = (props: any) => {
       loading={false}
       render={(data) => {
         return (
-          <AssessmentKitBanner assessmentTitle={assessmentTitle} {...data} />
+          <>
+            <AssessmentKitBanner assessmentTitle={assessmentTitle} {...data} />
+            <Box sx={{  py: 6,
+              paddingInlineStart: { xs: 1, md: 8 }
+            }}>
+              <AssessmentKitAbout />
+            </Box>
+          </>
         );
       }}
     />
