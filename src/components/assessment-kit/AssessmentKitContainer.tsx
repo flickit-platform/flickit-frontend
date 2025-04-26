@@ -13,6 +13,7 @@ import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { Link, useParams } from "react-router-dom";
 import AssessmentKitAbout from "@components/assessment-kit/AssessmentKitAbout";
+import Grid from "@mui/material/Grid";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -54,7 +55,7 @@ export default AssessmentKitContainer;
 const AssessmentKit = (props: any) => {
   const { data } = props;
 
-  const { title: assessmentTitle, expertGroupId } = data ?? {};
+  const { title: assessmentTitle, expertGroupId, about = "" } = data ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
@@ -72,7 +73,9 @@ const AssessmentKit = (props: any) => {
             <Box sx={{  py: 6,
               paddingInlineStart: { xs: 1, md: 8 }
             }}>
-              <AssessmentKitAbout />
+              <Grid container>
+                <AssessmentKitAbout about={about} />
+              </Grid>
             </Box>
           </>
         );
