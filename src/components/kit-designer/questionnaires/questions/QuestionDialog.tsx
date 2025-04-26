@@ -142,7 +142,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       {...rest}
       closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="editQuestion" />}
+      title={<Trans i18nKey="save" />}
     >
       <NavigationButtons
         onPrevious={onPreviousQuestion}
@@ -274,7 +274,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         loading={false}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        submitButtonLabel="editQuestion"
+        submitButtonLabel="save"
         type="create"
       />
     </CEDialog>
