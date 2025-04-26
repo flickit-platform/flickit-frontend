@@ -90,7 +90,7 @@ export const getReadableDate = (time: any) => {
       return afterDay[abs];
     } else if(diffDays > -7)  {
       const day: number =  date.getDay()
-      return week[day]
+      return `${week[day]} ${t("future")}`
     } else if( -7 >= diffDays && diffDays  > -15){
       return `${abs} ${t("daysLater")}`;
     } else {

@@ -38,7 +38,6 @@ import toastError from "@utils/toastError";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
-import formatDate from "@utils/formatDate";
 import { SubmitOnSelectCheckBox } from "./QuestionContainer";
 import QueryData from "../common/QueryData";
 import languageDetector from "@utils/languageDetector";
@@ -83,6 +82,7 @@ import { QuestionGuide } from "./QuestionCard/QuestionGuide";
 import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import { getReadableDate } from "@utils/readableDate";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -2471,9 +2471,7 @@ const EvidenceDetail = (props: any) => {
                         mt: -2,
                       }}
                     >
-                      {theme.direction == "rtl"
-                        ? formatDate(lastModificationTime, "Shamsi")
-                        : formatDate(lastModificationTime, "Miladi")}
+                      {getReadableDate(lastModificationTime)}
                     </Typography>
                   </Box>
                 </Box>

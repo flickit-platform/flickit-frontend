@@ -911,6 +911,7 @@
   "daysLater": "days later",
   "tomorrow": "Tomorrow",
   "afterTomorrow": "The day after tomorrow",
+  "future": "future",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",
