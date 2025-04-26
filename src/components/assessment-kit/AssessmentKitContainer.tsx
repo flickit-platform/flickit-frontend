@@ -85,7 +85,7 @@ const AssessmentKit = (props: any) => {
 };
 
 const AssessmentKitBanner = (props: any) => {
-  const { assessmentTitle, title: expertGroupTitle, pictureLink } = props;
+  const { assessmentTitle, title: expertGroupTitle,id: expertGroupId ,pictureLink } = props;
 
   return (
     <Box
@@ -94,7 +94,6 @@ const AssessmentKitBanner = (props: any) => {
         flexDirection: "column",
         background: "#2466A814",
         width: "100%",
-        height: "200px",
         py: 6,
         paddingInlineStart: { xs: 1, md: 8 },
         gap: 5,
@@ -123,7 +122,7 @@ const AssessmentKitBanner = (props: any) => {
           {assessmentTitle}
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
         {pictureLink && (
           <img
             style={{ width: "24px", height: "24px" }}
@@ -131,7 +130,10 @@ const AssessmentKitBanner = (props: any) => {
             alt={`${expertGroupTitle} pic`}
           />
         )}
-        <Typography sx={{ ...theme.typography.semiBoldLarge }}>
+        <Typography
+          component={Link}
+          to={`/user/expert-groups/${expertGroupId}`}
+          sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B",  textDecoration: "none" }}>
           {expertGroupTitle}
         </Typography>
       </Box>
