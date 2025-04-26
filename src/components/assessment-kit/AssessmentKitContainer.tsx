@@ -11,8 +11,6 @@ import { ErrorNotFoundOrAccessDenied } from "@common/errors/ErrorNotFoundOrAcces
 import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { getMaturityLevelColors } from "@styles";
-import useDialog from "@utils/useDialog";
 import { Link, useParams } from "react-router-dom";
 
 const AssessmentKitContainer = () => {
@@ -54,39 +52,17 @@ export default AssessmentKitContainer;
 
 const AssessmentKit = (props: any) => {
   const { data } = props;
-  const { assessmentKitId } = useParams();
 
   const {
     title: assessmentTitle,
-    summary = "",
-    about = "",
-    published,
-    creationTime,
-    lastModificationTime,
     expertGroupId,
-    like,
-    assessmentsCount,
-    subjectsCount,
-    questionnairesCount,
-    subjects = [],
-    questionnaires = [],
-    maturityLevels,
-    tags = [],
   } = data ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
-  const colorPallet = getMaturityLevelColors(
-    maturityLevels ? maturityLevels?.length : 5,
-  );
-  const dialogProps = useDialog({
-    context: {
-      type: "create",
-      staticData: { assessment_kit: { id: assessmentKitId, assessmentTitle } },
-    },
-  });
+
   return (
     <QueryData
       {...expertGroupQueryData}
