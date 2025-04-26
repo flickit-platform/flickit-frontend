@@ -14,6 +14,7 @@ import { t } from "i18next";
 import { Link, useParams } from "react-router-dom";
 import AssessmentKitAbout from "@components/assessment-kit/AssessmentKitAbout";
 import Grid from "@mui/material/Grid";
+import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -43,7 +44,7 @@ const AssessmentKitContainer = () => {
           config.appTitle,
         );
         return (
-            <AssessmentKit data={data} query={assessmentKitQueryData.query} />
+          <AssessmentKit data={data} query={assessmentKitQueryData.query} />
         );
       }}
     />
@@ -70,11 +71,15 @@ const AssessmentKit = (props: any) => {
         return (
           <>
             <AssessmentKitBanner assessmentTitle={assessmentTitle} {...data} />
-            <Box sx={{  py: 6,
-              paddingInlineStart: { xs: 1, md: 8 }
-            }}>
-              <Grid container>
+            <Box
+              sx={{
+                py: 6,
+                px: { xs: 1, md: 8 },
+              }}
+            >
+              <Grid container spacing={9}>
                 <AssessmentKitAbout about={about} />
+                <AssessmentKitAside />
               </Grid>
             </Box>
           </>
@@ -85,7 +90,12 @@ const AssessmentKit = (props: any) => {
 };
 
 const AssessmentKitBanner = (props: any) => {
-  const { assessmentTitle, title: expertGroupTitle,id: expertGroupId ,pictureLink } = props;
+  const {
+    assessmentTitle,
+    title: expertGroupTitle,
+    id: expertGroupId,
+    pictureLink,
+  } = props;
 
   return (
     <Box
@@ -133,7 +143,12 @@ const AssessmentKitBanner = (props: any) => {
         <Typography
           component={Link}
           to={`/user/expert-groups/${expertGroupId}`}
-          sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B",  textDecoration: "none" }}>
+          sx={{
+            ...theme.typography.semiBoldLarge,
+            color: "#2B333B",
+            textDecoration: "none",
+          }}
+        >
           {expertGroupTitle}
         </Typography>
       </Box>
