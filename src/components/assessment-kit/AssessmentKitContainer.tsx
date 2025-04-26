@@ -282,7 +282,7 @@ const AssessmentKit = (props: any) => {
               >
                 <Trans i18nKey="updated" />:{" "}
                 <Box component="span" color="black">
-                  {getReadableDate(creationTime)}
+                  {getReadableDate(lastModificationTime)}
                 </Box>
               </Box>
             </Box>
