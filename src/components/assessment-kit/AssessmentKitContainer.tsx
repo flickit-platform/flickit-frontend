@@ -53,10 +53,7 @@ export default AssessmentKitContainer;
 const AssessmentKit = (props: any) => {
   const { data } = props;
 
-  const {
-    title: assessmentTitle,
-    expertGroupId,
-  } = data ?? {};
+  const { title: assessmentTitle, expertGroupId } = data ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
@@ -77,7 +74,7 @@ const AssessmentKit = (props: any) => {
 };
 
 const AssessmentKitBanner = (props: any) => {
-  const { assessmentTitle, title: expertGroupTitle, id, pictureLink } = props;
+  const { assessmentTitle, title: expertGroupTitle, pictureLink } = props;
 
   return (
     <Box
@@ -116,11 +113,13 @@ const AssessmentKitBanner = (props: any) => {
         </Typography>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <img
-          style={{ width: "24px", height: "24px" }}
-          src={pictureLink}
-          alt={`${expertGroupTitle} pic`}
-        />
+        {pictureLink && (
+          <img
+            style={{ width: "24px", height: "24px" }}
+            src={pictureLink}
+            alt={`${expertGroupTitle} pic`}
+          />
+        )}
         <Typography sx={{ ...theme.typography.semiBoldLarge }}>
           {expertGroupTitle}
         </Typography>
