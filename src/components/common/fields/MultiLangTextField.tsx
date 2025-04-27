@@ -11,7 +11,7 @@ import GlobePlus from "@/assets/svg/globePlus.svg";
 import GlobeSub from "@/assets/svg/globeSub.svg";
 import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
@@ -44,7 +44,7 @@ const MultiLangTextField = ({
   maxRows,
   ...rest
 }: MultiLangTextFieldProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
   const mainLangCode = kitState.mainLanguage?.code;
 

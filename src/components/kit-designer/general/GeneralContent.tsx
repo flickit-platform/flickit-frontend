@@ -18,15 +18,15 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import toastError from "@/utils/toastError";
-import { kitActions, useKitLanguageContext } from "@/providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
   const { updateTranslation } = useTranslationUpdater(langCode);
-  const { dispatch } = useKitLanguageContext();
+  const { dispatch } = useKitDesignerContext();
   const { service } = useServiceContext();
   const {
     config: { languages },
@@ -268,18 +268,29 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               {["title", "summary", "about"].map((field) => (
                 <Box
                   key={field}
-                  sx={{ display: "flex", width: "100%" }}
-                  gap={2}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    flexDirection: field === "about" ? "column" : "row",
+                  }}
+                  gap={field === "about" ? 0 : 2}
                 >
                   <Typography variant="semiBoldLarge">
                     <Trans i18nKey={field} />:
                   </Typography>
-                  {renderEditableField(
-                    field as any,
-                    data,
-                    field === "about",
-                    field === "about",
-                  )}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                    }}
+                  >
+                    {renderEditableField(
+                      field as any,
+                      data,
+                      field === "about",
+                      field === "about",
+                    )}
+                  </Box>
                 </Box>
               ))}
             </Stack>

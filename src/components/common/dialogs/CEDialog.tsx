@@ -21,7 +21,15 @@ interface ICEDialogProps extends Omit<DialogProps, "title"> {
 }
 
 export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
-  const { closeDialog, title, children, style, titleStyle, contentStyle, ...rest } = props;
+  const {
+    closeDialog,
+    title,
+    children,
+    style,
+    titleStyle,
+    contentStyle,
+    ...rest
+  } = props;
   const fullScreen = useScreenResize("sm");
 
   return (
@@ -33,12 +41,17 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       fullScreen={fullScreen}
       {...rest}
     >
-      {title &&  <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV, ...titleStyle }}>
-        {title}
-      </DialogTitle>}
+      {title && (
+        <DialogTitle
+          textTransform={"uppercase"}
+          sx={{ ...styles.centerV, ...titleStyle }}
+        >
+          {title}
+        </DialogTitle>
+      )}
       <DialogContent
         style={style}
-        sx={{ display: "flex", flexDirection: "column",...contentStyle }}
+        sx={{ display: "flex", flexDirection: "column", ...contentStyle }}
       >
         {children}
       </DialogContent>
@@ -61,6 +74,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   hasBackBtn?: boolean;
   backType?: any;
   cancelLabel?: string | null;
+  disablePrimaryButton?: boolean;
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -79,6 +93,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     cancelLabel = "cancel",
     submitAndViewButtonLabel,
     backType = "contained",
+    disablePrimaryButton = false,
     children,
   } = props;
   const fullScreen = useScreenResize("sm");
@@ -118,6 +133,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
                 e.preventDefault();
                 onSubmit?.(e)?.();
               }}
+              disabled={disablePrimaryButton}
             >
               <Trans i18nKey={submitButtonLabel as string} />
             </LoadingButton>
