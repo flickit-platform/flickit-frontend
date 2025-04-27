@@ -15,6 +15,8 @@ import { Link, useParams } from "react-router-dom";
 import AssessmentKitAbout from "@components/assessment-kit/AssessmentKitAbout";
 import Grid from "@mui/material/Grid";
 import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
+import { styles } from "@styles";
+import Avatar from "@mui/material/Avatar";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -117,9 +119,9 @@ const AssessmentKitBanner = (props: any) => {
         gap: 5,
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <Box sx={{ ...styles.centerV, gap: "8px" }}>
         <Box
-          sx={{ display: "flex", alignItems: "center" }}
+          sx={{ ...styles.centerV }}
           component={Link}
           to={"./../"}
         >
@@ -140,13 +142,15 @@ const AssessmentKitBanner = (props: any) => {
           {assessmentTitle}
         </Typography>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-        {pictureLink && (
+      <Box sx={{ ...styles.centerV, gap: 0.5 }}>
+        {pictureLink ? (
           <img
             style={{ width: "24px", height: "24px" }}
             src={pictureLink}
             alt={`${expertGroupTitle} pic`}
           />
+        ) : (
+          <Avatar sx={{alignItems: "center"}} alt={assessmentTitle} src={pictureLink} />
         )}
         <Typography
           component={Link}
