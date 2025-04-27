@@ -148,14 +148,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const handleNext = () => {
     formMethods.handleSubmit(async (data) => {
-      await handleSubmit(data);
+      if (isDirty()) {
+        await handleSubmit(data);
+      }
       onNextQuestion();
     })();
   };
 
   const handlePrevious = () => {
     formMethods.handleSubmit(async (data) => {
-      await handleSubmit(data);
+      if (isDirty()) {
+        await handleSubmit(data);
+      }
       onPreviousQuestion();
     })();
   };
