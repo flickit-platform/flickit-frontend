@@ -899,6 +899,12 @@
   "createNewAssessment": "ساخت ارزیابی",
   "kitLibrary": "کیت\u200Cهای ارزیابی",
   "aboutThisKit": "درباره‌ی کیت",
+  "kitGoal": "هدف این کیت چیست؟",
+  "whoCanUseThisBest": "مناسب چه کسانی است؟",
+  "supportedLanguages": "زبان\u200Cهای پشتیبانی شده",
+  "anyQuestions": "سوالی دارید؟",
+  "doYouLikeThisKit": "این کیت را پسندیدید؟",
+  "youLikedThisKit": "کیت را پسندیدید!",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",

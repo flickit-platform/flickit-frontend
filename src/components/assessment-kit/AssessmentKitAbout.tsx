@@ -6,7 +6,6 @@ import RichEditor from "@common/rich-editor/RichEditor";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { t } from "i18next";
-import Box from "@mui/material/Box";
 
 const AssessmentKitAbout = (props: any) => {
   const { about } = props;

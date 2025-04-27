@@ -55,13 +55,21 @@ export default AssessmentKitContainer;
 
 const AssessmentKit = (props: any) => {
   const { data } = props;
-
-  const { title: assessmentTitle, expertGroupId, about = "" } = data ?? {};
+  const { title: assessmentTitle,id, expertGroupId, about = "", like } = data ?? {};
   const { service } = useServiceContext();
+  const { assessmentKitId } = useParams();
+
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
+
+  const likeQueryData = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
+    runOnMount: false,
+  });
+
 
   return (
     <QueryData
@@ -79,7 +87,7 @@ const AssessmentKit = (props: any) => {
             >
               <Grid container spacing={9}>
                 <AssessmentKitAbout about={about} />
-                <AssessmentKitAside />
+                <AssessmentKitAside likeQueryData={likeQueryData} like={like} id={id} title={assessmentTitle} />
               </Grid>
             </Box>
           </>
