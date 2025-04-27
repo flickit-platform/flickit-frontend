@@ -63,8 +63,6 @@ import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { format } from "date-fns";
-import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -1385,16 +1383,7 @@ const AnswerHistoryItem = (props: any) => {
         justifyContent="flex-end"
       >
         <Typography variant="bodyMedium">
-          {format(
-            new Date(
-              new Date(item.creationTime).getTime() -
-                new Date(item.creationTime).getTimezoneOffset() * 60000,
-            ),
-            "yyyy/MM/dd HH:mm",
-          ) +
-            " (" +
-            t(convertToRelativeTime(item.creationTime)) +
-            ")"}
+          {getReadableDate(item.creationTime)}
         </Typography>
       </Grid>
     </Grid>

@@ -1,6 +1,6 @@
 import i18next, { t } from "i18next";
 
-export const MiladiCalender = (date: any): string =>{
+export const MiladiCalendar = (date: Date): string =>{
 
   let  month = String((date.getMonth() + 1)) ;
   let  day = String(date.getDate())
@@ -12,7 +12,7 @@ export const MiladiCalender = (date: any): string =>{
   return MiladiDate;
 }
 
-export const ShamsiCalender = (MiladiDate: any) => {
+export const ShamsiCalendar = (MiladiDate: any) => {
   let [gy, gm, gd] = MiladiDate.split("/").map(Number);
 
   let jy, jm, jd;
@@ -59,7 +59,6 @@ export const ShamsiCalender = (MiladiDate: any) => {
 
 export const getReadableDate = (time: any) => {
   const lang = i18next.language;
-  console.log(time,"test time");
   const lastDay = [t("today"),t("yesterday")]
   const week = [t("sunday"),t("monday"),t("tuesday"),t("wednesday"),t("thursday"),t("friday"),t("saturday")]
   const afterDay = [t("tomorrow"), t("afterTomorrow")]
@@ -71,7 +70,7 @@ export const getReadableDate = (time: any) => {
   const diffTime = nowMidnight.getTime() - dateMidnight.getTime();
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  const calender: string = MiladiCalender(date)
+  const calendar: string = MiladiCalendar(date)
 
   if(diffDays >= 0){
     if (diffDays < 2) {
@@ -82,7 +81,7 @@ export const getReadableDate = (time: any) => {
     } else if( 7 <= diffDays && diffDays  < 15){
       return `${diffDays} ${t("daysAgo")}`;
     } else {
-      return  lang == "fa" ? ShamsiCalender(calender) : calender
+      return  lang == "fa" ? ShamsiCalendar(calendar) : calendar
     }
   }else{
     const abs = Math.abs(diffDays)
@@ -94,7 +93,7 @@ export const getReadableDate = (time: any) => {
     } else if( -7 >= diffDays && diffDays  > -15){
       return `${abs} ${t("daysLater")}`;
     } else {
-      return  lang == "fa" ? ShamsiCalender(calender) : calender
+      return  lang == "fa" ? ShamsiCalendar(calendar) : calendar
     }
   }
 
