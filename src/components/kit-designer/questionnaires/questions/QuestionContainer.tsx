@@ -11,7 +11,7 @@ import { useKitDesignerContext } from "@/providers/KitProvider";
 import useDialog from "@/utils/useDialog";
 
 const QuestionContain = (props: any) => {
-  const { fetchQuery, question, index } = props;
+  const { question, index } = props;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);

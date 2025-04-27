@@ -647,7 +647,6 @@ const ListOfItems = ({
                                                   sx={{ marginBottom: 1 }}
                                                 >
                                                   <QuestionContainer
-                                                    fetchQuery={fetchQuery}
                                                     key={question.id}
                                                     question={question}
                                                     index={index}
