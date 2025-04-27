@@ -33,7 +33,7 @@ const AssessmentKitAbout = (props: any) => {
   <Typography
     sx={{
       color: "#2B333B",
-      minHeight: "50px",
+      minHeight: "91%",
       display: "-webkit-box",
       WebkitLineClamp: showMore ? "unset" : 3,
       WebkitBoxOrient: "vertical",
