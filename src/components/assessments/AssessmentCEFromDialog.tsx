@@ -196,7 +196,13 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             <Grid item xs={12}>
               <SpaceField defaultValue={defaultValues?.space ?? data?.space} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={7}>
+              <AssessmentKitField
+                staticData={staticData?.assessment_kit}
+                defaultValue={defaultValues?.assessment_kit}
+              />
+            </Grid>
+            <Grid item xs={12} md={5}>
               <AssessmentKitField
                 staticData={staticData?.assessment_kit}
                 defaultValue={defaultValues?.assessment_kit}
