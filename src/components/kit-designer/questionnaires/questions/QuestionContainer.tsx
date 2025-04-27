@@ -7,21 +7,51 @@ import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
+import useDialog from "@/utils/useDialog";
 
 const QuestionContain = (props: any) => {
-  const { question, fetchQuery } = props;
-  const { kitState } = useKitLanguageContext();
-  const langCode = kitState.translatedLanguage?.code;
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { index } = props;
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
+    number | null
+  >(null);
+  const { kitState } = useKitDesignerContext();
+  const question = kitState.questions[index];
 
-  const handleEditClick = () => {
-    setIsDialogOpen(true);
+  const langCode = kitState.translatedLanguage?.code;
+  const dialogProps = useDialog();
+
+  const handleQuestionClick = (index: number) => {
+    setSelectedQuestionIndex(index);
+    dialogProps.openDialog({
+      type: "details",
+      index: index,
+    });
   };
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    fetchQuery.query();
+  const navigateToPreviousQuestion = () => {
+    if (selectedQuestionIndex !== null && selectedQuestionIndex > 0) {
+      const newIndex = selectedQuestionIndex - 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        index: selectedQuestionIndex - 1,
+      });
+    }
+  };
+
+  const navigateToNextQuestion = () => {
+    if (
+      selectedQuestionIndex !== null &&
+      selectedQuestionIndex < kitState.questions.length - 1
+    ) {
+      const newIndex = selectedQuestionIndex + 1;
+      setSelectedQuestionIndex(newIndex);
+      dialogProps.openDialog({
+        type: "details",
+        index: selectedQuestionIndex + 1,
+      });
+    }
   };
 
   return (
@@ -57,7 +87,7 @@ const QuestionContain = (props: any) => {
         >
           <IconButton
             data-testid="question-handel-edit"
-            onClick={handleEditClick}
+            onClick={() => handleQuestionClick(index)}
           >
             <ModeEditOutlineOutlinedIcon fontSize="small" />
           </IconButton>
@@ -66,12 +96,12 @@ const QuestionContain = (props: any) => {
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
-      {isDialogOpen && (
+      {dialogProps.open && (
         <QuestionDialog
-          open={isDialogOpen}
-          question={question}
-          onClose={handleCloseDialog}
-          fetchQuery={fetchQuery}
+          {...dialogProps}
+          onClose={() => dialogProps.onClose()}
+          onPreviousQuestion={navigateToPreviousQuestion}
+          onNextQuestion={navigateToNextQuestion}
         />
       )}
     </>

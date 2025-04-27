@@ -17,7 +17,7 @@ import QueryBatchData from "../common/QueryBatchData";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { IKitVersion, ILanguage } from "@/types";
-import { useKitLanguageContext, kitActions } from "@/providers/KitProvider";
+import { useKitDesignerContext, kitActions } from "@/providers/KitProvider";
 
 const tabMap = [
   { key: "General", title: "general", Component: GeneralContent },
@@ -45,7 +45,7 @@ const tabMap = [
 const KitDesignerContainer = () => {
   const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
-  const { dispatch } = useKitLanguageContext();
+  const { dispatch } = useKitDesignerContext();
 
   const [selectedTab, setSelectedTab] = useState(0);
 

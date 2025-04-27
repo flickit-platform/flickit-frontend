@@ -5,13 +5,13 @@ import {
   Typography,
   Divider,
   Switch,
+  DialogProps,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import toastError from "@/utils/toastError";
-import { IQuestionInfo } from "@/types";
 import { useQuery } from "@/utils/useQuery";
 import { styles } from "@styles";
 import {
@@ -26,52 +26,55 @@ import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
-import { useKitLanguageContext } from "@providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-
-interface Props {
-  open: boolean;
-  question: IQuestionInfo;
-  onClose: () => void;
-  fetchQuery: any;
-}
-
+import { theme } from "@/config/theme";
+import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 
 interface ITempValue {
   title: string;
   hint: string;
-  translations: {[key: string] : { title: string, hint: string }} | null;
+  translations: { [key: string]: { title: string; hint: string } } | null;
 }
 
-const QuestionDialog: React.FC<Props> = ({
-  open,
-  question,
-  onClose,
-  fetchQuery,
-}) => {
-  const { kitVersionId = "" } = useParams();
+interface IQuestionDetailsDialogDialogProps extends DialogProps {
+  onClose: () => void;
+  onPreviousQuestion: () => void;
+  onNextQuestion: () => void;
+  context?: any;
+}
 
+const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
+  const {
+    onClose: closeDialog,
+    onPreviousQuestion,
+    onNextQuestion,
+    context = {},
+    ...rest
+  } = props;
+  const { index } = context;
+
+  const { kitVersionId = "" } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 
-  const { kitState } = useKitLanguageContext();
+  const { kitState, dispatch } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
+  const question = kitState.questions[index];
 
   const { updateTranslation } = useTranslationUpdater(langCode);
 
   const [selectedAnswerRange, setSelectedAnswerRange] = useState<
     number | undefined
   >(question?.answerRangeId);
-
-  const [selectedMeasure, setSelectedMeasure] = useState<any>(null);
-
-
   const [tempValue, setTempValue] = useState<ITempValue>({
-    title: "",
-    hint: "",
-    translations: null
+    title: question.title,
+    hint: question.hint,
+    translations: question.translations,
   });
+  const [isSaving, setIsSaving] = useState(false);
+  const [initialData, setInitialData] = useState<any>(null);
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
@@ -88,48 +91,77 @@ const QuestionDialog: React.FC<Props> = ({
     const measureObject = fetchMeasures.data?.items?.find(
       (m: any) => m.id === question.measureId,
     );
-    setSelectedMeasure(measureObject);
     formMethods.setValue("measure", measureObject);
   }, [fetchMeasures?.data?.items]);
 
   useEffect(() => {
-    if (open && question.id) {
-     Promise.all([fetchOptions.query(), fetchMeasures.query()]);
-
-     setTempValue({
-       title: question.title ?? "",
-       hint: question.hint ?? "",
-       translations: question.translations ?? ""
-     })
-
-      formMethods.reset({
-
+    if (rest.open && question.id) {
+      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
+      const initial = {
         options: question.options ?? [{ text: "" }],
         mayNotBeApplicable: question.mayNotBeApplicable ?? false,
         advisable: question.advisable ?? false,
+        measure:
+          fetchMeasures.data?.items?.find(
+            (m: any) => m.id === question.measureId,
+          ) ?? null,
+      };
+      setInitialData(initial);
+      formMethods.reset(initial);
+      setTempValue({
+        title: question.title ?? "",
+        hint: question.hint ?? "",
+        translations: question.translations ?? "",
       });
       setSelectedAnswerRange(question.answerRangeId);
     }
-  }, [open]);
+  }, [rest.open, question.id]);
 
   const handleSubmit = async (data: any) => {
     try {
+      setIsSaving(true);
+      const updatedFields = {
+        ...data,
+        ...tempValue,
+        index: question.index,
+        answerRangeId: selectedAnswerRange,
+        measureId: data.measure?.id ?? null,
+      };
+
       await service.kitVersions.questions.update({
         kitVersionId,
         questionId: question.id,
-        data: {
-          ...data,
-          ...tempValue,
-          index: question.index,
-          answerRangeId: selectedAnswerRange,
-          measureId: data.measure?.id ?? null,
-        },
+        data: updatedFields,
       });
-      fetchQuery.query();
-      onClose();
+
+      const updatedQuestions = kitState.questions.map((q) =>
+        q.id === question.id ? { ...q, ...updatedFields } : q,
+      );
+
+      dispatch(kitActions.setQuestions(updatedQuestions));
+      setIsSaving(false);
     } catch (err) {
+      setIsSaving(false);
       toastError(err as ICustomError);
     }
+  };
+
+  const handleNext = () => {
+    formMethods.handleSubmit(async (data) => {
+      if (isDirty()) {
+        await handleSubmit(data);
+      }
+      onNextQuestion();
+    })();
+  };
+
+  const handlePrevious = () => {
+    formMethods.handleSubmit(async (data) => {
+      if (isDirty()) {
+        await handleSubmit(data);
+      }
+      onPreviousQuestion();
+    })();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,12 +172,39 @@ const QuestionDialog: React.FC<Props> = ({
     }));
   };
 
+  const isDirty = () => {
+    const currentValues = formMethods.getValues();
+    const measureId = currentValues.measure?.id ?? null;
+    const initialMeasureId = initialData?.measure?.id ?? null;
+    return (
+      tempValue.title !== (question.title ?? "") ||
+      tempValue.hint !== (question.hint ?? "") ||
+      JSON.stringify(tempValue.translations) !==
+        JSON.stringify(question.translations ?? {}) ||
+      selectedAnswerRange !== question.answerRangeId ||
+      measureId !== initialMeasureId ||
+      currentValues.mayNotBeApplicable !==
+        (question.mayNotBeApplicable ?? false) ||
+      currentValues.advisable !== (question.advisable ?? false)
+    );
+  };
+
   return (
     <CEDialog
-      open={open}
-      onClose={onClose}
-      title={<Trans i18nKey="editQuestion" />}
+      {...rest}
+      closeDialog={closeDialog}
+      sx={{ width: "100%", paddingInline: 4 }}
+      title={<Trans i18nKey="save" />}
     >
+      <NavigationButtons
+        onPrevious={handlePrevious}
+        onNext={handleNext}
+        isPreviousDisabled={index - 1 < 0}
+        isNextDisabled={index + 2 > kitState.questions.length}
+        direction={theme.direction}
+        previousTextKey="previousQuestion"
+        nextTextKey="nextQuestion"
+      />
       <FormProviderWithForm
         formMethods={formMethods}
         style={{
@@ -173,7 +232,9 @@ const QuestionDialog: React.FC<Props> = ({
               value={tempValue.title}
               onChange={handleInputChange}
               translationValue={
-                langCode ? (tempValue.translations?.[langCode]?.title ?? "") : ""
+                langCode
+                  ? (tempValue.translations?.[langCode]?.title ?? "")
+                  : ""
               }
               onTranslationChange={updateTranslation("title", setTempValue)}
               placeholder={t("questionPlaceholder")?.toString()}
@@ -218,12 +279,13 @@ const QuestionDialog: React.FC<Props> = ({
               fetchOptions={fetchOptions}
               selectedAnswerRange={selectedAnswerRange}
               setSelectedAnswerRange={setSelectedAnswerRange}
+              key={question.id}
             />
           </Grid>
         </Grid>
 
         <Divider sx={{ my: 1, mt: 4 }} />
-        <ImpactSection question={question} />
+        <ImpactSection question={question} key={question.id} />
 
         <Divider sx={{ my: 1, mt: 4 }} />
 
@@ -262,14 +324,15 @@ const QuestionDialog: React.FC<Props> = ({
       </FormProviderWithForm>
 
       <CEDialogActions
-        loading={false}
-        onClose={onClose}
+        loading={isSaving}
+        onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        submitButtonLabel="editQuestion"
+        submitButtonLabel="save"
         type="create"
+        disablePrimaryButton={!isDirty()}
       />
     </CEDialog>
   );
 };
 
-export default QuestionDialog;
+export default QuestionDetailsContainer;

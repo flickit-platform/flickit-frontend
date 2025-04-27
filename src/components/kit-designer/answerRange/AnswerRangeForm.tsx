@@ -7,7 +7,7 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { MultiLangs } from "@/types";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface AnswerRangeFormProps {
@@ -29,7 +29,7 @@ const AnswerRangeForm = ({
   handleCancel,
   setNewAnswerRange,
 }: AnswerRangeFormProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
   const { updateTranslation } = useTranslationUpdater(langCode);

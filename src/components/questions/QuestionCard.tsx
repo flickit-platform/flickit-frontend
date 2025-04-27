@@ -371,13 +371,15 @@ export const QuestionCard = (props: IQuestionCardProps) => {
         handleChange={handleChange}
         questionsInfo={questionsInfo}
         questionInfo={questionInfo}
+        key={questionInfo.id}
       />
     </Box>
   );
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, setValue, handleChange, questionsInfo, questionInfo } = props;
+  const { value, setValue, handleChange, questionsInfo, questionInfo, key } =
+    props;
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -517,6 +519,9 @@ export const QuestionTabsTemplate = (props: any) => {
       queryData.query();
     }
   }, [currentPage]);
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [key]);
 
   return (
     <TabContext value={value}>
@@ -526,6 +531,7 @@ export const QuestionTabsTemplate = (props: any) => {
           scrollButtons="auto"
           variant="scrollable"
           sx={{ display: "flex", alignItems: "center" }}
+          key={key}
         >
           <Tab
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
@@ -780,8 +786,8 @@ const AnswerTemplate = (props: {
       }
 
       if (questionsInfo.permissions?.viewAnswerHistory) {
-        await service
-          .assessments.questionnaire.getQuestionIssues(
+        await service.assessments.questionnaire
+          .getQuestionIssues(
             {
               assessmentId,
               questionId: questionInfo?.id,
@@ -1095,7 +1101,6 @@ const AnswerTemplate = (props: {
             onClick={submitQuestion}
             disabled={
               isSelectedValueTheSameAsAnswer ||
-              !value ||
               ((value || notApplicable) && !selcetedConfidenceLevel)
             }
           >
@@ -1103,6 +1108,7 @@ const AnswerTemplate = (props: {
           </LoadingButton>{" "}
         </Box>
         {isSelectedValueTheSameAsAnswer &&
+          value &&
           answer?.hasOwnProperty("approved") &&
           !answer?.approved &&
           permissions?.approveAnswer && (
@@ -1296,7 +1302,15 @@ const AnswerHistoryItem = (props: any) => {
             height: 46,
           }}
         ></Avatar>
-        <Typography variant="titleMedium" color="#1B4D7E" sx={{fontFamily : languageDetector(item?.createdBy?.displayName) ? farsiFontFamily : primaryFontFamily }}>
+        <Typography
+          variant="titleMedium"
+          color="#1B4D7E"
+          sx={{
+            fontFamily: languageDetector(item?.createdBy?.displayName)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
+        >
           {item?.createdBy?.displayName}
         </Typography>
       </Grid>
@@ -1359,7 +1373,17 @@ const AnswerHistoryItem = (props: any) => {
             <Typography variant="titleSmall">
               <Trans i18nKey="selectedOption" />:
             </Typography>
-            <Typography variant="bodyMedium" maxWidth="400px" sx={{ fontFamily : languageDetector(item?.answer?.selectedOption?.title) ? farsiFontFamily : primaryFontFamily }}>
+            <Typography
+              variant="bodyMedium"
+              maxWidth="400px"
+              sx={{
+                fontFamily: languageDetector(
+                  item?.answer?.selectedOption?.title,
+                )
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+            >
               {item?.answer?.selectedOption ? (
                 <>
                   {" "}
@@ -1425,7 +1449,8 @@ const Evidence = (props: any) => {
   });
 
   const fetchEvidenceAttachments = useQuery({
-    service: (args, config) => service.questions.evidences.getAttachments(args, config),
+    service: (args, config) =>
+      service.questions.evidences.getAttachments(args, config),
     runOnMount: false,
   });
 
@@ -1489,8 +1514,8 @@ const Evidence = (props: any) => {
         setEvidencesData(items);
         setValueCount("");
         if (permissions?.viewDashboard) {
-          service
-            .assessments.questionnaire.getQuestionIssues(
+          service.assessments.questionnaire
+            .getQuestionIssues(
               {
                 assessmentId,
                 questionId: questionInfo?.id,
@@ -1522,7 +1547,8 @@ const Evidence = (props: any) => {
   });
 
   const RemoveEvidenceAttachments = useQuery({
-    service: (args, config) => service.questions.evidences.removeAttachment(args, {}),
+    service: (args, config) =>
+      service.questions.evidences.removeAttachment(args, {}),
     runOnMount: false,
   });
 
@@ -1533,8 +1559,8 @@ const Evidence = (props: any) => {
       const { items } = await evidencesQueryData.query();
       setEvidencesData(items);
       if (permissions?.viewDashboard) {
-        service
-          .assessments.questionnaire.getQuestionIssues(
+        service.assessments.questionnaire
+          .getQuestionIssues(
             {
               assessmentId,
               questionId: questionInfo?.id,
@@ -1786,8 +1812,8 @@ const Evidence = (props: any) => {
                   loading={evidencesQueryData.loading}
                   onClick={() =>
                     permissions?.viewDashboard &&
-                    service
-                      .assessments.questionnaire.getQuestionIssues(
+                    service.assessments.questionnaire
+                      .getQuestionIssues(
                         {
                           assessmentId,
                           questionId: questionInfo?.id,
@@ -2035,8 +2061,8 @@ const EvidenceDetail = (props: any) => {
       setIsEditing(false);
       setValueCount("");
       if (permissions?.viewDashboard) {
-        service
-          .assessments.questionnaire.getQuestionIssues(
+        service.assessments.questionnaire
+          .getQuestionIssues(
             {
               assessmentId,
               questionId: questionInfo?.id,

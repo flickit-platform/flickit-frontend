@@ -70,7 +70,6 @@ const AssessmentExportContainer = () => {
   });
 
   const handleErrorResponse = async (errorCode: any) => {
-    console.log(errorCode);
     switch (errorCode) {
       case ErrorCodes.CalculateNotValid:
         await calculate();

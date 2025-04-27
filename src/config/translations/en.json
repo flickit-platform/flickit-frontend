@@ -218,7 +218,6 @@
   "editComparisonItems": "Edit comparison items",
   "editExpertGroup": "Edit expert group",
   "editing": "Editing",
-  "editQuestion": "Edit Question",
   "editSpace": "Edit space",
   "Elementary": "Elementary",
   "email": "Email",
@@ -912,6 +911,7 @@
   "tomorrow": "Tomorrow",
   "afterTomorrow": "The day after tomorrow",
   "future": "future",
+  "save": "Save",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",

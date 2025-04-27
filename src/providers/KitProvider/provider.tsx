@@ -8,24 +8,24 @@ import {
   FC,
 } from "react";
 import {
-  KitLanguageState,
-  initialKitLanguageState,
+  KitLDesignerState,
+  initialKitLDesignerState,
   kitLanguageReducer,
 } from "./reducer";
 
-interface KitLanguageContextType {
-  kitState: KitLanguageState;
+interface KitLDesignerContextType {
+  kitState: KitLDesignerState;
   dispatch: Dispatch<any>; 
 }
 
-const KitLanguageContext = createContext<KitLanguageContextType | undefined>(
+const KitLanguageContext = createContext<KitLDesignerContextType | undefined>(
   undefined,
 );
 
 export const KitLanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [kitState, dispatch] = useReducer(
     kitLanguageReducer,
-    initialKitLanguageState,
+    initialKitLDesignerState,
   );
 
   const value = useMemo(
@@ -40,11 +40,11 @@ export const KitLanguageProvider: FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
-export const useKitLanguageContext = (): KitLanguageContextType => {
+export const useKitDesignerContext = (): KitLDesignerContextType => {
   const context = useContext(KitLanguageContext);
   if (!context) {
     throw new Error(
-      "useKitLanguageContext must be used within a KitLanguageProvider",
+      "useKitDesignerContext must be used within a KitLanguageProvider",
     );
   }
   return context;

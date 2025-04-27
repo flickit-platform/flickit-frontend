@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { t } from "i18next";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import React from "react";
-import { useKitLanguageContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 
@@ -29,7 +29,7 @@ interface OptionFormProps {
 const OptionForm = (props: OptionFormProps) => {
   const { setNewItem, newItem, handleInputChange, handleSave, handleCancel } =
     props;
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);
