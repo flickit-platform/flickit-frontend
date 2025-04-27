@@ -15,7 +15,7 @@ import { Trans } from "react-i18next";
 import { t } from "i18next";
 import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
-import { useKitLanguageContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface OptionListProps {
@@ -49,7 +49,7 @@ const OptionList = (props: OptionListProps) => {
     index: reorderedItems?.length + 1,
   });
 
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const handleDragEnd = (result: any) => {

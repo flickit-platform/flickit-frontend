@@ -16,7 +16,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {
@@ -45,7 +45,7 @@ const ListOfItems = ({
   editableFieldKey,
   editable = true,
 }: ListOfItemsProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
   const { updateTranslation } = useTranslationUpdater(langCode);

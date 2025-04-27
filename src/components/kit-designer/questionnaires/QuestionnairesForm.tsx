@@ -9,7 +9,7 @@ import { MultiLangs } from "@/types";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useState } from "react";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import { Trans } from "react-i18next";
 
 interface QuestionnairesFormProps {
@@ -33,7 +33,7 @@ const QuestionnairesForm = ({
   handleCancel,
   setNewQuestionnaires,
 }: QuestionnairesFormProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);
