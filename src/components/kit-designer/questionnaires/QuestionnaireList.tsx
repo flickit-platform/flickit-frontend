@@ -208,7 +208,7 @@ const ListOfItems = ({
       index: idx + 1,
     }));
     handleReorder(reorderedQuestions);
-    dispatch(reorderedQuestions);
+    dispatch(kitActions.setQuestions(reorderedQuestions));
   };
 
   const handleAddNewQuestionClick = (id: any) => {
@@ -247,25 +247,24 @@ const ListOfItems = ({
       };
       handleCancel(id);
 
-      await postQuestionsKit.query({ kitVersionId, data }).then((response) => {
-        if (response?.questionId) {
-          const newQuestionData: IQuestion = {
-            advisable: data.advisable,
-            hint: null,
-            id: response.questionId,
-            index: data.index,
-            mayNotBeApplicable: data.mayNotBeApplicable,
-            title: data.title,
-          };
-          setNewQuestion({
-            title: "",
-            index: (newQuestion.index ?? 0) + 1,
-            value: (newQuestion.index ?? 0) + 1,
-            id: null,
-          });
-          dispatch([...kitState.questions, newQuestionData]);
-        }
-      });
+      await postQuestionsKit
+        .query({ kitVersionId, data })
+        .then(async (response) => {
+          if (response?.questionId) {
+            setNewQuestion({
+              title: "",
+              index: (newQuestion.index ?? 0) + 1,
+              value: (newQuestion.index ?? 0) + 1,
+              id: null,
+            });
+            const newData = await fetchQuestionListKit.query({
+              kitVersionId,
+              questionnaireId: id,
+            });
+
+            dispatch(kitActions.setQuestions(newData?.items));
+          }
+        });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -648,7 +647,6 @@ const ListOfItems = ({
                                                 >
                                                   <QuestionContainer
                                                     key={question.id}
-                                                    question={question}
                                                     index={index}
                                                   />
                                                 </Box>

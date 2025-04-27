@@ -11,11 +11,13 @@ import { useKitDesignerContext } from "@/providers/KitProvider";
 import useDialog from "@/utils/useDialog";
 
 const QuestionContain = (props: any) => {
-  const { question, index } = props;
+  const { index } = props;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
   const { kitState } = useKitDesignerContext();
+  const question = kitState.questions[index];
+
   const langCode = kitState.translatedLanguage?.code;
   const dialogProps = useDialog();
 
