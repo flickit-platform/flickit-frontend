@@ -21,6 +21,7 @@ import toastError from "@/utils/toastError";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { t } from "i18next";
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { kitState } = useKitDesignerContext();
@@ -62,6 +63,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     title: "",
     summary: "",
     about: "",
+    goal: "",
+    context: "",
     translations: undefined,
   });
 
@@ -69,6 +72,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     title: false,
     summary: false,
     about: false,
+    goal: false,
+    context: false,
   });
 
   useEffect(() => {
@@ -83,11 +88,15 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         title: !!translations[langCode]?.title,
         summary: !!translations[langCode]?.summary,
         about: !!translations[langCode]?.about,
+        goal: !!translations[langCode]?.goal,
+        context: !!translations[langCode]?.context,
       });
       setUpdatedValues({
         title: data.title ?? "",
         summary: data.summary ?? "",
         about: data.about ?? "",
+        goal: data.goal ?? "",
+        context: data.context ?? "",
         translations: translations ?? {},
       });
     }
@@ -118,7 +127,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   );
 
   const handleFieldEdit = useCallback(
-    (field: "title" | "summary" | "about") => {
+    (field: "title" | "summary" | "about" | "goal" | "context") => {
       setEditableFields((prev) => new Set(prev).add(field));
     },
     [],
@@ -147,7 +156,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   }, []);
 
   const toggleTranslation = useCallback(
-    (field: "title" | "summary" | "about") => {
+    (field: "title" | "summary" | "about" | "goal" | "context") => {
       setShowTranslations((prev) => ({
         ...prev,
         [field]: !prev[field],
@@ -158,7 +167,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const renderEditableField = useCallback(
     (
-      field: "title" | "summary" | "about",
+      field: "title" | "summary" | "about" | "goal" | "context",
       data: any,
       multiline = false,
       useRichEditor = false,
@@ -172,7 +181,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setUpdatedValues((prev) => ({ ...prev, [field]: e.target.value }))
             }
-            label={field.charAt(0).toUpperCase() + field.slice(1)}
+            label={""}
             translationValue={
               langCode
                 ? (updatedValues.translations?.[langCode]?.[field] ?? "")
@@ -265,15 +274,18 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
               <Divider sx={{ my: 1 }} />
 
-              {["title", "summary", "about"].map((field) => (
+              {["title", "summary", "about", "goal", "context"].map((field) => (
                 <Box
                   key={field}
                   sx={{
                     display: "flex",
                     width: "100%",
-                    flexDirection: field === "about" ? "column" : "row",
+                    flexDirection:
+                      field === "about" || field === "context"
+                        ? "column"
+                        : "row",
                   }}
-                  gap={field === "about" ? 0 : 2}
+                  gap={field === "about" || field === "context" ? 0 : 2}
                 >
                   <Typography variant="semiBoldLarge">
                     <Trans i18nKey={field} />:
