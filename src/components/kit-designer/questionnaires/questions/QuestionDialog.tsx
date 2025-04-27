@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Divider, Switch, DialogProps } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  Divider,
+  Switch,
+  DialogProps,
+} from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
@@ -19,7 +26,7 @@ import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
-import { useKitLanguageContext } from "@providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { theme } from "@/config/theme";
@@ -36,8 +43,6 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onPreviousQuestion: () => void;
   onNextQuestion: () => void;
   context?: any;
-  questionsLength: number;
-  fetchQuery: any;
 }
 
 const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
@@ -46,19 +51,18 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     onPreviousQuestion,
     onNextQuestion,
     context = {},
-    questionsLength,
-    fetchQuery,
     ...rest
   } = props;
-  const { question = {}, index } = context;
+  const { index } = context;
 
   const { kitVersionId = "" } = useParams();
 
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 
-  const { kitState } = useKitLanguageContext();
+  const { kitState, dispatch } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
+  const question = kitState.questions[index];
 
   const { updateTranslation } = useTranslationUpdater(langCode);
 
@@ -111,22 +115,48 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const handleSubmit = async (data: any) => {
     try {
+      const updatedFields = {
+        ...data,
+        ...tempValue,
+        index: question.index,
+        answerRangeId: selectedAnswerRange,
+        measureId: data.measure?.id ?? null,
+      };
+
       await service.kitVersions.questions.update({
         kitVersionId,
         questionId: question.id,
-        data: {
-          ...data,
-          ...tempValue,
-          index: question.index,
-          answerRangeId: selectedAnswerRange,
-          measureId: data.measure?.id ?? null,
-        },
+        data: updatedFields,
       });
-      fetchQuery.query();
-      closeDialog();
+
+      const updatedQuestions = kitState.questions.map((q) => {
+        if (q.id === question.id) {
+          return {
+            ...q,
+            ...updatedFields,
+          };
+        }
+        return q;
+      });
+
+      dispatch(kitActions.setQuestions(updatedQuestions));
     } catch (err) {
       toastError(err as ICustomError);
     }
+  };
+
+  const handleNext = () => {
+    formMethods.handleSubmit(async (data) => {
+      await handleSubmit(data);
+      onNextQuestion();
+    })();
+  };
+
+  const handlePrevious = () => {
+    formMethods.handleSubmit(async (data) => {
+      await handleSubmit(data);
+      onPreviousQuestion();
+    })();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,14 +172,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       {...rest}
       closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="editQuestion" />}
+      title={<Trans i18nKey="save" />}
     >
       <NavigationButtons
-        onPrevious={onPreviousQuestion}
-        onNext={onNextQuestion}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
         isPreviousDisabled={index - 1 < 0}
-        isNextDisabled={index + 2 > questionsLength}
-        direction={theme.direction} 
+        isNextDisabled={index + 2 > kitState.questions.length}
+        direction={theme.direction}
         previousTextKey="previousQuestion"
         nextTextKey="nextQuestion"
       />{" "}
@@ -274,7 +304,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         loading={false}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        submitButtonLabel="editQuestion"
+        submitButtonLabel="save"
         type="create"
       />
     </CEDialog>

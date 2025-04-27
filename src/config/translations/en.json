@@ -218,7 +218,6 @@
   "editComparisonItems": "Edit comparison items",
   "editExpertGroup": "Edit expert group",
   "editing": "Editing",
-  "editQuestion": "Edit Question",
   "editSpace": "Edit space",
   "Elementary": "Elementary",
   "email": "Email",
@@ -900,6 +899,7 @@
   "designedBy": "By",
   "createNewAssessment": "Create assessment",
   "kitLibrary": "Kit Library",
+  "save": "Save",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",

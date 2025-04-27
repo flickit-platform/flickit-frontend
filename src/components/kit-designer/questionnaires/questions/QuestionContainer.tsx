@@ -7,15 +7,15 @@ import QuestionDialog from "./QuestionDialog";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import useDialog from "@/utils/useDialog";
 
 const QuestionContain = (props: any) => {
-  const { questions, fetchQuery, question, index } = props;
+  const { question, index } = props;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
   >(null);
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
   const dialogProps = useDialog();
 
@@ -23,7 +23,6 @@ const QuestionContain = (props: any) => {
     setSelectedQuestionIndex(index);
     dialogProps.openDialog({
       type: "details",
-      question: questions[index],
       index: index,
     });
   };
@@ -34,10 +33,7 @@ const QuestionContain = (props: any) => {
       setSelectedQuestionIndex(newIndex);
       dialogProps.openDialog({
         type: "details",
-        question: questions[newIndex],
         index: selectedQuestionIndex - 1,
-        questionsLength: questions.length,
-        fetchQuery: fetchQuery,
       });
     }
   };
@@ -45,16 +41,13 @@ const QuestionContain = (props: any) => {
   const navigateToNextQuestion = () => {
     if (
       selectedQuestionIndex !== null &&
-      selectedQuestionIndex < questions.length - 1
+      selectedQuestionIndex < kitState.questions.length - 1
     ) {
       const newIndex = selectedQuestionIndex + 1;
       setSelectedQuestionIndex(newIndex);
       dialogProps.openDialog({
         type: "details",
-        question: questions[newIndex],
         index: selectedQuestionIndex + 1,
-        questionsLength: questions.length,
-        fetchQuery: fetchQuery,
       });
     }
   };
@@ -101,14 +94,14 @@ const QuestionContain = (props: any) => {
       {question.index !== question.total && (
         <Divider sx={{ width: "95%", mx: "auto" }} />
       )}
-      <QuestionDialog
-        {...dialogProps}
-        onClose={() => dialogProps.onClose()}
-        onPreviousQuestion={navigateToPreviousQuestion}
-        onNextQuestion={navigateToNextQuestion}
-        questionsLength={questions.length}
-        fetchQuery={fetchQuery}
-      />
+      {dialogProps.open && (
+        <QuestionDialog
+          {...dialogProps}
+          onClose={() => dialogProps.onClose()}
+          onPreviousQuestion={navigateToPreviousQuestion}
+          onNextQuestion={navigateToNextQuestion}
+        />
+      )}
     </>
   );
 };

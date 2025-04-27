@@ -3,7 +3,7 @@ import { Box, IconButton, Link, Typography } from "@mui/material";
 import { Trans } from "react-i18next";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
@@ -29,7 +29,7 @@ const MeasureForm = ({
   handleCancel,
   setNewMeasure,
 }: MeasureFormProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
   const { updateTranslation } = useTranslationUpdater(langCode);
 

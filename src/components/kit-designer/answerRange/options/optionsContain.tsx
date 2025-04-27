@@ -17,7 +17,7 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ITempValues {
@@ -27,7 +27,7 @@ interface ITempValues {
 }
 
 const OptionContain = (props: any) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
   const { updateTranslation } = useTranslationUpdater(langCode);

@@ -18,15 +18,15 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import toastError from "@/utils/toastError";
-import { kitActions, useKitLanguageContext } from "@/providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
   const { updateTranslation } = useTranslationUpdater(langCode);
-  const { dispatch } = useKitLanguageContext();
+  const { dispatch } = useKitDesignerContext();
   const { service } = useServiceContext();
   const {
     config: { languages },
