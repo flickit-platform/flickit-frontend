@@ -268,18 +268,29 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               {["title", "summary", "about"].map((field) => (
                 <Box
                   key={field}
-                  sx={{ display: "flex", width: "100%" }}
-                  gap={2}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    flexDirection: field === "about" ? "column" : "row",
+                  }}
+                  gap={field === "about" ? 0 : 2}
                 >
                   <Typography variant="semiBoldLarge">
                     <Trans i18nKey={field} />:
                   </Typography>
-                  {renderEditableField(
-                    field as any,
-                    data,
-                    field === "about",
-                    field === "about",
-                  )}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                    }}
+                  >
+                    {renderEditableField(
+                      field as any,
+                      data,
+                      field === "about",
+                      field === "about",
+                    )}
+                  </Box>
                 </Box>
               ))}
             </Stack>

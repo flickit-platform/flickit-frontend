@@ -56,7 +56,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const { index } = context;
 
   const { kitVersionId = "" } = useParams();
-
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 
@@ -69,12 +68,13 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   const [selectedAnswerRange, setSelectedAnswerRange] = useState<
     number | undefined
   >(question?.answerRangeId);
-
   const [tempValue, setTempValue] = useState<ITempValue>({
-    title: "",
-    hint: "",
-    translations: null,
+    title: question.title,
+    hint: question.hint,
+    translations: question.translations,
   });
+  const [isSaving, setIsSaving] = useState(false);
+  const [initialData, setInitialData] = useState<any>(null);
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
@@ -97,17 +97,21 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   useEffect(() => {
     if (rest.open && question.id) {
       Promise.all([fetchOptions.query(), fetchMeasures.query()]);
-
+      const initial = {
+        options: question.options ?? [{ text: "" }],
+        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
+        advisable: question.advisable ?? false,
+        measure:
+          fetchMeasures.data?.items?.find(
+            (m: any) => m.id === question.measureId,
+          ) ?? null,
+      };
+      setInitialData(initial);
+      formMethods.reset(initial);
       setTempValue({
         title: question.title ?? "",
         hint: question.hint ?? "",
         translations: question.translations ?? "",
-      });
-
-      formMethods.reset({
-        options: question.options ?? [{ text: "" }],
-        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-        advisable: question.advisable ?? false,
       });
       setSelectedAnswerRange(question.answerRangeId);
     }
@@ -115,6 +119,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const handleSubmit = async (data: any) => {
     try {
+      setIsSaving(true);
       const updatedFields = {
         ...data,
         ...tempValue,
@@ -129,18 +134,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         data: updatedFields,
       });
 
-      const updatedQuestions = kitState.questions.map((q) => {
-        if (q.id === question.id) {
-          return {
-            ...q,
-            ...updatedFields,
-          };
-        }
-        return q;
-      });
+      const updatedQuestions = kitState.questions.map((q) =>
+        q.id === question.id ? { ...q, ...updatedFields } : q,
+      );
 
       dispatch(kitActions.setQuestions(updatedQuestions));
+      setIsSaving(false);
     } catch (err) {
+      setIsSaving(false);
       toastError(err as ICustomError);
     }
   };
@@ -167,6 +168,23 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     }));
   };
 
+  const isDirty = () => {
+    const currentValues = formMethods.getValues();
+    const measureId = currentValues.measure?.id ?? null;
+    const initialMeasureId = initialData?.measure?.id ?? null;
+    return (
+      tempValue.title !== (question.title ?? "") ||
+      tempValue.hint !== (question.hint ?? "") ||
+      JSON.stringify(tempValue.translations) !==
+        JSON.stringify(question.translations ?? {}) ||
+      selectedAnswerRange !== question.answerRangeId ||
+      measureId !== initialMeasureId ||
+      currentValues.mayNotBeApplicable !==
+        (question.mayNotBeApplicable ?? false) ||
+      currentValues.advisable !== (question.advisable ?? false)
+    );
+  };
+
   return (
     <CEDialog
       {...rest}
@@ -182,7 +200,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         direction={theme.direction}
         previousTextKey="previousQuestion"
         nextTextKey="nextQuestion"
-      />{" "}
+      />
       <FormProviderWithForm
         formMethods={formMethods}
         style={{
@@ -300,12 +318,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Grid>
         <Divider sx={{ mt: 4 }} />
       </FormProviderWithForm>
+
       <CEDialogActions
-        loading={false}
+        loading={isSaving}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
         submitButtonLabel="save"
         type="create"
+        disablePrimaryButton={!isDirty()}
       />
     </CEDialog>
   );
