@@ -78,8 +78,10 @@ export const getReadableDate = (time: any) => {
     } else if(diffDays < 7)  {
       const day: number =  date.getDay()
       return week[day]
-    } else if( 7 <= diffDays && diffDays  < 15){
+    } else if( 7 <= diffDays && diffDays  <= 29){
       return `${diffDays} ${t("daysAgo")}`;
+    } else if (diffDays >= 30 && diffDays < 45 ) {
+      return t("lastMonth");
     } else {
       return  lang == "fa" ? ShamsiCalendar(calendar) : calendar
     }
