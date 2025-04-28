@@ -59,12 +59,12 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
-  const [updatedValues, setUpdatedValues] = useState({
+  const [updatedValues, setUpdatedValues] = useState<any>({
     title: "",
     summary: "",
     about: "",
-    goal: "",
-    context: "",
+    goal: undefined,
+    context: undefined,
     translations: undefined,
   });
 
@@ -88,19 +88,28 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         title: !!translations[langCode]?.title,
         summary: !!translations[langCode]?.summary,
         about: !!translations[langCode]?.about,
-        goal: !!translations[langCode]?.goal,
-        context: !!translations[langCode]?.context,
+        goal: !!translations[langCode]?.metadata?.goal,
+        context: !!translations[langCode]?.metadata?.context,
       });
+      console.log(data);
       setUpdatedValues({
         title: data.title ?? "",
         summary: data.summary ?? "",
         about: data.about ?? "",
-        goal: data.goal ?? "",
-        context: data.context ?? "",
-        translations: translations ?? {},
+        goal: data?.metadata?.goal ?? "",
+        context: data?.metadata?.context ?? "",
+        translations: langCode
+          ? {
+              [langCode]: {
+                ...translations[langCode],
+                goal: data?.translations?.[langCode]?.metadata?.goal,
+                context: data?.translations?.[langCode]?.metadata?.context,
+              },
+            }
+          : {},
       });
     }
-  }, [data, dispatch, langCode, translations]);
+  }, [data, langCode]);
 
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -134,10 +143,36 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   );
 
   const handleSaveEdit = useCallback(() => {
+    const goal = updatedValues.goal;
+    const context = updatedValues.context;
+
+    const translations: Record<string, any> = updatedValues.translations ?? {};
+
+    const updatedValuesWithMetadata = {
+      ...updatedValues,
+      metadata: {
+        goal,
+        context,
+      },
+      translations: {
+        ...translations,
+        [langCode]: {
+          ...translations[langCode],
+          metadata: {
+            context: translations?.[langCode].context,
+            goal: translations?.[langCode].goal,
+          },
+        },
+      },
+    };
+
+    delete updatedValuesWithMetadata.goal;
+    delete updatedValuesWithMetadata.context;
+
     updateKitInfoQuery
       .query({
         assessmentKitId: kitVersion.assessmentKit.id,
-        data: updatedValues,
+        data: updatedValuesWithMetadata,
       })
       .then(() => {
         fetchAssessmentKitInfoQuery.query();
@@ -173,13 +208,28 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       useRichEditor = false,
     ) => {
       const isEditing = editableFields.has(field);
+      const isMetadataField = field === "goal" || field === "context";
+
+      const fieldValue = isMetadataField
+        ? (data.metadata?.[field] ?? "")
+        : (data[field] ?? "");
+
+      const translationFieldValue = langCode
+        ? isMetadataField
+          ? (data.translations?.[langCode].metadata?.[field] ?? "")
+          : (data.translations?.[langCode]?.[field] ?? "")
+        : "";
+
       return isEditing ? (
         <Box sx={{ flexGrow: 1 }}>
           <MultiLangTextField
             name={field}
             value={updatedValues[field] ?? ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUpdatedValues((prev) => ({ ...prev, [field]: e.target.value }))
+              setUpdatedValues((prev: any) => ({
+                ...prev,
+                [field]: e.target.value,
+              }))
             }
             label={""}
             translationValue={
@@ -199,10 +249,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       ) : (
         <>
           <TitleWithTranslation
-            title={data[field] ?? ""}
-            translation={
-              langCode ? (data.translations?.[langCode]?.[field] ?? "") : ""
-            }
+            title={fieldValue ?? ""}
+            translation={translationFieldValue}
             variant="semiBoldMedium"
             multiline
           />
