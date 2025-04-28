@@ -79,7 +79,7 @@ const MindMap: React.FC<MindMapProps> = ({
 
   const subjectHeights = items.map((item, index) => {
     const { y } = getPosition(index, items.length);
-    const attributes = item[childrenField] || [];
+    const attributes = item[childrenField] ?? [];
     const lastAttrY = attributes.length
       ? y + ((attributes.length - 1) / 2) * attributeSpacing
       : y;
@@ -115,7 +115,7 @@ const MindMap: React.FC<MindMapProps> = ({
             key: `center-${item[idField]}`,
           });
 
-          const attributes = item[childrenField] || [];
+          const attributes = item[childrenField] ?? [];
           attributes.forEach((attr: any, i: number) => {
             const attrX =
               x + (x < centerX ? -attributeOffset : attributeOffset);
@@ -168,7 +168,7 @@ const MindMap: React.FC<MindMapProps> = ({
       {items.map((item, index) => {
         const { x, y } = getPosition(index, items.length);
         const isLeft = x < centerX;
-        const attributes = item[childrenField] || [];
+        const attributes = item[childrenField] ?? [];
 
         const subjectBgColor = colors[index % colors.length];
         const attributeBgColor = lightColors[index % lightColors.length];

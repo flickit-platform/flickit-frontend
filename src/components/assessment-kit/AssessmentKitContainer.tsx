@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { theme } from "@config/theme";
@@ -6,8 +5,6 @@ import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { useConfigContext } from "@providers/ConfgProvider";
-import { ECustomErrorType } from "@/types";
-import { ErrorNotFoundOrAccessDenied } from "@common/errors/ErrorNotFoundOrAccessDenied";
 import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";

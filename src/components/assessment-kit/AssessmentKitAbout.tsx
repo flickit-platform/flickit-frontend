@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
-import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import RichEditor from "@common/rich-editor/RichEditor";
 import Button from "@mui/material/Button";
 import { t } from "i18next";
