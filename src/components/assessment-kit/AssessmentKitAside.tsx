@@ -1,11 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import target from "@assets/svg/target.svg";
 import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
-import LanguageIcon from "@utils/icons/languageIcon";
-import PeopleIcon from "@utils/icons/peopleIcon";
+import LanguageIcon from "@mui/icons-material/Language";
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import PriceIcon from "@utils/icons/priceIcon";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
@@ -15,10 +14,14 @@ import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
 import { styles } from "@styles";
 import { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
-import LikeIcon from "@utils/icons/likeIcon";
+import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
+import { SvgIconProps } from '@mui/material';
+import { useQuery } from "@utils/useQuery";
+import { useParams } from "react-router-dom";
+import { useServiceContext } from "@providers/ServiceProvider";
 
 interface IlistOfItems {
-  Icon: string | ((props: string) => JSX.Element);
+  Icon: string | ((props: string) => JSX.Element) | React.ElementType<SvgIconProps>;
   title: string;
   description: string;
 }
@@ -31,7 +34,7 @@ const listOfItems: IlistOfItems[] = [
       "Enhance the ficency of development proccess with utilicing each step with propper tools",
   },
   {
-    Icon: PeopleIcon,
+    Icon: PeopleAltOutlinedIcon,
     title: "whoCanUseThisBest",
     description: "Anyone/teams who wants to boost the software developmnt",
   },
@@ -44,8 +47,17 @@ const listOfItems: IlistOfItems[] = [
 ];
 
 const AssessmentKitAside = (props: any) => {
-  const { id, title, likeQueryData, like } = props;
+  const { id, title, like } = props;
   const dialogProps = useDialog();
+  const { assessmentKitId } = useParams();
+  const { service } = useServiceContext();
+
+  const likeQueryData = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
+    runOnMount: false,
+  });
+
   const createAssessment = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -59,7 +71,7 @@ const AssessmentKitAside = (props: any) => {
     await likeQueryData.query();
   };
   let likeStatus: boolean = likeQueryData?.data?.liked ?? like?.liked;
-
+  console.log(dialogProps,"dialogProps");
   return (
     <>
       <Box
@@ -100,7 +112,7 @@ const AssessmentKitAside = (props: any) => {
                 color: theme.palette.primary.main,
                 cursor: "pointer",
               }}
-              onClick={() => dialogProps.openDialog({})}
+              onClick={() => dialogProps.openDialog({context: undefined})}
             >
               <Trans i18nKey={"contactUs"} />
             </Typography>
@@ -121,7 +133,7 @@ const AssessmentKitAside = (props: any) => {
         <IconButton
           onClick={toggleLike}
           sx={{
-            p: 0,
+            p: 1,
             width: "24px",
             height: "24px",
             background: likeStatus ? theme.palette.primary.main : "inherit",
@@ -131,20 +143,19 @@ const AssessmentKitAside = (props: any) => {
           }}
         >
           {likeStatus ? (
-            <LikeIcon sx={{ color: "#fff", width: "20px", height: "20px" }} />
+            <ThumbUpOffAltOutlinedIcon sx={{ color: "#fff", fontSize: "20px" }} />
           ) : (
-            <LikeIcon
+            <ThumbUpOffAltOutlinedIcon
               sx={{
                 color: theme.palette.primary.main,
-                width: "20px",
-                height: "20px",
+                fontSize: "20px"
               }}
             />
           )}
         </IconButton>
       </Typography>
-      <AssessmentCEFromDialog {...dialogProps} />
-      <ContactUsDialog {...dialogProps} />
+     { dialogProps.context && <AssessmentCEFromDialog {...dialogProps} /> }
+     { dialogProps.context == undefined && <ContactUsDialog {...dialogProps} /> }
     </>
   );
 };

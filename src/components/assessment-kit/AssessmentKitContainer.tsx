@@ -17,6 +17,8 @@ import Grid from "@mui/material/Grid";
 import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
 import { styles } from "@styles";
 import Avatar from "@mui/material/Avatar";
+import stringAvatar from "@utils/stringAvatar";
+import IconButton from "@mui/material/IconButton";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -59,17 +61,10 @@ const AssessmentKit = (props: any) => {
   const { data } = props;
   const { title: assessmentTitle,id, expertGroupId, about = "", like } = data ?? {};
   const { service } = useServiceContext();
-  const { assessmentKitId } = useParams();
 
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
-  });
-
-  const likeQueryData = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
-    runOnMount: false,
   });
 
 
@@ -92,7 +87,7 @@ const AssessmentKit = (props: any) => {
                 <AssessmentKitAbout about={about} />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <AssessmentKitAside likeQueryData={likeQueryData} like={like} id={id} title={assessmentTitle} />
+                  <AssessmentKitAside like={like} id={id} title={assessmentTitle} />
                 </Grid>
               </Grid>
             </Box>
@@ -124,19 +119,19 @@ const AssessmentKitBanner = (props: any) => {
       }}
     >
       <Box sx={{ ...styles.centerV, gap: "8px" }}>
-        <Box
+        <IconButton
           sx={{ ...styles.centerV }}
           component={Link}
           to={"./../"}
         >
           <ArrowBackRoundedIcon
+            fontSize={"large"}
             sx={{
               color: theme.palette.primary.dark,
               transform: theme.direction == "rtl" ? "rotate(180deg)" : "",
-              fontSize: "3rem",
             }}
           />
-        </Box>
+        </IconButton>
         <Typography
           sx={{
             ...theme.typography.headlineLarge,
@@ -147,15 +142,11 @@ const AssessmentKitBanner = (props: any) => {
         </Typography>
       </Box>
       <Box sx={{ ...styles.centerV, gap: 0.5 }}>
-        {pictureLink ? (
-          <img
-            style={{ width: "24px", height: "24px" }}
-            src={pictureLink}
-            alt={`${expertGroupTitle} pic`}
-          />
-        ) : (
-          <Avatar sx={{alignItems: "center"}} alt={assessmentTitle} src={pictureLink} />
-        )}
+        <Avatar
+          {...stringAvatar(expertGroupTitle?.toUpperCase())}
+          src={pictureLink}
+          sx={{ width: 32, height: 32, fontSize: 16 }}
+        ></Avatar>
         <Typography
           component={Link}
           to={`/user/expert-groups/${expertGroupId}`}
@@ -165,7 +156,7 @@ const AssessmentKitBanner = (props: any) => {
             textDecoration: "none",
           }}
         >
-          {expertGroupTitle}
+          {t("createdBy")}{" "} {expertGroupTitle}
         </Typography>
       </Box>
     </Box>
