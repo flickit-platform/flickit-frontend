@@ -43,6 +43,7 @@ const AssessmentKitsStoreCard = (props: any) => {
         ...styles.boxStyle,
         borderRadius: 1,
         height: "100%",
+        mb: small ? "8px !important" : "40px  !important",
         borderLeft: `4px solid ${
           isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
         }`,
