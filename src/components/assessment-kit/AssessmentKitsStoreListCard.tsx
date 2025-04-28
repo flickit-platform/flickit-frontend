@@ -36,11 +36,13 @@ const AssessmentKitsStoreListCard = () => {
         return (
           <Grid container spacing={4}>
             {items.map((item: any) => (
-              <AssessmentKitsStoreCard
-                key={item.id}
-                openDialog={dialogProps}
-                {...item}
-              />
+              <Grid key={item} item xs={12} md={6}>
+                <AssessmentKitsStoreCard
+                  key={item.id}
+                  openDialog={dialogProps}
+                  {...item}
+                />
+              </Grid>
             ))}
             <AssessmentCEFromDialog {...dialogProps} />
           </Grid>
