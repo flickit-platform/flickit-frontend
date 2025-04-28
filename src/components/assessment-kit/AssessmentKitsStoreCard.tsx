@@ -35,6 +35,11 @@ const AssessmentKitsStoreCard = (props: any) => {
     });
   };
 
+  const truncatedSummaryLength = small ? 150 : 297;
+  const truncatedSummary = summary.substring(0, truncatedSummaryLength);
+  const isSummaryTruncated =
+    summary.length > truncatedSummaryLength ? "..." : "";
+
   return (
     <Box
       to={`${id}/`}
@@ -147,7 +152,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                 : secondaryFontFamily,
             }}
             dangerouslySetInnerHTML={{
-              __html: `${summary.substring(0, small ? 150 : 297)}${summary.length > (small ? 150 : 297) ? "..." : ""}`,
+              __html: `${truncatedSummary}${isSummaryTruncated}`,
             }}
           />
         </Box>
