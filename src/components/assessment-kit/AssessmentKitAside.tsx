@@ -61,7 +61,7 @@ const AssessmentKitAside = (props: any) => {
   let likeStatus: boolean = likeQueryData?.data?.liked ?? like?.liked;
 
   return (
-    <Grid item xs={12} md={3}>
+    <>
       <Box
         sx={{
           background: "#E8EBEE",
@@ -145,7 +145,7 @@ const AssessmentKitAside = (props: any) => {
       </Typography>
       <AssessmentCEFromDialog {...dialogProps} />
       <ContactUsDialog {...dialogProps} />
-    </Grid>
+    </>
   );
 };
 
