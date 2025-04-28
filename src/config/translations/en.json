@@ -877,6 +877,7 @@
   "goal": "Goal",
   "context": "Who can use this best?",
   "goToSpace": "Go to space",
+  "exploreOtherKit": "Explor Other Kits",
   "createBasicSpaceCongratulation": "Your space is ready! You can now invite team members and start creating assessments right away.",
   "createPremiumSpaceCongratulation": "Your space has been successfully created. Please note that your premium space is temporarily active. We will contact you shortly. Kindly check your email for further details.",
   "spacePremiumInfo": "Your space will be created for free and remain active temporarily. Payment details will be sent via email; without agreement, it will be deactivated.",

@@ -20,6 +20,7 @@ import PermissionControl from "../common/PermissionControl";
 import MindMap from "../common/charts/MindMap";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
+import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -116,6 +117,16 @@ const AssessmentKit = (props: any) => {
                     childrenField="attributes"
                     title={t("kitStructure")}
                   />
+                </Grid>
+                <Typography
+                  sx={{ color: "#2B333B" }}
+                  variant="titleLarge"
+                  mb={4}
+                >
+                  <Trans i18nKey={"exploreOtherKits"} />
+                </Typography>
+                <Grid item xs={12} md={12} lg={12}>
+                  <AssessmentKitsStoreListCard small />
                 </Grid>
               </Grid>
             </Box>
