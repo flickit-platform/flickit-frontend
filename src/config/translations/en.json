@@ -900,6 +900,8 @@
   "createNewAssessment": "Create assessment",
   "kitLibrary": "Kit Library",
   "save": "Save",
+  "lookingForSomethingSpecific": "Looking for something more specific?",
+  "dropUsNote": "Drop us a note!",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",

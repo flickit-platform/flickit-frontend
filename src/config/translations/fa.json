@@ -898,6 +898,8 @@
   "createNewAssessment": "ساخت ارزیابی",
   "kitLibrary": "کیت‌های ارزیابی",
   "save": "ذخیره",
+  "lookingForSomethingSpecific": "در جست\u200Cوجوی کیت خاصی هستید؟",
+  "dropUsNote": "به ما خبر دهید!",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "نوشته هوش مصنوعی (نیازمند تایید)",
     "AIGeneratedNeedsApprovalDescription": "این تحلیل توسط هوش مصنوعی نوشته شده است و ممکن است نادقیق یا اشتباه باشد و نیاز به تایید یک ارزیاب دارد.",
