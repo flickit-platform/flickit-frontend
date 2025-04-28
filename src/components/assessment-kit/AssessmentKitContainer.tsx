@@ -210,7 +210,16 @@ const AssessmentKitBanner = (props: any) => {
             textDecoration: "none",
           }}
         >
-          {t("createdBy")} {expertGroupTitle}
+          {t("createdBy")}{" "}
+          <span
+            style={{
+              fontFamily: languageDetector(expertGroupTitle)
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+          >
+            {expertGroupTitle}
+          </span>
         </Typography>
       </Box>
     </Box>
