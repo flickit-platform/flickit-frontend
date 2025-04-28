@@ -66,7 +66,7 @@ const AssessmentKit = (props: any) => {
     like,
     subjects,
     metadata,
-    languages
+    languages,
   } = assessmentKitQueryData ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
@@ -110,10 +110,20 @@ const AssessmentKit = (props: any) => {
                     languages={languages}
                   />
                 </Grid>
-                <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
+                <Typography
+                  sx={{ color: "#2B333B" }}
+                  variant="titleLarge"
+                  display={{ xs: "none", sm: "block" }}
+                >
                   <Trans i18nKey={"kitStructure"} />
                 </Typography>
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid
+                  item
+                  xs={12}
+                  md={12}
+                  lg={12}
+                  display={{ xs: "none", sm: "block" }}
+                >
                   <MindMap
                     items={subjects}
                     childrenField="attributes"

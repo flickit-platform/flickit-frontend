@@ -160,7 +160,6 @@ const AssessmentKitsStoreCard = (props: any) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
           gap: small ? 1 : 2,
