@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
-import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import RichEditor from "@common/rich-editor/RichEditor";
 import Button from "@mui/material/Button";
 import { t } from "i18next";
@@ -26,9 +24,6 @@ const AssessmentKitAbout = (props: any) => {
 
   return (
     <>
-      <Typography sx={{ ...theme.typography.titleLarge, color: "#2B333B" }}>
-        <Trans i18nKey={"aboutThisKit"} />
-      </Typography>
       <Typography
         sx={{
           color: "#2B333B",
@@ -41,7 +36,10 @@ const AssessmentKitAbout = (props: any) => {
         }}
         ref={paragraphRef}
       >
-        <RichEditor boxProps={{sx:{textAlign: "justify"}}} content={about} />
+        <RichEditor
+          boxProps={{ sx: { textAlign: "justify" } }}
+          content={about}
+        />
       </Typography>
       {showBtn && (
         <Button
