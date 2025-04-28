@@ -153,11 +153,13 @@ const AssessmentKitsStoreCard = (props: any) => {
               }}
             >
               <PriceIcon
-                color={
-                  isPrivate
+                sx={{
+                  color: isPrivate
                     ? theme.palette.secondary.main
-                    : theme.palette.primary.main
-                }
+                    : theme.palette.primary.main,
+                  width: "32px",
+                  height: "32px",
+                }}
               />
               <Typography variant="titleSmall">
                 <Trans i18nKey="free" />

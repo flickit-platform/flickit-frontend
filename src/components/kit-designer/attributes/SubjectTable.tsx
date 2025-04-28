@@ -16,7 +16,7 @@ import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
-import { useKitLanguageContext } from "@providers/KitProvider";
+import { useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
 import TitleWithTranslation from "@common/fields/TranslationText";
@@ -71,7 +71,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);
