@@ -8,7 +8,11 @@ export const formatLanguageCodes = (
     return titles.join(separator);
   }
 
-  let separator = currentLang === "fa" ? "، " : ", ";
+  if (currentLang === "fa") {
+    return (languages as string[]).join("، ");
+  }
+
+  let separator = ", ";
 
   const formattedLanguages = (languages as string[]).map((lang) => {
     const lowerLang = lang.toLowerCase();
