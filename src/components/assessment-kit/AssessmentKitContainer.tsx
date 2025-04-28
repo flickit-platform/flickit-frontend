@@ -82,11 +82,11 @@ const AssessmentKit = (props: any) => {
                 px: { xs: 1, md: 8 },
               }}
             >
-              <Grid container spacing={9}>
-                <Grid item xs={12} md={9} >
+              <Grid container spacing={{xs: 4, md: 9}}>
+                <Grid item xs={12}  md={8} lg={9}>
                 <AssessmentKitAbout about={about} />
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12}  md={4} lg={3}>
                   <AssessmentKitAside like={like} id={id} title={assessmentTitle} />
                 </Grid>
               </Grid>

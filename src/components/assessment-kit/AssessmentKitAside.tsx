@@ -189,7 +189,7 @@ const InfoBox = (props: any) => {
         >
           {t(`${title}`)}
         </Typography>
-        <Typography sx={{ ...theme.typography.bodyLarge, color: "#2B333B" }}>
+        <Typography sx={{ ...theme.typography.bodyLarge, color: "#2B333B", textAlign: "justify" }}>
           {t(`${description}`)}
         </Typography>
       </Box>

@@ -41,7 +41,7 @@ const AssessmentKitAbout = (props: any) => {
         }}
         ref={paragraphRef}
       >
-        <RichEditor content={about} />
+        <RichEditor boxProps={{sx:{textAlign: "justify"}}} content={about} />
       </Typography>
       {showBtn && (
         <Button
