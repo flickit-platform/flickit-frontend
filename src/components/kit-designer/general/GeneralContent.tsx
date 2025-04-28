@@ -90,7 +90,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         goal: !!translations[langCode]?.metadata?.goal,
         context: !!translations[langCode]?.metadata?.context,
       });
-      console.log(data);
       setUpdatedValues({
         title: data.title ?? "",
         summary: data.summary ?? "",
@@ -340,7 +339,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                   gap={field === "about" || field === "context" ? 0 : 2}
                 >
                   <Typography variant="semiBoldLarge">
-                    <Trans i18nKey={field} />:
+                    <Trans i18nKey={field === "context" ? "bestFor" : field} />:
                   </Typography>
                   <Box
                     sx={{

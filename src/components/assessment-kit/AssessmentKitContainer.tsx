@@ -66,6 +66,7 @@ const AssessmentKit = (props: any) => {
     like,
     subjects,
     metadata,
+    languages
   } = assessmentKitQueryData ?? {};
   const { service } = useServiceContext();
   const expertGroupQueryData = useQuery({
@@ -106,6 +107,7 @@ const AssessmentKit = (props: any) => {
                     id={id}
                     title={assessmentTitle}
                     metadata={metadata}
+                    languages={languages}
                   />
                 </Grid>
                 <Typography sx={{ color: "#2B333B" }} variant="titleLarge">

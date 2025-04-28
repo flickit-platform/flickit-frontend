@@ -4,7 +4,7 @@ import target from "@assets/svg/target.svg";
 import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
 import LanguageIcon from "@mui/icons-material/Language";
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PriceIcon from "@utils/icons/priceIcon";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
@@ -12,22 +12,26 @@ import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDial
 import useDialog from "@utils/useDialog";
 import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
 import { styles } from "@styles";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
-import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
-import { SvgIconProps } from '@mui/material';
+import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
+import { SvgIconProps } from "@mui/material";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
+import { formatLanguageCodes } from "@/utils/languageUtils";
 
 interface IlistOfItems {
-  Icon: string | ((props: string) => JSX.Element) | React.ElementType<SvgIconProps>;
+  Icon:
+    | string
+    | ((props: string) => JSX.Element)
+    | React.ElementType<SvgIconProps>;
   title: string;
   description: string;
 }
 
 const AssessmentKitAside = (props: any) => {
-  const { id, title, like, metadata } = props;
+  const { id, title, like, metadata, languages } = props;
   const dialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
@@ -36,21 +40,20 @@ const AssessmentKitAside = (props: any) => {
     {
       Icon: target,
       title: "kitGoal",
-      description: metadata.goal ?? "-" ,
+      description: metadata.goal ?? "-",
     },
     {
       Icon: PeopleAltOutlinedIcon,
-      title: "whoCanUseThisBest",
+      title: "bestFor",
       description: metadata?.context ?? "-",
     },
     {
       Icon: LanguageIcon,
       title: "supportedLanguages",
-      description: "Farsi & English",
+      description: formatLanguageCodes(languages, i18next.language) ?? "-",
     },
     { Icon: PriceIcon, title: "price", description: "free" },
   ];
-
 
   const likeQueryData = useQuery({
     service: (args, config) =>
@@ -112,7 +115,7 @@ const AssessmentKitAside = (props: any) => {
                 color: theme.palette.primary.main,
                 cursor: "pointer",
               }}
-              onClick={() => dialogProps.openDialog({context: undefined})}
+              onClick={() => dialogProps.openDialog({ context: undefined })}
             >
               <Trans i18nKey={"contactUs"} />
             </Typography>
@@ -143,19 +146,21 @@ const AssessmentKitAside = (props: any) => {
           }}
         >
           {likeStatus ? (
-            <ThumbUpOffAltOutlinedIcon sx={{ color: "#fff", fontSize: "20px" }} />
+            <ThumbUpOffAltOutlinedIcon
+              sx={{ color: "#fff", fontSize: "20px" }}
+            />
           ) : (
             <ThumbUpOffAltOutlinedIcon
               sx={{
                 color: theme.palette.primary.main,
-                fontSize: "20px"
+                fontSize: "20px",
               }}
             />
           )}
         </IconButton>
       </Typography>
-     { dialogProps.context && <AssessmentCEFromDialog {...dialogProps} /> }
-     { dialogProps.context == undefined && <ContactUsDialog {...dialogProps} /> }
+      {dialogProps.context && <AssessmentCEFromDialog {...dialogProps} />}
+      {dialogProps.context == undefined && <ContactUsDialog {...dialogProps} />}
     </>
   );
 };
@@ -189,7 +194,13 @@ const InfoBox = (props: any) => {
         >
           {t(`${title}`)}
         </Typography>
-        <Typography sx={{ ...theme.typography.bodyLarge, color: "#2B333B", textAlign: "justify" }}>
+        <Typography
+          sx={{
+            ...theme.typography.bodyLarge,
+            color: "#2B333B",
+            textAlign: "justify",
+          }}
+        >
           {t(`${description}`)}
         </Typography>
       </Box>
