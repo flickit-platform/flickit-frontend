@@ -42,7 +42,7 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   return (
     <Box
-      to={`${id}/`}
+      to={small?`./../${id}/`:`${id}/`}
       component={Link}
       sx={{
         ...styles.boxStyle,

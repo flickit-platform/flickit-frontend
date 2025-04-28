@@ -21,6 +21,7 @@ import MindMap from "../common/charts/MindMap";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
+import { useEffect } from "react";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -36,6 +37,9 @@ const AssessmentKitContainer = () => {
   });
   const { config } = useConfigContext();
 
+  useEffect(() => {
+    assessmentKitQuery.query();
+  }, [assessmentKitId]);
   return (
     <PermissionControl error={[assessmentKitQuery.errorObject]}>
       <QueryData
