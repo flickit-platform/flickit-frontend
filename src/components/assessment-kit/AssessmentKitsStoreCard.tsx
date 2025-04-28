@@ -16,7 +16,6 @@ const AssessmentKitsStoreCard = (props: any) => {
   const { id, title, isPrivate, expertGroup, summary, languages, openDialog } =
     props;
 
-  const navigate = useNavigate();
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -61,6 +60,9 @@ const AssessmentKitsStoreCard = (props: any) => {
               <Typography
                 sx={{
                   ...theme.typography.headlineSmall,
+                  [theme.breakpoints.down('sm')]: {
+                    ...theme.typography.titleLarge,
+                  },
                   color: isPrivate
                     ? theme.palette.secondary.main
                     : theme.palette.primary.main,
@@ -110,7 +112,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               {expertGroup.title}
             </Typography>
           </Box>
-          <Box mt={4}>
+          <Box mt={{ xs: 1, sm: 4 }}>
             <Typography
               component="div"
               textAlign="justify"
@@ -138,12 +140,14 @@ const AssessmentKitsStoreCard = (props: any) => {
           <Box
             sx={{
               display: "flex",
-              gap: { xs: 1, sm: 4 },
+              gap: { xs: 6, sm: 4 },
               bgcolor: "#EDF0F2",
               borderRadius: 2,
               px: 2,
               py: 1,
-              flexWrap: "wrap",
+              flexWrap: "noWrap",
+              width: { xs: "100%", sm: "inherit" },
+              justifyContent: "center"
             }}
           >
             <Box
@@ -189,6 +193,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             variant="contained"
             size="large"
             sx={{
+              width: { xs: "100%", sm: "inherit" },
               backgroundColor: isPrivate
                 ? theme.palette.secondary.main
                 : theme.palette.primary.main,

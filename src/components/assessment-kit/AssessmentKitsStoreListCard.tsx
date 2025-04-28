@@ -34,7 +34,7 @@ const AssessmentKitsStoreListCard = () => {
       render={(data) => {
         const { items = [] } = data;
         return (
-          <Grid container spacing={4}>
+          <Grid container spacing={{xs: 2, sm: 4}}>
             {items.map((item: any) => (
               <AssessmentKitsStoreCard
                 key={item.id}

@@ -152,7 +152,7 @@ const box = {
     background: "#fff",
     borderRadius: "12px",
     width: "100%",
-    p: { xs: 2, sm: 4 },
+    p: { xs: 3, sm: 4 },
     backgroundColor: "#fff",
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
