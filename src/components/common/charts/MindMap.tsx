@@ -27,7 +27,7 @@ const MindMap: React.FC<MindMapProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const width = typeof window !== "undefined" ? window.innerWidth : 1200;
   const centerX = (width - 150) / 2;
-  const centerY = isMobile ? 200 : 400;
+  const centerY = 170;
 
   const radius = isMobile ? 70 : 200;
   const attributeOffset = isMobile ? 50 : 150;
@@ -97,7 +97,7 @@ const MindMap: React.FC<MindMapProps> = ({
   }[] = [];
 
   return (
-    <Box position="relative" width="100%" height={containerHeight} mt={-30}>
+    <Box position="relative" width="100%" height={containerHeight}>
       <Box
         component="svg"
         position="absolute"
