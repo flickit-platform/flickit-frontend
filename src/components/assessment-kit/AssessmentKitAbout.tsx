@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { t } from "i18next";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 const AssessmentKitAbout = (props: any) => {
   const { about } = props;
@@ -41,6 +43,9 @@ const AssessmentKitAbout = (props: any) => {
           transition: "max-height 0.3s ease",
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
+          fontFamily: languageDetector(about)
+            ? farsiFontFamily
+            : primaryFontFamily,
         }}
         dangerouslySetInnerHTML={{ __html: about }}
       />
