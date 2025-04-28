@@ -21,7 +21,6 @@ import toastError from "@/utils/toastError";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { t } from "i18next";
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { kitState } = useKitDesignerContext();
@@ -214,11 +213,16 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         ? (data.metadata?.[field] ?? "")
         : (data[field] ?? "");
 
-      const translationFieldValue = langCode
-        ? isMetadataField
-          ? (data.translations?.[langCode].metadata?.[field] ?? "")
-          : (data.translations?.[langCode]?.[field] ?? "")
-        : "";
+      let translationFieldValue = "";
+
+      if (langCode) {
+        if (isMetadataField) {
+          translationFieldValue =
+            data.translations?.[langCode].metadata?.[field] ?? "";
+        } else {
+          translationFieldValue = data.translations?.[langCode]?.[field] ?? "";
+        }
+      }
 
       return isEditing ? (
         <Box sx={{ flexGrow: 1 }}>
