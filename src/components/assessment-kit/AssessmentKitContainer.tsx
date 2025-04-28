@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
@@ -19,6 +19,7 @@ import IconButton from "@mui/material/IconButton";
 import PermissionControl from "../common/PermissionControl";
 import MindMap from "../common/charts/MindMap";
 import { Trans } from "react-i18next";
+import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 
 const AssessmentKitContainer = () => {
@@ -64,9 +65,9 @@ const AssessmentKit = (props: any) => {
     about = "",
     like,
     subjects,
+    metadata,
   } = assessmentKitQueryData ?? {};
   const { service } = useServiceContext();
-
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
@@ -104,6 +105,7 @@ const AssessmentKit = (props: any) => {
                     like={like}
                     id={id}
                     title={assessmentTitle}
+                    metadata={metadata}
                   />
                 </Grid>
                 <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
@@ -169,6 +171,9 @@ const AssessmentKitBanner = (props: any) => {
           sx={{
             ...theme.typography.headlineLarge,
             color: theme.palette.primary.dark,
+            fontFamily: languageDetector(assessmentTitle)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
           {assessmentTitle}
