@@ -26,9 +26,6 @@ const AssessmentKitAbout = (props: any) => {
 
   return (
     <>
-      <Typography sx={{ ...theme.typography.titleLarge, color: "#2B333B" }}>
-        <Trans i18nKey={"aboutThisKit"} />
-      </Typography>
       <Typography
         sx={{
           color: "#2B333B",
@@ -41,7 +38,10 @@ const AssessmentKitAbout = (props: any) => {
         }}
         ref={paragraphRef}
       >
-        <RichEditor boxProps={{sx:{textAlign: "justify"}}} content={about} />
+        <RichEditor
+          boxProps={{ sx: { textAlign: "justify" } }}
+          content={about}
+        />
       </Typography>
       {showBtn && (
         <Button

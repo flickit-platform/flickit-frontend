@@ -19,11 +19,14 @@ import { styles } from "@styles";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
 import IconButton from "@mui/material/IconButton";
+import PermissionControl from "../common/PermissionControl";
+import MindMap from "../common/charts/MindMap";
+import { Trans } from "react-i18next";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
-  const assessmentKitQueryData = useQuery({
+  const assessmentKitQuery = useQuery({
     service: (args, config) =>
       service.assessmentKit.info.getById(
         args ?? { id: assessmentKitId },
@@ -34,39 +37,42 @@ const AssessmentKitContainer = () => {
   });
   const { config } = useConfigContext();
 
-  return assessmentKitQueryData.errorObject?.response?.data?.code ===
-    ECustomErrorType.ACCESS_DENIED ||
-    assessmentKitQueryData.errorObject?.response?.data?.code ===
-      ECustomErrorType.NOT_FOUND ? (
-    <ErrorNotFoundOrAccessDenied />
-  ) : (
-    <QueryData
-      {...assessmentKitQueryData}
-      render={(data) => {
-        setDocumentTitle(
-          `${t("assessmentKit")}: ${data.title ?? ""}`,
-          config.appTitle,
-        );
-        return (
-          <AssessmentKit data={data} query={assessmentKitQueryData.query} />
-        );
-      }}
-    />
+  return (
+    <PermissionControl error={[assessmentKitQuery.errorObject]}>
+      <QueryData
+        {...assessmentKitQuery}
+        render={(assessmentKitQueryData) => {
+          setDocumentTitle(
+            `${t("assessmentKit")}: ${assessmentKitQueryData.title ?? ""}`,
+            config.appTitle,
+          );
+          return (
+            <AssessmentKit assessmentKitQueryData={assessmentKitQueryData} />
+          );
+        }}
+      />
+    </PermissionControl>
   );
 };
 
 export default AssessmentKitContainer;
 
 const AssessmentKit = (props: any) => {
-  const { data } = props;
-  const { title: assessmentTitle,id, expertGroupId, about = "", like } = data ?? {};
+  const { assessmentKitQueryData } = props;
+  const {
+    title: assessmentTitle,
+    id,
+    expertGroupId,
+    about = "",
+    like,
+    subjects,
+  } = assessmentKitQueryData ?? {};
   const { service } = useServiceContext();
 
   const expertGroupQueryData = useQuery({
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
-
 
   return (
     <QueryData
@@ -82,12 +88,35 @@ const AssessmentKit = (props: any) => {
                 px: { xs: 1, md: 8 },
               }}
             >
-              <Grid container spacing={{xs: 4, md: 9}}>
-                <Grid item xs={12}  md={8} lg={8.75}>
-                <AssessmentKitAbout about={about} />
+              <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
+                <Trans i18nKey={"aboutThisKit"} />
+              </Typography>
+              <Grid container>
+                <Grid
+                  item
+                  xs={12}
+                  md={8}
+                  lg={9}
+                  sx={{ paddingInlineEnd: { xs: 4, md: 9 } }}
+                >
+                  <AssessmentKitAbout about={about} />
                 </Grid>
-                <Grid item xs={12}  md={4} lg={3.25}>
-                  <AssessmentKitAside like={like} id={id} title={assessmentTitle} />
+                <Grid item xs={12} md={4} lg={3}>
+                  <AssessmentKitAside
+                    like={like}
+                    id={id}
+                    title={assessmentTitle}
+                  />
+                </Grid>
+                <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
+                  <Trans i18nKey={"kitStructure"} />
+                </Typography>
+                <Grid item xs={12} md={12} lg={12}>
+                  <MindMap
+                    items={subjects}
+                    childrenField="attributes"
+                    title={t("kitStructure")}
+                  />
                 </Grid>
               </Grid>
             </Box>
@@ -119,11 +148,7 @@ const AssessmentKitBanner = (props: any) => {
       }}
     >
       <Box sx={{ ...styles.centerV, gap: "8px" }}>
-        <IconButton
-          sx={{ ...styles.centerV }}
-          component={Link}
-          to={"./../"}
-        >
+        <IconButton sx={{ ...styles.centerV }} component={Link} to={"./../"}>
           <ArrowBackRoundedIcon
             fontSize={"large"}
             sx={{
@@ -156,7 +181,7 @@ const AssessmentKitBanner = (props: any) => {
             textDecoration: "none",
           }}
         >
-          {t("createdBy")}{" "} {expertGroupTitle}
+          {t("createdBy")} {expertGroupTitle}
         </Typography>
       </Box>
     </Box>

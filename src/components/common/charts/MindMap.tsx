@@ -3,6 +3,8 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { useTheme, useMediaQuery, Box, Typography } from "@mui/material";
 import { styles } from "@styles";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface MindMapProps {
   items: any[];
@@ -24,8 +26,8 @@ const MindMap: React.FC<MindMapProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const width = typeof window !== "undefined" ? window.innerWidth : 1200;
-  const centerX = width / 2;
-  const centerY = isMobile ? 200 : 300;
+  const centerX = (width - 150) / 2;
+  const centerY = isMobile ? 200 : 400;
 
   const radius = isMobile ? 70 : 200;
   const attributeOffset = isMobile ? 50 : 150;
@@ -96,7 +98,13 @@ const MindMap: React.FC<MindMapProps> = ({
 
   return (
     <Box position="relative" width="100%" height={containerHeight} mt={-30}>
-      <Box component="svg" position="absolute" width="100%" height="100%" zIndex={1}>
+      <Box
+        component="svg"
+        position="absolute"
+        width="100%"
+        height="100%"
+        zIndex={1}
+      >
         {items.map((item, index) => {
           const { x, y } = getPosition(index, items.length);
           allLines.push({
@@ -109,8 +117,10 @@ const MindMap: React.FC<MindMapProps> = ({
 
           const attributes = item[childrenField] || [];
           attributes.forEach((attr: any, i: number) => {
-            const attrX = x + (x < centerX ? -attributeOffset : attributeOffset);
-            const attrY = y + (i - (attributes.length - 1) / 2) * attributeSpacing;
+            const attrX =
+              x + (x < centerX ? -attributeOffset : attributeOffset);
+            const attrY =
+              y + (i - (attributes.length - 1) / 2) * attributeSpacing;
             allLines.push({
               x1: x,
               y1: y,
@@ -136,7 +146,6 @@ const MindMap: React.FC<MindMapProps> = ({
         ))}
       </Box>
 
-      {/* مرکز */}
       <Box
         position="absolute"
         top={centerY}
@@ -189,8 +198,30 @@ const MindMap: React.FC<MindMapProps> = ({
                   boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
                 }}
               >
-                <Typography variant="titleSmall">{item[titleField]}</Typography>
-                <Tooltip title={item[descriptionField]} arrow>
+                <Typography
+                  variant="titleSmall"
+                  fontFamily={
+                    languageDetector(item[titleField])
+                      ? farsiFontFamily
+                      : primaryFontFamily
+                  }
+                >
+                  {item[titleField]}
+                </Typography>
+                <Tooltip
+                  title={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        fontFamily: languageDetector(item[descriptionField])
+                          ? farsiFontFamily
+                          : primaryFontFamily,
+                      }}
+                    >
+                      {item[descriptionField]}
+                    </Typography>
+                  }
+                >
                   <InfoOutlinedIcon fontSize="small" />
                 </Tooltip>
               </Box>
@@ -198,7 +229,8 @@ const MindMap: React.FC<MindMapProps> = ({
 
             {attributes.map((attr: any, i: number) => {
               const attrX = x + (isLeft ? -attributeOffset : attributeOffset);
-              const attrY = y + (i - (attributes.length - 1) / 2) * attributeSpacing;
+              const attrY =
+                y + (i - (attributes.length - 1) / 2) * attributeSpacing;
 
               return (
                 <Box
@@ -224,10 +256,30 @@ const MindMap: React.FC<MindMapProps> = ({
                       boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                     }}
                   >
-                    <Typography variant="semiBoldSmall">
+                    <Typography
+                      variant="semiBoldSmall"
+                      fontFamily={
+                        languageDetector(attr[titleField])
+                          ? farsiFontFamily
+                          : primaryFontFamily
+                      }
+                    >
                       {attr[titleField]}
                     </Typography>
-                    <Tooltip title={attr[descriptionField]} arrow>
+                    <Tooltip
+                      title={
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontFamily: languageDetector(attr[descriptionField])
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          }}
+                        >
+                          {attr[descriptionField]}
+                        </Typography>
+                      }
+                    >
                       <InfoOutlinedIcon fontSize="small" />
                     </Tooltip>
                   </Box>
