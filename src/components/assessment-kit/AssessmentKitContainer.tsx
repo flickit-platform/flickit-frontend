@@ -121,7 +121,7 @@ const AssessmentKit = (props: any) => {
                   variant="titleLarge"
                   mb={4}
                 >
-                  <Trans i18nKey={"otherKits"} />
+                  <Trans i18nKey={"exploreOtherKits"} />
                 </Typography>
                 <Grid item xs={12} md={12} lg={12}>
                   <AssessmentKitsStoreListCard small />
