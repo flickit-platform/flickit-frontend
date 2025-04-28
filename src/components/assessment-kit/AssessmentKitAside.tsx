@@ -71,7 +71,7 @@ const AssessmentKitAside = (props: any) => {
     await likeQueryData.query();
   };
   let likeStatus: boolean = likeQueryData?.data?.liked ?? like?.liked;
-  console.log(dialogProps,"dialogProps");
+
   return (
     <>
       <Box
