@@ -26,31 +26,31 @@ interface IlistOfItems {
   description: string;
 }
 
-const listOfItems: IlistOfItems[] = [
-  {
-    Icon: target,
-    title: "kitGoal",
-    description:
-      "Enhance the ficency of development proccess with utilicing each step with propper tools",
-  },
-  {
-    Icon: PeopleAltOutlinedIcon,
-    title: "whoCanUseThisBest",
-    description: "Anyone/teams who wants to boost the software developmnt",
-  },
-  {
-    Icon: LanguageIcon,
-    title: "supportedLanguages",
-    description: "Farsi & English",
-  },
-  { Icon: PriceIcon, title: "price", description: "free" },
-];
-
 const AssessmentKitAside = (props: any) => {
-  const { id, title, like } = props;
+  const { id, title, like, metadata } = props;
   const dialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
+
+  const listOfItems: IlistOfItems[] = [
+    {
+      Icon: target,
+      title: "kitGoal",
+      description: metadata.goal ?? "" ,
+    },
+    {
+      Icon: PeopleAltOutlinedIcon,
+      title: "whoCanUseThisBest",
+      description: metadata?.context ?? "",
+    },
+    {
+      Icon: LanguageIcon,
+      title: "supportedLanguages",
+      description: "Farsi & English",
+    },
+    { Icon: PriceIcon, title: "price", description: "free" },
+  ];
+
 
   const likeQueryData = useQuery({
     service: (args, config) =>
