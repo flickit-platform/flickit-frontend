@@ -36,12 +36,12 @@ const AssessmentKitAside = (props: any) => {
     {
       Icon: target,
       title: "kitGoal",
-      description: metadata.goal ?? "" ,
+      description: metadata.goal ?? "-" ,
     },
     {
       Icon: PeopleAltOutlinedIcon,
       title: "whoCanUseThisBest",
-      description: metadata?.context ?? "",
+      description: metadata?.context ?? "-",
     },
     {
       Icon: LanguageIcon,
