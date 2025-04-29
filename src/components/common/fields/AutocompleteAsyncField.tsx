@@ -51,7 +51,7 @@ const AutocompleteAsyncField = (props: any) => {
     required = false,
     hasAddBtn = false,
     editable = false,
-    filterFields = ["title", "lang"],
+    filterFields = ["title", "mainLanguage"],
     createItemQuery,
     setError,
     searchable,
@@ -300,7 +300,9 @@ const AutocompleteBaseField = (
       autoHighlight
       getOptionLabel={getOptionLabel}
       options={(() => {
-        if (error) {
+        if (!query) {
+          return optionsData;
+        } else if (error) {
           return [{}];
         } else if (editable) {
           return options.filter(
@@ -412,12 +414,9 @@ const AutocompleteBaseField = (
                 sx={{
                   ...theme.typography.semiBoldSmall,
                   color: "#3D4D5C80",
-                  fontFamily: languageDetector(option?.[filterFields[1]])
-                    ? farsiFontFamily
-                    : primaryFontFamily,
                 }}
               >
-                ({option?.[filterFields[1]]})
+                ({option?.[filterFields[1]].code})
               </Box>
             )}
             {(option?.isPrivate ||

@@ -67,7 +67,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
   }, []);
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
-    const { space, assessment_kit, title, color, shortTitle } = data;
+    const { space, assessment_kit, title, color, shortTitle, language } = data;
     setLoading(true);
     try {
       type === "update"
@@ -78,6 +78,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 title,
                 shortTitle,
                 colorId: color,
+                lang: language.code,
               },
             },
             { signal: abortController.signal },
@@ -91,6 +92,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                   title: title,
                   shortTitle: shortTitle === "" ? null : (shortTitle ?? null),
                   colorId: color,
+                  lang: language.code,
                 },
               },
               { signal: abortController.signal },
@@ -148,6 +150,21 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       };
     }
   }, [openDialog, formMethods, abortController]);
+  const [languages, setLanguages] = useState<any[]>([]);
+
+  useEffect(() => {
+    const kit = formMethods.watch("assessment_kit");
+    const langs = kit?.languages ?? [];
+    const mainLang = kit?.mainLanguage;
+
+    setLanguages(langs);
+
+    console.log(mainLang);
+    if (mainLang) {
+      formMethods.setValue("language", mainLang);
+    }
+  }, [formMethods.watch("assessment_kit")]);
+
   return (
     <CEDialog
       {...rest}
@@ -203,9 +220,17 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               />
             </Grid>
             <Grid item xs={12} md={5}>
-              <AssessmentKitField
-                staticData={staticData?.assessment_kit}
-                defaultValue={defaultValues?.assessment_kit}
+              {" "}
+              <AutocompleteAsyncField
+                name="language"
+                label={<Trans i18nKey="language" />}
+                options={languages}
+                data-cy="language"
+                disabled={
+                  languages.length === 1 ||
+                  languages.length === 0 ||
+                  defaultValues?.assessment_kit
+                }
               />
             </Grid>
           </Grid>
