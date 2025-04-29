@@ -1,85 +1,73 @@
-import { describe, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import {describe, expect, it, vi} from "vitest";
+import {render, screen} from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { SpaceCard } from "../SpaceList";
-import { ServiceProvider } from "@providers/ServiceProvider";
 
 
-const MockServiceProvider = ({ children }: any) => {
-  return <ServiceProvider>{children}</ServiceProvider>;
-};
-
-
-const data = [
-  {
-    code: "test code1",
+const data = {
+    code: "space-card-test-code1",
     editable: false,
     id: 1,
-    title: "تست پریمیوم",
+    title: "space-card-test1",
     owner: {
-      "id": "ed1",
-      "displayName": "test1",
-      "isCurrentUserOwner": true
+      id: "ed1",
+      displayName: "test1",
+      isCurrentUserOwner: false
     },
     type: {
-      "code": "PREMIUM",
-      "title": "حرفه‌ای"
+      code: "PREMIUM",
+      title: "حرفه‌ای"
     },
     isActive: true,
     lastModificationTime: "2025-03-15T12:27:08.473287",
     membersCount: 1,
     assessmentsCount: 14
-  },
-  {
-    code: "test code2",
-    editable: false,
-    id: 2,
-    title: "Flickit Admin Space",
-    owner: {
-      id: "ed2",
-      displayName: "test2",
-      isCurrentUserOwner: true
-    },
-    type: {
-      code: "BASIC",
-      title: "پایه"
-    },
-    isActive: true,
-    lastModificationTime: "2023-05-29T11:15:41.61295",
-    membersCount: 8,
-    assessmentsCount: 12
   }
-]
 
-const spaceCardRender = () =>{
+
+const spaceCardRender = (modalStatus: {modal: boolean}) =>{
   render(
-    <MockServiceProvider>
-      <MemoryRouter>
-        {data.map(item =>{
+      <>
           return (
-            <SpaceCard
-              key={item?.id}
-              item={item}
-              isActiveSpace={false}
-              owner={item?.owner}
-              dialogProps={{
-                open: false,
-                onClose: () => {},
-                openDialog: () => {},
-                context:  undefined
-              }}
-              fetchSpaces={vi.fn()}
-            />
+             <MemoryRouter>
+               <SpaceCard
+                   key={data?.id}
+                   item={data}
+                   isActiveSpace={true}
+                   owner={data?.owner}
+                   dialogProps={{
+                     open: modalStatus.modal,
+                     onClose: () => {},
+                     openDialog: () => {},
+                     context: undefined
+                   }}
+                   fetchSpaces={vi.fn()}
+               />
+             </MemoryRouter>
           )
-        })}
-      </MemoryRouter>
-    </MockServiceProvider>,
+      </>
   );
 }
 
 describe("SpaceCard", () => {
-  spaceCardRender()
-  const spaceTitle = screen.getByTestId("space-title-displayName");
-  expect(spaceTitle.innerHTML).toHaveValue("Flickit Admin Space")
 
+  it("load space item card", async () => {
+    spaceCardRender({modal:false})
+    const spaceTitle = screen.getByTestId("space-card-title-test");
+    const spacePremium = screen.getByTestId("space-card-premium-test");
+    const spaceDisplayName = screen.getByTestId("space-card-show-displayName");
+    const membersCount = screen.getByTestId("space-card-test-membersCount");
+    const assessmentsCount = screen.getByTestId("space-card-test-assessmentsCount");
+    const isActiveSpace = screen.getByTestId("space-card-test-isActiveSpace");
+
+    expect(spaceTitle).toHaveTextContent("space-card-test1")
+    expect(spacePremium).toBeInTheDocument()
+    expect(spacePremium).toContainHTML("img")
+    expect(spaceDisplayName).toBeInTheDocument()
+    expect(membersCount).toContainHTML("p")
+    expect(membersCount).toHaveTextContent(String(1));
+    expect(assessmentsCount).toBeInTheDocument();
+    expect(assessmentsCount).toHaveTextContent(String(14));
+    expect(isActiveSpace).toBeInTheDocument()
+  });
 });
