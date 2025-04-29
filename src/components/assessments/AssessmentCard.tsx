@@ -13,7 +13,6 @@ import {
 } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import formatDate from "@utils/formatDate";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
@@ -47,9 +46,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
+import { getReadableDate } from "@utils/readableDate";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -209,9 +209,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 sx={{ padding: "1px 4px", textAlign: "center" }}
               >
                 <Trans i18nKey="lastUpdated" />{" "}
-                {theme.direction == "rtl"
-                  ? formatDate(lastModificationTime, "Shamsi")
-                  : formatDate(lastModificationTime, "Miladi")}
+                {getReadableDate(lastModificationTime)}
               </Typography>
             </Box>
           </Grid>

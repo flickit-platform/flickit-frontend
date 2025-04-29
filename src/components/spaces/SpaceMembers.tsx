@@ -30,7 +30,6 @@ import InviteMemberDialog from "@common/dialogs/InviteMemberDialog";
 import useDialog from "@utils/useDialog";
 import { ICustomError } from "@utils/CustomError";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import formatDate from "@utils/formatDate";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
@@ -38,6 +37,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
+import { getReadableDate } from "@utils/readableDate";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -408,9 +408,7 @@ export const SpaceMembers = (props: any) => {
                                   }}
                                 />
                                 <Typography variant="body2">
-                                  {theme.direction == "rtl"
-                                    ? formatDate(expirationDate, "Shamsi")
-                                    : formatDate(expirationDate, "Miladi")}
+                                  {getReadableDate(expirationDate)}
                                 </Typography>
                               </Box>
                               {

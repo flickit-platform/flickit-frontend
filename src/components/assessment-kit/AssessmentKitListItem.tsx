@@ -12,12 +12,12 @@ import { useQuery } from "@utils/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import formatDate from "@utils/formatDate";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 import flagsmith from "flagsmith";
+import { getReadableDate } from "@utils/readableDate";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -93,9 +93,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
           </Typography>
           <Typography color="GrayText" variant="body2">
             <Trans i18nKey="lastUpdated" />{" "}
-            {theme.direction == "rtl"
-              ? formatDate(lastModificationTime, "Shamsi")
-              : formatDate(lastModificationTime, "Miladi")}
+            {getReadableDate(lastModificationTime)}
           </Typography>
         </Box>
 

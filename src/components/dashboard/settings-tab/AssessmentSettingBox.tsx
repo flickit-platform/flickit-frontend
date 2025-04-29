@@ -32,7 +32,6 @@ import stringAvatar from "@utils/stringAvatar";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import formatDate from "@utils/formatDate";
 import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@utils/selectHeight";
@@ -43,6 +42,7 @@ import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
+import { getReadableDate } from "@utils/readableDate";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -266,14 +266,8 @@ export const AssessmentSettingGeneralBox = (props: {
                       {kit?.title}
                     </Link>
                   )}
-                  {index == 2 &&
-                    (theme.direction == "rtl"
-                      ? formatDate(creationTime, "Shamsi")
-                      : formatDate(creationTime, "Miladi"))}
-                  {index == 3 &&
-                    (theme.direction == "rtl"
-                      ? formatDate(lastModificationTime, "Shamsi")
-                      : formatDate(lastModificationTime, "Miladi"))}
+                  {index == 2 && getReadableDate(creationTime)}
+                  {index == 3 && getReadableDate(lastModificationTime)}
                 </Typography>
               </Grid>
             );
