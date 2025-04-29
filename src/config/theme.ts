@@ -233,7 +233,7 @@ export const theme = createTheme({
     },
     titleLarge: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 500,
+      fontWeight: 600,
       fontSize: "1.375rem",
       lineHeight: "1.75rem",
       letterSpacing: is_farsi ? "0px" : "0",
@@ -289,7 +289,7 @@ export const theme = createTheme({
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "500",
       fontSize: "0.75rem",
-      lineHeight: "0.75rem",
+      lineHeight: "1rem",
       letterSpacing: is_farsi ? "0px" : "0.5px",
     },
     semiBoldLarge: {
