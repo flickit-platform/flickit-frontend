@@ -13,7 +13,7 @@ const AssessmentKitAbout = (props: any) => {
   const [maxHeight, setMaxHeight] = useState<number>(0);
 
   useEffect(() => {
-    if ( paragraphRef.current) {
+    if (paragraphRef.current) {
       const paragraphHeight = paragraphRef.current.scrollHeight;
 
       const calculatedMaxHeight = 200;
@@ -41,6 +41,7 @@ const AssessmentKitAbout = (props: any) => {
           fontFamily: languageDetector(about)
             ? farsiFontFamily
             : primaryFontFamily,
+          textAlign: "justify",
         }}
         dangerouslySetInnerHTML={{ __html: about }}
       />

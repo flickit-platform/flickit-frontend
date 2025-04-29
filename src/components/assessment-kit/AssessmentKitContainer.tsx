@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -15,13 +14,16 @@ import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
 import { styles } from "@styles";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
-import IconButton from "@mui/material/IconButton";
 import PermissionControl from "../common/PermissionControl";
 import MindMap from "../common/charts/MindMap";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 import { useEffect } from "react";
+import Title from "@common/TitleComponent";
+import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
+import { InfoOutlined } from "@mui/icons-material";
+import { IconButton, Tooltip } from "@mui/material";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -89,7 +91,7 @@ const AssessmentKit = (props: any) => {
             <Box
               sx={{
                 py: 6,
-                px: { xl: 20, lg: 6, xs: 2, sm: 3 },
+                px: { xl: 30, lg: 12, xs: 2, sm: 3 },
               }}
             >
               <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
@@ -100,8 +102,8 @@ const AssessmentKit = (props: any) => {
                   container
                   item
                   xs={12}
-                  md={9.5}
-                  lg={9.5}
+                  md={9.3}
+                  lg={9.3}
                   sx={{ paddingInlineEnd: { xs: 4, md: 9 } }}
                 >
                   <Grid
@@ -113,13 +115,20 @@ const AssessmentKit = (props: any) => {
                   >
                     <AssessmentKitAbout about={about} />
                   </Grid>
-                  <Typography
-                    sx={{ color: "#2B333B" }}
-                    variant="titleLarge"
+                  <Box
+                    sx={{ ...styles.centerH }}
+                    maxHeight="33px"
                     display={{ xs: "none", sm: "block" }}
                   >
-                    <Trans i18nKey={"kitStructure"} />
-                  </Typography>
+                    <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
+                      <Trans i18nKey={"kitStructure"} />
+                    </Typography>
+                    <Tooltip title={t("kitStructureDescription")}>
+                      <IconButton>
+                        <InfoOutlined fontSize="small" color="action" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                   <Grid
                     item
                     xs={12}
@@ -134,7 +143,7 @@ const AssessmentKit = (props: any) => {
                     />
                   </Grid>
                 </Grid>
-                <Grid item xs={12} md={2.5} lg={2.5}>
+                <Grid item xs={12} md={2.7} lg={2.7}>
                   <AssessmentKitAside
                     like={like}
                     id={id}
@@ -178,33 +187,44 @@ const AssessmentKitBanner = (props: any) => {
         flexDirection: "column",
         background: "#2466A814",
         width: "100%",
-        py: 3,
-        paddingInlineStart: { xs: 1, md: 8 },
+        py: 4,
         gap: 2,
+        px: { xl: 30, lg: 12, xs: 2, sm: 3 },
       }}
     >
-      <Box sx={{ ...styles.centerV, gap: "8px" }}>
-        <IconButton sx={{ ...styles.centerV }} component={Link} to={"./../"}>
-          <ArrowBackRoundedIcon
-            fontSize={"large"}
-            sx={{
-              color: theme.palette.primary.dark,
-              transform: theme.direction == "rtl" ? "rotate(180deg)" : "",
-            }}
+      <Title
+        backLink={"/"}
+        size="large"
+        wrapperProps={{
+          sx: {
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "flex-start", md: "flex-end" },
+          },
+        }}
+        sup={
+          <SupTitleBreadcrumb
+            routes={[
+              {
+                title: t("kitLibrary") as string,
+                to: `/assessment-kits`,
+              },
+              { title: assessmentTitle },
+            ]}
+            displayChip
           />
-        </IconButton>
-        <Typography
-          sx={{
-            ...theme.typography.headlineLarge,
-            color: theme.palette.primary.dark,
-            fontFamily: languageDetector(assessmentTitle)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-        >
-          {assessmentTitle}
-        </Typography>
-      </Box>
+        }
+      ></Title>
+      <Typography
+        sx={{
+          ...theme.typography.headlineLarge,
+          color: theme.palette.primary.main,
+          fontFamily: languageDetector(assessmentTitle)
+            ? farsiFontFamily
+            : primaryFontFamily,
+        }}
+      >
+        {assessmentTitle}
+      </Typography>
       <Box sx={{ ...styles.centerV, gap: 0.5 }}>
         <Avatar
           {...stringAvatar(expertGroupTitle?.toUpperCase())}

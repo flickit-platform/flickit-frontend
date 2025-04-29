@@ -212,46 +212,50 @@ const MindMap: React.FC<MindMapProps> = ({
                 zIndex: 3,
               }}
             >
-              <Box
-                sx={{
-                  ...styles.centerV,
-                  p: subjectPadding,
-                  borderRadius: 2,
-                  gap: "4px",
-                  fontSize: subjectFontSize,
-                  fontWeight: "bold",
-                  bgcolor: subjectBgColor,
-                  color: "#fff",
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-                }}
+              <Tooltip
+                title={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontFamily: languageDetector(item[descriptionField])
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                  >
+                    {item[descriptionField]}
+                  </Typography>
+                }
               >
-                <Typography
-                  variant="titleSmall"
-                  fontFamily={
-                    languageDetector(item[titleField])
-                      ? farsiFontFamily
-                      : primaryFontFamily
-                  }
+                <Box
+                  sx={{
+                    ...styles.centerV,
+                    p: subjectPadding,
+                    borderRadius: 2,
+                    gap: "4px",
+                    fontSize: subjectFontSize,
+                    fontWeight: "bold",
+                    bgcolor: subjectBgColor,
+                    color: "#fff",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                  }}
                 >
-                  {item[titleField]}
-                </Typography>
-                <Tooltip
-                  title={
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        fontFamily: languageDetector(item[descriptionField])
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                    >
-                      {item[descriptionField]}
-                    </Typography>
-                  }
-                >
-                  <InfoOutlinedIcon fontSize="small" />
-                </Tooltip>
-              </Box>
+                  <Typography
+                    variant="titleSmall"
+                    fontFamily={
+                      languageDetector(item[titleField])
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                    }
+                    sx={{
+                      maxWidth: "180px", 
+                      wordBreak: "break-word",
+                      textAlign: "center", 
+                    }}
+                  >
+                    {item[titleField]}
+                  </Typography>
+                </Box>
+              </Tooltip>
             </Box>
 
             {attributes.map((attr: any, i: number) => {
@@ -270,46 +274,50 @@ const MindMap: React.FC<MindMapProps> = ({
                     zIndex: 2,
                   }}
                 >
-                  <Box
-                    sx={{
-                      ...styles.centerV,
-                      bgcolor: attributeBgColor,
-                      color: attributeTextColor,
-                      p: attributePadding,
-                      borderRadius: 1,
-                      fontSize: attributeFontSize,
-                      gap: "4px",
-                      minWidth: "100px",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                    }}
+                  <Tooltip
+                    title={
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          fontFamily: languageDetector(attr[descriptionField])
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                        }}
+                      >
+                        {attr[descriptionField]}
+                      </Typography>
+                    }
                   >
-                    <Typography
-                      variant="semiBoldSmall"
-                      fontFamily={
-                        languageDetector(attr[titleField])
-                          ? farsiFontFamily
-                          : primaryFontFamily
-                      }
+                    <Box
+                      sx={{
+                        ...styles.centerV,
+                        bgcolor: attributeBgColor,
+                        color: attributeTextColor,
+                        p: attributePadding,
+                        borderRadius: 1,
+                        fontSize: attributeFontSize,
+                        gap: "4px",
+                        minWidth: "100px",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                      }}
                     >
-                      {attr[titleField]}
-                    </Typography>
-                    <Tooltip
-                      title={
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontFamily: languageDetector(attr[descriptionField])
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          }}
-                        >
-                          {attr[descriptionField]}
-                        </Typography>
-                      }
-                    >
-                      <InfoOutlinedIcon fontSize="small" />
-                    </Tooltip>
-                  </Box>
+                      <Typography
+                        variant="semiBoldSmall"
+                        fontFamily={
+                          languageDetector(attr[titleField])
+                            ? farsiFontFamily
+                            : primaryFontFamily
+                        }
+                        sx={{
+                          maxWidth: "180px", 
+                          wordBreak: "break-word",
+                          textAlign: "center", 
+                        }}
+                      >
+                        {attr[titleField]}
+                      </Typography>
+                    </Box>
+                  </Tooltip>
                 </Box>
               );
             })}

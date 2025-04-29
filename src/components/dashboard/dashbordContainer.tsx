@@ -43,11 +43,10 @@ const DashbordContainer = () => {
       renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
       render={([pathInfo]) => {
         return (
-          <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
+          <Box m="auto" pb={3} sx={{ px: { xl: 28, lg: 8, xs: 2, sm: 3 } }}>
             <DashboardTitle pathInfo={pathInfo} />
             <Grid
               container
-              spacing={1}
               columns={12}
               display="flex"
               alignItems="center"
@@ -57,6 +56,7 @@ const DashbordContainer = () => {
                 item
                 sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 4 : 12}
                 xs={12}
+                mt={{ md: -2 }}
               >
                 <Typography
                   color="primary"
