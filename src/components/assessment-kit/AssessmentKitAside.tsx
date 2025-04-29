@@ -78,7 +78,7 @@ const AssessmentKitAside = (props: any) => {
 
   return (
     <>
-      <Box position="sticky" top={5}>
+      <Box position="sticky" top={60}>
         <Box
           sx={{
             background: "#E8EBEE",
