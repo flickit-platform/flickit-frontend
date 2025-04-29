@@ -90,7 +90,7 @@ const AssessmentKit = (props: any) => {
             <AssessmentKitBanner assessmentTitle={assessmentTitle} {...data} />
             <Box
               sx={{
-                py: 6,
+                py: 4,
                 px: { xl: 30, lg: 12, xs: 2, sm: 3 },
               }}
             >
@@ -187,7 +187,8 @@ const AssessmentKitBanner = (props: any) => {
         flexDirection: "column",
         background: "#2466A814",
         width: "100%",
-        py: 4,
+        pt: 4,
+        pb: 2,
         gap: 2,
         px: { xl: 30, lg: 12, xs: 2, sm: 3 },
       }}
@@ -214,43 +215,50 @@ const AssessmentKitBanner = (props: any) => {
           />
         }
       ></Title>
-      <Typography
+      <Box
         sx={{
-          ...theme.typography.headlineLarge,
-          color: theme.palette.primary.main,
-          fontFamily: languageDetector(assessmentTitle)
-            ? farsiFontFamily
-            : primaryFontFamily,
+          ...styles.centerCV
         }}
+        gap={1}
       >
-        {assessmentTitle}
-      </Typography>
-      <Box sx={{ ...styles.centerV, gap: 0.5 }}>
-        <Avatar
-          {...stringAvatar(expertGroupTitle?.toUpperCase())}
-          src={pictureLink}
-          sx={{ width: 32, height: 32, fontSize: 16 }}
-        ></Avatar>
         <Typography
-          component={Link}
-          to={`/user/expert-groups/${expertGroupId}`}
           sx={{
-            ...theme.typography.semiBoldLarge,
-            color: "#2B333B",
-            textDecoration: "none",
+            ...theme.typography.headlineLarge,
+            color: theme.palette.primary.main,
+            fontFamily: languageDetector(assessmentTitle)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
         >
-          {t("createdBy")}{" "}
-          <span
-            style={{
-              fontFamily: languageDetector(expertGroupTitle)
-                ? farsiFontFamily
-                : primaryFontFamily,
+          {assessmentTitle}
+        </Typography>
+        <Box sx={{ ...styles.centerV, gap: 0.5 }}>
+          <Avatar
+            {...stringAvatar(expertGroupTitle?.toUpperCase())}
+            src={pictureLink}
+            sx={{ width: 32, height: 32, fontSize: 16 }}
+          ></Avatar>
+          <Typography
+            component={Link}
+            to={`/user/expert-groups/${expertGroupId}`}
+            sx={{
+              ...theme.typography.semiBoldLarge,
+              color: "#2B333B",
+              textDecoration: "none",
             }}
           >
-            {expertGroupTitle}
-          </span>
-        </Typography>
+            {t("createdBy")}{" "}
+            <span
+              style={{
+                fontFamily: languageDetector(expertGroupTitle)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+            >
+              {expertGroupTitle}
+            </span>
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
