@@ -7,7 +7,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface MaturityLevelFormProps {
@@ -33,7 +33,7 @@ const MaturityLevelForm = ({
   handleCancel,
   setNewMaturityLevel,
 }: MaturityLevelFormProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);

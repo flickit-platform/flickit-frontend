@@ -28,7 +28,7 @@ import { t } from "i18next";
 import OptionForm from "@components/kit-designer/answerRange/options/optionForm";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
@@ -60,7 +60,7 @@ const ListOfItems = ({
   onDelete,
   setChangeData,
 }: ListOfItemsProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
   const { updateTranslation } = useTranslationUpdater(langCode);

@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { styles } from "@/config/styles";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import { MultiLangs } from "@/types";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
@@ -31,7 +31,7 @@ const SubjectForm = ({
   handleCancel,
   setNewSubject,
 }: SubjectFormProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);

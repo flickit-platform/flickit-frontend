@@ -9,7 +9,7 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import React from "react";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface OptionFormProps {
@@ -32,7 +32,7 @@ const OptionForm = ({
   handleSave,
   handleCancel,
 }: OptionFormProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
 
   const { updateTranslation } = useTranslationUpdater(langCode);

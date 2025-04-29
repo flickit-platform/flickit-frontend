@@ -30,7 +30,7 @@ import Add from "@mui/icons-material/Add";
 import QuestionForm from "./questions/QuestionForm";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 interface ListOfItemsProps {
@@ -63,7 +63,7 @@ const ListOfItems = ({
   onReorder,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState, dispatch } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);
@@ -93,7 +93,6 @@ const ListOfItems = ({
     question: 0,
   });
   const [questionnaireId, setQuestionnaireId] = useState(null);
-  const [questionData, setQuestionData] = useState<IQuestion[]>([]);
   const { service } = useServiceContext();
   const { kitVersionId = "" } = useParams();
   const handleDragEnd = (result: any) => {
@@ -167,7 +166,7 @@ const ListOfItems = ({
             value: (data?.items.length ?? 0) + 1,
             id: null,
           });
-          setQuestionData(data?.items);
+          dispatch(kitActions.setQuestions(data?.items));
         } else {
           setExpandedId(null);
           handleCancel(id);
@@ -200,7 +199,7 @@ const ListOfItems = ({
   };
   const handleQuestionDragEnd = (result: any) => {
     if (!result.destination) return;
-    const updatedQuestions = Array.from(questionData);
+    const updatedQuestions = Array.from(kitState.questions);
     const [movedQuestion] = updatedQuestions.splice(result.source.index, 1);
     updatedQuestions.splice(result.destination.index, 0, movedQuestion);
 
@@ -209,7 +208,7 @@ const ListOfItems = ({
       index: idx + 1,
     }));
     handleReorder(reorderedQuestions);
-    setQuestionData(reorderedQuestions);
+    dispatch(kitActions.setQuestions(reorderedQuestions));
   };
 
   const handleAddNewQuestionClick = (id: any) => {
@@ -248,25 +247,24 @@ const ListOfItems = ({
       };
       handleCancel(id);
 
-      await postQuestionsKit.query({ kitVersionId, data }).then((response) => {
-        if (response?.questionId) {
-          const newQuestionData: IQuestion = {
-            advisable: data.advisable,
-            hint: null,
-            id: response.questionId,
-            index: data.index,
-            mayNotBeApplicable: data.mayNotBeApplicable,
-            title: data.title,
-          };
-          setNewQuestion({
-            title: "",
-            index: (newQuestion.index ?? 0) + 1,
-            value: (newQuestion.index ?? 0) + 1,
-            id: null,
-          });
-          setQuestionData((prev) => [...prev, newQuestionData]);
-        }
-      });
+      await postQuestionsKit
+        .query({ kitVersionId, data })
+        .then(async (response) => {
+          if (response?.questionId) {
+            setNewQuestion({
+              title: "",
+              index: (newQuestion.index ?? 0) + 1,
+              value: (newQuestion.index ?? 0) + 1,
+              id: null,
+            });
+            const newData = await fetchQuestionListKit.query({
+              kitVersionId,
+              questionnaireId: id,
+            });
+
+            dispatch(kitActions.setQuestions(newData?.items));
+          }
+        });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);
@@ -330,7 +328,9 @@ const ListOfItems = ({
                                 ? alpha(theme.palette.error.main, 0.04)
                                 : "#fff",
                           borderRadius:
-                            questionData.length != 0 ? "8px" : "8px 8px 0 0",
+                            kitState.questions.length != 0
+                              ? "8px"
+                              : "8px 8px 0 0",
                           border: "0.3px solid #73808c30",
                           display: "flex",
                           position: "relative",
@@ -602,7 +602,7 @@ const ListOfItems = ({
                         sx={{
                           margin: 0,
                           padding: 0,
-                          py: questionData.length != 0 ? "20px" : "unset",
+                          py: kitState.questions.length != 0 ? "20px" : "unset",
                         }}
                       >
                         {fetchQuestionListKit.loading ? (
@@ -618,7 +618,7 @@ const ListOfItems = ({
                           </Box>
                         ) : (
                           <>
-                            {questionData.length >= 1 ? (
+                            {kitState.questions.length >= 1 ? (
                               <>
                                 <DragDropContext
                                   onDragEnd={handleQuestionDragEnd}
@@ -631,7 +631,7 @@ const ListOfItems = ({
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}
                                       >
-                                        {questionData?.map(
+                                        {kitState.questions?.map(
                                           (question: any, index: number) => (
                                             <Draggable
                                               key={question.id}
@@ -646,10 +646,7 @@ const ListOfItems = ({
                                                   sx={{ marginBottom: 1 }}
                                                 >
                                                   <QuestionContainer
-                                                    fetchQuery={fetchQuery}
                                                     key={question.id}
-                                                    question={question}
-                                                    questions={questionData}
                                                     index={index}
                                                   />
                                                 </Box>

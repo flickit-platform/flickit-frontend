@@ -11,9 +11,10 @@ import GlobePlus from "@/assets/svg/globePlus.svg";
 import GlobeSub from "@/assets/svg/globeSub.svg";
 import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
-import { useKitLanguageContext } from "@/providers/KitProvider";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { t } from "i18next";
 
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
@@ -35,7 +36,7 @@ const MultiLangTextField = ({
   inputProps,
   translationValue,
   onTranslationChange,
-  translationLabel = "Translation",
+  translationLabel = t("translation") ?? "",
   showTranslation: controlledShow,
   setShowTranslation: controlledSetter,
   useRichEditor = false,
@@ -44,7 +45,7 @@ const MultiLangTextField = ({
   maxRows,
   ...rest
 }: MultiLangTextFieldProps) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
   const mainLangCode = kitState.mainLanguage?.code;
 

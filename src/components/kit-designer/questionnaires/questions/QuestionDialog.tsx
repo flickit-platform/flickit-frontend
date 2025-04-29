@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box, Typography, Divider, Switch, DialogProps } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  Divider,
+  Switch,
+  DialogProps,
+} from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
@@ -19,7 +26,7 @@ import ImpactSection from "./ImpactSection";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@/components/common/fields/AutocompleteAsyncField";
-import { useKitLanguageContext } from "@providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { theme } from "@/config/theme";
@@ -36,8 +43,6 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onPreviousQuestion: () => void;
   onNextQuestion: () => void;
   context?: any;
-  questionsLength: number;
-  fetchQuery: any;
 }
 
 const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
@@ -46,31 +51,30 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     onPreviousQuestion,
     onNextQuestion,
     context = {},
-    questionsLength,
-    fetchQuery,
     ...rest
   } = props;
-  const { question = {}, index } = context;
+  const { index } = context;
 
   const { kitVersionId = "" } = useParams();
-
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 
-  const { kitState } = useKitLanguageContext();
+  const { kitState, dispatch } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
+  const question = kitState.questions[index];
 
   const { updateTranslation } = useTranslationUpdater(langCode);
 
   const [selectedAnswerRange, setSelectedAnswerRange] = useState<
     number | undefined
   >(question?.answerRangeId);
-
   const [tempValue, setTempValue] = useState<ITempValue>({
-    title: "",
-    hint: "",
-    translations: null,
+    title: question.title,
+    hint: question.hint,
+    translations: question.translations,
   });
+  const [isSaving, setIsSaving] = useState(false);
+  const [initialData, setInitialData] = useState<any>(null);
 
   const fetchMeasures = useQuery({
     service: () => service.kitVersions.measures.getAll({ kitVersionId }),
@@ -93,17 +97,21 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   useEffect(() => {
     if (rest.open && question.id) {
       Promise.all([fetchOptions.query(), fetchMeasures.query()]);
-
+      const initial = {
+        options: question.options ?? [{ text: "" }],
+        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
+        advisable: question.advisable ?? false,
+        measure:
+          fetchMeasures.data?.items?.find(
+            (m: any) => m.id === question.measureId,
+          ) ?? null,
+      };
+      setInitialData(initial);
+      formMethods.reset(initial);
       setTempValue({
         title: question.title ?? "",
         hint: question.hint ?? "",
         translations: question.translations ?? "",
-      });
-
-      formMethods.reset({
-        options: question.options ?? [{ text: "" }],
-        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-        advisable: question.advisable ?? false,
       });
       setSelectedAnswerRange(question.answerRangeId);
     }
@@ -111,22 +119,49 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const handleSubmit = async (data: any) => {
     try {
+      setIsSaving(true);
+      const updatedFields = {
+        ...data,
+        ...tempValue,
+        index: question.index,
+        answerRangeId: selectedAnswerRange,
+        measureId: data.measure?.id ?? null,
+      };
+
       await service.kitVersions.questions.update({
         kitVersionId,
         questionId: question.id,
-        data: {
-          ...data,
-          ...tempValue,
-          index: question.index,
-          answerRangeId: selectedAnswerRange,
-          measureId: data.measure?.id ?? null,
-        },
+        data: updatedFields,
       });
-      fetchQuery.query();
-      closeDialog();
+
+      const updatedQuestions = kitState.questions.map((q) =>
+        q.id === question.id ? { ...q, ...updatedFields } : q,
+      );
+
+      dispatch(kitActions.setQuestions(updatedQuestions));
+      setIsSaving(false);
     } catch (err) {
+      setIsSaving(false);
       toastError(err as ICustomError);
     }
+  };
+
+  const handleNext = () => {
+    formMethods.handleSubmit(async (data) => {
+      if (isDirty()) {
+        await handleSubmit(data);
+      }
+      onNextQuestion();
+    })();
+  };
+
+  const handlePrevious = () => {
+    formMethods.handleSubmit(async (data) => {
+      if (isDirty()) {
+        await handleSubmit(data);
+      }
+      onPreviousQuestion();
+    })();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,22 +172,39 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     }));
   };
 
+  const isDirty = () => {
+    const currentValues = formMethods.getValues();
+    const measureId = currentValues.measure?.id ?? null;
+    const initialMeasureId = initialData?.measure?.id ?? null;
+    return (
+      tempValue.title !== (question.title ?? "") ||
+      tempValue.hint !== (question.hint ?? "") ||
+      JSON.stringify(tempValue.translations) !==
+        JSON.stringify(question.translations ?? {}) ||
+      selectedAnswerRange !== question.answerRangeId ||
+      measureId !== initialMeasureId ||
+      currentValues.mayNotBeApplicable !==
+        (question.mayNotBeApplicable ?? false) ||
+      currentValues.advisable !== (question.advisable ?? false)
+    );
+  };
+
   return (
     <CEDialog
       {...rest}
       closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="editQuestion" />}
+      title={<Trans i18nKey="save" />}
     >
       <NavigationButtons
-        onPrevious={onPreviousQuestion}
-        onNext={onNextQuestion}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
         isPreviousDisabled={index - 1 < 0}
-        isNextDisabled={index + 2 > questionsLength}
-        direction={theme.direction} 
+        isNextDisabled={index + 2 > kitState.questions.length}
+        direction={theme.direction}
         previousTextKey="previousQuestion"
         nextTextKey="nextQuestion"
-      />{" "}
+      />
       <FormProviderWithForm
         formMethods={formMethods}
         style={{
@@ -270,12 +322,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Grid>
         <Divider sx={{ mt: 4 }} />
       </FormProviderWithForm>
+
       <CEDialogActions
-        loading={false}
+        loading={isSaving}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        submitButtonLabel="editQuestion"
+        submitButtonLabel="save"
         type="create"
+        disablePrimaryButton={!isDirty()}
       />
     </CEDialog>
   );

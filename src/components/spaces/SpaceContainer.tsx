@@ -127,7 +127,7 @@ const SpaceContainer = () => {
                   />
                   <Typography
                     textAlign="center"
-                    variant="h3"
+                    variant="headlineLarge"
                     sx={{
                       color: "#9DA7B3",
                       fontSize: "3rem",

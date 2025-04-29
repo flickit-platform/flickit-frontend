@@ -18,15 +18,15 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import toastError from "@/utils/toastError";
-import { kitActions, useKitLanguageContext } from "@/providers/KitProvider";
+import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
-  const { kitState } = useKitLanguageContext();
+  const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
   const { updateTranslation } = useTranslationUpdater(langCode);
-  const { dispatch } = useKitLanguageContext();
+  const { dispatch } = useKitDesignerContext();
   const { service } = useServiceContext();
   const {
     config: { languages },
@@ -58,10 +58,12 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
-  const [updatedValues, setUpdatedValues] = useState({
+  const [updatedValues, setUpdatedValues] = useState<any>({
     title: "",
     summary: "",
     about: "",
+    goal: undefined,
+    context: undefined,
     translations: undefined,
   });
 
@@ -69,6 +71,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     title: false,
     summary: false,
     about: false,
+    goal: false,
+    context: false,
   });
 
   useEffect(() => {
@@ -83,15 +87,27 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         title: !!translations[langCode]?.title,
         summary: !!translations[langCode]?.summary,
         about: !!translations[langCode]?.about,
+        goal: !!translations[langCode]?.metadata?.goal,
+        context: !!translations[langCode]?.metadata?.context,
       });
       setUpdatedValues({
         title: data.title ?? "",
         summary: data.summary ?? "",
         about: data.about ?? "",
-        translations: translations ?? {},
+        goal: data?.metadata?.goal ?? "",
+        context: data?.metadata?.context ?? "",
+        translations: langCode
+          ? {
+              [langCode]: {
+                ...translations[langCode],
+                goal: data?.translations?.[langCode]?.metadata?.goal,
+                context: data?.translations?.[langCode]?.metadata?.context,
+              },
+            }
+          : {},
       });
     }
-  }, [data, dispatch, langCode, translations]);
+  }, [data, langCode]);
 
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -118,17 +134,43 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   );
 
   const handleFieldEdit = useCallback(
-    (field: "title" | "summary" | "about") => {
+    (field: "title" | "summary" | "about" | "goal" | "context") => {
       setEditableFields((prev) => new Set(prev).add(field));
     },
     [],
   );
 
   const handleSaveEdit = useCallback(() => {
+    const goal = updatedValues.goal;
+    const context = updatedValues.context;
+
+    const translations: Record<string, any> = updatedValues.translations ?? {};
+
+    const updatedValuesWithMetadata = {
+      ...updatedValues,
+      metadata: {
+        goal,
+        context,
+      },
+      translations: {
+        ...translations,
+        [langCode]: {
+          ...translations[langCode],
+          metadata: {
+            context: translations?.[langCode].context,
+            goal: translations?.[langCode].goal,
+          },
+        },
+      },
+    };
+
+    delete updatedValuesWithMetadata.goal;
+    delete updatedValuesWithMetadata.context;
+
     updateKitInfoQuery
       .query({
         assessmentKitId: kitVersion.assessmentKit.id,
-        data: updatedValues,
+        data: updatedValuesWithMetadata,
       })
       .then(() => {
         fetchAssessmentKitInfoQuery.query();
@@ -147,7 +189,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   }, []);
 
   const toggleTranslation = useCallback(
-    (field: "title" | "summary" | "about") => {
+    (field: "title" | "summary" | "about" | "goal" | "context") => {
       setShowTranslations((prev) => ({
         ...prev,
         [field]: !prev[field],
@@ -158,21 +200,41 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const renderEditableField = useCallback(
     (
-      field: "title" | "summary" | "about",
+      field: "title" | "summary" | "about" | "goal" | "context",
       data: any,
       multiline = false,
       useRichEditor = false,
     ) => {
       const isEditing = editableFields.has(field);
+      const isMetadataField = field === "goal" || field === "context";
+
+      const fieldValue = isMetadataField
+        ? (data.metadata?.[field] ?? "")
+        : (data[field] ?? "");
+
+      let translationFieldValue = "";
+
+      if (langCode) {
+        if (isMetadataField) {
+          translationFieldValue =
+            data.translations?.[langCode].metadata?.[field] ?? "";
+        } else {
+          translationFieldValue = data.translations?.[langCode]?.[field] ?? "";
+        }
+      }
+
       return isEditing ? (
         <Box sx={{ flexGrow: 1 }}>
           <MultiLangTextField
             name={field}
             value={updatedValues[field] ?? ""}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUpdatedValues((prev) => ({ ...prev, [field]: e.target.value }))
+              setUpdatedValues((prev: any) => ({
+                ...prev,
+                [field]: e.target.value,
+              }))
             }
-            label={field.charAt(0).toUpperCase() + field.slice(1)}
+            label={""}
             translationValue={
               langCode
                 ? (updatedValues.translations?.[langCode]?.[field] ?? "")
@@ -190,10 +252,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       ) : (
         <>
           <TitleWithTranslation
-            title={data[field] ?? ""}
-            translation={
-              langCode ? (data.translations?.[langCode]?.[field] ?? "") : ""
-            }
+            title={fieldValue ?? ""}
+            translation={translationFieldValue}
             variant="semiBoldMedium"
             multiline
           />
@@ -265,21 +325,35 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
               <Divider sx={{ my: 1 }} />
 
-              {["title", "summary", "about"].map((field) => (
+              {["title", "summary", "about", "goal", "context"].map((field) => (
                 <Box
                   key={field}
-                  sx={{ display: "flex", width: "100%" }}
-                  gap={2}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    flexDirection:
+                      field === "about" || field === "context"
+                        ? "column"
+                        : "row",
+                  }}
+                  gap={field === "about" || field === "context" ? 0 : 2}
                 >
                   <Typography variant="semiBoldLarge">
-                    <Trans i18nKey={field} />:
+                    <Trans i18nKey={field === "context" ? "bestFor" : field} />:
                   </Typography>
-                  {renderEditableField(
-                    field as any,
-                    data,
-                    field === "about",
-                    field === "about",
-                  )}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                    }}
+                  >
+                    {renderEditableField(
+                      field as any,
+                      data,
+                      field === "about",
+                      field === "about",
+                    )}
+                  </Box>
                 </Box>
               ))}
             </Stack>
