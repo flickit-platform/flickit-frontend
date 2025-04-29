@@ -159,7 +159,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
 
     setLanguages(langs);
 
-    console.log(mainLang);
     if (mainLang) {
       formMethods.setValue("language", mainLang);
     }
@@ -226,11 +225,8 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 label={<Trans i18nKey="language" />}
                 options={languages}
                 data-cy="language"
-                disabled={
-                  languages.length === 1 ||
-                  languages.length === 0 ||
-                  defaultValues?.assessment_kit
-                }
+                disabled={languages.length === 1 || languages.length === 0}
+                required
               />
             </Grid>
           </Grid>
