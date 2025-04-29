@@ -33,6 +33,7 @@ interface IlistOfItems {
 const AssessmentKitAside = (props: any) => {
   const { id, title, like, metadata, languages } = props;
   const dialogProps = useDialog();
+  const contactusDialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
 
@@ -115,7 +116,9 @@ const AssessmentKitAside = (props: any) => {
                 color: theme.palette.primary.main,
                 cursor: "pointer",
               }}
-              onClick={() => dialogProps.openDialog({ context: undefined })}
+              onClick={() =>
+                contactusDialogProps.openDialog({ context: undefined })
+              }
             >
               <Trans i18nKey={"contactUs"} />
             </Typography>
@@ -159,8 +162,8 @@ const AssessmentKitAside = (props: any) => {
           )}
         </IconButton>
       </Typography>
-      {dialogProps.context && <AssessmentCEFromDialog {...dialogProps} />}
-      {dialogProps.context == undefined && <ContactUsDialog {...dialogProps} />}
+      <AssessmentCEFromDialog {...dialogProps} />
+      <ContactUsDialog {...contactusDialogProps} />
     </>
   );
 };
