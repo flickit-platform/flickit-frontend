@@ -1407,7 +1407,7 @@ const AnswerHistoryItem = (props: any) => {
         justifyContent="flex-end"
       >
         <Typography variant="bodyMedium">
-          {getReadableDate(item.creationTime)}
+          {getReadableDate(item.creationTime, "relativeWithDate", true)}
         </Typography>
       </Grid>
     </Grid>

@@ -1,16 +1,15 @@
 import i18next, { t } from "i18next";
 
-export const MiladiCalendar = (date: Date): string =>{
-
-  let  month = String((date.getMonth() + 1)) ;
-  let  day = String(date.getDate())
-  const  year = date.getFullYear();
+export const MiladiCalendar = (date: Date): string => {
+  let month = String(date.getMonth() + 1);
+  let day = String(date.getDate());
+  const year = date.getFullYear();
 
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
   const MiladiDate: string = [year, month, day].join("/");
   return MiladiDate;
-}
+};
 
 export const ShamsiCalendar = (MiladiDate: any) => {
   let [gy, gm, gd] = MiladiDate.split("/").map(Number);
@@ -56,47 +55,86 @@ export const ShamsiCalendar = (MiladiDate: any) => {
   return `${jy}/${String(jm)}/${String(jd)}`;
 };
 
+type DateDisplayMode = "relative" | "relativeWithDate" | "absolute";
 
-export const getReadableDate = (time: any) => {
+
+export const getReadableDate = (
+  time: Date | string | number,
+  mode: DateDisplayMode = "absolute",
+  withTime: boolean = false
+): string => {
   const lang = i18next.language;
-  const lastDay = [t("today"),t("yesterday")]
-  const week = [t("sunday"),t("monday"),t("tuesday"),t("wednesday"),t("thursday"),t("friday"),t("saturday")]
-  const afterDay = [t("tomorrow"), t("afterTomorrow")]
   const now = new Date();
   const date = new Date(time);
-  const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const dateMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-  const diffTime = nowMidnight.getTime() - dateMidnight.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const calendar: string = MiladiCalendar(date);
+  const localizedDate: string =
+    lang === "fa" ? ShamsiCalendar(calendar) : calendar;
 
-  const calendar: string = MiladiCalendar(date)
+  const nowMidnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+  const dateMidnight = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
 
-  if(diffDays >= 0){
-    if (diffDays < 2) {
-      return lastDay[diffDays];
-    } else if(diffDays < 7)  {
-      const day: number =  date.getDay()
-      return week[day]
-    } else if( 7 <= diffDays && diffDays  <= 29){
-      return `${diffDays} ${t("daysAgo")}`;
-    } else if (diffDays >= 30 && diffDays < 45 ) {
-      return t("lastMonth");
+  const diffDays = Math.floor(
+    (dateMidnight.getTime() - nowMidnight.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  const diffMonths =
+    (date.getFullYear() - now.getFullYear()) * 12 +
+    (date.getMonth() - now.getMonth());
+
+  let relativeStr = "";
+
+  if (diffDays < 0) {
+    const absDays = Math.abs(diffDays);
+    const absMonths = Math.abs(diffMonths);
+
+    if (diffDays === -1) {
+      relativeStr = t("yesterday");
+    } else if (diffDays === -2) {
+      relativeStr = t("2daysAgo");
+    } else if (absDays <= 6) {
+      relativeStr = t("thisWeek");
+    } else if (absMonths === 1) {
+      relativeStr = t("lastMonth");
+    } else if (absMonths > 1 && absMonths < 12) {
+      relativeStr = t("monthsAgo", { count: absMonths });
     } else {
-      return  lang == "fa" ? ShamsiCalendar(calendar) : calendar
+      relativeStr = t("lastYear");
     }
-  }else{
-    const abs = Math.abs(diffDays)
-    if (diffDays > -2) {
-      return afterDay[abs];
-    } else if(diffDays > -7)  {
-      const day: number =  date.getDay()
-      return `${week[day]} ${t("future")}`
-    } else if( -7 >= diffDays && diffDays  > -15){
-      return `${abs} ${t("daysLater")}`;
+  } else if (diffDays > 0) {
+    if (diffDays === 1) {
+      relativeStr = t("tomorrow");
+    } else if (diffDays === 2) {
+      relativeStr = t("afterTomorrow");
+    } else if (diffDays <= 6) {
+      relativeStr = t("thisWeek");
+    } else if (diffMonths === 1) {
+      relativeStr = t("nextMonth");
+    } else if (diffMonths > 1 && diffMonths < 12) {
+      relativeStr = t("inMonths", { count: diffMonths });
     } else {
-      return  lang == "fa" ? ShamsiCalendar(calendar) : calendar
+      relativeStr = t("nextYear");
     }
+  } else {
+    relativeStr = t("today");
   }
 
-}
+  const timeStr = withTime
+    ? ` - ${date.getHours().toString().padStart(2, "0")}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`
+    : "";
+
+  if (mode === "relative") return relativeStr + timeStr;
+  if (mode === "relativeWithDate") return `${relativeStr} (${localizedDate}${withTime ? timeStr : ""})`;
+  return `${localizedDate}${timeStr}`;
+};

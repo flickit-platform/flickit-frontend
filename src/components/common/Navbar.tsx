@@ -134,7 +134,7 @@ const NotificationItem = ({
           whiteSpace: "nowrap",
         }}
       >
-        {getReadableDate(message.createdAt)}
+        {getReadableDate(message.createdAt,"relative")}
       </Typography>
 
       {/* Arrow Icon */}
@@ -309,7 +309,11 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 </Box>
 
                 <Typography variant="labelSmall" sx={{ color: "#3D4D5C" }}>
-                  {getReadableDate(selectedMessage?.createdAt)}
+                  {getReadableDate(
+                    selectedMessage?.createdAt,
+                    "relativeWithDate",
+                    true,
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -847,7 +851,6 @@ const SpacesButton = () => {
 };
 
 const AccountDropDownButton = ({ userInfo }: any) => {
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

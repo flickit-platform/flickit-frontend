@@ -907,6 +907,7 @@
   "thursday": "پنجشنبه",
   "friday": "جمعه",
   "daysAgo": "روز قبل",
+  "monthsAgo": "{{count}} ماه قبل" ,
   "daysLater": "روز بعد",
   "tomorrow": "فردا",
   "afterTomorrow": "پس‌فردا",
