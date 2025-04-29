@@ -63,7 +63,7 @@ interface ISpaceCardProps {
   fetchSpaces: TQueryFunction<ISpacesModel>;
 }
 
-const SpaceCard = (props: ISpaceCardProps) => {
+export const SpaceCard = (props: ISpaceCardProps) => {
   const { item, isActiveSpace, dialogProps, fetchSpaces, owner } = props;
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { service } = useServiceContext();
