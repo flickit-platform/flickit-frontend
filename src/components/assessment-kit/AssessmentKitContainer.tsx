@@ -89,7 +89,7 @@ const AssessmentKit = (props: any) => {
             <Box
               sx={{
                 py: 6,
-                px: { xs: 1, md: 8 },
+                px: { xl: 20, lg: 6, xs: 2, sm: 3 },
               }}
             >
               <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
@@ -97,15 +97,44 @@ const AssessmentKit = (props: any) => {
               </Typography>
               <Grid container>
                 <Grid
+                  container
                   item
                   xs={12}
-                  md={8}
-                  lg={9}
+                  md={9.5}
+                  lg={9.5}
                   sx={{ paddingInlineEnd: { xs: 4, md: 9 } }}
                 >
-                  <AssessmentKitAbout about={about} />
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={12}
+                    display={{ xs: "none", sm: "block" }}
+                  >
+                    <AssessmentKitAbout about={about} />
+                  </Grid>
+                  <Typography
+                    sx={{ color: "#2B333B" }}
+                    variant="titleLarge"
+                    display={{ xs: "none", sm: "block" }}
+                  >
+                    <Trans i18nKey={"kitStructure"} />
+                  </Typography>
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={12}
+                    display={{ xs: "none", sm: "block" }}
+                  >
+                    <MindMap
+                      items={subjects}
+                      childrenField="attributes"
+                      title={t("kitStructure")}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={4} lg={3}>
+                <Grid item xs={12} md={2.5} lg={2.5}>
                   <AssessmentKitAside
                     like={like}
                     id={id}
@@ -114,26 +143,7 @@ const AssessmentKit = (props: any) => {
                     languages={languages}
                   />
                 </Grid>
-                <Typography
-                  sx={{ color: "#2B333B" }}
-                  variant="titleLarge"
-                  display={{ xs: "none", sm: "block" }}
-                >
-                  <Trans i18nKey={"kitStructure"} />
-                </Typography>
-                <Grid
-                  item
-                  xs={12}
-                  md={12}
-                  lg={12}
-                  display={{ xs: "none", sm: "block" }}
-                >
-                  <MindMap
-                    items={subjects}
-                    childrenField="attributes"
-                    title={t("kitStructure")}
-                  />
-                </Grid>
+
                 <Typography
                   sx={{ color: "#2B333B" }}
                   variant="titleLarge"
@@ -168,9 +178,9 @@ const AssessmentKitBanner = (props: any) => {
         flexDirection: "column",
         background: "#2466A814",
         width: "100%",
-        py: 6,
+        py: 3,
         paddingInlineStart: { xs: 1, md: 8 },
-        gap: 5,
+        gap: 2,
       }}
     >
       <Box sx={{ ...styles.centerV, gap: "8px" }}>

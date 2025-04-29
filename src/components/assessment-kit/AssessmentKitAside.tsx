@@ -78,90 +78,95 @@ const AssessmentKitAside = (props: any) => {
 
   return (
     <>
-      <Box
-        sx={{
-          background: "#E8EBEE",
-          border: "1px solid #668099",
-          borderRadius: "8px",
-          pt: 4,
-          pb: 2,
-          px: 3,
-        }}
-      >
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
-          {listOfItems.map((item) => {
-            return <InfoBox {...item} />;
-          })}
-        </Box>
-        <Box>
-          <Button
-            onClick={(e) => createAssessment(e)}
-            variant="contained"
-            size="large"
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Trans i18nKey="createNewAssessment" />
-          </Button>
-          <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
-            <Typography
-              sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
-            >
-              <Trans i18nKey={"anyQuestions"} />
-            </Typography>
-            <Typography
-              sx={{
-                ...theme.typography.bodySmall,
-                color: theme.palette.primary.main,
-                cursor: "pointer",
-              }}
-              onClick={() =>
-                contactusDialogProps.openDialog({ context: undefined })
-              }
-            >
-              <Trans i18nKey={"contactUs"} />
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-      <Typography
-        sx={{
-          ...theme.typography.bodySmall,
-          ...styles.centerVH,
-          gap: 1,
-          color: "#2B333B",
-          mt: "12px",
-          textAlign: "center",
-        }}
-      >
-        <Trans i18nKey={likeStatus ? "youLikedThisKit" : "doYouLikeThisKit"} />
-        <IconButton
-          onClick={toggleLike}
+      <Box position="sticky" top={5}>
+        <Box
           sx={{
-            p: 1,
-            width: "24px",
-            height: "24px",
-            background: likeStatus ? theme.palette.primary.main : "inherit",
-            "&:hover": {
-              background: likeStatus ? theme.palette.primary.main : "#EAF2FB",
-            },
+            background: "#E8EBEE",
+            border: "1px solid #668099",
+            borderRadius: "8px",
+            pt: 4,
+            pb: 2,
+            px: 3,
           }}
         >
-          {likeStatus ? (
-            <ThumbUpOffAltOutlinedIcon
-              sx={{ color: "#fff", fontSize: "20px" }}
-            />
-          ) : (
-            <ThumbUpOffAltOutlinedIcon
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
+            {listOfItems.map((item) => {
+              return <InfoBox {...item} />;
+            })}
+          </Box>
+          <Box>
+            <Button
+              onClick={(e) => createAssessment(e)}
+              variant="contained"
+              size="large"
               sx={{
-                color: theme.palette.primary.main,
-                fontSize: "20px",
+                width: "100%",
               }}
-            />
-          )}
-        </IconButton>
-      </Typography>
+            >
+              <Trans i18nKey="createNewAssessment" />
+            </Button>
+            <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
+              <Typography
+                sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
+              >
+                <Trans i18nKey={"anyQuestions"} />
+              </Typography>
+              <Typography
+                sx={{
+                  ...theme.typography.bodySmall,
+                  color: theme.palette.primary.main,
+                  cursor: "pointer",
+                }}
+                onClick={() =>
+                  contactusDialogProps.openDialog({ context: undefined })
+                }
+              >
+                <Trans i18nKey={"contactUs"} />
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Typography
+          sx={{
+            ...theme.typography.bodySmall,
+            ...styles.centerVH,
+            gap: 1,
+            color: "#2B333B",
+            mt: "12px",
+            textAlign: "center",
+          }}
+        >
+          <Trans
+            i18nKey={likeStatus ? "youLikedThisKit" : "doYouLikeThisKit"}
+          />
+          <IconButton
+            onClick={toggleLike}
+            sx={{
+              transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
+              p: 1,
+              width: "24px",
+              height: "24px",
+              background: likeStatus ? theme.palette.primary.main : "inherit",
+              "&:hover": {
+                background: likeStatus ? theme.palette.primary.main : "#EAF2FB",
+              },
+            }}
+          >
+            {likeStatus ? (
+              <ThumbUpOffAltOutlinedIcon
+                sx={{ color: "#fff", fontSize: "20px" }}
+              />
+            ) : (
+              <ThumbUpOffAltOutlinedIcon
+                sx={{
+                  color: theme.palette.primary.main,
+                  fontSize: "20px",
+                }}
+              />
+            )}
+          </IconButton>
+        </Typography>
+      </Box>
       <AssessmentCEFromDialog {...dialogProps} />
       <ContactUsDialog {...contactusDialogProps} />
     </>

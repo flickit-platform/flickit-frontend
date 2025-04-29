@@ -8,17 +8,15 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 const AssessmentKitAbout = (props: any) => {
   const { about } = props;
   const paragraphRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
   const [maxHeight, setMaxHeight] = useState<number>(0);
 
   useEffect(() => {
-    if (containerRef.current && paragraphRef.current) {
-      const parentHeight = containerRef.current.clientHeight;
+    if ( paragraphRef.current) {
       const paragraphHeight = paragraphRef.current.scrollHeight;
 
-      const calculatedMaxHeight = parentHeight - 40;
+      const calculatedMaxHeight = 200;
 
       setMaxHeight(calculatedMaxHeight > 0 ? calculatedMaxHeight : 200);
       setShowBtn(paragraphHeight > calculatedMaxHeight);
@@ -30,10 +28,7 @@ const AssessmentKitAbout = (props: any) => {
   };
 
   return (
-    <div
-      ref={containerRef}
-      style={{ height: "100%", display: "flex", flexDirection: "column" }}
-    >
+    <>
       <Typography
         ref={paragraphRef}
         sx={{
@@ -65,7 +60,7 @@ const AssessmentKitAbout = (props: any) => {
           {showMore ? t("showLess") : t("showMore")}...
         </Button>
       )}
-    </div>
+    </>
   );
 };
 

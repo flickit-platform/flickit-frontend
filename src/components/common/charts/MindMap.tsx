@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { useTheme, useMediaQuery, Box, Typography } from "@mui/material";
@@ -23,17 +23,39 @@ const MindMap: React.FC<MindMapProps> = ({
   descriptionField = "description",
   title,
 }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [containerSize, setContainerSize] = useState({
+    width: 1200,
+    height: 600,
+  });
+
+  useLayoutEffect(() => {
+    const updateSize = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerSize({ width: rect.width, height: rect.height });
+      }
+    };
+
+    updateSize();
+
+    const resizeObserver = new ResizeObserver(updateSize);
+    if (containerRef.current) resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const width = typeof window !== "undefined" ? window.innerWidth : 1200;
-  const centerX = (width - 150) / 2;
+  const width = containerSize.width;
+  const centerX = width / 2;
   const centerY = 170;
 
-  const radius = isMobile ? 70 : 200;
-  const attributeOffset = isMobile ? 50 : 150;
+  const radius = isMobile ? 70 : 150;
+  const attributeOffset = isMobile ? 50 : 120;
   const attributeSpacing = isMobile ? 14 : 40;
 
-  const centerSize = isMobile ? 50 : 120;
+  const centerSize = isMobile ? 50 : 110;
   const subjectFontSize = isMobile ? "10px" : "12px";
   const attributeFontSize = isMobile ? "9px" : "11px";
   const subjectPadding = isMobile ? "6px 8px" : "8px 12px";
@@ -97,7 +119,12 @@ const MindMap: React.FC<MindMapProps> = ({
   }[] = [];
 
   return (
-    <Box position="relative" width="100%" height={containerHeight}>
+    <Box
+      ref={containerRef}
+      position="relative"
+      width="100%"
+      height={containerHeight}
+    >
       <Box
         component="svg"
         position="absolute"
