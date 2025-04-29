@@ -8,14 +8,15 @@ import { styles } from "@styles";
 import { theme } from "@config/theme";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
-import uniqueId from "@/utils/uniqueId";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const DIRECTION = theme.direction === "rtl" ? "+" : "-";
 const ARROW_COLOR = "#1B4D7E";
 
 interface Banner {
   kitId: number;
-  banner: string;
+  smallBanner: string;
+  largeBanner: string;
 }
 
 interface GradientArrowProps {
@@ -74,6 +75,10 @@ const AssessmentKitsStoreBanner: React.FC = () => {
         config,
       ),
   });
+
+  const isMobileScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("sm"),
+  );
 
   const banners = data;
 
@@ -156,7 +161,7 @@ const AssessmentKitsStoreBanner: React.FC = () => {
         <Box
           sx={{
             display: "flex",
-            width: `${banners.length * 100}%`,
+            width: `${banners.length * 95}%`,
             height: "100%",
             transition: "transform 0.5s ease-in-out",
             transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
@@ -174,10 +179,11 @@ const AssessmentKitsStoreBanner: React.FC = () => {
                 height: "100%",
                 cursor: "pointer",
                 display: "block",
+                paddingInlineStart: 2
               }}
             >
               <img
-                src={item.banner}
+                src={isMobileScreen ? item.smallBanner : item.largeBanner}
                 alt={`Slide ${i + 1}`}
                 onLoad={() => handleImageLoad(i)}
                 style={{
@@ -190,18 +196,20 @@ const AssessmentKitsStoreBanner: React.FC = () => {
             </Box>
           ))}
         </Box>
-
-        <GradientArrow
-          onClick={goPrev}
-          side="left"
-          Icon={<ArrowBackIosRounded fontSize="large" />}
-        />
-        <GradientArrow
-          onClick={goNext}
-          side="right"
-          Icon={<ArrowForwardIosRounded fontSize="large" />}
-        />
-
+        {
+          !isMobileScreen && <>
+            <GradientArrow
+              onClick={goPrev}
+              side="left"
+              Icon={<ArrowBackIosRounded fontSize="large" />}
+            />
+            <GradientArrow
+              onClick={goNext}
+              side="right"
+              Icon={<ArrowForwardIosRounded fontSize="large" />}
+            />
+          </>
+        }
         <Box sx={styles.dots}>
           {banners.map((_, i) => (
             <Box
