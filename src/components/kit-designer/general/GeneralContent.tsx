@@ -217,9 +217,9 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       if (langCode) {
         if (isMetadataField) {
           translationFieldValue =
-            data.translations?.[langCode].metadata?.[field] ?? "";
+            data?.translations?.[langCode]?.metadata?.[field] ?? "";
         } else {
-          translationFieldValue = data.translations?.[langCode]?.[field] ?? "";
+          translationFieldValue = data?.translations?.[langCode]?.[field] ?? "";
         }
       }
 
