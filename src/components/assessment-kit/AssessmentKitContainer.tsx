@@ -115,20 +115,20 @@ const AssessmentKit = (props: any) => {
                   >
                     <AssessmentKitAbout about={about} />
                   </Grid>
-                  <Box
-                    sx={{ ...styles.centerH }}
-                    maxHeight="33px"
+
+                  <Typography
+                    sx={{ color: "#2B333B" }}
+                    variant="titleLarge"
                     display={{ xs: "none", sm: "block" }}
                   >
-                    <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
-                      <Trans i18nKey={"kitStructure"} />
-                    </Typography>
+                    <Trans i18nKey={"kitStructure"} />
                     <Tooltip title={t("kitStructureDescription")}>
-                      <IconButton>
+                      <IconButton size="small">
                         <InfoOutlined fontSize="small" color="action" />
                       </IconButton>
                     </Tooltip>
-                  </Box>
+                  </Typography>
+
                   <Grid
                     item
                     xs={12}

@@ -289,7 +289,7 @@ export const theme = createTheme({
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "500",
       fontSize: "0.75rem",
-      lineHeight: "0.75rem",
+      lineHeight: "1rem",
       letterSpacing: is_farsi ? "0px" : "0.5px",
     },
     semiBoldLarge: {
