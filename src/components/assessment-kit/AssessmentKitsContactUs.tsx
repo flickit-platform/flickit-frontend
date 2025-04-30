@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import useDialog from "@/utils/useDialog";
 import { t } from "i18next";
@@ -6,6 +7,7 @@ import contactUs from "@/assets/svg/contactUs.svg";
 import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
 import Button from "@mui/material/Button";
+import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
 
 const AssessmentKitsContactUs = () => {
   const dialogProps = useDialog();
@@ -71,6 +73,7 @@ const AssessmentKitsContactUs = () => {
              {t("contactUs")}
            </Button>
       </Box>
+      <ContactUsDialog {...dialogProps} />
     </Box>
   );
 };
