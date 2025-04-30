@@ -58,10 +58,11 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
   </Button>
 );
 
-const AssessmentKitsStoreBanner: React.FC = () => {
+const AssessmentKitsStoreBanner = (props: any) => {
   const { service } = useServiceContext();
   const navigate = useNavigate();
 
+  const { mobileScreen } = props
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -76,9 +77,7 @@ const AssessmentKitsStoreBanner: React.FC = () => {
       ),
   });
 
-  const isMobileScreen = useMediaQuery((theme: any) =>
-    theme.breakpoints.down("sm"),
-  );
+
 
   const banners = data;
 
@@ -138,7 +137,8 @@ const AssessmentKitsStoreBanner: React.FC = () => {
     });
   };
 
-  if (!banners.length) return <></>;
+  if (mobileScreen &&  !banners.some(kit => !!kit.smallBanner)) return <></>;
+  if (!mobileScreen &&  !banners.some(kit => !!kit.largeBanner)) return <></>;
   else
     return (
       <Box
@@ -183,7 +183,7 @@ const AssessmentKitsStoreBanner: React.FC = () => {
               }}
             >
               <img
-                src={isMobileScreen ? item.smallBanner : item.largeBanner}
+                src={mobileScreen ? item.smallBanner : item.largeBanner}
                 alt={`Slide ${i + 1}`}
                 onLoad={() => handleImageLoad(i)}
                 style={{
@@ -197,7 +197,7 @@ const AssessmentKitsStoreBanner: React.FC = () => {
           ))}
         </Box>
         {
-          !isMobileScreen && <>
+          !mobileScreen && <>
             <GradientArrow
               onClick={goPrev}
               side="left"
@@ -208,26 +208,26 @@ const AssessmentKitsStoreBanner: React.FC = () => {
               side="right"
               Icon={<ArrowForwardIosRounded fontSize="large" />}
             />
+            <Box sx={styles.dots}>
+              {banners.map((_, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    width: currentIndex === i ? "2rem" : "1rem",
+                    height: "0.75rem",
+                    backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
+                    borderRadius: currentIndex === i ? "20px" : "50%",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    opacity: currentIndex === i ? 1 : 0.7,
+                    transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
+                  }}
+                  onClick={() => setCurrentIndex(i)}
+                />
+              ))}
+            </Box>
           </>
         }
-        <Box sx={styles.dots}>
-          {banners.map((_, i) => (
-            <Box
-              key={i}
-              sx={{
-                width: currentIndex === i ? "2rem" : "1rem",
-                height: "0.75rem",
-                backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
-                borderRadius: currentIndex === i ? "20px" : "50%",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                opacity: currentIndex === i ? 1 : 0.7,
-                transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
-              }}
-              onClick={() => setCurrentIndex(i)}
-            />
-          ))}
-        </Box>
       </Box>
     );
 };
