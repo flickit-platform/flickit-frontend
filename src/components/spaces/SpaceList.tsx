@@ -63,7 +63,7 @@ interface ISpaceCardProps {
   fetchSpaces: TQueryFunction<ISpacesModel>;
 }
 
-const SpaceCard = (props: ISpaceCardProps) => {
+export const SpaceCard = (props: ISpaceCardProps) => {
   const { item, isActiveSpace, dialogProps, fetchSpaces, owner } = props;
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { service } = useServiceContext();
@@ -126,6 +126,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
         <Typography
           variant="h6"
           data-cy="space-card-link"
+          data-testid={"space-card-title-test"}
           sx={{
             fontSize: "1.2rem",
             fontWeight: "bold",
@@ -144,7 +145,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
         {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip title={"premiumSpace"}>
+          <Tooltip data-testid={"space-card-premium-test"} title={"premiumSpace"}>
             <img
               style={{ width: "32px", height: "32px" }}
               src={premium}
@@ -177,8 +178,10 @@ const SpaceCard = (props: ISpaceCardProps) => {
                           ? farsiFontFamily
                           : primaryFontFamily,
                       }}
+                      data-testid={"space-card-show-displayName"}
                     >
-                      <Trans i18nKey={owner?.displayName} />
+                      <Trans
+                             i18nKey={owner?.displayName}/>
                     </span>
                   )}
                 </>
@@ -207,7 +210,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 src={peopleIcon}
                 alt={"peopleIcon"}
               />
-              <Typography color="#2B333B" fontWeight={"bold"}>
+              <Typography data-testid={"space-card-test-membersCount"} color="#2B333B" fontWeight={"bold"}>
                 {membersCount}
               </Typography>
             </Box>
@@ -232,7 +235,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
                 src={descriptionIcon}
                 alt={"descriptionIcon"}
               />
-              <Typography color="#2B333B" fontWeight={"bold"}>
+              <Typography data-testid={"space-card-test-assessmentsCount"}  color="#2B333B" fontWeight={"bold"}>
                 {assessmentsCount}
               </Typography>
             </Box>
@@ -247,7 +250,7 @@ const SpaceCard = (props: ISpaceCardProps) => {
           }}
         >
           {isActiveSpace && (
-            <Box mr={1}>
+            <Box data-testid={"space-card-test-isActiveSpace"} mr={1}>
               <Chip
                 label={<Trans i18nKey={"current"} />}
                 color="info"
