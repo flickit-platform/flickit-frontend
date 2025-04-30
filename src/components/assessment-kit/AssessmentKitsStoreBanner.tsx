@@ -77,8 +77,6 @@ const AssessmentKitsStoreBanner = (props: any) => {
       ),
   });
 
-
-
   const banners = data;
 
   useEffect(() => {

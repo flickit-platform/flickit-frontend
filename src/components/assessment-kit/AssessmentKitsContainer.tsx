@@ -13,7 +13,7 @@ const AssessmentKitsContainer = (props: PropsWithChildren<{}>) => {
 
   const sharedBoxProps = {
     m: "auto",
-    my: isMobileScreen ? 2 :  0,
+    my: isMobileScreen ? 2 : 3,
     pb: isMobileScreen ? 0 :  3,
     gap: "40px",
     display: "flex",
