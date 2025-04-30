@@ -923,6 +923,8 @@
   "youLikedThisKit": "You liked this kit!",
   "kitStructureDescription": "Each kit consists of a set of topics directly linked to it. Each topic also contains several attributes specifically associated with it. By hovering over any topic or attribute, you can view its description.",
   "save": "Save",
+  "lookingForSomethingSpecific": "Looking for something more specific?",
+  "dropUsNote": "Drop us a note!",
   "kitStructure": "Kit Structure",
   "createdBy": "Created by",
   "generateInsights": {

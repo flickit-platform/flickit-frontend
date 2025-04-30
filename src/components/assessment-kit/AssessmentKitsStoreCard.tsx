@@ -46,9 +46,9 @@ const AssessmentKitsStoreCard = (props: any) => {
       component={Link}
       sx={{
         ...styles.boxStyle,
-        borderRadius: 1,
+        borderRadius: 2,
         height: "100%",
-        mb: small ? "8px !important" : "40px  !important",
+        mb: small ? "8px !important" : {xs: "12px", sm: "40px  !important" } ,
         borderLeft: `4px solid ${
           isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
         }`,
@@ -58,17 +58,19 @@ const AssessmentKitsStoreCard = (props: any) => {
         cursor: "pointer",
         textDecoration: "unset",
         color: "inherit",
-        p: small ? "24px !important" : "32px",
+        p: small ? "24px !important" : { xs: "24px", sm: "32px" },
       }}
     >
       <Box>
-        <Box>
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
           <Box
-            mb={small ? 0.5 : 1}
+            mb={small ? 0.5 : ""}
             sx={{
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              gap: 1
             }}
           >
             <Typography
@@ -86,45 +88,30 @@ const AssessmentKitsStoreCard = (props: any) => {
             >
               {title}
             </Typography>
-
-            {isPrivate && (
-              <Chip
-                label={<Trans i18nKey="private" />}
-                size={small ? "small" : "medium"}
+            <Box sx={{ ...styles.centerV }} gap={small ? 0.5 : 1}>
+              <Avatar
+                {...stringAvatar(expertGroup.title?.toUpperCase())}
+                src={expertGroup.picture}
                 sx={{
-                  background: "#FCE8EF",
-                  color: "#B8144B",
-                  ...(small
-                    ? theme.typography.semiBoldMedium
-                    : theme.typography.semiBoldLarge),
+                  width: small ? 24 : 32,
+                  height: small ? 24 : 32,
+                  fontSize: small ? 12 : 16,
                 }}
               />
-            )}
-          </Box>
-          <Box sx={{ ...styles.centerV }} gap={small ? 0.5 : 1}>
-            <Avatar
-              {...stringAvatar(expertGroup.title?.toUpperCase())}
-              src={expertGroup.picture}
-              sx={{
-                width: small ? 24 : 32,
-                height: small ? 24 : 32,
-                fontSize: small ? 12 : 16,
-              }}
-            />
-            <Typography
-              to={`/user/expert-groups/${expertGroup.id}`}
-              component={Link}
-              sx={{
-                ...(small
-                  ? theme.typography.labelSmall
-                  : theme.typography.semiBoldLarge),
-                color: "#6C8093",
-                textDecoration: "none",
-                fontFamily: languageDetector(expertGroup.title)
-                  ? farsiFontFamily
-                  : secondaryFontFamily,
-              }}
-            >
+              <Typography
+                to={`/user/expert-groups/${expertGroup.id}`}
+                component={Link}
+                sx={{
+                  ...(small
+                    ? theme.typography.labelSmall
+                    : theme.typography.semiBoldLarge),
+                  color: "#6C8093",
+                  textDecoration: "none",
+                  fontFamily: languageDetector(expertGroup.title)
+                    ? farsiFontFamily
+                    : secondaryFontFamily,
+                }}
+              >
               <span
                 style={{
                   fontFamily:
@@ -135,11 +122,26 @@ const AssessmentKitsStoreCard = (props: any) => {
               >
                 <Trans i18nKey="designedBy" />
               </span>{" "}
-              {expertGroup.title}
-            </Typography>
+                {expertGroup.title}
+              </Typography>
+            </Box>
           </Box>
+          {isPrivate && (
+            <Chip
+              label={<Trans i18nKey="private" />}
+              size={small ? "small" : "medium"}
+              sx={{
+                background: "#FCE8EF",
+                color: "#B8144B",
+                height: {xs: "40px"},
+                ...(small
+                  ? theme.typography.semiBoldMedium
+                  : theme.typography.semiBoldLarge),
+              }}
+            />
+          )}
         </Box>
-        <Box mt={small ? 1.5 : 4}>
+        <Box mt={small ? 1.5 : 1}>
           <Typography
             component="div"
             textAlign="justify"
@@ -150,6 +152,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               fontFamily: languageDetector(summary)
                 ? farsiFontFamily
                 : secondaryFontFamily,
+              mt: {xs: "8px", sm: "32px"}
             }}
             dangerouslySetInnerHTML={{
               __html: `${truncatedSummary}${isSummaryTruncated}`,
@@ -160,6 +163,7 @@ const AssessmentKitsStoreCard = (props: any) => {
       <Box
         sx={{
           display: "flex",
+          flexDirection:{xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
           gap: small ? 1 : 2,
@@ -169,7 +173,9 @@ const AssessmentKitsStoreCard = (props: any) => {
         <Box
           sx={{
             display: "flex",
-            gap: small ? "4px" : { xs: 1, sm: 4 },
+            width: {xs: "100%",sm: "unset" },
+            justifyContent: "center",
+            gap: small ? "4px" : { xs: "48px", md: "8px", lg: "48px" },
             bgcolor: "#EDF0F2",
             borderRadius: 2,
             px: small ? 1 : 2,
@@ -222,6 +228,7 @@ const AssessmentKitsStoreCard = (props: any) => {
           variant="contained"
           size={small ? "small" : "large"}
           sx={{
+            width: {xs: "100%",sm: "unset" },
             backgroundColor: isPrivate
               ? theme.palette.secondary.main
               : theme.palette.primary.main,

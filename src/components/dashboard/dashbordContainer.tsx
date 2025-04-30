@@ -56,7 +56,6 @@ const DashbordContainer = () => {
                 item
                 sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 4 : 12}
                 xs={12}
-                mt={{ md: -2 }}
               >
                 <Typography
                   color="primary"

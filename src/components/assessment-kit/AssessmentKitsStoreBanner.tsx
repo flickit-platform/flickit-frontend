@@ -8,14 +8,15 @@ import { styles } from "@styles";
 import { theme } from "@config/theme";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
-import uniqueId from "@/utils/uniqueId";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const DIRECTION = theme.direction === "rtl" ? "+" : "-";
 const ARROW_COLOR = "#1B4D7E";
 
 interface Banner {
   kitId: number;
-  banner: string;
+  smallBanner: string;
+  largeBanner: string;
 }
 
 interface GradientArrowProps {
@@ -57,10 +58,11 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
   </Button>
 );
 
-const AssessmentKitsStoreBanner: React.FC = () => {
+const AssessmentKitsStoreBanner = (props: any) => {
   const { service } = useServiceContext();
   const navigate = useNavigate();
 
+  const { mobileScreen } = props
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -133,7 +135,8 @@ const AssessmentKitsStoreBanner: React.FC = () => {
     });
   };
 
-  if (!banners.length) return <></>;
+  if (mobileScreen &&  !banners.some(kit => !!kit.smallBanner)) return <></>;
+  if (!mobileScreen &&  !banners.some(kit => !!kit.largeBanner)) return <></>;
   else
     return (
       <Box
@@ -156,7 +159,7 @@ const AssessmentKitsStoreBanner: React.FC = () => {
         <Box
           sx={{
             display: "flex",
-            width: `${banners.length * 100}%`,
+            width: `${banners.length * 95}%`,
             height: "100%",
             transition: "transform 0.5s ease-in-out",
             transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
@@ -174,10 +177,11 @@ const AssessmentKitsStoreBanner: React.FC = () => {
                 height: "100%",
                 cursor: "pointer",
                 display: "block",
+                paddingInlineStart: 2
               }}
             >
               <img
-                src={item.banner}
+                src={mobileScreen ? item.smallBanner : item.largeBanner}
                 alt={`Slide ${i + 1}`}
                 onLoad={() => handleImageLoad(i)}
                 style={{
@@ -190,36 +194,38 @@ const AssessmentKitsStoreBanner: React.FC = () => {
             </Box>
           ))}
         </Box>
-
-        <GradientArrow
-          onClick={goPrev}
-          side="left"
-          Icon={<ArrowBackIosRounded fontSize="large" />}
-        />
-        <GradientArrow
-          onClick={goNext}
-          side="right"
-          Icon={<ArrowForwardIosRounded fontSize="large" />}
-        />
-
-        <Box sx={styles.dots}>
-          {banners.map((_, i) => (
-            <Box
-              key={i}
-              sx={{
-                width: currentIndex === i ? "2rem" : "1rem",
-                height: "0.75rem",
-                backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
-                borderRadius: currentIndex === i ? "20px" : "50%",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                opacity: currentIndex === i ? 1 : 0.7,
-                transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
-              }}
-              onClick={() => setCurrentIndex(i)}
+        {
+          !mobileScreen && <>
+            <GradientArrow
+              onClick={goPrev}
+              side="left"
+              Icon={<ArrowBackIosRounded fontSize="large" />}
             />
-          ))}
-        </Box>
+            <GradientArrow
+              onClick={goNext}
+              side="right"
+              Icon={<ArrowForwardIosRounded fontSize="large" />}
+            />
+            <Box sx={styles.dots}>
+              {banners.map((_, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    width: currentIndex === i ? "2rem" : "1rem",
+                    height: "0.75rem",
+                    backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
+                    borderRadius: currentIndex === i ? "20px" : "50%",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    opacity: currentIndex === i ? 1 : 0.7,
+                    transform: currentIndex === i ? "scale(1.3)" : "scale(1)",
+                  }}
+                  onClick={() => setCurrentIndex(i)}
+                />
+              ))}
+            </Box>
+          </>
+        }
       </Box>
     );
 };
