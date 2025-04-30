@@ -30,12 +30,18 @@ const AssessmentReportContainer = (props: any) => {
   });
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>
-      service.assessments.info.calculateMaturity(args ?? { assessmentId }, config),
+      service.assessments.info.calculateMaturity(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: false,
   });
   const calculateConfidenceLevelQuery = useQuery({
     service: (args, config) =>
-      service.assessments.info.calculateConfidence(args ?? { assessmentId }, config),
+      service.assessments.info.calculateConfidence(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: false,
   });
   const assessmentTotalProgress = useQuery({
@@ -100,7 +106,6 @@ const AssessmentReportContainer = (props: any) => {
         render={([issues]) => {
           const { answersCount, questionsCount } =
             assessmentTotalProgress.data ?? {};
-
           return (
             <Box m="auto">
               <Grid container spacing={1} mt="32px">
@@ -146,10 +151,8 @@ const AssessmentReportContainer = (props: any) => {
             assessmentTotalProgress.data ?? {};
 
           const colorCode = assessment?.color?.code ?? "#101c32";
-          const { assessmentKit, maturityLevel, confidenceValue } =
-            assessment ?? {};
-          const progress =
-            ((answersCount ?? 0) / (questionsCount || 1)) * 100;
+          const { kit, maturityLevel, confidenceValue } = assessment ?? {};
+          const progress = ((answersCount ?? 0) / (questionsCount || 1)) * 100;
 
           return (
             <Box m="auto">
@@ -183,7 +186,7 @@ const AssessmentReportContainer = (props: any) => {
                   }}
                 >
                   <Gauge
-                    maturity_level_number={assessmentKit?.maturityLevelCount}
+                    maturity_level_number={kit?.maturityLevelsCount}
                     isMobileScreen={true}
                     maturity_level_status={maturityLevel?.title}
                     level_value={maturityLevel?.index ?? 0}
@@ -202,7 +205,7 @@ const AssessmentReportContainer = (props: any) => {
                 <Trans i18nKey="subjects" />
               </Typography>
               <AssessmentSubjectList
-                maturityLevelCount={assessmentKit?.maturityLevelCount ?? 5}
+                maturityLevelCount={kit?.maturityLevelsCount ?? 5}
                 subjects={subjects}
                 colorCode={colorCode}
                 reloadQuery={fetchInsightsIssues.query}
