@@ -210,7 +210,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               py: 1,
               flexWrap: "noWrap",
               width: { xs: "100%", sm: "inherit" },
-              justifyContent: "center"
+              justifyContent: "center",
               ...styles.centerV,
               gap: small ? "4px" : 1,
             }}
