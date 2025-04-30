@@ -23,7 +23,7 @@ const AssessmentKitsContactUs = () => {
         justifyContent: "space-between",
         width: "100%",
         background: "#D5E5F6",
-        borderRadius: 2,
+        borderRadius: 4,
         px: 4,
         pb: {xs: 4,sm: "unset"}
       }}
