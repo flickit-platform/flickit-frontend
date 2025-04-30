@@ -7,9 +7,12 @@ import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDial
 import useDialog from "@utils/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import uniqueId from "@/utils/uniqueId";
+import { useParams } from "react-router-dom";
 
-const AssessmentKitsStoreListCard = () => {
+const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const { service } = useServiceContext();
+  const { assessmentKitId } = useParams();
+
   const dialogProps = useDialog();
 
   const assessmentKitsQueryData = useQuery({
@@ -34,14 +37,20 @@ const AssessmentKitsStoreListCard = () => {
       render={(data) => {
         const { items = [] } = data;
         return (
-          <Grid container spacing={{xs: 2, sm: 4}}>
-            {items.map((item: any) => (
-              <AssessmentKitsStoreCard
-                key={item.id}
-                openDialog={dialogProps}
-                {...item}
-              />
-            ))}
+          <Grid container spacing={{ xs: 2, sm: small ? 2.5 : 4 }}>
+            {items
+              .filter((item: any) => item.id != assessmentKitId)
+              .map((item: any) => (
+                <Grid key={item.id} item xs={12} md={small ? 4 : 6}>
+                  <AssessmentKitsStoreCard
+                    key={item.id}
+                    openDialog={dialogProps}
+                    {...item}
+                    small={small}
+                  />
+                </Grid>
+              ))}
+
             <AssessmentCEFromDialog {...dialogProps} />
           </Grid>
         );

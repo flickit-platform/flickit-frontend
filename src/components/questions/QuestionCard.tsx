@@ -38,7 +38,6 @@ import toastError from "@utils/toastError";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
-import formatDate from "@utils/formatDate";
 import { SubmitOnSelectCheckBox } from "./QuestionContainer";
 import QueryData from "../common/QueryData";
 import languageDetector from "@utils/languageDetector";
@@ -64,8 +63,6 @@ import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { format } from "date-fns";
-import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import { evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -83,6 +80,7 @@ import { QuestionGuide } from "./QuestionCard/QuestionGuide";
 import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import { getReadableDate } from "@utils/readableDate";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -1409,16 +1407,7 @@ const AnswerHistoryItem = (props: any) => {
         justifyContent="flex-end"
       >
         <Typography variant="bodyMedium">
-          {format(
-            new Date(
-              new Date(item.creationTime).getTime() -
-                new Date(item.creationTime).getTimezoneOffset() * 60000,
-            ),
-            "yyyy/MM/dd HH:mm",
-          ) +
-            " (" +
-            t(convertToRelativeTime(item.creationTime)) +
-            ")"}
+          {getReadableDate(item.creationTime, "relativeWithDate", true)}
         </Typography>
       </Grid>
     </Grid>
@@ -2497,9 +2486,7 @@ const EvidenceDetail = (props: any) => {
                         mt: -2,
                       }}
                     >
-                      {theme.direction == "rtl"
-                        ? formatDate(lastModificationTime, "Shamsi")
-                        : formatDate(lastModificationTime, "Miladi")}
+                      {getReadableDate(lastModificationTime)}
                     </Typography>
                   </Box>
                 </Box>

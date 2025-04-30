@@ -36,9 +36,7 @@ import { IMessage } from "@novu/notification-center";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
-import { convertToRelativeTime } from "@/utils/convertToRelativeTime";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
-import { format } from "date-fns";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n, { t } from "i18next";
@@ -47,6 +45,7 @@ import languageDetector from "@utils/languageDetector";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
 import flagsmith from "flagsmith";
+import { getReadableDate } from "@utils/readableDate";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -135,7 +134,7 @@ const NotificationItem = ({
           whiteSpace: "nowrap",
         }}
       >
-        {t(convertToRelativeTime(message.createdAt))}
+        {getReadableDate(message.createdAt,"relative")}
       </Typography>
 
       {/* Arrow Icon */}
@@ -310,18 +309,11 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 </Box>
 
                 <Typography variant="labelSmall" sx={{ color: "#3D4D5C" }}>
-                  {t(convertToRelativeTime(selectedMessage.createdAt)) +
-                    " (" +
-                    format(
-                      new Date(
-                        new Date(selectedMessage.createdAt).getTime() -
-                          new Date(
-                            selectedMessage.createdAt,
-                          ).getTimezoneOffset(),
-                      ),
-                      "yyyy/MM/dd HH:mm",
-                    ) +
-                    ") "}
+                  {getReadableDate(
+                    selectedMessage?.createdAt,
+                    "relativeWithDate",
+                    true,
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -859,7 +851,6 @@ const SpacesButton = () => {
 };
 
 const AccountDropDownButton = ({ userInfo }: any) => {
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

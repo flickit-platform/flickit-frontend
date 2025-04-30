@@ -19,7 +19,9 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 
-  const [state, handleSubmitSpree] = useFormSpree("myzeoqrg");
+  const [state, handleSubmitSpree] = useFormSpree(
+    import.meta.env.VITE_FORM_SPREE,
+  );
   const methods = useForm();
   const [emailError, setEmailError] = useState<any>("");
 
@@ -51,7 +53,10 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       {...rest}
       closeDialog={close}
       title={
-        <Typography sx={theme.typography.semiBoldXLarge} textTransform={"uppercase"}>
+        <Typography
+          sx={theme.typography.semiBoldXLarge}
+          textTransform={"uppercase"}
+        >
           <Trans i18nKey="contactUs" />
         </Typography>
       }
