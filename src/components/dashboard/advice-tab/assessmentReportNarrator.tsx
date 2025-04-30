@@ -5,11 +5,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { format } from "date-fns";
-import { convertToRelativeTime } from "@utils/convertToRelativeTime";
-import { theme } from "@config/theme";
-import formatDate from "@utils/formatDate";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
+import { getReadableDate } from "@utils/readableDate";
 
 export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
   const [aboutSection, setAboutSection] = useState<any>(null);
@@ -67,36 +64,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
           />
           {aboutSection?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>
-              {theme.direction == "rtl"
-                ? formatDate(
-                    format(
-                      new Date(
-                        new Date(aboutSection?.creationTime).getTime() -
-                          new Date(
-                            aboutSection?.creationTime,
-                          ).getTimezoneOffset() *
-                            60000,
-                      ),
-                      "yyyy/MM/dd HH:mm",
-                    ),
-                    "Shamsi",
-                  )
-                : formatDate(
-                    format(
-                      new Date(
-                        new Date(aboutSection?.creationTime).getTime() -
-                          new Date(
-                            aboutSection?.creationTime,
-                          ).getTimezoneOffset() *
-                            60000,
-                      ),
-                      "yyyy/MM/dd HH:mm",
-                    ) +
-                      " (" +
-                      t(convertToRelativeTime(aboutSection?.creationTime)) +
-                      ")",
-                    "Miladi",
-                  )}
+              {getReadableDate(aboutSection?.creationTime)}
             </Typography>
           )}
         </>

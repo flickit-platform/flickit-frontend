@@ -12,6 +12,7 @@ interface ImportMetaEnv {
   VITE_MULTILINGUALITY: string;
   VITE_FLAGSMITH_ENVIRONMENT_KEY: string;
   VITE_FLAGSMITH_API: string;
+  VITE_FORM_SPREE: string
 }
 interface ImportMeta {
   readonly env: ImportMetaEnv;

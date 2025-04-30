@@ -40,7 +40,6 @@ import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { useAuthContext } from "@providers/AuthProvider";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
-import formatDate from "@utils/formatDate";
 import useMenu from "@utils/useMenu";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -67,6 +66,7 @@ import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import { FLAGS } from "@/types";
 import flagsmith from "flagsmith";
+import { getReadableDate } from "@utils/readableDate";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -858,9 +858,7 @@ const Invitees = (props: any) => {
                         }}
                       />
                       <Typography variant="body2">
-                        {theme.direction == "rtl"
-                          ? formatDate(inviteExpirationDate, "Shamsi")
-                          : formatDate(inviteExpirationDate, "Miladi")}
+                        {getReadableDate(inviteExpirationDate)}
                       </Typography>
                     </Box>
                   </Box>
@@ -1519,9 +1517,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                                 }}
                               />
                               <Typography variant="body2">
-                                {theme.direction == "rtl"
-                                  ? formatDate(inviteExpirationDate, "Shamsi")
-                                  : formatDate(inviteExpirationDate, "Miladi")}
+                                {getReadableDate(inviteExpirationDate)}
                               </Typography>
                             </Box>
                             <MemberActions

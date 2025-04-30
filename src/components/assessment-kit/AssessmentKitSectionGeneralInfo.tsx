@@ -4,7 +4,6 @@ import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import InfoItem from "@common/InfoItem";
-import formatDate from "@utils/formatDate";
 import { t } from "i18next";
 import { ICustomError } from "@utils/CustomError";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -39,6 +38,7 @@ import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
+import { getReadableDate } from "@utils/readableDate";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -417,10 +417,7 @@ const AssessmentKitSectionGeneralInfo = (
                     <InfoItem
                       bg="white"
                       info={{
-                        item:
-                          theme.direction == "rtl"
-                            ? formatDate(creationTime, "Shamsi")
-                            : formatDate(creationTime, "Miladi"),
+                        item:  getReadableDate(creationTime),
                         title: t("creationDate"),
                       }}
                     />
@@ -431,10 +428,7 @@ const AssessmentKitSectionGeneralInfo = (
                     <InfoItem
                       bg="white"
                       info={{
-                        item:
-                          theme.direction == "rtl"
-                            ? formatDate(lastModificationTime, "Shamsi")
-                            : formatDate(lastModificationTime, "Miladi"),
+                        item: getReadableDate(lastModificationTime),
                         title: t("lastUpdated"),
                       }}
                     />

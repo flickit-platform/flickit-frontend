@@ -14,6 +14,7 @@ import firstCharDetector from "@utils/firstCharDetector";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { t } from "i18next";
 
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
@@ -35,7 +36,7 @@ const MultiLangTextField = ({
   inputProps,
   translationValue,
   onTranslationChange,
-  translationLabel = "Translation",
+  translationLabel = t("translation") ?? "",
   showTranslation: controlledShow,
   setShowTranslation: controlledSetter,
   useRichEditor = false,
