@@ -400,9 +400,7 @@ export const IssuesItem = ({
 
       {name === "notGenerated" && (
         <Tooltip
-          disableHoverListener={
-            issues?.unanswered < 1 || !disableGenerateButtons
-          }
+          disableHoverListener={issues?.unanswered < 1}
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
           <div style={{ marginInlineStart: "auto" }}>
@@ -426,9 +424,7 @@ export const IssuesItem = ({
       {name == "expired" && (
         <>
           <Tooltip
-            disableHoverListener={
-              issues?.unanswered < 1 || !disableGenerateButtons
-            }
+            disableHoverListener={issues?.unanswered < 1}
             title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
           >
             <div
