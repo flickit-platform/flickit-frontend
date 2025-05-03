@@ -140,12 +140,13 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               ? farsiFontFamily
               : primaryFontFamily,
           }}
+          data-testid={"space-card-title-test"}
         >
           {loading ? <CircularProgress size={20} /> : title}
         </Typography>
 
         {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip title="premiumSpace">
+          <Tooltip title="premiumSpace" data-testid={"space-card-premium-test"}>
             <Box
               component="img"
               src={premium}
@@ -263,6 +264,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         <Box sx={{ ...styles.centerV, gap: 0.5 }}>
           {isActiveSpace && (
             <Chip
+              data-testid={"space-card-test-isActiveSpace"}
               label={<Trans i18nKey="current" />}
               color="info"
               size="small"
