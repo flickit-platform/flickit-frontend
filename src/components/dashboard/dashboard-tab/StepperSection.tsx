@@ -11,7 +11,7 @@ import { t } from "i18next";
 import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface IStepperSection {
   setActiveStep: (value: React.SetStateAction<number>) => void;
@@ -78,7 +78,7 @@ const StepBox = (props: IStepBox) => {
   const advices = category === "advices";
   const report = category === "report";
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalStep(activeStep);
   }, [activeStep]);
 
@@ -171,7 +171,7 @@ const StepBox = (props: IStepBox) => {
     completed = answered === total;
     const hasIssues = calcOfIssues() > 0;
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (completed && localStep === 0) {
         setActiveStep(1);
       }
@@ -212,7 +212,7 @@ const StepBox = (props: IStepBox) => {
     completed = localStep >= 1 && expected === result;
     const hasIssues = unapproved || expired || notGenerated;
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (completed && localStep === 1) {
         setActiveStep(2);
       }
@@ -253,7 +253,7 @@ const StepBox = (props: IStepBox) => {
     completed = localStep >= 2 && total !== 0;
     const hasIssues = total === 0;
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (completed && localStep === 2) {
         setActiveStep(3);
       }
@@ -288,7 +288,7 @@ const StepBox = (props: IStepBox) => {
     completed = localStep >= 3 && providedMetadata === totalMetadata && !unpublished;
     const hasIssues = unprovidedMetadata >= 1 || unpublished;
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (completed && localStep === 3) {
         setActiveStep(4);
       }
