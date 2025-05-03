@@ -1,12 +1,18 @@
 import { Box, Typography } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { useState } from "react";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { toast } from "react-toastify";
+import { theme } from "@/config/theme";
+import Tooltip from "@mui/material/Tooltip";
 
 interface TitleWithTranslationProps {
   title: string;
   translation?: string;
   variant?: any;
   multiline?: boolean;
+  showCopyIcon?: boolean | undefined;
 }
 
 const TitleWithTranslation = ({
@@ -14,13 +20,14 @@ const TitleWithTranslation = ({
   translation,
   variant = "h6",
   multiline = false,
+  showCopyIcon= false
 }: TitleWithTranslationProps) => {
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
     ? languageDetector(translation)
     : false;
 
-  const renderText = ({
+  const RenderText = ({
     text,
     isFarsi,
     color,
@@ -39,26 +46,47 @@ const TitleWithTranslation = ({
         color: color ?? "inherit",
         fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
         textAlign: multiline ? "justify" : "unset",
+        width: "fit-content",
       },
+    };
+    const [show,setShow] = useState(false)
+
+    const handleMouseOver = () => {
+     setShow(true)
+    };
+    const handelMouseOut = () => {
+      setShow(false)
+    };
+    const handleCopyClick = () => {
+      navigator.clipboard.writeText(text).then(() => {
+        toast("copied",{type: 'success'})
+      });
     };
 
     return multiline ? (
       <Typography {...baseProps} dangerouslySetInnerHTML={{ __html: text }} />
     ) : (
-      <Typography {...baseProps}>{text}</Typography>
+      <Typography
+        onClick={handleCopyClick}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handelMouseOut}
+        {...baseProps}
+      >
+        {text}{" "}
+        {show && showCopyIcon && (
+          <Tooltip title={"copy"} >
+            <ContentCopyIcon sx={{ float:[theme.direction == "rtl" ? "left" :  "right"], marginInlineStart: "10px" }} fontSize={"small"} />
+          </Tooltip>
+        )}
+      </Typography>
     );
   };
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      {renderText({ text: title, isFarsi: isFarsiTitle })}
+      <RenderText text={title} isFarsi={isFarsiTitle} />
       {translation &&
-        renderText({
-          text: translation,
-          isFarsi: isFarsiTranslation,
-          color: "#6C8093",
-          variantOverride: "body2",
-        })}
+        <RenderText text={translation} isFarsi={isFarsiTranslation} color={"#6C8093"} variantOverride={"body2"} />}
     </Box>
   );
 };
