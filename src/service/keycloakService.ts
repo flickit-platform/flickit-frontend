@@ -9,7 +9,7 @@ const _kc: KeycloakInstance = new Keycloak({
 
 const PUBLIC_PATHS = ["/assessment-kits"]
 
-const isPublicRoute = (path: string) =>
+export const isPublicRoute = (path: string) =>
   PUBLIC_PATHS.some((publicPath) => path.startsWith(publicPath));
 
 const initKeycloak = (onAuthenticatedCallback: () => void) => {
