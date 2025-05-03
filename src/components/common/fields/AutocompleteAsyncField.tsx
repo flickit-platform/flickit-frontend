@@ -25,6 +25,8 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { SxProps, Theme } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -55,6 +57,7 @@ const AutocompleteAsyncField = (props: any) => {
     createItemQuery,
     setError,
     searchable,
+    disabled,
     ...rest
   } = props;
   const { control } = useFormContext();
@@ -80,6 +83,7 @@ const AutocompleteAsyncField = (props: any) => {
             createItemQuery={createItemQuery}
             setError={setError}
             searchable={searchable}
+            disabled={disabled}
           />
         );
       }}
@@ -145,6 +149,7 @@ const AutocompleteBaseField = (
     createItemQuery,
     setError,
     searchable = true,
+    disabled,
     ...rest
   } = props;
   const { name, onChange, ref, value, ...restFields } = field;
@@ -386,6 +391,8 @@ const AutocompleteBaseField = (
           onBlur={handleBlur}
         />
       )}
+      disabled={disabled}
+      popupIcon={disabled ? <LockOutlinedIcon/> : <ArrowDropDownOutlinedIcon/>}
       renderOption={(props, option) =>
         option.inputValue ? (
           <li {...props}>
