@@ -103,7 +103,7 @@ export const AssessmentTOC = ({
           ...styles.rtlStyle(rtlLanguage),
         }}
       >
-        {t("quick_access", { lng: lang.code.toLowerCase() })}
+        {t("quickAccess", { lng: lang.code.toLowerCase() })}
       </Typography>
       <List
         sx={{
