@@ -313,6 +313,7 @@ const AssessmentKitField = ({
       disabled={!!staticData || !!defaultValue}
       label={<Trans i18nKey="assessmentKit" />}
       data-cy="assessment_kit"
+      filterFields={["title", "mainLanguage"]}
     />
   );
 };

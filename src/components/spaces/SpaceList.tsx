@@ -17,14 +17,19 @@ import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
-import { ISpaceModel, ISpacesModel, SPACE_LEVELS, TQueryFunction } from "@/types/index";
+import {
+  ISpaceModel,
+  ISpacesModel,
+  SPACE_LEVELS,
+  TQueryFunction,
+} from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
 import peopleIcon from "@/assets/svg/peopleIcon.svg";
 import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
-import settingsIcon from "@/assets/svg/settingsIcon.svg";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -102,17 +107,18 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         ...styles.centerV,
         boxShadow: "0 0 8px 0 #0A234240",
         borderRadius: 2,
-        px: { xs: 1, sm: 2, md: 4 },
+        paddingInlineStart: { xs: 1, sm: 2, md: 4 },
+        paddingInlineEnd: { xs: 1, sm: 2, md: 3 },
         py: { xs: 1, md: "12px" },
         mb: { xs: 1, md: 2 },
         backgroundColor: "white",
         textDecoration: "none",
         height: { xs: "auto", md: "56px" },
+        cursor: "pointer",
       }}
       justifyContent="space-between"
       data-cy="space-card"
-      component={Link}
-      to={`/${spaceId}/assessments/1`}
+      component="div"
       onClick={changeCurrentSpaceAndNavigateToAssessments}
     >
       <Box
@@ -120,6 +126,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           ...styles.centerV,
           width: { xs: "min-content", sm: "auto" },
           gap: { xs: "10px", sm: "16px" },
+          alignItems: "center",
         }}
         alignSelf="stretch"
       >
@@ -135,7 +142,6 @@ export const SpaceCard = (props: ISpaceCardProps) => {
             display: "flex",
             alignItems: "center",
             alignSelf: "stretch",
-            // px: 2,
             color: (t) => t.palette.primary.dark,
             fontFamily: languageDetector(title)
               ? farsiFontFamily
@@ -145,7 +151,10 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           {loading ? <CircularProgress size="20px" /> : <>{title}</>}
         </Typography>
         {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip data-testid={"space-card-premium-test"} title={"premiumSpace"}>
+          <Tooltip
+            data-testid={"space-card-premium-test"}
+            title={"premiumSpace"}
+          >
             <img
               style={{ width: "32px", height: "32px" }}
               src={premium}
@@ -154,8 +163,21 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           </Tooltip>
         )}
       </Box>
-      <Box sx={{ display: "flex", gap: { xs: 1, sm: 2, md: 4 } }}>
-        <Box sx={{ ...styles.centerV, gap: { xs: 1, sm: 2, md: 4 } }}>
+
+      <Box
+        sx={{
+          display: "flex",
+          gap: { xs: 1, sm: 2, md: 4 },
+          alignItems: "center",
+        }}
+      >
+        <Box
+          sx={{
+            ...styles.centerV,
+            gap: { xs: 1, sm: 2, md: 4 },
+            alignItems: "center",
+          }}
+        >
           <Tooltip title={<Trans i18nKey={owner?.displayName} />}>
             <Chip
               sx={{
@@ -180,8 +202,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                       }}
                       data-testid={"space-card-show-displayName"}
                     >
-                      <Trans
-                             i18nKey={owner?.displayName}/>
+                      <Trans i18nKey={owner?.displayName} />
                     </span>
                   )}
                 </>
@@ -190,6 +211,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               variant="outlined"
             />
           </Tooltip>
+
           <Tooltip title={<Trans i18nKey={"membersCount"} />}>
             <Box
               sx={{
@@ -199,22 +221,30 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                 textDecoration: "none",
                 color: "initial",
                 width: { sm: "52px" },
+                alignItems: "center",
               }}
             >
-              <img
-                style={{
-                  marginInlineStart: 0.5,
-                  width: "24px",
-                  height: "24px",
-                }}
-                src={peopleIcon}
-                alt={"peopleIcon"}
-              />
-              <Typography data-testid={"space-card-test-membersCount"} color="#2B333B" fontWeight={"bold"}>
+              <IconButton sx={{ padding: "5px" }} component="span">
+                <img
+                  style={{
+                    marginInlineStart: 0.5,
+                    width: "24px",
+                    height: "24px",
+                  }}
+                  src={peopleIcon}
+                  alt={"peopleIcon"}
+                />
+              </IconButton>
+              <Typography
+                data-testid={"space-card-test-membersCount"}
+                color="#2B333B"
+                fontWeight={"bold"}
+              >
                 {membersCount}
               </Typography>
             </Box>
           </Tooltip>
+
           <Tooltip title={<Trans i18nKey={"assessmentsCount"} />}>
             <Box
               sx={{
@@ -224,29 +254,38 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                 textDecoration: "none",
                 color: "initial",
                 width: { sm: "52px" },
+                alignItems: "center",
               }}
             >
-              <img
-                style={{
-                  marginInlineStart: 0.5,
-                  width: "24px",
-                  height: "24px",
-                }}
-                src={descriptionIcon}
-                alt={"descriptionIcon"}
-              />
-              <Typography data-testid={"space-card-test-assessmentsCount"}  color="#2B333B" fontWeight={"bold"}>
+              <IconButton sx={{ padding: "5px" }} component="span">
+                <img
+                  style={{
+                    marginInlineStart: 0.5,
+                    width: "24px",
+                    height: "24px",
+                  }}
+                  src={descriptionIcon}
+                  alt={"descriptionIcon"}
+                />
+              </IconButton>
+              <Typography
+                data-testid={"space-card-test-assessmentsCount"}
+                color="#2B333B"
+                fontWeight={"bold"}
+              >
                 {assessmentsCount}
               </Typography>
             </Box>
           </Tooltip>
         </Box>
+
         <Box
           justifyContent={"flex-end"}
           sx={{
             ...styles.centerV,
-            gap: 2,
+            gap: 0.5,
             minWidth: { xs: "60px", sm: "120px" },
+            alignItems: "center",
           }}
         >
           {isActiveSpace && (
@@ -265,17 +304,11 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                   size="small"
                   component={Link}
                   to={`/${spaceId}/setting`}
-                  sx={{ width: "24px", height: "24px" }}
+                  sx={{
+                    color: "black",
+                  }}
                 >
-                  <img
-                    style={{
-                      marginInlineStart: 0.5,
-                      width: "24px",
-                      height: "24px",
-                    }}
-                    src={settingsIcon}
-                    alt={"settingsIcon"}
-                  />
+                  <SettingsOutlinedIcon color="inherit" />
                 </IconButton>
               </Box>
             </Tooltip>

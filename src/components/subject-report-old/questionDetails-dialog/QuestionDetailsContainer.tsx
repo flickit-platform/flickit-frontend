@@ -36,7 +36,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
   } = props;
   const { questionInfo = {}, questionsInfo, index } = context;
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(undefined);
 
   const handleChange = (event: React.SyntheticEvent, newValue: any) => {
     setValue(newValue);

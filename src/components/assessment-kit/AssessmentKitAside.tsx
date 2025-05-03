@@ -91,7 +91,7 @@ const AssessmentKitAside = (props: any) => {
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
             {listOfItems.map((item) => {
-              return <InfoBox {...item} />;
+              return <InfoBox {...item} key={item.title} />;
             })}
           </Box>
           <Box>
