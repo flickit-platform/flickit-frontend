@@ -26,7 +26,7 @@ import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { SxProps, Theme } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -53,7 +53,7 @@ const AutocompleteAsyncField = (props: any) => {
     required = false,
     hasAddBtn = false,
     editable = false,
-    filterFields = ["title", "mainLanguage"],
+    filterFields = ["title"],
     createItemQuery,
     setError,
     searchable,
@@ -124,6 +124,8 @@ const AutocompleteBaseField = (
         return typeof option === "string"
           ? option
           : (option?.[filterFields[0]] ?? option.inputValue);
+      } else {
+        return "";
       }
     },
     filterSelectedOption = (options: readonly any[], value: any): any[] =>
@@ -392,7 +394,9 @@ const AutocompleteBaseField = (
         />
       )}
       disabled={disabled}
-      popupIcon={disabled ? <LockOutlinedIcon/> : <ArrowDropDownOutlinedIcon/>}
+      popupIcon={
+        disabled ? <LockOutlinedIcon /> : <ArrowDropDownOutlinedIcon />
+      }
       renderOption={(props, option) =>
         option.inputValue ? (
           <li {...props}>
@@ -423,7 +427,11 @@ const AutocompleteBaseField = (
                   color: "#3D4D5C80",
                 }}
               >
-                ({option?.[filterFields[1]].code})
+                (
+                {option?.[filterFields[1]].code
+                  ? option?.[filterFields[1]].code
+                  : option?.[filterFields[1]]}
+                )
               </Box>
             )}
             {(option?.isPrivate ||

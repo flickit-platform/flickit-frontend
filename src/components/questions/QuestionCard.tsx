@@ -523,8 +523,15 @@ export const QuestionTabsTemplate = (props: any) => {
     setIsExpanded(false);
   }, [key]);
 
+  const fallbackTab = () => {
+    if (counts.evidences) return "evidences";
+    if (counts.history) return "history";
+    if (counts.comments) return "comments";
+    return "evidences";
+  };
+
   return (
-    <TabContext value={value}>
+    <TabContext value={value ?? fallbackTab()}>
       <Box sx={{ px: { xs: 2, sm: 0 }, mt: 2, width: "100%" }}>
         <TabList
           onChange={handleChange}
