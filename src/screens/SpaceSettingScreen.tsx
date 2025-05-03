@@ -3,7 +3,7 @@ import SpaceSettingContainer from "@components/spaces/SpaceSettingContainer";
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const SpaceSettingScreen = () => {
-  useDocumentTitle(t("spaceSettingT") as string);
+  useDocumentTitle(t("spaceSetting") as string);
 
   return <SpaceSettingContainer />;
 };
