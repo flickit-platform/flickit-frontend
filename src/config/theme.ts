@@ -512,8 +512,8 @@ export const theme = createTheme({
               : "translate(-6px, 9px) scale(1)",
             "&.Mui-focused, &.MuiInputLabel-shrink": {
               transform: !is_farsi
-                ? "translate(12px, -9px) scale(0.75)"
-                : "translate(-12px, -9px) scale(0.75)",
+                ? "translate(12px, -9px) scale(0.71)"
+                : "translate(-12px, -9px) scale(0.71)",
               transformOrigin: !is_farsi ? "top left" : "top right",
             },
             maxWidth: "fit-content",

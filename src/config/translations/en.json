@@ -537,7 +537,7 @@
   "setAsDefault": "Set as default",
   "setTheseParameters": "Set these parameters",
   "settings": "Settings",
-  "shortTitle": "Short title",
+  "shortTitle": "Short Title",
   "shortTitleInfo": "A very short title (a few characters) for addressing the product under assessment in reports.",
   "showLessDetails": "Show less details",
   "showMore": "Show more",
@@ -927,6 +927,8 @@
   "dropUsNote": "Drop us a note!",
   "kitStructure": "Kit Structure",
   "createdBy": "Created by",
+  "assessmentAndReportLanguage": "Assessment & Report Language",
+  "onlyLangAvailable": "Only available in this language",
   "generateInsights": {
     "AIGeneratedNeedsApproval": "AI Generated (Needs Approval)",
     "AIGeneratedNeedsApprovalDescription": "This AI-generated insight may be inaccurate or misleading and needs approval from an assessor.",
