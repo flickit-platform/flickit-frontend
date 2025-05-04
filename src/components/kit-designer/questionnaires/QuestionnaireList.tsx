@@ -439,6 +439,7 @@ const ListOfItems = ({
                                         : ""
                                     }
                                     variant="semiBoldMedium"
+                                    showCopyIcon
                                   />
                                 )}
                               </Box>
@@ -550,6 +551,7 @@ const ListOfItems = ({
                                       : ""
                                   }
                                   variant="bodyMedium"
+                                  showCopyIcon
                                 />
                               )}
                               <Box

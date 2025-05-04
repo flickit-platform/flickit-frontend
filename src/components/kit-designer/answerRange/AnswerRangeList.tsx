@@ -327,6 +327,7 @@ const ListOfItems = ({
                           langCode ? item.translations?.[langCode]?.title : ""
                         }
                         variant="semiBoldMedium"
+                        showCopyIcon
                       />
                     )}
                     <Box sx={{ width: "60%", px: 3 }}>
