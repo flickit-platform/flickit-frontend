@@ -42,7 +42,7 @@ const SpacesList = (props: ISpaceListProps) => {
 
   return (
     <Box sx={{ overflowX: "hidden", pb: 1, px: "6px" }}>
-      <Box sx={{ minWidth: { xs: "320px", sm: "440px" } }}>
+      <Box >
         {data.map((item: any) => {
           return (
             <SpaceCard

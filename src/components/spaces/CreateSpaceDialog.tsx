@@ -157,7 +157,7 @@ const CreateSpaceDialog = (props: any) => {
       <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
         <Trans i18nKey={"selectYourSpaceType"} />
       </Typography>
-      <Box sx={{ py: 2, height: "86%" }}>
+      <Box sx={{ py: 2, height: "82%" }}>
         <Grid container spacing={3}>
           {[PremiumBox, BasicBox].map((list, idx) => (
             <Grid
@@ -431,7 +431,7 @@ const BoxType = ({
       }}
       onClick={handleSelect}
     >
-      <Box sx={{ mb: "13px" }}>
+      <Box sx={{ mb: { xs: 0.1, sm: 1 } }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
@@ -452,7 +452,7 @@ const BoxType = ({
           sx={{
             ...theme.typography.labelSmall,
             color: "#6C8093",
-            mt: 1,
+            mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
           }}
         >
@@ -464,7 +464,12 @@ const BoxType = ({
         {bullets.map((text: string, index: number) => (
           <Box
             key={UniqueId()}
-            sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 0.1, sm: 1 },
+              mb: { xs: 0.1, sm: 1 },
+            }}
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography
