@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -70,7 +70,13 @@ const RenderText = ({
       {text}{" "}
       {isHovered && showCopyIcon && (
         <Tooltip title={"copy"}>
-          <IconButton size="small">
+          <IconButton
+            size="small"
+            sx={{
+              float: [theme.direction == "rtl" ? "left" : "right"],
+              marginInlineStart: "10px",
+            }}
+          >
             <ContentCopyIcon sx={{ fontSize: "14px" }} />
           </IconButton>
         </Tooltip>
