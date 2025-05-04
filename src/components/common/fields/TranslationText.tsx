@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
