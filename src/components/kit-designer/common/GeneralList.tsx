@@ -226,7 +226,7 @@ const ListOfItems = ({
                                   : ""
                               }
                               variant="semiBoldMedium"
-                             showCopyIcon={true}
+                             showCopyIcon
                             />
                           )}
                         </Box>
@@ -338,7 +338,7 @@ const ListOfItems = ({
                                   : ""
                               }
                               variant="bodyMedium"
-                              showCopyIcon={true}
+                              showCopyIcon
                             />
                           )}
                         </Box>

@@ -77,6 +77,7 @@ const QuestionContain = (props: any) => {
           title={question.title}
           translation={langCode ? question.translations?.[langCode]?.title : ""}
           variant="semiBoldMedium"
+          showCopyIcon
         />{" "}
         <Box
           sx={{

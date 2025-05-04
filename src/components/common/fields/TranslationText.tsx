@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { useState } from "react";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -15,21 +15,21 @@ interface TitleWithTranslationProps {
 }
 
 const RenderText = ({
-                      text,
-                      isFarsi,
-                      color,
-                      variantOverride,
-                      variant,
-                      multiline,
-                      showCopyIcon
-                    }: {
+  text,
+  isFarsi,
+  color,
+  variantOverride,
+  variant,
+  multiline,
+  showCopyIcon,
+}: {
   text: string;
   isFarsi: boolean;
   color?: string;
   variantOverride?: any;
-  variant?: string,
-  multiline?: boolean,
-  showCopyIcon?: boolean
+  variant?: string;
+  multiline?: boolean;
+  showCopyIcon?: boolean;
 }) => {
   const baseProps = {
     component: "div" as const,
@@ -42,33 +42,37 @@ const RenderText = ({
       width: "fit-content",
     },
   };
-  const [isHovered,setIsHovered] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseOver = () => {
-    setIsHovered(true)
+    setIsHovered(true);
   };
   const handelMouseOut = () => {
-    setIsHovered(false)
-  };
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast("copied",{type: 'success'})
-    });
+    setIsHovered(false);
   };
 
   return multiline ? (
     <Typography {...baseProps} dangerouslySetInnerHTML={{ __html: text }} />
   ) : (
     <Typography
-      onClick={handleCopyClick}
+      onClick={(e) => {
+        if (showCopyIcon) {
+          e.stopPropagation();
+          navigator.clipboard.writeText(text).then(() => {
+            toast("copied", { type: "success" });
+          });
+        }
+      }}
       onMouseOver={handleMouseOver}
       onMouseOut={handelMouseOut}
       {...baseProps}
     >
       {text}{" "}
       {isHovered && showCopyIcon && (
-        <Tooltip title={"copy"} >
-          <ContentCopyIcon sx={{ float:[theme.direction == "rtl" ? "left" :  "right"], marginInlineStart: "10px" }} fontSize={"small"} />
+        <Tooltip title={"copy"}>
+          <IconButton size="small">
+            <ContentCopyIcon sx={{ fontSize: "14px" }} />
+          </IconButton>
         </Tooltip>
       )}
     </Typography>
@@ -78,7 +82,7 @@ const RenderText = ({
 const TitleWithTranslation = ({
   title,
   translation,
- ...rest
+  ...rest
 }: TitleWithTranslationProps) => {
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
@@ -87,10 +91,16 @@ const TitleWithTranslation = ({
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <RenderText text={title} isFarsi={isFarsiTitle}  {...rest} />
-      {translation &&
-        <RenderText text={translation} isFarsi={isFarsiTranslation} color={"#6C8093"} variantOverride={"body2"}
-            {...rest} />}
+      <RenderText text={title} isFarsi={isFarsiTitle} {...rest} />
+      {translation && (
+        <RenderText
+          text={translation}
+          isFarsi={isFarsiTranslation}
+          color={"#6C8093"}
+          variantOverride={"body2"}
+          {...rest}
+        />
+      )}
     </Box>
   );
 };

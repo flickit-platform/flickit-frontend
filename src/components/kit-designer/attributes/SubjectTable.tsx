@@ -314,7 +314,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                               langCode ? attribute.translations?.[langCode]?.title : ""
                                             }
                                             variant="semiBoldMedium"
-                                            showCopyIcon={true}
+                                            showCopyIcon
                                           />
                                         </TableCell>
                                         <TableCell
@@ -336,7 +336,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                               langCode ? attribute.translations?.[langCode]?.description : ""
                                             }
                                             variant="semiBoldMedium"
-                                            showCopyIcon={true}
+                                            showCopyIcon
                                           />
                                         </TableCell>
                                         <TableCell  sx={{alignContent: "center"}} data-testid="display-attribute-weight">
