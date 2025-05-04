@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { farsiFontFamily, secondaryFontFamily, theme } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
@@ -26,6 +26,8 @@ const AssessmentKitsStoreCard = (props: any) => {
     small,
   } = props;
 
+  const navigate = useNavigate();
+
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -42,13 +44,13 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   return (
     <Box
-      to={small?`./../${id}/`:`${id}/`}
+      to={small ? `./../${id}/` : `${id}/`}
       component={Link}
       sx={{
         ...styles.boxStyle,
         borderRadius: 2,
         height: "100%",
-        mb: small ? "8px !important" : {xs: "12px", sm: "40px  !important" } ,
+        mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
         borderLeft: `4px solid ${
           isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
         }`,
@@ -58,11 +60,11 @@ const AssessmentKitsStoreCard = (props: any) => {
         cursor: "pointer",
         textDecoration: "unset",
         color: "inherit",
-        p: small ? "24px !important" : { xs: "24px", sm: "32px" },
+        p: small ? "12px 24px !important" : { xs: "24px", sm: "32px" },
       }}
     >
       <Box>
-        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box
             mb={small ? 0.5 : ""}
             sx={{
@@ -70,7 +72,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "flex-start",
-              gap: 1
+              gap: 1,
             }}
           >
             <Typography
@@ -88,7 +90,17 @@ const AssessmentKitsStoreCard = (props: any) => {
             >
               {title}
             </Typography>
-            <Box sx={{ ...styles.centerV }} gap={small ? 0.5 : 1}>
+            <Box
+              sx={{
+                ...styles.centerV,
+              }}
+              gap={small ? 0.5 : 1}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(`/user/expert-groups/${expertGroup.id}`);
+              }}
+            >
               <Avatar
                 {...stringAvatar(expertGroup.title?.toUpperCase())}
                 src={expertGroup.picture}
@@ -99,8 +111,6 @@ const AssessmentKitsStoreCard = (props: any) => {
                 }}
               />
               <Typography
-                to={`/user/expert-groups/${expertGroup.id}`}
-                component={Link}
                 sx={{
                   ...(small
                     ? theme.typography.labelSmall
@@ -110,18 +120,22 @@ const AssessmentKitsStoreCard = (props: any) => {
                   fontFamily: languageDetector(expertGroup.title)
                     ? farsiFontFamily
                     : secondaryFontFamily,
+                  cursor: "pointer",
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
                 }}
               >
-              <span
-                style={{
-                  fontFamily:
-                    i18next.language === "fa"
-                      ? farsiFontFamily
-                      : secondaryFontFamily,
-                }}
-              >
-                <Trans i18nKey="designedBy" />
-              </span>{" "}
+                <span
+                  style={{
+                    fontFamily:
+                      i18next.language === "fa"
+                        ? farsiFontFamily
+                        : secondaryFontFamily,
+                  }}
+                >
+                  <Trans i18nKey="designedBy" />
+                </span>{" "}
                 {expertGroup.title}
               </Typography>
             </Box>
@@ -133,7 +147,6 @@ const AssessmentKitsStoreCard = (props: any) => {
               sx={{
                 background: "#FCE8EF",
                 color: "#B8144B",
-                height: {xs: "40px"},
                 ...(small
                   ? theme.typography.semiBoldMedium
                   : theme.typography.semiBoldLarge),
@@ -141,7 +154,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             />
           )}
         </Box>
-        <Box mt={small ? 1.5 : 1}>
+        <Box mt={1}>
           <Typography
             component="div"
             textAlign="justify"
@@ -152,7 +165,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               fontFamily: languageDetector(summary)
                 ? farsiFontFamily
                 : secondaryFontFamily,
-              mt: {xs: "8px", sm: "32px"}
+              mt: { xs: "8px", sm: small ? "8px" : "32px" },
             }}
             dangerouslySetInnerHTML={{
               __html: `${truncatedSummary}${isSummaryTruncated}`,
@@ -163,7 +176,7 @@ const AssessmentKitsStoreCard = (props: any) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection:{xs: "column", sm: "row" },
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
           gap: small ? 1 : 2,
@@ -173,7 +186,7 @@ const AssessmentKitsStoreCard = (props: any) => {
         <Box
           sx={{
             display: "flex",
-            width: {xs: "100%",sm: "unset" },
+            width: { xs: "100%", sm: "unset" },
             justifyContent: "center",
             gap: small ? "4px" : { xs: "48px", md: "8px", lg: "48px" },
             bgcolor: "#EDF0F2",
@@ -195,8 +208,8 @@ const AssessmentKitsStoreCard = (props: any) => {
                   ? theme.palette.secondary.main
                   : theme.palette.primary.main
               }
-              width={small ? "1rem" : undefined}
-              height={small ? "1rem" : undefined}
+              width={small ? "16px" : undefined}
+              height={small ? "16px" : undefined}
             />
             <Typography variant={small ? "bodySmall" : "titleSmall"}>
               <Trans i18nKey="free" />
@@ -228,7 +241,7 @@ const AssessmentKitsStoreCard = (props: any) => {
           variant="contained"
           size={small ? "small" : "large"}
           sx={{
-            width: {xs: "100%",sm: "unset" },
+            width: { xs: "100%", sm: "unset" },
             backgroundColor: isPrivate
               ? theme.palette.secondary.main
               : theme.palette.primary.main,

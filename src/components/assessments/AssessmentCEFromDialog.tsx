@@ -222,11 +222,18 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               {" "}
               <AutocompleteAsyncField
                 name="language"
-                label={<Trans i18nKey="language" />}
+                label={<Trans i18nKey="assessmentAndReportLanguage" />}
                 options={languages}
                 data-cy="language"
-                disabled={languages.length === 1 || languages.length === 0}
+                disabled={languages.length === 1}
                 required
+                helperText={
+                  languages.length === 1 ? (
+                    <Trans i18nKey="onlyLangAvailable" />
+                  ) : (
+                    ""
+                  )
+                }
               />
             </Grid>
           </Grid>
@@ -306,6 +313,7 @@ const AssessmentKitField = ({
       disabled={!!staticData || !!defaultValue}
       label={<Trans i18nKey="assessmentKit" />}
       data-cy="assessment_kit"
+      filterFields={["title", "mainLanguage"]}
     />
   );
 };

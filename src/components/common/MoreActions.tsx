@@ -60,7 +60,6 @@ const MoreActions = (props: IMoreActionsProps) => {
       {!hideInnerIconButton && (
         <IconButton
           data-cy="more-action-btn"
-          sx={IconButtonProps}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

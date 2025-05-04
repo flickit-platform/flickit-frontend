@@ -11,17 +11,18 @@ import { t } from "i18next";
 import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
-import MLink from "@mui/material/Link";
+import React from "react";
 
 interface IStepperSection {
-  setActiveStep: any;
+  setActiveStep: (value: React.SetStateAction<number>) => void;
   activeStep: number;
   stepData: { category: string; metrics: { [p: string]: any } }[];
 }
+
 interface IStepBox {
   category: string;
   metrics: { [p: string]: any };
-  setActiveStep: any;
+  setActiveStep: (value: React.SetStateAction<number>) => void;
   activeStep: number;
 }
 
@@ -29,59 +30,40 @@ const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
 
   return (
-    <Box
-      sx={{
-        ...styles.boxStyle,
-      }}
-    >
-      <Stepper
-        sx={{ width: "80%", mx: "auto", mb: "30px" }}
-        activeStep={activeStep}
-      >
-        {stepData.map((label: any, index: number) => {
-          const stepProps: { completed?: boolean } = {};
-          const labelProps: {
-            optional?: React.ReactNode;
-          } = {};
-          return (
-            <Step key={uniqueId()} {...stepProps}>
-              <StepLabel
-                StepIconProps={{ style: { fontSize: "2rem" } }}
-                sx={{
-                  color: "red",
-                  ".MuiSvgIcon-root.Mui-active": {
-                    padding: "0",
-                    borderRadius: "50%",
-                    border: "1px dashed #2466A8",
-                    marginY: "-4px",
-                    color: "#EAF2FB",
-                  },
-                  "& .Mui-active .MuiStepIcon-text": {
-                    fill: "#2466A8",
-                  },
-                  "& .Mui-disabled .MuiStepIcon-text": {
-                    fill: "#fff",
-                  },
-                }}
-                {...labelProps}
-              />
-            </Step>
-          );
-        })}
+    <Box sx={{ ...styles.boxStyle }}>
+      <Stepper sx={{ width: "80%", mx: "auto", mb: "30px" }} activeStep={activeStep}>
+        {stepData.map((label: any) => (
+          <Step key={uniqueId()}>
+            <StepLabel
+              StepIconProps={{ style: { fontSize: "2rem" } }}
+              sx={{
+                ".MuiSvgIcon-root.Mui-active": {
+                  padding: "0",
+                  borderRadius: "50%",
+                  border: "1px dashed #2466A8",
+                  marginY: "-4px",
+                  color: "#EAF2FB",
+                },
+                "& .Mui-active .MuiStepIcon-text": {
+                  fill: "#2466A8",
+                },
+                "& .Mui-disabled .MuiStepIcon-text": {
+                  fill: "#fff",
+                },
+              }}
+            />
+          </Step>
+        ))}
       </Stepper>
       <Grid container columns={12}>
-        {stepData.map(
-          (item: { category: string; metrics: any }, index: number) => {
-            return (
-              <StepBox
-                key={uniqueId()}
-                {...item}
-                activeStep={activeStep}
-                setActiveStep={setActiveStep}
-              />
-            );
-          },
-        )}
+        {stepData.map((item) => (
+          <StepBox
+            key={uniqueId()}
+            {...item}
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+          />
+        ))}
       </Grid>
     </Box>
   );
@@ -89,69 +71,73 @@ const StepperSection = (props: IStepperSection) => {
 
 const StepBox = (props: IStepBox) => {
   const { category, metrics, setActiveStep, activeStep } = props;
+  const [localStep, setLocalStep] = React.useState(activeStep);
 
-  const questions = category == "questions";
-  const insights = category == "insights";
-  const advices = category == "advices";
-  const report = category == "report";
+  const questions = category === "questions";
+  const insights = category === "insights";
+  const advices = category === "advices";
+  const report = category === "report";
+
+  React.useEffect(() => {
+    setLocalStep(activeStep);
+  }, [activeStep]);
 
   const calcOfIssues = () => {
     if (questions) {
       return Object.entries(metrics)
-        .filter(
-          ([key]) => key !== "total" && key !== "answered" && metrics[key],
-        )
+        .filter(([key]) => key !== "total" && key !== "answered" && metrics[key])
         .reduce((acc, [_, value]) => acc + value, 0);
-    } else if (insights) {
+    }
+    if (insights) {
       return Object.entries(metrics)
-        .filter(([key]) => key != "expected" && metrics[key])
+        .filter(([key]) => key !== "expected" && metrics[key])
         .reduce((acc, [_, value]) => acc + value, 0);
-    } else if (advices) {
+    }
+    if (advices) {
       return Object.keys(metrics).filter((item) => item).length;
-    } else if (report) {
+    }
+    if (report) {
       return Object.entries(metrics)
         .filter(
           ([key]) =>
-            key != "totalMetadata" && key != "providedMetadata" && metrics[key],
+            key !== "totalMetadata" && key !== "providedMetadata" && metrics[key]
         )
         .reduce((acc, [_, value]) => acc + value, 0);
     }
+    return 0;
   };
 
-  let content;
-
-  const issuesTag = (text: string) => {
-    return (
-      <MLink
-        sx={{ textDecoration: "none" }}
-        onClick={(e) => e.stopPropagation()}
-        href={`#${text}`}
-      >
-        <Chip
-          label={
-            <Box sx={{ ...styles.centerVH, gap: 1 }}>
-              <Typography
-                sx={{ ...theme.typography.labelMedium }}
-              >{`  ${calcOfIssues()}  `}</Typography>
-              <Typography sx={{ ...theme.typography.labelSmall }}>
-                {t(
-                  (calcOfIssues() ?? 0) > 1 ? "issues" : "issue",
-                ).toUpperCase()}
-              </Typography>
-            </Box>
-          }
-          size="small"
-          sx={{
-            ...theme.typography.labelMedium,
-            color: "#B8144B",
-            background: "#FCE8EF",
-            direction: theme.direction,
-            cursor: "pointer",
-          }}
-        />
-      </MLink>
-    );
-  };
+  const issuesTag = (text: string) => (
+    <Box
+      sx={{ textDecoration: "none", cursor: "pointer" }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        document.querySelector(`#${text}`)?.scrollIntoView({ behavior: "smooth" });
+      }}
+    >
+      <Chip
+        label={
+          <Box sx={{ ...styles.centerVH, gap: 1 }}>
+            <Typography sx={{ ...theme.typography.labelMedium }}>
+              {`  ${calcOfIssues()}  `}
+            </Typography>
+            <Typography sx={{ ...theme.typography.labelSmall }}>
+              {t((calcOfIssues() ?? 0) > 1 ? "issues" : "issue").toUpperCase()}
+            </Typography>
+          </Box>
+        }
+        size="small"
+        sx={{
+          ...theme.typography.labelMedium,
+          color: "#B8144B",
+          background: "#FCE8EF",
+          direction: theme.direction,
+          cursor: "pointer",
+        }}
+      />
+    </Box>
+  );
 
   const currentTag = (
     <Chip
@@ -164,6 +150,7 @@ const StepBox = (props: IStepBox) => {
       }}
     />
   );
+
   const completedTag = (
     <Chip
       label={t("completed") + "!"}
@@ -176,57 +163,38 @@ const StepBox = (props: IStepBox) => {
     />
   );
 
+  let content = null;
+  let completed = false;
+
   if (questions) {
-    const {
-      answered,
-      answeredWithLowConfidence,
-      withoutEvidence,
-      unresolvedComments,
-      total,
-      unanswered,
-    } = metrics;
-    const hasIssues =
-      answeredWithLowConfidence ||
-      withoutEvidence ||
-      unresolvedComments ||
-      unanswered;
-    const completed = answered == total;
-    if (completed && activeStep == 0) {
-      setActiveStep((prev: number) => prev + 1);
-    }
+    const { answered, total } = metrics;
+    completed = answered === total;
+    const hasIssues = calcOfIssues() > 0;
+
+    React.useEffect(() => {
+      if (completed && localStep === 0) {
+        setActiveStep(1);
+      }
+    }, [completed, localStep, setActiveStep]);
+
     content = (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "calc(100% - 60px)",
-        }}
-      >
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-evenly",
-          }}
-        >
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: "calc(100% - 60px)",
+      }}>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "space-evenly" }}>
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${answered} / ${total} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {answered == total ? completedTag : currentTag}
-            {hasIssues ? issuesTag("questions") : null}
+            {completed ? completedTag : localStep === 0 && currentTag}
+            {hasIssues && issuesTag("questions")}
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "4px",
-          }}
-        >
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
           <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
             {Math.floor((100 * answered) / total)}%
           </Typography>
@@ -240,40 +208,35 @@ const StepBox = (props: IStepBox) => {
 
   if (insights) {
     const { unapproved, expired, notGenerated, expected } = metrics;
-    const hasIssues = unapproved || expired || notGenerated;
     const result = expected - notGenerated;
-    const completed = activeStep >= 1 && expected == result;
+    completed = localStep >= 1 && expected === result;
+    const hasIssues = unapproved || expired || notGenerated;
 
-    if (completed && activeStep == 1) {
-      setActiveStep((prev: number) => prev + 1);
-    }
+    React.useEffect(() => {
+      if (completed && localStep === 1) {
+        setActiveStep(2);
+      }
+    }, [completed, localStep, setActiveStep]);
 
     content = (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "column",
-          width: "100%",
-          height: "calc(100% - 60px)",
-        }}
-      >
+      <Box sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        width: "100%",
+        height: "calc(100% - 60px)",
+      }}>
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
-            {!completed && activeStep == 1 && currentTag}
-            {hasIssues ? issuesTag("insights") : null}
+            {!completed && localStep === 1 && currentTag}
+            {hasIssues && issuesTag("insights")}
           </Box>
         </Box>
-        <Box
-          sx={{
-            ...styles.centerVH,
-            gap: "4px",
-          }}
-        >
+        <Box sx={{ ...styles.centerVH, gap: "4px" }}>
           <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
             {Math.floor((100 * result) / expected)}%
           </Typography>
@@ -287,32 +250,32 @@ const StepBox = (props: IStepBox) => {
 
   if (advices) {
     const { total } = metrics;
-    const completed = activeStep >= 2 && total != 0;
-    const hasIssues = total == 0;
+    completed = localStep >= 2 && total !== 0;
+    const hasIssues = total === 0;
 
-    if (completed && activeStep == 2) {
-      setActiveStep((prev: number) => prev + 1);
-    }
+    React.useEffect(() => {
+      if (completed && localStep === 2) {
+        setActiveStep(3);
+      }
+    }, [completed, localStep, setActiveStep]);
 
     content = (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "column",
-          width: "100%",
-          height: "calc(100% - 60px)",
-        }}
-      >
+      <Box sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        width: "100%",
+        height: "calc(100% - 60px)",
+      }}>
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Typography sx={{ ...theme.typography.headlineLarge }}>
             {total}
           </Typography>
-          {((completed && activeStep >= 2) || hasIssues) && (
+          {(completed || hasIssues) && (
             <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-              {completed && activeStep >= 2 && completedTag}
-              {!completed && activeStep == 2 && currentTag}
-              {hasIssues && !completed ? issuesTag("advices") : null}
+              {completed && completedTag}
+              {!completed && localStep === 2 && currentTag}
+              {hasIssues && !completed && issuesTag("advices")}
             </Box>
           )}
         </Box>
@@ -321,43 +284,32 @@ const StepBox = (props: IStepBox) => {
   }
 
   if (report) {
-    const { unprovidedMetadata, unpublished, providedMetadata, totalMetadata } =
-      metrics;
-    const completed =
-      activeStep >= 3 &&
-      providedMetadata == totalMetadata &&
-      unpublished === false;
-
+    const { unprovidedMetadata, unpublished, providedMetadata, totalMetadata } = metrics;
+    completed = localStep >= 3 && providedMetadata === totalMetadata && !unpublished;
     const hasIssues = unprovidedMetadata >= 1 || unpublished;
 
-    if (completed && activeStep == 3) {
-      setActiveStep((prev: number) => prev + 1);
-    }
+    React.useEffect(() => {
+      if (completed && localStep === 3) {
+        setActiveStep(4);
+      }
+    }, [completed, localStep, setActiveStep]);
 
     content = (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "calc(100% - 60px)",
-        }}
-      >
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-evenly",
-          }}
-        >
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: "calc(100% - 60px)",
+      }}>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "space-evenly" }}>
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${providedMetadata} / ${totalMetadata} `}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-            {completed && activeStep >= 3 && completedTag}
-            {!completed && activeStep == 3 && currentTag}
-            {hasIssues ? issuesTag("report") : null}
+            {completed && completedTag}
+            {!completed && localStep === 3 && currentTag}
+            {hasIssues && issuesTag("report")}
           </Box>
         </Box>
       </Box>
@@ -369,7 +321,7 @@ const StepBox = (props: IStepBox) => {
       component={Link}
       to={
         questions
-          ? `../questionnaires/`
+          ? "../questionnaires/"
           : insights
             ? "../insights"
             : advices
@@ -405,22 +357,22 @@ const StepBox = (props: IStepBox) => {
       >
         {questions && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"answeringQuestionsTitle"} />
+            <Trans i18nKey="answeringQuestionsTitle" />
           </Typography>
         )}
         {insights && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"submittingInsights"} />
+            <Trans i18nKey="submittingInsights" />
           </Typography>
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"providingAdvice"} />
+            <Trans i18nKey="providingAdvice" />
           </Typography>
         )}
         {report && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey={"preparingReport"} />
+            <Trans i18nKey="preparingReport" />
           </Typography>
         )}
       </Typography>
@@ -428,4 +380,5 @@ const StepBox = (props: IStepBox) => {
     </Grid>
   );
 };
+
 export default StepperSection;
