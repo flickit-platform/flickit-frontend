@@ -153,7 +153,6 @@ const AssessmentExportContainer = () => {
               m="auto"
               pb={3}
               sx={{
-                px: { xl: 20, lg: 6, xs: 2, sm: 3 },
                 textAlign: rtlLanguage ? "right" : "left",
                 ...styles.rtlStyle(rtlLanguage),
               }}
