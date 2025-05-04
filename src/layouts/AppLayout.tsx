@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoading";
 import Navbar from "@common/Navbar";
 import { styles } from "@styles";
+import WrapperApp from "@utils/wrapperApp";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
   const { children } = props;
@@ -10,11 +11,6 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
     <Box sx={{ overflowX: "clip", minHeight: "100vh" }}>
       <Navbar />
       <Box
-        sx={{
-          p: !location.pathname.startsWith("/assessment-kits")
-            ? { xs: 1, sm: 1, md: 4 }
-            : "0",
-        }}
         m="auto"
       >
         <Suspense
@@ -24,7 +20,9 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
             </Box>
           }
         >
-          {children}
+          <WrapperApp>
+            {children}
+          </WrapperApp>
         </Suspense>
       </Box>
     </Box>
