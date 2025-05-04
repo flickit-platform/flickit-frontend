@@ -631,6 +631,16 @@ export const theme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          fontSize: "16px",
+        },
+        root: {
+          fontSize: '16px',
+        },
+      },
+    },
     //@ts-expect-error
     MuiTabPanel: {
       styleOverrides: {
