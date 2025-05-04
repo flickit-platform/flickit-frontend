@@ -356,25 +356,7 @@ export const theme = createTheme({
           font-display: swap;
           font-size: ${fontSize[4]};
         }
-        @media (max-width: 1600px) {
-          html {
-            font-size: ${fontSize[3]};
-          }
-        }
-        @media (max-width: 1280px) {
-          html {
-            font-size: ${fontSize[2]};
-          }
-        }
-        @media (max-width: 960px) {
-          html {
-            font-size: ${fontSize[1]};
-          }
-        }
         @media (max-width: 600px) {
-          html {
-            font-size: ${fontSize[0]};
-          }
           .css-1wscs19 {
             width: 340px !important
           }

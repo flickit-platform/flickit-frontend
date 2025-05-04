@@ -23,7 +23,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
           p: !checkLink("/assessment-kits")
             ? { xs: 1, sm: 1, md: 4 }
             : "0",
-          px: checkLink(`/assessment-kits/${assessmentKitId}`) ?  0 :  { xl: 30, lg: 12, xs: 2, sm: 3 }
+          px: checkLink(`/assessment-kits/${assessmentKitId}`) ?  0 :  { xl: 30, lg: 12, xs: 1, sm: 3 }
         }}
         m="auto"
       >
