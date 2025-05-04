@@ -14,6 +14,30 @@ import {
   ASSESSMENT_ACTIONS_TYPE,
   useAssessmentDispatch,
 } from "@/providers/AssessmentProvider";
+const tabListTitle = [
+  { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
+  {
+    label: "questions",
+    address: "questionnaires",
+    permission: "viewAssessmentQuestionnaireList",
+  },
+  {
+    label: "insights",
+    address: "insights",
+    permission: "viewAssessmentInsights",
+  },
+  { label: "advice", address: "advice", permission: "createAdvice" },
+  {
+    label: "reportTitle",
+    address: "report",
+    permission: "manageReportMetadata",
+  },
+  {
+    label: "settings",
+    address: "settings",
+    permission: "grantUserAssessmentRole",
+  },
+];
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
@@ -21,30 +45,7 @@ const MainTabs = (props: any) => {
   const { onTabChange, selectedTab } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
-  const tabListTitle = [
-    { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
-    {
-      label: "questions",
-      address: "questionnaires",
-      permission: "viewAssessmentQuestionnaireList",
-    },
-    {
-      label: "insights",
-      address: "insights",
-      permission: "viewAssessmentInsights",
-    },
-    { label: "advice", address: "advice", permission: "createAdvice" },
-    {
-      label: "reportTitle",
-      address: "report",
-      permission: "manageReportMetadata",
-    },
-    {
-      label: "settings",
-      address: "settings",
-      permission: "grantUserAssessmentRole",
-    },
-  ];
+
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
 
   const fetchAssessmentPermissions = useQuery({
