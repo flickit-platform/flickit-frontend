@@ -12,6 +12,7 @@ import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
+import { MobileScreen } from "@utils/mobileScreen";
 
 interface IStepperSection {
   setActiveStep: (value: React.SetStateAction<number>) => void;
@@ -30,10 +31,15 @@ const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
 
   return (
-    <Box sx={{ ...styles.boxStyle }}>
+    <Box sx={{ ...styles.boxStyle, display: "flex", flexDirection: {xs: "row", md: "column"} }}>
       <Stepper
-        sx={{ width: "80%", mx: "auto", mb: "30px" }}
+        sx={{ width: {md: "80%"}, mx: "auto", mt: {xs: 8, md: "unset"}, mb: {xs: 8, md : "30px"},
+          "& .MuiStepConnector-line": {
+            height: "100%"
+          }
+        }}
         activeStep={activeStep}
+        orientation={MobileScreen("md") ? "vertical" : "horizontal" }
       >
         {stepData.map((label: any) => (
           <Step key={uniqueId()}>
