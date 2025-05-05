@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
@@ -13,7 +12,6 @@ import { styles } from "@styles";
 import i18next, { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
 import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
-import { SvgIconProps } from "@mui/material";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -26,7 +24,7 @@ interface IlistOfItems {
 }
 
 const AssessmentKitAside = (props: any) => {
-  const { id, title, like, metadata, languages } = props;
+  const { id, title, like, languages } = props;
   const dialogProps = useDialog();
   const contactusDialogProps = useDialog();
   const { assessmentKitId } = useParams();
