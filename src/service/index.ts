@@ -33,6 +33,9 @@ export const createService = (
 
   axios.interceptors.request.use(async (req: any) => {
     const accessToken = keycloakService.getToken();
+    if(!accessToken){
+      return req
+    }
     const hasTenantInUrl = req.url.includes("tenant");
 
     const currentLocale = getCurrentLocale();

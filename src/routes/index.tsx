@@ -71,7 +71,11 @@ const Routes = () => {
       <RrdRoutes>
         {/* Handles redirecting users to where they wanted to go before login  */}
         <Route path="/" element={<Redirect />} />
-        <Route path="/assessment-kits" element={<AssessmentKitsScreen />} />
+        <Route path="/assessment-kits" element={
+          <AppLayout>
+            <AssessmentKitsScreen />
+          </AppLayout>
+          } />
         <Route
           element={
             <AppLayout>

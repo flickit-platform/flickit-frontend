@@ -24,8 +24,8 @@ export const info = {
   },
 
   getAll(args: any, config: AxiosRequestConfig<any> | undefined = {}) {
-    const { langs, isPrivate } = args ?? {};
-    return axios.get(`/api/v2/assessment-kits/`, {
+    const { langs, isPrivate, isPublic= "" } = args ?? {};
+    return axios.get(`/api/v2${isPublic}/assessment-kits/`, {
       params: { isPrivate, langs },
       ...config,
     });
