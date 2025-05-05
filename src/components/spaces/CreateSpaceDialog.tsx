@@ -158,7 +158,7 @@ const CreateSpaceDialog = (props: any) => {
         <Trans i18nKey={"selectYourSpaceType"} />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
-        <Grid container spacing={3}>
+        <Grid container spacing={{ xs: 5,sm: 10, md: 3 }}>
           {[PremiumBox, BasicBox].map((list, idx) => (
             <Grid
               item
@@ -509,7 +509,7 @@ const BoxType = ({
             justifyContent: "center",
             alignItems: "center",
             gap: "8px",
-            bottom: "-54px",
+            bottom:{xs: "-45px", md: "-54px"},
           }}
         >
           <InfoOutlinedIcon fontSize="small" />

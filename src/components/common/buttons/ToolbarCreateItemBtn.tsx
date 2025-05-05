@@ -40,6 +40,7 @@ export const ToolbarCreateItemBtn = (props: IToolbarCreateItemBtnProps) => {
         "&:hover": {
           animation: `${animations.noPomp}`,
         },
+        ...rest.sx
       }}
     >
       {typeof text === "string" ? <Trans i18nKey={text} /> : text}
