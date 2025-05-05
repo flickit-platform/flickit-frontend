@@ -133,7 +133,7 @@ const AdviceListNewForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -146,7 +146,7 @@ const AdviceListNewForm = ({
         sx={{
           ...styles.centerVH,
           justifyContent: "space-evenly",
-          background: "#F3F5F6",
+          background: theme.palette.surface.container,
           width: "100%",
         }}
         borderRadius={2}
@@ -176,7 +176,7 @@ const AdviceListNewForm = ({
                   "& .MuiFormLabel-root": {
                     fontSize: 14,
                   },
-                  background: "#fff",
+                  background: theme.palette.surface.containerLowest,
                 }}
               />
               {errormessage?.title && (
@@ -214,7 +214,7 @@ const AdviceListNewForm = ({
                       onChange={(e) => handleInputChange(e)}
                       sx={{
                         fontSize: "14px",
-                        background: "#fff",
+                        background: theme.palette.surface.containerLowest,
                         px: "0px",
                         height: "36px",
                         "& .MuiSelect-select": {
@@ -227,7 +227,7 @@ const AdviceListNewForm = ({
                         <Typography
                           sx={{
                             ...theme.typography.labelMedium,
-                            color: "#2466A8",
+                            color: theme.palette.primary.main,
                             display: "flex",
                             alignItems: "center",
                             height: "24px",

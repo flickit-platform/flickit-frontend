@@ -5,6 +5,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import { Trans } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { theme } from "@/config/theme";
 
 const SelectLanguage = (props: any) => {
   const { mainLanguage, handleChange, languages, editable } = props;
@@ -27,7 +28,7 @@ const SelectLanguage = (props: any) => {
         onChange={(e) => handleChange(e)}
         sx={{
           fontSize: "14px",
-          background: "#fff",
+          background: theme.palette.surface.containerLowest,
           px: "0px",
           height: "40px",
           "& .MuiSelect-select": {

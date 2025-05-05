@@ -285,7 +285,10 @@ const AutocompleteBaseField = (
     },
     color,
     label: (
-      <Typography sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}>
+      <Typography
+        variant="semiBoldSmall"
+        color={theme.palette.surface.containerLowest}
+      >
         {label}
       </Typography>
     ),
@@ -448,7 +451,8 @@ const AutocompleteBaseField = (
                 color={option?.isPrivate ? "secondary" : "default"}
                 label={
                   <Typography
-                    sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
+                    variant="semiBoldSmall"
+                    color={theme.palette.surface.containerLowest}
                   >
                     {option?.isPrivate ? (
                       <Trans i18nKey="privateTitle" />

@@ -107,7 +107,10 @@ const AssessmentKitAside = (props: any) => {
             </Button>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
-                sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
+                sx={{
+                  ...theme.typography.bodySmall,
+                  color: theme.palette.surface.contrastText,
+                }}
               >
                 <Trans i18nKey={"haveAnyQuestions"} />
               </Typography>
@@ -131,7 +134,7 @@ const AssessmentKitAside = (props: any) => {
               ...theme.typography.bodySmall,
               ...styles.centerVH,
               gap: 1,
-              color: "#2B333B",
+              color: theme.palette.surface.contrastText,
               mt: "8px",
               textAlign: "center",
             }}
@@ -150,7 +153,7 @@ const AssessmentKitAside = (props: any) => {
                 "&:hover": {
                   background: likeStatus
                     ? theme.palette.primary.light
-                    : "#EAF2FB",
+                    : theme.palette.primary.bg,
                 },
               }}
             >
@@ -174,14 +177,17 @@ const InfoBox = (props: any) => {
       {icon}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
         <Typography
-          sx={{ ...theme.typography.semiBoldSmall, color: "#6C8093" }}
+          sx={{
+            ...theme.typography.semiBoldSmall,
+            color: theme.palette.surface.contrastTextVariant,
+          }}
         >
           {t(`${title}`)}
         </Typography>
         <Typography
+          color="surface"
+          variant="bodyLarge"
           sx={{
-            ...theme.typography.bodyLarge,
-            color: "#2B333B",
             textAlign: "justify",
           }}
         >

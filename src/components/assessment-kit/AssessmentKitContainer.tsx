@@ -138,11 +138,7 @@ const AssessmentKit = (props: any) => {
                   />
                 </Grid>
 
-                <Typography
-                  sx={{ color: "#2B333B" }}
-                  variant="titleLarge"
-                  my={4}
-                >
+                <Typography color="surface" variant="titleLarge" my={4}>
                   <Trans i18nKey={"exploreOtherKits"} />
                 </Typography>
                 <Grid item xs={12} md={12} lg={12}>
@@ -226,9 +222,9 @@ const AssessmentKitBanner = (props: any) => {
           <Typography
             component={Link}
             to={`/user/expert-groups/${expertGroupId}`}
+            variant="semiBoldLarge"
+            color="surface"
             sx={{
-              ...theme.typography.semiBoldLarge,
-              color: "#2B333B",
               textDecoration: "none",
             }}
           >

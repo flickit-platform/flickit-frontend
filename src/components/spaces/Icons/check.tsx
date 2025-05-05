@@ -1,3 +1,4 @@
+import { theme } from "@/config/theme";
 import React from "react";
 
 export default function Check(props: any) {
@@ -7,7 +8,7 @@ export default function Check(props: any) {
     if (type == "PREMIUM") {
       return "url(#paint0_linear_11642_19953)";
     } else if (type == "BASIC" && allowCreateBasic) {
-      return "#2B333B";
+      return theme.palette.surface.contrastText;
     } else if (type == "BASIC" && !allowCreateBasic) {
       return "#3D4D5C80";
     }
@@ -36,7 +37,7 @@ export default function Check(props: any) {
             gradientUnits="userSpaceOnUse"
           >
             <stop stopColor="#1B4D7E" />
-            <stop offset="0.33" stopColor="#2D80D2" />
+            <stop offset="0.33" stopColor={theme.palette.primary.lightDesign} />
             <stop offset="1" stopColor="#1B4D7E" />
           </linearGradient>
         </defs>

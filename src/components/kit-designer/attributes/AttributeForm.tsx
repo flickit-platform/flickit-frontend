@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { styles } from "@styles";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
+import { theme } from "@/config/theme";
 
 interface AttributeFormProps {
   newAttribute: any;
@@ -64,7 +65,7 @@ const AttributeForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -75,13 +76,16 @@ const AttributeForm = ({
     >
       {/* Index Number */}
       <Box
-        sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+        sx={{
+          ...styles.centerCVH,
+          background: theme.palette.surface.container,
+        }}
         borderRadius="0.5rem"
       >
         <Box
           sx={{
             ...styles.centerVH,
-            background: "#F3F5F6",
+            background: theme.palette.surface.container,
             width: { xs: "40px" },
             justifyContent: "space-around",
           }}
@@ -168,7 +172,12 @@ const AttributeForm = ({
           </IconButton>
         </Box>
 
-        {renderNumericField("weight", newAttribute.weight, "weight-id", "weight")}
+        {renderNumericField(
+          "weight",
+          newAttribute.weight,
+          "weight-id",
+          "weight",
+        )}
       </Box>
     </Box>
   );

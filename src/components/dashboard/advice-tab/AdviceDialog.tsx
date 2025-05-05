@@ -39,7 +39,8 @@ const AdviceDialog = ({
   });
 
   const createAINarrationQueryData = useQuery<any>({
-    service: (args, config) => service.assessments.advice.createAI(args, config),
+    service: (args, config) =>
+      service.assessments.advice.createAI(args, config),
     runOnMount: false,
   });
 
@@ -131,13 +132,10 @@ const AdviceDialog = ({
 
       <DialogContent
         sx={{
+          ...styles.centerCVH,
           padding: "unset",
-          background: "#fff",
+          background: theme.palette.surface.containerLowest,
           overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           textAlign: "center",
           gap: 3,
         }}
@@ -159,7 +157,7 @@ const AdviceDialog = ({
             px={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              background: "#fff",
+              background: theme.palette.surface.containerLowest,
               maxHeight: "60vh",
               overflow: "auto",
               overflowX: "hidden",

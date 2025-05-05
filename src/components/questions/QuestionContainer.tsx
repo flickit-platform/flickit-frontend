@@ -18,6 +18,7 @@ import { styles } from "@styles";
 import { QuestionsProgress } from "./QuestionsProgress";
 import EmptyState from "../kit-designer/common/EmptyState";
 import { t } from "i18next";
+import { theme } from "@/config/theme";
 
 export const QuestionContainer = () => {
   const {
@@ -83,15 +84,19 @@ export const SubmitOnSelectCheckBox = (props: any) => {
 
   return (
     <FormControlLabel
-      sx={{ mr: 0, color: "#fff", display: props?.disabled ? "none" : "block" }}
+      sx={{
+        mr: 0,
+        color: theme.palette.surface.containerLowest,
+        display: props?.disabled ? "none" : "block",
+      }}
       data-cy="automatic-submit-check"
       control={
         <Checkbox
           checked={submitOnAnswerSelection}
           sx={{
-            color: "#fff",
+            color: theme.palette.surface.containerLowest,
             "&.Mui-checked": {
-              color: "#fff",
+              color: theme.palette.surface.containerLowest,
             },
           }}
           onChange={(e) => {

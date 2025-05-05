@@ -17,6 +17,7 @@ import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { theme } from "@/config/theme";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -172,7 +173,7 @@ const OptionList = (props: OptionListProps) => {
                             alignItems: "center",
                             ml: 1,
                             paddingInlineEnd: 1.5,
-                            backgroundColor: "#F3F5F6",
+                            backgroundColor: theme.palette.surface.container,
                             borderRadius: "8px",
                           }}
                         >

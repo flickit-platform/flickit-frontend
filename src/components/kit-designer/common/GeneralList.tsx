@@ -136,7 +136,9 @@ const ListOfItems = ({
                     p={1.5}
                     sx={{
                       backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
+                        editMode === item.id
+                          ? theme.palette.surface.container
+                          : theme.palette.surface.containerLowest,
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
@@ -147,7 +149,7 @@ const ListOfItems = ({
                     <Box
                       sx={{
                         ...styles.centerVH,
-                        background: "#F3F5F6",
+                        background: theme.palette.surface.container,
                         width: { xs: "50px", md: "64px" },
                         justifyContent: "space-around",
                       }}
@@ -226,7 +228,7 @@ const ListOfItems = ({
                                   : ""
                               }
                               variant="semiBoldMedium"
-                             showCopyIcon
+                              showCopyIcon
                             />
                           )}
                         </Box>
@@ -360,11 +362,10 @@ const ListOfItems = ({
                               }}
                             >
                               <Typography
-                                sx={{
-                                  ...theme.typography.labelCondensed,
-                                  color: "#6C8093",
-                                  width: "100%",
-                                }}
+                                color={
+                                  theme.palette.surface.contrastTextVariant
+                                }
+                                variant="labelCondensed"
                               >
                                 <Trans i18nKey={editableFieldKey} />
                               </Typography>
@@ -417,11 +418,10 @@ const ListOfItems = ({
                                     width: "3.75rem",
                                     height: "3.75rem",
                                     borderRadius: "50%",
-                                    backgroundColor: "#E2E5E9",
-                                    color: "#2B333B",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
+                                    backgroundColor:
+                                      theme.palette.surface.variant,
+                                    color: theme.palette.surface.contrastText,
+                                    ...styles.centerVH,
                                   }}
                                 >
                                   {item[editableFieldKey]}

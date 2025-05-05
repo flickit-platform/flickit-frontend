@@ -114,7 +114,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
               size="small"
               sx={{
                 background: "#7954B3",
-                color: "#fff",
+                color: theme.palette.surface.containerLowest,
               }}
             />
           )}

@@ -74,15 +74,18 @@ const AssessmentKitsListContainer = () => {
   const handleSelected = (selected: string[]) => {
     if (selected.length == 0) {
       return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
-        >
+        <Typography color="surface" variant="semiBoldLarge">
           <Trans i18nKey="language" />
         </Typography>
       );
     } else if (selected.length >= 1) {
       return (
-        <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#fff" }}>
+        <Typography
+          sx={{
+            ...theme.typography.semiBoldLarge,
+            color: theme.palette.surface.containerLowest,
+          }}
+        >
           <Trans i18nKey="language" /> ({selected.length})
         </Typography>
       );
@@ -136,12 +139,15 @@ const AssessmentKitsListContainer = () => {
               displayEmpty={true}
               renderValue={(selected) => handleSelected(selected)}
               sx={{
-                background: "#fff",
+                background: theme.palette.surface.containerLowest,
                 px: "0px",
                 backgroundColor:
                   langsCode.length >= 1 ? theme.palette.primary.main : "",
                 "& .MuiSelect-icon": {
-                  color: langsCode.length >= 1 ? "#fff" : "unset",
+                  color:
+                    langsCode.length >= 1
+                      ? theme.palette.surface.containerLowest
+                      : "unset",
                 },
                 "& .MuiTypography-root": {
                   ...theme.typography.semiBoldMedium,
@@ -173,12 +179,15 @@ const AssessmentKitsListContainer = () => {
                   key={uniqueId()}
                   color="primary"
                   variant="outlined"
-                  sx={{ background: "#EAF2FB" }}
+                  sx={{ background: theme.palette.primary.bg }}
                   label={
                     <Box sx={{ ...styles.centerVH, gap: "10px" }}>
                       <Typography
                         variant="labelSmall"
-                        sx={{ ...styles.centerVH, color: "#6C8093" }}
+                        sx={{
+                          ...styles.centerVH,
+                          color: theme.palette.surface.contrastTextVariant,
+                        }}
                       >
                         <Trans i18nKey={"language"} />:
                       </Typography>

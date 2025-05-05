@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import useDialog from "@/utils/useDialog";
+import { theme } from "@/config/theme";
 
 const QuestionContain = (props: any) => {
   const { index } = props;
@@ -60,7 +61,7 @@ const QuestionContain = (props: any) => {
         <Box
           sx={{
             ...styles.centerVH,
-            background: "#F3F5F6",
+            background: theme.palette.surface.container,
             width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}

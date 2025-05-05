@@ -147,7 +147,7 @@ const MindMap: React.FC<MindMapProps> = ({
             y1={y1}
             x2={x2}
             y2={y2}
-            stroke="#6C8093"
+            stroke={theme.palette.surface.contrastTextVariant}
             strokeWidth={key.startsWith("attr") ? 0.91 : 2.23}
           />
         ))}
@@ -164,13 +164,13 @@ const MindMap: React.FC<MindMapProps> = ({
           height: centerSize,
           borderRadius: "50%",
           bgcolor: "color(srgb 0.9276 0.9376 0.9461)",
-          border: `2px solid #6C8093`,
+          border: `2px solid ${theme.palette.surface.contrastTextVariant}`,
           zIndex: 3,
           textAlign: "center",
           p:2
         }}
       >
-        <Typography variant="titleMedium" color="#6C8093">
+        <Typography variant="titleMedium" color={theme.palette.surface.contrastTextVariant}>
           {title}
         </Typography>
       </Box>

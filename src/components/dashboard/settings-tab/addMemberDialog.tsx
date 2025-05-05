@@ -243,13 +243,10 @@ const AddMemberDialog = (props: {
       </DialogTitle>
       <DialogContent
         sx={{
+          ...styles.centerCVH,
           padding: "unset",
-          background: "#fff",
+          background: theme.palette.surface.containerLowest,
           overflowX: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           textAlign: "center",
           gap: 3,
           p: 1,
@@ -349,7 +346,7 @@ const AddMemberDialog = (props: {
                     <Box
                       sx={{
                         maxWidth: "240px",
-                        color: "#2B333B",
+                        color: theme.palette.surface.contrastText,
                         fontSize: "0.875rem",
                         lineHeight: "21px",
                         fontWeight: 500,
@@ -359,7 +356,7 @@ const AddMemberDialog = (props: {
                       <Typography>{role.title}</Typography>
                       <div
                         style={{
-                          color: "#2B333B",
+                          color: theme.palette.surface.contrastText,
                           fontSize: "0.875rem",
                           lineHeight: "21px",
                           fontWeight: 300,

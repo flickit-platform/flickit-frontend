@@ -8,7 +8,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 
 interface ImpactFormProps {
@@ -52,7 +52,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",

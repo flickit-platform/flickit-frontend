@@ -168,7 +168,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={formMethods.handleSubmit(handleSubmit)}
               >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
+                <CheckCircleOutlineRounded
+                  sx={{ color: theme.palette.surface.containerLowest }}
+                />
               </IconButton>
               <IconButton
                 sx={{
@@ -181,7 +183,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={handleCancel}
               >
-                <CancelRounded sx={{ color: "#fff" }} />
+                <CancelRounded
+                  sx={{ color: theme.palette.surface.containerLowest }}
+                />
               </IconButton>
             </Box>
           </Box>
@@ -251,7 +255,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={() => setShowEditor(true)}
               >
-                <EditRounded sx={{ color: "#fff" }} />
+                <EditRounded
+                  sx={{ color: theme.palette.surface.containerLowest }}
+                />
               </IconButton>
             )}
           </Box>

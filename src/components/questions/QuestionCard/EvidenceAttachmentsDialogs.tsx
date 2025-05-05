@@ -344,7 +344,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       <DialogContent
         sx={{
           padding: "unset",
-          background: "#fff",
+          background: theme.palette.surface.containerLowest,
           overflowX: "hidden",
           display: "flex",
           flexDirection: "column",

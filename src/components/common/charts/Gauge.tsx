@@ -8,7 +8,7 @@ import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import PermissionRequired from "@common/charts/permissionRequired";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 
 interface IGaugeProps extends BoxProps {
   maturity_level_number: number;
@@ -155,7 +155,7 @@ const Gauge = ({
           {confidence_text && (
             <Typography
               variant={maturity_status_guide_variant}
-              color="#6C8093"
+              color={theme.palette.surface.contrastTextVariant}
               mt={!isMobileScreen ? "1.5rem" : "unset"}
               display="flex"
               justifyContent="center"

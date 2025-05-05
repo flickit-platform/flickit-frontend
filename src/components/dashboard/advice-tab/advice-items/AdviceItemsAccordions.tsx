@@ -32,8 +32,16 @@ enum ELevel {
 }
 
 const COLORS = {
-  primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
-  secondary: { background: "#F9F3EB", text: "#995700", icon: "#995700" },
+  primary: {
+    background: theme.palette.success.bg,
+    text: theme.palette.success.dark,
+    icon: "#388E3C",
+  },
+  secondary: {
+    background: theme.palette.tertiary.bg,
+    text: theme.palette.tertiary.dark,
+    icon: theme.palette.tertiary.dark,
+  },
   error: { background: "#FFEBEE", text: "#B86A77", icon: "#B86A77" },
   border: "#E0E0E0",
   unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
@@ -296,12 +304,14 @@ const AdviceItemAccordion: React.FC<{
       <Accordion
         sx={{
           borderBottom: `1px solid ${COLORS.border}`,
-          borderInlineStart: readOnly ? "4px solid #6C8093" : "",
+          borderInlineStart: readOnly
+            ? `4px solid ${theme.palette.surface.contrastTextVariant}`
+            : "",
           border: readOnly ? "" : `1px solid ${COLORS.border}`,
           borderRadius: "8px",
           mb: 1,
           boxShadow: "none",
-          background: !readOnly ? "#F9FAFB" : "initial",
+          background: !readOnly ? theme.palette.surface.main : "initial",
           "&:before": { content: "none" },
         }}
       >

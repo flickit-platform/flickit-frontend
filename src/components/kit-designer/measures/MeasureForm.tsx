@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { theme } from "@/config/theme";
 
 interface MeasureFormProps {
   newMeasure: {
@@ -38,7 +39,7 @@ const MeasureForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -49,7 +50,7 @@ const MeasureForm = ({
       {/* Value field */}
       <Box
         sx={{
-          background: "#F3F5F6",
+          background: theme.palette.surface.container,
           borderRadius: "0.5rem",
           px: 1.25,
           display: "flex",

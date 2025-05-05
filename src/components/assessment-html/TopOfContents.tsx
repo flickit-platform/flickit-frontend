@@ -168,7 +168,7 @@ export const AssessmentTOC = ({
                 <Collapse in={openItems[item.key]} timeout="auto" unmountOnExit>
                   <List
                     sx={{
-                      bgcolor: "#F9FAFB",
+                      bgcolor: theme.palette.surface.main,
                     }}
                   >
                     {item.subItems?.map((subItem: any) => (

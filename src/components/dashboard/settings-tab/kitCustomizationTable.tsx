@@ -13,6 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
+import { theme } from "@/config/theme";
 
 interface Attribute {
   id: string | number;
@@ -147,7 +148,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
           "& .MuiFormLabel-root": {
             fontSize: 14,
           },
-          background: "#fff",
+          background: theme.palette.surface.containerLowest,
         }}
       />
     );

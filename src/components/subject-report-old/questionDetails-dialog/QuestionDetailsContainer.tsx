@@ -70,7 +70,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             languageDetector(questionInfo?.question?.title ?? ""),
           ),
 
-          color: "#2B333B",
+          color: theme.palette.surface.contrastText,
         }}
         data-testid={"question-detail-title"}
       >
@@ -81,7 +81,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           sx={{
             ...styles.centerVH,
             marginInlineEnd: "auto",
-            color: "#6C8093",
+            color: theme.palette.surface.contrastTextVariant,
           }}
         >
           <Typography
@@ -113,7 +113,10 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       width="100%"
       sx={{ ...styles.centerCH, alignItems: "flex-start", gap: 2 }}
     >
-      <Typography color="#6C8093" sx={{ ...theme.typography.semiBoldMedium }}>
+      <Typography
+        color={theme.palette.surface.contrastTextVariant}
+        variant="semiBoldMedium"
+      >
         <Trans i18nKey={"selectedOption"} />:
       </Typography>
       {questionInfo?.answer?.index ? (
@@ -143,7 +146,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           variant="filled"
           sx={{
             backgroundColor: "rgba(138, 15, 36, 0.04)",
-            color: "#8A0F24",
+            color: theme.palette.error.main,
             borderRadius: "8px",
             mb: 2,
             width: "100%",

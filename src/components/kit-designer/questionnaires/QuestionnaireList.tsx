@@ -302,7 +302,9 @@ const ListOfItems = ({
                     mt={1.5}
                     sx={{
                       backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
+                        editMode === item.id
+                          ? theme.palette.surface.container
+                          : theme.palette.surface.containerLowest,
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
@@ -323,10 +325,10 @@ const ListOfItems = ({
                         sx={{
                           backgroundColor:
                             editMode === item.id
-                              ? "#F3F5F6"
+                              ? theme.palette.surface.container
                               : item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.04)
-                                : "#fff",
+                                : theme.palette.surface.containerLowest,
                           borderRadius:
                             kitState.questions.length != 0
                               ? "8px"
@@ -340,7 +342,7 @@ const ListOfItems = ({
                             backgroundColor:
                               item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.08)
-                                : "#F3F5F6",
+                                : theme.palette.surface.container,
                           },
                           "& .MuiAccordionSummary-content": {
                             margin: 0,
@@ -367,7 +369,7 @@ const ListOfItems = ({
                               background:
                                 item.questionsCount == 0
                                   ? alpha(theme.palette.error.main, 0.12)
-                                  : "#F3F5F6",
+                                  : theme.palette.surface.container,
                               width: { xs: "50px", md: "64px" },
                               justifyContent: "space-around",
                             }}
@@ -567,30 +569,30 @@ const ListOfItems = ({
                               >
                                 <Typography
                                   sx={{
-                                    ...theme.typography.labelCondensed,
-                                    color: "#6C8093",
                                     width: "100%",
                                   }}
+                                  color={
+                                    theme.palette.surface.contrastTextVariant
+                                  }
+                                  variant="labelCondensed"
                                 >
                                   <Trans i18nKey={"questions"} />
                                 </Typography>
                                 <Box
                                   aria-label="questionnaires"
+                                  sx={{ ...styles.centerVH }}
                                   style={{
                                     width: "3.75rem",
                                     height: "3.75rem",
-                                    borderRadius: "50%", // برای دایره‌ای کردن دکمه
+                                    borderRadius: "50%",
                                     backgroundColor:
                                       item.questionsCount == 0
                                         ? theme.palette.error.main
-                                        : "#E2E5E9", // رنگ پس‌زمینه
+                                        : theme.palette.surface.variant,
                                     color:
                                       item.questionsCount == 0
-                                        ? "#FAD1D8"
-                                        : "#2B333B",
-                                    display: "flex",
-                                    alignItems: " center",
-                                    justifyContent: "center",
+                                        ? theme.palette.error.bgVariant
+                                        : theme.palette.surface.contrastText,
                                   }}
                                 >
                                   {item.questionsCount}

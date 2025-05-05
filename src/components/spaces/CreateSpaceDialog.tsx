@@ -154,11 +154,11 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography color="surface" variant="semiBoldLarge">
         <Trans i18nKey={"selectYourSpaceType"} />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
-        <Grid container spacing={{ xs: 5,sm: 10, md: 3 }}>
+        <Grid container spacing={{ xs: 5, sm: 10, md: 3 }}>
           {[PremiumBox, BasicBox].map((list, idx) => (
             <Grid
               item
@@ -198,7 +198,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography color="surface" variant="semiBoldLarge">
         <Trans i18nKey="setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
@@ -329,7 +329,10 @@ const CreateSpaceDialog = (props: any) => {
               i18nKey={type === "update" ? "updateSpace" : "createSpace"}
             />
             <IconButton
-              sx={{ color: "#fff", marginInlineStart: "auto" }}
+              sx={{
+                color: theme.palette.surface.containerLowest,
+                marginInlineStart: "auto",
+              }}
               onClick={close}
               data-testid={"close-btn"}
             >
@@ -370,7 +373,7 @@ const getBackgroundStyle = (
 
 const getHoverBorderColor = (isPremium: boolean, allowCreateBasic: boolean) => {
   if (isPremium) {
-    return "#2D80D2";
+    return theme.palette.primary.lightDesign;
   } else if (!allowCreateBasic) {
     return "#C7CCD1";
   }
@@ -379,7 +382,7 @@ const getHoverBorderColor = (isPremium: boolean, allowCreateBasic: boolean) => {
 
 const getTextColor = (isBasic: boolean, allowCreateBasic: boolean) => {
   if (isBasic) {
-    return !allowCreateBasic ? "#3D4D5C80" : "#2B333B";
+    return !allowCreateBasic ? "#3D4D5C80" : theme.palette.surface.contrastText;
   }
   return "unset";
 };
@@ -450,11 +453,11 @@ const BoxType = ({
         </Box>
         <Typography
           sx={{
-            ...theme.typography.labelSmall,
-            color: "#6C8093",
             mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
           }}
+          color={theme.palette.surface.contrastTextVariant}
+          variant="labelSmall"
         >
           <Trans i18nKey={subTitle} />
         </Typography>
@@ -509,7 +512,7 @@ const BoxType = ({
             justifyContent: "center",
             alignItems: "center",
             gap: "8px",
-            bottom:{xs: "-45px", md: "-54px"},
+            bottom: { xs: "-45px", md: "-54px" },
           }}
         >
           <InfoOutlinedIcon fontSize="small" />

@@ -146,7 +146,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
       {/* Content */}
       <Box sx={{ flex: 1, p: 4 }}>
         {/* Section title with colored keyword */}
-        <Typography variant="titleLarge" color="#2B333B">
+        <Typography variant="titleLarge" color="surface">
           <Trans
             i18nKey={`assessmentKitTab.${currentSection.title}`}
             components={{

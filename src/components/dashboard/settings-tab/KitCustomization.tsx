@@ -33,7 +33,8 @@ const KitCustomization = (props: any) => {
   const { assessmentId = "" } = useParams();
 
   const fetchKitCustomization = useQuery({
-    service: (args, config) => service.assessmentKit.info.getCustomization(args, config),
+    service: (args, config) =>
+      service.assessmentKit.info.getCustomization(args, config),
     runOnMount: false,
   });
   const fetchKitCustomTitle = useQuery({
@@ -42,7 +43,8 @@ const KitCustomization = (props: any) => {
     runOnMount: false,
   });
   const sendKitCustomization = useQuery({
-    service: (args, config) => service.assessments.info.assignKitCustomization(args, config),
+    service: (args, config) =>
+      service.assessments.info.assignKitCustomization(args, config),
     runOnMount: false,
   });
   const updateKitCustomization = useQuery({
@@ -151,7 +153,7 @@ const KitCustomization = (props: any) => {
             <Trans
               i18nKey="spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
-            />
+            />,
           );
         } else {
           const customData = inputData;
@@ -170,7 +172,7 @@ const KitCustomization = (props: any) => {
             <Trans
               i18nKey="spaceCreatedSuccessMessage"
               values={{ title: inputData.title }}
-            />
+            />,
           );
         }
       } catch (e) {
@@ -196,7 +198,7 @@ const KitCustomization = (props: any) => {
                 width: "100%",
                 display: "inline-block",
               }}
-              color="#2B333B"
+              color="surface"
               variant="headlineMedium"
             >
               <Trans i18nKey={`${"kitCustomization"}`} />
@@ -260,18 +262,13 @@ const KitCustomization = (props: any) => {
               <Typography
                 sx={{
                   ...theme.typography.headlineSmall,
-                  color: "#2B333B",
+                  color: "surface",
                   mb: 1,
                 }}
               >
                 <Trans i18nKey={"customizingSubjectAndAttributes"} />
               </Typography>
-              <Typography
-                sx={{
-                  ...theme.typography.bodyMedium,
-                  color: "#2B333B",
-                }}
-              >
+              <Typography color="surface" variant="bodyMedium">
                 <Trans i18nKey={"viewTheWeightAndSubject"} />
               </Typography>
             </Box>
@@ -400,13 +397,15 @@ const OnHoverInputCustomTitle = (props: any) => {
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
             <InputCustomEditor
-                inputProps={inputProps}
-                hasError={hasError}
-                name={type}
-                inputHandler={(e: React.ChangeEvent<HTMLInputElement>)=> handleChange(e)}
-                value={localInputData.title}
-                handleDone={handleSave}
-                handleCancel={handleCancel}
+              inputProps={inputProps}
+              hasError={hasError}
+              name={type}
+              inputHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(e)
+              }
+              value={localInputData.title}
+              handleDone={handleSave}
+              handleCancel={handleCancel}
             />
             {hasError && (
               <Typography

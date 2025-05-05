@@ -12,6 +12,7 @@ import React from "react";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
+import { theme } from "@/config/theme";
 
 interface OptionFormProps {
   newItem: {
@@ -38,7 +39,7 @@ const OptionForm = (props: OptionFormProps) => {
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",

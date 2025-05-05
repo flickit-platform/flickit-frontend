@@ -9,6 +9,7 @@ import { styles } from "@/config/styles";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { theme } from "@/config/theme";
 
 interface MaturityLevelFormProps {
   newMaturityLevel: {
@@ -48,7 +49,7 @@ const MaturityLevelForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: 2,
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -57,7 +58,10 @@ const MaturityLevelForm = ({
       }}
     >
       <Box
-        sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+        sx={{
+          ...styles.centerCVH,
+          background: theme.palette.surface.container,
+        }}
         borderRadius="0.5rem"
       >
         <TextField

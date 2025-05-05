@@ -13,9 +13,9 @@ import RichEditor from "../rich-editor/RichEditor";
 import firstCharDetector from "@utils/firstCharDetector";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { t } from "i18next";
-
+import { styles } from "@styles";
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
   value?: string;
@@ -110,7 +110,7 @@ const MultiLangTextField = ({
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#fff",
+            backgroundColor: theme.palette.surface.containerLowest,
             fontSize: 14,
             ...(multiline ? {} : { height: 40 }),
           },
@@ -157,14 +157,11 @@ const MultiLangTextField = ({
         <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
           <Box
             sx={{
-              backgroundColor: "#F3F5F6",
+              ...styles.centerCVH,
+              backgroundColor: theme.palette.surface.container,
               borderRadius: 2,
               px: 1,
               py: 0.5,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
               minWidth: 40,
             }}
           >

@@ -73,6 +73,48 @@ declare module "@mui/material/styles" {
     ml: { primary: React.CSSProperties["color"] };
     cl: { primary: React.CSSProperties["color"] };
   }
+  interface PaletteColor {
+    bg?: string;
+    bgVariant?: string;
+    lightDesign?: string;
+  }
+
+  interface SimplePaletteColorOptions {
+    bg?: string;
+    bgVariant?: string;
+    lightDesign?: string;
+  }
+
+  interface Palette {
+    tertiary: PaletteColor;
+    surface: {
+      main: string;
+      variant: string;
+      contrastText: string;
+      inverseContrastText: string;
+      contrastTextVariant: string;
+      containerLowest: string;
+      containerLow: string;
+      container: string;
+      containerHigh: string;
+      containerHighest: string;
+    };
+  }
+
+  interface PaletteOptions {
+    tertiary?: SimplePaletteColorOptions;
+    surface?: {
+      main: string;
+      variant: string;
+      contrastText: string;
+      contrastTextVariant: string;
+      containerLowest: string;
+      containerLow: string;
+      container: string;
+      containerHigh: string;
+      containerHighest: string;
+    };
+  }
 }
 
 // Update the Typography's variant prop options
@@ -110,12 +152,17 @@ const palette = createPalette({
     contrastText: "#FFFFFF",
     light: "#EDF3F8",
     dark: "#1B4D7E",
+    bg: "#EAF2FB",
+    bgVariant: "#D5E5F6",
+    lightDesign: "2D80D2",
   },
   secondary: {
     main: "#B8144B",
     contrastText: "#FFFFFF",
     light: "#E51A5E",
     dark: "#8A0F38",
+    bg: "#FCE8EF",
+    bgVariant: "#FAD1DF",
   },
   background: { secondary: "#EDF4FC", secondaryDark: "#121d33" },
   ml: { primary: "#6035A1" },
@@ -125,12 +172,16 @@ const palette = createPalette({
     contrastText: "#fff",
     dark: "#5C0A18",
     light: "#F6ECED",
+    bg: "#FCE8EB",
+    bgVariant: "#FAD1D8",
   },
   success: {
     main: "#3D8F3D",
     contrastText: "#fff",
     dark: "#2E6B2E",
     light: "#EFF6EF",
+    bg: "#EDF7ED",
+    bgVariant: "#DBF0DB",
   },
   info: {
     main: "#6C8093",
@@ -138,7 +189,28 @@ const palette = createPalette({
     dark: "#6C8093",
     light: "#F3F5F6",
   },
+
+  tertiary: {
+    main: "#CC7400",
+    dark: "#995700",
+    light: "#FF9000",
+    contrastText: "#FFFFFF",
+    bg: "#F9F3EB",
+    bgVariant: "#F4E7D7",
+  },
+
   warning: { main: "#CC7400", contrastText: "#fff", light: "#F4E7D7" },
+  surface: {
+    main: "#F9FAFB",
+    variant: "#E2E5E9",
+    contrastText: "#2B333B",
+    contrastTextVariant: "#6C8093",
+    containerLowest: "#FFFFFF",
+    containerLow: "#FCFCFD",
+    container: "#F3F5F6",
+    containerHigh: "#EDF0F2",
+    containerHighest: "#E8EBEE",
+  },
 });
 const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
 export const theme = createTheme({

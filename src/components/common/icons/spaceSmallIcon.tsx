@@ -1,3 +1,5 @@
+import { theme } from "@/config/theme";
+
 export const SpaceSmallIcon = (props: any) => {
   const { type, allowCreateBasic } = props;
 
@@ -5,7 +7,7 @@ export const SpaceSmallIcon = (props: any) => {
     if (type == "PREMIUM") {
       return "url(#paint0_linear_11642_19953)";
     } else if (type == "BASIC" && allowCreateBasic) {
-      return "#2B333B";
+      return theme.palette.surface.contrastText;
     } else if (type == "BASIC" && !allowCreateBasic) {
       return "#3D4D5C";
     }
@@ -35,7 +37,7 @@ export const SpaceSmallIcon = (props: any) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#1B4D7E" />
-          <stop offset="0.33" stopColor="#2D80D2" />
+          <stop offset="0.33" stopColor={theme.palette.primary.lightDesign} />
           <stop offset="1" stopColor="#1B4D7E" />
         </linearGradient>
       </defs>

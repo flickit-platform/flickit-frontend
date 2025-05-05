@@ -87,7 +87,7 @@ const TopicsList = ({
         <Typography
           sx={{
             fontWeight: "bold",
-            color: "#2466A8",
+            color: theme.palette.primary.main,
             marginBottom: "8px",
             textAlign:
               graphicalReport?.lang.code.toLowerCase() === "fa"
@@ -360,7 +360,7 @@ const ReportCard = ({
                 height: "10px",
                 width: "27px",
                 borderRadius: "16px",
-                color: "#fff",
+                color: theme.palette.surface.containerLowest,
                 fontWeight: "bold",
               }}
             ></Box>

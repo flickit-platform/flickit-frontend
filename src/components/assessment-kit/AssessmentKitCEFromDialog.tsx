@@ -68,7 +68,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const { type, data = {} } = context;
   const { expertGroupId: fallbackExpertGroupId } = useParams();
   const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
-  const [lang, setLang] = useState({code: "", title: ""});
+  const [lang, setLang] = useState({ code: "", title: "" });
   const defaultValues = type === "update" ? data : {};
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -92,7 +92,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setLang(languages[0]);
   };
   const fetchSampleExecl = useQuery({
-    service: (args, config) => service.assessmentKit.dsl.getExcelSample(args, config),
+    service: (args, config) =>
+      service.assessmentKit.dsl.getExcelSample(args, config),
     runOnMount: false,
   });
 
@@ -105,7 +106,9 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   useEffect(() => {
     if (languages) {
       let appLang = languages.find(
-          (item: { code: string; title: string }) => item.code == i18n.language.toUpperCase())
+        (item: { code: string; title: string }) =>
+          item.code == i18n.language.toUpperCase(),
+      );
       setLang(appLang);
     }
   }, [languages]);
@@ -181,17 +184,19 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       0,
       args?.file?.name.lastIndexOf("."),
     );
-    service.assessmentKit.dsl.convertExcelToDsl(args, config).then((res: any) => {
-      const { data } = res;
-      const zipfile = new Blob([data], { type: "application/zip" });
-      const file: any = new File([zipfile], `${fileName}.zip`, {
-        type: "application/zip",
-        lastModified: new Date().getTime(),
+    service.assessmentKit.dsl
+      .convertExcelToDsl(args, config)
+      .then((res: any) => {
+        const { data } = res;
+        const zipfile = new Blob([data], { type: "application/zip" });
+        const file: any = new File([zipfile], `${fileName}.zip`, {
+          type: "application/zip",
+          lastModified: new Date().getTime(),
+        });
+        setZippedData({ file: zipfile, name: fileName });
+        setButtonStep(1);
+        setDropNewFile([file]);
       });
-      setZippedData({ file: zipfile, name: fileName });
-      setButtonStep(1);
-      setDropNewFile([file]);
-    });
   };
 
   const handleBack = () => {
@@ -213,7 +218,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const handleSelectedChange = (e: any) => {
     const { value } = e.target;
     let adjustValue = languages.find(
-        (item: { code: string; title: string }) => item.title == value,
+      (item: { code: string; title: string }) => item.title == value,
     );
     setLang(adjustValue);
   };
@@ -233,7 +238,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               <Box
                 sx={{
                   ...styles.centerV,
-                  background: "#E8EBEE",
+                  background: theme.palette.surface.containerHigh,
                   width: "fit-content",
                   px: 1,
                 }}
@@ -262,7 +267,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               <Box
                 sx={{
                   ...styles.centerV,
-                  background: "#E8EBEE",
+                  background: theme.palette.surface.containerHigh,
                   width: "fit-content",
                   px: 1,
                 }}
@@ -279,7 +284,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               }}
               uploadService={(args: any, config: any) => {
                 setConvertData({ args, config });
-                return service.assessmentKit.dsl.convertExcelToDsl(args, config);
+                return service.assessmentKit.dsl.convertExcelToDsl(
+                  args,
+                  config,
+                );
               }}
               name="dsl_id"
               param={expertGroupId}
@@ -571,7 +579,7 @@ const IsPrivateSwitch = (props: any) => {
             sx={{
               padding: 0.5,
               backgroundColor: isPrivate ? "#7954B3;" : "transparent",
-              color: isPrivate ? "#fff" : "#000",
+              color: isPrivate ? theme.palette.surface.containerLowest : "#000",
               cursor: "pointer",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
@@ -595,17 +603,17 @@ const IsPrivateSwitch = (props: any) => {
           <Box
             onClick={() => handleToggle(false)}
             sx={{
+              ...styles.centerVH,
               padding: 0.5,
               backgroundColor: !isPrivate ? "gray" : "transparent",
               cursor: "pointer",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
               borderRadius: "6px",
-              color: !isPrivate ? "#fff" : "#000",
+              color: !isPrivate
+                ? theme.palette.surface.containerLowest
+                : "#000",
               width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
             }}
           >
             <Typography

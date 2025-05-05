@@ -707,7 +707,7 @@ const AssessmentKitQuestionsList = (props: {
                           color: `${colorPallet[index]} !important`,
                         },
                         background: `${colorPallet[index]}  !important`,
-                        color: "#fff !important",
+                        color: `${theme.palette.surface.containerLowest} !important`,
                       }}
                       label={
                         <Box sx={{ ...styles.centerV }}>
@@ -1004,12 +1004,10 @@ const SubjectQuestionList = (props: any) => {
                 {question.mayNotBeApplicable && (
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      ...styles.centerVH,
                       borderRadius: "8px",
                       background: "#1976D2",
-                      color: "#fff",
+                      color: theme.palette.surface.containerLowest,
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1021,12 +1019,10 @@ const SubjectQuestionList = (props: any) => {
                 )}
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    ...styles.centerVH,
                     borderRadius: "8px",
                     background: "#273248",
-                    color: "#fff",
+                    color: theme.palette.surface.containerLowest,
                     fontSize: ".75rem",
                     px: "12px",
                     mx: "4px",
@@ -1037,12 +1033,10 @@ const SubjectQuestionList = (props: any) => {
                 </Box>
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    ...styles.centerVH,
                     borderRadius: "8px",
                     background: "#7954B3",
-                    color: "#fff",
+                    color: theme.palette.surface.containerLowest,
                     fontSize: ".75rem",
                     px: "12px",
                     mx: "4px",
@@ -1057,12 +1051,10 @@ const SubjectQuestionList = (props: any) => {
                 {question.advisable && (
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      ...styles.centerVH,
                       borderRadius: "8px",
                       background: "#004F83",
-                      color: "#fff",
+                      color: theme.palette.surface.containerLowest,
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1228,12 +1220,10 @@ const QuestionnairesQuestionList = (props: any) => {
                 {question.mayNotBeApplicable && (
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      ...styles.centerVH,
                       borderRadius: "8px",
                       background: "#1976D2",
-                      color: "#fff",
+                      color: theme.palette.surface.containerLowest,
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1246,12 +1236,10 @@ const QuestionnairesQuestionList = (props: any) => {
                 {question.advisable && (
                   <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      ...styles.centerVH,
+                      color: theme.palette.surface.containerLowest,
                       borderRadius: "8px",
                       background: "#004F83",
-                      color: "#fff",
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1487,7 +1475,14 @@ const MaturityLevelsDetails = (props: any) => {
     maturity_levels ? maturity_levels.length : 5,
   );
   return (
-    <Box sx={{ background: "#fff", px: 4, py: 4, borderRadius: "8px" }}>
+    <Box
+      sx={{
+        background: theme.palette.surface.containerLowest,
+        px: 4,
+        py: 4,
+        borderRadius: "8px",
+      }}
+    >
       <Typography fontWeight={900} fontSize="1.5rem" mb={8}>
         <Trans i18nKey="maturityLevels" />
       </Typography>
@@ -1512,7 +1507,7 @@ const MaturityLevelsDetails = (props: any) => {
                 sx={{ transform: "skew(30deg);" }}
                 fontSize="1.5rem"
                 fontWeight={900}
-                color="#fff"
+                color={theme.palette.surface.containerLowest}
               >
                 {index}.{title}
               </Typography>
@@ -1527,7 +1522,7 @@ const MaturityLevelsDetails = (props: any) => {
                 <Typography
                   sx={{ transform: "skew(30deg)" }}
                   fontSize=".875rem"
-                  color="#fff"
+                  color={theme.palette.surface.containerLowest}
                   fontWeight={900}
                   mr={"4px"}
                 >
@@ -1540,7 +1535,7 @@ const MaturityLevelsDetails = (props: any) => {
                       key={uniqueId()}
                       sx={{ transform: "skew(30deg)" }}
                       fontSize=".75rem"
-                      color="#fff"
+                      color={theme.palette.surface.containerLowest}
                     >
                       {theme.direction == "ltr" && key != 0 && "   ,"} {title}:{" "}
                       {value}%{" "}

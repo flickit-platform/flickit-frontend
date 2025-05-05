@@ -60,7 +60,9 @@ const NotificationIndicator = ({ seen }: { seen: boolean }) => (
     sx={{
       minWidth: "4px",
       height: "24px",
-      backgroundColor: seen ? "#6C8093" : "#2D80D2",
+      backgroundColor: seen
+        ? theme.palette.surface.contrastTextVariant
+        : theme.palette.primary.lightDesign,
       borderRadius: "2px",
       marginRight: theme.direction === "ltr" ? 1 : "unset",
       marginLeft: theme.direction === "rtl" ? 1 : "unset",
@@ -85,7 +87,9 @@ const NotificationItem = ({
         justifyContent: "space-between",
         padding: "12px 16px",
         border: "0.5px solid #C7CCD1",
-        backgroundColor: message.seen ? "#ffffff" : "#F3F5F6",
+        backgroundColor: message.seen
+          ? theme.palette.surface.containerLowest
+          : theme.palette.surface.container,
         cursor: "pointer",
         position: "relative",
         flexDirection: theme.direction === "rtl" ? "row-reverse" : "row", // Handle RTL/LTR
@@ -111,9 +115,9 @@ const NotificationItem = ({
       >
         <Typography
           variant="titleSmall"
+          color="surface"
           sx={{
             fontWeight: message.seen ? 400 : 600,
-            color: "#2B333B",
             overflow: "hidden",
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
@@ -157,7 +161,7 @@ const NotificationItem = ({
           right: theme.direction === "ltr" ? "8px" : "unset",
           width: "8px",
           height: "8px",
-          backgroundColor: "#B8144B",
+          backgroundColor:  theme.palette.secondary.main,
           borderRadius: "50%",
           display: message.seen ? "none" : "block",
         }}
@@ -262,7 +266,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: "12px 16px",
-                backgroundColor: "#FFFFFF",
+                backgroundColor: theme.palette.surface.containerLowest,
                 position: "relative",
               }}
             >
@@ -275,7 +279,9 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   top: 8,
                   bottom: 0,
                   width: "4px",
-                  backgroundColor: selectedMessage.seen ? "#6C8093" : "#2D80D2",
+                  backgroundColor: selectedMessage.seen
+                    ? theme.palette.surface.contrastTextVariant
+                    : theme.palette.primary.lightDesign,
                   borderRadius: "2px",
                 }}
               />
@@ -332,7 +338,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
-              <Typography variant="bodyMedium" color="#2466A8">
+              <Typography variant="bodyMedium" color={theme.palette.primary.main}>
                 <Trans i18nKey="notificationEmptyState" />
               </Typography>
             </Box>
@@ -559,7 +565,7 @@ const Navbar = () => {
               marginRight: theme.direction === "ltr" ? 1 : "unset",
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
               display: { md: "none" },
-              color: "#fff",
+              color: theme.palette.surface.containerLowest,
             }}
           >
             <MenuIcon />
@@ -604,7 +610,7 @@ const Navbar = () => {
                 textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff",
+                color: theme.palette.surface.containerLowest,
               }}
               size="small"
             >
@@ -623,7 +629,7 @@ const Navbar = () => {
                 textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff",
+                color: theme.palette.surface.containerLowest,
               }}
               size="small"
             >
@@ -761,13 +767,13 @@ const SpacesButton = () => {
               bottom: 0,
               left: "50%",
               transform: "translateX(-50%)",
-              width: "90%", // 👈 smaller underline
+              width: "90%",
               height: "2px",
-              backgroundColor: "#fff",
+              backgroundColor: theme.palette.surface.containerLowest,
               borderRadius: 1,
             },
           }),
-          color: "#fff",
+          color: theme.palette.surface.containerLowest,
         }}
         size="small"
         endIcon={
@@ -874,7 +880,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           ...styles.activeNavbarLink,
           marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
           marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
-          color: "#fff",
+          color: theme.palette.surface.containerLowest,
           fontFamily: languageDetector(userInfo.displayName)
             ? farsiFontFamily
             : primaryFontFamily,

@@ -82,7 +82,7 @@ export const AssessmentSettingGeneralBox = (props: {
             width: "100%",
             display: "inline-block",
           }}
-          color="#2B333B"
+          color="surface"
           variant="headlineMedium"
         >
           <Trans i18nKey="general" />
@@ -398,7 +398,7 @@ export const AssessmentSettingMemberBox = (props: {
             width: "100%",
           }}
         >
-          <Typography color="#2B333B" variant="headlineMedium">
+          <Typography color="surface" variant="headlineMedium">
             <Trans i18nKey="grantedRoles" />
           </Typography>
           <Button
@@ -435,7 +435,7 @@ export const AssessmentSettingMemberBox = (props: {
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
-                backgroundColor: "#fff",
+                backgroundColor: theme.palette.surface.containerLowest,
               }}
             >
               <TableRow
@@ -685,7 +685,7 @@ export const AssessmentSettingMemberBox = (props: {
                     position: "sticky",
                     top: 0,
                     zIndex: 3,
-                    backgroundColor: "#fff",
+                    backgroundColor: theme.palette.surface.containerLowest,
                   }}
                 >
                   <TableRow
@@ -866,7 +866,9 @@ export const AssessmentSettingMemberBox = (props: {
                                         <Box
                                           sx={{
                                             maxWidth: "240px",
-                                            color: "#2B333B",
+                                            color:
+                                              theme.palette.surface
+                                                .contrastText,
                                             fontSize: "0.875rem",
                                             lineHeight: "21px",
                                             fontWeight: 500,
@@ -890,7 +892,9 @@ export const AssessmentSettingMemberBox = (props: {
 
                                           <div
                                             style={{
-                                              color: "#2B333B",
+                                              color:
+                                                theme.palette.surface
+                                                  .contrastText,
                                               fontSize: "0.875rem",
                                               lineHeight: "21px",
                                               fontWeight: 300,
@@ -1055,7 +1059,7 @@ const SelectionRole = (props: any) => {
             </Typography>
             <Typography
               sx={{
-                color: "#2B333B",
+                color: theme.palette.surface.contrastText,
                 fontSize: "0.875rem",
                 fontWeight: 300,
                 paddingTop: "1rem",

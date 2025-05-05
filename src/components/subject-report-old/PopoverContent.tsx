@@ -7,6 +7,7 @@ import Radio from "@mui/material/Radio";
 import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
 import { t } from "i18next";
+import { theme } from "@/config/theme";
 
 const PopoverContent = ({
   onSortChange,
@@ -26,9 +27,8 @@ const PopoverContent = ({
       return "missedScoreHighToLow";
     } else if (sortBy === "missed_score" && sortOrder === "asc") {
       return "missedScoreLowToHigh";
-    } else if(sortBy === "weight" && sortOrder === "desc"){
+    } else if (sortBy === "weight" && sortOrder === "desc") {
       return "weight";
-
     }
     return "";
   };
@@ -43,15 +43,18 @@ const PopoverContent = ({
       onSortChange("missed_score", "desc");
     } else if (value === "missedScoreLowToHigh") {
       onSortChange("missed_score", "asc");
-    } else if (value==="weight"){
+    } else if (value === "weight") {
       onSortChange("weight", "desc");
-
     }
   };
 
   return (
     <Box px={2} py={1}>
-      <Typography variant="bodySmall" sx={{ mb: 1 }} color="#6C8093">
+      <Typography
+        variant="bodySmall"
+        sx={{ mb: 1 }}
+        color={theme.palette.surface.contrastTextVariant}
+      >
         <Trans i18nKey="orderBy" />
       </Typography>
       <RadioGroup value={getSelectedValue()} onChange={handleSortChange}>

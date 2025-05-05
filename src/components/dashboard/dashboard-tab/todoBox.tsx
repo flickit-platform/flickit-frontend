@@ -59,9 +59,7 @@ const TodoBox = (props: any) => {
                     mt: "32px",
                   }}
                 >
-                  <Typography
-                    sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
-                  >
+                  <Typography color="surface" variant="semiBoldLarge">
                     {item.name == "questions" && (
                       <Trans i18nKey={"questionsIssues"} />
                     )}
@@ -112,7 +110,10 @@ const TodoBox = (props: any) => {
             <Typography
               sx={{
                 ...theme.typography.headlineSmall,
-                color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
+                color:
+                  now.length < 0
+                    ? theme.palette.surface.contrastText
+                    : "#3D4D5C80",
               }}
             >
               <Trans i18nKey="whatToDoNext" />
@@ -142,7 +143,10 @@ const TodoBox = (props: any) => {
                   <Typography
                     sx={{
                       ...theme.typography.semiBoldLarge,
-                      color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
+                      color:
+                        now.length < 0
+                          ? theme.palette.surface.contrastText
+                          : "#3D4D5C80",
                     }}
                   >
                     {item.name == "questions" && (

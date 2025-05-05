@@ -97,12 +97,11 @@ const ReportTab = () => {
                     }}
                   >
                     <Typography
-                      style={{ ...theme.typography.semiBoldLarge }}
+                      color="surface"
+                      variant="semiBoldLarge"
                       sx={{
-                        display: "flex",
+                        ...styles.centerV,
                         justifyContent: "flex-start",
-                        alignItems: "center",
-                        color: "#2B333B",
                         gap: 2,
                         mb: 2,
                       }}

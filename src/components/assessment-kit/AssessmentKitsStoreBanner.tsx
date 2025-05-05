@@ -215,7 +215,10 @@ const AssessmentKitsStoreBanner = (props: any) => {
                 sx={{
                   width: currentIndex === i ? "2rem" : "1rem",
                   height: "0.75rem",
-                  backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
+                  backgroundColor:
+                    currentIndex === i
+                      ? theme.palette.surface.contrastTextVariant
+                      : "#668099",
                   borderRadius: currentIndex === i ? "20px" : "50%",
                   cursor: "pointer",
                   transition: "all 0.3s ease",

@@ -3,7 +3,7 @@ import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Typography from "@mui/material/Typography";
 import CustomTablePagination from "@components/common/CustomTablePagination";
@@ -41,7 +41,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
             mb: 4,
             textAlign: "center",
             fontWeight: "700",
-            color: "#6C8093",
+            color: theme.palette.surface.contrastTextVariant,
           }}
         >
           <Grid item xs={0.5} md={0.5}>
@@ -230,7 +230,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
         sx={{
           position: "sticky",
           bottom: 0,
-          background: "#fff",
+          background: theme.palette.surface.containerLowest,
           zIndex: 1000,
         }}
       >

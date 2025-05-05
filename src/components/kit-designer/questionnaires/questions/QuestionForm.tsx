@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 
 interface QuestionFormProps {
   newItem: {
@@ -30,7 +30,7 @@ const QuestionForm = ({
     mt={1.5}
     p={1.5}
     sx={{
-      backgroundColor: "#F3F5F6",
+      backgroundColor: theme.palette.surface.container,
       borderRadius: "8px",
       border: "0.3px solid #73808c30",
       display: "flex",
@@ -39,7 +39,7 @@ const QuestionForm = ({
     }}
   >
     <Box
-      sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+      sx={{ ...styles.centerCVH, background: theme.palette.surface.container }}
       borderRadius="0.5rem"
       mr={2}
       p={0.25}

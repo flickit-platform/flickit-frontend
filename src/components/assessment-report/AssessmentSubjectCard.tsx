@@ -12,7 +12,7 @@ import { getMaturityLevelColors, styles } from "@styles";
 import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import DonutChart from "../common/charts/donutChart/donutChart";
 import SubjectContainer from "../subject-report-old/SubjectContainer";
 
@@ -173,7 +173,7 @@ export const AssessmentSubjectAccordion = (
                 {maturityLevel?.title}
               </Typography>
               <Box sx={{ ...styles.centerVH, marginInlineStart: 1 }}>
-                <Typography variant="bodyMedium" color="#6C8093">
+                <Typography variant="bodyMedium" color={theme.palette.surface.contrastTextVariant}>
                   <Trans i18nKey="confidence" />:
                 </Typography>
                 <ConfidenceLevel
