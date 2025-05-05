@@ -12,7 +12,7 @@ import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
-import { MobileScreen } from "@utils/mobileScreen";
+import useScreenResize from "@utils/useScreenResize";
 
 interface IStepperSection {
   setActiveStep: (value: React.SetStateAction<number>) => void;
@@ -39,7 +39,7 @@ const StepperSection = (props: IStepperSection) => {
           }
         }}
         activeStep={activeStep}
-        orientation={MobileScreen("md") ? "vertical" : "horizontal" }
+        orientation={useScreenResize("md") ? "vertical" : "horizontal" }
       >
         {stepData.map((label: any) => (
           <Step key={uniqueId()}>
