@@ -16,8 +16,8 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
-import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
+import { useFlag } from "@/hooks/useFlag";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -36,6 +36,7 @@ interface IAssessmentKitListItemProps {
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
+  const showGroups = useFlag(FLAGS.display_expert_groups);
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
     service: (args, config) => service.assessmentKit.info.clone(args, config),
@@ -130,21 +131,20 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             title={!draftVersionId && <Trans i18nKey="noDraftVersion" />}
           >
             <div>
-              {hasAccess &&
-                flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
-                  <LoadingButton
-                    variant="outlined"
-                    size="small"
-                    color={!draftVersionId ? "primary" : "inherit"}
-                    onClick={draftClicked}
-                    loading={cloneAssessmentKit.loading}
-                  >
-                    <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
-                  </LoadingButton>
-                )}
+              {hasAccess && showGroups && (
+                <LoadingButton
+                  variant="outlined"
+                  size="small"
+                  color={!draftVersionId ? "primary" : "inherit"}
+                  onClick={draftClicked}
+                  loading={cloneAssessmentKit.loading}
+                >
+                  <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
+                </LoadingButton>
+              )}
             </div>
           </Tooltip>
-          {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+          {useFlag(FLAGS.display_expert_groups) && (
             <Actions
               assessment_kit={data}
               fetchAssessmentKits={fetchAssessmentKits}

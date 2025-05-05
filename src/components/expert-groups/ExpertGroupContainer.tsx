@@ -65,8 +65,8 @@ import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import { FLAGS } from "@/types";
-import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
+import { useFlag } from "@/hooks/useFlag";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -133,6 +133,8 @@ const ExpertGroupContainer = () => {
     }
   };
 
+  const showGroups = useFlag(FLAGS.display_expert_groups);
+
   return (
     <>
       <QueryData
@@ -180,8 +182,7 @@ const ExpertGroupContainer = () => {
                   />
                 }
                 toolbar={
-                  editable &&
-                  flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) ? (
+                  editable && showGroups ? (
                     <EditExpertGroupButton fetchExpertGroup={queryData.query} />
                   ) : (
                     <></>
@@ -724,6 +725,7 @@ const ExpertGroupMembers = (props: any) => {
   const { hasAccess, query, inviteeQuery } = props;
   const [openInvitees, setOpenInvitees] = useState(false);
   const [openAddMembers, setOpenAddMembers] = useState(false);
+  const showGroups = useFlag(FLAGS.display_expert_groups);
 
   return (
     <Box>
@@ -745,15 +747,14 @@ const ExpertGroupMembers = (props: any) => {
               >
                 <Trans i18nKey="members" />
               </Typography>
-              {hasAccess &&
-                flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
-                  <AddingNewMember
-                    queryData={query}
-                    inviteeQuery={inviteeQuery}
-                    setOpenAddMembers={setOpenAddMembers}
-                    openAddMembers={openAddMembers}
-                  />
-                )}
+              {hasAccess && showGroups && (
+                <AddingNewMember
+                  queryData={query}
+                  inviteeQuery={inviteeQuery}
+                  setOpenAddMembers={setOpenAddMembers}
+                  openAddMembers={openAddMembers}
+                />
+              )}
 
               <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1.5 }}>
                 <AvatarGroup>
@@ -1095,6 +1096,7 @@ const AssessmentKitsList = (props: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const showGroups = useFlag(FLAGS.display_expert_groups);
 
   return (
     <>
@@ -1103,7 +1105,7 @@ const AssessmentKitsList = (props: any) => {
         size="small"
         toolbar={
           <Box sx={{ display: "flex", gap: "8px" }}>
-            {hasAccess && flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+            {hasAccess && showGroups && (
               <>
                 <Button
                   variant="outlined"
