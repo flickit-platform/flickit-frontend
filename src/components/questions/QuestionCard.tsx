@@ -1628,7 +1628,7 @@ const Evidence = (props: any) => {
       display={"flex"}
       flexDirection={"column"}
       width="100%"
-      px={!permissions?.readonly ? 10 : 0}
+      px={!permissions?.readonly ? {xs: 0, sm: 10} : 0}
     >
       {permissions?.addEvidence && (
         <FormProvider {...formMethods}>
@@ -2165,13 +2165,14 @@ const EvidenceDetail = (props: any) => {
         {isEditing ? (
           <>
             <FormProvider {...formMethods}>
-              <form
+              <Box
+                component={"form"}
                 onSubmit={formMethods.handleSubmit(onSubmit)}
-                style={{
+                sx={{
                   display: "flex",
                   flexDirection: "column",
                   height: "fit-content",
-                  width: "60%",
+                  width: {xs: "100%", sm: "60%" },
                   borderRadius: "12px",
                   border: `1px solid ${evidenceBG.borderColor}`,
                 }}
@@ -2214,7 +2215,7 @@ const EvidenceDetail = (props: any) => {
                       style={is_farsi ? { left: 20 } : { right: 20 }}
                       sx={{
                         position: "absolute",
-                        top: 40,
+                        top: 7,
                         fontSize: ".875rem",
                         fontWeight: 300,
                         color:
@@ -2243,7 +2244,7 @@ const EvidenceDetail = (props: any) => {
                   type={"submit"}
                   sx={{ display: "none" }}
                 />
-              </form>
+              </Box>
             </FormProvider>
             <Box
               sx={{

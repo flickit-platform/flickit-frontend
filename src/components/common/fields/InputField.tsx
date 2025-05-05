@@ -113,12 +113,12 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     }
   };
 
-  let inputStyle: React.CSSProperties = {};
+  let inputStyle = {};
   if (hasCounter) {
     inputStyle =
       isFarsi || rtl
-        ? { paddingLeft: 80, minHeight: "110px" }
-        : { paddingRight: 80, minHeight: "110px" };
+        ? { paddingLeft: {sm : "80px"}, minHeight: "110px" }
+        : { paddingRight: {sm : "80px"}, minHeight: "110px" };
   }
 
   return (
@@ -173,7 +173,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               ),
             }
           : {
-              style: inputStyle,
+              sx: inputStyle,
             }
       }
       error={hasError || error}
