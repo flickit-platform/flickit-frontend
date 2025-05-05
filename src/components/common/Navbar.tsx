@@ -46,6 +46,7 @@ import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
 import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
+import { useFlag } from "@/hooks/useFlag";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -539,7 +540,6 @@ const Navbar = () => {
           backgroundColor: theme.palette.primary.main,
           position: "sticky",
           px: { xl: 26, lg: 8, xs: 1, sm: 3 },
-
         }}
         data-cy="nav-bar"
       >
@@ -917,7 +917,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <Trans i18nKey={"account"} />
           </ListItemText>
         </MenuItem>
-        {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+        {useFlag(FLAGS.display_expert_groups) && (
           <MenuItem
             dense
             onClick={handleClose}

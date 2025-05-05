@@ -25,6 +25,7 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import flagsmith from "flagsmith";
 import { FLAGS } from "@/types";
+import { useFlag } from "@/hooks/useFlag";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -210,7 +211,7 @@ const Actions = (props: any) => {
     }
   };
 
-  return editable && flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) ? (
+  return editable && useFlag(FLAGS.display_expert_groups) ? (
     <>
       <MoreActions
         {...useMenu()}

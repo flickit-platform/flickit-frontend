@@ -20,6 +20,7 @@ import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import { theme } from "@/config/theme";
 import flagsmith from "flagsmith";
+import { useFlag } from "@/hooks/useFlag";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -55,7 +56,7 @@ const ExpertGroupsContainer = () => {
   useDocumentTitle(t("expertGroups") as string);
   return (
     <Box>
-      {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+      {useFlag(FLAGS.display_expert_groups) && (
         <Box
           sx={{
             background: "white",
