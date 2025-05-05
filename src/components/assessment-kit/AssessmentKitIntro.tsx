@@ -178,7 +178,9 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               : primaryFontFamily,
             textAlign: "justify",
           }}
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{
+            __html: content !== "" ? content : t("unavailable"),
+          }}
         />
 
         {showBtn && (

@@ -23,7 +23,7 @@ import { useEffect } from "react";
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
-import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonOfAssessmentReport copy";
+import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
