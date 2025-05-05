@@ -8,6 +8,7 @@ import React, {
 import reducer, { initialState, AppState } from "./reducer";
 import { ActionTypes } from "./actions";
 import { useServiceContext } from "../ServiceProvider";
+import keycloakService from "@/service/keycloakService";
 
 interface AppContextType {
   config: AppState;
@@ -60,6 +61,7 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
       // Update title tag
       document.title = appTitle;
+      if (!keycloakService.isLoggedIn()) return
       service.common.getKitLanguages({}).then((res: any)=>{
         dispatch({
           type: ActionTypes.App_Languages,
