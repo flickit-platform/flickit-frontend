@@ -1,9 +1,6 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Paper from "@mui/material/Paper";
 
 const LoadingAssessmentKit = () => {
   return (
