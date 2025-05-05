@@ -8,7 +8,7 @@ import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { Link, useParams } from "react-router-dom";
-import AssessmentKitAbout from "@components/assessment-kit/AssessmentKitAbout";
+import AssessmentKitIntro from "@components/assessment-kit/AssessmentKitIntro";
 import Grid from "@mui/material/Grid";
 import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
 import { styles } from "@styles";
@@ -22,8 +22,7 @@ import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
 import { useEffect } from "react";
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
-import { InfoOutlined } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import AssessmentKitSubjects from "./AssessmentKitSubjects";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -94,9 +93,6 @@ const AssessmentKit = (props: any) => {
                 px: { xl: 30, lg: 12, xs: 2, sm: 3 },
               }}
             >
-              <Typography sx={{ color: "#2B333B" }} variant="titleLarge">
-                <Trans i18nKey={"aboutThisKit"} />
-              </Typography>
               <Grid container>
                 <Grid
                   container
@@ -104,30 +100,14 @@ const AssessmentKit = (props: any) => {
                   xs={12}
                   md={9.3}
                   lg={9.3}
-                  sx={{ paddingInlineEnd: { xs: 4, md: 9 } }}
+                  sx={{
+                    paddingInlineEnd: { xs: 0, md: 3 },
+                    paddingBlockEnd: { xs: 2, md: 0 },
+                  }}
                 >
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={12}
-                    display={{ xs: "none", sm: "block" }}
-                  >
-                    <AssessmentKitAbout about={about} />
+                  <Grid item xs={12} md={12} lg={12}>
+                    <AssessmentKitIntro {...assessmentKitQueryData} />
                   </Grid>
-
-                  <Typography
-                    sx={{ color: "#2B333B" }}
-                    variant="titleLarge"
-                    display={{ xs: "none", sm: "block" }}
-                  >
-                    <Trans i18nKey={"kitStructure"} />
-                    <Tooltip title={t("kitStructureDescription")}>
-                      <IconButton size="small">
-                        <InfoOutlined fontSize="small" color="action" />
-                      </IconButton>
-                    </Tooltip>
-                  </Typography>
 
                   <Grid
                     item
@@ -141,6 +121,9 @@ const AssessmentKit = (props: any) => {
                       childrenField="attributes"
                       title={t("kitStructure")}
                     />
+                  </Grid>
+                  <Grid item xs={12} md={12} lg={12} mt={2}>
+                    <AssessmentKitSubjects {...assessmentKitQueryData} />
                   </Grid>
                 </Grid>
                 <Grid item xs={12} md={2.7} lg={2.7}>
@@ -156,7 +139,7 @@ const AssessmentKit = (props: any) => {
                 <Typography
                   sx={{ color: "#2B333B" }}
                   variant="titleLarge"
-                  mb={4}
+                  my={4}
                 >
                   <Trans i18nKey={"exploreOtherKits"} />
                 </Typography>
@@ -217,7 +200,7 @@ const AssessmentKitBanner = (props: any) => {
       ></Title>
       <Box
         sx={{
-          ...styles.centerCV
+          ...styles.centerCV,
         }}
         gap={1}
       >
