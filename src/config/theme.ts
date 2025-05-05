@@ -258,11 +258,11 @@ export const theme = createTheme({
       letterSpacing: is_farsi ? "0px" : "0.5px",
     },
     labelSmall: {
-      fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
+      fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
       fontWeight: "400",
-      fontSize: "0.75rem",
+      fontSize: "0.68rem",
       lineHeight: "1rem",
-      letterSpacing: is_farsi ? "0px" : "0.4px",
+      letterSpacing: "0px",
     },
     labelMedium: {
       fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
@@ -637,7 +637,7 @@ export const theme = createTheme({
           fontSize: "16px",
         },
         root: {
-          fontSize: '16px',
+          fontSize: "16px",
         },
       },
     },

@@ -50,6 +50,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
+import { Divider } from "@mui/material";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -66,6 +67,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     id,
     lastModificationTime,
     confidenceValue,
+    language,
   } = item;
   const hasML = hasMaturityLevel(maturityLevel?.value);
   const { maturityLevelsCount } = kit;
@@ -73,7 +75,10 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
   const { service } = useServiceContext();
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>
-      service.assessments.info.calculateMaturity(args ?? { assessmentId: id }, config),
+      service.assessments.info.calculateMaturity(
+        args ?? { assessmentId: id },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -203,14 +208,31 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               >
                 {item.title}
               </Typography>
-              <Typography
-                variant="subMedium"
-                color="GrayText"
-                sx={{ padding: "1px 4px", textAlign: "center" }}
-              >
-                <Trans i18nKey="lastUpdated" />{" "}
-                {getReadableDate(lastModificationTime)}
-              </Typography>
+              <Box sx={{ ...styles.centerVH }}>
+                <Box
+                  sx={{
+                    ...styles.centerVH,
+                    backgroundColor: "#F9FAFB",
+                    borderRadius: "4px",
+                    border: "0.5px solid #C7CCD1",
+                    p: 0.5,
+                    pb:0
+                  }}
+                >
+                  <Typography variant="labelSmall" color="#6C8093">
+                    {language.code}
+                  </Typography>
+                </Box>
+                <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+                <Typography
+                  variant="labelSmall"
+                  sx={{ textAlign: "center" }}
+                  color="#6C8093"
+                >
+                  <Trans i18nKey="lastUpdated" />{" "}
+                  {getReadableDate(lastModificationTime)}
+                </Typography>
+              </Box>
             </Box>
           </Grid>
           <Grid
