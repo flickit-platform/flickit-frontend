@@ -219,6 +219,7 @@ const OptionList = (props: OptionListProps) => {
                                   : ""
                               }
                               variant="semiBoldMedium"
+                              showCopyIcon
                             />
                           </Box>
                         )}

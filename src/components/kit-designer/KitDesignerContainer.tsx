@@ -99,7 +99,7 @@ const KitDesignerContainer = () => {
       render={([kitVersion]) => {
         const CurrentComponent = tabMap[selectedTab].Component;
         return (
-          <Box m="auto" pb={3} sx={{ px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
+          <Box m="auto" pb={3}>
             <KitDesignerTitle kitVersion={kitVersion} />
 
             <Grid container spacing={1} columns={12}>

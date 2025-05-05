@@ -153,14 +153,20 @@ const CreateSpaceDialog = (props: any) => {
   };
 
   const renderStepOne = () => (
-    <Box sx={{ pt: 4, px: 4, pb: 0 }}>
+    <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
       <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
         <Trans i18nKey={"selectYourSpaceType"} />
       </Typography>
-      <Box sx={{ py: 2 }}>
+      <Box sx={{ py: 2, height: "82%" }}>
         <Grid container spacing={3}>
           {[PremiumBox, BasicBox].map((list, idx) => (
-            <Grid item xs={12} md={6} key={UniqueId()}>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              key={UniqueId()}
+              mt={{ xs: list === BasicBox ? 5 : 0, sm: 0 }}
+            >
               {list.map((item) => (
                 <BoxType
                   key={item.type}
@@ -176,7 +182,11 @@ const CreateSpaceDialog = (props: any) => {
       </Box>
       <Box sx={{ py: 2 }}>
         <Box sx={{ display: "flex", justifyContent: "end" }}>
-          <Button variant="contained"  data-testid="next-step-modal" onClick={() => setStep(2)}>
+          <Button
+            variant="contained"
+            data-testid="next-step-modal"
+            onClick={() => setStep(2)}
+          >
             <Typography>
               <Trans i18nKey={"next"} />
             </Typography>
@@ -187,11 +197,11 @@ const CreateSpaceDialog = (props: any) => {
   );
 
   const renderStepTwo = () => (
-    <Box sx={{ pt: 4, px: 4, pb: 0 }}>
+    <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
       <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
         <Trans i18nKey="setAName" />
       </Typography>
-      <FormProviderWithForm formMethods={formMethods}>
+      <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
         <Box
           sx={{
             minHeight: "290px",
@@ -239,7 +249,17 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepThree = () => (
     <CEDialog {...rest} closeDialog={close} title={null}>
-      <Box sx={{ display: "flex", pt: 4, px: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          pt: 4,
+          px: 4,
+          height: "100%",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
+          gap: { xs: 4, sm: 0 },
+        }}
+      >
         <img
           style={{ padding: "0px 15px" }}
           src={greenCheckmark}
@@ -411,7 +431,7 @@ const BoxType = ({
       }}
       onClick={handleSelect}
     >
-      <Box sx={{ mb: "13px" }}>
+      <Box sx={{ mb: { xs: 0.1, sm: 1 } }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
@@ -432,7 +452,7 @@ const BoxType = ({
           sx={{
             ...theme.typography.labelSmall,
             color: "#6C8093",
-            mt: 1,
+            mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
           }}
         >
@@ -444,7 +464,12 @@ const BoxType = ({
         {bullets.map((text: string, index: number) => (
           <Box
             key={UniqueId()}
-            sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 0.1, sm: 1 },
+              mb: { xs: 0.1, sm: 1 },
+            }}
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography

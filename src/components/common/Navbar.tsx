@@ -134,7 +134,7 @@ const NotificationItem = ({
           whiteSpace: "nowrap",
         }}
       >
-        {getReadableDate(message.createdAt,"relative")}
+        {getReadableDate(message.createdAt, "relative")}
       </Typography>
 
       {/* Arrow Icon */}
@@ -538,6 +538,8 @@ const Navbar = () => {
           borderRadius: "0px",
           backgroundColor: theme.palette.primary.main,
           position: "sticky",
+          px: { xl: 26, lg: 8, xs: 1, sm: 3 },
+
         }}
         data-cy="nav-bar"
       >

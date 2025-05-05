@@ -42,7 +42,7 @@ const SpacesList = (props: ISpaceListProps) => {
 
   return (
     <Box sx={{ overflowX: "hidden", pb: 1, px: "6px" }}>
-      <Box sx={{ minWidth: { xs: "320px", sm: "440px" } }}>
+      <Box >
         {data.map((item: any) => {
           return (
             <SpaceCard
@@ -103,62 +103,55 @@ export const SpaceCard = (props: ISpaceCardProps) => {
   };
   return (
     <Box
+      component="div"
+      data-cy="space-card"
+      onClick={changeCurrentSpaceAndNavigateToAssessments}
       sx={{
         ...styles.centerV,
+        justifyContent: "space-between",
+        flexDirection: { xs: "column", md: "row" },
         boxShadow: "0 0 8px 0 #0A234240",
         borderRadius: 2,
-        paddingInlineStart: { xs: 1, sm: 2, md: 4 },
-        paddingInlineEnd: { xs: 1, sm: 2, md: 3 },
-        py: { xs: 1, md: "12px" },
+        px: { xs: 1, sm: 2, md: 4 },
+        py: { xs: 1, md: 1.5 },
         mb: { xs: 1, md: 2 },
-        backgroundColor: "white",
-        textDecoration: "none",
-        height: { xs: "auto", md: "56px" },
+        bgcolor: "white",
         cursor: "pointer",
+        textDecoration: "none",
+        height: { xs: "auto", md: 56 },
+        gap: { xs: 1.5, md: 0 },
       }}
-      justifyContent="space-between"
-      data-cy="space-card"
-      component="div"
-      onClick={changeCurrentSpaceAndNavigateToAssessments}
     >
       <Box
         sx={{
           ...styles.centerV,
-          width: { xs: "min-content", sm: "auto" },
-          gap: { xs: "10px", sm: "16px" },
-          alignItems: "center",
+          gap: { xs: 1, sm: 2 },
+          width: { xs: "100%", md: "auto" },
         }}
-        alignSelf="stretch"
       >
         <Typography
           variant="h6"
-          data-cy="space-card-link"
-          data-testid={"space-card-title-test"}
           sx={{
-            fontSize: "1.2rem",
-            fontWeight: "bold",
-            textDecoration: "none",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            alignSelf: "stretch",
+            fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
+            fontWeight: 700,
+            flexShrink: 0,
             color: (t) => t.palette.primary.dark,
             fontFamily: languageDetector(title)
               ? farsiFontFamily
               : primaryFontFamily,
           }}
+          data-testid={"space-card-title-test"}
         >
-          {loading ? <CircularProgress size="20px" /> : <>{title}</>}
+          {loading ? <CircularProgress size={20} /> : title}
         </Typography>
+
         {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip
-            data-testid={"space-card-premium-test"}
-            title={"premiumSpace"}
-          >
-            <img
-              style={{ width: "32px", height: "32px" }}
+          <Tooltip title="premiumSpace" data-testid={"space-card-premium-test"}>
+            <Box
+              component="img"
               src={premium}
-              alt={"premium-sign"}
+              alt="premium"
+              sx={{ width: 32, height: 32 }}
             />
           </Tooltip>
         )}
@@ -166,28 +159,19 @@ export const SpaceCard = (props: ISpaceCardProps) => {
 
       <Box
         sx={{
-          display: "flex",
-          gap: { xs: 1, sm: 2, md: 4 },
-          alignItems: "center",
+          ...styles.centerV,
+          flexWrap: "wrap",
+          justifyContent: { xs: "space-between", md: "flex-end" },
+          gap: { xs: 0.5, sm: 2, md: 6 },
+          width: { xs: "100%", md: "auto" },
         }}
       >
-        <Box
-          sx={{
-            ...styles.centerV,
-            gap: { xs: 1, sm: 2, md: 4 },
-            alignItems: "center",
-          }}
-        >
-          <Tooltip title={<Trans i18nKey={owner?.displayName} />}>
+        <Box sx={{ ...styles.centerV, gap: { xs: 0.5, sm: 2, md: 2 } }}>
+          <Tooltip title={<Trans i18nKey={owner.displayName} />}>
             <Chip
-              sx={{
-                color: `${isOwner ? theme.palette.primary.main : "#2B333B"}`,
-                borderColor: `${isOwner ? theme.palette.primary.main : "#C7CCD1"}`,
-                width: { xs: "80px", sm: "120px", md: "auto" },
-                height: "34px",
-                display: "flex",
-                alignItems: "center",
-              }}
+              size="small"
+              variant="outlined"
+              color={isOwner ? "primary" : "default"}
               label={
                 <>
                   <Trans i18nKey={"ownerName"} />
@@ -207,8 +191,6 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                   )}
                 </>
               }
-              size="small"
-              variant="outlined"
             />
           </Tooltip>
 
@@ -216,7 +198,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
             <Box
               sx={{
                 ...styles.centerV,
-                gap: 1,
+                gap: 0.5,
                 opacity: 0.8,
                 textDecoration: "none",
                 color: "initial",
@@ -249,7 +231,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
             <Box
               sx={{
                 ...styles.centerV,
-                gap: 1,
+                gap: 0.5,
                 opacity: 0.8,
                 textDecoration: "none",
                 color: "initial",
@@ -279,64 +261,54 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           </Tooltip>
         </Box>
 
-        <Box
-          justifyContent={"flex-end"}
-          sx={{
-            ...styles.centerV,
-            gap: 0.5,
-            minWidth: { xs: "60px", sm: "120px" },
-            alignItems: "center",
-          }}
-        >
+        <Box sx={{ ...styles.centerV, gap: 0.5 }}>
           {isActiveSpace && (
-            <Box data-testid={"space-card-test-isActiveSpace"} mr={1}>
-              <Chip
-                label={<Trans i18nKey={"current"} />}
-                color="info"
-                size="small"
+            <Chip
+              data-testid={"space-card-test-isActiveSpace"}
+              label={<Trans i18nKey="current" />}
+              color="info"
+              size="small"
+            />
+          )}
+
+          <Tooltip title={<Trans i18nKey="spaceSetting" />}>
+            <IconButton
+              size="small"
+              component={Link}
+              to={`/${spaceId}/setting`}
+              onClick={(e) => {
+                e.stopPropagation();
+                trackSeen();
+              }}
+            >
+              <SettingsOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip
+            open={showTooltip}
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+            onClick={(e) => {
+              setShowTooltip(false);
+              e.stopPropagation();
+            }}
+            title={<Trans i18nKey={"moreAction"} />}
+          >
+            <Box>
+              <Actions
+                isActiveSpace={isActiveSpace}
+                dialogProps={dialogProps}
+                space={item}
+                fetchSpaces={fetchSpaces}
+                isOwner={isOwner}
+                setShowTooltip={setShowTooltip}
+                is_default_space_for_current_user={
+                  is_default_space_for_current_user
+                }
               />
             </Box>
-          )}
-          <>
-            <Tooltip title={<Trans i18nKey={"spaceSetting"} />}>
-              <Box onClick={trackSeen} sx={{ ...styles.centerV }}>
-                <IconButton
-                  size="small"
-                  component={Link}
-                  to={`/${spaceId}/setting`}
-                  sx={{
-                    color: "black",
-                  }}
-                >
-                  <SettingsOutlinedIcon color="inherit" />
-                </IconButton>
-              </Box>
-            </Tooltip>
-            <Tooltip
-              open={showTooltip}
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              onClick={(e) => {
-                setShowTooltip(false);
-                e.stopPropagation();
-              }}
-              title={<Trans i18nKey={"moreAction"} />}
-            >
-              <Box>
-                <Actions
-                  isActiveSpace={isActiveSpace}
-                  dialogProps={dialogProps}
-                  space={item}
-                  fetchSpaces={fetchSpaces}
-                  isOwner={isOwner}
-                  setShowTooltip={setShowTooltip}
-                  is_default_space_for_current_user={
-                    is_default_space_for_current_user
-                  }
-                />
-              </Box>
-            </Tooltip>
-          </>
+          </Tooltip>
         </Box>
       </Box>
     </Box>

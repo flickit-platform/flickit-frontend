@@ -224,19 +224,28 @@ export const IssuesItem = ({
 
   const regenerateInsights = useQuery({
     service: (args, config) =>
-      service.assessments.insight.regenerateExpired(args ?? { assessmentId }, config),
+      service.assessments.insight.regenerateExpired(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: false,
   });
 
   const approveExpiredInsights = useQuery({
     service: (args, config) =>
-      service.assessments.insight.approveExpired(args ?? { assessmentId }, config),
+      service.assessments.insight.approveExpired(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: false,
   });
 
   const resolvedAllComments = useQuery({
     service: (args, config) =>
-      service.assessments.questionnaire.resolveAllComments(args ?? { assessmentId }, config),
+      service.assessments.questionnaire.resolveAllComments(
+        args ?? { assessmentId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -367,7 +376,9 @@ export const IssuesItem = ({
         }}
         variant={textVariant}
       >
-        {value !== 0 && <Box>{value}</Box>}
+        {typeof value === "number" && value !== 0 && (
+          <Box component="span">{value.toString()}</Box>
+        )}
         {issueTextMap[name] && <Trans i18nKey={issueTextMap[name]} />}
       </Typography>
 
@@ -389,9 +400,7 @@ export const IssuesItem = ({
 
       {name === "notGenerated" && (
         <Tooltip
-          disableHoverListener={
-            issues?.unanswered < 1 || !disableGenerateButtons
-          }
+          disableHoverListener={issues?.unanswered < 1}
           title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
         >
           <div style={{ marginInlineStart: "auto" }}>
@@ -415,9 +424,7 @@ export const IssuesItem = ({
       {name == "expired" && (
         <>
           <Tooltip
-            disableHoverListener={
-              issues?.unanswered < 1 || !disableGenerateButtons
-            }
+            disableHoverListener={issues?.unanswered < 1}
             title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
           >
             <div

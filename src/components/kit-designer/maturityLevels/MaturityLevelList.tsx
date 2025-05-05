@@ -167,6 +167,7 @@ const MaturityLevelList = ({
                         langCode ? item.translations?.[langCode]?.title : ""
                       }
                       variant="semiBoldMedium"
+                      showCopyIcon
                     />
                   )}
                 </Box>
@@ -249,6 +250,7 @@ const MaturityLevelList = ({
                       langCode ? item.translations?.[langCode]?.description : ""
                     }
                     variant="bodyMedium"
+                    showCopyIcon
                   />
                 )}
               </Box>

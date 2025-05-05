@@ -34,7 +34,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
   };
   const listOfText = [
     "reachedNumberOfAssessments",
-    "youCanT",
+    "youCan",
     "deleteExistingAssessments",
     "upgradeToPremiumSpace",
   ];
@@ -83,7 +83,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                     </Typography>
                   )}
                 <Trans i18nKey={text} />
-                {text == "youCanT" && ":"}
+                {text == "youCan" && ":"}
               </Typography>
               {text == "upgradeToPremiumSpace" && theme.direction == "ltr" && (
                 <Typography variant="semiBoldLarge">

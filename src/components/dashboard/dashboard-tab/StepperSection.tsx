@@ -11,7 +11,8 @@ import { t } from "i18next";
 import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
+import useScreenResize from "@utils/useScreenResize";
 
 interface IStepperSection {
   setActiveStep: (value: React.SetStateAction<number>) => void;
@@ -30,8 +31,16 @@ const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
 
   return (
-    <Box sx={{ ...styles.boxStyle }}>
-      <Stepper sx={{ width: "80%", mx: "auto", mb: "30px" }} activeStep={activeStep}>
+    <Box sx={{ ...styles.boxStyle, display: "flex", flexDirection: {xs: "row", md: "column"} }}>
+      <Stepper
+        sx={{ width: {md: "80%"}, mx: "auto", mt: {xs: 8, md: "unset"}, mb: {xs: 8, md : "30px"},
+          "& .MuiStepConnector-line": {
+            height: "100%"
+          }
+        }}
+        activeStep={activeStep}
+        orientation={useScreenResize("md") ? "vertical" : "horizontal" }
+      >
         {stepData.map((label: any) => (
           <Step key={uniqueId()}>
             <StepLabel
@@ -78,14 +87,55 @@ const StepBox = (props: IStepBox) => {
   const advices = category === "advices";
   const report = category === "report";
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setLocalStep(activeStep);
+  }, [activeStep]);
+
+  useEffect(() => {
+    if (questions) {
+      const { answered, total } = metrics;
+      if (answered === total && localStep === 0) {
+        setActiveStep(1);
+      }
+    }
+
+    if (insights) {
+      const { expected, notGenerated } = metrics;
+      const result = expected - notGenerated;
+      if (expected === result && localStep === 1) {
+        setActiveStep(2);
+      }
+    }
+
+    if (advices) {
+      const { total } = metrics;
+      if (total !== 0 && localStep === 2) {
+        setActiveStep(3);
+      }
+    }
+
+    if (report) {
+      const { providedMetadata, totalMetadata, unpublished } = metrics;
+      if (
+        providedMetadata === totalMetadata &&
+        !unpublished &&
+        localStep === 3
+      ) {
+        setActiveStep(4);
+      }
+    }
+  }, [metrics, localStep, setActiveStep, questions, insights, advices, report]);
+
+  useEffect(() => {
     setLocalStep(activeStep);
   }, [activeStep]);
 
   const calcOfIssues = () => {
     if (questions) {
       return Object.entries(metrics)
-        .filter(([key]) => key !== "total" && key !== "answered" && metrics[key])
+        .filter(
+          ([key]) => key !== "total" && key !== "answered" && metrics[key],
+        )
         .reduce((acc, [_, value]) => acc + value, 0);
     }
     if (insights) {
@@ -100,7 +150,9 @@ const StepBox = (props: IStepBox) => {
       return Object.entries(metrics)
         .filter(
           ([key]) =>
-            key !== "totalMetadata" && key !== "providedMetadata" && metrics[key]
+            key !== "totalMetadata" &&
+            key !== "providedMetadata" &&
+            metrics[key],
         )
         .reduce((acc, [_, value]) => acc + value, 0);
     }
@@ -113,7 +165,9 @@ const StepBox = (props: IStepBox) => {
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        document.querySelector(`#${text}`)?.scrollIntoView({ behavior: "smooth" });
+        document
+          .querySelector(`#${text}`)
+          ?.scrollIntoView({ behavior: "smooth" });
       }}
     >
       <Chip
@@ -171,21 +225,23 @@ const StepBox = (props: IStepBox) => {
     completed = answered === total;
     const hasIssues = calcOfIssues() > 0;
 
-    React.useEffect(() => {
-      if (completed && localStep === 0) {
-        setActiveStep(1);
-      }
-    }, [completed, localStep, setActiveStep]);
-
     content = (
-      <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "calc(100% - 60px)",
-      }}>
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "space-evenly" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: "calc(100% - 60px)",
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${answered} / ${total} `}
           </Typography>
@@ -194,7 +250,14 @@ const StepBox = (props: IStepBox) => {
             {hasIssues && issuesTag("questions")}
           </Box>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "4px",
+          }}
+        >
           <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
             {Math.floor((100 * answered) / total)}%
           </Typography>
@@ -212,28 +275,24 @@ const StepBox = (props: IStepBox) => {
     completed = localStep >= 1 && expected === result;
     const hasIssues = unapproved || expired || notGenerated;
 
-    React.useEffect(() => {
-      if (completed && localStep === 1) {
-        setActiveStep(2);
-      }
-    }, [completed, localStep, setActiveStep]);
-
     content = (
-      <Box sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-        width: "100%",
-        height: "calc(100% - 60px)",
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          width: "100%",
+          height: "calc(100% - 60px)",
+        }}
+      >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
-            {!completed && localStep === 1 && currentTag}
-            {hasIssues && issuesTag("insights")}
+            {!completed && localStep === 1 ? currentTag : ""}
+            {hasIssues ? issuesTag("insights") : ""}
           </Box>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
@@ -253,20 +312,16 @@ const StepBox = (props: IStepBox) => {
     completed = localStep >= 2 && total !== 0;
     const hasIssues = total === 0;
 
-    React.useEffect(() => {
-      if (completed && localStep === 2) {
-        setActiveStep(3);
-      }
-    }, [completed, localStep, setActiveStep]);
-
     content = (
-      <Box sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-        width: "100%",
-        height: "calc(100% - 60px)",
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          width: "100%",
+          height: "calc(100% - 60px)",
+        }}
+      >
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Typography sx={{ ...theme.typography.headlineLarge }}>
             {total}
@@ -284,25 +339,29 @@ const StepBox = (props: IStepBox) => {
   }
 
   if (report) {
-    const { unprovidedMetadata, unpublished, providedMetadata, totalMetadata } = metrics;
-    completed = localStep >= 3 && providedMetadata === totalMetadata && !unpublished;
+    const { unprovidedMetadata, unpublished, providedMetadata, totalMetadata } =
+      metrics;
+    completed =
+      localStep >= 3 && providedMetadata === totalMetadata && !unpublished;
     const hasIssues = unprovidedMetadata >= 1 || unpublished;
 
-    React.useEffect(() => {
-      if (completed && localStep === 3) {
-        setActiveStep(4);
-      }
-    }, [completed, localStep, setActiveStep]);
-
     content = (
-      <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "calc(100% - 60px)",
-      }}>
-        <Box sx={{ width: "100%", display: "flex", justifyContent: "space-evenly" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: "calc(100% - 60px)",
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+          }}
+        >
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${providedMetadata} / ${totalMetadata} `}
           </Typography>

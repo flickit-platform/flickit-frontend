@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import MainCard from "@utils/MainCard";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -17,22 +16,20 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import Switch from "@mui/material/Switch";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
-
+import { styles } from "@styles";
 const ReportTab = () => {
   const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
 
   const fetchReportFields = useQuery({
     service: (args, config) =>
-      service.assessments.report.getMetadata(
-        args ?? { assessmentId },
-        config,
-      ),
+      service.assessments.report.getMetadata(args ?? { assessmentId }, config),
     runOnMount: true,
   });
 
   const PublishReportStatus = useQuery({
-    service: (args, config) => service.assessments.report.updatePublishStatus(args, config),
+    service: (args, config) =>
+      service.assessments.report.updatePublishStatus(args, config),
     runOnMount: false,
   });
 
@@ -88,9 +85,11 @@ const ReportTab = () => {
                     mt: name == "intro" ? 4 : null,
                   }}
                 >
-                  <MainCard
+                  <Box
                     key={uniqueId()}
-                    style={{
+                    sx={{
+                      ...styles.boxStyle,
+                      gap: 2,
                       minHeight: "190px",
                       // mt: name == "intro" ? 4 : 5,
                       width:
@@ -139,10 +138,12 @@ const ReportTab = () => {
                         required={false}
                       />
                     </Box>
-                  </MainCard>
+                  </Box>
                   {name == "intro" && (
-                    <MainCard
-                      style={{
+                    <Box
+                      sx={{
+                        ...styles.boxStyle,
+                        gap: 2,
                         minHeight: "190px",
                         width: { xs: "100%", md: "30%" },
                         display: "flex",
@@ -220,7 +221,7 @@ const ReportTab = () => {
                             </Box>
                           )}
                       </Box>
-                    </MainCard>
+                    </Box>
                   )}
                 </Box>
               );

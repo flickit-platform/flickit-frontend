@@ -22,10 +22,10 @@ const AssessmentKitsContainer = (props: PropsWithChildren<{}>) => {
 
   return (
     <>
-      <Box sx={{ ...sharedBoxProps, px: { xl: 30, lg: 12, xs: isMobileScreen ? 0 : 2, sm: 3 } }}>
+      <Box sx={{ ...sharedBoxProps }}>
         <AssessmentKitsStoreBanner mobileScreen={isMobileScreen} />
       </Box>
-      <Box sx={{ ...sharedBoxProps, px: { xl: 30, lg: 12, xs: 2, sm: 3 } }}>
+      <Box sx={{ ...sharedBoxProps }}>
         <AssessmentKitsStoreListCard />
         <AssessmentKitsContactUs />
       </Box>
