@@ -27,6 +27,7 @@ import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
 import { useQuery } from "@/utils/useQuery";
+import useScreenResize from "@utils/useScreenResize";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -59,6 +60,7 @@ const AssessmentContainer = () => {
   useEffect(() => {
     fetchSpaceInfo.query();
   }, [data]);
+  const isSmallScreen = useScreenResize("sm");
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
@@ -71,6 +73,7 @@ const AssessmentContainer = () => {
               textDecoration: "underline",
               cursor: "pointer",
               textAlign: "end",
+              mb: { xs: "5px", sm: "unset" },
             }}
             color="primary"
           >
@@ -99,7 +102,12 @@ const AssessmentContainer = () => {
                     onClick={() => navigate(`/${spaceId}/setting`)}
                     shouldAnimate={data?.length === 0}
                     variantType="outlined"
-                    text="settings"
+                    text={isSmallScreen ? "" : "settings"}
+                    sx={{px: isSmallScreen ? 0 : 1,
+                      "& .MuiButton-endIcon": {
+                        mx: isSmallScreen ? "0px !important" : "unset"
+                      },
+                    }}
                   />
                   <ToolbarCreateItemBtn
                     icon={
@@ -123,7 +131,12 @@ const AssessmentContainer = () => {
                     }
                     shouldAnimate={data?.length === 0}
                     disabled={!fetchSpaceInfo.data?.canCreateAssessment}
-                    text={"createAssessment"}
+                    text={isSmallScreen ? "" : "createAssessment"}
+                    sx={{px: isSmallScreen ? 0 : 1,
+                      "& .MuiButton-endIcon": {
+                        mx: isSmallScreen ? "0px !important" : "unset"
+                      },
+                    }}
                   />
                 </Box>
               ) : (
