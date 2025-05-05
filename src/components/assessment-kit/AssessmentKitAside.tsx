@@ -1,10 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import target from "@assets/svg/target.svg";
 import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
 import LanguageIcon from "@mui/icons-material/Language";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PriceIcon from "@utils/icons/priceIcon";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
@@ -22,10 +20,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 
 interface IlistOfItems {
-  Icon:
-    | string
-    | ((props: string) => JSX.Element)
-    | React.ElementType<SvgIconProps>;
+  icon: any;
   title: string;
   description: string;
 }
@@ -39,21 +34,30 @@ const AssessmentKitAside = (props: any) => {
 
   const listOfItems: IlistOfItems[] = [
     {
-      Icon: target,
-      title: "kitGoal",
-      description: metadata.goal ?? "-",
+      icon: (
+        <PriceIcon
+          color={theme.palette.primary.dark}
+          width={"33px"}
+          height={"33px"}
+        />
+      ),
+      title: "price",
+      description: "free",
     },
+
     {
-      Icon: PeopleAltOutlinedIcon,
-      title: "bestFor",
-      description: metadata?.context ?? "-",
-    },
-    {
-      Icon: LanguageIcon,
+      icon: (
+        <LanguageIcon
+          sx={{
+            color: theme.palette.primary.dark,
+            width: "33px",
+            height: "33px",
+          }}
+        />
+      ),
       title: "supportedLanguages",
       description: formatLanguageCodes(languages, i18next.language) ?? "-",
     },
-    { Icon: PriceIcon, title: "price", description: "free" },
   ];
 
   const likeQueryData = useQuery({
@@ -81,12 +85,10 @@ const AssessmentKitAside = (props: any) => {
       <Box position="sticky" top={60}>
         <Box
           sx={{
-            background: "#E8EBEE",
-            border: "1px solid #668099",
-            borderRadius: "8px",
-            pt: 4,
+            ...styles.shadowStyle,
             pb: 2,
             px: 3,
+            pt: 4,
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
@@ -109,13 +111,14 @@ const AssessmentKitAside = (props: any) => {
               <Typography
                 sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
               >
-                <Trans i18nKey={"anyQuestions"} />
+                <Trans i18nKey={"haveAnyQuestions"} />
               </Typography>
               <Typography
                 sx={{
                   ...theme.typography.bodySmall,
                   color: theme.palette.primary.main,
                   cursor: "pointer",
+                  textDecoration: "underline",
                 }}
                 onClick={() =>
                   contactusDialogProps.openDialog({ context: undefined })
@@ -125,47 +128,38 @@ const AssessmentKitAside = (props: any) => {
               </Typography>
             </Box>
           </Box>
-        </Box>
-        <Typography
-          sx={{
-            ...theme.typography.bodySmall,
-            ...styles.centerVH,
-            gap: 1,
-            color: "#2B333B",
-            mt: "12px",
-            textAlign: "center",
-          }}
-        >
-          <Trans
-            i18nKey={likeStatus ? "youLikedThisKit" : "doYouLikeThisKit"}
-          />
-          <IconButton
-            onClick={toggleLike}
+          <Typography
             sx={{
-              transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
-              p: 1,
-              width: "24px",
-              height: "24px",
-              background: likeStatus ? theme.palette.primary.main : "inherit",
-              "&:hover": {
-                background: likeStatus ? theme.palette.primary.main : "#EAF2FB",
-              },
+              ...theme.typography.bodySmall,
+              ...styles.centerVH,
+              gap: 1,
+              color: "#2B333B",
+              mt: "8px",
+              textAlign: "center",
             }}
           >
-            {likeStatus ? (
-              <ThumbUpOffAltOutlinedIcon
-                sx={{ color: "#fff", fontSize: "20px" }}
-              />
-            ) : (
-              <ThumbUpOffAltOutlinedIcon
-                sx={{
-                  color: theme.palette.primary.main,
-                  fontSize: "20px",
-                }}
-              />
-            )}
-          </IconButton>
-        </Typography>
+            <Trans
+              i18nKey={likeStatus ? "youLikedThisKit" : "didYouLikeThisKit"}
+            />
+            <IconButton
+              size="small"
+              onClick={toggleLike}
+              sx={{
+                transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
+                background: likeStatus
+                  ? theme.palette.primary.light
+                  : "inherit",
+                "&:hover": {
+                  background: likeStatus
+                    ? theme.palette.primary.light
+                    : "#EAF2FB",
+                },
+              }}
+            >
+              <ThumbUpOffAltOutlinedIcon color="primary" fontSize="small" />
+            </IconButton>
+          </Typography>
+        </Box>
       </Box>
       <AssessmentCEFromDialog {...dialogProps} />
       <ContactUsDialog {...contactusDialogProps} />
@@ -176,27 +170,11 @@ const AssessmentKitAside = (props: any) => {
 export default AssessmentKitAside;
 
 const InfoBox = (props: any) => {
-  const { Icon, title, description } = props;
+  const { icon, title, description } = props;
   return (
-    <Box sx={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-      <Box sx={{ width: "40px", height: "40px" }}>
-        {typeof Icon === "string" && Icon !== "" ? (
-          <img
-            style={{ width: "40px", height: "40px" }}
-            src={Icon}
-            alt={`${Icon}-icon`}
-          />
-        ) : (
-          <Icon
-            sx={{
-              color: theme.palette.primary.dark,
-              width: "40px",
-              height: "40px",
-            }}
-          />
-        )}
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+    <Box sx={{ ...styles.centerV, gap: "12px" }}>
+      {icon}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
         <Typography
           sx={{ ...theme.typography.semiBoldSmall, color: "#6C8093" }}
         >

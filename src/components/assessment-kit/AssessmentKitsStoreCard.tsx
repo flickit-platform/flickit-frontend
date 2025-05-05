@@ -47,7 +47,7 @@ const AssessmentKitsStoreCard = (props: any) => {
       to={small ? `./../${id}/` : `${id}/`}
       component={Link}
       sx={{
-        ...styles.boxStyle,
+        ...styles.shadowStyle,
         borderRadius: 2,
         height: "100%",
         mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
@@ -60,7 +60,7 @@ const AssessmentKitsStoreCard = (props: any) => {
         cursor: "pointer",
         textDecoration: "unset",
         color: "inherit",
-        p: small ? "12px 24px !important" : { xs: "24px", sm: "32px" },
+        p: small ? "12px 24px" : { xs: "24px", sm: "32px" },
       }}
     >
       <Box>
