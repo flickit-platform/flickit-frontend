@@ -105,7 +105,9 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
         sx={{
           ...styles.centerCV,
           width: { md: 120 },
-          borderRight: { md: "1px solid #8DAFD2" },
+          [theme.direction === "ltr" ? "borderRight" : "borderLeft"]: {
+            md: "1px solid #8DAFD2",
+          },
           borderBottom: { xs: "1px solid #8DAFD2", md: "none" },
         }}
       >
@@ -176,7 +178,9 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               : primaryFontFamily,
             textAlign: "justify",
           }}
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{
+            __html: content !== "" ? content : t("unavailable"),
+          }}
         />
 
         {showBtn && (

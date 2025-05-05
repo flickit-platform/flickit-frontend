@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
+import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -45,6 +46,7 @@ const AssessmentKitContainer = () => {
     <PermissionControl error={[assessmentKitQuery.errorObject]}>
       <QueryData
         {...assessmentKitQuery}
+        renderLoading={() => <LoadingAssessmentKit />}
         render={(assessmentKitQueryData) => {
           setDocumentTitle(
             `${t("assessmentKit")}: ${assessmentKitQueryData.title ?? ""}`,
