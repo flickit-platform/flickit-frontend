@@ -16,7 +16,6 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
-import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
 import { useFlag } from "@/hooks/useFlag";
 interface IAssessmentKitListItemProps {
@@ -37,6 +36,7 @@ interface IAssessmentKitListItemProps {
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
+  const showGroups = useFlag(FLAGS.display_expert_groups);
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
     service: (args, config) => service.assessmentKit.info.clone(args, config),
@@ -131,7 +131,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             title={!draftVersionId && <Trans i18nKey="noDraftVersion" />}
           >
             <div>
-              {hasAccess && useFlag(FLAGS.display_expert_groups) && (
+              {hasAccess && showGroups && (
                 <LoadingButton
                   variant="outlined"
                   size="small"

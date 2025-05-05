@@ -210,8 +210,10 @@ const Actions = (props: any) => {
       }
     }
   };
+  const showGroups = useFlag(FLAGS.display_expert_groups);
 
-  return editable && useFlag(FLAGS.display_expert_groups) ? (
+
+  return editable && showGroups ? (
     <>
       <MoreActions
         {...useMenu()}

@@ -39,12 +39,11 @@ import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
-import i18n, { t } from "i18next";
+import i18n from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
-import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
 import { useFlag } from "@/hooks/useFlag";
 
@@ -861,6 +860,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const showGroups = useFlag(FLAGS.display_expert_groups);
 
   return (
     <>
@@ -917,7 +917,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <Trans i18nKey={"account"} />
           </ListItemText>
         </MenuItem>
-        {useFlag(FLAGS.display_expert_groups) && (
+        {showGroups && (
           <MenuItem
             dense
             onClick={handleClose}

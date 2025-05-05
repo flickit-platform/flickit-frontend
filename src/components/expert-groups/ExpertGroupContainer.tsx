@@ -65,7 +65,6 @@ import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import { FLAGS } from "@/types";
-import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
 import { useFlag } from "@/hooks/useFlag";
 
@@ -134,6 +133,8 @@ const ExpertGroupContainer = () => {
     }
   };
 
+  const showGroups = useFlag(FLAGS.display_expert_groups);
+
   return (
     <>
       <QueryData
@@ -181,7 +182,7 @@ const ExpertGroupContainer = () => {
                   />
                 }
                 toolbar={
-                  editable && useFlag(FLAGS.display_expert_groups) ? (
+                  editable && showGroups ? (
                     <EditExpertGroupButton fetchExpertGroup={queryData.query} />
                   ) : (
                     <></>
@@ -724,6 +725,7 @@ const ExpertGroupMembers = (props: any) => {
   const { hasAccess, query, inviteeQuery } = props;
   const [openInvitees, setOpenInvitees] = useState(false);
   const [openAddMembers, setOpenAddMembers] = useState(false);
+  const showGroups = useFlag(FLAGS.display_expert_groups);
 
   return (
     <Box>
@@ -745,7 +747,7 @@ const ExpertGroupMembers = (props: any) => {
               >
                 <Trans i18nKey="members" />
               </Typography>
-              {hasAccess && useFlag(FLAGS.display_expert_groups) && (
+              {hasAccess && showGroups && (
                 <AddingNewMember
                   queryData={query}
                   inviteeQuery={inviteeQuery}
@@ -1094,6 +1096,7 @@ const AssessmentKitsList = (props: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const showGroups = useFlag(FLAGS.display_expert_groups);
 
   return (
     <>
@@ -1102,7 +1105,7 @@ const AssessmentKitsList = (props: any) => {
         size="small"
         toolbar={
           <Box sx={{ display: "flex", gap: "8px" }}>
-            {hasAccess && useFlag(FLAGS.display_expert_groups) && (
+            {hasAccess && showGroups && (
               <>
                 <Button
                   variant="outlined"

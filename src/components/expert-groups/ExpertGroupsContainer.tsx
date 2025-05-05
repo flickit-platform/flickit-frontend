@@ -54,9 +54,11 @@ const ExpertGroupsContainer = () => {
       : Math.ceil(queryData.data?.total / queryData.data?.size);
 
   useDocumentTitle(t("expertGroups") as string);
+  const showGroups = useFlag(FLAGS.display_expert_groups);
+
   return (
     <Box>
-      {useFlag(FLAGS.display_expert_groups) && (
+      {showGroups && (
         <Box
           sx={{
             background: "white",
