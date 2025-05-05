@@ -23,7 +23,6 @@ import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import flagsmith from "flagsmith";
 import { FLAGS } from "@/types";
 import { useFlag } from "@/hooks/useFlag";
 

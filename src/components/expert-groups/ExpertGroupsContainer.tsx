@@ -19,7 +19,6 @@ import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import { theme } from "@/config/theme";
-import flagsmith from "flagsmith";
 import { useFlag } from "@/hooks/useFlag";
 
 const ExpertGroupsContainer = () => {
