@@ -19,9 +19,7 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       pkceMethod: "S256",
     })
     .then((authenticated) => {
-
       const currentPath = location.pathname;
-
       if (!authenticated && isPublicRoute(currentPath)) {
         onAuthenticatedCallback();
         return;
