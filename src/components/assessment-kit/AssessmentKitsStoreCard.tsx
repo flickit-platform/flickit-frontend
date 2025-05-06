@@ -13,6 +13,7 @@ import i18next from "i18next";
 import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
+import keycloakService from "@/service/keycloakService";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -31,10 +32,15 @@ const AssessmentKitsStoreCard = (props: any) => {
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
-    openDialog.openDialog({
-      type: "create",
-      staticData: { assessment_kit: { id, title } },
-    });
+    const isAuthenticated = keycloakService.isLoggedIn();
+    if(!isAuthenticated){
+      keycloakService.doLogin();
+    }else{
+      openDialog.openDialog({
+        type: "create",
+        staticData: { assessment_kit: { id, title } },
+      });
+    }
   };
 
   const truncatedSummaryLength = small ? 150 : 297;
