@@ -8,10 +8,40 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@/types/index";
-import { useLocation, useOutlet, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { Trans } from "react-i18next";
+import { useMediaQuery } from "@mui/material";
+
+const tabListTitle = [
+  { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
+  {
+    label: "questions",
+    address: "questionnaires",
+    permission: "viewAssessmentQuestionnaireList",
+  },
+  {
+    label: "insights",
+    address: "insights",
+    permission: "viewAssessmentInsights",
+  },
+  { label: "advice", address: "advice", permission: "createAdvice" },
+  {
+    label: "reportTitle",
+    address: "report",
+    permission: "manageReportMetadata",
+  },
+  {
+    label: "settings",
+    address: "settings",
+    permission: "grantUserAssessmentRole",
+  },
+];
 
 const DashbordContainer = () => {
   const location = useLocation();
@@ -19,11 +49,13 @@ const DashbordContainer = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const outlet = useOutlet();
+  const navigate  = useNavigate();
 
   useEffect(() => {
     const pathSegments = location.pathname
       .split("/")
       .filter((segment) => segment);
+    console.log(pathSegments, "pathSegments");
     const lastPart = pathSegments[4];
     setSelectedTab(lastPart);
   }, [location]);
@@ -36,7 +68,19 @@ const DashbordContainer = () => {
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
     runOnMount: true,
   });
+  const isMobileScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("md"),
+  );
+  const handleChange = (event: SelectChangeEvent) => {
+    const { value, } = event.target;
+    setSelectedTab(value as string)
 
+    const selectedItem = tabListTitle.find(item => item.address === value);
+    if (selectedItem) {
+      const { address } = selectedItem;
+      navigate(`./${address}/`)
+    };
+  }
   return (
     <QueryBatchData
       queryBatchData={[fetchPathInfo]}
@@ -75,10 +119,27 @@ const DashbordContainer = () => {
                 xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
                 sx={{ display: "flex" }}
               >
-                <MainTabs
-                  onTabChange={handleTabChange}
-                  selectedTab={selectedTab}
-                />
+                {isMobileScreen ? (
+                  <FormControl fullWidth>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={selectedTab}
+                      onChange={(event)=>handleChange(event)}
+                    >
+                      {tabListTitle.map(item =>{
+                        const { label, address } = item
+                        return <MenuItem key={label} value={address}><Trans i18nKey={label} /></MenuItem>;
+                      })}
+                    </Select>
+                  </FormControl>
+                ) : (
+                  <MainTabs
+                    onTabChange={handleTabChange}
+                    selectedTab={selectedTab}
+                    tabListTitle={tabListTitle}
+                  />
+                )}
               </Grid>
               <Grid container>
                 <Grid item xs={12}>
