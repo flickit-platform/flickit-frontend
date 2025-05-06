@@ -38,7 +38,7 @@ const NavbarWithoutLogin = () => {
           backgroundColor: theme.palette.primary.main,
           borderRadius: 1,
           justifyContent: "space-between",
-          p:0
+          p: 0,
         }}
       >
         <Typography
@@ -47,7 +47,6 @@ const NavbarWithoutLogin = () => {
           sx={{
             display: {
               xs: "block",
-
             },
             color: "grey",
             height: "42px",
@@ -82,16 +81,15 @@ const NavbarWithoutLogin = () => {
           }}
         >
           <Button
-            component={NavLink}
-            to={`https://flickit.org/`}
             sx={{
               ...styles.activeNavbarLink,
               textTransform: "uppercase",
               color: "#fff",
             }}
             size="small"
+            onClick={() => keycloakService.doLogin()}
           >
-            <Trans i18nKey="home" />
+            <Trans i18nKey="spaces" />
           </Button>
           <Button
             component={NavLink}
@@ -118,7 +116,7 @@ const NavbarWithoutLogin = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: {xs: 0.8, sm: 2},
+            gap: { xs: 0.8, sm: 2 },
           }}
         >
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}

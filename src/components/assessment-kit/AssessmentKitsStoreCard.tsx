@@ -29,22 +29,17 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   const navigate = useNavigate();
 
-  let checkAuthenticated = () => {
-    const isAuthenticated = keycloakService.isLoggedIn();
-    if (!isAuthenticated) {
-      keycloakService.doLogin();
-      return null;
-    }
-  };
-
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
-    checkAuthenticated();
-    openDialog.openDialog({
-      type: "create",
-      staticData: { assessment_kit: { id, title } },
-    });
+    if (keycloakService.isLoggedIn()) {
+      openDialog.openDialog({
+        type: "create",
+        staticData: { assessment_kit: { id, title } },
+      });
+    } else {
+      keycloakService.doLogin();
+    }
   };
 
   const truncatedSummaryLength = small ? 150 : 297;
@@ -108,8 +103,11 @@ const AssessmentKitsStoreCard = (props: any) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                checkAuthenticated();
-                navigate(`/user/expert-groups/${expertGroup.id}`);
+                if (keycloakService.isLoggedIn()) {
+                  navigate(`/user/expert-groups/${expertGroup.id}`);
+                } else {
+                  keycloakService.doLogin();
+                }
               }}
             >
               <Avatar
