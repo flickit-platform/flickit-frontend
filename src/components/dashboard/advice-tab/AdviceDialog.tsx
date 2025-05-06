@@ -189,7 +189,7 @@ const AdviceDialog = ({
             mt={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              background: "#fff",
+              background: theme.palette.surface.containerLowest,
               maxHeight: "70vh",
               overflow: "hidden",
               overflowX: "hidden",

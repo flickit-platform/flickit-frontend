@@ -26,7 +26,7 @@ interface ImpactFormProps {
 export const dropdownStyle = {
   fullWidth: true,
   displayEmpty: true,
-  backgroundColor: "#fff",
+  backgroundColor: theme.palette.surface.containerLowest,
   fontSize: "14px",
 };
 
@@ -99,7 +99,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         fullWidth
         type="number"
         size="small"
-        sx={{ mx: 1, backgroundColor: "#fff", textFieldStyle, width: "50%" }}
+        sx={{ mx: 1, backgroundColor:theme.palette.surface.containerLowest, textFieldStyle, width: "50%" }}
       />
 
       <Box display="flex" alignItems="center">

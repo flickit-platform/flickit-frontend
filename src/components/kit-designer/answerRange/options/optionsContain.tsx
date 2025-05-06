@@ -159,7 +159,7 @@ const OptionContain = (props: any) => {
                 fontSize: 14,
               },
               width: { xs: "20%", md: "10%" },
-              background: "#fff",
+              background: theme.palette.surface.containerLowest,
               borderRadius: "8px",
             }}
             name="title"

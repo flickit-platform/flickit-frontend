@@ -97,7 +97,7 @@ const OptionForm = (props: OptionFormProps) => {
             "& .MuiFormLabel-root": {
               fontSize: 14,
             },
-            background: "#fff",
+            background:theme.palette.surface.containerLowest,
           }}
         />
       </Box>

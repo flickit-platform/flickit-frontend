@@ -407,7 +407,7 @@ const ListOfItems = ({
                                     "& .MuiFormLabel-root": {
                                       fontSize: 14,
                                     },
-                                    background: "#fff",
+                                    background: theme.palette.surface.containerLowest,
                                     borderRadius: "8px",
                                   }}
                                 />

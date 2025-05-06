@@ -76,7 +76,7 @@ const MaturityLevelForm = ({
             style: { textAlign: "center", width: 40 },
           }}
           sx={{
-            backgroundColor: "#fff",
+            backgroundColor: theme.palette.surface.containerLowest,
             "& .MuiInputBase-root": { fontSize: 14 },
           }}
         />

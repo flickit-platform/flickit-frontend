@@ -68,7 +68,7 @@ const SubjectForm = ({
           ...(testId ? { "data-testid": testId } : {}),
         }}
         sx={{
-          background: "#fff",
+          background:theme.palette.surface.containerLowest,
           borderRadius: "8px",
         }}
       />

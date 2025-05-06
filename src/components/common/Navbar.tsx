@@ -655,7 +655,7 @@ const Navbar = () => {
                 overlap="circular"
                 sx={{
                   "& .MuiBadge-badge": {
-                    backgroundColor: "#B8144B",
+                    backgroundColor:  theme.palette.secondary.main,
                     minWidth: "16px",
                     padding: 0,
                     height: "16px",

@@ -84,7 +84,7 @@ const QuestionnairesForm = ({
             "& .MuiInputBase-root": {
               fontSize: 14,
             },
-            background: "#fff",
+            background: theme.palette.surface.containerLowest,
           }}
         />
       </Box>

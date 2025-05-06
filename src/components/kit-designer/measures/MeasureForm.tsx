@@ -73,7 +73,7 @@ const MeasureForm = ({
             fontSize: "14px",
             border: "1px solid #ccc",
             borderRadius: "6px",
-            backgroundColor: "#fff",
+            backgroundColor: theme.palette.surface.containerLowest,
           }}
         />
       </Box>

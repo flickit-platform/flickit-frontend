@@ -152,7 +152,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
           renderValue={(selected) => handelSelected(selected)}
           sx={{
             ...theme.typography.semiBoldMedium,
-            background: "#fff",
+            background: theme.palette.surface.containerLowest,
             px: "0px",
             height: "40px",
           }}
