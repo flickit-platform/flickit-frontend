@@ -33,15 +33,9 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
   const subject = subjects[selectedTab];
 
   return (
-    <Box
-      sx={{
-        ...styles.shadowStyle,
-        bgcolor: "inherit !important",
-      }}
-    >
+    <Box>
       {/* Tabs */}
       <Box
-        px={4}
         pt="12px"
         sx={{
           ...styles.rtlStyle(languageDetector(subject.title)),
@@ -80,11 +74,7 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
       </Box>
 
       {/* Content */}
-      <Box
-        px={4}
-        py={3}
-        sx={{ ...styles.rtlStyle(languageDetector(subject.title)) }}
-      >
+      <Box py={3} sx={{ ...styles.rtlStyle(languageDetector(subject.title)) }}>
         <Typography variant="bodyLarge" sx={{ mb: 2 }}>
           {subject.description}
         </Typography>
