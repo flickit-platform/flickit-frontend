@@ -4,6 +4,8 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import Navbar from "@common/Navbar";
 import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
+import keycloakService from "@/service/keycloakService";
+import NavbarWithoutLogin from "@common/NavbarWithoutLogin";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
 
@@ -14,10 +16,11 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
   const checkLink = (link: string)=>{
     return  pathname.startsWith(link)
   }
+  const isAuthenticated = keycloakService.isLoggedIn();
 
   return (
     <Box sx={{ overflowX: "clip", minHeight: "100vh" }}>
-      <Navbar />
+      {isAuthenticated ? <Navbar /> : <NavbarWithoutLogin />}
       <Box
         sx={{
           p: !checkLink("/assessment-kits")

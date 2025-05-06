@@ -32,6 +32,10 @@ export const createService = (
   axios.defaults.timeoutErrorMessage = t("checkNetworkConnection") as string;
 
   axios.interceptors.request.use(async (req: any) => {
+    if (req.skipAuth) {
+      return req;
+    }
+    
     const accessToken = keycloakService.getToken();
     const hasTenantInUrl = req.url.includes("tenant");
 

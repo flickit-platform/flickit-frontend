@@ -13,6 +13,7 @@ import i18next from "i18next";
 import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
+import keycloakService from "@/service/keycloakService";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -28,9 +29,18 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   const navigate = useNavigate();
 
+  let checkAuthenticated = () => {
+    const isAuthenticated = keycloakService.isLoggedIn();
+    if (!isAuthenticated) {
+      keycloakService.doLogin();
+      return null;
+    }
+  };
+
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
+    checkAuthenticated();
     openDialog.openDialog({
       type: "create",
       staticData: { assessment_kit: { id, title } },
@@ -98,6 +108,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                checkAuthenticated();
                 navigate(`/user/expert-groups/${expertGroup.id}`);
               }}
             >
