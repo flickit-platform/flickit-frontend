@@ -8,14 +8,9 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import ErrorBoundary from "@common/errors/ErrorBoundry";
 import { useEffect } from "react";
 import flagsmith from "flagsmith";
-import {useLocation} from "react-router-dom";
-import {isPublicRoute} from "@/service/keycloakService";
 
 function App() {
-
-  const { pathname ="" } = useLocation();
-
-  const { error, loading } = useGetSignedInUserInfo({runOnMount : !isPublicRoute(pathname)}); // Checks if the user is signed in
+  const { error, loading } = useGetSignedInUserInfo(); // Checks if the user is signed in
   useEffect(() => {
     const customId = sessionStorage.getItem("currentUser");
 

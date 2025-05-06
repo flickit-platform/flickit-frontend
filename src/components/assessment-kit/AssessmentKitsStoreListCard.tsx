@@ -8,7 +8,6 @@ import useDialog from "@utils/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import uniqueId from "@/utils/uniqueId";
 import { useParams } from "react-router-dom";
-import keycloakService from "@/service/keycloakService";
 
 const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const { service } = useServiceContext();
@@ -16,10 +15,8 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
 
   const dialogProps = useDialog();
 
-  const isAuthenticated = keycloakService.isLoggedIn();
-  const isPublic = isAuthenticated ? "" : "/public"
   const assessmentKitsQueryData = useQuery({
-    service: (args={ isPublic }, config) => service.assessmentKit.info.getAll(args, config),
+    service: (args, config) => service.assessmentKit.info.getAll(args, config),
   });
 
   const renderSkeletons = () =>
