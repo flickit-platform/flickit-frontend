@@ -56,11 +56,17 @@ const commonService = {
 
   // ========== Misc ==========
   getKitLanguages(args: any, config: AxiosRequestConfig<any> | undefined = {}) {
-    return axios.get(`/api/v1/kit-languages/`, config);
+    return axios.get(`/api/v1/kit-languages/`, {
+      skipAuth: true,
+      ...config,
+    });
   },
 
   getTenantInfo(config?: AxiosRequestConfig<any>) {
-    return axios.get(`/api/v1/tenant/`, config);
+    return axios.get(`/api/v1/tenant/`, {
+      skipAuth: true,
+      ...config,
+    });
   },
 
   compareAssessments(

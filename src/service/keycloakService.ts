@@ -7,13 +7,24 @@ const _kc: KeycloakInstance = new Keycloak({
   clientId: import.meta.env.VITE_SSO_CLIENT_ID,
 });
 
+const PUBLIC_PATHS = ["/assessment-kits"];
+
+export const isPublicRoute = (path: string) =>
+  PUBLIC_PATHS.some((publicPath) => path.startsWith(publicPath));
+
 const initKeycloak = (onAuthenticatedCallback: () => void) => {
   _kc
     .init({
-      onLoad: "login-required",
+      onLoad: "check-sso",
       pkceMethod: "S256",
     })
     .then((authenticated) => {
+      const currentPath = location.pathname;
+      if (!authenticated && isPublicRoute(currentPath)) {
+        onAuthenticatedCallback();
+        return;
+      }
+
       if (!authenticated) {
         doLogin();
         return;
@@ -27,7 +38,6 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       const previousUser = localStorage.getItem("previousUser");
       const lastVisitedPage = localStorage.getItem("lastVisitedPage");
 
-      // اگر آدرس شامل html-document بود، ریدایرکت کن
       if (location.pathname.includes("html-document")) {
         const space = location.pathname.split("/")[1];
         const id = location.pathname.split("/")[4];

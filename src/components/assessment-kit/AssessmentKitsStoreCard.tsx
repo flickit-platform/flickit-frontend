@@ -13,6 +13,7 @@ import i18next from "i18next";
 import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
+import keycloakService from "@/service/keycloakService";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -31,10 +32,14 @@ const AssessmentKitsStoreCard = (props: any) => {
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
-    openDialog.openDialog({
-      type: "create",
-      staticData: { assessment_kit: { id, title } },
-    });
+    if (keycloakService.isLoggedIn()) {
+      openDialog.openDialog({
+        type: "create",
+        staticData: { assessment_kit: { id, title } },
+      });
+    } else {
+      keycloakService.doLogin();
+    }
   };
 
   const truncatedSummaryLength = small ? 150 : 297;
@@ -98,7 +103,11 @@ const AssessmentKitsStoreCard = (props: any) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                navigate(`/user/expert-groups/${expertGroup.id}`);
+                if (keycloakService.isLoggedIn()) {
+                  navigate(`/user/expert-groups/${expertGroup.id}`);
+                } else {
+                  keycloakService.doLogin();
+                }
               }}
             >
               <Avatar

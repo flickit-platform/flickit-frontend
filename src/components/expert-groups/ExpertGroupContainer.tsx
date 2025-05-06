@@ -66,7 +66,7 @@ import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import { FLAGS } from "@/types";
 import { getReadableDate } from "@utils/readableDate";
-import { useFlag } from "@/hooks/useFlag";
+import flagsmith from "flagsmith";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -133,7 +133,8 @@ const ExpertGroupContainer = () => {
     }
   };
 
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <>
@@ -725,7 +726,8 @@ const ExpertGroupMembers = (props: any) => {
   const { hasAccess, query, inviteeQuery } = props;
   const [openInvitees, setOpenInvitees] = useState(false);
   const [openAddMembers, setOpenAddMembers] = useState(false);
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <Box>
@@ -1096,7 +1098,8 @@ const AssessmentKitsList = (props: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <>
