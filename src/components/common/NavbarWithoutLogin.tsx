@@ -40,29 +40,16 @@ const NavbarWithoutLogin = () => {
           backgroundColor: theme.palette.primary.main,
           borderRadius: 1,
           justifyContent: "space-between",
+          p:0
         }}
       >
-        <IconButton
-          color="primary"
-          aria-label="open drawer"
-          edge="start"
-          // onClick={handleDrawerToggle}
-          sx={{
-            marginRight: theme.direction === "ltr" ? 1 : "unset",
-            marginLeft: theme.direction === "rtl" ? 1 : "unset",
-            display: { md: "none" },
-            color: "#fff",
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography
           variant="h6"
           onClick={login}
           sx={{
             display: {
-              xs: "none",
-              md: "block",
+              xs: "block",
+
             },
             color: "grey",
             height: "42px",
@@ -133,7 +120,7 @@ const NavbarWithoutLogin = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 2,
+            gap: {xs: 0.8, sm: 2},
           }}
         >
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
