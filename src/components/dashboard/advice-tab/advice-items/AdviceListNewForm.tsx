@@ -131,7 +131,7 @@ const AdviceListNewForm = ({
   return (
     <Box
       mt={1.5}
-      p={1.5}
+      p={{ xs: 0.2, sm: 1.5 }}
       sx={{
         backgroundColor: "#F3F5F6",
         borderRadius: "8px",
@@ -145,6 +145,7 @@ const AdviceListNewForm = ({
       <Box
         sx={{
           ...styles.centerVH,
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-evenly",
           background: "#F3F5F6",
           width: "100%",
@@ -189,7 +190,8 @@ const AdviceListNewForm = ({
               md={6}
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: {xs: "center", sm: "space-between"},
+                gap:{xs: 0.3, sm: "unset"},
                 "& .MuiGrid-root > .MuiGrid-item": {
                   paddingTop: "0px",
                 },
@@ -197,7 +199,7 @@ const AdviceListNewForm = ({
             >
               {selectAdvice?.map((item: any) => {
                 return (
-                  <FormControl key={item} sx={{ width: "30%" }}>
+                  <FormControl key={item} sx={{ width: {xs: "100%", sm: "30%" } }}>
                     <InputLabel id="demo-multiple-name-label">
                       {" "}
                       <Trans i18nKey={item} />
@@ -221,6 +223,9 @@ const AdviceListNewForm = ({
                           display: "flex",
                           alignItems: "center",
                         },
+                        "& .MuiOutlinedInput-input": {
+                          px: {xs: 0, sm: "unset"}
+                        }
                       }}
                     >
                       <MenuItem disabled value="">
@@ -257,7 +262,7 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt: 12,
+                mt: 2,
               }}
             >
               <RichEditorField
@@ -270,7 +275,7 @@ const AdviceListNewForm = ({
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
                 type={errormessage?.description ? "reportTab" : ""}
-                showEditorMenu
+                showEditorMenu={false}
               />
             </Box>
           </FormProviderWithForm>
@@ -284,7 +289,7 @@ const AdviceListNewForm = ({
         {/* Check and Close Buttons */}
         <Box
           display="flex"
-          alignSelf="flex-start"
+          alignSelf={{xs: "flex-end", sm: "flex-start" }}
           flexDirection="column"
           gap={"20px"}
         >
@@ -297,7 +302,8 @@ const AdviceListNewForm = ({
               display: "flex",
               alignItems: "center",
               gap: "20px",
-              flexDirection: { xs: "column", sm: "row" },
+              flexDirection: { xs: "row-reverse", sm: "column" },
+              mt: {xs: 2, sm: "unset"}
             }}
           >
             {" "}
