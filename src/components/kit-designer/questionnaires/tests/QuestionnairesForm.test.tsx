@@ -27,17 +27,15 @@ describe("QuestionnairesForm", () => {
 
   const renderForm = () => {
     render(
-      <KitLanguageProvider>
-        <I18nextProvider i18n={i18n}>
-          <QuestionnairesForm
-            newItem={newItem}
-            handleInputChange={handleInputChange}
-            handleSave={handleSave}
-            handleCancel={handleCancel}
-            setNewQuestionnaires={setNewQuestionnaires}
-          />
-        </I18nextProvider>
-      </KitLanguageProvider>,
+      <I18nextProvider i18n={i18n}>
+        <QuestionnairesForm
+          newItem={newItem}
+          handleInputChange={handleInputChange}
+          handleSave={handleSave}
+          handleCancel={handleCancel}
+          setNewQuestionnaires={setNewQuestionnaires}
+        />
+      </I18nextProvider>,
     );
   };
   it("renders with initial values", async () => {

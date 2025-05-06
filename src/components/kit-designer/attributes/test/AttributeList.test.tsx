@@ -7,7 +7,12 @@ const mockAttributeList = [
   {
     id: 1,
     title: "attribute 1",
-    translations: {FA: {title: "translations title", description : "translations description"}},
+    translations: {
+      FA: {
+        title: "translations title",
+        description: "translations description",
+      },
+    },
     description: "description 1",
     subject: {
       id: 1,
@@ -39,26 +44,26 @@ const setOpenDeleteDialog = vi.fn();
 describe("MaturityLevelList", () => {
   beforeEach(() => {
     render(
-      <KitLanguageProvider>
-        <SubjectTable
-          subjects={SubjectMock}
-          initialAttributes={mockAttributeList}
-          onAddAttribute={handleAddNewRow}
-          onReorder={handleReorder}
-          showNewAttributeForm={true}
-          handleCancel={handleCancel}
-          handleSave={handleSave}
-          newAttribute={true}
-          setNewAttribute={setNewAttribute}
-          handleEdit={handleEdit}
-        />
-      </KitLanguageProvider>,
+      <SubjectTable
+        subjects={SubjectMock}
+        initialAttributes={mockAttributeList}
+        onAddAttribute={handleAddNewRow}
+        onReorder={handleReorder}
+        showNewAttributeForm={true}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        newAttribute={true}
+        setNewAttribute={setNewAttribute}
+        handleEdit={handleEdit}
+      />,
     );
   });
 
   it("renders attribute correctly", () => {
     const title: any = screen.getByTestId("display-attribute-title");
-    const description: any = screen.getByTestId("display-attribute-description");
+    const description: any = screen.getByTestId(
+      "display-attribute-description",
+    );
     expect(title).toBeInTheDocument();
     expect(description).toBeInTheDocument();
     expect(screen.getByTestId("display-attribute-title")).toHaveTextContent(

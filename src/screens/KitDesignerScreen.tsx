@@ -5,11 +5,7 @@ import { KitLanguageProvider } from "@/providers/KitProvider";
 
 const KitDesignerScreen = () => {
   useDocumentTitle(t("kitDesigner") as string);
-  return (
-    <KitLanguageProvider>
-      <KitDesignerContainer />
-    </KitLanguageProvider>
-  );
+  return <KitDesignerContainer />;
 };
 
 export default KitDesignerScreen;

@@ -26,17 +26,15 @@ describe("answer range test form", () => {
 
   const renderForm = () => {
     render(
-      <KitLanguageProvider>
-        <I18nextProvider i18n={i18n}>
-          <AnswerRangeForm
-            newItem={mockNewAnswerRange}
-            handleInputChange={mockHandleInputChange}
-            handleSave={mockHandleSave}
-            handleCancel={mockHandleCancel}
-            setNewAnswerRange={setNewAnswerRange}
-          />
-        </I18nextProvider>
-      </KitLanguageProvider>,
+      <I18nextProvider i18n={i18n}>
+        <AnswerRangeForm
+          newItem={mockNewAnswerRange}
+          handleInputChange={mockHandleInputChange}
+          handleSave={mockHandleSave}
+          handleCancel={mockHandleCancel}
+          setNewAnswerRange={setNewAnswerRange}
+        />
+      </I18nextProvider>,
     );
   };
 

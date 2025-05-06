@@ -5,7 +5,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
-import { RolesType } from "@/types/index";
+import { ILanguage, RolesType } from "@/types/index";
 import {
   AssessmentSettingGeneralBox,
   AssessmentSettingMemberBox,
@@ -16,6 +16,7 @@ import AddMemberDialog from "./addMemberDialog";
 import ConfirmRemoveMemberDialog from "./confirmRemoveMemberDialog";
 import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
+import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -32,10 +33,7 @@ const AssessmentSettingContainer = () => {
   const [changeData, setChangeData] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [kitInfo, setKitInfo] = useState<null | {
-    kit: { id: number; title: string };
-    kitCustomId: null | number;
-  }>(null);
+  const [kitInfo, setKitInfo] = useState<null>(null);
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) =>
@@ -43,6 +41,7 @@ const AssessmentSettingContainer = () => {
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
+  const { dispatch } = useKitDesignerContext();
 
   const fetchAssessmentMembers = useQuery({
     service: (args: { page?: number; size?: number } = {}, config) =>
@@ -81,8 +80,9 @@ const AssessmentSettingContainer = () => {
       try {
         const res = await AssessmentInfo.query();
         if (res) {
-          const { kit, kitCustomId } = res;
-          setKitInfo({ kit, kitCustomId });
+          setKitInfo(res);
+
+          dispatch(kitActions.setMainLanguage(res.language));
         } else {
           console.warn("AssessmentInfo.query returned null or undefined");
         }

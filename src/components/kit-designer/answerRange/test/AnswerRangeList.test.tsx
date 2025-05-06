@@ -48,15 +48,13 @@ vi.mock("axios");
 describe("AnswerRangeList Component", () => {
   beforeEach(() => {
     render(
-      <KitLanguageProvider>
-        <ListOfItems
-          items={mockAnswerRange}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onReorder={mockOnReorder}
-          setChangeData={setChangeData}
-        />
-      </KitLanguageProvider>,
+      <ListOfItems
+        items={mockAnswerRange}
+        onEdit={mockOnEdit}
+        onDelete={mockOnDelete}
+        onReorder={mockOnReorder}
+        setChangeData={setChangeData}
+      />,
     );
   });
 
@@ -108,13 +106,12 @@ describe("AnswerRangeList Component", () => {
     render(
       <MockServiceProvider>
         {mockAnswerRange.map((answer) => (
-          <KitLanguageProvider key={answer.id}>
-            <OptionContain
-              answerOption={answer.answerOptions}
-              fetchQuery={fetchQuery}
-              setChangeData={setChangeData}
-            />
-          </KitLanguageProvider>
+          <OptionContain
+            key={answer.id}
+            answerOption={answer.answerOptions}
+            fetchQuery={fetchQuery}
+            setChangeData={setChangeData}
+          />
         ))}
       </MockServiceProvider>,
     );
