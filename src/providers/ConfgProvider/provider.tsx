@@ -61,7 +61,6 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
       // Update title tag
       document.title = appTitle;
-      if (!keycloakService.isLoggedIn()) return
       service.common.getKitLanguages({}).then((res: any)=>{
         dispatch({
           type: ActionTypes.App_Languages,
