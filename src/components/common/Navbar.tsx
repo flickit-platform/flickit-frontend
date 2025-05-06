@@ -45,7 +45,6 @@ import languageDetector from "@utils/languageDetector";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
 import { getReadableDate } from "@utils/readableDate";
-import { useFlag } from "@/hooks/useFlag";
 import flagsmith from "flagsmith";
 
 const NotificationCenter = lazy(() =>
