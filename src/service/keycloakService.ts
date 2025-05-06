@@ -7,26 +7,13 @@ const _kc: KeycloakInstance = new Keycloak({
   clientId: import.meta.env.VITE_SSO_CLIENT_ID,
 });
 
-const PUBLIC_PATHS = ["/assessment-kits"]
-
-export const isPublicRoute = (path: string) =>
-  PUBLIC_PATHS.some((publicPath) => path.startsWith(publicPath));
-
 const initKeycloak = (onAuthenticatedCallback: () => void) => {
   _kc
     .init({
-      onLoad: "check-sso",
+      onLoad: "login-required",
       pkceMethod: "S256",
     })
     .then((authenticated) => {
-
-      const currentPath = location.pathname;
-
-      if (!authenticated && isPublicRoute(currentPath)) {
-        onAuthenticatedCallback();
-        return;
-      }
-
       if (!authenticated) {
         doLogin();
         return;
