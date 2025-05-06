@@ -40,7 +40,6 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
       const previousUser = localStorage.getItem("previousUser");
       const lastVisitedPage = localStorage.getItem("lastVisitedPage");
 
-      // اگر آدرس شامل html-document بود، ریدایرکت کن
       if (location.pathname.includes("html-document")) {
         const space = location.pathname.split("/")[1];
         const id = location.pathname.split("/")[4];
