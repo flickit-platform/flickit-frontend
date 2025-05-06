@@ -351,14 +351,22 @@ export const getMaturityLevelColors = (
   }
 };
 
-export const generateColorFromString = (str: string) => {
+export const generateColorFromString = (
+  str: string,
+  palette: Record<
+    string,
+    { backgroundColor: string; color: string }
+  > = chipColorPalette,
+) => {
   let hash = 0;
   for (let i = 0; i < str?.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash); // DJB2 hash function
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  // Select a chip based on hash
-  const chipIndex = (Math.abs(hash) % Object.keys(chipColorPalette).length) + 1;
-  return chipColorPalette[`chip${chipIndex}`];
+
+  const keys = Object.keys(palette);
+  const chipIndex = Math.abs(hash) % keys.length;
+
+  return palette[keys[chipIndex]];
 };
 
 export const chipColorPalette: any = {
@@ -414,6 +422,19 @@ export const chipColorPalette: any = {
     backgroundColor: "rgba(228, 224, 220, 1)",
     color: "rgba(153, 94, 0, 1)",
   },
+};
+
+export const customMindMapPalette = {
+  chip1: { backgroundColor: "#FDEAEA", color: "#B71515" },
+  chip2: { backgroundColor: "#FBE1E1", color: "#8A1C1C" },
+  chip3: { backgroundColor: "#DCEEFF", color: "#005BBB" },
+  chip4: { backgroundColor: "#E5F0F9", color: "#1A73E8" },
+  chip5: { backgroundColor: "#FFF7E6", color: "#FFBC00" },
+  chip6: { backgroundColor: "#FEF3D6", color: "#D79F00" },
+  chip7: { backgroundColor: "#FFEFE2", color: "#E96B11" },
+  chip8: { backgroundColor: "#FFF2E0", color: "#CC5C00" },
+  chip9: { backgroundColor: "#F3F1F9", color: "#6A1B9A" },
+  chip10: { backgroundColor: "#F5F5F5", color: "#616161" },
 };
 
 export const getColorOfStatus = (
