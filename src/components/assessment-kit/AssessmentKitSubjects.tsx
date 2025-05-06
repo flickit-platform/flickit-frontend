@@ -8,7 +8,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 
 interface Attribute {
@@ -62,6 +62,9 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
               label={s.title}
               sx={{
                 ...theme.typography.semiBoldXLarge,
+                fontFamily: languageDetector(s.description)
+                ? farsiFontFamily
+                : primaryFontFamily,
                 textTransform: "none",
                 color: "#333",
                 "&.Mui-selected": {
@@ -75,7 +78,15 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
 
       {/* Content */}
       <Box py={3} sx={{ ...styles.rtlStyle(languageDetector(subject.title)) }}>
-        <Typography variant="bodyLarge" sx={{ mb: 2 }}>
+        <Typography
+          variant="bodyLarge"
+          sx={{
+            mb: 2,
+            fontFamily: languageDetector(subject.description)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
+        >
           {subject.description}
         </Typography>
 
@@ -90,12 +101,26 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
                   textAlign: languageDetector(subject.title) ? "right" : "left",
                 }}
                 primary={
-                  <Typography variant="titleMedium">
+                  <Typography
+                    variant="titleMedium"
+                    sx={{
+                      fontFamily: languageDetector(attr.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                  >
                     • {attr.title}:{" "}
                   </Typography>
                 }
                 secondary={
-                  <Typography variant="bodyLarge">
+                  <Typography
+                    variant="bodyLarge"
+                    sx={{
+                      fontFamily: languageDetector(attr.description)
+                        ? farsiFontFamily
+                        : primaryFontFamily,
+                    }}
+                  >
                     {attr.description}
                   </Typography>
                 }
