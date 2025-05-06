@@ -8,7 +8,6 @@ import React, {
 import reducer, { initialState, AppState } from "./reducer";
 import { ActionTypes } from "./actions";
 import { useServiceContext } from "../ServiceProvider";
-import keycloakService from "@/service/keycloakService";
 
 interface AppContextType {
   config: AppState;
