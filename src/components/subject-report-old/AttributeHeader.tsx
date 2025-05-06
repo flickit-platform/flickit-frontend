@@ -1,12 +1,12 @@
-import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Theme } from '@mui/material/styles'; 
-import FlatGauge from '../common/charts/flatGauge/FlatGauge';
-import languageDetector from '@/utils/languageDetector';
-import { Trans } from 'react-i18next';
-import { getMaturityLevelColors } from '@/config/styles';
-import { farsiFontFamily, primaryFontFamily } from '@/config/theme';
+import React from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Theme } from "@mui/material/styles";
+import FlatGauge from "../common/charts/flatGauge/FlatGauge";
+import languageDetector from "@/utils/languageDetector";
+import { Trans } from "react-i18next";
+import { getMaturityLevelColors } from "@/config/styles";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
 interface AttributeHeaderProps {
   title: string;
@@ -35,14 +35,19 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
   const backgroundColor = colorPallet[maturityLevel.value - 1];
 
   return (
-    <Grid container sx={{ width: "100%", direction: theme.direction, borderRadius: "16px" }}>
+    <Grid
+      container
+      sx={{ width: "100%", direction: theme.direction, borderRadius: "16px" }}
+    >
       <Grid item xs={12} sm={9} sx={{ p: 4 }}>
         <Box>
           <Typography
             sx={{
               ...theme.typography.headlineSmall,
               textTransform: "none",
-              fontFamily: languageDetector(title) ? farsiFontFamily : primaryFontFamily,
+              fontFamily: languageDetector(title)
+                ? farsiFontFamily
+                : primaryFontFamily,
             }}
           >
             {title}
@@ -61,11 +66,13 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
         </Box>
         <Typography
           sx={{
-            ...theme.typography.bodyMedium,
-            color: "#6C8093",
             mt: 1,
-            fontFamily: languageDetector(description) ? farsiFontFamily : primaryFontFamily,
+            fontFamily: languageDetector(description)
+              ? farsiFontFamily
+              : primaryFontFamily,
           }}
+          color={theme.palette.surface.contrastTextVariant}
+          variant="bodyMedium"
         >
           {description}
         </Typography>
@@ -98,7 +105,8 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
               justifyContent: "center",
               width: "100%",
               height: "100%",
-              borderRadius: expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
+              borderRadius:
+                expandedAttribute == id ? "0 8px 0 0" : "0 8px 8px 0",
             }}
           />
           {permissions.viewAttributeScoreDetail && (

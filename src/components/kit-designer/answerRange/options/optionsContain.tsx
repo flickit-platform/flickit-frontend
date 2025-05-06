@@ -14,7 +14,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/KitProvider";
@@ -84,7 +84,7 @@ const OptionContain = (props: any) => {
         <Box
           sx={{
             ...styles.centerVH,
-            background: "#F3F5F6",
+            background: theme.palette.surface.container,
             width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}
@@ -159,7 +159,7 @@ const OptionContain = (props: any) => {
                 fontSize: 14,
               },
               width: { xs: "20%", md: "10%" },
-              background: "#fff",
+              background: theme.palette.surface.containerLowest,
               borderRadius: "8px",
             }}
             name="title"

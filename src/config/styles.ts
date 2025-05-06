@@ -1,7 +1,7 @@
 import { keyframes, SxProps, Theme } from "@mui/material/styles";
 import { TStatus } from "@/types/index";
 import hasStatus from "@utils/hasStatus";
-import { farsiFontFamily, primaryFontFamily } from "./theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "./theme";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
@@ -42,7 +42,7 @@ const commonStyles = {
   }),
   activeNavbarLink: style({
     "&.active": {
-      color: "#fff",
+      color: theme.palette.surface.containerLowest,
     },
     "&.active::after": {
       content: '""',
@@ -52,7 +52,7 @@ const commonStyles = {
       transform: "translateX(-50%)",
       width: "90%",
       height: "2px",
-      backgroundColor: "#fff",
+      backgroundColor: theme.palette.surface.containerLowest,
       borderRadius: 1,
     },
   }),
@@ -149,18 +149,16 @@ const buttons = {
 
 const box = {
   shadowStyle: style({
-    background: "#fff",
     borderRadius: "12px",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: theme.palette.surface.containerLowest,
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
   }),
   boxStyle: style({
-    background: "#fff",
     borderRadius: "12px",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: theme.palette.surface.containerLowest,
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
     p: { xs: 3, sm: 4 },

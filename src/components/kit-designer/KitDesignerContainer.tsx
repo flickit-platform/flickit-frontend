@@ -18,6 +18,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { IKitVersion, ILanguage } from "@/types";
 import { useKitDesignerContext, kitActions } from "@/providers/KitProvider";
+import { theme } from "@/config/theme";
 
 const tabMap = [
   { key: "General", title: "general", Component: GeneralContent },
@@ -137,7 +138,7 @@ const KitDesignerContainer = () => {
                       color: "rgba(0, 0, 0, 0.6)", // Default text color
 
                       "& .Mui-selected": {
-                        color: "#2466A8 !important",
+                        color: `${theme.palette.primary.main} !important`,
                         fontWeight: "bold",
                       },
 

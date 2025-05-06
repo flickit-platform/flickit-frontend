@@ -13,6 +13,7 @@ import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { theme } from "@/config/theme";
 
 interface MaturityLevelListProps {
   maturityLevels: Array<IMaturityLevel>;
@@ -101,7 +102,9 @@ const MaturityLevelList = ({
             mt={1.5}
             p={1.5}
             sx={{
-              backgroundColor: isEditing ? "#F3F5F6" : "#fff",
+              backgroundColor: isEditing
+                ? theme.palette.surface.container
+                : theme.palette.surface.containerLowest,
               borderRadius: "8px",
               border: "0.3px solid #73808c30",
               display: "flex",
@@ -111,7 +114,10 @@ const MaturityLevelList = ({
             }}
           >
             <Box
-              sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+              sx={{
+                ...styles.centerCVH,
+                background: theme.palette.surface.container,
+              }}
               borderRadius="0.5rem"
               mr={2}
               p={0.25}
@@ -136,7 +142,7 @@ const MaturityLevelList = ({
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  flexDirection:  "row",
+                  flexDirection: "row",
                   gap: 1,
                 }}
               >

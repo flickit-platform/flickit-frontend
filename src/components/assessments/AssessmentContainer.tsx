@@ -53,7 +53,8 @@ const AssessmentContainer = () => {
   }
 
   const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) => service.space.getById(args, config),
+    service: (args = { spaceId }, config) =>
+      service.space.getById(args, config),
     runOnMount: true,
   });
 
@@ -103,9 +104,10 @@ const AssessmentContainer = () => {
                     shouldAnimate={data?.length === 0}
                     variantType="outlined"
                     text={isSmallScreen ? "" : "settings"}
-                    sx={{px: isSmallScreen ? 0 : 1,
+                    sx={{
+                      px: isSmallScreen ? 0 : 1,
                       "& .MuiButton-endIcon": {
-                        mx: isSmallScreen ? "0px !important" : "unset"
+                        mx: isSmallScreen ? "0px !important" : "unset",
                       },
                     }}
                   />
@@ -117,7 +119,7 @@ const AssessmentContainer = () => {
                         color={
                           !fetchSpaceInfo.data?.canCreateAssessment
                             ? "#3D4D5C80"
-                            : "#fff"
+                            : theme.palette.surface.containerLowest
                         }
                       />
                     }
@@ -132,9 +134,10 @@ const AssessmentContainer = () => {
                     shouldAnimate={data?.length === 0}
                     disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                     text={isSmallScreen ? "" : "createAssessment"}
-                    sx={{px: isSmallScreen ? 0 : 1,
+                    sx={{
+                      px: isSmallScreen ? 0 : 1,
                       "& .MuiButton-endIcon": {
-                        mx: isSmallScreen ? "0px !important" : "unset"
+                        mx: isSmallScreen ? "0px !important" : "unset",
                       },
                     }}
                   />

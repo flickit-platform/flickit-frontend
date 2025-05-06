@@ -55,7 +55,7 @@ const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
           dataKey="ml"
           label={{
             position: "middle",
-            fill: "#fff",
+            fill: theme.palette.surface.containerLowest,
             fontSize: "1.75rem",
             fontFamily: languageDetector(chartData[0]?.title)
               ? farsiFontFamily

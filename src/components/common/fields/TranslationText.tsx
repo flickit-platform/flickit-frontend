@@ -102,7 +102,7 @@ const TitleWithTranslation = ({
         <RenderText
           text={translation}
           isFarsi={isFarsiTranslation}
-          color={"#6C8093"}
+          color={theme.palette.surface.contrastTextVariant}
           variantOverride={"body2"}
           {...rest}
         />

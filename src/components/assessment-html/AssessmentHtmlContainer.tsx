@@ -133,7 +133,7 @@ const AssessmentExportContainer = () => {
       )}
       {renderChip(
         <CalendarMonthIcon fontSize="small" color="primary" />,
-         getReadableDate(graphicalReport?.assessment?.creationTime) ,
+        getReadableDate(graphicalReport?.assessment?.creationTime),
         language,
       )}
     </>
@@ -221,7 +221,7 @@ const AssessmentExportContainer = () => {
                     elevation={3}
                     sx={{
                       position: "relative",
-                      backgroundColor: "#ffffff",
+                      backgroundColor: theme.palette.surface.containerLowest,
                       display: "flex",
                       justifyContent: "center",
                       borderStartEndRadius: 16,
@@ -238,7 +238,7 @@ const AssessmentExportContainer = () => {
                         top: { md: "60px", xs: "6px" },
                         bottom: { md: "40px", xs: "4px" },
                         width: { md: "8px", xs: "2px" },
-                        backgroundColor: "#D5E5F6",
+                        backgroundColor: theme.palette.primary.bgVariant,
                       }}
                     />
                     <Box
@@ -248,7 +248,7 @@ const AssessmentExportContainer = () => {
                         top: { md: "60px", xs: "6px" },
                         bottom: { md: "40px", xs: "4px" },
                         width: { md: "8px", xs: "2px" },
-                        backgroundColor: "#D5E5F6",
+                        backgroundColor: theme.palette.primary.bgVariant,
                       }}
                     />
                     <Box padding={3} width="100%">
@@ -275,7 +275,7 @@ const AssessmentExportContainer = () => {
                             id="introduction"
                             sx={{
                               ...theme.typography.titleSmall,
-                              color: "#6C8093",
+                              color: theme.palette.surface.contrastTextVariant,
                               mt: 2,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -307,7 +307,7 @@ const AssessmentExportContainer = () => {
                             id="summary"
                             sx={{
                               ...theme.typography.titleSmall,
-                              color: "#6C8093",
+                              color: theme.palette.surface.contrastTextVariant,
                               mt: 2,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -378,7 +378,7 @@ const AssessmentExportContainer = () => {
                         id="strengthsAndWeaknesses"
                         sx={{
                           ...theme.typography.titleMedium,
-                          color: "#6C8093",
+                          color: theme.palette.surface.contrastTextVariant,
                           my: 1,
                           ...styles.rtlStyle(rtlLanguage),
                         }}
@@ -402,7 +402,7 @@ const AssessmentExportContainer = () => {
                       <Grid
                         xs={12}
                         md={12}
-                        bgcolor="#F3F5F6"
+                        bgcolor={theme.palette.surface.container}
                         borderRadius="8px"
                         paddingX={2}
                         paddingBottom={2}
@@ -414,7 +414,7 @@ const AssessmentExportContainer = () => {
                           <Typography
                             sx={{
                               ...theme.typography.titleSmall,
-                              color: "#2B333B",
+                              color: theme.palette.surface.contrastText,
                               my: 1,
                               ...styles.centerV,
                               direction: rtlLanguage ? "rtl" : "ltr",
@@ -451,7 +451,7 @@ const AssessmentExportContainer = () => {
                           <Typography
                             sx={{
                               ...theme.typography.titleSmall,
-                              color: "#2B333B",
+                              color: theme.palette.surface.contrastText,
                               my: 1,
                               ...styles.centerV,
                               direction: rtlLanguage ? "rtl" : "ltr",
@@ -491,7 +491,8 @@ const AssessmentExportContainer = () => {
                                       height: "10px",
                                       width: "27px",
                                       borderRadius: "16px",
-                                      color: "#fff",
+                                      color:
+                                        theme.palette.surface.containerLowest,
                                       fontWeight: "bold",
                                     }}
                                   ></Box>
@@ -500,7 +501,7 @@ const AssessmentExportContainer = () => {
                                     component="span"
                                     sx={{
                                       ...theme.typography.body2,
-                                      color: "#2B333B",
+                                      color: theme.palette.surface.contrastText,
                                       direction: rtlLanguage ? "rtl" : "ltr",
                                       fontFamily: rtlLanguage
                                         ? farsiFontFamily
@@ -522,7 +523,7 @@ const AssessmentExportContainer = () => {
                     elevation={3}
                     sx={{
                       position: "relative",
-                      backgroundColor: "#ffffff",
+                      backgroundColor: theme.palette.surface.containerLowest,
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",

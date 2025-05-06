@@ -286,7 +286,9 @@ const AssessmentKitSectionGeneralInfo = (
                             onClick={formMethods.handleSubmit(onSubmit)}
                           >
                             <CheckCircleOutlineRoundedIcon
-                              sx={{ color: "#fff" }}
+                              sx={{
+                                color: theme.palette.surface.containerLowest,
+                              }}
                             />
                           </IconButton>
                           <IconButton
@@ -302,7 +304,11 @@ const AssessmentKitSectionGeneralInfo = (
                             }}
                             onClick={handleCancel}
                           >
-                            <CancelRoundedIcon sx={{ color: "#fff" }} />
+                            <CancelRoundedIcon
+                              sx={{
+                                color: theme.palette.surface.containerLowest,
+                              }}
+                            />
                           </IconButton>
                         </Box>
                       </Box>
@@ -365,7 +371,11 @@ const AssessmentKitSectionGeneralInfo = (
                           }}
                           onClick={() => setShow(!show)}
                         >
-                          <EditRoundedIcon sx={{ color: "#fff" }} />
+                          <EditRoundedIcon
+                            sx={{
+                              color: theme.palette.surface.containerLowest,
+                            }}
+                          />
                         </IconButton>
                       )}
                     </Box>
@@ -417,7 +427,7 @@ const AssessmentKitSectionGeneralInfo = (
                     <InfoItem
                       bg="white"
                       info={{
-                        item:  getReadableDate(creationTime),
+                        item: getReadableDate(creationTime),
                         title: t("creationDate"),
                       }}
                     />
@@ -618,7 +628,9 @@ const OnHoverInput = (props: any) => {
                     }}
                     onClick={updateAssessmentKit}
                   >
-                    <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                    <CheckCircleOutlineRoundedIcon
+                      sx={{ color: theme.palette.surface.containerLowest }}
+                    />
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
@@ -633,7 +645,9 @@ const OnHoverInput = (props: any) => {
                     }}
                     onClick={handleCancel}
                   >
-                    <CancelRoundedIcon sx={{ color: "#fff" }} />
+                    <CancelRoundedIcon
+                      sx={{ color: theme.palette.surface.containerLowest }}
+                    />
                   </IconButton>
                 </InputAdornment>
               }
@@ -690,7 +704,9 @@ const OnHoverInput = (props: any) => {
                 }}
                 onClick={() => setShow(!show)}
               >
-                <EditRoundedIcon sx={{ color: "#fff" }} />
+                <EditRoundedIcon
+                  sx={{ color: theme.palette.surface.containerLowest }}
+                />
               </IconButton>
             )}
           </Box>
@@ -759,7 +775,7 @@ const OnHoverStatus = (props: any) => {
             sx={{
               padding: 0.5,
               backgroundColor: selected ? "#2e7d32" : "transparent",
-              color: selected ? "#fff" : "#000",
+              color: selected ? theme.palette.surface.containerLowest : "#000",
               cursor: editable ? "pointer" : "default",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
@@ -787,7 +803,7 @@ const OnHoverStatus = (props: any) => {
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
               borderRadius: "6px",
-              color: !selected ? "#fff" : "#000",
+              color: !selected ? theme.palette.surface.containerLowest : "#000",
               width: "100px",
               textAlign: "center",
             }}
@@ -870,7 +886,9 @@ const OnHoverVisibilityStatus = (props: any) => {
               sx={{
                 padding: 0.5,
                 backgroundColor: selected ? "#7954B3;" : "transparent",
-                color: selected ? "#fff" : "#000",
+                color: selected
+                  ? theme.palette.surface.containerLowest
+                  : "#000",
                 cursor: editable ? "pointer" : "default",
                 transition: "background-color 0.3s ease",
                 animation: `${fadeIn} 0.5s ease`,
@@ -898,7 +916,9 @@ const OnHoverVisibilityStatus = (props: any) => {
                 transition: "background-color 0.3s ease",
                 animation: `${fadeIn} 0.5s ease`,
                 borderRadius: "6px",
-                color: !selected ? "#fff" : "#000",
+                color: !selected
+                  ? theme.palette.surface.containerLowest
+                  : "#000",
                 width: "100px",
                 textAlign: "center",
               }}
@@ -1022,7 +1042,9 @@ const OnHoverRichEditor = (props: any) => {
                   }}
                   onClick={formMethods.handleSubmit(onSubmit)}
                 >
-                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                  <CheckCircleOutlineRoundedIcon
+                    sx={{ color: theme.palette.surface.containerLowest }}
+                  />
                 </IconButton>
                 <IconButton
                   sx={{
@@ -1037,7 +1059,9 @@ const OnHoverRichEditor = (props: any) => {
                   }}
                   onClick={handleCancel}
                 >
-                  <CancelRoundedIcon sx={{ color: "#fff" }} />
+                  <CancelRoundedIcon
+                    sx={{ color: theme.palette.surface.containerLowest }}
+                  />
                 </IconButton>
               </Box>
               {hasError && (
@@ -1101,7 +1125,9 @@ const OnHoverRichEditor = (props: any) => {
                 }}
                 onClick={() => setShow(!show)}
               >
-                <EditRoundedIcon sx={{ color: "#fff" }} />
+                <EditRoundedIcon
+                  sx={{ color: theme.palette.surface.containerLowest }}
+                />
               </IconButton>
             )}
           </Box>

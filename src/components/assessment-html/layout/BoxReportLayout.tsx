@@ -62,7 +62,7 @@ const BoxReportLayout = (props: IBoxReport) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        background: "#F9FAFB",
+        background: theme.palette.surface.main,
         borderRadius: "32px",
         paddingY: "32px",
         gap: "24px",
@@ -188,9 +188,9 @@ const BottomBox = ({
       />
 
       <Typography
+        color={theme.palette.primary.main}
+        variant="labelMedium"
         sx={{
-          ...theme.typography.labelMedium,
-          color: "#2466A8",
           fontSize: "1rem",
           ...styles.rtlStyle(language === "fa"),
           textAlign,
@@ -205,7 +205,7 @@ const BottomBox = ({
         sx={{
           ...theme.typography.bodyMedium,
           mt: 1,
-          color: "#2B333B",
+          color: theme.palette.surface.contrastText,
           ...styles.rtlStyle(language === "fa"),
         }}
         dangerouslySetInnerHTML={{
@@ -231,8 +231,8 @@ const BottomBox = ({
         </IconButton>
 
         <Typography
+          color={theme.palette.primary.main}
           sx={{
-            color: "#2466A8",
             fontFamily,
             whiteSpace: "nowrap",
           }}
@@ -247,7 +247,7 @@ const BottomBox = ({
           <Typography
             variant="labelSmall"
             sx={{
-              color: "#6C8093",
+              color: theme.palette.surface.contrastTextVariant,
               whiteSpace: "nowrap",
               fontFamily,
             }}
@@ -278,7 +278,7 @@ const BottomBox = ({
                 variant="labelSmall"
                 sx={{
                   fontFamily,
-                  color: "#6C8093",
+                  color: theme.palette.surface.contrastTextVariant,
                   marginInlineStart: "4px",
                 }}
               >

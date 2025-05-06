@@ -217,7 +217,7 @@ const SubjectAttributeCard = (props: any) => {
               boxShadow: "none",
             },
             "&.Mui-focusVisible": {
-              background: "#fff",
+              background: theme.palette.surface.containerLowest,
             },
             "& .MuiAccordionSummary-content .Mui-expanded": {
               margin: "0px !important",
@@ -261,13 +261,13 @@ const SubjectAttributeCard = (props: any) => {
               </Title>
               <Typography
                 sx={{
-                  ...theme.typography.bodyMedium,
-                  color: "#6C8093",
                   mt: 1,
                   fontFamily: languageDetector(description)
                     ? farsiFontFamily
                     : primaryFontFamily,
                 }}
+                color={theme.palette.surface.contrastTextVariant}
+                variant="bodyMedium"
               >
                 {description}
               </Typography>
@@ -330,7 +330,7 @@ const SubjectAttributeCard = (props: any) => {
         <AccordionDetails
           sx={{
             padding: "0 !important",
-            backgroundColor: "#fff",
+            backgroundColor: theme.palette.surface.containerLowest,
             borderRadius: "16px",
           }}
         >
@@ -359,7 +359,7 @@ const SubjectAttributeCard = (props: any) => {
                   color: "rgba(0, 0, 0, 0.6)", // Default text color
 
                   "& .Mui-selected": {
-                    color: "#2466A8 !important",
+                    color:`${theme.palette.primary.main} !important`,
                   },
 
                   "& .MuiTabs-indicator": {
@@ -378,7 +378,7 @@ const SubjectAttributeCard = (props: any) => {
                 <Box>
                   <Box
                     sx={{
-                      background: "#E2E5E9",
+                      background: theme.palette.surface.variant,
                       width: "100%",
                       borderRadius: "16px",
                       display: "flex",
@@ -418,15 +418,17 @@ const SubjectAttributeCard = (props: any) => {
                               mr: 1,
                               border: "none",
                               textTransform: "none",
-                              color: "#2B333B",
+                              color: theme.palette.surface.contrastText,
                               "&.Mui-selected": {
                                 boxShadow:
                                   "0 1px 4px rgba(0,0,0,25%) !important",
                                 borderRadius: "8px !important",
                                 color: theme.palette.primary.main,
-                                background: "#fff",
+                                background:
+                                  theme.palette.surface.containerLowest,
                                 "&:hover": {
-                                  background: "#fff",
+                                  background:
+                                    theme.palette.surface.containerLowest,
                                   border: "none",
                                 },
                               },

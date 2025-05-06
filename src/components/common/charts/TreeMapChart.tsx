@@ -28,7 +28,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
       <Treemap
         data={treeMapData}
         dataKey="count"
-        stroke="#fff"
+        stroke={theme.palette.surface.containerLowest}
         fill="white"
         content={<CustomNode levels={levels} />}
       >
@@ -63,7 +63,7 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 - 10}
             textAnchor="middle"
-            fill="#fff"
+            fill={theme.palette.surface.containerLowest}
             fontSize={adjustedFontSize}
             fontWeight={9}
             letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
@@ -74,7 +74,7 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 + 10}
             textAnchor="middle"
-            fill="#fff"
+            fill={theme.palette.surface.containerLowest}
             fontWeight={9}
             letterSpacing={0.5}
             fontSize={adjustedFontSize}

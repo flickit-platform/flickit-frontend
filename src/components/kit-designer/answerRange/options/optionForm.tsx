@@ -6,7 +6,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import React from "react";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/KitProvider";
@@ -41,7 +41,7 @@ const OptionForm = ({
     <Box
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.surface.container,
         borderRadius: "0px 0px 8px 8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -88,7 +88,7 @@ const OptionForm = ({
             "& .MuiInputBase-root": {
               fontSize: 14,
             },
-            background: "#fff",
+            background:theme.palette.surface.containerLowest,
             width: "100%",
           }}
         />

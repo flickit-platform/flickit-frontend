@@ -31,15 +31,25 @@ const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
 
   return (
-    <Box sx={{ ...styles.boxStyle, display: "flex", flexDirection: {xs: "row", md: "column"} }}>
+    <Box
+      sx={{
+        ...styles.boxStyle,
+        display: "flex",
+        flexDirection: { xs: "row", md: "column" },
+      }}
+    >
       <Stepper
-        sx={{ width: {md: "80%"}, mx: "auto", mt: {xs: 8, md: "unset"}, mb: {xs: 8, md : "30px"},
+        sx={{
+          width: { md: "80%" },
+          mx: "auto",
+          mt: { xs: 8, md: "unset" },
+          mb: { xs: 8, md: "30px" },
           "& .MuiStepConnector-line": {
-            height: "100%"
-          }
+            height: "100%",
+          },
         }}
         activeStep={activeStep}
-        orientation={useScreenResize("md") ? "vertical" : "horizontal" }
+        orientation={useScreenResize("md") ? "vertical" : "horizontal"}
       >
         {stepData.map((label: any) => (
           <Step key={uniqueId()}>
@@ -51,13 +61,13 @@ const StepperSection = (props: IStepperSection) => {
                   borderRadius: "50%",
                   border: "1px dashed #2466A8",
                   marginY: "-4px",
-                  color: "#EAF2FB",
+                  color: theme.palette.primary.bg,
                 },
                 "& .Mui-active .MuiStepIcon-text": {
-                  fill: "#2466A8",
+                  fill: theme.palette.primary.main,
                 },
                 "& .Mui-disabled .MuiStepIcon-text": {
-                  fill: "#fff",
+                  fill: theme.palette.surface.containerLowest,
                 },
               }}
             />
@@ -184,8 +194,8 @@ const StepBox = (props: IStepBox) => {
         size="small"
         sx={{
           ...theme.typography.labelMedium,
-          color: "#B8144B",
-          background: "#FCE8EF",
+          color: theme.palette.secondary.main,
+          background: theme.palette.secondary.bg,
           direction: theme.direction,
           cursor: "pointer",
         }}
@@ -199,8 +209,8 @@ const StepBox = (props: IStepBox) => {
       size="small"
       sx={{
         ...theme.typography.labelMedium,
-        color: "#2D80D2",
-        background: "#EAF2FB",
+        color: theme.palette.primary.lightDesign,
+        background: theme.palette.primary.bg,
       }}
     />
   );
@@ -211,8 +221,8 @@ const StepBox = (props: IStepBox) => {
       size="small"
       sx={{
         ...theme.typography.labelMedium,
-        color: "#3D8F3D",
-        background: "#EDF7ED",
+        color: theme.palette.success.main,
+        background: theme.palette.success.bg,
       }}
     />
   );
@@ -258,7 +268,10 @@ const StepBox = (props: IStepBox) => {
             gap: "4px",
           }}
         >
-          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
+          <Typography
+            variant="labelMedium"
+            color={theme.palette.primary.lightDesign}
+          >
             {Math.floor((100 * answered) / total)}%
           </Typography>
           <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
@@ -296,7 +309,10 @@ const StepBox = (props: IStepBox) => {
           </Box>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
-          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
+          <Typography
+            variant="labelMedium"
+            color={theme.palette.primary.lightDesign}
+          >
             {Math.floor((100 * result) / expected)}%
           </Typography>
           <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
@@ -408,11 +424,11 @@ const StepBox = (props: IStepBox) => {
     >
       <Typography
         sx={{
-          ...theme.typography.semiBoldLarge,
-          color: "#6C8093",
           textAlign: "center",
           mb: "36px",
         }}
+        color={theme.palette.surface.contrastTextVariant}
+        variant="semiBoldLarge"
       >
         {questions && (
           <Typography variant="semiBoldXLarge">

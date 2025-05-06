@@ -422,7 +422,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                             marginRight:
                               theme.direction === "ltr" ? 1 : "unset",
                             marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                            color: "#fff",
+                            color: theme.palette.surface.containerLowest,
                           }}
                         >
                           <Typography sx={{ display: "flex" }}>
@@ -449,7 +449,7 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                           emptyIcon={
                             <RadioButtonUncheckedRoundedIcon
                               style={{ opacity: 0.55 }}
-                              sx={{ mx: 0.25, color: "#fff" }}
+                              sx={{ mx: 0.25, color:theme.palette.surface.containerLowest }}
                               fontSize="inherit"
                             />
                           }

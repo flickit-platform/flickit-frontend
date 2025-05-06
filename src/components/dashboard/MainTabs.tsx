@@ -121,15 +121,15 @@ const MainTabs = (props: any) => {
                     border: "none",
                     textTransform: "none",
                     paddingY: 1.5,
-                    color: "#2B333B",
+                    color: theme.palette.surface.contrastText,
                     maxWidth: "unset",
                     "&.Mui-selected": {
                       boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                       borderRadius: 1,
                       color: theme.palette.primary.main,
-                      background: "#fff",
+                      background: theme.palette.surface.containerLowest,
                       "&:hover": {
-                        background: "#fff",
+                        background: theme.palette.surface.containerLowest,
                         border: "none",
                       },
                     },

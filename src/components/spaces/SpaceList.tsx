@@ -219,7 +219,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               </IconButton>
               <Typography
                 data-testid={"space-card-test-membersCount"}
-                color="#2B333B"
+                color="surface"
                 fontWeight={"bold"}
               >
                 {membersCount}
@@ -252,7 +252,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               </IconButton>
               <Typography
                 data-testid={"space-card-test-assessmentsCount"}
-                color="#2B333B"
+                color="surface"
                 fontWeight={"bold"}
               >
                 {assessmentsCount}
@@ -397,7 +397,7 @@ const Actions = (props: any) => {
           },
       ]}
       setShowTooltip={setShowTooltip}
-      color={"#2B333B"}
+      color={theme.palette.surface.contrastText}
       IconButtonProps={{ width: "20px", height: "20px" }}
     />
   );

@@ -252,7 +252,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                         sx={{
                           marginRight: theme.direction === "ltr" ? 2 : "unset",
                           marginLeft: theme.direction === "rtl" ? 2 : "unset",
-                          color: "#fff",
+                          color: theme.palette.surface.containerLowest,
                         }}
                       >
                         <Box
@@ -281,7 +281,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                       <Box
                         sx={{
                           marginInlineEnd: 1,
-                          color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
+                          color: `${disabledConfidence ? theme.palette.surface.containerLowest : theme.palette.secondary.light}`,
                         }}
                       >
                         <Typography>
@@ -313,7 +313,10 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                         }
                         emptyIcon={
                           <RadioButtonUncheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "#fff" }}
+                            sx={{
+                              mx: 0.25,
+                              color: theme.palette.surface.containerLowest,
+                            }}
                             fontSize="inherit"
                           />
                         }
@@ -991,21 +994,21 @@ const AnswerTemplate = (props: {
                     boxShadow: `0 0 2px ${
                       answer?.selectedOption?.index === defaultSelectedIndex
                         ? !answer?.approved && permissions?.approveAnswer
-                          ? "#CC7400"
+                          ? theme.palette.tertiary.main
                           : "#0acb89"
                         : "white"
                     }`,
                     borderWidth: "2px",
                     borderColor:
                       answer?.selectedOption?.index === defaultSelectedIndex
-                        ? "#CC7400"
+                        ? theme.palette.tertiary.main
                         : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
                           ? "#0ec586"
                           : !answer?.approved && permissions?.approveAnswer
-                            ? "#CC7400"
+                            ? theme.palette.tertiary.main
                             : "#0ec586",
                       },
                       backgroundImage: !isSelectedValueTheSameAsAnswer
@@ -1019,7 +1022,7 @@ const AnswerTemplate = (props: {
                       backgroundColor: !isSelectedValueTheSameAsAnswer
                         ? "#0ec586"
                         : !answer?.approved && permissions?.approveAnswer
-                          ? "#CC7400"
+                          ? theme.palette.tertiary.main
                           : "#0acb89",
                       borderColor: "transparent",
                       zIndex: 2,
@@ -1122,7 +1125,7 @@ const AnswerTemplate = (props: {
             <Box
               sx={{
                 ...styles.centerVH,
-                background: "#CC74004D",
+                background: theme.palette.tertiary.main,
                 borderRadius: "4px",
                 p: 2,
                 gap: 4,
@@ -1131,22 +1134,28 @@ const AnswerTemplate = (props: {
               }}
             >
               <Typography
-                sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
+                sx={{
+                  ...theme.typography.labelMedium,
+                  color: theme.palette.tertiary.light,
+                }}
               >
                 <Trans i18nKey={"answerNeedApprove"} />
               </Typography>
               <Button
                 onClick={onApprove}
                 sx={{
-                  background: "#CC7400",
+                  background: theme.palette.tertiary.main,
                   boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
                   "&:hover": {
                     boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                    background: "#CC7400",
+                    background: theme.palette.tertiary.main,
                   },
                 }}
               >
-                <Typography variant="bodySmall" sx={{ color: "#fff" }}>
+                <Typography
+                  variant="bodySmall"
+                  color={theme.palette.surface.containerLowest}
+                >
                   <Trans i18nKey={"approve"} />
                 </Typography>
               </Button>
@@ -1274,10 +1283,16 @@ const AnswerDetails = ({
         </Box>
       ) : (
         <Box sx={{ ...styles.centerCVH }} textAlign="center">
-          <Typography variant="displayMedium" color="#6C8093">
+          <Typography
+            variant="displayMedium"
+            color={theme.palette.surface.contrastTextVariant}
+          >
             <Trans i18nKey="emptyAnswerHistoryTitle" />
           </Typography>
-          <Typography variant="bodyLarge" color="#6C8093">
+          <Typography
+            variant="bodyLarge"
+            color={theme.palette.surface.contrastTextVariant}
+          >
             <Trans i18nKey="emptyAnswerHistoryDescription" />
           </Typography>
         </Box>
@@ -1628,7 +1643,7 @@ const Evidence = (props: any) => {
       display={"flex"}
       flexDirection={"column"}
       width="100%"
-      px={!permissions?.readonly ? {xs: 0, sm: 10} : 0}
+      px={!permissions?.readonly ? { xs: 0, sm: 10 } : 0}
     >
       {permissions?.addEvidence && (
         <FormProvider {...formMethods}>
@@ -1767,12 +1782,7 @@ const Evidence = (props: any) => {
                     />
                   }
                   label={
-                    <Typography
-                      sx={{
-                        ...theme.typography.titleSmall,
-                        color: "#2B333B",
-                      }}
-                    >
+                    <Typography color="surface" variant="titleSmall">
                       <Trans i18nKey={"needsToAddAttachments"} />
                     </Typography>
                   }
@@ -2172,7 +2182,7 @@ const EvidenceDetail = (props: any) => {
                   display: "flex",
                   flexDirection: "column",
                   height: "fit-content",
-                  width: {xs: "100%", sm: "60%" },
+                  width: { xs: "100%", sm: "60%" },
                   borderRadius: "12px",
                   border: `1px solid ${evidenceBG.borderColor}`,
                 }}

@@ -46,7 +46,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
-import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
@@ -212,14 +212,14 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 <Box
                   sx={{
                     ...styles.centerVH,
-                    backgroundColor: "#F9FAFB",
+                    backgroundColor: theme.palette.surface.main,
                     borderRadius: "4px",
                     border: "0.5px solid #C7CCD1",
                     p: 0.5,
-                    pb:0
+                    pb: 0,
                   }}
                 >
-                  <Typography variant="labelSmall" color="#6C8093">
+                  <Typography variant="labelSmall" color={theme.palette.surface.contrastTextVariant}>
                     {language.code}
                   </Typography>
                 </Box>
@@ -227,7 +227,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 <Typography
                   variant="labelSmall"
                   sx={{ textAlign: "center" }}
-                  color="#6C8093"
+                  color={theme.palette.surface.contrastTextVariant}
                 >
                   <Trans i18nKey="lastUpdated" />{" "}
                   {getReadableDate(lastModificationTime)}

@@ -224,7 +224,10 @@ const ListOfItems = ({
           key={index}
           mt={1.5}
           sx={{
-            backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",
+            backgroundColor:
+              editMode === item.id
+                ? theme.palette.surface.container
+                : theme.palette.surface.containerLowest,
             borderRadius: "8px",
             border: "0.3px solid #73808c30",
             display: "flex",
@@ -246,10 +249,10 @@ const ListOfItems = ({
               sx={{
                 backgroundColor:
                   editMode === item.id
-                    ? "#F3F5F6"
+                    ? theme.palette.surface.container
                     : item.questionsCount == 0
                       ? alpha(theme.palette.error.main, 0.04)
-                      : "#fff",
+                      : theme.palette.surface.containerLowest,
                 borderRadius: questionData.length != 0 ? "8px" : "8px 8px 0 0",
                 border: "0.3px solid #73808c30",
                 display: "flex",
@@ -260,7 +263,7 @@ const ListOfItems = ({
                   backgroundColor:
                     item.questionsCount == 0
                       ? alpha(theme.palette.error.main, 0.08)
-                      : "#F3F5F6",
+                      : theme.palette.surface.container,
                 },
                 "& .MuiAccordionSummary-content": {
                   margin: 0,
@@ -335,7 +338,7 @@ const ListOfItems = ({
                         label={t("options") + " " + item.answerOptions.length}
                         size="small"
                         sx={{
-                          backgroundColor: "#EAF2FB",
+                          backgroundColor: theme.palette.primary.bg,
                           fontSize: 14,
                           py: 1.4,
                         }}
@@ -413,7 +416,7 @@ const ListOfItems = ({
                     alignItems: "center",
                     justifyContent: "flex-start",
                     px: "1rem",
-                    color: "#6C8093",
+                    color: theme.palette.surface.contrastTextVariant,
                     ...theme.typography.semiBoldMedium,
                   }}
                 >

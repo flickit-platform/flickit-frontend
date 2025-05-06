@@ -68,7 +68,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                 listStyleType: "disc",
                 fontSize: "1.2rem",
                 gap: "2px",
-                color: "#2B333B",
+                color: theme.palette.surface.contrastText,
               }}
             >
               <Typography
