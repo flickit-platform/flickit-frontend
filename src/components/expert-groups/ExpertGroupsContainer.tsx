@@ -53,9 +53,11 @@ const ExpertGroupsContainer = () => {
       : Math.ceil(queryData.data?.total / queryData.data?.size);
 
   useDocumentTitle(t("expertGroups") as string);
+  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+
   return (
     <Box>
-      {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+      {showGroups && (
         <Box
           sx={{
             background: "white",

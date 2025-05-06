@@ -24,6 +24,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useConfigContext } from "@providers/ConfgProvider";
 import Chip from "@mui/material/Chip";
 import { IMapper } from "@/types/index";
+import keycloakService from "@/service/keycloakService";
 
 const AssessmentKitsListContainer = () => {
   const { service } = useServiceContext();
@@ -35,8 +36,11 @@ const AssessmentKitsListContainer = () => {
   const {
     config: { languages },
   }: any = useConfigContext();
+  const isAuthenticated = keycloakService.isLoggedIn();
+  const isPublic = isAuthenticated ? "" : "/public"
   const assessmentKitsQueryData = useQuery({
-    service: (args, config) => service.assessmentKit.info.getAll(args, config),
+    service: (args = { isPublic }, config) =>
+      service.assessmentKit.info.getAll(args, config),
     runOnMount: false,
   });
 

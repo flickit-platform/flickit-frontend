@@ -15,11 +15,11 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const { assessmentKitId } = useParams();
 
   const dialogProps = useDialog();
-
   const isAuthenticated = keycloakService.isLoggedIn();
   const isPublic = isAuthenticated ? "" : "/public"
   const assessmentKitsQueryData = useQuery({
-    service: (args={ isPublic }, config) => service.assessmentKit.info.getAll(args, config),
+    service: (args = { isPublic }, config) =>
+      service.assessmentKit.info.getAll(args, config),
   });
 
   const renderSkeletons = () =>

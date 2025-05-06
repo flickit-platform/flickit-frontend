@@ -1,5 +1,6 @@
 import { TId, TStatus, IColor, IDefaultModel } from "./common";
 import { IExpertGroup } from "./expertGroup";
+import { ILanguage } from "./kitDesigner";
 import { IMaturityLevel } from "./maturity";
 import { IAssessmentPermissions } from "./permissions";
 import { IQuestionnaire } from "./questionnaire";
@@ -81,6 +82,7 @@ export interface IAssessment {
   confidenceValue: number;
   maturityLevel: IMaturityLevel;
   permissions: IUserPermissions;
+  language: ILanguage
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {

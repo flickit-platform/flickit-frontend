@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { toastDefaultConfig } from "@config/toastConfigs";
 import { ServiceProvider } from "./providers/ServiceProvider";
@@ -16,7 +16,7 @@ import "./assets/font/fonts.css";
 import "@utils/richEditorStyles.css";
 import { AssessmentProvider } from "./providers/AssessmentProvider";
 import i18next from "i18next";
-import flagsmith from "flagsmith";
+import { KitLanguageProvider } from "./providers/KitProvider";
 
 // Lazy load non-critical components
 const ToastContainer = lazy(() =>
@@ -87,24 +87,27 @@ const renderApp = () => {
           <AssessmentProvider>
             <AuthProvider>
               <ServiceProvider>
-                <ConfigProvider>
-                  <CssBaseline />
-                  <Suspense fallback={null}>
-                    <ToastContainer
-                      {...toastDefaultConfig}
-                      toastStyle={{
-                        fontFamily:
-                          i18next.language === "fa"
-                            ? farsiFontFamily
-                            : primaryFontFamily,
-                        direction: i18next.language === "fa" ? "rtl" : "ltr",
-                        textAlign: i18next.language === "fa" ? "right" : "left",
-                      }}
-                    />
-                  </Suspense>
+                <KitLanguageProvider>
+                  <ConfigProvider>
+                    <CssBaseline />
+                    <Suspense fallback={null}>
+                      <ToastContainer
+                        {...toastDefaultConfig}
+                        toastStyle={{
+                          fontFamily:
+                            i18next.language === "fa"
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          direction: i18next.language === "fa" ? "rtl" : "ltr",
+                          textAlign:
+                            i18next.language === "fa" ? "right" : "left",
+                        }}
+                      />
+                    </Suspense>
 
-                  <AppWithNovu />
-                </ConfigProvider>
+                    <AppWithNovu />
+                  </ConfigProvider>
+                </KitLanguageProvider>
               </ServiceProvider>
             </AuthProvider>
           </AssessmentProvider>

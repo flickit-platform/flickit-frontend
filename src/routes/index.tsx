@@ -72,10 +72,10 @@ const Routes = () => {
         {/* Handles redirecting users to where they wanted to go before login  */}
         <Route path="/" element={<Redirect />} />
         <Route path="/assessment-kits" element={
-          <AppLayout>
-            <AssessmentKitsScreen />
-          </AppLayout>
-          } />
+           <AppLayout>
+             <AssessmentKitsScreen />
+           </AppLayout>
+           } />
         <Route
           element={
             <AppLayout>

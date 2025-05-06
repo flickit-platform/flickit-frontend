@@ -1,5 +1,5 @@
 const PriceIcon = (props: any) => {
-  const { color = "#2466A8", width = 32, height = 32 } = props;
+  const { color, width, height } = props;
   return (
     <svg
       width={width}

@@ -7,7 +7,7 @@ const _kc: KeycloakInstance = new Keycloak({
   clientId: import.meta.env.VITE_SSO_CLIENT_ID,
 });
 
-const PUBLIC_PATHS = ["/assessment-kits"]
+const PUBLIC_PATHS = ["/assessment-kits"];
 
 export const isPublicRoute = (path: string) =>
   PUBLIC_PATHS.some((publicPath) => path.startsWith(publicPath));

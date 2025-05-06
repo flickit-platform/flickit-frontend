@@ -39,13 +39,14 @@ import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
-import i18n, { t } from "i18next";
+import i18n from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
-import flagsmith from "flagsmith";
 import { getReadableDate } from "@utils/readableDate";
+import { useFlag } from "@/hooks/useFlag";
+import flagsmith from "flagsmith";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -539,7 +540,6 @@ const Navbar = () => {
           backgroundColor: theme.palette.primary.main,
           position: "sticky",
           px: { xl: 26, lg: 8, xs: 1, sm: 3 },
-
         }}
         data-cy="nav-bar"
       >
@@ -861,6 +861,8 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <>
@@ -917,7 +919,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <Trans i18nKey={"account"} />
           </ListItemText>
         </MenuItem>
-        {flagsmith.hasFeature(FLAGS.DISPLAY_EXPERT_GROUPS) && (
+        {showGroups && (
           <MenuItem
             dense
             onClick={handleClose}

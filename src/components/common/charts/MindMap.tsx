@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { useTheme, useMediaQuery, Box, Typography } from "@mui/material";
-import { styles } from "@styles";
+import { customMindMapPalette, generateColorFromString, styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
@@ -55,30 +55,11 @@ const MindMap: React.FC<MindMapProps> = ({
   const attributeOffset = isMobile ? 50 : 120;
   const attributeSpacing = isMobile ? 14 : 40;
 
-  const centerSize = isMobile ? 50 : 110;
+  const centerSize = isMobile ? 50 : 130;
   const subjectFontSize = isMobile ? "10px" : "12px";
   const attributeFontSize = isMobile ? "9px" : "11px";
   const subjectPadding = isMobile ? "6px 8px" : "8px 12px";
   const attributePadding = isMobile ? "4px 6px" : "6px 10px";
-
-  const colors = [
-    theme.palette.primary.main,
-    theme.palette.success.main,
-    theme.palette.error.main,
-    theme.palette.warning.main,
-  ];
-  const lightColors = [
-    theme.palette.primary.light,
-    theme.palette.success.light,
-    theme.palette.error.light,
-    theme.palette.warning.light,
-  ];
-  const darkColors = [
-    theme.palette.primary.dark,
-    theme.palette.success.dark,
-    theme.palette.error.dark,
-    theme.palette.warning.dark,
-  ];
 
   const getPosition = (index: number, total: number) => {
     if (total === 1) return { x: centerX + radius, y: centerY };
@@ -166,9 +147,8 @@ const MindMap: React.FC<MindMapProps> = ({
             y1={y1}
             x2={x2}
             y2={y2}
-            stroke="#ccc"
-            strokeWidth={1.5}
-            strokeDasharray={key.startsWith("attr") ? "3,3" : "0"}
+            stroke="#6C8093"
+            strokeWidth={key.startsWith("attr") ? 0.91 : 2.23}
           />
         ))}
       </Box>
@@ -183,24 +163,22 @@ const MindMap: React.FC<MindMapProps> = ({
           width: centerSize,
           height: centerSize,
           borderRadius: "50%",
-          bgcolor: theme.palette.grey[100],
-          border: `2px solid ${theme.palette.grey[400]}`,
+          bgcolor: "color(srgb 0.9276 0.9376 0.9461)",
+          border: `2px solid #6C8093`,
           zIndex: 3,
-          boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+          textAlign: "center",
+          p: 2,
         }}
       >
-        <Typography variant="titleMedium">{title}</Typography>
+        <Typography variant="titleMedium" color="#6C8093">
+          {title}
+        </Typography>
       </Box>
 
       {items.map((item, index) => {
         const { x, y } = getPosition(index, items.length);
         const isLeft = x < centerX;
         const attributes = item[childrenField] ?? [];
-
-        const subjectBgColor = colors[index % colors.length];
-        const attributeBgColor = lightColors[index % lightColors.length];
-        const attributeTextColor = darkColors[index % darkColors.length];
-
         return (
           <React.Fragment key={`subject-${item[idField]}`}>
             <Box
@@ -234,9 +212,14 @@ const MindMap: React.FC<MindMapProps> = ({
                     gap: "4px",
                     fontSize: subjectFontSize,
                     fontWeight: "bold",
-                    bgcolor: subjectBgColor,
-                    color: "#fff",
-                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                    bgcolor: generateColorFromString(
+                      item[titleField],
+                      customMindMapPalette,
+                    ).backgroundColor,
+                    color: generateColorFromString(
+                      item[titleField],
+                      customMindMapPalette,
+                    ).color,
                   }}
                 >
                   <Typography
@@ -247,9 +230,9 @@ const MindMap: React.FC<MindMapProps> = ({
                         : primaryFontFamily
                     }
                     sx={{
-                      maxWidth: "180px", 
+                      maxWidth: "180px",
                       wordBreak: "break-word",
-                      textAlign: "center", 
+                      textAlign: "center",
                     }}
                   >
                     {item[titleField]}
@@ -291,14 +274,19 @@ const MindMap: React.FC<MindMapProps> = ({
                     <Box
                       sx={{
                         ...styles.centerV,
-                        bgcolor: attributeBgColor,
-                        color: attributeTextColor,
+                        bgcolor: generateColorFromString(
+                          item[titleField],
+                          customMindMapPalette,
+                        ).backgroundColor,
+                        color: generateColorFromString(
+                          item[titleField],
+                          customMindMapPalette,
+                        ).color,
                         p: attributePadding,
                         borderRadius: 1,
                         fontSize: attributeFontSize,
                         gap: "4px",
                         minWidth: "100px",
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                       }}
                     >
                       <Typography
@@ -309,9 +297,9 @@ const MindMap: React.FC<MindMapProps> = ({
                             : primaryFontFamily
                         }
                         sx={{
-                          maxWidth: "180px", 
+                          maxWidth: "180px",
                           wordBreak: "break-word",
-                          textAlign: "center", 
+                          textAlign: "center",
                         }}
                       >
                         {attr[titleField]}

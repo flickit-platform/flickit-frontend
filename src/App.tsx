@@ -43,11 +43,16 @@ function App() {
   }, [window.clarity]);
 
   useEffect(() => {
-    flagsmith.init({
-      environmentID: import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY,
-      api: import.meta.env.VITE_FLAGSMITH_API,
-    });
-    flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
+    if (
+      import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY &&
+      import.meta.env.VITE_FLAGSMITH_API
+    ) {
+      flagsmith.init({
+        environmentID: import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY,
+        api: import.meta.env.VITE_FLAGSMITH_API,
+      });
+      flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
+    }
   }, []);
   return error ? (
     <Box sx={{ ...styles.centerVH }} height="100vh">

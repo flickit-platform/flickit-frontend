@@ -4,29 +4,28 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import Navbar from "@common/Navbar";
 import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
+import NavbarWithoutLogin from "@/components/common/NavbarWithoutLogin";
 import keycloakService from "@/service/keycloakService";
-import NavbarWithoutLogin from "@common/NavbarWithoutLogin";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
-
   const { children } = props;
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
   const { assessmentKitId = "" } = useParams();
 
-  const checkLink = (link: string)=>{
-    return  pathname.startsWith(link)
-  }
+  const checkLink = (link: string) => {
+    return pathname.startsWith(link);
+  };
   const isAuthenticated = keycloakService.isLoggedIn();
 
   return (
     <Box sx={{ overflowX: "clip", minHeight: "100vh" }}>
-      {isAuthenticated ? <Navbar /> : <NavbarWithoutLogin />}
+      {isAuthenticated ? <Navbar /> : <NavbarWithoutLogin />}{" "}
       <Box
         sx={{
-          p: !checkLink("/assessment-kits")
-            ? { xs: 1, sm: 1, md: 4 }
-            : "0",
-          px: checkLink(`/assessment-kits/${assessmentKitId}`) ?  0 :  { xl: 30, lg: 12, xs: 1, sm: 3 }
+          p: !checkLink("/assessment-kits") ? { xs: 1, sm: 1, md: 4 } : "0",
+          px: checkLink(`/assessment-kits/${assessmentKitId}`)
+            ? 0
+            : { xl: 30, lg: 12, xs: 1, sm: 3 },
         }}
         m="auto"
       >
@@ -37,7 +36,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
             </Box>
           }
         >
-         {children}
+          {children}
         </Suspense>
       </Box>
     </Box>

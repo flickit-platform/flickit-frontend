@@ -13,6 +13,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Trans } from "react-i18next";
+import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { useKitDesignerContext } from "@/providers/KitProvider";
 
 interface Attribute {
   id: string | number;
@@ -22,6 +24,7 @@ interface Attribute {
     defaultValue: number;
     customValue: any;
   };
+  translations: any;
 }
 
 interface Subject {
@@ -33,6 +36,7 @@ interface Subject {
     customValue: any;
   };
   attributes: Attribute[];
+  translations: any;
 }
 
 interface SubjectTableProps {
@@ -55,6 +59,8 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
       attributes: [],
     },
   });
+  const { kitState } = useKitDesignerContext();
+  const langCode = kitState.mainLanguage?.code;
 
   useEffect(() => {
     setTempInputData(JSON.parse(JSON.stringify(inputData)));
@@ -178,7 +184,19 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                 <TableCell>
                   <Typography variant="semiBoldLarge">{index + 1}</Typography>
                 </TableCell>
-                <TableCell>{subject.title}</TableCell>
+                <TableCell>
+                  {" "}
+                  <TitleWithTranslation
+                    title={
+                      langCode
+                        ? (subject.translations?.[langCode]?.title ??
+                          subject.title)
+                        : subject.title
+                    }
+                    translation={""}
+                    variant="semiBoldMedium"
+                  />{" "}
+                </TableCell>
                 <TableCell>
                   {editAttributeIds.includes(subject.id) ? (
                     renderEditableTextField(
@@ -237,7 +255,18 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
               {subject.attributes.map((attribute, attrIndex) => (
                 <TableRow key={attribute.id}>
                   <TableCell>{attrIndex + 1}</TableCell>
-                  <TableCell>{attribute.title}</TableCell>
+                  <TableCell>
+                    <TitleWithTranslation
+                      title={
+                        langCode
+                          ? (attribute.translations?.[langCode]?.title ??
+                            attribute.title)
+                          : attribute.title
+                      }
+                      translation={""}
+                      variant="semiBoldMedium"
+                    />{" "}
+                  </TableCell>
                   <TableCell>
                     {editAttributeIds.includes(attribute.id) ? (
                       renderEditableTextField(

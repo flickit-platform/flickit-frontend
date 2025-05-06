@@ -28,5 +28,5 @@ export interface IUserPermissions {
 }
 
 export enum FLAGS {
-  DISPLAY_EXPERT_GROUPS = "display_expert_groups",
+  display_expert_groups = "display_expert_groups",
 }

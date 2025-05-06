@@ -94,7 +94,6 @@ const TitleWithTranslation = ({
   const isFarsiTranslation = translation
     ? languageDetector(translation)
     : false;
-
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
       <RenderText text={title} isFarsi={isFarsiTitle} {...rest} />
