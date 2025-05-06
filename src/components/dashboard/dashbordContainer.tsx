@@ -8,10 +8,15 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@/types/index";
-import { useLocation, useNavigate, useOutlet, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutlet,
+  useParams,
+} from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -49,13 +54,12 @@ const DashbordContainer = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const outlet = useOutlet();
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const pathSegments = location.pathname
       .split("/")
       .filter((segment) => segment);
-    console.log(pathSegments, "pathSegments");
     const lastPart = pathSegments[4];
     setSelectedTab(lastPart);
   }, [location]);
@@ -69,18 +73,18 @@ const DashbordContainer = () => {
     runOnMount: true,
   });
   const isMobileScreen = useMediaQuery((theme: any) =>
-    theme.breakpoints.down("md"),
+    theme.breakpoints.down("sm"),
   );
   const handleChange = (event: SelectChangeEvent) => {
-    const { value, } = event.target;
-    setSelectedTab(value as string)
+    const { value } = event.target;
+    setSelectedTab(value as string);
 
-    const selectedItem = tabListTitle.find(item => item.address === value);
+    const selectedItem = tabListTitle.find((item) => item.address === value);
     if (selectedItem) {
       const { address } = selectedItem;
-      navigate(`./${address}/`)
-    };
-  }
+      navigate(`./${address}/`);
+    }
+  };
   return (
     <QueryBatchData
       queryBatchData={[fetchPathInfo]}
@@ -95,11 +99,12 @@ const DashbordContainer = () => {
               display="flex"
               alignItems="center"
               mt={0.5}
+              spacing={1}
             >
               <Grid
                 item
+                xs={6}
                 sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 4 : 12}
-                xs={12}
               >
                 <Typography
                   color="primary"
@@ -116,20 +121,39 @@ const DashbordContainer = () => {
               </Grid>
               <Grid
                 item
-                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
+                xs={6}
+                sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
                 sx={{ display: "flex" }}
               >
                 {isMobileScreen ? (
-                  <FormControl fullWidth>
+                  <FormControl sx={{ mt: 1 }} fullWidth>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
                       value={selectedTab}
-                      onChange={(event)=>handleChange(event)}
+                      onChange={(event) => handleChange(event)}
+                      sx={{
+                        background: "#fff",
+                        width: { xs: "100%" },
+                        "& .MuiTypography-root": {
+                          ...theme.typography.semiBoldMedium,
+                        },
+                      }}
                     >
-                      {tabListTitle.map(item =>{
-                        const { label, address } = item
-                        return <MenuItem key={label} value={address}><Trans i18nKey={label} /></MenuItem>;
+                      {tabListTitle.map((item) => {
+                        const { label, address } = item;
+                        return (
+                          <MenuItem
+                            key={label}
+                            value={address}
+                            sx={{
+                              fontFamily: languageDetector(label)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                              ...theme.typography.semiBoldMedium,
+                            }}
+                          >
+                            <Trans i18nKey={label} />
+                          </MenuItem>
+                        );
                       })}
                     </Select>
                   </FormControl>
