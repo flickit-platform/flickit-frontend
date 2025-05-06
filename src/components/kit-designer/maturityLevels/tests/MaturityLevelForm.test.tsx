@@ -21,15 +21,17 @@ describe("MaturityLevelForm", () => {
 
   const renderForm = () =>
     render(
-      <I18nextProvider i18n={i18n}>
-        <MaturityLevelForm
-          newMaturityLevel={newMaturityLevel}
-          setNewMaturityLevel={setNewMaturityLevel}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-        />
-      </I18nextProvider>,
+      <KitLanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <MaturityLevelForm
+            newMaturityLevel={newMaturityLevel}
+            setNewMaturityLevel={setNewMaturityLevel}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+          />
+        </I18nextProvider>
+      </KitLanguageProvider>,
     );
 
   it("renders with initial values", async () => {

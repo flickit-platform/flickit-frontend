@@ -28,15 +28,17 @@ describe("SubjectForm", () => {
 
   const setup = () => {
     render(
-      <I18nextProvider i18n={i18n}>
-        <SubjectForm
-          newSubject={newItem}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-          setNewSubject={setNewSubject}
-        />
-      </I18nextProvider>,
+      <KitLanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <SubjectForm
+            newSubject={newItem}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+            setNewSubject={setNewSubject}
+          />
+        </I18nextProvider>
+      </KitLanguageProvider>,
     );
 
     return {

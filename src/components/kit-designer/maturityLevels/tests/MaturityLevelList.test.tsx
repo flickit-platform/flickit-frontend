@@ -26,12 +26,14 @@ const mockOnReorder = vi.fn();
 describe("MaturityLevelList", () => {
   it("renders maturity levels correctly", () => {
     render(
-      <MaturityLevelList
-        maturityLevels={mockMaturityLevels}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <MaturityLevelList
+          maturityLevels={mockMaturityLevels}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
 
     expect(screen.getByText("Level 1")).toBeInTheDocument();
@@ -40,12 +42,14 @@ describe("MaturityLevelList", () => {
 
   it("allows editing a maturity level", () => {
     render(
-      <MaturityLevelList
-        maturityLevels={mockMaturityLevels}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <MaturityLevelList
+          maturityLevels={mockMaturityLevels}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
 
     // Click edit button for Level 1
@@ -75,7 +79,7 @@ describe("MaturityLevelList", () => {
 
   it("allows deleting a maturity level", () => {
     render(
-      <>
+      <KitLanguageProvider>
         <MaturityLevelList
           maturityLevels={mockMaturityLevels}
           onEdit={mockOnEdit}
@@ -89,7 +93,7 @@ describe("MaturityLevelList", () => {
           title="Warning"
           content="Are you sure you want to delete this maturity level?"
         />
-      </>,
+      </KitLanguageProvider>,
     );
 
     // Click delete button for Level 1

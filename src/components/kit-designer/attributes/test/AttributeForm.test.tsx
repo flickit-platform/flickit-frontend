@@ -9,20 +9,16 @@ import { KitLanguageProvider } from "@providers/KitProvider";
 describe("AttributeForm", () => {
   const newAttributeForm = {
     title: "Test attribute title",
-    translations: {
-      FA: {
-        title: "translations Title",
-        description: "translations description",
-      },
-    },
+    translations: {FA: {title: "translations Title", description: "translations description"}},
     subject: { id: 1, title: "subject title" },
     description: "Test attribute description",
     weight: 3,
     index: 1,
     value: 5,
     id: 11,
-    isEditing: false,
+    isEditing: false
   };
+
 
   const handleInputChange = vi.fn();
   const handleSave = vi.fn();
@@ -33,15 +29,17 @@ describe("AttributeForm", () => {
   const renderForm = () =>
     render(
       <I18nextProvider i18n={i18n}>
-        <AttributeForm
-          newAttribute={newAttributeForm}
-          handleCancel={handleCancel}
-          handleSave={handleSave}
-          handleInputChange={handleInputChange}
-          langCode={"FA"}
-          setNewAttribute={setNewAttribute}
-          updateTranslation={updateTranslation}
-        />
+        <KitLanguageProvider>
+          <AttributeForm
+            newAttribute={newAttributeForm}
+            handleCancel={handleCancel}
+            handleSave={handleSave}
+            handleInputChange={handleInputChange}
+            langCode={"FA"}
+            setNewAttribute={setNewAttribute}
+            updateTranslation={updateTranslation}
+          />
+        </KitLanguageProvider>
       </I18nextProvider>,
     );
 

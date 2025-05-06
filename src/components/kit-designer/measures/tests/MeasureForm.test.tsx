@@ -22,15 +22,17 @@ describe("MeasureForm", () => {
 
   const setup = () => {
     render(
-      <I18nextProvider i18n={i18n}>
-        <MeasureForm
-          newMeasure={newItem}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-          setNewMeasure={setNewMeasure}
-        />
-      </I18nextProvider>,
+      <KitLanguageProvider>
+        <I18nextProvider i18n={i18n}>
+          <MeasureForm
+            newMeasure={newItem}
+            handleInputChange={handleInputChange}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+            setNewMeasure={setNewMeasure}
+          />
+        </I18nextProvider>
+      </KitLanguageProvider>,
     );
 
     return {

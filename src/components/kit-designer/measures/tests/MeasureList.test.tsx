@@ -21,12 +21,14 @@ const mockSetOpenDeleteDialog = vi.fn();
 describe("ListOfItems (measure)", () => {
   const setup = () => {
     render(
-      <ListOfItems
-        items={mockItems}
-        onEdit={mockOnEdit}
-        onReorder={mockOnReorder}
-        setOpenDeleteDialog={mockSetOpenDeleteDialog}
-      />,
+      <KitLanguageProvider>
+        <ListOfItems
+          items={mockItems}
+          onEdit={mockOnEdit}
+          onReorder={mockOnReorder}
+          setOpenDeleteDialog={mockSetOpenDeleteDialog}
+        />
+      </KitLanguageProvider>,
     );
 
     return {
