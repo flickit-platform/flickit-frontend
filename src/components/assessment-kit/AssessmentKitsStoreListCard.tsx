@@ -17,7 +17,7 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const dialogProps = useDialog();
 
   const isAuthenticated = keycloakService.isLoggedIn();
-  let isPublic = isAuthenticated ? "" : "/public"
+  const isPublic = isAuthenticated ? "" : "/public"
   const assessmentKitsQueryData = useQuery({
     service: (args={ isPublic }, config) => service.assessmentKit.info.getAll(args, config),
   });

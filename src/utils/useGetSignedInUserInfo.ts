@@ -102,7 +102,7 @@ const useGetSignedInUserInfo = (
     return () => {};
   }, []);
 
-  return { error, loading: runOnMount ? loadingUserInfo : false, userInfo, getUser };
+  return { error, loading: runOnMount && loadingUserInfo , userInfo, getUser };
 };
 
 export default useGetSignedInUserInfo;

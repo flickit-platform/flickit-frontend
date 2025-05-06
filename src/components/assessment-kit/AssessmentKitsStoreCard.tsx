@@ -29,18 +29,22 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   const navigate = useNavigate();
 
+  let checkAuthenticated = () => {
+    const isAuthenticated = keycloakService.isLoggedIn();
+    if (!isAuthenticated) {
+      keycloakService.doLogin();
+      return null;
+    }
+  };
+
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
-    const isAuthenticated = keycloakService.isLoggedIn();
-    if(!isAuthenticated){
-      keycloakService.doLogin();
-    }else{
-      openDialog.openDialog({
-        type: "create",
-        staticData: { assessment_kit: { id, title } },
-      });
-    }
+    checkAuthenticated();
+    openDialog.openDialog({
+      type: "create",
+      staticData: { assessment_kit: { id, title } },
+    });
   };
 
   const truncatedSummaryLength = small ? 150 : 297;
@@ -104,6 +108,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                checkAuthenticated();
                 navigate(`/user/expert-groups/${expertGroup.id}`);
               }}
             >
