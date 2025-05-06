@@ -1,5 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { TId } from "@/types";
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    skipAuth?: boolean;
+  }
+}
 
 export const info = {
   getTags(args: any, config?: AxiosRequestConfig<any>) {
@@ -26,6 +31,7 @@ export const info = {
   getAll(args: any, config: AxiosRequestConfig<any> | undefined = {}) {
     const { langs, isPrivate, isPublic= "" } = args ?? {};
     return axios.get(`/api/v2${isPublic}/assessment-kits/`, {
+      skipAuth: true,
       params: { isPrivate, langs },
       ...config,
     });
