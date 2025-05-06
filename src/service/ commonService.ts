@@ -60,8 +60,10 @@ const commonService = {
       ...config });
   },
 
-  getTenantInfo(config?: AxiosRequestConfig<any>) {
+  getTenantInfo(args: any,config?: AxiosRequestConfig<any>) {
+    const {isLogin} = args
     return axios.get(`/api/v1/tenant/`, {
+      skipAuth: isLogin ? false : true,
       ...config,
     });
   },

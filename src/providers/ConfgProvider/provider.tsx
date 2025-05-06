@@ -8,6 +8,7 @@ import React, {
 import reducer, { initialState, AppState } from "./reducer";
 import { ActionTypes } from "./actions";
 import { useServiceContext } from "../ServiceProvider";
+import keycloakService from "@/service/keycloakService";
 
 interface AppContextType {
   config: AppState;
@@ -31,9 +32,10 @@ interface AppProviderProps {
 export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [config, dispatch] = useReducer(reducer, initialState);
   const { service } = useServiceContext();
+  const isAuthenticated = keycloakService.isLoggedIn();
 
   useEffect(() => {
-    service.common.getTenantInfo(undefined).then((res: any) => {
+    service.common.getTenantInfo({isLogin: isAuthenticated},undefined).then((res: any) => {
       dispatch({
         type: ActionTypes.SET_APP_LOGO_URL,
         payload: res.data.logo.logoLink,
