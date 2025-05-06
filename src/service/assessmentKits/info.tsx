@@ -31,7 +31,7 @@ export const info = {
   getAll(args: any, config: AxiosRequestConfig<any> | undefined = {}) {
     const { langs, isPrivate, isPublic= "" } = args ?? {};
     return axios.get(`/api/v2${isPublic}/assessment-kits/`, {
-      skipAuth: true,
+      skipAuth: isPublic ? true : false,
       params: { isPrivate, langs },
       ...config,
     });
