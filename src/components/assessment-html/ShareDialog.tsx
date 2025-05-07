@@ -21,6 +21,17 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import QueryBatchData from "../common/QueryBatchData";
+import IconButton from "@mui/material/IconButton";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import useMenu from "@/utils/useMenu";
+import { Menu, MenuItem } from "@mui/material";
+import {
+  ArrowDropDown,
+  ArrowDropUp,
+  Check,
+  Language,
+} from "@mui/icons-material";
+import { t } from "i18next";
 
 interface IDialogProps {
   open: boolean;
@@ -28,6 +39,26 @@ interface IDialogProps {
   title: string;
   fetchGraphicalReportUsers: any;
 }
+const accessOptions = {
+  restricted: {
+    title: t("accessRestrictedTitle", "Restricted"),
+    description: t(
+      "accessRestrictedDescription",
+      "Only people who are added can open with the link",
+    ),
+    icon: <LockOutlinedIcon />,
+    bgColor: "#E2E5E9",
+  },
+  anyone: {
+    title: t("accessAnyoneTitle", "Anyone with this link"),
+    description: t(
+      "accessAnyoneDescription",
+      "Anyone on the internet with the link can view this report",
+    ),
+    icon: <Language />,
+    bgColor: "#D5E5F6",
+  },
+};
 
 export const ShareDialog = ({
   open,
@@ -40,9 +71,17 @@ export const ShareDialog = ({
   const [value, setValue] = useState("");
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
+  const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
+  const [access, setAccess] = useState<"restricted" | "anyone">("restricted");
+
+  const handleSelect = (newAccess: "restricted" | "anyone") => {
+    setAccess(newAccess);
+    closeMenu();
+  };
 
   const grantReportAccess = useQuery({
-    service: (args, config) => service.assessments.member.grantReportAccess(args, config),
+    service: (args, config) =>
+      service.assessments.member.grantReportAccess(args, config),
     runOnMount: false,
   });
 
@@ -78,16 +117,17 @@ export const ShareDialog = ({
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+  const current = accessOptions[access];
 
   return (
     <CEDialog
       open={open}
       onClose={onClose}
       title={
-        <>
+        <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="shareReport" values={{ title }} />
-        </>
+          <Trans i18nKey="shareReportWithTitle" values={{ title }} />
+        </Box>
       }
       maxWidth="sm"
     >
@@ -100,7 +140,6 @@ export const ShareDialog = ({
         <Grid item xs={9.7}>
           <TextField
             placeholder={t("shareReportViaEmail").toString()}
-            label={<Trans i18nKey="email" />}
             name="value"
             value={value}
             onChange={(e) => setValue(e.target.value)}
@@ -115,11 +154,11 @@ export const ShareDialog = ({
           </LoadingButton>
         </Grid>
       </Grid>
-      <Box sx={{ my: 2 }}>
-        <Typography variant="bodyMedium" color="disabled">
-          <Trans i18nKey="onlyThesePeopleHaveAccess" />
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
+          <Trans i18nKey="peopleWithAccess" />
         </Typography>
-        <Divider sx={{ mt: 1 }} />
+        <Divider sx={{ my: 1 }} />
       </Box>
       <QueryBatchData
         queryBatchData={[fetchGraphicalReportUsers]}
@@ -170,6 +209,76 @@ export const ShareDialog = ({
           );
         }}
       />
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
+          <Trans i18nKey="accessStatus" />
+        </Typography>
+        <Divider sx={{ mt: 1 }} />
+      </Box>
+
+      <Box mt={1} sx={{ ...styles.centerV, gap: 1 }}>
+        <IconButton
+          color={access === "anyone" ? "primary" : "default"}
+          sx={{
+            backgroundColor: current.bgColor,
+            marginInlineEnd: 1,
+          }}
+          size="small"
+          onClick={openMenu}
+        >
+          {current.icon}
+        </IconButton>
+
+        <Box>
+          <Typography
+            onClick={openMenu}
+            sx={{
+              ...styles.centerV,
+              cursor: "pointer",
+              gap: 1,
+            }}
+            variant="semiBoldMedium"
+          >
+            {current.title}
+            {menuOpened ? (
+              <ArrowDropUp sx={{ color: "#6C8093" }} />
+            ) : (
+              <ArrowDropDown sx={{ color: "#6C8093" }} />
+            )}
+          </Typography>
+
+          <Typography variant="bodySmall" color="#6C8093">
+            {current.description}
+          </Typography>
+        </Box>
+
+        <Menu anchorEl={anchorEl} open={menuOpened} onClose={closeMenu}>
+          {(["restricted", "anyone"] as const).map((key) => {
+            const isSelected = access === key;
+            return (
+              <MenuItem
+                key={key}
+                selected={isSelected}
+                onClick={() => handleSelect(key)}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  gap: 2,
+                }}
+              >
+                <Typography variant="bodyMedium">
+                  {accessOptions[key].title}
+                </Typography>
+                {isSelected && (
+                  <Check sx={{ color: "primary.main" }} fontSize="small" />
+                )}
+              </MenuItem>
+            );
+          })}
+        </Menu>
+      </Box>
       <CEDialogActions
         type="delete"
         loading={false}
@@ -180,6 +289,7 @@ export const ShareDialog = ({
         <LoadingButton
           startIcon={<LinkIcon fontSize="small" />}
           onClick={handleCopyClick}
+          variant="outlined"
         >
           <Trans i18nKey="copyReportLink" />
         </LoadingButton>
