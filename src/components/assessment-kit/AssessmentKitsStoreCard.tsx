@@ -208,8 +208,8 @@ const AssessmentKitsStoreCard = (props: any) => {
                   ? theme.palette.secondary.main
                   : theme.palette.primary.main
               }
-              width={small ? "16px" : undefined}
-              height={small ? "16px" : undefined}
+              width={small ? "16px" : "32px"}
+              height={small ? "16px" : "32px"}
             />
             <Typography variant={small ? "bodySmall" : "titleSmall"}>
               <Trans i18nKey="free" />
