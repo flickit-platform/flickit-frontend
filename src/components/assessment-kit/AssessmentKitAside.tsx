@@ -12,7 +12,7 @@ import { styles } from "@styles";
 import i18next, { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
 import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -156,7 +156,7 @@ const AssessmentKitAside = (props: any) => {
               }}
             >
               {likeStatus ? (
-                <ThumbUpOffAltIcon color="primary" fontSize="small" />
+                <ThumbUpIcon color="primary" fontSize="small" />
               ) : (
                 <ThumbUpOffAltOutlinedIcon color="primary" fontSize="small" />
               )}
