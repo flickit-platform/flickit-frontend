@@ -9,17 +9,14 @@ import { t } from "i18next";
 const sections = [
   {
     key: "what",
-    label: "What",
     title: "whatIsThisKit",
   },
   {
     key: "who",
-    label: "Who",
     title: "whoNeedsThisKit",
   },
   {
     key: "when",
-    label: "When",
     title: "whenToUseThisKit",
   },
 ] as const;
@@ -111,7 +108,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
           borderBottom: { xs: "1px solid #8DAFD2", md: "none" },
         }}
       >
-        {sections.map(({ key, label }) => {
+        {sections.map(({ key }) => {
           const isActive = selected === key;
           return (
             <Box
@@ -137,7 +134,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                 },
               }}
             >
-              {label}
+              {t(key)}
             </Box>
           );
         })}

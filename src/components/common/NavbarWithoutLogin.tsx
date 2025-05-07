@@ -18,6 +18,9 @@ import keycloakService from "@/service/keycloakService";
 const login = () => {
   keycloakService.doLogin();
 };
+const LandingPage = import.meta.env.VITE_LANDING_PAGE
+  ? import.meta.env.VITE_LANDING_PAGE
+  : `https://flickit.org/`;
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
@@ -38,16 +41,20 @@ const NavbarWithoutLogin = () => {
           backgroundColor: theme.palette.primary.main,
           borderRadius: 1,
           justifyContent: "space-between",
-          p:0
+          p: 0,
         }}
       >
         <Typography
           variant="h6"
-          onClick={login}
+          component={NavLink}
+          to={
+            import.meta.env.VITE_LANDING_PAGE
+              ? import.meta.env.VITE_LANDING_PAGE
+              : `https://flickit.org/`
+          }
           sx={{
             display: {
               xs: "block",
-
             },
             color: "grey",
             height: "42px",
@@ -118,7 +125,7 @@ const NavbarWithoutLogin = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: {xs: 0.8, sm: 2},
+            gap: { xs: 0.8, sm: 2 },
           }}
         >
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}

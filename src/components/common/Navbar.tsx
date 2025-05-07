@@ -45,7 +45,7 @@ import languageDetector from "@utils/languageDetector";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
 import { getReadableDate } from "@utils/readableDate";
-import { useFlag } from "@/hooks/useFlag";
+import flagsmith from "flagsmith";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -860,7 +860,8 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <>

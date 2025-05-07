@@ -19,7 +19,7 @@ import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import { theme } from "@/config/theme";
-import { useFlag } from "@/hooks/useFlag";
+import flagsmith from "flagsmith";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -53,7 +53,7 @@ const ExpertGroupsContainer = () => {
       : Math.ceil(queryData.data?.total / queryData.data?.size);
 
   useDocumentTitle(t("expertGroups") as string);
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <Box>
