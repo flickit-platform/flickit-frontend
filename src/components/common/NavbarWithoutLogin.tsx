@@ -47,11 +47,7 @@ const NavbarWithoutLogin = () => {
         <Typography
           variant="h6"
           component={NavLink}
-          to={
-            import.meta.env.VITE_LANDING_PAGE
-              ? import.meta.env.VITE_LANDING_PAGE
-              : `https://flickit.org/`
-          }
+          to={LandingPage}
           sx={{
             display: {
               xs: "block",
@@ -90,7 +86,7 @@ const NavbarWithoutLogin = () => {
         >
           <Button
             component={NavLink}
-            to={`https://flickit.org/`}
+            to={LandingPage}
             sx={{
               ...styles.activeNavbarLink,
               textTransform: "uppercase",
