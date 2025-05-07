@@ -430,7 +430,7 @@ export const customMindMapPalette = {
   chip3: { backgroundColor: "#DCEEFF", color: "#005BBB" },
   chip4: { backgroundColor: "#E5F0F9", color: "#1A73E8" },
   chip5: { backgroundColor: "#FFF7E6", color: "#FFBC00" },
-  chip6: { backgroundColor: "#FEF3D6", color: "#D79F00" },
+  chip6: { backgroundColor: "#FAF0D5", color: "#A05A00" },
   chip7: { backgroundColor: "#FFEFE2", color: "#E96B11" },
   chip8: { backgroundColor: "#FFF2E0", color: "#CC5C00" },
   chip9: { backgroundColor: "#F3F1F9", color: "#6A1B9A" },
