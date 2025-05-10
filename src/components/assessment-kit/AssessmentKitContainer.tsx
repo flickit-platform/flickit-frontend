@@ -100,8 +100,8 @@ const AssessmentKit = (props: any) => {
                   container
                   item
                   xs={12}
-                  md={9.3}
-                  lg={9.3}
+                  md={9}
+                  lg={9}
                   sx={{
                     paddingInlineEnd: { xs: 0, md: 3 },
                     paddingBlockEnd: { xs: 2, md: 0 },
@@ -128,7 +128,7 @@ const AssessmentKit = (props: any) => {
                     <AssessmentKitSubjects {...assessmentKitQueryData} />
                   </Grid>
                 </Grid>
-                <Grid item xs={12} md={2.7} lg={2.7}>
+                <Grid item xs={12} md={3} lg={3}>
                   <AssessmentKitAside
                     like={like}
                     id={id}

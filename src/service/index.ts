@@ -16,8 +16,10 @@ import userService from "./userService";
 declare module "axios" {
   interface AxiosRequestConfig {
     isRefreshTokenReq?: boolean;
+    skipAuth?: boolean;
   }
 }
+
 
 const getCurrentLocale = () =>
   i18next.language ?? navigator.language ?? "en-US";
@@ -32,6 +34,10 @@ export const createService = (
   axios.defaults.timeoutErrorMessage = t("checkNetworkConnection") as string;
 
   axios.interceptors.request.use(async (req: any) => {
+    if (req.skipAuth && !keycloakService.getToken()) {
+      return req;
+    }
+
     const accessToken = keycloakService.getToken();
     const hasTenantInUrl = req.url.includes("tenant");
 

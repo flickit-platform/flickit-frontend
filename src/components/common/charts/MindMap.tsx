@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { useTheme, useMediaQuery, Box, Typography } from "@mui/material";
-import { generateColorFromString, styles } from "@styles";
+import { customMindMapPalette, generateColorFromString, styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 
@@ -167,7 +167,7 @@ const MindMap: React.FC<MindMapProps> = ({
           border: `2px solid #6C8093`,
           zIndex: 3,
           textAlign: "center",
-          p:2
+          p: 2,
         }}
       >
         <Typography variant="titleMedium" color="#6C8093">
@@ -212,9 +212,14 @@ const MindMap: React.FC<MindMapProps> = ({
                     gap: "4px",
                     fontSize: subjectFontSize,
                     fontWeight: "bold",
-                    bgcolor: generateColorFromString(item[titleField])
-                      .backgroundColor,
-                    color: generateColorFromString(item[titleField]).color,
+                    bgcolor: generateColorFromString(
+                      item[titleField],
+                      customMindMapPalette,
+                    ).backgroundColor,
+                    color: generateColorFromString(
+                      item[titleField],
+                      customMindMapPalette,
+                    ).color,
                   }}
                 >
                   <Typography
@@ -269,9 +274,14 @@ const MindMap: React.FC<MindMapProps> = ({
                     <Box
                       sx={{
                         ...styles.centerV,
-                        bgcolor: generateColorFromString(item[titleField])
-                          .backgroundColor,
-                        color: generateColorFromString(item[titleField]).color,
+                        bgcolor: generateColorFromString(
+                          item[titleField],
+                          customMindMapPalette,
+                        ).backgroundColor,
+                        color: generateColorFromString(
+                          item[titleField],
+                          customMindMapPalette,
+                        ).color,
                         p: attributePadding,
                         borderRadius: 1,
                         fontSize: attributeFontSize,
