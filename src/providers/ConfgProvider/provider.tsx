@@ -8,6 +8,7 @@ import React, {
 import reducer, { initialState, AppState } from "./reducer";
 import { ActionTypes } from "./actions";
 import { useServiceContext } from "../ServiceProvider";
+import keycloakService from "@/service/keycloakService";
 
 interface AppContextType {
   config: AppState;
@@ -64,8 +65,13 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
         dispatch({
           type: ActionTypes.App_Languages,
           payload: res.data.kitLanguages,
-        })
-      })
+        });
+      });
+    });
+    const isAuthenticated = keycloakService.isLoggedIn();
+    dispatch({
+      type: ActionTypes.App_Authenticated,
+      payload: isAuthenticated,
     });
   }, []);
   return (
