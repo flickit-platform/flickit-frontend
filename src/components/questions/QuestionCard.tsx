@@ -519,19 +519,21 @@ export const QuestionTabsTemplate = (props: any) => {
       queryData.query();
     }
   }, [currentPage]);
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [key]);
 
-  const fallbackTab = () => {
-    if (counts.evidences) return "evidences";
-    if (counts.history) return "history";
-    if (counts.comments) return "comments";
-    return "evidences";
-  };
+  useEffect(() => {
+    if (counts.evidences){
+      setValue("evidences")
+    } else if(counts.history){
+      setValue("history")
+    }else if(counts.comments){
+      setValue("comments")
+    }else {
+      setValue("evidences")
+    }
+  }, [counts.evidences, counts.history, counts.comments]);
 
   return (
-    <TabContext value={value ?? fallbackTab()}>
+    <TabContext value={value}>
       <Box sx={{ px: { xs: 2, sm: 0 }, mt: 2, width: "100%" }}>
         <TabList
           scrollButtons="auto"
