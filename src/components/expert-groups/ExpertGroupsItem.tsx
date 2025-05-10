@@ -24,7 +24,7 @@ import toastError from "@utils/toastError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { FLAGS } from "@/types";
-import { useFlag } from "@/hooks/useFlag";
+import flagsmith from "flagsmith";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -209,7 +209,7 @@ const Actions = (props: any) => {
       }
     }
   };
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
 
   return editable && showGroups ? (

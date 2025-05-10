@@ -17,7 +17,7 @@ import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
-import { useFlag } from "@/hooks/useFlag";
+import flagsmith from "flagsmith";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -36,7 +36,7 @@ interface IAssessmentKitListItemProps {
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
-  const showGroups = useFlag(FLAGS.display_expert_groups);
+  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
     service: (args, config) => service.assessmentKit.info.clone(args, config),
@@ -144,7 +144,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
               )}
             </div>
           </Tooltip>
-          {useFlag(FLAGS.display_expert_groups) && (
+          {showGroups && (
             <Actions
               assessment_kit={data}
               fetchAssessmentKits={fetchAssessmentKits}
