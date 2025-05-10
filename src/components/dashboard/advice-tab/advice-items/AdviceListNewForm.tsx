@@ -225,7 +225,10 @@ const AdviceListNewForm = ({
                         },
                         "& .MuiOutlinedInput-input": {
                           px: {xs: 0, sm: "unset"}
-                        }
+                        },
+                        "& .MuiSelect-select.MuiSelect-outlined": {
+                          padding: "1px",
+                        },
                       }}
                     >
                       <MenuItem disabled value="">
