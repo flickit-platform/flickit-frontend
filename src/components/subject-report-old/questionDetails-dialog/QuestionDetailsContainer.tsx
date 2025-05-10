@@ -38,10 +38,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   const [value, setValue] = useState(undefined);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: any) => {
-    setValue(newValue);
-  };
-
   const close = () => {
     closeDialog();
   };
@@ -170,7 +166,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         key={questionInfo?.question?.id}
         value={value}
         setValue={setValue}
-        handleChange={handleChange}
         questionsInfo={{
           ...questionsInfo,
           permissions: {
