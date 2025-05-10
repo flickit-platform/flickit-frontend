@@ -40,7 +40,7 @@ const MainTabs = (props: any) => {
       payload: fetchAssessmentPermissions.data?.permissions,
     });
     if (permissionsData) {
-      const updatedTabList = tabListTitle?.filter((tab) => {
+      const updatedTabList = tabListTitle?.filter((tab: any) => {
         if (typeof tab.permission === "boolean") {
           return tab.permission;
         }
