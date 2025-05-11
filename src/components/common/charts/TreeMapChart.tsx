@@ -7,6 +7,7 @@ import languageDetector from "@/utils/languageDetector";
 
 interface TreeMapNode {
   name: string;
+  id: number;
   description: string;
   count: number;
   label: string;
@@ -32,6 +33,13 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
         stroke="#fff"
         fill="white"
         content={<CustomNode levels={levels} />}
+        onClick={(props)=>{
+         const { id }: any = props
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
       >
         <Tooltip
           wrapperStyle={{ outline: "none" }}
@@ -57,7 +65,7 @@ const CustomNode: any = (props: any) => {
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={color} />
+      <rect x={x} y={y} width={width} height={height} fill={color} style={{cursor: "pointer"}} />
       {width > 50 && height > 20 && (
         <>
           <text
