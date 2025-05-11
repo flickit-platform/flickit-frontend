@@ -77,6 +77,17 @@ export const ShareDialog = ({
   const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
   const [access, setAccess] = useState<VISIBILITY>(visibility);
 
+  const getBasePath = (path: string): string => {
+    const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
+    const baseMatch = baseRegex.exec(path);
+
+    if (baseMatch && baseMatch[1]) {
+      return baseMatch[1] + "/";
+    }
+
+    return path.endsWith("/") ? path : path + "/";
+  };
+
   const PublishReportStatus = useQuery({
     service: (args, config) =>
       service.assessments.report.updateVisibilityStatus(args, config),
@@ -85,24 +96,21 @@ export const ShareDialog = ({
 
   const handleSelect = async (newAccess: VISIBILITY) => {
     try {
-      const data = { visibility: newAccess };
-      const response = await PublishReportStatus.query({ data, assessmentId });
+      const response = await PublishReportStatus.query({
+        data: { visibility: newAccess },
+        assessmentId,
+      });
 
       const currentPath = window.location.pathname;
+      const basePath = getBasePath(currentPath);
 
-      const baseMatch = currentPath.match(/^(.*\/graphical-report)(?:\/.*)?$/);
-      const basePath = baseMatch ? baseMatch[1] + "/" : currentPath;
-
-      let finalPath: string;
+      let finalPath = basePath;
 
       if (newAccess === VISIBILITY.PUBLIC && response?.linkHash) {
-        const alreadyHasHash =
-          currentPath === `${basePath}${response.linkHash}/`;
-        finalPath = alreadyHasHash
-          ? currentPath
-          : `${basePath}${response.linkHash}/`;
-      } else {
-        finalPath = basePath;
+        const expectedPath = `${basePath}${response.linkHash}/`;
+        if (currentPath !== expectedPath) {
+          finalPath = expectedPath;
+        }
       }
 
       if (window.location.pathname !== finalPath) {
@@ -147,39 +155,34 @@ export const ShareDialog = ({
 
   const handleCopyClick = async () => {
     try {
+      const currentPath = window.location.pathname;
+      const basePath = getBasePath(currentPath);
+  
       if (access === VISIBILITY.PUBLIC && linkHash === "") {
         const response = await PublishReportStatus.query({
           data: { visibility: VISIBILITY.PUBLIC },
           assessmentId,
         });
-
-        const linkHash = response?.linkHash;
-        const currentPath = window.location.pathname;
-
-        const baseMatch = currentPath.match(
-          /^(.*\/graphical-report)(?:\/.*)?$/,
-        );
-        const basePath = baseMatch
-          ? baseMatch[1] + "/"
-          : currentPath.endsWith("/")
-            ? currentPath
-            : currentPath + "/";
-
-        const newPath = `${basePath}${linkHash}/`;
-
+  
+        const newLinkHash = response?.data?.linkHash;
+        const newPath = `${basePath}${newLinkHash}/`;
+  
         if (currentPath !== newPath) {
           window.history.pushState({}, "", newPath);
         }
-
+  
         const fullLink = `${window.location.origin}${newPath}`;
         await navigator.clipboard.writeText(fullLink);
       } else {
         await navigator.clipboard.writeText(window.location.href);
       }
-
+  
       setSnackbarOpen(true);
-    } catch (error) {}
+    } catch (error) {
+      toastError(error as ICustomError);
+    }
   };
+  
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);

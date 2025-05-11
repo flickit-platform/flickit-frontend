@@ -4,7 +4,6 @@ import { useQuery } from "@/utils/useQuery";
 import { ErrorCodes, IGraphicalReport, PathInfo } from "@/types/index";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
-import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";

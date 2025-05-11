@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 
 interface IErrorDataLoadingProps extends BoxProps {}
 

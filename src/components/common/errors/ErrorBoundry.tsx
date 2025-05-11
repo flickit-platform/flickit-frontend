@@ -1,8 +1,7 @@
 import { Trans } from "react-i18next";
 import ErrorImage from "@assets/img/errorBoundary.png";
-import React, { Component } from "react";
+import { Component } from "react";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 
 class ErrorBoundary extends Component {
   constructor(props: any) {
