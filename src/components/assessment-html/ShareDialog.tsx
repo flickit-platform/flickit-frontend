@@ -81,7 +81,7 @@ export const ShareDialog = ({
     const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
     const baseMatch = baseRegex.exec(path);
 
-    if (baseMatch && baseMatch[1]) {
+    if (baseMatch?.[1]) {
       return baseMatch[1] + "/";
     }
 
@@ -111,7 +111,7 @@ export const ShareDialog = ({
         if (currentPath !== expectedPath) {
           finalPath = expectedPath;
         }
-        console.log(finalPath)
+        console.log(finalPath);
       }
 
       if (window.location.pathname !== finalPath) {
@@ -158,6 +158,7 @@ export const ShareDialog = ({
     try {
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
+      navigator.clipboard.writeText(window.location.href);
 
       if (access === VISIBILITY.PUBLIC && linkHash === "") {
         const response = await PublishReportStatus.query({
@@ -168,9 +169,7 @@ export const ShareDialog = ({
         const newLinkHash = response?.linkHash;
         const newPath = `${basePath}${newLinkHash}/`;
 
-        if (currentPath !== newPath) {
-          window.history.pushState({}, "", newPath);
-        }
+        window.history.pushState({}, "", newPath);
 
         const fullLink = `${window.location.origin}${newPath}`;
         navigator.clipboard.writeText(fullLink);
