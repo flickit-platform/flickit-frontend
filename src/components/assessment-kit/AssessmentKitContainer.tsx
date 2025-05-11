@@ -68,92 +68,74 @@ const AssessmentKit = (props: any) => {
   const {
     title: assessmentTitle,
     id,
-    expertGroupId,
-    about = "",
+    expertGroup,
     like,
     subjects,
     metadata,
     languages,
   } = assessmentKitQueryData ?? {};
-  const { service } = useServiceContext();
-  const expertGroupQueryData = useQuery({
-    service: (args, config) =>
-      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
-  });
 
   return (
-    <QueryData
-      {...expertGroupQueryData}
-      loading={false}
-      render={(data) => {
-        return (
-          <>
-            <AssessmentKitBanner assessmentTitle={assessmentTitle} {...data} />
-            <Box
-              sx={{
-                py: 4,
-                px: { xl: 30, lg: 12, xs: 2, sm: 3 },
-              }}
+    <>
+      <AssessmentKitBanner assessmentTitle={assessmentTitle} {...expertGroup} />
+      <Box
+        sx={{
+          py: 4,
+          px: { xl: 30, lg: 12, xs: 2, sm: 3 },
+        }}
+      >
+        <Grid container>
+          <Grid
+            container
+            item
+            xs={12}
+            md={9}
+            lg={9}
+            sx={{
+              paddingInlineEnd: { xs: 0, md: 3 },
+              paddingBlockEnd: { xs: 2, md: 0 },
+            }}
+          >
+            <Grid item xs={12} md={12} lg={12}>
+              <AssessmentKitIntro {...assessmentKitQueryData} />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              md={12}
+              lg={12}
+              display={{ xs: "none", sm: "block" }}
             >
-              <Grid container>
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  md={9}
-                  lg={9}
-                  sx={{
-                    paddingInlineEnd: { xs: 0, md: 3 },
-                    paddingBlockEnd: { xs: 2, md: 0 },
-                  }}
-                >
-                  <Grid item xs={12} md={12} lg={12}>
-                    <AssessmentKitIntro {...assessmentKitQueryData} />
-                  </Grid>
+              <MindMap
+                items={subjects}
+                childrenField="attributes"
+                title={t("kitStructure")}
+              />
+            </Grid>
+            <Grid item xs={12} md={12} lg={12} mt={2}>
+              <AssessmentKitSubjects {...assessmentKitQueryData} />
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={3} lg={3}>
+            <AssessmentKitAside
+              like={like}
+              id={id}
+              title={assessmentTitle}
+              metadata={metadata}
+              languages={languages}
+            />
+          </Grid>
 
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={12}
-                    display={{ xs: "none", sm: "block" }}
-                  >
-                    <MindMap
-                      items={subjects}
-                      childrenField="attributes"
-                      title={t("kitStructure")}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2}>
-                    <AssessmentKitSubjects {...assessmentKitQueryData} />
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} md={3} lg={3}>
-                  <AssessmentKitAside
-                    like={like}
-                    id={id}
-                    title={assessmentTitle}
-                    metadata={metadata}
-                    languages={languages}
-                  />
-                </Grid>
-
-                <Typography
-                  sx={{ color: "#2B333B" }}
-                  variant="titleLarge"
-                  my={4}
-                >
-                  <Trans i18nKey={"exploreOtherKits"} />
-                </Typography>
-                <Grid item xs={12} md={12} lg={12}>
-                  <AssessmentKitsStoreListCard small />
-                </Grid>
-              </Grid>
-            </Box>
-          </>
-        );
-      }}
-    />
+          <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>
+            <Trans i18nKey={"exploreOtherKits"} />
+          </Typography>
+          <Grid item xs={12} md={12} lg={12}>
+            <AssessmentKitsStoreListCard small />
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 };
 
