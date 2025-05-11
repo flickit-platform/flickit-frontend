@@ -4,6 +4,7 @@ import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { t } from "i18next";
 
 interface TreeMapNode {
   name: string;
@@ -78,8 +79,9 @@ const CustomNode: any = (props: any) => {
             fontWeight={9}
             letterSpacing={0.5}
             fontSize={adjustedFontSize}
+            direction={theme.direction}
           >
-            {`${label}/${levels}`}
+            {`${label} ${t(`from`)} ${levels}`}
           </text>
         </>
       )}
