@@ -111,6 +111,7 @@ export const ShareDialog = ({
         if (currentPath !== expectedPath) {
           finalPath = expectedPath;
         }
+        console.log(finalPath)
       }
 
       if (window.location.pathname !== finalPath) {
@@ -157,32 +158,31 @@ export const ShareDialog = ({
     try {
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
-  
+
       if (access === VISIBILITY.PUBLIC && linkHash === "") {
         const response = await PublishReportStatus.query({
           data: { visibility: VISIBILITY.PUBLIC },
           assessmentId,
         });
-  
-        const newLinkHash = response?.data?.linkHash;
+
+        const newLinkHash = response?.linkHash;
         const newPath = `${basePath}${newLinkHash}/`;
-  
+
         if (currentPath !== newPath) {
           window.history.pushState({}, "", newPath);
         }
-  
+
         const fullLink = `${window.location.origin}${newPath}`;
-        await navigator.clipboard.writeText(fullLink);
+        navigator.clipboard.writeText(fullLink);
       } else {
-        await navigator.clipboard.writeText(window.location.href);
+        navigator.clipboard.writeText(window.location.href);
       }
-  
+
       setSnackbarOpen(true);
     } catch (error) {
       toastError(error as ICustomError);
     }
   };
-  
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);

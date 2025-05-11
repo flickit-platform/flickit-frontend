@@ -51,7 +51,7 @@ export const report = {
     config?: AxiosRequestConfig<any>,
   ) {
     return axios.get(
-      `/api/v1/public/graphical-report/${args.linkHash}`,
+      `/api/v1/public/graphical-report/${args.linkHash}/`,
       {
         skipAuth: true,
         ...config,
