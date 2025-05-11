@@ -7,7 +7,7 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AssessmentKitIntro from "@components/assessment-kit/AssessmentKitIntro";
 import Grid from "@mui/material/Grid";
 import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
@@ -24,14 +24,17 @@ import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
+import keycloakService from "@/service/keycloakService";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
+  const isAuthenticated = keycloakService.isLoggedIn();
+  const isPublic = isAuthenticated ? "" : "/public";
   const assessmentKitQuery = useQuery({
     service: (args, config) =>
       service.assessmentKit.info.getById(
-        args ?? { id: assessmentKitId },
+        args ?? { id: assessmentKitId, isPublic },
         config,
       ),
     toastError: false,
@@ -147,6 +150,7 @@ const AssessmentKitBanner = (props: any) => {
     pictureLink,
   } = props;
 
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -206,12 +210,20 @@ const AssessmentKitBanner = (props: any) => {
             sx={{ width: 32, height: 32, fontSize: 16 }}
           ></Avatar>
           <Typography
-            component={Link}
-            to={`/user/expert-groups/${expertGroupId}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (keycloakService.isLoggedIn()) {
+                navigate(`/user/expert-groups/${expertGroupId}`);
+              } else {
+                keycloakService.doLogin();
+              }
+            }}
             sx={{
               ...theme.typography.semiBoldLarge,
               color: "#2B333B",
               textDecoration: "none",
+              cursor: "pointer"
             }}
           >
             {t("createdBy")}{" "}

@@ -103,7 +103,11 @@ const AssessmentKitsStoreCard = (props: any) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                navigate(`/user/expert-groups/${expertGroup.id}`);
+                if (keycloakService.isLoggedIn()) {
+                  navigate(`/user/expert-groups/${expertGroup.id}`);
+                } else {
+                  keycloakService.doLogin();
+                }
               }}
             >
               <Avatar
