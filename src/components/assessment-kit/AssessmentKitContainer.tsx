@@ -15,7 +15,7 @@ import { styles } from "@styles";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
 import PermissionControl from "../common/PermissionControl";
-import MindMap from "../common/charts/MindMap";
+import SemiCircleChartap from "../common/charts/SemiCircleChart";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
@@ -24,6 +24,7 @@ import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
+import useScreenResize from "@/utils/useScreenResize";
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
@@ -80,6 +81,7 @@ const AssessmentKit = (props: any) => {
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
   });
+  const isMobileScreen = useScreenResize("md");
 
   return (
     <QueryData
@@ -110,21 +112,44 @@ const AssessmentKit = (props: any) => {
                   <Grid item xs={12} md={12} lg={12}>
                     <AssessmentKitIntro {...assessmentKitQueryData} />
                   </Grid>
-
+                  <Typography
+                    sx={{ color: "#2B333B" }}
+                    variant="titleLarge"
+                    mt={4}
+                    mb={1}
+                  >
+                    <Trans i18nKey={"kitStructure"} />
+                  </Typography>
+                  <Typography sx={{ color: "#2B333B" }} variant="bodyMedium">
+                    <Trans
+                      i18nKey={
+                        isMobileScreen
+                          ? "kitStructureDescriptionWithoutChart"
+                          : "kitStructureDescription"
+                      }
+                    />
+                  </Typography>
                   <Grid
                     item
                     xs={12}
                     md={12}
                     lg={12}
                     display={{ xs: "none", sm: "block" }}
+                    mt={2}
                   >
-                    <MindMap
+                    <SemiCircleChartap
                       items={subjects}
                       childrenField="attributes"
                       title={t("kitStructure")}
                     />
                   </Grid>
-                  <Grid item xs={12} md={12} lg={12} mt={2}>
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={12}
+                    mt={{ xs: "0", sm: "-450px" }}
+                  >
                     <AssessmentKitSubjects {...assessmentKitQueryData} />
                   </Grid>
                 </Grid>
