@@ -7,6 +7,7 @@ import languageDetector from "@/utils/languageDetector";
 
 interface TreeMapNode {
   name: string;
+  description: string;
   count: number;
   label: string;
 }
@@ -89,7 +90,7 @@ const CustomNode: any = (props: any) => {
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload?.length) {
-    const { name } = payload[0].payload;
+    const { description } = payload[0].payload;
     return (
       <div
         style={{
@@ -105,7 +106,7 @@ const CustomTooltip = ({ active, payload }: any) => {
           padding: 3,
         }}
       >
-        <p>{name}</p>
+        <p>{description}</p>
       </div>
     );
   }
