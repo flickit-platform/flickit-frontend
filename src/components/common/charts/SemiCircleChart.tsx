@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
 
@@ -149,36 +149,9 @@ const renderMainLabel = (props: any) => {
   );
 };
 
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    const text = data.description;
-
-    return (
-      <div
-        style={{
-          background: "#fff",
-          border: "1px solid #ccc",
-          padding: "8px 12px",
-          borderRadius: 6,
-          fontSize: 13,
-          maxWidth: 220,
-          fontFamily: languageDetector(text)
-            ? farsiFontFamily
-            : primaryFontFamily,
-        }}
-      >
-        {text}
-      </div>
-    );
-  }
-  return null;
-};
-
 const SemiCircleChart = ({
   items,
   childrenField,
-  title,
 }: SemiCircleChartProps) => {
   const radius = useResponsiveRadius();
 

@@ -1,6 +1,7 @@
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { Box, Typography } from "@mui/material";
+import { styles } from "@styles";
 
 const ChartTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -15,22 +16,19 @@ const ChartTooltip = ({ active, payload }: any) => {
           color: "#fff",
           px: 1,
           py: 0.5,
-          fontSize: 12,
           borderRadius: "4px",
           maxWidth: 250,
-          direction: isFarsi ? "rtl" : "ltr",
-          fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
           boxShadow: theme.shadows[1],
+          ...styles.rtlStyle(isFarsi),
         }}
       >
         <Typography
           sx={{
-            fontSize: "0.75rem",
-            lineHeight: 1.4,
             textAlign: isFarsi ? "right" : "left",
             whiteSpace: "pre-wrap",
             fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
           }}
+          variant="semiBoldSmall"
         >
           {text}
         </Typography>
