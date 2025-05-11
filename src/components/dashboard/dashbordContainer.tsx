@@ -110,7 +110,7 @@ const DashbordContainer = () => {
               <Grid
                 item
                 sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 4 : 12}
-                xs={12}
+                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 7 : 12}
               >
                 <Typography
                   color="primary"
@@ -127,7 +127,8 @@ const DashbordContainer = () => {
               </Grid>
               <Grid
                 item
-                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
+                sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
+                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 5 : 12}
                 sx={{ display: "flex" }}
               >
                 {isMobileScreen ? (
@@ -136,7 +137,6 @@ const DashbordContainer = () => {
                       ...styles.centerVH,
                       mt: 1,
                       background: "#2466A814",
-                      width: "70%",
                       borderRadius: "16px",
                       p: 1.3,
                     }}
@@ -154,26 +154,6 @@ const DashbordContainer = () => {
                           <ArrowDropDownRoundedIcon />
                         )
                       }
-                      sx={{
-                        height: "40px",
-                        background: "#fff",
-                        "&:hover": {
-                          background: "#fff",
-                        },
-                        "&:active": {
-                          background: "#fff",
-                          boxShadow: "0 1px 4px rgba(0,0,0,0.25)!important",
-                        },
-                        "&.Mui-focused": {
-                          background: "#fff",
-                        },
-                        width: { xs: "100%" },
-                        justifyContent: "space-between",
-                        borderRadius: "8px 8px 0 0",
-                        boxShadow: "0 1px 4px rgba(0,0,0,0.25)!important",
-                        ...theme.typography.semiBoldMedium,
-                        color: theme.palette.primary.main,
-                      }}
                     >
                       {showTabName()}
                     </Button>
@@ -206,7 +186,6 @@ const DashbordContainer = () => {
                               ...theme.typography.semiBoldMedium,
                               fontSize: "14px",
                               transition: "all 0.2s ease",
-
                             }}
                           >
                             <ListItemText>
