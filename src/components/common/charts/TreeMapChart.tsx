@@ -81,7 +81,7 @@ const CustomNode: any = (props: any) => {
             fontSize={adjustedFontSize}
             direction={theme.direction}
           >
-            {`${label} ${t(`from`)} ${levels}`}
+            {`${label} ${t('from')} ${levels}`}
           </text>
         </>
       )}
