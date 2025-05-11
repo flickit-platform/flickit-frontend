@@ -81,7 +81,7 @@ export const ShareDialog = ({
     const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
     const baseMatch = baseRegex.exec(path);
 
-    if (baseMatch?.[1]) {
+    if (baseMatch && baseMatch[1]) {
       return baseMatch[1] + "/";
     }
 
@@ -111,7 +111,7 @@ export const ShareDialog = ({
         if (currentPath !== expectedPath) {
           finalPath = expectedPath;
         }
-        console.log(finalPath);
+        console.log(finalPath)
       }
 
       if (window.location.pathname !== finalPath) {
