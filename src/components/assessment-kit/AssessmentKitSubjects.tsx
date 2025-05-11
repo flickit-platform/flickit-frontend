@@ -61,7 +61,7 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
               key={s.id}
               label={s.title}
               sx={{
-                ...theme.typography.semiBoldXLarge,
+                ...theme.typography.semiBoldLarge,
                 fontFamily: languageDetector(s.description)
                 ? farsiFontFamily
                 : primaryFontFamily,
