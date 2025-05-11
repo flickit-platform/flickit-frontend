@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { styles } from "@styles";
 
 const ChartTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
+  if (active && payload?.length) {
     const data = payload[0].payload;
     const text = data.description;
     const isFarsi = languageDetector(text);
@@ -12,12 +12,12 @@ const ChartTooltip = ({ active, payload }: any) => {
     return (
       <Box
         sx={{
-          backgroundColor: "#616161",
+          backgroundColor: "rgba(97, 97, 97, 0.92)",
           color: "#fff",
-          px: 1,
-          py: 0.5,
+          p: "4px 8px",
           borderRadius: "4px",
-          maxWidth: 250,
+          maxWidth: "300px",
+          margin: "2px",
           boxShadow: theme.shadows[1],
           ...styles.rtlStyle(isFarsi),
         }}
@@ -28,7 +28,7 @@ const ChartTooltip = ({ active, payload }: any) => {
             whiteSpace: "pre-wrap",
             fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
           }}
-          variant="semiBoldSmall"
+          variant="labelSmall"
         >
           {text}
         </Typography>

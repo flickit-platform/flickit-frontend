@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
+import uniqueId from "@/utils/uniqueId";
 
 interface SemiCircleChartProps {
   items: {
@@ -149,10 +150,7 @@ const renderMainLabel = (props: any) => {
   );
 };
 
-const SemiCircleChart = ({
-  items,
-  childrenField,
-}: SemiCircleChartProps) => {
+const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
   const radius = useResponsiveRadius();
 
   const mainData = items.map((item, index) => {
@@ -194,8 +192,8 @@ const SemiCircleChart = ({
           label={renderMainLabel}
           labelLine={false}
         >
-          {mainData.map((entry, index) => (
-            <Cell key={`cell-main-${index}`} fill={entry.color} />
+          {mainData.map((entry) => (
+            <Cell key={uniqueId()} fill={entry.color} />
           ))}
         </Pie>
 
@@ -210,8 +208,8 @@ const SemiCircleChart = ({
           labelLine={false}
           isAnimationActive={false}
         >
-          {attributeData.map((entry, index) => (
-            <Cell key={`cell-attr-${index}`} fill={entry.fillColor} />
+          {attributeData.map((entry) => (
+            <Cell key={uniqueId()} fill={entry.fillColor} />
           ))}
         </Pie>
       </PieChart>
