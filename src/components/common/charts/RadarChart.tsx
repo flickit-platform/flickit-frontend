@@ -117,6 +117,7 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
                     }}
                     fontSize={10}
                     color="color(srgb 0.4245 0.5003 0.5759)"
+                    textAnchor="middle"
                   >
                     {line}
                   </text>
