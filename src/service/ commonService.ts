@@ -57,7 +57,6 @@ const commonService = {
   // ========== Misc ==========
   getKitLanguages(args: any, config: AxiosRequestConfig<any> | undefined = {}) {
     return axios.get(`/api/v1/kit-languages/`, {
-      skipAuth: true,
       ...config,
     });
   },
