@@ -232,7 +232,10 @@ const AssessmentExportContainer = () => {
                     startIcon={<Share fontSize="small" />}
                     size="small"
                     onClick={() => dialogProps.openDialog({})}
-                    // disabled={!permissions.canShareReport}
+                    disabled={
+                      !keycloakService.isLoggedIn() &&
+                      !permissions.canShareReport
+                    }
                   >
                     <Trans i18nKey="shareReport" />
                   </LoadingButton>
