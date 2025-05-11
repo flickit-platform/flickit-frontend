@@ -71,11 +71,30 @@ const Routes = () => {
       <RrdRoutes>
         {/* Handles redirecting users to where they wanted to go before login  */}
         <Route path="/" element={<Redirect />} />
-        <Route path="/assessment-kits" element={
-           <AppLayout>
-             <AssessmentKitsScreen />
-           </AppLayout>
-           } />
+        <Route
+          path="/assessment-kits"
+          element={
+            <AppLayout>
+              <AssessmentKitsScreen />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/:spaceId/assessments/:assessmentId/graphical-report/:linkHash/"
+          element={
+            <AppLayout>
+              <AssessmentHTMLDocumentScreen />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/:spaceId/assessments/:assessmentId/graphical-report/"
+          element={
+            <AppLayout>
+              <AssessmentHTMLDocumentScreen />
+            </AppLayout>
+          }
+        />
         <Route
           element={
             <AppLayout>
@@ -108,10 +127,6 @@ const Routes = () => {
           <Route
             path="/:spaceId/assessments/:page"
             element={<AssessmentsScreen />}
-          />
-          <Route
-            path="/:spaceId/assessments/:assessmentId/graphical-report/"
-            element={<AssessmentHTMLDocumentScreen />}
           />
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/"

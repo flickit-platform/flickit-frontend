@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import { styles } from "@styles";
 import ErrorNotFoundOrAccessDeniedImage from "@assets/svg/notFoundOrAccessDenied.svg";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 import { Trans } from "react-i18next";
 
 export const ErrorNotFoundOrAccessDenied = () => {
@@ -20,8 +19,14 @@ export const ErrorNotFoundOrAccessDenied = () => {
           width="100%"
         />
       </Box>
-      <Button variant="contained" size="large" component={Link} to={"/spaces/1"}>
-        <Trans i18nKey={"backToHome"} />
+      <Button
+        variant="contained"
+        size="large"
+        onClick={() => {
+          window.location.href = "/spaces/1";
+        }}
+      >
+        <Trans i18nKey="backToHome" />
       </Button>
     </Box>
   );
