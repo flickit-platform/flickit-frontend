@@ -140,7 +140,6 @@ const AssessmentKit = (props: any) => {
                     <SemiCircleChartap
                       items={subjects}
                       childrenField="attributes"
-                      title={t("kitStructure")}
                     />
                   </Grid>
                   <Grid

@@ -13,7 +13,6 @@ interface SemiCircleChartProps {
     [key: string]: any;
   }[];
   childrenField: string;
-  title: string;
 }
 
 const subjectColors = [
