@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -8,17 +8,21 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@/types/index";
-import { useLocation, useNavigate, useOutlet, useParams } from "react-router-dom";
+import { NavLink, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { theme } from "@/config/theme";
 import { Trans } from "react-i18next";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
+import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
+import ListItemText from "@mui/material/ListItemText";
+import { t } from "i18next";
 
 const tabListTitle = [
   { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
@@ -51,7 +55,23 @@ const DashbordContainer = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
   const outlet = useOutlet();
-  const navigate = useNavigate()
+  const buttonRef = useRef<any>(null);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const showTabName = () => {
+    return t(
+      `${tabListTitle.find((item) => item.address === selectedTab)?.label}`,
+    );
+  };
+
   useEffect(() => {
     const pathSegments = location.pathname
       .split("/")
@@ -59,6 +79,7 @@ const DashbordContainer = () => {
     const lastPart = pathSegments[4];
     setSelectedTab(lastPart);
   }, [location]);
+
   const handleTabChange = (event: any, newValue: any) => {
     setSelectedTab(newValue);
   };
@@ -69,19 +90,7 @@ const DashbordContainer = () => {
     runOnMount: true,
   });
 
-
-  const handleChange = (event: SelectChangeEvent) => {
-    const { value } = event.target;
-    setSelectedTab(value as string);
-
-    const selectedItem = tabListTitle.find((item) => item.address === value);
-    if (selectedItem) {
-      const { address } = selectedItem;
-      navigate(`./${address}/`);
-    }
-  };
-
-  const isMobileScreen = useScreenResize("sm")
+  const isMobileScreen = useScreenResize("sm");
 
   return (
     <QueryBatchData
@@ -132,78 +141,81 @@ const DashbordContainer = () => {
                       p: 1.3,
                     }}
                   >
-                    <FormControl fullWidth>
-                      <Select
-                        value={selectedTab}
-                        onChange={(event: any) => handleChange(event)}
-                        MenuProps={{
-                          PaperProps: {
-                            sx: {
-                              mt: 0,
-                              borderTop: "none",
-                              borderRadius: "0 0 8px 8px",
-                              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                            },
-                          },
-                          MenuListProps: {
-                            disablePadding: true,
-                          },
-                        }}
-                        sx={{
-                          height: "40px",
+                    <Button
+                      ref={buttonRef}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClick(e);
+                      }}
+                      endIcon={
+                        open ? (
+                          <ArrowDropUpRoundedIcon />
+                        ) : (
+                          <ArrowDropDownRoundedIcon />
+                        )
+                      }
+                      sx={{
+                        height: "40px",
+                        background: "#fff",
+                        "&:hover": {
                           background: "#fff",
-                          width: { xs: "100%" },
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            border: "none",
-                          },
-                          "& .MuiOutlinedInput-root": {
-                            borderRadius: "8px 8px 0 0",
-                            boxShadow: "0 1px 4px rgba(0,0,0,0.25)!important",
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            border: "none",
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            boxShadow: "none",
-                          },
-                          "& .MuiTypography-root": {
-                            ...theme.typography.semiBoldMedium,
-                          },
-                          color: theme.palette.primary.main,
-                        }}
-                      >
-                        {tabListTitle.map((item) => {
-                          const { label, address } = item;
-                          return (
-                            <MenuItem
-                              key={label}
-                              value={address}
-                              sx={{
-                                fontFamily: languageDetector(label)
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                                ...theme.typography.semiBoldMedium,
-                                fontSize: "14px",
-                                transition: "all 0.2s ease",
-                                "&:hover": {
-                                  backgroundColor: "#2466A830",
-                                  color: theme.palette.primary.main,
-                                  fontWeight: 600,
-                                },
-                                "&.Mui-selected": {
-                                  backgroundColor: "#2466A820 !important",
-                                },
-                                "&.Mui-selected:hover": {
-                                  backgroundColor: "#2466A840 !important",
-                                },
-                              }}
-                            >
+                        },
+                        "&:active": {
+                          background: "#fff",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.25)!important",
+                        },
+                        "&.Mui-focused": {
+                          background: "#fff",
+                        },
+                        width: { xs: "100%" },
+                        justifyContent: "space-between",
+                        borderRadius: "8px 8px 0 0",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.25)!important",
+                        ...theme.typography.semiBoldMedium,
+                        color: theme.palette.primary.main,
+                      }}
+                    >
+                      {showTabName()}
+                    </Button>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        sx: {
+                          width: buttonRef.current
+                            ? `${buttonRef?.current?.offsetWidth}px`
+                            : "180px",
+                        },
+                      }}
+                    >
+                      {tabListTitle.map((item) => {
+                        const { label, address } = item;
+                        return (
+                          <MenuItem
+                            key={label}
+                            dense
+                            component={NavLink}
+                            to={address}
+                            onClick={handleClose}
+                            sx={{
+                              fontFamily: languageDetector(label)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
+                              ...theme.typography.semiBoldMedium,
+                              fontSize: "14px",
+                              transition: "all 0.2s ease",
+
+                            }}
+                          >
+                            <ListItemText>
                               <Trans i18nKey={label} />
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                            </ListItemText>
+                          </MenuItem>
+                        );
+                      })}
+                    </Menu>
                   </Box>
                 ) : (
                   <MainTabs
