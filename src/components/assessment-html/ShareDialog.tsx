@@ -134,6 +134,20 @@ export const ShareDialog = ({
   useEffect(() => {
     if (open) {
       fetchGraphicalReportUsers.query();
+      const currentPath = window.location.pathname;
+      const basePath = getBasePath(currentPath);
+
+      if (access === VISIBILITY.PUBLIC) {
+        PublishReportStatus.query({
+          data: { visibility: VISIBILITY.PUBLIC },
+          assessmentId,
+        }).then((response) => {
+          const newLinkHash = response?.linkHash;
+          const newPath = `${basePath}${newLinkHash}/`;
+
+          window.history.pushState({}, "", newPath);
+        });
+      }
     }
   }, [open]);
 
@@ -156,26 +170,7 @@ export const ShareDialog = ({
 
   const handleCopyClick = async () => {
     try {
-      const currentPath = window.location.pathname;
-      const basePath = getBasePath(currentPath);
       navigator.clipboard.writeText(window.location.href);
-
-      if (access === VISIBILITY.PUBLIC && linkHash === "") {
-        const response = await PublishReportStatus.query({
-          data: { visibility: VISIBILITY.PUBLIC },
-          assessmentId,
-        });
-
-        const newLinkHash = response?.linkHash;
-        const newPath = `${basePath}${newLinkHash}/`;
-
-        window.history.pushState({}, "", newPath);
-
-        const fullLink = `${window.location.origin}${newPath}`;
-        navigator.clipboard.writeText(fullLink);
-      } else {
-        navigator.clipboard.writeText(window.location.href);
-      }
 
       setSnackbarOpen(true);
     } catch (error) {
@@ -357,7 +352,7 @@ export const ShareDialog = ({
       >
         <LoadingButton
           startIcon={<LinkIcon fontSize="small" />}
-          onClick={handleCopyClick}
+          onClick={() => handleCopyClick()}
           variant="outlined"
         >
           <Trans i18nKey="copyReportLink" />
