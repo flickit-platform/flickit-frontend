@@ -23,6 +23,7 @@ export interface IMember {
 export interface IUserPermissions {
   canManageSettings: boolean;
   canViewReport: boolean;
+  canShareReport: boolean;
   canViewDashboard: boolean;
   canViewQuestionnaires: boolean;
 }

@@ -1,3 +1,4 @@
+import { VISIBILITY } from "@/utils/enumType";
 import { TId, TStatus, IColor, IDefaultModel } from "./common";
 import { IExpertGroup } from "./expertGroup";
 import { ILanguage } from "./kitDesigner";
@@ -128,6 +129,7 @@ export interface IGraphicalReport {
     participant: string;
   };
   lang: { code: string };
+  visibility: VISIBILITY
 }
 
 type insight = {
@@ -224,6 +226,7 @@ export interface IAssessment {
   permissions: {
     canManageSettings: boolean;
     canViewReport: boolean;
+    canShareReport: boolean;
     canViewDashboard: boolean;
     canViewQuestionnaires: boolean;
   };

@@ -20,8 +20,14 @@ export const ErrorNotFoundOrAccessDenied = () => {
           width="100%"
         />
       </Box>
-      <Button variant="contained" size="large" component={Link} to={"/spaces/1"}>
-        <Trans i18nKey={"backToHome"} />
+      <Button
+        variant="contained"
+        size="large"
+        onClick={() => {
+          window.location.href = "/spaces/1";
+        }}
+      >
+        <Trans i18nKey="backToHome" />
       </Button>
     </Box>
   );

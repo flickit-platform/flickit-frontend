@@ -24,8 +24,9 @@ const ErrorNotFoundPage = () => {
         <Button
           variant="contained"
           size="large"
-          component={Link}
-          to={"/spaces/1"}
+          onClick={() => {
+            window.location.href = "/spaces/1";
+          }}
         >
           <Trans i18nKey={"backToHome"} />
         </Button>

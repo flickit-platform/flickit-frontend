@@ -32,15 +32,17 @@ import {
   Language,
 } from "@mui/icons-material";
 import { t } from "i18next";
+import { VISIBILITY } from "@/utils/enumType";
 
 interface IDialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
   fetchGraphicalReportUsers: any;
+  visibility: VISIBILITY;
 }
 const accessOptions = {
-  restricted: {
+  [VISIBILITY.RESTRICTED]: {
     title: t("accessRestrictedTitle", "Restricted"),
     description: t(
       "accessRestrictedDescription",
@@ -49,7 +51,7 @@ const accessOptions = {
     icon: <LockOutlinedIcon />,
     bgColor: "#E2E5E9",
   },
-  anyone: {
+  [VISIBILITY.PUBLIC]: {
     title: t("accessAnyoneTitle", "Anyone with this link"),
     description: t(
       "accessAnyoneDescription",
@@ -65,16 +67,51 @@ export const ShareDialog = ({
   onClose,
   title,
   fetchGraphicalReportUsers,
+  visibility,
 }: IDialogProps) => {
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [value, setValue] = useState("");
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
   const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
-  const [access, setAccess] = useState<"restricted" | "anyone">("restricted");
+  const [access, setAccess] = useState<VISIBILITY>(visibility);
 
-  const handleSelect = (newAccess: "restricted" | "anyone") => {
+  const PublishReportStatus = useQuery({
+    service: (args, config) =>
+      service.assessments.report.updateVisibilityStatus(args, config),
+    runOnMount: false,
+  });
+
+  const handleSelect = async (newAccess: VISIBILITY) => {
+    try {
+      const data = { visibility: newAccess };
+      const response = await PublishReportStatus.query({ data, assessmentId });
+
+      const currentPath = window.location.pathname;
+
+      const baseMatch = currentPath.match(/^(.*\/graphical-report)(?:\/.*)?$/);
+      const basePath = baseMatch ? baseMatch[1] + "/" : currentPath;
+
+      let finalPath: string;
+
+      if (newAccess === VISIBILITY.PUBLIC && response?.linkHash) {
+        const alreadyHasHash =
+          currentPath === `${basePath}${response.linkHash}/`;
+        finalPath = alreadyHasHash
+          ? currentPath
+          : `${basePath}${response.linkHash}/`;
+      } else {
+        finalPath = basePath;
+      }
+
+      if (window.location.pathname !== finalPath) {
+        window.history.pushState({}, "", finalPath);
+      }
+    } catch (error) {
+      toastError(error as ICustomError);
+    }
+
     setAccess(newAccess);
     closeMenu();
   };
@@ -108,10 +145,40 @@ export const ShareDialog = ({
     }
   };
 
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+  const handleCopyClick = async () => {
+    try {
+      if (access === VISIBILITY.PUBLIC && linkHash === "") {
+        const response = await PublishReportStatus.query({
+          data: { visibility: VISIBILITY.PUBLIC },
+          assessmentId,
+        });
+
+        const linkHash = response?.linkHash;
+        const currentPath = window.location.pathname;
+
+        const baseMatch = currentPath.match(
+          /^(.*\/graphical-report)(?:\/.*)?$/,
+        );
+        const basePath = baseMatch
+          ? baseMatch[1] + "/"
+          : currentPath.endsWith("/")
+            ? currentPath
+            : currentPath + "/";
+
+        const newPath = `${basePath}${linkHash}/`;
+
+        if (currentPath !== newPath) {
+          window.history.pushState({}, "", newPath);
+        }
+
+        const fullLink = `${window.location.origin}${newPath}`;
+        await navigator.clipboard.writeText(fullLink);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+      }
+
       setSnackbarOpen(true);
-    });
+    } catch (error) {}
   };
 
   const handleCloseSnackbar = () => {
@@ -218,15 +285,15 @@ export const ShareDialog = ({
 
       <Box mt={1} sx={{ ...styles.centerV, gap: 1 }}>
         <IconButton
-          color={access === "anyone" ? "primary" : "default"}
+          color={access === VISIBILITY.PUBLIC ? "primary" : "default"}
           sx={{
-            backgroundColor: current.bgColor,
+            backgroundColor: current?.bgColor,
             marginInlineEnd: 1,
           }}
           size="small"
           onClick={openMenu}
         >
-          {current.icon}
+          {current?.icon}
         </IconButton>
 
         <Box>
@@ -239,7 +306,7 @@ export const ShareDialog = ({
             }}
             variant="semiBoldMedium"
           >
-            {current.title}
+            {current?.title}
             {menuOpened ? (
               <ArrowDropUp sx={{ color: "#6C8093" }} />
             ) : (
@@ -248,12 +315,12 @@ export const ShareDialog = ({
           </Typography>
 
           <Typography variant="bodySmall" color="#6C8093">
-            {current.description}
+            {current?.description}
           </Typography>
         </Box>
 
         <Menu anchorEl={anchorEl} open={menuOpened} onClose={closeMenu}>
-          {(["restricted", "anyone"] as const).map((key) => {
+          {Object.values(VISIBILITY).map((key) => {
             const isSelected = access === key;
             return (
               <MenuItem
