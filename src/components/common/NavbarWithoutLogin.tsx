@@ -20,7 +20,7 @@ const login = () => {
 };
 const LandingPage = import.meta.env.VITE_LANDING_PAGE
   ? import.meta.env.VITE_LANDING_PAGE
-  : `https://flickit.org/`;
+  : "";
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
@@ -84,18 +84,20 @@ const NavbarWithoutLogin = () => {
             mx: "auto",
           }}
         >
-          <Button
-            component={NavLink}
-            to={LandingPage}
-            sx={{
-              ...styles.activeNavbarLink,
-              textTransform: "uppercase",
-              color: "#fff",
-            }}
-            size="small"
-          >
-            <Trans i18nKey="home" />
-          </Button>
+          {LandingPage && (
+            <Button
+              component={NavLink}
+              to={LandingPage}
+              sx={{
+                ...styles.activeNavbarLink,
+                textTransform: "uppercase",
+                color: "#fff",
+              }}
+              size="small"
+            >
+              <Trans i18nKey="home" />
+            </Button>
+          )}
           <Button
             component={NavLink}
             to={`/assessment-kits`}
