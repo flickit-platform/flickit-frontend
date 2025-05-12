@@ -15,9 +15,10 @@ interface TreeMapNode {
 interface TreeMapProps {
   data: TreeMapNode[];
   levels: number;
+  lang: {code: string}
 }
 
-const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
+const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
   const colorPallet = getMaturityLevelColors(levels);
   const treeMapData = data.map((node) => ({
     ...node,
@@ -31,7 +32,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
         dataKey="count"
         stroke="#fff"
         fill="white"
-        content={<CustomNode levels={levels} />}
+        content={<CustomNode levels={levels} lang={lang} />}
       >
         <Tooltip
           wrapperStyle={{ outline: "none" }}
@@ -45,8 +46,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 const CustomNode: any = (props: any) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { x, y, width, height, name, color, label, levels } = props;
-
+  const { x, y, width, height, name, color, label, levels, lang } = props;
   if (width <= 10 || height <= 20) return null;
 
   const fontSize = width / (isSmallScreen ? 10 : 8);
@@ -79,9 +79,9 @@ const CustomNode: any = (props: any) => {
             fontWeight={9}
             letterSpacing={0.5}
             fontSize={adjustedFontSize}
-            direction={theme.direction}
+            direction={lang.code === "FA" ? "rtl" : "ltr"}
           >
-            {`${label} ${t('from')} ${levels}`}
+            {`${label} ${lang.code === "EN" ? "out of" :  "از"} ${levels}`}
           </text>
         </>
       )}
