@@ -36,10 +36,8 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
     <Box>
       {/* Tabs */}
       <Box
-        pt="12px"
         sx={{
           ...styles.rtlStyle(languageDetector(subject.title)),
-
           borderBottom: "1px solid #C7CCD1",
         }}
       >
@@ -61,10 +59,10 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
               key={s.id}
               label={s.title}
               sx={{
-                ...theme.typography.semiBoldXLarge,
+                ...theme.typography.semiBoldLarge,
                 fontFamily: languageDetector(s.description)
-                ? farsiFontFamily
-                : primaryFontFamily,
+                  ? farsiFontFamily
+                  : primaryFontFamily,
                 textTransform: "none",
                 color: "#333",
                 "&.Mui-selected": {

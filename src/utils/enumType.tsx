@@ -7,3 +7,8 @@ export enum evidenceAttachmentType {
   positive = "POSITIVE",
   negative = "NEGATIVE",
 }
+
+export enum VISIBILITY {
+  PUBLIC = "PUBLIC",
+  RESTRICTED = "RESTRICTED",
+}
