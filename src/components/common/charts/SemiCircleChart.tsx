@@ -59,19 +59,34 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-  const rotateAngle =
-    totalAttributes < 5
-      ? 70 - (midAngle / 180) * 140
-      : midAngle > 90 && midAngle < 270
-        ? 180 - midAngle
-        : -midAngle;
+  let rotateAngle: number;
+  if (totalAttributes < 5) {
+    rotateAngle = 70 - (midAngle / 180) * 140;
+  } else {
+    const flip = midAngle > 90 && midAngle < 270;
+    rotateAngle = flip ? 180 - midAngle : -midAngle;
+  }
 
   const isFarsi = languageDetector(name);
   const font = isFarsi ? farsiFontFamily : primaryFontFamily;
 
-  const maxCharPerLine = isTightAngle ? 26 : totalAttributes < 5 ? 30 : 20;
-  const maxLines = isTightAngle ? 1 : 2;
-  const fontSize = isTightAngle ? 10 : 14;
+  let maxCharPerLine: number;
+  let maxLines: number;
+  let fontSize: number;
+
+  if (isTightAngle) {
+    maxCharPerLine = 26;
+    maxLines = 1;
+    fontSize = 10;
+  } else if (totalAttributes < 5) {
+    maxCharPerLine = 30;
+    maxLines = 2;
+    fontSize = 14;
+  } else {
+    maxCharPerLine = 20;
+    maxLines = 2;
+    fontSize = 14;
+  }
 
   const buildLines = (
     text: string,
@@ -82,14 +97,16 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
     const lines: string[][] = [];
 
     for (const word of words) {
-      if (
-        !lines.length ||
-        lines[lines.length - 1].join(" ").length + word.length > maxLineLength
-      ) {
+      const currentLine = lines[lines.length - 1] ?? [];
+      const currentLength = currentLine.join(" ").length + word.length;
+
+      if (!lines.length || currentLength > maxLineLength) {
         if (lines.length < maxLines) {
           lines.push([word]);
         } else {
-          lines[lines.length - 1].push("…");
+          if (lines[lines.length - 1].slice(-1)[0] !== "…") {
+            lines[lines.length - 1].push("…");
+          }
           break;
         }
       } else {
@@ -106,7 +123,7 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
     <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
       {lines.map((line, i) => (
         <text
-          key={i}
+          key={uniqueId()}
           x={x}
           y={y + i * (fontSize + 4) - ((lines.length - 1) * (fontSize + 4)) / 2}
           fill={payload.textColor}
@@ -126,36 +143,52 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
 const renderMainLabel = (props: any) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, outerRadius, midAngle, name } = props;
+
   const radius = outerRadius - 90;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
   const rotateAngle = 65 - (midAngle / 180) * 130;
+
   const isFarsi = languageDetector(name);
   const font = isFarsi ? farsiFontFamily : primaryFontFamily;
 
   const MAX_LENGTH = 14;
-  const lines =
-    name.length > MAX_LENGTH && name.includes(" ")
-      ? name.split(" ").reduce((acc: string[][], word: string) => {
-          if (
-            !acc.length ||
-            acc[acc.length - 1].join(" ").length > MAX_LENGTH / 2
-          )
-            acc.push([word]);
-          else acc[acc.length - 1].push(word);
-          return acc;
-        }, [])
-      : [[name]];
+  const shouldSplit = name.length > MAX_LENGTH && name.includes(" ");
 
-  const fontSize = lines.length === 1 ? 22 : lines.length === 2 ? 16 : 14;
+  const splitLines = (text: string, maxLength: number): string[][] => {
+    const words = text.split(" ");
+    const lines: string[][] = [];
+    for (const word of words) {
+      const lastLine = lines.at(-1);
+      if (!lastLine || lastLine.join(" ").length > maxLength / 2) {
+        lines.push([word]);
+      } else {
+        lastLine.push(word);
+      }
+    }
+    return lines;
+  };
+
+  const lines = shouldSplit ? splitLines(name, MAX_LENGTH) : [[name]];
+
+  const lineCount = lines.length;
+  const fontSizeMap: Record<number, number> = {
+    1: 22,
+    2: 16,
+  };
+  const fontSize = fontSizeMap[lineCount] ?? 14;
+
+  const getLineY = (index: number) =>
+    y + index * (fontSize + 4) - ((lineCount - 1) * (fontSize + 4)) / 2;
 
   return (
     <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
-      {lines.map((line: any, i: any) => (
+      {lines.map((line: string[], i: number) => (
         <text
           key={i}
           x={x}
-          y={y + i * (fontSize + 4) - ((lines.length - 1) * (fontSize + 4)) / 2}
+          y={getLineY(i)}
           fill="#fff"
           textAnchor="middle"
           dominantBaseline="central"
