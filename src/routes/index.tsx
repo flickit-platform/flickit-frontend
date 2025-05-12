@@ -71,11 +71,38 @@ const Routes = () => {
       <RrdRoutes>
         {/* Handles redirecting users to where they wanted to go before login  */}
         <Route path="/" element={<Redirect />} />
-        <Route path="/assessment-kits" element={
-           <AppLayout>
-             <AssessmentKitsScreen />
+        <Route
+          path="/assessment-kits"
+          element={
+            <AppLayout>
+              <AssessmentKitsScreen />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/assessment-kits/:assessmentKitId"
+          element={
+            <AppLayout>
+              <AssessmentKitScreen />
            </AppLayout>
-           } />
+          }
+        />
+        <Route  
+          path="/:spaceId/assessments/:assessmentId/graphical-report/:linkHash/"
+          element={
+            <AppLayout>
+              <AssessmentHTMLDocumentScreen />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/:spaceId/assessments/:assessmentId/graphical-report/"
+          element={
+            <AppLayout>
+              <AssessmentHTMLDocumentScreen />
+            </AppLayout>
+          }
+        />
         <Route
           element={
             <AppLayout>
@@ -110,10 +137,6 @@ const Routes = () => {
             element={<AssessmentsScreen />}
           />
           <Route
-            path="/:spaceId/assessments/:assessmentId/graphical-report/"
-            element={<AssessmentHTMLDocumentScreen />}
-          />
-          <Route
             path="/:spaceId/assessments/:page/:assessmentId/"
             element={<DashboardScreen />}
           >
@@ -144,12 +167,6 @@ const Routes = () => {
             element={<AssessmentAdviceScreen />}
           />
           {/* Questionnaires and questions related routes */}
-
-          {/* Assessment kits related routes */}
-          <Route
-            path="/assessment-kits/:assessmentKitId"
-            element={<AssessmentKitScreen />}
-          />
 
           {/* Compare routes */}
           <Route path="/compare" element={<CompareScreen />} />

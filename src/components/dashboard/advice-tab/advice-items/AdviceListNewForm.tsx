@@ -131,7 +131,7 @@ const AdviceListNewForm = ({
   return (
     <Box
       mt={1.5}
-      p={1.5}
+      p={{ xs: 0.2, sm: 1.5 }}
       sx={{
         backgroundColor: "#F3F5F6",
         borderRadius: "8px",
@@ -145,6 +145,7 @@ const AdviceListNewForm = ({
       <Box
         sx={{
           ...styles.centerVH,
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-evenly",
           background: "#F3F5F6",
           width: "100%",
@@ -153,7 +154,7 @@ const AdviceListNewForm = ({
         p={2}
       >
         <Box sx={{ width: "100%" }} mx={1}>
-          <Grid container spacing={2}>
+          <Grid container spacing={1.4}>
             <Grid item xs={12} md={6}>
               <TextField
                 error={errormessage?.title}
@@ -183,21 +184,23 @@ const AdviceListNewForm = ({
                 <FormHelperText error>{t(errormessage?.title)}</FormHelperText>
               )}
             </Grid>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                "& .MuiGrid-root > .MuiGrid-item": {
-                  paddingTop: "0px",
-                },
-              }}
-            >
-              {selectAdvice?.map((item: any) => {
-                return (
-                  <FormControl key={item} sx={{ width: "30%" }}>
+
+            {selectAdvice?.map((item: any) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  md={2}
+                  sx={{
+                    display: "flex",
+                    justifyContent: { xs: "center" },
+                    gap: { xs: 0.3, sm: "unset" },
+                    "& .MuiGrid-root > .MuiGrid-item": {
+                      paddingTop: "0px",
+                    },
+                  }}
+                >
+                  <FormControl key={item} sx={{ width: { xs: "100%" } }}>
                     <InputLabel id="demo-multiple-name-label">
                       {" "}
                       <Trans i18nKey={item} />
@@ -246,9 +249,9 @@ const AdviceListNewForm = ({
                       ))}
                     </Select>
                   </FormControl>
-                );
-              })}
-            </Grid>
+                </Grid>
+              );
+            })}
           </Grid>
           <FormProviderWithForm formMethods={formMethods}>
             <Box
@@ -257,7 +260,7 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt: 12,
+                mt: 2,
               }}
             >
               <RichEditorField
@@ -270,7 +273,7 @@ const AdviceListNewForm = ({
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
                 type={errormessage?.description ? "reportTab" : ""}
-                showEditorMenu
+                showEditorMenu={false}
               />
             </Box>
           </FormProviderWithForm>
@@ -284,7 +287,7 @@ const AdviceListNewForm = ({
         {/* Check and Close Buttons */}
         <Box
           display="flex"
-          alignSelf="flex-start"
+          alignSelf={{ xs: "flex-end", sm: "flex-start" }}
           flexDirection="column"
           gap={"20px"}
         >
@@ -297,7 +300,8 @@ const AdviceListNewForm = ({
               display: "flex",
               alignItems: "center",
               gap: "20px",
-              flexDirection: { xs: "column", sm: "row" },
+              flexDirection: { xs: "row-reverse", sm: "column" },
+              mt: { xs: 2, sm: "unset" },
             }}
           >
             {" "}

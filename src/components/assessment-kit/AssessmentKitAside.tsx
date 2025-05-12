@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
+import keycloakService from "@/service/keycloakService";
 
 interface IlistOfItems {
   icon: any;
@@ -72,10 +73,14 @@ const AssessmentKitAside = (props: any) => {
   const createAssessment = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
-    dialogProps.openDialog({
-      type: "create",
-      staticData: { assessment_kit: { id, title } },
-    });
+    if (keycloakService.isLoggedIn()) {
+      dialogProps.openDialog({
+        type: "create",
+        staticData: { assessment_kit: { id, title } },
+      });
+    } else {
+      keycloakService.doLogin();
+    }
   };
 
   const toggleLike = async () => {
@@ -89,7 +94,7 @@ const AssessmentKitAside = (props: any) => {
         <Box
           sx={{
             ...styles.shadowStyle,
-            pb: 2,
+            pb: isAuthenticated ? 2 : 4,
             px: 3,
             pt: 4,
           }}

@@ -34,7 +34,7 @@ const commonService = {
       }${spaceId ? `&&space_id=${spaceId}` : ""}${
         questionnaireId ? `&&questionnaire_id=${questionnaireId}` : ""
       }`,
-      config,
+      { skipAuth: true, ...config },
     );
   },
 
@@ -57,7 +57,6 @@ const commonService = {
   // ========== Misc ==========
   getKitLanguages(args: any, config: AxiosRequestConfig<any> | undefined = {}) {
     return axios.get(`/api/v1/kit-languages/`, {
-      skipAuth: true,
       ...config,
     });
   },

@@ -4,9 +4,12 @@ import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import ChartTooltip from "./ChartTooltip";
 
 interface TreeMapNode {
   name: string;
+  id: number;
+  description: string;
   count: number;
   label: string;
 }
@@ -14,9 +17,10 @@ interface TreeMapNode {
 interface TreeMapProps {
   data: TreeMapNode[];
   levels: number;
+  lang: { code: string };
 }
 
-const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
+const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
   const colorPallet = getMaturityLevelColors(levels);
   const treeMapData = data.map((node) => ({
     ...node,
@@ -30,11 +34,23 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
         dataKey="count"
         stroke="#fff"
         fill="white"
-        content={<CustomNode levels={levels} />}
+        content={<CustomNode levels={levels} lang={lang} />}
+        onClick={(props) => {
+          const { id }: any = props;
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
       >
         <Tooltip
           wrapperStyle={{ outline: "none" }}
-          content={<CustomTooltip />}
+          content={
+            <ChartTooltip
+              getPrimary={(d) => d.name}
+              getSecondary={(d) => d.description}
+            />
+          }
         />
       </Treemap>
     </ResponsiveContainer>
@@ -44,11 +60,20 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 const CustomNode: any = (props: any) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { x, y, width, height, name, color, label, levels } = props;
+  const { x, y, width, height, name, color, label, levels, lang } = props;
+  if (width <= 30 || height <= 30)
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={color}
+        style={{ cursor: "pointer" }}
+      />
+    );
 
-  if (width <= 10 || height <= 20) return null;
-
-  const fontSize = width / (isSmallScreen ? 10 : 8);
+  const fontSize = width / 12;
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
 
   const truncatedName =
@@ -56,7 +81,14 @@ const CustomNode: any = (props: any) => {
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={color} />
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={color}
+        style={{ cursor: "pointer" }}
+      />
       {width > 50 && height > 20 && (
         <>
           <text
@@ -73,43 +105,17 @@ const CustomNode: any = (props: any) => {
           <text
             x={x + width / 2}
             y={y + height / 2 + 10}
-            textAnchor="middle"
             fill="#fff"
+            textAnchor="middle"
             fontWeight={9}
-            letterSpacing={0.5}
-            fontSize={adjustedFontSize}
+            fontSize={11}
           >
-            {`${label}/${levels}`}
+            {`${label} ${lang.code === "EN" ? "out of" : " از "} ${levels}`}
           </text>
         </>
       )}
     </g>
   );
-};
-
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload?.length) {
-    const { name } = payload[0].payload;
-    return (
-      <div
-        style={{
-          backgroundColor: "rgba(97, 97, 97, 0.92)",
-          borderRadius: "4px",
-          color: "white",
-          maxWidth: "300px",
-          overflowWrap: "break-word",
-          fontWeight: 500,
-          border: "none !important",
-          boxShadow: "none",
-          fontSize: 12,
-          padding: 3,
-        }}
-      >
-        <p>{name}</p>
-      </div>
-    );
-  }
-  return null;
 };
 
 export default TreeMapChart;

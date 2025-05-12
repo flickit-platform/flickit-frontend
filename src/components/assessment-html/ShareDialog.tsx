@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -21,105 +20,200 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import QueryBatchData from "../common/QueryBatchData";
+import IconButton from "@mui/material/IconButton";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import useMenu from "@/utils/useMenu";
+import { Menu, MenuItem, Tooltip } from "@mui/material";
+import {
+  ArrowDropDown,
+  ArrowDropUp,
+  Check,
+  Language,
+} from "@mui/icons-material";
+import { t } from "i18next";
+import { VISIBILITY } from "@/utils/enumType";
+import { IUserPermissions } from "@/types";
+import { FormProvider, useForm } from "react-hook-form";
+import { InputFieldUC } from "../common/fields/InputField";
 
 interface IDialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
   fetchGraphicalReportUsers: any;
+  visibility: VISIBILITY;
+  permissions: IUserPermissions;
 }
+
+const accessOptions = {
+  [VISIBILITY.RESTRICTED]: {
+    title: t("accessRestrictedTitle", "Restricted"),
+    description: t(
+      "accessRestrictedDescription",
+      "Only people who are added can open with the link",
+    ),
+    icon: <LockOutlinedIcon />,
+    bgColor: "#E2E5E9",
+  },
+  [VISIBILITY.PUBLIC]: {
+    title: t("accessAnyoneTitle", "Anyone with this link"),
+    description: t(
+      "accessAnyoneDescription",
+      "Anyone on the internet with the link can view this report",
+    ),
+    icon: <Language />,
+    bgColor: "#D5E5F6",
+  },
+};
 
 export const ShareDialog = ({
   open,
   onClose,
   title,
   fetchGraphicalReportUsers,
+  visibility,
+  permissions,
 }: IDialogProps) => {
   const { t } = useTranslation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [value, setValue] = useState("");
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
+  const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
+  const [access, setAccess] = useState<VISIBILITY>(visibility);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const methods = useForm();
+  const { reset, handleSubmit } = methods;
+
+  const getBasePath = (path: string): string => {
+    const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
+    const baseMatch = baseRegex.exec(path);
+    return baseMatch?.[1]
+      ? baseMatch[1] + "/"
+      : path.endsWith("/")
+        ? path
+        : path + "/";
+  };
+
+  const PublishReportStatus = useQuery({
+    service: (args, config) =>
+      service.assessments.report.updateVisibilityStatus(args, config),
+    runOnMount: false,
+  });
+
+  const handleSelect = async (newAccess: VISIBILITY) => {
+    try {
+      const response = await PublishReportStatus.query({
+        data: { visibility: newAccess },
+        assessmentId,
+      });
+      const currentPath = window.location.pathname;
+      const basePath = getBasePath(currentPath);
+      let finalPath = basePath;
+
+      if (newAccess === VISIBILITY.PUBLIC && response?.linkHash) {
+        const expectedPath = `${basePath}${response.linkHash}/`;
+        if (currentPath !== expectedPath) finalPath = expectedPath;
+      }
+
+      if (window.location.pathname !== finalPath)
+        window.history.pushState({}, "", finalPath);
+    } catch (error) {
+      toastError(error as ICustomError);
+    }
+
+    setAccess(newAccess);
+    closeMenu();
+  };
 
   const grantReportAccess = useQuery({
-    service: (args, config) => service.assessments.member.grantReportAccess(args, config),
+    service: (args, config) =>
+      service.assessments.member.grantReportAccess(args, config),
     runOnMount: false,
   });
 
   useEffect(() => {
     if (open) {
       fetchGraphicalReportUsers.query();
+      reset();
+      const currentPath = window.location.pathname;
+      const basePath = getBasePath(currentPath);
+
+      if (access === VISIBILITY.PUBLIC && permissions.canManageVisibility) {
+        PublishReportStatus.query({
+          data: { visibility: VISIBILITY.PUBLIC },
+          assessmentId,
+        }).then((response) => {
+          const newPath = `${basePath}${response?.linkHash}/`;
+          window.history.pushState({}, "", newPath);
+        });
+      }
     }
   }, [open]);
 
-  const handleAddClick = async () => {
+  const onSubmit = async (data: any) => {
     try {
-      await grantReportAccess
-        .query({
-          email: value,
-          assessmentId,
-        })
-        .then(() => {
-          fetchGraphicalReportUsers.query();
-          setValue("");
-        });
+      await grantReportAccess.query({ email: data.email, assessmentId });
+      fetchGraphicalReportUsers.query();
+      reset();
     } catch (error) {
-      const err = error as ICustomError;
-      toastError(err);
+      toastError(error as ICustomError);
     }
   };
 
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+  const handleCopyClick = async () => {
+    try {
+      navigator.clipboard.writeText(window.location.href);
       setSnackbarOpen(true);
-    });
+    } catch (error) {
+      toastError(error as ICustomError);
+    }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  const handleCloseSnackbar = () => setSnackbarOpen(false);
+  const current = accessOptions[access];
 
   return (
     <CEDialog
       open={open}
       onClose={onClose}
       title={
-        <>
+        <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="shareReport" values={{ title }} />
-        </>
+          <Trans i18nKey="shareReportWithTitle" values={{ title }} />
+        </Box>
       }
       maxWidth="sm"
     >
-      <Grid
-        container
-        display="flex"
-        alignItems="center"
-        sx={{ ...styles.formGrid }}
-      >
-        <Grid item xs={9.7}>
-          <TextField
-            placeholder={t("shareReportViaEmail").toString()}
-            label={<Trans i18nKey="email" />}
-            name="value"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            fullWidth
-            size="small"
-          />
-        </Grid>
-        <Grid item xs={0.5}></Grid>
-        <Grid item xs={1.8}>
-          <LoadingButton variant="contained" onClick={handleAddClick}>
-            <Trans i18nKey="add" />
-          </LoadingButton>
-        </Grid>
-      </Grid>
-      <Box sx={{ my: 2 }}>
-        <Typography variant="bodyMedium" color="disabled">
-          <Trans i18nKey="onlyThesePeopleHaveAccess" />
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid
+            container
+            display="flex"
+            alignItems="flex-start"
+            sx={{ ...styles.formGrid }}
+          >
+            <Grid item xs={9.7}>
+              <InputFieldUC
+                name="email"
+                size="small"
+                placeholder={t("shareReportViaEmail") ?? ""}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={0.5}></Grid>
+            <Grid item xs={1.8}>
+              <LoadingButton variant="contained" type="submit">
+                <Trans i18nKey="add" />
+              </LoadingButton>
+            </Grid>
+          </Grid>
+        </form>
+      </FormProvider>
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
+          <Trans i18nKey="peopleWithAccess" />
         </Typography>
-        <Divider sx={{ mt: 1 }} />
+        <Divider sx={{ my: 1 }} />
       </Box>
       <QueryBatchData
         queryBatchData={[fetchGraphicalReportUsers]}
@@ -170,6 +264,104 @@ export const ShareDialog = ({
           );
         }}
       />
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
+          <Trans i18nKey="accessStatus" />
+        </Typography>
+        <Divider sx={{ mt: 1 }} />
+      </Box>
+      <Tooltip
+        disableHoverListener={permissions.canManageVisibility}
+        title={<Trans i18nKey="youDontHavePermission" />}
+      >
+        <div>
+          <Box
+            mt={1}
+            sx={{
+              ...styles.centerV,
+              gap: 1,
+              pointerEvents: permissions.canManageVisibility ? "auto" : "none",
+            }}
+          >
+            <IconButton
+              color={access === VISIBILITY.PUBLIC ? "primary" : "default"}
+              sx={{
+                backgroundColor: current?.bgColor,
+                marginInlineEnd: 1,
+              }}
+              size="small"
+              onClick={openMenu}
+              disabled={!permissions.canManageVisibility}
+            >
+              {current?.icon}
+            </IconButton>
+
+            <Box>
+              <Typography
+                onClick={openMenu}
+                sx={{
+                  ...styles.centerV,
+                  cursor: permissions.canManageVisibility
+                    ? "pointer"
+                    : "default",
+                  gap: 1,
+                }}
+                variant="semiBoldMedium"
+              >
+                {current?.title}
+                {menuOpened ? (
+                  <ArrowDropUp sx={{ color: "#6C8093" }} />
+                ) : (
+                  <ArrowDropDown sx={{ color: "#6C8093" }} />
+                )}
+              </Typography>
+
+              <Typography variant="bodySmall" color="#6C8093">
+                {current?.description}
+              </Typography>
+            </Box>
+
+            {!permissions.canManageVisibility && (
+              <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
+                <LockOutlinedIcon sx={{ color: "#B0B0B0", fontSize: 20 }} />
+              </Box>
+            )}
+
+            <Menu
+              anchorEl={anchorEl}
+              open={menuOpened}
+              onClose={closeMenu}
+              disablePortal={!permissions.canManageVisibility}
+            >
+              {Object.values(VISIBILITY).map((key) => {
+                const isSelected = access === key;
+                return (
+                  <MenuItem
+                    key={key}
+                    selected={isSelected}
+                    onClick={() => handleSelect(key)}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      gap: 2,
+                    }}
+                  >
+                    <Typography variant="bodyMedium">
+                      {accessOptions[key].title}
+                    </Typography>
+                    {isSelected && (
+                      <Check sx={{ color: "primary.main" }} fontSize="small" />
+                    )}
+                  </MenuItem>
+                );
+              })}
+            </Menu>
+          </Box>
+        </div>
+      </Tooltip>
+
       <CEDialogActions
         type="delete"
         loading={false}
@@ -179,7 +371,8 @@ export const ShareDialog = ({
       >
         <LoadingButton
           startIcon={<LinkIcon fontSize="small" />}
-          onClick={handleCopyClick}
+          onClick={() => handleCopyClick()}
+          variant="outlined"
         >
           <Trans i18nKey="copyReportLink" />
         </LoadingButton>

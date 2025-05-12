@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 
 interface IErrorDataLoadingProps extends BoxProps {}
 
@@ -15,8 +14,15 @@ const ErrorDataLoading = (props: IErrorDataLoadingProps) => {
       <ReportGmailerrorredRoundedIcon sx={{ fontSize: "4rem", mb: "16px" }} />
       <Typography>
         <Trans i18nKey="someThingWentWrong" />
-      </Typography >
-      <Button sx={{mt:"50px"}} variant="contained" size="small" component={Link} to={"/spaces/1"}>
+      </Typography>
+      <Button
+        sx={{ mt: "50px" }}
+        variant="contained"
+        size="small"
+        onClick={() => {
+          window.location.href = "/spaces/1";
+        }}
+      >
         <Trans i18nKey={"backToHome"} />
       </Button>
     </Box>

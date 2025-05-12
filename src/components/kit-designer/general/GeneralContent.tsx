@@ -22,6 +22,14 @@ import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
+const generalFields = [
+  { name: "title", multiline: false, useRichEditor: false },
+  { name: "summary", multiline: false, useRichEditor: false },
+  { name: "about", multiline: true, useRichEditor: true },
+  { name: "goal", multiline: true, useRichEditor: true },
+  { name: "context", multiline: true, useRichEditor: true },
+] as const;
+
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
@@ -325,21 +333,18 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
               <Divider sx={{ my: 1 }} />
 
-              {["title", "summary", "about", "goal", "context"].map((field) => (
+              {generalFields.map(({ name, multiline, useRichEditor }) => (
                 <Box
-                  key={field}
+                  key={name}
                   sx={{
                     display: "flex",
                     width: "100%",
-                    flexDirection:
-                      field === "about" || field === "context"
-                        ? "column"
-                        : "row",
+                    flexDirection: multiline ? "column" : "row",
                   }}
-                  gap={field === "about" || field === "context" ? 0 : 2}
+                  gap={multiline ? 0 : 2}
                 >
                   <Typography variant="semiBoldLarge">
-                    <Trans i18nKey={field === "context" ? "bestFor" : field} />:
+                    <Trans i18nKey={name === "context" ? "bestFor" : name} />:
                   </Typography>
                   <Box
                     sx={{
@@ -348,10 +353,10 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                     }}
                   >
                     {renderEditableField(
-                      field as any,
+                      name as any,
                       data,
-                      field === "about",
-                      field === "about",
+                      multiline,
+                      useRichEditor,
                     )}
                   </Box>
                 </Box>
