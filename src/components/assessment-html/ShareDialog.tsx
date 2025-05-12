@@ -35,6 +35,8 @@ import { VISIBILITY } from "@/utils/enumType";
 import { IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import languageDetector from "@/utils/languageDetector";
 
 interface IDialogProps {
   open: boolean;
@@ -178,7 +180,21 @@ export const ShareDialog = ({
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="shareReportWithTitle" values={{ title }} />
+          <Trans
+            i18nKey="shareReportWithTitle"
+            values={{ title }}
+            components={{
+              style: (
+                <span
+                  style={{
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
+                  }}
+                />
+              ),
+            }}
+          />
         </Box>
       }
       maxWidth="sm"

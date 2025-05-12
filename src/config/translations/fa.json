@@ -564,7 +564,7 @@
   "settings": "تنظیمات",
   "shareReport": "اشتراک‌‌گذاری",
   "shareReportViaEmail": "ایمیل فرد مورد نظر را وارد کنید",
-  "shareReportWithTitle": "اشتراک‌‌گذاری گزارش {{title}}",
+  "shareReportWithTitle": "اشتراک‌‌گذاری گزارش <style>{{title}}</style>",
   "shortTitle": "عنوان کوتاه",
   "shortTitleInfo": "عنوان بسیار کوتاه (چند کاراکتر) برای پرداختن به محصول مورد ارزیابی در گزارش‌ها.",
   "showLess": "نمایش کمتر",
