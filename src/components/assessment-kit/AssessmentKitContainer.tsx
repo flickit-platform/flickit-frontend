@@ -134,6 +134,7 @@ const AssessmentKit = (props: any) => {
                     md={12}
                     lg={12}
                     display={{ xs: "none", sm: "block" }}
+                    height={{sm: "350px", md: "420px", lg: "550px"}}
                     mt={2}
                   >
                     <SemiCircleChartap
@@ -146,7 +147,7 @@ const AssessmentKit = (props: any) => {
                     xs={12}
                     md={12}
                     lg={12}
-                    mt={{ xs: "0", sm: "-450px" }}
+                    mt={1}
                   >
                     <AssessmentKitSubjects {...assessmentKitQueryData} />
                   </Grid>

@@ -178,7 +178,7 @@ const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
   const totalAttributes = attributeData.length;
 
   return (
-    <ResponsiveContainer width="100%" height={1000}>
+    <ResponsiveContainer width="100%" height={"100%"}>
       <PieChart>
         <Tooltip content={<ChartTooltip />} />
         <Pie
@@ -190,6 +190,8 @@ const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
           outerRadius={radius.inner}
           label={renderMainLabel}
           labelLine={false}
+          cx="50%"
+          cy="100%"
         >
           {mainData.map((entry) => (
             <Cell key={uniqueId()} fill={entry.color} />
@@ -206,6 +208,8 @@ const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
           label={(props) => renderCustomLabel(props, totalAttributes)}
           labelLine={false}
           isAnimationActive={false}
+          cx="50%"
+          cy="100%"
         >
           {attributeData.map((entry) => (
             <Cell key={uniqueId()} fill={entry.fillColor} />
