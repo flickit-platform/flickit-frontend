@@ -194,7 +194,7 @@ const AdviceDialog = ({
               background: "#fff",
               maxHeight: "70vh",
               overflow: "hidden",
-              overflowX: "hidden",
+              overflowX: "auto",
               display: step === 2 ? "block" : "none",
             }}
           >
