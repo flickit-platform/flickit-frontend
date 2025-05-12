@@ -35,7 +35,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
         dataKey="count"
         stroke="#fff"
         fill="white"
-        content={<CustomNode levels={levels} />}
+        content={<CustomNode levels={levels} lang={lang}/>}
         onClick={(props)=>{
          const { id }: any = props
           const element = document.getElementById(id);
