@@ -74,14 +74,11 @@ const CustomNode: any = (props: any) => {
           <text
             x={x + width / 2}
             y={y + height / 2 + 10}
-            textAnchor="middle"
             fill="#fff"
             fontWeight={9}
-            letterSpacing={0.5}
-            fontSize={adjustedFontSize}
-            direction={lang.code === "FA" ? "rtl" : "ltr"}
+            fontSize={11}
           >
-            {`${label} ${lang.code === "EN" ? "out of" :  "از"} ${levels}`}
+            {`${label} ${lang.code === "EN" ? "out of" :  " از "} ${levels}`}
           </text>
         </>
       )}
