@@ -426,6 +426,8 @@ const AssessmentExportContainer = () => {
                         data={subjects.flatMap((subject: any) =>
                           subject.attributes.map((attribute: any) => ({
                             name: attribute.title,
+                            description: attribute.description,
+                            id: attribute.id,
                             count: attribute.weight,
                             label: attribute.maturityLevel.value.toString(),
                           })),
