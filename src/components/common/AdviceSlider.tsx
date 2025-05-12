@@ -53,7 +53,7 @@ const AdviceSlider = (props: any) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        px: { xs: 3, sm: 4 },
+        px: { xs: 1, sm: 4 },
         width: "100%",
         margin: "0 auto",
         flexDirection: { xs: "column", sm: "row" },
@@ -166,7 +166,9 @@ const AdviceSlider = (props: any) => {
         sx={{
           display: "flex",
           textAlign: "center",
-          width: "20%",
+          justifyContent: "center",
+          width: {xs: "90%", sm: "20%"} ,
+          mt:1
         }}
       >
         <Typography

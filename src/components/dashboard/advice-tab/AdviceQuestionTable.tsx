@@ -28,17 +28,18 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
   return (
     <>
       <Box
-        px={4}
+        px={{ xs: 0.7, sm: 4 }}
         sx={{
-          height: "56vh",
-          overflowY: "auto",
+          height: "300px",
+          width: {xs: "600px",sm: "unset"},
+          overflow: "auto",
         }}
       >
         <Grid
           container
-          spacing={2}
+          spacing={{xs: 1, md: 2}}
           sx={{
-            mb: 4,
+            my: { xs: 2, sm: 4 },
             textAlign: "center",
             fontWeight: "700",
             color: "#6C8093",
@@ -95,7 +96,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
           return (
             <Grid
               container
-              spacing={2}
+              spacing={{xs: 1, sm: 2}}
               sx={{ alignItems: "center", mb: 2 }}
               key={uniqueId()}
             >
@@ -205,7 +206,15 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                   </Box>
                 ))}
               </Grid>
-              <Grid item xs={0} md={2}>
+              <Grid
+                item xs={0} md={2}
+                sx={{
+                  display: {
+                    md: "block",
+                    xs: "none",
+                  },
+                }}
+              >
                 <Typography
                   variant="labelMedium"
                   component="div"

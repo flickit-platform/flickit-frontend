@@ -55,6 +55,7 @@ const RichEditorFieldBase = (props: any) => {
   } = props;
   const [shrink, setShrink] = useState(() => Boolean(defaultValue));
   const [focus, setFocus] = useState(false);
+  const [hover, setHover] = useState(false);
 
   const {
     formState: { errors },
@@ -65,6 +66,12 @@ const RichEditorFieldBase = (props: any) => {
     <FormControl
       fullWidth
       variant="outlined"
+      onMouseDown={()=>{
+        setHover(true)
+      }}
+      onMouseOut={()=>{
+        setHover(false)
+      }}
       onFocus={(e) => {
         if (e.target?.id === "proseMirror") {
           setFocus(true);
@@ -109,7 +116,7 @@ const RichEditorFieldBase = (props: any) => {
         checkLang={firstCharDetector(defaultValue.replace(/<[^<>]+>/g, ""))}
         placeholder={placeholder}
         type={type}
-        showEditorMenu={showEditorMenu}
+        showEditorMenu={showEditorMenu || hover}
       />
       <FormHelperText style={{ marginTop: 0, marginLeft: 0, marginRight: 0 }}>
         {errorMessage as string}
