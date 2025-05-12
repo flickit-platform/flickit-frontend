@@ -232,7 +232,7 @@ const AssessmentExportContainer = () => {
                     startIcon={<Share fontSize="small" />}
                     size="small"
                     onClick={() => dialogProps.openDialog({})}
-                    // disabled={!permissions.canShareReport}
+                    disabled={!permissions.canShareReport}
                   >
                     <Trans i18nKey="shareReport" />
                   </LoadingButton>
@@ -242,6 +242,7 @@ const AssessmentExportContainer = () => {
                     fetchGraphicalReportUsers={fetchGraphicalReportUsers}
                     title={assessment.title}
                     visibility={visibility}
+                    permissions={permissions}
                   />
                 </>{" "}
               </Box>

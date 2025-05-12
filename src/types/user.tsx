@@ -26,6 +26,7 @@ export interface IUserPermissions {
   canShareReport: boolean;
   canViewDashboard: boolean;
   canViewQuestionnaires: boolean;
+  canManageVisibility: boolean
 }
 
 export enum FLAGS {
