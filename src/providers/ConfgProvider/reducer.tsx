@@ -4,12 +4,14 @@ export interface AppState {
   appTitle: string;
   appLogoUrl: string;
   languages: any[];
+  isAuthenticated: boolean;
 }
 
 export const initialState: AppState = {
   appTitle: "",
   appLogoUrl: "",
   languages: [],
+  isAuthenticated: false
 };
 
 const reducer = (state: AppState, action: any): AppState => {
@@ -28,6 +30,11 @@ const reducer = (state: AppState, action: any): AppState => {
       return {
         ...state,
         languages: action.payload,
+      };
+    case ActionTypes.App_Authenticated:
+      return {
+        ...state,
+        isAuthenticated: action.payload,
       };
     default:
       return state;

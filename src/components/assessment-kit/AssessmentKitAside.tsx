@@ -17,6 +17,7 @@ import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
+import { useConfigContext } from "@providers/ConfgProvider";
 import keycloakService from "@/service/keycloakService";
 
 interface IlistOfItems {
@@ -31,6 +32,9 @@ const AssessmentKitAside = (props: any) => {
   const contactusDialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
+  const {
+    config: { isAuthenticated },
+  }: any = useConfigContext();
 
   const listOfItems: IlistOfItems[] = [
     {
@@ -74,7 +78,7 @@ const AssessmentKitAside = (props: any) => {
         type: "create",
         staticData: { assessment_kit: { id, title } },
       });
-    }else{
+    } else {
       keycloakService.doLogin();
     }
   };
@@ -90,7 +94,7 @@ const AssessmentKitAside = (props: any) => {
         <Box
           sx={{
             ...styles.shadowStyle,
-            pb: 2,
+            pb: isAuthenticated ? 2 : 4,
             px: 3,
             pt: 4,
           }}
@@ -132,41 +136,43 @@ const AssessmentKitAside = (props: any) => {
               </Typography>
             </Box>
           </Box>
-          <Typography
-            sx={{
-              ...theme.typography.bodySmall,
-              ...styles.centerVH,
-              gap: 1,
-              color: "#2B333B",
-              mt: "8px",
-              textAlign: "center",
-            }}
-          >
-            <Trans
-              i18nKey={likeStatus ? "youLikedThisKit" : "didYouLikeThisKit"}
-            />
-            <IconButton
-              size="small"
-              onClick={toggleLike}
+          {isAuthenticated && (
+            <Typography
               sx={{
-                transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
-                background: likeStatus
-                  ? theme.palette.primary.light
-                  : "inherit",
-                "&:hover": {
-                  background: likeStatus
-                    ? theme.palette.primary.light
-                    : "#EAF2FB",
-                },
+                ...theme.typography.bodySmall,
+                ...styles.centerVH,
+                gap: 1,
+                color: "#2B333B",
+                mt: "8px",
+                textAlign: "center",
               }}
             >
-              {likeStatus ? (
-                <ThumbUpIcon color="primary" fontSize="small" />
-              ) : (
-                <ThumbUpOffAltOutlinedIcon color="primary" fontSize="small" />
-              )}
-            </IconButton>
-          </Typography>
+              <Trans
+                i18nKey={likeStatus ? "youLikedThisKit" : "didYouLikeThisKit"}
+              />
+              <IconButton
+                size="small"
+                onClick={toggleLike}
+                sx={{
+                  transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
+                  background: likeStatus
+                    ? theme.palette.primary.light
+                    : "inherit",
+                  "&:hover": {
+                    background: likeStatus
+                      ? theme.palette.primary.light
+                      : "#EAF2FB",
+                  },
+                }}
+              >
+                {likeStatus ? (
+                  <ThumbUpIcon color="primary" fontSize="small" />
+                ) : (
+                  <ThumbUpOffAltOutlinedIcon color="primary" fontSize="small" />
+                )}
+              </IconButton>
+            </Typography>
+          )}
         </Box>
       </Box>
       <AssessmentCEFromDialog {...dialogProps} />
