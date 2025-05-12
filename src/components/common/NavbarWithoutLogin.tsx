@@ -19,8 +19,6 @@ const login = () => {
   keycloakService.doLogin();
 };
 const LandingPage = import.meta.env.VITE_LANDING_PAGE
-  ? import.meta.env.VITE_LANDING_PAGE
-  : "";
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
@@ -46,8 +44,6 @@ const NavbarWithoutLogin = () => {
       >
         <Typography
           variant="h6"
-          component={NavLink}
-          to={LandingPage}
           sx={{
             display: {
               xs: "block",
@@ -55,7 +51,6 @@ const NavbarWithoutLogin = () => {
             color: "grey",
             height: "42px",
             width: "110px",
-            cursor: "pointer",
           }}
         >
           {config.appLogoUrl ? (
