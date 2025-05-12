@@ -150,7 +150,6 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
         {/* Main content with fade mask */}
         <Box
           sx={{
-            mt: 2,
             overflow: "hidden",
             position: "relative",
             maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
