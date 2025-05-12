@@ -45,4 +45,29 @@ export const report = {
       config,
     );
   },
+
+  getPublicGraphicalReport(
+    args: { linkHash: string },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.get(
+      `/api/v1/public/graphical-report/${args.linkHash}/`,
+      {
+        skipAuth: true,
+        ...config,
+      },
+    );
+  },
+
+  updateVisibilityStatus(
+    args: { assessmentId: string; data: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    const { assessmentId, data } = args;
+    return axios.put(
+      `/api/v1/assessments/${assessmentId}/report-visibility-status/`,
+      data,
+      config,
+    );
+  },
 };

@@ -4,8 +4,6 @@ import { styles } from "@styles";
 import Navbar from "@common/Navbar";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import { Link } from "react-router-dom";
-import React from "react";
 
 const ErrorNotFoundPage = () => {
   return (
@@ -24,8 +22,9 @@ const ErrorNotFoundPage = () => {
         <Button
           variant="contained"
           size="large"
-          component={Link}
-          to={"/spaces/1"}
+          onClick={() => {
+            window.location.href = "/spaces/1";
+          }}
         >
           <Trans i18nKey={"backToHome"} />
         </Button>

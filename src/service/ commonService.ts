@@ -34,7 +34,7 @@ const commonService = {
       }${spaceId ? `&&space_id=${spaceId}` : ""}${
         questionnaireId ? `&&questionnaire_id=${questionnaireId}` : ""
       }`,
-      config,
+      { skipAuth: true, ...config },
     );
   },
 

@@ -84,6 +84,22 @@ const Routes = () => {
           element={
             <AppLayout>
               <AssessmentKitScreen />
+           </AppLayout>
+          }
+        />
+        <Route  
+          path="/:spaceId/assessments/:assessmentId/graphical-report/:linkHash/"
+          element={
+            <AppLayout>
+              <AssessmentHTMLDocumentScreen />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/:spaceId/assessments/:assessmentId/graphical-report/"
+          element={
+            <AppLayout>
+              <AssessmentHTMLDocumentScreen />
             </AppLayout>
           }
         />
@@ -119,10 +135,6 @@ const Routes = () => {
           <Route
             path="/:spaceId/assessments/:page"
             element={<AssessmentsScreen />}
-          />
-          <Route
-            path="/:spaceId/assessments/:assessmentId/graphical-report/"
-            element={<AssessmentHTMLDocumentScreen />}
           />
           <Route
             path="/:spaceId/assessments/:page/:assessmentId/"
