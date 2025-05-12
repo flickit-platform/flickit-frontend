@@ -49,7 +49,12 @@ const useResponsiveRadius = () => {
 
 const renderCustomLabel = (props: any, totalAttributes: number) => {
   const RADIAN = Math.PI / 180;
-  const { cx, cy, outerRadius, midAngle, name, payload } = props;
+  const { cx, cy, outerRadius, midAngle, name, payload, startAngle, endAngle } =
+    props;
+
+  const angleSpan = Math.abs(endAngle - startAngle);
+  const isFarsi = languageDetector(name);
+  const font = isFarsi ? farsiFontFamily : primaryFontFamily;
 
   const radius = outerRadius * 0.8;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -58,65 +63,52 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
   const rotateAngle =
     totalAttributes < 5
       ? 70 - (midAngle / 180) * 140
-      : (() => {
-          const flip = midAngle > 90 && midAngle < 270;
-          return flip ? 180 - midAngle : -midAngle;
-        })();
+      : midAngle > 90 && midAngle < 270
+        ? 180 - midAngle
+        : -midAngle;
 
-  const MAX_LENGTH = 25;
-  const isFarsi = languageDetector(name);
+  const isTightAngle = angleSpan < 6;
+  const maxCharPerLine = isTightAngle ? 26 : totalAttributes < 5 ? 30 : 20;
+  const maxLines = isTightAngle ? 1 : 2;
+  const fontSize = isTightAngle ? 10 : 14;
 
-  if (name.length > MAX_LENGTH && name.includes(" ")) {
-    const words = name.split(" ");
-    const firstLine = words.slice(0, Math.ceil(words.length / 2)).join(" ");
-    const secondLine = words.slice(Math.ceil(words.length / 2)).join(" ");
-
-    return (
-      <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
-        <text
-          x={x}
-          y={y - 8}
-          fill={payload.textColor}
-          fontSize={14}
-          fontWeight={500}
-          textAnchor="middle"
-          dominantBaseline="central"
-          style={{ fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily }}
-        >
-          {firstLine}
-        </text>
-        <text
-          x={x}
-          y={y + 14}
-          fill={payload.textColor}
-          fontSize={14}
-          fontWeight={500}
-          textAnchor="middle"
-          dominantBaseline="central"
-          style={{ fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily }}
-        >
-          {secondLine}
-        </text>
-      </g>
-    );
+  const words = name.split(" ");
+  const lines: string[][] = [];
+  for (let i = 0; i < words.length; i++) {
+    if (
+      !lines.length ||
+      lines[lines.length - 1].join(" ").length + words[i].length >
+        maxCharPerLine
+    ) {
+      if (lines.length < maxLines) {
+        lines.push([words[i]]);
+      } else {
+        lines[lines.length - 1].push("…");
+        break;
+      }
+    } else {
+      lines[lines.length - 1].push(words[i]);
+    }
   }
 
   return (
-    <text
-      x={x}
-      y={y}
-      fill={payload.textColor}
-      fontSize={14}
-      fontWeight={500}
-      textAnchor="middle"
-      dominantBaseline="central"
-      transform={`rotate(${rotateAngle}, ${x}, ${y})`}
-      style={{
-        fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
-      }}
-    >
-      {name}
-    </text>
+    <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
+      {lines.map((line: string[], i: number) => (
+        <text
+          key={i}
+          x={x}
+          y={y + i * (fontSize + 4) - ((lines.length - 1) * (fontSize + 4)) / 2}
+          fill={payload.textColor}
+          fontSize={fontSize}
+          fontWeight={500}
+          textAnchor="middle"
+          dominantBaseline="central"
+          style={{ fontFamily: font }}
+        >
+          {line.join(" ")}
+        </text>
+      ))}
+    </g>
   );
 };
 
@@ -126,26 +118,44 @@ const renderMainLabel = (props: any) => {
   const radius = outerRadius - 90;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  const rotateAngle = 70 - (midAngle / 180) * 140;
+  const rotateAngle = 65 - (midAngle / 180) * 130;
+  const isFarsi = languageDetector(name);
+  const font = isFarsi ? farsiFontFamily : primaryFontFamily;
+
+  const MAX_LENGTH = 14;
+  const lines =
+    name.length > MAX_LENGTH && name.includes(" ")
+      ? name.split(" ").reduce((acc: string[][], word: string) => {
+          if (
+            !acc.length ||
+            acc[acc.length - 1].join(" ").length > MAX_LENGTH / 2
+          )
+            acc.push([word]);
+          else acc[acc.length - 1].push(word);
+          return acc;
+        }, [])
+      : [[name]];
+
+  const fontSize = lines.length === 1 ? 22 : lines.length === 2 ? 16 : 14;
 
   return (
-    <text
-      x={x}
-      y={y}
-      fill="#fff"
-      textAnchor="middle"
-      dominantBaseline="central"
-      transform={`rotate(${rotateAngle}, ${x}, ${y})`}
-      fontSize={22}
-      fontWeight={500}
-      style={{
-        fontFamily: languageDetector(name)
-          ? farsiFontFamily
-          : primaryFontFamily,
-      }}
-    >
-      {name}
-    </text>
+    <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
+      {lines.map((line: any, i: any) => (
+        <text
+          key={i}
+          x={x}
+          y={y + i * (fontSize + 4) - ((lines.length - 1) * (fontSize + 4)) / 2}
+          fill="#fff"
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontSize={fontSize}
+          fontWeight={500}
+          style={{ fontFamily: font }}
+        >
+          {line.join(" ")}
+        </text>
+      ))}
+    </g>
   );
 };
 
