@@ -103,85 +103,89 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     </Box>
   );
 
-  const renderAnswerDetails = () => (
+  const renderAnswerDetails = (props: any) =>{
+    const { position } = props
+    return (
     <Box
-      flex={1}
-      width="100%"
-      sx={{ ...styles.centerCH, alignItems: "flex-start", gap: 2 }}
-    >
-      <Typography color="#6C8093" sx={{ ...theme.typography.semiBoldMedium }}>
-        <Trans i18nKey={"selectedOption"} />:
-      </Typography>
-      {questionInfo?.answer?.index ? (
-        <>
-          <Box sx={{ p: 1, border: "1px solid #C7CCD1", borderRadius: 2 }}>
-            <Typography
-              sx={{
-                ...theme.typography.bodyMedium,
-                ...styles.rtlStyle(
-                  languageDetector(questionInfo?.answer?.title),
-                ),
-              }}
-            >
-              {questionInfo?.answer?.index + ". " + questionInfo?.answer?.title}
-            </Typography>
-          </Box>
-          <Box sx={{ ...styles.centerVH, alignSelf: "flex-end", gap: 1 }}>
-            <Typography>
-              <Trans i18nKey={"yourConfidence"} />
-            </Typography>
-            <CircleRating value={questionInfo?.answer?.confidenceLevel} />
-          </Box>
-        </>
-      ) : (
-        <AlertBox
-          severity="error"
-          variant="filled"
-          sx={{
-            backgroundColor: "rgba(138, 15, 36, 0.04)",
-            color: "#8A0F24",
-            borderRadius: "8px",
-            mb: 2,
-            width: "100%",
-          }}
-          action={
-            <Button
-              variant="outlined"
-              color="error"
-              component={Link}
-              target="_blank"
-              to={`./../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
-            >
-              <Trans i18nKey="answerNow" />
-            </Button>
-          }
-        >
-          <AlertTitle>
-            <Trans i18nKey={"noQuestionHasBeenAnswered"} />
-          </AlertTitle>
-        </AlertBox>
-      )}
+    flex={1}
+    width="100%"
+    sx={{ ...styles.centerCH, alignItems: "flex-start", gap: 2 }}
+  >
+  <Typography color="#6C8093" sx={{ ...theme.typography.semiBoldMedium }}>
+  <Trans i18nKey={"selectedOption"} />:
+  </Typography>
+    {questionInfo?.answer?.index ? (
+      <>
+        <Box sx={{ p: 1, border: "1px solid #C7CCD1", borderRadius: 2 }}>
+          <Typography
+            sx={{
+              ...theme.typography.bodyMedium,
+              ...styles.rtlStyle(
+                languageDetector(questionInfo?.answer?.title),
+              ),
+            }}
+          >
+            {questionInfo?.answer?.index + ". " + questionInfo?.answer?.title}
+          </Typography>
+        </Box>
+        <Box sx={{ ...styles.centerVH, alignSelf: "flex-end", gap: 1 }}>
+          <Typography>
+            <Trans i18nKey={"yourConfidence"} />
+          </Typography>
+          <CircleRating value={questionInfo?.answer?.confidenceLevel} />
+        </Box>
+      </>
+    ) : (
+      <AlertBox
+        severity="error"
+        variant="filled"
+        sx={{
+          backgroundColor: "rgba(138, 15, 36, 0.04)",
+          color: "#8A0F24",
+          borderRadius: "8px",
+          mb: 2,
+          width: "100%",
+        }}
+        action={
+          <Button
+            variant="outlined"
+            color="error"
+            component={Link}
+            target="_blank"
+            to={`./../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
+          >
+            <Trans i18nKey="answerNow" />
+          </Button>
+        }
+      >
+        <AlertTitle>
+          <Trans i18nKey={"noQuestionHasBeenAnswered"} />
+        </AlertTitle>
+      </AlertBox>
+    )}
 
-      <QuestionTabsTemplate
-        key={questionInfo?.question?.id}
-        value={value}
-        setValue={setValue}
-        questionsInfo={{
-          ...questionsInfo,
-          permissions: {
-            addEvidence: false,
-            viewAnswerHistory: true,
-            viewEvidenceList: true,
-            readonly: true,
-          },
-        }}
-        questionInfo={{
-          ...questionInfo?.question,
-          questionId: questionInfo?.question?.id,
-        }}
-      />
-    </Box>
-  );
+    <QuestionTabsTemplate
+      key={questionInfo?.question?.id}
+      value={value}
+      setValue={setValue}
+      questionsInfo={{
+        ...questionsInfo,
+        permissions: {
+          addEvidence: false,
+          viewAnswerHistory: true,
+          viewEvidenceList: true,
+          readonly: true,
+        },
+      }}
+      questionInfo={{
+        ...questionInfo?.question,
+        questionId: questionInfo?.question?.id,
+      }}
+      position={position}
+    />
+  </Box>
+  )
+  } ;
 
   return (
     <CEDialog
@@ -202,7 +206,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         />
         {renderQuestionDetails()}
         <Divider sx={{ width: "100%", my: 2 }} />
-        {renderAnswerDetails()}
+        {renderAnswerDetails({position : "dialog" })}
       </Box>
       <CEDialogActions
         type="close"

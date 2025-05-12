@@ -378,7 +378,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, setValue, questionsInfo, questionInfo, key } =
+  const { value, setValue, questionsInfo, questionInfo, key, position } =
     props;
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
@@ -528,7 +528,13 @@ export const QuestionTabsTemplate = (props: any) => {
     }else if(counts.comments){
       setValue("comments")
     }else {
-      setValue("evidences")
+      setValue(()=>{
+        if(position == "dialog"){
+          return ""
+        }else {
+          return "evidences"
+        }
+      })
     }
   }, [counts.evidences, counts.history, counts.comments]);
 
