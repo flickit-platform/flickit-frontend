@@ -4,7 +4,8 @@ import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
-import ChartTooltip from "@/components/common/charts/ChartTooltip"
+import { t } from "i18next";
+import ChartTooltip from "./ChartTooltip";
 
 interface TreeMapNode {
   name: string;
@@ -17,9 +18,10 @@ interface TreeMapNode {
 interface TreeMapProps {
   data: TreeMapNode[];
   levels: number;
+  lang: {code: string}
 }
 
-const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
+const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
   const colorPallet = getMaturityLevelColors(levels);
   const treeMapData = data.map((node) => ({
     ...node,
@@ -33,7 +35,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
         dataKey="count"
         stroke="#fff"
         fill="white"
-        content={<CustomNode levels={levels} />}
+        content={<CustomNode levels={levels} lang={lang}/>}
         onClick={(props)=>{
          const { id }: any = props
           const element = document.getElementById(id);
@@ -54,8 +56,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels }) => {
 const CustomNode: any = (props: any) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { x, y, width, height, name, color, label, levels } = props;
-
+  const { x, y, width, height, name, color, label, levels, lang } = props;
   if (width <= 10 || height <= 20) return null;
 
   const fontSize = width / (isSmallScreen ? 10 : 8);
@@ -83,13 +84,11 @@ const CustomNode: any = (props: any) => {
           <text
             x={x + width / 2}
             y={y + height / 2 + 10}
-            textAnchor="middle"
             fill="#fff"
             fontWeight={9}
-            letterSpacing={0.5}
-            fontSize={adjustedFontSize}
+            fontSize={11}
           >
-            {`${label}/${levels}`}
+            {`${label} ${lang.code === "EN" ? "out of" :  " از "} ${levels}`}
           </text>
         </>
       )}

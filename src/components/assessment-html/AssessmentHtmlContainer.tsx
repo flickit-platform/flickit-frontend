@@ -433,6 +433,7 @@ const AssessmentExportContainer = () => {
                           })),
                         )}
                         levels={assessment.assessmentKit.maturityLevelCount}
+                        lang={lang}
                       />
 
                       <Grid
