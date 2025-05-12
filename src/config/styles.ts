@@ -424,7 +424,7 @@ export const chipColorPalette: any = {
   },
 };
 
-export const customMindMapPalette = {
+export const customSemiCircleChartapPalette = {
   chip1: { backgroundColor: "#FDEAEA", color: "#B71515" },
   chip2: { backgroundColor: "#FBE1E1", color: "#8A1C1C" },
   chip3: { backgroundColor: "#DCEEFF", color: "#005BBB" },

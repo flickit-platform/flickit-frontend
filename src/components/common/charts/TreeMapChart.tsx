@@ -5,9 +5,12 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { t } from "i18next";
+import ChartTooltip from "./ChartTooltip";
 
 interface TreeMapNode {
   name: string;
+  id: number;
+  description: string;
   count: number;
   label: string;
 }
@@ -32,11 +35,18 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
         dataKey="count"
         stroke="#fff"
         fill="white"
-        content={<CustomNode levels={levels} lang={lang} />}
+        content={<CustomNode levels={levels} />}
+        onClick={(props)=>{
+         const { id }: any = props
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
       >
         <Tooltip
           wrapperStyle={{ outline: "none" }}
-          content={<CustomTooltip />}
+          content={<ChartTooltip />}
         />
       </Treemap>
     </ResponsiveContainer>
@@ -57,7 +67,7 @@ const CustomNode: any = (props: any) => {
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={color} />
+      <rect x={x} y={y} width={width} height={height} fill={color} style={{cursor: "pointer"}} />
       {width > 50 && height > 20 && (
         <>
           <text
@@ -84,31 +94,6 @@ const CustomNode: any = (props: any) => {
       )}
     </g>
   );
-};
-
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload?.length) {
-    const { name } = payload[0].payload;
-    return (
-      <div
-        style={{
-          backgroundColor: "rgba(97, 97, 97, 0.92)",
-          borderRadius: "4px",
-          color: "white",
-          maxWidth: "300px",
-          overflowWrap: "break-word",
-          fontWeight: 500,
-          border: "none !important",
-          boxShadow: "none",
-          fontSize: 12,
-          padding: 3,
-        }}
-      >
-        <p>{name}</p>
-      </div>
-    );
-  }
-  return null;
 };
 
 export default TreeMapChart;

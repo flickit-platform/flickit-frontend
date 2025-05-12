@@ -311,6 +311,7 @@ const AdviceItemAccordion: React.FC<{
             "& .MuiAccordionSummary-content": {
               alignItems: "center",
               minWidth: readOnly ? "20%" : "unset",
+              width: "100%",
             },
             padding: "0 16px",
           }}
@@ -322,7 +323,7 @@ const AdviceItemAccordion: React.FC<{
             width="100%"
             spacing={1}
           >
-            <Grid item xs={12} sm={8} md={readOnly ? 7 : 8.3}>
+            <Grid item xs={12} md={readOnly ? 7 : 8.3}>
               <Grid container alignItems="center" spacing={1}>
                 <Grid item xs={12} alignItems="center" display="flex">
                   <Typography
@@ -377,7 +378,7 @@ const AdviceItemAccordion: React.FC<{
               </Grid>
             </Grid>
 
-            <Grid item xs={12} sm={4} md={readOnly ? 2.8 : 3.7}>
+            <Grid item xs={12} md={readOnly ? 2.8 : 3.7}>
               <Grid
                 container
                 justifyContent="flex-start"
@@ -387,10 +388,11 @@ const AdviceItemAccordion: React.FC<{
                 <Grid
                   item
                   display="flex"
-                  xs={readOnly ? 12 : 10}
-                  alignItems="center"
-                  justifyContent={{ xs: "flex-start", sm: "flex-end" }}
+                  xs={readOnly ? 12 : 9}
+                  alignItems={{ xs: "flex-start", md: "center" }}
+                  justifyContent={{ xs: "flex-start", md: "flex-end" }}
                   gap={1}
+                  flexDirection={{ xs: "column", md: "row" }}
                 >
                   <CustomChip
                     type="impact"
@@ -408,7 +410,7 @@ const AdviceItemAccordion: React.FC<{
                 </Grid>
                 <Grid
                   item
-                  xs={0.2}
+                  xs={3}
                   alignItems="center"
                   display={readOnly ? "none" : "flex"}
                 >

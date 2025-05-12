@@ -6,19 +6,12 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { t } from "i18next";
 
+const MAX_HEIGHT = 210;
+
 const sections = [
-  {
-    key: "what",
-    title: "whatIsThisKit",
-  },
-  {
-    key: "who",
-    title: "whoNeedsThisKit",
-  },
-  {
-    key: "when",
-    title: "whenToUseThisKit",
-  },
+  { key: "what", title: "whatIsThisKit" },
+  { key: "who", title: "whoNeedsThisKit" },
+  { key: "when", title: "whenToUseThisKit" },
 ] as const;
 
 type SectionKey = (typeof sections)[number]["key"];
@@ -59,23 +52,21 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
 
   const currentSection = sections.find((s) => s.key === selected)!;
 
-  const paragraphRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [showMore, setShowMore] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
-  const [maxHeight, setMaxHeight] = useState<number>(280);
 
   useEffect(() => {
     setShowMore(false);
   }, [selected]);
 
   useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
     const timeout = setTimeout(() => {
-      if (paragraphRef.current) {
-        const fullHeight = paragraphRef.current.scrollHeight;
-        const defaultMaxHeight = 280;
-        setMaxHeight(defaultMaxHeight);
-        setShowBtn(fullHeight > defaultMaxHeight);
-      }
+      const fullHeight = el.scrollHeight;
+      setShowBtn(fullHeight > MAX_HEIGHT);
     }, 0);
 
     return () => clearTimeout(timeout);
@@ -142,7 +133,6 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
 
       {/* Content */}
       <Box sx={{ flex: 1, p: 4 }}>
-        {/* Section title with colored keyword */}
         <Typography variant="titleLarge" color="#2B333B">
           <Trans
             i18nKey={`assessmentKitTab.${currentSection.title}`}
@@ -157,28 +147,44 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
           />
         </Typography>
 
-        {/* Main content */}
-        <Typography
-          key={selected}
-          ref={paragraphRef}
-          component="div"
+        {/* Main content with fade mask */}
+        <Box
           sx={{
             mt: 2,
-            color: "text.primary",
             overflow: "hidden",
-            maxHeight: showBtn && !showMore ? `${maxHeight}px` : "none",
-            transition: "max-height 0.3s ease",
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            fontFamily: languageDetector(content)
-              ? farsiFontFamily
-              : primaryFontFamily,
-            textAlign: "justify",
+            position: "relative",
+            maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
+            transition: "max-height 0.4s ease",
+            "&::after": !showMore
+              ? {
+                  content: '""',
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: "40px",
+                  background: showBtn
+                    ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
+                    : "none",
+                  pointerEvents: "none",
+                }
+              : undefined,
           }}
-          dangerouslySetInnerHTML={{
-            __html: content !== "" ? content : t("unavailable"),
-          }}
-        />
+        >
+          <Box
+            ref={contentRef}
+            sx={{
+              fontFamily: languageDetector(content)
+                ? farsiFontFamily
+                : primaryFontFamily,
+              color: "text.primary",
+              textAlign: "justify",
+            }}
+            dangerouslySetInnerHTML={{
+              __html: content || t("unavailable"),
+            }}
+          />
+        </Box>
 
         {showBtn && (
           <Button

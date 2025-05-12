@@ -4,7 +4,6 @@ import { useQuery } from "@/utils/useQuery";
 import { ErrorCodes, IGraphicalReport, PathInfo } from "@/types/index";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
-import QueryBatchData from "../common/QueryBatchData";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
@@ -36,11 +35,13 @@ import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
 import { useEffect } from "react";
 import { getReadableDate } from "@utils/readableDate";
+import keycloakService from "@/service/keycloakService";
+import QueryData from "../common/QueryData";
 
 const AssessmentExportContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
 
-  const { assessmentId = "", spaceId = "" } = useParams();
+  const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
 
   const dialogProps = useDialog();
@@ -48,15 +49,20 @@ const AssessmentExportContainer = () => {
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
-    runOnMount: true,
+    runOnMount: keycloakService.isLoggedIn(),
   });
 
   const fetchGraphicalReport = useQuery({
     service: (args, config) =>
-      service.assessments.report.getGraphical(
-        { assessmentId, ...(args ?? {}) },
-        config,
-      ),
+      keycloakService.isLoggedIn()
+        ? service.assessments.report.getGraphical(
+            { assessmentId, ...(args ?? {}) },
+            config,
+          )
+        : service.assessments.report.getPublicGraphicalReport(
+            { linkHash, ...(args ?? {}) },
+            { skipAuth: true, ...config },
+          ),
     runOnMount: true,
   });
 
@@ -83,7 +89,13 @@ const AssessmentExportContainer = () => {
       default:
         break;
     }
-    fetchGraphicalReport.query();
+    if (
+      errorCode === ErrorCodes.CalculateNotValid ||
+      errorCode === ErrorCodes.ConfidenceCalculationNotValid ||
+      errorCode === "DEPRECATED"
+    ) {
+      fetchGraphicalReport.query();
+    }
   };
 
   useEffect(() => {
@@ -133,7 +145,7 @@ const AssessmentExportContainer = () => {
       )}
       {renderChip(
         <CalendarMonthIcon fontSize="small" color="primary" />,
-         getReadableDate(graphicalReport?.assessment?.creationTime) ,
+        getReadableDate(graphicalReport?.assessment?.creationTime),
         language,
       )}
     </>
@@ -141,12 +153,18 @@ const AssessmentExportContainer = () => {
 
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
-      <QueryBatchData
-        queryBatchData={[fetchPathInfo, fetchGraphicalReport]}
+      <QueryData
+        {...fetchGraphicalReport}
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
-        render={([pathInfo, graphicalReport]) => {
-          const { assessment, advice, permissions, subjects, lang } =
-            graphicalReport as IGraphicalReport;
+        render={(graphicalReport) => {
+          const {
+            assessment,
+            advice,
+            permissions,
+            subjects,
+            lang,
+            visibility,
+          } = graphicalReport as IGraphicalReport;
           const rtlLanguage = lang.code.toLowerCase() === "fa";
           return (
             <Box
@@ -157,10 +175,21 @@ const AssessmentExportContainer = () => {
                 ...styles.rtlStyle(rtlLanguage),
               }}
             >
-              <AssessmentHtmlTitle
-                pathInfo={pathInfo}
-                language={lang.code.toLowerCase()}
-              />
+              {keycloakService.isLoggedIn() && (
+                <QueryData
+                  {...fetchPathInfo}
+                  renderLoading={() => <></>}
+                  render={(pathInfo) => {
+                    return (
+                      <AssessmentHtmlTitle
+                        pathInfo={pathInfo}
+                        language={lang.code.toLowerCase()}
+                      />
+                    );
+                  }}
+                />
+              )}
+
               <Box
                 display="flex"
                 justifyContent="space-between"
@@ -175,22 +204,24 @@ const AssessmentExportContainer = () => {
                     ...styles.rtlStyle(rtlLanguage),
                   }}
                 >
-                  <IconButton
-                    color={"primary"}
-                    component={Link}
-                    to={
-                      permissions.canViewDashboard
-                        ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/`
-                        : `/${spaceId}/assessments/1/`
-                    }
-                  >
-                    <ArrowForward
-                      sx={{
-                        ...theme.typography.headlineMedium,
-                        transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
-                      }}
-                    />
-                  </IconButton>
+                  {keycloakService.isLoggedIn() && (
+                    <IconButton
+                      color={"primary"}
+                      component={Link}
+                      to={
+                        permissions.canViewDashboard
+                          ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/`
+                          : `/${spaceId}/assessments/1/`
+                      }
+                    >
+                      <ArrowForward
+                        sx={{
+                          ...theme.typography.headlineMedium,
+                          transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
+                        }}
+                      />
+                    </IconButton>
+                  )}
                   {t("assessmentReport", {
                     lng: lang.code.toLowerCase(),
                   })}
@@ -201,6 +232,7 @@ const AssessmentExportContainer = () => {
                     startIcon={<Share fontSize="small" />}
                     size="small"
                     onClick={() => dialogProps.openDialog({})}
+                    disabled={!permissions.canShareReport}
                   >
                     <Trans i18nKey="shareReport" />
                   </LoadingButton>
@@ -209,6 +241,8 @@ const AssessmentExportContainer = () => {
                     onClose={() => dialogProps.onClose()}
                     fetchGraphicalReportUsers={fetchGraphicalReportUsers}
                     title={assessment.title}
+                    visibility={visibility}
+                    permissions={permissions}
                   />
                 </>{" "}
               </Box>
@@ -392,6 +426,8 @@ const AssessmentExportContainer = () => {
                         data={subjects.flatMap((subject: any) =>
                           subject.attributes.map((attribute: any) => ({
                             name: attribute.title,
+                            description: attribute.description,
+                            id: attribute.id,
                             count: attribute.weight,
                             label: attribute.maturityLevel.value.toString(),
                           })),

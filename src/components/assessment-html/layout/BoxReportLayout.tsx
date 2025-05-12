@@ -29,6 +29,7 @@ interface IBoxReport {
   };
   attributeMeasures: any;
   language: string;
+  id: number;
 }
 
 interface ITopBoxReport {
@@ -51,6 +52,7 @@ const BoxReportLayout = (props: IBoxReport) => {
     maturityLevelCount,
     language,
     attributeMeasures,
+    id,
     ...rest
   } = props;
 
@@ -71,6 +73,7 @@ const BoxReportLayout = (props: IBoxReport) => {
         width: "100%",
         paddingX: 4,
       }}
+      id={`${id}`}
     >
       <TopBox
         ConfidenceColor={colorCode}
