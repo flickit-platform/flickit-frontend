@@ -8,6 +8,7 @@ import { styles } from "@styles";
 import { theme } from "@config/theme";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
+import uniqueId from "@/utils/uniqueId";
 
 const DIRECTION = theme.direction === "rtl" ? "+" : "-";
 const ARROW_COLOR = "#1B4D7E";
@@ -211,7 +212,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
           <Box sx={styles.dots}>
             {banners.map((_, i) => (
               <Box
-                key={i}
+                key={uniqueId()}
                 sx={{
                   width: currentIndex === i ? "2rem" : "1rem",
                   height: "0.75rem",
