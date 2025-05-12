@@ -185,22 +185,22 @@ const AdviceListNewForm = ({
               )}
             </Grid>
 
-              {selectAdvice?.map((item: any) => {
-                return (
-                  <Grid
-                    item
-                    xs={12}
-                    md={2}
-                    sx={{
-                      display: "flex",
-                      justifyContent: {xs: "center"},
-                      gap:{xs: 0.3, sm: "unset"},
-                      "& .MuiGrid-root > .MuiGrid-item": {
-                        paddingTop: "0px",
-                      },
-                    }}
-                  >
-                  <FormControl key={item} sx={{ width: {xs: "100%" } }}>
+            {selectAdvice?.map((item: any) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  md={2}
+                  sx={{
+                    display: "flex",
+                    justifyContent: { xs: "center" },
+                    gap: { xs: 0.3, sm: "unset" },
+                    "& .MuiGrid-root > .MuiGrid-item": {
+                      paddingTop: "0px",
+                    },
+                  }}
+                >
+                  <FormControl key={item} sx={{ width: { xs: "100%" } }}>
                     <InputLabel id="demo-multiple-name-label">
                       {" "}
                       <Trans i18nKey={item} />
@@ -223,12 +223,6 @@ const AdviceListNewForm = ({
                         "& .MuiSelect-select": {
                           display: "flex",
                           alignItems: "center",
-                        },
-                        "& .MuiOutlinedInput-input": {
-                          px: {xs: 0, sm: "unset"}
-                        },
-                        "& .MuiSelect-select.MuiSelect-outlined": {
-                          padding: "1px",
                         },
                       }}
                     >
@@ -255,9 +249,9 @@ const AdviceListNewForm = ({
                       ))}
                     </Select>
                   </FormControl>
-                  </Grid>
-                );
-              })}
+                </Grid>
+              );
+            })}
           </Grid>
           <FormProviderWithForm formMethods={formMethods}>
             <Box
@@ -293,7 +287,7 @@ const AdviceListNewForm = ({
         {/* Check and Close Buttons */}
         <Box
           display="flex"
-          alignSelf={{xs: "flex-end", sm: "flex-start" }}
+          alignSelf={{ xs: "flex-end", sm: "flex-start" }}
           flexDirection="column"
           gap={"20px"}
         >
@@ -307,7 +301,7 @@ const AdviceListNewForm = ({
               alignItems: "center",
               gap: "20px",
               flexDirection: { xs: "row-reverse", sm: "column" },
-              mt: {xs: 2, sm: "unset"}
+              mt: { xs: 2, sm: "unset" },
             }}
           >
             {" "}
