@@ -450,12 +450,11 @@ const Navbar = () => {
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
             component={NavLink}
-            to="spaces/1"
+            to="/spaces/1"
           >
             <ListItemText primary={<Trans i18nKey="spaces" />} />
           </ListItemButton>
         </ListItem>
-        {spaceId && (
           <QueryData
             {...spacesQueryData}
             render={(data) => {
@@ -507,7 +506,6 @@ const Navbar = () => {
               );
             }}
           />
-        )}
         {/* <ListItem disablePadding>
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
