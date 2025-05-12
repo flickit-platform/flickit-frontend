@@ -4,7 +4,6 @@ import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { t } from "i18next";
 import ChartTooltip from "./ChartTooltip";
 
 interface TreeMapNode {
@@ -62,9 +61,19 @@ const CustomNode: any = (props: any) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { x, y, width, height, name, color, label, levels, lang } = props;
-  if (width <= 10 || height <= 20) return null;
+  if (width <= 30 || height <= 30)
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={color}
+        style={{ cursor: "pointer" }}
+      />
+    );
 
-  const fontSize = width / (isSmallScreen ? 10 : 8);
+  const fontSize = width / 12;
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
 
   const truncatedName =
