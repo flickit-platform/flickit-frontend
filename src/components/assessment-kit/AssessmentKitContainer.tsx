@@ -32,13 +32,18 @@ const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const isAuthenticated = keycloakService.isLoggedIn();
-  const isPublic = isAuthenticated ? "" : "/public";
+
   const assessmentKitQuery = useQuery({
     service: (args, config) =>
-      service.assessmentKit.info.getById(
-        args ?? { id: assessmentKitId, isPublic },
-        config,
-      ),
+      isAuthenticated
+        ? service.assessmentKit.info.getById(
+            args ?? { id: assessmentKitId },
+            config,
+          )
+        : service.assessmentKit.info.getPublicById(
+            args ?? { id: assessmentKitId },
+            config,
+          ),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });

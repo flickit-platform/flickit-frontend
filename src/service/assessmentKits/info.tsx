@@ -67,9 +67,15 @@ export const info = {
     });
   },
 
-  getById(args: { id: TId, isPublic: string }, config?: AxiosRequestConfig<any>) {
-    const { id, isPublic } = args ?? {};
-    return axios.get(`/api/v1${isPublic}/assessment-kits/${id}/`, {
+  getById(args: { id: TId }, config?: AxiosRequestConfig<any>) {
+    const { id } = args ?? {};
+    return axios.get(`/api/v1/assessment-kits/${id}/`, {
+      ...config });
+  },
+
+  getPublicById(args: { id: TId }, config?: AxiosRequestConfig<any>) {
+    const { id } = args ?? {};
+    return axios.get(`/api/v1/public/assessment-kits/${id}/`, {
       skipAuth: true,
       ...config });
   },
