@@ -53,8 +53,7 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
     props;
 
   const angleSpan = Math.abs(endAngle - startAngle);
-  const isFarsi = languageDetector(name);
-  const font = isFarsi ? farsiFontFamily : primaryFontFamily;
+  const isTightAngle = angleSpan < 6;
 
   const radius = outerRadius * 0.8;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -67,33 +66,45 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
         ? 180 - midAngle
         : -midAngle;
 
-  const isTightAngle = angleSpan < 6;
+  const isFarsi = languageDetector(name);
+  const font = isFarsi ? farsiFontFamily : primaryFontFamily;
+
   const maxCharPerLine = isTightAngle ? 26 : totalAttributes < 5 ? 30 : 20;
   const maxLines = isTightAngle ? 1 : 2;
   const fontSize = isTightAngle ? 10 : 14;
 
-  const words = name.split(" ");
-  const lines: string[][] = [];
-  for (let i = 0; i < words.length; i++) {
-    if (
-      !lines.length ||
-      lines[lines.length - 1].join(" ").length + words[i].length >
-        maxCharPerLine
-    ) {
-      if (lines.length < maxLines) {
-        lines.push([words[i]]);
+  const buildLines = (
+    text: string,
+    maxLineLength: number,
+    maxLines: number,
+  ): string[][] => {
+    const words = text.split(" ");
+    const lines: string[][] = [];
+
+    for (const word of words) {
+      if (
+        !lines.length ||
+        lines[lines.length - 1].join(" ").length + word.length > maxLineLength
+      ) {
+        if (lines.length < maxLines) {
+          lines.push([word]);
+        } else {
+          lines[lines.length - 1].push("…");
+          break;
+        }
       } else {
-        lines[lines.length - 1].push("…");
-        break;
+        lines[lines.length - 1].push(word);
       }
-    } else {
-      lines[lines.length - 1].push(words[i]);
     }
-  }
+
+    return lines;
+  };
+
+  const lines = buildLines(name, maxCharPerLine, maxLines);
 
   return (
     <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
-      {lines.map((line: string[], i: number) => (
+      {lines.map((line, i) => (
         <text
           key={i}
           x={x}
