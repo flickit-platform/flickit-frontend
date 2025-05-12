@@ -20,6 +20,7 @@ import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import { theme } from "@/config/theme";
 import flagsmith from "flagsmith";
+import uniqueId from "@/utils/uniqueId";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -53,7 +54,8 @@ const ExpertGroupsContainer = () => {
       : Math.ceil(queryData.data?.total / queryData.data?.size);
 
   useDocumentTitle(t("expertGroups") as string);
-  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
   return (
     <Box>
@@ -85,9 +87,9 @@ const ExpertGroupsContainer = () => {
         renderLoading={() => {
           return (
             <Grid container spacing={3} mt={1}>
-              {forLoopComponent(4, (i) => {
+              {forLoopComponent(4, () => {
                 return (
-                  <Grid item key={i} xs={12} sm={6} lg={4}>
+                  <Grid item key={uniqueId()} xs={12} sm={6} lg={4}>
                     <LoadingSkeleton height="174px" />
                   </Grid>
                 );

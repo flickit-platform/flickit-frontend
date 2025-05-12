@@ -186,7 +186,7 @@ const renderMainLabel = (props: any) => {
     <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
       {lines.map((line: string[], i: number) => (
         <text
-          key={i}
+        key={uniqueId()}
           x={x}
           y={getLineY(i)}
           fill="#fff"
