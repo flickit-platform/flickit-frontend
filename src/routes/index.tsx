@@ -80,6 +80,14 @@ const Routes = () => {
           }
         />
         <Route
+          path="/assessment-kits/:assessmentKitId"
+          element={
+            <AppLayout>
+              <AssessmentKitScreen />
+           </AppLayout>
+          }
+        />
+        <Route  
           path="/:spaceId/assessments/:assessmentId/graphical-report/:linkHash/"
           element={
             <AppLayout>
@@ -159,12 +167,6 @@ const Routes = () => {
             element={<AssessmentAdviceScreen />}
           />
           {/* Questionnaires and questions related routes */}
-
-          {/* Assessment kits related routes */}
-          <Route
-            path="/assessment-kits/:assessmentKitId"
-            element={<AssessmentKitScreen />}
-          />
 
           {/* Compare routes */}
           <Route path="/compare" element={<CompareScreen />} />

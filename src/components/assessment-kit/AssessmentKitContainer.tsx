@@ -7,7 +7,7 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import QueryData from "@common/QueryData";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AssessmentKitIntro from "@components/assessment-kit/AssessmentKitIntro";
 import Grid from "@mui/material/Grid";
 import AssessmentKitAside from "@components/assessment-kit/AssessmentKitAside";
@@ -24,17 +24,26 @@ import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
+import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
+
 
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
+  const isAuthenticated = keycloakService.isLoggedIn();
+
   const assessmentKitQuery = useQuery({
     service: (args, config) =>
-      service.assessmentKit.info.getById(
-        args ?? { id: assessmentKitId },
-        config,
-      ),
+      isAuthenticated
+        ? service.assessmentKit.info.getById(
+            args ?? { id: assessmentKitId },
+            config,
+          )
+        : service.assessmentKit.info.getPublicById(
+            args ?? { id: assessmentKitId },
+            config,
+          ),
     toastError: false,
     toastErrorOptions: { filterByStatus: [404] },
   });
@@ -69,28 +78,18 @@ const AssessmentKit = (props: any) => {
   const {
     title: assessmentTitle,
     id,
-    expertGroupId,
-    about = "",
+    expertGroup,
     like,
     subjects,
     metadata,
     languages,
   } = assessmentKitQueryData ?? {};
-  const { service } = useServiceContext();
-  const expertGroupQueryData = useQuery({
-    service: (args, config) =>
-      service.expertGroups.info.getById(args ?? { id: expertGroupId }, config),
-  });
+
   const isMobileScreen = useScreenResize("md");
 
-  return (
-    <QueryData
-      {...expertGroupQueryData}
-      loading={false}
-      render={(data) => {
         return (
           <>
-            <AssessmentKitBanner assessmentTitle={assessmentTitle} {...data} />
+            <AssessmentKitBanner assessmentTitle={assessmentTitle} {...expertGroup} />
             <Box
               sx={{
                 py: 4,
@@ -161,23 +160,15 @@ const AssessmentKit = (props: any) => {
                     languages={languages}
                   />
                 </Grid>
-
-                <Typography
-                  sx={{ color: "#2B333B" }}
-                  variant="titleLarge"
-                  my={4}
-                >
-                  <Trans i18nKey={"exploreOtherKits"} />
-                </Typography>
-                <Grid item xs={12} md={12} lg={12}>
-                  <AssessmentKitsStoreListCard small />
-                </Grid>
-              </Grid>
-            </Box>
-          </>
-        );
-      }}
-    />
+          <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>
+            <Trans i18nKey={"exploreOtherKits"} />
+          </Typography>
+          <Grid item xs={12} md={12} lg={12}>
+            <AssessmentKitsStoreListCard small />
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 };
 
@@ -189,6 +180,7 @@ const AssessmentKitBanner = (props: any) => {
     pictureLink,
   } = props;
 
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -248,12 +240,20 @@ const AssessmentKitBanner = (props: any) => {
             sx={{ width: 32, height: 32, fontSize: 16 }}
           ></Avatar>
           <Typography
-            component={Link}
-            to={`/user/expert-groups/${expertGroupId}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (keycloakService.isLoggedIn()) {
+                navigate(`/user/expert-groups/${expertGroupId}`);
+              } else {
+                keycloakService.doLogin();
+              }
+            }}
             sx={{
               ...theme.typography.semiBoldLarge,
               color: "#2B333B",
               textDecoration: "none",
+              cursor: "pointer"
             }}
           >
             {t("createdBy")}{" "}
