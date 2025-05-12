@@ -707,6 +707,7 @@
   "youAnsweredQuestionOf": "{{answeredQuestions}} از {{totalQuestions}} سوال برای پرسشنامه‌ی <style>{{questionnaire}}</style> پاسخ داده شده است",
   "youCan": "برای ایجاد یک ارزیابی جدید می‌توانید",
   "youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces": "تنها می‌توانید به ارزیابی‌هایی که در فضاهای کاریی شما هستند دسترسی داشته باشید.",
+  "youDontHavePermission": "شما دسترسی لازم برای ویرایش این بخش را ندارید.",
   "youHaveBeenInvitedToExpertGroup": "شما به این گروه دعوت شده‌اید. آیا می‌خواهید این دعوت‌نامه را بپذیرید؟",
   "youLikedThisKit": "کیت را پسندیدید!",
   "yourAnswer": "پاسخ شما",

@@ -707,6 +707,7 @@
   "youAnsweredQuestionOf": "{{answeredQuestions}} out of {{totalQuestions}} questions in the <style>{{questionnaire}}</style> questionnaire has been answered.",
   "youCan": "you can",
   "youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces": "You can only have access to the assessments that are in your spaces.",
+  "youDontHavePermission": "You don’t have the necessary permission to edit this section.",
   "youHaveBeenInvitedToExpertGroup": "You have been invited to this group. Do you want to accept this invitation?",
   "youLikedThisKit": "You liked this kit!",
   "yourAnswer": "Selected answer",

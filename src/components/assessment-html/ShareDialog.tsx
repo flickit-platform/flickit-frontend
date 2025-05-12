@@ -24,7 +24,7 @@ import QueryBatchData from "../common/QueryBatchData";
 import IconButton from "@mui/material/IconButton";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import useMenu from "@/utils/useMenu";
-import { Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem, Tooltip } from "@mui/material";
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -33,6 +33,7 @@ import {
 } from "@mui/icons-material";
 import { t } from "i18next";
 import { VISIBILITY } from "@/utils/enumType";
+import { IUserPermissions } from "@/types";
 
 interface IDialogProps {
   open: boolean;
@@ -40,6 +41,7 @@ interface IDialogProps {
   title: string;
   fetchGraphicalReportUsers: any;
   visibility: VISIBILITY;
+  permissions: IUserPermissions;
 }
 const accessOptions = {
   [VISIBILITY.RESTRICTED]: {
@@ -68,6 +70,7 @@ export const ShareDialog = ({
   title,
   fetchGraphicalReportUsers,
   visibility,
+  permissions,
 }: IDialogProps) => {
   const { t } = useTranslation();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -111,7 +114,6 @@ export const ShareDialog = ({
         if (currentPath !== expectedPath) {
           finalPath = expectedPath;
         }
-        console.log(finalPath);
       }
 
       if (window.location.pathname !== finalPath) {
@@ -137,7 +139,7 @@ export const ShareDialog = ({
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
 
-      if (access === VISIBILITY.PUBLIC) {
+      if (access === VISIBILITY.PUBLIC && permissions.canManageVisibility) {
         PublishReportStatus.query({
           data: { visibility: VISIBILITY.PUBLIC },
           assessmentId,
@@ -279,70 +281,98 @@ export const ShareDialog = ({
         </Typography>
         <Divider sx={{ mt: 1 }} />
       </Box>
-
-      <Box mt={1} sx={{ ...styles.centerV, gap: 1 }}>
-        <IconButton
-          color={access === VISIBILITY.PUBLIC ? "primary" : "default"}
-          sx={{
-            backgroundColor: current?.bgColor,
-            marginInlineEnd: 1,
-          }}
-          size="small"
-          onClick={openMenu}
-        >
-          {current?.icon}
-        </IconButton>
-
-        <Box>
-          <Typography
-            onClick={openMenu}
+      <Tooltip
+        disableHoverListener={permissions.canManageVisibility}
+        title={<Trans i18nKey="youDontHavePermission" />}
+      >
+        <div>
+          <Box
+            mt={1}
             sx={{
               ...styles.centerV,
-              cursor: "pointer",
               gap: 1,
+              pointerEvents: permissions.canManageVisibility ? "auto" : "none",
             }}
-            variant="semiBoldMedium"
           >
-            {current?.title}
-            {menuOpened ? (
-              <ArrowDropUp sx={{ color: "#6C8093" }} />
-            ) : (
-              <ArrowDropDown sx={{ color: "#6C8093" }} />
-            )}
-          </Typography>
+            <IconButton
+              color={access === VISIBILITY.PUBLIC ? "primary" : "default"}
+              sx={{
+                backgroundColor: current?.bgColor,
+                marginInlineEnd: 1,
+              }}
+              size="small"
+              onClick={openMenu}
+              disabled={!permissions.canManageVisibility}
+            >
+              {current?.icon}
+            </IconButton>
 
-          <Typography variant="bodySmall" color="#6C8093">
-            {current?.description}
-          </Typography>
-        </Box>
-
-        <Menu anchorEl={anchorEl} open={menuOpened} onClose={closeMenu}>
-          {Object.values(VISIBILITY).map((key) => {
-            const isSelected = access === key;
-            return (
-              <MenuItem
-                key={key}
-                selected={isSelected}
-                onClick={() => handleSelect(key)}
+            <Box>
+              <Typography
+                onClick={openMenu}
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  gap: 2,
+                  ...styles.centerV,
+                  cursor: permissions.canManageVisibility
+                    ? "pointer"
+                    : "default",
+                  gap: 1,
                 }}
+                variant="semiBoldMedium"
               >
-                <Typography variant="bodyMedium">
-                  {accessOptions[key].title}
-                </Typography>
-                {isSelected && (
-                  <Check sx={{ color: "primary.main" }} fontSize="small" />
+                {current?.title}
+                {menuOpened ? (
+                  <ArrowDropUp sx={{ color: "#6C8093" }} />
+                ) : (
+                  <ArrowDropDown sx={{ color: "#6C8093" }} />
                 )}
-              </MenuItem>
-            );
-          })}
-        </Menu>
-      </Box>
+              </Typography>
+
+              <Typography variant="bodySmall" color="#6C8093">
+                {current?.description}
+              </Typography>
+            </Box>
+
+            {!permissions.canManageVisibility && (
+              <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
+                <LockOutlinedIcon sx={{ color: "#B0B0B0", fontSize: 20 }} />
+              </Box>
+            )}
+
+            <Menu
+              anchorEl={anchorEl}
+              open={menuOpened}
+              onClose={closeMenu}
+              disablePortal={!permissions.canManageVisibility}
+            >
+              {Object.values(VISIBILITY).map((key) => {
+                const isSelected = access === key;
+                return (
+                  <MenuItem
+                    key={key}
+                    selected={isSelected}
+                    onClick={() => handleSelect(key)}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      gap: 2,
+                    }}
+                  >
+                    <Typography variant="bodyMedium">
+                      {accessOptions[key].title}
+                    </Typography>
+                    {isSelected && (
+                      <Check sx={{ color: "primary.main" }} fontSize="small" />
+                    )}
+                  </MenuItem>
+                );
+              })}
+            </Menu>
+          </Box>
+        </div>
+      </Tooltip>
+
       <CEDialogActions
         type="delete"
         loading={false}
