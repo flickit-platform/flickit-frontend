@@ -229,5 +229,6 @@ export interface IAssessment {
     canShareReport: boolean;
     canViewDashboard: boolean;
     canViewQuestionnaires: boolean;
+    canManageVisibility: boolean
   };
 }
