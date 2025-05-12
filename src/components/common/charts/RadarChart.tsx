@@ -79,7 +79,7 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
 }) => {
   const theme = useTheme();
   const chartData = useMemo(() => convertToAssessmentChartData(data), [data]);
-  const maxLineLength = 24;
+  const maxLineLength = 10;
 
   return (
     <ResponsiveContainer width="100%" height={chartHeight ?? 400}>
