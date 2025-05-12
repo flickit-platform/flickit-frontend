@@ -18,9 +18,7 @@ import keycloakService from "@/service/keycloakService";
 const login = () => {
   keycloakService.doLogin();
 };
-const LandingPage = import.meta.env.VITE_LANDING_PAGE
-  ? import.meta.env.VITE_LANDING_PAGE
-  : `https://flickit.org/`;
+const LandingPage = import.meta.env.VITE_LANDING_PAGE;
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
@@ -55,7 +53,7 @@ const NavbarWithoutLogin = () => {
             color: "grey",
             height: "42px",
             width: "110px",
-            cursor: "pointer",
+            cursor: LandingPage ? "pointer" : "default",
           }}
         >
           {config.appLogoUrl ? (
@@ -84,18 +82,20 @@ const NavbarWithoutLogin = () => {
             mx: "auto",
           }}
         >
-          <Button
-            component={NavLink}
-            to={LandingPage}
-            sx={{
-              ...styles.activeNavbarLink,
-              textTransform: "uppercase",
-              color: "#fff",
-            }}
-            size="small"
-          >
-            <Trans i18nKey="home" />
-          </Button>
+          {LandingPage && (
+            <Button
+              component={NavLink}
+              to={LandingPage}
+              sx={{
+                ...styles.activeNavbarLink,
+                textTransform: "uppercase",
+                color: "#fff",
+              }}
+              size="small"
+            >
+              <Trans i18nKey="home" />
+            </Button>
+          )}
           <Button
             component={NavLink}
             to={`/assessment-kits`}
