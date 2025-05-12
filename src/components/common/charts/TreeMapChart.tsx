@@ -4,7 +4,6 @@ import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
-import { t } from "i18next";
 import ChartTooltip from "./ChartTooltip";
 
 interface TreeMapNode {
@@ -18,7 +17,7 @@ interface TreeMapNode {
 interface TreeMapProps {
   data: TreeMapNode[];
   levels: number;
-  lang: {code: string}
+  lang: { code: string };
 }
 
 const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
@@ -35,18 +34,23 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
         dataKey="count"
         stroke="#fff"
         fill="white"
-        content={<CustomNode levels={levels} lang={lang}/>}
-        onClick={(props)=>{
-         const { id }: any = props
+        content={<CustomNode levels={levels} lang={lang} />}
+        onClick={(props) => {
+          const { id }: any = props;
           const element = document.getElementById(id);
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({ behavior: "smooth" });
           }
         }}
       >
         <Tooltip
           wrapperStyle={{ outline: "none" }}
-          content={<ChartTooltip />}
+          content={
+            <ChartTooltip
+              getPrimary={(d) => d.name}
+              getSecondary={(d) => d.description}
+            />
+          }
         />
       </Treemap>
     </ResponsiveContainer>
@@ -57,9 +61,19 @@ const CustomNode: any = (props: any) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { x, y, width, height, name, color, label, levels, lang } = props;
-  if (width <= 10 || height <= 20) return null;
+  if (width <= 30 || height <= 30)
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={color}
+        style={{ cursor: "pointer" }}
+      />
+    );
 
-  const fontSize = width / (isSmallScreen ? 10 : 8);
+  const fontSize = width / 12;
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
 
   const truncatedName =
@@ -67,7 +81,14 @@ const CustomNode: any = (props: any) => {
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={color} style={{cursor: "pointer"}} />
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={color}
+        style={{ cursor: "pointer" }}
+      />
       {width > 50 && height > 20 && (
         <>
           <text
@@ -85,10 +106,11 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 + 10}
             fill="#fff"
+            textAnchor="middle"
             fontWeight={9}
             fontSize={11}
           >
-            {`${label} ${lang.code === "EN" ? "out of" :  " از "} ${levels}`}
+            {`${label} ${lang.code === "EN" ? "out of" : " از "} ${levels}`}
           </text>
         </>
       )}

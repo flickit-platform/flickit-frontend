@@ -8,6 +8,7 @@ import getFieldError from "@utils/getFieldError";
 import { primaryFontFamily, theme } from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
 import languageDetector from "@utils/languageDetector";
+import { t } from "i18next";
 
 const InputField = () => {
   return <TextField />;
@@ -63,7 +64,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     errors,
     name,
     minLength,
-    maxLength,
+    maxLength
   );
 
   useEffect(() => {
@@ -117,14 +118,24 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   if (hasCounter) {
     inputStyle =
       isFarsi || rtl
-        ? { paddingLeft: {sm : "80px"}, minHeight: "110px" }
-        : { paddingRight: {sm : "80px"}, minHeight: "110px" };
+        ? { paddingLeft: { sm: "80px" }, minHeight: "110px" }
+        : { paddingRight: { sm: "80px" }, minHeight: "110px" };
   }
+
+  const validationRules: any = { required };
+  if (name === "email") {
+    validationRules.pattern = {
+      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      message: t("invalidEmail"),
+    };
+  }
+  if (minLength) validationRules.minLength = minLength;
+  if (maxLength) validationRules.maxLength = maxLength;
 
   return (
     <TextField
       {...rest}
-      {...register(name, { required, minLength, maxLength })}
+      {...register(name, validationRules)}
       data-testid={`input-${name}`}
       type={showPassword ? "text" : type}
       fullWidth
@@ -152,7 +163,9 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               ? evidenceAttachmentInput.paddingTop
               : "",
           paddingBottom:
-            name === "evidence" ? evidenceAttachmentInput.paddingBottom : "",
+            name === "evidence"
+              ? evidenceAttachmentInput.paddingBottom
+              : "",
         },
       }}
       InputLabelProps={{ ...InputLabelProps, required }}

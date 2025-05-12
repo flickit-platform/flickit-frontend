@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -34,6 +33,8 @@ import {
 import { t } from "i18next";
 import { VISIBILITY } from "@/utils/enumType";
 import { IUserPermissions } from "@/types";
+import { FormProvider, useForm } from "react-hook-form";
+import { InputFieldUC } from "../common/fields/InputField";
 
 interface IDialogProps {
   open: boolean;
@@ -43,6 +44,7 @@ interface IDialogProps {
   visibility: VISIBILITY;
   permissions: IUserPermissions;
 }
+
 const accessOptions = {
   [VISIBILITY.RESTRICTED]: {
     title: t("accessRestrictedTitle", "Restricted"),
@@ -73,22 +75,22 @@ export const ShareDialog = ({
   permissions,
 }: IDialogProps) => {
   const { t } = useTranslation();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [value, setValue] = useState("");
   const { assessmentId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
   const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
   const [access, setAccess] = useState<VISIBILITY>(visibility);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const methods = useForm();
+  const { reset, handleSubmit } = methods;
 
   const getBasePath = (path: string): string => {
     const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
     const baseMatch = baseRegex.exec(path);
-
-    if (baseMatch?.[1]) {
-      return baseMatch[1] + "/";
-    }
-
-    return path.endsWith("/") ? path : path + "/";
+    return baseMatch?.[1]
+      ? baseMatch[1] + "/"
+      : path.endsWith("/")
+        ? path
+        : path + "/";
   };
 
   const PublishReportStatus = useQuery({
@@ -103,22 +105,17 @@ export const ShareDialog = ({
         data: { visibility: newAccess },
         assessmentId,
       });
-
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
-
       let finalPath = basePath;
 
       if (newAccess === VISIBILITY.PUBLIC && response?.linkHash) {
         const expectedPath = `${basePath}${response.linkHash}/`;
-        if (currentPath !== expectedPath) {
-          finalPath = expectedPath;
-        }
+        if (currentPath !== expectedPath) finalPath = expectedPath;
       }
 
-      if (window.location.pathname !== finalPath) {
+      if (window.location.pathname !== finalPath)
         window.history.pushState({}, "", finalPath);
-      }
     } catch (error) {
       toastError(error as ICustomError);
     }
@@ -136,6 +133,7 @@ export const ShareDialog = ({
   useEffect(() => {
     if (open) {
       fetchGraphicalReportUsers.query();
+      reset();
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
 
@@ -144,45 +142,33 @@ export const ShareDialog = ({
           data: { visibility: VISIBILITY.PUBLIC },
           assessmentId,
         }).then((response) => {
-          const newLinkHash = response?.linkHash;
-          const newPath = `${basePath}${newLinkHash}/`;
-
+          const newPath = `${basePath}${response?.linkHash}/`;
           window.history.pushState({}, "", newPath);
         });
       }
     }
   }, [open]);
 
-  const handleAddClick = async () => {
+  const onSubmit = async (data: any) => {
     try {
-      await grantReportAccess
-        .query({
-          email: value,
-          assessmentId,
-        })
-        .then(() => {
-          fetchGraphicalReportUsers.query();
-          setValue("");
-        });
+      await grantReportAccess.query({ email: data.email, assessmentId });
+      fetchGraphicalReportUsers.query();
+      reset();
     } catch (error) {
-      const err = error as ICustomError;
-      toastError(err);
+      toastError(error as ICustomError);
     }
   };
 
   const handleCopyClick = async () => {
     try {
       navigator.clipboard.writeText(window.location.href);
-
       setSnackbarOpen(true);
     } catch (error) {
       toastError(error as ICustomError);
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  const handleCloseSnackbar = () => setSnackbarOpen(false);
   const current = accessOptions[access];
 
   return (
@@ -197,29 +183,32 @@ export const ShareDialog = ({
       }
       maxWidth="sm"
     >
-      <Grid
-        container
-        display="flex"
-        alignItems="center"
-        sx={{ ...styles.formGrid }}
-      >
-        <Grid item xs={9.7}>
-          <TextField
-            placeholder={t("shareReportViaEmail").toString()}
-            name="value"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            fullWidth
-            size="small"
-          />
-        </Grid>
-        <Grid item xs={0.5}></Grid>
-        <Grid item xs={1.8}>
-          <LoadingButton variant="contained" onClick={handleAddClick}>
-            <Trans i18nKey="add" />
-          </LoadingButton>
-        </Grid>
-      </Grid>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid
+            container
+            display="flex"
+            alignItems="flex-start"
+            sx={{ ...styles.formGrid }}
+          >
+            <Grid item xs={9.7}>
+              <InputFieldUC
+                name="email"
+                size="small"
+                placeholder={t("shareReportViaEmail") ?? ""}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={0.5}></Grid>
+            <Grid item xs={1.8}>
+              <LoadingButton variant="contained" type="submit">
+                <Trans i18nKey="add" />
+              </LoadingButton>
+            </Grid>
+          </Grid>
+        </form>
+      </FormProvider>
       <Box sx={{ mt: 3 }}>
         <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
           <Trans i18nKey="peopleWithAccess" />

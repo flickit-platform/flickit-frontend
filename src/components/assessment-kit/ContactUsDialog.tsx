@@ -106,13 +106,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               <Trans i18nKey="contactUsIntroText" />
             </Typography>
 
-            <InputFieldUC
-              name="email"
-              label={t("yourEmail")}
-              required
-              error={!!emailError}
-              helperText={emailError}
-            />
+            <InputFieldUC name="email" label={t("yourEmail")} required />
 
             <Box sx={{ mt: 2 }}>
               <InputFieldUC

@@ -180,7 +180,15 @@ const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
   return (
     <ResponsiveContainer width="100%" height={1000}>
       <PieChart>
-        <Tooltip content={<ChartTooltip />} />
+        <Tooltip
+          wrapperStyle={{ outline: "none" }}
+          content={
+            <ChartTooltip
+              getPrimary={(d) => d.name}
+              getSecondary={(d) => d.description}
+            />
+          }
+        />
         <Pie
           data={mainData}
           dataKey="value"
