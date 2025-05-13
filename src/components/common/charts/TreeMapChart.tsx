@@ -106,9 +106,15 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 + 10}
             fill="#fff"
+<<<<<<< Updated upstream
             textAnchor="middle"
             fontWeight={9}
             fontSize={11}
+=======
+            fontWeight={9}
+            alignmentBaseline="middle"
+            fontSize={adjustedFontSize}
+>>>>>>> Stashed changes
           >
             {`${label} ${lang.code === "EN" ? "out of" : " از "} ${levels}`}
           </text>
