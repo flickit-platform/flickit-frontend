@@ -69,20 +69,6 @@ jobs:
       - name: push image to GitHub Container Registry
         run: docker push ghcr.io/flickit-platform/flickit-frontend:"${GITHUB_SHA:0:7}"
 
-  Frontend_Deploy_Latest:
-    needs: Frontend_Push_Latest_Image
-    container:
-      image: registry.hectora.cloud/hectora-public/darkube-cli:v1.1
-      env:
-        CONSOLE_API_BASE_URL: "https://api.hectora.cloud"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run script
-        run: darkube deploy --ref main --token ${DEPLOY_TOKEN} --app-id ${APP_ID}  --image-tag "${GITHUB_SHA:0:7}" --job-id "$GITHUB_RUN_ID" --stateless-app true
-        env:
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN_FRONTEND_STAGE }}
-          APP_ID: ${{ secrets.APP_ID_FRONTEND_STAGE }}
-
   Frontend_Deploy_With_Webhook:
     needs: Frontend_Push_Latest_Image
     runs-on: ubuntu-latest
