@@ -11,6 +11,9 @@ import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { TDialogContextType } from "@/types/index";
 import { t } from "i18next";
+import Typography from "@mui/material/Typography";
+import { theme } from "@config/theme";
+import Box from "@mui/material/Box";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
@@ -75,6 +78,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   backType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
+  contactSection?: {id: number, icon: string; bg: string; link: {WhatsappLink: string, WhatsappWebLink: string } }[];
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -94,18 +98,49 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     submitAndViewButtonLabel,
     backType = "contained",
     disablePrimaryButton = false,
+    contactSection,
     children,
   } = props;
   const fullScreen = useScreenResize("sm");
   if (!onClose) {
     throw new Error("onClose or closeDialog not provided for CEDialogActions");
   }
+  const isMobile = useScreenResize("sm")
+
+  const openChat = (link: any) =>{
+    if(isMobile){
+      window.location.href = link.WhatsappLink;
+    }else {
+      window.open(link.WhatsappWebLink, '_blank');
+    }
+  }
+
   return (
     <DialogActions
       sx={{
+        flexDirection: { xs: "column", sm: "row"},
+        gap: { xs: 4, sm: "unset"},
         marginTop: fullScreen ? "auto" : 4,
       }}
     >
+      {contactSection?.length &&
+        <Box  sx={{display: "flex",alignItems: "center",mr: "auto", gap: 2 }}>
+          <Typography sx={{...theme.typography.semiBoldLarge, color: "#000", whiteSpace: "nowrap"}}>
+            <Trans i18nKey={"moreWaysToReachUs"}/>
+          </Typography>
+          <Box sx={{display: "flex", gap: 1}}>
+            {contactSection.map(chat =>{
+              return (
+                <Box key={chat.id} onClick={()=>openChat(chat.link)} >
+                  <Box sx={{...styles.centerVH, borderRadius: 1, cursor: "pointer", width: "36px", height: "36px" , background: chat.bg}}>
+                    <img src={chat.icon} alt={`chat icon`} />
+                  </Box>
+                </Box>
+              )
+            })}
+          </Box>
+        </Box>
+      }
       <Grid container spacing={2} justifyContent="flex-end">
         {!hideCancelButton && (
           <Grid item>

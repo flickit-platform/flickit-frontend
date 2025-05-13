@@ -18,7 +18,11 @@ import keycloakService from "@/service/keycloakService";
 const login = () => {
   keycloakService.doLogin();
 };
-const LandingPage = import.meta.env.VITE_LANDING_PAGE;
+const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
+const LandingPage =
+  rawLandingPage && rawLandingPage !== "PLATFORM_LANDING_PAGE"
+    ? rawLandingPage
+    : "";
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
