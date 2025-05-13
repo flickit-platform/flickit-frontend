@@ -10,17 +10,18 @@ const PermissionControl = (props: PropsWithChildren<any>) => {
   const {
     config: { isAuthenticated },
   }: any = useConfigContext();
-  if(!isAuthenticated) {
-    keycloakService.doLogin()
-  }
-  
+
   if (loading) {
     return <>{children}</>;
   }
 
   const hasViewPermission = getHasViewPermission(error);
 
- 
+  if (!isAuthenticated && !hasViewPermission) {
+    keycloakService.doLogin();
+    return <></>
+  }
+
   if (!hasViewPermission) {
     return <ErrorNotFoundOrAccessDenied />;
   }
