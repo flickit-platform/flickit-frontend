@@ -54,6 +54,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
 
   const socialIcon = [
     {
+      id: 1,
       icon: whatsApp,
       bg: "#3D8F3D14",
       link : {WhatsappLink, WhatsappWebLink} ,

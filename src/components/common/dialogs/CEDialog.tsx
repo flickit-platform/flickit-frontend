@@ -78,7 +78,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   backType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
-  contactSection?: { icon: string; bg: string; link: {WhatsappLink: string, WhatsappWebLink: string } }[];
+  contactSection?: {id: number, icon: string; bg: string; link: {WhatsappLink: string, WhatsappWebLink: string } }[];
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -131,9 +131,9 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
           <Box sx={{display: "flex", gap: 1}}>
             {contactSection.map(chat =>{
               return (
-                <Box onClick={()=>openChat(chat.link)} >
+                <Box key={chat.id} onClick={()=>openChat(chat.link)} >
                   <Box sx={{...styles.centerVH, borderRadius: 1, cursor: "pointer", width: "36px", height: "36px" , background: chat.bg}}>
-                    <img src={chat.icon} alt={`test`} />
+                    <img src={chat.icon} alt={`chat icon`} />
                   </Box>
                 </Box>
               )
