@@ -378,7 +378,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, setValue, handleChange, questionsInfo, questionInfo, key } =
+  const { value, setValue, questionsInfo, questionInfo, key, position } =
     props;
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
@@ -519,22 +519,29 @@ export const QuestionTabsTemplate = (props: any) => {
       queryData.query();
     }
   }, [currentPage]);
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [key]);
 
-  const fallbackTab = () => {
-    if (counts.evidences) return "evidences";
-    if (counts.history) return "history";
-    if (counts.comments) return "comments";
-    return "evidences";
-  };
+  useEffect(() => {
+    if (counts.evidences){
+      setValue("evidences")
+    } else if(counts.history){
+      setValue("history")
+    }else if(counts.comments){
+      setValue("comments")
+    }else {
+      setValue(()=>{
+        if(position == "dialog"){
+          return ""
+        }else {
+          return "evidences"
+        }
+      })
+    }
+  }, [counts.evidences, counts.history, counts.comments]);
 
   return (
-    <TabContext value={value ?? fallbackTab()}>
+    <TabContext value={value}>
       <Box sx={{ px: { xs: 2, sm: 0 }, mt: 2, width: "100%" }}>
         <TabList
-          onChange={handleChange}
           scrollButtons="auto"
           variant="scrollable"
           sx={{ display: "flex", alignItems: "center" }}
@@ -548,6 +555,7 @@ export const QuestionTabsTemplate = (props: any) => {
                 {` (${counts.evidences})`}
               </Box>
             }
+            onClick={() => setValue("evidences")}
             value="evidences"
             disabled={questionsInfo.permissions.readonly && !counts.evidences}
           />
@@ -561,6 +569,7 @@ export const QuestionTabsTemplate = (props: any) => {
                 </Box>
               }
               value="history"
+              onClick={() => setValue("history")}
               disabled={questionsInfo.permissions.readonly && !counts.history}
             />
           )}
@@ -573,6 +582,7 @@ export const QuestionTabsTemplate = (props: any) => {
               </Box>
             }
             value="comments"
+            onClick={() => setValue("comments")}
             disabled={questionsInfo.permissions.readonly && !counts.comments}
           />
           <IconButton
