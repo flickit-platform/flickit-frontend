@@ -2,16 +2,25 @@ import { PropsWithChildren } from "react";
 import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
 import { ErrorNotFoundOrAccessDenied } from "./errors/ErrorNotFoundOrAccessDenied";
+import { useConfigContext } from "@/providers/ConfgProvider";
+import keycloakService from "@/service/keycloakService";
 
 const PermissionControl = (props: PropsWithChildren<any>) => {
   const { children, error, loading } = props;
-
+  const {
+    config: { isAuthenticated },
+  }: any = useConfigContext();
+  if(!isAuthenticated) {
+    keycloakService.doLogin()
+  }
+  
   if (loading) {
     return <>{children}</>;
   }
 
   const hasViewPermission = getHasViewPermission(error);
 
+ 
   if (!hasViewPermission) {
     return <ErrorNotFoundOrAccessDenied />;
   }
