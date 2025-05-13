@@ -10,6 +10,7 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
+import whatsApp from "@assets/svg/whatsApp.svg"
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -46,6 +47,18 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     setEmailError("");
     handleSubmitSpree(data);
   };
+
+  const phoneNumber = '+989966529108';
+  const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
+  const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
+
+  const socialIcon = [
+    {
+      icon: whatsApp,
+      bg: "#3D8F3D14",
+      link : {WhatsappLink, WhatsappWebLink} ,
+    },
+  ];
 
   return (
     <CEDialog
@@ -121,6 +134,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
 
           <CEDialogActions
             cancelLabel={t("cancel")}
+            contactSection={socialIcon}
             submitButtonLabel={t("confirm")}
             onClose={close}
             loading={state.submitting}
