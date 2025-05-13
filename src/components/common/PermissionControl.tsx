@@ -19,7 +19,7 @@ const PermissionControl = (props: PropsWithChildren<any>) => {
 
   if (!isAuthenticated && !hasViewPermission) {
     keycloakService.doLogin();
-    return
+    return <></>
   }
 
   if (!hasViewPermission) {
