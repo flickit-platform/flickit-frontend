@@ -5,6 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
+import { Typography } from "@mui/material";
 
 interface TreeMapNode {
   name: string;
@@ -78,7 +79,11 @@ const CustomNode: any = (props: any) => {
 
   const truncatedName =
     name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 11)}...` : name;
+  const isFarsi = lang.code === "FA";
 
+  const text = isFarsi
+    ? `\u200F${label} از ${levels}` // \u200F = RLM (Right-to-Left Mark)
+    : `${label} out of ${levels}`;
   return (
     <g>
       <rect
@@ -105,18 +110,13 @@ const CustomNode: any = (props: any) => {
           <text
             x={x + width / 2}
             y={y + height / 2 + 10}
-            fill="#fff"
-<<<<<<< Updated upstream
             textAnchor="middle"
-            fontWeight={9}
+            fill="#fff"
             fontSize={11}
-=======
             fontWeight={9}
             alignmentBaseline="middle"
-            fontSize={adjustedFontSize}
->>>>>>> Stashed changes
           >
-            {`${label} ${lang.code === "EN" ? "out of" : " از "} ${levels}`}
+            {text}
           </text>
         </>
       )}
