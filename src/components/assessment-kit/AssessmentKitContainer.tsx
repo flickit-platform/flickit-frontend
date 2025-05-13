@@ -49,9 +49,6 @@ const AssessmentKitContainer = () => {
   });
   const { config } = useConfigContext();
 
-  useEffect(() => {
-    assessmentKitQuery.query();
-  }, [assessmentKitId]);
   return (
     <PermissionControl error={[assessmentKitQuery.errorObject]}>
       <QueryData
