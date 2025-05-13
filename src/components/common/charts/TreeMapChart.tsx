@@ -78,7 +78,11 @@ const CustomNode: any = (props: any) => {
 
   const truncatedName =
     name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 11)}...` : name;
+  const isFarsi = lang.code === "FA";
 
+  const text = isFarsi
+    ? `\u200F${label} از ${levels}` // \u200F = RLM (Right-to-Left Mark)
+    : `${label} out of ${levels}`;
   return (
     <g>
       <rect
@@ -105,12 +109,13 @@ const CustomNode: any = (props: any) => {
           <text
             x={x + width / 2}
             y={y + height / 2 + 10}
-            fill="#fff"
             textAnchor="middle"
-            fontWeight={9}
+            fill="#fff"
             fontSize={11}
+            fontWeight={9}
+            alignmentBaseline="middle"
           >
-            {`${label} ${lang.code === "EN" ? "out of" : " از "} ${levels}`}
+            {text}
           </text>
         </>
       )}

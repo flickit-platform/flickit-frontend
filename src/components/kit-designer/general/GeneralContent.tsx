@@ -23,11 +23,11 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const generalFields = [
-  { name: "title", multiline: false, useRichEditor: false },
-  { name: "summary", multiline: false, useRichEditor: false },
-  { name: "about", multiline: true, useRichEditor: true },
-  { name: "goal", multiline: true, useRichEditor: true },
-  { name: "context", multiline: true, useRichEditor: true },
+  { name: "title", label: "title", multiline: false, useRichEditor: false },
+  { name: "summary", label: "summary", multiline: false, useRichEditor: false },
+  { name: "about", label: "what", multiline: true, useRichEditor: true },
+  { name: "goal", label: "when", multiline: true, useRichEditor: true },
+  { name: "context", label: "who", multiline: true, useRichEditor: true },
 ] as const;
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
@@ -333,34 +333,36 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
               <Divider sx={{ my: 1 }} />
 
-              {generalFields.map(({ name, multiline, useRichEditor }) => (
-                <Box
-                  key={name}
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    flexDirection: multiline ? "column" : "row",
-                  }}
-                  gap={multiline ? 0 : 2}
-                >
-                  <Typography variant="semiBoldLarge">
-                    <Trans i18nKey={name === "context" ? "bestFor" : name} />:
-                  </Typography>
+              {generalFields.map(
+                ({ name, label, multiline, useRichEditor }) => (
                   <Box
+                    key={name}
                     sx={{
                       display: "flex",
                       width: "100%",
+                      flexDirection: multiline ? "column" : "row",
                     }}
+                    gap={multiline ? 0 : 2}
                   >
-                    {renderEditableField(
-                      name as any,
-                      data,
-                      multiline,
-                      useRichEditor,
-                    )}
+                    <Typography variant="semiBoldLarge">
+                      <Trans i18nKey={label} />:
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                      }}
+                    >
+                      {renderEditableField(
+                        name as any,
+                        data,
+                        multiline,
+                        useRichEditor,
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-              ))}
+                ),
+              )}
             </Stack>
           )}
         />
