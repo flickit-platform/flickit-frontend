@@ -112,17 +112,14 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                 px: 1,
                 textAlign: "center",
                 cursor: "pointer",
-                backgroundColor: isActive
-                  ? "#E5EDF5"
-                  : theme.palette.primary.light,
-                color: isActive ? theme.palette.primary.main : "text.primary",
-                fontWeight: isActive ? 600 : 500,
-                fontSize: 16,
+                backgroundColor: isActive ? "#E5EDF5" : "#F9FAFB",
+                color: isActive ? theme.palette.primary.main : "#2B333B",
                 transition: "all 0.3s ease",
                 userSelect: "none",
                 "&:not(:last-child)": {
                   borderBottom: "0.5px solid #8DAFD2",
                 },
+                ...theme.typography.titleMedium
               }}
             >
               {t(key)}
