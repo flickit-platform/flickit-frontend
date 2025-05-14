@@ -17,6 +17,16 @@ declare module "@mui/material/styles/createPalette" {
 }
 
 declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+    xxl: true; 
+  }
+}
+declare module "@mui/material/styles" {
   interface TypographyVariants {
     headlineSmall: React.CSSProperties;
     headlineMedium: React.CSSProperties;
@@ -151,6 +161,7 @@ export const theme = createTheme({
       md: 960,
       lg: 1280,
       xl: 1620,
+      xxl: 1900,
     },
   },
   typography: {

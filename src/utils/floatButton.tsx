@@ -11,7 +11,7 @@ const FloatButton = (props: any) => {
       sx={{
         position: "fixed",
         right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
-        bottom: "55px",
+        bottom: { xs: 0, md: "55px" },
       }}
     >
       <IconButton
