@@ -588,7 +588,7 @@ const Navbar = () => {
               mx: "auto",
             }}
           >
-            <SpacesButton />
+            <SpacesButton spacesQueryData={spacesQueryData} />
             {/* <Button
               component={NavLink}
               to={`/compare`}
@@ -711,7 +711,8 @@ const Navbar = () => {
   );
 };
 
-const SpacesButton = () => {
+const SpacesButton = (props: any) => {
+  const { spacesQueryData } = props
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { dispatch } = useAuthContext();
@@ -727,14 +728,6 @@ const SpacesButton = () => {
   };
 
   const navigate = useNavigate();
-  const { service } = useServiceContext();
-
-  const spacesQueryData = useQuery<ISpacesModel>({
-    service: (args?: { page?: number; size?: number }, config?: any) =>
-      service.space.getList({ page: 1, size: 20, ...args }, config),
-    toastError: true,
-  });
-
   const isActive = location.pathname.startsWith("/spaces/1");
 
   return (
