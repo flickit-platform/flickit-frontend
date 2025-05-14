@@ -114,8 +114,8 @@ const AssessmentKitsStoreCard = (props: any) => {
                 {...stringAvatar(expertGroup.title?.toUpperCase())}
                 src={expertGroup.picture}
                 sx={{
-                  width: small ? 24 : 32,
-                  height: small ? 24 : 32,
+                  width: small ? 20 : 32,
+                  height: small ? 20 : 32,
                   fontSize: small ? 12 : 16,
                 }}
               />

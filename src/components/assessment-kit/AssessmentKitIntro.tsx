@@ -105,8 +105,11 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
             <Box
               key={key}
               onClick={() => setSelected(key)}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
               sx={{
-                ...styles.centerCVH,
+                ...theme.typography.titleMedium,
                 flex: 1,
                 py: 2,
                 px: 1,
@@ -119,7 +122,6 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                 "&:not(:last-child)": {
                   borderBottom: "0.5px solid #8DAFD2",
                 },
-                ...theme.typography.titleMedium
               }}
             >
               {t(key)}

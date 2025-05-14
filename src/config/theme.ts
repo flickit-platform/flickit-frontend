@@ -23,7 +23,7 @@ declare module "@mui/material/styles" {
     md: true;
     lg: true;
     xl: true;
-    xxl: true; 
+    xxl: true;
   }
 }
 declare module "@mui/material/styles" {
@@ -218,7 +218,7 @@ export const theme = createTheme({
     displayMedium: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
       fontSize: "1.75rem",
-      fontWeight: "Bold",
+      fontWeight: "bold",
       lineHeight: "2.25rem",
       letterSpacing: is_farsi ? "0px" : "0",
     },
@@ -231,20 +231,20 @@ export const theme = createTheme({
     },
     titleSmall: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 600,
+      fontWeight: "bold",
       fontSize: "0.875rem",
       lineHeight: "1.25rem",
       letterSpacing: is_farsi ? "0px" : ".1px",
     },
     titleMedium: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 600,
+      fontWeight: "bold",
       fontSize: "1rem",
       letterSpacing: is_farsi ? "0px" : ".15px",
     },
     titleLarge: {
       fontFamily: is_farsi ? farsiFontFamily : primaryFontFamily,
-      fontWeight: 600,
+      fontWeight: "bold",
       fontSize: "1.375rem",
       lineHeight: "1.75rem",
       letterSpacing: is_farsi ? "0px" : "0",
