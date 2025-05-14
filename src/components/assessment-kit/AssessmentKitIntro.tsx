@@ -105,19 +105,18 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
             <Box
               key={key}
               onClick={() => setSelected(key)}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
               sx={{
-                ...styles.centerCVH,
+                ...theme.typography.titleMedium,
                 flex: 1,
                 py: 2,
                 px: 1,
                 textAlign: "center",
                 cursor: "pointer",
-                backgroundColor: isActive
-                  ? "#E5EDF5"
-                  : theme.palette.primary.light,
-                color: isActive ? theme.palette.primary.main : "text.primary",
-                fontWeight: isActive ? 600 : 500,
-                fontSize: 16,
+                backgroundColor: isActive ? "#E5EDF5" : "#F9FAFB",
+                color: isActive ? theme.palette.primary.main : "#2B333B",
                 transition: "all 0.3s ease",
                 userSelect: "none",
                 "&:not(:last-child)": {
