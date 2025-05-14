@@ -27,7 +27,6 @@ import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKi
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
 
-
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
@@ -87,80 +86,71 @@ const AssessmentKit = (props: any) => {
 
   const isMobileScreen = useScreenResize("md");
 
-        return (
-          <>
-            <AssessmentKitBanner assessmentTitle={assessmentTitle} {...expertGroup} />
-            <Box
-              sx={{
-                py: 4,
-                px: { xl: 30, lg: 12, xs: 2, sm: 3 },
-              }}
+  return (
+    <>
+      <AssessmentKitBanner assessmentTitle={assessmentTitle} {...expertGroup} />
+      <Box
+        sx={{
+          py: 4,
+          px: { xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 },
+        }}
+      >
+        <Grid container>
+          <Grid
+            container
+            item
+            xs={12}
+            md={12}
+            lg={9}
+            sx={{
+              paddingInlineEnd: { xs: 0, md: 3 },
+              paddingBlockEnd: { xs: 2, md: 0 },
+            }}
+          >
+            <Grid item xs={12} md={12} lg={12}>
+              <AssessmentKitIntro {...assessmentKitQueryData} />
+            </Grid>
+            <Typography
+              sx={{ color: "#2B333B" }}
+              variant="titleLarge"
+              mt={5}
+              mb={1}
             >
-              <Grid container>
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  md={9}
-                  lg={9}
-                  sx={{
-                    paddingInlineEnd: { xs: 0, md: 3 },
-                    paddingBlockEnd: { xs: 2, md: 0 },
-                  }}
-                >
-                  <Grid item xs={12} md={12} lg={12}>
-                    <AssessmentKitIntro {...assessmentKitQueryData} />
-                  </Grid>
-                  <Typography
-                    sx={{ color: "#2B333B" }}
-                    variant="titleLarge"
-                    mt={4}
-                    mb={1}
-                  >
-                    <Trans i18nKey={"kitStructure"} />
-                  </Typography>
-                  <Typography sx={{ color: "#2B333B" }} variant="bodyMedium">
-                    <Trans
-                      i18nKey={
-                        isMobileScreen
-                          ? "kitStructureDescriptionWithoutChart"
-                          : "kitStructureDescription"
-                      }
-                    />
-                  </Typography>
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={12}
-                    display={{ xs: "none", sm: "block" }}
-                    height={{sm: "350px", md: "420px", lg: "550px"}}
-                    mt={2}
-                  >
-                    <SemiCircleChartap
-                      items={subjects}
-                      childrenField="attributes"
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={12}
-                    mt={1}
-                  >
-                    <AssessmentKitSubjects {...assessmentKitQueryData} />
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} md={3} lg={3}>
-                  <AssessmentKitAside
-                    like={like}
-                    id={id}
-                    title={assessmentTitle}
-                    metadata={metadata}
-                    languages={languages}
-                  />
-                </Grid>
+              <Trans i18nKey={"kitStructure"} />
+            </Typography>
+            <Typography sx={{ color: "#2B333B" }} variant="bodyMedium">
+              <Trans
+                i18nKey={
+                  isMobileScreen
+                    ? "kitStructureDescriptionWithoutChart"
+                    : "kitStructureDescription"
+                }
+              />
+            </Typography>
+            <Grid
+              item
+              xs={12}
+              md={12}
+              lg={12}
+              display={{ xs: "none", sm: "block" }}
+              height={{ md: "450px", lg: "460px", xl: "500px", xxl: "550px" }}
+              mt={2}
+            >
+              <SemiCircleChartap items={subjects} childrenField="attributes" />
+            </Grid>
+            <Grid item xs={12} md={12} lg={12} mt={1}>
+              <AssessmentKitSubjects {...assessmentKitQueryData} />
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={12} lg={3}>
+            <AssessmentKitAside
+              like={like}
+              id={id}
+              title={assessmentTitle}
+              metadata={metadata}
+              languages={languages}
+            />
+          </Grid>
           <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>
             <Trans i18nKey={"exploreOtherKits"} />
           </Typography>
@@ -181,7 +171,7 @@ const AssessmentKitBanner = (props: any) => {
     pictureLink,
   } = props;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -192,7 +182,7 @@ const AssessmentKitBanner = (props: any) => {
         pt: 4,
         pb: 2,
         gap: 2,
-        px: { xl: 30, lg: 12, xs: 2, sm: 3 },
+        px: { xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 },
       }}
     >
       <Title
@@ -221,7 +211,7 @@ const AssessmentKitBanner = (props: any) => {
         sx={{
           ...styles.centerCV,
         }}
-        gap={1}
+        gap={2}
       >
         <Typography
           sx={{
@@ -238,7 +228,7 @@ const AssessmentKitBanner = (props: any) => {
           <Avatar
             {...stringAvatar(expertGroupTitle?.toUpperCase())}
             src={pictureLink}
-            sx={{ width: 32, height: 32, fontSize: 16 }}
+            sx={{ width: 24, height: 24, fontSize: 16 }}
           ></Avatar>
           <Typography
             onClick={(e) => {
@@ -254,7 +244,7 @@ const AssessmentKitBanner = (props: any) => {
               ...theme.typography.semiBoldLarge,
               color: "#2B333B",
               textDecoration: "none",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             {t("createdBy")}{" "}

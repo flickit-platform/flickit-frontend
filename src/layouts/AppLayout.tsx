@@ -28,7 +28,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
           p: !checkLink("/assessment-kits") ? { xs: 1, sm: 1, md: 4 } : "0",
           px: checkLink(`/assessment-kits/${assessmentKitId}`)
             ? 0
-            : { xl: 30, lg: 12, xs: 1, sm: 3 },
+            : { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
         }}
         m="auto"
       >
@@ -41,7 +41,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         >
           {children}
         </Suspense>
-        <FloatButton  dialogProps={dialogProps}  />
+        <FloatButton dialogProps={dialogProps} />
       </Box>
       <ContactUsDialog {...dialogProps} />
     </Box>

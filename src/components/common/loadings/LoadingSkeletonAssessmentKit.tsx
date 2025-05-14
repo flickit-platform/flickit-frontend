@@ -7,7 +7,7 @@ const LoadingAssessmentKit = () => {
     <Box
       sx={{
         py: 4,
-        px: { xl: 30, lg: 12, xs: 2, sm: 3 },
+        px: { xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 },
       }}
     >
       <Skeleton height={40} width="50%" sx={{ mb: 2 }} />

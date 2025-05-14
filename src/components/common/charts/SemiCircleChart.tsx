@@ -28,14 +28,18 @@ const useResponsiveRadius = () => {
   useEffect(() => {
     const updateRadius = () => {
       const width = window.innerWidth;
-      if (width < 960) {
-        setRadius({ inner: 180, outer: 300 });
+      if (width < 890) {
+        setRadius({ inner: 200, outer: 350 });
       } else if (width < 1280) {
-        setRadius({ inner: 220, outer: 350 });
+        setRadius({ inner: 240, outer: 400 });
+      } else if (width < 1400) {
+        setRadius({ inner: 250, outer: 420 });
       } else if (width < 1620) {
         setRadius({ inner: 270, outer: 450 });
+      } else if (width < 1900) {
+        setRadius({ inner: 270, outer: 490 });
       } else {
-        setRadius({ inner: 290, outer: 500 });
+        setRadius({ inner: 290, outer: 520 });
       }
     };
 
@@ -186,7 +190,7 @@ const renderMainLabel = (props: any) => {
     <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
       {lines.map((line: string[], i: number) => (
         <text
-        key={uniqueId()}
+          key={uniqueId()}
           x={x}
           y={getLineY(i)}
           fill="#fff"

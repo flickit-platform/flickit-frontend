@@ -536,7 +536,7 @@ const Navbar = () => {
           borderRadius: "0px",
           backgroundColor: theme.palette.primary.main,
           position: "sticky",
-          px: { xl: 26, lg: 8, xs: 1, sm: 3 },
+          px: {  xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
         }}
         data-cy="nav-bar"
       >
