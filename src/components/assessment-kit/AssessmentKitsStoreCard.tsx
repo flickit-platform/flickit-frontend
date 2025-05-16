@@ -29,9 +29,22 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   const navigate = useNavigate();
 
+  const handleKitClick = (id: any, title: any) => {
+    (window as any).dataLayer.push({
+      event: "ppms.cm:trackEvent",
+      parameters: {
+        category: "Kit List",
+        action: "Click",
+        name: title,
+        value: id,
+      },
+    });
+  };
+
   const createAssessment = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
+    handleKitClick(id, title);
     if (keycloakService.isLoggedIn()) {
       openDialog.openDialog({
         type: "create",
