@@ -297,7 +297,6 @@ export const ShareDialog = ({
               }}
               size="small"
               onClick={openMenu}
-              disabled={!permissions.canManageVisibility}
             >
               {current?.icon}
             </IconButton>
