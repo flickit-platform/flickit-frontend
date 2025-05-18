@@ -270,20 +270,23 @@ export const ShareDialog = ({
         </>
       )}
 
-      {permissions.canManageVisibility && (
-        <>
-          {" "}
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
-              <Trans i18nKey="accessStatus" />
-            </Typography>
-            <Divider sx={{ mt: 1 }} />
-          </Box>
+      <Box sx={{ mt: 3 }}>
+        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
+          <Trans i18nKey="accessStatus" />
+        </Typography>
+        <Divider sx={{ mt: 1 }} />
+      </Box>
+      <Tooltip
+        disableHoverListener={permissions.canManageVisibility}
+        title={<Trans i18nKey="youDontHavePermission" />}
+      >
+        <div>
           <Box
             mt={1}
             sx={{
               ...styles.centerV,
               gap: 1,
+              pointerEvents: permissions.canManageVisibility ? "auto" : "none",
             }}
           >
             <IconButton
@@ -308,14 +311,19 @@ export const ShareDialog = ({
                     ? "pointer"
                     : "default",
                   gap: 1,
+                  color: permissions.canManageVisibility ? "unset" : "#B0B0B0",
                 }}
                 variant="semiBoldMedium"
               >
                 {current?.title}
-                {menuOpened ? (
-                  <ArrowDropUp sx={{ color: "#6C8093" }} />
-                ) : (
-                  <ArrowDropDown sx={{ color: "#6C8093" }} />
+                {permissions.canManageVisibility && (
+                  <>
+                    {menuOpened ? (
+                      <ArrowDropUp sx={{ color: "#6C8093" }} />
+                    ) : (
+                      <ArrowDropDown sx={{ color: "#6C8093" }} />
+                    )}
+                  </>
                 )}
               </Typography>
 
@@ -323,12 +331,6 @@ export const ShareDialog = ({
                 {current?.description}
               </Typography>
             </Box>
-
-            {!permissions.canManageVisibility && (
-              <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
-                <LockOutlinedIcon sx={{ color: "#B0B0B0", fontSize: 20 }} />
-              </Box>
-            )}
 
             <Menu
               anchorEl={anchorEl}
@@ -362,8 +364,8 @@ export const ShareDialog = ({
               })}
             </Menu>
           </Box>
-        </>
-      )}
+        </div>
+      </Tooltip>
 
       <CEDialogActions
         type="delete"
