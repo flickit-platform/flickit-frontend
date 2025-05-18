@@ -47,6 +47,7 @@ const getHasViewPermission = (error?: ICustomError | ICustomError[]) => {
           err?.code === ECustomErrorType.NOT_FOUND ||
           err?.status === 404 ||
           err?.status === 403 ||
+          err?.response?.data.code === ECustomErrorType.REPORT_UNPUBLISHED ||
           err?.response?.data.code === ECustomErrorType.ACCESS_DENIED ||
           err?.response?.data.code === ECustomErrorType.NOT_FOUND ||
           err?.response?.status === 404 ||

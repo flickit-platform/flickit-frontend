@@ -47,20 +47,16 @@ interface IDialogProps {
 
 const accessOptions = {
   [VISIBILITY.RESTRICTED]: {
-    title: t("accessRestrictedTitle", "Restricted"),
-    description: t(
-      "accessRestrictedDescription",
-      "Only people who are added can open with the link",
-    ),
+    title: t("accessRestricted"),
+    titleMenu: t("accessRestricted"),
+    description: t("accessRestrictedDescription"),
     icon: <LockOutlinedIcon />,
     bgColor: "#E2E5E9",
   },
   [VISIBILITY.PUBLIC]: {
-    title: t("accessAnyoneTitle", "Anyone with this link"),
-    description: t(
-      "accessAnyoneDescription",
-      "Anyone on the internet with the link can view this report",
-    ),
+    title: t("accessAnyone"),
+    titleMenu: t("accessAnyoneWithLink"),
+    description: t("accessAnyoneDescription"),
     icon: <Language />,
     bgColor: "#D5E5F6",
   },
@@ -183,87 +179,93 @@ export const ShareDialog = ({
       }
       maxWidth="sm"
     >
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid
-            container
-            display="flex"
-            alignItems="flex-start"
-            sx={{ ...styles.formGrid }}
-          >
-            <Grid item xs={9.7}>
-              <InputFieldUC
-                name="email"
-                size="small"
-                placeholder={t("shareReportViaEmail") ?? ""}
-                fullWidth
-                required
-              />
-            </Grid>
-            <Grid item xs={0.5}></Grid>
-            <Grid item xs={1.8}>
-              <LoadingButton variant="contained" type="submit">
-                <Trans i18nKey="add" />
-              </LoadingButton>
-            </Grid>
-          </Grid>
-        </form>
-      </FormProvider>
-      <Box sx={{ mt: 3 }}>
-        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
-          <Trans i18nKey="peopleWithAccess" />
-        </Typography>
-        <Divider sx={{ my: 1 }} />
-      </Box>
-      <QueryBatchData
-        queryBatchData={[fetchGraphicalReportUsers]}
-        renderLoading={() => {
-          return (
-            <>
-              {[1, 2, 3].map((number) => {
-                return (
-                  <Skeleton
-                    key={number}
-                    variant="rectangular"
-                    sx={{ borderRadius: 2, height: "30px", mb: 1 }}
+      {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
+        <>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid
+                container
+                display="flex"
+                alignItems="flex-start"
+                sx={{ ...styles.formGrid }}
+              >
+                <Grid item xs={9.7}>
+                  <InputFieldUC
+                    name="email"
+                    size="small"
+                    placeholder={t("shareReportViaEmail") ?? ""}
+                    fullWidth
+                    required
                   />
-                );
-              })}
-            </>
-          );
-        }}
-        render={([graphicalReportUsers]) => {
-          return (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              {[
-                ...graphicalReportUsers.users,
-                ...graphicalReportUsers.invitees,
-              ].map((member: any) => {
-                const { displayName, id, pictureLink, email } = member;
-                return (
-                  <Box
-                    key={id}
-                    sx={{
-                      ...styles.centerV,
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      {...stringAvatar(displayName?.toUpperCase())}
-                      src={pictureLink}
-                      sx={{ width: 24, height: 24, fontSize: 12 }}
-                    ></Avatar>
-                    {email}
-                    {graphicalReportUsers.invitees.includes(member) && (
-                      <Chip label={t("invited")} size="small" />
-                    )}
-                  </Box>
-                );
-              })}
-            </Box>
-          );
-        }}
-      />
+                </Grid>
+                <Grid item xs={0.5}></Grid>
+                <Grid item xs={1.8}>
+                  <LoadingButton variant="contained" type="submit">
+                    <Trans i18nKey="add" />
+                  </LoadingButton>
+                </Grid>
+              </Grid>
+            </form>
+          </FormProvider>
+
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
+              <Trans i18nKey="peopleWithAccess" />
+            </Typography>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+          <QueryBatchData
+            queryBatchData={[fetchGraphicalReportUsers]}
+            renderLoading={() => {
+              return (
+                <>
+                  {[1, 2, 3].map((number) => {
+                    return (
+                      <Skeleton
+                        key={number}
+                        variant="rectangular"
+                        sx={{ borderRadius: 2, height: "30px", mb: 1 }}
+                      />
+                    );
+                  })}
+                </>
+              );
+            }}
+            render={([graphicalReportUsers]) => {
+              return (
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {[
+                    ...graphicalReportUsers.users,
+                    ...graphicalReportUsers.invitees,
+                  ].map((member: any) => {
+                    const { displayName, id, pictureLink, email } = member;
+                    return (
+                      <Box
+                        key={id}
+                        sx={{
+                          ...styles.centerV,
+                          gap: 1,
+                        }}
+                      >
+                        <Avatar
+                          {...stringAvatar(displayName?.toUpperCase())}
+                          src={pictureLink}
+                          sx={{ width: 24, height: 24, fontSize: 12 }}
+                        ></Avatar>
+                        {email}
+                        {graphicalReportUsers.invitees.includes(member) && (
+                          <Chip label={t("invited")} size="small" />
+                        )}
+                      </Box>
+                    );
+                  })}
+                </Box>
+              );
+            }}
+          />
+        </>
+      )}
+
       <Box sx={{ mt: 3 }}>
         <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
           <Trans i18nKey="accessStatus" />
@@ -291,7 +293,6 @@ export const ShareDialog = ({
               }}
               size="small"
               onClick={openMenu}
-              disabled={!permissions.canManageVisibility}
             >
               {current?.icon}
             </IconButton>
@@ -305,14 +306,19 @@ export const ShareDialog = ({
                     ? "pointer"
                     : "default",
                   gap: 1,
+                  color: permissions.canManageVisibility ? "unset" : "#B0B0B0",
                 }}
                 variant="semiBoldMedium"
               >
                 {current?.title}
-                {menuOpened ? (
-                  <ArrowDropUp sx={{ color: "#6C8093" }} />
-                ) : (
-                  <ArrowDropDown sx={{ color: "#6C8093" }} />
+                {permissions.canManageVisibility && (
+                  <>
+                    {menuOpened ? (
+                      <ArrowDropUp sx={{ color: "#6C8093" }} />
+                    ) : (
+                      <ArrowDropDown sx={{ color: "#6C8093" }} />
+                    )}
+                  </>
                 )}
               </Typography>
 
@@ -320,12 +326,6 @@ export const ShareDialog = ({
                 {current?.description}
               </Typography>
             </Box>
-
-            {!permissions.canManageVisibility && (
-              <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
-                <LockOutlinedIcon sx={{ color: "#B0B0B0", fontSize: 20 }} />
-              </Box>
-            )}
 
             <Menu
               anchorEl={anchorEl}
@@ -349,7 +349,7 @@ export const ShareDialog = ({
                     }}
                   >
                     <Typography variant="bodyMedium">
-                      {accessOptions[key].title}
+                      {accessOptions[key].titleMenu}
                     </Typography>
                     {isSelected && (
                       <Check sx={{ color: "primary.main" }} fontSize="small" />
@@ -378,7 +378,7 @@ export const ShareDialog = ({
         </LoadingButton>
 
         <LoadingButton variant="contained" onClick={onClose} sx={{ mx: 1 }}>
-          <Trans i18nKey="close" />
+          <Trans i18nKey="done" />
         </LoadingButton>
       </CEDialogActions>
       <Snackbar

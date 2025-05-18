@@ -2,7 +2,13 @@
   "about": "درباره",
   "aboutThisKit": "درباره‌ی کیت",
   "acceptInvitation": "پذیرش دعوت‌نامه",
-  "accessDenied": "دسترسی ندارید ",
+  "accessAnyone": "دسترسی عمومی",
+  "accessAnyoneWithLink": "دسترسی عمومی از طریق لینک",
+  "accessAnyoneDescription": "هر کسی می‌تواند با دراختیار داشتن لینک، گزارش را مشاهده کند",
+  "accessDenied": "دسترسی ندارید",
+  "accessRestricted": "دسترسی محدود",
+  "accessRestrictedDescription": "تنها کاربرانی  که ایمیلشان افزوده شده باشد می‌توانند گزارش را ببینند.",
+  "accessStatus": "وضعیت دسترسی",
   "account": "حساب کاربری",
   "add": "افزودن",
   "addAttachment": "اضافه کردن پیوست",
@@ -75,7 +81,7 @@
   "assessmentKitTab": {
     "whatIsThisKit": "این کیت چیست؟",
     "whoNeedsThisKit": "چه کسانی به این کیت نیاز دارند؟",
-    "whenToUseThisKit":  "چه زمانی از این کیت استفاده کنیم؟"
+    "whenToUseThisKit": "چه زمانی از این کیت استفاده کنیم؟"
   },
   "assessmentLimitExceeded": "محدودیت ساخت ارزیابی جدید",
   "assessmentReport": "گزارش ارزیابی",
@@ -180,7 +186,7 @@
   "displayName": "نام",
   "divider": "{{cl}} از {{clDivider}}",
   "document": "سند {{title}}",
-  "done": "بستن",
+  "done": "انجام شد",
   "download": "دانلود",
   "downloadDSL": "دانلود DSL",
   "didYouLikeThisKit": "این کیت را پسندیدید؟",

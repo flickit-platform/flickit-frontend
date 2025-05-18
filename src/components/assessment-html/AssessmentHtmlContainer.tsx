@@ -37,6 +37,7 @@ import { useEffect } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
+import { VISIBILITY } from "@/utils/enumType";
 
 const AssessmentExportContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
@@ -232,7 +233,11 @@ const AssessmentExportContainer = () => {
                     startIcon={<Share fontSize="small" />}
                     size="small"
                     onClick={() => dialogProps.openDialog({})}
-                    disabled={!permissions.canShareReport}
+                    disabled={
+                      !permissions.canShareReport &&
+                      !permissions.canManageVisibility &&
+                      visibility === VISIBILITY.RESTRICTED
+                    }
                   >
                     <Trans i18nKey="shareReport" />
                   </LoadingButton>
