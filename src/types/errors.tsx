@@ -7,6 +7,7 @@ export enum ECustomErrorType {
   CANCELED = "ERR_CANCELED",
   ACCESS_DENIED = "ACCESS_DENIED",
   ERR_BAD_REQUEST = "ERR_BAD_REQUEST",
+  REPORT_UNPUBLISHED = "REPORT_UNPUBLISHED",
 }
 
 export interface ICustomError {
