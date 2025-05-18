@@ -47,20 +47,16 @@ interface IDialogProps {
 
 const accessOptions = {
   [VISIBILITY.RESTRICTED]: {
-    title: t("accessRestrictedTitle", "Restricted"),
-    description: t(
-      "accessRestrictedDescription",
-      "Only people who are added can open with the link",
-    ),
+    title: t("accessRestricted"),
+    titleMenu: t("accessRestricted"),
+    description: t("accessRestrictedDescription"),
     icon: <LockOutlinedIcon />,
     bgColor: "#E2E5E9",
   },
   [VISIBILITY.PUBLIC]: {
-    title: t("accessAnyoneTitle", "Anyone with this link"),
-    description: t(
-      "accessAnyoneDescription",
-      "Anyone on the internet with the link can view this report",
-    ),
+    title: t("accessAnyone"),
+    titleMenu: t("accessAnyoneWithLink"),
+    description: t("accessAnyoneDescription"),
     icon: <Language />,
     bgColor: "#D5E5F6",
   },
@@ -353,7 +349,7 @@ export const ShareDialog = ({
                     }}
                   >
                     <Typography variant="bodyMedium">
-                      {accessOptions[key].title}
+                      {accessOptions[key].titleMenu}
                     </Typography>
                     {isSelected && (
                       <Check sx={{ color: "primary.main" }} fontSize="small" />
