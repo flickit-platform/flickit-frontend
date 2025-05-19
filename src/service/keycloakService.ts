@@ -7,7 +7,7 @@ const _kc: KeycloakInstance = new Keycloak({
   clientId: import.meta.env.VITE_SSO_CLIENT_ID,
 });
 
-const PUBLIC_PATHS = ["/assessment-kits","/graphical-report/"];
+const PUBLIC_PATHS = ["/assessment-kits", "/graphical-report/"];
 
 export const isPublicRoute = (path: string) =>
   PUBLIC_PATHS.some((publicPath) => path.includes(publicPath));
@@ -24,62 +24,12 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
         onAuthenticatedCallback();
         return;
       }
-
-      if (!authenticated) {
-        doLogin();
-        return;
-      }
-
-      const currentUser =
-        _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
-
-      sessionStorage.setItem("currentUser", currentUser ?? "");
-
-      const previousUser = localStorage.getItem("previousUser");
-      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
-
-      if (location.pathname.includes("html-document")) {
-        const space = location.pathname.split("/")[1];
-        const id = location.pathname.split("/")[4];
-        onAuthenticatedCallback();
-        window.location.href = `/${space}/assessments/${id}/graphical-report/`;
-        return;
-      }
-
-      const hasRedirected = localStorage.getItem("hasRedirected");
-
-      if (!hasRedirected) {
-        localStorage.setItem("hasRedirected", "true");
-
-        if (previousUser && previousUser !== currentUser) {
-          onAuthenticatedCallback();
-          window.location.href = "/spaces/1";
-          return;
-        }
-
-        if (lastVisitedPage) {
-          localStorage.removeItem("lastVisitedPage");
-          onAuthenticatedCallback();
-          window.location.href = lastVisitedPage;
-          return;
-        }
-      }
-
-      // در حالت عادی فقط callback اجرا کن
       onAuthenticatedCallback();
     })
     .catch(console.error);
 };
 
 const doLogout = async () => {
-  const currentUser =
-    _kc.tokenParsed?.preferred_username ?? _kc.tokenParsed?.sub;
-
-  localStorage.setItem("previousUser", currentUser ?? "");
-  localStorage.setItem("lastVisitedPage", window.location.pathname);
-  localStorage.removeItem("hasRedirected");
-  sessionStorage.clear();
-
   await _kc.logout();
 };
 
