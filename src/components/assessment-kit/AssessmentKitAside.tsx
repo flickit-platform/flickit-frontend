@@ -19,6 +19,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
 import keycloakService from "@/service/keycloakService";
+import { useEffect } from "react";
 
 interface IlistOfItems {
   icon: any;
@@ -70,9 +71,35 @@ const AssessmentKitAside = (props: any) => {
     runOnMount: false,
   });
 
+  useEffect(() => {
+    if (window.location.hash.startsWith("#createAssessment")) {
+      const params = new URLSearchParams(window.location.hash.split("?")[1]);
+      const idParam = params.get("id");
+      const titleParam = params.get("title");
+
+      if (idParam && titleParam && !dialogProps.open) {
+        if (keycloakService.isLoggedIn()) {
+          dialogProps.openDialog({
+            type: "create",
+            staticData: {
+              assessment_kit: {
+                id: idParam,
+                title: decodeURIComponent(titleParam),
+              },
+            },
+          });
+          window.location.hash = "";
+        } else {
+          keycloakService.doLogin();
+        }
+      }
+    }
+  }, []);
   const createAssessment = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
+    window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
+
     if (keycloakService.isLoggedIn()) {
       dialogProps.openDialog({
         type: "create",

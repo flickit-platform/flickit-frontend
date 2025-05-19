@@ -14,6 +14,7 @@ import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
+import { useEffect } from "react";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -45,6 +46,8 @@ const AssessmentKitsStoreCard = (props: any) => {
     e.preventDefault();
     e.stopPropagation();
     handleKitClick(id, title);
+    window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
+
     if (keycloakService.isLoggedIn()) {
       openDialog.openDialog({
         type: "create",
@@ -54,6 +57,36 @@ const AssessmentKitsStoreCard = (props: any) => {
       keycloakService.doLogin();
     }
   };
+
+  useEffect(() => {
+    if (window.location.hash.startsWith("#createAssessment")) {
+      const params = new URLSearchParams(window.location.hash.split("?")[1]);
+      const idParam = params.get("id");
+      const titleParam = params.get("title");
+
+      if (
+        idParam === id?.toString() &&
+        titleParam &&
+        props.openDialog &&
+        !props.openDialog.open
+      ) {
+        if (keycloakService.isLoggedIn()) {
+          props.openDialog.openDialog({
+            type: "create",
+            staticData: {
+              assessment_kit: {
+                id: idParam,
+                title: decodeURIComponent(titleParam),
+              },
+            },
+          });
+          window.location.hash = "";
+        } else {
+          keycloakService.doLogin();
+        }
+      }
+    }
+  }, []);
 
   const truncatedSummaryLength = small ? 150 : 297;
   const truncatedSummary = summary.substring(0, truncatedSummaryLength);
