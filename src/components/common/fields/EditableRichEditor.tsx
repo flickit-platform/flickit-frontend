@@ -16,6 +16,8 @@ import languageDetector from "@utils/languageDetector";
 import toastError from "@/utils/toastError";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
 
+const MAX_HEIGHT = 210;
+
 interface EditableRichEditorProps {
   defaultValue: string;
   editable?: boolean;
@@ -210,30 +212,53 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            <Typography
-              textAlign="justify"
+            <Box
               sx={{
-                fontFamily: languageDetector(tempData)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-                width: "100%",
-                color: !tempData ? "rgba(61, 77, 92, 0.5)" : "initial",
-                display: "-webkit-box",
-                WebkitLineClamp: showMore ? "unset" : 3,
-                WebkitBoxOrient: "vertical",
                 overflow: "hidden",
-                textOverflow: "ellipsis",
+                position: "relative",
+                maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
+                transition: "max-height 0.4s ease",
+                "&::after": !showMore
+                  ? {
+                    content: '""',
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: "40px",
+                    background: showBtn
+                      ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
+                      : "none",
+                    pointerEvents: "none",
+                  }
+                  : undefined,
               }}
-              variant="bodyMedium"
-              dangerouslySetInnerHTML={{
-                __html:
-                  tempData ||
-                  (editable
-                    ? (placeholder ?? t("writeHere"))
-                    : t("unavailable")),
-              }}
-              ref={paragraphRef}
-            />
+            >
+              <Typography
+                textAlign="justify"
+                sx={{
+                  fontFamily: languageDetector(tempData)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                  width: "100%",
+                  color: !tempData ? "rgba(61, 77, 92, 0.5)" : "initial",
+                  display: "-webkit-box",
+                  WebkitLineClamp: showMore ? "unset" : 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+                variant="bodyMedium"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    tempData ||
+                    (editable
+                      ? (placeholder ?? t("writeHere"))
+                      : t("unavailable")),
+                }}
+                ref={paragraphRef}
+              />
+            </Box>
             {isHovering && editable && (
               <IconButton
                 title="Edit"
