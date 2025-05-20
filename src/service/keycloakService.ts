@@ -20,8 +20,12 @@ const initKeycloak = (onAuthenticatedCallback: () => void) => {
     })
     .then((authenticated) => {
       const currentPath = location.pathname;
-      if (!authenticated && isPublicRoute(currentPath)) {
-        onAuthenticatedCallback();
+      if (!authenticated) {
+        if (isPublicRoute(currentPath)) {
+          onAuthenticatedCallback();
+        } else {
+          _kc.login();
+        }
         return;
       }
       onAuthenticatedCallback();
