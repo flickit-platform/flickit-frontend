@@ -1,36 +1,23 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Title from "@common/Title";
+import { Link, useParams } from "react-router-dom";
 import { useQuestionContext } from "@/providers/QuestionProvider";
 import doneSvg from "@assets/svg/Done.svg";
 import noQuestionSvg from "@assets/svg/noQuestion.svg";
 import someQuestionSvg from "@assets/svg/someQuestion.svg";
 import Hidden from "@mui/material/Hidden";
-import languageDetector from "@utils/languageDetector";
-import Rating from "@mui/material/Rating";
-import RadioButtonUncheckedRoundedIcon from "@mui/icons-material/RadioButtonUncheckedRounded";
-import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 import { useEffect, useMemo, useState } from "react";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import { primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { useQuestionnaire } from "../questionnaires/QuestionnaireContainer";
-import { toCamelCase } from "@common/makeCamelcaseString";
+import { styles } from "@styles";
+import { IQuestionnairesInfo } from "@/types";
+import languageDetector from "@/utils/languageDetector";
 
-const QuestionsReview = () => {
-  const { questionsInfo } = useQuestionContext();
-  return (
-    <Box width="100%">
-      <Review questions={questionsInfo.questions} isReviewPage={true} />
-    </Box>
-  );
-};
-
-export const Review = ({ questions = [], isReviewPage }: any) => {
+export const Review = () => {
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
 
@@ -45,11 +32,13 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
     return AssessmentInfo?.data?.viewable;
   }, [AssessmentInfo]);
 
-  const navigate = useNavigate();
   const { questionsInfo } = useQuestionContext();
   const [answeredQuestions, setAnsweredQuestions] = useState<number>();
   const [questionnaireTitle, setQuestionnaireTitle] = useState<string>("");
+  const [nextQuestionnaire, setNextQuestionnaire] =
+    useState<IQuestionnairesInfo | null>(null);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
+
   useEffect(() => {
     if (questionsInfo.questions) {
       const answeredQuestionsCount = questionsInfo.questions.filter(
@@ -64,10 +53,17 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
       }
     }
   }, []);
-  const { assessmentTotalProgress, fetchPathInfo } = useQuestionnaire();
+  const { assessmentTotalProgress, fetchPathInfo, questionnaireQueryData } =
+    useQuestionnaire();
   useEffect(() => {
     fetchPathInfo.query({ questionnaireId }).then((data) => {
       setQuestionnaireTitle(data?.questionnaire?.title);
+    });
+    questionnaireQueryData.query().then((data) => {
+      const questionnaireIndex = data.items.findIndex(
+        (item: any) => item.id == questionnaireId,
+      );
+      setNextQuestionnaire(data.items[questionnaireIndex + 1]);
     });
   }, [questionnaireId]);
 
@@ -83,13 +79,14 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
       }}
     >
       <Box
-        mb={6}
+        my={5}
         sx={{
           background: "white",
           borderRadius: 2,
           p: { xs: 2, sm: 3, md: 6 },
           display: "flex",
           width: "100%",
+          ...styles.shadowStyle,
         }}
       >
         <Hidden smDown>
@@ -160,6 +157,9 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                             color: theme.palette.secondary.main,
                             cursor: "pointer",
                             textDecoration: "none",
+                            fontFamily: languageDetector(questionnaireTitle)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
                           }}
                         />
                       ),
@@ -276,6 +276,9 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
                               color: theme.palette.secondary.main,
                               cursor: "pointer",
                               textDecoration: "none",
+                              fontFamily: languageDetector(questionnaireTitle)
+                                ? farsiFontFamily
+                                : primaryFontFamily,
                             }}
                           />
                         ),
@@ -301,197 +304,37 @@ export const Review = ({ questions = [], isReviewPage }: any) => {
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: { xs: 1, sm: 4 },
+              gap: { xs: 1, sm: 2 },
             }}
           >
             <Button
               variant="outlined"
               size="large"
               component={Link}
-              to={"./../../../insights/"}
-              sx={{ fontSize: "1rem", display: isPermitted ? "" : "none" }}
-            >
-              <Trans i18nKey="insights" />
-            </Button>
-            <Button
-              variant="contained"
-              size="large"
-              component={Link}
               to={"./../../../questionnaires"}
-              sx={{ fontSize: "1rem" }}
+              sx={{ display: isPermitted ? "" : "none" }}
             >
-              <Trans i18nKey="chooseAnotherQuestionnaire" />
+              <Trans i18nKey="allQuestionnaires" />
             </Button>
-          </Box>
-        </Box>
-      </Box>
-
-      <Box>
-        {!isReviewPage && (
-          <Title>
-            <Trans i18nKey="review" />
-          </Title>
-        )}
-        <Box mt={2}>
-          {questions.map((question: any) => {
-            const is_farsi = languageDetector(question.title);
-            return (
-              <Paper
-                key={question.id}
-                sx={{
-                  p: 3,
-                  backgroundColor: "#273248",
-                  flex: 1,
-                  color: "white",
-                  position: "relative",
-                  overflow: "hidden",
-                  mb: 2,
-                  borderRadius: "8px",
-                  direction: `${is_farsi ? "rtl" : "ltr"}`,
-                }}
-                elevation={3}
+            {nextQuestionnaire && (
+              <Button
+                variant="contained"
+                size="large"
+                component={Link}
+                to={
+                  "./../../../questionnaires" +
+                    "/" +
+                    nextQuestionnaire?.id +
+                    "/" +
+                    nextQuestionnaire?.nextQuestion ?? 1
+                }
               >
-                <Box>
-                  <Box>
-                    <Typography
-                      textTransform={"capitalize"}
-                      variant="subMedium"
-                      sx={{ color: "#b3b3b3" }}
-                    >
-                      <Trans i18nKey={"question"} />
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      fontFamily={`${
-                        is_farsi ? "Vazirmatn" : primaryFontFamily
-                      }`}
-                      fontWeight="bold"
-                      letterSpacing={is_farsi ? "0" : ".05em"}
-                    >
-                      {question.index}.{question.title}
-                    </Typography>
-                  </Box>
-                  {question?.answer?.selectedOption && (
-                    <Box mt={3}>
-                      <Typography
-                        variant="subMedium"
-                        textTransform="uppercase"
-                        sx={{ color: "#b3b3b3" }}
-                      >
-                        <Trans i18nKey={"yourAnswer"} />
-                      </Typography>
-                      <Typography
-                        variant="h6"
-                        fontFamily={`${
-                          is_farsi ? "Vazirmatn" : primaryFontFamily
-                        }`}
-                        fontWeight="bold"
-                        letterSpacing={is_farsi ? "0" : ".05em"}
-                      >
-                        {question.answer?.selectedOption?.index}.
-                        {question.answer?.selectedOption?.title}
-                      </Typography>
-                    </Box>
-                  )}
-                  {question?.answer?.isNotApplicable && (
-                    <Box mt={3}>
-                      <Typography
-                        variant="subMedium"
-                        textTransform="uppercase"
-                        sx={{ color: "#b3b3b3" }}
-                      >
-                        <Trans i18nKey={"yourAnswer"} />
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold">
-                        <Trans i18nKey={"markedAsNotApplicable"} />
-                      </Typography>
-                    </Box>
-                  )}
-                  {question?.answer?.confidenceLevel && (
-                    <Box mt={3}>
-                      <Typography
-                        variant="subMedium"
-                        textTransform="uppercase"
-                        sx={{ color: "#b3b3b3" }}
-                      >
-                        <Trans i18nKey={"yourConfidence"} />
-                      </Typography>
-                      <Box sx={{ display: "flex", mt: 1 }}>
-                        <Box
-                          sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 1 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                            color: "#fff",
-                          }}
-                        >
-                          <Typography sx={{ display: "flex" }}>
-                            <Typography variant="h6" fontWeight="bold">
-                              <Trans
-                                i18nKey={toCamelCase(
-                                  `${question.answer.confidenceLevel.title}`,
-                                )}
-                              />
-                            </Typography>
-                          </Typography>
-                        </Box>
-                        <Rating
-                          sx={{ alignItems: "center" }}
-                          value={question.answer.confidenceLevel?.id}
-                          size="medium"
-                          readOnly
-                          icon={
-                            <RadioButtonCheckedRoundedIcon
-                              sx={{ mx: 0.25, color: "#42a5f5" }}
-                              fontSize="inherit"
-                            />
-                          }
-                          emptyIcon={
-                            <RadioButtonUncheckedRoundedIcon
-                              style={{ opacity: 0.55 }}
-                              sx={{ mx: 0.25, color: "#fff" }}
-                              fontSize="inherit"
-                            />
-                          }
-                        />
-                      </Box>
-                    </Box>
-                  )}
-
-                  <Box display="flex" mt={2}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        mt: 0.2,
-                        ml: `${theme.direction == "rtl" ? "0" : "auto"}`,
-                        mr: `${theme.direction == "rtl" ? "auto" : "0"}`,
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(
-                          isReviewPage
-                            ? `./../${question.index}`
-                            : `../${question.index}`,
-                        );
-                      }}
-                    >
-                      {question.answer ||
-                      !questionsInfo?.permissions?.answerQuestion ||
-                      question.is_not_applicable ? (
-                        <Trans i18nKey="edit" />
-                      ) : (
-                        <Trans i18nKey="submitAnAnswer" />
-                      )}
-                    </Button>
-                  </Box>
-                </Box>
-              </Paper>
-            );
-          })}
+                <Trans i18nKey="nextQuestionnaire" />
+              </Button>
+            )}
+          </Box>
         </Box>
       </Box>
     </Box>
   );
 };
-
-export default QuestionsReview;

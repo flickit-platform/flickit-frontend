@@ -1849,7 +1849,7 @@ const Evidence = (props: any) => {
                 >
                   <Trans
                     i18nKey={"createEvidence"}
-                    values={{ title: t(type) }}
+                    values={{ title: t(type).toLowerCase() }}
                   />
                 </LoadingButton>
               </Box>

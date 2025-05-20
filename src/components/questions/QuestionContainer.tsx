@@ -35,7 +35,7 @@ export const QuestionContainer = () => {
         <Box overflow="hidden">
           {questionsInfo.questions?.[realIndex - 1] && <QuestionsProgress />}
           {assessmentStatus === EAssessmentStatus.DONE ? (
-            <Review questions={questionsInfo.questions} />
+            <Review />
           ) : (
             <Box position="relative" sx={{ ...styles.centerVH }}>
               {questionsInfo.questions?.[realIndex - 1] ? (
