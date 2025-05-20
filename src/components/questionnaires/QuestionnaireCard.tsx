@@ -61,11 +61,11 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   const boxRef = useRef<any>(null);
 
   return (
-    <Paper sx={{ mt: 3 }} data-cy="questionnaire-card">
+    <Paper sx={{ mt: 3, borderRadius: "4px" }} data-cy="questionnaire-card">
       <Box
-        p="8px 6px"
-        pl={is_farsi ? 0 : "12px"}
-        pr={is_farsi ? "12px" : 0}
+        p="16px"
+        pl={is_farsi ? 0 : "16px"}
+        pr={is_farsi ? "16px" : 0}
         display="flex"
         flexDirection={"column"}
         height="100%"
@@ -128,7 +128,8 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   >
                     <QANumberIndicator
                       q={number_of_questions}
-                      a={number_of_answers}
+                      color={"#6C8093"}
+                      variant={"labelSmall"}
                     />
                   </Box>
                 )}
@@ -143,13 +144,9 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
         <Box sx={{ ...styles.centerV }} pt={1}>
           <QuestionnaireProgress
             position="relative"
-            left={is_farsi ? 0 : "-12px"}
-            right={is_farsi ? "-12px" : 0}
+            left={is_farsi ? 0 : "-16px"}
+            right={is_farsi ? "-16px" : 0}
             progress={progress}
-            q={number_of_questions}
-            a={number_of_answers}
-            isQuestionnaire={true}
-            isSmallScreen={isSmallScreen}
           />
         </Box>
 

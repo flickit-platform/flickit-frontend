@@ -4,16 +4,11 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import QANumberIndicator from "../QANumberIndicator";
 import { styles } from "@styles";
 import { secondaryFontFamily } from "@/config/theme";
 
 interface IQuestionnaireProgress extends BoxProps {
   progress: number;
-  q?: number;
-  a?: number;
-  isQuestionnaire?: boolean;
-  isSmallScreen?: boolean;
 }
 
 const progressToLabelMap: Record<number, string> = {
@@ -32,7 +27,7 @@ const progressToColorMapColor: Record<number, string> = {
 };
 
 const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
-  const { progress = 0, q, a, isQuestionnaire, isSmallScreen, ...rest } = props;
+  const { progress = 0, ...rest } = props;
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
     <Box sx={{ ...styles.centerV }} flex="1" {...rest}>
@@ -48,9 +43,6 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
         />
       </Box>
       <Box pl={is_farsi ? 0 : "8px"} pr={is_farsi ? "8px" : 0} mr="-2px">
-        {isQuestionnaire && isSmallScreen ? (
-          <QANumberIndicator q={q} a={a} />
-        ) : (
           <Typography
             fontWeight={"bold"}
             fontFamily={is_farsi ? "Vazirmatn" : secondaryFontFamily}
@@ -59,7 +51,6 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
           >
             <Trans i18nKey={progressToLabelMap[progress] ?? "inprogress"} />
           </Typography>
-        )}
       </Box>
     </Box>
   );
