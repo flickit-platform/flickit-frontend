@@ -33,7 +33,8 @@ const KitCustomization = (props: any) => {
   const { assessmentId = "" } = useParams();
 
   const fetchKitCustomization = useQuery({
-    service: (args, config) => service.assessmentKit.info.getCustomization(args, config),
+    service: (args, config) =>
+      service.assessmentKit.info.getCustomization(args, config),
     runOnMount: false,
   });
   const fetchKitCustomTitle = useQuery({
@@ -42,7 +43,8 @@ const KitCustomization = (props: any) => {
     runOnMount: false,
   });
   const sendKitCustomization = useQuery({
-    service: (args, config) => service.assessments.info.assignKitCustomization(args, config),
+    service: (args, config) =>
+      service.assessments.info.assignKitCustomization(args, config),
     runOnMount: false,
   });
   const updateKitCustomization = useQuery({
@@ -151,7 +153,7 @@ const KitCustomization = (props: any) => {
             <Trans
               i18nKey="spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
-            />
+            />,
           );
         } else {
           const customData = inputData;
@@ -170,7 +172,7 @@ const KitCustomization = (props: any) => {
             <Trans
               i18nKey="spaceCreatedSuccessMessage"
               values={{ title: inputData.title }}
-            />
+            />,
           );
         }
       } catch (e) {
@@ -197,7 +199,7 @@ const KitCustomization = (props: any) => {
                 display: "inline-block",
               }}
               color="#2B333B"
-              variant="headlineMedium"
+              variant="headlineSmall"
             >
               <Trans i18nKey={`${"kitCustomization"}`} />
             </Typography>
@@ -213,21 +215,11 @@ const KitCustomization = (props: any) => {
                 item
                 xs={12}
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  ...styles.centerVH,
                 }}
               >
-                <Typography
-                  color="#9DA7B3"
-                  fontWeight={500}
-                  sx={{
-                    fontSize: { xs: "1rem", sm: "1.375rem" },
-                    whiteSpace: { xs: "wrap", sm: "nowrap" },
-                  }}
-                  lineHeight={"normal"}
-                >
-                  <Trans i18nKey="kitCustomTitle" />:
+                <Typography color="#2B333B" variant="semiBoldLarge">
+                  <Trans i18nKey="kitCustomTitle" />
                 </Typography>
 
                 <Box
@@ -259,7 +251,7 @@ const KitCustomization = (props: any) => {
             <Box sx={{ mb: 2 }}>
               <Typography
                 sx={{
-                  ...theme.typography.headlineSmall,
+                  ...theme.typography.titleMedium,
                   color: "#2B333B",
                   mb: 1,
                 }}
@@ -400,13 +392,15 @@ const OnHoverInputCustomTitle = (props: any) => {
             sx={{ display: "flex", flexDirection: "column", width: "100% " }}
           >
             <InputCustomEditor
-                inputProps={inputProps}
-                hasError={hasError}
-                name={type}
-                inputHandler={(e: React.ChangeEvent<HTMLInputElement>)=> handleChange(e)}
-                value={localInputData.title}
-                handleDone={handleSave}
-                handleCancel={handleCancel}
+              inputProps={inputProps}
+              hasError={hasError}
+              name={type}
+              inputHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(e)
+              }
+              value={localInputData.title}
+              handleDone={handleSave}
+              handleCancel={handleCancel}
             />
             {hasError && (
               <Typography
