@@ -19,7 +19,7 @@ import SemiCircleChartap from "../common/charts/SemiCircleChart";
 import { Trans } from "react-i18next";
 import languageDetector from "@/utils/languageDetector";
 import AssessmentKitsStoreListCard from "./AssessmentKitsStoreListCard";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "../common/SupTitleBreadcrumb";
 import AssessmentKitSubjects from "./AssessmentKitSubjects";
@@ -31,6 +31,7 @@ const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
   const isAuthenticated = keycloakService.isLoggedIn();
+  const ref = useRef<any>(null);
 
   const assessmentKitQuery = useQuery({
     service: (args, config) =>
@@ -49,8 +50,13 @@ const AssessmentKitContainer = () => {
   const { config } = useConfigContext();
 
   useEffect(() => {
-    assessmentKitQuery.query();
-  }, [assessmentKitId]);
+    if(ref.current){
+      assessmentKitQuery.query();
+    }else{
+      ref.current = assessmentKitId
+    }
+}, [assessmentKitId]);
+
   return (
     <PermissionControl error={[assessmentKitQuery.errorObject]}>
       <QueryData
