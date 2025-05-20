@@ -337,7 +337,10 @@ const ExpertGroupContainer = () => {
                             fontSize: "inherit",
                           }}
                         >
-                          {numberOfMembers} {t("members").toLowerCase()}
+                          {numberOfMembers}{" "}
+                          {t(
+                            numberOfMembers > 1 ? "members" : "member",
+                          ).toLowerCase()}
                         </Typography>
                       </Box>
                       <Box
