@@ -348,19 +348,40 @@ const QuickAssessmentSwitch = (props: {
         open={dialogProps.open}
         onClose={dialogProps.onClose}
         title={
-          <>
-            <Trans i18nKey="warning" />
-          </>
+          <Trans
+            i18nKey="switchTo"
+            values={{
+              title: t(
+                mode.code === ASSESSMENT_MODE.QUICK
+                  ? "advancedAssessmentMode"
+                  : "quickAssessmentMode",
+              ),
+            }}
+          />
         }
         maxWidth="sm"
       >
-        <Typography sx={{ color: "#0A2342" }}></Typography>
+        <Typography sx={{ color: "#2B333B" }}>
+          <Trans
+            i18nKey={
+              mode.code === ASSESSMENT_MODE.QUICK
+                ? "advancedAssessmentSwitchTitle"
+                : "quickAssessmentSwitchTitle"
+            }
+          />
+        </Typography>
 
         <CEDialogActions
           type="delete"
           loading={false}
           onClose={dialogProps.onClose}
-          submitButtonLabel={t("confirm")}
+          submitButtonLabel={t("switchTo", {
+            title: t(
+              mode.code === ASSESSMENT_MODE.QUICK
+                ? "advancedAssessmentMode"
+                : "quickAssessmentMode",
+            ),
+          })}
           cancelLabel={t("cancel")}
           onSubmit={handleConfirmToggle}
         />
