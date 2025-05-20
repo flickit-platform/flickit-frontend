@@ -48,6 +48,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
             fontFamily={is_farsi ? "Vazirmatn" : secondaryFontFamily}
             textTransform="uppercase"
             color={progressToColorMapColor[progress] ?? "#1976d2"}
+            sx={{position:"relative", [is_farsi ? "left" : "right"]: "-16px"}}
           >
             <Trans i18nKey={progressToLabelMap[progress] ?? "inprogress"} />
           </Typography>
