@@ -12,3 +12,8 @@ export enum VISIBILITY {
   PUBLIC = "PUBLIC",
   RESTRICTED = "RESTRICTED",
 }
+
+export enum ASSESSMENT_MODE {
+  ADVANCED = "ADVANCED",
+  QUICK = "QUICK",
+}

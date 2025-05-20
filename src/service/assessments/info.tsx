@@ -114,4 +114,11 @@ export const info = {
       config,
     );
   },
+
+  updateAssessmentMode(
+    { id, data }: { id: any; data: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.put(`/api/v1/assessments/${id}/mode/`, data, config);
+  },
 };

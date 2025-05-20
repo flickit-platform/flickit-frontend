@@ -522,6 +522,8 @@
   "questionsCount": "Questions",
   "questionsIssues": "Questions issues",
   "quickAccess": "Quick Access",
+  "quickAssessmentMode": "Quick assessment mode",
+  "quickAssessmentModeDescription": "Quick Assessment Mode shows only essential steps for faster completion and direct access to the final report — ideal for self-assessments.",
   "reachedLimit": "Reached limit",
   "reachedNumberOfAssessments": "You’ve reached the maximum number of assessments allowed in the Basic space. To create a new assessment,",
   "recentSpaces": "Recent spaces",

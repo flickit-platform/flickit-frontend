@@ -17,6 +17,7 @@ import ConfirmRemoveMemberDialog from "./confirmRemoveMemberDialog";
 import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -165,47 +166,51 @@ const AssessmentSettingContainer = () => {
                   />
                 </Grid>
               </Grid>
-              <Grid container columns={12}>
-                <Grid item sm={12} xs={12}>
-                  <AssessmentSettingMemberBox
+              {AssessmentInfo.data.mode.code !== ASSESSMENT_MODE.QUICK && (
+                <>
+                  <Grid container columns={12}>
+                    <Grid item sm={12} xs={12}>
+                      <AssessmentSettingMemberBox
+                        listOfRoles={listOfRoles}
+                        listOfUser={listOfUser}
+                        inviteesMemberList={inviteesMemberList}
+                        openModal={handleClickOpen}
+                        openRemoveModal={handleOpenRemoveModal}
+                        setChangeData={setChangeData}
+                        changeData={changeData}
+                        totalUser={totalUser}
+                        page={page}
+                        handleChangePage={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        handleChangeRowsPerPage={handleChangeRowsPerPage}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container columns={12}>
+                    <Grid item sm={12} xs={12}>
+                      <KitCustomization kitInfo={kitInfo} />
+                    </Grid>
+                  </Grid>
+                  <AddMemberDialog
+                    expanded={expanded}
+                    onClose={handleClose}
                     listOfRoles={listOfRoles}
-                    listOfUser={listOfUser}
-                    inviteesMemberList={inviteesMemberList}
-                    openModal={handleClickOpen}
-                    openRemoveModal={handleOpenRemoveModal}
+                    assessmentId={assessmentId}
+                    cancelText={<Trans i18nKey={"cancel"} />}
+                    confirmText={<Trans i18nKey={"addToThisAssessment"} />}
                     setChangeData={setChangeData}
-                    changeData={changeData}
-                    totalUser={totalUser}
-                    page={page}
-                    handleChangePage={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                   />
-                </Grid>
-              </Grid>
-              <Grid container columns={12}>
-                <Grid item sm={12} xs={12}>
-                  <KitCustomization kitInfo={kitInfo} />
-                </Grid>
-              </Grid>
-              <AddMemberDialog
-                expanded={expanded}
-                onClose={handleClose}
-                listOfRoles={listOfRoles}
-                assessmentId={assessmentId}
-                cancelText={<Trans i18nKey={"cancel"} />}
-                confirmText={<Trans i18nKey={"addToThisAssessment"} />}
-                setChangeData={setChangeData}
-              />
-              <ConfirmRemoveMemberDialog
-                expandedRemoveDialog={expandedRemoveModal}
-                onCloseRemoveDialog={handleCloseRemoveModal}
-                assessmentId={assessmentId}
-                fetchAssessmentMembers={fetchAssessmentMembers.query}
-                inviteesMemberList={inviteesMemberList}
-                assessmentName={title}
-                setChangeData={setChangeData}
-              />
+                  <ConfirmRemoveMemberDialog
+                    expandedRemoveDialog={expandedRemoveModal}
+                    onCloseRemoveDialog={handleCloseRemoveModal}
+                    assessmentId={assessmentId}
+                    fetchAssessmentMembers={fetchAssessmentMembers.query}
+                    inviteesMemberList={inviteesMemberList}
+                    assessmentName={title}
+                    setChangeData={setChangeData}
+                  />
+                </>
+              )}
             </Box>
           );
         }}

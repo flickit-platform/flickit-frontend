@@ -43,6 +43,14 @@ import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
 import { getReadableDate } from "@utils/readableDate";
+import { FormControlLabel, Switch } from "@mui/material";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ILanguage } from "@/types";
+import {
+  CEDialog,
+  CEDialogActions,
+} from "@/components/common/dialogs/CEDialog";
+import useDialog from "@/utils/useDialog";
 
 export const AssessmentSettingGeneralBox = (props: {
   AssessmentInfo: any;
@@ -64,6 +72,7 @@ export const AssessmentSettingGeneralBox = (props: {
     lastModificationTime,
     kit,
     shortTitle,
+    mode,
   } = AssessmentInfo;
 
   const title = ["creator", "assessmentKit", "created", "lastModified"];
@@ -83,7 +92,7 @@ export const AssessmentSettingGeneralBox = (props: {
             display: "inline-block",
           }}
           color="#2B333B"
-          variant="headlineMedium"
+          variant="headlineSmall"
         >
           <Trans i18nKey="general" />
         </Typography>
@@ -108,14 +117,11 @@ export const AssessmentSettingGeneralBox = (props: {
           >
             <Typography
               sx={{
-                ...theme.typography.titleLarge,
-                fontSize: { xs: "1rem", sm: "1.375rem" },
-                whiteSpace: { xs: "wrap", sm: "nowrap" },
-                color: "#78818b",
-                width: "250px",
+                ...theme.typography.semiBoldLarge,
               }}
+              color="#2B333B"
             >
-              <Trans i18nKey="assessmentTitle" />:
+              <Trans i18nKey="assessmentTitle" />
             </Typography>
 
             <Box
@@ -145,21 +151,24 @@ export const AssessmentSettingGeneralBox = (props: {
                 alignItems: "center",
               }}
             >
-              <Typography
-                color="#78818b"
-                fontWeight={500}
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: "6px",
-                  fontSize: { xs: "1rem", sm: "1.375rem" },
-                  whiteSpace: { xs: "wrap", sm: "nowrap" },
-                  width: "250px",
-                }}
-                lineHeight={"normal"}
-              >
-                <Trans i18nKey="shortTitle" />:
-              </Typography>
+              <Box sx={{ ...styles.centerVH }} color="#6C8093" gap={1}>
+                <Typography
+                  sx={{
+                    ...theme.typography.semiBoldLarge,
+                  }}
+                  color="#2B333B"
+                  lineHeight={"normal"}
+                >
+                  <Trans i18nKey="shortTitle" />
+                </Typography>
+                <Tooltip title={<Trans i18nKey="shortTitleInfo" />}>
+                  <InfoOutlined
+                    fontSize="small"
+                    color="inherit"
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Tooltip>
+              </Box>
               <Box
                 sx={{
                   display: "flex",
@@ -182,29 +191,17 @@ export const AssessmentSettingGeneralBox = (props: {
                 />
               </Box>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  gap: "5px",
-                  color: "#78818b",
-                  ...theme.typography.labelMedium,
-                }}
-              >
-                <InfoOutlined fontSize="small" />
-                <Trans i18nKey={"shortTitleInfo"} />
-              </Box>
-            </Grid>
+          </Grid>
+        </Grid>
+        <Divider
+          sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
+        />
+        <Grid container spacing={2}>
+          <Grid item>
+            <QuickAssessmentSwitch
+              mode={mode}
+              AssessmentInfoQuery={AssessmentInfoQuery}
+            />
           </Grid>
         </Grid>
         <Divider
@@ -226,30 +223,26 @@ export const AssessmentSettingGeneralBox = (props: {
                 }}
               >
                 <Typography
-                  color="#78818b"
-                  fontWeight={500}
+                  color="#6C8093"
                   whiteSpace={"nowrap"}
                   sx={{
                     width: "250px",
                     display: "flex",
                     justifyContent: "flex-start",
-                    fontSize: { xs: "1rem", md: "1.375rem" },
                   }}
-                  lineHeight={"normal"}
+                  variant="bodyLarge"
                 >
-                  <Trans i18nKey={`${itemList}`} />:
+                  <Trans i18nKey={`${itemList}`} />
                 </Typography>
 
                 <Typography
-                  color="#0A2342"
-                  fontWeight={500}
+                  color="#2B333B"
+                  variant="semiBoldLarge"
                   sx={{
                     display: "flex",
                     justifyContent: "flex-start",
-                    fontSize: { xs: "1rem", md: "1.375rem" },
                     width: { md: "350px" },
                   }}
-                  lineHeight={"normal"}
                 >
                   {index == 0 && displayName}
                   {index == 1 && (
@@ -278,6 +271,103 @@ export const AssessmentSettingGeneralBox = (props: {
   );
 };
 
+const QuickAssessmentSwitch = (props: {
+  mode: ILanguage;
+  AssessmentInfoQuery: any;
+}) => {
+  const { assessmentId = "" } = useParams();
+  const { service } = useServiceContext();
+  const { mode, AssessmentInfoQuery } = props;
+  const [isQuickMode, setIsQuickMode] = useState(
+    mode.code === ASSESSMENT_MODE.QUICK,
+  );
+
+  const dialogProps = useDialog();
+
+  const handleToggleQuickMode = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    dialogProps.openDialog({});
+  };
+
+  const handleConfirmToggle = () => {
+    const newMode = isQuickMode
+      ? ASSESSMENT_MODE.ADVANCED
+      : ASSESSMENT_MODE.QUICK;
+    updateAssessmentMode
+      .query({
+        id: assessmentId,
+        data: { mode: newMode },
+      })
+      .then(() => {
+        AssessmentInfoQuery();
+      });
+    setIsQuickMode(!isQuickMode);
+    dialogProps.onClose();
+  };
+
+  const updateAssessmentMode = useQuery({
+    service: (args, config) =>
+      service.assessments.info.updateAssessmentMode(args, config),
+    runOnMount: false,
+  });
+
+  return (
+    <Box sx={{ ...styles.centerV }} color="#6C8093" gap={1}>
+      <FormControlLabel
+        control={
+          <Switch checked={isQuickMode} onChange={handleToggleQuickMode} />
+        }
+        label={
+          <Box display="flex" alignItems="center" gap={1}>
+            <Typography
+              sx={{ ...theme.typography.semiBoldLarge }}
+              color="#2B333B"
+            >
+              <Trans i18nKey="quickAssessmentMode" />
+            </Typography>
+            <Tooltip title={<Trans i18nKey="quickAssessmentModeDescription" />}>
+              <InfoOutlined
+                fontSize="small"
+                color="inherit"
+                sx={{ cursor: "pointer" }}
+              />
+            </Tooltip>
+          </Box>
+        }
+        sx={{
+          margin: 0,
+          display: "flex",
+          alignItems: "center",
+          gap: "32px",
+        }}
+        labelPlacement="start"
+      />
+
+      <CEDialog
+        open={dialogProps.open}
+        onClose={dialogProps.onClose}
+        title={
+          <>
+            <Trans i18nKey="warning" />
+          </>
+        }
+        maxWidth="sm"
+      >
+        <Typography sx={{ color: "#0A2342" }}></Typography>
+
+        <CEDialogActions
+          type="delete"
+          loading={false}
+          onClose={dialogProps.onClose}
+          submitButtonLabel={t("confirm")}
+          cancelLabel={t("cancel")}
+          onSubmit={handleConfirmToggle}
+        />
+      </CEDialog>
+    </Box>
+  );
+};
 export const AssessmentSettingMemberBox = (props: {
   listOfRoles: any[];
   listOfUser: any[];
@@ -398,7 +488,7 @@ export const AssessmentSettingMemberBox = (props: {
             width: "100%",
           }}
         >
-          <Typography color="#2B333B" variant="headlineMedium">
+          <Typography color="#2B333B" variant="headlineSmall">
             <Trans i18nKey="grantedRoles" />
           </Typography>
           <Button
@@ -462,13 +552,16 @@ export const AssessmentSettingMemberBox = (props: {
                       display: {
                         xs: column.display,
                         md: "inline-block",
-                        color: "#78818b",
                         border: "none",
-                        fontSize: "1rem",
                       },
                     }}
                   >
-                    <Trans i18nKey={`${column.label}`} />
+                    <Typography
+                      color="rgba(0, 0, 0, 0.56)"
+                      variant="semiBoldLarge"
+                    >
+                      <Trans i18nKey={`${column.label}`} />
+                    </Typography>
                   </TableCell>
                 ))}
               </TableRow>
@@ -662,7 +755,7 @@ export const AssessmentSettingMemberBox = (props: {
                 gap: "10px",
               }}
             >
-              <Typography color="#78818b" variant="headlineMedium">
+              <Typography color="#78818b" variant="headlineSmall">
                 <Trans i18nKey={`invitees`} />
               </Typography>
             </Box>
@@ -1213,14 +1306,12 @@ const OnHoverInputTitleSetting = (props: any) => {
           >
             <Typography
               color="#004F83"
-              fontWeight={500}
               sx={{
-                fontSize: { xs: "1rem", sm: "1.375rem" },
                 fontFamily: languageDetector(data)
                   ? farsiFontFamily
                   : primaryFontFamily,
               }}
-              lineHeight={"normal"}
+              variant="semiBoldLarge"
             >
               {type == "title" && data?.replace(/<\/?p>/g, "")}
               {type == "shortTitle" && shortTitle?.replace(/<\/?p>/g, "")}

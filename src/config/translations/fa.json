@@ -523,6 +523,8 @@
   "questionsCount": "پرسش‌ها",
   "questionsIssues": "موارد سوالات",
   "quickAccess": "دسترسی سریع",
+  "quickAssessmentMode": "حالت دسترسی سریع",
+  "quickAssessmentModeDescription": "در حالت ارزیابی سریع، تنها بخش‌های ضروری نمایش داده می‌شوند تا سریع‌تر به گزارش نهایی برسید — مناسب برای ارزیابی فردی.",
   "reachedLimit": "ظرفیت شما تکمیل شده است",
   "reachedNumberOfAssessments": "شما به حداکثر تعداد ارزیابی‌های مجاز در این فضای کاری پایه رسیده‌اید.",
   "recentSpaces": "فضاهای کاری اخیر",
