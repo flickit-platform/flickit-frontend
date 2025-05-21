@@ -300,7 +300,7 @@ const ActionButton = ({
   variant?: any
 }) => (
   <Button
-    size="small"
+    size="medium"
     component={Link}
     state={state}
     to={to}
