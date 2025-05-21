@@ -1,5 +1,13 @@
-import { useReducer, FC, useContext, Dispatch, createContext, useMemo } from "react";
+import {
+  useReducer,
+  FC,
+  useContext,
+  Dispatch,
+  createContext,
+  useMemo,
+} from "react";
 import assessmentReducer from "./reducer";
+import { IAssessmentInfo } from "@/types";
 
 interface IAssessmentProviderProps {
   children?: JSX.Element | JSX.Element[];
@@ -7,11 +15,13 @@ interface IAssessmentProviderProps {
 
 export interface IAssessmentContext {
   permissions: any;
+  assessmentInfo?: IAssessmentInfo;
   dispatch: Dispatch<any>;
 }
 
 export const AssessmentContext = createContext<IAssessmentContext>({
   permissions: {},
+  assessmentInfo: undefined,
   dispatch: () => {},
 });
 
@@ -22,6 +32,7 @@ export const AssessmentProvider: FC<IAssessmentProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(assessmentReducer, {
     permissions: {},
+    assessmentInfo: {},
   });
 
   const contextValue = useMemo(
