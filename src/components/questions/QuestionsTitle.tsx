@@ -124,7 +124,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
         wrapperProps={{
           sx: {
             flexDirection: { xs: "column", md: "row" },
-            alignItems: { xs: "flex-start", md: "flex-end" },
+            alignItems: { xs: "flex-start", md: "center" },
             display: { xs: "block", sm: "flex" },
           },
         }}
@@ -192,9 +192,9 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                   </IconButton>
                   <Typography
                     display="inline-block"
-                    variant="h5"
-                    fontWeight={"bold"}
                     style={{
+                      ...theme.typography.titleLarge,
+                      color: "#2B333B",
                       fontFamily: languageDetector(questionnaire.title)
                         ? farsiFontFamily
                         : primaryFontFamily,
@@ -205,16 +205,15 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                   </Typography>{" "}
                   <Typography
                     display="inline-block"
-                    variant="h5"
-                    fontWeight={"bold"}
                     sx={{
-                      opacity: 0.6,
+                      ...theme.typography.titleLarge,
+                      color: "#6C8093",
                       ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
                       mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
                     }}
                   >
                     {" "}
-                    <Trans i18nKey="question" /> {questionIndex}/
+                    <Trans i18nKey="question" /> {questionIndex} {t("from")}{" "}
                     {total_number_of_questions}
                   </Typography>
                 </Box>
