@@ -1255,7 +1255,7 @@ const OnHoverInputTitleSetting = (props: any) => {
             ? "right"
             : "left"
           : type == "shortTitle"
-            ? firstCharDetector(inputDataShortTitle ?? "")
+            ? firstCharDetector(inputDataShortTitle)
               ? "right"
               : "left"
             : "left",
