@@ -45,7 +45,6 @@ import InputCustomEditor from "@common/fields/InputCustomEditor";
 import { getReadableDate } from "@utils/readableDate";
 import { FormControlLabel, Switch } from "@mui/material";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
-import { ILanguage } from "@/types";
 import {
   CEDialog,
   CEDialogActions,

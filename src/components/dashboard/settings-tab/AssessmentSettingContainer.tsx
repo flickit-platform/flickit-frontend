@@ -17,7 +17,6 @@ import ConfirmRemoveMemberDialog from "./confirmRemoveMemberDialog";
 import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 
 const AssessmentSettingContainer = () => {
