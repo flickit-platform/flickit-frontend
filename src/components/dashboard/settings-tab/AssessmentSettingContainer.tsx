@@ -5,7 +5,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useLocation, useParams } from "react-router-dom";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { Trans } from "react-i18next";
-import { RolesType } from "@/types/index";
+import { IAssessmentInfo, RolesType } from "@/types/index";
 import {
   AssessmentSettingGeneralBox,
   AssessmentSettingMemberBox,
@@ -18,6 +18,7 @@ import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -34,7 +35,9 @@ const AssessmentSettingContainer = () => {
   const [changeData, setChangeData] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [kitInfo, setKitInfo] = useState<null>(null);
+  const [kitInfo, setKitInfo] = useState<IAssessmentInfo | undefined>(
+    undefined,
+  );
   const { state } = useLocation();
   const fetchAssessmentsRoles = useQuery<RolesType>({
     service: (args, config) =>
@@ -43,7 +46,7 @@ const AssessmentSettingContainer = () => {
     toastErrorOptions: { filterByStatus: [404] },
   });
   const { dispatch } = useKitDesignerContext();
-
+  const { assessmentInfo } = useAssessmentContext();
   const fetchAssessmentMembers = useQuery({
     service: (args: { page?: number; size?: number } = {}, config) =>
       service.assessments.member.getUsers(
@@ -64,12 +67,6 @@ const AssessmentSettingContainer = () => {
     runOnMount: true,
   });
 
-  const AssessmentInfo = useQuery({
-    service: (args, config) =>
-      service.assessments.info.getById(args ?? { assessmentId }, config),
-    toastError: false,
-    toastErrorOptions: { filterByStatus: [404] },
-  });
   const inviteesMemberList = useQuery({
     service: (args, config) =>
       service.assessments.member.getInvitees({ assessmentId }, config),
@@ -77,20 +74,8 @@ const AssessmentSettingContainer = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await AssessmentInfo.query();
-        if (res) {
-          setKitInfo(res);
-
-          dispatch(kitActions.setMainLanguage(res.language));
-        } else {
-          console.warn("AssessmentInfo.query returned null or undefined");
-        }
-      } catch (err) {
-        console.error("Failed to fetch assessment info:", err);
-      }
-    })();
+    setKitInfo(assessmentInfo);
+    dispatch(kitActions.setMainLanguage(assessmentInfo?.language));
   }, [assessmentId]);
 
   useEffect(() => {
@@ -141,14 +126,13 @@ const AssessmentSettingContainer = () => {
       error={[
         fetchPathInfo.errorObject?.response,
         fetchAssessmentsRoles.errorObject?.response,
-        AssessmentInfo.errorObject?.response,
         fetchAssessmentMembers.errorObject?.response,
       ]}
     >
       <QueryBatchData
-        queryBatchData={[fetchPathInfo, fetchAssessmentsRoles, AssessmentInfo]}
+        queryBatchData={[fetchPathInfo, fetchAssessmentsRoles]}
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
-        render={([pathInfo = {}, roles = {}, assessmentInfo = {}]) => {
+        render={([pathInfo = {}, roles = {}]) => {
           const {
             assessment: { title },
           } = pathInfo;
@@ -158,59 +142,53 @@ const AssessmentSettingContainer = () => {
               <Grid container columns={12}>
                 <Grid item sm={12} xs={12}>
                   <AssessmentSettingGeneralBox
-                    AssessmentInfoQuery={AssessmentInfo.query}
-                    AssessmentInfo={assessmentInfo}
                     AssessmentTitle={title}
                     fetchPathInfo={fetchPathInfo.query}
                     color={state}
                   />
                 </Grid>
               </Grid>
-              {AssessmentInfo.data.mode.code !== ASSESSMENT_MODE.QUICK && (
-                <>
-                  <Grid container columns={12}>
-                    <Grid item sm={12} xs={12}>
-                      <AssessmentSettingMemberBox
-                        listOfRoles={listOfRoles}
-                        listOfUser={listOfUser}
-                        inviteesMemberList={inviteesMemberList}
-                        openModal={handleClickOpen}
-                        openRemoveModal={handleOpenRemoveModal}
-                        setChangeData={setChangeData}
-                        changeData={changeData}
-                        totalUser={totalUser}
-                        page={page}
-                        handleChangePage={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        handleChangeRowsPerPage={handleChangeRowsPerPage}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container columns={12}>
-                    <Grid item sm={12} xs={12}>
-                      <KitCustomization kitInfo={kitInfo} />
-                    </Grid>
-                  </Grid>
-                  <AddMemberDialog
-                    expanded={expanded}
-                    onClose={handleClose}
+              <Grid container columns={12}>
+                <Grid item sm={12} xs={12}>
+                  <AssessmentSettingMemberBox
                     listOfRoles={listOfRoles}
-                    assessmentId={assessmentId}
-                    cancelText={<Trans i18nKey={"cancel"} />}
-                    confirmText={<Trans i18nKey={"addToThisAssessment"} />}
-                    setChangeData={setChangeData}
-                  />
-                  <ConfirmRemoveMemberDialog
-                    expandedRemoveDialog={expandedRemoveModal}
-                    onCloseRemoveDialog={handleCloseRemoveModal}
-                    assessmentId={assessmentId}
-                    fetchAssessmentMembers={fetchAssessmentMembers.query}
+                    listOfUser={listOfUser}
                     inviteesMemberList={inviteesMemberList}
-                    assessmentName={title}
+                    openModal={handleClickOpen}
+                    openRemoveModal={handleOpenRemoveModal}
                     setChangeData={setChangeData}
+                    changeData={changeData}
+                    totalUser={totalUser}
+                    page={page}
+                    handleChangePage={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                   />
-                </>
-              )}
+                </Grid>
+              </Grid>
+              <Grid container columns={12}>
+                <Grid item sm={12} xs={12}>
+                  <KitCustomization kitInfo={kitInfo} />
+                </Grid>
+              </Grid>
+              <AddMemberDialog
+                expanded={expanded}
+                onClose={handleClose}
+                listOfRoles={listOfRoles}
+                assessmentId={assessmentId}
+                cancelText={<Trans i18nKey={"cancel"} />}
+                confirmText={<Trans i18nKey={"addToThisAssessment"} />}
+                setChangeData={setChangeData}
+              />
+              <ConfirmRemoveMemberDialog
+                expandedRemoveDialog={expandedRemoveModal}
+                onCloseRemoveDialog={handleCloseRemoveModal}
+                assessmentId={assessmentId}
+                fetchAssessmentMembers={fetchAssessmentMembers.query}
+                inviteesMemberList={inviteesMemberList}
+                assessmentName={title}
+                setChangeData={setChangeData}
+              />
             </Box>
           );
         }}

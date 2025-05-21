@@ -51,32 +51,21 @@ import {
   CEDialogActions,
 } from "@/components/common/dialogs/CEDialog";
 import useDialog from "@/utils/useDialog";
+import {
+  assessmentActions,
+  useAssessmentContext,
+} from "@/providers/AssessmentProvider";
 
 export const AssessmentSettingGeneralBox = (props: {
-  AssessmentInfo: any;
-  AssessmentInfoQuery: any;
   AssessmentTitle: string;
   fetchPathInfo: () => void;
   color: any;
 }) => {
-  const {
-    AssessmentInfo,
-    AssessmentInfoQuery,
-    AssessmentTitle,
-    fetchPathInfo,
-    color,
-  } = props;
-  const {
-    createdBy: { displayName },
-    creationTime,
-    lastModificationTime,
-    kit,
-    shortTitle,
-    mode,
-  } = AssessmentInfo;
+  const { AssessmentTitle, fetchPathInfo, color } = props;
 
   const title = ["creator", "assessmentKit", "created", "lastModified"];
   const formMethods = useForm({ shouldUnregister: true });
+  const { assessmentInfo } = useAssessmentContext();
 
   return (
     <Box
@@ -134,9 +123,7 @@ export const AssessmentSettingGeneralBox = (props: {
               <OnHoverInputTitleSetting
                 formMethods={formMethods}
                 data={AssessmentTitle}
-                shortTitle={shortTitle}
                 infoQuery={fetchPathInfo}
-                AssessmentInfoQuery={AssessmentInfoQuery}
                 editable={true}
                 color={color}
                 type={"title"}
@@ -181,13 +168,10 @@ export const AssessmentSettingGeneralBox = (props: {
                 <OnHoverInputTitleSetting
                   formMethods={formMethods}
                   data={AssessmentTitle}
-                  shortTitle={shortTitle}
                   infoQuery={fetchPathInfo}
-                  AssessmentInfoQuery={AssessmentInfoQuery}
                   editable={true}
                   color={color}
                   type={"shortTitle"}
-                  displayEdit={!shortTitle}
                 />
               </Box>
             </Grid>
@@ -198,10 +182,7 @@ export const AssessmentSettingGeneralBox = (props: {
         />
         <Grid container spacing={2}>
           <Grid item>
-            <QuickAssessmentSwitch
-              mode={mode}
-              AssessmentInfoQuery={AssessmentInfoQuery}
-            />
+            <QuickAssessmentSwitch />
           </Grid>
         </Grid>
         <Divider
@@ -244,23 +225,25 @@ export const AssessmentSettingGeneralBox = (props: {
                     width: { md: "350px" },
                   }}
                 >
-                  {index == 0 && displayName}
+                  {index == 0 && assessmentInfo?.createdBy?.displayName}
                   {index == 1 && (
                     <Link
                       style={{
                         textDecoration: "none",
                         color: "inherit",
-                        fontFamily: languageDetector(kit?.title)
+                        fontFamily: languageDetector(assessmentInfo?.kit?.title)
                           ? farsiFontFamily
                           : primaryFontFamily,
                       }}
-                      to={`/assessment-kits/${kit?.id}`}
+                      to={`/assessment-kits/${assessmentInfo?.kit?.id}`}
                     >
-                      {kit?.title}
+                      {assessmentInfo?.kit?.title}
                     </Link>
                   )}
-                  {index == 2 && getReadableDate(creationTime)}
-                  {index == 3 && getReadableDate(lastModificationTime)}
+                  {index == 2 &&
+                    getReadableDate(assessmentInfo?.creationTime ?? 0)}
+                  {index == 3 &&
+                    getReadableDate(assessmentInfo?.lastModificationTime ?? 0)}
                 </Typography>
               </Grid>
             );
@@ -271,15 +254,13 @@ export const AssessmentSettingGeneralBox = (props: {
   );
 };
 
-const QuickAssessmentSwitch = (props: {
-  mode: ILanguage;
-  AssessmentInfoQuery: any;
-}) => {
+const QuickAssessmentSwitch = () => {
+  const { assessmentInfo } = useAssessmentContext();
+
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-  const { mode, AssessmentInfoQuery } = props;
   const [isQuickMode, setIsQuickMode] = useState(
-    mode.code === ASSESSMENT_MODE.QUICK,
+    assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK,
   );
 
   const dialogProps = useDialog();
@@ -294,14 +275,10 @@ const QuickAssessmentSwitch = (props: {
     const newMode = isQuickMode
       ? ASSESSMENT_MODE.ADVANCED
       : ASSESSMENT_MODE.QUICK;
-    updateAssessmentMode
-      .query({
-        id: assessmentId,
-        data: { mode: newMode },
-      })
-      .then(() => {
-        AssessmentInfoQuery();
-      });
+    updateAssessmentMode.query({
+      id: assessmentId,
+      data: { mode: newMode },
+    });
     setIsQuickMode(!isQuickMode);
     dialogProps.onClose();
   };
@@ -352,7 +329,7 @@ const QuickAssessmentSwitch = (props: {
             i18nKey="switchTo"
             values={{
               title: t(
-                mode.code === ASSESSMENT_MODE.QUICK
+                assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
                   ? "advancedAssessmentMode"
                   : "quickAssessmentMode",
               ),
@@ -364,7 +341,7 @@ const QuickAssessmentSwitch = (props: {
         <Typography sx={{ color: "#2B333B" }}>
           <Trans
             i18nKey={
-              mode.code === ASSESSMENT_MODE.QUICK
+              assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
                 ? "advancedAssessmentSwitchTitle"
                 : "quickAssessmentSwitchTitle"
             }
@@ -377,7 +354,7 @@ const QuickAssessmentSwitch = (props: {
           onClose={dialogProps.onClose}
           submitButtonLabel={t("switchTo", {
             title: t(
-              mode.code === ASSESSMENT_MODE.QUICK
+              assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
                 ? "advancedAssessmentMode"
                 : "quickAssessmentMode",
             ),
@@ -1196,6 +1173,8 @@ const SelectionRole = (props: any) => {
 };
 
 const OnHoverInputTitleSetting = (props: any) => {
+  const { assessmentInfo, dispatch } = useAssessmentContext();
+
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {
@@ -1205,25 +1184,21 @@ const OnHoverInputTitleSetting = (props: any) => {
   const handleMouseOut = () => {
     setIsHovering(false);
   };
-  const {
-    data,
-    shortTitle,
-    type,
-    editable,
-    infoQuery,
-    color,
-    AssessmentInfoQuery,
-    displayEdit,
-  } = props;
+  const { data, type, editable, infoQuery, color } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const [inputData, setInputData] = useState<string>(data);
-  const [inputDataShortTitle, setInputDataShortTitle] =
-    useState<string>(shortTitle);
+  const [inputDataShortTitle, setInputDataShortTitle] = useState<
+    string | undefined | null
+  >(assessmentInfo?.shortTitle);
   const handleCancel = () => {
     setShow(false);
     setInputData(data);
     setHasError(false);
   };
+
+  useEffect(() => {
+    setInputDataShortTitle(assessmentInfo?.shortTitle);
+  }, [assessmentInfo?.shortTitle]);
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
 
@@ -1253,7 +1228,16 @@ const OnHoverInputTitleSetting = (props: any) => {
       const res = await updateAssessmentQuery.query();
       res.message && toast.success(res.message);
       await infoQuery();
-      await AssessmentInfoQuery();
+      if (assessmentInfo) {
+        dispatch(
+          assessmentActions.setAssessmentInfo({
+            ...assessmentInfo,
+            shortTitle: inputDataShortTitle,
+          }),
+        );
+      }
+
+      console.log(res);
     } catch (e) {
       const err = e as ICustomError;
       setHasError(true);
@@ -1272,7 +1256,7 @@ const OnHoverInputTitleSetting = (props: any) => {
             ? "right"
             : "left"
           : type == "shortTitle"
-            ? firstCharDetector(inputDataShortTitle)
+            ? firstCharDetector(inputDataShortTitle ?? "")
               ? "right"
               : "left"
             : "left",
@@ -1335,9 +1319,10 @@ const OnHoverInputTitleSetting = (props: any) => {
               variant="semiBoldLarge"
             >
               {type == "title" && data?.replace(/<\/?p>/g, "")}
-              {type == "shortTitle" && shortTitle?.replace(/<\/?p>/g, "")}
+              {type == "shortTitle" &&
+                assessmentInfo?.shortTitle?.replace(/<\/?p>/g, "")}
             </Typography>
-            {(isHovering || displayEdit) && (
+            {(isHovering || !assessmentInfo?.shortTitle) && (
               <EditRoundedIcon
                 sx={{ color: "#78818b", position: "absolute", right: -10 }}
                 fontSize="small"
