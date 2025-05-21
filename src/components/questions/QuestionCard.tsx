@@ -145,11 +145,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           py: { xs: 3, sm: 5 },
           backgroundColor: `${notApplicable ? "#000000cc" : "#273248"}`,
           flex: 1,
-          backgroundImage: `url(${QASvg})`,
           color: "white",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "auto",
-          backgroundPosition: "-140px -140px",
+          background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
           position: "relative",
           overflow: "hidden",
           mx: { xs: 2, sm: "auto" },
@@ -161,7 +158,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
         <Box>
           <Typography
             variant="subLarge"
-            sx={{ color: "white", opacity: 0.65, px: 6 }}
+            sx={{ color: "white", opacity: 0.65, px: 6, textAlign: [is_farsi ? "right" : "left" ] }}
           >
             <Trans i18nKey="question" />
           </Typography>
