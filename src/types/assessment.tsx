@@ -65,25 +65,43 @@ export interface AdviceItem {
   impact: { code: string; title: string };
 }
 
-export interface IAssessment {
-  id: TId;
-  lastModificationTime: string;
-  status: TStatus;
+export interface IAssessmentInfo {
+  id: string;
   title: string;
-  hasReport: boolean;
-  color: IColor;
-  isCalculateValid: boolean;
-  isConfidenceValid?: boolean;
-  assessment_results: string[];
-  kit: {
-    id: TId;
-    title?: string;
-    maturityLevelsCount: number;
+  shortTitle?: string | null;
+  space: {
+    id: number;
+    title: string;
   };
-  confidenceValue: number;
-  maturityLevel: IMaturityLevel;
-  permissions: IUserPermissions;
-  language: ILanguage
+  kitCustomId?: string | null;
+  kit?: {
+    id: number;
+    title?: string;
+  };
+  creationTime: string;
+  lastModificationTime: string;
+  createdBy: {
+    id: string;
+    displayName: string;
+  };
+  maturityLevel: {
+    id: number;
+    title: string;
+    index: number;
+    value: number;
+    description?: string;
+  };
+  isCalculateValid: boolean;
+  language: {
+    code: string;
+    title: string;
+  };
+  mode: {
+    code: string;
+    title: string;
+  };
+  manageable: boolean;
+  viewable: boolean;
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
@@ -129,7 +147,7 @@ export interface IGraphicalReport {
     participant: string;
   };
   lang: { code: string };
-  visibility: VISIBILITY
+  visibility: VISIBILITY;
 }
 
 type insight = {
@@ -203,7 +221,7 @@ export interface AssessmentKitInfoType {
   tags: [];
   editable?: boolean;
   hasActiveVersion?: boolean;
-  mainLanguage?: {code:string, title: string };
+  mainLanguage?: { code: string; title: string };
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {
@@ -229,6 +247,7 @@ export interface IAssessment {
     canShareReport: boolean;
     canViewDashboard: boolean;
     canViewQuestionnaires: boolean;
-    canManageVisibility: boolean
+    canManageVisibility: boolean;
   };
+  language: ILanguage
 }

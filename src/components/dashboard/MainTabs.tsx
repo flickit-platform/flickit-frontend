@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
   ASSESSMENT_ACTIONS_TYPE,
+  assessmentActions,
   useAssessmentDispatch,
 } from "@/providers/AssessmentProvider";
 
@@ -33,6 +34,13 @@ const MainTabs = (props: any) => {
     runOnMount: true,
   });
 
+  const AssessmentInfo = useQuery({
+    service: (args, config) =>
+      service.assessments.info.getById(args ?? { assessmentId }, config),
+    toastError: false,
+    toastErrorOptions: { filterByStatus: [404] },
+  });
+
   useEffect(() => {
     const permissionsData = fetchAssessmentPermissions.data?.permissions;
     dispatch({
@@ -51,6 +59,9 @@ const MainTabs = (props: any) => {
     }
   }, [fetchAssessmentPermissions.data]);
 
+  useEffect(() => {
+    dispatch(assessmentActions.setAssessmentInfo(AssessmentInfo.data));
+  }, [AssessmentInfo.data]);
   return (
     <>
       {fetchAssessmentPermissions.loading ? (
