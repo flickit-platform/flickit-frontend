@@ -249,4 +249,5 @@ export interface IAssessment {
     canViewQuestionnaires: boolean;
     canManageVisibility: boolean;
   };
+  language: ILanguage
 }
