@@ -14,6 +14,8 @@ import { QuestionPopover } from "./QuestionPopover";
 import Tooltip from "@mui/material/Tooltip";
 import uniqueId from "@/utils/uniqueId";
 import usePopover from "@/hooks/usePopover";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
 
 const QuestionsProgress = () => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
@@ -68,16 +70,19 @@ const QuestionsProgress = () => {
 
 export const QuestionProgressItem = (props: any) => {
   const { question, to, questionsInfo } = props;
+  const { assessmentInfo } = useAssessmentContext();
 
   const { questionIndex } = useParams();
   const { handlePopoverOpen, ...popoverProps } = usePopover();
 
   const hasIssue =
-    question?.issues?.isUnanswered ||
-    question?.issues?.hasUnapprovedAnswer ||
-    question?.issues?.isAnsweredWithLowConfidence ||
-    question?.issues?.isAnsweredWithoutEvidences ||
-    question?.issues?.unresolvedCommentsCount;
+    ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code
+      ? question?.issues?.isUnanswered ||
+        question?.issues?.hasUnapprovedAnswer ||
+        question?.issues?.isAnsweredWithLowConfidence ||
+        question?.issues?.isAnsweredWithoutEvidences ||
+        question?.issues?.unresolvedCommentsCount
+      : question?.issues?.isUnanswered;
 
   return (
     <Box

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -35,7 +35,7 @@ export const QuestionContainer = () => {
         <Box overflow="hidden">
           {questionsInfo.questions?.[realIndex - 1] && <QuestionsProgress />}
           {assessmentStatus === EAssessmentStatus.DONE ? (
-            <Review questions={questionsInfo.questions} />
+            <Review />
           ) : (
             <Box position="relative" sx={{ ...styles.centerVH }}>
               {questionsInfo.questions?.[realIndex - 1] ? (
@@ -141,7 +141,9 @@ export const useQuestion = () => {
     hasAnyQuestion && realIndex < questionsInfo.total_number_of_questions;
   const hasPreviousQuestion = hasAnyQuestion && realIndex > 1;
   const container = useRef(null);
-
+  useEffect(() => {
+    console.log(questionsInfo);
+  }, [questionsInfo]);
   return {
     hasAnyQuestion,
     questionInfo,
