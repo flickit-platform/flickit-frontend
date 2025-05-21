@@ -4,14 +4,21 @@ const assessmentReducer = (
   prevState: any,
   action: { type: ASSESSMENT_ACTIONS_TYPE; payload: any },
 ) => {
-  if (action.type === ASSESSMENT_ACTIONS_TYPE.SET_PERMISSIONS) {
-    return {
-      ...prevState,
-      permissions: action.payload,
-    };
-  }
+  switch (action.type) {
+    case ASSESSMENT_ACTIONS_TYPE.SET_PERMISSIONS:
+      return {
+        ...prevState,
+        permissions: action.payload,
+      };
+    case ASSESSMENT_ACTIONS_TYPE.SET_INFO:
+      return {
+        ...prevState,
+        assessmentInfo: action.payload,
+      };
 
-  return prevState;
+    default:
+      return prevState;
+  }
 };
 
 export default assessmentReducer;
