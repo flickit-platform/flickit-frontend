@@ -18,6 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useState } from "react";
 import { styles } from "@styles";
 import { useLocation } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -187,6 +188,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
+  const [calculatePercentage, setCalculatePercentage] = useState<any>();
 
   const { state } = useLocation();
 
@@ -198,7 +200,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
 
   return (
     <>
-      <Box display={"flex"} alignItems={"center"} justifyContent="space-between">
+      <Box display={"flex"} alignItems={"center"} justifyContent="space-between"
+      sx={{px:{sm: "10px" }}}
+      >
         <Box
           minWidth="130px"
           display="flex"
@@ -213,13 +217,16 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           }}
         >
           <Typography variant={"titleLarge"} color="white" >
-            <Trans i18nKey={"questionnaire"} />
-            {"  "}(<QueryData
+            <Trans i18nKey={"questionnaire"} />{"  "}
+            (<QueryData
             {...(assessmentTotalProgress ?? {})}
             errorComponent={<></>}
             renderLoading={() => <Skeleton width="60px" height="36px" />}
             render={(data) => {
-              const { questionsCount = 0 } = data ?? {};
+              const { questionsCount = 0, answersCount= 0 } = data ?? {};
+              const calc = (answersCount / questionsCount) * 100;
+              setCalculatePercentage(calc.toFixed(2));
+
               return (
                 <QANumberIndicator
                   color="white"
@@ -231,12 +238,57 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           />)
           </Typography>
         </Box>
-        <QuestionsFilteringDropdown
-          setOriginalItem={setOriginalItem}
-          originalItem={originalItem}
-          itemNames={itemNames}
-          filteredItem={state}
-        />
+        <Box>
+          <Button
+            sx={{
+              borderRadius: "4px",
+              background: "#C2CCD680",
+              height: '40px',
+              width: "176px",
+              position: "relative",
+              overflow: "hidden",
+              "&:hover":{
+                background: "#C2CCD680",
+              }
+            }}
+          >
+            <Box
+              sx={{
+                background: "#C2CCD680",
+                height: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                borderRadius: theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
+                width:
+                  calculatePercentage
+                    ? `${calculatePercentage}%`
+                    : "0%",
+                transition: "all 1s ease-in-out",
+              }}
+            >
+            </Box>
+            <Typography
+              sx={{
+                textTransform: "capitalize",
+                color: "#3D4D5C80"
+              }}
+            >
+              <Trans i18nKey={"viewReport"} />
+            </Typography>
+          </Button>
+          <Typography sx={{...theme.typography.labelMedium, color: "#FF9000"}}>
+            { (assessmentTotalProgress?.data?.questionsCount - assessmentTotalProgress?.data?.answersCount) ?? 0} <Trans i18nKey={"more answers needed!"} />
+          </Typography>
+        </Box>
+        {/*<QuestionsFilteringDropdown*/}
+        {/*  setOriginalItem={setOriginalItem}*/}
+        {/*  originalItem={originalItem}*/}
+        {/*  itemNames={itemNames}*/}
+        {/*  filteredItem={state}*/}
+        {/*/>*/}
       </Box>
       <Box>
         <Divider sx={{ borderColor: "white", opacity: 0.4, mt: 1, mb: 1 }} />
