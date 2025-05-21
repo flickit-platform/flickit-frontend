@@ -5,7 +5,7 @@ import LinearProgress, {
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { secondaryFontFamily } from "@/config/theme";
+import { theme } from "@/config/theme";
 
 interface IQuestionnaireProgress extends BoxProps {
   progress: number;
@@ -22,7 +22,7 @@ const progressToColorMap: Record<number, LinearProgressProps["color"]> = {
 };
 
 const progressToColorMapColor: Record<number, string> = {
-  0: "gray",
+  0: theme.palette.error.main,
   100: "#2e7d32",
 };
 
@@ -38,17 +38,17 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
           variant="determinate"
           sx={{
             borderRadius: is_farsi ? "8px 0 0 8px" : "0 8px 8px 0px",
-            color: progress === 0 ? "gray" : undefined,
+            color: progress === 0 ? theme.palette.error.main : undefined,
           }}
         />
       </Box>
       <Box pl={is_farsi ? 0 : "8px"} pr={is_farsi ? "8px" : 0} mr="-2px">
           <Typography
-            fontWeight={"bold"}
-            fontFamily={is_farsi ? "Vazirmatn" : secondaryFontFamily}
             textTransform="uppercase"
             color={progressToColorMapColor[progress] ?? "#1976d2"}
-            sx={{position:"relative", [is_farsi ? "left" : "right"]: "-16px"}}
+            sx={{
+              ...theme.typography.semiBoldSmall,
+              position:"relative", [is_farsi ? "left" : "right"]: "-16px"}}
           >
             <Trans i18nKey={progressToLabelMap[progress] ?? "inprogress"} />
           </Typography>

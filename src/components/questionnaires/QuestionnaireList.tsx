@@ -198,13 +198,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
 
   return (
     <>
-      <Box display={"flex"} justifyContent="space-between">
-        <QuestionsFilteringDropdown
-          setOriginalItem={setOriginalItem}
-          originalItem={originalItem}
-          itemNames={itemNames}
-          filteredItem={state}
-        />
+      <Box display={"flex"} alignItems={"center"} justifyContent="space-between">
         <Box
           minWidth="130px"
           display="flex"
@@ -218,7 +212,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             },
           }}
         >
-          <QueryData
+          <Typography variant={"titleLarge"} color="white" >
+            <Trans i18nKey={"questionnaire"} />
+            {"  "}(<QueryData
             {...(assessmentTotalProgress ?? {})}
             errorComponent={<></>}
             renderLoading={() => <Skeleton width="60px" height="36px" />}
@@ -232,8 +228,15 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                 />
               );
             }}
-          />
+          />)
+          </Typography>
         </Box>
+        <QuestionsFilteringDropdown
+          setOriginalItem={setOriginalItem}
+          originalItem={originalItem}
+          itemNames={itemNames}
+          filteredItem={state}
+        />
       </Box>
       <Box>
         <Divider sx={{ borderColor: "white", opacity: 0.4, mt: 1, mb: 1 }} />

@@ -241,17 +241,11 @@ const ActionButtons = ({
 }) => {
   const is_farsi = localStorage.getItem("lang") === "fa";
   return (
-    <Box display="flex">
+    <Box display="flex" gap={1}>
       {progress === 100 && (
         <ActionButton
           to={`${id}/1`}
           text="edit"
-          icon={
-            <ModeEditOutlineRoundedIcon
-              sx={{ ml: is_farsi ? 0 : 1, mr: is_farsi ? 1 : 0 }}
-              fontSize="small"
-            />
-          }
         />
       )}
       {progress > 0 && (
@@ -296,6 +290,7 @@ const ActionButton = ({
   text,
   icon,
   state = {},
+  variant,
   ...rest
 }: {
   to: string;
@@ -311,9 +306,12 @@ const ActionButton = ({
     to={to}
     endIcon={icon}
     sx={{ ml: 0.5 }}
+    variant={variant}
     {...rest}
   >
-    <Trans i18nKey={text} />
+    <Typography sx={{color: variant ? "#fff" : "#2466A8", ...theme.typography.semiBoldMedium}} textTransform={"capitalize"}>
+      <Trans i18nKey={text} />
+    </Typography>
   </Button>
 );
 
