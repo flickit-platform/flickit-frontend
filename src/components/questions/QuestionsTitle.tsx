@@ -10,7 +10,6 @@ import {
   useQuestionContext,
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
-import AssignmentTurnedInRoundedIcon from "@mui/icons-material/AssignmentTurnedInRounded";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
@@ -21,7 +20,6 @@ import { QuestionsFilteringDropdown } from "../questionnaires/QuestionnaireList"
 import IconButton from "@mui/material/IconButton";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
 
 const itemNames = [
   {

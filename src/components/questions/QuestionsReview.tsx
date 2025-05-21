@@ -323,10 +323,10 @@ export const Review = () => {
                 component={Link}
                 to={
                   "./../../../questionnaires" +
-                    "/" +
-                    nextQuestionnaire?.id +
-                    "/" +
-                    nextQuestionnaire?.nextQuestion ?? 1
+                  "/" +
+                  (nextQuestionnaire?.id ?? "") +
+                  "/" +
+                  (nextQuestionnaire?.nextQuestion ?? 1)
                 }
               >
                 <Trans i18nKey="nextQuestionnaire" />

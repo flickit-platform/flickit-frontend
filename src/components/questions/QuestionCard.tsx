@@ -75,7 +75,6 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import EmptyState from "../kit-designer/common/EmptyState";
 import convertLinksToClickable from "@utils/convertTextToClickableLink";
-import { useQuestions } from "@components/questions/QuestionsContainer";
 import { DeleteConfirmationDialog } from "../common/dialogs/DeleteConfirmationDialog";
 import { QuestionGuide } from "./QuestionCard/QuestionGuide";
 import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDialogs";
