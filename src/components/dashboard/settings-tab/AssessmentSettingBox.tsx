@@ -254,7 +254,7 @@ export const AssessmentSettingGeneralBox = (props: {
 };
 
 const QuickAssessmentSwitch = () => {
-  const { assessmentInfo } = useAssessmentContext();
+  const { assessmentInfo, dispatch } = useAssessmentContext();
 
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
@@ -278,6 +278,14 @@ const QuickAssessmentSwitch = () => {
       id: assessmentId,
       data: { mode: newMode },
     });
+    if (assessmentInfo) {
+      dispatch(
+        assessmentActions.setAssessmentInfo({
+          ...assessmentInfo,
+          mode: { ...assessmentInfo.mode, code: newMode },
+        }),
+      );
+    }
     setIsQuickMode(!isQuickMode);
     dialogProps.onClose();
   };
@@ -1235,7 +1243,6 @@ const OnHoverInputTitleSetting = (props: any) => {
           }),
         );
       }
-
     } catch (e) {
       const err = e as ICustomError;
       setHasError(true);
