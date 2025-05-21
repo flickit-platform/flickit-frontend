@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -141,7 +141,9 @@ export const useQuestion = () => {
     hasAnyQuestion && realIndex < questionsInfo.total_number_of_questions;
   const hasPreviousQuestion = hasAnyQuestion && realIndex > 1;
   const container = useRef(null);
-
+  useEffect(() => {
+    console.log(questionsInfo);
+  }, [questionsInfo]);
   return {
     hasAnyQuestion,
     questionInfo,

@@ -20,6 +20,7 @@ import {
   IAnswerHistory,
   IPermissions,
   IQuestionInfo,
+  IQuestionsModel,
   TAnswer,
   TQuestionsInfo,
 } from "@/types/index";
@@ -97,7 +98,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const [confidenceLebels, setConfidenceLebels] = useState<any>([]);
   const { service } = useServiceContext();
   const { config } = useConfigContext();
-
   useEffect(() => {
     return () => {
       abortController.current.abort();
@@ -378,8 +378,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, setValue, questionsInfo, questionInfo, key, position } =
-    props;
+  const { value, setValue, questionsInfo, questionInfo, key, position } = props;
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -521,20 +520,20 @@ export const QuestionTabsTemplate = (props: any) => {
   }, [currentPage]);
 
   useEffect(() => {
-    if (counts.evidences){
-      setValue("evidences")
-    } else if(counts.history){
-      setValue("history")
-    }else if(counts.comments){
-      setValue("comments")
-    }else {
-      setValue(()=>{
-        if(position == "dialog"){
-          return ""
-        }else {
-          return "evidences"
+    if (counts.evidences) {
+      setValue("evidences");
+    } else if (counts.history) {
+      setValue("history");
+    } else if (counts.comments) {
+      setValue("comments");
+    } else {
+      setValue(() => {
+        if (position == "dialog") {
+          return "";
+        } else {
+          return "evidences";
         }
-      })
+      });
     }
   }, [counts.evidences, counts.history, counts.comments]);
 
@@ -713,8 +712,16 @@ const AnswerTemplate = (props: {
   const { total_number_of_questions, permissions } = questionsInfo;
   const { service } = useServiceContext();
   const dispatch = useQuestionDispatch();
-  const { assessmentId = "", questionnaireId } = useParams();
-  const { questionsResultQueryData } = useQuestions();
+  const { assessmentId = "", questionnaireId = "" } = useParams();
+  const questionsResultQueryData = useQuery<IQuestionsModel>({
+    service: (args, config) =>
+      service.assessments.questionnaire.getQuestionnaireAnswers(
+        { questionnaireId, assessmentId, page: args.page ?? 0, size: 50 },
+        config,
+      ),
+    runOnMount: false,
+  });
+
   const [value, setValue] = useState<TAnswer | null>(
     answer?.selectedOption || null,
   );
@@ -1638,7 +1645,7 @@ const Evidence = (props: any) => {
       display={"flex"}
       flexDirection={"column"}
       width="100%"
-      px={!permissions?.readonly ? {xs: 0, sm: 10} : 0}
+      px={!permissions?.readonly ? { xs: 0, sm: 10 } : 0}
     >
       {permissions?.addEvidence && (
         <FormProvider {...formMethods}>
@@ -2182,7 +2189,7 @@ const EvidenceDetail = (props: any) => {
                   display: "flex",
                   flexDirection: "column",
                   height: "fit-content",
-                  width: {xs: "100%", sm: "60%" },
+                  width: { xs: "100%", sm: "60%" },
                   borderRadius: "12px",
                   border: `1px solid ${evidenceBG.borderColor}`,
                 }}

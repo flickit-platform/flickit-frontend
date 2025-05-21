@@ -1236,7 +1236,6 @@ const OnHoverInputTitleSetting = (props: any) => {
         );
       }
 
-      console.log(res);
     } catch (e) {
       const err = e as ICustomError;
       setHasError(true);

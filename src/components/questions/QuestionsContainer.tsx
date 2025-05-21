@@ -172,7 +172,7 @@ export const useQuestions = () => {
         console.error("Failed to load initial questions", e);
         toastError(e as ICustomError);
       });
-  }, []);
+  }, [questionnaireId]);
 
   const loadMoreQuestions = async (newPage: number) => {
     try {

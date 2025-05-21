@@ -134,8 +134,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
         toolbar={
           <Box sx={{ mt: { xs: 1.5, sm: 0 } }}>
             {!window.location.pathname.includes("review") &&
-              questionsInfo.permissions?.viewDashboard &&
-              ASSESSMENT_MODE.ADVANCED && (
+              questionsInfo.permissions?.viewDashboard && (
                 <QuestionsFilteringDropdown
                   setOriginalItem={setOriginalItem}
                   originalItem={originalItem}
