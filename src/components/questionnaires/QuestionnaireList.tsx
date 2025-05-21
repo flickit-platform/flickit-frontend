@@ -19,6 +19,8 @@ import { useEffect, useState } from "react";
 import { styles } from "@styles";
 import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useAssessmentContext } from "@providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@utils/enumType";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -190,6 +192,12 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const [originalItem, setOriginalItem] = useState<string[]>([]);
   const [calculatePercentage, setCalculatePercentage] = useState<any>();
 
+  const { assessmentInfo } = useAssessmentContext()
+
+  const [isQuickMode, ] = useState(
+    assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK,
+  );
+
   const { state } = useLocation();
 
   useEffect(() => {
@@ -238,57 +246,63 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           />)
           </Typography>
         </Box>
-        <Box>
-          <Button
-            sx={{
-              borderRadius: "4px",
-              background: "#C2CCD680",
-              height: '40px',
-              width: "176px",
-              position: "relative",
-              overflow: "hidden",
-              "&:hover":{
-                background: "#C2CCD680",
-              }
-            }}
-          >
-            <Box
+
+        {
+          isQuickMode
+          ?
+            <Box>
+            <Button
               sx={{
+                borderRadius: "4px",
                 background: "#C2CCD680",
-                height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                borderRadius: theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
-                width:
-                  calculatePercentage
-                    ? `${calculatePercentage}%`
-                    : "0%",
-                transition: "all 1s ease-in-out",
+                height: '40px',
+                width: "176px",
+                position: "relative",
+                overflow: "hidden",
+                "&:hover":{
+                  background: "#C2CCD680",
+                }
               }}
             >
-            </Box>
-            <Typography
-              sx={{
-                textTransform: "capitalize",
-                color: "#3D4D5C80"
-              }}
-            >
-              <Trans i18nKey={"viewReport"} />
+              <Box
+                sx={{
+                  background: "#C2CCD680",
+                  height: "100%",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  borderRadius: theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
+                  width:
+                    calculatePercentage
+                      ? `${calculatePercentage}%`
+                      : "0%",
+                  transition: "all 1s ease-in-out",
+                }}
+              >
+              </Box>
+              <Typography
+                sx={{
+                  textTransform: "capitalize",
+                  color: "#3D4D5C80"
+                }}
+              >
+                <Trans i18nKey={"viewReport"} />
+              </Typography>
+            </Button>
+            <Typography sx={{...theme.typography.labelMedium, color: "#FF9000"}}>
+              { (assessmentTotalProgress?.data?.questionsCount - assessmentTotalProgress?.data?.answersCount) ?? 0} <Trans i18nKey={"more answers needed!"} />
             </Typography>
-          </Button>
-          <Typography sx={{...theme.typography.labelMedium, color: "#FF9000"}}>
-            { (assessmentTotalProgress?.data?.questionsCount - assessmentTotalProgress?.data?.answersCount) ?? 0} <Trans i18nKey={"more answers needed!"} />
-          </Typography>
-        </Box>
-        {/*<QuestionsFilteringDropdown*/}
-        {/*  setOriginalItem={setOriginalItem}*/}
-        {/*  originalItem={originalItem}*/}
-        {/*  itemNames={itemNames}*/}
-        {/*  filteredItem={state}*/}
-        {/*/>*/}
+          </Box>
+            :
+            <QuestionsFilteringDropdown
+              setOriginalItem={setOriginalItem}
+              originalItem={originalItem}
+              itemNames={itemNames}
+              filteredItem={state}
+            />
+        }
       </Box>
       <Box>
         <Divider sx={{ borderColor: "white", opacity: 0.4, mt: 1, mb: 1 }} />
