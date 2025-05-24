@@ -18,6 +18,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useState } from "react";
 import { styles } from "@styles";
 import { useLocation } from "react-router-dom";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -56,6 +58,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
     allSelected,
     filteredItem,
   } = props;
+  const { assessmentInfo } = useAssessmentContext();
   const [issues, setIssues] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
     const {
@@ -132,7 +135,10 @@ export const QuestionsFilteringDropdown = (props: any) => {
   return (
     <Box
       sx={{
-        display: "flex",
+        display:
+          ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code
+            ? "flex"
+            : "none",
         justifyContent: "flex-start",
         alignItems: "center",
         gap: 2,
