@@ -137,7 +137,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
     setValue(newValue);
   };
 
-  const assessmentMode = useMemo(()=>{
+  const advanceMode = useMemo(()=>{
     return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code
   },[assessmentInfo?.mode?.code])
 
@@ -199,11 +199,11 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             setDisabledConfidence={setDisabledConfidence}
             selcetedConfidenceLevel={selcetedConfidenceLevel}
             confidenceLebels={confidenceLebels}
-            assessmentMode={assessmentMode}
+            advanceMode={advanceMode}
           />
         </Box>
       </Paper>
-      {assessmentMode && (
+      {advanceMode && (
         <Box sx={{ px: { xs: 2, sm: 0 } }}>
           <Box
             sx={{
@@ -682,7 +682,7 @@ const AnswerTemplate = (props: {
   setDisabledConfidence: any;
   selcetedConfidenceLevel: any;
   confidenceLebels: any;
-  assessmentMode: boolean
+  advanceMode: boolean
 }) => {
   const { submitOnAnswerSelection, isSubmitting } = useQuestionContext();
   const {
@@ -697,7 +697,7 @@ const AnswerTemplate = (props: {
     setDisabledConfidence,
     selcetedConfidenceLevel,
     confidenceLebels,
-    assessmentMode
+    advanceMode
   } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
@@ -900,12 +900,16 @@ const AnswerTemplate = (props: {
   const isLTR = theme.direction === "ltr";
 
   const handleForwardClick = () => {
-    if (isLTR) {
-      isSelectedValueTheSameAsAnswer
-        ? goToQuestion("asc")
-        : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
-    } else {
-      goToQuestion("desc");
+    if(advanceMode){
+      if (isLTR) {
+        isSelectedValueTheSameAsAnswer
+          ? goToQuestion("asc")
+          : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
+      } else {
+        goToQuestion("desc");
+      }
+    }else {
+      submitQuestion()
     }
   };
 
@@ -1097,7 +1101,7 @@ const AnswerTemplate = (props: {
         }}
       >
         {
-          assessmentMode && <Box
+          advanceMode && <Box
             sx={{
               ...styles.centerVH,
             }}
