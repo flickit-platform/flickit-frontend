@@ -198,10 +198,10 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
 
   const { assessmentInfo } = useAssessmentContext()
 
-  const [isQuickMode, setQuickMode ] = useState(false);
+  const [isQuickMode, setisQuickMode ] = useState(false);
 
   useEffect(() => {
-    setQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK)
+    setisQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK)
   }, [assessmentInfo?.mode?.code]);
 
   const { state } = useLocation();
@@ -298,7 +298,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
               </Typography>
             </Button>
             <Typography sx={{...theme.typography.labelMedium, color: "#FF9000"}}>
-              { (assessmentTotalProgress?.data?.questionsCount - assessmentTotalProgress?.data?.answersCount) ?? 0} <Trans i18nKey={"more answers needed!"} />
+              { (assessmentTotalProgress?.data?.questionsCount - assessmentTotalProgress?.data?.answersCount) || 0} <Trans i18nKey={"more answers needed!"} />
             </Typography>
           </Box>
             :

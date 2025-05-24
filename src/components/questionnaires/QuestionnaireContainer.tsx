@@ -11,10 +11,6 @@ const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =
     useQuestionnaire();
 
-  const progress =
-    ((assessmentTotalProgress?.data?.answersCount ?? 0) /
-      (assessmentTotalProgress?.data?.questionsCount || 1)) *
-    100;
 
   return (
     <PermissionControl

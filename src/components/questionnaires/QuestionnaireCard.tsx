@@ -7,7 +7,6 @@ import QANumberIndicator from "@common/QANumberIndicator";
 import QuestionnaireProgress from "@common/progress/CategoryProgress";
 import { Link } from "react-router-dom";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
-import ModeEditOutlineRoundedIcon from "@mui/icons-material/ModeEditOutlineRounded";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { IPermissions, IQuestionnairesInfo, TId } from "@/types/index";
@@ -47,10 +46,8 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
     answerCount: number_of_answers,
     description,
     progress = 0,
-    subjects,
     nextQuestion,
   } = data ?? {};
-  const isSmallScreen = useScreenResize("sm");
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   const [collapse, setCollapse] = useState<boolean>(false);
 
