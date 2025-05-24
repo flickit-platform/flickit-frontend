@@ -12,9 +12,10 @@ import { useEffect, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
   ASSESSMENT_ACTIONS_TYPE,
-  assessmentActions,
-  useAssessmentDispatch,
+  assessmentActions, useAssessmentContext,
+  useAssessmentDispatch
 } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@utils/enumType";
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
@@ -23,6 +24,7 @@ const MainTabs = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
+  const { assessmentInfo } = useAssessmentContext()
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
 
   const fetchAssessmentPermissions = useQuery({
@@ -72,7 +74,7 @@ const MainTabs = (props: any) => {
             background: "#2466A814",
             width: "100%",
             borderRadius: "16px",
-            display: "flex",
+            display: assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ?  "none" :  "flex",
             alignItems: "center",
             justifyContent: "center",
             mt: 1,
