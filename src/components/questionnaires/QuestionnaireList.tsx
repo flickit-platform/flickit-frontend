@@ -59,6 +59,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
     allSelected,
     filteredItem,
   } = props;
+  const { assessmentInfo } = useAssessmentContext();
   const [issues, setIssues] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
     const {
@@ -135,7 +136,10 @@ export const QuestionsFilteringDropdown = (props: any) => {
   return (
     <Box
       sx={{
-        display: "flex",
+        display:
+          ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code
+            ? "flex"
+            : "none",
         justifyContent: "flex-start",
         alignItems: "center",
         gap: 2,

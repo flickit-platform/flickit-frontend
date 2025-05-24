@@ -10,7 +10,6 @@ import {
   useQuestionContext,
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
-import AssignmentTurnedInRoundedIcon from "@mui/icons-material/AssignmentTurnedInRounded";
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
@@ -51,7 +50,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
     questionsInfo: { total_number_of_questions },
     assessmentStatus,
   } = useQuestionContext();
-  const { questionIndex } = useParams();
+  const { questionIndex, questionnaireId } = useParams();
   const isComplete = questionIndex === "completed";
   const { questionnaire } = pathInfo;
   const { config } = useConfigContext();
@@ -71,7 +70,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
         config.appTitle,
       );
     }
-  }, [questionnaire, isComplete]);
+  }, [questionnaire, isComplete, questionnaireId]);
 
   useEffect(() => {
     if (initialQuestionsRef.current.length === 0) {
@@ -82,12 +81,14 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
       (currentItem: any, index: number) => {
         const initialItem = initialQuestionsRef.current[index];
         const updatedIssues = { ...currentItem.issues };
+        if (initialItem?.issues) {
+          Object.keys(initialItem?.issues).forEach((key) => {
+            if (!(key in updatedIssues)) {
+              updatedIssues[key] = initialItem?.issues[key];
+            }
+          });
+        }
 
-        Object.keys(initialItem.issues).forEach((key) => {
-          if (!(key in updatedIssues)) {
-            updatedIssues[key] = initialItem.issues[key];
-          }
-        });
         Object.keys(updatedIssues).forEach((key) => {
           if (!originalItem.includes(key)) {
             delete updatedIssues[key];
@@ -154,55 +155,28 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
           ></div>
         ) : (
           <>
-            {assessmentStatus === EAssessmentStatus.DONE && (
-              <AssignmentTurnedInRoundedIcon
-                sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
-                  opacity: 0.6,
-                }}
-                fontSize="large"
-              />
-            )}
             <Box display="block">
-              {assessmentStatus === EAssessmentStatus.DONE ? (
+              <Box sx={{ ...styles.centerVH }}>
+                <IconButton component={Link} to={isReview ? "./../.." : "./.."}>
+                  {theme.direction === "ltr" ? (
+                    <ArrowBack color="primary" />
+                  ) : (
+                    <ArrowForward color="primary" />
+                  )}
+                </IconButton>
                 <Typography
-                  display="inline-flex"
+                  display="inline-block"
                   variant="h5"
-                  sx={{
-                    fontWeight: "bold",
-                    opacity: 0.6,
-                    ml: { xs: 0, sm: 1 },
-                    alignItems: "center",
+                  fontWeight={"bold"}
+                  style={{
+                    fontFamily: languageDetector(questionnaire.title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                   }}
                 >
-                  <Trans i18nKey="questionnaireFinished" />
-                </Typography>
-              ) : (
-                <Box sx={{ ...styles.centerVH }}>
-                  <IconButton
-                    component={Link}
-                    to={isReview ? "./../.." : "./.."}
-                  >
-                    {theme.direction === "ltr" ? (
-                      <ArrowBack color="primary" />
-                    ) : (
-                      <ArrowForward color="primary" />
-                    )}
-                  </IconButton>
-                  <Typography
-                    display="inline-block"
-                    variant="h5"
-                    fontWeight={"bold"}
-                    style={{
-                      fontFamily: languageDetector(questionnaire.title)
-                        ? farsiFontFamily
-                        : primaryFontFamily,
-                    }}
-                  >
-                    {questionnaire.title}
-                    {" -"}
-                  </Typography>{" "}
+                  {questionnaire.title}
+                </Typography>{" "}
+                {assessmentStatus !== EAssessmentStatus.DONE && (
                   <Typography
                     display="inline-block"
                     variant="h5"
@@ -213,12 +187,12 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                       mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
                     }}
                   >
-                    {" "}
+                    {" - "}
                     <Trans i18nKey="question" /> {questionIndex}/
                     {total_number_of_questions}
                   </Typography>
-                </Box>
-              )}
+                )}
+              </Box>
             </Box>
           </>
         )}

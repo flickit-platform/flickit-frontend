@@ -461,6 +461,9 @@ export const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
         startIcon: {
           marginRight: is_farsi ? "-2px !important" : "8px !important",
           marginLeft: !is_farsi ? "-2px !important" : "8px !important",
