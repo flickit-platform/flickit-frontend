@@ -63,7 +63,7 @@ import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { evidenceAttachmentType } from "@utils/enumType";
+import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
@@ -80,6 +80,7 @@ import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDi
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { getReadableDate } from "@utils/readableDate";
+import { useAssessmentContext } from "@providers/AssessmentProvider";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -95,6 +96,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const [disabledConfidence, setDisabledConfidence] = useState<boolean>(true);
   const [confidenceLebels, setConfidenceLebels] = useState<any>([]);
   const { service } = useServiceContext();
+  const { assessmentInfo } = useAssessmentContext()
   const { config } = useConfigContext();
   useEffect(() => {
     return () => {
@@ -134,6 +136,10 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const assessmentMode = useMemo(()=>{
+    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code
+  },[assessmentInfo?.mode?.code])
 
   return (
     <Box>
@@ -203,163 +209,166 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             setDisabledConfidence={setDisabledConfidence}
             selcetedConfidenceLevel={selcetedConfidenceLevel}
             confidenceLebels={confidenceLebels}
+            assessmentMode={assessmentMode}
           />
         </Box>
       </Paper>
-      <Box sx={{ px: { xs: 2, sm: 0 } }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            background: `${notApplicable ? "#273248" : "#000000cc"}`,
-            flexDirection: { xs: "column", md: "row" },
-            borderRadius: " 0 0 8px 8px ",
-            px: { xs: 1.75, sm: 2, md: 2.5 },
-            py: { xs: 1.5, sm: 2.5 },
-          }}
-        >
-          <SubmitOnSelectCheckBox
-            disabled={!questionsInfo?.permissions?.answerQuestion}
-          />
+      {assessmentMode && (
+        <Box sx={{ px: { xs: 2, sm: 0 } }}>
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              justifyContent: "space-between",
+              background: `${notApplicable ? "#273248" : "#000000cc"}`,
               flexDirection: { xs: "column", md: "row" },
+              borderRadius: " 0 0 8px 8px ",
+              px: { xs: 1.75, sm: 2, md: 2.5 },
+              py: { xs: 1.5, sm: 2.5 },
             }}
           >
-            <QueryData
-              {...ConfidenceListQueryData}
-              loading={false}
-              error={false}
-              render={(data) => {
-                const labels = data.confidenceLevels;
-                setConfidenceLebels(labels);
-                return (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {selcetedConfidenceLevel !== null ? (
-                      <Box
-                        sx={{
-                          marginRight: theme.direction === "ltr" ? 2 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 2 : "unset",
-                          color: "#fff",
-                        }}
-                      >
+            {/*todo*/}
+            {/*<SubmitOnSelectCheckBox*/}
+            {/*  disabled={!questionsInfo?.permissions?.answerQuestion}*/}
+            {/*/>*/}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: { xs: "column", md: "row" },
+              }}
+            >
+              <QueryData
+                {...ConfidenceListQueryData}
+                loading={false}
+                error={false}
+                render={(data) => {
+                  const labels = data.confidenceLevels;
+                  setConfidenceLebels(labels);
+                  return (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {selcetedConfidenceLevel !== null ? (
                         <Box
-                          sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
+                          sx={{
+                            marginRight: theme.direction === "ltr" ? 2 : "unset",
+                            marginLeft: theme.direction === "rtl" ? 2 : "unset",
+                            color: "#fff",
+                          }}
                         >
-                          <Trans
-                            i18nKey={
-                              questionsInfo?.permissions?.answerQuestion
-                                ? "selcetConfidenceLevel"
-                                : "confidenceLevel"
-                            }
-                          />
-                          <Typography
-                            fontWeight={900}
-                            sx={{ borderBottom: "1px solid", mx: 1 }}
+                          <Box
+                            sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
                           >
                             <Trans
-                              i18nKey={toCamelCase(
-                                `${labels[selcetedConfidenceLevel - 1]?.title}`,
-                              )}
+                              i18nKey={
+                                questionsInfo?.permissions?.answerQuestion
+                                  ? "selcetConfidenceLevel"
+                                  : "confidenceLevel"
+                              }
+                            />
+                            <Typography
+                              fontWeight={900}
+                              sx={{ borderBottom: "1px solid", mx: 1 }}
+                            >
+                              <Trans
+                                i18nKey={toCamelCase(
+                                  `${labels[selcetedConfidenceLevel - 1]?.title}`,
+                                )}
+                              />
+                            </Typography>
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            marginInlineEnd: 1,
+                            color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
+                          }}
+                        >
+                          <Typography>
+                            <Trans
+                              i18nKey={
+                                disabledConfidence
+                                  ? "selectConfidenceLevel"
+                                  : "toContinueToSubmitAnAnswer"
+                              }
                             />
                           </Typography>
                         </Box>
+                      )}
+                      <Box sx={{ position: "relative" }}>
+                        <Rating
+                          disabled
+                          value={Number(answer?.confidenceLevel?.id)}
+                          size="medium"
+                          icon={
+                            <RadioButtonCheckedRoundedIcon
+                              sx={{
+                                mx: 0.25,
+                                color: "transparent",
+                                borderRadius: "100%",
+                                border: "2px solid #42a5f5",
+                              }}
+                              fontSize="inherit"
+                            />
+                          }
+                          emptyIcon={
+                            <RadioButtonUncheckedRoundedIcon
+                              sx={{ mx: 0.25, color: "#fff" }}
+                              fontSize="inherit"
+                            />
+                          }
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            zIndex: 1,
+                          }}
+                        />
+                        <Rating
+                          disabled={!questionsInfo?.permissions?.answerQuestion}
+                          value={
+                            selcetedConfidenceLevel !== null
+                              ? selcetedConfidenceLevel
+                              : null
+                          }
+                          size="medium"
+                          onChange={(event, newValue) => {
+                            dispatch(
+                              questionActions.setSelectedConfidenceLevel(
+                                newValue,
+                              ),
+                            );
+                          }}
+                          icon={
+                            <RadioButtonCheckedRoundedIcon
+                              sx={{ mx: 0.25, color: "#42a5f5" }}
+                              fontSize="inherit"
+                            />
+                          }
+                          emptyIcon={
+                            <RadioButtonUncheckedRoundedIcon
+                              sx={{ mx: 0.25, color: "transparent" }}
+                              fontSize="inherit"
+                            />
+                          }
+                          sx={{
+                            position: "relative",
+                            zIndex: 2,
+                          }}
+                        />
                       </Box>
-                    ) : (
-                      <Box
-                        sx={{
-                          marginInlineEnd: 1,
-                          color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
-                        }}
-                      >
-                        <Typography>
-                          <Trans
-                            i18nKey={
-                              disabledConfidence
-                                ? "selectConfidenceLevel"
-                                : "toContinueToSubmitAnAnswer"
-                            }
-                          />
-                        </Typography>
-                      </Box>
-                    )}
-                    <Box sx={{ position: "relative" }}>
-                      <Rating
-                        disabled
-                        value={Number(answer?.confidenceLevel?.id)}
-                        size="medium"
-                        icon={
-                          <RadioButtonCheckedRoundedIcon
-                            sx={{
-                              mx: 0.25,
-                              color: "transparent",
-                              borderRadius: "100%",
-                              border: "2px solid #42a5f5",
-                            }}
-                            fontSize="inherit"
-                          />
-                        }
-                        emptyIcon={
-                          <RadioButtonUncheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "#fff" }}
-                            fontSize="inherit"
-                          />
-                        }
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          zIndex: 1,
-                        }}
-                      />
-
-                      <Rating
-                        disabled={!questionsInfo?.permissions?.answerQuestion}
-                        value={
-                          selcetedConfidenceLevel !== null
-                            ? selcetedConfidenceLevel
-                            : null
-                        }
-                        size="medium"
-                        onChange={(event, newValue) => {
-                          dispatch(
-                            questionActions.setSelectedConfidenceLevel(
-                              newValue,
-                            ),
-                          );
-                        }}
-                        icon={
-                          <RadioButtonCheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "#42a5f5" }}
-                            fontSize="inherit"
-                          />
-                        }
-                        emptyIcon={
-                          <RadioButtonUncheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "transparent" }}
-                            fontSize="inherit"
-                          />
-                        }
-                        sx={{
-                          position: "relative",
-                          zIndex: 2,
-                        }}
-                      />
                     </Box>
-                  </Box>
-                );
-              }}
-            />
+                  );
+                }}
+              />
+            </Box>
           </Box>
         </Box>
-      </Box>
+      )}
       <QuestionTabsTemplate
         value={value}
         setValue={setValue}
@@ -683,6 +692,7 @@ const AnswerTemplate = (props: {
   setDisabledConfidence: any;
   selcetedConfidenceLevel: any;
   confidenceLebels: any;
+  assessmentMode: boolean
 }) => {
   const { submitOnAnswerSelection, isSubmitting } = useQuestionContext();
   const {
@@ -697,6 +707,7 @@ const AnswerTemplate = (props: {
     setDisabledConfidence,
     selcetedConfidenceLevel,
     confidenceLebels,
+    assessmentMode
   } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
@@ -1020,11 +1031,6 @@ const AnswerTemplate = (props: {
                             ? "#CC7400"
                             : "#0ec586",
                       },
-                      backgroundImage: !isSelectedValueTheSameAsAnswer
-                        ? "#0ec586"
-                        : !answer?.approved && permissions?.approveAnswer
-                          ? null
-                          : `url(${AnswerSvg})`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "right",
                       color: "white",
@@ -1032,7 +1038,7 @@ const AnswerTemplate = (props: {
                         ? "#0ec586"
                         : !answer?.approved && permissions?.approveAnswer
                           ? "#CC7400"
-                          : "#0acb89",
+                          : theme.palette.success.main,
                       borderColor: "transparent",
                       zIndex: 2,
                       position: "relative",
@@ -1101,31 +1107,33 @@ const AnswerTemplate = (props: {
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            ...styles.centerVH,
-          }}
-          gap={2}
-        >
-          <LoadingButton
-            variant="contained"
-            loading={isSubmitting}
+        {
+          assessmentMode && <Box
             sx={{
-              fontSize: "1.2rem",
-              "&.Mui-disabled": {
-                background: "#C2CCD650",
-                color: "black",
-              },
+              ...styles.centerVH,
             }}
-            onClick={submitQuestion}
-            disabled={
-              isSelectedValueTheSameAsAnswer ||
-              ((value || notApplicable) && !selcetedConfidenceLevel)
-            }
+            gap={2}
           >
-            <Trans i18nKey="submit" />
-          </LoadingButton>{" "}
-        </Box>
+            <LoadingButton
+              variant="contained"
+              loading={isSubmitting}
+              sx={{
+                fontSize: "1.2rem",
+                "&.Mui-disabled": {
+                  background: "#C2CCD650",
+                  color: "black",
+                },
+              }}
+              onClick={submitQuestion}
+              disabled={
+                isSelectedValueTheSameAsAnswer ||
+                ((value || notApplicable) && !selcetedConfidenceLevel)
+              }
+            >
+              <Trans i18nKey="submit" />
+            </LoadingButton>{" "}
+          </Box>
+        }
         {isSelectedValueTheSameAsAnswer &&
           value &&
           answer?.hasOwnProperty("approved") &&
