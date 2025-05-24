@@ -15,7 +15,7 @@ import { t } from "i18next";
 import { theme } from "@config/theme";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { styles } from "@styles";
 import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -196,12 +196,12 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const [originalItem, setOriginalItem] = useState<string[]>([]);
   const [calculatePercentage, setCalculatePercentage] = useState<any>();
 
-  const { assessmentInfo } = useAssessmentContext()
+  const { assessmentInfo } = useAssessmentContext();
 
-  const [isQuickMode, setisQuickMode ] = useState(false);
+  const [isQuickMode, setIsQuickMode] = useState(false);
 
   useEffect(() => {
-    setisQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK)
+    setIsQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK);
   }, [assessmentInfo?.mode?.code]);
 
   const { state } = useLocation();
@@ -212,10 +212,100 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
     }
   }, []);
 
+  const calcLeftQuestion = useMemo(() => {
+    return (
+      assessmentTotalProgress?.data?.questionsCount -
+      assessmentTotalProgress?.data?.answersCount
+    );
+  }, [
+    assessmentTotalProgress?.data?.questionsCount,
+    assessmentTotalProgress?.data?.answersCount,
+  ]);
+
+  const ProgressButton = () => {
+    return (
+      <Box>
+        {calcLeftQuestion > 0 ? (
+          <Box>
+            <Button
+              sx={{
+                borderRadius: "4px",
+                background: "#C2CCD680",
+                height: "40px",
+                width: "176px",
+                position: "relative",
+                overflow: "hidden",
+                "&:hover": {
+                  background: "#C2CCD680",
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  background: "#C2CCD680",
+                  height: "100%",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  borderRadius:
+                    theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
+                  width: calculatePercentage ? `${calculatePercentage}%` : "0%",
+                  transition: "all 1s ease-in-out",
+                }}
+              ></Box>
+              <Typography
+                sx={{
+                  textTransform: "capitalize",
+                  color: "#3D4D5C80",
+                }}
+              >
+                <Trans i18nKey={"viewReport"} />
+              </Typography>
+            </Button>
+            <Typography
+              sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
+            >
+              {calcLeftQuestion || 0} <Trans i18nKey={"more answers needed!"} />
+            </Typography>
+          </Box>
+        ) : (
+          <Button
+            sx={{
+              borderRadius: "4px",
+              background: "#F3F5F6",
+              height: "40px",
+              width: "176px",
+              position: "relative",
+              overflow: "hidden",
+              boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
+              "&:hover": {
+                background: "#F3F5F6",
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                textTransform: "capitalize",
+                color: theme.palette.primary.main,
+              }}
+            >
+              <Trans i18nKey={"viewReport"} />
+            </Typography>
+          </Button>
+        )}
+      </Box>
+    );
+  };
+
   return (
     <>
-      <Box display={"flex"} alignItems={"center"} justifyContent="space-between"
-      sx={{px:{sm: "10px" }}}
+      <Box
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent="space-between"
+        sx={{ px: { sm: "10px" } }}
       >
         <Box
           minWidth="130px"
@@ -230,85 +320,42 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             },
           }}
         >
-          <Typography variant={"titleLarge"} color="white" >
-            <Trans i18nKey={"questionnaire"} />{"  "}
-            (<QueryData
-            {...(assessmentTotalProgress ?? {})}
-            errorComponent={<></>}
-            renderLoading={() => <Skeleton width="60px" height="36px" />}
-            render={(data) => {
-              const { questionsCount = 0, answersCount= 0 } = data ?? {};
-              const calc = (answersCount / questionsCount) * 100;
-              setCalculatePercentage(calc.toFixed(2));
+          <Typography variant={"titleLarge"} color="white">
+            <Trans i18nKey={"questionnaire"} />
+            {"  "}
+            (
+            <QueryData
+              {...(assessmentTotalProgress ?? {})}
+              errorComponent={<></>}
+              renderLoading={() => <Skeleton width="60px" height="36px" />}
+              render={(data) => {
+                const { questionsCount = 0, answersCount = 0 } = data ?? {};
+                const calc = (answersCount / questionsCount) * 100;
+                setCalculatePercentage(calc.toFixed(2));
 
-              return (
-                <QANumberIndicator
-                  color="white"
-                  q={questionsCount}
-                  variant={"titleLarge"}
-                />
-              );
-            }}
-          />)
+                return (
+                  <QANumberIndicator
+                    color="white"
+                    q={questionsCount}
+                    variant={"titleLarge"}
+                  />
+                );
+              }}
+            />
+            )
           </Typography>
         </Box>
 
-        {
-          isQuickMode
-          ?
-            <Box>
-            <Button
-              sx={{
-                borderRadius: "4px",
-                background: "#C2CCD680",
-                height: '40px',
-                width: "176px",
-                position: "relative",
-                overflow: "hidden",
-                "&:hover":{
-                  background: "#C2CCD680",
-                }
-              }}
-            >
-              <Box
-                sx={{
-                  background: "#C2CCD680",
-                  height: "100%",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  borderRadius: theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
-                  width:
-                    calculatePercentage
-                      ? `${calculatePercentage}%`
-                      : "0%",
-                  transition: "all 1s ease-in-out",
-                }}
-              >
-              </Box>
-              <Typography
-                sx={{
-                  textTransform: "capitalize",
-                  color: "#3D4D5C80"
-                }}
-              >
-                <Trans i18nKey={"viewReport"} />
-              </Typography>
-            </Button>
-            <Typography sx={{...theme.typography.labelMedium, color: "#FF9000"}}>
-              { (assessmentTotalProgress?.data?.questionsCount - assessmentTotalProgress?.data?.answersCount) || 0} <Trans i18nKey={"more answers needed!"} />
-            </Typography>
-          </Box>
-            :
-            <QuestionsFilteringDropdown
-              setOriginalItem={setOriginalItem}
-              originalItem={originalItem}
-              itemNames={itemNames}
-              filteredItem={state}
-            />
-        }
+        {isQuickMode ? (
+          <ProgressButton />
+        ) : (
+          <QuestionsFilteringDropdown
+            setOriginalItem={setOriginalItem}
+            originalItem={originalItem}
+            itemNames={itemNames}
+            filteredItem={state}
+          />
+        )}
       </Box>
       <Box>
         <Divider sx={{ borderColor: "white", opacity: 0.4, mt: 1, mb: 1 }} />
