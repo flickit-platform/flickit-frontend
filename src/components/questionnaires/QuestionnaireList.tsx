@@ -198,9 +198,11 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
 
   const { assessmentInfo } = useAssessmentContext()
 
-  const [isQuickMode, ] = useState(
-    assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK,
-  );
+  const [isQuickMode, setQuickMode ] = useState(false);
+
+  useEffect(() => {
+    setQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK)
+  }, [assessmentInfo?.mode?.code]);
 
   const { state } = useLocation();
 
