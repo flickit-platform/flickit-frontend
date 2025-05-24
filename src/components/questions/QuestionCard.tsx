@@ -6,7 +6,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate, useParams } from "react-router-dom";
-import QASvg from "@assets/svg/qa.svg";
 import AnswerSvg from "@assets/svg/answer.svg";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -183,7 +182,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           >
             {title.split("\n").map((line) => (
               <React.Fragment key={line}>
-                {line}
+                {questionIndex}.{" "}{line}
                 <br />
               </React.Fragment>
             ))}

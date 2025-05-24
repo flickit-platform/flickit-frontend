@@ -176,23 +176,6 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                 >
                   {questionnaire.title}
                 </Typography>{" "}
-                {assessmentStatus !== EAssessmentStatus.DONE && (
-                  <Typography
-                    display="inline-block"
-                    sx={{
-                      ...theme.typography.titleLarge,
-                      color: "#6C8093",
-                      ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
-                      mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
-                    }}
-                  >
-                    {" "}
-                    <Trans i18nKey="question" /> {questionIndex} {t("from")}{" "}
-                    {" - "}
-                    <Trans i18nKey="question" /> {questionIndex}/
-                    {total_number_of_questions}
-                  </Typography>
-                )}
               </Box>
             </Box>
           </>
