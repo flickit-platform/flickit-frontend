@@ -169,22 +169,12 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           <Typography
             variant="h4"
             letterSpacing={is_farsi ? "0" : ".05em"}
-            sx={
-              is_farsi
-                ? {
-                    pt: 0.5,
-                    fontSize: "2rem",
-                    fontFamily: { xs: "Vazirmatn", lg: "Vazirmatn" },
-                    direction: "rtl",
-                    px: 6,
-                  }
-                : {
-                    pt: 0.5,
-                    fontSize: "2rem",
-                    direction: "ltr",
-                    px: 6,
-                  }
-            }
+            sx={{
+                ...theme.typography.semiBoldXLarge,
+                pt: 0.5,
+                px: 6,
+                direction: is_farsi ? "rtl" : "ltr"
+            }}
           >
             {title.split("\n").map((line) => (
               <React.Fragment key={line}>
@@ -981,7 +971,7 @@ const AnswerTemplate = (props: {
           }}
           flexWrap={"wrap"}
         >
-          {options?.map((option: any, index: number) => {
+          {options?.map((option: any) => {
             const { index: defaultSelectedIndex, title } = option ?? {};
             return (
               <Box
@@ -1004,12 +994,11 @@ const AnswerTemplate = (props: {
                     !permissions?.answerQuestion
                   }
                   sx={{
+                    ...theme.typography.titleMedium,
                     letterSpacing: `${is_farsi ? "0" : ".05em"}`,
                     color: "white",
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
-                    fontSize: { xs: "1.15rem", sm: "1.3rem" },
-                    fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
                     boxShadow: `0 0 2px ${
                       answer?.selectedOption?.index === defaultSelectedIndex
@@ -1029,7 +1018,7 @@ const AnswerTemplate = (props: {
                           ? "#0ec586"
                           : !answer?.approved && permissions?.approveAnswer
                             ? "#CC7400"
-                            : "#0ec586",
+                            : theme.palette.success.main,
                       },
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "right",
