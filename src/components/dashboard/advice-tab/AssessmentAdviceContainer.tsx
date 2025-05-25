@@ -96,7 +96,7 @@ const AssessmentAdviceContainer = (props: any) => {
       render={([narrationComponent]) => {
 
         return (
-          <Box mt={4}>
+          <Box>
             <AdviceDialog
               loading={loading}
               open={expanded}

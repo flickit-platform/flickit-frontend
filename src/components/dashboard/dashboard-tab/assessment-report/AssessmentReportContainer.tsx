@@ -11,13 +11,13 @@ import LoadingSkeletonOfAssessmentReport from "@common/loadings/LoadingSkeletonO
 import { RolesType } from "@/types/index";
 import { styles } from "@styles";
 import { AssessmentInsight } from "./AssessmentInsight";
-import PermissionControl from "../common/PermissionControl";
+import PermissionControl from "../../../common/PermissionControl";
 import { t } from "i18next";
-import { Gauge } from "../common/charts/Gauge";
+import { Gauge } from "../../../common/charts/Gauge";
 import { Trans } from "react-i18next";
-import { IssuesItem } from "../dashboard/dashboard-tab/todoBox";
+import { IssuesItem } from "../todoBox";
 import uniqueId from "@/utils/uniqueId";
-import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
+import { LoadingSkeleton } from "../../../common/loadings/LoadingSkeleton";
 
 const AssessmentReportContainer = (props: any) => {
   const { service } = useServiceContext();
@@ -108,7 +108,7 @@ const AssessmentReportContainer = (props: any) => {
             assessmentTotalProgress.data ?? {};
           return (
             <Box m="auto">
-              <Grid container spacing={1} mt="32px">
+              <Grid container spacing={1}>
                 {Object.entries(issues).map(([key, value]) => {
                   return (
                     <Grid

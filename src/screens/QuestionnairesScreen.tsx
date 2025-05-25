@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { QuestionnaireContainer } from "@components/questionnaires/QuestionnaireContainer";
+import { QuestionnaireContainer } from "@/components/dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const QuestionnairesScreen = () => {

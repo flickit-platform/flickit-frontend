@@ -112,25 +112,23 @@ export const QuestionsFilteringDropdown = (props: any) => {
           <Trans i18nKey={"all"} />
         </Typography>
       );
+    } else if (selected.length == 1) {
+      return selected.join(", ");
     } else {
-      if (selected.length == 1) {
-        return selected.join(", ");
-      } else {
-        return (
-          <Box
-            sx={{
-              ...theme.typography.semiBoldMedium,
-              color: "#333333",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <Trans i18nKey={"selectedIssuesType"} />:
-            <Typography>{selected.length}</Typography>
-          </Box>
-        );
-      }
+      return (
+        <Box
+          sx={{
+            ...theme.typography.semiBoldMedium,
+            color: "#333333",
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Trans i18nKey={"selectedIssuesType"} />:
+          <Typography>{selected.length}</Typography>
+        </Box>
+      );
     }
   };
   return (
@@ -191,8 +189,8 @@ export const QuestionsFilteringDropdown = (props: any) => {
   );
 };
 
-const ProgressButton = (props:any) => {
-  const { leftQuestions, calculatePercentage  } = props
+const ProgressButton = (props: any) => {
+  const { leftQuestions, calculatePercentage } = props;
   return (
     <Box>
       {leftQuestions > 0 ? (
@@ -234,9 +232,16 @@ const ProgressButton = (props:any) => {
             </Typography>
           </Button>
           <Typography
-            sx={{ ...theme.typography.labelMedium, color: "#FF9000", textAlign: "center" }}
+            sx={{
+              ...theme.typography.labelMedium,
+              color: "#FF9000",
+              textAlign: "center",
+            }}
           >
-            <Trans i18nKey={"moreAnswersNeeded"} values={{count : leftQuestions}} />
+            <Trans
+              i18nKey={"moreAnswersNeeded"}
+              values={{ count: leftQuestions }}
+            />
           </Typography>
         </Box>
       ) : (
@@ -295,12 +300,17 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   }, [
     assessmentTotalProgress?.data?.questionsCount,
     assessmentTotalProgress?.data?.answersCount,
-  ])
+  ]);
 
   return (
     <>
       <Box
-        sx={{...styles.centerH, alignItems: "flex-start", justifyContent: "space-between", px: { sm: "10px" } }}
+        sx={{
+          ...styles.centerH,
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          px: { sm: "10px" },
+        }}
       >
         <Box
           minWidth="130px"
@@ -342,7 +352,10 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton calculatePercentage={calculatePercentage} leftQuestions={leftQuestions} />
+          <ProgressButton
+            calculatePercentage={calculatePercentage}
+            leftQuestions={leftQuestions}
+          />
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}

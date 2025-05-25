@@ -10,8 +10,8 @@ import { Trans } from "react-i18next";
 import { useQuery } from "@/utils/useQuery";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
-import { EditableRichEditor } from "../common/fields/EditableRichEditor";
-import ActionPopup from "../common/buttons/ActionPopup";
+import { EditableRichEditor } from "../../../common/fields/EditableRichEditor";
+import ActionPopup from "../../../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 
 export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {

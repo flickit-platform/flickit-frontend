@@ -1,17 +1,14 @@
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import { Link, useParams } from "react-router-dom";
-import Box from "@mui/material/Box";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { useAssessmentContext } from "@providers/AssessmentProvider";
-import { ASSESSMENT_MODE } from "@utils/enumType";
+import { styles } from "@styles";
+import { IconButton } from "@mui/material";
 
 const DashboardTitle = (props: any) => {
-  const { pathInfo } = props;
+  const { pathInfo, title } = props;
   const { spaceId, page } = useParams();
-  const { space, assessment } = pathInfo;
-
-  const { assessmentInfo } = useAssessmentContext();
+  const { space } = pathInfo;
 
   return (
     <Title
@@ -20,7 +17,7 @@ const DashboardTitle = (props: any) => {
         sx: {
           flexDirection: { xs: "column", md: "row" },
           alignItems: { xs: "flex-start", md: "flex-end" },
-          justifyContent: "center"
+          justifyContent: "center",
         },
       }}
       sup={
@@ -31,17 +28,19 @@ const DashboardTitle = (props: any) => {
               to: `/${spaceId}/assessments/${page}`,
             },
             {
-              title: `${assessment?.title}`,
+              title: `${title}`,
             },
           ]}
           displayChip
         />
       }
-     toolbar={
-       <Box component={Link} to={"settings"}>
-         <SettingsOutlinedIcon sx={{display: assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ? "flex" : "none", alignSelf: "center", color: "#6C8093"}} />
-       </Box>
-     }
+      toolbar={
+        <IconButton component={Link} to={"settings"}>
+          <SettingsOutlinedIcon
+            sx={{ ...styles.centerCVH, color: "#6C8093" }}
+          />
+        </IconButton>
+      }
     ></Title>
   );
 };

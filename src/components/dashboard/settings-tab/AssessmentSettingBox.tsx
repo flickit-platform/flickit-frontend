@@ -37,7 +37,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@utils/selectHeight";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
@@ -55,43 +54,81 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 
-export const AssessmentSettingGeneralBox = (props: {
+type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";
+
+interface Props {
   AssessmentTitle: string;
   fetchPathInfo: () => void;
-  color: any;
-}) => {
-  const { AssessmentTitle, fetchPathInfo, color } = props;
+  color: string;
+}
 
-  const title = ["creator", "assessmentKit", "created", "lastModified"];
+const infoFields: { key: InfoField; i18n: string }[] = [
+  { key: "creator", i18n: "creator" },
+  { key: "assessmentKit", i18n: "assessmentKit" },
+  { key: "created", i18n: "created" },
+  { key: "lastModified", i18n: "lastModified" },
+];
+
+function getInfoFieldValue(
+  field: InfoField,
+  assessmentInfo: any,
+  getReadableDate: (time: number) => string,
+) {
+  switch (field) {
+    case "creator":
+      return assessmentInfo?.createdBy?.displayName ?? "-";
+    case "assessmentKit":
+      return assessmentInfo?.kit?.title ? (
+        <Link
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            fontFamily: languageDetector(assessmentInfo?.kit?.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
+          }}
+          to={`/assessment-kits/${assessmentInfo?.kit?.id}`}
+        >
+          {assessmentInfo.kit.title}
+        </Link>
+      ) : (
+        "-"
+      );
+    case "created":
+      return assessmentInfo?.creationTime
+        ? getReadableDate(assessmentInfo.creationTime)
+        : "-";
+    case "lastModified":
+      return assessmentInfo?.lastModificationTime
+        ? getReadableDate(assessmentInfo.lastModificationTime)
+        : "-";
+    default:
+      return "-";
+  }
+}
+
+// ---- Main component ----
+export const AssessmentSettingGeneralBox: React.FC<Props> = ({
+  AssessmentTitle,
+  fetchPathInfo,
+  color,
+}) => {
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentInfo } = useAssessmentContext();
 
   return (
-    <Box
-      sx={{
-        ...styles.boxStyle,
-      }}
-      gap={2}
-    >
+    <Box sx={{ ...styles.boxStyle }} gap={2}>
       <Box height={"100%"} width={"100%"}>
         <Typography
-          sx={{
-            width: "100%",
-            display: "inline-block",
-          }}
+          sx={{ width: "100%", display: "inline-block" }}
           color="#2B333B"
           variant="headlineSmall"
         >
           <Trans i18nKey="general" />
         </Typography>
 
-        <Divider
-          sx={{
-            width: "100%",
-            marginTop: "24px",
-            marginBottom: "10px !important",
-          }}
-        />
+        <Divider sx={{ width: "100%", mt: "24px", mb: "10px !important" }} />
+
         <Grid container spacing={2} sx={{ ...styles.centerH }}>
           <Grid
             item
@@ -103,15 +140,9 @@ export const AssessmentSettingGeneralBox = (props: {
               alignItems: "center",
             }}
           >
-            <Typography
-              sx={{
-                ...theme.typography.semiBoldLarge,
-              }}
-              color="#2B333B"
-            >
+            <Typography sx={theme.typography.semiBoldLarge} color="#2B333B">
               <Trans i18nKey="assessmentTitle" />
             </Typography>
-
             <Box
               sx={{
                 ...styles.centerVH,
@@ -125,7 +156,7 @@ export const AssessmentSettingGeneralBox = (props: {
                 infoQuery={fetchPathInfo}
                 editable={true}
                 color={color}
-                type={"title"}
+                type="title"
               />
             </Box>
           </Grid>
@@ -139,11 +170,9 @@ export const AssessmentSettingGeneralBox = (props: {
             >
               <Box sx={{ ...styles.centerVH }} color="#6C8093" gap={1}>
                 <Typography
-                  sx={{
-                    ...theme.typography.semiBoldLarge,
-                  }}
+                  sx={theme.typography.semiBoldLarge}
                   color="#2B333B"
-                  lineHeight={"normal"}
+                  lineHeight="normal"
                 >
                   <Trans i18nKey="shortTitle" />
                 </Typography>
@@ -170,83 +199,62 @@ export const AssessmentSettingGeneralBox = (props: {
                   infoQuery={fetchPathInfo}
                   editable={true}
                   color={color}
-                  type={"shortTitle"}
+                  type="shortTitle"
                 />
               </Box>
             </Grid>
           </Grid>
         </Grid>
-        <Divider
-          sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
-        />
+
+        <Divider sx={{ width: "100%", mb: "24px", mt: "10px" }} />
+
         <Grid container spacing={2}>
           <Grid item>
             <QuickAssessmentSwitch />
           </Grid>
         </Grid>
-        <Divider
-          sx={{ width: "100%", marginBottom: "24px", marginTop: "10px" }}
-        />
+
+        <Divider sx={{ width: "100%", mb: "24px", mt: "10px" }} />
+
         <Grid container spacing={2} sx={{ ...styles.centerH }}>
-          {title.map((itemList: string, index: number) => {
-            return (
-              <Grid
-                key={uniqueId()}
-                item
-                xs={12}
-                md={6}
+          {infoFields.map((field) => (
+            <Grid
+              key={field.key}
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: "10px",
+              }}
+            >
+              <Typography
+                color="#6C8093"
+                whiteSpace="nowrap"
+                sx={{
+                  width: "250px",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                }}
+                variant="bodyLarge"
+              >
+                <Trans i18nKey={field.i18n} />
+              </Typography>
+              <Typography
+                color="#2B333B"
+                variant="semiBoldLarge"
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mb: "10px",
+                  justifyContent: "flex-start",
+                  width: { md: "350px" },
                 }}
               >
-                <Typography
-                  color="#6C8093"
-                  whiteSpace={"nowrap"}
-                  sx={{
-                    width: "250px",
-                    display: "flex",
-                    justifyContent: "flex-start",
-                  }}
-                  variant="bodyLarge"
-                >
-                  <Trans i18nKey={`${itemList}`} />
-                </Typography>
-
-                <Typography
-                  color="#2B333B"
-                  variant="semiBoldLarge"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    width: { md: "350px" },
-                  }}
-                >
-                  {index == 0 && assessmentInfo?.createdBy?.displayName}
-                  {index == 1 && (
-                    <Link
-                      style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        fontFamily: languageDetector(assessmentInfo?.kit?.title)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                      to={`/assessment-kits/${assessmentInfo?.kit?.id}`}
-                    >
-                      {assessmentInfo?.kit?.title}
-                    </Link>
-                  )}
-                  {index == 2 &&
-                    getReadableDate(assessmentInfo?.creationTime ?? 0)}
-                  {index == 3 &&
-                    getReadableDate(assessmentInfo?.lastModificationTime ?? 0)}
-                </Typography>
-              </Grid>
-            );
-          })}
+                {getInfoFieldValue(field.key, assessmentInfo, getReadableDate)}
+              </Typography>
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </Box>
@@ -1240,6 +1248,7 @@ const OnHoverInputTitleSetting = (props: any) => {
           assessmentActions.setAssessmentInfo({
             ...assessmentInfo,
             shortTitle: inputDataShortTitle,
+            title: inputData,
           }),
         );
       }

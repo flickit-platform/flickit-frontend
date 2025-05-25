@@ -13,8 +13,8 @@ import { ISubjectInfo, IMaturityLevel } from "@/types/index";
 import ConfidenceLevel from "@/utils/confidenceLevel/confidenceLevel";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
-import DonutChart from "../common/charts/donutChart/donutChart";
-import SubjectContainer from "../subject-report-old/SubjectContainer";
+import DonutChart from "../../../common/charts/donutChart/donutChart";
+import SubjectContainer from "../../../subject-report-old/SubjectContainer";
 
 interface IAssessmentSubjectCardProps extends ISubjectInfo {
   maturity_level?: IMaturityLevel;

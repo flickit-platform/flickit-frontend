@@ -82,7 +82,6 @@ const ReportTab = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     flexDirection: { xs: "column-reverse", md: "row" },
-                    mt: name == "intro" ? 4 : null,
                   }}
                 >
                   <Box

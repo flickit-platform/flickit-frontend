@@ -41,7 +41,7 @@
   "allQuestionnaires": "All questionnaires",
   "allQuestionsHaveBeenAnswered": "All questions in the <style>{{questionnaire}}</style> questionnaire have been answered.",
   "allQuestionsInAllQuestionnaireHaveBeenAnswered": "All questions in every questionnaire have been answered. You can now view insights or choose to review other questionnaires.",
-  "allQuestionsInThisQuestionnaireHaveBeenAnswered": "All questions in this questionnaire have been answered. For more accurate insights, you can complete other questionnaires as well.",
+  "allQuestionsInThisQuestionnaireHaveBeenAnswered": "To have more accurate insights, you can complete other questionnaires as well.",
   "allQuestonsMustBeAnsweredFirst": "All questions must be answered first.",
   "analysisResults": "Insights",
   "and": " and ",
