@@ -12,9 +12,10 @@ import { useEffect, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
   ASSESSMENT_ACTIONS_TYPE,
-  assessmentActions,
-  useAssessmentDispatch,
+  assessmentActions, useAssessmentContext,
+  useAssessmentDispatch
 } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@utils/enumType";
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
@@ -23,8 +24,9 @@ const MainTabs = (props: any) => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
+  const { assessmentInfo } = useAssessmentContext()
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
-
+  const [displayTabs, setDisplayTabs] = useState("none")
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
       service.assessments.info.getPermissions(
@@ -33,6 +35,14 @@ const MainTabs = (props: any) => {
       ),
     runOnMount: true,
   });
+
+  useEffect(() => {
+    if(assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED){
+      setDisplayTabs("flex")
+    }else{
+      setDisplayTabs("none")
+    }
+  }, [assessmentInfo?.mode?.code]);
 
   const AssessmentInfo = useQuery({
     service: (args, config) =>
@@ -72,7 +82,7 @@ const MainTabs = (props: any) => {
             background: "#2466A814",
             width: "100%",
             borderRadius: "16px",
-            display: "flex",
+            display: displayTabs,
             alignItems: "center",
             justifyContent: "center",
             mt: 1,
