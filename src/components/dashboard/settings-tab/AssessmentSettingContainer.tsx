@@ -176,7 +176,7 @@ const AssessmentSettingContainer = () => {
                 listOfRoles={listOfRoles}
                 assessmentId={assessmentId}
                 cancelText={<Trans i18nKey={"cancel"} />}
-                confirmText={<Trans i18nKey={"addToThisAssessment"} />}
+                confirmText={<Trans i18nKey={"done"} />}
                 setChangeData={setChangeData}
               />
               <ConfirmRemoveMemberDialog

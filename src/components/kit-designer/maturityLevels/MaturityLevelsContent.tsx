@@ -254,7 +254,7 @@ const MaturityLevelsContent = () => {
                       <EmptyState
                         btnTitle="newMaturityLevel"
                         title="maturityLevelsListEmptyState"
-                        SubTitle="maturityLevelsListEmptyStateDatailed"
+                        SubTitle="maturityLevelsListEmptyStateDetailed"
                         onAddNewRow={handleNewMaturityLevelClick}
                       />
                     )}

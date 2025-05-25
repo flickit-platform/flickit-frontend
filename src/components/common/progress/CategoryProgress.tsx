@@ -57,7 +57,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
             textTransform="uppercase"
             color={progressToColorMapColor[progress] ?? "#1976d2"}
           >
-            <Trans i18nKey={progressToLabelMap[progress] ?? "inprogress"} />
+            <Trans i18nKey={progressToLabelMap[progress] ?? "inProgress"} />
           </Typography>
         )}
       </Box>
