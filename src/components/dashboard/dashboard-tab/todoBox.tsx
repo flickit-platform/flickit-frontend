@@ -338,10 +338,10 @@ export const IssuesItem = ({
     unresolvedComments: value > 1 ? "UnresolvedComments" : "UnresolvedComment",
     notGenerated: "insightsNeedToBeGenerated",
     unapproved:
-      value > 1 ? "insightsNeedApprovement" : "insightNeedApprovement",
+      value > 1 ? "insightsNeedApproval" : "insightNeedsApproval",
     expired: value > 1 ? "expiredDueToNewAnswers" : "expiredDueToNewAnswer",
     unprovidedMetadata:
-      value > 1 ? "metadataAreNotProvider" : "metadataIsNotProvider",
+      value > 1 ? "metadataAreNotProvided" : "metadataIsNotProvided",
     unpublished: "unpublishedReport",
     total: "suggestAnyAdvicesSoFar",
   } as any;

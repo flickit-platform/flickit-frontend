@@ -247,18 +247,18 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                           }}
                         >
                           <Box
-                            sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
+                            sx={{ display: "flex", fontSize: { xs: ".85rem" } }
                           >
-                            <Trans
-                              i18nKey={
-                                questionsInfo?.permissions?.answerQuestion
-                                  ? "selcetConfidenceLevel"
-                                  : "confidenceLevel"
-                              }
-                            />
-                            <Typography
-                              fontWeight={900}
-                              sx={{ borderBottom: "1px solid", mx: 1 }}
+                         <Trans
+                            i18nKey={
+                              questionsInfo?.permissions?.answerQuestion
+                                ? "selectedConfidenceLevel"
+                                : "confidenceLevel"
+                            }
+                          />
+                          <Typography
+                            fontWeight={900}
+                            sx={{ borderBottom: "1px solid", mx: 1 }}
                             >
                               <Trans
                                 i18nKey={toCamelCase(

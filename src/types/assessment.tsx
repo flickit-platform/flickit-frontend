@@ -241,6 +241,7 @@ export interface IAssessment {
   kit: IAssessmentKitList;
   confidenceValue: number;
   maturityLevel: IMaturityLevel;
+  mode?: {code: string},
   permissions: {
     canManageSettings: boolean;
     canViewReport: boolean;

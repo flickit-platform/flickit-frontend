@@ -51,6 +51,7 @@ import languageDetector from "@/utils/languageDetector";
 import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
+import { ASSESSMENT_MODE } from "@utils/enumType";
 
 const AssessmentCard = (props: IAssessmentCardProps) => {
   const [calculateResault, setCalculateResault] = useState<any>();
@@ -68,6 +69,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     lastModificationTime,
     confidenceValue,
     language,
+    mode
   } = item;
   const hasML = hasMaturityLevel(maturityLevel?.value);
   const { maturityLevelsCount } = kit;
@@ -119,6 +121,26 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     );
   }, [item.permissions]);
 
+  const isQuickMode = useMemo(()=>{
+    return mode?.code === ASSESSMENT_MODE.QUICK
+  },[mode?.code])
+
+  const pathRoute = (checkItem: boolean) : string => {
+    if (checkItem && item.permissions.canViewDashboard) {
+      if(isQuickMode){
+        return `${item.id}/questionnaires`
+      }else{
+        return `${item.id}/dashboard`
+      }
+    } else if (item.permissions.canViewQuestionnaires && isQuickMode ) {
+      return `${item.id}/questionnaires`
+    } else if (item.permissions.canViewReport && item.hasReport) {
+      return `/${spaceId}/assessments/${item.id}/graphical-report/`
+    }else{
+      return ""
+    }
+  }
+
   return (
     <Grid item lg={3} md={4} sm={6} xs={12}>
       <Paper
@@ -153,15 +175,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                 justifyContent: "center",
               }}
               component={Link}
-              to={
-                isCalculateValid && item.permissions.canViewDashboard
-                  ? `${item.id}/dashboard`
-                  : item.permissions.canViewReport && item.hasReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                    : item.permissions.canViewQuestionnaires
-                      ? `${item.id}/questionnaires`
-                      : ""
-              }
+              to={pathRoute(isCalculateValid)}
             >
               <Tooltip title={kit?.title}>
                 <Chip
@@ -241,15 +255,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
             sx={{ ...styles.centerCH, textDecoration: "none" }}
             mt={2}
             component={Link}
-            to={
-              hasML && item.permissions.canViewDashboard
-                ? `${item.id}/dashboard`
-                : item.permissions.canViewQuestionnaires
-                  ? `${item.id}/questionnaires`
-                  : item.hasReport && item.permissions.canViewReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                    : ""
-            }
+            to={pathRoute(hasML)}
           >
             {show ? (
               <Gauge
