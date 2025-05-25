@@ -81,11 +81,13 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     fontFamily: languageDetector(title)
                       ? farsiFontFamily
                       : primaryFontFamily,
-                    display:"inline-block",
+                    display: "inline-block",
                     textTransform: "lowercase",
-                    "&::first-letter": {
-                      textTransform: !languageDetector(title) ? "uppercase" : "unset",
-                    },
+                    "&::first-letter": !languageDetector(title)
+                      ? {
+                          textTransform: "uppercase",
+                        }
+                      : {},
                   }}
                   ref={titleRef}
                 >
@@ -109,26 +111,26 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     onClick={() => setCollapse(!collapse)}
                     size="small"
                   >
-                    <InfoOutlined sx={{width: "16px", height: "16px"}} />
+                    <InfoOutlined sx={{ width: "16px", height: "16px" }} />
                   </IconButton>
                 )}
-                  <Box
-                    ref={boxRef}
-                    display="inline-block"
-                    sx={{
-                      float: theme.direction === "ltr" ? "right" : "left",
-                      marginLeft: theme.direction === "ltr" ? "auto" : "unset",
-                      marginRight: theme.direction === "ltr" ? "unset" : "auto",
-                      minWidth: "80px",
-                      textAlign: "end"
-                    }}
-                  >
-                    <QANumberIndicator
-                      q={number_of_questions}
-                      color={"#6C8093"}
-                      variant={"labelSmall"}
-                    />
-                  </Box>
+                <Box
+                  ref={boxRef}
+                  display="inline-block"
+                  sx={{
+                    float: theme.direction === "ltr" ? "right" : "left",
+                    marginLeft: theme.direction === "ltr" ? "auto" : "unset",
+                    marginRight: theme.direction === "ltr" ? "unset" : "auto",
+                    minWidth: "80px",
+                    textAlign: "end",
+                  }}
+                >
+                  <QANumberIndicator
+                    q={number_of_questions}
+                    color={"#6C8093"}
+                    variant={"labelSmall"}
+                  />
+                </Box>
               </Box>
             </Title>
             <QuestionDescription
@@ -243,12 +245,7 @@ const ActionButtons = ({
   const is_farsi = localStorage.getItem("lang") === "fa";
   return (
     <Box display="flex" gap={1}>
-      {progress === 100 && (
-        <ActionButton
-          to={`${id}/1`}
-          text="edit"
-        />
-      )}
+      {progress === 100 && <ActionButton to={`${id}/1`} text="edit" />}
       {progress > 0 && (
         <ActionButton
           to={`${id}/completed`}
@@ -298,7 +295,7 @@ const ActionButton = ({
   text: string;
   icon?: JSX.Element;
   state?: any;
-  variant?: any
+  variant?: any;
 }) => (
   <Button
     size="medium"
@@ -310,7 +307,13 @@ const ActionButton = ({
     variant={variant}
     {...rest}
   >
-    <Typography sx={{color: variant ? "#fff" : "#2466A8", ...theme.typography.semiBoldMedium}} textTransform={"capitalize"}>
+    <Typography
+      sx={{
+        color: variant ? "#fff" : "#2466A8",
+        ...theme.typography.semiBoldMedium,
+      }}
+      textTransform={"capitalize"}
+    >
       <Trans i18nKey={text} />
     </Typography>
   </Button>
