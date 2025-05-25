@@ -260,7 +260,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                           <Trans
                             i18nKey={
                               questionsInfo?.permissions?.answerQuestion
-                                ? "selcetConfidenceLevel"
+                                ? "selectedConfidenceLevel"
                                 : "confidenceLevel"
                             }
                           />

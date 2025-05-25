@@ -49,7 +49,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
               ...theme.typography.semiBoldSmall,
               position:"relative", [is_farsi ? "left" : "right"]: "-16px"}}
           >
-            <Trans i18nKey={progressToLabelMap[progress] ?? "inprogress"} />
+            <Trans i18nKey={progressToLabelMap[progress] ?? "inProgress"} />
           </Typography>
       </Box>
     </Box>
