@@ -8,25 +8,11 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@/types/index";
-import {
-  Link,
-  NavLink,
-  useLocation,
-  useOutlet,
-  useParams,
-} from "react-router-dom";
+import { Link, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
-import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
-import MenuItem from "@mui/material/MenuItem";
-import { Trans } from "react-i18next";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
-import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import ListItemText from "@mui/material/ListItemText";
 import { t } from "i18next";
 import { IconButton } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
@@ -41,11 +27,8 @@ const DashbordContainer: React.FC = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams<{ assessmentId?: string }>();
   const outlet = useOutlet();
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { assessmentInfo, permissions } = useAssessmentContext();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const open = Boolean(anchorEl);
 
   useEffect(() => {
     const pathSegments = location.pathname.split("/").filter(Boolean);
