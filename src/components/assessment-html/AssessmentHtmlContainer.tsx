@@ -235,8 +235,7 @@ const AssessmentExportContainer = () => {
                     onClick={() => dialogProps.openDialog({})}
                     disabled={
                       !permissions.canShareReport &&
-                      !permissions.canManageVisibility &&
-                      visibility === VISIBILITY.RESTRICTED
+                      !permissions.canManageVisibility
                     }
                   >
                     <Trans i18nKey="shareReport" />

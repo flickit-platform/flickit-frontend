@@ -133,7 +133,7 @@ export const ShareDialog = ({
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
 
-      if (access === VISIBILITY.PUBLIC && permissions.canManageVisibility) {
+      if (access === VISIBILITY.PUBLIC) {
         PublishReportStatus.query({
           data: { visibility: VISIBILITY.PUBLIC },
           assessmentId,
