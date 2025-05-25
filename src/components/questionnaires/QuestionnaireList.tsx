@@ -191,6 +191,82 @@ export const QuestionsFilteringDropdown = (props: any) => {
   );
 };
 
+const ProgressButton = (props:any) => {
+  const { calcLeftQuestion, calculatePercentage  } = props
+  return (
+    <Box>
+      {calcLeftQuestion > 0 ? (
+        <Box>
+          <Button
+            sx={{
+              borderRadius: "4px",
+              background: "#C2CCD680",
+              height: "40px",
+              width: "176px",
+              position: "relative",
+              overflow: "hidden",
+              "&:hover": {
+                background: "#C2CCD680",
+              },
+            }}
+          >
+            <Box
+              sx={{
+                background: "#C2CCD680",
+                height: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                borderRadius:
+                  theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
+                width: calculatePercentage ? `${calculatePercentage}%` : "0%",
+                transition: "all 1s ease-in-out",
+              }}
+            ></Box>
+            <Typography
+              sx={{
+                color: "#3D4D5C80",
+              }}
+            >
+              <Trans i18nKey={"viewReport"} />
+            </Typography>
+          </Button>
+          <Typography
+            sx={{ ...theme.typography.labelMedium, color: "#FF9000", textAlign: "center" }}
+          >
+            <Trans i18nKey={"moreAnswersNeeded"} values={{count : calcLeftQuestion}} />
+          </Typography>
+        </Box>
+      ) : (
+        <Button
+          sx={{
+            borderRadius: "4px",
+            background: "#F3F5F6",
+            height: "40px",
+            width: "176px",
+            position: "relative",
+            overflow: "hidden",
+            boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
+            "&:hover": {
+              background: "#F3F5F6",
+            },
+          }}
+        >
+          <Typography
+            sx={{
+              color: theme.palette.primary.main,
+            }}
+          >
+            <Trans i18nKey={"viewReport"} />
+          </Typography>
+        </Button>
+      )}
+    </Box>
+  );
+};
+
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
@@ -221,81 +297,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
     assessmentTotalProgress?.data?.questionsCount,
     assessmentTotalProgress?.data?.answersCount,
   ]);
-
-  const ProgressButton = () => {
-    return (
-      <Box>
-        {calcLeftQuestion > 0 ? (
-          <Box>
-            <Button
-              sx={{
-                borderRadius: "4px",
-                background: "#C2CCD680",
-                height: "40px",
-                width: "176px",
-                position: "relative",
-                overflow: "hidden",
-                "&:hover": {
-                  background: "#C2CCD680",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  background: "#C2CCD680",
-                  height: "100%",
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  borderRadius:
-                    theme.direction == "rtl" ? "4px 0 0 4px" : "0 4px 4px 0",
-                  width: calculatePercentage ? `${calculatePercentage}%` : "0%",
-                  transition: "all 1s ease-in-out",
-                }}
-              ></Box>
-              <Typography
-                sx={{
-                  color: "#3D4D5C80",
-                }}
-              >
-                <Trans i18nKey={"viewReport"} />
-              </Typography>
-            </Button>
-            <Typography
-              sx={{ ...theme.typography.labelMedium, color: "#FF9000", textAlign: "center" }}
-            >
-             <Trans i18nKey={"moreAnswersNeeded"} values={{count : calcLeftQuestion}} />
-            </Typography>
-          </Box>
-        ) : (
-          <Button
-            sx={{
-              borderRadius: "4px",
-              background: "#F3F5F6",
-              height: "40px",
-              width: "176px",
-              position: "relative",
-              overflow: "hidden",
-              boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
-              "&:hover": {
-                background: "#F3F5F6",
-              },
-            }}
-          >
-            <Typography
-              sx={{
-                color: theme.palette.primary.main,
-              }}
-            >
-              <Trans i18nKey={"viewReport"} />
-            </Typography>
-          </Button>
-        )}
-      </Box>
-    );
-  };
 
   return (
     <>
@@ -345,7 +346,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton />
+          <ProgressButton calculatePercentage={calculatePercentage} calcLeftQuestion={calcLeftQuestion} />
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}

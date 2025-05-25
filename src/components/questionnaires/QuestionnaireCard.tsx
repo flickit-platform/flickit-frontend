@@ -7,7 +7,6 @@ import QANumberIndicator from "@common/QANumberIndicator";
 import QuestionnaireProgress from "@common/progress/CategoryProgress";
 import { Link } from "react-router-dom";
 import StartRoundedIcon from "@mui/icons-material/StartRounded";
-import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { IPermissions, IQuestionnairesInfo, TId } from "@/types/index";
 import Chip from "@mui/material/Chip";
