@@ -1001,8 +1001,8 @@ const AnswerTemplate = (props: {
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 2px ${
-                      answer?.selectedOption?.index === defaultSelectedIndex
+                    boxShadow: `0 0 3px ${
+                      !!answer?.approved &&   answer?.selectedOption?.index === defaultSelectedIndex
                         ? !answer?.approved && permissions?.approveAnswer
                           ? "#CC7400"
                           : "#0acb89"
@@ -1010,21 +1010,21 @@ const AnswerTemplate = (props: {
                     }`,
                     borderWidth: "2px",
                     borderColor:
-                      answer?.selectedOption?.index === defaultSelectedIndex
+                      !!answer?.approved &&  answer?.selectedOption?.index === defaultSelectedIndex && !answer?.approved && permissions?.approveAnswer
                         ? "#CC7400"
                         : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
-                          ? "#0ec586"
-                          : !answer?.approved && permissions?.approveAnswer
+                          ? theme.palette.success.main
+                          : !!answer?.approved && !answer?.approved && permissions?.approveAnswer
                             ? "#CC7400"
                             : theme.palette.success.main,
                       },
                       color: "white",
                       backgroundColor: !isSelectedValueTheSameAsAnswer
-                        ? "#0ec586"
-                        : !answer?.approved && permissions?.approveAnswer
+                        ? theme.palette.success.main
+                        : !!answer?.approved && !answer?.approved && permissions?.approveAnswer
                           ? "#CC7400"
                           : theme.palette.success.main,
                       borderColor: "transparent",
