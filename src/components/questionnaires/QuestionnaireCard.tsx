@@ -84,7 +84,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     display:"inline-block",
                     textTransform: "lowercase",
                     "&::first-letter": {
-                      textTransform: "uppercase",
+                      textTransform: !languageDetector(title) ? "uppercase" : "unset",
                     },
                   }}
                   ref={titleRef}
