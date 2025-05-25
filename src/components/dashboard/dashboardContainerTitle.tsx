@@ -4,22 +4,19 @@ import { Link, useParams } from "react-router-dom";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { styles } from "@styles";
 import { IconButton } from "@mui/material";
+import { useMemo } from "react";
 
 const DashboardTitle = (props: any) => {
-  const { pathInfo, title } = props;
+  const { pathInfo, title, permissions } = props;
   const { spaceId, page } = useParams();
   const { space } = pathInfo;
 
+  const hasAccessTonSettings = useMemo(() => {
+    return permissions?.grantUserAssessmentRole;
+  }, [permissions]);
   return (
     <Title
       backLink="/"
-      wrapperProps={{
-        sx: {
-          flexDirection: { xs: "column", md: "row" },
-          alignItems: { xs: "flex-start", md: "flex-end" },
-          justifyContent: "center",
-        },
-      }}
       sup={
         <SupTitleBreadcrumb
           routes={[
@@ -28,18 +25,20 @@ const DashboardTitle = (props: any) => {
               to: `/${spaceId}/assessments/${page}`,
             },
             {
-              title: `${title}`,
+              title: `${title ?? pathInfo.assessment.title}`,
             },
           ]}
           displayChip
         />
       }
       toolbar={
-        <IconButton component={Link} to={"settings"}>
-          <SettingsOutlinedIcon
-            sx={{ ...styles.centerCVH, color: "#6C8093" }}
-          />
-        </IconButton>
+        hasAccessTonSettings && (
+          <IconButton component={Link} to={"settings"}>
+            <SettingsOutlinedIcon
+              sx={{ ...styles.centerCVH, color: "#6C8093" }}
+            />
+          </IconButton>
+        )
       }
     ></Title>
   );
