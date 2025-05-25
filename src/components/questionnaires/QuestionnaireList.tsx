@@ -192,10 +192,10 @@ export const QuestionsFilteringDropdown = (props: any) => {
 };
 
 const ProgressButton = (props:any) => {
-  const { calcLeftQuestion, calculatePercentage  } = props
+  const { leftQuestions, calculatePercentage  } = props
   return (
     <Box>
-      {calcLeftQuestion > 0 ? (
+      {leftQuestions > 0 ? (
         <Box>
           <Button
             sx={{
@@ -236,7 +236,7 @@ const ProgressButton = (props:any) => {
           <Typography
             sx={{ ...theme.typography.labelMedium, color: "#FF9000", textAlign: "center" }}
           >
-            <Trans i18nKey={"moreAnswersNeeded"} values={{count : calcLeftQuestion}} />
+            <Trans i18nKey={"moreAnswersNeeded"} values={{count : leftQuestions}} />
           </Typography>
         </Box>
       ) : (
@@ -288,23 +288,19 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
     }
   }, []);
 
-  const calcLeftQuestion = useMemo(() => {
-    return (
-      assessmentTotalProgress?.data?.questionsCount -
-      assessmentTotalProgress?.data?.answersCount
-    );
+  const leftQuestions = useMemo(() => {
+    const total = assessmentTotalProgress?.data?.questionsCount ?? 0;
+    const answered = assessmentTotalProgress?.data?.answersCount ?? 0;
+    return total - answered;
   }, [
     assessmentTotalProgress?.data?.questionsCount,
     assessmentTotalProgress?.data?.answersCount,
-  ]);
+  ])
 
   return (
     <>
       <Box
-        display={"flex"}
-        alignItems={"flex-start"}
-        justifyContent="space-between"
-        sx={{ px: { sm: "10px" } }}
+        sx={{...styles.centerH, alignItems: "flex-start", justifyContent: "space-between", px: { sm: "10px" } }}
       >
         <Box
           minWidth="130px"
@@ -346,7 +342,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton calculatePercentage={calculatePercentage} calcLeftQuestion={calcLeftQuestion} />
+          <ProgressButton calculatePercentage={calculatePercentage} leftQuestions={leftQuestions} />
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}
