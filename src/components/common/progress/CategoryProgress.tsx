@@ -44,7 +44,6 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
       </Box>
       <Box pl={is_farsi ? 0 : "8px"} pr={is_farsi ? "8px" : 0} mr="-2px">
           <Typography
-            textTransform="uppercase"
             color={progressToColorMapColor[progress] ?? "#1976d2"}
             sx={{
               ...theme.typography.semiBoldSmall,

@@ -82,6 +82,11 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     fontFamily: languageDetector(title)
                       ? farsiFontFamily
                       : primaryFontFamily,
+                    display:"inline-block",
+                    textTransform: "lowercase",
+                    "&::first-letter": {
+                      textTransform: "uppercase",
+                    },
                   }}
                   ref={titleRef}
                 >

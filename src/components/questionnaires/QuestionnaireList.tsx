@@ -257,7 +257,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
               ></Box>
               <Typography
                 sx={{
-                  textTransform: "capitalize",
                   color: "#3D4D5C80",
                 }}
               >
@@ -265,9 +264,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
               </Typography>
             </Button>
             <Typography
-              sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
+              sx={{ ...theme.typography.labelMedium, color: "#FF9000", textAlign: "center" }}
             >
-              {calcLeftQuestion || 0} <Trans i18nKey={"more answers needed!"} />
+             <Trans i18nKey={"moreAnswersNeeded"} values={{count : calcLeftQuestion}} />
             </Typography>
           </Box>
         ) : (
@@ -287,7 +286,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           >
             <Typography
               sx={{
-                textTransform: "capitalize",
                 color: theme.palette.primary.main,
               }}
             >
@@ -321,7 +319,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           }}
         >
           <Typography variant={"titleLarge"} color="white">
-            <Trans i18nKey={"questionnaire"} />
+            <Trans i18nKey={"Questionnaires"} />
             {"  "}
             (
             <QueryData
@@ -379,7 +377,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                   {filteredItems.length > 0 ? (
                     filteredItems.map((data: any) => {
                       return (
-                        <Grid item md={6} sm={12} xs={12} key={data.id}>
+                        <Grid item lg={4} md={6} sm={12} xs={12} key={data.id}>
                           <QuestionnaireCard
                             data={data}
                             permissions={permissions}

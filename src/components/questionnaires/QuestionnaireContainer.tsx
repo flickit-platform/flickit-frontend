@@ -22,10 +22,7 @@ const QuestionnaireContainer = () => {
           sx={{
             ...styles.centerCV,
             transition: "height 1s ease",
-            backgroundColor: "#01221e",
-            background: questionnaireQueryData.loading
-              ? undefined
-              : `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
+            background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
             px: { xs: 1, sm: 2, md: 3, lg: 4 },
             pt: { xs: 5, sm: 3 },
             pb: 5,
