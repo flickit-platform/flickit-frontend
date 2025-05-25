@@ -6,7 +6,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate, useParams } from "react-router-dom";
-import AnswerSvg from "@assets/svg/answer.svg";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
@@ -1160,19 +1159,19 @@ const AnswerTemplate = (props: {
               </Button>
             </Box>
           )}
-        {may_not_be_applicable && (
+        {!may_not_be_applicable && (
           <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
-              sx={{ color: theme.palette.primary.main }}
+              sx={{ color: "#fff" }}
               data-cy="automatic-submit-check"
               control={
                 <Checkbox
                   checked={notApplicable}
                   onChange={(e) => notApplicableonChanhe(e)}
                   sx={{
-                    color: theme.palette.primary.main,
+                    color: "#fff",
                     "&.Mui-checked": {
-                      color: theme.palette.primary.main,
+                      color: "#fff",
                     },
                   }}
                 />
