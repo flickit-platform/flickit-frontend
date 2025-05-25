@@ -161,16 +161,15 @@ export const QuestionCard = (props: IQuestionCardProps) => {
       >
         <Box>
           <Typography
-            variant="subLarge"
-            sx={{ color: "white", opacity: 0.65, px: 6, textAlign: [is_farsi ? "right" : "left" ] }}
+            sx={{...theme.typography.semiBoldSmall, color: "#6C8093", opacity: 0.65, px: 6, textAlign: [is_farsi ? "right" : "left" ] }}
           >
             <Trans i18nKey="question" />
           </Typography>
           <Typography
-            variant="h4"
             letterSpacing={is_farsi ? "0" : ".05em"}
             sx={{
                 ...theme.typography.semiBoldXLarge,
+                color: "#F9FAFB",
                 pt: 0.5,
                 px: 6,
                 direction: is_farsi ? "rtl" : "ltr"
@@ -216,10 +215,9 @@ export const QuestionCard = (props: IQuestionCardProps) => {
               py: { xs: 1.5, sm: 2.5 },
             }}
           >
-            {/*todo*/}
-            {/*<SubmitOnSelectCheckBox*/}
-            {/*  disabled={!questionsInfo?.permissions?.answerQuestion}*/}
-            {/*/>*/}
+            <SubmitOnSelectCheckBox
+              disabled={!questionsInfo?.permissions?.answerQuestion}
+            />
             <Box
               sx={{
                 display: "flex",
@@ -999,8 +997,7 @@ const AnswerTemplate = (props: {
                   }
                   sx={{
                     ...theme.typography.titleMedium,
-                    letterSpacing: `${is_farsi ? "0" : ".05em"}`,
-                    color: "white",
+                    color: "#F9FAFB",
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
                     justifyContent: "flex-start",
@@ -1024,8 +1021,6 @@ const AnswerTemplate = (props: {
                             ? "#CC7400"
                             : theme.palette.success.main,
                       },
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "right",
                       color: "white",
                       backgroundColor: !isSelectedValueTheSameAsAnswer
                         ? "#0ec586"
