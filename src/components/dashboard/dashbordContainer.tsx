@@ -164,6 +164,7 @@ const DashbordContainer: React.FC = () => {
               }
               xs={titleLength < maxLength ? 5 : 12}
               sx={{ display: "flex", my: 1 }}
+              justifyContent="flex-end"
             >
               {isMobileScreen ? (
                 <Box
