@@ -1433,6 +1433,7 @@ const Evidence = (props: any) => {
   const LIMITED = 500;
   const [valueCount, setValueCount] = useState("");
   const [evidencesData, setEvidencesData] = useState<any[]>([]);
+  const [displayAdvanceMode, setDisplayAdvanceMode] = useState("none")
   const [expandedDeleteDialog, setExpandedDeleteDialog] =
     useState<boolean>(false);
   const [expandedDeleteAttachmentDialog, setExpandedDeleteAttachmentDialog] =
@@ -1443,6 +1444,8 @@ const Evidence = (props: any) => {
   const is_farsi = languageDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
+  const { assessmentInfo } = useAssessmentContext()
+
   const {
     questionInfo,
     permissions,
@@ -1461,6 +1464,18 @@ const Evidence = (props: any) => {
     service: (args, config) => service.questions.evidences.save(args, config),
     runOnMount: false,
   });
+
+  const isAdvanceMode = useMemo(()=>{
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED
+  },[assessmentInfo?.mode?.code])
+
+  useEffect(() => {
+    if(isAdvanceMode){
+      setDisplayAdvanceMode("flex")
+    }else {
+      setDisplayAdvanceMode("none")
+    }
+  }, []);
 
   const fetchEvidenceAttachments = useQuery({
     service: (args, config) =>
@@ -1641,7 +1656,7 @@ const Evidence = (props: any) => {
         <FormProvider {...formMethods}>
           <form
             onSubmit={formMethods.handleSubmit(onSubmit)}
-            style={{ flex: 1, display: "flex", flexDirection: "column" }}
+            style={{ flex: 1, display: displayAdvanceMode , flexDirection: "column" }}
           >
             <Grid
               container
