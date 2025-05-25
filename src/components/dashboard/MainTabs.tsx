@@ -26,7 +26,7 @@ const MainTabs = (props: any) => {
 
   const { assessmentInfo } = useAssessmentContext()
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
-
+  const [displayTabs, setDisplayTabs] = useState("none")
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
       service.assessments.info.getPermissions(
@@ -35,6 +35,14 @@ const MainTabs = (props: any) => {
       ),
     runOnMount: true,
   });
+
+  useEffect(() => {
+    if(assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED){
+      setDisplayTabs("flex")
+    }else{
+      setDisplayTabs("none")
+    }
+  }, [assessmentInfo?.mode?.code]);
 
   const AssessmentInfo = useQuery({
     service: (args, config) =>
@@ -74,7 +82,7 @@ const MainTabs = (props: any) => {
             background: "#2466A814",
             width: "100%",
             borderRadius: "16px",
-            display: assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ?  "none" :  "flex",
+            display: displayTabs,
             alignItems: "center",
             justifyContent: "center",
             mt: 1,

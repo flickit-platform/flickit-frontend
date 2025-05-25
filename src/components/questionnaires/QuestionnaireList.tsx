@@ -301,7 +301,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
     <>
       <Box
         display={"flex"}
-        alignItems={"center"}
+        alignItems={"flex-start"}
         justifyContent="space-between"
         sx={{ px: { sm: "10px" } }}
       >
