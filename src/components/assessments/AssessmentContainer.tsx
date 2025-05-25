@@ -53,7 +53,8 @@ const AssessmentContainer = () => {
   }
 
   const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) => service.space.getById(args, config),
+    service: (args = { spaceId }, config) =>
+      service.space.getById(args, config),
     runOnMount: true,
   });
 
@@ -80,7 +81,7 @@ const AssessmentContainer = () => {
             <Trans i18nKey={"learnWhyThisIsUnavailable"} />
           </Typography>
         )}
-        <Box sx={{ ...styles.centerVH, mb: "40px" }}>
+        <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
           <Title
             borderBottom={true}
             size="large"
@@ -103,9 +104,10 @@ const AssessmentContainer = () => {
                     shouldAnimate={data?.length === 0}
                     variantType="outlined"
                     text={isSmallScreen ? "" : "settings"}
-                    sx={{px: isSmallScreen ? 0 : 1,
+                    sx={{
+                      px: isSmallScreen ? 0 : 1,
                       "& .MuiButton-endIcon": {
-                        mx: isSmallScreen ? "0px !important" : "unset"
+                        mx: isSmallScreen ? "0px !important" : "unset",
                       },
                     }}
                   />
@@ -132,9 +134,10 @@ const AssessmentContainer = () => {
                     shouldAnimate={data?.length === 0}
                     disabled={!fetchSpaceInfo.data?.canCreateAssessment}
                     text={isSmallScreen ? "" : "createAssessment"}
-                    sx={{px: isSmallScreen ? 0 : 1,
+                    sx={{
+                      px: isSmallScreen ? 0 : 1,
                       "& .MuiButton-endIcon": {
-                        mx: isSmallScreen ? "0px !important" : "unset"
+                        mx: isSmallScreen ? "0px !important" : "unset",
                       },
                     }}
                   />

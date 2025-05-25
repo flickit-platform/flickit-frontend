@@ -12,21 +12,22 @@ import { useEffect, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
   ASSESSMENT_ACTIONS_TYPE,
-  assessmentActions, useAssessmentContext,
-  useAssessmentDispatch
+  assessmentActions,
+  useAssessmentContext,
+  useAssessmentDispatch,
 } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
 
-  const { onTabChange, selectedTab, tabListTitle } = props;
+  const { onTabChange, selectedTab, tabListTitle, flexColumn } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
 
-  const { assessmentInfo } = useAssessmentContext()
+  const { assessmentInfo } = useAssessmentContext();
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
-  const [displayTabs, setDisplayTabs] = useState("none")
+  const [displayTabs, setDisplayTabs] = useState("none");
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
       service.assessments.info.getPermissions(
@@ -37,10 +38,10 @@ const MainTabs = (props: any) => {
   });
 
   useEffect(() => {
-    if(assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED){
-      setDisplayTabs("flex")
-    }else{
-      setDisplayTabs("none")
+    if (assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED) {
+      setDisplayTabs("flex");
+    } else {
+      setDisplayTabs("none");
     }
   }, [assessmentInfo?.mode?.code]);
 
@@ -80,14 +81,11 @@ const MainTabs = (props: any) => {
         <Box
           sx={{
             background: "#2466A814",
-            width: "100%",
             borderRadius: "16px",
             display: displayTabs,
             alignItems: "center",
             justifyContent: "center",
-            mt: 1,
-            mb: 2,
-            paddingBlock: 1,
+            p: 1,
           }}
         >
           <Tabs
@@ -98,7 +96,6 @@ const MainTabs = (props: any) => {
             aria-label="scrollable auto tabs example"
             sx={{
               border: "none",
-              width: "100%",
               "& .MuiTabs-indicator": {
                 display: "none",
               },
@@ -113,11 +110,9 @@ const MainTabs = (props: any) => {
                   value={tab.address}
                   sx={{
                     ...theme.typography.semiBoldLarge,
-                    flexGrow: 1,
-                    mr: 1,
+                    flexGrow: flexColumn ? 0 : 1,
                     border: "none",
                     textTransform: "none",
-                    paddingY: 1.5,
                     color: "#2B333B",
                     maxWidth: "unset",
                     "&.Mui-selected": {

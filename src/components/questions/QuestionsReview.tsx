@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
-import { useQuestionnaire } from "../questionnaires/QuestionnaireContainer";
+import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import { styles } from "@styles";
 import { IQuestionnairesInfo } from "@/types";
 import languageDetector from "@/utils/languageDetector";

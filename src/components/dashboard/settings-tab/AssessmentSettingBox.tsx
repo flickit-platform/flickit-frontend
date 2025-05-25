@@ -1240,6 +1240,7 @@ const OnHoverInputTitleSetting = (props: any) => {
           assessmentActions.setAssessmentInfo({
             ...assessmentInfo,
             shortTitle: inputDataShortTitle,
+            title: inputData
           }),
         );
       }

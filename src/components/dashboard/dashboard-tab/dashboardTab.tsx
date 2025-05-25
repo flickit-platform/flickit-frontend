@@ -105,7 +105,7 @@ const DashboardTab = () => {
         {...fetchDashboard}
         renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
         render={() => (
-          <Box sx={{ mt: "32px", width: "100%" }}>
+          <Box sx={{ width: "100%" }}>
             <StepperSection
               setActiveStep={setActiveStep}
               activeStep={activeStep}

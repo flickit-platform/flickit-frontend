@@ -8,7 +8,13 @@ import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
 import { PathInfo } from "@/types/index";
-import { NavLink, useLocation, useOutlet, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useOutlet,
+  useParams,
+} from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -22,8 +28,19 @@ import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ListItemText from "@mui/material/ListItemText";
 import { t } from "i18next";
+import { IconButton } from "@mui/material";
+import { ArrowForward } from "@mui/icons-material";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 
-const tabListTitle = [
+// ---------- Types
+type TabItem = {
+  label: string;
+  address: string;
+  permission: string;
+};
+
+const tabListTitle: TabItem[] = [
   { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
   {
     label: "questions",
@@ -41,47 +58,35 @@ const tabListTitle = [
     address: "report",
     permission: "manageReportMetadata",
   },
-  {
-    label: "settings",
-    address: "settings",
-    permission: "grantUserAssessmentRole",
-  },
 ];
 
-const DashbordContainer = () => {
+const maxLength = 40;
+
+const DashbordContainer: React.FC = () => {
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState("dashboard");
+  const [selectedTab, setSelectedTab] = useState<string>("dashboard");
   const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "" } = useParams<{ assessmentId?: string }>();
   const outlet = useOutlet();
-  const buttonRef = useRef<any>(null);
-
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const { assessmentInfo } = useAssessmentContext();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  const showTabName = () => {
-    return t(
-      `${tabListTitle.find((item) => item.address === selectedTab)?.label}`,
-    );
-  };
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) =>
+    setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
+  const showTabName = () =>
+    t(tabListTitle.find((item) => item.address === selectedTab)?.label || "");
 
   useEffect(() => {
-    const pathSegments = location.pathname
-      .split("/")
-      .filter((segment) => segment);
-    const lastPart = pathSegments[4];
-    setSelectedTab(lastPart);
+    const pathSegments = location.pathname.split("/").filter(Boolean);
+    setSelectedTab(pathSegments[4] || "dashboard");
   }, [location]);
 
-  const handleTabChange = (event: any, newValue: any) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: string) =>
     setSelectedTab(newValue);
-  };
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
@@ -90,129 +95,158 @@ const DashbordContainer = () => {
   });
 
   const isMobileScreen = useScreenResize("sm");
+  const titleLength = assessmentInfo?.title?.length || 0;
 
   return (
     <QueryBatchData
       queryBatchData={[fetchPathInfo]}
       renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
-      render={([pathInfo]) => {
-        return (
-          <Box m="auto" pb={3}>
-            <DashboardTitle pathInfo={pathInfo} />
+      render={([pathInfo]) => (
+        <Box sx={{ ...styles.centerCV }} m="auto" pb={3} gap={1}>
+          <DashboardTitle pathInfo={pathInfo} title={assessmentInfo?.title} />
+          <Grid
+            container
+            columns={12}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
             <Grid
-              container
-              columns={12}
-              display="flex"
-              alignItems="center"
-              mt={0.5}
+              item
+              sm={
+                titleLength < maxLength || selectedTab === "settings" ? 6.8 : 12
+              }
+              xs={titleLength < maxLength ? 7 : 12}
+              sx={{
+                my:
+                  assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK ? 2 : 0,
+              }}
             >
-              <Grid
-                item
-                sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 4 : 12}
-                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 7 : 12}
-              >
+              {selectedTab === "settings" ? (
+                <Typography
+                  color="primary"
+                  textAlign="left"
+                  variant="headlineLarge"
+                >
+                  <IconButton
+                    color="primary"
+                    component={Link}
+                    to={`./questionnaires/`}
+                  >
+                    <ArrowForward
+                      sx={{
+                        ...theme.typography.headlineMedium,
+                        transform: `scaleX(${theme.direction === "rtl" ? 1 : -1})`,
+                      }}
+                    />
+                  </IconButton>
+                  {t("settings")}
+                </Typography>
+              ) : (
                 <Typography
                   color="primary"
                   textAlign="left"
                   variant="headlineLarge"
                   sx={{
-                    fontFamily: languageDetector(pathInfo?.assessment?.title)
+                    fontFamily: languageDetector(assessmentInfo?.title)
                       ? farsiFontFamily
                       : primaryFontFamily,
                   }}
                 >
-                  {pathInfo?.assessment?.title}
+                  {assessmentInfo?.title}
                 </Typography>
-              </Grid>
-              <Grid
-                item
-                sm={Number(pathInfo?.assessment?.title?.length) < 20 ? 8 : 12}
-                xs={Number(pathInfo?.assessment?.title?.length) < 20 ? 5 : 12}
-                sx={{ display: "flex" }}
-              >
-                {isMobileScreen ? (
-                  <Box
-                    sx={{
-                      ...styles.centerVH,
-                      mt: 1,
-                      background: "#2466A814",
-                      borderRadius: "16px",
-                      p: 1.3,
+              )}
+            </Grid>
+            {/* Tab Menu Section */}
+            <Grid
+              item
+              sm={
+                titleLength < maxLength || selectedTab === "settings" ? 5.2 : 12
+              }
+              xs={titleLength < maxLength ? 5 : 12}
+              sx={{ display: "flex", my: 1 }}
+            >
+              {isMobileScreen ? (
+                <Box
+                  sx={{
+                    ...styles.centerVH,
+                    mt: 1,
+                    background: "#2466A814",
+                    borderRadius: "16px",
+                    p: 1.3,
+                  }}
+                >
+                  <Button
+                    ref={buttonRef}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClick(e);
+                    }}
+                    endIcon={
+                      open ? (
+                        <ArrowDropUpRoundedIcon />
+                      ) : (
+                        <ArrowDropDownRoundedIcon />
+                      )
+                    }
+                  >
+                    {showTabName()}
+                  </Button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                      sx: {
+                        width: buttonRef.current
+                          ? `${buttonRef.current.offsetWidth}px`
+                          : "180px",
+                      },
                     }}
                   >
-                    <Button
-                      ref={buttonRef}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleClick(e);
-                      }}
-                      endIcon={
-                        open ? (
-                          <ArrowDropUpRoundedIcon />
-                        ) : (
-                          <ArrowDropDownRoundedIcon />
-                        )
-                      }
-                    >
-                      {showTabName()}
-                    </Button>
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        sx: {
-                          width: buttonRef.current
-                            ? `${buttonRef?.current?.offsetWidth}px`
-                            : "180px",
-                        },
-                      }}
-                    >
-                      {tabListTitle.map((item) => {
-                        const { label, address } = item;
-                        return (
-                          <MenuItem
-                            key={label}
-                            dense
-                            component={NavLink}
-                            to={address}
-                            onClick={handleClose}
-                            sx={{
-                              fontFamily: languageDetector(label)
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                              ...theme.typography.semiBoldMedium,
-                              fontSize: "14px",
-                              transition: "all 0.2s ease",
-                            }}
-                          >
-                            <ListItemText>
-                              <Trans i18nKey={label} />
-                            </ListItemText>
-                          </MenuItem>
-                        );
-                      })}
-                    </Menu>
-                  </Box>
-                ) : (
-                  <MainTabs
-                    onTabChange={handleTabChange}
-                    selectedTab={selectedTab}
-                    tabListTitle={tabListTitle}
-                  />
-                )}
-              </Grid>
-              <Grid container>
-                <Grid item xs={12}>
-                  {outlet}
-                </Grid>
+                    {tabListTitle.map(({ label, address }) => (
+                      <MenuItem
+                        key={label}
+                        dense
+                        component={NavLink}
+                        to={address}
+                        onClick={handleClose}
+                        sx={{
+                          fontFamily: languageDetector(label)
+                            ? farsiFontFamily
+                            : primaryFontFamily,
+                          ...theme.typography.semiBoldMedium,
+                          fontSize: "14px",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        <ListItemText>
+                          <Trans i18nKey={label} />
+                        </ListItemText>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+              ) : (
+                <MainTabs
+                  onTabChange={handleTabChange}
+                  selectedTab={selectedTab}
+                  tabListTitle={tabListTitle}
+                  flexColumn={titleLength < maxLength}
+                />
+              )}
+            </Grid>
+            {/* Outlet */}
+            <Grid container mt={2}>
+              <Grid item xs={12}>
+                {outlet}
               </Grid>
             </Grid>
-          </Box>
-        );
-      }}
+          </Grid>
+        </Box>
+      )}
     />
   );
 };
+
 export default DashbordContainer;
