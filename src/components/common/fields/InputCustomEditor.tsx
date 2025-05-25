@@ -5,6 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import { theme } from "@config/theme";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
+import { styles } from "@styles";
+import languageDetector from "@/utils/languageDetector";
 
 const InputCustomEditor = (props: any) => {
   const {
@@ -28,11 +30,8 @@ const InputCustomEditor = (props: any) => {
       required={true}
       multiline={true}
       sx={{
-        minHeight: "38px",
         borderRadius: "4px",
-        paddingRight: "12px;",
-        fontWeight: "700",
-        fontSize: "0.875rem",
+        ...styles.rtlStyle(languageDetector(value)),
       }}
       endAdornment={
         <InputAdornment position="end">
@@ -45,8 +44,7 @@ const InputCustomEditor = (props: any) => {
                 background: theme.palette.primary.dark,
               },
               borderRadius: "3px",
-              height: "36px",
-              margin: "3px",
+              marginRight: !languageDetector(value) ? "0px" : "-12px",
             }}
             onClick={handleDone}
           >
@@ -61,7 +59,9 @@ const InputCustomEditor = (props: any) => {
                 background: theme.palette.primary.dark,
               },
               borderRadius: "4px",
-              height: "36px",
+              marginRight: !languageDetector(value) ? "-12px" : "0px",
+              marginLeft: !languageDetector(value) ? "0px" : "-12px",
+
             }}
             onClick={handleCancel}
           >

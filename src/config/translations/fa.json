@@ -41,7 +41,7 @@
   "allQuestionnaires": "همه پرسش‌نامه‌ها",
   "allQuestionsHaveBeenAnswered": "به ‌همه پرسش‌های پرسش‌نامه <style>{{questionnaire}}</style> پاسخ داده شده است.",
   "allQuestionsInAllQuestionnaireHaveBeenAnswered": "به ‌همه پرسش‌ها در ‌همه پرسش‌نامه‌ها پاسخ داده شده است. اکنون می‌توانید گزارش را مشاهده کنید یا پرسش‌های مورد نظر را مرور نمایید.",
-  "allQuestionsInThisQuestionnaireHaveBeenAnswered": "به تمامی پرسش‌های این پرسش‌نامه پاسخ داده شده است. برای تحلیل دقیق‌تر می‌توانید پرسش‌نامه‌های دیگر را نیز تکمیل کنید.",
+  "allQuestionsInThisQuestionnaireHaveBeenAnswered": "برای تحلیل دقیق‌تر می‌توانید پرسش‌نامه‌های دیگر را نیز تکمیل کنید.",
   "allQuestonsMustBeAnsweredFirst": "ابتدا باید به همه پرسش‌ها پاسخ دهید.",
   "analysisResults": "تحلیل نتایج",
   "and": " و ",

@@ -79,7 +79,7 @@ export const Review = () => {
       }}
     >
       <Box
-        my={5}
+        my={4}
         sx={{
           background: "white",
           borderRadius: 2,
@@ -123,24 +123,15 @@ export const Review = () => {
             {answeredQuestions === questionsInfo?.total_number_of_questions && (
               <>
                 <Typography
-                  variant="h4"
-                  sx={{
-                    fontSize: "2.2rem",
-                    mb: 1,
-                    fontWeight: 600,
-                    color: "#004F83",
-                  }}
+                  variant="headlineMedium"
+                  mb={1}
+                  color={theme.palette.primary.main}
                 >
                   <Trans i18nKey="goodJob" />
                 </Typography>
                 <Typography
-                  variant="h4"
-                  sx={{
-                    fontSize: "1.5rem",
-                    mb: 4,
-                    fontWeight: 600,
-                    color: "#004F83",
-                  }}
+                  variant="headlineSmall"
+                  color={theme.palette.primary.main}
                 >
                   <Trans
                     i18nKey="allQuestionsHaveBeenAnswered"
@@ -166,33 +157,22 @@ export const Review = () => {
                     }}
                   />
                 </Typography>
-                {progress === 100 ? (
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      opacity: 0.8,
-                      fontSize: "1rem",
-                      mb: 4,
-                      fontWeight: 600,
-                      color: "#0A2342",
-                    }}
-                  >
-                    <Trans i18nKey="allQuestionsInAllQuestionnaireHaveBeenAnswered" />
-                  </Typography>
-                ) : (
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      opacity: 0.8,
-                      fontSize: "1rem",
-                      mb: 4,
-                      fontWeight: 600,
-                      color: "#0A2342",
-                    }}
-                  >
-                    <Trans i18nKey="allQuestionsInThisQuestionnaireHaveBeenAnswered" />
-                  </Typography>
-                )}
+                <Typography
+                  variant="semiBoldLarge"
+                  sx={{
+                    mt: 2,
+                    mb: 4,
+                    color: "#0A2342",
+                  }}
+                >
+                  <Trans
+                    i18nKey={
+                      progress === 100
+                        ? "allQuestionsInAllQuestionnaireHaveBeenAnswered"
+                        : "allQuestionsInThisQuestionnaireHaveBeenAnswered"
+                    }
+                  />
+                </Typography>
               </>
             )}
             {isEmpty && (
@@ -309,7 +289,6 @@ export const Review = () => {
           >
             <Button
               variant="outlined"
-              size="large"
               component={Link}
               to={"./../../../questionnaires"}
               sx={{ display: isPermitted ? "" : "none" }}
@@ -319,7 +298,6 @@ export const Review = () => {
             {nextQuestionnaire && (
               <Button
                 variant="contained"
-                size="large"
                 component={Link}
                 to={
                   "./../../../questionnaires" +

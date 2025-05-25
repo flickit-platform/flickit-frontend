@@ -119,7 +119,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   }, [originalItem, questionsInfo]);
 
   return (
-    <Box sx={{ pt: 1, pb: 0 }}>
+    <Box>
       <Title
         size="large"
         wrapperProps={{
