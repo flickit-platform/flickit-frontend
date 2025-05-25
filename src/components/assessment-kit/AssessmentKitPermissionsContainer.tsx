@@ -87,7 +87,7 @@ const AssessmentKitPermisson = (props: any) => {
   return (
     <Box>
       <Title
-        inPageLink="assessmentKitPermissons"
+        inPageLink="assessmentKitPermissions"
         size="large"
         letterSpacing=".08em"
         sup={
@@ -114,7 +114,7 @@ const AssessmentKitPermisson = (props: any) => {
         }
       >
         <Trans
-          i18nKey={"assessmentKitPermissons"}
+          i18nKey={"assessmentKitPermissions"}
           values={{ assessmentKit: title }}
         />
       </Title>
