@@ -37,7 +37,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@utils/selectHeight";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
@@ -77,7 +76,7 @@ function getInfoFieldValue(
 ) {
   switch (field) {
     case "creator":
-      return assessmentInfo?.createdBy?.displayName || "-";
+      return assessmentInfo?.createdBy?.displayName ?? "-";
     case "assessmentKit":
       return assessmentInfo?.kit?.title ? (
         <Link

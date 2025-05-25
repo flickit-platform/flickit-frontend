@@ -78,11 +78,11 @@ const DashbordContainer: React.FC = () => {
   const handleClose = () => setAnchorEl(null);
 
   const showTabName = () =>
-    t(tabListTitle.find((item) => item.address === selectedTab)?.label || "");
+    t(tabListTitle.find((item) => item.address === selectedTab)?.label ?? "");
 
   useEffect(() => {
     const pathSegments = location.pathname.split("/").filter(Boolean);
-    setSelectedTab(pathSegments[4] || "dashboard");
+    setSelectedTab(pathSegments[4] ?? "dashboard");
   }, [location]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: string) =>
@@ -95,7 +95,7 @@ const DashbordContainer: React.FC = () => {
   });
 
   const isMobileScreen = useScreenResize("sm");
-  const titleLength = assessmentInfo?.title?.length || 0;
+  const titleLength = assessmentInfo?.title?.length ?? 0;
 
   return (
     <QueryBatchData

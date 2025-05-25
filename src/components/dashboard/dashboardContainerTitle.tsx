@@ -1,7 +1,6 @@
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import { Link, useParams } from "react-router-dom";
-import Box from "@mui/material/Box";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { styles } from "@styles";
 import { IconButton } from "@mui/material";
@@ -9,7 +8,7 @@ import { IconButton } from "@mui/material";
 const DashboardTitle = (props: any) => {
   const { pathInfo, title } = props;
   const { spaceId, page } = useParams();
-  const { space, assessment } = pathInfo;
+  const { space } = pathInfo;
 
   return (
     <Title
