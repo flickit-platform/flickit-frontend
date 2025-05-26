@@ -105,13 +105,17 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 
   const is_farsi = languageDetector(title);
 
+  const isAdvanceMode = useMemo(() => {
+    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code;
+  }, [assessmentInfo?.mode?.code]);
+
   useEffect(() => {
     setDocumentTitle(
       `${t("question")} ${questionIndex}: ${title}`,
       config.appTitle,
     );
     setNotApplicable(answer?.isNotApplicable ?? false);
-    if(!advanceMode){
+    if(!isAdvanceMode){
       dispatch(
         questionActions.setSelectedConfidenceLevel(3),
       );
@@ -141,10 +145,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-
-  const advanceMode = useMemo(() => {
-    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code;
-  }, [assessmentInfo?.mode?.code]);
 
   return (
     <Box>
@@ -212,11 +212,10 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             setDisabledConfidence={setDisabledConfidence}
             selcetedConfidenceLevel={selcetedConfidenceLevel}
             confidenceLebels={confidenceLebels}
-            advanceMode={advanceMode}
           />
         </Box>
       </Paper>
-      {advanceMode && (
+      {isAdvanceMode && (
         <Box sx={{ px: { xs: 2, sm: 0 } }}>
           <Box
             sx={{
@@ -372,7 +371,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           </Box>
         </Box>
       )}
-      {advanceMode && (
+      {isAdvanceMode && (
         <QuestionTabsTemplate
           value={value}
           setValue={setValue}
@@ -697,7 +696,6 @@ const AnswerTemplate = (props: {
   setDisabledConfidence: any;
   selcetedConfidenceLevel: any;
   confidenceLebels: any;
-  advanceMode: boolean;
 }) => {
   const { submitOnAnswerSelection, isSubmitting } = useQuestionContext();
   const {
@@ -712,7 +710,6 @@ const AnswerTemplate = (props: {
     setDisabledConfidence,
     selcetedConfidenceLevel,
     confidenceLebels,
-    advanceMode,
   } = props;
   const [openDeleteDialog, setOpenDeleteDialog] = useState<{
     status: boolean;
@@ -723,6 +720,7 @@ const AnswerTemplate = (props: {
   const { total_number_of_questions, permissions } = questionsInfo;
   const { service } = useServiceContext();
   const dispatch = useQuestionDispatch();
+  const { assessmentInfo } = useAssessmentContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
@@ -732,6 +730,10 @@ const AnswerTemplate = (props: {
       ),
     runOnMount: false,
   });
+
+  const isAdvanceMode = useMemo(() => {
+    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code;
+  }, [assessmentInfo?.mode?.code]);
 
   const [value, setValue] = useState<TAnswer | null>(
     answer?.selectedOption || null,
@@ -914,7 +916,7 @@ const AnswerTemplate = (props: {
 
   const handleForwardClick = () => {
     if (isLTR) {
-      if(!advanceMode){
+      if(!isAdvanceMode){
         goToQuestion("asc")
         return
       }
@@ -928,7 +930,7 @@ const AnswerTemplate = (props: {
 
   const handleBackwardClick = () => {
     if (!isLTR) {
-      if(!advanceMode){
+      if(!isAdvanceMode){
         goToQuestion("desc")
         return
       }
@@ -969,7 +971,7 @@ const AnswerTemplate = (props: {
   };
   
   useEffect(() => {
-    if (changeHappened.current && value && !advanceMode){
+    if (changeHappened.current && value && !isAdvanceMode){
       submitQuestion()
       changeHappened.current = false
     }
@@ -1133,7 +1135,7 @@ const AnswerTemplate = (props: {
           alignItems: "center",
         }}
       >
-        {advanceMode && (
+        {isAdvanceMode && (
           <Box
             sx={{
               ...styles.centerVH,
