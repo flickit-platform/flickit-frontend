@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import QueryBatchData from "@common/QueryBatchData";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
@@ -18,6 +18,7 @@ import KitCustomization from "./KitCustomization";
 import PermissionControl from "@common/PermissionControl";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 
 const AssessmentSettingContainer = () => {
   const { service } = useServiceContext();
@@ -120,6 +121,10 @@ const AssessmentSettingContainer = () => {
     });
   };
 
+  const isAdvanceMode = useMemo(() => {
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
+
   return (
     <PermissionControl
       error={[
@@ -165,11 +170,14 @@ const AssessmentSettingContainer = () => {
                   />
                 </Grid>
               </Grid>
-              <Grid container columns={12}>
-                <Grid item sm={12} xs={12}>
-                  <KitCustomization kitInfo={kitInfo} />
+              {isAdvanceMode && (
+                <Grid container columns={12}>
+                  <Grid item sm={12} xs={12}>
+                    <KitCustomization kitInfo={kitInfo} />
+                  </Grid>
                 </Grid>
-              </Grid>
+              )}
+
               <AddMemberDialog
                 expanded={expanded}
                 onClose={handleClose}
