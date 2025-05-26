@@ -254,7 +254,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                           }}
                         >
                           <Box
-                            sx={{ display: "flex", fontSize: { xs: ".85rem" } }
+                            sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
                           >
                          <Trans
                             i18nKey={
