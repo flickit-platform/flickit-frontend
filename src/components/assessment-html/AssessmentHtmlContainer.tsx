@@ -39,6 +39,7 @@ import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
 
 const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
@@ -162,7 +163,7 @@ const AssessmentHtmlContainer = () => {
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
       <QueryData
         {...fetchGraphicalReport}
-        renderLoading={() => <LoadingSkeletonOfAssessmentRoles />}
+        renderLoading={() => <GraphicalReportSkeleton />}
         render={(graphicalReport) => {
           const {
             assessment,
@@ -180,6 +181,8 @@ const AssessmentHtmlContainer = () => {
               sx={{
                 textAlign: rtlLanguage ? "right" : "left",
                 ...styles.rtlStyle(rtlLanguage),
+                p: { xs: 1, sm: 1, md: 4 },
+                px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
               }}
             >
               {keycloakService.isLoggedIn() && (

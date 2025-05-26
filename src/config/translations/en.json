@@ -281,6 +281,7 @@
     "regenerateViaAI": "Regenerate via AI",
     "regenerateViaAIDescription": "The current insight will be lost. Generate a new one with AI?"
   },
+  "generatingFinalReport": "We’re generating your final report based on your responses to this assessment. This process may take a few minutes.",
   "gettingThingsReady": "We are getting things ready for you...",
   "goal": "Goal",
   "Good": "Good",

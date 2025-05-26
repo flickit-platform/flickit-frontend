@@ -20,9 +20,10 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
     "/assessment-kits",
     "/graphical-report",
   ]);
-  const shouldApplyHorizontalPadding = !pathname.includes(
+  const shouldApplyHorizontalPadding = !isPathMatching(pathname, [
     `/assessment-kits/${assessmentKitId}`,
-  );
+    "/graphical-report",
+  ]);
 
   const isAuthenticated = keycloakService.isLoggedIn();
 
