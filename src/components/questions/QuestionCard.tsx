@@ -6,8 +6,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate, useParams } from "react-router-dom";
-import QASvg from "@assets/svg/qa.svg";
-import AnswerSvg from "@assets/svg/answer.svg";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
@@ -64,7 +62,7 @@ import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
-import { evidenceAttachmentType } from "@utils/enumType";
+import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toCamelCase } from "@common/makeCamelcaseString";
@@ -81,6 +79,7 @@ import { EvidenceAttachmentsDialogs } from "./QuestionCard/EvidenceAttachmentsDi
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { getReadableDate } from "@utils/readableDate";
+import { useAssessmentContext } from "@providers/AssessmentProvider";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -96,6 +95,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const [disabledConfidence, setDisabledConfidence] = useState<boolean>(true);
   const [confidenceLebels, setConfidenceLebels] = useState<any>([]);
   const { service } = useServiceContext();
+  const { assessmentInfo } = useAssessmentContext();
   const { config } = useConfigContext();
   useEffect(() => {
     return () => {
@@ -105,12 +105,22 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 
   const is_farsi = languageDetector(title);
 
+  const isAdvanceMode = useMemo(() => {
+    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code;
+  }, [assessmentInfo?.mode?.code]);
+
   useEffect(() => {
     setDocumentTitle(
       `${t("question")} ${questionIndex}: ${title}`,
       config.appTitle,
     );
     setNotApplicable(answer?.isNotApplicable ?? false);
+    if(!isAdvanceMode){
+      dispatch(
+        questionActions.setSelectedConfidenceLevel(3),
+      );
+      return
+    }
     if (answer?.confidenceLevel) {
       dispatch(
         questionActions.setSelectedConfidenceLevel(
@@ -144,11 +154,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           py: { xs: 3, sm: 5 },
           backgroundColor: `${notApplicable ? "#000000cc" : "#273248"}`,
           flex: 1,
-          backgroundImage: `url(${QASvg})`,
           color: "white",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "auto",
-          backgroundPosition: "-140px -140px",
+          background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
           position: "relative",
           overflow: "hidden",
           mx: { xs: 2, sm: "auto" },
@@ -159,34 +166,32 @@ export const QuestionCard = (props: IQuestionCardProps) => {
       >
         <Box>
           <Typography
-            variant="subLarge"
-            sx={{ color: "white", opacity: 0.65, px: 6 }}
+            sx={{
+              ...theme.typography.semiBoldSmall,
+              color: "#6C8093",
+              opacity: 0.65,
+              px: 6,
+              textAlign: [is_farsi ? "right" : "left"],
+            }}
           >
             <Trans i18nKey="question" />
           </Typography>
           <Typography
-            variant="h4"
             letterSpacing={is_farsi ? "0" : ".05em"}
-            sx={
-              is_farsi
-                ? {
-                    pt: 0.5,
-                    fontSize: "2rem",
-                    fontFamily: { xs: "Vazirmatn", lg: "Vazirmatn" },
-                    direction: "rtl",
-                    px: 6,
-                  }
-                : {
-                    pt: 0.5,
-                    fontSize: "2rem",
-                    direction: "ltr",
-                    px: 6,
-                  }
-            }
+            sx={{
+              ...theme.typography.semiBoldXLarge,
+              fontFamily: languageDetector(title)
+                ? farsiFontFamily
+                : primaryFontFamily,
+              color: "#F9FAFB",
+              pt: 0.5,
+              px: 6,
+              direction: is_farsi ? "rtl" : "ltr",
+            }}
           >
             {title.split("\n").map((line) => (
               <React.Fragment key={line}>
-                {line}
+                {questionIndex}. {line}
                 <br />
               </React.Fragment>
             ))}
@@ -210,54 +215,56 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           />
         </Box>
       </Paper>
-      <Box sx={{ px: { xs: 2, sm: 0 } }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            background: `${notApplicable ? "#273248" : "#000000cc"}`,
-            flexDirection: { xs: "column", md: "row" },
-            borderRadius: " 0 0 8px 8px ",
-            px: { xs: 1.75, sm: 2, md: 2.5 },
-            py: { xs: 1.5, sm: 2.5 },
-          }}
-        >
-          <SubmitOnSelectCheckBox
-            disabled={!questionsInfo?.permissions?.answerQuestion}
-          />
+      {isAdvanceMode && (
+        <Box sx={{ px: { xs: 2, sm: 0 } }}>
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              justifyContent: "space-between",
+              background: `${notApplicable ? "#273248" : "#000000cc"}`,
               flexDirection: { xs: "column", md: "row" },
+              borderRadius: " 0 0 8px 8px ",
+              px: { xs: 1.75, sm: 2, md: 2.5 },
+              py: { xs: 1.5, sm: 2.5 },
             }}
           >
-            <QueryData
-              {...ConfidenceListQueryData}
-              loading={false}
-              error={false}
-              render={(data) => {
-                const labels = data.confidenceLevels;
-                setConfidenceLebels(labels);
-                return (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {selcetedConfidenceLevel !== null ? (
-                      <Box
-                        sx={{
-                          marginRight: theme.direction === "ltr" ? 2 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 2 : "unset",
-                          color: "#fff",
-                        }}
-                      >
+            <SubmitOnSelectCheckBox
+              disabled={!questionsInfo?.permissions?.answerQuestion}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: { xs: "column", md: "row" },
+              }}
+            >
+              <QueryData
+                {...ConfidenceListQueryData}
+                loading={false}
+                error={false}
+                render={(data) => {
+                  const labels = data.confidenceLevels;
+                  setConfidenceLebels(labels);
+                  return (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {selcetedConfidenceLevel !== null ? (
                         <Box
-                          sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
+                          sx={{
+                            marginRight:
+                              theme.direction === "ltr" ? 2 : "unset",
+                            marginLeft: theme.direction === "rtl" ? 2 : "unset",
+                            color: "#fff",
+                          }}
                         >
-                          <Trans
+                          <Box
+                            sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
+                          >
+                         <Trans
                             i18nKey={
                               questionsInfo?.permissions?.answerQuestion
                                 ? "selectedConfidenceLevel"
@@ -267,111 +274,113 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                           <Typography
                             fontWeight={900}
                             sx={{ borderBottom: "1px solid", mx: 1 }}
-                          >
+                            >
+                              <Trans
+                                i18nKey={toCamelCase(
+                                  `${labels[selcetedConfidenceLevel - 1]?.title}`,
+                                )}
+                              />
+                            </Typography>
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            marginInlineEnd: 1,
+                            color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
+                          }}
+                        >
+                          <Typography>
                             <Trans
-                              i18nKey={toCamelCase(
-                                `${labels[selcetedConfidenceLevel - 1]?.title}`,
-                              )}
+                              i18nKey={
+                                disabledConfidence
+                                  ? "selectConfidenceLevel"
+                                  : "toContinueToSubmitAnAnswer"
+                              }
                             />
                           </Typography>
                         </Box>
+                      )}
+                      <Box sx={{ position: "relative" }}>
+                        <Rating
+                          disabled
+                          value={Number(answer?.confidenceLevel?.id)}
+                          size="medium"
+                          icon={
+                            <RadioButtonCheckedRoundedIcon
+                              sx={{
+                                mx: 0.25,
+                                color: "transparent",
+                                borderRadius: "100%",
+                                border: "2px solid #42a5f5",
+                              }}
+                              fontSize="inherit"
+                            />
+                          }
+                          emptyIcon={
+                            <RadioButtonUncheckedRoundedIcon
+                              sx={{ mx: 0.25, color: "#fff" }}
+                              fontSize="inherit"
+                            />
+                          }
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            zIndex: 1,
+                          }}
+                        />
+                        <Rating
+                          disabled={!questionsInfo?.permissions?.answerQuestion}
+                          value={
+                            selcetedConfidenceLevel !== null
+                              ? selcetedConfidenceLevel
+                              : null
+                          }
+                          size="medium"
+                          onChange={(event, newValue) => {
+                            dispatch(
+                              questionActions.setSelectedConfidenceLevel(
+                                newValue,
+                              ),
+                            );
+                          }}
+                          icon={
+                            <RadioButtonCheckedRoundedIcon
+                              sx={{ mx: 0.25, color: "#42a5f5" }}
+                              fontSize="inherit"
+                            />
+                          }
+                          emptyIcon={
+                            <RadioButtonUncheckedRoundedIcon
+                              sx={{ mx: 0.25, color: "transparent" }}
+                              fontSize="inherit"
+                            />
+                          }
+                          sx={{
+                            position: "relative",
+                            zIndex: 2,
+                          }}
+                        />
                       </Box>
-                    ) : (
-                      <Box
-                        sx={{
-                          marginInlineEnd: 1,
-                          color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
-                        }}
-                      >
-                        <Typography>
-                          <Trans
-                            i18nKey={
-                              disabledConfidence
-                                ? "selectConfidenceLevel"
-                                : "toContinueToSubmitAnAnswer"
-                            }
-                          />
-                        </Typography>
-                      </Box>
-                    )}
-                    <Box sx={{ position: "relative" }}>
-                      <Rating
-                        disabled
-                        value={Number(answer?.confidenceLevel?.id)}
-                        size="medium"
-                        icon={
-                          <RadioButtonCheckedRoundedIcon
-                            sx={{
-                              mx: 0.25,
-                              color: "transparent",
-                              borderRadius: "100%",
-                              border: "2px solid #42a5f5",
-                            }}
-                            fontSize="inherit"
-                          />
-                        }
-                        emptyIcon={
-                          <RadioButtonUncheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "#fff" }}
-                            fontSize="inherit"
-                          />
-                        }
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          zIndex: 1,
-                        }}
-                      />
-
-                      <Rating
-                        disabled={!questionsInfo?.permissions?.answerQuestion}
-                        value={
-                          selcetedConfidenceLevel !== null
-                            ? selcetedConfidenceLevel
-                            : null
-                        }
-                        size="medium"
-                        onChange={(event, newValue) => {
-                          dispatch(
-                            questionActions.setSelectedConfidenceLevel(
-                              newValue,
-                            ),
-                          );
-                        }}
-                        icon={
-                          <RadioButtonCheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "#42a5f5" }}
-                            fontSize="inherit"
-                          />
-                        }
-                        emptyIcon={
-                          <RadioButtonUncheckedRoundedIcon
-                            sx={{ mx: 0.25, color: "transparent" }}
-                            fontSize="inherit"
-                          />
-                        }
-                        sx={{
-                          position: "relative",
-                          zIndex: 2,
-                        }}
-                      />
                     </Box>
-                  </Box>
-                );
-              }}
-            />
+                  );
+                }}
+              />
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <QuestionTabsTemplate
-        value={value}
-        setValue={setValue}
-        handleChange={handleChange}
-        questionsInfo={questionsInfo}
-        questionInfo={questionInfo}
-        key={questionInfo.id}
-      />
+      )}
+      {isAdvanceMode && (
+        <QuestionTabsTemplate
+          value={value}
+          setValue={setValue}
+          handleChange={handleChange}
+          questionsInfo={questionsInfo}
+          questionInfo={questionInfo}
+          key={questionInfo.id}
+        />
+      )}
     </Box>
   );
 };
@@ -711,6 +720,7 @@ const AnswerTemplate = (props: {
   const { total_number_of_questions, permissions } = questionsInfo;
   const { service } = useServiceContext();
   const dispatch = useQuestionDispatch();
+  const { assessmentInfo } = useAssessmentContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
@@ -720,6 +730,10 @@ const AnswerTemplate = (props: {
       ),
     runOnMount: false,
   });
+
+  const isAdvanceMode = useMemo(() => {
+    return ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code;
+  }, [assessmentInfo?.mode?.code]);
 
   const [value, setValue] = useState<TAnswer | null>(
     answer?.selectedOption || null,
@@ -753,9 +767,7 @@ const AnswerTemplate = (props: {
     event: React.MouseEvent<HTMLElement>,
     v: TAnswer | null,
   ) => {
-    if (isSelectedValueTheSameAsAnswer) {
       changeHappened.current = true;
-    }
     if (value?.index !== v?.index || !questionInfo?.mayNotBeApplicable) {
       setDisabledConfidence(false);
     } else {
@@ -904,6 +916,10 @@ const AnswerTemplate = (props: {
 
   const handleForwardClick = () => {
     if (isLTR) {
+      if(!isAdvanceMode){
+        goToQuestion("asc")
+        return
+      }
       isSelectedValueTheSameAsAnswer
         ? goToQuestion("asc")
         : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
@@ -914,6 +930,10 @@ const AnswerTemplate = (props: {
 
   const handleBackwardClick = () => {
     if (!isLTR) {
+      if(!isAdvanceMode){
+        goToQuestion("desc")
+        return
+      }
       isSelectedValueTheSameAsAnswer
         ? goToQuestion("asc")
         : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
@@ -949,6 +969,14 @@ const AnswerTemplate = (props: {
       toastError(err);
     }
   };
+  
+  useEffect(() => {
+    if (changeHappened.current && value && !isAdvanceMode){
+      submitQuestion()
+      changeHappened.current = false
+    }
+  }, [value]);
+
   return (
     <>
       <Box
@@ -974,7 +1002,7 @@ const AnswerTemplate = (props: {
           }}
           flexWrap={"wrap"}
         >
-          {options?.map((option: any, index: number) => {
+          {options?.map((option: any) => {
             const { index: defaultSelectedIndex, title } = option ?? {};
             return (
               <Box
@@ -997,14 +1025,13 @@ const AnswerTemplate = (props: {
                     !permissions?.answerQuestion
                   }
                   sx={{
-                    letterSpacing: `${is_farsi ? "0" : ".05em"}`,
-                    color: "white",
+                    ...theme.typography.titleMedium,
+                    color: "#F9FAFB",
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
-                    fontSize: { xs: "1.15rem", sm: "1.3rem" },
-                    fontFamily: `${is_farsi ? "Vazirmatn" : customElements}`,
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 2px ${
+                    boxShadow: `0 0 3px ${
+                      !!answer?.approved &&
                       answer?.selectedOption?.index === defaultSelectedIndex
                         ? !answer?.approved && permissions?.approveAnswer
                           ? "#CC7400"
@@ -1013,30 +1040,30 @@ const AnswerTemplate = (props: {
                     }`,
                     borderWidth: "2px",
                     borderColor:
-                      answer?.selectedOption?.index === defaultSelectedIndex
+                      !!answer?.approved &&
+                      answer?.selectedOption?.index === defaultSelectedIndex &&
+                      !answer?.approved &&
+                      permissions?.approveAnswer
                         ? "#CC7400"
                         : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
-                          ? "#0ec586"
-                          : !answer?.approved && permissions?.approveAnswer
+                          ? theme.palette.success.main
+                          : !!answer?.approved &&
+                              !answer?.approved &&
+                              permissions?.approveAnswer
                             ? "#CC7400"
-                            : "#0ec586",
+                            : theme.palette.success.main,
                       },
-                      backgroundImage: !isSelectedValueTheSameAsAnswer
-                        ? "#0ec586"
-                        : !answer?.approved && permissions?.approveAnswer
-                          ? null
-                          : `url(${AnswerSvg})`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "right",
                       color: "white",
                       backgroundColor: !isSelectedValueTheSameAsAnswer
-                        ? "#0ec586"
-                        : !answer?.approved && permissions?.approveAnswer
+                        ? theme.palette.success.main
+                        : !!answer?.approved &&
+                            !answer?.approved &&
+                            permissions?.approveAnswer
                           ? "#CC7400"
-                          : "#0acb89",
+                          : theme.palette.success.main,
                       borderColor: "transparent",
                       zIndex: 2,
                       position: "relative",
@@ -1044,6 +1071,9 @@ const AnswerTemplate = (props: {
                     "&.Mui-disabled": {
                       color: "#ffffff78",
                     },
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                   }}
                 >
                   <Checkbox
@@ -1105,31 +1135,33 @@ const AnswerTemplate = (props: {
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            ...styles.centerVH,
-          }}
-          gap={2}
-        >
-          <LoadingButton
-            variant="contained"
-            loading={isSubmitting}
+        {isAdvanceMode && (
+          <Box
             sx={{
-              fontSize: "1.2rem",
-              "&.Mui-disabled": {
-                background: "#C2CCD650",
-                color: "black",
-              },
+              ...styles.centerVH,
             }}
-            onClick={submitQuestion}
-            disabled={
-              isSelectedValueTheSameAsAnswer ||
-              ((value || notApplicable) && !selcetedConfidenceLevel)
-            }
+            gap={2}
           >
-            <Trans i18nKey="submit" />
-          </LoadingButton>{" "}
-        </Box>
+            <LoadingButton
+              variant="contained"
+              loading={isSubmitting}
+              sx={{
+                fontSize: "1.2rem",
+                "&.Mui-disabled": {
+                  background: "#C2CCD650",
+                  color: "black",
+                },
+              }}
+              onClick={submitQuestion}
+              disabled={
+                isSelectedValueTheSameAsAnswer ||
+                ((value || notApplicable) && !selcetedConfidenceLevel)
+              }
+            >
+              <Trans i18nKey="submit" />
+            </LoadingButton>{" "}
+          </Box>
+        )}
         {isSelectedValueTheSameAsAnswer &&
           value &&
           answer?.hasOwnProperty("approved") &&
@@ -1171,16 +1203,16 @@ const AnswerTemplate = (props: {
         {may_not_be_applicable && (
           <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
-              sx={{ color: theme.palette.primary.main }}
+              sx={{ color: "#fff" }}
               data-cy="automatic-submit-check"
               control={
                 <Checkbox
                   checked={notApplicable}
                   onChange={(e) => notApplicableonChanhe(e)}
                   sx={{
-                    color: theme.palette.primary.main,
+                    color: "#fff",
                     "&.Mui-checked": {
-                      color: theme.palette.primary.main,
+                      color: "#fff",
                     },
                   }}
                 />
@@ -1452,6 +1484,8 @@ const Evidence = (props: any) => {
   const is_farsi = languageDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
+  const { assessmentInfo } = useAssessmentContext();
+
   const {
     questionInfo,
     permissions,
@@ -1648,219 +1682,220 @@ const Evidence = (props: any) => {
     >
       {permissions?.addEvidence && (
         <FormProvider {...formMethods}>
-          <form
-            onSubmit={formMethods.handleSubmit(onSubmit)}
-            style={{ flex: 1, display: "flex", flexDirection: "column" }}
-          >
-            <Grid
-              container
-              display={"flex"}
-              justifyContent={"end"}
-              sx={styles.formGrid}
+            <form
+              onSubmit={formMethods.handleSubmit(onSubmit)}
+              style={{ flex: 1, display: "flex", flexDirection: "column" }}
             >
-              <TabContext value={value}>
-                <TabList
-                  onChange={handleChange}
-                  sx={{
-                    width: "100%",
-                    "&.MuiTabs-root": {
-                      borderBottomColor: "transparent",
-                      justifyContent: "space-between",
-                      display: "flex",
-                    },
-                    ".MuiTabs-indicator": {
-                      backgroundColor: evidenceBG.borderColor,
-                    },
-                  }}
-                >
-                  {type === "evidence" && (
-                    <Tab
-                      label={<Trans i18nKey="negativeEvidence" />}
-                      value={evidenceAttachmentType.negative}
-                      sx={{
+              <Grid
+                container
+                display={"flex"}
+                justifyContent={"end"}
+                sx={styles.formGrid}
+              >
+                <TabContext value={value}>
+                  <TabList
+                    onChange={handleChange}
+                    sx={{
+                      width: "100%",
+                      "&.MuiTabs-root": {
+                        borderBottomColor: "transparent",
+                        justifyContent: "space-between",
                         display: "flex",
-                        flex: 1,
-                        maxWidth: "unset",
-                        "&.Mui-selected": {
-                          color: `${evidenceBG.borderColor}  !important`,
-                        },
-                        ...theme.typography.headlineSmall,
-                        fontSize: { xs: "1rem !important" },
-                      }}
-                    />
-                  )}
-                  {type === "comment" && (
-                    <Tab
-                      label={
-                        <Box
-                          sx={{
-                            ...styles.centerV,
-                          }}
-                        >
-                          <Trans i18nKey="comment" />
-                        </Box>
-                      }
-                      sx={{
-                        display: "flex",
-                        flex: 1,
-                        maxWidth: "unset",
-
-                        "&.Mui-selected": {
-                          color: `${evidenceBG.borderColor}  !important`,
-                        },
-                        ...theme.typography.headlineSmall,
-                        fontSize: { xs: "1rem !important" },
-                      }}
-                      value={null}
-                    />
-                  )}
-                  {type === "evidence" && (
-                    <Tab
-                      label={<Trans i18nKey="positiveEvidence" />}
-                      sx={{
-                        display: "flex",
-                        flex: 1,
-                        maxWidth: "unset",
-
-                        "&.Mui-selected": {
-                          color: `${evidenceBG.borderColor}  !important`,
-                        },
-                        ...theme.typography.headlineSmall,
-                        fontSize: { xs: "1rem !important" },
-                      }}
-                      value={evidenceAttachmentType.positive}
-                    />
-                  )}
-                </TabList>
-              </TabContext>
-              <Grid item xs={12} position={"relative"}>
-                <InputFieldUC
-                  multiline
-                  minRows={3}
-                  maxRows={8}
-                  minLength={3}
-                  maxLength={LIMITED}
-                  autoFocus={false}
-                  defaultValue={""}
-                  pallet={evidenceBG}
-                  name="evidence"
-                  label={null}
-                  required={true}
-                  placeholder={t(`evidencePlaceholder`) as string}
-                  borderRadius={"12px"}
-                  setValueCount={setValueCount}
-                  hasCounter={true}
-                  isFarsi={is_farsi}
-                  rtl={rtl}
-                  inputProps={{
-                    sx: {
-                      "&::placeholder": {
-                        ...theme.typography.bodyMedium,
                       },
-                    },
-                  }}
-                />
-                <FormControlLabel
-                  sx={{
-                    color: theme.palette.primary.main,
-                    position: "absolute",
-                    bottom: "20px",
-                    left: theme.direction === "ltr" ? "20px" : "unset",
-                    right: theme.direction === "rtl" ? "20px" : "unset",
-                  }}
-                  data-cy="automatic-submit-check"
-                  control={
-                    <Checkbox
-                      disabled={!permissions?.addEvidenceAttachment}
-                      checked={createAttachment}
-                      onChange={() => setCreateAttachment((prev) => !prev)}
-                      sx={{
-                        color: evidenceBG.borderColor,
-                        "&.Mui-checked": {
-                          color: evidenceBG.borderColor,
-                        },
-                      }}
-                    />
-                  }
-                  label={
-                    <Typography
-                      sx={{
-                        ...theme.typography.titleSmall,
-                        color: "#2B333B",
-                      }}
-                    >
-                      <Trans i18nKey={"needsToAddAttachments"} />
-                    </Typography>
-                  }
-                />
-                <Typography
-                  style={is_farsi || rtl ? { left: 10 } : { right: 10 }}
-                  sx={{
-                    position: "absolute",
-                    top: 20,
-                    fontSize: ".875rem",
-                    fontWeight: 300,
-                    color: valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
-                  }}
-                >
-                  {valueCount.length ?? 0} / {LIMITED}
-                </Typography>
-                <Grid
-                  item
-                  xs={12}
-                  sx={
-                    is_farsi
-                      ? { position: "absolute", top: 15, left: 5 }
-                      : {
-                          position: "absolute",
-                          top: 15,
-                          right: 5,
+                      ".MuiTabs-indicator": {
+                        backgroundColor: evidenceBG.borderColor,
+                      },
+                    }}
+                  >
+                    {type === "evidence" && (
+                      <Tab
+                        label={<Trans i18nKey="negativeEvidence" />}
+                        value={evidenceAttachmentType.negative}
+                        sx={{
+                          display: "flex",
+                          flex: 1,
+                          maxWidth: "unset",
+                          "&.Mui-selected": {
+                            color: `${evidenceBG.borderColor}  !important`,
+                          },
+                          ...theme.typography.headlineSmall,
+                          fontSize: { xs: "1rem !important" },
+                        }}
+                      />
+                    )}
+                    {type === "comment" && (
+                      <Tab
+                        label={
+                          <Box
+                            sx={{
+                              ...styles.centerV,
+                            }}
+                          >
+                            <Trans i18nKey="comment" />
+                          </Box>
                         }
-                  }
-                ></Grid>
-              </Grid>
-              <Box display={"flex"} justifyContent={"end"} mt={2}>
-                <LoadingButton
-                  sx={{
-                    borderRadius: "4px",
-                    px: 3,
-                    background: evidenceBG.borderColor,
-                    "&:hover": {
-                      background: evidenceBG.borderColor,
-                    },
-                    ...theme.typography.titleMedium,
-                  }}
-                  type="submit"
-                  variant="contained"
-                  loading={evidencesQueryData.loading}
-                  onClick={() =>
-                    permissions?.viewDashboard &&
-                    service.assessments.questionnaire
-                      .getQuestionIssues(
-                        {
-                          assessmentId,
-                          questionId: questionInfo?.id,
+                        sx={{
+                          display: "flex",
+                          flex: 1,
+                          maxWidth: "unset",
+
+                          "&.Mui-selected": {
+                            color: `${evidenceBG.borderColor}  !important`,
+                          },
+                          ...theme.typography.headlineSmall,
+                          fontSize: { xs: "1rem !important" },
+                        }}
+                        value={null}
+                      />
+                    )}
+                    {type === "evidence" && (
+                      <Tab
+                        label={<Trans i18nKey="positiveEvidence" />}
+                        sx={{
+                          display: "flex",
+                          flex: 1,
+                          maxWidth: "unset",
+
+                          "&.Mui-selected": {
+                            color: `${evidenceBG.borderColor}  !important`,
+                          },
+                          ...theme.typography.headlineSmall,
+                          fontSize: { xs: "1rem !important" },
+                        }}
+                        value={evidenceAttachmentType.positive}
+                      />
+                    )}
+                  </TabList>
+                </TabContext>
+                <Grid item xs={12} position={"relative"}>
+                  <InputFieldUC
+                    multiline
+                    minRows={3}
+                    maxRows={8}
+                    minLength={3}
+                    maxLength={LIMITED}
+                    autoFocus={false}
+                    defaultValue={""}
+                    pallet={evidenceBG}
+                    name="evidence"
+                    label={null}
+                    required={true}
+                    placeholder={t(`evidencePlaceholder`) as string}
+                    borderRadius={"12px"}
+                    setValueCount={setValueCount}
+                    hasCounter={true}
+                    isFarsi={is_farsi}
+                    rtl={rtl}
+                    inputProps={{
+                      sx: {
+                        "&::placeholder": {
+                          ...theme.typography.bodyMedium,
                         },
-                        {},
-                      )
-                      .then((res: any) => {
-                        dispatch(
-                          questionActions.setQuestionInfo({
-                            ...questionInfo,
-                            issues: res.data,
-                          }),
-                        );
-                      })
-                  }
-                >
-                  <Trans
-                    i18nKey={"createEvidence"}
-                    values={{ title: t(type).toLowerCase() }}
+                      },
+                    }}
                   />
-                </LoadingButton>
-              </Box>
-            </Grid>
-          </form>
+                  <FormControlLabel
+                    sx={{
+                      color: theme.palette.primary.main,
+                      position: "absolute",
+                      bottom: "20px",
+                      left: theme.direction === "ltr" ? "20px" : "unset",
+                      right: theme.direction === "rtl" ? "20px" : "unset",
+                    }}
+                    data-cy="automatic-submit-check"
+                    control={
+                      <Checkbox
+                        disabled={!permissions?.addEvidenceAttachment}
+                        checked={createAttachment}
+                        onChange={() => setCreateAttachment((prev) => !prev)}
+                        sx={{
+                          color: evidenceBG.borderColor,
+                          "&.Mui-checked": {
+                            color: evidenceBG.borderColor,
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography
+                        sx={{
+                          ...theme.typography.titleSmall,
+                          color: "#2B333B",
+                        }}
+                      >
+                        <Trans i18nKey={"needsToAddAttachments"} />
+                      </Typography>
+                    }
+                  />
+                  <Typography
+                    style={is_farsi || rtl ? { left: 10 } : { right: 10 }}
+                    sx={{
+                      position: "absolute",
+                      top: 20,
+                      fontSize: ".875rem",
+                      fontWeight: 300,
+                      color:
+                        valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
+                    }}
+                  >
+                    {valueCount.length ?? 0} / {LIMITED}
+                  </Typography>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={
+                      is_farsi
+                        ? { position: "absolute", top: 15, left: 5 }
+                        : {
+                            position: "absolute",
+                            top: 15,
+                            right: 5,
+                          }
+                    }
+                  ></Grid>
+                </Grid>
+                <Box display={"flex"} justifyContent={"end"} mt={2}>
+                  <LoadingButton
+                    sx={{
+                      borderRadius: "4px",
+                      px: 3,
+                      background: evidenceBG.borderColor,
+                      "&:hover": {
+                        background: evidenceBG.borderColor,
+                      },
+                      ...theme.typography.titleMedium,
+                    }}
+                    type="submit"
+                    variant="contained"
+                    loading={evidencesQueryData.loading}
+                    onClick={() =>
+                      permissions?.viewDashboard &&
+                      service.assessments.questionnaire
+                        .getQuestionIssues(
+                          {
+                            assessmentId,
+                            questionId: questionInfo?.id,
+                          },
+                          {},
+                        )
+                        .then((res: any) => {
+                          dispatch(
+                            questionActions.setQuestionInfo({
+                              ...questionInfo,
+                              issues: res.data,
+                            }),
+                          );
+                        })
+                    }
+                  >
+                    <Trans
+                      i18nKey={"createEvidence"}
+                      values={{ title: t(type).toLowerCase() }}
+                    />
+                  </LoadingButton>
+                </Box>
+              </Grid>
+            </form>
         </FormProvider>
       )}
       <Box mt={3} width="100%">

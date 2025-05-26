@@ -5,7 +5,6 @@ import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import Title from "@common/Title";
 import {
-  EAssessmentStatus,
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
@@ -46,10 +45,6 @@ const itemNames = [
 
 const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   const { isReview, pathInfo } = props;
-  const {
-    questionsInfo: { total_number_of_questions },
-    assessmentStatus,
-  } = useQuestionContext();
   const { questionIndex, questionnaireId } = useParams();
   const isComplete = questionIndex === "completed";
   const { questionnaire } = pathInfo;
@@ -125,7 +120,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
         wrapperProps={{
           sx: {
             flexDirection: { xs: "column", md: "row" },
-            alignItems: { xs: "flex-start", md: "flex-end" },
+            alignItems: { xs: "flex-start", md: "center" },
             display: { xs: "block", sm: "flex" },
           },
         }}
@@ -176,22 +171,6 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                 >
                   {questionnaire.title}
                 </Typography>{" "}
-                {assessmentStatus !== EAssessmentStatus.DONE && (
-                  <Typography
-                    display="inline-block"
-                    variant="h5"
-                    fontWeight={"bold"}
-                    sx={{
-                      opacity: 0.6,
-                      ml: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
-                      mr: theme.direction == "rtl" ? { xs: 0, sm: 1 } : "unset",
-                    }}
-                  >
-                    {" - "}
-                    <Trans i18nKey="question" /> {questionIndex}/
-                    {total_number_of_questions}
-                  </Typography>
-                )}
               </Box>
             </Box>
           </>

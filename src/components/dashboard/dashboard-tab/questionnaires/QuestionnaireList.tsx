@@ -1,7 +1,6 @@
 import { QuestionnaireCard } from "./QuestionnaireCard";
 import QueryData from "@common/QueryData";
 import Grid from "@mui/material/Grid";
-import Skeleton from "@mui/material/Skeleton";
 import LoadingSkeletonOfQuestionnaires from "@common/loadings/LoadingSkeletonOfQuestionnaires";
 import Box from "@mui/material/Box";
 import QANumberIndicator from "@common/QANumberIndicator";
@@ -190,8 +189,21 @@ export const QuestionsFilteringDropdown = (props: any) => {
 };
 
 const ProgressButton = (props: any) => {
-  const { leftQuestions, calculatePercentage } = props;
+  const { questionsCount, answersCount } = props;
   const { assessmentId, spaceId } = useParams();
+
+  const leftQuestions = useMemo(() => {
+    const total = questionsCount ?? 0;
+    const answered = answersCount ?? 0;
+    return total - answered;
+  }, [questionsCount, answersCount]);
+
+  const calculatePercentage = useMemo(() => {
+    const total = questionsCount ?? 0;
+    const answered = answersCount ?? 0;
+    return Number((answered / total).toFixed(2)) * 100;
+  }, [questionsCount, answersCount]);
+
   return (
     <Box>
       {leftQuestions > 0 ? (
@@ -278,7 +290,6 @@ const ProgressButton = (props: any) => {
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
-  const [calculatePercentage, setCalculatePercentage] = useState<any>();
 
   const { assessmentInfo } = useAssessmentContext();
 
@@ -295,15 +306,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
       setOriginalItem([state]);
     }
   }, []);
-
-  const leftQuestions = useMemo(() => {
-    const total = assessmentTotalProgress?.data?.questionsCount ?? 0;
-    const answered = assessmentTotalProgress?.data?.answersCount ?? 0;
-    return total - answered;
-  }, [
-    assessmentTotalProgress?.data?.questionsCount,
-    assessmentTotalProgress?.data?.answersCount,
-  ]);
 
   return (
     <>
@@ -330,35 +332,18 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         >
           <Typography variant={"titleLarge"} color="white">
             <Trans i18nKey={"Questionnaires"} />
-            {"  "}
-            (
-            <QueryData
-              {...(assessmentTotalProgress ?? {})}
-              errorComponent={<></>}
-              renderLoading={() => <Skeleton width="60px" height="36px" />}
-              render={(data) => {
-                const { questionsCount = 0, answersCount = 0 } = data ?? {};
-                const calc = (answersCount / questionsCount) * 100;
-                setCalculatePercentage(calc.toFixed(2));
-
-                return (
-                  <QANumberIndicator
-                    color="white"
-                    q={questionsCount}
-                    variant={"titleLarge"}
-                  />
-                );
-              }}
+            {"  "}(
+            <QANumberIndicator
+              color="white"
+              q={assessmentTotalProgress?.data?.questionsCount ?? ""}
+              variant={"titleLarge"}
             />
             )
           </Typography>
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton
-            calculatePercentage={calculatePercentage}
-            leftQuestions={leftQuestions}
-          />
+          <ProgressButton {...assessmentTotalProgress?.data} />
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}

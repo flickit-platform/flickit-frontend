@@ -22,7 +22,6 @@ import { t } from "i18next";
 export const QuestionContainer = () => {
   const {
     questionInfo,
-
     container,
     assessmentStatus,
     questionsInfo,
