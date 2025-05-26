@@ -965,6 +965,13 @@ const AnswerTemplate = (props: {
       toastError(err);
     }
   };
+  
+  useEffect(() => {
+    if (value && !advanceMode){
+      submitQuestion()
+    }
+  }, [value]);
+
   return (
     <>
       <Box
