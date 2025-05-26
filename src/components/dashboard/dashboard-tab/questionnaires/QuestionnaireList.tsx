@@ -17,7 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useMemo, useState } from "react";
 import { styles } from "@styles";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
@@ -191,6 +191,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
 const ProgressButton = (props: any) => {
   const { leftQuestions, calculatePercentage } = props;
+  const { assessmentId, spaceId } = useParams();
   return (
     <Box>
       {leftQuestions > 0 ? (
@@ -246,6 +247,8 @@ const ProgressButton = (props: any) => {
         </Box>
       ) : (
         <Button
+          component={Link}
+          to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
           sx={{
             borderRadius: "4px",
             background: "#F3F5F6",

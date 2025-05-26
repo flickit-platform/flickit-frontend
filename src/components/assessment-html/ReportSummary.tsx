@@ -7,6 +7,9 @@ import { IGraphicalReport, ISubject } from "@/types/index";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import uniqueId from "@/utils/uniqueId";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { useMemo } from "react";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 
 const sectionStyle = {
   marginTop: "16px",
@@ -224,6 +227,12 @@ const ReportCard = ({
 }) => {
   const { assessment, subjects, assessmentProcess, lang } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
+  const { assessmentInfo } = useAssessmentContext();
+
+  const isAdvanceMode = useMemo(() => {
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
+
   return (
     <Box
       sx={{
@@ -243,74 +252,78 @@ const ReportCard = ({
     >
       <TitleBox language={lang.code.toLowerCase()} />
 
-      <Section
-        title={t("disclaimer", { lng: lang.code.toLowerCase() })}
-        rtlLanguage={rtlLanguage}
-      >
-        <Typography
-          variant="bodyMedium"
-          sx={{
-            fontFamily:
-              lang.code.toLowerCase() === "fa"
-                ? farsiFontFamily
-                : primaryFontFamily,
-            textAlign: "justify",
-          }}
-        >
-          {t("disclaimerDescription", { lng: lang.code.toLowerCase() })}
-        </Typography>
-      </Section>
+      {isAdvanceMode && (
+        <>
+          <Section
+            title={t("disclaimer", { lng: lang.code.toLowerCase() })}
+            rtlLanguage={rtlLanguage}
+          >
+            <Typography
+              variant="bodyMedium"
+              sx={{
+                fontFamily:
+                  lang.code.toLowerCase() === "fa"
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                textAlign: "justify",
+              }}
+            >
+              {t("disclaimerDescription", { lng: lang.code.toLowerCase() })}
+            </Typography>
+          </Section>
 
-      <Section
-        title={t("assessmentSteps", { lng: lang.code.toLowerCase() })}
-        rtlLanguage={rtlLanguage}
-      >
-        {assessmentProcess.steps ? (
-          <Typography
-            variant="bodyMedium"
-            sx={{
-              fontFamily: languageDetector(assessmentProcess.steps)
-                ? farsiFontFamily
-                : primaryFontFamily,
-              ...textStyle,
-              textAlign: "justify",
-            }}
-            dangerouslySetInnerHTML={{
-              __html:
-                assessmentProcess.steps ??
-                t("unavailable", { lng: lang.code.toLowerCase() }),
-            }}
-            className={"tiptap"}
-          />
-        ) : (
-          <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
-        )}
-      </Section>
-      <Section
-        title={t("participant", { lng: lang.code.toLowerCase() })}
-        rtlLanguage={rtlLanguage}
-      >
-        {assessmentProcess.participant ? (
-          <Typography
-            variant="bodyMedium"
-            sx={{
-              fontFamily: languageDetector(assessmentProcess.participant)
-                ? farsiFontFamily
-                : primaryFontFamily,
-              ...textStyle,
-              textAlign: "justify",
-            }}
-            dangerouslySetInnerHTML={{
-              __html:
-                graphicalReport?.assessmentProcess.participant ??
-                t("unavailable", { lng: lang.code.toLowerCase() }),
-            }}
-            className={"tiptap"}
-          />
-        ) : (
-          <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
-        )}
-      </Section>
+          <Section
+            title={t("assessmentSteps", { lng: lang.code.toLowerCase() })}
+            rtlLanguage={rtlLanguage}
+          >
+            {assessmentProcess.steps ? (
+              <Typography
+                variant="bodyMedium"
+                sx={{
+                  fontFamily: languageDetector(assessmentProcess.steps)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                  ...textStyle,
+                  textAlign: "justify",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    assessmentProcess.steps ??
+                    t("unavailable", { lng: lang.code.toLowerCase() }),
+                }}
+                className={"tiptap"}
+              />
+            ) : (
+              <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
+            )}
+          </Section>
+          <Section
+            title={t("participant", { lng: lang.code.toLowerCase() })}
+            rtlLanguage={rtlLanguage}
+          >
+            {assessmentProcess.participant ? (
+              <Typography
+                variant="bodyMedium"
+                sx={{
+                  fontFamily: languageDetector(assessmentProcess.participant)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                  ...textStyle,
+                  textAlign: "justify",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    graphicalReport?.assessmentProcess.participant ??
+                    t("unavailable", { lng: lang.code.toLowerCase() }),
+                }}
+                className={"tiptap"}
+              />
+            ) : (
+              <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
+            )}
+          </Section>
+        </>
+      )}
 
       <Section
         title={t("assessmentKit", { lng: lang.code.toLowerCase() })}
