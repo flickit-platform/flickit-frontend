@@ -1198,7 +1198,7 @@ const AnswerTemplate = (props: {
               </Button>
             </Box>
           )}
-        {!may_not_be_applicable && (
+        {may_not_be_applicable && (
           <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
               sx={{ color: "#fff" }}
