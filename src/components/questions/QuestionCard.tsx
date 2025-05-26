@@ -765,9 +765,7 @@ const AnswerTemplate = (props: {
     event: React.MouseEvent<HTMLElement>,
     v: TAnswer | null,
   ) => {
-    if (isSelectedValueTheSameAsAnswer) {
       changeHappened.current = true;
-    }
     if (value?.index !== v?.index || !questionInfo?.mayNotBeApplicable) {
       setDisabledConfidence(false);
     } else {
@@ -915,11 +913,11 @@ const AnswerTemplate = (props: {
   const isLTR = theme.direction === "ltr";
 
   const handleForwardClick = () => {
-    if (!advanceMode) {
-      submitQuestion();
-      return;
-    }
     if (isLTR) {
+      if(!advanceMode){
+        goToQuestion("asc")
+        return
+      }
       isSelectedValueTheSameAsAnswer
         ? goToQuestion("asc")
         : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
@@ -930,6 +928,10 @@ const AnswerTemplate = (props: {
 
   const handleBackwardClick = () => {
     if (!isLTR) {
+      if(!advanceMode){
+        goToQuestion("desc")
+        return
+      }
       isSelectedValueTheSameAsAnswer
         ? goToQuestion("asc")
         : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
@@ -967,8 +969,9 @@ const AnswerTemplate = (props: {
   };
   
   useEffect(() => {
-    if (value && !advanceMode){
+    if (changeHappened.current && value && !advanceMode){
       submitQuestion()
+      changeHappened.current = false
     }
   }, [value]);
 
