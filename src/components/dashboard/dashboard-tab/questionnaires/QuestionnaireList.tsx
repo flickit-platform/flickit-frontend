@@ -1,7 +1,6 @@
 import { QuestionnaireCard } from "./QuestionnaireCard";
 import QueryData from "@common/QueryData";
 import Grid from "@mui/material/Grid";
-import Skeleton from "@mui/material/Skeleton";
 import LoadingSkeletonOfQuestionnaires from "@common/loadings/LoadingSkeletonOfQuestionnaires";
 import Box from "@mui/material/Box";
 import QANumberIndicator from "@common/QANumberIndicator";
@@ -278,7 +277,6 @@ const ProgressButton = (props: any) => {
 export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
-  const [calculatePercentage, setCalculatePercentage] = useState<any>();
 
   const { assessmentInfo } = useAssessmentContext();
 
@@ -342,7 +340,10 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
 
         {isQuickMode ? (
           <ProgressButton
-            calculatePercentage={calculatePercentage}
+            calculatePercentage={(
+              assessmentTotalProgress?.data?.questionsCount /
+              assessmentTotalProgress?.data?.answersCount
+            ).toFixed(2)}
             leftQuestions={leftQuestions}
           />
         ) : (
