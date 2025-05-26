@@ -39,9 +39,8 @@ import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
-import { is } from "cypress/types/bluebird";
 
-const AssessmentExportContainer = () => {
+const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
@@ -658,4 +657,4 @@ const AssessmentExportContainer = () => {
   );
 };
 
-export default AssessmentExportContainer;
+export default AssessmentHtmlContainer;
