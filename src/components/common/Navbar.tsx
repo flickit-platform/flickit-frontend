@@ -455,57 +455,53 @@ const Navbar = () => {
             <ListItemText primary={<Trans i18nKey="spaces" />} />
           </ListItemButton>
         </ListItem>
-          <QueryData
-            {...spacesQueryData}
-            render={(data) => {
-              const { items } = data;
-              return (
-                <Box>
-                  {items.slice(0, 5).map((space: any) => {
-                    return (
-                      <ListItem disablePadding key={space?.id}>
-                        <ListItemButton
-                          sx={{ textAlign: "left", borderRadius: 1.5 }}
-                          component={NavLink}
-                          to={`/${space?.id}/assessments/1`}
-                        >
-                          <ListItemText
-                            primary={
-                              <>
-                                {space?.title && (
-                                  <Typography
-                                    variant="caption"
-                                    textTransform={"none"}
-                                    sx={{
-                                      paddingLeft:
-                                        theme.direction === "ltr"
-                                          ? 0.5
-                                          : "unset",
-                                      paddingRight:
-                                        theme.direction === "rtl"
-                                          ? 0.5
-                                          : "unset",
-                                      ml: 0.5,
-                                      lineHeight: "1",
-                                      borderLeft: (t) =>
-                                        `1px solid ${t.palette.grey[300]}`,
-                                    }}
-                                  >
-                                    {space?.title}
-                                  </Typography>
-                                )}
-                              </>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  })}
-                  <Divider />
-                </Box>
-              );
-            }}
-          />
+        <QueryData
+          {...spacesQueryData}
+          render={(data) => {
+            const { items } = data;
+            return (
+              <Box>
+                {items.slice(0, 5).map((space: any) => {
+                  return (
+                    <ListItem disablePadding key={space?.id}>
+                      <ListItemButton
+                        sx={{ textAlign: "left", borderRadius: 1.5 }}
+                        component={NavLink}
+                        to={`/${space?.id}/assessments/1`}
+                      >
+                        <ListItemText
+                          primary={
+                            <>
+                              {space?.title && (
+                                <Typography
+                                  variant="caption"
+                                  textTransform={"none"}
+                                  sx={{
+                                    paddingLeft:
+                                      theme.direction === "ltr" ? 0.5 : "unset",
+                                    paddingRight:
+                                      theme.direction === "rtl" ? 0.5 : "unset",
+                                    ml: 0.5,
+                                    lineHeight: "1",
+                                    borderLeft: (t) =>
+                                      `1px solid ${t.palette.grey[300]}`,
+                                  }}
+                                >
+                                  {space?.title}
+                                </Typography>
+                              )}
+                            </>
+                          }
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+                <Divider />
+              </Box>
+            );
+          }}
+        />
         {/* <ListItem disablePadding>
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
@@ -536,7 +532,8 @@ const Navbar = () => {
           borderRadius: "0px",
           backgroundColor: theme.palette.primary.main,
           position: "sticky",
-          px: {  xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
+          px: { xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
+          boxShadow: "0 0px 8px rgba(10, 35, 66, 0.25)",
         }}
         data-cy="nav-bar"
       >
@@ -712,7 +709,7 @@ const Navbar = () => {
 };
 
 const SpacesButton = (props: any) => {
-  const { spacesQueryData } = props
+  const { spacesQueryData } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { dispatch } = useAuthContext();

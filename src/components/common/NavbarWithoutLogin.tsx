@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import { theme } from "@config/theme";
@@ -33,7 +32,8 @@ const NavbarWithoutLogin = () => {
         borderRadius: "0px",
         backgroundColor: theme.palette.primary.main,
         position: "sticky",
-        px: {  xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
+        px: { xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
+        boxShadow: "0 0px 8px rgba(10, 35, 66, 0.25)",
       }}
       data-cy="nav-bar"
     >

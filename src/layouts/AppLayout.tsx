@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, Suspense } from "react";
+import { PropsWithChildren, Suspense } from "react";
 import Box from "@mui/material/Box";
 import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoading";
 import Navbar from "@common/Navbar";
@@ -9,15 +9,22 @@ import keycloakService from "@/service/keycloakService";
 import FloatButton from "@utils/floatButton";
 import useDialog from "@utils/useDialog";
 import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import { isPathMatching } from "@/utils/pathMatcher";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
   const { children } = props;
   const { pathname } = useLocation();
   const { assessmentKitId = "" } = useParams();
   const dialogProps = useDialog();
-  const checkLink = (link: string) => {
-    return pathname.startsWith(link);
-  };
+  const shouldApplyPadding = !isPathMatching(pathname, [
+    "/assessment-kits",
+    "/graphical-report",
+  ]);
+  const shouldApplyHorizontalPadding = !isPathMatching(pathname, [
+    `/assessment-kits/${assessmentKitId}`,
+    "/graphical-report",
+  ]);
+
   const isAuthenticated = keycloakService.isLoggedIn();
 
   return (
@@ -25,10 +32,10 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
       {isAuthenticated ? <Navbar /> : <NavbarWithoutLogin />}{" "}
       <Box
         sx={{
-          p: !checkLink("/assessment-kits") ? { xs: 1, sm: 1, md: 4 } : "0",
-          px: checkLink(`/assessment-kits/${assessmentKitId}`)
-            ? 0
-            : { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
+          p: shouldApplyPadding ? { xs: 1, sm: 1, md: 4 } : "0",
+          px: shouldApplyHorizontalPadding
+            ? { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 }
+            : 0,
         }}
         m="auto"
       >
