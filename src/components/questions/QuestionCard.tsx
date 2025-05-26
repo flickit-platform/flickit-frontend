@@ -1059,6 +1059,9 @@ const AnswerTemplate = (props: {
                     "&.Mui-disabled": {
                       color: "#ffffff78",
                     },
+                    fontFamily: languageDetector(title)
+                      ? farsiFontFamily
+                      : primaryFontFamily,
                   }}
                 >
                   <Checkbox
