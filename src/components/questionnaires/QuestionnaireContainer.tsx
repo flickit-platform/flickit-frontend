@@ -11,10 +11,6 @@ const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =
     useQuestionnaire();
 
-  const progress =
-    ((assessmentTotalProgress?.data?.answersCount ?? 0) /
-      (assessmentTotalProgress?.data?.questionsCount || 1)) *
-    100;
 
   return (
     <PermissionControl
@@ -26,10 +22,7 @@ const QuestionnaireContainer = () => {
           sx={{
             ...styles.centerCV,
             transition: "height 1s ease",
-            backgroundColor: "#01221e",
-            background: questionnaireQueryData.loading
-              ? undefined
-              : `linear-gradient(135deg, #2e7d72 ${progress}%, #01221e ${progress}%)`,
+            background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
             px: { xs: 1, sm: 2, md: 3, lg: 4 },
             pt: { xs: 5, sm: 3 },
             pb: 5,

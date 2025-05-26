@@ -407,9 +407,9 @@ const AddMemberDialog = (props: {
             />
             <Typography variant="bodyLarge" textAlign="left">
               {addedEmailType === EUserType.EXISTED ? (
-                <Trans i18nKey={"emailExistedInApp"} />
+                <Trans i18nKey={"emailExistsInApp"} />
               ) : (
-                <Trans i18nKey={"emailDoesntExistedInApp"} />
+                <Trans i18nKey={"emailDoesNotExistInApp"} />
               )}
             </Typography>
           </Box>
