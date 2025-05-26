@@ -191,8 +191,8 @@ export const QuestionsFilteringDropdown = (props: any) => {
   );
 };
 
-const ProgressButton = (props:any) => {
-  const { leftQuestions, calculatePercentage  } = props
+const ProgressButton = (props: any) => {
+  const { leftQuestions, calculatePercentage } = props;
   return (
     <Box>
       {leftQuestions > 0 ? (
@@ -234,9 +234,16 @@ const ProgressButton = (props:any) => {
             </Typography>
           </Button>
           <Typography
-            sx={{ ...theme.typography.labelMedium, color: "#FF9000", textAlign: "center" }}
+            sx={{
+              ...theme.typography.labelMedium,
+              color: "#FF9000",
+              textAlign: "center",
+            }}
           >
-            <Trans i18nKey={"moreAnswersNeeded"} values={{count : leftQuestions}} />
+            <Trans
+              i18nKey={"moreAnswersNeeded"}
+              values={{ count: leftQuestions }}
+            />
           </Typography>
         </Box>
       ) : (
@@ -295,12 +302,17 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   }, [
     assessmentTotalProgress?.data?.questionsCount,
     assessmentTotalProgress?.data?.answersCount,
-  ])
+  ]);
 
   return (
     <>
       <Box
-        sx={{...styles.centerH, alignItems: "flex-start", justifyContent: "space-between", px: { sm: "10px" } }}
+        sx={{
+          ...styles.centerH,
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          px: { sm: "10px" },
+        }}
       >
         <Box
           minWidth="130px"
@@ -317,32 +329,21 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         >
           <Typography variant={"titleLarge"} color="white">
             <Trans i18nKey={"Questionnaires"} />
-            {"  "}
-            (
-            <QueryData
-              {...(assessmentTotalProgress ?? {})}
-              errorComponent={<></>}
-              renderLoading={() => <Skeleton width="60px" height="36px" />}
-              render={(data) => {
-                const { questionsCount = 0, answersCount = 0 } = data ?? {};
-                const calc = (answersCount / questionsCount) * 100;
-                setCalculatePercentage(calc.toFixed(2));
-
-                return (
-                  <QANumberIndicator
-                    color="white"
-                    q={questionsCount}
-                    variant={"titleLarge"}
-                  />
-                );
-              }}
+            {"  "}(
+            <QANumberIndicator
+              color="white"
+              q={assessmentTotalProgress?.data?.questionsCount ?? ""}
+              variant={"titleLarge"}
             />
             )
           </Typography>
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton calculatePercentage={calculatePercentage} leftQuestions={leftQuestions} />
+          <ProgressButton
+            calculatePercentage={calculatePercentage}
+            leftQuestions={leftQuestions}
+          />
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}
