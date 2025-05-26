@@ -13,8 +13,8 @@ import { useTranslation } from "react-i18next";
 import { IAttribute, IGraphicalReport, ISubject } from "@/types/index";
 import { styles } from "@styles";
 import uniqueId from "@/utils/uniqueId";
-
-// Define the type for the state to track open items
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 interface OpenItemsState {
   [key: string]: boolean;
 }
@@ -24,6 +24,12 @@ export const AssessmentTOC = ({
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
+  const { assessmentInfo } = useAssessmentContext();
+
+  const isAdvanceMode = useMemo(() => {
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
+
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -56,6 +62,7 @@ export const AssessmentTOC = ({
       key: "introduction",
       subItems: [],
       id: "introduction",
+      isAdvanceMode: true,
     },
     {
       key: "summary",
@@ -116,7 +123,9 @@ export const AssessmentTOC = ({
       >
         {items?.map((item) => {
           const hasSubItems = item.subItems.length > 0;
-
+          if (item.isAdvanceMode && !isAdvanceMode) {
+            return;
+          }
           return (
             <React.Fragment key={uniqueId()}>
               <ListItem

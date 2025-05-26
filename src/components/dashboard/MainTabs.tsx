@@ -2,31 +2,70 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import uniqueId from "@/utils/uniqueId";
-import { theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
   ASSESSMENT_ACTIONS_TYPE,
-  assessmentActions, useAssessmentContext,
-  useAssessmentDispatch
+  assessmentActions,
+  useAssessmentContext,
+  useAssessmentDispatch,
 } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import { styles } from "@styles";
+import { Button, ListItemText, Menu, MenuItem } from "@mui/material";
+import useScreenResize from "@/utils/useScreenResize";
+import { ArrowDropDownRounded, ArrowDropUpRounded } from "@mui/icons-material";
+import languageDetector from "@/utils/languageDetector";
+import useMenu from "@/utils/useMenu";
+import { t } from "i18next";
+
+type TabItem = {
+  label: string;
+  address: string;
+  permission: string;
+};
+
+const tabListTitle: TabItem[] = [
+  { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
+  {
+    label: "questions",
+    address: "questionnaires",
+    permission: "viewAssessmentQuestionnaireList",
+  },
+  {
+    label: "insights",
+    address: "insights",
+    permission: "viewAssessmentInsights",
+  },
+  { label: "advice", address: "advice", permission: "createAdvice" },
+  {
+    label: "reportTitle",
+    address: "report",
+    permission: "manageReportMetadata",
+  },
+];
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
 
-  const { onTabChange, selectedTab, tabListTitle } = props;
+  const { onTabChange, selectedTab, flexColumn } = props;
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
+  const isMobileScreen = useScreenResize("sm");
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const { open, openMenu, closeMenu, anchorEl } = useMenu();
+  const showTabName = () =>
+    t(tabListTitle.find((item) => item.address === selectedTab)?.label ?? "");
 
-  const { assessmentInfo } = useAssessmentContext()
+  const { assessmentInfo } = useAssessmentContext();
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
-  const [displayTabs, setDisplayTabs] = useState("none")
+  const [displayTabs, setDisplayTabs] = useState("none");
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
       service.assessments.info.getPermissions(
@@ -37,10 +76,10 @@ const MainTabs = (props: any) => {
   });
 
   useEffect(() => {
-    if(assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED){
-      setDisplayTabs("flex")
-    }else{
-      setDisplayTabs("none")
+    if (assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED) {
+      setDisplayTabs("flex");
+    } else {
+      setDisplayTabs("none");
     }
   }, [assessmentInfo?.mode?.code]);
 
@@ -74,82 +113,136 @@ const MainTabs = (props: any) => {
   }, [AssessmentInfo.data]);
   return (
     <>
-      {fetchAssessmentPermissions.loading ? (
-        <LoadingSkeleton />
-      ) : (
+      {isMobileScreen && selectedTab !== "settings"? (
         <Box
           sx={{
-            background: "#2466A814",
-            width: "100%",
-            borderRadius: "16px",
-            display: displayTabs,
-            alignItems: "center",
-            justifyContent: "center",
+            ...styles.centerVH,
             mt: 1,
-            mb: 2,
-            paddingBlock: 1,
+            background: "#2466A814",
+            borderRadius: "16px",
+            p: 1.3,
           }}
         >
-          <Tabs
-            value={selectedTab}
-            onChange={(event, newValue) => onTabChange(event, newValue)}
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
-            sx={{
-              border: "none",
-              width: "100%",
-              "& .MuiTabs-indicator": {
-                display: "none",
+          <Button
+            ref={buttonRef}
+            onClick={(e) => {
+              e.stopPropagation();
+              openMenu(e);
+            }}
+            endIcon={open ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
+          >
+            {showTabName()}
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={closeMenu}
+            PaperProps={{
+              sx: {
+                width: buttonRef.current
+                  ? `${buttonRef.current.offsetWidth}px`
+                  : "180px",
               },
             }}
           >
-            {filteredTabList?.map((tab: any) => {
-              return (
-                <Tab
-                  key={uniqueId()}
-                  to={`./${tab.address}/`}
-                  component={Link}
-                  value={tab.address}
-                  sx={{
-                    ...theme.typography.semiBoldLarge,
-                    flexGrow: 1,
-                    mr: 1,
-                    border: "none",
-                    textTransform: "none",
-                    paddingY: 1.5,
-                    color: "#2B333B",
-                    maxWidth: "unset",
-                    "&.Mui-selected": {
-                      boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                      borderRadius: 1,
-                      color: theme.palette.primary.main,
-                      background: "#fff",
-                      "&:hover": {
-                        background: "#fff",
-                        border: "none",
-                      },
-                    },
-                  }}
-                  label={
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <Typography variant="semiBoldLarge">
-                        <Trans i18nKey={tab.label} />
-                      </Typography>
-                    </Box>
-                  }
-                />
-              );
-            })}
-          </Tabs>
+            {tabListTitle.map(({ label, address }) => (
+              <MenuItem
+                key={label}
+                dense
+                component={NavLink}
+                to={address}
+                onClick={closeMenu}
+                sx={{
+                  fontFamily: languageDetector(label)
+                    ? farsiFontFamily
+                    : primaryFontFamily,
+                  ...theme.typography.semiBoldMedium,
+                  fontSize: "14px",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <ListItemText>
+                  <Trans i18nKey={label} />
+                </ListItemText>
+              </MenuItem>
+            ))}
+          </Menu>
         </Box>
+      ) : (
+        <>
+          {fetchAssessmentPermissions.loading ? (
+            <LoadingSkeleton />
+          ) : (
+            <Box
+              sx={{
+                background: "#2466A814",
+                borderRadius: "16px",
+                display: displayTabs,
+                alignItems: "center",
+                justifyContent: "center",
+                p: 1,
+              }}
+            >
+              <Tabs
+                value={selectedTab}
+                onChange={(event, newValue) => onTabChange(event, newValue)}
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+                sx={{
+                  border: "none",
+                  "& .MuiTabs-indicator": {
+                    display: "none",
+                  },
+                }}
+              >
+                {filteredTabList?.map((tab: any) => {
+                  return (
+                    <Tab
+                      key={uniqueId()}
+                      to={`./${tab.address}/`}
+                      component={Link}
+                      value={tab.address}
+                      sx={{
+                        ...theme.typography.semiBoldLarge,
+                        flexGrow: flexColumn ? 0 : 1,
+                        border: "none",
+                        textTransform: "none",
+                        color: "#2B333B",
+                        maxWidth: "unset",
+                        "&.Mui-selected": {
+                          boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
+                          borderRadius: 1,
+                          color: theme.palette.primary.main,
+                          background: "#fff",
+                          "&:hover": {
+                            background: "#fff",
+                            border: "none",
+                          },
+                        },
+                      }}
+                      label={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 1,
+                          }}
+                        >
+                          <Typography variant="semiBoldLarge">
+                            <Trans i18nKey={tab.label} />
+                          </Typography>
+                        </Box>
+                      }
+                    />
+                  );
+                })}
+              </Tabs>
+            </Box>
+          )}
+        </>
       )}
     </>
   );

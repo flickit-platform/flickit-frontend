@@ -28,7 +28,6 @@ const QuestionnaireContainer = () => {
             pb: 5,
           }}
           borderRadius={2}
-          my={2}
           color="white"
           position={"relative"}
         >

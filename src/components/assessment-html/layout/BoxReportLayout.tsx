@@ -9,10 +9,12 @@ import { t } from "i18next";
 import ScoreImpactBarChart from "@/components/subject-report-old/ScoreImpactBarChart";
 import ArrowDropUpRounded from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRounded from "@mui/icons-material/ArrowDropDownRounded";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 
 interface IBoxReport {
   title: string;
@@ -102,6 +104,12 @@ const TopBox = (props: ITopBoxReport) => {
     maturityLevelCount,
     language,
   } = props;
+  const { assessmentInfo } = useAssessmentContext();
+
+  const isAdvanceMode = useMemo(() => {
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
+
   return (
     <Grid
       spacing={2}
@@ -141,7 +149,9 @@ const TopBox = (props: ITopBoxReport) => {
           text={maturityLevel.title}
           textPosition={"top"}
           confidenceLevelNum={confidenceValue}
-          confidenceText={t("confidenceLevel", { lng: language })}
+          confidenceText={
+            isAdvanceMode ? t("confidenceLevel", { lng: language }) : ""
+          }
         />
       </Grid>
     </Grid>
