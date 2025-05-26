@@ -5,7 +5,6 @@ import { Trans } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import Title from "@common/Title";
 import {
-  EAssessmentStatus,
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
@@ -46,10 +45,6 @@ const itemNames = [
 
 const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   const { isReview, pathInfo } = props;
-  const {
-    questionsInfo: { total_number_of_questions },
-    assessmentStatus,
-  } = useQuestionContext();
   const { questionIndex, questionnaireId } = useParams();
   const isComplete = questionIndex === "completed";
   const { questionnaire } = pathInfo;

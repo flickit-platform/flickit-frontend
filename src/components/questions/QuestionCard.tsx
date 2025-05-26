@@ -1503,10 +1503,6 @@ const Evidence = (props: any) => {
     runOnMount: false,
   });
 
-  const isAdvanceMode = useMemo(() => {
-    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-  }, [assessmentInfo?.mode?.code]);
-
   const fetchEvidenceAttachments = useQuery({
     service: (args, config) =>
       service.questions.evidences.getAttachments(args, config),
