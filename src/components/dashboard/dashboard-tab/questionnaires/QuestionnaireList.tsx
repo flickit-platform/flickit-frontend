@@ -189,8 +189,21 @@ export const QuestionsFilteringDropdown = (props: any) => {
 };
 
 const ProgressButton = (props: any) => {
-  const { leftQuestions, calculatePercentage } = props;
+  const { questionsCount, answersCount } = props;
   const { assessmentId, spaceId } = useParams();
+
+  const leftQuestions = useMemo(() => {
+    const total = questionsCount ?? 0;
+    const answered = answersCount ?? 0;
+    return total - answered;
+  }, [questionsCount, answersCount]);
+
+  const calculatePercentage = useMemo(() => {
+    const total = questionsCount ?? 0;
+    const answered = answersCount ?? 0;
+    return Number((answered / total).toFixed(2)) * 100;
+  }, [questionsCount, answersCount]);
+
   return (
     <Box>
       {leftQuestions > 0 ? (
@@ -294,15 +307,6 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
     }
   }, []);
 
-  const leftQuestions = useMemo(() => {
-    const total = assessmentTotalProgress?.data?.questionsCount ?? 0;
-    const answered = assessmentTotalProgress?.data?.answersCount ?? 0;
-    return total - answered;
-  }, [
-    assessmentTotalProgress?.data?.questionsCount,
-    assessmentTotalProgress?.data?.answersCount,
-  ]);
-
   return (
     <>
       <Box
@@ -339,13 +343,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton
-            calculatePercentage={(
-              assessmentTotalProgress?.data?.questionsCount /
-              assessmentTotalProgress?.data?.answersCount
-            ).toFixed(2)}
-            leftQuestions={leftQuestions}
-          />
+          <ProgressButton {...assessmentTotalProgress?.data} />
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}
