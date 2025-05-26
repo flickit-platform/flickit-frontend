@@ -117,7 +117,7 @@ const FlatGauge = (props: IGaugeProps) => {
             )}
           </Box>
 
-          {textPosition === "top" && (
+          {textPosition === "top" && confidenceText && (
             <Typography
               sx={{
                 display: "flex",

@@ -33,17 +33,24 @@ import Share from "@mui/icons-material/Share";
 import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
-import { VISIBILITY } from "@/utils/enumType";
+import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
+import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { is } from "cypress/types/bluebird";
 
 const AssessmentExportContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
+  const { assessmentInfo } = useAssessmentContext();
+
+  const isAdvanceMode = useMemo(() => {
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
 
   const dialogProps = useDialog();
 
@@ -308,38 +315,41 @@ const AssessmentExportContainer = () => {
                           >
                             {assessment.title}
                           </Typography>
-                          <Typography
-                            component="div"
-                            id="introduction"
-                            sx={{
-                              ...theme.typography.titleSmall,
-                              color: "#6C8093",
-                              mt: 2,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                          >
-                            {t("introduction", {
-                              lng: lang.code.toLowerCase(),
-                            })}
-                          </Typography>
-                          <Typography
-                            component="div"
-                            textAlign="justify"
-                            sx={{
-                              ...theme.typography.bodyMedium,
-                              mt: 1,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                assessment.intro ??
-                                t("unavailable", {
+                          {isAdvanceMode && (
+                            <>
+                              <Typography
+                                component="div"
+                                id="introduction"
+                                sx={{
+                                  ...theme.typography.titleSmall,
+                                  color: "#6C8093",
+                                  mt: 2,
+                                  ...styles.rtlStyle(rtlLanguage),
+                                }}
+                              >
+                                {t("introduction", {
                                   lng: lang.code.toLowerCase(),
-                                }),
-                            }}
-                            className="tiptap"
-                          />
-
+                                })}
+                              </Typography>
+                              <Typography
+                                component="div"
+                                textAlign="justify"
+                                sx={{
+                                  ...theme.typography.bodyMedium,
+                                  mt: 1,
+                                  ...styles.rtlStyle(rtlLanguage),
+                                }}
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    assessment.intro ??
+                                    t("unavailable", {
+                                      lng: lang.code.toLowerCase(),
+                                    }),
+                                }}
+                                className="tiptap"
+                              />
+                            </>
+                          )}
                           <Typography
                             component="div"
                             id="summary"
@@ -381,9 +391,13 @@ const AssessmentExportContainer = () => {
                               assessment.assessmentKit?.maturityLevelCount
                             }
                             confidence_value={assessment.confidenceValue}
-                            confidence_text={t("withPercentConfidence", {
-                              lng: lang.code.toLowerCase(),
-                            })}
+                            confidence_text={
+                              isAdvanceMode
+                                ? t("withPercentConfidence", {
+                                    lng: lang.code.toLowerCase(),
+                                  })
+                                : ""
+                            }
                             isMobileScreen={false}
                             hideGuidance={true}
                             status_font_variant="titleMedium"
@@ -451,44 +465,47 @@ const AssessmentExportContainer = () => {
                         container
                         spacing={2}
                       >
-                        <Grid item xs={12} md={10}>
-                          <Typography
-                            sx={{
-                              ...theme.typography.titleSmall,
-                              color: "#2B333B",
-                              my: 1,
-                              ...styles.centerV,
-                              direction: rtlLanguage ? "rtl" : "ltr",
-                              fontFamily: rtlLanguage
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                              gap: "4px",
-                            }}
-                          >
-                            <InfoOutlinedIcon fontSize="small" />
-                            {t("treeMapChart", {
-                              lng: lang.code.toLowerCase(),
-                            })}
-                          </Typography>
-                          <Typography
-                            component="div"
-                            textAlign="justify"
-                            sx={{
-                              ...theme.typography.bodyMedium,
-                              fontWeight: "light",
-                              mt: 1,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                assessment.prosAndCons ??
-                                t("unavailable", {
-                                  lng: lang.code.toLowerCase(),
-                                }),
-                            }}
-                          ></Typography>
-                        </Grid>
-                        <Grid item xs={12} md={2}>
+                        {isAdvanceMode && (
+                          <Grid item xs={12} md={10}>
+                            <Typography
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                color: "#2B333B",
+                                my: 1,
+                                ...styles.centerV,
+                                direction: rtlLanguage ? "rtl" : "ltr",
+                                fontFamily: rtlLanguage
+                                  ? farsiFontFamily
+                                  : primaryFontFamily,
+                                gap: "4px",
+                              }}
+                            >
+                              <InfoOutlinedIcon fontSize="small" />
+                              {t("treeMapChart", {
+                                lng: lang.code.toLowerCase(),
+                              })}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              textAlign="justify"
+                              sx={{
+                                ...theme.typography.bodyMedium,
+                                fontWeight: "light",
+                                mt: 1,
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  assessment.prosAndCons ??
+                                  t("unavailable", {
+                                    lng: lang.code.toLowerCase(),
+                                  }),
+                              }}
+                            ></Typography>
+                          </Grid>
+                        )}
+
+                        <Grid item xs={12} md={isAdvanceMode ? 2 : 12}>
                           <Typography
                             sx={{
                               ...theme.typography.titleSmall,
@@ -509,7 +526,7 @@ const AssessmentExportContainer = () => {
                             container
                             xs={12}
                             sx={{
-                              flexDirection: "column",
+                              flexDirection: isAdvanceMode ? "column" : "row",
                             }}
                             mt={2}
                           >
@@ -520,7 +537,7 @@ const AssessmentExportContainer = () => {
                                   sx={{
                                     display: "flex",
                                     alignItems: "center",
-                                    gap: 2,
+                                    rowGap: 2,
                                   }}
                                 >
                                   <Box
@@ -546,6 +563,8 @@ const AssessmentExportContainer = () => {
                                       fontFamily: rtlLanguage
                                         ? farsiFontFamily
                                         : primaryFontFamily,
+                                      paddingInlineEnd: 1,
+                                      paddingInlineStart: 0.25,
                                     }}
                                   >
                                     {level.title}

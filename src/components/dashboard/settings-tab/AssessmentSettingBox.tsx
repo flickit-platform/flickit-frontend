@@ -249,6 +249,15 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                   display: "flex",
                   justifyContent: "flex-start",
                   width: { md: "350px" },
+                  fontFamily: languageDetector(
+                    getInfoFieldValue(
+                      field.key,
+                      assessmentInfo,
+                      getReadableDate,
+                    ),
+                  )
+                    ? farsiFontFamily
+                    : primaryFontFamily,
                 }}
               >
                 {getInfoFieldValue(field.key, assessmentInfo, getReadableDate)}
