@@ -111,6 +111,12 @@ export const QuestionCard = (props: IQuestionCardProps) => {
       config.appTitle,
     );
     setNotApplicable(answer?.isNotApplicable ?? false);
+    if(!advanceMode){
+      dispatch(
+        questionActions.setSelectedConfidenceLevel(3),
+      );
+      return
+    }
     if (answer?.confidenceLevel) {
       dispatch(
         questionActions.setSelectedConfidenceLevel(
@@ -174,6 +180,9 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             letterSpacing={is_farsi ? "0" : ".05em"}
             sx={{
               ...theme.typography.semiBoldXLarge,
+              fontFamily: languageDetector(title)
+                ? farsiFontFamily
+                : primaryFontFamily,
               color: "#F9FAFB",
               pt: 0.5,
               px: 6,
@@ -363,14 +372,16 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           </Box>
         </Box>
       )}
-      <QuestionTabsTemplate
-        value={value}
-        setValue={setValue}
-        handleChange={handleChange}
-        questionsInfo={questionsInfo}
-        questionInfo={questionInfo}
-        key={questionInfo.id}
-      />
+      {advanceMode && (
+        <QuestionTabsTemplate
+          value={value}
+          setValue={setValue}
+          handleChange={handleChange}
+          questionsInfo={questionsInfo}
+          questionInfo={questionInfo}
+          key={questionInfo.id}
+        />
+      )}
     </Box>
   );
 };
@@ -1660,7 +1671,6 @@ const Evidence = (props: any) => {
     >
       {permissions?.addEvidence && (
         <FormProvider {...formMethods}>
-          {isAdvanceMode && (
             <form
               onSubmit={formMethods.handleSubmit(onSubmit)}
               style={{ flex: 1, display: "flex", flexDirection: "column" }}
@@ -1875,7 +1885,6 @@ const Evidence = (props: any) => {
                 </Box>
               </Grid>
             </form>
-          )}
         </FormProvider>
       )}
       <Box mt={3} width="100%">
