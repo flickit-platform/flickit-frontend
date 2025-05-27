@@ -132,7 +132,7 @@ const palette = createPalette({
   cl: { primary: "#3596A1" },
   error: {
     main: "#8A0F24",
-    contrastText: "#fff",
+    contrastText: "#FAD1D8",
     dark: "#5C0A18",
     light: "#F6ECED",
   },

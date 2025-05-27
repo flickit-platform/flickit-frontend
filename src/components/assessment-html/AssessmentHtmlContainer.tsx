@@ -1,9 +1,13 @@
 import { Link, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
-import { ErrorCodes, IGraphicalReport, PathInfo } from "@/types/index";
+import {
+  ErrorCodes,
+  IGraphicalReport,
+  ISubject,
+  PathInfo,
+} from "@/types/index";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import LoadingSkeletonOfAssessmentRoles from "../common/loadings/LoadingSkeletonOfAssessmentRoles";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
@@ -37,9 +41,11 @@ import { useEffect, useMemo } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
-import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
+import ReplayIcon from "@mui/icons-material/Replay";
+import { Button } from "@mui/material";
 
 const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
@@ -159,6 +165,12 @@ const AssessmentHtmlContainer = () => {
     </>
   );
 
+  const isAnyInsightEmpty = (subjects: ISubject[]) =>
+    subjects.some((s) => !s?.insight) && !isAdvanceMode;
+
+  const handleReloadReport = () => {
+    fetchGraphicalReport.query();
+  };
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
       <QueryData
@@ -175,161 +187,354 @@ const AssessmentHtmlContainer = () => {
           } = graphicalReport as IGraphicalReport;
           const rtlLanguage = lang.code.toLowerCase() === "fa";
           return (
-            <Box
-              m="auto"
-              pb={3}
-              sx={{
-                textAlign: rtlLanguage ? "right" : "left",
-                ...styles.rtlStyle(rtlLanguage),
-                p: { xs: 1, sm: 1, md: 4 },
-                px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
-              }}
-            >
-              {keycloakService.isLoggedIn() && (
-                <QueryData
-                  {...fetchPathInfo}
-                  renderLoading={() => <></>}
-                  render={(pathInfo) => {
-                    return (
-                      <AssessmentHtmlTitle
-                        pathInfo={pathInfo}
-                        language={lang.code.toLowerCase()}
-                      />
-                    );
+            <>
+              {isAnyInsightEmpty(subjects) && (
+                <Box
+                  sx={{
+                    backgroundColor: theme.palette.error.main,
+                    height: 48,
+                    ...styles.centerVH,
                   }}
-                />
+                  gap={6}
+                >
+                  <Typography
+                    variant="semiBoldLarge"
+                    color="error.contrastText"
+                    sx={{
+                      ...styles.centerV,
+                    }}
+                  >
+                    {t("incompleteReportDueToDelay")}
+                  </Typography>
+                  <Box
+                    sx={{
+                      background: "#F3F5F6",
+                      color: theme.palette.error.main,
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <Button
+                      onClick={handleReloadReport}
+                      size="small"
+                      variant="contained"
+                      color="inherit"
+                      endIcon={<ReplayIcon />}
+                    >
+                      {t("retry")}
+                    </Button>
+                  </Box>
+                </Box>
               )}
 
               <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                my={2}
+                m="auto"
+                pb={3}
+                sx={{
+                  textAlign: rtlLanguage ? "right" : "left",
+                  ...styles.rtlStyle(rtlLanguage),
+                  p: isAnyInsightEmpty(subjects) ? 1 : { xs: 1, sm: 1, md: 4 },
+                  px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
+                }}
               >
-                <Typography
-                  color="primary"
-                  textAlign="left"
-                  variant="headlineLarge"
-                  sx={{
-                    ...styles.rtlStyle(rtlLanguage),
-                  }}
-                >
-                  {keycloakService.isLoggedIn() && (
-                    <IconButton
-                      color={"primary"}
-                      component={Link}
-                      to={
-                        permissions.canViewDashboard
-                          ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/`
-                          : `/${spaceId}/assessments/1/`
-                      }
-                    >
-                      <ArrowForward
-                        sx={{
-                          ...theme.typography.headlineMedium,
-                          transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
-                        }}
-                      />
-                    </IconButton>
-                  )}
-                  {t("assessmentReport", {
-                    lng: lang.code.toLowerCase(),
-                  })}
-                </Typography>
-                <>
-                  <LoadingButton
-                    variant="contained"
-                    startIcon={<Share fontSize="small" />}
-                    size="small"
-                    onClick={() => dialogProps.openDialog({})}
-                    disabled={
-                      !permissions.canShareReport &&
-                      !permissions.canManageVisibility
-                    }
-                  >
-                    <Trans i18nKey="shareReport" />
-                  </LoadingButton>
-                  <ShareDialog
-                    {...dialogProps}
-                    onClose={() => dialogProps.onClose()}
-                    fetchGraphicalReportUsers={fetchGraphicalReportUsers}
-                    title={assessment.title}
-                    visibility={visibility}
-                    permissions={permissions}
+                {keycloakService.isLoggedIn() && (
+                  <QueryData
+                    {...fetchPathInfo}
+                    renderLoading={() => <></>}
+                    render={(pathInfo) => {
+                      return (
+                        <AssessmentHtmlTitle
+                          pathInfo={pathInfo}
+                          language={lang.code.toLowerCase()}
+                        />
+                      );
+                    }}
                   />
-                </>{" "}
-              </Box>
-              <Grid container spacing={2}>
-                <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
-                  <AssessmentTOC graphicalReport={graphicalReport} />
-                </Grid>
-                <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
-                  <Paper
-                    elevation={3}
+                )}
+
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  my={2}
+                >
+                  <Typography
+                    color="primary"
+                    textAlign="left"
+                    variant="headlineLarge"
                     sx={{
-                      position: "relative",
-                      backgroundColor: "#ffffff",
-                      display: "flex",
-                      justifyContent: "center",
-                      borderStartEndRadius: 16,
-                      borderStartStartRadius: 16,
-                      boxShadow: "none",
-                      width: "100%",
-                      padding: { md: 6, xs: 1 },
+                      ...styles.rtlStyle(rtlLanguage),
                     }}
                   >
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        right: { md: "40px", xs: "12px" },
-                        top: { md: "60px", xs: "6px" },
-                        bottom: { md: "40px", xs: "4px" },
-                        width: { md: "8px", xs: "2px" },
-                        backgroundColor: "#D5E5F6",
-                      }}
+                    {keycloakService.isLoggedIn() && (
+                      <IconButton
+                        color={"primary"}
+                        component={Link}
+                        to={
+                          permissions.canViewDashboard
+                            ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/`
+                            : `/${spaceId}/assessments/1/`
+                        }
+                      >
+                        <ArrowForward
+                          sx={{
+                            ...theme.typography.headlineMedium,
+                            transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
+                          }}
+                        />
+                      </IconButton>
+                    )}
+                    {t("assessmentReport", {
+                      lng: lang.code.toLowerCase(),
+                    })}
+                  </Typography>
+                  <>
+                    <LoadingButton
+                      variant="contained"
+                      startIcon={<Share fontSize="small" />}
+                      size="small"
+                      onClick={() => dialogProps.openDialog({})}
+                      disabled={
+                        !permissions.canShareReport &&
+                        !permissions.canManageVisibility
+                      }
+                    >
+                      <Trans i18nKey="shareReport" />
+                    </LoadingButton>
+                    <ShareDialog
+                      {...dialogProps}
+                      onClose={() => dialogProps.onClose()}
+                      fetchGraphicalReportUsers={fetchGraphicalReportUsers}
+                      title={assessment.title}
+                      visibility={visibility}
+                      permissions={permissions}
                     />
-                    <Box
+                  </>{" "}
+                </Box>
+                <Grid container spacing={2}>
+                  <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
+                    <AssessmentTOC graphicalReport={graphicalReport} />
+                  </Grid>
+                  <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
+                    <Paper
+                      elevation={3}
                       sx={{
-                        position: "absolute",
-                        left: { md: "40px", xs: "12px" },
-                        top: { md: "60px", xs: "6px" },
-                        bottom: { md: "40px", xs: "4px" },
-                        width: { md: "8px", xs: "2px" },
-                        backgroundColor: "#D5E5F6",
+                        position: "relative",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        justifyContent: "center",
+                        borderStartEndRadius: 16,
+                        borderStartStartRadius: 16,
+                        boxShadow: "none",
+                        width: "100%",
+                        padding: { md: 6, xs: 1 },
                       }}
-                    />
-                    <Box padding={3} width="100%">
-                      <Grid container spacing={4} sx={{ mb: "40px" }}>
-                        <Grid item xs={12} sm={12}>
-                          {renderChips(
-                            graphicalReport,
-                            lang.code.toLowerCase(),
-                          )}
+                    >
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          right: { md: "40px", xs: "12px" },
+                          top: { md: "60px", xs: "6px" },
+                          bottom: { md: "40px", xs: "4px" },
+                          width: { md: "8px", xs: "2px" },
+                          backgroundColor: "#D5E5F6",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          left: { md: "40px", xs: "12px" },
+                          top: { md: "60px", xs: "6px" },
+                          bottom: { md: "40px", xs: "4px" },
+                          width: { md: "8px", xs: "2px" },
+                          backgroundColor: "#D5E5F6",
+                        }}
+                      />
+                      <Box padding={3} width="100%">
+                        <Grid container spacing={4} sx={{ mb: "40px" }}>
+                          <Grid item xs={12} sm={12}>
+                            {renderChips(
+                              graphicalReport,
+                              lang.code.toLowerCase(),
+                            )}
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={6} lg={8}>
+                            <Typography
+                              sx={{
+                                color: theme.palette.primary.main,
+                                ...theme.typography.headlineSmall,
+                                fontWeight: "bold",
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                            >
+                              {assessment.title}
+                            </Typography>
+                            {isAdvanceMode && (
+                              <>
+                                <Typography
+                                  component="div"
+                                  id="introduction"
+                                  sx={{
+                                    ...theme.typography.titleSmall,
+                                    color: "#6C8093",
+                                    mt: 2,
+                                    ...styles.rtlStyle(rtlLanguage),
+                                  }}
+                                >
+                                  {t("introduction", {
+                                    lng: lang.code.toLowerCase(),
+                                  })}
+                                </Typography>
+                                <Typography
+                                  component="div"
+                                  textAlign="justify"
+                                  sx={{
+                                    ...theme.typography.bodyMedium,
+                                    mt: 1,
+                                    ...styles.rtlStyle(rtlLanguage),
+                                  }}
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      assessment.intro ??
+                                      t("unavailable", {
+                                        lng: lang.code.toLowerCase(),
+                                      }),
+                                  }}
+                                  className="tiptap"
+                                />
+                              </>
+                            )}
+                            <Typography
+                              component="div"
+                              id="summary"
+                              sx={{
+                                ...theme.typography.titleSmall,
+                                color: "#6C8093",
+                                mt: 2,
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                            >
+                              {t("summary", {
+                                lng: lang.code.toLowerCase(),
+                              })}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              textAlign="justify"
+                              sx={{
+                                ...theme.typography.bodyMedium,
+                                mt: 1,
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  assessment.overallInsight ??
+                                  t("unavailable", {
+                                    lng: lang.code.toLowerCase(),
+                                  }),
+                              }}
+                            ></Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
+                            <Gauge
+                              level_value={assessment.maturityLevel?.value ?? 0}
+                              maturity_level_status={
+                                assessment.maturityLevel?.title
+                              }
+                              maturity_level_number={
+                                assessment.assessmentKit?.maturityLevelCount
+                              }
+                              confidence_value={assessment.confidenceValue}
+                              confidence_text={
+                                isAdvanceMode
+                                  ? t("withPercentConfidence", {
+                                      lng: lang.code.toLowerCase(),
+                                    })
+                                  : ""
+                              }
+                              isMobileScreen={false}
+                              hideGuidance={true}
+                              status_font_variant="titleMedium"
+                              height={250}
+                            />
+                          </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={6} lg={8}>
-                          <Typography
-                            sx={{
-                              color: theme.palette.primary.main,
-                              ...theme.typography.headlineSmall,
-                              fontWeight: "bold",
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                          >
-                            {assessment.title}
-                          </Typography>
+                        <PieChart
+                          data={subjects?.map((subject: any) => ({
+                            name: subject.title,
+                            value: 1,
+                            color: getMaturityLevelColors(
+                              assessment.assessmentKit.maturityLevelCount,
+                            )[subject.maturityLevel.value - 1],
+                            label:
+                              subject.maturityLevel.title +
+                              ": " +
+                              subject.maturityLevel.value +
+                              "/" +
+                              assessment.assessmentKit.maturityLevelCount,
+                            bgColor: getMaturityLevelColors(
+                              assessment.assessmentKit.maturityLevelCount,
+                              true,
+                            )[subject.maturityLevel.value - 1],
+                          }))}
+                          language={lang.code.toLowerCase()}
+                        />
+                        <Typography
+                          component="div"
+                          id="strengthsAndWeaknesses"
+                          sx={{
+                            ...theme.typography.titleMedium,
+                            color: "#6C8093",
+                            my: 1,
+                            ...styles.rtlStyle(rtlLanguage),
+                          }}
+                        >
+                          {t("prosAndCons", {
+                            lng: lang.code.toLowerCase(),
+                          })}
+                        </Typography>
+
+                        <TreeMapChart
+                          data={subjects.flatMap((subject: any) =>
+                            subject.attributes.map((attribute: any) => ({
+                              name: attribute.title,
+                              description: attribute.description,
+                              id: attribute.id,
+                              count: attribute.weight,
+                              label: attribute.maturityLevel.value.toString(),
+                            })),
+                          )}
+                          levels={assessment.assessmentKit.maturityLevelCount}
+                          lang={lang}
+                        />
+
+                        <Grid
+                          xs={12}
+                          md={12}
+                          bgcolor="#F3F5F6"
+                          borderRadius="8px"
+                          paddingX={2}
+                          paddingBottom={2}
+                          my={2}
+                          container
+                          spacing={2}
+                        >
                           {isAdvanceMode && (
-                            <>
+                            <Grid item xs={12} md={10}>
                               <Typography
-                                component="div"
-                                id="introduction"
                                 sx={{
                                   ...theme.typography.titleSmall,
-                                  color: "#6C8093",
-                                  mt: 2,
-                                  ...styles.rtlStyle(rtlLanguage),
+                                  color: "#2B333B",
+                                  my: 1,
+                                  ...styles.centerV,
+                                  direction: rtlLanguage ? "rtl" : "ltr",
+                                  fontFamily: rtlLanguage
+                                    ? farsiFontFamily
+                                    : primaryFontFamily,
+                                  gap: "4px",
                                 }}
                               >
-                                {t("introduction", {
+                                <InfoOutlinedIcon fontSize="small" />
+                                {t("treeMapChart", {
                                   lng: lang.code.toLowerCase(),
                                 })}
                               </Typography>
@@ -338,137 +543,22 @@ const AssessmentHtmlContainer = () => {
                                 textAlign="justify"
                                 sx={{
                                   ...theme.typography.bodyMedium,
+                                  fontWeight: "light",
                                   mt: 1,
                                   ...styles.rtlStyle(rtlLanguage),
                                 }}
                                 dangerouslySetInnerHTML={{
                                   __html:
-                                    assessment.intro ??
+                                    assessment.prosAndCons ??
                                     t("unavailable", {
                                       lng: lang.code.toLowerCase(),
                                     }),
                                 }}
-                                className="tiptap"
-                              />
-                            </>
+                              ></Typography>
+                            </Grid>
                           )}
-                          <Typography
-                            component="div"
-                            id="summary"
-                            sx={{
-                              ...theme.typography.titleSmall,
-                              color: "#6C8093",
-                              mt: 2,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                          >
-                            {t("summary", {
-                              lng: lang.code.toLowerCase(),
-                            })}
-                          </Typography>
-                          <Typography
-                            component="div"
-                            textAlign="justify"
-                            sx={{
-                              ...theme.typography.bodyMedium,
-                              mt: 1,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                assessment.overallInsight ??
-                                t("unavailable", {
-                                  lng: lang.code.toLowerCase(),
-                                }),
-                            }}
-                          ></Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
-                          <Gauge
-                            level_value={assessment.maturityLevel?.value ?? 0}
-                            maturity_level_status={
-                              assessment.maturityLevel?.title
-                            }
-                            maturity_level_number={
-                              assessment.assessmentKit?.maturityLevelCount
-                            }
-                            confidence_value={assessment.confidenceValue}
-                            confidence_text={
-                              isAdvanceMode
-                                ? t("withPercentConfidence", {
-                                    lng: lang.code.toLowerCase(),
-                                  })
-                                : ""
-                            }
-                            isMobileScreen={false}
-                            hideGuidance={true}
-                            status_font_variant="titleMedium"
-                            height={250}
-                          />
-                        </Grid>
-                      </Grid>
-                      <PieChart
-                        data={subjects?.map((subject: any) => ({
-                          name: subject.title,
-                          value: 1,
-                          color: getMaturityLevelColors(
-                            assessment.assessmentKit.maturityLevelCount,
-                          )[subject.maturityLevel.value - 1],
-                          label:
-                            subject.maturityLevel.title +
-                            ": " +
-                            subject.maturityLevel.value +
-                            "/" +
-                            assessment.assessmentKit.maturityLevelCount,
-                          bgColor: getMaturityLevelColors(
-                            assessment.assessmentKit.maturityLevelCount,
-                            true,
-                          )[subject.maturityLevel.value - 1],
-                        }))}
-                        language={lang.code.toLowerCase()}
-                      />
-                      <Typography
-                        component="div"
-                        id="strengthsAndWeaknesses"
-                        sx={{
-                          ...theme.typography.titleMedium,
-                          color: "#6C8093",
-                          my: 1,
-                          ...styles.rtlStyle(rtlLanguage),
-                        }}
-                      >
-                        {t("prosAndCons", {
-                          lng: lang.code.toLowerCase(),
-                        })}
-                      </Typography>
 
-                      <TreeMapChart
-                        data={subjects.flatMap((subject: any) =>
-                          subject.attributes.map((attribute: any) => ({
-                            name: attribute.title,
-                            description: attribute.description,
-                            id: attribute.id,
-                            count: attribute.weight,
-                            label: attribute.maturityLevel.value.toString(),
-                          })),
-                        )}
-                        levels={assessment.assessmentKit.maturityLevelCount}
-                        lang={lang}
-                      />
-
-                      <Grid
-                        xs={12}
-                        md={12}
-                        bgcolor="#F3F5F6"
-                        borderRadius="8px"
-                        paddingX={2}
-                        paddingBottom={2}
-                        my={2}
-                        container
-                        spacing={2}
-                      >
-                        {isAdvanceMode && (
-                          <Grid item xs={12} md={10}>
+                          <Grid item xs={12} md={isAdvanceMode ? 2 : 12}>
                             <Typography
                               sx={{
                                 ...theme.typography.titleSmall,
@@ -479,180 +569,142 @@ const AssessmentHtmlContainer = () => {
                                 fontFamily: rtlLanguage
                                   ? farsiFontFamily
                                   : primaryFontFamily,
-                                gap: "4px",
                               }}
                             >
-                              <InfoOutlinedIcon fontSize="small" />
-                              {t("treeMapChart", {
+                              {t("maturityLevels", {
                                 lng: lang.code.toLowerCase(),
                               })}
                             </Typography>
-                            <Typography
-                              component="div"
-                              textAlign="justify"
+                            <Grid
+                              container
+                              xs={12}
                               sx={{
-                                ...theme.typography.bodyMedium,
-                                fontWeight: "light",
-                                mt: 1,
-                                ...styles.rtlStyle(rtlLanguage),
+                                flexDirection: isAdvanceMode ? "column" : "row",
                               }}
-                              dangerouslySetInnerHTML={{
-                                __html:
-                                  assessment.prosAndCons ??
-                                  t("unavailable", {
-                                    lng: lang.code.toLowerCase(),
-                                  }),
-                              }}
-                            ></Typography>
-                          </Grid>
-                        )}
-
-                        <Grid item xs={12} md={isAdvanceMode ? 2 : 12}>
-                          <Typography
-                            sx={{
-                              ...theme.typography.titleSmall,
-                              color: "#2B333B",
-                              my: 1,
-                              ...styles.centerV,
-                              direction: rtlLanguage ? "rtl" : "ltr",
-                              fontFamily: rtlLanguage
-                                ? farsiFontFamily
-                                : primaryFontFamily,
-                            }}
-                          >
-                            {t("maturityLevels", {
-                              lng: lang.code.toLowerCase(),
-                            })}
-                          </Typography>
-                          <Grid
-                            container
-                            xs={12}
-                            sx={{
-                              flexDirection: isAdvanceMode ? "column" : "row",
-                            }}
-                            mt={2}
-                          >
-                            {assessment.assessmentKit.maturityLevels.map(
-                              (level: any, index: number) => (
-                                <Box
-                                  key={uniqueId()}
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    rowGap: 2,
-                                  }}
-                                >
+                              mt={2}
+                            >
+                              {assessment.assessmentKit.maturityLevels.map(
+                                (level: any, index: number) => (
                                   <Box
+                                    key={uniqueId()}
                                     sx={{
-                                      backgroundColor: getMaturityLevelColors(
-                                        assessment.assessmentKit
-                                          .maturityLevelCount,
-                                      )[level.value - 1],
-                                      height: "10px",
-                                      width: "27px",
-                                      borderRadius: "16px",
-                                      color: "#fff",
-                                      fontWeight: "bold",
-                                    }}
-                                  ></Box>
-
-                                  <Typography
-                                    component="span"
-                                    sx={{
-                                      ...theme.typography.body2,
-                                      color: "#2B333B",
-                                      direction: rtlLanguage ? "rtl" : "ltr",
-                                      fontFamily: rtlLanguage
-                                        ? farsiFontFamily
-                                        : primaryFontFamily,
-                                      paddingInlineEnd: 1,
-                                      paddingInlineStart: 0.25,
+                                      display: "flex",
+                                      alignItems: "center",
+                                      rowGap: 2,
                                     }}
                                   >
-                                    {level.title}
-                                  </Typography>
-                                </Box>
-                              ),
-                            )}
+                                    <Box
+                                      sx={{
+                                        backgroundColor: getMaturityLevelColors(
+                                          assessment.assessmentKit
+                                            .maturityLevelCount,
+                                        )[level.value - 1],
+                                        height: "10px",
+                                        width: "27px",
+                                        borderRadius: "16px",
+                                        color: "#fff",
+                                        fontWeight: "bold",
+                                      }}
+                                    ></Box>
+
+                                    <Typography
+                                      component="span"
+                                      sx={{
+                                        ...theme.typography.body2,
+                                        color: "#2B333B",
+                                        direction: rtlLanguage ? "rtl" : "ltr",
+                                        fontFamily: rtlLanguage
+                                          ? farsiFontFamily
+                                          : primaryFontFamily,
+                                        paddingInlineEnd: 1,
+                                        paddingInlineStart: 0.25,
+                                      }}
+                                    >
+                                      {level.title}
+                                    </Typography>
+                                  </Box>
+                                ),
+                              )}
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </Grid>
-                      <SubjectReport graphicalReport={graphicalReport} />
-                    </Box>
-                  </Paper>
-                  <Paper
-                    elevation={3}
-                    sx={{
-                      position: "relative",
-                      backgroundColor: "#ffffff",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      borderEndStartRadius: 16,
-                      borderEndEndRadius: 16,
-                      boxShadow: "none",
-                      width: "100%",
-                      padding: { md: 6, xs: 1 },
-                    }}
-                  >
-                    <Typography
-                      component="div"
-                      id="recommendations"
+                        <SubjectReport graphicalReport={graphicalReport} />
+                      </Box>
+                    </Paper>
+                    <Paper
+                      elevation={3}
                       sx={{
-                        color: theme.palette.primary.main,
-                        ...theme.typography.headlineSmall,
-                        fontWeight: "bold",
-                        ...styles.rtlStyle(rtlLanguage),
+                        position: "relative",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        borderEndStartRadius: 16,
+                        borderEndEndRadius: 16,
+                        boxShadow: "none",
+                        width: "100%",
+                        padding: { md: 6, xs: 1 },
                       }}
                     >
-                      {t("recommendations", {
-                        lng: lang.code.toLowerCase(),
-                      })}
-                    </Typography>
-                    {advice?.narration || advice?.adviceItems?.length ? (
-                      <>
-                        {" "}
-                        <Typography
-                          textAlign="justify"
-                          sx={{
-                            ...theme.typography.bodyMedium,
-                            my: 1,
-                            ...styles.rtlStyle(rtlLanguage),
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: advice?.narration,
-                          }}
-                        ></Typography>
-                        <AdviceItemsAccordion
-                          items={graphicalReport?.advice?.adviceItems}
-                          onDelete={() => {}}
-                          setDisplayedItems={() => {}}
-                          query={undefined}
-                          readOnly
-                          language={lang.code.toLowerCase()}
-                        />
-                      </>
-                    ) : (
                       <Typography
-                        textAlign="justify"
+                        component="div"
+                        id="recommendations"
                         sx={{
-                          ...theme.typography.titleSmall,
-                          fontWeight: "light",
-                          my: 1,
+                          color: theme.palette.primary.main,
+                          ...theme.typography.headlineSmall,
+                          fontWeight: "bold",
                           ...styles.rtlStyle(rtlLanguage),
                         }}
                       >
-                        {t("unavailable", { lng: lang.code.toLowerCase() })}
+                        {t("recommendations", {
+                          lng: lang.code.toLowerCase(),
+                        })}
                       </Typography>
-                    )}
+                      {advice?.narration || advice?.adviceItems?.length ? (
+                        <>
+                          {" "}
+                          <Typography
+                            textAlign="justify"
+                            sx={{
+                              ...theme.typography.bodyMedium,
+                              my: 1,
+                              ...styles.rtlStyle(rtlLanguage),
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: advice?.narration,
+                            }}
+                          ></Typography>
+                          <AdviceItemsAccordion
+                            items={graphicalReport?.advice?.adviceItems}
+                            onDelete={() => {}}
+                            setDisplayedItems={() => {}}
+                            query={undefined}
+                            readOnly
+                            language={lang.code.toLowerCase()}
+                          />
+                        </>
+                      ) : (
+                        <Typography
+                          textAlign="justify"
+                          sx={{
+                            ...theme.typography.titleSmall,
+                            fontWeight: "light",
+                            my: 1,
+                            ...styles.rtlStyle(rtlLanguage),
+                          }}
+                        >
+                          {t("unavailable", { lng: lang.code.toLowerCase() })}
+                        </Typography>
+                      )}
 
-                    <div id="evaluationProcess">
-                      <ReportCard graphicalReport={graphicalReport} />
-                    </div>
-                  </Paper>
+                      <div id="evaluationProcess">
+                        <ReportCard graphicalReport={graphicalReport} />
+                      </div>
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
+              </Box>
+            </>
           );
         }}
       />
