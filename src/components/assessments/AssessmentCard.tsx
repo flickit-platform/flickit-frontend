@@ -32,7 +32,6 @@ import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
 import hasStatus from "@utils/hasStatus";
 import hasMaturityLevel from "@utils/hasMaturityLevel";
-import { toast } from "react-toastify";
 import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import { useQuery } from "@utils/useQuery";
 import Star from "@/assets/svg/star.svg";
@@ -46,7 +45,6 @@ import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
-import { t } from "i18next";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -344,7 +342,7 @@ const Header = ({
       gap="10px"
       data-cy="assessment-card-title"
     >
-      {!isQuickMode && <img src={Star} height={24} />}
+      {!isQuickMode && <img alt="star" src={Star} height={24} />}
       {itemTitle}
     </Typography>
     <Box sx={{ ...styles.centerVH }}>

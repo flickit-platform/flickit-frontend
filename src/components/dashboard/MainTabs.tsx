@@ -65,7 +65,6 @@ const MainTabs = (props: any) => {
 
   const { assessmentInfo } = useAssessmentContext();
   const [filteredTabList, setFilteredTabList] = useState(tabListTitle);
-  const [displayTabs, setDisplayTabs] = useState("none");
   const fetchAssessmentPermissions = useQuery({
     service: (args, config) =>
       service.assessments.info.getPermissions(
