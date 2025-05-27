@@ -18,6 +18,7 @@ export interface ISubject {
   confidenceValue: number | null;
   maturityLevel: IMaturityLevel;
   attributes: IAttribute[];
+  insight: string
 }
 
 export interface ISubjectInfo {
