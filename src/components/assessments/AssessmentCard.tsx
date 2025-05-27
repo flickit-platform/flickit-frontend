@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 import { t } from "i18next";
 import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import { useQuery } from "@utils/useQuery";
+import Star from "@/assets/svg/star.svg";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -69,7 +70,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     lastModificationTime,
     confidenceValue,
     language,
-    mode
+    mode,
   } = item;
   const hasML = hasMaturityLevel(maturityLevel?.value);
   const { maturityLevelsCount } = kit;
@@ -121,25 +122,25 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     );
   }, [item.permissions]);
 
-  const isQuickMode = useMemo(()=>{
-    return mode?.code === ASSESSMENT_MODE.QUICK
-  },[mode?.code])
+  const isQuickMode = useMemo(() => {
+    return mode?.code === ASSESSMENT_MODE.QUICK;
+  }, [mode?.code]);
 
-  const pathRoute = (checkItem: boolean) : string => {
+  const pathRoute = (checkItem: boolean): string => {
     if (checkItem && item.permissions.canViewDashboard) {
-      if(isQuickMode){
-        return `${item.id}/questionnaires`
-      }else{
-        return `${item.id}/dashboard`
+      if (isQuickMode) {
+        return `${item.id}/questionnaires`;
+      } else {
+        return `${item.id}/dashboard`;
       }
-    } else if (item.permissions.canViewQuestionnaires && isQuickMode ) {
-      return `${item.id}/questionnaires`
+    } else if (item.permissions.canViewQuestionnaires && isQuickMode) {
+      return `${item.id}/questionnaires`;
     } else if (item.permissions.canViewReport && item.hasReport) {
-      return `/${spaceId}/assessments/${item.id}/graphical-report/`
-    }else{
-      return ""
+      return `/${spaceId}/assessments/${item.id}/graphical-report/`;
+    } else {
+      return "";
     }
-  }
+  };
 
   return (
     <Grid item lg={3} md={4} sm={6} xs={12}>
@@ -217,9 +218,14 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                   fontFamily: languageDetector(item?.title)
                     ? farsiFontFamily
                     : primaryFontFamily,
+                  ...styles.centerVH,
                 }}
+                gap="10px"
                 data-cy="assessment-card-title"
               >
+                {mode?.code === ASSESSMENT_MODE.ADVANCED && (
+                  <img src={Star} height={24} />
+                )}
                 {item.title}
               </Typography>
               <Box sx={{ ...styles.centerVH }}>
@@ -230,7 +236,7 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                     borderRadius: "4px",
                     border: "0.5px solid #C7CCD1",
                     p: 0.5,
-                    pb:0
+                    pb: 0,
                   }}
                 >
                   <Typography variant="labelSmall" color="#6C8093">
