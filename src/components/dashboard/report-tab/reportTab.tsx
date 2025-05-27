@@ -161,6 +161,7 @@ const ReportTab = () => {
                         <Button
                           component={Link}
                           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
+                          state={{ from: location.pathname }}
                           sx={{ display: "flex", gap: 1, width: "100%" }}
                           variant={"contained"}
                         >

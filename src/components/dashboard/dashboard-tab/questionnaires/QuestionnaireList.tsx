@@ -261,6 +261,7 @@ const ProgressButton = (props: any) => {
         <Button
           component={Link}
           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
+          state={{ from: location.pathname }}
           sx={{
             borderRadius: "4px",
             background: "#F3F5F6",
