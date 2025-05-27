@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Hidden from "@mui/material/Hidden";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -24,12 +23,17 @@ const QuestionsProgress = () => {
 
   return (
     <Box position="relative" sx={{ my: { xs: 1, sm: 3 } }}>
-      <Hidden
-        smDown
-        mdDown={questions.length > 20}
-        lgDown={questions.length > 23}
-        xlDown={questions.length > 32}
-        xlUp={questions.length > 40}
+      <Box
+      sx={{
+      display:{
+        xs: "none",
+        sm: "none",
+        md: questions.length > 20 ? "none": "inherit",
+        lg: questions.length > 23 ? "none": "inherit",
+        xl: questions.length > 32 ? "none": "inherit",
+        xxl: questions.length > 40 ? "none": "inherit",
+      }
+      }}
       >
         <Box
           position={"absolute"}
@@ -53,7 +57,7 @@ const QuestionsProgress = () => {
             );
           })}
         </Box>
-      </Hidden>
+      </Box>
       <LinearProgress
         sx={{ flex: 1, borderRadius: 4 }}
         variant="determinate"
