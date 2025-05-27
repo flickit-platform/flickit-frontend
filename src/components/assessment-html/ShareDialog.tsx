@@ -32,14 +32,14 @@ import {
 } from "@mui/icons-material";
 import { t } from "i18next";
 import { VISIBILITY } from "@/utils/enumType";
-import { IUserPermissions } from "@/types";
+import { IGraphicalReport, IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 
-interface IDialogProps {
+interface IDialogProps extends IGraphicalReport {
   open: boolean;
   onClose: () => void;
-  title: string;
+  assessme: string;
   fetchGraphicalReportUsers: any;
   visibility: VISIBILITY;
   permissions: IUserPermissions;
@@ -65,13 +65,15 @@ const accessOptions = {
 export const ShareDialog = ({
   open,
   onClose,
-  title,
+  assessment,
   fetchGraphicalReportUsers,
   visibility,
   permissions,
+  linkHash,
 }: IDialogProps) => {
   const { t } = useTranslation();
-  const { assessmentId = "", linkHash = "" } = useParams();
+  const { title } = assessment;
+  const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
   const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
   const [access, setAccess] = useState<VISIBILITY>(visibility);
@@ -134,13 +136,8 @@ export const ShareDialog = ({
       const basePath = getBasePath(currentPath);
 
       if (access === VISIBILITY.PUBLIC) {
-        PublishReportStatus.query({
-          data: { visibility: VISIBILITY.PUBLIC },
-          assessmentId,
-        }).then((response) => {
-          const newPath = `${basePath}${response?.linkHash}/`;
-          window.history.pushState({}, "", newPath);
-        });
+        const newPath = `${basePath}${linkHash}/`;
+        window.history.pushState({}, "", newPath);
       }
     }
   }, [open]);
