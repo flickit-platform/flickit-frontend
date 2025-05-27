@@ -312,9 +312,7 @@ const AssessmentHtmlContainer = () => {
                       {...dialogProps}
                       onClose={() => dialogProps.onClose()}
                       fetchGraphicalReportUsers={fetchGraphicalReportUsers}
-                      title={assessment.title}
-                      visibility={visibility}
-                      permissions={permissions}
+                      {...graphicalReport}
                     />
                   </>{" "}
                 </Box>

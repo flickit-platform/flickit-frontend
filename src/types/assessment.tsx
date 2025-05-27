@@ -149,6 +149,7 @@ export interface IGraphicalReport {
   lang: ILanguage;
   visibility: VISIBILITY;
   mode: ILanguage;
+  linkHash: string;
 }
 
 type insight = {
