@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
 import {
@@ -165,12 +165,24 @@ const AssessmentHtmlContainer = () => {
     </>
   );
 
-  const isAnyInsightEmpty = (subjects: ISubject[]) =>
-    subjects.some((s) => !s?.insight) && !isAdvanceMode;
+  const isAnyInsightEmpty = (subjects: ISubject[], quickMode: boolean) =>
+    subjects.some((s) => !s?.insight) && quickMode;
 
   const handleReloadReport = () => {
     fetchGraphicalReport.query();
   };
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from;
+
+  const handleBack = () => {
+    if (from) {
+      navigate(from, { replace: true });
+    } else {
+      navigate(`/${spaceId}/assessments/1/`, { replace: true });
+    }
+  };
+
   return (
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
       <QueryData
@@ -184,11 +196,13 @@ const AssessmentHtmlContainer = () => {
             subjects,
             lang,
             visibility,
+            mode,
           } = graphicalReport as IGraphicalReport;
           const rtlLanguage = lang.code.toLowerCase() === "fa";
+          const isQuickMode = mode?.code === ASSESSMENT_MODE.QUICK;
           return (
             <>
-              {isAnyInsightEmpty(subjects) && (
+              {isAnyInsightEmpty(subjects, isQuickMode) && (
                 <Box
                   sx={{
                     backgroundColor: theme.palette.error.main,
@@ -232,7 +246,9 @@ const AssessmentHtmlContainer = () => {
                 sx={{
                   textAlign: rtlLanguage ? "right" : "left",
                   ...styles.rtlStyle(rtlLanguage),
-                  p: isAnyInsightEmpty(subjects) ? 1 : { xs: 1, sm: 1, md: 4 },
+                  p: isAnyInsightEmpty(subjects, isQuickMode)
+                    ? 1
+                    : { xs: 1, sm: 1, md: 4 },
                   px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
                 }}
               >
@@ -266,15 +282,7 @@ const AssessmentHtmlContainer = () => {
                     }}
                   >
                     {keycloakService.isLoggedIn() && (
-                      <IconButton
-                        color={"primary"}
-                        component={Link}
-                        to={
-                          permissions.canViewDashboard
-                            ? `/${spaceId}/assessments/1/${assessmentId}/dashboard/`
-                            : `/${spaceId}/assessments/1/`
-                        }
-                      >
+                      <IconButton color="primary" onClick={handleBack}>
                         <ArrowForward
                           sx={{
                             ...theme.typography.headlineMedium,

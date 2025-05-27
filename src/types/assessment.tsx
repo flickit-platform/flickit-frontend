@@ -146,8 +146,9 @@ export interface IGraphicalReport {
     steps: string;
     participant: string;
   };
-  lang: { code: string };
+  lang: ILanguage;
   visibility: VISIBILITY;
+  mode: ILanguage;
 }
 
 type insight = {
@@ -241,7 +242,7 @@ export interface IAssessment {
   kit: IAssessmentKitList;
   confidenceValue: number;
   maturityLevel: IMaturityLevel;
-  mode?: {code: string},
+  mode?: { code: string };
   permissions: {
     canManageSettings: boolean;
     canViewReport: boolean;
@@ -250,5 +251,5 @@ export interface IAssessment {
     canViewQuestionnaires: boolean;
     canManageVisibility: boolean;
   };
-  language: ILanguage
+  language: ILanguage;
 }
