@@ -278,6 +278,9 @@ const QuickAssessmentSwitch = () => {
   const [isQuickMode, setIsQuickMode] = useState(
     assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK,
   );
+  useEffect(() => {
+    setIsQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK);
+  }, [assessmentInfo?.mode?.code]);
 
   const dialogProps = useDialog();
 
