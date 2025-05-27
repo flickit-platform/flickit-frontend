@@ -33,16 +33,9 @@ import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
 import hasStatus from "@utils/hasStatus";
 import hasMaturityLevel from "@utils/hasMaturityLevel";
 import { toast } from "react-toastify";
-import { t } from "i18next";
 import CompareRoundedIcon from "@mui/icons-material/CompareRounded";
 import { useQuery } from "@utils/useQuery";
 import Star from "@/assets/svg/star.svg";
-
-interface IAssessmentCardProps {
-  item: IAssessment & { space: any };
-  dialogProps: TDialogProps;
-  deleteAssessment: TQueryFunction<any, TId>;
-}
 import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
@@ -53,14 +46,26 @@ import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import { t } from "i18next";
 
-const AssessmentCard = (props: IAssessmentCardProps) => {
-  const [calculateResault, setCalculateResault] = useState<any>();
-  const [calculatePercentage, setCalculatePercentage] = useState<any>();
+interface IAssessmentCardProps {
+  item: IAssessment & { space: any };
+  dialogProps: TDialogProps;
+  deleteAssessment: TQueryFunction<any, TId>;
+}
+
+const AssessmentCard = ({
+  item,
+  dialogProps,
+  deleteAssessment,
+}: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
-  const { item } = props;
+  const [gaugeResult, setGaugeResult] = useState<any>();
+  const [progressPercent, setProgressPercent] = useState<string | undefined>();
   const abortController = useRef(new AbortController());
   const { spaceId } = useParams();
+  const { service } = useServiceContext();
+  const location = useLocation();
 
   const {
     maturityLevel,
@@ -71,32 +76,21 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
     confidenceValue,
     language,
     mode,
+    permissions,
+    hasReport,
+    color,
+    title,
   } = item;
-  const hasML = hasMaturityLevel(maturityLevel?.value);
-  const { maturityLevelsCount } = kit;
-  const location = useLocation();
-  const { service } = useServiceContext();
+
   const calculateMaturityLevelQuery = useQuery({
     service: (args, config) =>
       service.assessments.info.calculateMaturity(
-        args ?? { assessmentId: id },
+        { assessmentId: id, ...(args ?? {}) },
         config,
       ),
     runOnMount: false,
   });
 
-  const fetchAssessments = async () => {
-    setShow(isCalculateValid);
-    if (!isCalculateValid) {
-      const data = await calculateMaturityLevelQuery.query().catch(() => {
-        setShow(true);
-      });
-      setCalculateResault(data);
-      if (data?.id) {
-        setShow(true);
-      }
-    }
-  };
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
       service.assessments.info.getProgress(
@@ -104,43 +98,63 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
         config,
       ),
   });
+
   useEffect(() => {
-    fetchAssessments();
-    (async () => {
+    const fetchGaugeAndProgress = async () => {
+      setShow(isCalculateValid);
+      if (!isCalculateValid) {
+        try {
+          const data = await calculateMaturityLevelQuery.query();
+          setGaugeResult(data);
+          if (data?.id) setShow(true);
+        } catch {
+          setShow(true);
+        }
+      }
       const { answersCount, questionsCount } =
         await assessmentTotalProgress.query();
-      const calc = (answersCount / questionsCount) * 100;
-      setCalculatePercentage(calc.toFixed(2));
-    })();
+      if (questionsCount) {
+        setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
+      }
+    };
+    fetchGaugeAndProgress();
+    // eslint-disable-next-line
   }, [isCalculateValid]);
 
-  const canViewReport = useMemo(() => {
-    return (
-      item.permissions.canViewReport &&
-      !item.permissions.canViewQuestionnaires &&
-      !item.permissions.canViewDashboard
-    );
-  }, [item.permissions]);
-
-  const isQuickMode = useMemo(() => {
-    return mode?.code === ASSESSMENT_MODE.QUICK;
-  }, [mode?.code]);
+  const hasML = useMemo(
+    () => hasMaturityLevel(maturityLevel?.value),
+    [maturityLevel?.value],
+  );
+  const isQuickMode = useMemo(
+    () => mode?.code === ASSESSMENT_MODE.QUICK,
+    [mode?.code],
+  );
 
   const pathRoute = (checkItem: boolean): string => {
-    if (checkItem && item.permissions.canViewDashboard) {
-      if (isQuickMode) {
-        return `${item.id}/questionnaires`;
-      } else {
-        return `${item.id}/dashboard`;
-      }
-    } else if (item.permissions.canViewQuestionnaires && isQuickMode) {
-      return `${item.id}/questionnaires`;
-    } else if (item.permissions.canViewReport && item.hasReport) {
-      return `/${spaceId}/assessments/${item.id}/graphical-report/`;
-    } else {
-      return "";
+    if (permissions.canViewReport && hasReport && isQuickMode) {
+      return `/${spaceId}/assessments/${id}/graphical-report/`;
     }
+    if (checkItem && permissions.canViewDashboard) {
+      return isQuickMode ? `${id}/questionnaires` : `${id}/dashboard`;
+    }
+    if (permissions.canViewReport && hasReport) {
+      return `/${spaceId}/assessments/${id}/graphical-report/`;
+    }
+    if (permissions.canViewQuestionnaires && isQuickMode) {
+      return `${id}/questionnaires`;
+    }
+    return "";
   };
+
+  const showReport = permissions.canViewReport && hasReport;
+  const showDashboard = permissions.canViewDashboard;
+  const showQuestionnaires = permissions.canViewQuestionnaires;
+
+  const buttonTypes: Array<"report" | "questionnaires" | "dashboard"> = [];
+  if (showReport) buttonTypes.push("report");
+  if (showQuestionnaires && !(!isQuickMode && showReport && showDashboard))
+    buttonTypes.push("questionnaires");
+  if (showDashboard && !isQuickMode) buttonTypes.push("dashboard");
 
   return (
     <Grid item lg={3} md={4} sm={6} xs={12}>
@@ -155,106 +169,37 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
           minHeight: "300px",
           height: "100%",
           justifyContent: "space-between",
-          ":hover": {
-            boxShadow: 9,
-          },
+          ":hover": { boxShadow: 9 },
         }}
         elevation={4}
         data-cy="assessment-card"
       >
-        {item.permissions.canManageSettings && (
-          <Actions {...props} abortController={abortController} />
+        {permissions.canManageSettings && (
+          <Actions
+            deleteAssessment={deleteAssessment}
+            item={item}
+            dialogProps={dialogProps}
+            abortController={abortController}
+          />
         )}
+
         <Grid container sx={{ textDecoration: "none", height: "100%" }}>
+          {/* Header */}
           <Grid item xs={12}>
-            <Box
-              sx={{
-                textDecoration: "none",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              component={Link}
-              to={pathRoute(isCalculateValid)}
-            >
-              <Tooltip title={kit?.title}>
-                <Chip
-                  label={kit?.title}
-                  size="small"
-                  sx={{
-                    maxWidth: "70%",
-                    width: "fit-content",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    border: `0.5px solid #2466A8`,
-                    textTransform: "none",
-                    color: "#101c32",
-                    background: "transparent",
-                    fontFamily: languageDetector(kit?.title)
-                      ? farsiFontFamily
-                      : primaryFontFamily,
-                  }}
-                  data-cy="assessment-card-title"
-                />
-              </Tooltip>
-              <Typography
-                variant="h5"
-                color="CaptionText"
-                textTransform={"uppercase"}
-                sx={{
-                  padding: "8px 28px",
-                  fontWeight: "bold",
-                  pb: 0,
-                  textAlign: "center",
-                  color: item.color?.code ?? "#101c32",
-                  maxWidth: "320px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  margin: "0 auto",
-                  width: "100%",
-                  fontFamily: languageDetector(item?.title)
-                    ? farsiFontFamily
-                    : primaryFontFamily,
-                  ...styles.centerVH,
-                }}
-                gap="10px"
-                data-cy="assessment-card-title"
-              >
-                {mode?.code === ASSESSMENT_MODE.ADVANCED && (
-                  <img src={Star} height={24} />
-                )}
-                {item.title}
-              </Typography>
-              <Box sx={{ ...styles.centerVH }}>
-                <Box
-                  sx={{
-                    ...styles.centerVH,
-                    backgroundColor: "#F9FAFB",
-                    borderRadius: "4px",
-                    border: "0.5px solid #C7CCD1",
-                    p: 0.5,
-                    pb: 0,
-                  }}
-                >
-                  <Typography variant="labelSmall" color="#6C8093">
-                    {language.code}
-                  </Typography>
-                </Box>
-                <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-                <Typography
-                  variant="labelSmall"
-                  sx={{ textAlign: "center" }}
-                  color="#6C8093"
-                >
-                  <Trans i18nKey="lastUpdated" />{" "}
-                  {getReadableDate(lastModificationTime)}
-                </Typography>
-              </Box>
-            </Box>
+            <Header
+              kit={kit}
+              itemTitle={title}
+              color={color}
+              language={language}
+              lastModificationTime={lastModificationTime}
+              isQuickMode={isQuickMode}
+              spaceId={spaceId}
+              id={id}
+              pathRoute={pathRoute}
+              isCalculateValid={isCalculateValid}
+            />
           </Grid>
+          {/* Gauge */}
           <Grid
             item
             xs={12}
@@ -265,10 +210,10 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
           >
             {show ? (
               <Gauge
-                maturity_level_number={maturityLevelsCount}
-                level_value={calculateResault?.index ?? maturityLevel?.index}
+                maturity_level_number={kit.maturityLevelsCount}
+                level_value={gaugeResult?.index ?? maturityLevel?.index}
                 maturity_level_status={
-                  calculateResault?.title ?? maturityLevel?.title
+                  gaugeResult?.title ?? maturityLevel?.title
                 }
                 maxWidth="275px"
                 mt="auto"
@@ -277,7 +222,8 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
               <LoadingGauge />
             )}
           </Grid>
-          {item.permissions.canViewReport && (
+          {/* Confidence */}
+          {permissions.canViewReport && (
             <Grid item xs={12} mt="-4rem">
               <Typography
                 variant="titleSmall"
@@ -292,182 +238,254 @@ const AssessmentCard = (props: IAssessmentCardProps) => {
                   displayNumber
                   inputNumber={Math.ceil(confidenceValue)}
                   variant="titleMedium"
-                ></ConfidenceLevel>
+                />
               </Typography>
             </Grid>
           )}
-          {(item.permissions.canViewQuestionnaires ||
-            (item.permissions.canViewReport && item.hasReport)) && (
-            <Grid item xs={12} mt={1} sx={{ ...styles.centerCH }}>
-              <Button
-                startIcon={
-                  item.permissions.canViewReport || item.hasReport ? (
-                    <Assessment />
-                  ) : (
-                    <QuizRoundedIcon />
-                  )
-                }
-                fullWidth
-                onClick={(
-                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-                ) => {
-                  e.stopPropagation();
-                }}
-                component={Link}
-                sx={{ position: "relative", zIndex: 1 }}
-                state={location}
-                to={
-                  item.permissions.canViewReport && item.hasReport
-                    ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                    : item.permissions.canViewQuestionnaires
-                      ? `${item.id}/questionnaires`
-                      : ""
-                }
-                data-cy="questionnaires-btn"
-                variant={
-                  !item.permissions.canViewReport || !item.hasReport
-                    ? "outlined"
-                    : "contained"
-                }
-              >
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    background: "rgba(102, 128, 153, 0.3)",
-                    zIndex: -1,
-                    width:
-                      !(item.permissions.canViewReport && item.hasReport) &&
-                      calculatePercentage
-                        ? `${calculatePercentage}%`
-                        : "0%",
-                    transition: "all 1s ease-in-out",
-                  }}
-                ></Box>
-                <Trans
-                  i18nKey={
-                    item.permissions.canViewReport && item.hasReport
-                      ? "reportTitle"
-                      : "questionnaires"
-                  }
+          {/* Buttons Section */}
+          {buttonTypes.length > 0 && (
+            <Grid
+              item
+              xs={12}
+              mt={1}
+              sx={{
+                ...styles.centerCH,
+                gap: 1,
+                flexDirection: "column",
+              }}
+            >
+              {buttonTypes.map((type) => (
+                <CardButton
+                  key={type}
+                  item={item}
+                  progressPercent={progressPercent}
+                  location={location}
+                  spaceId={spaceId}
+                  type={type}
                 />
-              </Button>
+              ))}
             </Grid>
           )}
-          <Grid
-            item
-            xs={12}
-            sx={{
-              ...styles.centerCH,
-              display:
-                item.permissions.canViewDashboard ||
-                (item.permissions.canViewQuestionnaires &&
-                  item.permissions.canViewReport &&
-                  item.hasReport)
-                  ? "block"
-                  : "none",
-            }}
-            mt={1}
-          >
-            <Button
-              startIcon={
-                item.permissions.canViewQuestionnaires ? (
-                  <QuizRoundedIcon />
-                ) : (
-                  <QueryStatsRounded />
-                )
-              }
-              variant={"contained"}
-              fullWidth
-              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                e.stopPropagation();
-                if (!hasML) {
-                  e.preventDefault();
-                  toast.warn(t("inOrderToViewSomeInsight") as string);
-                }
-              }}
-              component={Link}
-              to={
-                hasML && item.permissions.canViewDashboard
-                  ? `${item.id}/dashboard`
-                  : item.permissions.canViewQuestionnaires
-                    ? `${item.id}/questionnaires`
-                    : canViewReport
-                      ? `/${spaceId}/assessments/${item.id}/graphical-report/`
-                      : ""
-              }
-              sx={{
-                backgroundColor: "#2e7d72",
-                background:
-                  item.permissions.canViewDashboard ||
-                  canViewReport ||
-                  item.permissions.canViewQuestionnaires
-                    ? `#01221e`
-                    : "rgba(0,59,100, 12%)",
-                color:
-                  !item.permissions.canViewDashboard &&
-                  !canViewReport &&
-                  !item.permissions.canViewQuestionnaires
-                    ? "rgba(10,35,66, 38%)"
-                    : "",
-                boxShadow:
-                  !item.permissions.canViewDashboard &&
-                  !canViewReport &&
-                  !item.permissions.canViewQuestionnaires
-                    ? "none"
-                    : "",
-                "&:hover": {
-                  background:
-                    item.permissions.canViewDashboard ||
-                    canViewReport ||
-                    item.permissions.canViewQuestionnaires
-                      ? ``
-                      : "rgba(0,59,100, 12%)",
-                  boxShadow:
-                    !item.permissions.canViewDashboard &&
-                    !canViewReport &&
-                    !item.permissions.canViewQuestionnaires
-                      ? "none"
-                      : "",
-                },
-              }}
-              data-cy="view-insights-btn"
-            >
-              <Trans
-                i18nKey={
-                  item.permissions.canViewDashboard
-                    ? "dashboard"
-                    : "questionnaire"
-                }
-              />
-            </Button>
-          </Grid>
         </Grid>
       </Paper>
     </Grid>
   );
 };
 
-const Actions = (props: {
+export default AssessmentCard;
+
+// --- Components breakdown ---
+
+const Header = ({
+  kit,
+  itemTitle,
+  color,
+  language,
+  lastModificationTime,
+  isQuickMode,
+  spaceId,
+  id,
+  pathRoute,
+  isCalculateValid,
+}: any) => (
+  <Box
+    sx={{
+      textDecoration: "none",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+    component={Link}
+    to={pathRoute(isCalculateValid)}
+  >
+    <Tooltip title={kit?.title}>
+      <Chip
+        label={kit?.title}
+        size="small"
+        sx={{
+          maxWidth: "70%",
+          width: "fit-content",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          border: `0.5px solid #2466A8`,
+          textTransform: "none",
+          color: "#101c32",
+          background: "transparent",
+          fontFamily: languageDetector(kit?.title)
+            ? farsiFontFamily
+            : primaryFontFamily,
+        }}
+        data-cy="assessment-card-title"
+      />
+    </Tooltip>
+    <Typography
+      variant="h5"
+      color="CaptionText"
+      textTransform={"uppercase"}
+      sx={{
+        padding: "8px 28px",
+        fontWeight: "bold",
+        pb: 0,
+        textAlign: "center",
+        color: color?.code ?? "#101c32",
+        maxWidth: "320px",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        margin: "0 auto",
+        width: "100%",
+        fontFamily: languageDetector(itemTitle)
+          ? farsiFontFamily
+          : primaryFontFamily,
+        ...styles.centerVH,
+      }}
+      gap="10px"
+      data-cy="assessment-card-title"
+    >
+      {!isQuickMode && <img src={Star} height={24} />}
+      {itemTitle}
+    </Typography>
+    <Box sx={{ ...styles.centerVH }}>
+      <Box
+        sx={{
+          ...styles.centerVH,
+          backgroundColor: "#F9FAFB",
+          borderRadius: "4px",
+          border: "0.5px solid #C7CCD1",
+          p: 0.5,
+          pb: 0,
+        }}
+      >
+        <Typography variant="labelSmall" color="#6C8093">
+          {language.code}
+        </Typography>
+      </Box>
+      <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+      <Typography
+        variant="labelSmall"
+        sx={{ textAlign: "center" }}
+        color="#6C8093"
+      >
+        <Trans i18nKey="lastUpdated" /> {getReadableDate(lastModificationTime)}
+      </Typography>
+    </Box>
+  </Box>
+);
+
+const CardButton = ({
+  item,
+  progressPercent,
+  location,
+  spaceId,
+  type, // 'report' | 'questionnaires' | 'dashboard'
+}: any) => {
+  let to = "";
+  let icon = null;
+  let labelKey = "";
+
+  if (type === "report") {
+    to = `/${spaceId}/assessments/${item.id}/graphical-report/`;
+    icon = <Assessment />;
+    labelKey = "reportTitle";
+  } else if (type === "questionnaires") {
+    to = `${item.id}/questionnaires`;
+    icon = <QuizRoundedIcon />;
+    labelKey = "questionnaires";
+  } else if (type === "dashboard") {
+    to = `${item.id}/dashboard`;
+    icon = <QueryStatsRounded />;
+    labelKey = "dashboard";
+  }
+
+  if (!type) {
+    if (item.permissions.canViewReport && item.hasReport) {
+      to = `/${spaceId}/assessments/${item.id}/graphical-report/`;
+      icon = <Assessment />;
+      labelKey = "reportTitle";
+    } else if (item.permissions.canViewQuestionnaires) {
+      to = `${item.id}/questionnaires`;
+      icon = <QuizRoundedIcon />;
+      labelKey = "questionnaires";
+    } else if (item.permissions.canViewDashboard) {
+      to = `${item.id}/dashboard`;
+      icon = <QueryStatsRounded />;
+      labelKey = "dashboard";
+    }
+  }
+
+  return (
+    <Button
+      startIcon={icon}
+      fullWidth
+      onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.stopPropagation();
+      }}
+      component={Link}
+      sx={{
+        position: "relative",
+        zIndex: 1,
+        ...(labelKey === "dashboard" && {
+          background: "#01221e",
+          color: "#fff",
+          "&:hover": {
+            background: "#01221ecc",
+          },
+        }),
+      }}
+      state={location}
+      to={to}
+      data-cy="assessment-card-btn"
+      variant={
+        labelKey === "reportTitle" || labelKey === "dashboard"
+          ? "contained"
+          : "outlined"
+      }
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          left: 0,
+          bottom: 0,
+          background: "rgba(102, 128, 153, 0.3)",
+          zIndex: -1,
+          width:
+            labelKey === "questionnaires" && progressPercent
+              ? `${progressPercent}%`
+              : "0%",
+          transition: "all 1s ease-in-out",
+        }}
+      />
+      <Trans i18nKey={labelKey} />
+    </Button>
+  );
+};
+
+// --- Actions ---
+const Actions = ({
+  deleteAssessment,
+  item,
+  abortController,
+}: {
   deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
 }) => {
-  const { deleteAssessment, item } = props;
   const navigate = useNavigate();
-  const deleteItem = async (e: any) => {
+
+  const deleteItem = async () => {
     try {
       await deleteAssessment(item.id);
     } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
+      toastError(e as ICustomError);
     }
   };
-  const addToCompare = (e: any) => {
+
+  const addToCompare = () => {
     navigate({
       pathname: "/compare",
       search: createSearchParams({
@@ -476,46 +494,45 @@ const Actions = (props: {
     });
   };
 
-  const assessmentSetting = (e: any) => {
+  const assessmentSetting = () => {
     navigate(`${item.id}/settings/`, {
       state: item?.color ?? { code: "#073B4C", id: 6 },
     });
   };
 
+  const actions = hasStatus(item.status)
+    ? [
+        {
+          icon: <CompareRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="addToCompare" />,
+          onClick: addToCompare,
+        },
+        {
+          icon: <DeleteRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="delete" />,
+          onClick: deleteItem,
+          menuItemProps: { "data-cy": "delete-action-btn" },
+        },
+      ]
+    : [
+        {
+          icon: <SettingsIcon fontSize="small" />,
+          text: <Trans i18nKey="settings" />,
+          onClick: assessmentSetting,
+        },
+        {
+          icon: <DeleteRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="delete" />,
+          onClick: deleteItem,
+          menuItemProps: { "data-cy": "delete-action-btn" },
+        },
+      ];
+
   return (
     <MoreActions
       {...useMenu()}
       boxProps={{ position: "absolute", top: "10px", right: "10px", zIndex: 2 }}
-      items={
-        hasStatus(item.status)
-          ? [
-              {
-                icon: <CompareRoundedIcon fontSize="small" />,
-                text: <Trans i18nKey="addToCompare" />,
-                onClick: addToCompare,
-              },
-              {
-                icon: <DeleteRoundedIcon fontSize="small" />,
-                text: <Trans i18nKey="delete" />,
-                onClick: deleteItem,
-                menuItemProps: { "data-cy": "delete-action-btn" },
-              },
-            ]
-          : [
-              {
-                icon: <SettingsIcon fontSize="small" />,
-                text: <Trans i18nKey="settings" />,
-                onClick: assessmentSetting,
-              },
-              {
-                icon: <DeleteRoundedIcon fontSize="small" />,
-                text: <Trans i18nKey="delete" />,
-                onClick: deleteItem,
-                menuItemProps: { "data-cy": "delete-action-btn" },
-              },
-            ]
-      }
+      items={actions}
     />
   );
 };
-export default AssessmentCard;

@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import {
   ASSESSMENT_ACTIONS_TYPE,
@@ -75,14 +75,6 @@ const MainTabs = (props: any) => {
     runOnMount: true,
   });
 
-  useEffect(() => {
-    if (assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED) {
-      setDisplayTabs("flex");
-    } else {
-      setDisplayTabs("none");
-    }
-  }, [assessmentInfo?.mode?.code]);
-
   const AssessmentInfo = useQuery({
     service: (args, config) =>
       service.assessments.info.getById(args ?? { assessmentId }, config),
@@ -111,9 +103,13 @@ const MainTabs = (props: any) => {
   useEffect(() => {
     dispatch(assessmentActions.setAssessmentInfo(AssessmentInfo.data));
   }, [AssessmentInfo.data]);
+
+  const isAdvanceMode = useMemo(() => {
+    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
   return (
     <>
-      {isMobileScreen && selectedTab !== "settings"? (
+      {isMobileScreen && selectedTab !== "settings" ? (
         <Box
           sx={{
             ...styles.centerVH,
@@ -171,76 +167,82 @@ const MainTabs = (props: any) => {
         </Box>
       ) : (
         <>
-          {fetchAssessmentPermissions.loading ? (
-            <LoadingSkeleton />
-          ) : (
-            <Box
-              sx={{
-                background: "#2466A814",
-                borderRadius: "16px",
-                display: displayTabs,
-                alignItems: "center",
-                justifyContent: "center",
-                p: 1,
-              }}
-            >
-              <Tabs
-                value={selectedTab}
-                onChange={(event, newValue) => onTabChange(event, newValue)}
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-                sx={{
-                  border: "none",
-                  "& .MuiTabs-indicator": {
-                    display: "none",
-                  },
-                }}
-              >
-                {filteredTabList?.map((tab: any) => {
-                  return (
-                    <Tab
-                      key={uniqueId()}
-                      to={`./${tab.address}/`}
-                      component={Link}
-                      value={tab.address}
-                      sx={{
-                        ...theme.typography.semiBoldLarge,
-                        flexGrow: flexColumn ? 0 : 1,
-                        border: "none",
-                        textTransform: "none",
-                        color: "#2B333B",
-                        maxWidth: "unset",
-                        "&.Mui-selected": {
-                          boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
-                          borderRadius: 1,
-                          color: theme.palette.primary.main,
-                          background: "#fff",
-                          "&:hover": {
-                            background: "#fff",
-                            border: "none",
-                          },
-                        },
-                      }}
-                      label={
-                        <Box
+          {isAdvanceMode ? (
+            <>
+              {" "}
+              {fetchAssessmentPermissions.loading ? (
+                <LoadingSkeleton />
+              ) : (
+                <Box
+                  sx={{
+                    background: "#2466A814",
+                    borderRadius: "16px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    p: 1,
+                  }}
+                >
+                  <Tabs
+                    value={selectedTab}
+                    onChange={(event, newValue) => onTabChange(event, newValue)}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
+                    sx={{
+                      border: "none",
+                      "& .MuiTabs-indicator": {
+                        display: "none",
+                      },
+                    }}
+                  >
+                    {filteredTabList?.map((tab: any) => {
+                      return (
+                        <Tab
+                          key={uniqueId()}
+                          to={`./${tab.address}/`}
+                          component={Link}
+                          value={tab.address}
                           sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 1,
+                            ...theme.typography.semiBoldLarge,
+                            flexGrow: flexColumn ? 0 : 1,
+                            border: "none",
+                            textTransform: "none",
+                            color: "#2B333B",
+                            maxWidth: "unset",
+                            "&.Mui-selected": {
+                              boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
+                              borderRadius: 1,
+                              color: theme.palette.primary.main,
+                              background: "#fff",
+                              "&:hover": {
+                                background: "#fff",
+                                border: "none",
+                              },
+                            },
                           }}
-                        >
-                          <Typography variant="semiBoldLarge">
-                            <Trans i18nKey={tab.label} />
-                          </Typography>
-                        </Box>
-                      }
-                    />
-                  );
-                })}
-              </Tabs>
-            </Box>
+                          label={
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Typography variant="semiBoldLarge">
+                                <Trans i18nKey={tab.label} />
+                              </Typography>
+                            </Box>
+                          }
+                        />
+                      );
+                    })}
+                  </Tabs>
+                </Box>
+              )}
+            </>
+          ) : (
+            <></>
           )}
         </>
       )}

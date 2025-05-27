@@ -8,7 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
@@ -278,6 +278,9 @@ const QuickAssessmentSwitch = () => {
   const [isQuickMode, setIsQuickMode] = useState(
     assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK,
   );
+  useEffect(() => {
+    setIsQuickMode(assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK);
+  }, [assessmentInfo?.mode?.code]);
 
   const dialogProps = useDialog();
 
