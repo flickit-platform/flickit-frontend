@@ -39,14 +39,33 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     methods.setValue("email", email);
   }, [email]);
   const close = () => {
-    handleSubmitSpree({});
     abortController.abort();
     methods.reset();
     setDialogKey((prev) => prev + 1);
     onClose();
+    if (messagePlaceHolder) {
+      methods.setValue(
+        "type" as any,
+        "User asked help in " + window.location.href + " report.",
+      );
+    }
   };
 
-  const onSubmit = (data: any) => {
+  const handleSucceeded = () => {
+    handleSubmitSpree({});
+    close();
+  };
+
+  useEffect(() => {
+    if (messagePlaceHolder) {
+      methods.setValue(
+        "type" as any,
+        "User asked help in " + window.location.href + " report.",
+      );
+    }
+  }, []);
+
+  const onSubmit = async (data: any) => {
     handleSubmitSpree(data);
   };
 
@@ -63,7 +82,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     <CEDialog
       key={dialogKey}
       {...rest}
-      closeDialog={close}
+      closeDialog={state.succeeded ? handleSucceeded : close}
       title={
         <Typography sx={theme.typography.semiBoldXLarge}>
           {dialogTitle ?? <Trans i18nKey="contactUs" />}
@@ -99,8 +118,8 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
           <CEDialogActions
             hideCancelButton
             submitButtonLabel={t("okGotIt")}
-            closeDialog={close}
-            onSubmit={close}
+            closeDialog={handleSucceeded}
+            onSubmit={handleSucceeded}
           />
         </Box>
       ) : (

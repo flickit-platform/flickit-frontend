@@ -41,12 +41,22 @@ import { useEffect, useMemo } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
-import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
+
+const getBasePath = (path: string): string => {
+  const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
+  const baseMatch = baseRegex.exec(path);
+  return baseMatch?.[1]
+    ? baseMatch[1] + "/"
+    : path.endsWith("/")
+      ? path
+      : path + "/";
+};
 
 const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
@@ -198,9 +208,17 @@ const AssessmentHtmlContainer = () => {
             lang,
             visibility,
             mode,
+            linkHash
           } = graphicalReport as IGraphicalReport;
           const rtlLanguage = lang.code.toLowerCase() === "fa";
           const isQuickMode = mode?.code === ASSESSMENT_MODE.QUICK;
+          const currentPath = window.location.pathname;
+          const basePath = getBasePath(currentPath);
+
+          if (visibility === VISIBILITY.PUBLIC &&linkHash) {
+            const newPath = `${basePath}${linkHash}/`;
+            window.history.pushState({}, "", newPath);
+          }
           return (
             <>
               {isAnyInsightEmpty(subjects, isQuickMode) && (
