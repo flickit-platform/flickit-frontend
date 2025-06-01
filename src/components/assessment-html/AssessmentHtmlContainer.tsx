@@ -46,6 +46,7 @@ import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
+import languageDetector from "@/utils/languageDetector";
 
 const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
@@ -369,7 +370,7 @@ const AssessmentHtmlContainer = () => {
                                 color: theme.palette.primary.main,
                                 ...theme.typography.headlineSmall,
                                 fontWeight: "bold",
-                                ...styles.rtlStyle(rtlLanguage),
+                                ...styles.rtlStyle(languageDetector(assessment.title)),
                               }}
                             >
                               {assessment.title}
