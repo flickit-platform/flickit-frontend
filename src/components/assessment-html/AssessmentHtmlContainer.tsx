@@ -47,12 +47,14 @@ import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton"
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
+  const { userInfo } = useAuthContext();
   const { assessmentInfo } = useAssessmentContext();
 
   const isAdvanceMode = useMemo(() => {
@@ -370,7 +372,9 @@ const AssessmentHtmlContainer = () => {
                                 color: theme.palette.primary.main,
                                 ...theme.typography.headlineSmall,
                                 fontWeight: "bold",
-                                ...styles.rtlStyle(languageDetector(assessment.title)),
+                                ...styles.rtlStyle(
+                                  languageDetector(assessment.title),
+                                ),
                               }}
                             >
                               {assessment.title}

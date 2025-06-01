@@ -68,7 +68,6 @@ const DotsLoading = () => (
 
 const GraphicalReportSkeleton = () => (
   <Box sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}>
-    {/* Top Banner */}
     <Box
       sx={{
         backgroundColor: "#D5E5F6",
@@ -88,14 +87,12 @@ const GraphicalReportSkeleton = () => (
       <DotsLoading />
     </Box>
 
-    {/* Main Content */}
     <Box
       m="auto"
       pb={3}
       p={{ xs: 1, sm: 1, md: 4 }}
       px={{ xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 }}
     >
-      {/* Title, Share & Breadcrumb Skeleton */}
       <Box>
         <Skeleton variant="text" width={170} height={28} sx={{ mb: 2 }} />
         <Box
@@ -105,18 +102,40 @@ const GraphicalReportSkeleton = () => (
           my={2}
         >
           <Skeleton variant="rectangular" width={100} height={36} />{" "}
-          {/* Back Btn */}
           <Skeleton variant="rectangular" width={140} height={36} />{" "}
-          {/* Share Btn */}
         </Box>
       </Box>
 
       <Grid container spacing={2}>
         <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
           <Skeleton variant="rounded" height={420} sx={{ borderRadius: 2 }} />
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+            <Box
+              sx={{
+                width: "100%",
+                height: 48,
+                borderRadius: "16px",
+                position: "relative",
+                overflow: "hidden",
+                background:
+                  "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
+                backgroundSize: "600% 600%",
+                animation: "gradientShift 4s ease infinite",
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              }}
+            />
+            <style>
+              {`
+                @keyframes gradientShift {
+                  0% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                  100% { background-position: 0% 50%; }
+                }
+              `}
+            </style>
+          </Box>
         </Grid>
         <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
-          {/* Paper: گزارش */}
           <Paper
             elevation={3}
             sx={{
@@ -227,7 +246,6 @@ const GraphicalReportSkeleton = () => (
               />
             </Box>
           </Paper>
-          {/* Paper: توصیه‌ها */}
           <Paper
             elevation={3}
             sx={{
