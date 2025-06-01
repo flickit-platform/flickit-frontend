@@ -454,6 +454,15 @@ export const theme = createTheme({
         marginBottom: "8px",
       },
     },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          "& > :not(:first-of-type)": {
+            marginLeft: is_farsi ? "-24px" : "8px",
+          },
+        },
+      },
+    },
     MuiButtonGroup: {
       defaultProps: {
         color: "primary",

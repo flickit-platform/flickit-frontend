@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
@@ -10,54 +10,52 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
-import whatsApp from "@assets/svg/whatsApp.svg"
+import whatsApp from "@assets/svg/whatsApp.svg";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
+  context?: any;
 }
 
-const ContactUsDialog = (props: IContactUsDialogProps) => {
-  const { onClose, ...rest } = props;
-  const abortController = useMemo(() => new AbortController(), [rest.open]);
+const phoneNumber = "+989966529108";
+const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
+const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
 
+const ContactUsDialog = (props: IContactUsDialogProps) => {
+  const { onClose, context, ...rest } = props;
+  const abortController = useMemo(() => new AbortController(), [rest.open]);
+  const { data = {}, type } = context ?? {};
+  const { email, dialogTitle, content, messagePlaceHolder } = data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
   );
-  const methods = useForm();
-  const [emailError, setEmailError] = useState<any>("");
+  const methods = useForm({
+    defaultValues: { email: email ?? "" },
+  });
 
   const [dialogKey, setDialogKey] = useState(0);
 
+  useEffect(() => {
+    methods.setValue("email", email);
+  }, [email]);
   const close = () => {
     handleSubmitSpree({});
     abortController.abort();
-    setEmailError("");
     methods.reset();
     setDialogKey((prev) => prev + 1);
     onClose();
   };
 
   const onSubmit = (data: any) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(data.email)) {
-      setEmailError(t("invalidEmail"));
-      return;
-    }
-
-    setEmailError("");
     handleSubmitSpree(data);
   };
-
-  const phoneNumber = '+989966529108';
-  const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
-  const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
 
   const socialIcon = [
     {
       id: 1,
       icon: whatsApp,
       bg: "#3D8F3D14",
-      link : {WhatsappLink, WhatsappWebLink} ,
+      link: { WhatsappLink, WhatsappWebLink },
     },
   ];
 
@@ -67,20 +65,15 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       {...rest}
       closeDialog={close}
       title={
-        <Typography
-          sx={theme.typography.semiBoldXLarge}
-          textTransform={"uppercase"}
-        >
-          <Trans i18nKey="contactUs" />
+        <Typography sx={theme.typography.semiBoldXLarge}>
+          {dialogTitle ?? <Trans i18nKey="contactUs" />}
         </Typography>
       }
     >
       {state.succeeded ? (
         <Box
           mt={2}
-          sx={{
-            minHeight: { xs: "calc(100vh - 100px)", sm: "unset" },
-          }}
+          sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}
         >
           <Box
             height="94%"
@@ -96,10 +89,10 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               sx={{ fontSize: 64, color: "success.main", mb: 1 }}
             />
             <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
-              <Trans i18nKey="thankYouForYourMessage" />
+              {t("thankYouForYourMessage")}
             </Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              <Trans i18nKey="weWillGetBackToYouSoon" />
+              {t("weWillGetBackToYouSoon")}
             </Typography>
           </Box>
 
@@ -112,40 +105,40 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         </Box>
       ) : (
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            style={{ padding: 24 }}
-          >
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              <Trans i18nKey="contactUsIntroText" />
-            </Typography>
+          <Box px={1} pt={3}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {content ?? t("contactUsIntroText")}
+              </Typography>
 
-            <InputFieldUC name="email" label={t("yourEmail")} required />
+              {type !== "getHelp" && (
+                <InputFieldUC name="email" label={t("yourEmail")} required />
+              )}
 
-            <Box sx={{ mt: 2 }}>
-              <InputFieldUC
-                name="message"
-                label={t("yourMessage")}
-                multiline
-                rows={4}
-                required
-              />
-            </Box>
-          </form>
+              <Box sx={{ mt: 2 }}>
+                <InputFieldUC
+                  name="message"
+                  label={messagePlaceHolder ?? t("yourMessage")}
+                  multiline
+                  rows={4}
+                  required
+                />
+              </Box>
+            </form>
 
-          <CEDialogActions
-            cancelLabel={t("cancel")}
-            contactSection={socialIcon}
-            submitButtonLabel={t("confirm")}
-            onClose={close}
-            loading={state.submitting}
-            onSubmit={methods.handleSubmit(onSubmit)}
-            sx={{
-              flexDirection: { xs: "column-reverse", sm: "row" },
-              gap: 2,
-              mt: 2,
-            }}
-          />
+            <CEDialogActions
+              cancelLabel={t("cancel")}
+              contactSection={socialIcon}
+              submitButtonLabel={t("confirm")}
+              onClose={close}
+              loading={state.submitting}
+              onSubmit={methods.handleSubmit(onSubmit)}
+              sx={{
+                flexDirection: { xs: "column-reverse", sm: "row" },
+                gap: 2,
+              }}
+            />
+          </Box>
         </FormProvider>
       )}
     </CEDialog>

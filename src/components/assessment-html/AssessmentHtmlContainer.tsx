@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
 import {
@@ -370,7 +370,9 @@ const AssessmentHtmlContainer = () => {
                                 color: theme.palette.primary.main,
                                 ...theme.typography.headlineSmall,
                                 fontWeight: "bold",
-                                ...styles.rtlStyle(languageDetector(assessment.title)),
+                                ...styles.rtlStyle(
+                                  languageDetector(assessment.title),
+                                ),
                               }}
                             >
                               {assessment.title}

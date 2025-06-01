@@ -180,6 +180,7 @@
   "deletingAQuestionnaire": "Deleting a questionnaire",
   "deletingQuestionFromAPreExistingQuestionnaireOrAddingANewOne": "Deleting a question from a pre-existing questionnaire or adding a new one",
   "descending": "Descending",
+  "describeYourIssue": "Describe your issue",
   "description": "Description",
   "designedBy": "By",
   "disableAttributeMessage": "You can't add a new attribute until you have at least one subject.",
@@ -282,6 +283,8 @@
     "regenerateViaAIDescription": "The current insight will be lost. Generate a new one with AI?"
   },
   "generatingFinalReport": "We’re generating your final report based on your responses to this assessment. This process may take a few minutes.",
+  "getHelpFromAssessor": "Get help from an assessor",
+  "getHelpFromAssessorContent": "<strong>Need help from an assessor?</strong><br/>If you’re unsure about the results or need expert input before moving forward, let us know.<br/>This is a paid service, so we’d like to be sure it’s the right fit—no unnecessary costs for you.<br/>Just share what you’re looking for.<br/> We’ll review it and reply to the email linked to your account—so keep an eye on your inbox",
   "gettingThingsReady": "We are getting things ready for you...",
   "goal": "Goal",
   "Good": "Good",
