@@ -2,16 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
-import { t, use } from "i18next";
+import { t } from "i18next";
 import Typography from "@mui/material/Typography";
-import { Box, DialogContentText } from "@mui/material";
+import { Box } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import whatsApp from "@assets/svg/whatsApp.svg";
-import { useAuthContext } from "@/providers/AuthProvider";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
