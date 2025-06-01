@@ -329,22 +329,36 @@ const Header = ({
         textAlign: "center",
         color: color?.code ?? "#101c32",
         maxWidth: "320px",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
         margin: "0 auto",
         width: "100%",
         fontFamily: languageDetector(itemTitle)
           ? farsiFontFamily
           : primaryFontFamily,
         ...styles.centerVH,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "10px",
       }}
-      gap="10px"
       data-cy="assessment-card-title"
     >
-      {!isQuickMode && <img alt="star" src={Star} height={24} />}
-      {itemTitle}
+      {!isQuickMode && (
+        <Box sx={{ flexShrink: 0 }}>
+          <img alt="star" src={Star} height={24} />
+        </Box>
+      )}
+      <Box
+        sx={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          flexShrink: 1,
+        }}
+      >
+        {itemTitle}
+      </Box>
     </Typography>
+
     <Box sx={{ ...styles.centerVH }}>
       <Box
         sx={{
