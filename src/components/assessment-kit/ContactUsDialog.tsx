@@ -43,6 +43,12 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     methods.reset();
     setDialogKey((prev) => prev + 1);
     onClose();
+    if (messagePlaceHolder) {
+      methods.setValue(
+        "type" as any,
+        "User asked help in " + window.location.href + " report.",
+      );
+    }
   };
 
   const handleSucceeded = () => {
