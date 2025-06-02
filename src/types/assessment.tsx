@@ -134,6 +134,7 @@ export interface IGraphicalReport {
     confidenceValue: number;
     prosAndCons: string;
     language: string;
+    mode: ILanguage;
   };
   subjects: ISubject[];
   recommendationsSummary: string;
@@ -148,7 +149,6 @@ export interface IGraphicalReport {
   };
   lang: ILanguage;
   visibility: VISIBILITY;
-  mode: ILanguage;
   linkHash: string;
 }
 

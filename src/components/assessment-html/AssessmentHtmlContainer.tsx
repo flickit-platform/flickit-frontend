@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
 import {
+  AdviceItem,
   ErrorCodes,
   IGraphicalReport,
   ISubject,
@@ -176,8 +177,12 @@ const AssessmentHtmlContainer = () => {
     </>
   );
 
-  const isAnyInsightEmpty = (subjects: ISubject[], quickMode: boolean) =>
-    subjects.some((s) => !s?.insight) && quickMode;
+  const isInvalid = (subjects: ISubject[], advice: any, quickMode: boolean) => {
+    const isAnyInsightMissing = subjects.some((s) => !s?.insight);
+    const isAdviceMissing =
+      !advice || advice.narration == null || !advice.adviceItems?.length;
+    return (isAnyInsightMissing || isAdviceMissing) && quickMode;
+  };
 
   const handleReloadReport = () => {
     fetchGraphicalReport.query();
@@ -207,21 +212,21 @@ const AssessmentHtmlContainer = () => {
             subjects,
             lang,
             visibility,
-            mode,
-            linkHash
+            linkHash,
           } = graphicalReport as IGraphicalReport;
           const rtlLanguage = lang.code.toLowerCase() === "fa";
-          const isQuickMode = mode?.code === ASSESSMENT_MODE.QUICK;
+          const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
           const currentPath = window.location.pathname;
           const basePath = getBasePath(currentPath);
 
-          if (visibility === VISIBILITY.PUBLIC &&linkHash) {
+          if (visibility === VISIBILITY.PUBLIC && linkHash) {
             const newPath = `${basePath}${linkHash}/`;
             window.history.pushState({}, "", newPath);
           }
+
           return (
             <>
-              {isAnyInsightEmpty(subjects, isQuickMode) && (
+              {isInvalid(subjects, advice, isQuickMode) && (
                 <Box
                   sx={{
                     backgroundColor: theme.palette.error.main,
@@ -265,7 +270,7 @@ const AssessmentHtmlContainer = () => {
                 sx={{
                   textAlign: rtlLanguage ? "right" : "left",
                   ...styles.rtlStyle(rtlLanguage),
-                  p: isAnyInsightEmpty(subjects, isQuickMode)
+                  p: isInvalid(subjects, advice, isQuickMode)
                     ? 1
                     : { xs: 1, sm: 1, md: 4 },
                   px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
