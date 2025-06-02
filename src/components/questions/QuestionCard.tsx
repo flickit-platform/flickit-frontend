@@ -927,7 +927,7 @@ const AnswerTemplate = (props: {
   };
 
   const handleBackwardClick = () => {
-    if (!isLTR) {
+    if (isLTR) {
       if (!isAdvanceMode) {
         goToQuestion("desc");
         return;
@@ -936,7 +936,7 @@ const AnswerTemplate = (props: {
         ? goToQuestion("asc")
         : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
     } else {
-      goToQuestion("desc");
+      goToQuestion("asc");
     }
   };
 
