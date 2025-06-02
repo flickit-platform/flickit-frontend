@@ -25,7 +25,8 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, context, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { data = {}, type } = context ?? {};
-  const { email, dialogTitle, content, primaryActionButtonText } = data;
+  const { email, dialogTitle, content, primaryActionButtonText, children } =
+    data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
   );
@@ -126,8 +127,13 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         <FormProvider {...methods}>
           <Box px={1} pt={3}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                {content ?? t("contactUsIntroText")}
+              <Typography
+                variant="bodyLarge"
+                sx={{ mb: 2 }}
+                textAlign="justify"
+              >
+                {children}
+                {/* {content ?? t("contactUsIntroText")} */}
               </Typography>
 
               {type !== "requestAnExpertReview" && (

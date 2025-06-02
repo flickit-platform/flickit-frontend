@@ -73,7 +73,7 @@ export const Review = () => {
     100;
   return (
     <Box
-      maxWidth={"1440px"}
+      maxWidth="1440px"
       sx={{
         mx: "auto",
       }}
@@ -85,7 +85,7 @@ export const Review = () => {
           borderRadius: 2,
           p: { xs: 2, sm: 3, md: 6 },
           display: "flex",
-          width: "100%",
+          width: { xs: "100%", md: "900px" },
           ...styles.shadowStyle,
         }}
       >

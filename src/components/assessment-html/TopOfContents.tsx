@@ -40,7 +40,43 @@ export const AssessmentTOC = ({
           keycloakService._kc.tokenParsed?.preferred_username ??
           keycloakService._kc.tokenParsed?.sub,
         dialogTitle: t("expertReassessmentService"),
-        content: <Trans i18nKey="requestAnExpertReviewContent" />,
+        children: (
+          <Box>
+            <Typography textAlign="justify" variant="bodyLarge">
+              <Trans
+                i18nKey="requestAnExpertReviewContent.intro"
+                components={{ strong: <strong /> }}
+              />
+            </Typography>
+
+            <Typography mt={2} variant="bodyLarge" fontWeight="bold">
+              {t("requestAnExpertReviewContent.listTitle")}
+            </Typography>
+
+            <ul style={{ listStyle: "none", padding: 0, marginTop: 8 }}>
+              {(
+                t("requestAnExpertReviewContent.listItems", {
+                  returnObjects: true,
+                }) as string[]
+              ).map((item, idx) => (
+                <li key={idx} style={{ marginBottom: 6 }}>
+                  • {item}
+                </li>
+              ))}
+            </ul>
+
+            <Typography mt={2} textAlign="justify" variant="bodyLarge">
+              <Trans
+                i18nKey="requestAnExpertReviewContent.note"
+                components={{ strong: <strong /> }}
+              />
+            </Typography>
+
+            <Typography mt={1} textAlign="justify" variant="bodyLarge">
+              {t("requestAnExpertReviewContent.instruction")}
+            </Typography>
+          </Box>
+        ),
         primaryActionButtonText: t("submitRequest"),
       },
     },

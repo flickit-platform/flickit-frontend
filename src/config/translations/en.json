@@ -285,7 +285,17 @@
   },
   "generatingFinalReport": "We’re generating your final report based on your responses to this assessment. This process may take a few minutes.",
   "requestAnExpertReview": "Request an expert review",
-  "requestAnExpertReviewContent": "Want a deeper, more precise assessment of your software’s maturity? With our <strong>Expert re-assessment service,</strong> a seasoned specialist will personally review your assessment using <strong>advanced platform features,</strong> combined with their <strong>real-world experience and deep understanding of common challenges and solutions in this domain.</strong><br/>You’ll receive:<br/>• A more accurate maturity-level score<br/>• A tailored roadmap for improving your product<br/>• Direct feedback from a qualified assessor <br/> <strong>Note:</strong> This is a paid service. To get started, briefly describe your situation or concerns in the field below. Our team will review your request and contact you by email to see if this service is right for you, and if so, guide you through the next steps.",
+  "requestAnExpertReviewContent": {
+    "intro": "Want a deeper, more precise assessment of your software’s maturity? With our <strong>Expert re-assessment service,</strong> a seasoned specialist will personally review your assessment using <strong>advanced platform features,</strong> combined with their <strong>real-world experience and deep understanding of common challenges and solutions in this domain.</strong>",
+    "listTitle": "You’ll receive:",
+    "listItems": [
+      "A more accurate maturity-level score",
+      "A tailored roadmap for improving your product",
+      "Direct feedback from a qualified assessor"
+    ],
+    "note": "<strong>Note:</strong> This is a paid service.",
+    "instruction": "To get started, briefly describe your situation or concerns in the field below. Our team will review your request and contact you by email to see if this service is right for you, and if so, guide you through the next steps."
+  },
   "gettingThingsReady": "We are getting things ready for you...",
   "goal": "Goal",
   "Good": "Good",
