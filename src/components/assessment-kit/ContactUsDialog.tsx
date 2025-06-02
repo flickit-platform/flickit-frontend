@@ -25,7 +25,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, context, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { data = {}, type } = context ?? {};
-  const { email, dialogTitle, content, messagePlaceHolder } = data;
+  const { email, dialogTitle, content, primaryActionButtonText } = data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
   );
@@ -43,7 +43,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     methods.reset();
     setDialogKey((prev) => prev + 1);
     onClose();
-    if (messagePlaceHolder) {
+    if (type === "requestAnExpertReview") {
       methods.setValue(
         "type" as any,
         "User asked help in " + window.location.href + " report.",
@@ -57,7 +57,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   };
 
   useEffect(() => {
-    if (messagePlaceHolder) {
+    if (type === "requestAnExpertReview") {
       methods.setValue(
         "type" as any,
         "User asked help in " + window.location.href + " report.",
@@ -130,14 +130,14 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                 {content ?? t("contactUsIntroText")}
               </Typography>
 
-              {type !== "getHelp" && (
+              {type !== "requestAnExpertReview" && (
                 <InputFieldUC name="email" label={t("yourEmail")} required />
               )}
 
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={messagePlaceHolder ?? t("yourMessage")}
+                  label={t("yourMessage")}
                   multiline
                   rows={4}
                   required
@@ -148,7 +148,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
             <CEDialogActions
               cancelLabel={t("cancel")}
               contactSection={socialIcon}
-              submitButtonLabel={t("confirm")}
+              submitButtonLabel={primaryActionButtonText ?? t("confirm")}
               onClose={close}
               loading={state.submitting}
               onSubmit={methods.handleSubmit(onSubmit)}

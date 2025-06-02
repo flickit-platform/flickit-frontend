@@ -66,7 +66,7 @@ const DotsLoading = () => (
   </Box>
 );
 
-const GraphicalReportSkeleton = () => (
+const GraphicalReportSkeleton = ({ isAuthenticatedUser }: any) => (
   <Box sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}>
     <Box
       sx={{
@@ -109,31 +109,33 @@ const GraphicalReportSkeleton = () => (
       <Grid container spacing={2}>
         <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
           <Skeleton variant="rounded" height={420} sx={{ borderRadius: 2 }} />
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
-            <Box
-              sx={{
-                width: "100%",
-                height: 48,
-                borderRadius: "16px",
-                position: "relative",
-                overflow: "hidden",
-                background:
-                  "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
-                backgroundSize: "600% 600%",
-                animation: "gradientShift 4s ease infinite",
-                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-              }}
-            />
-            <style>
-              {`
+          {isAuthenticatedUser && (
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 48,
+                  borderRadius: "16px",
+                  position: "relative",
+                  overflow: "hidden",
+                  background:
+                    "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
+                  backgroundSize: "600% 600%",
+                  animation: "gradientShift 4s ease infinite",
+                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                }}
+              />
+              <style>
+                {`
                 @keyframes gradientShift {
                   0% { background-position: 0% 50%; }
                   50% { background-position: 100% 50%; }
                   100% { background-position: 0% 50%; }
                 }
               `}
-            </style>
-          </Box>
+              </style>
+            </Box>
+          )}
         </Grid>
         <Grid item lg={9.5} md={9.5} sm={12} xs={12}>
           <Paper

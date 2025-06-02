@@ -2,7 +2,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
 import {
-  AdviceItem,
   ErrorCodes,
   IGraphicalReport,
   ISubject,
@@ -48,6 +47,7 @@ import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton"
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -61,6 +61,7 @@ const getBasePath = (path: string): string => {
 
 const AssessmentHtmlContainer = () => {
   const { calculate, calculateConfidence } = useCalculate();
+  const { isAuthenticatedUser } = useAuthContext();
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
@@ -75,12 +76,12 @@ const AssessmentHtmlContainer = () => {
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
-    runOnMount: keycloakService.isLoggedIn(),
+    runOnMount: isAuthenticatedUser ?? false,
   });
 
   const fetchGraphicalReport = useQuery({
     service: (args, config) =>
-      keycloakService.isLoggedIn()
+      isAuthenticatedUser
         ? service.assessments.report.getGraphical(
             { assessmentId, ...(args ?? {}) },
             config,
@@ -203,7 +204,9 @@ const AssessmentHtmlContainer = () => {
     <PermissionControl error={[fetchGraphicalReport.errorObject]}>
       <QueryData
         {...fetchGraphicalReport}
-        renderLoading={() => <GraphicalReportSkeleton />}
+        renderLoading={() => (
+          <GraphicalReportSkeleton isAuthenticatedUser={isAuthenticatedUser} />
+        )}
         render={(graphicalReport) => {
           const {
             assessment,
@@ -276,7 +279,7 @@ const AssessmentHtmlContainer = () => {
                   px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
                 }}
               >
-                {keycloakService.isLoggedIn() && (
+                {isAuthenticatedUser && (
                   <QueryData
                     {...fetchPathInfo}
                     renderLoading={() => <></>}
@@ -305,7 +308,7 @@ const AssessmentHtmlContainer = () => {
                       ...styles.rtlStyle(rtlLanguage),
                     }}
                   >
-                    {keycloakService.isLoggedIn() && (
+                    {isAuthenticatedUser && (
                       <IconButton color="primary" onClick={handleBack}>
                         <ArrowForward
                           sx={{

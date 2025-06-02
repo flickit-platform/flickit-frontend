@@ -20,6 +20,7 @@ import useDialog from "@/utils/useDialog";
 import ContactUsDialog from "../assessment-kit/ContactUsDialog";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface OpenItemsState {
   [key: string]: boolean;
@@ -33,14 +34,14 @@ export const AssessmentTOC = ({
   const { assessmentInfo } = useAssessmentContext();
   const contactusDialogProps = useDialog({
     context: {
-      type: "getHelp",
+      type: "requestAnExpertReview",
       data: {
         email:
           keycloakService._kc.tokenParsed?.preferred_username ??
           keycloakService._kc.tokenParsed?.sub,
-        dialogTitle: t("getHelpFromAssessor"),
-        content: <Trans i18nKey="getHelpFromAssessorContent" />,
-        messagePlaceHolder: t("describeYourIssue"),
+        dialogTitle: t("expertReassessmentService"),
+        content: <Trans i18nKey="requestAnExpertReviewContent" />,
+        primaryActionButtonText: t("submitRequest"),
       },
     },
   });
@@ -103,6 +104,8 @@ export const AssessmentTOC = ({
       id: "evaluationProcess",
     },
   ];
+  const { isAuthenticatedUser } = useAuthContext();
+
   return (
     <Box
       sx={{
@@ -237,26 +240,29 @@ export const AssessmentTOC = ({
           })}
         </List>
       </Box>
-      <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
-        <Button
-          onClick={() => contactusDialogProps.openDialog({})}
-          variant="contained"
-          sx={{
-            width: "100%",
-            height: 48,
-            borderRadius: "16px !important",
-            background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
-            color: "#fff",
-            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            "&:hover": {
+      {isAuthenticatedUser && (
+        <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+          <Button
+            onClick={() => contactusDialogProps.openDialog({})}
+            variant="contained"
+            sx={{
+              width: "100%",
+              height: 48,
+              borderRadius: "16px !important",
               background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
-              opacity: 0.9,
-            },
-          }}
-        >
-          {t("getHelpFromAssessor")}
-        </Button>
-      </Box>
+              color: "#fff",
+              boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              "&:hover": {
+                background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
+                opacity: 0.9,
+              },
+            }}
+          >
+            {t("requestAnExpertReview")}
+          </Button>
+        </Box>
+      )}
+
       <ContactUsDialog {...contactusDialogProps} />
     </Box>
   );
