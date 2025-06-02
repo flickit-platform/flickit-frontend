@@ -171,7 +171,7 @@ export const ShareDialog = ({
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="shareReportWithTitle" values={{ title }} />
+          <Trans i18nKey="shareReport" values={{ title }} />
         </Box>
       }
       maxWidth="sm"
