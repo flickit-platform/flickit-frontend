@@ -19,33 +19,40 @@ const InputCustomEditor = (props: any) => {
     handleDone,
     handleCancel,
   } = props;
+
+  const isRTL = languageDetector(value);
+
+  const buttonStyle = {
+    background: theme.palette.primary.main,
+    "&:hover": { background: theme.palette.primary.dark },
+    borderRadius: "6px",
+    padding: "6px",
+    mx: 0.1,
+  };
+
   return (
     <OutlinedInput
       inputProps={inputProps}
       error={hasError}
       fullWidth
       name={name}
-      onChange={(e) => inputHandler(e)}
+      onChange={inputHandler}
       value={value ?? ""}
-      required={true}
-      multiline={true}
+      required
+      multiline
       sx={{
-        borderRadius: "4px",
-        ...styles.rtlStyle(languageDetector(value)),
+        borderRadius: "6px",
+        ...styles.rtlStyle(isRTL),
       }}
       endAdornment={
-        <InputAdornment position="end">
+        <InputAdornment
+          position="end"
+          sx={{ gap: 0.5, mr: isRTL ? 0 : -1, ml: isRTL ? -1 : 0 }}
+        >
           <IconButton
             title="Submit Edit"
             edge="end"
-            sx={{
-              background: theme.palette.primary.main,
-              "&:hover": {
-                background: theme.palette.primary.dark,
-              },
-              borderRadius: "3px",
-              marginRight: !languageDetector(value) ? "0px" : "-12px",
-            }}
+            sx={buttonStyle}
             onClick={handleDone}
           >
             <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
@@ -53,16 +60,7 @@ const InputCustomEditor = (props: any) => {
           <IconButton
             title="Cancel Edit"
             edge="end"
-            sx={{
-              background: theme.palette.primary.main,
-              "&:hover": {
-                background: theme.palette.primary.dark,
-              },
-              borderRadius: "4px",
-              marginRight: !languageDetector(value) ? "-12px" : "0px",
-              marginLeft: !languageDetector(value) ? "0px" : "-12px",
-
-            }}
+            sx={buttonStyle}
             onClick={handleCancel}
           >
             <CancelRoundedIcon sx={{ color: "#fff" }} />
