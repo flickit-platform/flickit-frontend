@@ -7,7 +7,7 @@ import DashboardTitle from "@components/dashboard/dashboardContainerTitle";
 import QueryBatchData from "@common/QueryBatchData";
 import LoadingSkeletonOfAssessmentRoles from "@common/loadings/LoadingSkeletonOfAssessmentRoles";
 import { useQuery } from "@utils/useQuery";
-import { PathInfo } from "@/types/index";
+import { ICustomError, PathInfo } from "@/types/index";
 import { Link, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
@@ -16,9 +16,14 @@ import { styles } from "@styles";
 import { t } from "i18next";
 import { IconButton } from "@mui/material";
 import { ArrowForward, EditOutlined } from "@mui/icons-material";
-import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import {
+  assessmentActions,
+  useAssessmentContext,
+} from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
+import { toast } from "react-toastify";
+import toastError from "@/utils/toastError";
 
 const maxLength = 40;
 
@@ -28,7 +33,7 @@ const DashbordContainer: React.FC = () => {
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams<{ assessmentId?: string }>();
   const outlet = useOutlet();
-  const { assessmentInfo, permissions } = useAssessmentContext();
+  const { assessmentInfo, permissions, dispatch } = useAssessmentContext();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState<string>("");
@@ -48,7 +53,7 @@ const DashbordContainer: React.FC = () => {
   });
 
   const title =
-    fetchPathInfo?.data?.assessment?.title ?? assessmentInfo?.title ?? "";
+    assessmentInfo?.title ?? fetchPathInfo?.data?.assessment?.title ?? "";
   const titleLength = title.length;
 
   const handleStartEdit = () => {
@@ -56,11 +61,38 @@ const DashbordContainer: React.FC = () => {
     setIsEditing(true);
   };
 
-  const handleSaveEdit = () => {
-    console.log("Saving new title: ", editedValue);
-    setIsEditing(false);
-  };
+  const updateAssessmentQuery = useQuery({
+    service: (args, config) =>
+      service.assessments.info.update(
+        args ?? {
+          id: assessmentId,
+          data: {
+            title: editedValue,
+          },
+        },
+        config,
+      ),
+    runOnMount: false,
+  });
 
+  const handleSaveEdit = async () => {
+    try {
+      const res = await updateAssessmentQuery.query();
+      res.message && toast.success(res.message);
+      if (assessmentInfo) {
+        dispatch(
+          assessmentActions.setAssessmentInfo({
+            ...assessmentInfo,
+            title: editedValue,
+          }),
+        );
+      }
+      setIsEditing(false);
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err.message);
+    }
+  };
   const handleCancelEdit = () => {
     setEditedValue(title);
     setIsEditing(false);
