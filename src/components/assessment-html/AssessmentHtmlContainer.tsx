@@ -182,7 +182,11 @@ const AssessmentHtmlContainer = () => {
     const isAnyInsightMissing = subjects.some((s) => !s?.insight);
     const isAdviceMissing =
       !advice || advice.narration == null || !advice.adviceItems?.length;
-    return (isAnyInsightMissing || isAdviceMissing) && quickMode;
+    return (
+      (isAnyInsightMissing || isAdviceMissing) &&
+      quickMode &&
+      isAuthenticatedUser
+    );
   };
 
   const handleReloadReport = () => {
