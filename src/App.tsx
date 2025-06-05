@@ -18,7 +18,9 @@ function App() {
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
-    const customId = sessionStorage.getItem("currentUser");
+    const customId =
+      keycloakService._kc.tokenParsed?.preferred_username ??
+      keycloakService._kc.tokenParsed?.sub;
 
     // @ts-ignore
     if (customId && window.clarity) {
@@ -51,7 +53,11 @@ function App() {
         environmentID: import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY,
         api: import.meta.env.VITE_FLAGSMITH_API,
       });
-      flagsmith.identify(sessionStorage.getItem("currentUser") ?? "");
+      flagsmith.identify(
+        keycloakService._kc.tokenParsed?.preferred_username ??
+          keycloakService._kc.tokenParsed?.sub ??
+          "",
+      );
     }
   }, []);
   return error ? (
