@@ -345,6 +345,20 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 1299,
+          backgroundColor: "rgba(0,0,0,0.5)",
+        },
+      },
+    },
+
     MuiPaper: {
       styleOverrides: {
         root: {
