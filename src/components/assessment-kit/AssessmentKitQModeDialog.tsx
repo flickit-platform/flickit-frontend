@@ -45,7 +45,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
     ...rest
   } = props;
 
-  const { type, data = {}, staticData = {} } = context;
+  const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id
   const { spaceId } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
@@ -53,15 +53,19 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const navigate = useNavigate();
 
   const [lang, setLang] = useState<any>([]);
-  const queryData = useQuery({
+  const queryDataLang = useQuery({
     service: (args, config) =>
         service.assessmentKit.info.getOptions(args, config),
     accessor: "items",
   });
 
+  const queryDataSpaces = useConnectAutocompleteField({
+    service: (args, config) => service.space.topSpaces(args, config),
+  })
+
   useEffect(() => {
     const listKits = async () => {
-      const kits = await queryData.query();
+      const kits = await queryDataLang.query();
       const { languages } = kits.find((kit: any) => kit.id == assessmentId);
       setLang(languages);
     };
@@ -87,6 +91,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, title, language } = data;
+    const spaceIdNumber = spaceId ?? space?.id
     const selectLang = lang.length == 1 ? lang[0].code : language.code
     setLoading(true);
     try {
@@ -94,7 +99,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
             .create(
               {
                 data: {
-                  spaceId: spaceId ?? space?.id,
+                  spaceId: spaceIdNumber,
                   assessmentKitId: assessmentId,
                   lang: selectLang,
                   title: selectLang  == "EN" ? "Untitled" : "بدون عنوان"
@@ -104,6 +109,10 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
             )
             .then((res: any) => {
               setCreatedKitId(res.data?.id);
+              if (window.location.hash) {
+                history.replaceState(null, "", window.location.pathname + window.location.search);
+              }
+              return navigate(`/${spaceIdNumber}/assessments/1/${res.data?.id}/questionnaires`)
             });
       setLoading(false);
       setSubmittedTitle(title);
@@ -114,7 +123,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       if (type === "update") {
         close();
       }
-      setCreatedKitSpaceId(spaceId ?? space?.id);
+      setCreatedKitSpaceId(spaceIdNumber);
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
@@ -156,6 +165,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
     }
   }, [openDialog, formMethods, abortController]);
 
+
   return (
     <CEDialog
       {...rest}
@@ -170,83 +180,83 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       contentStyle={{ padding: "32px 32px 16px" }}
       style={{ paddingTop: "32px", background: "#F3F5F6" }}
     >
-      <FormProviderWithForm formMethods={formMethods}>
-        <Typography
-          sx={{
-            ...theme.typography.semiBoldLarge,
-            color: "#2B333B",
-            pb: "32px",
-          }}
-        >
-          <Trans i18nKey={"createAssessmentConfirmSettings"} />
-        </Typography>
-        <Box display="flex" alignItems="start">
-          <Box  flex={1} sx={{ py: "18px" }}>
-            <Box
-              sx={{
-                ...styles.centerVH,
-                justifyContent: "flex-start",
-                gap: "8px",
-                mb: "8px",
-              }}
-            >
-              <FolderOutlinedIcon
-                sx={{ color: "#6C8093", background: "transparent" }}
-              />
-              <Typography>
-                <Trans i18nKey={"spaces"} />
-              </Typography>
-            </Box>
+          <FormProviderWithForm formMethods={formMethods}>
             <Typography
-              sx={{
-                ...theme.typography.bodySmall,
-                color: "#2B333B",
-                mb: "42px",
-                minHeight: "55px",
-              }}
+                sx={{
+                  ...theme.typography.semiBoldLarge,
+                  color: "#2B333B",
+                  pb: "32px",
+                }}
             >
-              <Trans i18nKey={"chooseSpace"} />
+              <Trans i18nKey={"createAssessmentConfirmSettings"} />
             </Typography>
-            <SpaceField />
-          </Box>
-          <Divider orientation="vertical" flexItem sx={{ mx: 4 }} />
-          <Box flex={1} sx={{ py: "18px" }}>
-            <Box
-              sx={{
-                ...styles.centerVH,
-                justifyContent: "flex-start",
-                gap: "8px",
-                mb: "8px",
-              }}
-            >
-              <LanguageIcon
-                sx={{ color: "#6C8093", background: "transparent" }}
-              />
-              <Typography>
-                <Trans i18nKey={"assessmentLanguage"} />
-              </Typography>
+            <Box display="flex" alignItems="start">
+              <Box  flex={1} sx={{ py: "18px" }}>
+                <Box
+                    sx={{
+                      ...styles.centerVH,
+                      justifyContent: "flex-start",
+                      gap: "8px",
+                      mb: "8px",
+                    }}
+                >
+                  <FolderOutlinedIcon
+                      sx={{ color: "#6C8093", background: "transparent" }}
+                  />
+                  <Typography>
+                    <Trans i18nKey={"spaces"} />
+                  </Typography>
+                </Box>
+                <Typography
+                    sx={{
+                      ...theme.typography.bodySmall,
+                      color: "#2B333B",
+                      mb: "42px",
+                      minHeight: "55px",
+                    }}
+                >
+                  <Trans i18nKey={"chooseSpace"} />
+                </Typography>
+                <SpaceField queryData={queryDataSpaces} />
+              </Box>
+              <Divider orientation="vertical" flexItem sx={{ mx: 4 }} />
+              <Box flex={1} sx={{ py: "18px" }}>
+                <Box
+                    sx={{
+                      ...styles.centerVH,
+                      justifyContent: "flex-start",
+                      gap: "8px",
+                      mb: "8px",
+                    }}
+                >
+                  <LanguageIcon
+                      sx={{ color: "#6C8093", background: "transparent" }}
+                  />
+                  <Typography>
+                    <Trans i18nKey={"assessmentLanguage"} />
+                  </Typography>
+                </Box>
+                <Typography
+                    sx={{
+                      ...theme.typography.bodySmall,
+                      color: "#2B333B",
+                      mb: "42px",
+                      minHeight: "55px",
+                    }}
+                >
+                  <Trans i18nKey={"assessmentSupportsMultipleLanguages"} />
+                </Typography>
+                <LangField lang={lang} />
+              </Box>
             </Box>
-            <Typography
-              sx={{
-                ...theme.typography.bodySmall,
-                color: "#2B333B",
-                mb: "42px",
-                minHeight: "55px",
-              }}
-            >
-              <Trans i18nKey={"assessmentSupportsMultipleLanguages"} />
-            </Typography>
-            <LangField lang={lang} />
-          </Box>
-        </Box>
-        <CEDialogActions
-          closeDialog={close}
-          submitButtonLabel="continue"
-          loading={loading}
-          type={type}
-          onSubmit={formMethods.handleSubmit(onSubmit)}
-        />
-      </FormProviderWithForm>
+            <CEDialogActions
+                closeDialog={close}
+                submitButtonLabel="continue"
+                loading={loading}
+                type={type}
+                onSubmit={formMethods.handleSubmit(onSubmit)}
+            />
+          </FormProviderWithForm>
     </CEDialog>
   );
 };
@@ -265,12 +275,10 @@ const LangField = ({lang} : {lang: any}) => {
   );
 };
 
-const SpaceField = () => {
+const SpaceField = ({queryData}: {queryData: any}) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
-  const queryData = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
-  })
+
 
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
