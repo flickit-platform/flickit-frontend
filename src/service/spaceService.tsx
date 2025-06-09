@@ -101,6 +101,12 @@ const space = {
   leave({ spaceId }: { spaceId: TId }, config?: AxiosRequestConfig<any>) {
     return axios.delete(`/api/v1/spaces/${spaceId}/leave/`, config);
   },
+  topSpaces(
+        args?: any,
+        config?: AxiosRequestConfig<any>
+  ) {
+    return axios.get(`/api/v1/spaces/top-spaces/`, config);
+  },
 };
 
 export default space;
