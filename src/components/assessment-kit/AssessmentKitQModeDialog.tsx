@@ -40,7 +40,6 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
-  console.log("render test")
   const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id;
   const { langList, spaceList } = staticData
