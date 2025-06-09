@@ -32,12 +32,9 @@ interface IAssessmentCEFromDialogProps extends DialogProps {
 
 const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submittedTitle, setSubmittedTitle] = useState("");
-  const [isFocused, setIsFocused] = useState(true);
-  const [createdKitId, setCreatedKitId] = useState("");
   const [createdKitSpaceId, setCreatedKitSpaceId] = useState(undefined);
   const { service } = useServiceContext();
+
   const {
     onClose: closeDialog,
     onSubmitForm,
@@ -52,8 +49,9 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
-
   const [lang, setLang] = useState<any>([]);
+  const [displaySection,setDisplaySection] = useState({langSec: false, spaceSec: false})
+
   const queryDataLang = useQuery({
     service: (args, config) =>
       service.assessmentKit.info.getOptions(args, config),
@@ -63,6 +61,15 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const queryDataSpaces = useConnectAutocompleteField({
     service: (args, config) => service.space.topSpaces(args, config),
   });
+
+  useEffect(()=>{
+    if(queryDataSpaces?.options?.length > 1 ){
+      setDisplaySection((prev: any) => ({...prev, spaceSec : true}))
+    }
+    if(lang?.length > 1 ){
+      setDisplaySection((prev: any) => ({...prev, langSec : true}))
+    }
+  },[queryDataLang?.data,queryDataSpaces?.options])
 
   useEffect(() => {
     const listKits = async () => {
@@ -76,7 +83,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const close = () => {
     abortController.abort();
     closeDialog();
-    setIsSubmitted(false);
+    setDisplaySection({langSec: false, spaceSec: false})
     !!staticData.assessment_kit &&
       createdKitSpaceId &&
       navigate(`/${createdKitSpaceId}/assessments/1`);
@@ -88,11 +95,6 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       );
     }
   };
-  useEffect(() => {
-    return () => {
-      abortController.abort();
-    };
-  }, []);
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, title, language } = data;
@@ -113,7 +115,6 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
           { signal: abortController.signal },
         )
         .then((res: any) => {
-          setCreatedKitId(res.data?.id);
           if (window.location.hash) {
             history.replaceState(
               null,
@@ -126,13 +127,8 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
           );
         });
       setLoading(false);
-      setSubmittedTitle(title);
-      setIsSubmitted(true);
       if (onSubmitForm !== undefined) {
         onSubmitForm();
-      }
-      if (type === "update") {
-        close();
       }
       setCreatedKitSpaceId(spaceIdNumber);
     } catch (e) {
@@ -152,30 +148,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       abortController.abort();
     };
   }, []);
-
-  useEffect(() => {
-    if (openDialog) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Enter") {
-          setIsFocused(false);
-          setTimeout(() => {
-            setIsFocused(true);
-          }, 500);
-          formMethods.handleSubmit((data) =>
-            onSubmit(formMethods.getValues(), e),
-          )();
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-        abortController.abort();
-      };
-    }
-  }, [openDialog, formMethods, abortController]);
-
+    console.log(displaySection,"displaySectiondisplaySection")
   return (
     <CEDialog
       {...rest}
@@ -201,7 +174,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
           <Trans i18nKey={"createAssessmentConfirmSettings"} />
         </Typography>
         <Grid container display="flex" alignItems="start">
-          <Grid xs={12} sm={5.5} item sx={{ py: "18px" }}>
+          <Grid  xs={12} sm={displaySection.langSec ? 5.5 : 12} item sx={{ py: "18px" ,display: displaySection.spaceSec ? "relative" : "none" }}>
             <Box
               sx={{
                 ...styles.centerVH,
@@ -214,7 +187,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
                 sx={{ color: "#6C8093", background: "transparent" }}
               />
               <Typography>
-                <Trans i18nKey={"spaces"} />
+                <Trans i18nKey={"targetSpace"} />
               </Typography>
             </Box>
             <Typography
@@ -229,8 +202,8 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
             </Typography>
             <SpaceField queryData={queryDataSpaces} />
           </Grid>
-          <Divider orientation="vertical" flexItem sx={{ mx: 4 }} />
-          <Grid item xs={12} sm={5.5} sx={{ py: "18px" }}>
+          <Divider orientation="vertical" flexItem sx={{ mx: 4, display: displaySection.spaceSec ? "relative" : "none" }} />
+          <Grid  item xs={12} sm={displaySection.spaceSec ? 5.5 : 12} sx={{ py: "18px", display: displaySection.langSec ? "relative" : "none" }}>
             <Box
               sx={{
                 ...styles.centerVH,
