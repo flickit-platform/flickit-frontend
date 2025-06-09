@@ -54,7 +54,7 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
                   />
                 </Grid>
               ))}
-              <AssessmentKitQModeDialog {...dialogProps} />
+              {dialogProps.open && <AssessmentKitQModeDialog {...dialogProps} />}
           </Grid>
         );
       }}

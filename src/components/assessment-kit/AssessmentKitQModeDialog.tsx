@@ -11,7 +11,7 @@ import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useQuery } from "@utils/useQuery";
-import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
+import AutocompleteAsyncField, {useConnectAutocompleteField} from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
@@ -40,15 +40,19 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
-
+  console.log("render test")
   const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id;
-  const { langList, spaceList, queryDataSpaces } = staticData
+  const { langList, spaceList } = staticData
   const { spaceId } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const [displaySection,setDisplaySection] = useState({langSec: false, spaceSec: false})
+
+  const queryDataSpaces = useConnectAutocompleteField({
+    service: (args, config) => service.space.topSpaces(args, config),
+  });
 
   useEffect(()=>{
     if(spaceList?.length > 1 ){

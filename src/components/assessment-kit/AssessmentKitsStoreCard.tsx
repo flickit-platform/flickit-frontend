@@ -21,6 +21,7 @@ import {useServiceContext} from "@providers/ServiceProvider";
 import {ICustomError} from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import toastError from "@utils/toastError";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -36,7 +37,7 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   const navigate = useNavigate();
   const { service } = useServiceContext();
-
+    const [loading, setLoading] = useState(false)
     const queryDataLang = useQuery({
         service: (args, config) =>
             service.assessmentKit.info.getOptions(args, config),
@@ -61,6 +62,7 @@ const AssessmentKitsStoreCard = (props: any) => {
   };
 
   const createAssessment = async (e: any, id: any, title: any) => {
+    setLoading(true)
     e.preventDefault();
     e.stopPropagation();
     handleKitClick(id, title);
@@ -94,25 +96,29 @@ const AssessmentKitsStoreCard = (props: any) => {
                                 window.location.pathname + window.location.search,
                             );
                         }
+                        setLoading(false)
                         return navigate(
                             `/${spaceId}/assessments/1/${res.data?.id}/questionnaires`,
                         );
                     });
             }catch (e){
                 const err = e as ICustomError;
+                setLoading(false)
                 toastError(err);
                 return () => {
                     abortController.abort();
                 };
             }
         }else {
+            setLoading(false)
             window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
             openDialog.openDialog({
                 type: "create",
-                staticData: { assessment_kit: { id, title }, langList: languages, spaceList : spaces, queryDataSpaces: queryDataSpaces  },
+                staticData: { assessment_kit: { id, title }, langList: languages, spaceList : spaces,  },
             });
         }
     } else {
+      setLoading(false)
       keycloakService.doLogin();
     }
   };
@@ -350,8 +356,9 @@ const AssessmentKitsStoreCard = (props: any) => {
           </Box>
         </Box>
 
-        <Button
+        <LoadingButton
           onClick={(e) => createAssessment(e, id, title)}
+          loading={loading}
           variant="contained"
           size={small ? "small" : "large"}
           sx={{
@@ -367,7 +374,7 @@ const AssessmentKitsStoreCard = (props: any) => {
           }}
         >
           <Trans i18nKey="createNewAssessment" />
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );
