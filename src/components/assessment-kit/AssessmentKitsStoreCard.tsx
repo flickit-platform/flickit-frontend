@@ -14,7 +14,13 @@ import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
-import { useEffect } from "react";
+import {useEffect, useMemo, useState} from "react";
+import {useQuery} from "@utils/useQuery";
+import {useConnectAutocompleteField} from "@common/fields/AutocompleteAsyncField";
+import {useServiceContext} from "@providers/ServiceProvider";
+import {ICustomError} from "@utils/CustomError";
+import setServerFieldErrors from "@utils/setServerFieldError";
+import toastError from "@utils/toastError";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -29,6 +35,18 @@ const AssessmentKitsStoreCard = (props: any) => {
   } = props;
 
   const navigate = useNavigate();
+  const { service } = useServiceContext();
+
+    const queryDataLang = useQuery({
+        service: (args, config) =>
+            service.assessmentKit.info.getOptions(args, config),
+        accessor: "items",
+    });
+
+    const queryDataSpaces = useConnectAutocompleteField({
+        service: (args, config) => service.space.topSpaces(args, config),
+    });
+
 
   const handleKitClick = (id: any, title: any) => {
     (window as any).dataLayer.push({
@@ -42,17 +60,58 @@ const AssessmentKitsStoreCard = (props: any) => {
     });
   };
 
-  const createAssessment = (e: any, id: any, title: any) => {
+  const createAssessment = async (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
     handleKitClick(id, title);
-    window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
+      const kits = await queryDataLang.query();
+      const { languages } = kits.find((kit: any) => kit.id == id);
+      const spaces = await queryDataSpaces.query()
 
     if (keycloakService.isLoggedIn()) {
-      openDialog.openDialog({
-        type: "create",
-        staticData: { assessment_kit: { id, title } },
-      });
+        if(spaces.length == 1 && languages.length == 1){
+            const abortController = new AbortController();
+            try {
+               let {id: spaceId} = spaces[0]
+               let langCode = languages[0].code
+                await service.assessments.info
+                    .create(
+                        {
+                            data: {
+                                spaceId,
+                                assessmentKitId: id,
+                                lang: langCode,
+                                title: langCode == "EN" ? "Untitled" : "بدون عنوان",
+                            },
+                        },
+                        { signal: abortController.signal },
+                    )
+                    .then((res: any) => {
+                        if (window.location.hash) {
+                            history.replaceState(
+                                null,
+                                "",
+                                window.location.pathname + window.location.search,
+                            );
+                        }
+                        return navigate(
+                            `/${spaceId}/assessments/1/${res.data?.id}/questionnaires`,
+                        );
+                    });
+            }catch (e){
+                const err = e as ICustomError;
+                toastError(err);
+                return () => {
+                    abortController.abort();
+                };
+            }
+        }else {
+            window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
+            openDialog.openDialog({
+                type: "create",
+                staticData: { assessment_kit: { id, title }, langList: languages, spaceList : spaces, queryDataSpaces: queryDataSpaces  },
+            });
+        }
     } else {
       keycloakService.doLogin();
     }

@@ -11,9 +11,7 @@ import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useQuery } from "@utils/useQuery";
-import AutocompleteAsyncField, {
-  useConnectAutocompleteField,
-} from "@common/fields/AutocompleteAsyncField";
+import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
@@ -45,40 +43,21 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id;
+  const { langList, spaceList, queryDataSpaces } = staticData
   const { spaceId } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
-  const [lang, setLang] = useState<any>([]);
   const [displaySection,setDisplaySection] = useState({langSec: false, spaceSec: false})
 
-  const queryDataLang = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.getOptions(args, config),
-    accessor: "items",
-  });
-
-  const queryDataSpaces = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
-  });
-
   useEffect(()=>{
-    if(queryDataSpaces?.options?.length > 1 ){
+    if(spaceList?.length > 1 ){
       setDisplaySection((prev: any) => ({...prev, spaceSec : true}))
     }
-    if(lang?.length > 1 ){
+    if(langList?.length > 1 ){
       setDisplaySection((prev: any) => ({...prev, langSec : true}))
     }
-  },[queryDataLang?.data,queryDataSpaces?.options])
-
-  useEffect(() => {
-    const listKits = async () => {
-      const kits = await queryDataLang.query();
-      const { languages } = kits.find((kit: any) => kit.id == assessmentId);
-      setLang(languages);
-    };
-    listKits();
-  }, [assessmentId]);
+  },[spaceList, langList])
 
   const close = () => {
     abortController.abort();
@@ -97,9 +76,9 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   };
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
-    const { space, title, language } = data;
+    const { space, language } = data;
     const spaceIdNumber = spaceId ?? space?.id;
-    const selectLang = lang.length == 1 ? lang[0].code : language.code;
+    const selectLang = langList.length == 1 ? langList[0].code : language.code;
     setLoading(true);
     try {
       await service.assessments.info
@@ -148,7 +127,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       abortController.abort();
     };
   }, []);
-    console.log(displaySection,"displaySectiondisplaySection")
+
   return (
     <CEDialog
       {...rest}
@@ -229,7 +208,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
             >
               <Trans i18nKey={"assessmentSupportsMultipleLanguages"} />
             </Typography>
-            <LangField lang={lang} />
+            <LangField lang={langList} />
           </Grid>
         </Grid>
         <CEDialogActions
