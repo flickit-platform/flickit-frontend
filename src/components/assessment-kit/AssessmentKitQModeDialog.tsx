@@ -21,6 +21,7 @@ import NewAssessmentIcon from "@utils/icons/newAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -46,7 +47,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   } = props;
 
   const { type, staticData = {} } = context;
-  const assessmentId = staticData?.assessment_kit?.id
+  const assessmentId = staticData?.assessment_kit?.id;
   const { spaceId } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -55,13 +56,13 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const [lang, setLang] = useState<any>([]);
   const queryDataLang = useQuery({
     service: (args, config) =>
-        service.assessmentKit.info.getOptions(args, config),
+      service.assessmentKit.info.getOptions(args, config),
     accessor: "items",
   });
 
   const queryDataSpaces = useConnectAutocompleteField({
     service: (args, config) => service.space.topSpaces(args, config),
-  })
+  });
 
   useEffect(() => {
     const listKits = async () => {
@@ -80,7 +81,11 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       createdKitSpaceId &&
       navigate(`/${createdKitSpaceId}/assessments/1`);
     if (window.location.hash) {
-      history.replaceState(null, "", window.location.pathname + window.location.search);
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
     }
   };
   useEffect(() => {
@@ -91,29 +96,35 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, title, language } = data;
-    const spaceIdNumber = spaceId ?? space?.id
-    const selectLang = lang.length == 1 ? lang[0].code : language.code
+    const spaceIdNumber = spaceId ?? space?.id;
+    const selectLang = lang.length == 1 ? lang[0].code : language.code;
     setLoading(true);
     try {
-       await service.assessments.info
-            .create(
-              {
-                data: {
-                  spaceId: spaceIdNumber,
-                  assessmentKitId: assessmentId,
-                  lang: selectLang,
-                  title: selectLang  == "EN" ? "Untitled" : "بدون عنوان"
-                },
-              },
-              { signal: abortController.signal },
-            )
-            .then((res: any) => {
-              setCreatedKitId(res.data?.id);
-              if (window.location.hash) {
-                history.replaceState(null, "", window.location.pathname + window.location.search);
-              }
-              return navigate(`/${spaceIdNumber}/assessments/1/${res.data?.id}/questionnaires`)
-            });
+      await service.assessments.info
+        .create(
+          {
+            data: {
+              spaceId: spaceIdNumber,
+              assessmentKitId: assessmentId,
+              lang: selectLang,
+              title: selectLang == "EN" ? "Untitled" : "بدون عنوان",
+            },
+          },
+          { signal: abortController.signal },
+        )
+        .then((res: any) => {
+          setCreatedKitId(res.data?.id);
+          if (window.location.hash) {
+            history.replaceState(
+              null,
+              "",
+              window.location.pathname + window.location.search,
+            );
+          }
+          return navigate(
+            `/${spaceIdNumber}/assessments/1/${res.data?.id}/questionnaires`,
+          );
+        });
       setLoading(false);
       setSubmittedTitle(title);
       setIsSubmitted(true);
@@ -165,7 +176,6 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
     }
   }, [openDialog, formMethods, abortController]);
 
-
   return (
     <CEDialog
       {...rest}
@@ -180,105 +190,104 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
       contentStyle={{ padding: "32px 32px 16px" }}
       style={{ paddingTop: "32px", background: "#F3F5F6" }}
     >
-          <FormProviderWithForm formMethods={formMethods}>
-            <Typography
-                sx={{
-                  ...theme.typography.semiBoldLarge,
-                  color: "#2B333B",
-                  pb: "32px",
-                }}
+      <FormProviderWithForm formMethods={formMethods}>
+        <Typography
+          sx={{
+            ...theme.typography.semiBoldLarge,
+            color: "#2B333B",
+            pb: "32px",
+          }}
+        >
+          <Trans i18nKey={"createAssessmentConfirmSettings"} />
+        </Typography>
+        <Grid container display="flex" alignItems="start">
+          <Grid xs={12} sm={5.5} item sx={{ py: "18px" }}>
+            <Box
+              sx={{
+                ...styles.centerVH,
+                justifyContent: "flex-start",
+                gap: "8px",
+                mb: "8px",
+              }}
             >
-              <Trans i18nKey={"createAssessmentConfirmSettings"} />
-            </Typography>
-            <Box display="flex" alignItems="start">
-              <Box  flex={1} sx={{ py: "18px" }}>
-                <Box
-                    sx={{
-                      ...styles.centerVH,
-                      justifyContent: "flex-start",
-                      gap: "8px",
-                      mb: "8px",
-                    }}
-                >
-                  <FolderOutlinedIcon
-                      sx={{ color: "#6C8093", background: "transparent" }}
-                  />
-                  <Typography>
-                    <Trans i18nKey={"spaces"} />
-                  </Typography>
-                </Box>
-                <Typography
-                    sx={{
-                      ...theme.typography.bodySmall,
-                      color: "#2B333B",
-                      mb: "42px",
-                      minHeight: "55px",
-                    }}
-                >
-                  <Trans i18nKey={"chooseSpace"} />
-                </Typography>
-                <SpaceField queryData={queryDataSpaces} />
-              </Box>
-              <Divider orientation="vertical" flexItem sx={{ mx: 4 }} />
-              <Box flex={1} sx={{ py: "18px" }}>
-                <Box
-                    sx={{
-                      ...styles.centerVH,
-                      justifyContent: "flex-start",
-                      gap: "8px",
-                      mb: "8px",
-                    }}
-                >
-                  <LanguageIcon
-                      sx={{ color: "#6C8093", background: "transparent" }}
-                  />
-                  <Typography>
-                    <Trans i18nKey={"assessmentLanguage"} />
-                  </Typography>
-                </Box>
-                <Typography
-                    sx={{
-                      ...theme.typography.bodySmall,
-                      color: "#2B333B",
-                      mb: "42px",
-                      minHeight: "55px",
-                    }}
-                >
-                  <Trans i18nKey={"assessmentSupportsMultipleLanguages"} />
-                </Typography>
-                <LangField lang={lang} />
-              </Box>
+              <FolderOutlinedIcon
+                sx={{ color: "#6C8093", background: "transparent" }}
+              />
+              <Typography>
+                <Trans i18nKey={"spaces"} />
+              </Typography>
             </Box>
-            <CEDialogActions
-                closeDialog={close}
-                submitButtonLabel="continue"
-                loading={loading}
-                type={type}
-                onSubmit={formMethods.handleSubmit(onSubmit)}
-            />
-          </FormProviderWithForm>
+            <Typography
+              sx={{
+                ...theme.typography.bodySmall,
+                color: "#2B333B",
+                mb: "42px",
+                minHeight: "55px",
+              }}
+            >
+              <Trans i18nKey={"chooseSpace"} />
+            </Typography>
+            <SpaceField queryData={queryDataSpaces} />
+          </Grid>
+          <Divider orientation="vertical" flexItem sx={{ mx: 4 }} />
+          <Grid item xs={12} sm={5.5} sx={{ py: "18px" }}>
+            <Box
+              sx={{
+                ...styles.centerVH,
+                justifyContent: "flex-start",
+                gap: "8px",
+                mb: "8px",
+              }}
+            >
+              <LanguageIcon
+                sx={{ color: "#6C8093", background: "transparent" }}
+              />
+              <Typography>
+                <Trans i18nKey={"assessmentLanguage"} />
+              </Typography>
+            </Box>
+            <Typography
+              sx={{
+                ...theme.typography.bodySmall,
+                color: "#2B333B",
+                mb: "42px",
+                minHeight: "55px",
+              }}
+            >
+              <Trans i18nKey={"assessmentSupportsMultipleLanguages"} />
+            </Typography>
+            <LangField lang={lang} />
+          </Grid>
+        </Grid>
+        <CEDialogActions
+          closeDialog={close}
+          submitButtonLabel="continue"
+          loading={loading}
+          type={type}
+          onSubmit={formMethods.handleSubmit(onSubmit)}
+        />
+      </FormProviderWithForm>
     </CEDialog>
   );
 };
 
 export default AssessmentKitQModeDialog;
 
-const LangField = ({lang} : {lang: any}) => {
+const LangField = ({ lang }: { lang: any }) => {
   return (
     <AutocompleteAsyncField
       name="language"
       label={<Trans i18nKey="assessmentAndReportLanguage" />}
       options={lang}
       data-cy="language"
-      required ={lang.length > 1}
+      required={lang.length > 1}
     />
   );
 };
 
-const SpaceField = ({queryData}: {queryData: any}) => {
+const SpaceField = ({ queryData }: { queryData: any }) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
-
 
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
@@ -294,7 +303,7 @@ const SpaceField = ({queryData}: {queryData: any}) => {
     return newOption;
   };
 
-  const defaultValue = queryData?.options?.find( (item: any) => item.isDefault)
+  const defaultValue = queryData?.options?.find((item: any) => item.isDefault);
 
   return (
     <AutocompleteAsyncField
