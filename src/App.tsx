@@ -45,6 +45,14 @@ function App() {
   }, [window.clarity]);
 
   useEffect(() => {
+    // @ts-ignore
+    if (typeof window !== "undefined" && window.clarity) {
+      // @ts-ignore
+      window.clarity("set", "page_view_id", new Date().getTime());
+    }
+  }, [pathname]);
+  
+  useEffect(() => {
     if (
       import.meta.env.VITE_FLAGSMITH_ENVIRONMENT_KEY &&
       import.meta.env.VITE_FLAGSMITH_API
