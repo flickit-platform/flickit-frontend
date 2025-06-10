@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useQuery } from "@utils/useQuery";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
@@ -20,8 +20,7 @@ import keycloakService from "@/service/keycloakService";
 import { useEffect, useState } from "react";
 import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { FetchQModalData } from "@utils/fetchQModalData";
-import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 
 interface IlistOfItems {
   icon: any;
@@ -35,23 +34,12 @@ const AssessmentKitAside = (props: any) => {
   const contactusDialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
-  const navigate = useNavigate();
-
-  const queryDataLang = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.getOptions(args, config),
-    accessor: "items",
-  });
-
-  const queryDataSpaces = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
-  });
 
   const {
     config: { isAuthenticated },
   }: any = useConfigContext();
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const listOfItems: IlistOfItems[] = [
     {
@@ -86,6 +74,9 @@ const AssessmentKitAside = (props: any) => {
       service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
     runOnMount: false,
   });
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: dialogProps.openDialog,
+  });
 
   useEffect(() => {
     const openModalAuto = async () => {
@@ -96,42 +87,34 @@ const AssessmentKitAside = (props: any) => {
 
         if (idParam && titleParam && !dialogProps.open) {
           if (keycloakService.isLoggedIn()) {
-            FetchQModalData({
-              idParam,
-              titleParam,
-              dialogProps,
+            createOrOpenDialog({
+              id,
+              title,
+              languages,
               setLoading,
-              navigate,
-              queryDataSpaces,
-              queryDataLang,
-              service,
             });
           } else {
             keycloakService.doLogin();
           }
         }
       }
-    }
-    openModalAuto()
+    };
+    openModalAuto();
   }, []);
   const createAssessment = async (e: any) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     e.stopPropagation();
 
     if (keycloakService.isLoggedIn()) {
-      FetchQModalData({
+      createOrOpenDialog({
         id,
         title,
-        dialogProps,
+        languages,
         setLoading,
-        navigate,
-        queryDataSpaces,
-        queryDataLang,
-        service,
       });
     } else {
-      setLoading(false)
+      setLoading(false);
       window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
       keycloakService.doLogin();
     }

@@ -47,7 +47,7 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
                 <Grid key={item.id} item xs={12} md={small ? 4 : 6}>
                   <AssessmentKitsStoreCard
                     key={item.id}
-                    openDialog={dialogProps}
+                    dialogProps={dialogProps}
                     {...item}
                     small={small}
                   />

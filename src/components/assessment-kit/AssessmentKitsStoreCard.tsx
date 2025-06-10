@@ -13,12 +13,11 @@ import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
-import {useEffect, useState} from "react";
-import {useQuery} from "@utils/useQuery";
-import {useConnectAutocompleteField} from "@common/fields/AutocompleteAsyncField";
-import {useServiceContext} from "@providers/ServiceProvider";
+import { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { FetchQModalData } from "@utils/fetchQModalData";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import { useConfigContext } from "@/providers/ConfgProvider";
+import { ILanguage } from "@/types";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -28,23 +27,20 @@ const AssessmentKitsStoreCard = (props: any) => {
     expertGroup,
     summary,
     languages,
-    openDialog,
+    dialogProps,
     small,
   } = props;
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false)
-  const { service } = useServiceContext();
+  const { config } = useConfigContext();
 
-  const queryDataLang = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.getOptions(args, config),
-    accessor: "items",
-    runOnMount: false
-  });
+  const filteredLanguages = config.languages.filter((kitLang: ILanguage) =>
+    languages.includes(kitLang.title),
+  );
 
-  const queryDataSpaces = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
+  const [loading, setLoading] = useState(false);
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: dialogProps.openDialog,
   });
 
   const handleKitClick = (id: any, title: any) => {
@@ -60,58 +56,50 @@ const AssessmentKitsStoreCard = (props: any) => {
   };
 
   const createAssessment = (e: any, id: any, title: any) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     e.stopPropagation();
     handleKitClick(id, title);
 
     if (keycloakService.isLoggedIn()) {
-      FetchQModalData({
+      createOrOpenDialog({
         id,
         title,
-        openDialog,
+        languages: filteredLanguages,
         setLoading,
-        navigate,
-        queryDataSpaces,
-        queryDataLang,
-        service,
       });
     } else {
-      setLoading(false)
+      setLoading(false);
       window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
       keycloakService.doLogin();
     }
   };
 
   useEffect(() => {
-      if (window.location.hash.startsWith("#createAssessment")) {
-        const params = new URLSearchParams(window.location.hash.split("?")[1]);
-        const idParam = params.get("id");
-        const titleParam = params.get("title");
+    if (window.location.hash.startsWith("#createAssessment")) {
+      const params = new URLSearchParams(window.location.hash.split("?")[1]);
+      const idParam = params.get("id");
+      const titleParam = params.get("title");
 
-        if (
-          idParam === id?.toString() &&
-          titleParam &&
-          props.openDialog &&
-          !props.openDialog.open
-        ) {
-          if (keycloakService.isLoggedIn()) {
-            FetchQModalData({
-              id,
-              title,
-              openDialog,
-              setLoading,
-              navigate,
-              queryDataSpaces,
-              queryDataLang,
-              service,
-            });
-          } else {
-            setLoading(false)
-            keycloakService.doLogin();
-          }
+      if (
+        idParam === id?.toString() &&
+        titleParam &&
+        dialogProps &&
+        !dialogProps.open
+      ) {
+        if (keycloakService.isLoggedIn()) {
+          createOrOpenDialog({
+            id,
+            title,
+            languages: filteredLanguages,
+            setLoading,
+          });
+        } else {
+          setLoading(false);
+          keycloakService.doLogin();
         }
       }
+    }
   }, []);
 
   const truncatedSummaryLength = small ? 150 : 297;
