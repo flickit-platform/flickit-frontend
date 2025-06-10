@@ -48,6 +48,28 @@ const SpaceContainer = () => {
     navigate(`/spaces/${pageCount}`);
   }
 
+  useEffect(() => {
+    const openDialog = () => {
+      if (window.location.hash === "#createSpace") {
+        dialogProps.openDialog({ type: "create" });
+      }
+    };
+    openDialog();
+    window.addEventListener("hashchange", openDialog);
+    return () => window.removeEventListener("hashchange", openDialog);
+  }, [dialogProps]);
+  
+
+  const handleOpenDialog = () => {
+    dialogProps.openDialog({ type: "create" });
+    window.location.hash = "#createSpace";
+  };
+
+  const handleCloseDialog = () => {
+    window.location.hash = "";
+    dialogProps.onClose();
+  };
+
   return (
     <SpaceLayout
       title={
@@ -65,7 +87,7 @@ const SpaceContainer = () => {
                       sx={{ marginInlineStart: 1, marginInlineEnd: 0 }}
                     />
                   }
-                  onClick={() => dialogProps.openDialog({ type: "create" })}
+                  onClick={handleOpenDialog}
                   shouldAnimate={data?.length === 0}
                   text="createSpace"
                 />
@@ -202,6 +224,7 @@ const SpaceContainer = () => {
         onSubmitForm={fetchSpace}
         titleStyle={{ mb: 0 }}
         contentStyle={{ p: 0 }}
+        onClose={handleCloseDialog}
       />
     </SpaceLayout>
   );
