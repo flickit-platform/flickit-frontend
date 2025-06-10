@@ -7,21 +7,18 @@ import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
 import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
-import Button from "@mui/material/Button";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
 import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import {useQuery} from "@utils/useQuery";
 import {useConnectAutocompleteField} from "@common/fields/AutocompleteAsyncField";
 import {useServiceContext} from "@providers/ServiceProvider";
-import {ICustomError} from "@utils/CustomError";
-import setServerFieldErrors from "@utils/setServerFieldError";
-import toastError from "@utils/toastError";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { FetchQModalData } from "@utils/fetchQModalData";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -36,18 +33,18 @@ const AssessmentKitsStoreCard = (props: any) => {
   } = props;
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
   const { service } = useServiceContext();
-    const [loading, setLoading] = useState(false)
-    const queryDataLang = useQuery({
-        service: (args, config) =>
-            service.assessmentKit.info.getOptions(args, config),
-        accessor: "items",
-    });
 
-    const queryDataSpaces = useConnectAutocompleteField({
-        service: (args, config) => service.space.topSpaces(args, config),
-    });
+  const queryDataLang = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.getOptions(args, config),
+    accessor: "items",
+  });
 
+  const queryDataSpaces = useConnectAutocompleteField({
+    service: (args, config) => service.space.topSpaces(args, config),
+  });
 
   const handleKitClick = (id: any, title: any) => {
     (window as any).dataLayer.push({
@@ -61,67 +58,6 @@ const AssessmentKitsStoreCard = (props: any) => {
     });
   };
 
-
-  const fetchData = async (id: any, title: any)=>{
-
-    const kits = await queryDataLang.query();
-    const { languages : kitLangs } = kits.find((kit: any) => kit.id == id);
-    const spaces = await queryDataSpaces.query()
-    if(spaces.length == 1 && kitLangs.length == 1){
-      const abortController = new AbortController();
-      try {
-        const {id: spaceId} = spaces[0]
-        const langCode = kitLangs[0].code
-        await service.assessments.info
-          .create(
-            {
-              data: {
-                spaceId,
-                assessmentKitId: id,
-                lang: langCode,
-                title: langCode == "EN" ? "Untitled" : "بدون عنوان",
-              },
-            },
-            { signal: abortController.signal },
-          )
-          .then((res: any) => {
-            if (window.location.hash) {
-              history.replaceState(
-                null,
-                "",
-                window.location.pathname + window.location.search,
-              );
-            }
-            setLoading(false)
-            return navigate(
-              `/${spaceId}/assessments/1/${res.data?.id}/questionnaires`,
-            );
-          });
-      }catch (e){
-        const err = e as ICustomError;
-        setLoading(false)
-        toastError(err);
-        return () => {
-          abortController.abort();
-        };
-      }
-    }else {
-      setLoading(false)
-      openDialog.openDialog({
-        type: "create",
-        staticData: { assessment_kit: { id, title }, langList: kitLangs, spaceList : spaces,  },
-      });
-      if (window.location.hash) {
-        history.replaceState(
-          null,
-          "",
-          window.location.pathname + window.location.search,
-        );
-      }
-    }
-  }
-
-
   const createAssessment = (e: any, id: any, title: any) => {
     setLoading(true)
     e.preventDefault();
@@ -129,7 +65,16 @@ const AssessmentKitsStoreCard = (props: any) => {
     handleKitClick(id, title);
 
     if (keycloakService.isLoggedIn()) {
-      fetchData(id, title )
+      FetchQModalData({
+        id,
+        title,
+        openDialog,
+        setLoading,
+        navigate,
+        queryDataSpaces,
+        queryDataLang,
+        service,
+      });
     } else {
       setLoading(false)
       window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
@@ -150,7 +95,16 @@ const AssessmentKitsStoreCard = (props: any) => {
           !props.openDialog.open
         ) {
           if (keycloakService.isLoggedIn()) {
-            fetchData(idParam, titleParam)
+            FetchQModalData({
+              id,
+              title,
+              openDialog,
+              setLoading,
+              navigate,
+              queryDataSpaces,
+              queryDataLang,
+              service,
+            });
           } else {
             setLoading(false)
             keycloakService.doLogin();
