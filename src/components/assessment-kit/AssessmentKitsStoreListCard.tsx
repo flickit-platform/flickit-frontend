@@ -8,7 +8,7 @@ import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import uniqueId from "@/utils/uniqueId";
 import { useParams } from "react-router-dom";
 import keycloakService from "@/service/keycloakService";
-import AssessmentKitQModeDialog from "@components/assessment-kit/AssessmentKitQModeDialog";
+import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 
 const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const { service } = useServiceContext();
@@ -53,7 +53,7 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
                   />
                 </Grid>
               ))}
-              {dialogProps.open && <AssessmentKitQModeDialog {...dialogProps} />}
+              {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
           </Grid>
         );
       }}

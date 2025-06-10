@@ -18,7 +18,7 @@ import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
 import keycloakService from "@/service/keycloakService";
 import { useEffect, useState } from "react";
-import AssessmentKitQModeDialog from "@components/assessment-kit/AssessmentKitQModeDialog";
+import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { FetchQModalData } from "@utils/fetchQModalData";
 import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
@@ -230,7 +230,7 @@ const AssessmentKitAside = (props: any) => {
           )}
         </Box>
       </Box>
-      {dialogProps.open && <AssessmentKitQModeDialog {...dialogProps} />}
+      {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
       <ContactUsDialog {...contactusDialogProps} />
     </>
   );

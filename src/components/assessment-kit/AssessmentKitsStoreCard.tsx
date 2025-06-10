@@ -40,6 +40,7 @@ const AssessmentKitsStoreCard = (props: any) => {
     service: (args, config) =>
       service.assessmentKit.info.getOptions(args, config),
     accessor: "items",
+    runOnMount: false
   });
 
   const queryDataSpaces = useConnectAutocompleteField({

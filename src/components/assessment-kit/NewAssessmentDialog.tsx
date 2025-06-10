@@ -28,7 +28,7 @@ interface IAssessmentCEFromDialogProps extends DialogProps {
   context?: any;
 }
 
-const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
+const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [createdKitSpaceId, setCreatedKitSpaceId] = useState(undefined);
   const { service } = useServiceContext();
@@ -47,20 +47,12 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
-  const [displaySection,setDisplaySection] = useState({langSec: false, spaceSec: false})
-  useEffect(()=>{
-    if(spaceList?.length > 1 ){
-      setDisplaySection((prev: any) => ({...prev, spaceSec : true}))
-    }
-    if(langList?.length > 1 ){
-      setDisplaySection((prev: any) => ({...prev, langSec : true}))
-    }
-  },[spaceList, langList])
+  const langSec = langList?.length > 1;
+  const spaceSec = spaceList?.length > 1;
 
   const close = () => {
     abortController.abort();
     closeDialog();
-    setDisplaySection({langSec: false, spaceSec: false})
     !!staticData.assessment_kit &&
       createdKitSpaceId &&
       navigate(`/${createdKitSpaceId}/assessments/1`);
@@ -151,7 +143,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
           <Trans i18nKey={"createAssessmentConfirmSettings"} />
         </Typography>
         <Grid container display="flex" alignItems="start">
-          <Grid  xs={12} sm={displaySection.langSec ? 5.5 : 12} item sx={{ py: "18px" ,display: displaySection.spaceSec ? "relative" : "none" }}>
+          <Grid  xs={12} sm={langSec ? 5.5 : 12} item sx={{ py: "18px" ,display: spaceSec ? "relative" : "none" }}>
             <Box
               sx={{
                 ...styles.centerVH,
@@ -179,8 +171,8 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
             </Typography>
             <SpaceField />
           </Grid>
-          <Divider orientation="vertical" flexItem sx={{ mx: 4, display: displaySection.spaceSec ? "relative" : "none" }} />
-          <Grid  item xs={12} sm={displaySection.spaceSec ? 5.5 : 12} sx={{ py: "18px", display: displaySection.langSec ? "relative" : "none" }}>
+          <Divider orientation="vertical" flexItem sx={{ mx: 4, display: spaceSec ? "relative" : "none" }} />
+          <Grid  item xs={12} sm={spaceSec ? 5.5 : 12} sx={{ py: "18px", display: langSec ? "relative" : "none" }}>
             <Box
               sx={{
                 ...styles.centerVH,
@@ -221,7 +213,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   );
 };
 
-export default AssessmentKitQModeDialog;
+export default NewAssessmentDialog;
 
 const LangField = ({ lang }: { lang: any }) => {
   return (
