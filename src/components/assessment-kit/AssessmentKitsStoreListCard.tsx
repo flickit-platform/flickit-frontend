@@ -3,12 +3,12 @@ import AssessmentKitsStoreCard from "@components/assessment-kit/AssessmentKitsSt
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
-import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDialog";
 import useDialog from "@utils/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import uniqueId from "@/utils/uniqueId";
 import { useParams } from "react-router-dom";
 import keycloakService from "@/service/keycloakService";
+import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 
 const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const { service } = useServiceContext();
@@ -47,14 +47,13 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
                 <Grid key={item.id} item xs={12} md={small ? 4 : 6}>
                   <AssessmentKitsStoreCard
                     key={item.id}
-                    openDialog={dialogProps}
+                    dialogProps={dialogProps}
                     {...item}
                     small={small}
                   />
                 </Grid>
               ))}
-
-            <AssessmentCEFromDialog {...dialogProps} />
+              {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
           </Grid>
         );
       }}

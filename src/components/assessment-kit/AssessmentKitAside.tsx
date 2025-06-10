@@ -3,9 +3,7 @@ import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
 import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@utils/icons/priceIcon";
-import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDialog";
 import useDialog from "@utils/useDialog";
 import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
 import { styles } from "@styles";
@@ -19,7 +17,10 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
 import keycloakService from "@/service/keycloakService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 
 interface IlistOfItems {
   icon: any;
@@ -33,9 +34,12 @@ const AssessmentKitAside = (props: any) => {
   const contactusDialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
+
   const {
     config: { isAuthenticated },
   }: any = useConfigContext();
+
+  const [loading, setLoading] = useState(false);
 
   const listOfItems: IlistOfItems[] = [
     {
@@ -70,42 +74,48 @@ const AssessmentKitAside = (props: any) => {
       service.assessmentKit.info.like(args ?? { id: assessmentKitId }, config),
     runOnMount: false,
   });
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: dialogProps.openDialog,
+  });
 
   useEffect(() => {
-    if (window.location.hash.startsWith("#createAssessment")) {
-      const params = new URLSearchParams(window.location.hash.split("?")[1]);
-      const idParam = params.get("id");
-      const titleParam = params.get("title");
+    const openModalAuto = async () => {
+      if (window.location.hash.startsWith("#createAssessment")) {
+        const params = new URLSearchParams(window.location.hash.split("?")[1]);
+        const idParam = params.get("id");
+        const titleParam = params.get("title");
 
-      if (idParam && titleParam && !dialogProps.open) {
-        if (keycloakService.isLoggedIn()) {
-          dialogProps.openDialog({
-            type: "create",
-            staticData: {
-              assessment_kit: {
-                id: idParam,
-                title: decodeURIComponent(titleParam),
-              },
-            },
-          });
-          window.location.hash = "";
-        } else {
-          keycloakService.doLogin();
+        if (idParam && titleParam && !dialogProps.open) {
+          if (keycloakService.isLoggedIn()) {
+            createOrOpenDialog({
+              id,
+              title,
+              languages,
+              setLoading,
+            });
+          } else {
+            keycloakService.doLogin();
+          }
         }
       }
-    }
+    };
+    openModalAuto();
   }, []);
-  const createAssessment = (e: any) => {
+  const createAssessment = async (e: any) => {
+    setLoading(true);
     e.preventDefault();
     e.stopPropagation();
-    window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
 
     if (keycloakService.isLoggedIn()) {
-      dialogProps.openDialog({
-        type: "create",
-        staticData: { assessment_kit: { id, title } },
+      createOrOpenDialog({
+        id,
+        title,
+        languages,
+        setLoading,
       });
     } else {
+      setLoading(false);
+      window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
       keycloakService.doLogin();
     }
   };
@@ -132,8 +142,9 @@ const AssessmentKitAside = (props: any) => {
             })}
           </Box>
           <Box>
-            <Button
+            <LoadingButton
               onClick={(e) => createAssessment(e)}
+              loading={loading}
               variant="contained"
               size="large"
               sx={{
@@ -141,7 +152,7 @@ const AssessmentKitAside = (props: any) => {
               }}
             >
               <Trans i18nKey="createNewAssessment" />
-            </Button>
+            </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
                 sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
@@ -202,7 +213,7 @@ const AssessmentKitAside = (props: any) => {
           )}
         </Box>
       </Box>
-      <AssessmentCEFromDialog {...dialogProps} />
+      {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
       <ContactUsDialog {...contactusDialogProps} />
     </>
   );

@@ -7,14 +7,17 @@ import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
 import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
-import Button from "@mui/material/Button";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
 import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import { useConfigContext } from "@/providers/ConfgProvider";
+import { ILanguage } from "@/types";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -24,11 +27,21 @@ const AssessmentKitsStoreCard = (props: any) => {
     expertGroup,
     summary,
     languages,
-    openDialog,
+    dialogProps,
     small,
   } = props;
 
   const navigate = useNavigate();
+  const { config } = useConfigContext();
+
+  const filteredLanguages = config.languages.filter((kitLang: ILanguage) =>
+    languages.includes(kitLang.title),
+  );
+
+  const [loading, setLoading] = useState(false);
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: dialogProps.openDialog,
+  });
 
   const handleKitClick = (id: any, title: any) => {
     (window as any).dataLayer.push({
@@ -43,17 +56,21 @@ const AssessmentKitsStoreCard = (props: any) => {
   };
 
   const createAssessment = (e: any, id: any, title: any) => {
+    setLoading(true);
     e.preventDefault();
     e.stopPropagation();
     handleKitClick(id, title);
-    window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
 
     if (keycloakService.isLoggedIn()) {
-      openDialog.openDialog({
-        type: "create",
-        staticData: { assessment_kit: { id, title } },
+      createOrOpenDialog({
+        id,
+        title,
+        languages: filteredLanguages,
+        setLoading,
       });
     } else {
+      setLoading(false);
+      window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
       keycloakService.doLogin();
     }
   };
@@ -67,21 +84,18 @@ const AssessmentKitsStoreCard = (props: any) => {
       if (
         idParam === id?.toString() &&
         titleParam &&
-        props.openDialog &&
-        !props.openDialog.open
+        dialogProps &&
+        !dialogProps.open
       ) {
         if (keycloakService.isLoggedIn()) {
-          props.openDialog.openDialog({
-            type: "create",
-            staticData: {
-              assessment_kit: {
-                id: idParam,
-                title: decodeURIComponent(titleParam),
-              },
-            },
+          createOrOpenDialog({
+            id,
+            title,
+            languages: filteredLanguages,
+            setLoading,
           });
-          window.location.hash = "";
         } else {
+          setLoading(false);
           keycloakService.doLogin();
         }
       }
@@ -291,8 +305,9 @@ const AssessmentKitsStoreCard = (props: any) => {
           </Box>
         </Box>
 
-        <Button
+        <LoadingButton
           onClick={(e) => createAssessment(e, id, title)}
+          loading={loading}
           variant="contained"
           size={small ? "small" : "large"}
           sx={{
@@ -308,7 +323,7 @@ const AssessmentKitsStoreCard = (props: any) => {
           }}
         >
           <Trans i18nKey="createNewAssessment" />
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );
