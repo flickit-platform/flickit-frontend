@@ -49,7 +49,7 @@ export const FetchQModalData = async (props: any)=>{
     setLoading(false)
     open.openDialog({
       type: "create",
-      staticData: { assessment_kit: { id, title }, langList: kitLangs, spaceList : spaces,  },
+      staticData: { assessment_kit: { id, title }, langList: kitLangs, spaceList : spaces, queryDataSpaces  },
     });
     if (window.location.hash) {
       history.replaceState(

@@ -42,7 +42,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   } = props;
   const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id;
-  const { langList, spaceList } = staticData
+  const { langList, spaceList, queryDataSpaces } = staticData
   const { spaceId } = useParams();
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -169,7 +169,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
             >
               <Trans i18nKey={"chooseSpace"} />
             </Typography>
-            <SpaceField />
+            <SpaceField queryDataSpaces={queryDataSpaces} spaces={spaceList} />
           </Grid>
           <Divider orientation="vertical" flexItem sx={{ mx: 4, display: spaceSec ? "relative" : "none" }} />
           <Grid  item xs={12} sm={spaceSec ? 5.5 : 12} sx={{ py: "18px", display: langSec ? "relative" : "none" }}>
@@ -227,17 +227,13 @@ const LangField = ({ lang }: { lang: any }) => {
   );
 };
 
-const SpaceField = () => {
+const SpaceField = ({queryDataSpaces, spaces}: {queryDataSpaces: any, spaces: any}) => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
 
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
     runOnMount: false,
-  });
-
-  const queryDataSpaces = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
   });
 
   const createItemQuery = async (inputValue: any) => {
@@ -253,7 +249,7 @@ const SpaceField = () => {
 
   return (
     <AutocompleteAsyncField
-      {...queryDataSpaces}
+      {...{ options: spaces }}
       name="space"
       required={true}
       disabled={!!spaceId}
