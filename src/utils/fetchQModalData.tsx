@@ -3,7 +3,7 @@ import {ICustomError} from "@utils/CustomError";
 
 export const FetchQModalData = async (props: any)=>{
   const {id, title, openDialog, dialogProps, setLoading, navigate, queryDataSpaces, queryDataLang, service} = props
-  const open =  openDialog || dialogProps
+  const open =  openDialog ?? dialogProps
   const kits = await queryDataLang.query();
   const { languages : kitLangs } = kits.find((kit: any) => kit.id == id);
   const spaces = await queryDataSpaces.query()

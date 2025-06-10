@@ -3,7 +3,6 @@ import AssessmentKitsStoreCard from "@components/assessment-kit/AssessmentKitsSt
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import QueryData from "@common/QueryData";
-import AssessmentCEFromDialog from "@components/assessments/AssessmentCEFromDialog";
 import useDialog from "@utils/useDialog";
 import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import uniqueId from "@/utils/uniqueId";
