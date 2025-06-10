@@ -61,96 +61,102 @@ const AssessmentKitsStoreCard = (props: any) => {
     });
   };
 
-  const createAssessment = async (e: any, id: any, title: any) => {
+
+  const fetchData = async (id: any, title: any)=>{
+
+    const kits = await queryDataLang.query();
+    const { languages : kitLangs } = kits.find((kit: any) => kit.id == id);
+    const spaces = await queryDataSpaces.query()
+    if(spaces.length == 1 && kitLangs.length == 1){
+      const abortController = new AbortController();
+      try {
+        const {id: spaceId} = spaces[0]
+        const langCode = kitLangs[0].code
+        await service.assessments.info
+          .create(
+            {
+              data: {
+                spaceId,
+                assessmentKitId: id,
+                lang: langCode,
+                title: langCode == "EN" ? "Untitled" : "بدون عنوان",
+              },
+            },
+            { signal: abortController.signal },
+          )
+          .then((res: any) => {
+            if (window.location.hash) {
+              history.replaceState(
+                null,
+                "",
+                window.location.pathname + window.location.search,
+              );
+            }
+            setLoading(false)
+            return navigate(
+              `/${spaceId}/assessments/1/${res.data?.id}/questionnaires`,
+            );
+          });
+      }catch (e){
+        const err = e as ICustomError;
+        setLoading(false)
+        toastError(err);
+        return () => {
+          abortController.abort();
+        };
+      }
+    }else {
+      setLoading(false)
+      openDialog.openDialog({
+        type: "create",
+        staticData: { assessment_kit: { id, title }, langList: kitLangs, spaceList : spaces,  },
+      });
+      if (window.location.hash) {
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+    }
+  }
+
+
+  const createAssessment = (e: any, id: any, title: any) => {
     setLoading(true)
     e.preventDefault();
     e.stopPropagation();
     handleKitClick(id, title);
-      const kits = await queryDataLang.query();
-      const { languages } = kits.find((kit: any) => kit.id == id);
-      const spaces = await queryDataSpaces.query()
 
     if (keycloakService.isLoggedIn()) {
-        if(spaces.length == 1 && languages.length == 1){
-            const abortController = new AbortController();
-            try {
-               let {id: spaceId} = spaces[0]
-               let langCode = languages[0].code
-                await service.assessments.info
-                    .create(
-                        {
-                            data: {
-                                spaceId,
-                                assessmentKitId: id,
-                                lang: langCode,
-                                title: langCode == "EN" ? "Untitled" : "بدون عنوان",
-                            },
-                        },
-                        { signal: abortController.signal },
-                    )
-                    .then((res: any) => {
-                        if (window.location.hash) {
-                            history.replaceState(
-                                null,
-                                "",
-                                window.location.pathname + window.location.search,
-                            );
-                        }
-                        setLoading(false)
-                        return navigate(
-                            `/${spaceId}/assessments/1/${res.data?.id}/questionnaires`,
-                        );
-                    });
-            }catch (e){
-                const err = e as ICustomError;
-                setLoading(false)
-                toastError(err);
-                return () => {
-                    abortController.abort();
-                };
-            }
-        }else {
-            setLoading(false)
-            window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
-            openDialog.openDialog({
-                type: "create",
-                staticData: { assessment_kit: { id, title }, langList: languages, spaceList : spaces,  },
-            });
-        }
+      fetchData(id, title )
     } else {
       setLoading(false)
+      window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
       keycloakService.doLogin();
     }
   };
 
   useEffect(() => {
-    if (window.location.hash.startsWith("#createAssessment")) {
-      const params = new URLSearchParams(window.location.hash.split("?")[1]);
-      const idParam = params.get("id");
-      const titleParam = params.get("title");
+      if (window.location.hash.startsWith("#createAssessment")) {
+        const params = new URLSearchParams(window.location.hash.split("?")[1]);
+        const idParam = params.get("id");
+        const titleParam = params.get("title");
 
-      if (
-        idParam === id?.toString() &&
-        titleParam &&
-        props.openDialog &&
-        !props.openDialog.open
-      ) {
-        if (keycloakService.isLoggedIn()) {
-          props.openDialog.openDialog({
-            type: "create",
-            staticData: {
-              assessment_kit: {
-                id: idParam,
-                title: decodeURIComponent(titleParam),
-              },
-            },
-          });
-          window.location.hash = "";
-        } else {
-          keycloakService.doLogin();
+        if (
+          idParam === id?.toString() &&
+          titleParam &&
+          props.openDialog &&
+          !props.openDialog.open
+        ) {
+          if (keycloakService.isLoggedIn()) {
+            fetchData(idParam, titleParam)
+          } else {
+            setLoading(false)
+            keycloakService.doLogin();
+          }
         }
       }
-    }
   }, []);
 
   const truncatedSummaryLength = small ? 150 : 297;

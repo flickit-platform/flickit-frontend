@@ -48,11 +48,6 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
   const [displaySection,setDisplaySection] = useState({langSec: false, spaceSec: false})
-
-  const queryDataSpaces = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
-  });
-
   useEffect(()=>{
     if(spaceList?.length > 1 ){
       setDisplaySection((prev: any) => ({...prev, spaceSec : true}))
@@ -182,7 +177,7 @@ const AssessmentKitQModeDialog = (props: IAssessmentCEFromDialogProps) => {
             >
               <Trans i18nKey={"chooseSpace"} />
             </Typography>
-            <SpaceField queryData={queryDataSpaces} />
+            <SpaceField />
           </Grid>
           <Divider orientation="vertical" flexItem sx={{ mx: 4, display: displaySection.spaceSec ? "relative" : "none" }} />
           <Grid  item xs={12} sm={displaySection.spaceSec ? 5.5 : 12} sx={{ py: "18px", display: displaySection.langSec ? "relative" : "none" }}>
@@ -235,18 +230,22 @@ const LangField = ({ lang }: { lang: any }) => {
       label={<Trans i18nKey="assessmentAndReportLanguage" />}
       options={lang}
       data-cy="language"
-      required={lang.length > 1}
+      required={lang?.length > 1}
     />
   );
 };
 
-const SpaceField = ({ queryData }: { queryData: any }) => {
+const SpaceField = () => {
   const { service } = useServiceContext();
   const { spaceId } = useParams();
 
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
     runOnMount: false,
+  });
+
+  const queryDataSpaces = useConnectAutocompleteField({
+    service: (args, config) => service.space.topSpaces(args, config),
   });
 
   const createItemQuery = async (inputValue: any) => {
@@ -258,11 +257,11 @@ const SpaceField = ({ queryData }: { queryData: any }) => {
     return newOption;
   };
 
-  const defaultValue = queryData?.options?.find((item: any) => item.isDefault);
+  const defaultValue = queryDataSpaces?.options?.find((item: any) => item.isDefault);
 
   return (
     <AutocompleteAsyncField
-      {...queryData}
+      {...queryDataSpaces}
       name="space"
       required={true}
       disabled={!!spaceId}

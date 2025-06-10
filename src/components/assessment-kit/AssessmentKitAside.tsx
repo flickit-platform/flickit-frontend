@@ -14,12 +14,17 @@ import IconButton from "@mui/material/IconButton";
 import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { useQuery } from "@utils/useQuery";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
 import keycloakService from "@/service/keycloakService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import AssessmentKitQModeDialog from "@components/assessment-kit/AssessmentKitQModeDialog";
+import { useConnectAutocompleteField } from "@common/fields/AutocompleteAsyncField";
+import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 interface IlistOfItems {
   icon: any;
@@ -33,9 +38,82 @@ const AssessmentKitAside = (props: any) => {
   const contactusDialogProps = useDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
+  const navigate = useNavigate();
   const {
     config: { isAuthenticated },
   }: any = useConfigContext();
+
+  const [loading, setLoading] = useState(false)
+  const queryDataLang = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.getOptions(args, config),
+    accessor: "items",
+  });
+
+  const queryDataSpaces = useConnectAutocompleteField({
+    service: (args, config) => service.space.topSpaces(args, config),
+  });
+
+  const fetchData = async (id: any, title: any)=>{
+
+    const kits = await queryDataLang.query();
+    const { languages : kitLangs } = kits.find((kit: any) => kit.id == id);
+    const spaces = await queryDataSpaces.query()
+    if(spaces.length == 1 && kitLangs.length == 1){
+      const abortController = new AbortController();
+      try {
+        const {id: spaceId} = spaces[0]
+        const langCode = kitLangs[0].code
+        await service.assessments.info
+          .create(
+            {
+              data: {
+                spaceId,
+                assessmentKitId: id,
+                lang: langCode,
+                title: langCode == "EN" ? "Untitled" : "بدون عنوان",
+              },
+            },
+            { signal: abortController.signal },
+          )
+          .then((res: any) => {
+            if (window.location.hash) {
+              history.replaceState(
+                null,
+                "",
+                window.location.pathname + window.location.search,
+              );
+            }
+            setLoading(false)
+            return navigate(
+              `/${spaceId}/assessments/1/${res.data?.id}/questionnaires`,
+            );
+          });
+      }catch (e){
+        const err = e as ICustomError;
+        setLoading(false)
+        toastError(err);
+        return () => {
+          abortController.abort();
+        };
+      }
+    }else {
+      setLoading(false)
+      dialogProps.openDialog({
+        type: "create",
+        staticData: { assessment_kit: { id, title }, langList: kitLangs, spaceList : spaces,  },
+      });
+      if (window.location.hash) {
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+    }
+  }
+
+
 
   const listOfItems: IlistOfItems[] = [
     {
@@ -72,40 +150,33 @@ const AssessmentKitAside = (props: any) => {
   });
 
   useEffect(() => {
-    if (window.location.hash.startsWith("#createAssessment")) {
-      const params = new URLSearchParams(window.location.hash.split("?")[1]);
-      const idParam = params.get("id");
-      const titleParam = params.get("title");
+    const openModalAuto = async () => {
+      if (window.location.hash.startsWith("#createAssessment")) {
+        const params = new URLSearchParams(window.location.hash.split("?")[1]);
+        const idParam = params.get("id");
+        const titleParam = params.get("title");
 
-      if (idParam && titleParam && !dialogProps.open) {
-        if (keycloakService.isLoggedIn()) {
-          dialogProps.openDialog({
-            type: "create",
-            staticData: {
-              assessment_kit: {
-                id: idParam,
-                title: decodeURIComponent(titleParam),
-              },
-            },
-          });
-          window.location.hash = "";
-        } else {
-          keycloakService.doLogin();
+        if (idParam && titleParam && !dialogProps.open) {
+          if (keycloakService.isLoggedIn()) {
+            fetchData(idParam, titleParam)
+          } else {
+            keycloakService.doLogin();
+          }
         }
       }
     }
+    openModalAuto()
   }, []);
-  const createAssessment = (e: any) => {
+  const createAssessment = async (e: any) => {
+    setLoading(true)
     e.preventDefault();
     e.stopPropagation();
-    window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
 
     if (keycloakService.isLoggedIn()) {
-      dialogProps.openDialog({
-        type: "create",
-        staticData: { assessment_kit: { id, title } },
-      });
+      fetchData(id, title)
     } else {
+      setLoading(false)
+      window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
       keycloakService.doLogin();
     }
   };
@@ -132,8 +203,9 @@ const AssessmentKitAside = (props: any) => {
             })}
           </Box>
           <Box>
-            <Button
+            <LoadingButton
               onClick={(e) => createAssessment(e)}
+              loading={loading}
               variant="contained"
               size="large"
               sx={{
@@ -141,7 +213,7 @@ const AssessmentKitAside = (props: any) => {
               }}
             >
               <Trans i18nKey="createNewAssessment" />
-            </Button>
+            </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
                 sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
@@ -202,7 +274,7 @@ const AssessmentKitAside = (props: any) => {
           )}
         </Box>
       </Box>
-      <AssessmentCEFromDialog {...dialogProps} />
+      {dialogProps.open && <AssessmentKitQModeDialog {...dialogProps} />}
       <ContactUsDialog {...contactusDialogProps} />
     </>
   );
