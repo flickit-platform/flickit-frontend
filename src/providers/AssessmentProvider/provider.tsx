@@ -16,12 +16,14 @@ interface IAssessmentProviderProps {
 export interface IAssessmentContext {
   permissions: any;
   assessmentInfo?: IAssessmentInfo;
+  pendingKitData: { id?: string; title?: string; display?: boolean };
   dispatch: Dispatch<any>;
 }
 
 export const AssessmentContext = createContext<IAssessmentContext>({
   permissions: {},
   assessmentInfo: undefined,
+  pendingKitData: {},
   dispatch: () => {},
 });
 

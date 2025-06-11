@@ -24,6 +24,10 @@ import Check from "@components/spaces/Icons/check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { SpaceSmallIcon } from "@common/icons/spaceSmallIcon";
 import UniqueId from "@utils/uniqueId";
+import {
+  assessmentActions,
+  useAssessmentContext,
+} from "@/providers/AssessmentProvider";
 
 const PremiumBox = [
   {
@@ -75,6 +79,7 @@ const CreateSpaceDialog = (props: any) => {
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const navigate = useNavigate();
+  const { dispatch, pendingKitData } = useAssessmentContext();
 
   useEffect(() => {
     if (!spaceDefaultType?.code) {
@@ -85,6 +90,16 @@ const CreateSpaceDialog = (props: any) => {
   }, [spaceDefaultType?.code]);
 
   const close = () => {
+    if (step === 3) {
+      if (pendingKitData?.id) {
+        dispatch(
+          assessmentActions.setPendingKit({
+            ...pendingKitData,
+            display: true,
+          }),
+        );
+      }
+    }
     abortController.abort();
     closeDialog();
     setSelectedType("");
@@ -103,9 +118,7 @@ const CreateSpaceDialog = (props: any) => {
         await service.space.markAsSeen({ spaceId }, {});
         close();
       } else {
-        const res = await service.space.create(data, {
-          signal: abortController.signal,
-        });
+        const res = await service.space.create(data);
         setSpaceIdNum(res.data.id);
         setStep(3);
       }
@@ -158,7 +171,7 @@ const CreateSpaceDialog = (props: any) => {
         <Trans i18nKey={"selectYourSpaceType"} />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
-        <Grid container spacing={{ xs: 5,sm: 10, md: 3 }}>
+        <Grid container spacing={{ xs: 5, sm: 10, md: 3 }}>
           {[PremiumBox, BasicBox].map((list, idx) => (
             <Grid
               item
@@ -509,7 +522,7 @@ const BoxType = ({
             justifyContent: "center",
             alignItems: "center",
             gap: "8px",
-            bottom:{xs: "-45px", md: "-54px"},
+            bottom: { xs: "-45px", md: "-54px" },
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
