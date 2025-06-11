@@ -22,7 +22,6 @@ import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutline";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import AssessmentErrorIcon from "@/assets/svg/assessment-error.svg";
-import { IconButton } from "@mui/material";
 import {
   assessmentActions,
   useAssessmentContext,

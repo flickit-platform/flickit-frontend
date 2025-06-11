@@ -65,7 +65,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
   const handleContinue = useCallback(() => {
     if (kit?.id) {
       navigate(
-        `/assessment-kits#createAssessment?id=${kit.id}&title=${encodeURIComponent(kit.title || "")}`,
+        `/assessment-kits#createAssessment?id=${kit.id}&title=${encodeURIComponent(kit.title ?? "")}`,
       );
     }
     clearAll();
@@ -152,7 +152,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
           <Trans
             i18nKey="continueAssessmentKitMessage"
             values={{
-              kitName: kit?.title || "",
+              kitName: kit?.title ?? "",
             }}
             components={{
               name: (

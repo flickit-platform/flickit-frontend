@@ -22,10 +22,6 @@ import Stack from "@mui/material/Stack";
 import { useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
-import {
-  assessmentActions,
-  useAssessmentContext,
-} from "@/providers/AssessmentProvider";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
