@@ -70,7 +70,7 @@ const AssessmentKitsStoreCard = (props: any) => {
       });
     } else {
       setLoading(false);
-      window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
+      window.location.hash = `#createAssessment?id=${id}`;
       keycloakService.doLogin();
     }
   };
@@ -79,14 +79,8 @@ const AssessmentKitsStoreCard = (props: any) => {
     if (window.location.hash.startsWith("#createAssessment")) {
       const params = new URLSearchParams(window.location.hash.split("?")[1]);
       const idParam = params.get("id");
-      const titleParam = params.get("title");
 
-      if (
-        idParam === id?.toString() &&
-        titleParam &&
-        dialogProps &&
-        !dialogProps.open
-      ) {
+      if (idParam === id?.toString() && dialogProps && !dialogProps.open) {
         if (keycloakService.isLoggedIn()) {
           createOrOpenDialog({
             id,

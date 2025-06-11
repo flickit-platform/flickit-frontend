@@ -83,9 +83,8 @@ const AssessmentKitAside = (props: any) => {
       if (window.location.hash.startsWith("#createAssessment")) {
         const params = new URLSearchParams(window.location.hash.split("?")[1]);
         const idParam = params.get("id");
-        const titleParam = params.get("title");
 
-        if (idParam && titleParam && !dialogProps.open) {
+        if (idParam && !dialogProps.open) {
           if (keycloakService.isLoggedIn()) {
             createOrOpenDialog({
               id,
@@ -115,7 +114,7 @@ const AssessmentKitAside = (props: any) => {
       });
     } else {
       setLoading(false);
-      window.location.hash = `#createAssessment?id=${id}&title=${encodeURIComponent(title)}`;
+      window.location.hash = `#createAssessment?id=${id}`;
       keycloakService.doLogin();
     }
   };
