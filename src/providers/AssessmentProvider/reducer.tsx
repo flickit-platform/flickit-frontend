@@ -15,7 +15,11 @@ const assessmentReducer = (
         ...prevState,
         assessmentInfo: action.payload,
       };
-
+    case ASSESSMENT_ACTIONS_TYPE.SET_PENDING_KIT:
+      return {
+        ...prevState,
+        pendingKitData: action.payload,
+      };
     default:
       return prevState;
   }

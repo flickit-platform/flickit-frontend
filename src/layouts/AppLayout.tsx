@@ -10,6 +10,7 @@ import FloatButton from "@utils/floatButton";
 import useDialog from "@utils/useDialog";
 import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
 import { isPathMatching } from "@/utils/pathMatcher";
+import PendingKitBanner from "@/components/common/dialogs/PendingKitBanner";
 
 const AppLayout = (props: PropsWithChildren<{}>) => {
   const { children } = props;
@@ -50,6 +51,8 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         </Suspense>
         <FloatButton dialogProps={dialogProps} />
       </Box>
+      <PendingKitBanner/>
+
       <ContactUsDialog {...dialogProps} />
     </Box>
   );

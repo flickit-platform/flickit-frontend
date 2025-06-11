@@ -36,7 +36,7 @@ export function useAssessmentCreation({
       } catch (err) {
         setLoading(false);
         openDialog({
-          type: "create",
+          type: "limitExceeded",
           staticData: {
             assessment_kit: { id, title },
             langList: languages,

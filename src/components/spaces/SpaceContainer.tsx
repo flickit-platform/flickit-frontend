@@ -22,6 +22,10 @@ import Stack from "@mui/material/Stack";
 import { useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import {
+  assessmentActions,
+  useAssessmentContext,
+} from "@/providers/AssessmentProvider";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
@@ -49,16 +53,11 @@ const SpaceContainer = () => {
   }
 
   useEffect(() => {
-    const openDialog = () => {
-      if (window.location.hash === "#createSpace") {
-        dialogProps.openDialog({ type: "create" });
-      }
-    };
-    openDialog();
-    window.addEventListener("hashchange", openDialog);
-    return () => window.removeEventListener("hashchange", openDialog);
-  }, [dialogProps]);
-  
+    if (window.location.hash === "#createSpace") {
+      dialogProps.openDialog({ type: "create" });
+      window.location.hash = "";
+    }
+  }, []);
 
   const handleOpenDialog = () => {
     dialogProps.openDialog({ type: "create" });
@@ -66,8 +65,8 @@ const SpaceContainer = () => {
   };
 
   const handleCloseDialog = () => {
-    window.location.hash = "";
     dialogProps.onClose();
+    window.location.hash = "";
   };
 
   return (
@@ -89,7 +88,7 @@ const SpaceContainer = () => {
                   }
                   onClick={handleOpenDialog}
                   shouldAnimate={data?.length === 0}
-                  text="createSpace"
+                  text="newSpace"
                 />
               ) : (
                 <></>
