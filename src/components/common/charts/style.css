@@ -23,6 +23,11 @@
   display: none;
 }
 
+.recharts-sector,
+.recharts-layer {
+  outline: none;
+}
+
 @media screen and (max-width: 620px) {
   .insight--report__gauge {
     margin-top: 6%;
