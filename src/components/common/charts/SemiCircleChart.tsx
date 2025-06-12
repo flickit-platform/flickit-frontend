@@ -147,11 +147,11 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
   );
 };
 
-const renderMainLabel = (props: any) => {
+const renderMainLabel = (props: any, count: number) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, outerRadius, midAngle, name } = props;
 
-  const labelRadius = outerRadius * 0.68;
+  const labelRadius = outerRadius * (count > 1 ? 0.68 : 0.4);
   const angle = -midAngle;
   const x = cx + labelRadius * Math.cos(angle * RADIAN);
   const y = cy + labelRadius * Math.sin(angle * RADIAN);
@@ -211,7 +211,6 @@ const renderMainLabel = (props: any) => {
   );
 };
 
-
 const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
   const radius = useResponsiveRadius();
 
@@ -259,7 +258,7 @@ const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
           endAngle={0}
           innerRadius={0}
           outerRadius={radius.inner}
-          label={renderMainLabel}
+          label={(props) => renderMainLabel(props, mainData.length)}
           labelLine={false}
           cx="50%"
           cy="100%"
