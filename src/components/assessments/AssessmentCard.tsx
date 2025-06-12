@@ -95,6 +95,7 @@ const AssessmentCard = ({
         { assessmentId: id, ...(args ?? {}) },
         config,
       ),
+    runOnMount: false,
   });
 
   useEffect(() => {

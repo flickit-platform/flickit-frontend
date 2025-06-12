@@ -64,10 +64,13 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   let rotateAngle: number;
+  const flip = midAngle > 90 && midAngle < 270;
+
   if (totalAttributes < 5) {
-    rotateAngle = 70 - (midAngle / 180) * 140;
+    rotateAngle = flip
+      ? 75 - (midAngle / 180) * 160
+      : 85 - (midAngle / 180) * 160;
   } else {
-    const flip = midAngle > 90 && midAngle < 270;
     rotateAngle = flip ? 180 - midAngle : -midAngle;
   }
 
@@ -144,37 +147,41 @@ const renderCustomLabel = (props: any, totalAttributes: number) => {
   );
 };
 
-const renderMainLabel = (props: any) => {
+const renderMainLabel = (props: any, count: number) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, outerRadius, midAngle, name } = props;
 
-  const radius = outerRadius - 90;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const labelRadius = outerRadius * (count > 1 ? 0.68 : 0.4);
+  const angle = -midAngle;
+  const x = cx + labelRadius * Math.cos(angle * RADIAN);
+  const y = cy + labelRadius * Math.sin(angle * RADIAN);
 
-  const rotateAngle = 65 - (midAngle / 180) * 130;
+  let rotate = -midAngle + 90;
 
   const isFarsi = languageDetector(name);
   const font = isFarsi ? farsiFontFamily : primaryFontFamily;
-
   const MAX_LENGTH = 14;
-  const shouldSplit = name.length > MAX_LENGTH && name.includes(" ");
 
-  const splitLines = (text: string, maxLength: number): string[][] => {
-    const words = text.split(" ");
-    const lines: string[][] = [];
-    for (const word of words) {
-      const lastLine = lines.at(-1);
-      if (!lastLine || lastLine.join(" ").length > maxLength / 2) {
-        lines.push([word]);
+  let lines: string[] = [];
+  if (name.length > MAX_LENGTH && name.includes(" ")) {
+    const words = name.split(" ");
+    let firstLine = "";
+    let secondLine = "";
+    for (let w of words) {
+      if ((firstLine + " " + w).trim().length <= MAX_LENGTH) {
+        firstLine = (firstLine + " " + w).trim();
       } else {
-        lastLine.push(word);
+        secondLine = (secondLine + " " + w).trim();
       }
     }
-    return lines;
-  };
-
-  const lines = shouldSplit ? splitLines(name, MAX_LENGTH) : [[name]];
+    if (!firstLine) {
+      firstLine = name.slice(0, MAX_LENGTH);
+      secondLine = name.slice(MAX_LENGTH);
+    }
+    lines = [firstLine, secondLine];
+  } else {
+    lines = [name];
+  }
 
   const lineCount = lines.length;
   const fontSizeMap: Record<number, number> = {
@@ -183,24 +190,21 @@ const renderMainLabel = (props: any) => {
   };
   const fontSize = fontSizeMap[lineCount] ?? 14;
 
-  const getLineY = (index: number) =>
-    y + index * (fontSize + 4) - ((lineCount - 1) * (fontSize + 4)) / 2;
-
   return (
-    <g transform={`rotate(${rotateAngle}, ${x}, ${y})`}>
-      {lines.map((line: string[], i: number) => (
+    <g transform={`translate(${x},${y}) rotate(${rotate})`}>
+      {lines.map((line, idx) => (
         <text
-          key={uniqueId()}
-          x={x}
-          y={getLineY(i)}
+          key={idx}
+          x={0}
+          y={idx * (fontSize + 3) - ((lines.length - 1) * (fontSize + 3)) / 2}
           fill="#fff"
-          textAnchor="middle"
-          dominantBaseline="central"
           fontSize={fontSize}
           fontWeight={500}
-          style={{ fontFamily: font }}
+          textAnchor="middle"
+          dominantBaseline="central"
+          style={{ fontFamily: font, pointerEvents: "none" }}
         >
-          {line.join(" ")}
+          {line}
         </text>
       ))}
     </g>
@@ -254,7 +258,7 @@ const SemiCircleChart = ({ items, childrenField }: SemiCircleChartProps) => {
           endAngle={0}
           innerRadius={0}
           outerRadius={radius.inner}
-          label={renderMainLabel}
+          label={(props) => renderMainLabel(props, mainData.length)}
           labelLine={false}
           cx="50%"
           cy="100%"

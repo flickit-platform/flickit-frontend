@@ -55,12 +55,12 @@ const AssessmentContainer = () => {
   const fetchSpaceInfo = useQuery({
     service: (args = { spaceId }, config) =>
       service.space.getById(args, config),
-    runOnMount: true,
+    runOnMount: false,
   });
 
   useEffect(() => {
     fetchSpaceInfo.query();
-  }, [data]);
+  }, []);
   const isSmallScreen = useScreenResize("sm");
   return (
     <PermissionControl error={[errorObject?.response]}>
