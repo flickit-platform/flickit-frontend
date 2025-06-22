@@ -47,16 +47,16 @@ interface IDialogProps extends IGraphicalReport {
 
 const accessOptions = {
   [VISIBILITY.RESTRICTED]: {
-    title: t("accessRestricted"),
-    titleMenu: t("accessRestricted"),
-    description: t("accessRestrictedDescription"),
+    title: t("assessmentReport.accessRestricted"),
+    titleMenu: t("assessmentReport.accessRestricted"),
+    description: t("assessmentReport.accessRestrictedDescription"),
     icon: <LockOutlinedIcon />,
     bgColor: "#E2E5E9",
   },
   [VISIBILITY.PUBLIC]: {
-    title: t("accessAnyone"),
-    titleMenu: t("accessAnyoneWithLink"),
-    description: t("accessAnyoneDescription"),
+    title: t("assessmentReport.accessAnyone"),
+    titleMenu: t("assessmentReport.accessAnyoneWithLink"),
+    description: t("assessmentReport.accessAnyoneDescription"),
     icon: <Language />,
     bgColor: "#D5E5F6",
   },
@@ -198,7 +198,7 @@ export const ShareDialog = ({
                 <Grid item xs={0.5}></Grid>
                 <Grid item xs={1.8}>
                   <LoadingButton variant="contained" type="submit">
-                    <Trans i18nKey="add" />
+                    <Trans i18nKey="common.add" />
                   </LoadingButton>
                 </Grid>
               </Grid>
@@ -265,7 +265,7 @@ export const ShareDialog = ({
 
       <Box sx={{ mt: 3 }}>
         <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
-          <Trans i18nKey="accessStatus" />
+          <Trans i18nKey="assessmentReport.accessStatus" />
         </Typography>
         <Divider sx={{ mt: 1 }} />
       </Box>

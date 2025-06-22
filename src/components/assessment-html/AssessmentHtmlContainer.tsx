@@ -322,7 +322,7 @@ const AssessmentHtmlContainer = () => {
                         />
                       </IconButton>
                     )}
-                    {t("assessmentReport", {
+                    {t("assessmentReport.assessmentReport", {
                       lng: lang.code.toLowerCase(),
                     })}
                   </Typography>

@@ -1,0 +1,20 @@
+{
+  "addAttachment": "افزودن پیوست",
+  "addDescriptionToAttachment": "افزودن توضیح برای این پیوست (حداکثر ۱۰۰ نویسه)",
+  "addFirstOption": "افزودن اولین گزینه",
+  "addFirstQuestion": "افزودن اولین پرسش",
+  "additionalInfo": "توضیحات تکمیلی (اختیاری)",
+  "advancedSettings": "تنظیمات پیشرفته",
+  "advancedSettingsDescription": "در این بخش می‌توانید درباره برخی تنظیمات تکمیلی این پرسش تصمیم‌گیری کنید.",
+  "allQuestionnaires": "همه پرسش‌نامه‌ها",
+  "allQuestionsHaveBeenAnswered": "به ‌همه پرسش‌های پرسش‌نامه <style>{{questionnaire}}</style> پاسخ داده شده است.",
+  "allQuestionsInAllQuestionnaireHaveBeenAnswered": "به ‌همه پرسش‌ها در ‌همه پرسش‌نامه‌ها پاسخ داده شده است. اکنون می‌توانید گزارش را مشاهده کنید یا پرسش‌های مورد نظر را مرور نمایید.",
+  "allQuestionsInThisQuestionnaireHaveBeenAnswered": "برای تحلیل دقیق‌تر می‌توانید پرسش‌نامه‌های دیگر را نیز تکمیل کنید.",
+  "answerHistory": "تاریخچه پاسخ‌ها",
+  "answerNeedApprove": "این پاسخ نیاز به تایید ارزیاب دارد.",
+  "areYouSureYouWantDeleteThisAttachment": "آیا مطمئن هستید که می‌خواهید این پیوست را حذف کنید؟",
+  "areYouSureYouWantDeleteThisItem": "آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید؟",
+  "areYouSureYouWantSkipThisQuestion": "تغییرات شما از دست خواهد رفت. آیا می‌خواهید ادامه دهید؟",
+  "attachmentCount": "{{attachmentsCount}} پیوست",
+  "attachmentRequired": "فایل پیوست الزامی است"
+}

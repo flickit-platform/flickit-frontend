@@ -209,7 +209,7 @@ const BottomBox = ({
           textAlign,
         }}
       >
-        {t("analysisResults", { lng: language })}
+        {t("assessment.analysisResults", { lng: language })}
       </Typography>
 
       <Typography

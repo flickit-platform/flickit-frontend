@@ -374,7 +374,7 @@ const AssessmentKitSectionGeneralInfo = (
 
                 <OnHoverRichEditor
                   data={about}
-                  title={<Trans i18nKey="about" />}
+                  title={<Trans i18nKey="common.about" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
@@ -459,7 +459,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: attributesCount,
-                      title: t("attributesCount"),
+                      title: t("assessmentKit.attributesCount"),
                     }}
                   />
                 </Box>

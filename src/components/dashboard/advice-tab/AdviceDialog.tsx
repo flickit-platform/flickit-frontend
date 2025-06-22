@@ -108,7 +108,7 @@ const AdviceDialog = ({
               marginLeft: theme.direction === "rtl" ? "6px" : "unset",
             }}
           />
-          <Trans i18nKey="adviceAssistant" />
+          <Trans i18nKey="advice.adviceAssistant" />
         </>
       </DialogTitle>
 
@@ -221,11 +221,11 @@ const AdviceDialog = ({
                 sx={{ mr: "auto" }}
                 variant="outlined"
               >
-                <Trans i18nKey="back" />
+                <Trans i18nKey="common.back" />
               </Button>
             )}
             <Button onClick={handleClose}>
-              <Trans i18nKey="cancel" />
+              <Trans i18nKey="common.cancel" />
             </Button>
 
             <LoadingButton

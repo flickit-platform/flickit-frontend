@@ -51,7 +51,7 @@ export const DeleteConfirmationDialog = ({
         loading={false}
         onClose={onClose}
         submitButtonLabel={confirmButtonText ?? t("confirm")}
-        cancelLabel={cancelButtonText ?? t("cancel")}
+        cancelLabel={cancelButtonText ?? t("common.cancel")}
         onSubmit={onConfirm}
       />
     </CEDialog>

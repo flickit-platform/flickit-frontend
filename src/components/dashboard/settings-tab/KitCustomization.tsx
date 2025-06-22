@@ -277,7 +277,7 @@ const KitCustomization = (props: any) => {
             <Grid mt={2} container spacing={2} justifyContent="flex-end">
               <Grid item>
                 <Button onClick={onClose} data-cy="cancel">
-                  <Trans i18nKey={"cancel"} />
+                  <Trans i18nKey="common.cancel" />
                 </Button>
               </Grid>
               <Grid item>

@@ -380,7 +380,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           onClick={handleCancelEdit}
           disabled={updateKitInfoQuery.loading || editableFields.size === 0}
         >
-          <Trans i18nKey="cancel" />
+          <Trans i18nKey="common.cancel" />
         </Button>
         <Button
           variant="contained"

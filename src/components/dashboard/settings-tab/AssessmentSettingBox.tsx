@@ -64,7 +64,7 @@ interface Props {
 
 const infoFields: { key: InfoField; i18n: string }[] = [
   { key: "creator", i18n: "creator" },
-  { key: "assessmentKit", i18n: "assessmentKit" },
+  { key: "assessmentKit", i18n: "assessmentKit.assessmentKit" },
   { key: "created", i18n: "created" },
   { key: "lastModified", i18n: "lastModified" },
 ];
@@ -141,7 +141,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
             }}
           >
             <Typography sx={theme.typography.semiBoldLarge} color="#2B333B">
-              <Trans i18nKey="assessmentTitle" />
+              <Trans i18nKey="assessment.assessmentTitle" />
             </Typography>
             <Box
               sx={{
@@ -357,7 +357,7 @@ const QuickAssessmentSwitch = () => {
             values={{
               title: t(
                 assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
-                  ? "advancedAssessmentMode"
+                  ? "assessment.advancedAssessmentMode"
                   : "quickAssessmentMode",
               ),
             }}
@@ -369,7 +369,7 @@ const QuickAssessmentSwitch = () => {
           <Trans
             i18nKey={
               assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
-                ? "advancedAssessmentSwitchTitle"
+                ? "assessment.advancedAssessmentSwitchTitle"
                 : "quickAssessmentSwitchTitle"
             }
           />
@@ -382,11 +382,11 @@ const QuickAssessmentSwitch = () => {
           submitButtonLabel={t("switchTo", {
             title: t(
               assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
-                ? "advancedAssessmentMode"
+                ? "assessment.advancedAssessmentMode"
                 : "quickAssessmentMode",
             ),
           })}
-          cancelLabel={t("cancel")}
+          cancelLabel={t("common.cancel")}
           onSubmit={handleConfirmToggle}
         />
       </CEDialog>

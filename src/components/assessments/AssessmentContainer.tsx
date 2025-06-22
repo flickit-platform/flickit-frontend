@@ -147,7 +147,7 @@ const AssessmentContainer = () => {
               )
             }
           >
-            <Trans i18nKey="assessments" />
+            <Trans i18nKey="assessment.assessments" />
           </Title>
           {}
         </Box>

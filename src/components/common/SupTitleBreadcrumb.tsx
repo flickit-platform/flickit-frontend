@@ -93,28 +93,5 @@ const SupTitleBreadcrumb = (
   );
 };
 
-/**
- * fetch the passed arguments ids title
- */
-export const useSupTitleBreadcrumb = (
-  params: Record<string, string | undefined>,
-) => {
-  const { service } = useServiceContext();
-
-  const { loading, data } = useQuery({
-    service: (args, config) =>
-      service.common.getBreadcrumbInfo(args ?? params, config),
-  });
-
-  return {
-    space: !loading ? data?.space_id || "spaces" : data?.space_id,
-    assessment: !loading
-      ? data?.assessment_id || "assessments"
-      : data?.assessment_id,
-    questionnaire: !loading
-      ? data?.questionnaire_id || "questionnaires"
-      : data?.questionnaire_id,
-  };
-};
 
 export default SupTitleBreadcrumb;

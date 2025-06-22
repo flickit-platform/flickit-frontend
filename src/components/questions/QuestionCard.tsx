@@ -569,7 +569,7 @@ export const QuestionTabsTemplate = (props: any) => {
               sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Trans i18nKey="answerHistory" />
+                  <Trans i18nKey="questions.answerHistory" />
                   {` (${counts.history})`}
                 </Box>
               }
@@ -1179,7 +1179,7 @@ const AnswerTemplate = (props: {
               <Typography
                 sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
               >
-                <Trans i18nKey={"answerNeedApprove"} />
+                <Trans i18nKey="questions.answerNeedApprove" />
               </Typography>
               <Button
                 onClick={onApprove}
@@ -1193,7 +1193,7 @@ const AnswerTemplate = (props: {
                 }}
               >
                 <Typography variant="bodySmall" sx={{ color: "#fff" }}>
-                  <Trans i18nKey={"approve"} />
+                  <Trans i18nKey="common.approve" />
                 </Typography>
               </Button>
             </Box>
@@ -1226,7 +1226,7 @@ const AnswerTemplate = (props: {
           }
           onConfirm={() => goToQuestion("asc")}
           title="warning"
-          content="areYouSureYouWantSkipThisQuestion"
+          content="questions.areYouSureYouWantSkipThisQuestion"
           confirmButtonText={t("continue")}
         />
       </Box>
@@ -1967,7 +1967,7 @@ const Evidence = (props: any) => {
           setEvidencesData={setEvidencesData}
           evidenceId={evidenceId}
           evidencesQueryData={evidencesQueryData}
-          title={<Trans i18nKey={"addNewMember"} />}
+          title={<Trans i18nKey="common.addNewMember" />}
           uploadAnother={<Trans i18nKey={"uploadAnother"} />}
           uploadAttachment={<Trans i18nKey={"uploadAttachment"} />}
           fetchAttachments={fetchAttachments}
@@ -1979,7 +1979,7 @@ const Evidence = (props: any) => {
           onClose={() => setExpandedDeleteDialog(false)}
           onConfirm={deleteItem}
           title="warning"
-          content="areYouSureYouWantDeleteThisItem"
+          content="questions.areYouSureYouWantDeleteThisItem"
         />
         <DeleteConfirmationDialog
           open={expandedDeleteAttachmentDialog.expended}
@@ -1991,7 +1991,7 @@ const Evidence = (props: any) => {
           }
           onConfirm={deleteAttachment}
           title="warning"
-          content="areYouSureYouWantDeleteThisAttachment"
+          content="questions.areYouSureYouWantDeleteThisAttachment"
           confirmButtonText={t("yesDeleteIt")}
           cancelButtonText={t("letMeSeeItAgain")}
         />
@@ -2403,7 +2403,7 @@ const EvidenceDetail = (props: any) => {
                               fontSize: { xs: "10px", sm: "unset" },
                             }}
                           >
-                            <Trans i18nKey={"addAttachment"} />
+                            <Trans i18nKey={"questions.addAttachment"} />
                           </Typography>
                         ) : (
                           <Typography
@@ -2413,7 +2413,7 @@ const EvidenceDetail = (props: any) => {
                               gap: "5px",
                             }}
                           >
-                            {t("attachmentCount", { attachmentsCount })}
+                            {t("questions.attachmentCount", { attachmentsCount })}
                           </Typography>
                         )}
                         <img

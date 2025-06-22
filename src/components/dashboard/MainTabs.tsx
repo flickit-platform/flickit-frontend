@@ -43,7 +43,7 @@ const tabListTitle: TabItem[] = [
     address: "insights",
     permission: "viewAssessmentInsights",
   },
-  { label: "advice", address: "advice", permission: "createAdvice" },
+  { label: "advice.advice", address: "advice", permission: "createAdvice" },
   {
     label: "reportTitle",
     address: "report",

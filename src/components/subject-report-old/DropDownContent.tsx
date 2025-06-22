@@ -11,7 +11,7 @@ const sortOptions = [
   { value: "impact_percentage", label: t("impact") },
   {
     value: "gainedScoreLowToHigh",
-    label: `${t("gainedScore")} (${t("ascending")})`,
+    label: `${t("gainedScore")} (${t("common.ascending")})`,
   },
   {
     value: "gainedScoreHighToLow",
@@ -19,7 +19,7 @@ const sortOptions = [
   },
   {
     value: "missedScoreLowToHigh",
-    label: `${t("missedScore")} (${t("ascending")})`,
+    label: `${t("missedScore")} (${t("common.ascending")})`,
   },
   {
     value: "missedScoreHighToLow",

@@ -110,14 +110,14 @@ const AssessmentAdviceContainer = (props: any) => {
                 <Box display="flex" justifyContent="space-between">
                   <Box sx={{ ...styles.centerVH }} gap={1}>
                     <Typography variant="semiBoldLarge">
-                      <Trans i18nKey="approachToAdvice" />
+                      <Trans i18nKey="advice.approachToAdvice" />
                     </Typography>
                     {isAIGenerated && <AIGenerated />}
                   </Box>
                   <Tooltip
                     title={
                       !narrationComponent.aiEnabled && (
-                        <Trans i18nKey="AIDisabled" />
+                        <Trans i18nKey="advice.AIDisabled" />
                       )
                     }
                   >

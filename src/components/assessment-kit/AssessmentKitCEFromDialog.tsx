@@ -68,7 +68,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const { type, data = {} } = context;
   const { expertGroupId: fallbackExpertGroupId } = useParams();
   const { id, expertGroupId = fallbackExpertGroupId, languages } = data;
-  const [lang, setLang] = useState({code: "", title: ""});
+  const [lang, setLang] = useState({ code: "", title: "" });
   const defaultValues = type === "update" ? data : {};
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -92,7 +92,8 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
     setLang(languages[0]);
   };
   const fetchSampleExecl = useQuery({
-    service: (args, config) => service.assessmentKit.dsl.getExcelSample(args, config),
+    service: (args, config) =>
+      service.assessmentKit.dsl.getExcelSample(args, config),
     runOnMount: false,
   });
 
@@ -105,7 +106,9 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   useEffect(() => {
     if (languages) {
       let appLang = languages.find(
-          (item: { code: string; title: string }) => item.code == i18n.language.toUpperCase())
+        (item: { code: string; title: string }) =>
+          item.code == i18n.language.toUpperCase(),
+      );
       setLang(appLang);
     }
   }, [languages]);
@@ -181,17 +184,19 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       0,
       args?.file?.name.lastIndexOf("."),
     );
-    service.assessmentKit.dsl.convertExcelToDsl(args, config).then((res: any) => {
-      const { data } = res;
-      const zipfile = new Blob([data], { type: "application/zip" });
-      const file: any = new File([zipfile], `${fileName}.zip`, {
-        type: "application/zip",
-        lastModified: new Date().getTime(),
+    service.assessmentKit.dsl
+      .convertExcelToDsl(args, config)
+      .then((res: any) => {
+        const { data } = res;
+        const zipfile = new Blob([data], { type: "application/zip" });
+        const file: any = new File([zipfile], `${fileName}.zip`, {
+          type: "application/zip",
+          lastModified: new Date().getTime(),
+        });
+        setZippedData({ file: zipfile, name: fileName });
+        setButtonStep(1);
+        setDropNewFile([file]);
       });
-      setZippedData({ file: zipfile, name: fileName });
-      setButtonStep(1);
-      setDropNewFile([file]);
-    });
   };
 
   const handleBack = () => {
@@ -213,7 +218,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const handleSelectedChange = (e: any) => {
     const { value } = e.target;
     let adjustValue = languages.find(
-        (item: { code: string; title: string }) => item.title == value,
+      (item: { code: string; title: string }) => item.title == value,
     );
     setLang(adjustValue);
   };
@@ -279,7 +284,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               }}
               uploadService={(args: any, config: any) => {
                 setConvertData({ args, config });
-                return service.assessmentKit.dsl.convertExcelToDsl(args, config);
+                return service.assessmentKit.dsl.convertExcelToDsl(
+                  args,
+                  config,
+                );
               }}
               name="dsl_id"
               param={expertGroupId}
@@ -393,7 +401,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         >
           <RichEditorField
             name="about"
-            label={<Trans i18nKey="about" />}
+            label={<Trans i18nKey="common.about" />}
             required={true}
             defaultValue={defaultValues.about ?? ""}
           />
@@ -420,7 +428,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         }}
       >
         <Button onClick={close}>
-          <Trans i18nKey="cancel" />
+          <Trans i18nKey="common.cancel" />
         </Button>
         {type == "convert" && buttonStep == 0 && (
           <LoadingButton
@@ -495,12 +503,12 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
         <Grid item>
           <Button onClick={close} data-cy="cancel">
-            <Trans i18nKey="cancel" />
+            <Trans i18nKey="common.cancel" />
           </Button>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowErrorLog(false)}>
-            <Trans i18nKey="Back" />
+            <Trans i18nKey="common.back" />
           </Button>
         </Grid>
       </Grid>

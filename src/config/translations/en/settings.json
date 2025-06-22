@@ -1,0 +1,5 @@
+{
+  "areYouSureYouWantDeleteThisMember": "Are you sure you want to remove {{name}} from {{assessment}}?",
+  "areYouSureYouWantDeleteThisMemberInvited": "Are you sure you want to cancel the invitation sent to {{name}} for this assessment?",
+  "assignRole": "Assign role"
+}

@@ -227,7 +227,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
             </Box>
           </Tooltip>
 
-          <Tooltip title={<Trans i18nKey={"assessmentsCount"} />}>
+          <Tooltip title={<Trans i18nKey="assessment.assessmentsCount" />}>
             <Box
               sx={{
                 ...styles.centerV,

@@ -135,7 +135,7 @@ export const QuestionProgressItem = (props: any) => {
                   <Trans i18nKey="lowConfidenceAnswers" />
                 ),
                 question?.issues.isAnsweredWithoutEvidences && (
-                  <Trans i18nKey="answersWithNoEvidence" />
+                  <Trans i18nKey="dashboard.answersWithNoEvidence" />
                 ),
                 question?.issues.unresolvedCommentsCount > 0 && (
                   <>

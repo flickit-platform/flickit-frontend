@@ -152,7 +152,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
             </form>
 
             <CEDialogActions
-              cancelLabel={t("cancel")}
+              cancelLabel={t("common.cancel")}
               contactSection={socialIcon}
               submitButtonLabel={primaryActionButtonText ?? t("confirm")}
               onClose={close}

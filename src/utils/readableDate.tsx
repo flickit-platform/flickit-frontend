@@ -113,7 +113,7 @@ export const getReadableDate = (
     if (diffDays === 1) {
       relativeStr = t("tomorrow");
     } else if (diffDays === 2) {
-      relativeStr = t("afterTomorrow");
+      relativeStr = t("common.afterTomorrow");
     } else if (diffDays <= 6) {
       relativeStr = t("thisWeek");
     } else if (diffMonths === 1) {

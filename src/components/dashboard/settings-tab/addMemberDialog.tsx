@@ -238,7 +238,7 @@ const AddMemberDialog = (props: {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          <Trans i18nKey="assignRole" />
+          <Trans i18nKey="settings.assignRole" />
         </>
       </DialogTitle>
       <DialogContent
@@ -266,7 +266,7 @@ const AddMemberDialog = (props: {
           mt={1}
         >
           <Typography sx={{ whiteSpace: "noWrap" }}>
-            <Trans i18nKey={"add"} />
+            <Trans i18nKey="common.add" />
           </Typography>
           <Box width="50%">
             <FormProviderWithForm formMethods={formMethods}>
@@ -277,7 +277,7 @@ const AddMemberDialog = (props: {
             </FormProviderWithForm>
           </Box>
           <Typography sx={{ whiteSpace: "nowrap" }}>
-            <Trans i18nKey={"as"} />
+            <Trans i18nKey="common.as"/>
           </Typography>
           <FormControl sx={{ width: "40%" }}>
             <Select

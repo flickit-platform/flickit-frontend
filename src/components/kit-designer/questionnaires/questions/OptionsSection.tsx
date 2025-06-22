@@ -163,7 +163,7 @@ const OptionsSection = ({
         }}
       >
         <Typography variant="body2">
-          <Trans i18nKey="answerOptions" />
+          <Trans i18nKey="kitDesigner.answerOptions" />
         </Typography>
         <Tooltip
           title={

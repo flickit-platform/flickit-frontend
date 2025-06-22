@@ -206,7 +206,7 @@ const ExpertGroupContainer = () => {
                   {about && (
                     <>
                       <Title size="small">
-                        <Trans i18nKey="about" />
+                        <Trans i18nKey="common.about" />
                       </Title>
                       <Box
                         sx={{
@@ -970,7 +970,7 @@ const AddingNewMember = (props: any) => {
         sx={{ mb: 2, fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
         onClick={() => setOpenAddMembers((state: boolean) => !state)}
       >
-        <Trans i18nKey="addMember" />
+        <Trans i18nKey="expertGroups.addMember" />
         <Box
           sx={{
             ...styles.centerV,
@@ -1185,7 +1185,7 @@ const AssessmentKitsList = (props: any) => {
           </Box>
         }
       >
-        <Trans i18nKey="assessmentKits" />
+        <Trans i18nKey="assessmentKit.assessmentKits" />
       </Title>
       <Box mt={2}>
         <QueryData
@@ -1295,7 +1295,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                 letterSpacing: ".05rem",
               }}
             >
-              <Trans i18nKey="addNewMember" />
+              <Trans i18nKey="common.addNewMember" />
             </Title>
             <AddMember queryData={queryData} inviteeQuery={inviteeQueryData} />
           </Box>

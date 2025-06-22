@@ -1,0 +1,16 @@
+{
+  "affectedLevel": "سطح بلوغ تحت تاثیر",
+  "affectedQualityAttribute": "ویژگی کیفی تحت تاثیر",
+  "anyChangesInTheNumberOfOptionsForAPreExistingQuestion": "هر تغییر در تعداد گزینه‌ها برای یک پرسش موجود",
+  "haveAnyQuestions": "آیا پرسشی دارید؟",
+  "assessmentKit": "کیت ارزیابی",
+  "assessmentKitDescription": "برای ارزیابی وضعیت سامانه از کیت ارزیابی {{title}} استفاده شده است. این کیت {{attributesCount}} شاخص اصلی را در {{subjectsLength}} موضوع ({{subjects}}) می‌سنجد و امتیاز هر شاخص را در قالب {{maturityLevelCount}} سطح بلوغ گزارش می‌کند. این کیت شامل {{questionnairesCount}} پرسش‌نامه است که در ادامه به تفکیک بررسی می‌شوند.",
+  "assessmentKitPermissions": "مجوزهای {{assessmentKit}}",
+  "assessmentKits": "کیت‌های ارزیابی",
+  "whatIsThisKit": "این کیت چیست؟",
+  "whoNeedsThisKit": "چه کسانی به این کیت نیاز دارند؟",
+  "whenToUseThisKit": "چه زمانی از این کیت استفاده کنیم؟",
+  "attributesCount": "تعداد ویژگی‌ها",
+  "assessmentLanguage": "زبان ارزیابی",
+  "assessmentSupportsMultipleLanguages": "این کیت ارزیابی از چند زبان مختلف پشتیبانی می‌‌کند. می‌توانید زبان دلخواه خود را برای ارزیابی انتخاب کنید. سوالات ارزیابی و گزارش نهایی به این زبان نمایش داده خواهند شد."
+}

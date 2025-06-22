@@ -117,7 +117,7 @@ export const SpaceMembers = (props: any) => {
             letterSpacing: ".05rem",
           }}
         >
-          <Trans i18nKey="addNewMember" />
+          <Trans i18nKey="common.addNewMember" />
         </Title>
         <form
           onSubmit={async (e) => {
@@ -467,7 +467,7 @@ const AddMemberButton = ({ loading }: { loading: boolean }) => {
         {isSmallScreen ? (
           <AddRoundedIcon fontSize="small" />
         ) : (
-          <Trans i18nKey={"addMember"} />
+          <Trans i18nKey="expertGroups.addMember" />
         )}
       </LoadingButton>
     </InputAdornment>

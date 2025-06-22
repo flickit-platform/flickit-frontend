@@ -64,7 +64,7 @@ const AssessmentKitContainer = () => {
         renderLoading={() => <LoadingAssessmentKit />}
         render={(assessmentKitQueryData) => {
           setDocumentTitle(
-            `${t("assessmentKit")}: ${assessmentKitQueryData.title ?? ""}`,
+            `${t("assessmentKit.assessmentKit")}: ${assessmentKitQueryData.title ?? ""}`,
             config.appTitle,
           );
           return (

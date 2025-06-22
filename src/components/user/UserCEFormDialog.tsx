@@ -108,7 +108,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               multiline
               defaultValue={defaultValues.bio ?? ""}
               name="bio"
-              label={<Trans i18nKey="bio" />}
+              label={<Trans i18nKey="common.bio" />}
               isFarsi={languageDetector(defaultValues?.bio)}
             />
           </Grid>

@@ -109,7 +109,7 @@ const AssessmentKitExpertViewContainer = () => {
   }, [loaded, forceUpdate, hasActiveVersion]);
   useEffect(() => {
     setDocumentTitle(
-      `${t("assessmentKit")}: ${assessmentKitTitle ?? ""}`,
+      `${t("assessmentKit.assessmentKit")}: ${assessmentKitTitle ?? ""}`,
       config.appTitle,
     );
   }, [assessmentKitTitle]);
@@ -388,7 +388,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
               <Divider />
               <Box m={1} mt={2}>
                 <Typography variant="h6" fontWeight={"bold"} fontSize="1rem">
-                  <Trans i18nKey="attributes" />
+                  <Trans i18nKey="common.attributes" />
                 </Typography>
                 {assessmentKitSubjectDetails && (
                   <ListAccordion
@@ -821,7 +821,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
           <Trans i18nKey="deletingQuestionFromAPreExistingQuestionnaireOrAddingANewOne" />
         </Typography>
         <Typography component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="anyChangesInTheNumberOfOptionsForAPreExistingQuestion" />
+          <Trans i18nKey="assessmentKit.anyChangesInTheNumberOfOptionsForAPreExistingQuestion" />
         </Typography>
       </Box>
       <Grid container spacing={2} sx={styles.formGrid}>
@@ -914,12 +914,12 @@ const UpdateAssessmentKitDialog = (props: any) => {
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
         <Grid item>
           <Button onClick={close} data-cy="cancel">
-            <Trans i18nKey="cancel" />
+            <Trans i18nKey="common.cancel" />
           </Button>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowErrorLog(false)}>
-            <Trans i18nKey="Back" />
+            <Trans i18nKey="common.back" />
           </Button>
         </Grid>
       </Grid>
@@ -1069,7 +1069,7 @@ const SubjectQuestionList = (props: any) => {
                       height: "24px",
                     }}
                   >
-                    <Trans i18nKey="Advisable" />
+                    <Trans i18nKey="advice.advisable" />
                   </Box>
                 )}
               </Typography>
@@ -1258,7 +1258,7 @@ const QuestionnairesQuestionList = (props: any) => {
                       height: "24px",
                     }}
                   >
-                    <Trans i18nKey="advisable" />
+                    <Trans i18nKey="advice.advisable" />
                   </Box>
                 )}
               </Typography>
@@ -1312,7 +1312,7 @@ const QuestionnairesQuestionList = (props: any) => {
                           fontSize: "0.8rem",
                         }}
                       >
-                        <Trans i18nKey="affectedLevel" />
+                        <Trans i18nKey="assessmentKit.affectedLevel" />
                       </Typography>
                       <Typography
                         sx={{

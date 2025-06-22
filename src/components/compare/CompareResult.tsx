@@ -80,7 +80,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
   const assessmentKit = assessments[0].assessmentKit;
   return (
     <AlertBox severity="info" sx={{ mb: 3 }}>
-      <Trans i18nKey={"allOfTheSelectedAssessmentsUse"} />
+      <Trans i18nKey={"compare.allOfTheSelectedAssessmentsUse"} />
       <Chip
         component={Link}
         to={`/assessment-kits/${assessmentKit?.id}`}

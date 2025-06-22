@@ -687,7 +687,7 @@ const ListOfItems = ({
                               <>
                                 {!showNewQuestionForm[item.id] && (
                                   <EmptyStateQuestion
-                                    btnTitle={"addFirstQuestion"}
+                                    btnTitle={"questions.addFirstQuestion"}
                                     title={"noQuestionHere"}
                                     SubTitle={"noQuestionAtTheMoment"}
                                     onAddNewRow={() =>

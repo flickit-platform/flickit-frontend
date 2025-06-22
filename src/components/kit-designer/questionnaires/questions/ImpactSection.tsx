@@ -115,7 +115,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const fields = [
     {
       name: "attributeId",
-      label: t("attribute"),
+      label: t("kitDesigner.attribute"),
       options: fetchAttributeKit?.data?.items ?? [],
     },
     {

@@ -91,7 +91,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
                 variant="contained"
                 onClick={confirmInvitation}
               >
-                <Trans i18nKey="acceptInvitation" />
+                <Trans i18nKey="expertGroups.acceptInvitation" />
               </LoadingButton>
               <LoadingButton
                 loading={confirmInvitationQueryData.loading}

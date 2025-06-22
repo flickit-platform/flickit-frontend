@@ -183,7 +183,7 @@ const AssessmentSettingContainer = () => {
                 onClose={handleClose}
                 listOfRoles={listOfRoles}
                 assessmentId={assessmentId}
-                cancelText={<Trans i18nKey={"cancel"} />}
+                cancelText={<Trans i18nKey="common.cancel" />}
                 confirmText={<Trans i18nKey={"done"} />}
                 setChangeData={setChangeData}
               />

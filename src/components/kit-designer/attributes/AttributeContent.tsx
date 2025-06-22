@@ -19,13 +19,13 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import { MultiLangs } from "@/types";
 
 interface INewAttribute {
-  title: string,
-  description: string,
-  index: number,
-  value: number,
-  id: number | null,
-  weight: number,
-  translations: MultiLangs | null,
+  title: string;
+  description: string;
+  index: number;
+  value: number;
+  id: number | null;
+  weight: number;
+  translations: MultiLangs | null;
 }
 const AttributesContent = () => {
   const { service } = useServiceContext();
@@ -49,17 +49,20 @@ const AttributesContent = () => {
   });
 
   const postAttributeKit = useQuery({
-    service: (args, config) => service.kitVersions.attributes.create(args, config),
+    service: (args, config) =>
+      service.kitVersions.attributes.create(args, config),
     runOnMount: false,
   });
 
   const deleteAttributeKit = useQuery({
-    service: (args, config) => service.kitVersions.attributes.remove(args, config),
+    service: (args, config) =>
+      service.kitVersions.attributes.remove(args, config),
     runOnMount: false,
   });
 
   const updateKitAttribute = useQuery({
-    service: (args, config) => service.kitVersions.attributes.update(args, config),
+    service: (args, config) =>
+      service.kitVersions.attributes.update(args, config),
     runOnMount: false,
   });
 
@@ -111,7 +114,7 @@ const AttributesContent = () => {
         weight: newAttribute.weight,
         description: newAttribute.description,
         translations: newAttribute.translations,
-        subjectId: subjectId
+        subjectId: subjectId,
       };
       if (newAttribute?.id) {
         await service.kitVersions.attributes.update({
@@ -165,7 +168,7 @@ const AttributesContent = () => {
         weight: AttributeItem.weight,
         description: AttributeItem.description,
         subjectId: AttributeItem.subject.id,
-        translations: AttributeItem.translations
+        translations: AttributeItem.translations,
       };
       await updateKitAttribute.query({
         kitVersionId,
@@ -237,8 +240,8 @@ const AttributesContent = () => {
             fetchAttributeKit.loaded &&
             fetchAttributeKit.data.items.length !== 0
           }
-          mainTitle={"attributes"}
-          description={"attributesKitDesignerDescription"}
+          mainTitle="common.attributes"
+          description="kitDesigner.attributesKitDesignerDescription"
           btnTitle={"newAttribute"}
         />
         {fetchAttributeKit.loaded &&
@@ -273,8 +276,8 @@ const AttributesContent = () => {
                 !showNewAttributeForm && (
                   <EmptyState
                     btnTitle={"newAttribute"}
-                    title={"attributesListEmptyState"}
-                    SubTitle={"AttributeEmptyStateDetailed"}
+                    title="kitDesigner.attributesListEmptyState"
+                    SubTitle="kitDesigner.attributeEmptyStateDetailed"
                     onAddNewRow={handleAddNewRow}
                     disabled={subjects.length === 0}
                     disableTextBox={

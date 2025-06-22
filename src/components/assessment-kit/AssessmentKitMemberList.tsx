@@ -388,7 +388,7 @@ const AddMemberModal = (props: any) => {
       title={
         <>
           <PersonAddIcon sx={{ mr: 1 }} />
-          <Trans i18nKey="addMember" />
+          <Trans i18nKey="expertGroups.addMember" />
         </>
       }
     >
@@ -403,7 +403,7 @@ const AddMemberModal = (props: any) => {
           loading={addMemberQueryData.loading}
           type={"submit"}
           onSubmit={formMethods.handleSubmit(onSubmit)}
-          submitButtonLabel={"add"}
+          submitButtonLabel={"common.add"}
         />
       </FormProviderWithForm>
     </CEDialog>

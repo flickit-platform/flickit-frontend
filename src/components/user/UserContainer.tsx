@@ -59,7 +59,7 @@ const UserContainer = () => {
                           ml: `${is_farsi ? "8px" : 0}`,
                         }}
                       />
-                      <Trans i18nKey="account" />
+                      <Trans i18nKey="user.account" />
                     </Box>
                   }
                   value={`account`}

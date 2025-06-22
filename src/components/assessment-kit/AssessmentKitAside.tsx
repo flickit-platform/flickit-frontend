@@ -156,7 +156,7 @@ const AssessmentKitAside = (props: any) => {
               <Typography
                 sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
               >
-                <Trans i18nKey={"haveAnyQuestions"} />
+                <Trans i18nKey="assessmentKit.haveAnyQuestions" />
               </Typography>
               <Typography
                 sx={{

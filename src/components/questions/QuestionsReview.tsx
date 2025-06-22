@@ -134,7 +134,7 @@ export const Review = () => {
                   color={theme.palette.primary.main}
                 >
                   <Trans
-                    i18nKey="allQuestionsHaveBeenAnswered"
+                    i18nKey="questions.allQuestionsHaveBeenAnswered"
                     values={{
                       questionnaire: questionnaireTitle,
                     }}
@@ -168,8 +168,8 @@ export const Review = () => {
                   <Trans
                     i18nKey={
                       progress === 100
-                        ? "allQuestionsInAllQuestionnaireHaveBeenAnswered"
-                        : "allQuestionsInThisQuestionnaireHaveBeenAnswered"
+                        ? "questions.allQuestionsInAllQuestionnaireHaveBeenAnswered"
+                        : "questions.allQuestionsInThisQuestionnaireHaveBeenAnswered"
                     }
                   />
                 </Typography>
@@ -293,7 +293,7 @@ export const Review = () => {
               to={"./../../../questionnaires"}
               sx={{ display: isPermitted ? "" : "none" }}
             >
-              <Trans i18nKey="allQuestionnaires" />
+              <Trans i18nKey="questions.allQuestionnaires" />
             </Button>
             {nextQuestionnaire && (
               <Button

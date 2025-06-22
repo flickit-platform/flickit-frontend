@@ -66,7 +66,7 @@ const InviteMemberDialog = (props: PropsWithChildren<ICEDialogProps>) => {
           </Grid>
           <Grid item>
             <Button onClick={closeDialog as any}>
-              <Trans i18nKey="cancel" />
+              <Trans i18nKey="common.cancel" />
             </Button>
           </Grid>
         </Grid>

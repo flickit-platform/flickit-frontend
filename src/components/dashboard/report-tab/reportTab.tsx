@@ -54,7 +54,7 @@ const ReportTab = () => {
     },
     {
       name: "steps",
-      title: "assessmentSteps",
+      title: "assessment.assessmentSteps",
       placeholder: "writeStepsForAssessment",
     },
     {

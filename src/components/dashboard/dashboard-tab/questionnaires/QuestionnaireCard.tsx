@@ -159,13 +159,13 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
         >
           {originalItem.includes("answeredWithLowConfidence") && (
             <ErrorChip
-              i18nKey="answeredWithLowConfidence"
+              i18nKey="dashboard.answeredWithLowConfidence"
               value={answeredWithLowConfidence}
             />
           )}
           {originalItem.includes("answeredWithoutEvidence") && (
             <ErrorChip
-              i18nKey="answeredWithoutEvidence"
+              i18nKey="dashboard.answeredWithoutEvidence"
               value={answeredWithoutEvidence}
             />
           )}

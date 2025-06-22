@@ -903,7 +903,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <AccountBoxRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            <Trans i18nKey={"account"} />
+            <Trans i18nKey="user.account" />
           </ListItemText>
         </MenuItem>
         {showGroups && (

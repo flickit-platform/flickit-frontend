@@ -69,7 +69,7 @@ const TodoBox = (props: any) => {
                       <Trans i18nKey={"insightsIssues"} />
                     )}
                     {item.name == "advices" && (
-                      <Trans i18nKey={"advicesIssues"} />
+                      <Trans i18nKey="advice.advicesIssues" />
                     )}
                     {item.name == "report" && (
                       <Trans i18nKey={"reportIssues"} />
@@ -152,7 +152,7 @@ const TodoBox = (props: any) => {
                       <Trans i18nKey={"insightsIssues"} />
                     )}
                     {item.name == "advices" && (
-                      <Trans i18nKey={"advicesIssues"} />
+                      <Trans i18nKey="advice.advicesIssues" />
                     )}
                     {item.name == "report" && (
                       <Trans i18nKey={"reportIssues"} />
@@ -331,14 +331,13 @@ export const IssuesItem = ({
   const issueTextMap = {
     unanswered: value > 1 ? "needForAnswers" : "needsForAnswer",
     unapprovedAnswers:
-      value > 1 ? "answersNeedApproval" : "answerNeedsApproval",
+      value > 1 ? "dashboard.answersNeedApproval" : "dashboard.answerNeedsApproval",
     answeredWithLowConfidence:
       value > 1 ? "questionsConfidenceAnswers" : "questionConfidenceAnswer",
     withoutEvidence: value > 1 ? "lackForEvidences" : "lackForEvidence",
     unresolvedComments: value > 1 ? "UnresolvedComments" : "UnresolvedComment",
     notGenerated: "insightsNeedToBeGenerated",
-    unapproved:
-      value > 1 ? "insightsNeedApproval" : "insightNeedsApproval",
+    unapproved: value > 1 ? "insightsNeedApproval" : "insightNeedsApproval",
     expired: value > 1 ? "expiredDueToNewAnswers" : "expiredDueToNewAnswer",
     unprovidedMetadata:
       value > 1 ? "metadataAreNotProvided" : "metadataIsNotProvided",
@@ -393,7 +392,7 @@ export const IssuesItem = ({
           variant="outlined"
         >
           <Typography sx={{ ...theme.typography.labelMedium }}>
-            <Trans i18nKey="approveAll" />
+            <Trans i18nKey="common.approveAll" />
           </Typography>
         </Button>
       )}
@@ -401,7 +400,7 @@ export const IssuesItem = ({
       {name === "notGenerated" && (
         <Tooltip
           disableHoverListener={issues?.unanswered < 1}
-          title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
+          title={<Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />}
         >
           <div style={{ marginInlineStart: "auto" }}>
             <LoadingButton
@@ -425,7 +424,7 @@ export const IssuesItem = ({
         <>
           <Tooltip
             disableHoverListener={issues?.unanswered < 1}
-            title={<Trans i18nKey="allQuestonsMustBeAnsweredFirst" />}
+            title={<Trans i18nKey="dashboard.allQuestonsMustBeAnsweredFirst" />}
           >
             <div
               style={{
@@ -462,7 +461,7 @@ export const IssuesItem = ({
               <Typography
                 sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
               >
-                <Trans i18nKey="approveAll" />
+                <Trans i18nKey="common.approveAll" />
               </Typography>
             </LoadingButton>
           </Box>
@@ -495,7 +494,7 @@ export const IssuesItem = ({
             }}
           >
             <Typography sx={{ ...theme.typography.labelMedium }}>
-              <Trans i18nKey="approveAll" />
+              <Trans i18nKey="common.approveAll" />
             </Typography>
           </LoadingButton>
         </Box>

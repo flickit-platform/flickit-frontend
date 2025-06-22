@@ -1,0 +1,5 @@
+{
+  "areYouSureYouWantDeleteThisMember": "آیا مطمئن هستید که می‌خواهید {{name}} را از {{assessment}} حذف کنید؟",
+  "areYouSureYouWantDeleteThisMemberInvited": "آیا مطمئن هستید که می‌خواهید دعوت‌نامه‌ی {{name}} را برای این ارزیابی لغو کنید؟",
+  "assignRole": "تخصیص نقش"
+}

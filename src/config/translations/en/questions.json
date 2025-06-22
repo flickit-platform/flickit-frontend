@@ -1,0 +1,20 @@
+{
+  "addAttachment": "Add attachment",
+  "addDescriptionToAttachment": "Add a description for this attachment (up to 100 characters).",
+  "addFirstOption": "Add first option",
+  "addFirstQuestion": "Add first question",
+  "additionalInfo": "Additional info (optional)",
+  "advancedSettings": "Advanced settings",
+  "advancedSettingsDescription": "In this section, you can configure additional settings for this question.",
+  "allQuestionnaires": "All questionnaires",
+  "allQuestionsHaveBeenAnswered": "All questions in the <style>{{questionnaire}}</style> questionnaire have been answered.",
+  "allQuestionsInAllQuestionnaireHaveBeenAnswered": "All questions in every questionnaire have been answered. You can now view insights or choose to review other questionnaires.",
+  "allQuestionsInThisQuestionnaireHaveBeenAnswered": "To have more accurate insights, you can complete other questionnaires as well.",
+  "answerHistory": "Answer history",
+  "answerNeedApprove": "The selected answer needs approval from an assessor.",
+  "areYouSureYouWantDeleteThisAttachment": "Are you sure you want to delete this attachment?",
+  "areYouSureYouWantDeleteThisItem": "Are you sure you want to delete this item?",
+  "areYouSureYouWantSkipThisQuestion": "Your changes will be lost. Do you want to continue?",
+  "attachmentCount": "Contains {{attachmentsCount}} attachments",
+  "attachmentRequired": "Attachment file is required."
+}

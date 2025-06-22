@@ -45,7 +45,7 @@ const PremiumBox = [
 const BasicBox = [
   {
     type: "BASIC",
-    title: "basicSpace",
+    title: "spaces.basicSpace",
     subTitle: "simpleStart",
     bullets: [
       "freeToUse",

@@ -27,8 +27,8 @@ const tabMap = [
     Component: MaturityLevelsContent,
   },
   { key: "Subjects", title: "subjects", Component: SubjectsContent },
-  { key: "Attributes", title: "attributes", Component: AttributesContent },
-  { key: "Answer-Ranges", title: "answerRanges", Component: AnaweRangeContent },
+  { key: "Attributes", title: "common.attributes", Component: AttributesContent },
+  { key: "Answer-Ranges", title: "kitDesigner.answerRanges", Component: AnaweRangeContent },
   {
     key: "Measures",
     title: "kitDesignerTab.measures",

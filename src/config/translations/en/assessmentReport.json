@@ -1,0 +1,9 @@
+{
+  "accessAnyone": "Anyone with this link",
+  "accessAnyoneWithLink": "Anyone with this link",
+  "accessAnyoneDescription": "Anyone with this link can view the report.",
+  "accessRestricted": "Restricted",
+  "accessRestrictedDescription": "Only users who are added can access this link.",
+  "accessStatus": "Access status",
+  "assessmentReport": "Assessment report"
+}

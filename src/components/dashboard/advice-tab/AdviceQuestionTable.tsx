@@ -65,7 +65,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
           </Grid>
           <Grid item xs={2} md={2}>
             <Typography variant="semiBoldLarge">
-              <Trans i18nKey="affectedAttributes" />
+              <Trans i18nKey="advice.affectedAttributes" />
             </Typography>
           </Grid>
           <Grid

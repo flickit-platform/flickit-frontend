@@ -249,7 +249,9 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   const [btnState, setBtnState] = useState("");
   const addEvidenceAttachments = useQuery({
     service: (args, config) =>
-      service.questions.evidences.addAttachment(args, { signal: abortController.signal }),
+      service.questions.evidences.addAttachment(args, {
+        signal: abortController.signal,
+      }),
     runOnMount: false,
   });
   useEffect(() => {
@@ -277,7 +279,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       return setError(true);
     }
     if (!dropZoneData) {
-      return toast(t("attachmentRequired"), { type: "error" });
+      return toast(t("questions.attachmentRequired"), { type: "error" });
     }
     if (error && description.length >= 100) {
       return toast(t("max100characters"), { type: "error" });
@@ -438,7 +440,10 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 </Typography>
               </Box>
             </Typography>
-            <MyDropzone setDropZoneData={setDropZoneData} dropZoneData={dropZoneData} />
+            <MyDropzone
+              setDropZoneData={setDropZoneData}
+              dropZoneData={dropZoneData}
+            />
           </Box>
           <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
             <Typography
@@ -448,7 +453,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 paddingBottom: "1rem",
               }}
             >
-              <Trans i18nKey={"additionalInfo"} />
+              <Trans i18nKey="questions.additionalInfo" />
             </Typography>
             <TextField
               sx={{
@@ -473,7 +478,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                   padding: "5px",
                 },
               }}
-              placeholder={t(`addDescriptionToAttachment`) as string}
+              placeholder={t("questions.addDescriptionToAttachment") as string}
               error={error}
               helperText={
                 description.length >= 1 && error && description.length <= 3

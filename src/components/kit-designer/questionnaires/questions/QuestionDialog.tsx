@@ -291,10 +291,10 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
         <Box display="flex" flexDirection="column" gap={1} mt={4}>
           <Typography variant="semiBoldXLarge" gutterBottom>
-            <Trans i18nKey="advancedSettings" />
+            <Trans i18nKey="questions.advancedSettings" />
           </Typography>
           <Typography variant="bodyMedium" color="textSecondary">
-            <Trans i18nKey="advancedSettingsDescription" />
+            <Trans i18nKey="questions.advancedSettingsDescription" />
           </Typography>
         </Box>
 

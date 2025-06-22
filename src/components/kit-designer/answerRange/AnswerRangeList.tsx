@@ -506,7 +506,7 @@ const ListOfItems = ({
                   <>
                     {!showNewAnswerRangeForm[item.id] && (
                       <EmptyStateOptions
-                        btnTitle={"addFirstOption"}
+                        btnTitle={"questions.addFirstOption"}
                         title={"noOptionHere"}
                         SubTitle={"noOptionAtTheMoment"}
                         onAddNewRow={() => handleAddNewOptionClick(item.id)}

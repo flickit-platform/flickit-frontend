@@ -175,7 +175,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
           />
         </Typography>
         <Button color="primary" onClick={handleCancel}>
-          <Trans i18nKey="cancel" />
+          <Trans i18nKey="common.cancel" />
         </Button>
         <Button variant="contained" onClick={handleContinue}>
           <Trans i18nKey="yesContinue" />

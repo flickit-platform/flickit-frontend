@@ -47,7 +47,7 @@ class ErrorBoundary extends Component {
               window.location.href = "/spaces/1";
             }}
           >
-            <Trans i18nKey={"backToHome"} />
+            <Trans i18nKey="common.backToHome" />
           </Button>
         </div>
       );

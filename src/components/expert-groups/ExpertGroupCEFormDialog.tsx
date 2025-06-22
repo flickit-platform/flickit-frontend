@@ -56,7 +56,8 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
     };
   }, []);
   const seenExpertGroupQuery = useQuery({
-    service: (args, config) => service.expertGroups.info.markAsSeen({ id }, config),
+    service: (args, config) =>
+      service.expertGroups.info.markAsSeen({ id }, config),
     runOnMount: false,
     toastError: false,
   });
@@ -147,7 +148,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           <Grid item xs={12} md={8}>
             <InputFieldUC
               name="bio"
-              label={<Trans i18nKey="bio" />}
+              label={<Trans i18nKey="common.bio" />}
               defaultValue={defaultValues.bio ?? ""}
               required
             />
@@ -163,7 +164,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           <Grid item xs={12}>
             <RichEditorField
               name="about"
-              label={<Trans i18nKey="about" />}
+              label={<Trans i18nKey="common.about" />}
               defaultValue={defaultValues.about ?? ""}
               required
             />

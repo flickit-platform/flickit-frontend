@@ -154,7 +154,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             target="_blank"
             to={`./../questionnaires/${questionInfo?.questionnaire?.id}/${questionInfo?.question?.index}`}
           >
-            <Trans i18nKey="answerNow" />
+            <Trans i18nKey="subject.answerNow" />
           </Button>
         }
       >

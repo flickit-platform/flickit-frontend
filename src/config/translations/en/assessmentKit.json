@@ -1,0 +1,16 @@
+{
+  "affectedLevel": "Affected level",
+  "affectedQualityAttribute": "Affected quality attribute",
+  "anyChangesInTheNumberOfOptionsForAPreExistingQuestion": "Any changes in the number of options for a pre-existing question",
+  "haveAnyQuestions": "Got any questions?",
+  "assessmentKit": "Assessment kit",
+  "assessmentKitDescription": "To assess the system's status, the {{title}} assessment kit is used. This kit measures {{attributesCount}} main indicators across {{subjectsLength}} topics, namely {{subjects}}, and reports each indicator's score in {{maturityLevelCount}} maturity levels. The kit consists of {{questionnairesCount}} questionnaires, each of which will be reviewed separately below.",
+  "assessmentKitPermissions": "{{assessmentKit}} permissions",
+  "assessmentKits": "Assessment kits",
+  "whatIsThisKit": "<primary>What</primary> is this kit?",
+  "whoNeedsThisKit": "<primary>Who</primary> needs this kit?",
+  "whenToUseThisKit": "<primary>When</primary> to use this kit?",
+  "attributesCount": "Attributes count",
+  "assessmentLanguage": "Assessment language",
+  "assessmentSupportsMultipleLanguages": "This assessment kit supports multiple languages. A preferred language is selected, but you can change it. Your choice will set the language for the questions and the final report."
+}

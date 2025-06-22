@@ -40,7 +40,7 @@ const itemNames = [
     original: "unresolvedComments",
   },
   {
-    translate: t("answersWithNoEvidence"),
+    translate: t("dashboard.answersWithNoEvidence"),
     original: "answeredWithoutEvidence",
   },
   {
@@ -108,7 +108,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         <Typography
           sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
         >
-          <Trans i18nKey={"all"} />
+          <Trans i18nKey="common.all" />
         </Typography>
       );
     } else if (selected.length == 1) {

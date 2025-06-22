@@ -155,7 +155,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
             autoFocus={true}
             name="assessment"
             defaultValue={defaultValues ?? ""}
-            label={<Trans i18nKey="assessment" />}
+            label={<Trans i18nKey="assessment.assessment" />}
             size="medium"
             selectedOptions={assessment_kit}
             loadMore={total > PAGE_SIZE * PageCount + PAGE_SIZE}

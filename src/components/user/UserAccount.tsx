@@ -217,7 +217,7 @@ const UserAccount = () => {
           <Grid container spacing={3}>
             <Grid item md={3}>
               <Title size="small" textTransform={"none"}>
-                <Trans i18nKey="about" />
+                <Trans i18nKey="common.about" />
               </Title>
             </Grid>
             <Grid item md={9}>
@@ -239,7 +239,7 @@ const UserAccount = () => {
               </Box>
               <Box mt={2.5}>
                 <Typography variant="subLarge">
-                  <Trans i18nKey="bio" />
+                  <Trans i18nKey="common.bio" />
                 </Typography>
                 <Typography
                   sx={{

@@ -51,7 +51,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             alt={"AssessmentError"}
           />
           <Typography sx={{ ...theme.typography.semiBoldXLarge }}>
-            <Trans i18nKey="assessmentLimitExceeded" />
+            <Trans i18nKey="assessment.assessmentLimitExceeded" />
           </Typography>
         </>
       }

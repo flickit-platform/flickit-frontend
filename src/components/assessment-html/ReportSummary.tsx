@@ -273,7 +273,7 @@ const ReportCard = ({
           </Section>
 
           <Section
-            title={t("assessmentSteps", { lng: lang.code.toLowerCase() })}
+            title={t("assessment.assessmentSteps", { lng: lang.code.toLowerCase() })}
             rtlLanguage={rtlLanguage}
           >
             {assessmentProcess.steps ? (
@@ -326,10 +326,10 @@ const ReportCard = ({
       )}
 
       <Section
-        title={t("assessmentKit", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentKit.assessmentKit", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
-        {t("assessmentKitDescription", {
+        {t("assessmentKit.assessmentKitDescription", {
           lng: lang.code.toLowerCase(),
           title: assessment.assessmentKit.title,
           attributesCount: assessment.assessmentKit.attributesCount,
@@ -337,7 +337,7 @@ const ReportCard = ({
           subjects: subjects
             ?.map((elem: ISubject, index: number) =>
               index === subjects?.length - 1 && subjects?.length !== 1
-                ? t("and", { lng: lang.code.toLowerCase() }) + elem?.title
+                ? t("common.and", { lng: lang.code.toLowerCase() }) + elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,

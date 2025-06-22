@@ -32,7 +32,7 @@ const AssessmentKitPermissionsContainer = () => {
       ]}
       render={([data = {}, info = {}]) => {
         setDocumentTitle(
-          `${t("assessmentKit")}: ${info?.expertGroup?.title ?? ""}`,
+          `${t("assessmentKit.assessmentKit")}: ${info?.expertGroup?.title ?? ""}`,
           config.appTitle,
         );
         return (
@@ -114,7 +114,7 @@ const AssessmentKitPermisson = (props: any) => {
         }
       >
         <Trans
-          i18nKey={"assessmentKitPermissions"}
+          i18nKey={"assessmentKit.assessmentKitPermissions"}
           values={{ assessmentKit: title }}
         />
       </Title>
@@ -122,7 +122,7 @@ const AssessmentKitPermisson = (props: any) => {
         <MemberList
           title={"members"}
           hasBtn={true}
-          btnLabel={"addMember"}
+          btnLabel="expertGroups.addMember"
           listOfUser={items}
           query={query}
           columns={columns}

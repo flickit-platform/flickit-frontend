@@ -222,7 +222,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               {" "}
               <AutocompleteAsyncField
                 name="language"
-                label={<Trans i18nKey="assessmentAndReportLanguage" />}
+                label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
                 options={languages}
                 data-cy="language"
                 disabled={languages.length === 1}
@@ -277,7 +277,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained">
-                <Trans i18nKey="assessmentSettings" />
+                <Trans i18nKey="assessment.assessmentSettings" />
               </Button>
             </Link>
           </CEDialogActions>
@@ -311,7 +311,7 @@ const AssessmentKitField = ({
       required={true}
       defaultValue={staticData ?? defaultValue}
       disabled={!!staticData || !!defaultValue}
-      label={<Trans i18nKey="assessmentKit" />}
+      label={<Trans i18nKey="assessmentKit.assessmentKit" />}
       data-cy="assessment_kit"
       filterFields={["title", "mainLanguage"]}
     />

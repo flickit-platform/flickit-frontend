@@ -38,7 +38,7 @@ const itemNames = [
     original: "unresolvedCommentsCount",
   },
   {
-    translate: t("answersWithNoEvidence"),
+    translate: t("dashboard.answersWithNoEvidence"),
     original: "isAnsweredWithoutEvidences",
   },
 ];
