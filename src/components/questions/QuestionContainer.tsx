@@ -64,7 +64,7 @@ export const QuestionContainer = () => {
                 </Box>
               ) : (
                 <Box mt={6}>
-                  <EmptyState title={t("noQuestionAtTheMoment")} />
+                  <EmptyState title={t("questions.noQuestionAtTheMoment")} />
                 </Box>
               )}
             </Box>
@@ -106,8 +106,8 @@ export const SubmitOnSelectCheckBox = (props: any) => {
         <Trans
           i18nKey={
             isSmallerScreen
-              ? "submitAnswerAutomatically"
-              : "submitAnswerAutomaticallyAndGoToNextQuestion"
+              ? "questions.submitAnswerAutomatically"
+              : "questions.submitAnswerAutomaticallyAndGoToNextQuestion"
           }
         />
       }

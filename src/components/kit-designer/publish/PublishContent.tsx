@@ -59,11 +59,11 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       <>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="headlineSmall" fontWeight="bold">
-            <Trans i18nKey="release" />
+            <Trans i18nKey="kitDesigner.release" />
           </Typography>
         </Box>
         <Typography variant="bodyMedium">
-          <Trans i18nKey="publishDescription" />
+          <Trans i18nKey="kitDesigner.publishDescription" />
         </Typography>
         <Box
           display="flex"
@@ -72,7 +72,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           mt={4}
         >
           <Typography variant="headlineSmall" fontWeight="bold">
-            <Trans i18nKey="validation" />
+            <Trans i18nKey="common.validation" />
           </Typography>
         </Box>
         <Divider sx={{ my: 1 }} />
@@ -106,7 +106,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             >
               <CircularProgress size={24} />
               <Typography variant="bodyMedium">
-                <Trans i18nKey="loading" />
+                <Trans i18nKey="common.loading" />
               </Typography>
             </Box>
           ) : validateKitVersion?.data?.isValid ? (
@@ -118,7 +118,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             >
               <CheckCircleIcon color="inherit" />
               <Typography variant="bodyMedium">
-                <Trans i18nKey="kitValidated" />{" "}
+                <Trans i18nKey="kitDesigner.kitValidated" />{" "}
               </Typography>
             </Box>
           ) : (
@@ -131,7 +131,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               >
                 <ErrorIcon color="inherit" />
                 <Typography variant="bodyMedium" fontWeight="bold">
-                  <Trans i18nKey="kitErrorsTitle" />{" "}
+                  <Trans i18nKey="kitDesigner.kitErrorsTitle" />{" "}
                 </Typography>
               </Box>
               <ul>
@@ -165,21 +165,21 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
               variant="outlined"
               onClick={() => setDeleteDialogOpen(true)}
             >
-              <Trans i18nKey="deleteDraft" />
+              <Trans i18nKey="kitDesigner.deleteDraft" />
             </Button>
-            <Tooltip title={<Trans i18nKey="releaseNote" />}>
+            <Tooltip title={<Trans i18nKey="kitDesigner.releaseNote" />}>
               <Button
                 variant="outlined"
                 component={Link}
                 to={`/user/expert-groups/${expertGroupId}/`}
               >
-                <Trans i18nKey="close" />
+                <Trans i18nKey="common.close" />
               </Button>
             </Tooltip>
           </Box>
           <Tooltip
             disableHoverListener={validateKitVersion?.data?.isValid}
-            title={<Trans i18nKey="validateReleaseTooltip" />}
+            title={<Trans i18nKey="kitDesigner.validateReleaseTooltip" />}
           >
             <div>
               <Button
@@ -189,7 +189,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                 component={Link}
                 to={`/user/expert-groups/${expertGroupId}/assessment-kits/${kitVersion.assessmentKit.id}`}
               >
-                <Trans i18nKey="release" />
+                <Trans i18nKey="kitDesigner.release" />
               </Button>
             </div>
           </Tooltip>
@@ -198,8 +198,8 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           open={deleteDialogOpen}
           onClose={() => setDeleteDialogOpen(false)}
           onConfirm={handleDeleteDraft}
-          title="warning"
-          content="deleteDraftConfirmationMessage"
+          title="common.warning"
+          content="kitDesigner.deleteDraftConfirmationMessage"
         />
       </>
     </PermissionControl>

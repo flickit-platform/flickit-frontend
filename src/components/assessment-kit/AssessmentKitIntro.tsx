@@ -179,7 +179,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               textAlign: "justify",
             }}
             dangerouslySetInnerHTML={{
-              __html: content || t("unavailable"),
+              __html: content || t("common.unavailable"),
             }}
           />
         </Box>
@@ -196,7 +196,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               paddingX: 0,
             }}
           >
-            {showMore ? t("showLess") : t("showMore")}...
+            {showMore ? t("common.showLess") : t("common.showMore")}...
           </Button>
         )}
       </Box>

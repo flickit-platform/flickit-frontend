@@ -38,7 +38,7 @@ class ErrorBoundary extends Component {
             <img src={ErrorImage} alt="error" width="100%" />
           </div>
           <h2 style={{ opacity: 0.8 }}>
-            <Trans i18nKey={"someThingWentWrong"} />
+            <Trans i18nKey="errors.someThingWentWrong" />
           </h2>
           <Button
             variant="contained"

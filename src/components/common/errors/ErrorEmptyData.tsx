@@ -14,7 +14,7 @@ interface IErrorEmptyDataProps extends BoxProps {
 
 const ErrorEmptyData = (props: IErrorEmptyDataProps) => {
   const {
-    emptyMessage = <Trans i18nKey="thisPlaceIsEmpty" />,
+    emptyMessage = <Trans i18nKey="errors.thisPlaceIsEmpty" />,
     useIllustration = false,
     img = useIllustration ? (
       <img src="/assets/svg/noData.svg" alt="noData" />

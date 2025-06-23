@@ -100,7 +100,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     hasViewBtn,
     hideSubmitButton = false,
     hideCancelButton = false,
-    submitButtonLabel = type === "update" ? t("update") : t("create"),
+    submitButtonLabel = type === "update" ? t("common.update") : t("common.create"),
     cancelLabel = "common.cancel",
     submitAndViewButtonLabel,
     backType = "contained",
@@ -140,7 +140,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               whiteSpace: "nowrap",
             }}
           >
-            <Trans i18nKey={"moreWaysToReachUs"} />
+            <Trans i18nKey="common.moreWaysToReachUs" />
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             {contactSection.map((chat) => {

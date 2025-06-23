@@ -255,7 +255,7 @@ const SubjectAttributeCard = (props: any) => {
                   marginX={2}
                 >
                   {"("}
-                  <Trans i18nKey="weight" />: {maturityLevel?.value}
+                  <Trans i18nKey="common.weight" />: {maturityLevel?.value}
                   {")"}
                 </Typography>
               </Title>
@@ -367,9 +367,9 @@ const SubjectAttributeCard = (props: any) => {
                   },
                 }}
               >
-                <Tab label={t("impactTable")} />
+                <Tab label={t("subject.impactTable")} />
                 <Tab
-                  label={t("measureChart")}
+                  label={t("subject.measureChart")}
                   disabled={!fetchMeasures?.data?.measures?.length}
                 />
               </Tabs>
@@ -610,7 +610,7 @@ export const AttributeStatusBar = (props: any) => {
         textTransform="uppercase"
         variant="h6"
       >
-        <Trans i18nKey={isMl ? "maturityLevel" : "confidenceLevel"} />
+        <Trans i18nKey={isMl ? "common.maturityLevel" : "common.confidenceLevel"} />
       </Typography>
       <Typography
         sx={{

@@ -146,7 +146,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         </Typography>
 
         {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip title="premiumSpace" data-testid={"space-card-premium-test"}>
+          <Tooltip title="spaces.premiumSpace" data-testid={"space-card-premium-test"}>
             <Box
               component="img"
               src={premium}
@@ -174,9 +174,9 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               color={isOwner ? "primary" : "default"}
               label={
                 <>
-                  <Trans i18nKey={"ownerName"} />
+                  <Trans i18nKey="owner" />:{" "}
                   {isOwner ? (
-                    <Trans i18nKey={"you"} />
+                    <Trans i18nKey="common.you" />
                   ) : (
                     <span
                       style={{
@@ -194,7 +194,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
             />
           </Tooltip>
 
-          <Tooltip title={<Trans i18nKey={"membersCount"} />}>
+          <Tooltip title={<Trans i18nKey="common.membersCount" />}>
             <Box
               sx={{
                 ...styles.centerV,
@@ -271,7 +271,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
             />
           )}
 
-          <Tooltip title={<Trans i18nKey="spaceSetting" />}>
+          <Tooltip title={<Trans i18nKey="spaces.spaceSetting" />}>
             <IconButton
               size="small"
               component={Link}
@@ -293,7 +293,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
               setShowTooltip(false);
               e.stopPropagation();
             }}
-            title={<Trans i18nKey={"moreAction"} />}
+            title={<Trans i18nKey="common.moreAction" />}
           >
             <Box>
               <Actions
@@ -381,18 +381,18 @@ const Actions = (props: any) => {
       items={[
         isOwner && {
           icon: <EditRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="edit" />,
+          text: <Trans i18nKey="common.edit" />,
           onClick: openEditDialog,
         },
         isOwner && {
           icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="delete" />,
+          text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
         },
         !is_default_space_for_current_user &&
           !isOwner && {
             icon: <ExitToAppRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="leaveSpace" />,
+            text: <Trans i18nKey="spaces.leaveSpace" />,
             onClick: leaveSpace,
           },
       ]}

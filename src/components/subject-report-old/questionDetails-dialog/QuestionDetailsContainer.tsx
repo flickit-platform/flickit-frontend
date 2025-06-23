@@ -86,7 +86,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               textTransform: "capitalize",
             }}
           >
-            <Trans i18nKey={"hint"} />:
+            <Trans i18nKey="common.hint" />:
           </Typography>
           <Typography
             sx={{
@@ -112,7 +112,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     sx={{ ...styles.centerCH, alignItems: "flex-start", gap: 2 }}
   >
   <Typography color="#6C8093" sx={{ ...theme.typography.semiBoldMedium }}>
-  <Trans i18nKey={"selectedOption"} />:
+  <Trans i18nKey="questions.selectedOption" />:
   </Typography>
     {questionInfo?.answer?.index ? (
       <>
@@ -130,7 +130,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Box>
         <Box sx={{ ...styles.centerVH, alignSelf: "flex-end", gap: 1 }}>
           <Typography>
-            <Trans i18nKey={"yourConfidence"} />
+            <Trans i18nKey="common.yourConfidence" />
           </Typography>
           <CircleRating value={questionInfo?.answer?.confidenceLevel} />
         </Box>
@@ -159,7 +159,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         }
       >
         <AlertTitle>
-          <Trans i18nKey={"noQuestionHasBeenAnswered"} />
+          <Trans i18nKey="subject.noQuestionHasBeenAnswered" />
         </AlertTitle>
       </AlertBox>
     )}
@@ -192,7 +192,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       {...rest}
       closeDialog={close}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="questionDetails" />}
+      title={<Trans i18nKey="questions.questionDetails" />}
     >
       <Box overflow="auto" px={2}>
         <NavigationButtons
@@ -201,8 +201,8 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           isPreviousDisabled={index - 1 < 0}
           isNextDisabled={index + 2 > questionsInfo?.length}
           direction={theme.direction}
-          previousTextKey="previousQuestion"
-          nextTextKey="nextQuestion"
+          previousTextKey="questions.previousQuestion"
+          nextTextKey="questions.nextQuestion"
         />
         {renderQuestionDetails()}
         <Divider sx={{ width: "100%", my: 2 }} />
@@ -223,10 +223,10 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           startIcon={<QuestionAnswer />}
           target="_blank"
         >
-          <Trans i18nKey="goToQuestion" />
+          <Trans i18nKey="common.goToQuestion" />
         </Button>
         <LoadingButton variant="contained" onClick={closeDialog} sx={{ mx: 1 }}>
-          <Trans i18nKey="done" />
+          <Trans i18nKey="common.done" />
         </LoadingButton>
       </CEDialogActions>
     </CEDialog>

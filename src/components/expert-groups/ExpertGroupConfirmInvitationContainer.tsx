@@ -76,7 +76,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
             }}
           >
             <Title size="small" textTransform={"none"}>
-              <Trans i18nKey="youHaveBeenInvitedToExpertGroup" />
+              <Trans i18nKey="expertGroups.youHaveBeenInvitedToExpertGroup" />
             </Title>
             <Box my={3}>
               <ExpertGroupsItem data={data} disableActions={true} />
@@ -97,7 +97,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
                 loading={confirmInvitationQueryData.loading}
                 onClick={decline}
               >
-                <Trans i18nKey="decline" />
+                <Trans i18nKey="common.decline" />
               </LoadingButton>
             </Box>
           </Box>

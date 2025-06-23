@@ -38,17 +38,17 @@ const getFieldError = (
   const error = errors?.[name];
   const hasError = !!error?.type;
   const errorMessagesBaseOnErrorTypes: TErrorMessagesBaseOnErrorTypes = {
-    required: <Trans i18nKey="requiredFieldError" />,
+    required: <Trans i18nKey="errors.requiredFieldError" />,
 
     minLength: (
       <Trans
-        i18nKey="minLengthFieldError"
+        i18nKey="errors.minLengthFieldError"
         values={{ length: minLength ?? "8" }}
       />
     ),
     maxLength: (
       <Trans
-        i18nKey="maxLengthFieldError"
+        i18nKey="errors.maxLengthFieldError"
         values={{ length: maxLength ?? "8" }}
       />
     ),

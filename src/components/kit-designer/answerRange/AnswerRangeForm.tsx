@@ -63,7 +63,7 @@ const AnswerRangeForm = ({
             langCode ? newItem.translations?.[langCode]?.title ?? "" : ""
           }
           onTranslationChange={updateTranslation("title", setNewAnswerRange)}
-          label={<Trans i18nKey="title" />}
+          label={<Trans i18nKey="common.title" />}
         />
       </Box>
 

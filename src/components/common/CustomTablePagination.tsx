@@ -11,8 +11,8 @@ interface CustomTablePaginationProps {
 }
 
 const labelDisplayedRows = ({ from, to, count }: any) => {
-  const countText = count !== -1 ? count : `${t("moreThan")} ${to}`;
-  return `${from}-${to} ${t("of")} ${countText}`;
+  const countText = count !== -1 ? count : `${t("common.moreThan")} ${to}`;
+  return `${from}-${to} ${t("common.of")} ${countText}`;
 };
 
 const CustomTablePagination: React.FC<CustomTablePaginationProps> = ({
@@ -47,7 +47,7 @@ const CustomTablePagination: React.FC<CustomTablePaginationProps> = ({
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage={t("rowsPerPage")}
+        labelRowsPerPage={t("common.rowsPerPage")}
         labelDisplayedRows={labelDisplayedRows}
       />
     </Box>

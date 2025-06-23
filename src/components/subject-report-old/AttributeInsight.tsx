@@ -115,7 +115,7 @@ const AttributeInsight = ({
     <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
-          <Trans i18nKey="insight" />
+          <Trans i18nKey="common.insight" />
         </Typography>
         {editable && (
           <ActionPopup
@@ -129,7 +129,7 @@ const AttributeInsight = ({
             texts={texts}
             disablePrimaryButton={progress !== 100}
             disablePrimaryButtonText={
-              t("generateInsights.questionsArentCompleteSoAICantBeGenerated") ??
+              t("assessment.questionsArentCompleteSoAICantBeGenerated") ??
               ""
             }
           />
@@ -166,8 +166,8 @@ const AttributeInsight = ({
             }}
             infoQuery={fetchSubjectInsight.query}
             placeholder={
-              t("writeHere", {
-                title: t("insight").toLowerCase(),
+              t("common.writeHere", {
+                title: t("common.insight").toLowerCase(),
               }) ?? ""
             }
           />

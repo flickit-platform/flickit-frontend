@@ -428,7 +428,7 @@ const ListOfItems = ({
                                       "title",
                                       setTempValues,
                                     )}
-                                    label={<Trans i18nKey="title" />}
+                                    label={<Trans i18nKey="common.title" />}
                                   />
                                 ) : (
                                   <TitleWithTranslation
@@ -536,7 +536,7 @@ const ListOfItems = ({
                                     "description",
                                     setTempValues,
                                   )}
-                                  label={<Trans i18nKey="description" />}
+                                  label={<Trans i18nKey="common.description" />}
                                   multiline
                                   minRows={2}
                                   maxRows={5}
@@ -572,18 +572,18 @@ const ListOfItems = ({
                                     width: "100%",
                                   }}
                                 >
-                                  <Trans i18nKey={"questions"} />
+                                  <Trans i18nKey="common.questions" />
                                 </Typography>
                                 <Box
                                   aria-label="questionnaires"
                                   style={{
                                     width: "3.75rem",
                                     height: "3.75rem",
-                                    borderRadius: "50%", // برای دایره‌ای کردن دکمه
+                                    borderRadius: "50%",
                                     backgroundColor:
                                       item.questionsCount == 0
                                         ? theme.palette.error.main
-                                        : "#E2E5E9", // رنگ پس‌زمینه
+                                        : "#E2E5E9",
                                     color:
                                       item.questionsCount == 0
                                         ? "#FAD1D8"
@@ -678,7 +678,7 @@ const ListOfItems = ({
                                       }
                                     >
                                       <Add fontSize="small" />
-                                      <Trans i18nKey="newQuestion" />
+                                      <Trans i18nKey="kitDesigner.newQuestion" />
                                     </Button>
                                   </Box>
                                 )}
@@ -687,9 +687,9 @@ const ListOfItems = ({
                               <>
                                 {!showNewQuestionForm[item.id] && (
                                   <EmptyStateQuestion
-                                    btnTitle={"questions.addFirstQuestion"}
-                                    title={"noQuestionHere"}
-                                    SubTitle={"noQuestionAtTheMoment"}
+                                    btnTitle="questions.addFirstQuestion"
+                                    title="kitDesigner.noQuestionHere"
+                                    SubTitle="questions.noQuestionAtTheMoment"
                                     onAddNewRow={() =>
                                       handleAddNewQuestionClick(item.id)
                                     }

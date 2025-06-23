@@ -194,7 +194,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       {...rest}
       closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="save" />}
+      title={<Trans i18nKey="common.save" />}
     >
       <NavigationButtons
         onPrevious={handlePrevious}
@@ -202,8 +202,8 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         isPreviousDisabled={index - 1 < 0}
         isNextDisabled={index + 2 > kitState.questions.length}
         direction={theme.direction}
-        previousTextKey="previousQuestion"
-        nextTextKey="nextQuestion"
+        previousTextKey="questions.previousQuestion"
+        nextTextKey="questions.nextQuestion"
       />
       <FormProviderWithForm
         formMethods={formMethods}
@@ -216,10 +216,10 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       >
         <Box display="flex" flexDirection="column" gap={1}>
           <Typography variant="semiBoldXLarge" gutterBottom>
-            <Trans i18nKey="questionAndOptions" />
+            <Trans i18nKey="questions.questionAndOptions" />
           </Typography>
           <Typography variant="bodyMedium" color="textSecondary">
-            <Trans i18nKey="questionAndOptionsDescription" />
+            <Trans i18nKey="questions.questionAndOptionsDescription" />
           </Typography>
         </Box>
 
@@ -227,7 +227,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           <Grid item xs={12}>
             <MultiLangTextField
               id="question-title"
-              label={<Trans i18nKey="question" />}
+              label={<Trans i18nKey="common.question" />}
               name="title"
               value={tempValue.title}
               onChange={handleInputChange}
@@ -237,14 +237,14 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                   : ""
               }
               onTranslationChange={updateTranslation("title", setTempValue)}
-              placeholder={t("questionPlaceholder")?.toString()}
+              placeholder={t("kitDesigner.questionPlaceholder")?.toString()}
               multiline
             />
           </Grid>
           <Grid item xs={12}>
             <MultiLangTextField
               id="question-hint"
-              label={<Trans i18nKey="hint" />}
+              label={<Trans i18nKey="common.hint"/>}
               name="hint"
               value={tempValue.hint}
               onChange={handleInputChange}
@@ -264,7 +264,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
                   service.kitVersions.measures.getAll({ kitVersionId }),
               })}
               name="measure"
-              label={<Trans i18nKey="kitDesignerTab.selectMeasure" />}
+              label={<Trans i18nKey="kitDesigner.selectMeasure" />}
               getOptionLabel={(option: any) => option?.title ?? ""}
               defaultValue={formMethods.watch("measure")}
               rules={{ required: false }}
@@ -302,7 +302,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           <Grid item xs={6}>
             <Box sx={styles.centerVH}>
               <Typography variant="semiBoldMedium">
-                <Trans i18nKey="notApplicable" />
+                <Trans i18nKey="questions.notApplicable" />
               </Typography>
               <Switch
                 {...formMethods.register("mayNotBeApplicable")}
@@ -312,7 +312,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           </Grid>
           <Grid item xs={6}>
             <Typography variant="semiBoldMedium">
-              <Trans i18nKey="notAdvisable" />
+              <Trans i18nKey="questions.notAdvisable" />
             </Typography>
             <Switch
               {...formMethods.register("advisable")}
@@ -327,7 +327,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         loading={isSaving}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        submitButtonLabel="save"
+        submitButtonLabel="common.save"
         type="create"
         disablePrimaryButton={!isDirty()}
       />

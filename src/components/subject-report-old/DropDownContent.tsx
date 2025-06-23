@@ -8,22 +8,22 @@ import FormControl from "@mui/material/FormControl";
 import { theme } from "@/config/theme";
 
 const sortOptions = [
-  { value: "impact_percentage", label: t("impact") },
+  { value: "impact_percentage", label: t("common.impact") },
   {
     value: "gainedScoreLowToHigh",
-    label: `${t("gainedScore")} (${t("common.ascending")})`,
+    label: `${t("subject.gainedScore")} (${t("common.ascending")})`,
   },
   {
     value: "gainedScoreHighToLow",
-    label: `${t("gainedScore")} (${t("descending")})`,
+    label: `${t("subject.gainedScore")} (${t("common.descending")})`,
   },
   {
     value: "missedScoreLowToHigh",
-    label: `${t("missedScore")} (${t("common.ascending")})`,
+    label: `${t("subject.missedScore")} (${t("common.ascending")})`,
   },
   {
     value: "missedScoreHighToLow",
-    label: `${t("missedScore")} (${t("descending")})`,
+    label: `${t("subject.missedScore")} (${t("common.descending")})`,
   },
 ];
 
@@ -75,13 +75,13 @@ const DropdownContent = ({
             ...theme.typography.bodySmall,
           }}
         >
-          {t("orderBy")}
+          {t("common.orderBy")}
         </InputLabel>
         <Select
           labelId="sort-select-label"
           value={getSelectedValue()}
           onChange={handleSortChange}
-          input={<OutlinedInput label={t("orderBy")} />}
+          input={<OutlinedInput label={t("common.orderBy")} />}
           displayEmpty
           renderValue={(selected) => {
             const selectedOption = sortOptions.find(

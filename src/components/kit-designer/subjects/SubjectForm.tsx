@@ -114,7 +114,7 @@ const SubjectForm = ({
         />
 
         <MultiLangTextField
-          label={<Trans i18nKey="description" />}
+          label={<Trans i18nKey="common.description" />}
           name="description"
           value={newSubject.description}
           onChange={handleInputChange}

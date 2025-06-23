@@ -144,7 +144,7 @@ export const SelectField = (props: ISelectField) => {
             onClick={() => loadMoreHandler((prev: number) => prev + 1)}
             sx={{ display: "flex", justifyContent: "center" }}
           >
-            <Trans i18nKey="loadMore" />
+            <Trans i18nKey="common.loadMore" />
           </ListItemButton>
         )}
       </Select>

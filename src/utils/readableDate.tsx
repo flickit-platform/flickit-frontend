@@ -97,34 +97,34 @@ export const getReadableDate = (
     const absMonths = Math.abs(diffMonths);
 
     if (diffDays === -1) {
-      relativeStr = t("yesterday");
+      relativeStr = t("common.yesterday");
     } else if (diffDays === -2) {
       relativeStr = t("2daysAgo");
     } else if (absDays <= 6) {
-      relativeStr = t("thisWeek");
+      relativeStr = t("common.thisWeek");
     } else if (absMonths === 1) {
-      relativeStr = t("lastMonth");
+      relativeStr = t("common.lastMonth");
     } else if (absMonths > 1 && absMonths < 12) {
-      relativeStr = t("monthsAgo", { count: absMonths });
+      relativeStr = t("common.monthsAgo", { count: absMonths });
     } else {
-      relativeStr = t("lastYear");
+      relativeStr = t("common.lastYear");
     }
   } else if (diffDays > 0) {
     if (diffDays === 1) {
-      relativeStr = t("tomorrow");
+      relativeStr = t("common.tomorrow");
     } else if (diffDays === 2) {
       relativeStr = t("common.afterTomorrow");
     } else if (diffDays <= 6) {
-      relativeStr = t("thisWeek");
+      relativeStr = t("common.thisWeek");
     } else if (diffMonths === 1) {
-      relativeStr = t("nextMonth");
+      relativeStr = t("common.nextMonth");
     } else if (diffMonths > 1 && diffMonths < 12) {
-      relativeStr = t("inMonths", { count: diffMonths });
+      relativeStr = t("common.inMonths", { count: diffMonths });
     } else {
-      relativeStr = t("nextYear");
+      relativeStr = t("common.nextYear");
     }
   } else {
-    relativeStr = t("today");
+    relativeStr = t("common.today");
   }
 
   const timeStr = withTime

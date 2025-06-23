@@ -32,13 +32,13 @@ import {
 const PremiumBox = [
   {
     type: "PREMIUM",
-    title: "premiumSpace",
-    subTitle: "limitlessSpace",
+    title: "spaces.premiumSpace",
+    subTitle: "spaces.limitlessSpace",
     bullets: [
-      "paidVariesByPlan",
-      "unlimitedPremiumSpace",
-      "unlimitedAssessmentPerSpace",
-      "fullAccessToCommercialAssessmentKits",
+      "spaces.paidVariesByPlan",
+      "spaces.unlimitedPremiumSpace",
+      "spaces.unlimitedAssessmentPerSpace",
+      "spaces.fullAccessToCommercialAssessmentKits",
     ],
   },
 ];
@@ -46,12 +46,12 @@ const BasicBox = [
   {
     type: "BASIC",
     title: "spaces.basicSpace",
-    subTitle: "simpleStart",
+    subTitle: "spaces.simpleStart",
     bullets: [
-      "freeToUse",
-      "veryLimitedNumberOfSpaces",
-      "createLimitedAssessments",
-      "noCommercialAssessmentKits",
+      "spaces.freeToUse",
+      "spaces.veryLimitedNumberOfSpaces",
+      "spaces.createLimitedAssessments",
+      "spaces.noCommercialAssessmentKits",
     ],
   },
 ];
@@ -168,7 +168,7 @@ const CreateSpaceDialog = (props: any) => {
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
       <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
-        <Trans i18nKey={"selectYourSpaceType"} />
+        <Trans i18nKey="spaces.selectYourSpaceType" />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
         <Grid container spacing={{ xs: 5, sm: 10, md: 3 }}>
@@ -201,7 +201,7 @@ const CreateSpaceDialog = (props: any) => {
             onClick={() => setStep(2)}
           >
             <Typography>
-              <Trans i18nKey={"next"} />
+              <Trans i18nKey="common.next" />
             </Typography>
           </Button>
         </Box>
@@ -212,7 +212,7 @@ const CreateSpaceDialog = (props: any) => {
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
       <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
-        <Trans i18nKey="setAName" />
+        <Trans i18nKey="spaces.setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
         <Box
@@ -229,9 +229,9 @@ const CreateSpaceDialog = (props: any) => {
             <InputFieldUC
               name="title"
               defaultValue={defaultValues.title ?? ""}
-              placeholder={t("spaceName") ?? ""}
+              placeholder={t("spaces.spaceName") ?? ""}
               required
-              label={<Trans i18nKey="name" />}
+              label={<Trans i18nKey="user.name" />}
               isFocused={isFocused}
             />
           </Grid>
@@ -296,14 +296,14 @@ const CreateSpaceDialog = (props: any) => {
                 "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )",
             }}
           >
-            <Trans i18nKey="congratulation" />
+            <Trans i18nKey="spaces.congratulation" />
           </Typography>
           <Typography sx={{ ...theme.typography.bodyLarge }}>
             <Trans
               i18nKey={
                 selectedType === "PREMIUM"
-                  ? "createPremiumSpaceCongratulation"
-                  : "createBasicSpaceCongratulation"
+                  ? "spaces.createPremiumSpaceCongratulation"
+                  : "spaces.createBasicSpaceCongratulation"
               }
             />
           </Typography>
@@ -319,11 +319,11 @@ const CreateSpaceDialog = (props: any) => {
         }}
       >
         <Button onClick={close}>
-          <Trans i18nKey="close" />
+          <Trans i18nKey="common.close" />
         </Button>
         <Button onClick={goToSpace} variant="contained">
           <Typography>
-            <Trans i18nKey="goToSpace" />
+            <Trans i18nKey="spaces.goToSpace" />
           </Typography>
         </Button>
       </Box>
@@ -339,7 +339,7 @@ const CreateSpaceDialog = (props: any) => {
           <>
             <CreateNewFolderRoundedIcon sx={{ marginInlineEnd: 1 }} />
             <Trans
-              i18nKey={type === "update" ? "updateSpace" : "createSpace"}
+              i18nKey={type === "update" ? "spaces.updateSpace" : "spaces.createSpace"}
             />
             <IconButton
               sx={{ color: "#fff", marginInlineStart: "auto" }}
@@ -505,7 +505,7 @@ const BoxType = ({
                     display: "inline-block",
                   }}
                 >
-                  (<Trans i18nKey="reachedLimit" />)
+                  (<Trans i18nKey="spaces.reachedLimit" />)
                 </Typography>
               )}
             </Typography>
@@ -527,7 +527,7 @@ const BoxType = ({
         >
           <InfoOutlinedIcon fontSize="small" />
           <Typography sx={{ ...theme.typography.labelSmall }}>
-            <Trans i18nKey="spacePremiumInfo" />
+            <Trans i18nKey="spaces.spacePremiumInfo" />
           </Typography>
         </Box>
       )}

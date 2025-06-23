@@ -110,7 +110,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data, language }) => {
               fill="#333"
               direction="rtl"
             >
-              {t("consideredSubjects", { lng: language })}
+              {t("subject.consideredSubjects", { lng: language })}
             </text>
           </>
         )}

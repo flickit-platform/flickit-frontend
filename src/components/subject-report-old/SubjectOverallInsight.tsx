@@ -106,7 +106,7 @@ const SubjectOverallInsight = ({
     <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
-          <Trans i18nKey="insight" />
+          <Trans i18nKey="common.insight" />
         </Typography>
         {editable && (
           <ActionPopup
@@ -155,8 +155,8 @@ const SubjectOverallInsight = ({
             }}
             infoQuery={fetchSubjectInsight.query}
             placeholder={
-              t("writeHere", {
-                title: t("insight").toLowerCase(),
+              t("common.writeHere", {
+                title: t("common.insight").toLowerCase(),
               }) ?? ""
             }
           />

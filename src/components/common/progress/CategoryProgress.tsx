@@ -12,8 +12,8 @@ interface IQuestionnaireProgress extends BoxProps {
 }
 
 const progressToLabelMap: Record<number, string> = {
-  0: "notStarted",
-  100: "completed",
+  0: "common.notStarted",
+  100: "common.completed",
 };
 
 const progressToColorMap: Record<number, LinearProgressProps["color"]> = {
@@ -49,7 +49,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
               ...theme.typography.semiBoldSmall,
               position:"relative", [is_farsi ? "left" : "right"]: "-16px"}}
           >
-            <Trans i18nKey={progressToLabelMap[progress] ?? "inProgress"} />
+            <Trans i18nKey={progressToLabelMap[progress] ?? "common.inProgress"} />
           </Typography>
       </Box>
     </Box>

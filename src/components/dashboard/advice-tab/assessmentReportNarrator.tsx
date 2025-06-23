@@ -60,7 +60,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
               );
             }}
             infoQuery={fetchAdviceNarration.query}
-            placeholder={t("writeYourOwnAdvices") ?? ""}
+            placeholder={t("advice.writeYourOwnAdvices") ?? ""}
           />
           {aboutSection?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>

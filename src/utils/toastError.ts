@@ -24,7 +24,7 @@ const toastError = (
   options?: IToastErrorOptions,
 ) => {
   if (typeof err === "boolean" && err) {
-    toast.error(t("someThingWentWrong") as string);
+    toast.error(t("errors.someThingWentWrong") as string);
     return;
   }
   if (typeof err === "string") {

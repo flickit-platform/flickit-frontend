@@ -6,5 +6,17 @@
   "advisable": "Advisable",
   "affectedAttributes": "Affected attributes",
   "AIDisabled": "AI advice generation is currently disabled. You won't be able to use this feature at this time.",
-  "approachToAdvice": "Advice approach"
+  "approachToAdvice": "Advice approach",
+  "currentStage": "Current stage",
+  "deleteItemConfirmation": "Are you sure you want to remove <title>{{title}}</title> from the advice items?",
+  "fromTo": "From <fromStyle>{{fromTitle}}</fromStyle> to <toStyle>{{toTitle}}</toStyle>",
+  "generateAdvicesViaAI": "Generate all via AI",
+  "newActionItem": "New action item",
+  "noActionYet": "No action items yet!",
+  "regenerateAdvicesViaAI": "Regenerate all via AI",
+  "reviewAdvice": "Based on the goal setting established in the previous section, the responses to the questionnaires will be reviewed. From there, questions will be selected that directly align with the chosen goals, where improving these areas will have the most significant impact on achieving the defined objectives.",
+  "suggestedActionItems": "Suggested action items",
+  "weightValue": " W:{{weight}}",
+  "whichAttYouWant": "Decide how much you want each attribute to improve. The Advice Generator will identify which assessment questions require improvement and will provide recommendations based on those questions.",
+  "writeYourOwnAdvices": "Describe the approach behind your advice. Explain how it’s based on the assessment and goals."
 }

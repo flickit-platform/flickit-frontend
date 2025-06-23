@@ -167,7 +167,8 @@ const OptionsSection = ({
         </Typography>
         <Tooltip
           title={
-            fetchAnswerRanges?.data?.items.length === 0 && t("emptyAnswerRange")
+            fetchAnswerRanges?.data?.items.length === 0 &&
+            t("kitDesigner.emptyAnswerRange")
           }
         >
           <Select
@@ -179,7 +180,7 @@ const OptionsSection = ({
             disabled={fetchAnswerRanges?.data?.items?.length === 0}
           >
             <MenuItem value="" disabled>
-              <Trans i18nKey="chooseAnswerRange" />
+              <Trans i18nKey="kitDesigner.chooseAnswerRange" />
             </MenuItem>
             {fetchAnswerRanges?.data?.items?.map((range: any) => (
               <MenuItem
@@ -222,12 +223,12 @@ const OptionsSection = ({
             />
           ) : (
             <EmptyState
-              btnTitle="newOption"
-              title="optionsEmptyState"
-              SubTitle="optionsEmptyStateDetailed"
+              btnTitle="kitDesigner.newOption"
+              title="kitDesigner.optionsEmptyState"
+              SubTitle="kitDesigner.optionsEmptyStateDetailed"
               onAddNewRow={handleAddNewRow}
               disabled={Boolean(selectedAnswerRange)}
-              disableTextBox={<Trans i18nKey={"emptyAnswerRange"} />}
+              disableTextBox={<Trans i18nKey="kitDesigner.emptyAnswerRange" />}
             />
           )}
         </>

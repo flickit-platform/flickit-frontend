@@ -67,13 +67,13 @@ const OptionForm = ({
             langCode ? (newItem.translations?.[langCode]?.title ?? "") : ""
           }
           onTranslationChange={updateTranslation("title", setNewOptions)}
-          label={<Trans i18nKey="title" />}
+          label={<Trans i18nKey="common.title" />}
         />
       </Box>
       <Box sx={{ width: { xs: "20%", md: "10%" } }}>
         <TextField
           required
-          label={<Trans i18nKey="value" />}
+          label={<Trans i18nKey="common.value" />}
           name="value"
           value={newItem.value}
           onChange={handleInputChange}

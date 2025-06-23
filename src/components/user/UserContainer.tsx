@@ -74,7 +74,7 @@ const UserContainer = () => {
                           ml: `${is_farsi ? "8px" : 0}`,
                         }}
                       />
-                      <Trans i18nKey="expertGroups" />
+                      <Trans i18nKey="expertGroups.expertGroups" />
                     </Box>
                   }
                   value="expert-groups"
@@ -112,7 +112,7 @@ const SignOut = () => {
           dispatch(authActions.signOut());
         }}
       >
-        <Trans i18nKey="signOut" />
+        <Trans i18nKey="common.signOut" />
       </Button>
     </Box>
   );

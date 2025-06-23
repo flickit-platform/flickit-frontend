@@ -23,11 +23,11 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 
 const generalFields = [
-  { name: "title", label: "title", multiline: false, useRichEditor: false },
-  { name: "summary", label: "summary", multiline: false, useRichEditor: false },
-  { name: "about", label: "what", multiline: true, useRichEditor: true },
-  { name: "goal", label: "when", multiline: true, useRichEditor: true },
-  { name: "context", label: "who", multiline: true, useRichEditor: true },
+  { name: "title", label: "common.title", multiline: false, useRichEditor: false },
+  { name: "summary", label: "common.summary", multiline: false, useRichEditor: false },
+  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
+  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
+  { name: "context", label: "common.who", multiline: true, useRichEditor: true },
 ] as const;
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
@@ -301,12 +301,12 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="headlineSmall" fontWeight="bold">
-          <Trans i18nKey="general" />
+          <Trans i18nKey="common.general" />
         </Typography>
       </Box>
 
       <Typography variant="bodyMedium">
-        <Trans i18nKey="kitDesignerTab.generalDescription" />
+        <Trans i18nKey="kitDesigner.generalDescription" />
       </Typography>
 
       <Divider sx={{ my: 2 }} />
@@ -321,7 +321,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             <Stack spacing={2}>
               <Box sx={{ ...styles.centerV }} gap={2}>
                 <Typography variant="semiBoldLarge">
-                  <Trans i18nKey="kitDesignerTab.availableLanguages" />:
+                  <Trans i18nKey="kitDesigner.availableLanguages" />:
                 </Typography>
                 <LanguageSelectorChips
                   mainLanguage={data.mainLanguage}
@@ -390,7 +390,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           {updateKitInfoQuery.loading ? (
             <Trans i18nKey="saving" />
           ) : (
-            <Trans i18nKey="saveChanges" />
+            <Trans i18nKey="common.saveChanges" />
           )}
         </Button>
       </Box>

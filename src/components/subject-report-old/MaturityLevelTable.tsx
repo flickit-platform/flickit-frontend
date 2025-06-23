@@ -88,21 +88,21 @@ const columns: TableColumn[] = [
   {
     field: "questionnaire",
     serverKey: "questionnaire",
-    label: "questionnaire",
+    label: "common.questionnaire",
     sortable: true,
     width: "130px",
   },
   {
     field: "question",
     serverKey: "question",
-    label: "question",
+    label: "common.question",
     sortable: false,
     width: "300px",
   },
   {
     field: "gainedScore",
     serverKey: "gained_score",
-    label: "score",
+    label: "common.score",
     sortable: true,
     align: "center",
     width: "285px",
@@ -110,7 +110,7 @@ const columns: TableColumn[] = [
   {
     field: "confidence",
     serverKey: "confidence",
-    label: "confidence",
+    label: "common.confidence",
     sortable: true,
     align: "center",
     width: "20px",
@@ -118,7 +118,7 @@ const columns: TableColumn[] = [
   {
     field: "evidenceCount",
     serverKey: "evidence_count",
-    label: "evidence",
+    label: "common.evidence",
     sortable: true,
     align: "center",
     width: "20px",
@@ -333,9 +333,9 @@ const MaturityLevelTable = ({
       }}
     >
       {[
-        { label: "maxPossibleScore", value: maxPossibleScore },
-        { label: "gainedScores", value: gainedScore },
-        { label: "questionsCount", value: questionsCount },
+        { label: "subject.maxPossibleScore", value: maxPossibleScore },
+        { label: "subject.gainedScores", value: gainedScore },
+        { label: "common.questions", value: questionsCount },
       ].map((item, index) => (
         <Grid
           item
@@ -511,7 +511,7 @@ const MaturityLevelTable = ({
           sx={{ textAlign: "center" }}
         >
           <Typography>
-            <Trans i18nKey="noQuestionAvailableForThisMaturity" />
+            <Trans i18nKey="subject.noQuestionAvailableForThisMaturity" />
           </Typography>
         </TableCell>
       )}
@@ -533,9 +533,9 @@ const MaturityLevelTable = ({
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={t("rowsPerPage")}
+          labelRowsPerPage={t("common.rowsPerPage")}
           labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to}  ${t("of")} ${count !== -1 ? count : `${t("moreThan")} ${to}`}`
+            `${from}-${to}  ${t("common.of")} ${count !== -1 ? count : `${t("common.moreThan")} ${to}`}`
           }
         />
       </TableContainer>

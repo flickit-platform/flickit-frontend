@@ -135,8 +135,8 @@ const AssessmentAdviceContainer = (props: any) => {
                         <Trans
                           i18nKey={
                             isAIGenerated
-                              ? "regenerateAdvicesViaAI"
-                              : "generateAdvicesViaAI"
+                              ? "advice.regenerateAdvicesViaAI"
+                              : "advice.generateAdvicesViaAI"
                           }
                         />
                         <FaWandMagicSparkles

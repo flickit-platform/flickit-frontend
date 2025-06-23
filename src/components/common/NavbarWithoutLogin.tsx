@@ -97,7 +97,7 @@ const NavbarWithoutLogin = () => {
               }}
               size="small"
             >
-              <Trans i18nKey="home" />
+              <Trans i18nKey="common.home" />
             </Button>
           )}
           <Button
@@ -115,7 +115,7 @@ const NavbarWithoutLogin = () => {
             }}
             size="small"
           >
-            <Trans i18nKey="kitLibrary" />
+            <Trans i18nKey="common.kitLibrary" />
           </Button>
         </Box>
         <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
@@ -143,7 +143,7 @@ const NavbarWithoutLogin = () => {
               },
             }}
           >
-            <Trans i18nKey={"login"} />
+            <Trans i18nKey="common.login" />
           </Button>
           <Button
             variant={"contained"}
@@ -160,7 +160,7 @@ const NavbarWithoutLogin = () => {
               },
             }}
           >
-            <Trans i18nKey={"createAccount"} />
+            <Trans i18nKey="common.createAccount" />
           </Button>
         </Box>
       </Toolbar>

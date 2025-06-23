@@ -191,18 +191,18 @@ const AssessmentReportContainer = (props: any) => {
                     maturity_level_status={maturityLevel?.title}
                     level_value={maturityLevel?.index ?? 0}
                     confidence_value={confidenceValue}
-                    confidence_text={t("confidence") + ":"}
+                    confidence_text={t("common.confidence") + ":"}
                     hideGuidance={true}
                     maxWidth="180px"
                     maturity_status_guide_variant="bodyMedium"
                     m="auto"
-                    maturity_status_guide={t("overallStatus")}
+                    maturity_status_guide={t("assessmentReport.overallStatus")}
                   />
                 </Box>
               </Box>
 
               <Typography color="#73808C" variant="semiBoldMedium">
-                <Trans i18nKey="subjects" />
+                <Trans i18nKey="common.subjects" />
               </Typography>
               <AssessmentSubjectList
                 maturityLevelCount={kit?.maturityLevelsCount ?? 5}

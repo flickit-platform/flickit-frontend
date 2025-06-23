@@ -138,9 +138,9 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
               m: 0.2,
             }}
           >
-            <Trans i18nKey="used" />:{" "}
+            <Trans i18nKey="common.used" />:{" "}
             <Box component="span" color="black" textTransform="lowercase">
-              {data.assessmentsCount} <Trans i18nKey="times" />
+              {data.assessmentsCount} <Trans i18nKey="common.times" />
             </Box>
           </Box>
         </Box>

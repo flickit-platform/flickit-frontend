@@ -92,7 +92,7 @@ const QuestionnairesContent = () => {
         title: newQuestionnaires.title,
         weight: newQuestionnaires.weight,
         description: newQuestionnaires.description,
-        translations: newQuestionnaires.translations
+        translations: newQuestionnaires.translations,
       };
       if (newQuestionnaires.id) {
         await service.kitVersions.questionnaires.update({
@@ -202,14 +202,14 @@ const QuestionnairesContent = () => {
             fetchQuestionnairesKit.loaded &&
             fetchQuestionnairesKit.data.items.length !== 0
           }
-          btnTitle={"newQuestionnaire"}
-          mainTitle={"questionnaires"}
-          description={"questionnairesKitDesignerDescription"}
+          btnTitle="kitDesigner.newQuestionnaire"
+          mainTitle="common.questionnaires"
+          description="kitDesigner.questionnairesKitDesignerDescription"
         />
         {fetchQuestionnairesKit.loaded &&
         fetchQuestionnairesKit.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
-            <Trans i18nKey="changeOrderHelper" />
+            <Trans i18nKey="kitDesigner.changeOrderHelper" />
           </Typography>
         ) : null}
         <Divider sx={{ my: 1 }} />
@@ -232,9 +232,9 @@ const QuestionnairesContent = () => {
                 ) : (
                   !showNewQuestionnairesForm && (
                     <EmptyState
-                      btnTitle={"newQuestionnaire"}
-                      title={"questionnairesListEmptyState"}
-                      SubTitle={"questionnairesEmptyStateDetailed"}
+                      btnTitle="kitDesigner.newQuestionnaire"
+                      title="kitDesigner.questionnairesListEmptyState"
+                      SubTitle="kitDesigner.questionnairesEmptyStateDetailed"
                       onAddNewRow={handleAddNewRow}
                     />
                   )

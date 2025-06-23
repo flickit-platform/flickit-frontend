@@ -207,7 +207,7 @@ const OptionList = (props: OptionListProps) => {
                               },
                               "& .MuiFormLabel-root": { fontSize: 14 },
                             }}
-                            label={<Trans i18nKey="title" />}
+                            label={<Trans i18nKey="common.title" />}
                           />
                         ) : (
                           <Box sx={{ display: "flex", flexGrow: 1 }}>
@@ -239,7 +239,7 @@ const OptionList = (props: OptionListProps) => {
                             }
                             variant="outlined"
                             size="small"
-                            label={<Trans i18nKey="value" />}
+                            label={<Trans i18nKey="common.value" />}
                             sx={{
                               fontSize: 14,
                               "& .MuiInputBase-root": {
@@ -251,7 +251,7 @@ const OptionList = (props: OptionListProps) => {
                           />
                         ) : (
                           <Chip
-                            label={t("value") + ": " + item.value}
+                            label={t("common.value") + ": " + item.value}
                             color="primary"
                             size="small"
                             sx={{ ml: 2, fontSize: 12 }}
@@ -319,7 +319,7 @@ const OptionList = (props: OptionListProps) => {
             size="small"
           >
             <Add fontSize="small" />
-            <Trans i18nKey="newOption" />
+            <Trans i18nKey="kitDesigner.newOption" />
           </Button>
         </Box>
       )}

@@ -70,7 +70,7 @@ const QuestionForm = ({
     <Box width="100%" mx={1}>
       <TextField
         required
-        label={<Trans i18nKey="title" />}
+        label={<Trans i18nKey="common.title" />}
         name="title"
         value={newItem.title}
         onChange={handleInputChange}

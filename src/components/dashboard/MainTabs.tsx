@@ -32,20 +32,20 @@ type TabItem = {
 };
 
 const tabListTitle: TabItem[] = [
-  { label: "dashboard", address: "dashboard", permission: "viewDashboard" },
+  { label: "dashboard.dashboard", address: "dashboard", permission: "viewDashboard" },
   {
-    label: "questions",
+    label: "common.questions",
     address: "questionnaires",
     permission: "viewAssessmentQuestionnaireList",
   },
   {
-    label: "insights",
+    label: "common.insights",
     address: "insights",
     permission: "viewAssessmentInsights",
   },
   { label: "advice.advice", address: "advice", permission: "createAdvice" },
   {
-    label: "reportTitle",
+    label: "assessmentReport.reportTitle",
     address: "report",
     permission: "manageReportMetadata",
   },

@@ -127,7 +127,7 @@ export const Review = () => {
                   mb={1}
                   color={theme.palette.primary.main}
                 >
-                  <Trans i18nKey="goodJob" />
+                  <Trans i18nKey="questions.goodJob" />
                 </Typography>
                 <Typography
                   variant="headlineSmall"
@@ -186,7 +186,7 @@ export const Review = () => {
                     color: "#D81E5B",
                   }}
                 >
-                  <Trans i18nKey="hmmm" />
+                  <Trans i18nKey="questions.hmmm" />
                 </Typography>
                 <Typography
                   variant="h4"
@@ -198,7 +198,7 @@ export const Review = () => {
                   }}
                 >
                   <Trans
-                    i18nKey="noQuestionsHaveBeenAnswered"
+                    i18nKey="questions.noQuestionsHaveBeenAnswered"
                     values={{ questionnaire: questionnaireTitle }}
                   />
                 </Typography>
@@ -211,7 +211,7 @@ export const Review = () => {
                     color: "#0A2342",
                   }}
                 >
-                  <Trans i18nKey="weHighlyRecommendAnsweringMoreQuestions" />
+                  <Trans i18nKey="questions.weHighlyRecommendAnsweringMoreQuestions" />
                 </Typography>
               </>
             )}
@@ -227,7 +227,7 @@ export const Review = () => {
                       color: "#F9A03F",
                     }}
                   >
-                    <Trans i18nKey="nice" />
+                    <Trans i18nKey="questions.nice" />
                   </Typography>
                   <Typography
                     variant="h4"
@@ -239,7 +239,7 @@ export const Review = () => {
                     }}
                   >
                     <Trans
-                      i18nKey="youAnsweredQuestionOf"
+                      i18nKey="questions.youAnsweredQuestionOf"
                       values={{
                         answeredQuestions: answeredQuestions,
                         totalQuestions:
@@ -275,7 +275,7 @@ export const Review = () => {
                       color: "#0A2342",
                     }}
                   >
-                    <Trans i18nKey="someQuestionsHaveNotBeenAnswered" />
+                    <Trans i18nKey="questions.someQuestionsHaveNotBeenAnswered" />
                   </Typography>
                 </>
               )}
@@ -307,7 +307,7 @@ export const Review = () => {
                   (nextQuestionnaire?.nextQuestion ?? 1)
                 }
               >
-                <Trans i18nKey="nextQuestionnaire" />
+                <Trans i18nKey="questions.nextQuestionnaire" />
               </Button>
             )}
           </Box>

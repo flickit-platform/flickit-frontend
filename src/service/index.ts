@@ -31,7 +31,7 @@ export const createService = (
 ) => {
   axios.defaults.baseURL = BASE_URL;
   axios.defaults.withCredentials = true;
-  axios.defaults.timeoutErrorMessage = t("checkNetworkConnection") as string;
+  axios.defaults.timeoutErrorMessage = t("common.checkNetworkConnection") as string;
 
   axios.interceptors.request.use(async (req: any) => {
     if (req.skipAuth && !keycloakService.getToken()) {

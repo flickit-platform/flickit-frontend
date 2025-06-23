@@ -147,7 +147,7 @@ const Uploader = (props: IUploadProps) => {
   useEffect(() => {
     if (maxSize) {
       setLimitGuide(
-        t("maximumUploadFileSize", {
+        t("errors.maximumUploadFileSize", {
           maxSize: maxSize ? formatBytes(maxSize) : "2 MB",
         }) as string,
       );
@@ -237,14 +237,14 @@ const Uploader = (props: IUploadProps) => {
         if (error.find((e) => e.code === "file-too-large")) {
           errors[fieldProps.name] = {
             type: "maxSize",
-            message: t("maximumUploadFileSize", {
+            message: t("errors.maximumUploadFileSize", {
               maxSize: maxSize ? formatBytes(maxSize) : "2 MB",
             }) as string,
           };
         } else if (rejectedFiles.length == 1 && error[0]?.message) {
           toastError(error?.pop()?.message as string);
         } else {
-          toastError(t("oneFileOnly") as string);
+          toastError(t("errors.oneFileOnly") as string);
         }
       }
     },
@@ -389,7 +389,7 @@ const Uploader = (props: IUploadProps) => {
                 {!hideDropText && (
                   <>
                     {" "}
-                    <Trans i18nKey="dropYourFileHere" />
+                    <Trans i18nKey="common.dropYourFileHere" />
                   </>
                 )}
               </Box>

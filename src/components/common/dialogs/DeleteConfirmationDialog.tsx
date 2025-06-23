@@ -31,7 +31,7 @@ export const DeleteConfirmationDialog = ({
       title={
         <>
           <Warning />
-          <Trans i18nKey="warning" />
+          <Trans i18nKey="common.warning" />
         </>
       }
       maxWidth="sm"
@@ -50,7 +50,7 @@ export const DeleteConfirmationDialog = ({
         type="delete"
         loading={false}
         onClose={onClose}
-        submitButtonLabel={confirmButtonText ?? t("confirm")}
+        submitButtonLabel={confirmButtonText ?? t("common.confirm")}
         cancelLabel={cancelButtonText ?? t("common.cancel")}
         onSubmit={onConfirm}
       />

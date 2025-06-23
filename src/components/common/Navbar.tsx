@@ -250,7 +250,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   }}
                 />
               </IconButton>
-              <Trans i18nKey="notificationDetails" />
+              <Trans i18nKey="notification.notificationDetails" />
             </Typography>
           </Box>
 
@@ -333,7 +333,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
               <Typography variant="bodyMedium" color="#2466A8">
-                <Trans i18nKey="notificationEmptyState" />
+                <Trans i18nKey="notification.notificationEmptyState" />
               </Typography>
             </Box>
           }
@@ -452,7 +452,7 @@ const Navbar = () => {
             component={NavLink}
             to="/spaces/1"
           >
-            <ListItemText primary={<Trans i18nKey="spaces" />} />
+            <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
           </ListItemButton>
         </ListItem>
         <QueryData
@@ -508,7 +508,7 @@ const Navbar = () => {
             component={NavLink}
             to={`/compare`}
           >
-            <ListItemText primary={<Trans i18nKey="compare" />} />
+            <ListItemText primary={<Trans i18nKey="compare.compare" />} />
           </ListItemButton>
         </ListItem> */}
         <ListItem disablePadding>
@@ -517,7 +517,7 @@ const Navbar = () => {
             component={NavLink}
             to={`/assessment-kits`}
           >
-            <ListItemText primary={<Trans i18nKey="kitLibrary" />} />
+            <ListItemText primary={<Trans i18nKey="common.kitLibrary" />} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -603,7 +603,7 @@ const Navbar = () => {
               }}
               size="small"
             >
-              <Trans i18nKey="compare" />
+              <Trans i18nKey="compare.compare" />
             </Button> */}
             <Button
               component={NavLink}
@@ -622,7 +622,7 @@ const Navbar = () => {
               }}
               size="small"
             >
-              <Trans i18nKey="kitLibrary" />
+              <Trans i18nKey="common.kitLibrary" />
             </Button>
           </Box>
           <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
@@ -775,7 +775,7 @@ const SpacesButton = (props: any) => {
           </Box>
         }
       >
-        <Trans i18nKey={"spaces"} />
+        <Trans i18nKey="spaces.spaces" />
       </Button>
 
       <Menu
@@ -801,7 +801,7 @@ const SpacesButton = (props: any) => {
                   variant="subMedium"
                   sx={{ px: 1.2, py: 0.3, opacity: 0.8 }}
                 >
-                  <Trans i18nKey={"recentSpaces"} />
+                  <Trans i18nKey="spaces.recentSpaces" />
                 </Typography>
                 {items.slice(0, 5).map((space: any) => {
                   return (
@@ -832,7 +832,7 @@ const SpacesButton = (props: any) => {
           component={NavLink}
           to={`/spaces/1`}
         >
-          <Trans i18nKey={"spaceDirectory"} />
+          <Trans i18nKey="spaces.spaceDirectory" />
         </MenuItem>
       </Menu>
     </>
@@ -918,7 +918,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             </ListItemIcon>
             <ListItemText>
               {" "}
-              <Trans i18nKey={"expertGroups"} />
+              <Trans i18nKey="expertGroups.expertGroups" />
             </ListItemText>
           </MenuItem>
         )}
@@ -934,8 +934,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
             <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {" "}
-            <Trans i18nKey={"signOut"} />
+            <Trans i18nKey="common.signOut" />
           </ListItemText>
         </MenuItem>
       </Menu>

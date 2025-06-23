@@ -50,7 +50,7 @@ const TitleBox = ({ language }: { language: string }) => (
         ...styles.rtlStyle(language === "fa"),
       }}
     >
-      {t("how_was_this_report_built", {
+      {t("assessmentReport.how_was_this_report_built", {
         lng: language,
       })}
     </Typography>
@@ -193,7 +193,7 @@ const QuestionnaireList = ({
             }}
           >
             {item.questionCount}{" "}
-            {t("question", { lng: graphicalReport?.lang.code.toLowerCase() })}
+            {t("common.question", { lng: graphicalReport?.lang.code.toLowerCase() })}
           </Typography>
           <Divider
             orientation="vertical"
@@ -255,7 +255,7 @@ const ReportCard = ({
       {isAdvanceMode && (
         <>
           <Section
-            title={t("disclaimer", { lng: lang.code.toLowerCase() })}
+            title={t("assessmentReport.disclaimer", { lng: lang.code.toLowerCase() })}
             rtlLanguage={rtlLanguage}
           >
             <Typography
@@ -268,7 +268,7 @@ const ReportCard = ({
                 textAlign: "justify",
               }}
             >
-              {t("disclaimerDescription", { lng: lang.code.toLowerCase() })}
+              {t("assessmentReport.disclaimerDescription", { lng: lang.code.toLowerCase() })}
             </Typography>
           </Section>
 
@@ -289,16 +289,16 @@ const ReportCard = ({
                 dangerouslySetInnerHTML={{
                   __html:
                     assessmentProcess.steps ??
-                    t("unavailable", { lng: lang.code.toLowerCase() }),
+                    t("common.unavailable", { lng: lang.code.toLowerCase() }),
                 }}
                 className={"tiptap"}
               />
             ) : (
-              <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
+              <>{t("common.unavailable", { lng: lang.code.toLowerCase() })}</>
             )}
           </Section>
           <Section
-            title={t("participant", { lng: lang.code.toLowerCase() })}
+            title={t("assessmentKit.participant", { lng: lang.code.toLowerCase() })}
             rtlLanguage={rtlLanguage}
           >
             {assessmentProcess.participant ? (
@@ -314,12 +314,12 @@ const ReportCard = ({
                 dangerouslySetInnerHTML={{
                   __html:
                     graphicalReport?.assessmentProcess.participant ??
-                    t("unavailable", { lng: lang.code.toLowerCase() }),
+                    t("common.unavailable", { lng: lang.code.toLowerCase() }),
                 }}
                 className={"tiptap"}
               />
             ) : (
-              <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
+              <>{t("common.unavailable", { lng: lang.code.toLowerCase() })}</>
             )}
           </Section>
         </>
@@ -349,7 +349,7 @@ const ReportCard = ({
       </Section>
 
       <Section
-        title={t("maturityLevels", { lng: lang.code.toLowerCase() })}
+        title={t("common.maturityLevels", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
         {t("maturityLevelsDescription", {
@@ -411,17 +411,17 @@ const ReportCard = ({
       </Section>
 
       <Section
-        title={t("topicsAndIndicators", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentReport.topicsAndIndicators", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
-        {t("topicsTable", {
+        {t("assessmentReport.topicsTable", {
           lng: lang.code.toLowerCase(),
         })}
         <TopicsList graphicalReport={graphicalReport} />
       </Section>
 
       <Section
-        title={t("questionnaires", { lng: lang.code.toLowerCase() })}
+        title={t("common.questionnaires", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
         <QuestionnaireList graphicalReport={graphicalReport} />

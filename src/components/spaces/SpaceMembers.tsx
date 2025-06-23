@@ -123,7 +123,7 @@ export const SpaceMembers = (props: any) => {
           onSubmit={async (e) => {
             e.preventDefault();
             if (!user_id_ref.current?.value) {
-              toast.error(t("pleaseEnterEmailAddress") as string);
+              toast.error(t("errors.pleaseEnterEmailAddress") as string);
             } else {
               try {
                 await addMember({
@@ -148,12 +148,12 @@ export const SpaceMembers = (props: any) => {
         >
           <TextField
             fullWidth
-            type={"email"}
+            type="email"
             size="small"
             variant="outlined"
             inputRef={user_id_ref}
-            placeholder={t("enterEmailOfTheUserYouWantToAdd") as string}
-            label={<Trans i18nKey="userEmail" />}
+            placeholder={t("user.enterEmailOfTheUserYouWantToAdd") as string}
+            label={<Trans i18nKey="user.userEmail" />}
             InputProps={{
               endAdornment: <AddMemberButton loading={loading} />,
             }}
@@ -184,7 +184,7 @@ export const SpaceMembers = (props: any) => {
             </Box>
           }
         >
-          <Trans i18nKey="members" />
+          <Trans i18nKey="expertGroups.members" />
         </Title>
         <QueryData
           {...spaceMembersQueryData}
@@ -268,7 +268,7 @@ export const SpaceMembers = (props: any) => {
                         >
                           {isOwner && (
                             <Chip
-                              label={<Trans i18nKey="owner" />}
+                              label={<Trans i18nKey="common.owner" />}
                               size="small"
                               sx={{
                                 marginRight:
@@ -342,7 +342,7 @@ export const SpaceMembers = (props: any) => {
                         fontSize: ".95rem",
                       }}
                     >
-                      <Trans i18nKey="invitees" />
+                      <Trans i18nKey="common.invitees" />
                     </Title>
                     <Box mt={1}>
                       {items.map((invitees: any) => {
@@ -530,7 +530,7 @@ const Actions = (props: any) => {
   const inviteMember = async () => {
     try {
       await inviteMemberQueryData.query();
-      toast.success(t("invitationSentSuccessfully"));
+      toast.success(t("spaces.invitationSentSuccessfully"));
       fetchSpaceMembers();
     } catch (e) {
       toastError(e as ICustomError);
@@ -545,21 +545,21 @@ const Actions = (props: any) => {
         isInvitees && isInvitationExpired && editable
           ? {
               icon: <EmailRoundedIcon fontSize="small" />,
-              text: <Trans i18nKey="resendInvitation" />,
+              text: <Trans i18nKey="common.resendInvitation" />,
               onClick: inviteMember,
             }
           : undefined,
         isInvitees &&
           editable && {
             icon: <DeleteRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="cancelInvitation" />,
+            text: <Trans i18nKey="common.cancelInvitation" />,
             onClick: deleteItemInvite,
           },
         !isInvitees &&
           !isOwner &&
           editable && {
             icon: <DeleteRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="remove" />,
+            text: <Trans i18nKey="common.remove" />,
             onClick: deleteItem,
           },
       ]}
@@ -595,7 +595,7 @@ const InviteSpaceMemberDialog = (
   const onInvite = async () => {
     try {
       await inviteMemberQuery();
-      toast.success(t("invitationSentSuccessfully"));
+      toast.success(t("spaces.invitationSentSuccessfully"));
       resetForm();
       rest.onClose();
       spaceMembersQueryData.query();
@@ -614,13 +614,13 @@ const InviteSpaceMemberDialog = (
     >
       <Typography>
         <Trans
-          i18nKey="emailIsNotOnAppTitleYet"
+          i18nKey="user.emailIsNotOnAppTitleYet"
           values={{
             email: rest.context?.data?.email ?? "This user",
             title: config.appTitle,
           }}
         />{" "}
-        <Trans i18nKey={"wouldYouLikeToInviteThemToJoin"} />
+        <Trans i18nKey="user.wouldYouLikeToInviteThemToJoin" />
       </Typography>
     </InviteMemberDialog>
   );

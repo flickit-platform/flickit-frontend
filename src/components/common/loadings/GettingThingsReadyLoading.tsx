@@ -20,7 +20,7 @@ const GettingThingsReadyLoading = (props: IGettingThingsReadyLoadingProps) => {
       }}
     >
       <Typography variant="h5">
-        <Trans i18nKey="gettingThingsReady" />
+        <Trans i18nKey="notification.gettingThingsReady" />
       </Typography>
       <LinearProgress color="inherit" sx={{ marginTop: "12px" }} />
     </Box>

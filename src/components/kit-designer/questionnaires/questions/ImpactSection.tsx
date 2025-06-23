@@ -120,7 +120,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
     },
     {
       name: "maturityLevelId",
-      label: t("maturityLevel"),
+      label: t("common.maturityLevel"),
       options: fetchMaturityLevels?.data?.items ?? [],
     },
   ];
@@ -132,10 +132,10 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
     <>
       <Box display="flex" flexDirection="column" gap={1} mt={4}>
         <Typography variant="semiBoldXLarge" gutterBottom>
-          <Trans i18nKey="questionImpacts" />
+          <Trans i18nKey="kitDesigner.questionImpacts" />
         </Typography>
         <Typography variant="bodyMedium" color="textSecondary">
-          <Trans i18nKey="optionsImpactsDescription" />
+          <Trans i18nKey="kitDesigner.optionsImpactsDescription" />
         </Typography>
       </Box>
 
@@ -156,12 +156,12 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
         ) : (
           !showForm && (
             <EmptyState
-              btnTitle="newOptionImpact"
-              title="optionsImpactsEmptyState"
-              SubTitle="optionsImpactsEmptyStateDetailed"
+              btnTitle="kitDesigner.newOptionImpact"
+              title="kitDesigner.optionsImpactsEmptyState"
+              SubTitle="kitDesigner.optionsImpactsEmptyStateDetailed"
               onAddNewRow={() => setShowForm(true)}
               disabled={disabled}
-              disableTextBox={<Trans i18nKey="optionsImpactsDisabled" />}
+              disableTextBox={<Trans i18nKey="kitDesigner.optionsImpactsDisabled" />}
             />
           )
         )}

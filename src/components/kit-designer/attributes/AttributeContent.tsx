@@ -242,12 +242,12 @@ const AttributesContent = () => {
           }
           mainTitle="common.attributes"
           description="kitDesigner.attributesKitDesignerDescription"
-          btnTitle={"newAttribute"}
+          btnTitle="kitDesigner.newAttribute"
         />
         {fetchAttributeKit.loaded &&
         fetchAttributeKit.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
-            <Trans i18nKey="changeOrderHelper" />
+            <Trans i18nKey="kitDesigner.changeOrderHelper" />
           </Typography>
         ) : null}
         <Divider sx={{ my: 1 }} />
@@ -275,13 +275,13 @@ const AttributesContent = () => {
               ) : (
                 !showNewAttributeForm && (
                   <EmptyState
-                    btnTitle={"newAttribute"}
+                    btnTitle="kitDesigner.newAttribute"
                     title="kitDesigner.attributesListEmptyState"
                     SubTitle="kitDesigner.attributeEmptyStateDetailed"
                     onAddNewRow={handleAddNewRow}
                     disabled={subjects.length === 0}
                     disableTextBox={
-                      <Trans i18nKey={"disableAttributeMessage"} />
+                      <Trans i18nKey="kitDesigner.disableAttributeMessage" />
                     }
                   />
                 )
@@ -296,8 +296,8 @@ const AttributesContent = () => {
           setOpenDeleteDialog({ ...openDeleteDialog, status: false })
         }
         onConfirm={handleDelete}
-        title="warning"
-        content="deleteAttribute"
+        title="common.warning"
+        content="kitDesigner.deleteAttribute"
       />
     </PermissionControl>
   );

@@ -50,8 +50,8 @@ const AssessmentKitAside = (props: any) => {
           height={"33px"}
         />
       ),
-      title: "price",
-      description: "free",
+      title: "common.price",
+      description: "common.free",
     },
 
     {
@@ -64,7 +64,7 @@ const AssessmentKitAside = (props: any) => {
           }}
         />
       ),
-      title: "supportedLanguages",
+      title: "common.supportedLanguages",
       description: formatLanguageCodes(languages, i18next.language) ?? "-",
     },
   ];
@@ -150,7 +150,7 @@ const AssessmentKitAside = (props: any) => {
                 width: "100%",
               }}
             >
-              <Trans i18nKey="createNewAssessment" />
+              <Trans i18nKey="assessment.createNewAssessment" />
             </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
@@ -169,7 +169,7 @@ const AssessmentKitAside = (props: any) => {
                   contactusDialogProps.openDialog({ context: undefined })
                 }
               >
-                <Trans i18nKey={"contactUs"} />
+                <Trans i18nKey="common.contactUs" />
               </Typography>
             </Box>
           </Box>
@@ -185,7 +185,7 @@ const AssessmentKitAside = (props: any) => {
               }}
             >
               <Trans
-                i18nKey={likeStatus ? "youLikedThisKit" : "didYouLikeThisKit"}
+                i18nKey={likeStatus ? "assessmentKit.youLikedThisKit" : "assessmentKit.didYouLikeThisKit"}
               />
               <IconButton
                 size="small"

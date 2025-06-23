@@ -112,7 +112,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
           }
           subheader={
             <Box sx={{ ...styles.centerCV, textTransform: "lowercase" }}>
-              <Trans i18nKey="publishedAssessmentKits" />: {publishedKitsCount}
+              <Trans i18nKey="expertGroups.publishedAssessmentKits" />: {publishedKitsCount}
               <Box></Box>
             </Box>
           }
@@ -221,12 +221,12 @@ const Actions = (props: any) => {
         items={[
           {
             icon: <EditRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="edit" />,
+            text: <Trans i18nKey="common.edit" />,
             onClick: openEditDialog,
           },
           {
             icon: <DeleteRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="delete" />,
+            text: <Trans i18nKey="common.delete" />,
             onClick: (e) => deleteExpertGroup(e),
           },
         ]}

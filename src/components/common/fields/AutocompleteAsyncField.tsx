@@ -451,7 +451,7 @@ const AutocompleteBaseField = (
                     sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
                   >
                     {option?.isPrivate ? (
-                      <Trans i18nKey="privateTitle" />
+                      <Trans i18nKey="common.privateTitle" />
                     ) : (
                       option?.type?.title
                     )}

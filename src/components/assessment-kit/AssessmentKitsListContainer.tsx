@@ -81,13 +81,13 @@ const AssessmentKitsListContainer = () => {
         <Typography
           sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
         >
-          <Trans i18nKey="language" />
+          <Trans i18nKey="common.language" />
         </Typography>
       );
     } else if (selected.length >= 1) {
       return (
         <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#fff" }}>
-          <Trans i18nKey="language" /> ({selected.length})
+          <Trans i18nKey="common.language" /> ({selected.length})
         </Typography>
       );
     }
@@ -109,7 +109,7 @@ const AssessmentKitsListContainer = () => {
                 <Box sx={{ ...styles.centerV }}>
                   <Trans
                     style={{ ...theme.typography.titleSmall }}
-                    i18nKey="public"
+                    i18nKey="common.public"
                   />
                 </Box>
               }
@@ -120,7 +120,7 @@ const AssessmentKitsListContainer = () => {
                 <Box sx={{ ...styles.centerV }}>
                   <Trans
                     style={{ ...theme.typography.titleSmall }}
-                    i18nKey="private"
+                    i18nKey="common.private"
                   />
                 </Box>
               }
@@ -184,7 +184,7 @@ const AssessmentKitsListContainer = () => {
                         variant="labelSmall"
                         sx={{ ...styles.centerVH, color: "#6C8093" }}
                       >
-                        <Trans i18nKey={"language"} />:
+                        <Trans i18nKey="common.language" />:
                       </Typography>
                       <Typography variant="labelSmall">{lang.title}</Typography>
                     </Box>

@@ -64,20 +64,20 @@ const AssessmentKitPermisson = (props: any) => {
   const columns: readonly Column[] = [
     {
       id: "displayName",
-      label: "name",
+      label: "user.name",
       minWidth: "29%",
       position: "left",
     },
     {
       id: "email",
-      label: "email",
+      label: "user.email",
       display: "none",
       minWidth: "30%",
       position: "center",
     },
     {
       id: "remove",
-      label: "remove",
+      label: "common.remove",
       align: "right",
       minWidth: "30%",
       position: "center",
@@ -94,7 +94,7 @@ const AssessmentKitPermisson = (props: any) => {
           <SupTitleBreadcrumb
             routes={[
               {
-                title: t("expertGroups") as string,
+                title: t("expertGroups.expertGroups") as string,
                 to: `/user/expert-groups`,
               },
               {
@@ -120,7 +120,7 @@ const AssessmentKitPermisson = (props: any) => {
       </Title>
       <Box mt={2}>
         <MemberList
-          title={"members"}
+          title="expertGroups.members"
           hasBtn={true}
           btnLabel="expertGroups.addMember"
           listOfUser={items}

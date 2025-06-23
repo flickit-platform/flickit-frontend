@@ -111,7 +111,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 
   useEffect(() => {
     setDocumentTitle(
-      `${t("question")} ${questionIndex}: ${title}`,
+      `${t("common.question")} ${questionIndex}: ${title}`,
       config.appTitle,
     );
     setNotApplicable(answer?.isNotApplicable ?? false);
@@ -172,7 +172,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
               textAlign: [is_farsi ? "right" : "left"],
             }}
           >
-            <Trans i18nKey="question" />
+            <Trans i18nKey="common.question" />
           </Typography>
           <Typography
             letterSpacing={is_farsi ? "0" : ".05em"}
@@ -265,8 +265,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                             <Trans
                               i18nKey={
                                 questionsInfo?.permissions?.answerQuestion
-                                  ? "selectedConfidenceLevel"
-                                  : "confidenceLevel"
+                                  ? "common.selectedConfidenceLevel"
+                                  : "common.confidenceLevel"
                               }
                             />
                             <Typography
@@ -292,8 +292,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                             <Trans
                               i18nKey={
                                 disabledConfidence
-                                  ? "selectConfidenceLevel"
-                                  : "toContinueToSubmitAnAnswer"
+                                  ? "questions.selectConfidenceLevel"
+                                  : "questions.toContinueToSubmitAnAnswer"
                               }
                             />
                           </Typography>
@@ -556,7 +556,7 @@ export const QuestionTabsTemplate = (props: any) => {
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Trans i18nKey="evidences" />
+                <Trans i18nKey="common.evidences" />
                 {` (${counts.evidences})`}
               </Box>
             }
@@ -582,7 +582,7 @@ export const QuestionTabsTemplate = (props: any) => {
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Trans i18nKey="comments" />
+                <Trans i18nKey="questions.comments" />
                 {` (${counts.comments})`}
               </Box>
             }
@@ -1119,7 +1119,7 @@ const AnswerTemplate = (props: {
             color="error"
             sx={{ ml: "4px", mt: "4px" }}
           >
-            <Trans i18nKey={"theOptionSelectionIsDisabled"} />
+            <Trans i18nKey="questions.theOptionSelectionIsDisabled" />
           </Typography>
         </Box>
       )}
@@ -1156,7 +1156,7 @@ const AnswerTemplate = (props: {
                 ((value || notApplicable) && !selcetedConfidenceLevel)
               }
             >
-              <Trans i18nKey="submit" />
+              <Trans i18nKey="common.submit" />
             </LoadingButton>{" "}
           </Box>
         )}
@@ -1215,7 +1215,7 @@ const AnswerTemplate = (props: {
                   }}
                 />
               }
-              label={<Trans i18nKey={"notApplicable"} />}
+              label={<Trans i18nKey="questions.notApplicable" />}
             />
           </Box>
         )}
@@ -1225,9 +1225,9 @@ const AnswerTemplate = (props: {
             setOpenDeleteDialog({ ...openDeleteDialog, status: false })
           }
           onConfirm={() => goToQuestion("asc")}
-          title="warning"
+          title="common.warning"
           content="questions.areYouSureYouWantSkipThisQuestion"
-          confirmButtonText={t("continue")}
+          confirmButtonText={t("common.continue")}
         />
       </Box>
     </>
@@ -1321,10 +1321,10 @@ const AnswerDetails = ({
       ) : (
         <Box sx={{ ...styles.centerCVH }} textAlign="center">
           <Typography variant="displayMedium" color="#6C8093">
-            <Trans i18nKey="emptyAnswerHistoryTitle" />
+            <Trans i18nKey="questions.emptyAnswerHistoryTitle" />
           </Typography>
           <Typography variant="bodyLarge" color="#6C8093">
-            <Trans i18nKey="emptyAnswerHistoryDescription" />
+            <Trans i18nKey="questions.emptyAnswerHistoryDescription" />
           </Typography>
         </Box>
       )}
@@ -1370,7 +1370,7 @@ const AnswerHistoryItem = (props: any) => {
       {item.answer.isNotApplicable ? (
         <Grid item xs={12} md={12} lg={5} xl={5}>
           <Typography variant="titleMedium" color="#1B4D7E">
-            <Trans i18nKey="questionIsMarkedAsNotApplicable" />:
+            <Trans i18nKey="questions.uestionIsMarkedAsNotApplicable" />:
           </Typography>
         </Grid>
       ) : (
@@ -1392,7 +1392,7 @@ const AnswerHistoryItem = (props: any) => {
             gap={1.5}
           >
             <Typography variant="titleSmall">
-              <Trans i18nKey="confidence" />:
+              <Trans i18nKey="common.confidence" />:
             </Typography>
             <Rating
               disabled={true}
@@ -1424,7 +1424,7 @@ const AnswerHistoryItem = (props: any) => {
             gap={1.5}
           >
             <Typography variant="titleSmall">
-              <Trans i18nKey="selectedOption" />:
+              <Trans i18nKey="questions.selectedOption" />:
             </Typography>
             <Typography
               variant="bodyMedium"
@@ -1444,7 +1444,7 @@ const AnswerHistoryItem = (props: any) => {
                   {item?.answer?.selectedOption?.title}
                 </>
               ) : (
-                <Trans i18nKey="noOptionSelected" />
+                <Trans i18nKey="questions.noOptionSelected" />
               )}
             </Typography>
           </Box>
@@ -1707,7 +1707,7 @@ const Evidence = (props: any) => {
                 >
                   {type === "evidence" && (
                     <Tab
-                      label={<Trans i18nKey="negativeEvidence" />}
+                      label={<Trans i18nKey="questions.negativeEvidence" />}
                       value={evidenceAttachmentType.negative}
                       sx={{
                         display: "flex",
@@ -1729,7 +1729,7 @@ const Evidence = (props: any) => {
                             ...styles.centerV,
                           }}
                         >
-                          <Trans i18nKey="comment" />
+                          <Trans i18nKey="questions.comment" />
                         </Box>
                       }
                       sx={{
@@ -1748,7 +1748,7 @@ const Evidence = (props: any) => {
                   )}
                   {type === "evidence" && (
                     <Tab
-                      label={<Trans i18nKey="positiveEvidence" />}
+                      label={<Trans i18nKey="questions.positiveEvidence" />}
                       sx={{
                         display: "flex",
                         flex: 1,
@@ -1778,7 +1778,7 @@ const Evidence = (props: any) => {
                   name="evidence"
                   label={null}
                   required={true}
-                  placeholder={t(`evidencePlaceholder`) as string}
+                  placeholder={t("questions.evidencePlaceholder") as string}
                   borderRadius={"12px"}
                   setValueCount={setValueCount}
                   hasCounter={true}
@@ -1821,7 +1821,7 @@ const Evidence = (props: any) => {
                         color: "#2B333B",
                       }}
                     >
-                      <Trans i18nKey={"needsToAddAttachments"} />
+                      <Trans i18nKey="questions.needsToAddAttachments" />
                     </Typography>
                   }
                 />
@@ -1886,7 +1886,7 @@ const Evidence = (props: any) => {
                   }
                 >
                   <Trans
-                    i18nKey={"createEvidence"}
+                    i18nKey="questions.createEvidence"
                     values={{ title: t(type).toLowerCase() }}
                   />
                 </LoadingButton>
@@ -1916,7 +1916,9 @@ const Evidence = (props: any) => {
                 >
                   <EmptyState
                     title={
-                      type === "evidence" ? t("noEvidence") : t("noComment")
+                      type === "evidence"
+                        ? t("questions.noEvidence")
+                        : t("questions.noComment")
                     }
                   />
                 </Box>
@@ -1968,8 +1970,8 @@ const Evidence = (props: any) => {
           evidenceId={evidenceId}
           evidencesQueryData={evidencesQueryData}
           title={<Trans i18nKey="common.addNewMember" />}
-          uploadAnother={<Trans i18nKey={"uploadAnother"} />}
-          uploadAttachment={<Trans i18nKey={"uploadAttachment"} />}
+          uploadAnother={<Trans i18nKey="common.uploadAnother" />}
+          uploadAttachment={<Trans i18nKey="common.uploadAttachment" />}
           fetchAttachments={fetchAttachments}
           setAttachmentData={setAttachmentData}
           createAttachment={createAttachment}
@@ -1978,7 +1980,7 @@ const Evidence = (props: any) => {
           open={expandedDeleteDialog}
           onClose={() => setExpandedDeleteDialog(false)}
           onConfirm={deleteItem}
-          title="warning"
+          title="common.warning"
           content="questions.areYouSureYouWantDeleteThisItem"
         />
         <DeleteConfirmationDialog
@@ -1990,10 +1992,10 @@ const Evidence = (props: any) => {
             })
           }
           onConfirm={deleteAttachment}
-          title="warning"
+          title="common.warning"
           content="questions.areYouSureYouWantDeleteThisAttachment"
-          confirmButtonText={t("yesDeleteIt")}
-          cancelButtonText={t("letMeSeeItAgain")}
+          confirmButtonText={t("common.yesDeleteIt")}
+          cancelButtonText={t("common.letMeSeeItAgain")}
         />
       </Box>
     </Box>
@@ -2239,7 +2241,7 @@ const EvidenceDetail = (props: any) => {
                         color: evidenceBG.borderColor,
                       }}
                     >
-                      <Trans i18nKey="editing" />
+                      <Trans i18nKey="common.edit" />
                     </Typography>
                     <InputFieldUC
                       multiline
@@ -2413,7 +2415,9 @@ const EvidenceDetail = (props: any) => {
                               gap: "5px",
                             }}
                           >
-                            {t("questions.attachmentCount", { attachmentsCount })}
+                            {t("questions.attachmentCount", {
+                              attachmentsCount,
+                            })}
                           </Typography>
                         )}
                         <img
@@ -2523,7 +2527,7 @@ const EvidenceDetail = (props: any) => {
                                 height: "15px",
                               }}
                             />
-                            <Trans i18nKey={"evidenceIsLimited"} />
+                            <Trans i18nKey="questions.evidenceIsLimited" />
                           </Typography>
                         </Box>
                       )}
@@ -2593,7 +2597,7 @@ const EvidenceDetail = (props: any) => {
                   </IconButton>
                 )}
                 {resolvable && !permissions.readonly && (
-                  <Tooltip title={<Trans i18nKey={"resolve"} />}>
+                  <Tooltip title={<Trans i18nKey="common.resolve" />}>
                     <IconButton
                       aria-label="resolve"
                       size="small"

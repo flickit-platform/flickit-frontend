@@ -80,7 +80,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          <Trans i18nKey="warning" />
+          <Trans i18nKey="common.warning" />
         </>
       </DialogTitle>
       <DialogContent
@@ -117,7 +117,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
             <Trans i18nKey="common.cancel" />
           </Button>
           <Button variant="contained" onClick={DeletePerson}>
-            <Trans i18nKey={"confirm"} />
+            <Trans i18nKey="common.confirm" />
           </Button>
         </Box>
       </DialogContent>

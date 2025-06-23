@@ -22,19 +22,19 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 
 const itemNames = [
   {
-    translate: t("unansweredQuestions"),
+    translate: t("dashboard.unansweredQuestions"),
     original: "isUnanswered",
   },
   {
-    translate: t("unapprovedAnswer"),
+    translate: t("dashboard.unapprovedAnswer"),
     original: "hasUnapprovedAnswer",
   },
   {
-    translate: t("lowConfidenceAnswers"),
+    translate: t("dashboard.lowConfidenceAnswers"),
     original: "isAnsweredWithLowConfidence",
   },
   {
-    translate: t("unresolvedComments"),
+    translate: t("dashboard.unresolvedComments"),
     original: "unresolvedCommentsCount",
   },
   {
@@ -61,7 +61,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   useEffect(() => {
     if (isComplete) {
       setDocumentTitle(
-        `${questionnaire.title} ${t("questionnaireFinished")}`,
+        `${questionnaire.title} ${t("questions.questionnaireFinished")}`,
         config.appTitle,
       );
     }
@@ -133,7 +133,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                   originalItem={originalItem}
                   itemNames={itemNames}
                   dropdownLabel={
-                    <Trans i18nKey="highlightQuestionsWithIssues" />
+                    <Trans i18nKey="dashboard.highlightQuestionsWithIssues" />
                   }
                   allSelected
                 />

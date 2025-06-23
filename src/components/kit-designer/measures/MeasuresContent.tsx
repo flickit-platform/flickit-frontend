@@ -17,6 +17,7 @@ import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkel
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import MeasureForm from "./MeasureForm";
 import { MultiLangs } from "@/types";
+import { t } from "i18next";
 
 const MeasuresContent = () => {
   const { service } = useServiceContext();
@@ -157,10 +158,7 @@ const MeasuresContent = () => {
         index: idx + 1,
       }));
 
-      await service.kitVersions.measures.reorder(
-        { kitVersionId },
-        { orders },
-      );
+      await service.kitVersions.measures.reorder({ kitVersionId }, { orders });
       handleCancel();
     } catch (e) {
       toastError(e as ICustomError);
@@ -177,13 +175,13 @@ const MeasuresContent = () => {
         <KitDesignerHeader
           onAddNewRow={handleAddNewRow}
           hasBtn={fetchMeasures.loaded && fetchMeasures.data.items.length !== 0}
-          mainTitle="kitDesignerTab.measures"
-          btnTitle="kitDesignerTab.newMeasure"
-          description="kitDesignerTab.measuresKitDesignerDescription"
+          mainTitle="kitDesigner.measures"
+          btnTitle="kitDesigner.newMeasure"
+          description="kitDesigner.measuresKitDesignerDescription"
         />
         {fetchMeasures.loaded && fetchMeasures.data.items.length !== 0 && (
           <Typography variant="bodyMedium" mt={1}>
-            <Trans i18nKey="changeOrderHelper" />
+            <Trans i18nKey="kitDesigner.changeOrderHelper" />
           </Typography>
         )}
         <Divider sx={{ my: 1 }} />
@@ -199,16 +197,17 @@ const MeasuresContent = () => {
                     items={data.items}
                     onEdit={handleEdit}
                     onReorder={handleReorder}
-                    editableFieldKey="questionsCount"
+                    editableFieldKey={"questionsCount"}
+                    editableFieldLabel={t("questions")}
                     editable={false}
                   />
                 </Box>
               ) : (
                 !showNewForm && (
                   <EmptyState
-                    btnTitle="newMeasure"
-                    title="measuresListEmptyState"
-                    SubTitle="measureEmptyStateDetailed"
+                    btnTitle="kitDesigner.newMeasure"
+                    title="kitDesigner.measuresListEmptyState"
+                    SubTitle="kitDesigner.measureEmptyStateDetailed"
                     onAddNewRow={handleAddNewRow}
                   />
                 )

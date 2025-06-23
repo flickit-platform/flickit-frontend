@@ -1,5 +1,11 @@
 {
   "areYouSureYouWantDeleteThisMember": "Are you sure you want to remove {{name}} from {{assessment}}?",
   "areYouSureYouWantDeleteThisMemberInvited": "Are you sure you want to cancel the invitation sent to {{name}} for this assessment?",
-  "assignRole": "Assign role"
+  "assignRole": "Assign role",
+  "chooseARole": "Choose a role",
+  "grantedRoles": "Granted roles",
+  "kitCustomDefaultDataChanged": "Default data has not been changed since the last update.",
+  "kitCustomization": "Kit customization",
+  "kitCustomTitle": "Custom kit title",
+  "viewTheWeightAndSubject": "Here, you can view the weights of different subjects or attributes and adjust them as desired for this specific assessment."
 }

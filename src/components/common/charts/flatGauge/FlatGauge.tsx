@@ -40,7 +40,7 @@ const FlatGauge = (props: IGaugeProps) => {
     text,
     textPosition,
     confidenceLevelNum = 0,
-    confidenceText = t("confidence") + ":",
+    confidenceText = t("common.confidence") + ":",
     lng,
     ...rest
   } = props;

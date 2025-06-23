@@ -243,7 +243,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                   px: 1,
                 }}
               >
-                <Trans i18nKey={"dslDownloadGuide"} />
+                <Trans i18nKey="assessmentKit.dslDownloadGuide" />
                 <span
                   style={{
                     textDecoration: "underline",
@@ -255,7 +255,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                   aria-hidden={true}
                   onClick={downloadTemplate}
                 >
-                  <Trans i18nKey={"here"} />
+                  <Trans i18nKey="common.here" />
                 </span>
               </Box>
             </Box>
@@ -272,7 +272,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                   px: 1,
                 }}
               >
-                <Trans i18nKey={"dslReadyToDownload"} />
+                <Trans i18nKey="assessmentKit.dslReadyToDownload" />
               </Box>
             </Box>
           )}
@@ -316,7 +316,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                 name="dsl_id"
                 param={expertGroupId}
                 required={true}
-                label={<Trans i18nKey="dsl" />}
+                label={<Trans i18nKey="assessmentKit.dsl" />}
                 setShowErrorLog={setShowErrorLog}
                 setSyntaxErrorObject={setSyntaxErrorObject}
                 setIsValid={setIsValid}
@@ -334,7 +334,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         >
           <InputFieldUC
             name="title"
-            label={<Trans i18nKey="title" />}
+            label={<Trans i18nKey="common.title" />}
             required
             defaultValue={defaultValues.title ?? ""}
           />
@@ -364,7 +364,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             multiple={true}
             searchOnType={false}
             required={true}
-            label={<Trans i18nKey="tags" />}
+            label={<Trans i18nKey="common.tags" />}
           />
         </Grid>
         <Grid
@@ -388,7 +388,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         >
           <InputFieldUC
             name="summary"
-            label={<Trans i18nKey="summary" />}
+            label={<Trans i18nKey="common.summary" />}
             required={true}
             defaultValue={defaultValues.summary ?? ""}
           />
@@ -437,7 +437,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             onClick={handleConvertDsl}
             disabled={!isValid}
           >
-            <Trans i18nKey="convertToDsl" />
+            <Trans i18nKey="assessmentKit.convertToDsl" />
           </LoadingButton>
         )}
         {type == "convert" && buttonStep == 1 && (
@@ -447,7 +447,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             onClick={handleDownloadDsl}
             disabled={!isValid}
           >
-            <Trans i18nKey="download" />
+            <Trans i18nKey="common.download" />
           </Button>
         )}
         {type != "convert" && (
@@ -457,7 +457,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             onClick={handleNext}
             disabled={!isValid}
           >
-            <Trans i18nKey="next" />
+            <Trans i18nKey="common.next" />
           </Button>
         )}
       </Box>
@@ -466,7 +466,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const syntaxErrorContent = (
     <Box>
       <Typography ml={1} variant="h6">
-        <Trans i18nKey="youveGotSyntaxErrorsInYourDslFile" />
+        <Trans i18nKey="errors.youveGotSyntaxErrorsInYourDslFile" />
       </Typography>
       <Divider />
       <Box mt={4} sx={{ maxHeight: "260px", overflow: "scroll" }}>
@@ -477,7 +477,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography variant="subtitle2" color="error">
                     <Trans
-                      i18nKey="errorAtLine"
+                      i18nKey="errors.errorAtLine"
                       values={{
                         message: e.message,
                         fileName: e.fileName,
@@ -488,7 +488,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
                   </Typography>
                   <Typography variant="subtitle2" color="error">
                     <Trans
-                      i18nKey="errorLine"
+                      i18nKey="errors.errorLine"
                       values={{
                         errorLine: e.errorLine,
                       }}
@@ -526,10 +526,10 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          {type === "update" && <Trans i18nKey="updateAssessmentKit" />}
-          {type === "draft" && <Trans i18nKey="createDraft" />}
-          {type === "create" && <Trans i18nKey="createAssessmentKit" />}
-          {type === "convert" && <Trans i18nKey="convertExcelToDsl" />}
+          {type === "update" && <Trans i18nKey="assessmentKit.updateAssessmentKit" />}
+          {type === "draft" && <Trans i18nKey="assessmentKit.createDraft" />}
+          {type === "create" && <Trans i18nKey="assessmentKit.createAssessmentKit" />}
+          {type === "convert" && <Trans i18nKey="assessmentKit.convertExcelToDsl" />}
         </>
       }
     >
@@ -597,7 +597,7 @@ const IsPrivateSwitch = (props: any) => {
               sx={{ userSelect: "none" }}
               fontSize="0.825rem"
             >
-              <Trans i18nKey="private" />
+              <Trans i18nKey="common.private" />
             </Typography>
           </Box>
           <Box
@@ -623,7 +623,7 @@ const IsPrivateSwitch = (props: any) => {
               sx={{ userSelect: "none" }}
               fontSize="0.825rem"
             >
-              <Trans i18nKey="public" />
+              <Trans i18nKey="common.public" />
             </Typography>
           </Box>
         </Box>

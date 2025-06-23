@@ -69,7 +69,7 @@ const RenderText = ({
     >
       {text}{" "}
       {isHovered && showCopyIcon && (
-        <Tooltip title={"copy"}>
+        <Tooltip title="common.copy">
           <IconButton
             size="small"
             sx={{

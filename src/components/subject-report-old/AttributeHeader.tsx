@@ -55,7 +55,7 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
             marginX={2}
           >
             {"("}
-            <Trans i18nKey="weight" />: {maturityLevel?.value}
+            <Trans i18nKey="common.weight" />: {maturityLevel?.value}
             {")"}
           </Typography>
         </Box>

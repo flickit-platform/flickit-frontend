@@ -170,14 +170,14 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             />
           )}
           {originalItem.includes("unapprovedAnswers") && (
-            <ErrorChip i18nKey="unapprovedAnswers" value={unapprovedAnswers} />
+            <ErrorChip i18nKey="dashboard.unapprovedAnswers" value={unapprovedAnswers} />
           )}
           {originalItem.includes("unanswered") && (
-            <ErrorChip i18nKey="unanswered" value={unanswered} />
+            <ErrorChip i18nKey="dashboard.unanswered" value={unanswered} />
           )}
           {originalItem.includes("unresolvedComments") && (
             <ErrorChip
-              i18nKey="unresolvedComments"
+              i18nKey="dashboard.unresolvedComments"
               value={unresolvedComments}
             />
           )}
@@ -245,26 +245,26 @@ const ActionButtons = ({
   const is_farsi = localStorage.getItem("lang") === "fa";
   return (
     <Box display="flex" gap={1}>
-      {progress === 100 && <ActionButton to={`${id}/1`} text="edit" />}
+      {progress === 100 && <ActionButton to={`${id}/1`} text="common.edit" />}
       {progress > 0 && (
         <ActionButton
           to={`${id}/completed`}
-          text="review"
+          text="common.review"
           state={{ name: "Questionnaires" }}
         />
       )}
       {progress < 100 && progress > 0 && (
         <ActionButton
           to={`${id}/${nextQuestion || number_of_answers + 1}`}
-          text="continue"
+          text="common.continue"
           data-cy={`questionnaire-${title}-start-btn`}
-          variant={"contained"}
+          variant="contained"
         />
       )}
       {progress === 0 && (
         <ActionButton
           to={`${id}/1`}
-          text="start"
+          text="common.start"
           icon={
             <StartRoundedIcon
               sx={{

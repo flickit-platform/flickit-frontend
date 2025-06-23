@@ -97,7 +97,7 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
             <AddBoxRoundedIcon sx={{ mb: 0.5 }} fontSize="large" />
             <Typography textTransform={"none"} textAlign="center">
               <Trans
-                i18nKey="selectAssessmentForComparison"
+                i18nKey="compare.selectAssessmentForComparison"
                 values={{ value: numberMap[index] }}
               />
             </Typography>

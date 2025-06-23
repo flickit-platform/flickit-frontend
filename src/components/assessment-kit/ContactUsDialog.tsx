@@ -86,7 +86,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       closeDialog={state.succeeded ? handleSucceeded : close}
       title={
         <Typography sx={theme.typography.semiBoldXLarge}>
-          {dialogTitle ?? <Trans i18nKey="contactUs" />}
+          {dialogTitle ?? <Trans i18nKey="common.contactUs" />}
         </Typography>
       }
     >
@@ -109,16 +109,16 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               sx={{ fontSize: 64, color: "success.main", mb: 1 }}
             />
             <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
-              {t("thankYouForYourMessage")}
+              {t("common.thankYouForYourMessage")}
             </Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              {t("weWillGetBackToYouSoon")}
+              {t("common.weWillGetBackToYouSoon")}
             </Typography>
           </Box>
 
           <CEDialogActions
             hideCancelButton
-            submitButtonLabel={t("okGotIt")}
+            submitButtonLabel={t("common.okGotIt")}
             closeDialog={handleSucceeded}
             onSubmit={handleSucceeded}
           />
@@ -133,17 +133,16 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                 textAlign="justify"
               >
                 {children}
-                {/* {content ?? t("contactUsIntroText")} */}
               </Typography>
 
               {type !== "requestAnExpertReview" && (
-                <InputFieldUC name="email" label={t("yourEmail")} required />
+                <InputFieldUC name="email" label={t("user.yourEmail")} required />
               )}
 
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={t("yourMessage")}
+                  label={t("common.yourMessage")}
                   multiline
                   rows={4}
                   required
@@ -154,7 +153,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
             <CEDialogActions
               cancelLabel={t("common.cancel")}
               contactSection={socialIcon}
-              submitButtonLabel={primaryActionButtonText ?? t("confirm")}
+              submitButtonLabel={primaryActionButtonText ?? t("common.confirm")}
               onClose={close}
               loading={state.submitting}
               onSubmit={methods.handleSubmit(onSubmit)}

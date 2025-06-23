@@ -150,7 +150,7 @@ const TopBox = (props: ITopBoxReport) => {
           textPosition={"top"}
           confidenceLevelNum={confidenceValue}
           confidenceText={
-            isAdvanceMode ? t("confidenceLevel", { lng: language }) : ""
+            isAdvanceMode ? t("common.confidenceLevel", { lng: language }) : ""
           }
         />
       </Grid>
@@ -222,7 +222,7 @@ const BottomBox = ({
           ...styles.rtlStyle(language === "fa"),
         }}
         dangerouslySetInnerHTML={{
-          __html: insight ?? t("unavailable", { lng: language }),
+          __html: insight ?? t("common.unavailable", { lng: language }),
         }}
       />
 
@@ -251,7 +251,7 @@ const BottomBox = ({
           }}
           variant="labelSmall"
         >
-          {t("reportDocument.measureStatus", { lng: language })}
+          {t("assessmentReport.measureStatus", { lng: language })}
         </Typography>
       </Box>
 
@@ -265,7 +265,7 @@ const BottomBox = ({
               fontFamily,
             }}
           >
-            {t("reportDocument.measureTitle", { lng: language })}
+            {t("assessmentReport.measureTitle", { lng: language })}
           </Typography>
 
           <Box mt={-3}>
@@ -295,7 +295,7 @@ const BottomBox = ({
                   marginInlineStart: "4px",
                 }}
               >
-                {t("hint", { lng: language })}
+                {t("common.hint", { lng: language })}
               </Typography>
               <IconButton size="small">
                 {showGuide ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
@@ -313,7 +313,7 @@ const BottomBox = ({
                   fontFamily,
                 }}
               >
-                {t("reportDocument.helpDescription", { lng: language })}
+                {t("assessmentReport.helpDescription", { lng: language })}
               </Typography>
             )}
           </Box>

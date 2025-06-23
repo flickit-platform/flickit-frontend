@@ -177,7 +177,7 @@ const StepBox = (props: IStepBox) => {
               {`  ${calcOfIssues()}  `}
             </Typography>
             <Typography sx={{ ...theme.typography.labelSmall }}>
-              {t((calcOfIssues() ?? 0) > 1 ? "issues" : "issue").toUpperCase()}
+              {t((calcOfIssues() ?? 0) > 1 ? "common.issues" : "common.issue").toUpperCase()}
             </Typography>
           </Box>
         }
@@ -195,7 +195,7 @@ const StepBox = (props: IStepBox) => {
 
   const currentTag = (
     <Chip
-      label={t("currentStep")}
+      label={t("dashboard.currentStep")}
       size="small"
       sx={{
         ...theme.typography.labelMedium,
@@ -207,7 +207,7 @@ const StepBox = (props: IStepBox) => {
 
   const completedTag = (
     <Chip
-      label={t("completed") + "!"}
+      label={t("common.completed") + "!"}
       size="small"
       sx={{
         ...theme.typography.labelMedium,
@@ -262,7 +262,7 @@ const StepBox = (props: IStepBox) => {
             {Math.floor((100 * answered) / total)}%
           </Typography>
           <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
-            {t("fromTotalQuestionsCount")}
+            {t("dashboard.fromTotalQuestionsCount")}
           </Typography>
         </Box>
       </Box>
@@ -300,7 +300,7 @@ const StepBox = (props: IStepBox) => {
             {Math.floor((100 * result) / expected)}%
           </Typography>
           <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
-            {t("totalInsightsCount")}
+            {t("dashboard.totalInsightsCount")}
           </Typography>
         </Box>
       </Box>
@@ -421,17 +421,17 @@ const StepBox = (props: IStepBox) => {
         )}
         {insights && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="submittingInsights" />
+            <Trans i18nKey="dashboard.submittingInsights" />
           </Typography>
         )}
         {advices && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="providingAdvice" />
+            <Trans i18nKey="dashboard.providingAdvice" />
           </Typography>
         )}
         {report && (
           <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="preparingReport" />
+            <Trans i18nKey="dashboard.preparingReport" />
           </Typography>
         )}
       </Typography>

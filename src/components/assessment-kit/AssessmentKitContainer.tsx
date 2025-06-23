@@ -122,14 +122,14 @@ const AssessmentKit = (props: any) => {
               mt={5}
               mb={1}
             >
-              <Trans i18nKey={"kitStructure"} />
+              <Trans i18nKey="assessmentKit.kitStructure" />
             </Typography>
             <Typography sx={{ color: "#2B333B" }} variant="bodyMedium">
               <Trans
                 i18nKey={
                   isMobileScreen
-                    ? "kitStructureDescriptionWithoutChart"
-                    : "kitStructureDescription"
+                    ? "assessmentKit.kitStructureDescriptionWithoutChart"
+                    : "assessmentKit.kitStructureDescription"
                 }
               />
             </Typography>
@@ -158,7 +158,7 @@ const AssessmentKit = (props: any) => {
             />
           </Grid>
           <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>
-            <Trans i18nKey={"exploreOtherKits"} />
+            <Trans i18nKey="assessmentKit.exploreOtherKits" />
           </Typography>
           <Grid item xs={12} md={12} lg={12}>
             <AssessmentKitsStoreListCard small />
@@ -204,7 +204,7 @@ const AssessmentKitBanner = (props: any) => {
           <SupTitleBreadcrumb
             routes={[
               {
-                title: t("kitLibrary") as string,
+                title: t("common.kitLibrary") as string,
                 to: `/assessment-kits`,
               },
               { title: assessmentTitle },
@@ -253,7 +253,7 @@ const AssessmentKitBanner = (props: any) => {
               cursor: "pointer",
             }}
           >
-            {t("createdBy")}{" "}
+            {t("common.createdBy")}{" "}
             <span
               style={{
                 fontFamily: languageDetector(expertGroupTitle)

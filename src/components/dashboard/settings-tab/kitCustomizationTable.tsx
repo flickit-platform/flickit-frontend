@@ -136,7 +136,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
     return (
       <TextField
         required
-        label={<Trans i18nKey="weight" />}
+        label={<Trans i18nKey="common.weight" />}
         name="weight"
         type="number"
         value={inputValue ?? ""}
@@ -165,13 +165,13 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
         <TableHead>
           <TableRow>
             <TableCell sx={{ width: "10%" }}>
-              <Trans i18nKey="index" />
+              <Trans i18nKey="common.index" />
             </TableCell>
             <TableCell sx={{ width: "75%" }}>
-              <Trans i18nKey="title" />
+              <Trans i18nKey="common.title" />
             </TableCell>
             <TableCell sx={{ width: "15%", textAlign: "center" }}>
-              <Trans i18nKey="weight" />
+              <Trans i18nKey="common.weight" />
             </TableCell>
           </TableRow>
         </TableHead>
@@ -207,7 +207,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                   ) : (
                     <Box sx={{ display: "flex", gap: 1 }}>
                       <Typography>
-                        <Trans i18nKey={"weight"} />:
+                        <Trans i18nKey="common.weight" />:
                       </Typography>
                       {inputData?.customData?.["subjects"]?.find(
                         (item: any) => item.id === subject.id,
@@ -219,7 +219,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                       )?.weight &&
                         !subject.weight.customValue && (
                           <Box>
-                            (<Trans i18nKey={"default"} />)
+                            (<Trans i18nKey="common.default" />)
                           </Box>
                         )}
                     </Box>
@@ -278,7 +278,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                     ) : (
                       <Box sx={{ display: "flex", gap: 1 }}>
                         <Typography>
-                          <Trans i18nKey={"weight"} />:
+                          <Trans i18nKey="common.weight" />:
                         </Typography>
                         {inputData?.customData?.["attributes"]?.find(
                           (item: any) => item.id === attribute.id,
@@ -290,7 +290,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         )?.weight &&
                           !attribute.weight.customValue && (
                             <Box>
-                              (<Trans i18nKey={"default"} />)
+                            (<Trans i18nKey="common.default" />)
                             </Box>
                           )}
                       </Box>

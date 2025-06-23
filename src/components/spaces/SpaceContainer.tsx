@@ -84,14 +84,14 @@ const SpaceContainer = () => {
                   }
                   onClick={handleOpenDialog}
                   shouldAnimate={data?.length === 0}
-                  text="newSpace"
+                  text="spaces.newSpace"
                 />
               ) : (
                 <></>
               )
             }
           >
-            <Trans i18nKey="spaces" />
+            <Trans i18nKey="spaces.spaces" />
           </Title>
           {}
         </Box>
@@ -114,10 +114,10 @@ const SpaceContainer = () => {
         )}
         emptyDataComponent={
           <ErrorEmptyData
-            emptyMessage={<Trans i18nKey="nothingToSeeHere" />}
+            emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
             suggests={
               <Typography variant="subtitle1" textAlign="center">
-                <Trans i18nKey="tryCreatingNewSpace" />
+                <Trans i18nKey="spaces.tryCreatingNewSpace" />
               </Typography>
             }
           />
@@ -152,7 +152,7 @@ const SpaceContainer = () => {
                       width: "60%",
                     }}
                   >
-                    <Trans i18nKey="noSpaceHere" />
+                    <Trans i18nKey="spaces.noSpaceHere" />
                   </Typography>
                   <Typography
                     textAlign="center"
@@ -164,7 +164,7 @@ const SpaceContainer = () => {
                       width: "60%",
                     }}
                   >
-                    <Trans i18nKey="spacesAreEssentialForCreating" />
+                    <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
                   </Typography>
                   <Box>
                     <Button
@@ -179,7 +179,7 @@ const SpaceContainer = () => {
                       }}
                     >
                       <Typography fontSize="1.25rem" variant="button">
-                        <Trans i18nKey="createYourFirstSpace" />
+                        <Trans i18nKey="spaces.createYourFirstSpace" />
                       </Typography>
                     </Button>
                   </Box>

@@ -197,7 +197,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                         : secondaryFontFamily,
                   }}
                 >
-                  <Trans i18nKey="designedBy" />
+                  <Trans i18nKey="assessmentKit.designedBy" />
                 </span>{" "}
                 {expertGroup.title}
               </Typography>
@@ -205,7 +205,7 @@ const AssessmentKitsStoreCard = (props: any) => {
           </Box>
           {isPrivate && (
             <Chip
-              label={<Trans i18nKey="private" />}
+              label={<Trans i18nKey="common.private" />}
               size={small ? "small" : "medium"}
               sx={{
                 background: "#FCE8EF",
@@ -275,7 +275,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               height={small ? "16px" : "32px"}
             />
             <Typography variant={small ? "bodySmall" : "titleSmall"}>
-              <Trans i18nKey="free" />
+              <Trans i18nKey="common.free" />
             </Typography>
           </Box>
 
@@ -316,7 +316,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             },
           }}
         >
-          <Trans i18nKey="createNewAssessment" />
+          <Trans i18nKey="assessment.createNewAssessment" />
         </LoadingButton>
       </Box>
     </Box>

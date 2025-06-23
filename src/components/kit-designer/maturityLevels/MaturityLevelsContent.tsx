@@ -202,13 +202,13 @@ const MaturityLevelsContent = () => {
           hasBtn={
             maturityLevels.loaded && maturityLevels.data.items.length !== 0
           }
-          mainTitle="maturityLevels"
-          btnTitle="newMaturityLevel"
-          description="maturityLevelsKitDesignerDescription"
+          mainTitle="common.maturityLevels"
+          btnTitle="kitDesigner.newMaturityLevel"
+          description="kitDesigner.maturityLevelsKitDesignerDescription"
         />
         {maturityLevels.loaded && maturityLevels.data.items.length !== 0 && (
           <Typography variant="bodyMedium" mt={1}>
-            <Trans i18nKey="changeOrderHelper" />
+            <Trans i18nKey="kitDesigner.changeOrderHelper" />
           </Typography>
         )}
         <Divider sx={{ my: 1 }} />
@@ -252,9 +252,9 @@ const MaturityLevelsContent = () => {
                       />
                     ) : (
                       <EmptyState
-                        btnTitle="newMaturityLevel"
-                        title="maturityLevelsListEmptyState"
-                        SubTitle="maturityLevelsListEmptyStateDetailed"
+                        btnTitle="kitDesigner.newMaturityLevel"
+                        title="kitDesigner.maturityLevelsListEmptyState"
+                        SubTitle="kitDesigner.maturityLevelsListEmptyStateDetailed"
                         onAddNewRow={handleNewMaturityLevelClick}
                       />
                     )}
@@ -268,7 +268,7 @@ const MaturityLevelsContent = () => {
         {maturityLevels.loaded && maturityLevels.data.items.length !== 0 && (
           <Box mt={4}>
             <Typography variant="headlineSmall" fontWeight="bold">
-              <Trans i18nKey="competences" />
+              <Trans i18nKey="common.competences" />
             </Typography>
             <Divider sx={{ my: 1 }} />
             <QueryBatchData
@@ -292,8 +292,8 @@ const MaturityLevelsContent = () => {
           setOpenDeleteDialog({ ...openDeleteDialog, status: false })
         }
         onConfirm={handleDelete}
-        title="warning"
-        content="deleteMaturityLevel"
+        title="common.warning"
+        content="kitDesigner.deleteMaturityLevel"
       />
     </PermissionControl>
   );

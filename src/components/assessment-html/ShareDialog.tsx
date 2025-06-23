@@ -171,7 +171,7 @@ export const ShareDialog = ({
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="shareReport" values={{ title }} />
+          <Trans i18nKey="assessmentReport.shareReport"/>
         </Box>
       }
       maxWidth="sm"
@@ -190,7 +190,7 @@ export const ShareDialog = ({
                   <InputFieldUC
                     name="email"
                     size="small"
-                    placeholder={t("shareReportViaEmail") ?? ""}
+                    placeholder={t("assessmentReport.shareReportViaEmail") ?? ""}
                     fullWidth
                     required
                   />
@@ -207,7 +207,7 @@ export const ShareDialog = ({
 
           <Box sx={{ mt: 3 }}>
             <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
-              <Trans i18nKey="peopleWithAccess" />
+              <Trans i18nKey="assessmentReport.peopleWithAccess" />
             </Typography>
             <Divider sx={{ my: 1 }} />
           </Box>
@@ -251,7 +251,7 @@ export const ShareDialog = ({
                         ></Avatar>
                         {email}
                         {graphicalReportUsers.invitees.includes(member) && (
-                          <Chip label={t("invited")} size="small" />
+                          <Chip label={t("common.invited")} size="small" />
                         )}
                       </Box>
                     );
@@ -271,7 +271,7 @@ export const ShareDialog = ({
       </Box>
       <Tooltip
         disableHoverListener={permissions.canManageVisibility}
-        title={<Trans i18nKey="youDontHavePermission" />}
+        title={<Trans i18nKey="notification.youDontHavePermission" />}
       >
         <div>
           <Box
@@ -371,18 +371,18 @@ export const ShareDialog = ({
           onClick={() => handleCopyClick()}
           variant="outlined"
         >
-          <Trans i18nKey="copyReportLink" />
+          <Trans i18nKey="assessmentReport.copyReportLink" />
         </LoadingButton>
 
         <LoadingButton variant="contained" onClick={onClose} sx={{ mx: 1 }}>
-          <Trans i18nKey="done" />
+          <Trans i18nKey="common.done" />
         </LoadingButton>
       </CEDialogActions>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
-        message={t("linkCopied")}
+        message={t("common.linkCopied")}
       />
     </CEDialog>
   );

@@ -31,7 +31,7 @@ export const QuestionGuide = (props: any) => {
                   marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
                 }}
               />
-              <Trans i18nKey="hint" />
+              <Trans i18nKey="common.hint" />
             </Box>
           }
           size="small"

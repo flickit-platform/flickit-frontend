@@ -277,7 +277,7 @@ const AddMemberDialog = (props: {
             </FormProviderWithForm>
           </Box>
           <Typography sx={{ whiteSpace: "nowrap" }}>
-            <Trans i18nKey="common.as"/>
+            <Trans i18nKey="common.as" />
           </Typography>
           <FormControl sx={{ width: "40%" }}>
             <Select
@@ -303,7 +303,7 @@ const AddMemberDialog = (props: {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <Trans i18nKey={"chooseARole"} />
+                      <Trans i18nKey="settings.chooseARole" />
                     </Box>
                   ) : (
                     roleSelected.title
@@ -320,7 +320,7 @@ const AddMemberDialog = (props: {
                 }}
               >
                 <Typography sx={{ fontSize: "0.875rem" }}>
-                  <Trans i18nKey={"chooseARole"} />
+                  <Trans i18nKey="settings.chooseARole" />
                 </Typography>
               </Box>
               {listOfRoles?.map((role: any, index: number) => {
@@ -407,9 +407,9 @@ const AddMemberDialog = (props: {
             />
             <Typography variant="bodyLarge" textAlign="left">
               {addedEmailType === EUserType.EXISTED ? (
-                <Trans i18nKey={"emailExistsInApp"} />
+                <Trans i18nKey="user.emailExistsInApp" />
               ) : (
-                <Trans i18nKey={"emailDoesNotExistInApp"} />
+                <Trans i18nKey="user.emailDoesNotExistInApp" />
               )}
             </Typography>
           </Box>
@@ -483,7 +483,7 @@ const EmailField = ({
         {...queryData}
         name={EUserInfo.EMAIL}
         required={true}
-        label={<Trans i18nKey="email" />}
+        label={<Trans i18nKey="user.email" />}
         data-cy={EUserInfo.EMAIL}
         hasAddBtn={true}
         filterFields={[EUserInfo.EMAIL, EUserInfo.NAME]}

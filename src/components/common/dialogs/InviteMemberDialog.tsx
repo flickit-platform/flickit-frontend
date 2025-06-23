@@ -22,9 +22,9 @@ const InviteMemberDialog = (props: PropsWithChildren<ICEDialogProps>) => {
   const {
     onClose = () => {},
     closeDialog = onClose,
-    title = <Trans i18nKey="inviteMember" />,
+    title = <Trans i18nKey="common.inviteMember" />,
     children,
-    inviteButtonLabel = "invite",
+    inviteButtonLabel = "common.invite",
     onInvite,
     loading,
     ...rest

@@ -1,3 +1,21 @@
 {
-  "accessDenied": "Access denied"
+  "accessDenied": "Access denied",
+  "attachmentRequired": "Attachment file is required.",
+  "errorAtLine": "{{message}} at {{fileName}} in line: {{line}} column: {{column}}",
+  "errorLine": "Error line: {{errorLine}}",
+  "fillInAllRequired": "Please fill in all sections first.",
+  "invalidEmail": "Please enter a valid email address.",
+  "max100characters": "maximum 100 characters",
+  "maximumUploadFileSize": "Maximum upload file size: {{maxSize}}",
+  "maxLengthFieldError": "Please enter up to {{length}} characters.",
+  "minLengthFieldError": "Please enter at least {{length}} characters",
+  "oneFileOnly": "You can only upload one file at a time.",
+  "pleaseEnterEmailAddress": "Please enter an email address.",
+  "requiredFieldError": "This field is required.",
+  "someThingWentWrong": "Something went wrong.",
+  "thisFileNotAcceptable": "This file is not acceptable.",
+  "thisPlaceIsEmpty": "This place is empty.",
+  "uploadAcceptable": "Only the following formats are acceptable: PDF, JPG, PNG, DOCX, DOC, TXT, RAR, ZIP, Excel",
+  "uploadAcceptableSize": "The size of an attachment must be less than 2 MB.",
+  "youveGotSyntaxErrorsInYourDslFile": "There are syntax errors in your DSL file."
 }
