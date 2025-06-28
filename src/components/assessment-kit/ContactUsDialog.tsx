@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import whatsApp from "@assets/svg/whatsApp.svg";
 import telegram from "@assets/svg/telegram.svg";
+import { toast } from "react-toastify";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -68,7 +69,12 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   }, []);
 
   const onSubmit = async (data: any) => {
-    handleSubmitSpree(data);
+    handleSubmitSpree(data).then(() =>{
+      if(type == "purchased"){
+        handleSucceeded()
+        toast(t("thankYouForYourMessage"),{type: "success"})
+      }
+    });
   };
 
   const socialIcon = [
@@ -97,7 +103,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         </Typography>
       }
     >
-      {state.succeeded ? (
+      {state.succeeded && type != "purchased" ? (
         <Box
           mt={2}
           sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}
