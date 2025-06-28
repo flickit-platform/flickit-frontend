@@ -348,6 +348,7 @@
   "issue": "Issue",
   "issues": "Issues",
   "items": "Items",
+  "interestedThisKit": "Interested in this kit?",
   "kitCustomDefaultDataChanged": "Default data has not been changed since the last update.",
   "kitCustomization": "Kit customization",
   "kitCustomTitle": "Custom kit title",
@@ -533,6 +534,12 @@
   "publishedAssessmentKits": "Published assessment kits",
   "publishReport": "Publish report",
   "purchased": "Purchased",
+  "purchase": "Purchase",
+  "purchaseModal": {
+    "accessToKit": "Access to this assessment kit requires a payment.",
+    "makeSureFitsYourNeeds": "We want to make sure it truly fits your needs and is worth the investment.",
+    "getInTouch": "Please fill out the short form below, and we’ll get in touch with you soon to help you decide whether this kit is the right fit for you."
+  },
   "paid": "Paid",
   "question": "Question",
   "questionAndOptions": "Question and options",
@@ -653,6 +660,7 @@
   "summary": "Summary",
   "supportedLanguages": "Supported languages",
   "switchTo": "Switch to {{title}}",
+  "sendEmail": "Send E-mail",
   "tags": "Tags",
   "thankYouForYourMessage": "Thank you for your message!",
   "theOptionSelectionIsDisabled": "The option selection is disabled as long as the question is marked as not applicable.",
@@ -681,6 +689,7 @@
   "tryCreatingNewAssessment": "There is no assessment in this space. Try creating one.",
   "tryCreatingNewSpace": "You don't have access to existing spaces. Try creating one or ask for access.",
   "targetSpace": "Target space",
+  "tellUsWhatYouLookingFor": "Tell us what you were looking for?",
   "unanswered": "Unanswered questions",
   "unansweredQuestions": "Unanswered questions",
   "unapprovedAnswer": "Unapproved answer",
@@ -764,6 +773,7 @@
   "yourAnswer": "Selected answer",
   "yourConfidence": "Selected confidence",
   "yourEmail": "Your email",
+  "yourEmailAddress": "Your e-mail address",
   "yourMessage": "Your message",
   "youveGotSyntaxErrorsInYourDslFile": "There are syntax errors in your DSL file."
 }

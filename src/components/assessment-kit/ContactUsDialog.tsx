@@ -11,6 +11,7 @@ import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import whatsApp from "@assets/svg/whatsApp.svg";
+import telegram from "@assets/svg/telegram.svg";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -77,6 +78,12 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       bg: "#3D8F3D14",
       link: { WhatsappLink, WhatsappWebLink },
     },
+    {
+      id: 1,
+      icon: telegram,
+      bg: "#2466A814",
+      link: { WhatsappLink, WhatsappWebLink },
+    },
   ];
 
   return (
@@ -137,13 +144,13 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               </Typography>
 
               {type !== "requestAnExpertReview" && (
-                <InputFieldUC name="email" label={t("yourEmail")} required />
+                <InputFieldUC name="email" label={t("yourEmailAddress")} required />
               )}
 
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={t("yourMessage")}
+                  label={t("tellUsWhatYouLookingFor")}
                   multiline
                   rows={4}
                   required

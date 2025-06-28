@@ -9,12 +9,41 @@ import uniqueId from "@/utils/uniqueId";
 import { useParams } from "react-router-dom";
 import keycloakService from "@/service/keycloakService";
 import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
+import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import { t } from "i18next";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const AssessmentKitsStoreListCard = ({ small = false }: any) => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
 
   const dialogProps = useDialog();
+  const dialogPurchaseProps = useDialog({
+    context: {
+      type: "purchased",
+      data: {
+        email:
+          keycloakService._kc.tokenParsed?.preferred_username ??
+          keycloakService._kc.tokenParsed?.sub,
+        dialogTitle: t("interestedThisKit"),
+        children: (
+          <Box sx={{color: "#2B333B"}}>
+            <Typography component={"p"} textAlign="justify" variant="semiBoldLarge">
+              {t("purchaseModal.accessToKit")}
+            </Typography>
+            <Typography component={"p"} mt={1} textAlign="justify" variant="semiBoldLarge">
+              {t("purchaseModal.makeSureFitsYourNeeds")}
+            </Typography>
+            <Typography component={"p"} mt={1} mb={4} textAlign="justify" variant="semiBoldLarge">
+              {t("purchaseModal.getInTouch")}
+            </Typography>
+          </Box>
+        ),
+        primaryActionButtonText: t("sendEmail"),
+      },
+    }
+  });
   const isAuthenticated = keycloakService.isLoggedIn();
   const isPublic = isAuthenticated ? "" : "/public"
   const assessmentKitsQueryData = useQuery({
@@ -48,12 +77,14 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
                   <AssessmentKitsStoreCard
                     key={item.id}
                     dialogProps={dialogProps}
+                    dialogPurchaseProps={dialogPurchaseProps}
                     {...item}
                     small={small}
                   />
                 </Grid>
               ))}
               {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
+              {dialogPurchaseProps.open && <ContactUsDialog {...dialogPurchaseProps} />}
           </Grid>
         );
       }}

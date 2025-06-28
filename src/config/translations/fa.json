@@ -334,6 +334,7 @@
   "issue": "مورد",
   "issues": "موارد",
   "items": "موارد",
+  "interestedThisKit": "به این کیت علاقه‌مندید؟",
   "kitCustomDefaultDataChanged": "هیچ تغییری برای ذخیره‌سازی وجود ندارد.",
   "kitCustomization": "شخصی‌سازی کیت",
   "kitCustomTitle": "عنوان کیت سفارشی",
@@ -516,6 +517,12 @@
   "publishedAssessmentKits": "کیت‌های ارزیابی منتشر‌شده",
   "publishReport": "انتشار گزارش",
   "purchased": "خریداری‌شده",
+  "purchase": "خرید کیت",
+  "purchaseModal": {
+    "accessToKit": "دسترسی به این کیت ارزیابی مستلزم پرداخت هزینه است.",
+    "makeSureFitsYourNeeds": "مایلیم اطمینان حاصل کنیم که این کیت به‌درستی با نیازهای شما منطبق است و ارزش سرمایه‌گذاری دارد.",
+    "getInTouch": "لطفا فرم زیر را به‌صورت مختصر تکمیل کنید تا در اولین فرصت با شما تماس بگیریم و در تصمیم‌گیری برای استفاده یا صرف‌نظر از این کیت، شما را یاری کنیم."
+  },
   "paid": "غیر رایگان",
   "question": "پرسش",
   "questionAndOptions": "پرسش و گزینه‌ها",
@@ -648,6 +655,7 @@
   "summary": "خلاصه",
   "supportedLanguages": "زبان‌های پشتیبانی‌شده",
   "switchTo": "تغییر به {{title}}",
+  "sendEmail": "ارسال رایانامه",
   "tags": "برچسب‌ها",
   "thankYouForYourMessage": "پیام شما با موفقیت ارسال شد!",
   "theOptionSelectionIsDisabled": "انتخاب گزینه تا زمانی که پرسش به عنوان «نامرتبط» علامت‌گذاری شده، غیرفعال است.",
@@ -672,6 +680,7 @@
   "tryCreatingNewAssessment": "در این فضای کاری هیچ ارزیابی‌ای وجود ندارد. می‌توانید یکی ایجاد کنید.",
   "tryCreatingNewSpace": "در حال حاضر، به هیچ فضای کاری‌ای دسترسی ندارید. می‌توانید یکی ایجاد کنید یا درخواست دسترسی بدهید.",
   "targetSpace": "فضای کاری",
+  "tellUsWhatYouLookingFor": "درباره نیازمندی‌تان کمی توضیح دهید.",
   "unanswered": "پرسش‌های بدون پاسخ",
   "unansweredQuestions": "پاسخ داده‌نشده",
   "unapprovedAnswer": "پاسخ تاییدنشده",
@@ -755,6 +764,7 @@
   "yourAnswer": "پاسخ شما",
   "yourConfidence": "سطح اطمینان شما",
   "yourEmail": "ایمیل شما",
+  "yourEmailAddress": "نشانی رایانامه خود را بنویسید",
   "yourMessage": "پیام شما",
   "youveGotSyntaxErrorsInYourDslFile": "در فایل DSL شما خطای نحوی وجود دارد."
 }

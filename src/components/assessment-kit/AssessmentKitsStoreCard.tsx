@@ -30,6 +30,7 @@ const AssessmentKitsStoreCard = (props: any) => {
     summary,
     languages,
     dialogProps,
+    dialogPurchaseProps,
     small,
     isFree,
     hasAccess
@@ -37,6 +38,7 @@ const AssessmentKitsStoreCard = (props: any) => {
 
   const navigate = useNavigate();
   const { config } = useConfigContext();
+  const paid = !isFree && !hasAccess;
 
   const filteredLanguages = config.languages.filter((kitLang: ILanguage) =>
     languages.includes(kitLang.title),
@@ -78,6 +80,15 @@ const AssessmentKitsStoreCard = (props: any) => {
       keycloakService.doLogin();
     }
   };
+  const handleClick = (e: any, id: any, title: any) =>{
+    e.preventDefault();
+    e.stopPropagation();
+    if(paid){
+      dialogPurchaseProps.openDialog()
+    }else {
+      createAssessment(e, id, title)
+    }
+  }
 
   useEffect(() => {
     if (window.location.hash.startsWith("#createAssessment")) {
@@ -298,7 +309,7 @@ const AssessmentKitsStoreCard = (props: any) => {
         </Box>
 
         <LoadingButton
-          onClick={(e) => createAssessment(e, id, title)}
+          onClick={(e) => handleClick(e, id, title)}
           loading={loading}
           variant="contained"
           size={small ? "small" : "large"}
@@ -314,7 +325,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             },
           }}
         >
-          <Trans i18nKey="createNewAssessment" />
+          {paid ? <Trans i18nKey="purchase" /> : <Trans i18nKey="createNewAssessment" />}
         </LoadingButton>
       </Box>
     </Box>
