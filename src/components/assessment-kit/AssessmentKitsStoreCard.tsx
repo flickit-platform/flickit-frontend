@@ -18,6 +18,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { ILanguage } from "@/types";
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import PurchasedIcon from "@utils/icons/purchasedIcon";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -29,6 +31,8 @@ const AssessmentKitsStoreCard = (props: any) => {
     languages,
     dialogProps,
     small,
+    isFree,
+    hasAccess
   } = props;
 
   const navigate = useNavigate();
@@ -265,18 +269,12 @@ const AssessmentKitsStoreCard = (props: any) => {
               gap: small ? "4px" : 1,
             }}
           >
-            <PriceIcon
-              color={
-                isPrivate
-                  ? theme.palette.secondary.main
-                  : theme.palette.primary.main
-              }
-              width={small ? "16px" : "32px"}
-              height={small ? "16px" : "32px"}
-            />
-            <Typography variant={small ? "bodySmall" : "titleSmall"}>
-              <Trans i18nKey="free" />
-            </Typography>
+         <CheckStatus
+          small={small}
+          isPrivate={isPrivate}
+          isFree={isFree}
+          hasAccess={hasAccess}
+         />
           </Box>
 
           <Box
@@ -322,5 +320,65 @@ const AssessmentKitsStoreCard = (props: any) => {
     </Box>
   );
 };
+
+const CheckStatus = (props: any) =>{
+  const {isPrivate, small, isFree, hasAccess} = props
+
+  const purchased = !isFree && hasAccess
+  const paid = !isFree && !hasAccess
+
+  const icon = () =>{
+    if(isFree){
+      return (
+        <PriceIcon
+          color={
+            isPrivate
+              ? theme.palette.secondary.main
+              : theme.palette.primary.main
+          }
+          width={small ? "16px" : "32px"}
+          height={small ? "16px" : "32px"}
+        />
+      )
+    }else if(paid){
+      return (
+        <PaidOutlinedIcon
+          sx={{
+            color:
+              isPrivate
+              ? theme.palette.secondary.main
+              : theme.palette.primary.main,
+            width: small ? "16px" : "32px",
+            height: small ? "16px" : "32px"
+          }}
+        />
+      )
+    }else if(purchased){
+      return (
+      <PurchasedIcon
+        color={
+          isPrivate
+            ? theme.palette.secondary.main
+            : theme.palette.primary.main
+        }
+        width={small ? "16px" : "32px"}
+        height={small ? "16px" : "32px"}
+      />
+      )
+    }
+  }
+
+
+  return (
+    <>
+      {icon()}
+      <Typography variant={small ? "bodySmall" : "titleSmall"}>
+        {isFree && <Trans i18nKey="free" />}
+        {paid && <Trans i18nKey="paid" />}
+        {purchased && <Trans i18nKey="purchased" />}
+      </Typography>
+    </>
+  )
+}
 
 export default AssessmentKitsStoreCard;
