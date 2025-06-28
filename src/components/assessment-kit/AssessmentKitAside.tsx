@@ -21,17 +21,45 @@ import { useEffect, useState } from "react";
 import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import PurchasedIcon from "@utils/icons/purchasedIcon";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 
 interface IlistOfItems {
+  field: string;
   icon: any;
   title: string;
   description: string;
 }
 
 const AssessmentKitAside = (props: any) => {
-  const { id, title, like, languages } = props;
+  const { id, title, like, languages, paid, purchased, free } = props;
   const dialogProps = useDialog();
   const contactusDialogProps = useDialog();
+  const dialogPurchaseProps = useDialog({
+    context: {
+      type: "purchased",
+      data: {
+        email:
+          keycloakService._kc.tokenParsed?.preferred_username ??
+          keycloakService._kc.tokenParsed?.sub,
+        dialogTitle: t("interestedThisKit"),
+        children: (
+          <Box sx={{color: "#2B333B"}}>
+            <Typography component={"p"} textAlign="justify" variant="semiBoldLarge">
+              {t("purchaseModal.accessToKit")}
+            </Typography>
+            <Typography component={"p"} mt={1} textAlign="justify" variant="semiBoldLarge">
+              {t("purchaseModal.makeSureFitsYourNeeds")}
+            </Typography>
+            <Typography component={"p"} mt={1} mb={4} textAlign="justify" variant="semiBoldLarge">
+              {t("purchaseModal.getInTouch")}
+            </Typography>
+          </Box>
+        ),
+        primaryActionButtonText: t("sendEmail"),
+      },
+    }
+  });
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
 
@@ -43,6 +71,7 @@ const AssessmentKitAside = (props: any) => {
 
   const listOfItems: IlistOfItems[] = [
     {
+      field: free,
       icon: (
         <PriceIcon
           color={theme.palette.primary.dark}
@@ -53,8 +82,34 @@ const AssessmentKitAside = (props: any) => {
       title: "price",
       description: "free",
     },
-
     {
+      field: purchased,
+      icon: (
+        <PurchasedIcon
+          color={theme.palette.primary.dark}
+          width={"33px"}
+          height={"33px"}
+        />
+      ),
+      title: "price",
+      description: "purchased",
+    },
+    {
+      field: paid,
+      icon: (
+        <PaidOutlinedIcon
+          sx={{
+            color: theme.palette.primary.dark,
+            width:"33px",
+            height:"33px"
+          }}
+        />
+      ),
+      title: "price",
+      description: "paid",
+    },
+    {
+      field: true,
       icon: (
         <LanguageIcon
           sx={{
@@ -102,8 +157,6 @@ const AssessmentKitAside = (props: any) => {
   }, []);
   const createAssessment = async (e: any) => {
     setLoading(true);
-    e.preventDefault();
-    e.stopPropagation();
 
     if (keycloakService.isLoggedIn()) {
       createOrOpenDialog({
@@ -118,6 +171,16 @@ const AssessmentKitAside = (props: any) => {
       keycloakService.doLogin();
     }
   };
+
+    const handleClick = (e: any) =>{
+      e.preventDefault();
+      e.stopPropagation();
+      if(paid){
+        dialogPurchaseProps.openDialog({})
+      }else {
+        createAssessment(e)
+      }
+    }
 
   const toggleLike = async () => {
     await likeQueryData.query();
@@ -136,13 +199,13 @@ const AssessmentKitAside = (props: any) => {
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
-            {listOfItems.map((item) => {
+            {listOfItems.filter(filter => filter.field).map((item) => {
               return <InfoBox {...item} key={item.title} />;
             })}
           </Box>
           <Box>
             <LoadingButton
-              onClick={(e) => createAssessment(e)}
+              onClick={(e) => handleClick(e)}
               loading={loading}
               variant="contained"
               size="large"
@@ -150,7 +213,7 @@ const AssessmentKitAside = (props: any) => {
                 width: "100%",
               }}
             >
-              <Trans i18nKey="createNewAssessment" />
+              {paid ? <Trans i18nKey="purchase" /> : <Trans i18nKey="createNewAssessment" />}
             </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
@@ -214,6 +277,7 @@ const AssessmentKitAside = (props: any) => {
       </Box>
       {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
       <ContactUsDialog {...contactusDialogProps} />
+      {dialogPurchaseProps.open && <ContactUsDialog {...dialogPurchaseProps} />}
     </>
   );
 };

@@ -88,6 +88,8 @@ const AssessmentKit = (props: any) => {
     subjects,
     metadata,
     languages,
+    isFree,
+    hasAccess
   } = assessmentKitQueryData ?? {};
 
   const isMobileScreen = useScreenResize("md");
@@ -155,6 +157,9 @@ const AssessmentKit = (props: any) => {
               title={assessmentTitle}
               metadata={metadata}
               languages={languages}
+              paid={!isFree && !hasAccess}
+              purchased={!isFree && hasAccess}
+              free={isFree && hasAccess}
             />
           </Grid>
           <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>
