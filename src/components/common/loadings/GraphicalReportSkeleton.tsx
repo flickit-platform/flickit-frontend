@@ -66,8 +66,8 @@ const DotsLoading = () => (
   </Box>
 );
 
-const GraphicalReportSkeleton = ({ isAuthenticatedUser }: any) => (
-  <Box sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}>
+const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
+  <Box dir={lang === "FA" ? "rtl": "ltr"} sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}>
     <Box
       sx={{
         backgroundColor: "#D5E5F6",
