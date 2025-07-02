@@ -161,7 +161,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
       <Box
         sx={{
           display: "flex",
-          width: `${banners.length * 95}%`,
+          width: {xs: `${banners.length * 95}%`, sm: `${banners.length * 100}%` },
           height: "100%",
           transition: "transform 0.5s ease-in-out",
           transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,

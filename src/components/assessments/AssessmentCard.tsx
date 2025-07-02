@@ -259,6 +259,7 @@ const AssessmentCard = ({
                   item={item}
                   progressPercent={progressPercent}
                   location={location}
+                  language={language}
                   spaceId={spaceId}
                   type={type}
                 />
@@ -393,6 +394,7 @@ const CardButton = ({
   progressPercent,
   location,
   spaceId,
+  language,
   type, // 'report' | 'questionnaires' | 'dashboard'
 }: any) => {
   let to = "";
@@ -455,7 +457,7 @@ const CardButton = ({
           },
         }),
       }}
-      state={location}
+      state={{ location, language }}
       to={to}
       data-cy="assessment-card-btn"
       variant={

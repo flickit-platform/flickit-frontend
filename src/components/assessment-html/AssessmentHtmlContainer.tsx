@@ -192,9 +192,10 @@ const AssessmentHtmlContainer = () => {
   const handleReloadReport = () => {
     fetchGraphicalReport.query();
   };
-  const location = useLocation();
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from;
+  const from = state?.location?.from;
+  const lang = state?.language?.code;
 
   const handleBack = () => {
     if (from) {
@@ -209,7 +210,7 @@ const AssessmentHtmlContainer = () => {
       <QueryData
         {...fetchGraphicalReport}
         renderLoading={() => (
-          <GraphicalReportSkeleton isAuthenticatedUser={isAuthenticatedUser} />
+          <GraphicalReportSkeleton lang={lang} isAuthenticatedUser={isAuthenticatedUser} />
         )}
         render={(graphicalReport) => {
           const {
