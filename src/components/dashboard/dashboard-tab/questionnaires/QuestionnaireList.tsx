@@ -28,23 +28,23 @@ interface IQuestionnaireListProps {
 
 const itemNames = [
   {
-    translate: t("unansweredQuestions"),
+    translate: t("dashboard.unansweredQuestions"),
     original: "unanswered",
   },
   {
-    translate: t("lowConfidenceAnswers"),
+    translate: t("dashboard.lowConfidenceAnswers"),
     original: "answeredWithLowConfidence",
   },
   {
-    translate: t("unresolvedComments"),
+    translate: t("dashboard.unresolvedComments"),
     original: "unresolvedComments",
   },
   {
-    translate: t("answersWithNoEvidence"),
+    translate: t("dashboard.answersWithNoEvidence"),
     original: "answeredWithoutEvidence",
   },
   {
-    translate: t("unapprovedAnswers"),
+    translate: t("dashboard.unapprovedAnswers"),
     original: "unapprovedAnswers",
   },
 ];
@@ -100,7 +100,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         <Typography
           sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
         >
-          <Trans i18nKey="none" />
+          <Trans i18nKey="common.none" />
         </Typography>
       );
     } else if (isAllSelected) {
@@ -108,7 +108,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         <Typography
           sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
         >
-          <Trans i18nKey={"all"} />
+          <Trans i18nKey="common.all" />
         </Typography>
       );
     } else if (selected.length == 1) {
@@ -124,7 +124,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
             gap: 1,
           }}
         >
-          <Trans i18nKey={"selectedIssuesType"} />:
+          <Trans i18nKey="dashboard.selectedIssuesType" />:
           <Typography>{selected.length}</Typography>
         </Box>
       );
@@ -143,7 +143,9 @@ export const QuestionsFilteringDropdown = (props: any) => {
       }}
     >
       <Typography sx={{ ...theme.typography.semiBoldLarge }}>
-        {dropdownLabel ?? <Trans i18nKey={"filterQuestionsWithIssues"} />}
+        {dropdownLabel ?? (
+          <Trans i18nKey="dashboard.filterQuestionsWithIssues" />
+        )}
       </Typography>
       <FormControl sx={{ m: 1, width: 250 }}>
         <Select
@@ -241,7 +243,7 @@ const ProgressButton = (props: any) => {
                 color: "#3D4D5C80",
               }}
             >
-              <Trans i18nKey={"viewReport"} />
+              <Trans i18nKey="assessmentReport.viewReport" />
             </Typography>
           </Button>
           <Typography
@@ -252,7 +254,7 @@ const ProgressButton = (props: any) => {
             }}
           >
             <Trans
-              i18nKey={"moreAnswersNeeded"}
+              i18nKey="dashboard.moreAnswersNeeded"
               values={{ count: leftQuestions }}
             />
           </Typography>
@@ -280,7 +282,7 @@ const ProgressButton = (props: any) => {
               color: theme.palette.primary.main,
             }}
           >
-            <Trans i18nKey={"viewReport"} />
+            <Trans i18nKey="assessmentReport.viewReport" />
           </Typography>
         </Button>
       )}
@@ -332,7 +334,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
           }}
         >
           <Typography variant={"titleLarge"} color="white">
-            <Trans i18nKey={"Questionnaires"} />
+            <Trans i18nKey="common.questionnaires" />
             {"  "}(
             <QANumberIndicator
               color="white"
@@ -394,10 +396,10 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                         }}
                       >
                         {originalItem.length == 1 && (
-                          <Trans i18nKey={"NoIssueFound"} />
+                          <Trans i18nKey="dashboard.noIssueFound" />
                         )}
                         {originalItem.length > 1 && (
-                          <Trans i18nKey={"NoIssuesFound"} />
+                          <Trans i18nKey="dashboard.NoIssuesFound" />
                         )}
                       </Typography>
                     </Box>

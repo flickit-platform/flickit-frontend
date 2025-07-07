@@ -63,7 +63,7 @@ const OptionForm = (props: OptionFormProps) => {
       <Box width="100%" mx={1}>
         <MultiLangTextField
           id="question-option-title"
-          label={<Trans i18nKey="title" />}
+          label={<Trans i18nKey="common.title" />}
           name="title"
           value={newItem.title}
           onChange={handleInputChange}
@@ -71,13 +71,13 @@ const OptionForm = (props: OptionFormProps) => {
             langCode ? (newItem.translations?.[langCode]?.title ?? "") : ""
           }
           onTranslationChange={updateTranslation("title", setNewItem)}
-          placeholder={t("questionPlaceholder")?.toString()}
+          placeholder={t("kitDesigner.questionPlaceholder")?.toString()}
         />
       </Box>
       <Box width="20%" mx={1}>
         <TextField
           required
-          label={<Trans i18nKey="value" />}
+          label={<Trans i18nKey="common.value" />}
           name="value"
           value={newItem.value}
           onChange={handleInputChange}

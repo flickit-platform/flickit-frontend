@@ -1,0 +1,13 @@
+{
+  "editorActionRestriction": "You cannot perform other actions while the editor is active. Complete the current action by saving or canceling first.",
+  "generatingFinalReport": "We’re generating your final report based on your responses to this assessment. This process may take a few minutes.",
+  "gettingThingsReady": "We are getting things ready for you...",
+  "incompleteReportDueToDelay": "Due to network or AI processing delays, parts of this report are incomplete.",
+  "insightsAreRecalculating": "Insights are recalculating",
+  "nothingToSeeHere": "Nothing to see here yet.",
+  "notificationDetails": "Notification details",
+  "notificationEmptyState": "Nothing new to see here yet!",
+  "permissionRequired": "Report inaccessible",
+  "pleaseWait": "Please wait...",
+  "youDontHavePermission": "You don’t have the necessary permission to edit this section."
+}

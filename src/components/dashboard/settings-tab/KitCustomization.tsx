@@ -72,7 +72,7 @@ const KitCustomization = (props: any) => {
 
   useEffect(() => {
     if (!hasChanges) {
-      setTooltipTitle(<Trans i18nKey={"kitCustomDefaultDataChanged"} />);
+      setTooltipTitle(<Trans i18nKey="settings.kitCustomDefaultDataChanged" />);
     } else {
       setTooltipTitle("");
     }
@@ -151,7 +151,7 @@ const KitCustomization = (props: any) => {
           setHasChanges(false);
           toast.success(
             <Trans
-              i18nKey="spaceUpdatedSuccessMessage"
+              i18nKey="spaces.spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
           );
@@ -170,7 +170,7 @@ const KitCustomization = (props: any) => {
           setHasChanges(false);
           toast.success(
             <Trans
-              i18nKey="spaceCreatedSuccessMessage"
+              i18nKey="spaces.spaceCreatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
           );
@@ -201,7 +201,7 @@ const KitCustomization = (props: any) => {
               color="#2B333B"
               variant="headlineSmall"
             >
-              <Trans i18nKey={`${"kitCustomization"}`} />
+              <Trans i18nKey="settings.kitCustomization" />
             </Typography>
             <Divider
               sx={{
@@ -219,7 +219,7 @@ const KitCustomization = (props: any) => {
                 }}
               >
                 <Typography color="#2B333B" variant="semiBoldLarge">
-                  <Trans i18nKey="kitCustomTitle" />
+                  <Trans i18nKey="settings.kitCustomTitle" />
                 </Typography>
 
                 <Box
@@ -256,7 +256,7 @@ const KitCustomization = (props: any) => {
                   mb: 1,
                 }}
               >
-                <Trans i18nKey={"customizingSubjectAndAttributes"} />
+                <Trans i18nKey="dashboard.customizingSubjectAndAttributes" />
               </Typography>
               <Typography
                 sx={{
@@ -264,7 +264,7 @@ const KitCustomization = (props: any) => {
                   color: "#2B333B",
                 }}
               >
-                <Trans i18nKey={"viewTheWeightAndSubject"} />
+                <Trans i18nKey="settings.viewTheWeightAndSubject" />
               </Typography>
             </Box>
             <Box>
@@ -277,7 +277,7 @@ const KitCustomization = (props: any) => {
             <Grid mt={2} container spacing={2} justifyContent="flex-end">
               <Grid item>
                 <Button onClick={onClose} data-cy="cancel">
-                  <Trans i18nKey={"cancel"} />
+                  <Trans i18nKey="common.cancel" />
                 </Button>
               </Grid>
               <Grid item>
@@ -293,7 +293,7 @@ const KitCustomization = (props: any) => {
                         sendKitCustomization.loading
                       }
                     >
-                      <Trans i18nKey="saveChanges" />
+                      <Trans i18nKey="common.saveChanges" />
                     </LoadingButton>
                   </Box>
                 </Tooltip>
@@ -407,7 +407,7 @@ const OnHoverInputCustomTitle = (props: any) => {
                 color="error"
                 sx={{ fontSize: "0.75rem", marginTop: "4px" }}
               >
-                <Trans i18nKey="requiredFieldError" />
+                <Trans i18nKey="errors.requiredFieldError" />
               </Typography>
             )}
           </Box>

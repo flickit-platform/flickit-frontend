@@ -56,7 +56,8 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
     };
   }, []);
   const seenExpertGroupQuery = useQuery({
-    service: (args, config) => service.expertGroups.info.markAsSeen({ id }, config),
+    service: (args, config) =>
+      service.expertGroups.info.markAsSeen({ id }, config),
     runOnMount: false,
     toastError: false,
   });
@@ -110,9 +111,9 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
             }}
           />
           {type === "update" ? (
-            <Trans i18nKey="updateExpertGroup" />
+            <Trans i18nKey="expertGroups.updateExpertGroup" />
           ) : (
-            <Trans i18nKey="createExpertGroup" />
+            <Trans i18nKey="expertGroups.createExpertGroup" />
           )}
         </>
       }
@@ -131,7 +132,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
                 shouldFetchFileInfo={true}
                 hideDropText
                 name="picture"
-                label={<Trans i18nKey="groupPicture" />}
+                label={<Trans i18nKey="expertGroups.groupPicture" />}
                 maxSize={convertToBytes(2, "MB")}
               />
             </Grid>
@@ -140,14 +141,14 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
             <InputFieldUC
               defaultValue={defaultValues.title ?? ""}
               name="title"
-              label={<Trans i18nKey="title" />}
+              label={<Trans i18nKey="common.title" />}
               required
             />
           </Grid>
           <Grid item xs={12} md={8}>
             <InputFieldUC
               name="bio"
-              label={<Trans i18nKey="bio" />}
+              label={<Trans i18nKey="common.bio" />}
               defaultValue={defaultValues.bio ?? ""}
               required
             />
@@ -155,7 +156,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           <Grid item xs={12} md={4}>
             <InputFieldUC
               name="website"
-              label={<Trans i18nKey="website" />}
+              label={<Trans i18nKey="common.website" />}
               placeholder="https://example.com"
               defaultValue={defaultValues.website ?? ""}
             />
@@ -163,7 +164,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           <Grid item xs={12}>
             <RichEditorField
               name="about"
-              label={<Trans i18nKey="about" />}
+              label={<Trans i18nKey="common.about" />}
               defaultValue={defaultValues.about ?? ""}
               required
             />

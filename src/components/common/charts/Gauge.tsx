@@ -126,7 +126,7 @@ const Gauge = ({
               color="black"
               fontSize={{ xs: "1.35rem", sm: "1.35rem", md: "0.875rem" }}
             >
-              <Trans i18nKey="maturityGuidanceFirst" />
+              <Trans i18nKey="common.maturityGuidanceFirst" />
             </Typography>
           )}
           {maturity_status_guide && (
@@ -186,7 +186,7 @@ const Gauge = ({
               color="black"
               fontSize={{ xs: "1.35rem", sm: "1.35rem", md: "0.875rem" }}
             >
-              <Trans i18nKey="maturityGuidanceSecond" />
+              <Trans i18nKey="common.maturityGuidanceSecond" />
             </Typography>
           )}
         </Box>
@@ -201,7 +201,7 @@ const Gauge = ({
             variant="h5"
             color="GrayText"
           >
-            <Trans i18nKey="permissionRequired" />
+            <Trans i18nKey="notification.permissionRequired" />
           </Typography>
         </Box>
       )}

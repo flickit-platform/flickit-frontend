@@ -100,8 +100,8 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     hasViewBtn,
     hideSubmitButton = false,
     hideCancelButton = false,
-    submitButtonLabel = type === "update" ? t("update") : t("create"),
-    cancelLabel = "cancel",
+    submitButtonLabel = type === "update" ? t("common.update") : t("common.create"),
+    cancelLabel = "common.cancel",
     submitAndViewButtonLabel,
     backType = "contained",
     disablePrimaryButton = false,
@@ -140,7 +140,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               whiteSpace: "nowrap",
             }}
           >
-            <Trans i18nKey={"moreWaysToReachUs"} />
+            <Trans i18nKey="common.moreWaysToReachUs" />
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             {contactSection.map((chat) => {
@@ -175,7 +175,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
         {hasBackBtn && (
           <Grid item>
             <Button data-cy="back" variant={backType} onClick={onBack}>
-              <Trans i18nKey="back" />
+              <Trans i18nKey="common.back" />
             </Button>
           </Grid>
         )}
@@ -212,7 +212,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               }}
             >
               {submitAndViewButtonLabel ?? (
-                <Trans i18nKey={`${submitButtonLabel} ${t("andView")}`} />
+                <Trans i18nKey={`${submitButtonLabel} ${t("common.andView")}`} />
               )}
             </LoadingButton>
           </Grid>

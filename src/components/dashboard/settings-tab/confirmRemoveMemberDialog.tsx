@@ -80,7 +80,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          <Trans i18nKey="warning" />
+          <Trans i18nKey="common.warning" />
         </>
       </DialogTitle>
       <DialogContent
@@ -96,14 +96,14 @@ const ConfirmRemoveMemberDialog = (props: any) => {
         <Typography sx={{ color: "#0A2342" }}>
           {expandedRemoveDialog.invited ? (
             <Trans
-              i18nKey="areYouSureYouWantDeleteThisMemberInvited"
+              i18nKey="settings.areYouSureYouWantDeleteThisMemberInvited"
               values={{
                 name: expandedRemoveDialog?.name,
               }}
             />
           ) : (
             <Trans
-              i18nKey="areYouSureYouWantDeleteThisMember"
+              i18nKey="settings.areYouSureYouWantDeleteThisMember"
               values={{
                 name: expandedRemoveDialog?.name,
                 assessment: assessmentName,
@@ -114,10 +114,10 @@ const ConfirmRemoveMemberDialog = (props: any) => {
 
         <Box mt={2} alignSelf="flex-end" sx={{ display: "flex", gap: 2 }}>
           <Button onClick={onCloseRemoveDialog}>
-            <Trans i18nKey={"cancel"} />
+            <Trans i18nKey="common.cancel" />
           </Button>
           <Button variant="contained" onClick={DeletePerson}>
-            <Trans i18nKey={"confirm"} />
+            <Trans i18nKey="common.confirm" />
           </Button>
         </Box>
       </DialogContent>

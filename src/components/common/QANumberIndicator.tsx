@@ -20,7 +20,7 @@ const QANumberIndicator = (props: IQANumberIndicatorProps) => {
       color="GrayText"
       {...rest}
     >
-      {q} <Trans i18nKey={isFarsi ? "question" : "questions"} />
+      {q} <Trans i18nKey={isFarsi ? "common.question" : "common.questions"} />
     </Typography>
   );
 };

@@ -34,7 +34,7 @@ const DonutChart = (props: IGaugeProps) => {
   const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
 
   return (
-    <Suspense fallback={<Trans i18nKey={"loading"} />}>
+    <Suspense fallback={<Trans i18nKey="common.loading" />}>
       <Box sx={{ height: "100%" }} {...rest}>
         <Box
           sx={{

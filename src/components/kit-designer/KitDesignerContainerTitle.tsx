@@ -9,7 +9,7 @@ import { IKitVersion } from "@/types/index";
 const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { config } = useConfigContext();
   useEffect(() => {
-    setDocumentTitle(`${t("kitDesigner")}`, config.appTitle);
+    setDocumentTitle(`${t("kitDesigner.kitDesigner")}`, config.appTitle);
   }, []);
 
   return (
@@ -26,7 +26,7 @@ const KitDesignerTitle = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         <SupTitleBreadcrumb
           routes={[
             {
-              title: t("expertGroups") as string,
+              title: t("expertGroups.expertGroups") as string,
               to: `/user/expert-groups`,
             },
             {

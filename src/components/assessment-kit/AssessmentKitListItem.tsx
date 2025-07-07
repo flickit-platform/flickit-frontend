@@ -93,7 +93,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             {title}
           </Typography>
           <Typography color="GrayText" variant="body2">
-            <Trans i18nKey="lastUpdated" />{" "}
+            <Trans i18nKey="common.lastUpdated" />{" "}
             {getReadableDate(lastModificationTime)}
           </Typography>
         </Box>
@@ -110,7 +110,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
         >
           {isPrivate && (
             <Chip
-              label={<Trans i18nKey="private" />}
+              label={<Trans i18nKey="common.private" />}
               size="small"
               sx={{
                 background: "#7954B3",
@@ -120,15 +120,15 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
           )}
           {is_active ? (
             <Chip
-              label={<Trans i18nKey="published" />}
+              label={<Trans i18nKey="common.published" />}
               color="success"
               size="small"
             />
           ) : (
-            <Chip label={<Trans i18nKey="unPublished" />} size="small" />
+            <Chip label={<Trans i18nKey="common.unpublished" />} size="small" />
           )}
           <Tooltip
-            title={!draftVersionId && <Trans i18nKey="noDraftVersion" />}
+            title={!draftVersionId && <Trans i18nKey="assessmentKit.noDraftVersion" />}
           >
             <div>
               {hasAccess && showGroups && (
@@ -139,7 +139,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
                   onClick={draftClicked}
                   loading={cloneAssessmentKit.loading}
                 >
-                  <Trans i18nKey={!draftVersionId ? "newDraft" : "draft"} />
+                  <Trans i18nKey={!draftVersionId ? "assessmentKit.newDraft" : "assessmentKit.draft"} />
                 </LoadingButton>
               )}
             </div>
@@ -197,7 +197,7 @@ const Actions = (props: any) => {
       items={[
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="delete" />,
+          text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
         },
       ]}

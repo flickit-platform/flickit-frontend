@@ -82,7 +82,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
           ...styles.centerV,
         }}
       >
-        {t("generatingFinalReport")}
+        {t("notification.generatingFinalReport")}
       </Typography>
       <DotsLoading />
     </Box>

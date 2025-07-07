@@ -77,10 +77,10 @@ const getChipData = (
 ) => {
   const priorityColor: any = getIconColors(level, type);
   const translatedLevel = t(
-    level.toLowerCase(),
+    `common.${level.toLowerCase()}`,
     readOnly ? { lng: language } : {},
   );
-  const translatedType = t(type, readOnly ? { lng: language } : {});
+  const translatedType = t(`common.${type}`, readOnly ? { lng: language } : {});
   const isFarsi = i18next.language === "fa" || readOnly;
 
   return {
@@ -244,14 +244,14 @@ const AdviceItemAccordion: React.FC<{
       const updatedErrorMessage: any = {};
 
       if (!newAdvice.title) {
-        updatedErrorMessage.title = "requiredFieldError";
+        updatedErrorMessage.title = "errors.requiredFieldError";
         errorOccurred = true;
       } else {
         updatedErrorMessage.title = null;
       }
 
       if (!newAdvice.description || newAdvice.description === "<p></p>") {
-        updatedErrorMessage.description = "requiredFieldError";
+        updatedErrorMessage.description = "errors.requiredFieldError";
         errorOccurred = true;
       } else {
         updatedErrorMessage.description = null;
@@ -365,11 +365,11 @@ const AdviceItemAccordion: React.FC<{
                     {!isFarsi && !readOnly
                       ? t(item.priority.code.toLowerCase()) +
                         " " +
-                        t("priority")
-                      : t("priority", !readOnly ? {} : { lng: language }) +
+                        t("common.priority")
+                      : t("common.priority", !readOnly ? {} : { lng: language }) +
                         " " +
                         t(
-                          item.priority.code.toLowerCase(),
+                         `common.${item.priority.code.toLowerCase()}`,
                           !readOnly ? {} : { lng: language },
                         )}
                     )
@@ -469,7 +469,7 @@ const AdviceItemAccordion: React.FC<{
           setDisplayedItems(updatedItems);
         }}
         title={t("deleteItem")}
-        content={t("deleteItemConfirmation", { title: item.title })}
+        content={t("advice.deleteItemConfirmation", { title: item.title })}
       />
     </>
   );

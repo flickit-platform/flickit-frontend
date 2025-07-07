@@ -109,7 +109,7 @@ const AssessmentKitExpertViewContainer = () => {
   }, [loaded, forceUpdate, hasActiveVersion]);
   useEffect(() => {
     setDocumentTitle(
-      `${t("assessmentKit")}: ${assessmentKitTitle ?? ""}`,
+      `${t("assessmentKit.assessmentKit")}: ${assessmentKitTitle ?? ""}`,
       config.appTitle,
     );
   }, [assessmentKitTitle]);
@@ -129,7 +129,7 @@ const AssessmentKitExpertViewContainer = () => {
             <SupTitleBreadcrumb
               routes={[
                 {
-                  title: t("expertGroups") as string,
+                  title: t("expertGroups.expertGroups") as string,
                   to: `/user/expert-groups`,
                 },
                 {
@@ -154,7 +154,7 @@ const AssessmentKitExpertViewContainer = () => {
                 }}
               >
                 <Typography sx={{ marginInlineEnd: 1 }} variant="button">
-                  <Trans i18nKey="updateDSL" />
+                  <Trans i18nKey="assessmentKit.updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
               </Button>
@@ -177,7 +177,7 @@ const AssessmentKitExpertViewContainer = () => {
                 onClick={handleDownload}
               >
                 <Typography sx={{ marginInlineEnd: 1 }} variant="button">
-                  <Trans i18nKey="downloadDSL" />
+                  <Trans i18nKey="assessmentKit.downloadDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
               </Button>
@@ -222,7 +222,7 @@ const AssessmentKitSectionsTabs = (props: {
               <Tab
                 label={
                   <Box sx={{ ...styles.centerV }}>
-                    <Trans i18nKey="maturityLevels" />
+                    <Trans i18nKey="common.maturityLevels" />
                   </Box>
                 }
                 value="maturityLevels"
@@ -230,7 +230,7 @@ const AssessmentKitSectionsTabs = (props: {
               <Tab
                 label={
                   <Box sx={{ ...styles.centerV }}>
-                    <Trans i18nKey="subjects" />
+                    <Trans i18nKey="common.subjects" />
                   </Box>
                 }
                 value="subjects"
@@ -238,7 +238,7 @@ const AssessmentKitSectionsTabs = (props: {
               <Tab
                 label={
                   <Box sx={{ ...styles.centerV }}>
-                    <Trans i18nKey="questionnaires" />
+                    <Trans i18nKey="common.questionnaires" />
                   </Box>
                 }
                 value="questionnaires"
@@ -350,7 +350,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                       }}
                     >
                       <Typography variant="body2">
-                        <Trans i18nKey="numberOfQuestions" />:
+                        <Trans i18nKey="assessmentKit.numberOfQuestions" />:
                       </Typography>
                       <Typography
                         variant="body2"
@@ -372,7 +372,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                       }}
                     >
                       <Typography variant="body2">
-                        <Trans i18nKey="description" />:
+                        <Trans i18nKey="common.description" />:
                       </Typography>
                       <Typography
                         variant="body2"
@@ -388,7 +388,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
               <Divider />
               <Box m={1} mt={2}>
                 <Typography variant="h6" fontWeight={"bold"} fontSize="1rem">
-                  <Trans i18nKey="attributes" />
+                  <Trans i18nKey="common.attributes" />
                 </Typography>
                 {assessmentKitSubjectDetails && (
                   <ListAccordion
@@ -504,7 +504,7 @@ const AssessmentKitQuestionnaires = (props: {
                   }}
                 >
                   <Typography variant="body2">
-                    <Trans i18nKey="numberOfQuestions" />:
+                    <Trans i18nKey="assessmentKit.numberOfQuestions" />:
                   </Typography>
                   <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
                     {questionnaireDetails?.questionsCount}
@@ -523,7 +523,7 @@ const AssessmentKitQuestionnaires = (props: {
                   }}
                 >
                   <Typography variant="body2">
-                    <Trans i18nKey="relatedSubjects" />:
+                    <Trans i18nKey="assessmentKit.relatedSubjects" />:
                   </Typography>
                   {questionnaireDetails?.relatedsubjects?.map(
                     (subject: string) => (
@@ -551,7 +551,7 @@ const AssessmentKitQuestionnaires = (props: {
                   }}
                 >
                   <Typography variant="body2">
-                    <Trans i18nKey="description" />:
+                    <Trans i18nKey="common.description" />:
                   </Typography>
                   <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
                     {questionnaireDetails?.description}
@@ -635,7 +635,7 @@ const AssessmentKitQuestionsList = (props: {
           }}
         >
           <Typography variant="body2">
-            <Trans i18nKey="numberOfQuestions" />:
+            <Trans i18nKey="assessmentKit.numberOfQuestions" />:
           </Typography>
           <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
             {attributesDetails?.questionCount}
@@ -653,7 +653,7 @@ const AssessmentKitQuestionsList = (props: {
           }}
         >
           <Typography variant="body2">
-            <Trans i18nKey="weight" />:
+            <Trans i18nKey="common.weight" />:
           </Typography>
           <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
             {attributesDetails?.weight}
@@ -671,7 +671,7 @@ const AssessmentKitQuestionsList = (props: {
           }}
         >
           <Typography variant="body2">
-            <Trans i18nKey="description" />:
+            <Trans i18nKey="common.description" />:
           </Typography>
           <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
             {attributesDetails?.description}
@@ -811,17 +811,17 @@ const UpdateAssessmentKitDialog = (props: any) => {
   const formContent = (
     <FormProviderWithForm formMethods={formMethods}>
       <Typography variant="body1">
-        <Trans i18nKey="pleaseNoteThatThereAreSomeLimitations" />
+        <Trans i18nKey="assessmentKit.pleaseNoteThatThereAreSomeLimitations" />
       </Typography>
       <Box sx={{ ml: 4, my: 2 }}>
         <Typography component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="deletingAQuestionnaire" />
+          <Trans i18nKey="assessmentKit.deletingAQuestionnaire" />
         </Typography>
         <Typography component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="deletingQuestionFromAPreExistingQuestionnaireOrAddingANewOne" />
+          <Trans i18nKey="assessmentKit.deletingQuestionFromAPreExistingQuestionnaireOrAddingANewOne" />
         </Typography>
         <Typography component="li" variant="body1" fontWeight={"bold"}>
-          <Trans i18nKey="anyChangesInTheNumberOfOptionsForAPreExistingQuestion" />
+          <Trans i18nKey="assessmentKit.anyChangesInTheNumberOfOptionsForAPreExistingQuestion" />
         </Typography>
       </Box>
       <Grid container spacing={2} sx={styles.formGrid}>
@@ -838,7 +838,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
             param={expertGroupId}
             name="dsl_id"
             required={true}
-            label={<Trans i18nKey="dsl" />}
+            label={<Trans i18nKey="assessmentKit.dsl" />}
             maxSize={convertToBytes(5, "MB")}
             setSyntaxErrorObject={setSyntaxErrorObject}
             setShowErrorLog={setShowErrorLog}
@@ -849,7 +849,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
         closeDialog={close}
         loading={loaded}
         type="submit"
-        submitButtonLabel={t("saveChanges") as string}
+        submitButtonLabel={t("common.saveChanges") as string}
         onSubmit={formMethods.handleSubmit(onSubmit)}
       />
     </FormProviderWithForm>
@@ -858,12 +858,12 @@ const UpdateAssessmentKitDialog = (props: any) => {
     <Box>
       {syntaxErrorObject && (
         <Typography ml={1} variant="h6">
-          <Trans i18nKey="youveGotSyntaxErrorsInYourDslFile" />
+          <Trans i18nKey="errors.youveGotSyntaxErrorsInYourDslFile" />
         </Typography>
       )}
       {updateErrorObject && (
         <Typography ml={1} variant="h6">
-          <Trans i18nKey="unsupportedDslContentChange" />
+          <Trans i18nKey="assessmentKit.unsupportedDslContentChange" />
         </Typography>
       )}
       <Divider />
@@ -875,7 +875,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography variant="subtitle2" color="error">
                     <Trans
-                      i18nKey="errorAtLine"
+                      i18nKey="errors.errorAtLine"
                       values={{
                         message: e.message,
                         fileName: e.fileName,
@@ -886,7 +886,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
                   </Typography>
                   <Typography variant="subtitle2" color="error">
                     <Trans
-                      i18nKey="errorLine"
+                      i18nKey="errors.errorLine"
                       values={{
                         errorLine: e.errorLine,
                       }}
@@ -914,12 +914,12 @@ const UpdateAssessmentKitDialog = (props: any) => {
       <Grid mt={4} container spacing={2} justifyContent="flex-end">
         <Grid item>
           <Button onClick={close} data-cy="cancel">
-            <Trans i18nKey="cancel" />
+            <Trans i18nKey="common.cancel" />
           </Button>
         </Grid>
         <Grid item>
           <Button variant="contained" onClick={() => setShowErrorLog(false)}>
-            <Trans i18nKey="Back" />
+            <Trans i18nKey="common.back" />
           </Button>
         </Grid>
       </Grid>
@@ -937,7 +937,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          {<Trans i18nKey="updateDSL" />}
+          {<Trans i18nKey="assessmentKit.updateDSL" />}
         </>
       }
     >
@@ -957,7 +957,7 @@ const SubjectQuestionList = (props: any) => {
       {questions[0] && (
         <Box m={1} mt={2}>
           <Typography variant="h6" fontWeight={"bold"} fontSize="1rem">
-            <Trans i18nKey="questions" />
+            <Trans i18nKey="common.questions" />
           </Typography>
         </Box>
       )}
@@ -1016,7 +1016,7 @@ const SubjectQuestionList = (props: any) => {
                       height: "24px",
                     }}
                   >
-                    <Trans i18nKey="na" />
+                    <Trans i18nKey="common.na" />
                   </Box>
                 )}
                 <Box
@@ -1050,7 +1050,7 @@ const SubjectQuestionList = (props: any) => {
                   }}
                 >
                   <Trans
-                    i18nKey="weightValue"
+                    i18nKey="advice.weightValue"
                     values={{ weight: question.weight }}
                   />
                 </Box>
@@ -1069,7 +1069,7 @@ const SubjectQuestionList = (props: any) => {
                       height: "24px",
                     }}
                   >
-                    <Trans i18nKey="Advisable" />
+                    <Trans i18nKey="advice.advisable" />
                   </Box>
                 )}
               </Typography>
@@ -1093,7 +1093,7 @@ const SubjectQuestionList = (props: any) => {
                       ml: "4px",
                     }}
                   >
-                    <Trans i18nKey="options" />
+                    <Trans i18nKey="common.options" />
                   </Typography>
                   <Typography
                     variant="body2"
@@ -1103,7 +1103,7 @@ const SubjectQuestionList = (props: any) => {
                       ml: "4px",
                     }}
                   >
-                    <Trans i18nKey="value" />
+                    <Trans i18nKey="common.value" />
                   </Typography>
                 </Box>
                 {question.answerOptions.map((item: any) => (
@@ -1181,7 +1181,7 @@ const QuestionnairesQuestionList = (props: any) => {
     <Box>
       <Box m={1} mt={2}>
         <Typography variant="h6" fontWeight={"bold"} fontSize="1rem">
-          <Trans i18nKey="questions" />
+          <Trans i18nKey="common.questions" />
         </Typography>
       </Box>
 
@@ -1240,7 +1240,7 @@ const QuestionnairesQuestionList = (props: any) => {
                       height: "24px",
                     }}
                   >
-                    <Trans i18nKey="na" />
+                    <Trans i18nKey="common.na" />
                   </Box>
                 )}
                 {question.advisable && (
@@ -1258,7 +1258,7 @@ const QuestionnairesQuestionList = (props: any) => {
                       height: "24px",
                     }}
                   >
-                    <Trans i18nKey="advisable" />
+                    <Trans i18nKey="advice.advisable" />
                   </Box>
                 )}
               </Typography>
@@ -1312,7 +1312,7 @@ const QuestionnairesQuestionList = (props: any) => {
                           fontSize: "0.8rem",
                         }}
                       >
-                        <Trans i18nKey="affectedLevel" />
+                        <Trans i18nKey="assessmentKit.affectedLevel" />
                       </Typography>
                       <Typography
                         sx={{
@@ -1325,7 +1325,7 @@ const QuestionnairesQuestionList = (props: any) => {
                           fontSize: "0.8rem",
                         }}
                       >
-                        <Trans i18nKey="weight" />
+                        <Trans i18nKey="common.weight" />
                       </Typography>
                       <Box
                         sx={{
@@ -1345,7 +1345,7 @@ const QuestionnairesQuestionList = (props: any) => {
                               }}
                             >
                               <Trans
-                                i18nKey="optionValue"
+                                i18nKey="assessmentKit.optionValue"
                                 values={{ index: index + 1 }}
                               />
                             </Typography>
@@ -1489,7 +1489,7 @@ const MaturityLevelsDetails = (props: any) => {
   return (
     <Box sx={{ background: "#fff", px: 4, py: 4, borderRadius: "8px" }}>
       <Typography fontWeight={900} fontSize="1.5rem" mb={8}>
-        <Trans i18nKey="maturityLevels" />
+        <Trans i18nKey="common.maturityLevels" />
       </Typography>
       {maturity_levels
         ?.map((maturity_level: any, key: number) => {
@@ -1531,7 +1531,7 @@ const MaturityLevelsDetails = (props: any) => {
                   fontWeight={900}
                   mr={"4px"}
                 >
-                  <Trans i18nKey="competences" />:
+                  <Trans i18nKey="common.competences" />:
                 </Typography>
                 {competences.map((comp: any, key: number) => {
                   const { title, value } = comp;

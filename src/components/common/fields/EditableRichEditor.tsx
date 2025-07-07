@@ -253,8 +253,8 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                   __html:
                     tempData ||
                     (editable
-                      ? (placeholder ?? t("writeHere"))
-                      : t("unavailable")),
+                      ? (placeholder ?? t("common.writeHere"))
+                      : t("common.unavailable")),
                 }}
                 ref={paragraphRef}
               />
@@ -286,7 +286,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               onClick={toggleShowMore}
               sx={{ textTransform: "none" }}
             >
-              {showMore ? t("showLess") : t("showMore")}
+              {showMore ? t("common.showLess") : t("common.showMore")}
             </Button>
           )}
         </Box>
@@ -295,12 +295,12 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
       <CEDialog
         open={showUnsavedDialog}
         onClose={cancelLeaveEditor}
-        title={<Trans i18nKey="warning" />}
+        title={<Trans i18nKey="common.warning" />}
         maxWidth="sm"
       >
         <Typography sx={{ color: "#0A2342" }}>
           <Trans
-            i18nKey="editorActionRestriction"
+            i18nKey="notification.editorActionRestriction"
             components={{
               title: <span style={{ fontWeight: "bold", color: "#B86A77" }} />,
             }}
@@ -310,7 +310,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         <CEDialogActions
           type="delete"
           loading={false}
-          submitButtonLabel={t("okGotIt")}
+          submitButtonLabel={t("common.okGotIt")}
           onSubmit={cancelLeaveEditor}
           closeDialog={cancelLeaveEditor}
           hideCancelButton={true}

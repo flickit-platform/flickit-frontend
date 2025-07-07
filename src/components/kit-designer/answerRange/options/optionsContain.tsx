@@ -123,7 +123,7 @@ const OptionContain = (props: any) => {
                   : ""
               }
               onTranslationChange={updateTranslation("title", setTempValues)}
-              label={<Trans i18nKey="title" />}
+              label={<Trans i18nKey="common.title" />}
             />
           ) : (
             <TitleWithTranslation
@@ -163,7 +163,7 @@ const OptionContain = (props: any) => {
               borderRadius: "8px",
             }}
             name="title"
-            label={<Trans i18nKey="value" />}
+            label={<Trans i18nKey="common.value" />}
           />
         ) : (
           <Box sx={{ width: { xs: "20%", md: "10%" }, textAlign: "center" }}>

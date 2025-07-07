@@ -50,7 +50,7 @@ const TitleBox = ({ language }: { language: string }) => (
         ...styles.rtlStyle(language === "fa"),
       }}
     >
-      {t("how_was_this_report_built", {
+      {t("assessmentReport.how_was_this_report_built", {
         lng: language,
       })}
     </Typography>
@@ -193,7 +193,7 @@ const QuestionnaireList = ({
             }}
           >
             {item.questionCount}{" "}
-            {t("question", { lng: graphicalReport?.lang.code.toLowerCase() })}
+            {t("common.question", { lng: graphicalReport?.lang.code.toLowerCase() })}
           </Typography>
           <Divider
             orientation="vertical"
@@ -255,7 +255,7 @@ const ReportCard = ({
       {isAdvanceMode && (
         <>
           <Section
-            title={t("disclaimer", { lng: lang.code.toLowerCase() })}
+            title={t("assessmentReport.disclaimer", { lng: lang.code.toLowerCase() })}
             rtlLanguage={rtlLanguage}
           >
             <Typography
@@ -268,12 +268,12 @@ const ReportCard = ({
                 textAlign: "justify",
               }}
             >
-              {t("disclaimerDescription", { lng: lang.code.toLowerCase() })}
+              {t("assessmentReport.disclaimerDescription", { lng: lang.code.toLowerCase() })}
             </Typography>
           </Section>
 
           <Section
-            title={t("assessmentSteps", { lng: lang.code.toLowerCase() })}
+            title={t("assessment.assessmentSteps", { lng: lang.code.toLowerCase() })}
             rtlLanguage={rtlLanguage}
           >
             {assessmentProcess.steps ? (
@@ -289,16 +289,16 @@ const ReportCard = ({
                 dangerouslySetInnerHTML={{
                   __html:
                     assessmentProcess.steps ??
-                    t("unavailable", { lng: lang.code.toLowerCase() }),
+                    t("common.unavailable", { lng: lang.code.toLowerCase() }),
                 }}
                 className={"tiptap"}
               />
             ) : (
-              <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
+              <>{t("common.unavailable", { lng: lang.code.toLowerCase() })}</>
             )}
           </Section>
           <Section
-            title={t("participant", { lng: lang.code.toLowerCase() })}
+            title={t("assessmentKit.participant", { lng: lang.code.toLowerCase() })}
             rtlLanguage={rtlLanguage}
           >
             {assessmentProcess.participant ? (
@@ -314,22 +314,22 @@ const ReportCard = ({
                 dangerouslySetInnerHTML={{
                   __html:
                     graphicalReport?.assessmentProcess.participant ??
-                    t("unavailable", { lng: lang.code.toLowerCase() }),
+                    t("common.unavailable", { lng: lang.code.toLowerCase() }),
                 }}
                 className={"tiptap"}
               />
             ) : (
-              <>{t("unavailable", { lng: lang.code.toLowerCase() })}</>
+              <>{t("common.unavailable", { lng: lang.code.toLowerCase() })}</>
             )}
           </Section>
         </>
       )}
 
       <Section
-        title={t("assessmentKit", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentKit.assessmentKit", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
-        {t("assessmentKitDescription", {
+        {t("assessmentKit.assessmentKitDescription", {
           lng: lang.code.toLowerCase(),
           title: assessment.assessmentKit.title,
           attributesCount: assessment.assessmentKit.attributesCount,
@@ -337,7 +337,7 @@ const ReportCard = ({
           subjects: subjects
             ?.map((elem: ISubject, index: number) =>
               index === subjects?.length - 1 && subjects?.length !== 1
-                ? t("and", { lng: lang.code.toLowerCase() }) + elem?.title
+                ? t("common.and", { lng: lang.code.toLowerCase() }) + elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
@@ -349,10 +349,10 @@ const ReportCard = ({
       </Section>
 
       <Section
-        title={t("maturityLevels", { lng: lang.code.toLowerCase() })}
+        title={t("common.maturityLevels", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
-        {t("maturityLevelsDescription", {
+        {t("assessmentReport.maturityLevelsDescription", {
           lng: lang.code.toLowerCase(),
           maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
         })}
@@ -411,17 +411,17 @@ const ReportCard = ({
       </Section>
 
       <Section
-        title={t("topicsAndIndicators", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentReport.topicsAndIndicators", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
-        {t("topicsTable", {
+        {t("assessmentReport.topicsTable", {
           lng: lang.code.toLowerCase(),
         })}
         <TopicsList graphicalReport={graphicalReport} />
       </Section>
 
       <Section
-        title={t("questionnaires", { lng: lang.code.toLowerCase() })}
+        title={t("common.questionnaires", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
         <QuestionnaireList graphicalReport={graphicalReport} />

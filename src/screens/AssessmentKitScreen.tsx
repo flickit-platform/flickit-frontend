@@ -3,7 +3,7 @@ import AssessmentKitContainer from "@components/assessment-kit/AssessmentKitCont
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const AssessmentKitScreen = () => {
-  useDocumentTitle(t("assessmentKit") as string);
+  useDocumentTitle(t("assessmentKit.assessmentKit") as string);
   return <AssessmentKitContainer />;
 };
 

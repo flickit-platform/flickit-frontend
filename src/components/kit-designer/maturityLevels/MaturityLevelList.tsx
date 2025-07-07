@@ -158,7 +158,7 @@ const MaturityLevelList = ({
                         "title",
                         setTempValues,
                       )}
-                      label={<Trans i18nKey="title" />}
+                      label={<Trans i18nKey="common.title" />}
                     />
                   ) : (
                     <TitleWithTranslation
@@ -238,7 +238,7 @@ const MaturityLevelList = ({
                       "description",
                       setTempValues,
                     )}
-                    label={<Trans i18nKey="description" />}
+                    label={<Trans i18nKey="common.description" />}
                     multiline
                     minRows={2}
                     maxRows={5}

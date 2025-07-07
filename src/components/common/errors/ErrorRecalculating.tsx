@@ -23,10 +23,10 @@ const ErrorRecalculating = (props: IGettingThingsReadyLoadingProps) => {
     >
       <Box sx={{ ...styles.centerCH }}>
         <Typography variant="h5">
-          <Trans i18nKey="insightsAreRecalculating" />
+          <Trans i18nKey="notification.insightsAreRecalculating" />
         </Typography>
         <Typography variant="h5">
-          <Trans i18nKey="pleaseWait" />
+          <Trans i18nKey="notification.pleaseWait" />
         </Typography>
       </Box>
       <LinearProgress color="inherit" sx={{ marginTop: "12px" }} />

@@ -1,0 +1,16 @@
+{
+  "addToCompare": "افزودن به مقایسه",
+  "addToCompareList": "افزودن به لیست مقایسه",
+  "allOfTheSelectedAssessmentsUse": "همه ارزیابی‌های انتخاب‌شده از",
+  "changeSelectedAssessment": "تغییر ارزیابی انتخاب‌شده",
+  "compare": "مقایسه",
+  "comparisonResult": "نتیجه مقایسه",
+  "comparisonResultT": "نتیجه مقایسه از",
+  "editComparisonItems": "ویرایش موارد مقایسه",
+  "generalSpecification": "مشخصات عمومی",
+  "newComparison": "مقایسه جدید",
+  "selectAssessment": "انتخاب ارزیابی",
+  "selectAssessmentForComparison": "ارزیابی {{value}} را برای مقایسه انتخاب کنید",
+  "toCompareAssessmentsOfOtherAssessmentKits": "برای مقایسه ارزیابی کیت‌های دیگر، یک مقایسه جدید ایجاد کنید.",
+  "youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces": "فقط به ارزیابی‌های فضای کاری خود دسترسی دارید."
+}

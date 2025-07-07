@@ -8,7 +8,7 @@ const CompareContainer = () => {
   return (
     <Box>
       <Title size="large" borderBottom={true}>
-        <Trans i18nKey="compare" />
+        <Trans i18nKey="compare.compare" />
       </Title>
       <Box mt={3}>
         <CompareProvider>

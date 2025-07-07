@@ -3,7 +3,7 @@ import useDocumentTitle from "@utils/useDocumentTitle";
 import DashboardTab from "@/components/dashboard/dashboard-tab/dashboardTab";
 
 const AssessmentDashboardScreen = () => {
-    useDocumentTitle(t("dashboard") as string);
+    useDocumentTitle(t("dashboard.dashboard") as string);
 
     return <DashboardTab />;
 };

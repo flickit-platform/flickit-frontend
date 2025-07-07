@@ -78,7 +78,7 @@ const AssessmentContainer = () => {
             }}
             color="primary"
           >
-            <Trans i18nKey={"learnWhyThisIsUnavailable"} />
+            <Trans i18nKey="assessment.learnWhyThisIsUnavailable" />
           </Typography>
         )}
         <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
@@ -103,7 +103,7 @@ const AssessmentContainer = () => {
                     onClick={() => navigate(`/${spaceId}/setting`)}
                     shouldAnimate={data?.length === 0}
                     variantType="outlined"
-                    text={isSmallScreen ? "" : "settings"}
+                    text={isSmallScreen ? "" : "common.settings"}
                     sx={{
                       px: isSmallScreen ? 0 : 1,
                       "& .MuiButton-endIcon": {
@@ -133,7 +133,7 @@ const AssessmentContainer = () => {
                     }
                     shouldAnimate={data?.length === 0}
                     disabled={!fetchSpaceInfo.data?.canCreateAssessment}
-                    text={isSmallScreen ? "" : "createAssessment"}
+                    text={isSmallScreen ? "" : "assessment.createAssessment"}
                     sx={{
                       px: isSmallScreen ? 0 : 1,
                       "& .MuiButton-endIcon": {
@@ -147,7 +147,7 @@ const AssessmentContainer = () => {
               )
             }
           >
-            <Trans i18nKey="assessments" />
+            <Trans i18nKey="assessment.assessments" />
           </Title>
           {}
         </Box>
@@ -178,7 +178,7 @@ const AssessmentContainer = () => {
                 width: "60%",
               }}
             >
-              <Trans i18nKey="noAssesmentHere" />
+              <Trans i18nKey="assessment.noAssesmentHere" />
             </Typography>
             <Typography
               textAlign="center"
@@ -190,7 +190,7 @@ const AssessmentContainer = () => {
                 width: "60%",
               }}
             >
-              <Trans i18nKey="createAnAssessmentWith" />
+              <Trans i18nKey="assessment.createAnAssessmentWith" />
             </Typography>
             <Box>
               <Button
@@ -212,7 +212,7 @@ const AssessmentContainer = () => {
                 }
               >
                 <Typography sx={{ fontSize: "1.25rem" }} variant="button">
-                  <Trans i18nKey="newAssessment" />
+                  <Trans i18nKey="assessment.newAssessment" />
                 </Typography>
               </Button>
             </Box>
@@ -223,10 +223,10 @@ const AssessmentContainer = () => {
           {...rest}
           emptyDataComponent={
             <ErrorEmptyData
-              emptyMessage={<Trans i18nKey="nothingToSeeHere" />}
+              emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
               suggests={
                 <Typography variant="subtitle1" textAlign="center">
-                  <Trans i18nKey="tryCreatingNewAssessment" />
+                  <Trans i18nKey="assessment.tryCreatingNewAssessment" />
                 </Typography>
               }
             />

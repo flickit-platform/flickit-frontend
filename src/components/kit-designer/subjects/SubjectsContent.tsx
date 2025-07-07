@@ -16,6 +16,7 @@ import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectForm from "./SubjectForm";
+import { t } from "i18next";
 
 const SubjectsContent = () => {
   const { service } = useServiceContext();
@@ -196,13 +197,13 @@ const SubjectsContent = () => {
           hasBtn={
             fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0
           }
-          mainTitle={"subjects"}
-          btnTitle={"newSubject"}
-          description={"subjectsKitDesignerDescription"}
+          mainTitle="common.subjects"
+          btnTitle="kitDesigner.newSubject"
+          description="kitDesigner.subjectsKitDesignerDescription"
         />
         {fetchSubjectKit.loaded && fetchSubjectKit.data.items.length !== 0 ? (
           <Typography variant="bodyMedium" mt={1}>
-            <Trans i18nKey="changeOrderHelper" />
+            <Trans i18nKey="kitDesigner.changeOrderHelper" />
           </Typography>
         ) : null}
         <Divider sx={{ my: 1 }} />
@@ -220,14 +221,15 @@ const SubjectsContent = () => {
                       onEdit={handleEdit}
                       onReorder={handleReorder}
                       editableFieldKey="weight"
+                      editableFieldLabel={t("common.weight")}
                     />
                   </Box>
                 ) : (
                   !showNewSubjectForm && (
                     <EmptyState
-                      btnTitle={"newSubject"}
-                      title={"subjectsListEmptyState"}
-                      SubTitle={"subjectEmptyStateDetailed"}
+                      btnTitle="kitDesigner.newSubject"
+                      title="kitDesigner.subjectsListEmptyState"
+                      SubTitle="kitDesigner.subjectEmptyStateDetailed"
                       onAddNewRow={handleAddNewRow}
                     />
                   )

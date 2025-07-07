@@ -6,7 +6,7 @@ import useDocumentTitle from "@utils/useDocumentTitle";
 
 const ExpertGroupScreen = () => {
   const { userInfo } = useAuthContext();
-  useDocumentTitle(`${t("expertGroup")}: ${getUserName(userInfo)}`);
+  useDocumentTitle(`${t("expertGroups.expertGroup")}: ${getUserName(userInfo)}`);
 
   return <ExpertGroupContainer />;
 };

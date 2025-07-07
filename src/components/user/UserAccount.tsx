@@ -48,7 +48,7 @@ const UserAccount = () => {
   }, [userQueryData.loaded]);
 
   const dialogProps = useDialog();
-  useDocumentTitle(`${t("userProfile")}: ${getUserName(userInfo)}`);
+  useDocumentTitle(`${t("user.userProfile")}: ${getUserName(userInfo)}`);
 
   const onSubmit = async () => {
     const res = await userQueryData.query();
@@ -217,13 +217,13 @@ const UserAccount = () => {
           <Grid container spacing={3}>
             <Grid item md={3}>
               <Title size="small" textTransform={"none"}>
-                <Trans i18nKey="about" />
+                <Trans i18nKey="common.about" />
               </Title>
             </Grid>
             <Grid item md={9}>
               <Box>
                 <Typography variant="subLarge">
-                  <Trans i18nKey="linkedin" />
+                  <Trans i18nKey="common.linkedin" />
                 </Typography>
                 <Typography
                   sx={{
@@ -239,7 +239,7 @@ const UserAccount = () => {
               </Box>
               <Box mt={2.5}>
                 <Typography variant="subLarge">
-                  <Trans i18nKey="bio" />
+                  <Trans i18nKey="common.bio" />
                 </Typography>
                 <Typography
                   sx={{

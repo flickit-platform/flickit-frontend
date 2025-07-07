@@ -63,10 +63,10 @@ interface Props {
 }
 
 const infoFields: { key: InfoField; i18n: string }[] = [
-  { key: "creator", i18n: "creator" },
-  { key: "assessmentKit", i18n: "assessmentKit" },
-  { key: "created", i18n: "created" },
-  { key: "lastModified", i18n: "lastModified" },
+  { key: "creator", i18n: "common.creator" },
+  { key: "assessmentKit", i18n: "assessmentKit.assessmentKit" },
+  { key: "created", i18n: "common.created" },
+  { key: "lastModified", i18n: "common.lastModified" },
 ];
 
 function getInfoFieldValue(
@@ -124,7 +124,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
           color="#2B333B"
           variant="headlineSmall"
         >
-          <Trans i18nKey="general" />
+          <Trans i18nKey="common.general" />
         </Typography>
 
         <Divider sx={{ width: "100%", mt: "24px", mb: "10px !important" }} />
@@ -141,7 +141,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
             }}
           >
             <Typography sx={theme.typography.semiBoldLarge} color="#2B333B">
-              <Trans i18nKey="assessmentTitle" />
+              <Trans i18nKey="assessment.assessmentTitle" />
             </Typography>
             <Box
               sx={{
@@ -174,9 +174,9 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                   color="#2B333B"
                   lineHeight="normal"
                 >
-                  <Trans i18nKey="shortTitle" />
+                  <Trans i18nKey="assessment.shortTitle" />
                 </Typography>
-                <Tooltip title={<Trans i18nKey="shortTitleInfo" />}>
+                <Tooltip title={<Trans i18nKey="assessment.shortTitleInfo" />}>
                   <InfoOutlined
                     fontSize="small"
                     color="inherit"
@@ -328,9 +328,9 @@ const QuickAssessmentSwitch = () => {
               sx={{ ...theme.typography.semiBoldLarge }}
               color="#2B333B"
             >
-              <Trans i18nKey="quickAssessmentMode" />
+              <Trans i18nKey="assessment.quickAssessmentMode" />
             </Typography>
-            <Tooltip title={<Trans i18nKey="quickAssessmentModeDescription" />}>
+            <Tooltip title={<Trans i18nKey="assessment.quickAssessmentModeDescription" />}>
               <InfoOutlined
                 fontSize="small"
                 color="inherit"
@@ -353,12 +353,12 @@ const QuickAssessmentSwitch = () => {
         onClose={dialogProps.onClose}
         title={
           <Trans
-            i18nKey="switchTo"
+            i18nKey="common.switchTo"
             values={{
               title: t(
                 assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
-                  ? "advancedAssessmentMode"
-                  : "quickAssessmentMode",
+                  ? "assessment.advancedAssessmentMode"
+                  : "assessment.quickAssessmentMode",
               ),
             }}
           />
@@ -369,8 +369,8 @@ const QuickAssessmentSwitch = () => {
           <Trans
             i18nKey={
               assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
-                ? "advancedAssessmentSwitchTitle"
-                : "quickAssessmentSwitchTitle"
+                ? "assessment.advancedAssessmentSwitchTitle"
+                : "assessment.quickAssessmentSwitchTitle"
             }
           />
         </Typography>
@@ -379,14 +379,14 @@ const QuickAssessmentSwitch = () => {
           type="delete"
           loading={false}
           onClose={dialogProps.onClose}
-          submitButtonLabel={t("switchTo", {
+          submitButtonLabel={t("common.switchTo", {
             title: t(
               assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
-                ? "advancedAssessmentMode"
-                : "quickAssessmentMode",
+                ? "assessment.advancedAssessmentMode"
+                : "assessment.quickAssessmentMode",
             ),
           })}
-          cancelLabel={t("cancel")}
+          cancelLabel={t("common.cancel")}
           onSubmit={handleConfirmToggle}
         />
       </CEDialog>
@@ -444,17 +444,17 @@ export const AssessmentSettingMemberBox = (props: {
   });
 
   const columns: readonly Column[] = [
-    { id: "displayName", label: "name", minWidth: "24%", position: "center" },
+    { id: "displayName", label: "user.name", minWidth: "24%", position: "center" },
     {
       id: "email",
-      label: "email",
+      label: "user.email",
       minWidth: "0%",
       display: "none",
       position: "center",
     },
     {
       id: "role",
-      label: "role",
+      label: "user.role",
       minWidth: "22%",
       position: "start",
     },
@@ -463,13 +463,13 @@ export const AssessmentSettingMemberBox = (props: {
   const inviteesColumns: readonly Column[] = [
     {
       id: "email",
-      label: "email",
+      label: "user.email",
       minWidth: "30vw",
       position: "center",
     },
     {
       id: "role",
-      label: "role",
+      label: "user.role",
       align: "right",
       minWidth: "30vw",
       position: "center",
@@ -514,7 +514,7 @@ export const AssessmentSettingMemberBox = (props: {
           }}
         >
           <Typography color="#2B333B" variant="headlineSmall">
-            <Trans i18nKey="grantedRoles" />
+            <Trans i18nKey="settings.grantedRoles" />
           </Typography>
           <Button
             variant="contained"
@@ -531,7 +531,7 @@ export const AssessmentSettingMemberBox = (props: {
               fontSize="small"
               style={{ color: "#EDFCFC" }}
             />
-            <Trans i18nKey={"grantAccess"} />
+            <Trans i18nKey="dashboard.grantAccess" />
           </Button>
         </Box>
         <Divider sx={{ width: "100%", marginTop: "24px" }} />
@@ -655,7 +655,7 @@ export const AssessmentSettingMemberBox = (props: {
                                 color: "#9A003C",
                                 borderColor: "#9A003C",
                               }}
-                              label={<Trans i18nKey={"owner"} />}
+                              label={<Trans i18nKey="common.owner" />}
                               size="small"
                               variant="outlined"
                             />
@@ -710,7 +710,7 @@ export const AssessmentSettingMemberBox = (props: {
                             <Tooltip
                               disableHoverListener={row.editable}
                               title={
-                                <Trans i18nKey="spaceOwnerRoleIsNotEditable" />
+                                <Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />
                               }
                             >
                               <div>
@@ -728,7 +728,7 @@ export const AssessmentSettingMemberBox = (props: {
                         <Tooltip
                           disableHoverListener={row.editable}
                           title={
-                            <Trans i18nKey="spaceOwnerRoleIsNotEditable" />
+                            <Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />
                           }
                         >
                           <Box
@@ -763,9 +763,9 @@ export const AssessmentSettingMemberBox = (props: {
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={t("rowsPerPage")}
+          labelRowsPerPage={t("common.rowsPerPage")}
           labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to}  ${t("of")} ${count !== -1 ? count : `${t("moreThan")} ${to}`}`
+            `${from}-${to}  ${t("common.of")} ${count !== -1 ? count : `${t("common.moreThan")} ${to}`}`
           }
         />
         <Divider sx={{ width: "100%", marginBlock: "24px" }} />
@@ -953,7 +953,7 @@ export const AssessmentSettingMemberBox = (props: {
                                     }}
                                   >
                                     <Typography sx={{ fontSize: "0.875rem" }}>
-                                      <Trans i18nKey={"chooseARole"} />
+                                      <Trans i18nKey="settings.chooseARole" />
                                     </Typography>
                                   </Box>
                                   {listOfRoles?.map(
@@ -1136,7 +1136,7 @@ const SelectionRole = (props: any) => {
         }}
       >
         <Typography sx={{ fontSize: "0.875rem" }}>
-          <Trans i18nKey="chooseARole" />
+          <Trans i18nKey="settings.chooseARole" />
         </Typography>
       </Box>
 

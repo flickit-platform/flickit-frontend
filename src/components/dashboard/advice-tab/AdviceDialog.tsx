@@ -108,7 +108,7 @@ const AdviceDialog = ({
               marginLeft: theme.direction === "rtl" ? "6px" : "unset",
             }}
           />
-          <Trans i18nKey="adviceAssistant" />
+          <Trans i18nKey="advice.adviceAssistant" />
         </>
       </DialogTitle>
 
@@ -125,7 +125,7 @@ const AdviceDialog = ({
         }}
       >
         <Typography variant="titleMedium" fontWeight={400}>
-          <Trans i18nKey={step === 1 ? "whichAttYouWant" : "reviewAdvice"} />
+          <Trans i18nKey={step === 1 ? "advice.whichAttYouWant" : "advice.reviewAdvice"} />
         </Typography>
       </Box>
 
@@ -221,11 +221,11 @@ const AdviceDialog = ({
                 sx={{ mr: "auto" }}
                 variant="outlined"
               >
-                <Trans i18nKey="back" />
+                <Trans i18nKey="common.back" />
               </Button>
             )}
             <Button onClick={handleClose}>
-              <Trans i18nKey="cancel" />
+              <Trans i18nKey="common.cancel" />
             </Button>
 
             <LoadingButton
@@ -238,7 +238,7 @@ const AdviceDialog = ({
                   : createAINarrationQueryData.loading
               }
             >
-              <Trans i18nKey={step === 1 ? "continue" : "finish"} />
+              <Trans i18nKey={step === 1 ? "common.continue" : "common.finish"} />
             </LoadingButton>
           </Box>
         </Box>

@@ -72,12 +72,12 @@ const DropZoneArea = (props: any) => {
       }}
       onDrop={(acceptedFiles) => {
         if (acceptedFiles[0]?.size && acceptedFiles[0]?.size > MAX_SIZE) {
-          return toast(t("uploadAcceptableSize"), { type: "error" });
+          return toast(t("errors.uploadAcceptableSize"), { type: "error" });
         }
         if (acceptedFiles?.length && acceptedFiles.length >= 1) {
           setDropZoneData(acceptedFiles);
         } else {
-          return toast(t("thisFileNotAcceptable"), { type: "error" });
+          return toast(t("errors.thisFileNotAcceptable"), { type: "error" });
         }
       }}
     >
@@ -144,7 +144,7 @@ const MyDropzone = (props: any) => {
               }}
               onClick={() => setDropZoneData(null)}
             >
-              <Trans i18nKey={"remove"} />
+              <Trans i18nKey="common.remove" />
             </Button>
 
             {typeFile === "pdf" ? (
@@ -210,11 +210,11 @@ const MyDropzone = (props: any) => {
                     gap: "5px",
                   }}
                 >
-                  <Trans i18nKey={"dragYourFile"} />
+                  <Trans i18nKey="assessmentKit.dragYourFile" />
                   <Typography
                     sx={{ ...theme.typography.titleMedium, color: "#205F94" }}
                   >
-                    <Trans i18nKey={"locateIt"} />
+                    <Trans i18nKey="common.locateIt" />
                   </Typography>
                 </Typography>
               </div>
@@ -249,7 +249,9 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   const [btnState, setBtnState] = useState("");
   const addEvidenceAttachments = useQuery({
     service: (args, config) =>
-      service.questions.evidences.addAttachment(args, { signal: abortController.signal }),
+      service.questions.evidences.addAttachment(args, {
+        signal: abortController.signal,
+      }),
     runOnMount: false,
   });
   useEffect(() => {
@@ -258,7 +260,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
         (dropZoneData[0] as any)?.size &&
         (dropZoneData[0] as any)?.size > 2097152
       ) {
-        toast(t("uploadAcceptableSize"), { type: "error" });
+        toast(t("errors.uploadAcceptableSize"), { type: "error" });
       }
     }
   }, [dropZoneData]);
@@ -277,14 +279,14 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       return setError(true);
     }
     if (!dropZoneData) {
-      return toast(t("attachmentRequired"), { type: "error" });
+      return toast(t("errors.attachmentRequired"), { type: "error" });
     }
     if (error && description.length >= 100) {
-      return toast(t("max100characters"), { type: "error" });
+      return toast(t("errors.max100characters"), { type: "error" });
     }
 
     if ((dropZoneData[0] as any).size > MAX_SIZE) {
-      return toast(t("uploadAcceptableSize"), { type: "error" });
+      return toast(t("errors.uploadAcceptableSize"), { type: "error" });
     }
     if (expanded.count >= 5) {
       return toast("Each evidence can have up to 5 attachments.", {
@@ -339,7 +341,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       }}
     >
       <DialogTitle textTransform="uppercase">
-        <Trans i18nKey="uploadAttachment" />
+        <Trans i18nKey="common.uploadAttachment" />
       </DialogTitle>
       <DialogContent
         sx={{
@@ -369,9 +371,9 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 gap: "5px",
               }}
             >
-              <Trans i18nKey={"uploadAttachment"} />
+              <Trans i18nKey="common.uploadAttachment" />
               <Typography sx={{ ...theme.typography.headlineSmall }}>
-                {expanded.count} <Trans i18nKey={"of"} /> 5{" "}
+                {expanded.count} <Trans i18nKey="common.of" /> 5{" "}
               </Typography>
             </Typography>
             <Typography
@@ -403,7 +405,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  <Trans i18nKey="uploadAcceptable" />
+                  <Trans i18nKey="errors.uploadAcceptable" />
                 </Typography>
               </Box>
             </Typography>
@@ -434,11 +436,14 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  <Trans i18nKey="uploadAcceptableSize" />
+                  <Trans i18nKey="errors.uploadAcceptableSize" />
                 </Typography>
               </Box>
             </Typography>
-            <MyDropzone setDropZoneData={setDropZoneData} dropZoneData={dropZoneData} />
+            <MyDropzone
+              setDropZoneData={setDropZoneData}
+              dropZoneData={dropZoneData}
+            />
           </Box>
           <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
             <Typography
@@ -448,7 +453,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                 paddingBottom: "1rem",
               }}
             >
-              <Trans i18nKey={"additionalInfo"} />
+              <Trans i18nKey="questions.additionalInfo" />
             </Typography>
             <TextField
               sx={{
@@ -473,7 +478,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
                   padding: "5px",
                 },
               }}
-              placeholder={t(`addDescriptionToAttachment`) as string}
+              placeholder={t("questions.addDescriptionToAttachment") as string}
               error={error}
               helperText={
                 description.length >= 1 && error && description.length <= 3

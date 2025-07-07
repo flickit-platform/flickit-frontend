@@ -62,7 +62,7 @@ const SubjectReport = ({
                   dangerouslySetInnerHTML={{
                     __html:
                       insight ??
-                      t("unavailable", { lng: lang.code.toLowerCase() }),
+                      t("common.unavailable", { lng: lang.code.toLowerCase() }),
                   }}
                 ></Typography>
               </Grid>
