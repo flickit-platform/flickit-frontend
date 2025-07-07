@@ -58,12 +58,12 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   };
 
   useEffect(() => {
-    if (type === "requestAnExpertReview") {
-      methods.setValue(
-        "type" as any,
-        "User asked help in " + window.location.href + " report.",
-      );
-    }
+    methods.setValue(
+      "type" as any,
+      type === "requestAnExpertReview"
+        ? `Expert Review - ${window.location.href}`
+        : "Contact Us - Flickit",
+    );
   }, []);
 
   const onSubmit = async (data: any) => {
