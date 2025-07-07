@@ -124,7 +124,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                 },
               }}
             >
-              {t(key)}
+              {t(`common.${key}`)}
             </Box>
           );
         })}
