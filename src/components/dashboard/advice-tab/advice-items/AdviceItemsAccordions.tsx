@@ -77,7 +77,7 @@ const getChipData = (
 ) => {
   const priorityColor: any = getIconColors(level, type);
   const translatedLevel = t(
-    level.toLowerCase(),
+    `common.${level.toLowerCase()}`,
     readOnly ? { lng: language } : {},
   );
   const translatedType = t(`common.${type}`, readOnly ? { lng: language } : {});
@@ -369,7 +369,7 @@ const AdviceItemAccordion: React.FC<{
                       : t("common.priority", !readOnly ? {} : { lng: language }) +
                         " " +
                         t(
-                          item.priority.code.toLowerCase(),
+                         `common.${item.priority.code.toLowerCase()}`,
                           !readOnly ? {} : { lng: language },
                         )}
                     )

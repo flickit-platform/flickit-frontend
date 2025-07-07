@@ -43,7 +43,6 @@
   "questionAndOptions": "Question and options",
   "questionAndOptionsDescription": "In this section, enter the question text and its options. If desired, you can also add a hint or additional explanation for the question in the 'hint' section. For easier input of options, you can create a new template and reuse it in other questions, or use templates that have been previously created.",
   "questionDetails": "Question details",
-  "questionImpacts": "Question impacts",
   "questionIsMarkedAsNotApplicable": "Question is marked as 'Not applicable'.",
   "questionnaireFinished": "Questionnaire finished",
   "selectConfidenceLevel": "Select confidence level",

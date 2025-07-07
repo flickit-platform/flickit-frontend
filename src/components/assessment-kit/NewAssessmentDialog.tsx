@@ -189,7 +189,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                   sx={{ color: "#6C8093", background: "transparent" }}
                 />
                 <Typography>
-                  <Trans i18nKey="assessment.targetSpace" />
+                  <Trans i18nKey="spaces.targetSpace" />
                 </Typography>
               </Box>
               <Typography

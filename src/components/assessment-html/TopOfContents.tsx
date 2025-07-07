@@ -124,7 +124,7 @@ export const AssessmentTOC = ({
       id: "summary",
     },
     {
-      label: "assessmentReport.strengths_and_weaknesses",
+      label: "assessmentReport.prosAndCons",
       subItems: [],
       id: "strengthsAndWeaknesses",
     },
@@ -157,6 +157,7 @@ export const AssessmentTOC = ({
           borderRadius: 2,
           p: 2,
           overflowY: "auto",
+          maxHeight: "80vh",
           textAlign: rtlLanguage ? "right" : "left",
           ...styles.rtlStyle(rtlLanguage),
         }}
@@ -217,7 +218,9 @@ export const AssessmentTOC = ({
                     }
                   >
                     <ListItemText
-                      primary={t(item.label, { lng: lang.code.toLowerCase() })}
+                      primary={t(hasSubItems ? item.id : item.label, {
+                        lng: lang.code.toLowerCase(),
+                      })}
                       sx={{
                         "& .MuiTypography-root": {
                           ...theme.typography.semiBoldMedium,

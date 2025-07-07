@@ -1,3 +1,4 @@
+import advice from "./advice.json";
 import assessment from "./assessment.json";
 import assessmentKit from "./assessmentKit.json";
 import assessmentReport from "./assessmentReport.json";
@@ -9,11 +10,13 @@ import expertGroups from "./expertGroups.json";
 import kitDesigner from "./kitDesigner.json";
 import notification from "./notification.json";
 import questions from "./questions.json";
+import settings from "./settings.json";
 import spaces from "./spaces.json";
 import subject from "./subject.json";
 import user from "./user.json";
 
 export default {
+  advice,
   assessment,
   assessmentKit,
   assessmentReport,
@@ -25,6 +28,7 @@ export default {
   kitDesigner,
   notification,
   questions,
+  settings,
   spaces,
   subject,
   user,

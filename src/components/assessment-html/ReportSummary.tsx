@@ -352,7 +352,7 @@ const ReportCard = ({
         title={t("common.maturityLevels", { lng: lang.code.toLowerCase() })}
         rtlLanguage={rtlLanguage}
       >
-        {t("maturityLevelsDescription", {
+        {t("assessmentReport.maturityLevelsDescription", {
           lng: lang.code.toLowerCase(),
           maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
         })}

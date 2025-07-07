@@ -54,6 +54,7 @@
   "optionsImpactsEmptyState": "No attribute is impacted by this question yet!",
   "optionsImpactsEmptyStateDetailed": "A question has to impact at least one attribute to be created and added to the questionnaire.",
   "publishDescription": "In this section, the content of the kit is automatically reviewed and validated. If no errors are found, you can release the kit and make it available. If there are any errors, you need to resolve them before the kit can be released.",
+  "questionImpacts": "Question impacts",
   "questionnairesEmptyStateDetailed": "Questionnaires are necessary to create questions! Create your first questionnaire here.",
   "questionnairesKitDesignerDescription": "Questionnaires provide a structure for organizing and categorizing various questions. By dividing an assessment into different questionnaires, evaluators who intend to use your kit can navigate and utilize your assessment more easily. Questions can be categorized in various ways, but the most common method is by topic. In this way, questions that are most similar in terms of the topic are grouped into one questionnaire. It is recommended that each questionnaire contains a maximum of 15 questions and a minimum of 3 questions.",
   "questionnairesListEmptyState": "No questionnaire has been created so far.",
