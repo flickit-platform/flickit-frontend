@@ -275,7 +275,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                             >
                               <Trans
                                 i18nKey={toCamelCase(
-                                  `${labels[selcetedConfidenceLevel - 1]?.title}`,
+                                  `common.${labels[selcetedConfidenceLevel - 1]?.title}`,
                                 )}
                               />
                             </Typography>

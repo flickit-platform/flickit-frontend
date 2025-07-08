@@ -337,15 +337,12 @@ const Header = ({
           ? farsiFontFamily
           : primaryFontFamily,
         ...styles.centerVH,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         gap: "10px",
       }}
       data-cy="assessment-card-title"
     >
       {!isQuickMode && (
-        <Box sx={{ flexShrink: 0 }}>
+        <Box sx={{ flexShrink: 0, ...styles.centerVH }}>
           <img alt="star" src={Star} height={24} />
         </Box>
       )}

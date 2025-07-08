@@ -210,7 +210,10 @@ const AssessmentHtmlContainer = () => {
       <QueryData
         {...fetchGraphicalReport}
         renderLoading={() => (
-          <GraphicalReportSkeleton lang={lang} isAuthenticatedUser={isAuthenticatedUser} />
+          <GraphicalReportSkeleton
+            lang={lang}
+            isAuthenticatedUser={isAuthenticatedUser}
+          />
         )}
         render={(graphicalReport) => {
           const {
@@ -557,6 +560,7 @@ const AssessmentHtmlContainer = () => {
                           my={2}
                           container
                           spacing={2}
+                          marginLeft={0}
                         >
                           {isAdvanceMode && (
                             <Grid item xs={12} md={10}>
@@ -733,7 +737,9 @@ const AssessmentHtmlContainer = () => {
                             ...styles.rtlStyle(rtlLanguage),
                           }}
                         >
-                          {t("common.unavailable", { lng: lang.code.toLowerCase() })}
+                          {t("common.unavailable", {
+                            lng: lang.code.toLowerCase(),
+                          })}
                         </Typography>
                       )}
 
