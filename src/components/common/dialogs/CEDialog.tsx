@@ -84,7 +84,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
     id: number;
     icon: string;
     bg: string;
-    link: { WhatsappLink: string; WhatsappWebLink: string };
+    link: {[key: string]: string | undefined };
   }[];
 }
 
@@ -115,10 +115,11 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
   const isMobile = useScreenResize("sm");
 
   const openChat = (link: any) => {
+    const { BaleWebLink, WhatsappLink, WhatsappWebLink } = link
     if (isMobile) {
-      window.location.href = link.WhatsappLink;
+      window.location.href = WhatsappLink;
     } else {
-      window.open(link.WhatsappWebLink, "_blank");
+      window.open((WhatsappWebLink || BaleWebLink), "_blank");
     }
   };
 
@@ -142,7 +143,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
           >
             <Trans i18nKey="common.moreWaysToReachUs" />
           </Typography>
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
             {contactSection.map((chat) => {
               return (
                 <Box key={chat.id} onClick={() => openChat(chat.link)}>
@@ -156,7 +157,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
                       background: chat.bg,
                     }}
                   >
-                    <img src={chat.icon} alt={`chat icon`} />
+                    <img style={{width:"100%", height: "100%"}} src={chat.icon} alt={`chat icon`} />
                   </Box>
                 </Box>
               );

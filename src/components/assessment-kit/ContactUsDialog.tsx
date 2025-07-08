@@ -11,6 +11,7 @@ import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import whatsApp from "@assets/svg/whatsApp.svg";
+import BaleIcon from "@assets/svg/baleIcon.svg";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -20,6 +21,7 @@ interface IContactUsDialogProps extends DialogProps {
 const phoneNumber = "+989966529108";
 const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
 const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
+const BaleWebLink= `https://web.bale.ai/chat?uid=1294957316`;
 
 const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, context, ...rest } = props;
@@ -76,6 +78,12 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       icon: whatsApp,
       bg: "#3D8F3D14",
       link: { WhatsappLink, WhatsappWebLink },
+    },
+    {
+      id: 2,
+      icon: BaleIcon,
+      bg: "#3D8F3D14",
+      link: { BaleWebLink },
     },
   ];
 
