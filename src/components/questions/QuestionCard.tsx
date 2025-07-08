@@ -884,7 +884,7 @@ const AnswerTemplate = (props: {
   };
 
   useEffect(() => {
-    if(notApp && !value?.id && !isAdvanceMode){
+    if(notApp && !value?.id && !isAdvanceMode) {
       submitQuestion()
     }
   }, [notApp, value?.id]);
@@ -911,8 +911,8 @@ const AnswerTemplate = (props: {
 
   const notApplicableonChanhe = (e: any) => {
     setNotApplicable(e.target.checked || false);
+    setNotApp(true)
     if (e.target.checked) {
-      setNotApp(true)
       setDisabledConfidence(false);
     } else {
       setDisabledConfidence(true);
