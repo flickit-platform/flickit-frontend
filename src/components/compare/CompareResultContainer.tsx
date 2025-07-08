@@ -35,11 +35,11 @@ const CompareResultContainer = () => {
                     navigate({ pathname: "/compare", search: location.search })
                   }
                 >
-                  <Trans i18nKey="editComparisonItems" />
+                  <Trans i18nKey="compare.editComparisonItems" />
                 </Button>
               }
             >
-              <Trans i18nKey="comparisonResult" />{" "}
+              <Trans i18nKey="compare.comparisonResult" />{" "}
             </Title>
 
             <CompareResult data={data} />

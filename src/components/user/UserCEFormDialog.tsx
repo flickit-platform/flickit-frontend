@@ -87,7 +87,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          <Trans i18nKey="updateUser" />
+          <Trans i18nKey="user.updateUser" />
         </>
       }
     >
@@ -99,7 +99,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               defaultValue={defaultValues.displayName ?? ""}
               name="displayName"
               required={true}
-              label={<Trans i18nKey="displayName" />}
+              label={<Trans i18nKey="common.name" />}
               isFarsi={languageDetector(defaultValues?.displayName)}
             />
           </Grid>
@@ -108,7 +108,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
               multiline
               defaultValue={defaultValues.bio ?? ""}
               name="bio"
-              label={<Trans i18nKey="bio" />}
+              label={<Trans i18nKey="common.bio" />}
               isFarsi={languageDetector(defaultValues?.bio)}
             />
           </Grid>
@@ -116,7 +116,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
             <InputFieldUC
               defaultValue={defaultValues.linkedin ?? ""}
               name="linkedin"
-              label={<Trans i18nKey="linkedin" />}
+              label={<Trans i18nKey="common.linkedin" />}
             />
           </Grid>
         </Grid>

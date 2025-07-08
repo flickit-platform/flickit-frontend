@@ -156,7 +156,7 @@ const AssessmentHtmlContainer = () => {
     <>
       {renderChip(
         <DesignServicesIcon fontSize="small" color="primary" />,
-        t("kitWithTitle", {
+        t("assessmentReport.kitWithTitle", {
           lng: language,
           title: graphicalReport?.assessment.assessmentKit.title,
         }),
@@ -164,7 +164,7 @@ const AssessmentHtmlContainer = () => {
       )}
       {renderChip(
         <EmojiObjectsIcon fontSize="small" color="primary" />,
-        t("questionsAndAnswer", {
+        t("assessmentReport.questionsAndAnswer", {
           lng: language,
           count: graphicalReport?.assessment.assessmentKit.questionsCount,
         }),
@@ -192,9 +192,10 @@ const AssessmentHtmlContainer = () => {
   const handleReloadReport = () => {
     fetchGraphicalReport.query();
   };
-  const location = useLocation();
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from;
+  const from = state?.location?.from;
+  const lang = state?.language?.code;
 
   const handleBack = () => {
     if (from) {
@@ -209,7 +210,10 @@ const AssessmentHtmlContainer = () => {
       <QueryData
         {...fetchGraphicalReport}
         renderLoading={() => (
-          <GraphicalReportSkeleton isAuthenticatedUser={isAuthenticatedUser} />
+          <GraphicalReportSkeleton
+            lang={lang}
+            isAuthenticatedUser={isAuthenticatedUser}
+          />
         )}
         render={(graphicalReport) => {
           const {
@@ -249,7 +253,7 @@ const AssessmentHtmlContainer = () => {
                       ...styles.centerV,
                     }}
                   >
-                    {t("incompleteReportDueToDelay")}
+                    {t("notification.incompleteReportDueToDelay")}
                   </Typography>
                   <Box
                     sx={{
@@ -265,7 +269,7 @@ const AssessmentHtmlContainer = () => {
                       color="inherit"
                       endIcon={<ReplayIcon />}
                     >
-                      {t("retry")}
+                      {t("common.retry")}
                     </Button>
                   </Box>
                 </Box>
@@ -322,7 +326,7 @@ const AssessmentHtmlContainer = () => {
                         />
                       </IconButton>
                     )}
-                    {t("assessmentReport", {
+                    {t("assessmentReport.assessmentReport", {
                       lng: lang.code.toLowerCase(),
                     })}
                   </Typography>
@@ -337,7 +341,7 @@ const AssessmentHtmlContainer = () => {
                         !permissions.canManageVisibility
                       }
                     >
-                      <Trans i18nKey="shareReport" />
+                      <Trans i18nKey="assessmentReport.shareReport" />
                     </LoadingButton>
                     <ShareDialog
                       {...dialogProps}
@@ -419,7 +423,7 @@ const AssessmentHtmlContainer = () => {
                                     ...styles.rtlStyle(rtlLanguage),
                                   }}
                                 >
-                                  {t("introduction", {
+                                  {t("assessmentReport.introduction", {
                                     lng: lang.code.toLowerCase(),
                                   })}
                                 </Typography>
@@ -434,7 +438,7 @@ const AssessmentHtmlContainer = () => {
                                   dangerouslySetInnerHTML={{
                                     __html:
                                       assessment.intro ??
-                                      t("unavailable", {
+                                      t("common.unavailable", {
                                         lng: lang.code.toLowerCase(),
                                       }),
                                   }}
@@ -452,7 +456,7 @@ const AssessmentHtmlContainer = () => {
                                 ...styles.rtlStyle(rtlLanguage),
                               }}
                             >
-                              {t("summary", {
+                              {t("common.summary", {
                                 lng: lang.code.toLowerCase(),
                               })}
                             </Typography>
@@ -467,7 +471,7 @@ const AssessmentHtmlContainer = () => {
                               dangerouslySetInnerHTML={{
                                 __html:
                                   assessment.overallInsight ??
-                                  t("unavailable", {
+                                  t("common.unavailable", {
                                     lng: lang.code.toLowerCase(),
                                   }),
                               }}
@@ -485,7 +489,7 @@ const AssessmentHtmlContainer = () => {
                               confidence_value={assessment.confidenceValue}
                               confidence_text={
                                 isAdvanceMode
-                                  ? t("withPercentConfidence", {
+                                  ? t("common.withPercentConfidence", {
                                       lng: lang.code.toLowerCase(),
                                     })
                                   : ""
@@ -527,7 +531,7 @@ const AssessmentHtmlContainer = () => {
                             ...styles.rtlStyle(rtlLanguage),
                           }}
                         >
-                          {t("prosAndCons", {
+                          {t("assessmentReport.prosAndCons", {
                             lng: lang.code.toLowerCase(),
                           })}
                         </Typography>
@@ -556,6 +560,7 @@ const AssessmentHtmlContainer = () => {
                           my={2}
                           container
                           spacing={2}
+                          marginLeft={0}
                         >
                           {isAdvanceMode && (
                             <Grid item xs={12} md={10}>
@@ -573,7 +578,7 @@ const AssessmentHtmlContainer = () => {
                                 }}
                               >
                                 <InfoOutlinedIcon fontSize="small" />
-                                {t("treeMapChart", {
+                                {t("common.treeMapChart", {
                                   lng: lang.code.toLowerCase(),
                                 })}
                               </Typography>
@@ -589,7 +594,7 @@ const AssessmentHtmlContainer = () => {
                                 dangerouslySetInnerHTML={{
                                   __html:
                                     assessment.prosAndCons ??
-                                    t("unavailable", {
+                                    t("common.unavailable", {
                                       lng: lang.code.toLowerCase(),
                                     }),
                                 }}
@@ -610,7 +615,7 @@ const AssessmentHtmlContainer = () => {
                                   : primaryFontFamily,
                               }}
                             >
-                              {t("maturityLevels", {
+                              {t("common.maturityLevels", {
                                 lng: lang.code.toLowerCase(),
                               })}
                             </Typography>
@@ -695,7 +700,7 @@ const AssessmentHtmlContainer = () => {
                           ...styles.rtlStyle(rtlLanguage),
                         }}
                       >
-                        {t("recommendations", {
+                        {t("assessmentReport.recommendations", {
                           lng: lang.code.toLowerCase(),
                         })}
                       </Typography>
@@ -732,7 +737,9 @@ const AssessmentHtmlContainer = () => {
                             ...styles.rtlStyle(rtlLanguage),
                           }}
                         >
-                          {t("unavailable", { lng: lang.code.toLowerCase() })}
+                          {t("common.unavailable", {
+                            lng: lang.code.toLowerCase(),
+                          })}
                         </Typography>
                       )}
 

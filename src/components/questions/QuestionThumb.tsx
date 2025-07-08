@@ -22,7 +22,7 @@ export const QuestionThumb = (props: any) => {
     <Box py={2.5} px={2.5} minWidth="284px" maxWidth="600px">
       <Box>
         <Typography textTransform={"capitalize"} variant="subMedium">
-          <Trans i18nKey={"question"} /> {questionIndex}/
+          <Trans i18nKey="common.question" /> {questionIndex}/
           {total_number_of_questions}
         </Typography>
         <Typography
@@ -39,7 +39,7 @@ export const QuestionThumb = (props: any) => {
       {question.answer?.selectedOption && (
         <Box mt={3}>
           <Typography variant="subMedium" textTransform="uppercase">
-            <Trans i18nKey={"yourAnswer"} />
+            <Trans i18nKey="common.yourAnswer" />
           </Typography>
           <Typography
             variant="h6"
@@ -58,10 +58,10 @@ export const QuestionThumb = (props: any) => {
       {question.answer?.isNotApplicable && (
         <Box mt={3}>
           <Typography variant="subMedium" textTransform="uppercase">
-            <Trans i18nKey={"yourAnswer"} />
+            <Trans i18nKey="common.yourAnswer" />
           </Typography>
           <Typography variant="h6">
-            <Trans i18nKey={"markedAsNotApplicable"} />
+            <Trans i18nKey="questions.markedAsNotApplicable" />
           </Typography>
         </Box>
       )}
@@ -82,9 +82,9 @@ export const QuestionThumb = (props: any) => {
           {question.answer ||
           !permissions.answerQuestion ||
           question.answer?.isNotApplicable ? (
-            <Trans i18nKey="edit" />
+            <Trans i18nKey="common.edit" />
           ) : (
-            <Trans i18nKey="submitAnAnswer" />
+            <Trans i18nKey="common.submitAnAnswer" />
           )}
         </Button>
       </Box>

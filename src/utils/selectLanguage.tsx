@@ -13,7 +13,7 @@ const SelectLanguage = (props: any) => {
     <FormControl sx={{ width: "100%" }}>
       <InputLabel id="language-name-label">
         {" "}
-        <Trans i18nKey={"language"} />
+        <Trans i18nKey="common.language" />
       </InputLabel>
       <Select
         disabled={editable != undefined ? !editable : false}
@@ -23,7 +23,7 @@ const SelectLanguage = (props: any) => {
         IconComponent={KeyboardArrowDownIcon}
         displayEmpty
         required={true}
-        input={<OutlinedInput label="language" />}
+        input={<OutlinedInput label="common.language" />}
         onChange={(e) => handleChange(e)}
         sx={{
           fontSize: "14px",

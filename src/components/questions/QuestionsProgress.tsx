@@ -126,16 +126,16 @@ export const QuestionProgressItem = (props: any) => {
             <Box>
               {[
                 question?.issues.isUnanswered && (
-                  <Trans i18nKey="unansweredQuestions" />
+                  <Trans i18nKey="dashboard.unansweredQuestions" />
                 ),
                 question?.issues.hasUnapprovedAnswer && (
-                  <Trans i18nKey="unapprovedAnswer" />
+                  <Trans i18nKey="dashboard.unapprovedAnswer" />
                 ),
                 question?.issues.isAnsweredWithLowConfidence && (
-                  <Trans i18nKey="lowConfidenceAnswers" />
+                  <Trans i18nKey="dashboard.lowConfidenceAnswers" />
                 ),
                 question?.issues.isAnsweredWithoutEvidences && (
-                  <Trans i18nKey="answersWithNoEvidence" />
+                  <Trans i18nKey="dashboard.answersWithNoEvidence" />
                 ),
                 question?.issues.unresolvedCommentsCount > 0 && (
                   <>
@@ -143,8 +143,8 @@ export const QuestionProgressItem = (props: any) => {
                     <Trans
                       i18nKey={
                         question?.issues.unresolvedCommentsCount !== 1
-                          ? "unresolvedComments"
-                          : "unresolvedComment"
+                          ? "dashboard.unresolvedComments"
+                          : "dashboard.unresolvedComment"
                       }
                     />
                   </>

@@ -44,23 +44,23 @@ const ReportTab = () => {
   const reportFields: { name: string; title: string; placeholder: string }[] = [
     {
       name: "intro",
-      title: "introductionReport",
-      placeholder: "writeIntroduction",
+      title: "assessmentReport.introductionReport",
+      placeholder: "assessmentReport.writeIntroduction",
     },
     {
       name: "prosAndCons",
-      title: "strengthsAndAreasForImprovement",
-      placeholder: "writeStrengthAndAreas",
+      title: "assessmentReport.strengthsAndAreasForImprovement",
+      placeholder: "assessmentReport.writeStrengthAndAreas",
     },
     {
       name: "steps",
-      title: "assessmentSteps",
-      placeholder: "writeStepsForAssessment",
+      title: "assessment.assessmentSteps",
+      placeholder: "assessmentReport.writeStepsForAssessment",
     },
     {
       name: "participants",
-      title: "participants",
-      placeholder: "writeAboutParticipants",
+      title: "assessmentReport.participants",
+      placeholder: "assessmentReport.writeAboutParticipants",
     },
   ];
   return (
@@ -114,7 +114,7 @@ const ReportTab = () => {
                             color: theme.palette.error.main,
                           }}
                         >
-                          (<Trans i18nKey={"empty"} />)
+                          (<Trans i18nKey="common.empty" />)
                         </Typography>
                       )}
                     </Typography>
@@ -166,7 +166,7 @@ const ReportTab = () => {
                           variant={"contained"}
                         >
                           <Typography sx={{ whiteSpace: "nowrap" }}>
-                            <Trans i18nKey={"viewReport"} />
+                            <Trans i18nKey="assessmentReport.viewReport" />
                           </Typography>
                           <AssignmentOutlinedIcon fontSize={"small"} />
                         </Button>
@@ -182,7 +182,7 @@ const ReportTab = () => {
                           <Typography
                             sx={{ ...theme.typography.semiBoldLarge }}
                           >
-                            <Trans i18nKey={"publishReport"} />
+                            <Trans i18nKey="assessmentReport.publishReport" />
                           </Typography>
                           <Switch
                             checked={published}
@@ -216,7 +216,7 @@ const ReportTab = () => {
                                 }}
                               >
                                 <ReportProblemOutlinedIcon fontSize={"small"} />
-                                <Trans i18nKey={"fillInAllRequired"} />
+                                <Trans i18nKey="errors.fillInAllRequired" />
                               </Typography>
                             </Box>
                           )}

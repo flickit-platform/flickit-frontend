@@ -88,7 +88,7 @@ const MeasureForm = ({
             langCode ? (newMeasure.translations?.[langCode]?.title ?? "") : ""
           }
           onTranslationChange={updateTranslation("title", setNewMeasure)}
-          label={<Trans i18nKey="title" />}
+          label={<Trans i18nKey="common.title" />}
         />
 
         <MultiLangTextField
@@ -101,7 +101,7 @@ const MeasureForm = ({
               : ""
           }
           onTranslationChange={updateTranslation("description", setNewMeasure)}
-          label={<Trans i18nKey="description" />}
+          label={<Trans i18nKey="common.description" />}
           multiline
           minRows={2}
           maxRows={5}

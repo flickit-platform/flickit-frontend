@@ -138,7 +138,7 @@ const SubjectRadar: React.FC<SubjectRadarProps> = ({
           tick={false}
         />
         <Radar
-          name={t("maturityLevel") as string}
+          name={t("common.maturityLevel") as string}
           dataKey="ml"
           stroke="#9CCAFF"
           fill="#9CCAFF"

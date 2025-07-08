@@ -1,0 +1,16 @@
+{
+  "acceptInvitation": "پذیرش دعوت‌نامه",
+  "addMember": "افزودن عضو",
+  "createExpertGroup": "ایجاد گروه خبرگی",
+  "editExpertGroup": "ویرایش گروه خبرگی",
+  "expertGroup": "گروه خبرگی",
+  "expertGroups": "گروه‌های خبرگی",
+  "groupPicture": "تصویر گروه",
+  "groupSummary": "خلاصه گروه",
+  "members": "اعضا",
+  "publishedAssessmentKits": "کیت‌های ارزیابی منتشر‌شده",
+  "removeMemberExpertGroup": "آیا مطمئن هستید که این عضو حذف شود؟",
+  "unpublishedAssessmentKits": "کیت‌های ارزیابی منتشر‌نشده",
+  "updateExpertGroup": "به‌روزرسانی گروه خبرگی",
+  "youHaveBeenInvitedToExpertGroup": "شما به این گروه دعوت شده‌اید. آیا می‌خواهید این دعوت‌نامه را بپذیرید؟"
+}

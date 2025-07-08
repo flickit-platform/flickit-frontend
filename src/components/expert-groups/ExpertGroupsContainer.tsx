@@ -53,7 +53,7 @@ const ExpertGroupsContainer = () => {
       ? 1
       : Math.ceil(queryData.data?.total / queryData.data?.size);
 
-  useDocumentTitle(t("expertGroups") as string);
+  useDocumentTitle(t("expertGroups.expertGroups") as string);
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
@@ -140,7 +140,7 @@ const CreateExpertGroupButton = (props: { onSubmitForm: TQueryFunction }) => {
         size="small"
         onClick={dialogProps.openDialog}
       >
-        <Trans i18nKey="createExpertGroup" />
+        <Trans i18nKey="expertGroups.createExpertGroup" />
       </Button>
       <ExpertGroupCEFormDialog {...dialogProps} onSubmitForm={onSubmitForm} />
     </>

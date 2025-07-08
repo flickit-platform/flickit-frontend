@@ -177,9 +177,9 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             }}
           />
           {type === "update" ? (
-            <Trans i18nKey="updateAssessment" />
+            <Trans i18nKey="assessment.updateAssessment" />
           ) : (
-            <Trans i18nKey="createAssessment" />
+            <Trans i18nKey="assessment.createAssessment" />
           )}
         </>
       }
@@ -193,7 +193,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 defaultValue={defaultValues.title ?? ""}
                 name="title"
                 required={true}
-                label={<Trans i18nKey="title" />}
+                label={<Trans i18nKey="common.title" />}
                 data-cy="title"
                 isFocused={isFocused}
               />
@@ -204,9 +204,9 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 defaultValue={defaultValues.shortTitle ?? null}
                 name="shortTitle"
                 required={false}
-                label={<Trans i18nKey="shortTitle" />}
+                label={<Trans i18nKey="assessment.shortTitle" />}
                 data-cy="title"
-                helperText={<Trans i18nKey="shortTitleInfo" />}
+                helperText={<Trans i18nKey="assessment.shortTitleInfo" />}
               />
             </Grid>
             <Grid item xs={12}>
@@ -222,14 +222,14 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               {" "}
               <AutocompleteAsyncField
                 name="language"
-                label={<Trans i18nKey="assessmentAndReportLanguage" />}
+                label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
                 options={languages}
                 data-cy="language"
                 disabled={languages.length === 1}
                 required
                 helperText={
                   languages.length === 1 ? (
-                    <Trans i18nKey="onlyLangAvailable" />
+                    <Trans i18nKey="assessment.availableLanguage" />
                   ) : (
                     ""
                   )
@@ -250,24 +250,24 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             <CheckmarkGif />
             <Typography variant="titleLarge">
               <Trans
-                i18nKey="successCreatedAssessmentTitleFirstPart"
+                i18nKey="assessment.successCreatedAssessmentTitleFirstPart"
                 values={{ title: submittedTitle }}
               />{" "}
               <Typography variant="headlineMedium">{submittedTitle}</Typography>
               <Trans
-                i18nKey="successCreatedAssessmentTitleSecondPart"
+                i18nKey="assessment.successCreatedAssessmentTitleSecondPart"
                 values={{ title: submittedTitle }}
               />
             </Typography>
             <Typography variant="displaySmall" mt={2}>
-              <Trans i18nKey="successCreatedAssessmentMessage" />
+              <Trans i18nKey="assessment.successCreatedAssessmentMessage" />
             </Typography>
           </Box>
           <CEDialogActions
             closeDialog={close}
             loading={loading}
             type={undefined}
-            cancelLabel="close"
+            cancelLabel="common.close"
             hideSubmitButton
           >
             <Link
@@ -277,7 +277,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained">
-                <Trans i18nKey="assessmentSettings" />
+                <Trans i18nKey="assessment.assessmentSettings" />
               </Button>
             </Link>
           </CEDialogActions>
@@ -311,7 +311,7 @@ const AssessmentKitField = ({
       required={true}
       defaultValue={staticData ?? defaultValue}
       disabled={!!staticData || !!defaultValue}
-      label={<Trans i18nKey="assessmentKit" />}
+      label={<Trans i18nKey="assessmentKit.assessmentKit" />}
       data-cy="assessment_kit"
       filterFields={["title", "mainLanguage"]}
     />
@@ -346,7 +346,7 @@ const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
       required={true}
       disabled={!!spaceId}
       defaultValue={defaultValue}
-      label={<Trans i18nKey="space" />}
+      label={<Trans i18nKey="spaces.space" />}
       data-cy="space"
       hasAddBtn={true}
       createItemQuery={createItemQuery}

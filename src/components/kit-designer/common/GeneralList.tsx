@@ -25,6 +25,7 @@ interface ListOfItemsProps {
   onReorder: (reorderedItems: KitDesignListItems[]) => void;
   setOpenDeleteDialog?: any;
   editableFieldKey?: keyof KitDesignListItems;
+  editableFieldLabel?: any;
   editable?: boolean;
 }
 
@@ -43,6 +44,7 @@ const ListOfItems = ({
   onReorder,
   setOpenDeleteDialog,
   editableFieldKey,
+  editableFieldLabel,
   editable = true,
 }: ListOfItemsProps) => {
   const { kitState } = useKitDesignerContext();
@@ -366,7 +368,7 @@ const ListOfItems = ({
                                   width: "100%",
                                 }}
                               >
-                                <Trans i18nKey={editableFieldKey} />
+                                {editableFieldLabel}
                               </Typography>
 
                               {editable && editMode === item.id ? (

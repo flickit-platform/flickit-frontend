@@ -83,7 +83,7 @@ const CompareButton = (props: { disabled?: boolean }) => {
         style={{ ...theme.typography.labelLarge }}
         onClick={handleClick}
       >
-        <Trans i18nKey="compare" />
+        <Trans i18nKey="compare.compare" />
       </Button>
       <Box sx={{ ...styles.compareButtonBg }} />
     </>
@@ -108,11 +108,11 @@ const CompareSelectedAssessmentKitInfo = () => {
           color="primary"
           onClick={makeNewComparison}
         >
-          <Trans i18nKey="newComparison" />
+          <Trans i18nKey="compare.newComparison" />
         </Button>
       }
     >
-      <Trans i18nKey="toCompareAssessmentsOfOtherAssessmentKits" />
+      <Trans i18nKey="compare.toCompareAssessmentsOfOtherAssessmentKits" />
     </AlertBox>
   ) : (
     <></>

@@ -113,7 +113,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
         }}
       >
         <Typography variant="semiBoldLarge">
-          <Trans i18nKey="insightsTab.assessmentOverallInsights" />
+          <Trans i18nKey="dashboard.assessmentOverallInsights" />
         </Typography>
 
         {editable && (
@@ -144,7 +144,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
             );
           }}
           infoQuery={fetchAssessmentInsight.query}
-          placeholder={t("writeYourInsightsOfTheAssessmentResultsHere") ?? ""}
+          placeholder={t("assessmentReport.writeYourInsightsOfTheAssessmentResultsHere") ?? ""}
         />
       )}
     </Box>

@@ -271,7 +271,7 @@ const UserInfoCell = ({ row }: any) => (
       {!row.editable && (
         <Chip
           sx={chipStyles}
-          label={<Trans i18nKey={"owner"} />}
+          label={<Trans i18nKey="common.owner" />}
           size="small"
           variant="outlined"
         />
@@ -291,7 +291,7 @@ const DeleteActionCell = ({ row, deleteEGMember }: any) => (
   >
     <Tooltip
       disableHoverListener={row.editable}
-      title={<Trans i18nKey="spaceOwnerRoleIsNotEditable" />}
+      title={<Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />}
     >
       <Box
         sx={{
@@ -388,7 +388,7 @@ const AddMemberModal = (props: any) => {
       title={
         <>
           <PersonAddIcon sx={{ mr: 1 }} />
-          <Trans i18nKey="addMember" />
+          <Trans i18nKey="expertGroups.addMember" />
         </>
       }
     >
@@ -401,9 +401,9 @@ const AddMemberModal = (props: any) => {
         <CEDialogActions
           closeDialog={close}
           loading={addMemberQueryData.loading}
-          type={"submit"}
+          type="submit"
           onSubmit={formMethods.handleSubmit(onSubmit)}
-          submitButtonLabel={"add"}
+          submitButtonLabel={"common.add"}
         />
       </FormProviderWithForm>
     </CEDialog>
@@ -415,12 +415,12 @@ const AddMember = (props: any) => {
     <Box component="form" sx={{ mb: 2, mt: 0 }}>
       <TextField
         fullWidth
-        type={"email"}
+        type="email"
         size="small"
         variant="outlined"
         inputRef={inputRef}
-        placeholder={t("enterEmailOfTheUserYouWantToAdd") as string}
-        label={<Trans i18nKey="userEmail" />}
+        placeholder={t("user.enterEmailOfTheUserYouWantToAdd") as string}
+        label={<Trans i18nKey="user.userEmail" />}
       />
     </Box>
   );

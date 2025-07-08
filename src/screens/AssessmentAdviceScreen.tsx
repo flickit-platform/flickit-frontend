@@ -3,7 +3,7 @@ import AssessmentAdviceContainer from "@components/dashboard/advice-tab/Assessme
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const AssessmentAdviceScreen = () => {
-  useDocumentTitle(`${t("overallInsights")}`);
+  useDocumentTitle(`${t("common.overallInsights")}`);
 
   return <AssessmentAdviceContainer />;
 };

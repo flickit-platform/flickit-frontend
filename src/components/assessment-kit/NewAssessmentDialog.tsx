@@ -148,7 +148,9 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
           )}
           <Trans
             i18nKey={
-              type === "create" ? "createAssessment" : "limitExceededSpaces"
+              type === "create"
+                ? "assessment.createAssessment"
+                : "spaces.limitExceededSpaces"
             }
           />
         </Box>
@@ -166,7 +168,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               pb: "32px",
             }}
           >
-            <Trans i18nKey={"createAssessmentConfirmSettings"} />
+            <Trans i18nKey="assessment.createAssessmentConfirmSettings" />
           </Typography>
           <Grid container display="flex" alignItems="start">
             <Grid
@@ -187,7 +189,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                   sx={{ color: "#6C8093", background: "transparent" }}
                 />
                 <Typography>
-                  <Trans i18nKey={"targetSpace"} />
+                  <Trans i18nKey="spaces.targetSpace" />
                 </Typography>
               </Box>
               <Typography
@@ -198,7 +200,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                   minHeight: "55px",
                 }}
               >
-                <Trans i18nKey={"chooseSpace"} />
+                <Trans i18nKey="assessment.chooseSpace" />
               </Typography>
               <SpaceField
                 queryDataSpaces={queryDataSpaces}
@@ -228,7 +230,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                   sx={{ color: "#6C8093", background: "transparent" }}
                 />
                 <Typography>
-                  <Trans i18nKey={"assessmentLanguage"} />
+                  <Trans i18nKey="assessmentKit.assessmentLanguage" />
                 </Typography>
               </Box>
               <Typography
@@ -239,7 +241,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                   minHeight: "55px",
                 }}
               >
-                <Trans i18nKey={"assessmentSupportsMultipleLanguages"} />
+                <Trans i18nKey="assessmentKit.assessmentSupportsMultipleLanguages" />
               </Typography>
               <LangField lang={langList} />
             </Grid>
@@ -249,21 +251,23 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
         <Box
           sx={{
             ...styles.centerV,
-            alignItems:"flex-start",
+            alignItems: "flex-start",
             justifyContent: "flex-start",
             gap: "8px",
           }}
         >
           <ErrorOutlinedIcon color="error" />
           <Typography>
-            <Trans i18nKey={"limitExceededSpacesDesc"} />
+            <Trans i18nKey="spaces.limitExceededSpacesDesc" />
           </Typography>
         </Box>
       )}
 
       <CEDialogActions
         closeDialog={close}
-        submitButtonLabel={type === "create" ? "continue" : "createSpace"}
+        submitButtonLabel={
+          type === "create" ? "common.continue" : "spaces.createSpace"
+        }
         loading={loading}
         type={type}
         onSubmit={
@@ -282,7 +286,7 @@ const LangField = ({ lang }: { lang: any }) => {
   return (
     <AutocompleteAsyncField
       name="language"
-      label={<Trans i18nKey="assessmentAndReportLanguage" />}
+      label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
       options={lang}
       data-cy="language"
       required={lang?.length > 1}
@@ -325,7 +329,7 @@ const SpaceField = ({
       required={true}
       disabled={!!spaceId}
       defaultValue={defaultValue}
-      label={<Trans i18nKey="space" />}
+      label={<Trans i18nKey="spaces.space" />}
       data-cy="space"
       hasAddBtn={true}
       createItemQuery={createItemQuery}

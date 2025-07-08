@@ -123,14 +123,14 @@ const AdviceItems = () => {
       const updatedErrorMessage: any = {};
 
       if (!newAdvice.title) {
-        updatedErrorMessage.title = "requiredFieldError";
+        updatedErrorMessage.title = "errors.requiredFieldError";
         errorOccurred = true;
       } else {
         updatedErrorMessage.title = null;
       }
 
       if (!newAdvice.description || newAdvice.description === "<p></p>") {
-        updatedErrorMessage.description = "requiredFieldError";
+        updatedErrorMessage.description = "errors.requiredFieldError";
         errorOccurred = true;
       } else {
         updatedErrorMessage.description = null;
@@ -176,7 +176,7 @@ const AdviceItems = () => {
                 alignItems="center"
               >
                 <Typography variant="semiBoldLarge">
-                  <Trans i18nKey="suggestedActionItems" />
+                  <Trans i18nKey="advice.suggestedActionItems" />
                 </Typography>
                 {displayedItems.length !== 0 && (
                   <Link
@@ -195,7 +195,7 @@ const AdviceItems = () => {
                       onClick={handleAddNewRow}
                       data-test-id="newAdvice"
                     >
-                      <Trans i18nKey="newActionItem" />
+                      <Trans i18nKey="advice.newActionItem" />
                     </Button>
                   </Link>
                 )}
@@ -235,8 +235,8 @@ const AdviceItems = () => {
               !showNewAdviceListForm && (
                 <EmptyAdviceList
                   onAddNewRow={handleAddNewRow}
-                  btnTitle="newActionItem"
-                  title="noActionYet"
+                  btnTitle="advice.newActionItem"
+                  title="advice.noActionYet"
                 />
               )
             )}

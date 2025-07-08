@@ -7,11 +7,7 @@ const getStatusText = (status: TStatus, onlyText: boolean = false) => {
   if (hasStatus(status)) {
     return status;
   }
-  return onlyText ? (
-    (t("notEvaluated") as string)
-  ) : (
-    <Trans i18nKey="notEvaluated" />
-  );
+  return <Trans i18nKey="common.notEvaluated" />;
 };
 
 export default getStatusText;

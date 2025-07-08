@@ -39,23 +39,23 @@ export const AssessmentTOC = ({
         email:
           keycloakService._kc.tokenParsed?.preferred_username ??
           keycloakService._kc.tokenParsed?.sub,
-        dialogTitle: t("expertReassessmentService"),
+        dialogTitle: t("assessmentReport.expertReassessmentService"),
         children: (
           <Box>
             <Typography textAlign="justify" variant="bodyLarge">
               <Trans
-                i18nKey="requestAnExpertReviewContent.intro"
+                i18nKey="assessmentReport.requestAnExpertReviewContent.intro"
                 components={{ strong: <strong /> }}
               />
             </Typography>
 
             <Typography mt={2} variant="bodyLarge" fontWeight="bold">
-              {t("requestAnExpertReviewContent.listTitle")}
+              {t("assessmentReport.requestAnExpertReviewContent.listTitle")}
             </Typography>
 
             <ul style={{ listStyle: "none", padding: 0, marginTop: 8 }}>
               {(
-                t("requestAnExpertReviewContent.listItems", {
+                t("assessmentReport.requestAnExpertReviewContent.listItems", {
                   returnObjects: true,
                 }) as string[]
               ).map((item, idx) => (
@@ -67,17 +67,17 @@ export const AssessmentTOC = ({
 
             <Typography mt={2} textAlign="justify" variant="bodyLarge">
               <Trans
-                i18nKey="requestAnExpertReviewContent.note"
+                i18nKey="assessmentReport.requestAnExpertReviewContent.note"
                 components={{ strong: <strong /> }}
               />
             </Typography>
 
             <Typography mt={1} textAlign="justify" variant="bodyLarge">
-              {t("requestAnExpertReviewContent.instruction")}
+              {t("assessmentReport.requestAnExpertReviewContent.instruction")}
             </Typography>
           </Box>
         ),
-        primaryActionButtonText: t("submitRequest"),
+        primaryActionButtonText: t("assessmentReport.submitRequest"),
       },
     },
   });
@@ -113,29 +113,29 @@ export const AssessmentTOC = ({
 
   const items = [
     {
-      key: "introduction",
+      label: "assessmentReport.introduction",
       subItems: [],
       id: "introduction",
       isAdvanceMode: true,
     },
     {
-      key: "summary",
+      label: "common.summary",
       subItems: [],
       id: "summary",
     },
     {
-      key: "strengths_and_weaknesses",
+      label: "assessmentReport.prosAndCons",
       subItems: [],
       id: "strengthsAndWeaknesses",
     },
     ...subjects,
     {
-      key: "recommendations",
+      label: "assessmentReport.recommendations",
       subItems: [],
       id: "recommendations",
     },
     {
-      key: "evaluation_process",
+      label: "assessmentReport.evaluation_process",
       subItems: [],
       id: "evaluationProcess",
     },
@@ -157,6 +157,7 @@ export const AssessmentTOC = ({
           borderRadius: 2,
           p: 2,
           overflowY: "auto",
+          maxHeight: "80vh",
           textAlign: rtlLanguage ? "right" : "left",
           ...styles.rtlStyle(rtlLanguage),
         }}
@@ -170,7 +171,7 @@ export const AssessmentTOC = ({
             ...styles.rtlStyle(rtlLanguage),
           }}
         >
-          {t("quickAccess", { lng: lang.code.toLowerCase() })}
+          {t("assessmentReport.quickAccess", { lng: lang.code.toLowerCase() })}
         </Typography>
         <List
           sx={{
@@ -193,7 +194,7 @@ export const AssessmentTOC = ({
                   sx={{
                     display: {
                       md: "block",
-                      xs: item.key !== "evaluation_process" ? "block" : "none",
+                      xs: item.id !== "evaluationProcess" ? "block" : "none",
                     },
                   }}
                 >
@@ -213,11 +214,13 @@ export const AssessmentTOC = ({
                       },
                     }}
                     onClick={
-                      hasSubItems ? () => handleToggle(item.key) : undefined
+                      hasSubItems ? () => handleToggle(item.id) : undefined
                     }
                   >
                     <ListItemText
-                      primary={t(item.key, { lng: lang.code.toLowerCase() })}
+                      primary={t(hasSubItems ? item.id : item.label, {
+                        lng: lang.code.toLowerCase(),
+                      })}
                       sx={{
                         "& .MuiTypography-root": {
                           ...theme.typography.semiBoldMedium,
@@ -229,13 +232,13 @@ export const AssessmentTOC = ({
                       }}
                     />
                     {hasSubItems &&
-                      (openItems[item.key] ? <ExpandLess /> : <ExpandMore />)}
+                      (openItems[item.id] ? <ExpandLess /> : <ExpandMore />)}
                   </ListItemButton>
                 </ListItem>
 
                 {hasSubItems && (
                   <Collapse
-                    in={openItems[item.key]}
+                    in={openItems[item.id]}
                     timeout="auto"
                     unmountOnExit
                   >
@@ -294,7 +297,7 @@ export const AssessmentTOC = ({
               },
             }}
           >
-            {t("requestAnExpertReview")}
+            {t("assessmentReport.requestAnExpertReview")}
           </Button>
         </Box>
       )}

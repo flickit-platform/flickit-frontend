@@ -112,7 +112,7 @@ const AttributeForm = ({
       >
         <MultiLangTextField
           id="new-item"
-          label={<Trans i18nKey="title" />}
+          label={<Trans i18nKey="common.title" />}
           name="title"
           value={newAttribute.title}
           onChange={handleInputChange}
@@ -123,7 +123,7 @@ const AttributeForm = ({
         />
 
         <MultiLangTextField
-          label={<Trans i18nKey="description" />}
+          label={<Trans i18nKey="common.description" />}
           name="description"
           value={newAttribute.description}
           onChange={handleInputChange}

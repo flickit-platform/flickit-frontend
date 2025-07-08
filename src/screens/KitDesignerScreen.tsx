@@ -3,7 +3,7 @@ import useDocumentTitle from "@utils/useDocumentTitle";
 import KitDesignerContainer from "@/components/kit-designer/KitDesignerContainer";
 
 const KitDesignerScreen = () => {
-  useDocumentTitle(t("kitDesigner") as string);
+  useDocumentTitle(t("kitDesigner.kitDesigner") as string);
   return <KitDesignerContainer />;
 };
 

@@ -1,0 +1,11 @@
+{
+  "areYouSureYouWantDeleteThisMember": "آیا مطمئن هستید که می‌خواهید {{name}} را از {{assessment}} حذف کنید؟",
+  "areYouSureYouWantDeleteThisMemberInvited": "آیا مطمئن هستید که می‌خواهید دعوت‌نامه‌ی {{name}} را برای این ارزیابی لغو کنید؟",
+  "assignRole": "تخصیص نقش",
+  "chooseARole": "انتخاب نقش",
+  "grantedRoles": "نقش‌های اعطا‌شده",
+  "kitCustomDefaultDataChanged": "هیچ تغییری برای ذخیره‌سازی وجود ندارد.",
+  "kitCustomization": "شخصی‌سازی کیت",
+  "kitCustomTitle": "عنوان کیت سفارشی",
+  "viewTheWeightAndSubject": "در اینجا می‌توانید وزن موضوعات با ویژگی‌های مختلف را مشاهده کرده و آن‌ها را به دلخواه برای این ارزیابی خاص تنظیم کنید."
+}

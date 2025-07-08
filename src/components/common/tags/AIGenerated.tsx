@@ -25,7 +25,7 @@ const AIGenerated = ({ type, title, icon }: any) => {
               }}
             />
           )}
-          <Trans i18nKey={title ?? "AIGenerated"} />
+          <Trans i18nKey={title ?? "common.AIGenerated"} />
         </Box>
       }
       size="small"

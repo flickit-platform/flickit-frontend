@@ -126,7 +126,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   if (name === "email") {
     validationRules.pattern = {
       value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      message: t("invalidEmail"),
+      message: t("errors.invalidEmail"),
     };
   }
   if (minLength) validationRules.minLength = minLength;

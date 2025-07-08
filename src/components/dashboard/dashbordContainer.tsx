@@ -145,7 +145,7 @@ const DashbordContainer: React.FC = () => {
                       }}
                     />
                   </IconButton>
-                  {t("settings")}
+                  {t("common.settings")}
                 </Typography>
               ) : (
                 <Box paddingX={isEditing ? 1 : 0}>

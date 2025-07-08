@@ -76,7 +76,7 @@ const SpaceSettingContainer = () => {
           ) : (
             title
           )}{" "}
-          <Trans i18nKey="settings" />
+          <Trans i18nKey="common.settings" />
         </Box>
       </Title>
       <Box pt={3}>{!loading && <SpaceSettings editable={editable} />}</Box>
@@ -111,7 +111,7 @@ const EditSpaceButton = (props: any) => {
         size="small"
         onClick={openEditDialog}
       >
-        <Trans i18nKey="editSpace" />
+        <Trans i18nKey="spaces.editSpace" />
       </LoadingButton>
       <CreateSpaceDialog
         {...dialogProps}
@@ -148,7 +148,7 @@ function SpaceSettings(props: any) {
                       ml: `${is_farsi ? "8px" : 0}`,
                     }}
                   />
-                  <Trans i18nKey="members" />
+                  <Trans i18nKey="expertGroups.members" />
                 </Box>
               }
               value="1"

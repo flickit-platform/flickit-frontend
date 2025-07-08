@@ -157,7 +157,7 @@ const AdviceSlider = (props: any) => {
               color: "#F9A03F",
             }}
           >
-            <Trans i18nKey="currentStage" />
+            <Trans i18nKey="advice.currentStage" />
           </Box>
         </Box>
       </Box>
@@ -178,7 +178,7 @@ const AdviceSlider = (props: any) => {
           variant="bodySmall"
         >
           <Trans
-            i18nKey="fromTo"
+            i18nKey="advice.fromTo"
             values={{
               fromTitle: currentState?.title,
               toTitle:

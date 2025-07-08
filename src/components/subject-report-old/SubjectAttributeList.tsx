@@ -8,7 +8,7 @@ export const SubjectAttributeList = (props: any) => {
   return (
     <Box mt={5} id="attributes">
       <Typography color="#73808C" variant="semiBoldMedium">
-        <Trans i18nKey="attributes" />
+        <Trans i18nKey="common.attributes" />
       </Typography>
       <Box mt={3}>
         {attributes.map((attribute: any = {}) => {

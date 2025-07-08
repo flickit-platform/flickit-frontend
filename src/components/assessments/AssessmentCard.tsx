@@ -232,7 +232,7 @@ const AssessmentCard = ({
                 display="flex"
                 gap="0.125rem"
               >
-                <Trans i18nKey="withConfidence" />:
+                <Trans i18nKey="common.withConfidence" />:
                 <ConfidenceLevel
                   displayNumber
                   inputNumber={Math.ceil(confidenceValue)}
@@ -259,6 +259,7 @@ const AssessmentCard = ({
                   item={item}
                   progressPercent={progressPercent}
                   location={location}
+                  language={language}
                   spaceId={spaceId}
                   type={type}
                 />
@@ -336,15 +337,12 @@ const Header = ({
           ? farsiFontFamily
           : primaryFontFamily,
         ...styles.centerVH,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         gap: "10px",
       }}
       data-cy="assessment-card-title"
     >
       {!isQuickMode && (
-        <Box sx={{ flexShrink: 0 }}>
+        <Box sx={{ flexShrink: 0, ...styles.centerVH }}>
           <img alt="star" src={Star} height={24} />
         </Box>
       )}
@@ -381,7 +379,8 @@ const Header = ({
         sx={{ textAlign: "center" }}
         color="#6C8093"
       >
-        <Trans i18nKey="lastUpdated" /> {getReadableDate(lastModificationTime)}
+        <Trans i18nKey="common.lastUpdated" />{" "}
+        {getReadableDate(lastModificationTime)}
       </Typography>
     </Box>
   </Box>
@@ -392,39 +391,47 @@ const CardButton = ({
   progressPercent,
   location,
   spaceId,
+  language,
   type, // 'report' | 'questionnaires' | 'dashboard'
 }: any) => {
   let to = "";
   let icon = null;
-  let labelKey = "";
+  let key = "";
+  let label = "";
 
   if (type === "report") {
     to = `/${spaceId}/assessments/${item.id}/graphical-report/`;
     icon = <Assessment />;
-    labelKey = "reportTitle";
+    key = "reportTitle";
+    label = "assessmentReport.reportTitle";
   } else if (type === "questionnaires") {
     to = `${item.id}/questionnaires`;
     icon = <QuizRoundedIcon />;
-    labelKey = "questionnaires";
+    key = "questionnaires";
+    label = "common.questionnaires";
   } else if (type === "dashboard") {
     to = `${item.id}/dashboard`;
     icon = <QueryStatsRounded />;
-    labelKey = "dashboard";
+    key = "dashboard";
+    label = "dashboard.dashboard";
   }
 
   if (!type) {
     if (item.permissions.canViewReport && item.hasReport) {
       to = `/${spaceId}/assessments/${item.id}/graphical-report/`;
       icon = <Assessment />;
-      labelKey = "reportTitle";
+      key = "reportTitle";
+      label = "assessmentReport.reportTitle";
     } else if (item.permissions.canViewQuestionnaires) {
       to = `${item.id}/questionnaires`;
       icon = <QuizRoundedIcon />;
-      labelKey = "questionnaires";
+      key = "questionnaires";
+      label = "common.questionnaires";
     } else if (item.permissions.canViewDashboard) {
       to = `${item.id}/dashboard`;
       icon = <QueryStatsRounded />;
-      labelKey = "dashboard";
+      key = "dashboard";
+      label = "dashboard.dashboard";
     }
   }
 
@@ -439,7 +446,7 @@ const CardButton = ({
       sx={{
         position: "relative",
         zIndex: 1,
-        ...(labelKey === "dashboard" && {
+        ...(key === "dashboard" && {
           background: "#01221e",
           color: "#fff",
           "&:hover": {
@@ -447,13 +454,11 @@ const CardButton = ({
           },
         }),
       }}
-      state={location}
+      state={{ location, language }}
       to={to}
       data-cy="assessment-card-btn"
       variant={
-        labelKey === "reportTitle" || labelKey === "dashboard"
-          ? "contained"
-          : "outlined"
+        key === "reportTitle" || key === "dashboard" ? "contained" : "outlined"
       }
     >
       <Box
@@ -466,13 +471,13 @@ const CardButton = ({
           background: "rgba(102, 128, 153, 0.3)",
           zIndex: -1,
           width:
-            labelKey === "questionnaires" && progressPercent
+            key === "questionnaires" && progressPercent
               ? `${progressPercent}%`
               : "0%",
           transition: "all 1s ease-in-out",
         }}
       />
-      <Trans i18nKey={labelKey} />
+      <Trans i18nKey={label} />
     </Button>
   );
 };
@@ -522,7 +527,7 @@ const Actions = ({
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="delete" />,
+          text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
         },
@@ -530,12 +535,12 @@ const Actions = ({
     : [
         {
           icon: <SettingsIcon fontSize="small" />,
-          text: <Trans i18nKey="settings" />,
+          text: <Trans i18nKey="common.settings" />,
           onClick: assessmentSetting,
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="delete" />,
+          text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
         },

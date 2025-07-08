@@ -318,7 +318,7 @@ const ListOfItems = ({
                           "title",
                           setTempValues,
                         )}
-                        label={<Trans i18nKey="title" />}
+                        label={<Trans i18nKey="common.title" />}
                       />
                     ) : (
                       <TitleWithTranslation
@@ -332,7 +332,7 @@ const ListOfItems = ({
                     )}
                     <Box sx={{ width: "60%", px: 3 }}>
                       <Chip
-                        label={t("options") + " " + item.answerOptions.length}
+                        label={t("common.options") + " " + item.answerOptions.length}
                         size="small"
                         sx={{
                           backgroundColor: "#EAF2FB",
@@ -425,10 +425,10 @@ const ListOfItems = ({
                     mr={2}
                     px={0.2}
                   >
-                    <Trans i18nKey={"index"} />
+                    <Trans i18nKey="common.index" />
                   </Box>
                   <Box sx={{ width: { xs: "50%", md: "60%" } }}>
-                    <Trans i18nKey={"title"} />
+                    <Trans i18nKey="common.title" />
                   </Box>
                   <Box
                     sx={{
@@ -436,7 +436,7 @@ const ListOfItems = ({
                       textAlign: "center",
                     }}
                   >
-                    <Trans i18nKey={"value"} />
+                    <Trans i18nKey="common.value" />
                   </Box>
                 </Box>
               )}
@@ -497,7 +497,7 @@ const ListOfItems = ({
                           onClick={() => handleAddNewOptionClick(item.id)}
                         >
                           <Add fontSize="small" />
-                          <Trans i18nKey="newOption" />
+                          <Trans i18nKey="kitDesigner.newOption" />
                         </Button>
                       </Box>
                     )}
@@ -506,9 +506,9 @@ const ListOfItems = ({
                   <>
                     {!showNewAnswerRangeForm[item.id] && (
                       <EmptyStateOptions
-                        btnTitle={"addFirstOption"}
-                        title={"noOptionHere"}
-                        SubTitle={"noOptionAtTheMoment"}
+                        btnTitle="kitDesigner.addFirstOption"
+                        title="kitDesigner.noOptionHere"
+                        SubTitle="kitDesigner.noOptionAtTheMoment"
                         onAddNewRow={() => handleAddNewOptionClick(item.id)}
                       />
                     )}

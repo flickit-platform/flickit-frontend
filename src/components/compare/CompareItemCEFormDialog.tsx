@@ -50,7 +50,7 @@ const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
                   marginLeft: theme.direction === "rtl" ? 1 : "unset",
                 }}
               />
-              <Trans i18nKey="changeSelectedAssessment" />
+              <Trans i18nKey="compare.changeSelectedAssessment" />
             </>
           ) : (
             <>
@@ -60,14 +60,14 @@ const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
                   marginLeft: theme.direction === "rtl" ? 1 : "unset",
                 }}
               />
-              <Trans i18nKey="selectAssessment" />
+              <Trans i18nKey="compare.selectAssessment" />
             </>
           )}
         </>
       }
     >
       <AlertBox severity="info">
-        <Trans i18nKey="youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces" />
+        <Trans i18nKey="compare.youCanOnlyHaveAccessToTheAssessmentsThatAreInYourSpaces" />
       </AlertBox>
       <CompareItemCEForm {...props} closeDialog={closeDialog} />
     </CEDialog>
@@ -155,7 +155,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
             autoFocus={true}
             name="assessment"
             defaultValue={defaultValues ?? ""}
-            label={<Trans i18nKey="assessment" />}
+            label={<Trans i18nKey="assessment.assessment" />}
             size="medium"
             selectedOptions={assessment_kit}
             loadMore={total > PAGE_SIZE * PageCount + PAGE_SIZE}

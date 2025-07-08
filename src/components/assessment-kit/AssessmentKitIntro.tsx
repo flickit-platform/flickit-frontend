@@ -9,9 +9,9 @@ import { t } from "i18next";
 const MAX_HEIGHT = 210;
 
 const sections = [
-  { key: "what", title: "whatIsThisKit" },
-  { key: "who", title: "whoNeedsThisKit" },
-  { key: "when", title: "whenToUseThisKit" },
+  { key: "what", title: "assessmentKit.whatIsThisKit" },
+  { key: "who", title: "assessmentKit.whoNeedsThisKit" },
+  { key: "when", title: "assessmentKit.whenToUseThisKit" },
 ] as const;
 
 type SectionKey = (typeof sections)[number]["key"];
@@ -124,7 +124,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                 },
               }}
             >
-              {t(key)}
+              {t(`common.${key}`)}
             </Box>
           );
         })}
@@ -134,7 +134,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
       <Box sx={{ flex: 1, p: 4 }}>
         <Typography variant="titleLarge" color="#2B333B">
           <Trans
-            i18nKey={`assessmentKitTab.${currentSection.title}`}
+            i18nKey={currentSection.title}
             components={{
               primary: (
                 <Box
@@ -179,7 +179,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               textAlign: "justify",
             }}
             dangerouslySetInnerHTML={{
-              __html: content || t("unavailable"),
+              __html: content || t("common.unavailable"),
             }}
           />
         </Box>
@@ -196,7 +196,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               paddingX: 0,
             }}
           >
-            {showMore ? t("showLess") : t("showMore")}...
+            {showMore ? t("common.showLess") : t("common.showMore")}...
           </Button>
         )}
       </Box>

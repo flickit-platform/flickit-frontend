@@ -169,7 +169,7 @@ const AttributeImpactList = ({
             size="small"
           >
             <Add fontSize="small" />
-            <Trans i18nKey="newImpact" />
+            <Trans i18nKey="kitDesigner.newImpact" />
           </Button>
         </Box>
       )}
@@ -227,7 +227,7 @@ const ImpactDetails = ({
             onChange={(e) => handleInputChange("weight", e.target.value)}
             variant="outlined"
             size="small"
-            label={t("weight")}
+            label={t("common.weight")}
             sx={textFieldStyle}
           />
         )}
@@ -239,12 +239,12 @@ const ImpactDetails = ({
             {attribute.title}
           </Typography>
           <Typography variant="bodyLarge" sx={{ ml: 0.5 }}>
-            {t("impactsOn") + " " + item.maturityLevel?.title}
+            {t("kitDesigner.impactsOn") + " " + item.maturityLevel?.title}
           </Typography>
         </Box>
         {hasWeight && (
           <Chip
-            label={`${t("weight")}: ${item.weight}`}
+            label={`${t("common.weight")}: ${item.weight}`}
             color="primary"
             size="small"
             sx={{ ml: 2, fontSize: 12 }}

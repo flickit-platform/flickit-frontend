@@ -93,7 +93,7 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
       <TextField
         required
         name="weight"
-        label={<Trans i18nKey="weight" />}
+        label={<Trans i18nKey="common.weight" />}
         value={newItem.weight}
         onChange={handleTextFieldChange}
         fullWidth

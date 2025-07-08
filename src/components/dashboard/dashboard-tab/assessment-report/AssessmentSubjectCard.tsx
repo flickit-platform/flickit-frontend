@@ -105,7 +105,7 @@ export const AssessmentSubjectAccordion = (
               </Box>
               <Typography variant="bodyMedium">
                 {"("}
-                <Trans i18nKey="weight" />: {maturityLevel?.value}
+                <Trans i18nKey="common.weight" />: {maturityLevel?.value}
                 {")"}
               </Typography>
             </Box>
@@ -174,7 +174,7 @@ export const AssessmentSubjectAccordion = (
               </Typography>
               <Box sx={{ ...styles.centerVH, marginInlineStart: 1 }}>
                 <Typography variant="bodyMedium" color="#6C8093">
-                  <Trans i18nKey="confidence" />:
+                  <Trans i18nKey="common.confidence" />:
                 </Typography>
                 <ConfidenceLevel
                   inputNumber={confidenceValue}
@@ -225,7 +225,7 @@ const SubjectStatus = (
         />
       ) : (
         <Typography>
-          <Trans i18nKey="notEvaluated" />
+          <Trans i18nKey="common.notEvaluated" />
         </Typography>
       )}
     </Box>

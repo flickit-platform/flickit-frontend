@@ -67,7 +67,7 @@ const ScoreDisplay = ({ data }: any) => {
                 {gainedScore} ({gainedScorePercentage}%)
               </Typography>
               <Typography variant="bodySmall" sx={{ color: "white" }}>
-                <Trans i18nKey="gainedScore" />
+                <Trans i18nKey="subject.gainedScore" />
               </Typography>
             </Box>
           </Box>

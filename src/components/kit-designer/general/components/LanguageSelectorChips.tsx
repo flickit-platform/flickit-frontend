@@ -48,14 +48,14 @@ const LanguageSelectorChips = ({
     <Stack direction="row" alignItems="center" gap={2}>
       <Chip
         sx={{ ...theme.typography.labelSmall }}
-        label={t("kitDesignerTab.mainLanguage", { lang: mainLanguage.title })}
+        label={t("kitDesigner.mainLanguage", { lang: mainLanguage.title })}
         color="primary"
         variant="outlined"
       />
       {translatedLanguage && (
         <Chip
           sx={{ ...theme.typography.labelSmall }}
-          label={t("kitDesignerTab.translatedLanguage", {
+          label={t("kitDesigner.translatedLanguage", {
             lang: translatedLanguage.title,
           })}
           variant="outlined"
@@ -74,7 +74,7 @@ const LanguageSelectorChips = ({
               whiteSpace: "nowrap",
             }}
           >
-            {t("kitDesignerTab.addLanguage")}
+            {t("kitDesigner.addLanguage")}
           </Button>
           <Menu
             anchorEl={menuAnchor}

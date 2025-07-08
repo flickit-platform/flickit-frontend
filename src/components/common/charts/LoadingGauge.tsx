@@ -56,7 +56,7 @@ const LoadingGauge: React.FC = () => {
           variant="h6"
           color="GrayText"
         >
-          <Trans i18nKey="loading" />
+          <Trans i18nKey="common.loading" />
         </Typography>
       </Box>
     </Box>

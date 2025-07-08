@@ -179,9 +179,9 @@ const AnaweRangeContent = () => {
             fetchAnswerRangeKit.loaded &&
             fetchAnswerRangeKit.data.items.length !== 0
           }
-          btnTitle={"newAnswerRange"}
-          mainTitle={"answerRanges"}
-          description={"answerRangeKitDesignerDescription"}
+          btnTitle="kitDesigner.newAnswerRange"
+          mainTitle="kitDesigner.answerRanges"
+          description="kitDesigner.answerRangeKitDesignerDescription"
         />
         <Divider sx={{ my: 1 }} />
         <>
@@ -199,9 +199,9 @@ const AnaweRangeContent = () => {
             data?.length == 0 &&
             !showNewAnswerRangeForm && (
               <EmptyState
-                btnTitle={"newAnswerRange"}
-                title={"answerRangeListEmptyState"}
-                SubTitle={"answerRangeEmptyStateDetailed"}
+                btnTitle="kitDesigner.newAnswerRange"
+                title="kitDesigner.answerRangeListEmptyState"
+                SubTitle="kitDesigner.answerRangeEmptyStateDetailed"
                 onAddNewRow={handleAddNewRow}
               />
             )

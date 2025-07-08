@@ -160,7 +160,7 @@ const AdviceListNewForm = ({
                 error={errormessage?.title}
                 id="new-advice-item"
                 required
-                label={<Trans i18nKey="title" />}
+                label={<Trans i18nKey="common.title" />}
                 name="title"
                 value={newAdvice.title}
                 onChange={handleInputChange}
@@ -213,7 +213,7 @@ const AdviceListNewForm = ({
                       IconComponent={KeyboardArrowDownIcon}
                       name={item}
                       displayEmpty
-                      input={<OutlinedInput label="Name" />}
+                      input={<OutlinedInput label="user.name" />}
                       onChange={(e) => handleInputChange(e)}
                       sx={{
                         fontSize: "14px",
@@ -265,7 +265,7 @@ const AdviceListNewForm = ({
             >
               <RichEditorField
                 name="advice-description"
-                label={t("description")}
+                label={t("common.description")}
                 disable_label={false}
                 required={true}
                 defaultValue={newAdvice.description}

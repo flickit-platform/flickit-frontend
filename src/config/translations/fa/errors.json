@@ -1,0 +1,21 @@
+{
+  "accessDenied": "دسترسی غیرمجاز",
+  "attachmentRequired": "فایل پیوست الزامی است",
+  "errorAtLine": "{{message}} در {{fileName}} خط: {{line}} ستون: {{column}}",
+  "errorLine": "خطای شماره: {{errorLine}}",
+  "fillInAllRequired": "لطفا تمام بخش‌های الزامی را تکمیل کنید.",
+  "invalidEmail": "لطفا ایمیل معتبر وارد کنید.",
+  "max100characters": "حداکثر ۱۰۰ کاراکتر",
+  "maximumUploadFileSize": "حداکثر اندازه مجاز فایل: {{maxSize}}",
+  "maxLengthFieldError": "حداکثر {{length}} کاراکتر مجاز است.",
+  "minLengthFieldError": "لطفا حداقل {{length}} کاراکتر وارد کنید.",
+  "oneFileOnly": "در هر بار فقط یک فایل می‌توانید بارگذاری کنید.",
+  "pleaseEnterEmailAddress": "لطفا آدرس ایمیل را وارد کنید.",
+  "requiredFieldError": "این فیلد الزامی است.",
+  "someThingWentWrong": "مشکلی رخ داد",
+  "thisFileNotAcceptable": "این فایل قابل قبول نیست.",
+  "thisPlaceIsEmpty": "این بخش خالی است.",
+  "uploadAcceptable": "فرمت‌های مجاز: PDF, JPG, PNG, DOCX, DOC, TXT, RAR, ZIP, EXCEL",
+  "uploadAcceptableSize": "هر فایل باید کمتر از ۲ مگابایت باشد.",
+  "youveGotSyntaxErrorsInYourDslFile": "در فایل DSL شما خطای نحوی وجود دارد."
+}

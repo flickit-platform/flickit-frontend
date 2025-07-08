@@ -20,7 +20,6 @@ declare module "axios" {
   }
 }
 
-
 const getCurrentLocale = () =>
   i18next.language ?? navigator.language ?? "en-US";
 
@@ -31,9 +30,15 @@ export const createService = (
 ) => {
   axios.defaults.baseURL = BASE_URL;
   axios.defaults.withCredentials = true;
-  axios.defaults.timeoutErrorMessage = t("checkNetworkConnection") as string;
+  axios.defaults.timeoutErrorMessage = t(
+    "common.checkNetworkConnection",
+  ) as string;
 
   axios.interceptors.request.use(async (req: any) => {
+    const currentLocale = getCurrentLocale();
+    req.headers["Accept-Language"] = currentLocale;
+    document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
+
     if (req.skipAuth && !keycloakService.getToken()) {
       return req;
     }
@@ -41,9 +46,6 @@ export const createService = (
     const accessToken = keycloakService.getToken();
     const hasTenantInUrl = req.url.includes("tenant");
 
-    const currentLocale = getCurrentLocale();
-    req.headers["Accept-Language"] = currentLocale;
-    document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
     if (!hasTenantInUrl) {
       req.headers["Authorization"] = `Bearer ${accessToken}`;
     }

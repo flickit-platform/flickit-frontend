@@ -33,10 +33,10 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
     closeDialog();
   };
   const listOfText = [
-    "reachedNumberOfAssessments",
-    "youCan",
-    "deleteExistingAssessments",
-    "upgradeToPremiumSpace",
+    "assessment.reachedNumberOfAssessments",
+    "common.youCan",
+    "assessment.deleteExistingAssessments",
+    "spaces.upgradeToPremiumSpace",
   ];
 
   return (
@@ -51,7 +51,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             alt={"AssessmentError"}
           />
           <Typography sx={{ ...theme.typography.semiBoldXLarge }}>
-            <Trans i18nKey="assessmentLimitExceeded" />
+            <Trans i18nKey="assessment.assessmentLimitExceeded" />
           </Typography>
         </>
       }
@@ -75,20 +75,19 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                 component={index >= 2 ? "li" : "p"}
                 variant="semiBoldLarge"
               >
-                {text == "upgradeToPremiumSpace" &&
+                {text == "spaces.upgradeToPremiumSpace" &&
                   theme.direction == "rtl" && (
                     <Typography variant="semiBoldLarge">
-                      (<Trans i18nKey={"comingSoon"} />
+                      (<Trans i18nKey={"common.comingSoon"} />
                       !)
                     </Typography>
                   )}
                 <Trans i18nKey={text} />
-                {text == "youCan" && ":"}
+                {text == "common.youCan" && ":"}
               </Typography>
-              {text == "upgradeToPremiumSpace" && theme.direction == "ltr" && (
+              {text == "spaces.upgradeToPremiumSpace" && theme.direction == "ltr" && (
                 <Typography variant="semiBoldLarge">
-                  (<Trans i18nKey={"comingSoon"} />
-                  ).
+                  <Trans i18nKey={"common.comingSoon"} />.
                 </Typography>
               )}
             </Box>
@@ -104,7 +103,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
         }}
       >
         <Button onClick={close} variant="contained">
-          <Trans i18nKey="okGotIt" />
+          <Trans i18nKey="common.okGotIt" />
         </Button>
       </Box>
     </CEDialog>

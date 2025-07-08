@@ -50,7 +50,7 @@ const CustomTooltip = ({
       >
         {[
           { score: missedScore, label: "missedScore" },
-          { score: gainedScore, label: "gainedScore" },
+          { score: gainedScore, label: "subject.gainedScore" },
         ].map(({ score, label }) => (
           <Box key={label} sx={{ ...styles.centerCVH }}>
             <Typography
@@ -89,7 +89,7 @@ const legendFormatter = (value: string, language: string) => (
     }}
   >
     {value === "uv"
-      ? t("gainedScore", { lng: language })
+      ? t("subject.gainedScore", { lng: language })
       : t("missedScore", { lng: language })}
   </span>
 );

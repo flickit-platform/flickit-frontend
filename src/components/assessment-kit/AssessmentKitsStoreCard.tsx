@@ -212,7 +212,7 @@ const AssessmentKitsStoreCard = (props: any) => {
                         : secondaryFontFamily,
                   }}
                 >
-                  <Trans i18nKey="designedBy" />
+                  <Trans i18nKey="assessmentKit.designedBy" />
                 </span>{" "}
                 {expertGroup.title}
               </Typography>
@@ -220,7 +220,7 @@ const AssessmentKitsStoreCard = (props: any) => {
           </Box>
           {isPrivate && (
             <Chip
-              label={<Trans i18nKey="private" />}
+              label={<Trans i18nKey="common.private" />}
               size={small ? "small" : "medium"}
               sx={{
                 background: "#FCE8EF",
@@ -325,7 +325,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             },
           }}
         >
-          {paid ? <Trans i18nKey="purchase" /> : <Trans i18nKey="createNewAssessment" />}
+          {paid ? <Trans i18nKey="purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
         </LoadingButton>
       </Box>
     </Box>
@@ -384,7 +384,7 @@ const CheckStatus = (props: any) =>{
     <>
       {icon()}
       <Typography variant={small ? "bodySmall" : "titleSmall"}>
-        {isFree && <Trans i18nKey="free" />}
+        {isFree && <Trans i18nKey="common.free" />}
         {paid && <Trans i18nKey="paid" />}
         {purchased && <Trans i18nKey="purchased" />}
       </Typography>

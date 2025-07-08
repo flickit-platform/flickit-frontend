@@ -103,7 +103,7 @@ const ExpertGroupContainer = () => {
     runOnMount: false,
   });
 
-  const setDocTitle = useDocumentTitle(t("expertGroup") as string);
+  const setDocTitle = useDocumentTitle(t("expertGroups.expertGroup") as string);
   const createAssessmentKitDialogProps = useDialog({
     context: { type: "create", data: { expertGroupId, languages } },
   });
@@ -155,7 +155,7 @@ const ExpertGroupContainer = () => {
             },
           );
           const hasAccess = editable;
-          setDocTitle(`${t("expertGroup")}: ${title ?? ""}`);
+          setDocTitle(`${t("expertGroups.expertGroup")}: ${title ?? ""}`);
           return (
             <Box>
               <Title
@@ -173,7 +173,7 @@ const ExpertGroupContainer = () => {
                   <SupTitleBreadcrumb
                     routes={[
                       {
-                        title: t("expertGroups") as string,
+                        title: t("expertGroups.expertGroups") as string,
                         to: `/user/expert-groups`,
                       },
                       {
@@ -206,7 +206,7 @@ const ExpertGroupContainer = () => {
                   {about && (
                     <>
                       <Title size="small">
-                        <Trans i18nKey="about" />
+                        <Trans i18nKey="common.about" />
                       </Title>
                       <Box
                         sx={{
@@ -282,7 +282,7 @@ const ExpertGroupContainer = () => {
                         alignItems={"center"}
                         sx={{ mb: 1.5 }}
                       >
-                        <Trans i18nKey="groupSummary" />
+                        <Trans i18nKey="expertGroups.groupSummary" />
                       </Typography>
                       {bio && (
                         <Box mt={1}>
@@ -343,7 +343,7 @@ const ExpertGroupContainer = () => {
                             fontSize: "inherit",
                           }}
                         >
-                          {numberOfMembers} {t("members").toLowerCase()}
+                          {numberOfMembers} {t("expertGroups.members").toLowerCase()}
                         </Typography>
                       </Box>
                       <Box
@@ -380,7 +380,7 @@ const ExpertGroupContainer = () => {
                               assessmentKitsCounts.filter(
                                 (item: any) => item.published,
                               ).length
-                            } ${t("publishedAssessmentKits").toLowerCase()}`}
+                            } ${t("expertGroups.publishedAssessmentKits").toLowerCase()}`}
                         </Typography>
                         {editable && (
                           <Box
@@ -438,7 +438,7 @@ const ExpertGroupContainer = () => {
                                 assessmentKitsCounts.filter(
                                   (item: any) => !item.published,
                                 ).length
-                              } ${t("unpublishedAssessmentKits").toLowerCase()}`}
+                              } ${t("expertGroups.unpublishedAssessmentKits").toLowerCase()}`}
                           </Typography>
                         </Box>
                       )}
@@ -467,8 +467,8 @@ const ExpertGroupContainer = () => {
           setRemoveMemberDialog({ ...removeMemberDialog, status: false })
         }
         onConfirm={() => handelRemoveMember}
-        title="warning"
-        content="removeMemberExpertGroup"
+        title="common.warning"
+        content="expertGroups.removeMemberExpertGroup"
       />
     </>
   );
@@ -711,7 +711,7 @@ const EditExpertGroupButton = (props: any) => {
         size="small"
         onClick={openEditDialog}
       >
-        <Trans i18nKey="editExpertGroup" />
+        <Trans i18nKey="expertGroups.editExpertGroup" />
       </LoadingButton>
       <ExpertGroupCEFormDialog
         {...dialogProps}
@@ -747,7 +747,7 @@ const ExpertGroupMembers = (props: any) => {
                 href="#members"
                 sx={{ textDecoration: "none", mb: 2, color: "inherit" }}
               >
-                <Trans i18nKey="members" />
+                <Trans i18nKey="expertGroups.members" />
               </Typography>
               {hasAccess && showGroups && (
                 <AddingNewMember
@@ -812,7 +812,7 @@ const Invitees = (props: any) => {
           sx={{ fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
           onClick={() => setOpenInvitees((state: boolean) => !state)}
         >
-          <Trans i18nKey="invited" />
+          <Trans i18nKey="common.invited" />
           <Box
             sx={{
               ...styles.centerV,
@@ -944,13 +944,13 @@ const MemberActions = (props: any) => {
         isInvitationExpired
           ? {
               icon: <EmailRoundedIcon fontSize="small" />,
-              text: <Trans i18nKey="resendInvitation" />,
+              text: <Trans i18nKey="common.resendInvitation" />,
               onClick: inviteMember,
             }
           : undefined,
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="cancelInvitation" />,
+          text: <Trans i18nKey="common.cancelInvitation" />,
           onClick: deleteItem,
         },
       ]}
@@ -970,7 +970,7 @@ const AddingNewMember = (props: any) => {
         sx={{ mb: 2, fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
         onClick={() => setOpenAddMembers((state: boolean) => !state)}
       >
-        <Trans i18nKey="addMember" />
+        <Trans i18nKey="expertGroups.addMember" />
         <Box
           sx={{
             ...styles.centerV,
@@ -1030,18 +1030,18 @@ const AddMember = (props: any) => {
       onSubmit={(e) => {
         e.preventDefault();
         if (!inputRef.current?.value) {
-          toastError(t("pleaseEnterEmailAddress") as string);
+          toastError(t("errors.pleaseEnterEmailAddress") as string);
         } else addMember();
       }}
     >
       <TextField
         fullWidth
-        type={"email"}
+        type="email"
         size="small"
         variant="outlined"
         inputRef={inputRef}
-        placeholder={t("enterEmailOfTheUserYouWantToAdd") as string}
-        label={<Trans i18nKey="userEmail" />}
+        placeholder={t("user.enterEmailOfTheUserYouWantToAdd") as string}
+        label={<Trans i18nKey="user.userEmail" />}
         InputProps={{
           endAdornment: (
             <AddMemberButton loading={addMemberQueryData.loading} />
@@ -1119,7 +1119,7 @@ const AssessmentKitsList = (props: any) => {
                     });
                   }}
                 >
-                  <Trans i18nKey="convertExcelToDsl" />
+                  <Trans i18nKey="assessmentKit.convertExcelToDsl" />
                 </Button>
 
                 <Button
@@ -1134,7 +1134,7 @@ const AssessmentKitsList = (props: any) => {
                     )
                   }
                 >
-                  <Trans i18nKey="createAssessmentKit" />
+                  <Trans i18nKey="assessmentKit.createAssessmentKit" />
                 </Button>
 
                 <Menu
@@ -1155,7 +1155,7 @@ const AssessmentKitsList = (props: any) => {
                       });
                     }}
                   >
-                    <Trans i18nKey="viaDSL" />
+                    <Trans i18nKey="assessmentKit.viaDSL" />
                   </MenuItem>
                   <MenuItem
                     onClick={() => {
@@ -1165,7 +1165,7 @@ const AssessmentKitsList = (props: any) => {
                       });
                     }}
                   >
-                    <Trans i18nKey="viaKitDesigner" />
+                    <Trans i18nKey="assessmentKit.viaKitDesigner" />
                   </MenuItem>
                 </Menu>
                 <AssessmentKitCEFromDialog
@@ -1185,7 +1185,7 @@ const AssessmentKitsList = (props: any) => {
           </Box>
         }
       >
-        <Trans i18nKey="assessmentKits" />
+        <Trans i18nKey="assessmentKit.assessmentKits" />
       </Title>
       <Box mt={2}>
         <QueryData
@@ -1194,7 +1194,7 @@ const AssessmentKitsList = (props: any) => {
             <Box sx={{ background: "white", borderRadius: 2 }}>
               <ErrorEmptyData
                 emptyMessage={
-                  <Trans i18nKey="thereIsNoPublishedAssessmentKitYet" />
+                  <Trans i18nKey="assessmentKit.thereIsNoPublishedAssessmentKitYet" />
                 }
               />
             </Box>
@@ -1281,7 +1281,7 @@ const ExpertGroupMembersDetail = (props: any) => {
   return (
     <>
       <Title inPageLink="members" size="small">
-        <Trans i18nKey={"members"} />
+        <Trans i18nKey="expertGroups.members" />
       </Title>
       <Box mt={2} p={3} sx={{ borderRadius: 2, background: "white" }}>
         {hasAccess && (
@@ -1295,7 +1295,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                 letterSpacing: ".05rem",
               }}
             >
-              <Trans i18nKey="addNewMember" />
+              <Trans i18nKey="common.addNewMember" />
             </Title>
             <AddMember queryData={queryData} inviteeQuery={inviteeQueryData} />
           </Box>
@@ -1320,7 +1320,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                           mb: 1,
                         }}
                       >
-                        <Trans i18nKey="members" />
+                        <Trans i18nKey="expertGroups.members" />
                       </Title>
                     )}
                     <Grid container spacing={2}>
@@ -1352,7 +1352,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                               }}
                             >
                               {deletable && (
-                                <Tooltip title={<Trans i18nKey={"remove"} />}>
+                                <Tooltip title={<Trans i18nKey="common.remove" />}>
                                   <IconButton
                                     onClick={() =>
                                       setRemoveMemberDialog({
@@ -1466,7 +1466,7 @@ const ExpertGroupMembersDetail = (props: any) => {
                         fontSize: ".95rem",
                       }}
                     >
-                      <Trans i18nKey="invitees" />
+                      <Trans i18nKey="common.invitees" />
                     </Title>
                   )}
                   <Box mt={1}>

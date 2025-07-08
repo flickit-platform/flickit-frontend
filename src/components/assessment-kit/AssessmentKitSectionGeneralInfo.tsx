@@ -176,7 +176,7 @@ const AssessmentKitSectionGeneralInfo = (
                 <OnHoverInput
                   formMethods={formMethods}
                   data={title}
-                  title={<Trans i18nKey="title" />}
+                  title={<Trans i18nKey="common.title" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   type="title"
                   editable={editable}
@@ -184,20 +184,20 @@ const AssessmentKitSectionGeneralInfo = (
                 <OnHoverInput
                   formMethods={formMethods}
                   data={summary}
-                  title={<Trans i18nKey="summary" />}
+                  title={<Trans i18nKey="common.summary" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   type="summary"
                   editable={editable}
                 />
                 <OnHoverStatus
                   data={published}
-                  title={<Trans i18nKey="status" />}
+                  title={<Trans i18nKey="common.status" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
                 <OnHoverVisibilityStatus
                   data={isPrivate}
-                  title={<Trans i18nKey="visibility" />}
+                  title={<Trans i18nKey="common.visibility" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
@@ -214,10 +214,10 @@ const AssessmentKitSectionGeneralInfo = (
                     mr={4}
                     sx={{ minWidth: "64px !important" }}
                   >
-                    <Trans i18nKey="price" />
+                    <Trans i18nKey="common.price" />
                   </Typography>
                   <Typography variant="body2" fontWeight="700" mr={4} ml={1}>
-                    <Trans i18nKey={"free"} />
+                    <Trans i18nKey="common.free" />
                   </Typography>
                 </Box>
                 <Box
@@ -233,7 +233,7 @@ const AssessmentKitSectionGeneralInfo = (
                     mr={4}
                     sx={{ minWidth: "64px !important" }}
                   >
-                    <Trans i18nKey="tags" />
+                    <Trans i18nKey="common.tags" />
                   </Typography>
                   {editable && show ? (
                     <FormProviderWithForm formMethods={formMethods}>
@@ -374,7 +374,7 @@ const AssessmentKitSectionGeneralInfo = (
 
                 <OnHoverRichEditor
                   data={about}
-                  title={<Trans i18nKey="about" />}
+                  title={<Trans i18nKey="common.about" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
@@ -391,7 +391,7 @@ const AssessmentKitSectionGeneralInfo = (
                     mr={4}
                     sx={{ minWidth: "64px !important" }}
                   >
-                    <Trans i18nKey={"language"} />
+                    <Trans i18nKey="common.language" />
                   </Typography>
                   <SelectLanguage
                     handleChange={handleLanguageChange}
@@ -417,8 +417,8 @@ const AssessmentKitSectionGeneralInfo = (
                     <InfoItem
                       bg="white"
                       info={{
-                        item:  getReadableDate(creationTime),
-                        title: t("creationDate"),
+                        item: getReadableDate(creationTime),
+                        title: t("common.creationDate"),
                       }}
                     />
                   </Box>
@@ -429,7 +429,7 @@ const AssessmentKitSectionGeneralInfo = (
                       bg="white"
                       info={{
                         item: getReadableDate(lastModificationTime),
-                        title: t("lastUpdated"),
+                        title: t("common.lastUpdated"),
                       }}
                     />
                   </Box>
@@ -440,7 +440,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: subjects?.map((sub: any) => sub?.title),
-                      title: t("subjects"),
+                      title: t("common.subjects"),
                       type: "array",
                     }}
                   />
@@ -450,7 +450,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: questionnairesCount,
-                      title: t("questionnairesCount"),
+                      title: t("assessmentKit.questionnairesCount"),
                     }}
                   />
                 </Box>
@@ -459,7 +459,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: attributesCount,
-                      title: t("attributesCount"),
+                      title: t("assessmentKit.attributesCount"),
                     }}
                   />
                 </Box>
@@ -468,7 +468,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: questionsCount,
-                      title: t("totalQuestionsCount"),
+                      title: t("assessmentKit.totalQuestionsCount"),
                     }}
                   />
                 </Box>
@@ -477,7 +477,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: maturityLevelsCount,
-                      title: t("maturitylevels"),
+                      title: t("common.maturityLevels"),
                     }}
                   />
                 </Box>
@@ -775,7 +775,7 @@ const OnHoverStatus = (props: any) => {
               sx={{ userSelect: "none" }}
               fontSize="0.75rem"
             >
-              <Trans i18nKey="published" />
+              <Trans i18nKey="common.published" />
             </Typography>
           </Box>
           <Box
@@ -799,7 +799,7 @@ const OnHoverStatus = (props: any) => {
               sx={{ userSelect: "none" }}
               fontSize=".75rem"
             >
-              <Trans i18nKey="unPublished" />
+              <Trans i18nKey="common.unpublished" />
             </Typography>
           </Box>
         </Box>
@@ -886,7 +886,7 @@ const OnHoverVisibilityStatus = (props: any) => {
                 sx={{ userSelect: "none" }}
                 fontSize=".75rem"
               >
-                <Trans i18nKey="private" />
+                <Trans i18nKey="common.private" />
               </Typography>
             </Box>
             <Box
@@ -910,13 +910,13 @@ const OnHoverVisibilityStatus = (props: any) => {
                 sx={{ userSelect: "none" }}
                 fontSize=".75rem"
               >
-                <Trans i18nKey="public" />
+                <Trans i18nKey="common.public" />
               </Typography>
             </Box>
           </Box>
           {editable && selected && (
             <Box sx={{ ml: 1 }}>
-              <Tooltip title={<Trans i18nKey="managePermissions" />}>
+              <Tooltip title={<Trans i18nKey="assessmentKit.managePermissions" />}>
                 <IconButton
                   sx={{ width: "20px", height: "20px" }}
                   color="primary"

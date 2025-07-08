@@ -1,0 +1,15 @@
+{
+  "account": "Account",
+  "email": "Email",
+  "emailDoesNotExistInApp": "No user with the provided email was found. An invitation letter will be sent to this email. Once the user registers, they will automatically become a member of the space and be granted access to this assessment.",
+  "emailExistsInApp": "The user with the provided email is not a member of the assessment space. Assigning them a role will automatically add them to the space.",
+  "emailIsNotOnAppTitleYet": "{{email}} has not joined {{title}} yet.",
+  "enterEmailOfTheUserYouWantToAdd": "Enter the email address of the user you want to add.",
+  "name": "Name",
+  "role": "Role",
+  "updateUser": "Update user",
+  "userEmail": "User email address",
+  "userProfile": "User profile",
+  "wouldYouLikeToInviteThemToJoin": "Would you like to invite them to join?",
+  "yourEmail": "Your email"
+}

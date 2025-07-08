@@ -92,13 +92,13 @@ const useInsightPopup = ({
   }, [insight, isApproved, isExpired, theme]);
 
   const getButtonLabelText = useCallback(() => {
-    if (!insight) return t("generateInsights.insightIsNotGenerated");
+    if (!insight) return t("assessment.insightIsNotGenerated");
 
-    if (isExpired) return t("generateInsights.insightIsExpired");
-    if (isApproved) return t("generateInsights.insightIsApproved");
+    if (isExpired) return t("assessment.insightIsExpired");
+    if (isApproved) return t("assessment.insightIsApproved");
 
-    if (AIEnabled) return t("generateInsights.AIGeneratedNeedsApproval");
-    return t("generateInsights.generatedByAppNeedsApproval", {
+    if (AIEnabled) return t("assessment.AIGeneratedNeedsApproval");
+    return t("assessment.generatedByAppNeedsApproval", {
       title: config.appTitle,
     });
   }, [insight, isExpired, isApproved]);
@@ -106,28 +106,28 @@ const useInsightPopup = ({
   const getDescription = () => {
     if (isExpired) {
       return AIEnabled
-        ? t("generateInsights.AIinsightIsExpiredDescription")
-        : t("generateInsights.insightIsExpiredDescription");
+        ? t("assessment.AIinsightIsExpiredDescription")
+        : t("assessment.insightIsExpiredDescription");
     }
 
     if (insight) {
       if (isApproved) {
         return AIEnabled
-          ? t("generateInsights.AIinsightIsApprovedDescription")
-          : t("generateInsights.insightIsApprovedDescription", {
+          ? t("assessment.AIinsightIsApprovedDescription")
+          : t("assessment.insightIsApprovedDescription", {
               title: config.appTitle,
             });
       }
       return AIEnabled
-        ? t("generateInsights.AIGeneratedNeedsApprovalDescription")
-        : t("generateInsights.generatedByAppNeedsApprovalDescription", {
+        ? t("assessment.AIGeneratedNeedsApprovalDescription")
+        : t("assessment.generatedByAppNeedsApprovalDescription", {
             title: config.appTitle,
           });
     }
 
     return AIEnabled
-      ? t("generateInsights.generateInsightViaAIDescription")
-      : t("generateInsights.generateInsightDescription", {
+      ? t("assessment.generateInsightViaAIDescription")
+      : t("assessment.generateInsightDescription", {
           title: config.appTitle,
         });
   };
@@ -135,18 +135,18 @@ const useInsightPopup = ({
   const getPrimaryAction = () => {
     if (insight) {
       return AIEnabled
-        ? t("generateInsights.regenerateViaAI")
-        : t("generateInsights.regenerate");
+        ? t("assessment.regenerateViaAI")
+        : t("assessment.regenerate");
     }
     return AIEnabled
-      ? t("generateInsights.generateInsightViaAI")
-      : t("generateInsights.generateInsight");
+      ? t("assessment.generateInsightViaAI")
+      : t("assessment.generateInsight");
   };
 
   const getConfirmMessage = () => {
     return AIEnabled
-      ? t("generateInsights.regenerateViaAIDescription")
-      : t("generateInsights.regenerateDescription");
+      ? t("assessment.regenerateViaAIDescription")
+      : t("assessment.regenerateDescription");
   };
 
   const getPopupTexts = useCallback((): PopupTexts => {
@@ -165,10 +165,10 @@ const useInsightPopup = ({
       buttonLabel,
       description: getDescription(),
       primaryAction: getPrimaryAction(),
-      secondaryAction: t("generateInsights.approveInsight"),
+      secondaryAction: t("assessment.approveInsight"),
       confirmMessage: getConfirmMessage(),
-      confirmButtonLabel: t("generateInsights.regenerate"),
-      cancelButtonLabel: t("generateInsights.no"),
+      confirmButtonLabel: t("assessment.regenerate"),
+      cancelButtonLabel: t("assessment.no"),
     };
   }, [insight, isExpired, isApproved, getButtonLabelText]);
 

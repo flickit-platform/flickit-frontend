@@ -3,7 +3,7 @@ import { QuestionnaireContainer } from "@/components/dashboard/dashboard-tab/que
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const QuestionnairesScreen = () => {
-  useDocumentTitle(t("questionnaires") as string);
+  useDocumentTitle(t("common.questionnaires") as string);
 
   return <QuestionnaireContainer />;
 };

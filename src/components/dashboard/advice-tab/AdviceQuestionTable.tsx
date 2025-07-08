@@ -50,22 +50,22 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
           </Grid>
           <Grid item xs={5} md={3.5}>
             <Typography variant="semiBoldLarge">
-              <Trans i18nKey="question" />
+              <Trans i18nKey="common.question" />
             </Typography>
           </Grid>
           <Grid item xs={2} md={2}>
             <Typography variant="semiBoldLarge">
-              <Trans i18nKey="whatIsNow" />
+              <Trans i18nKey="common.whatIsNow" />
             </Typography>
           </Grid>
           <Grid item xs={2} md={2}>
             <Typography variant="semiBoldLarge">
-              <Trans i18nKey="whatShouldBe" />
+              <Trans i18nKey="common.whatShouldBe" />
             </Typography>
           </Grid>
           <Grid item xs={2} md={2}>
             <Typography variant="semiBoldLarge">
-              <Trans i18nKey="affectedAttributes" />
+              <Trans i18nKey="advice.affectedAttributes" />
             </Typography>
           </Grid>
           <Grid
@@ -80,7 +80,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
             }}
           >
             <Typography variant="semiBoldLarge">
-              <Trans i18nKey="questionnaire" />
+              <Trans i18nKey="common.questionnaire" />
             </Typography>
           </Grid>
         </Grid>

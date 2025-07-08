@@ -128,7 +128,7 @@ const defaultGetMenuItems = (
         promptBody(closePrompt) {
           return <PromptLinkBody editor={editor} closePrompt={closePrompt} />;
         },
-        title: t("addLink") as string,
+        title: t("common.addLink") as string,
       },
       action: editor.isActive("link")
         ? () => editor.chain().focus().unsetLink().run()
@@ -261,10 +261,10 @@ const PromptLinkBody = (props: { editor: Editor; closePrompt: () => void }) => {
       </DialogContent>
       <DialogActions sx={{ py: 2, px: 3 }}>
         <Button onClick={closePrompt} size="small">
-          <Trans i18nKey="cancel" />
+          <Trans i18nKey="common.cancel" />
         </Button>
         <Button onClick={addLink} variant="contained" size="small">
-          <Trans i18nKey="addLink" />
+          <Trans i18nKey="common.addLink" />
         </Button>
       </DialogActions>
     </>

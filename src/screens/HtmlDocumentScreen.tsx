@@ -3,7 +3,7 @@ import useDocumentTitle from "@utils/useDocumentTitle";
 import AssessmentHtmlContainer from "@/components/assessment-html/AssessmentHtmlContainer";
 
 const AssessmentDocumentScreen = () => {
-  useDocumentTitle(`${t("assessmentReport", { title: "" })}`);
+  useDocumentTitle(`${t("assessmentReport.assessmentReport", { title: "" })}`);
 
   return <AssessmentHtmlContainer />;
 };

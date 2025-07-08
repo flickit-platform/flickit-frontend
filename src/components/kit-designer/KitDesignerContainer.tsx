@@ -20,26 +20,26 @@ import { IKitVersion, ILanguage } from "@/types";
 import { useKitDesignerContext, kitActions } from "@/providers/KitProvider";
 
 const tabMap = [
-  { key: "General", title: "general", Component: GeneralContent },
+  { key: "General", title: "common.general", Component: GeneralContent },
   {
     key: "Maturity-Levels",
-    title: "maturityLevels",
+    title: "common.maturityLevels",
     Component: MaturityLevelsContent,
   },
-  { key: "Subjects", title: "subjects", Component: SubjectsContent },
-  { key: "Attributes", title: "attributes", Component: AttributesContent },
-  { key: "Answer-Ranges", title: "answerRanges", Component: AnaweRangeContent },
+  { key: "Subjects", title: "common.subjects", Component: SubjectsContent },
+  { key: "Attributes", title: "common.attributes", Component: AttributesContent },
+  { key: "Answer-Ranges", title: "kitDesigner.answerRanges", Component: AnaweRangeContent },
   {
     key: "Measures",
-    title: "kitDesignerTab.measures",
+    title: "kitDesigner.measures",
     Component: MeasuresContent,
   },
   {
     key: "Questionnaires",
-    title: "questionnaires",
+    title: "common.questionnaires",
     Component: QuestionnairesContent,
   },
-  { key: "Release", title: "release", Component: PublishContent },
+  { key: "Release", title: "kitDesigner.release", Component: PublishContent },
 ];
 
 const KitDesignerContainer = () => {
@@ -109,7 +109,7 @@ const KitDesignerContainer = () => {
                   textAlign="left"
                   variant="headlineLarge"
                 >
-                  <Trans i18nKey="kitDesigner" />
+                  <Trans i18nKey="kitDesigner.kitDesigner" />
                 </Typography>
               </Grid>
 

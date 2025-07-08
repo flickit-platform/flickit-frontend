@@ -26,7 +26,7 @@ const CompareResult = (props: ICompareResultProps) => {
   const { config } = useConfigContext();
 
   useEffect(() => {
-    setDocumentTitle(`${t("comparisonResultT")} `, config.appTitle);
+    setDocumentTitle(`${t("compare.comparisonResultT")} `, config.appTitle);
   }, []);
 
   return (
@@ -46,7 +46,7 @@ const CompareResult = (props: ICompareResultProps) => {
                 sx={{ opacity: 0.9, flex: 1 }}
                 inPageLink={`generalSpecification`}
               >
-                <Trans i18nKey={"generalSpecification"} />
+                <Trans i18nKey="compare.generalSpecification" />
               </Title>
               <Box
                 sx={{
@@ -62,7 +62,7 @@ const CompareResult = (props: ICompareResultProps) => {
             </Box>
           </Box>
           <Title ml={2} mt={10}>
-            <Trans i18nKey="subjects" />
+            <Trans i18nKey="common.subjects" />
           </Title>
           <Divider />
           <Box>
@@ -80,7 +80,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
   const assessmentKit = assessments[0].assessmentKit;
   return (
     <AlertBox severity="info" sx={{ mb: 3 }}>
-      <Trans i18nKey={"allOfTheSelectedAssessmentsUse"} />
+      <Trans i18nKey={"compare.allOfTheSelectedAssessmentsUse"} />
       <Chip
         component={Link}
         to={`/assessment-kits/${assessmentKit?.id}`}
@@ -99,7 +99,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
           fontFamily: languageDetector(assessmentKit.title) ? farsiFontFamily : primaryFontFamily
         }}
       />
-      <Trans i18nKey={"whichHasNamed"} values={{ value: subjects.length }} />
+      <Trans i18nKey="common.whichHasNamed" values={{ value: subjects.length }} />
       {subjects?.map((subject: any, index: number) => (
         <MuiLink
           key={subject?.id}

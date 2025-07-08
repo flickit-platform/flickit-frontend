@@ -3,7 +3,7 @@ import CompareContainer from "@components/compare/CompareContainer";
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const CompareScreen = () => {
-  useDocumentTitle(t("compare") as string);
+  useDocumentTitle(t("compare.compare") as string);
   return <CompareContainer />;
 };
 

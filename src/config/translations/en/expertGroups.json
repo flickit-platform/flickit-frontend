@@ -1,0 +1,16 @@
+{
+  "acceptInvitation": "Accept invitation",
+  "addMember": "Add member",
+  "createExpertGroup": "Create expert group",
+  "editExpertGroup": "Edit expert group",
+  "expertGroup": "Expert group",
+  "expertGroups": "Expert groups",
+  "groupPicture": "Group picture",
+  "groupSummary": "Group summary",
+  "members": "Members",
+  "publishedAssessmentKits": "Published assessment kits",
+  "removeMemberExpertGroup": "Are you sure you want to remove this member?",
+  "unpublishedAssessmentKits": "Unpublished assessment kits",
+  "updateExpertGroup": "Update the expert group",
+  "youHaveBeenInvitedToExpertGroup": "You have been invited to this group. Do you want to accept this invitation?"
+}

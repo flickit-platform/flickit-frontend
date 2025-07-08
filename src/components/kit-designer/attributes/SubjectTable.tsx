@@ -178,16 +178,16 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
           <TableHead>
             <TableRow>
               <TableCell sx={{ width: "10%" }}>
-                <Trans i18nKey="order" />
+                <Trans i18nKey="common.order" />
               </TableCell>
               <TableCell sx={{ width: "30%" }}>
-                <Trans i18nKey="title" />
+                <Trans i18nKey="common.title" />
               </TableCell>
               <TableCell sx={{ width: "50%" }}>
-                <Trans i18nKey="description" />
+                <Trans i18nKey="common.description" />
               </TableCell>
               <TableCell sx={{ width: "10%" }}>
-                <Trans i18nKey="weight" />
+                <Trans i18nKey="common.weight" />
               </TableCell>
               <TableCell sx={{ width: "10%" }}></TableCell>
             </TableRow>

@@ -52,7 +52,7 @@ const PopoverContent = ({
   return (
     <Box px={2} py={1}>
       <Typography variant="bodySmall" sx={{ mb: 1 }} color="#6C8093">
-        <Trans i18nKey="orderBy" />
+        <Trans i18nKey="common.orderBy" />
       </Typography>
       <RadioGroup value={getSelectedValue()} onChange={handleSortChange}>
         <FormControlLabel
@@ -67,7 +67,7 @@ const PopoverContent = ({
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("gainedScore")} ({t("ascending")})
+              {t("subject.gainedScore")} ({t("common.ascending")})
             </Typography>
           }
         />
@@ -76,7 +76,7 @@ const PopoverContent = ({
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("gainedScore")} ({t("descending")})
+              {t("subject.gainedScore")} ({t("common.descending")})
             </Typography>
           }
         />
@@ -86,7 +86,7 @@ const PopoverContent = ({
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("missedScore")} ({t("ascending")})
+              {t("missedScore")} ({t("common.ascending")})
             </Typography>
           }
         />
@@ -95,7 +95,7 @@ const PopoverContent = ({
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("missedScore")} ({t("descending")})
+              {t("missedScore")} ({t("common.descending")})
             </Typography>
           }
         />

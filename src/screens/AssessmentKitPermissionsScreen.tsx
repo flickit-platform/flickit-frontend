@@ -3,7 +3,7 @@ import AssessmentKitPermissionsContainer from "@/components/assessment-kit/Asses
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const AssessmentKitPermissionsScreen = () => {
-  useDocumentTitle(t("assessmentKit") as string);
+  useDocumentTitle(t("assessmentKit.assessmentKit") as string);
   return <AssessmentKitPermissionsContainer />;
 };
 

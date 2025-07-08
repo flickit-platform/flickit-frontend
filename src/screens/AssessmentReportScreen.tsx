@@ -3,7 +3,7 @@ import AssessmentReportContainer from "@/components/dashboard/dashboard-tab/asse
 import useDocumentTitle from "@utils/useDocumentTitle";
 
 const AssessmentReportScreen = () => {
-  useDocumentTitle(`${t("overallInsights")}`);
+  useDocumentTitle(`${t("common.overallInsights")}`);
 
   return <AssessmentReportContainer />;
 };

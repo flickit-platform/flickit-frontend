@@ -45,7 +45,7 @@ const AssessmentKitsContactUs = () => {
             mb: { xs: "12px", sm: 4 },
           }}
         >
-          {t("lookingForSomethingSpecific")}
+          {t("assessmentKit.lookingForSomethingSpecific")}
         </Typography>
         <Typography
           sx={{
@@ -54,7 +54,7 @@ const AssessmentKitsContactUs = () => {
             mb: { xs: 2, sm: 4 },
           }}
         >
-          {t("dropUsNote")}
+          {t("assessmentKit.dropUsNote")}
         </Typography>
            <Button
              variant="contained"
@@ -70,7 +70,7 @@ const AssessmentKitsContactUs = () => {
              }}
              size="large"
            >
-             {t("contactUs")}
+             {t("common.contactUs")}
            </Button>
       </Box>
       <ContactUsDialog {...dialogProps} />
