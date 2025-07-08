@@ -47,7 +47,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     if (type === "requestAnExpertReview") {
       methods.setValue(
         "type" as any,
-        "User asked help in " + window.location.href + " report.",
+        `Expert Review - ${window.location.href}`,
       );
     }
   };
@@ -136,7 +136,11 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               </Typography>
 
               {type !== "requestAnExpertReview" && (
-                <InputFieldUC name="email" label={t("user.yourEmail")} required />
+                <InputFieldUC
+                  name="email"
+                  label={t("user.yourEmail")}
+                  required
+                />
               )}
 
               <Box sx={{ mt: 2 }}>
