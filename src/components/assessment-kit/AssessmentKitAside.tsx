@@ -42,21 +42,21 @@ const AssessmentKitAside = (props: any) => {
         email:
           keycloakService._kc.tokenParsed?.preferred_username ??
           keycloakService._kc.tokenParsed?.sub,
-        dialogTitle: t("interestedThisKit"),
+        dialogTitle: t("assessmentKit.interestedThisKit"),
         children: (
           <Box sx={{color: "#2B333B"}}>
             <Typography component={"p"} textAlign="justify" variant="semiBoldLarge">
-              {t("purchaseModal.accessToKit")}
+              {t("common.purchaseModal.accessToKit")}
             </Typography>
             <Typography component={"p"} mt={1} textAlign="justify" variant="semiBoldLarge">
-              {t("purchaseModal.makeSureFitsYourNeeds")}
+              {t("common.purchaseModal.makeSureFitsYourNeeds")}
             </Typography>
             <Typography component={"p"} mt={1} mb={4} textAlign="justify" variant="semiBoldLarge">
-              {t("purchaseModal.getInTouch")}
+              {t("common.purchaseModal.getInTouch")}
             </Typography>
           </Box>
         ),
-        primaryActionButtonText: t("sendEmail"),
+        primaryActionButtonText: t("common.sendEmail"),
       },
     }
   });
@@ -91,8 +91,8 @@ const AssessmentKitAside = (props: any) => {
           height={"33px"}
         />
       ),
-      title: "price",
-      description: "purchased",
+      title: "common.price",
+      description: "common.purchased",
     },
     {
       field: paid,
@@ -105,8 +105,8 @@ const AssessmentKitAside = (props: any) => {
           }}
         />
       ),
-      title: "price",
-      description: "paid",
+      title: "common.price",
+      description: "common.paid",
     },
     {
       field: true,
@@ -213,7 +213,7 @@ const AssessmentKitAside = (props: any) => {
                 width: "100%",
               }}
             >
-              {paid ? <Trans i18nKey="purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
+              {paid ? <Trans i18nKey="common.purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
             </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography

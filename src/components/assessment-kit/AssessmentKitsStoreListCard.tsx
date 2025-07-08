@@ -30,17 +30,17 @@ const AssessmentKitsStoreListCard = ({ small = false }: any) => {
         children: (
           <Box sx={{color: "#2B333B"}}>
             <Typography component={"p"} textAlign="justify" variant="semiBoldLarge">
-              {t("purchaseModal.accessToKit")}
+              {t("common.purchaseModal.accessToKit")}
             </Typography>
             <Typography component={"p"} mt={1} textAlign="justify" variant="semiBoldLarge">
-              {t("purchaseModal.makeSureFitsYourNeeds")}
+              {t("common.purchaseModal.makeSureFitsYourNeeds")}
             </Typography>
             <Typography component={"p"} mt={1} mb={4} textAlign="justify" variant="semiBoldLarge">
-              {t("purchaseModal.getInTouch")}
+              {t("common.purchaseModal.getInTouch")}
             </Typography>
           </Box>
         ),
-        primaryActionButtonText: t("sendEmail"),
+        primaryActionButtonText: t("common.sendEmail"),
       },
     }
   });

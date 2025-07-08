@@ -325,7 +325,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             },
           }}
         >
-          {paid ? <Trans i18nKey="purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
+          {paid ? <Trans i18nKey="common.purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
         </LoadingButton>
       </Box>
     </Box>
@@ -385,8 +385,8 @@ const CheckStatus = (props: any) =>{
       {icon()}
       <Typography variant={small ? "bodySmall" : "titleSmall"}>
         {isFree && <Trans i18nKey="common.free" />}
-        {paid && <Trans i18nKey="paid" />}
-        {purchased && <Trans i18nKey="purchased" />}
+        {paid && <Trans i18nKey="common.paid" />}
+        {purchased && <Trans i18nKey="common.purchased" />}
       </Typography>
     </>
   )
