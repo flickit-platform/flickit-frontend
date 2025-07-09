@@ -119,7 +119,7 @@ const RichEditor = (props: IRichEditorProps) => {
               direction: `${isFarsi ? "rtl" : "ltr"}`,
               textAlign: `${isFarsi ? "right" : "left"}`,
               cursor: "text",
-              fontFamily: `${isFarsi ? "VazirMatn" : primaryFontFamily}`,
+              fontFamily: `${isFarsi ? farsiFontFamily : primaryFontFamily}`,
               position: "relative",
               marginTop: "0px !important",
               width: "100%",

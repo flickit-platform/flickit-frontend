@@ -101,8 +101,9 @@ const CustomNode: any = (props: any) => {
             textAnchor="middle"
             fill="#fff"
             fontSize={adjustedFontSize}
-            fontWeight={9}
+            fontWeight={5}
             letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
+            style={{fontWeight:100}}
           >
             {truncatedName}
           </text>
@@ -112,7 +113,7 @@ const CustomNode: any = (props: any) => {
             textAnchor="middle"
             fill="#fff"
             fontSize={11}
-            fontWeight={9}
+            fontWeight={5}
             alignmentBaseline="middle"
           >
             {text}
