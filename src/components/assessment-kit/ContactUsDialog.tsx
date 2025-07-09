@@ -14,6 +14,7 @@ import whatsApp from "@assets/svg/whatsApp.svg";
 import BaleIcon from "@assets/svg/baleIcon.svg";
 import useScreenResize from "@/utils/useScreenResize";
 import { styles } from "@styles";
+import { toast } from "react-toastify";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -86,7 +87,12 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   }, []);
 
   const onSubmit = async (data: any) => {
-    handleSubmitSpree(data);
+    handleSubmitSpree(data).then(() =>{
+      if(type == "purchased"){
+        handleSucceeded()
+        toast(t("thankYouForYourMessage"),{type: "success"})
+      }
+    });
   };
 
   const openChat = (link: any) => {
@@ -108,7 +114,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         </Typography>
       }
     >
-      {state.succeeded ? (
+      {state.succeeded && type != "purchased" ? (
         <Box
           mt={2}
           sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}
@@ -153,7 +159,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               {type !== "requestAnExpertReview" && (
                 <InputFieldUC
                   name="email"
-                  label={t("user.yourEmail")}
+                  label={t("user.yourEmailAddress")}
                   required
                 />
               )}
@@ -161,7 +167,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={t("common.yourMessage")}
+                  label={t("common.tellUsWhatYouLookingFor")}
                   multiline
                   rows={4}
                   required
