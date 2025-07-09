@@ -12,6 +12,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import whatsApp from "@assets/svg/whatsApp.svg";
 import BaleIcon from "@assets/svg/baleIcon.svg";
+import useScreenResize from "@/utils/useScreenResize";
+import { styles } from "@styles";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -21,10 +23,25 @@ interface IContactUsDialogProps extends DialogProps {
 const phoneNumber = "+989966529108";
 const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
 const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
-const BaleWebLink= `https://web.bale.ai/chat?uid=1294957316`;
+const BaleWebLink = `https://web.bale.ai/chat?uid=1294957316`;
+const socialIcon = [
+  {
+    id: 1,
+    icon: whatsApp,
+    bg: "#3D8F3D14",
+    link: { web: WhatsappWebLink, mobile: WhatsappLink },
+  },
+  {
+    id: 2,
+    icon: BaleIcon,
+    bg: "#3D8F3D14",
+    link: { web: BaleWebLink, mobile: BaleWebLink },
+  },
+];
 
 const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, context, ...rest } = props;
+  const isMobile = useScreenResize("sm");
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { data = {}, type } = context ?? {};
   const { email, dialogTitle, content, primaryActionButtonText, children } =
@@ -72,21 +89,14 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     handleSubmitSpree(data);
   };
 
-  const socialIcon = [
-    {
-      id: 1,
-      icon: whatsApp,
-      bg: "#3D8F3D14",
-      link: { WhatsappLink, WhatsappWebLink },
-    },
-    {
-      id: 2,
-      icon: BaleIcon,
-      bg: "#3D8F3D14",
-      link: { BaleWebLink },
-    },
-  ];
-
+  const openChat = (link: any) => {
+    const { mobile, web } = link;
+    if (isMobile) {
+      window.location.href = mobile;
+    } else {
+      window.open(web, "_blank");
+    }
+  };
   return (
     <CEDialog
       key={dialogKey}
@@ -106,10 +116,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
           <Box
             height="94%"
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
+              ...styles.centerCVH,
               textAlign: "center",
             }}
           >
@@ -144,7 +151,11 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               </Typography>
 
               {type !== "requestAnExpertReview" && (
-                <InputFieldUC name="email" label={t("user.yourEmail")} required />
+                <InputFieldUC
+                  name="email"
+                  label={t("user.yourEmail")}
+                  required
+                />
               )}
 
               <Box sx={{ mt: 2 }}>
@@ -157,19 +168,62 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                 />
               </Box>
             </form>
-
-            <CEDialogActions
-              cancelLabel={t("common.cancel")}
-              contactSection={socialIcon}
-              submitButtonLabel={primaryActionButtonText ?? t("common.confirm")}
-              onClose={close}
-              loading={state.submitting}
-              onSubmit={methods.handleSubmit(onSubmit)}
+            <Box
               sx={{
-                flexDirection: { xs: "column-reverse", sm: "row" },
+                display: "flex",
+                alignItems: "center",
+                flexDirection: { xs: "column", md: "row" },
+                justifyContent: "space-between",
                 gap: 2,
+                ml: -1,
               }}
-            />
+            >
+              <Box sx={{ ...styles.centerVH, gap: 2, mt: 3 }}>
+                <Typography
+                  sx={{
+                    ...theme.typography.semiBoldLarge,
+                    color: "#000",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <Trans i18nKey="common.moreWaysToReachUs" />
+                </Typography>
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  {socialIcon.map((chat) => {
+                    return (
+                      <Box
+                        key={chat.id}
+                        onClick={() => openChat(chat.link)}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <img
+                          style={{
+                            height: 24,
+                            width: 24,
+                          }}
+                          src={chat.icon}
+                          alt={`chat icon`}
+                        />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+              <CEDialogActions
+                cancelLabel={t("common.cancel")}
+                contactSection={socialIcon}
+                submitButtonLabel={
+                  primaryActionButtonText ?? t("common.confirm")
+                }
+                onClose={close}
+                loading={state.submitting}
+                onSubmit={methods.handleSubmit(onSubmit)}
+                sx={{
+                  flexDirection: { xs: "column-reverse", sm: "row" },
+                  gap: 2,
+                }}
+              />
+            </Box>
           </Box>
         </FormProvider>
       )}
