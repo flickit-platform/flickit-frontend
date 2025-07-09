@@ -10,9 +10,6 @@ import { useParams } from "react-router-dom";
 import keycloakService from "@/service/keycloakService";
 import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
-import { t } from "i18next";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 
 const AssessmentKitsStoreListCard = ({ small = false }: any) => {

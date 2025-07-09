@@ -15,13 +15,13 @@ export const usePurchaseDialog = () => {
           keycloakService._kc.tokenParsed?.sub,
         dialogTitle: t("assessmentKit.interestedThisKit"),
         children: (
-          <Box sx={{ color: "#2B333B" }}>
+          <Box sx={{ color: "#2B333B", mb: 3 }}>
             <Typography textAlign="justify" variant="semiBoldLarge">
               {t("common.purchaseModal.accessToKit")}
-            </Typography>
+            </Typography>{" "}
             <Typography mt={1} textAlign="justify" variant="semiBoldLarge">
               {t("common.purchaseModal.makeSureFitsYourNeeds")}
-            </Typography>
+            </Typography>{" "}
             <Typography mt={1} mb={4} textAlign="justify" variant="semiBoldLarge">
               {t("common.purchaseModal.getInTouch")}
             </Typography>
