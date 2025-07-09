@@ -23,6 +23,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import PurchasedIcon from "@utils/icons/purchasedIcon";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 
 interface IlistOfItems {
   field: boolean;
@@ -35,46 +36,7 @@ const AssessmentKitAside = (props: any) => {
   const { id, title, like, languages, status } = props;
   const dialogProps = useDialog();
   const contactusDialogProps = useDialog();
-  const dialogPurchaseProps = useDialog({
-    context: {
-      type: "purchased",
-      data: {
-        email:
-          keycloakService._kc.tokenParsed?.preferred_username ??
-          keycloakService._kc.tokenParsed?.sub,
-        dialogTitle: t("assessmentKit.interestedThisKit"),
-        children: (
-          <Box sx={{ color: "#2B333B" }}>
-            <Typography
-              component={"p"}
-              textAlign="justify"
-              variant="semiBoldLarge"
-            >
-              {t("common.purchaseModal.accessToKit")}
-            </Typography>
-            <Typography
-              component={"p"}
-              mt={1}
-              textAlign="justify"
-              variant="semiBoldLarge"
-            >
-              {t("common.purchaseModal.makeSureFitsYourNeeds")}
-            </Typography>
-            <Typography
-              component={"p"}
-              mt={1}
-              mb={4}
-              textAlign="justify"
-              variant="semiBoldLarge"
-            >
-              {t("common.purchaseModal.getInTouch")}
-            </Typography>
-          </Box>
-        ),
-        primaryActionButtonText: t("common.sendEmail"),
-      },
-    },
-  });
+  const dialogPurchaseProps = usePurchaseDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
 
