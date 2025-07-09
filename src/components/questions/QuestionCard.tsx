@@ -720,6 +720,7 @@ const AnswerTemplate = (props: {
   const dispatch = useQuestionDispatch();
   const { assessmentInfo } = useAssessmentContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
+  const [notApp,setNotApp] = useState<boolean>(false)
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.assessments.questionnaire.getQuestionnaireAnswers(
@@ -879,7 +880,14 @@ const AnswerTemplate = (props: {
         replace: true,
       });
     }
+    setNotApp(false)
   };
+
+  useEffect(() => {
+    if(notApp && !value?.id && !isAdvanceMode) {
+      submitQuestion()
+    }
+  }, [notApp, value?.id]);
 
   const goToQuestion = async (order: "desc" | "asc") => {
     try {
@@ -903,6 +911,7 @@ const AnswerTemplate = (props: {
 
   const notApplicableonChanhe = (e: any) => {
     setNotApplicable(e.target.checked || false);
+    setNotApp(true)
     if (e.target.checked) {
       setDisabledConfidence(false);
     } else {
