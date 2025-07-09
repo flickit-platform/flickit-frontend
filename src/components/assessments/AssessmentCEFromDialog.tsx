@@ -253,7 +253,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 i18nKey="assessment.successCreatedAssessmentTitleFirstPart"
                 values={{ title: submittedTitle }}
               />{" "}
-              <Typography variant="headlineMedium">{submittedTitle}</Typography>
+              <Typography variant="headlineMedium">{submittedTitle}</Typography>{" "}
               <Trans
                 i18nKey="assessment.successCreatedAssessmentTitleSecondPart"
                 values={{ title: submittedTitle }}
