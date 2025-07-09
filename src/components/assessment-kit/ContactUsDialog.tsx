@@ -90,7 +90,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
     handleSubmitSpree(data).then(() =>{
       if(type == "purchased"){
         handleSucceeded()
-        toast(t("thankYouForYourMessage"),{type: "success"})
+        toast(t("common.thankYouForYourMessage"),{type: "success"})
       }
     });
   };
@@ -166,7 +166,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={t("common.tellUsWhatYouLookingFor")}
+                  label={t("assessmentKit.tellUsWhatYouLookingFor")}
                   multiline
                   rows={4}
                   required
