@@ -77,12 +77,6 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   backType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
-  contactSection?: {
-    id: number;
-    icon: string;
-    bg: string;
-    link: { [key: string]: string | undefined };
-  }[];
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {

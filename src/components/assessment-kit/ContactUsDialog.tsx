@@ -10,9 +10,8 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
-import whatsApp from "@assets/svg/whatsApp.svg";
-import BaleIcon from "@assets/svg/baleIcon.svg";
-import useScreenResize from "@/utils/useScreenResize";
+import telegramIcon from "@assets/svg/telegram.svg";
+import eitaaIcon from "@assets/svg/eitaa_logo.svg";
 import { styles } from "@styles";
 import { toast } from "react-toastify";
 
@@ -21,31 +20,28 @@ interface IContactUsDialogProps extends DialogProps {
   context?: any;
 }
 
-const phoneNumber = "+989966529108";
-const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
-const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
-const BaleWebLink = `https://web.bale.ai/chat?uid=1294957316`;
+const TelegramLink = 'https://web.telegram.org/a/#8179187991';
+const EitaaWebLink = 'https://web.eitaa.com/#67786801';
 const socialIcon = [
   {
     id: 1,
-    icon: whatsApp,
-    bg: "#3D8F3D14",
-    link: { web: WhatsappWebLink, mobile: WhatsappLink },
+    icon: telegramIcon,
+    bg: "#2466A814",
+    link: TelegramLink,
   },
   {
     id: 2,
-    icon: BaleIcon,
-    bg: "#3D8F3D14",
-    link: { web: BaleWebLink, mobile: BaleWebLink },
+    icon: eitaaIcon,
+    bg: "#f7632314",
+    link: EitaaWebLink,
   },
 ];
 
 const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, context, ...rest } = props;
-  const isMobile = useScreenResize("sm");
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { data = {}, type } = context ?? {};
-  const { email, dialogTitle, content, primaryActionButtonText, children } =
+  const { email, dialogTitle, primaryActionButtonText, children } =
     data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
@@ -96,12 +92,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   };
 
   const openChat = (link: any) => {
-    const { mobile, web } = link;
-    if (isMobile) {
-      window.location.href = mobile;
-    } else {
-      window.open(web, "_blank");
-    }
+      window.open(link, "_blank");
   };
   return (
     <CEDialog
@@ -217,7 +208,6 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               </Box>
               <CEDialogActions
                 cancelLabel={t("common.cancel")}
-                contactSection={socialIcon}
                 submitButtonLabel={
                   primaryActionButtonText ?? t("common.confirm")
                 }
