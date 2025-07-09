@@ -39,7 +39,6 @@ import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
 import { useEffect, useMemo } from "react";
 import { getReadableDate } from "@utils/readableDate";
-import keycloakService from "@/service/keycloakService";
 import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
@@ -232,9 +231,9 @@ const AssessmentHtmlContainer = () => {
 
           if (visibility === VISIBILITY.PUBLIC && linkHash) {
             const newPath = `${basePath}${linkHash}/`;
-            window.history.pushState({}, "", newPath);
+            window.history.replaceState({}, "", newPath);
           }
-
+          
           return (
             <>
               {isInvalid(subjects, advice, isQuickMode) && (

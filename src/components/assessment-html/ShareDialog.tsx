@@ -113,7 +113,7 @@ export const ShareDialog = ({
       }
 
       if (window.location.pathname !== finalPath)
-        window.history.pushState({}, "", finalPath);
+        window.history.replaceState({}, "", finalPath);
     } catch (error) {
       toastError(error as ICustomError);
     }
@@ -171,7 +171,7 @@ export const ShareDialog = ({
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="assessmentReport.shareReport"/>
+          <Trans i18nKey="assessmentReport.shareReport" />
         </Box>
       }
       maxWidth="sm"
@@ -190,7 +190,9 @@ export const ShareDialog = ({
                   <InputFieldUC
                     name="email"
                     size="small"
-                    placeholder={t("assessmentReport.shareReportViaEmail") ?? ""}
+                    placeholder={
+                      t("assessmentReport.shareReportViaEmail") ?? ""
+                    }
                     fullWidth
                     required
                   />
