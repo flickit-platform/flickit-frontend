@@ -25,14 +25,14 @@ import PurchasedIcon from "@utils/icons/purchasedIcon";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 
 interface IlistOfItems {
-  field: string;
+  field: boolean;
   icon: any;
   title: string;
   description: string;
 }
 
 const AssessmentKitAside = (props: any) => {
-  const { id, title, like, languages, paid, purchased, free } = props;
+  const { id, title, like, languages, status } = props;
   const dialogProps = useDialog();
   const contactusDialogProps = useDialog();
   const dialogPurchaseProps = useDialog({
@@ -44,21 +44,36 @@ const AssessmentKitAside = (props: any) => {
           keycloakService._kc.tokenParsed?.sub,
         dialogTitle: t("assessmentKit.interestedThisKit"),
         children: (
-          <Box sx={{color: "#2B333B"}}>
-            <Typography component={"p"} textAlign="justify" variant="semiBoldLarge">
+          <Box sx={{ color: "#2B333B" }}>
+            <Typography
+              component={"p"}
+              textAlign="justify"
+              variant="semiBoldLarge"
+            >
               {t("common.purchaseModal.accessToKit")}
             </Typography>
-            <Typography component={"p"} mt={1} textAlign="justify" variant="semiBoldLarge">
+            <Typography
+              component={"p"}
+              mt={1}
+              textAlign="justify"
+              variant="semiBoldLarge"
+            >
               {t("common.purchaseModal.makeSureFitsYourNeeds")}
             </Typography>
-            <Typography component={"p"} mt={1} mb={4} textAlign="justify" variant="semiBoldLarge">
+            <Typography
+              component={"p"}
+              mt={1}
+              mb={4}
+              textAlign="justify"
+              variant="semiBoldLarge"
+            >
               {t("common.purchaseModal.getInTouch")}
             </Typography>
           </Box>
         ),
         primaryActionButtonText: t("common.sendEmail"),
       },
-    }
+    },
   });
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
@@ -71,7 +86,7 @@ const AssessmentKitAside = (props: any) => {
 
   const listOfItems: IlistOfItems[] = [
     {
-      field: free,
+      field: status === "free",
       icon: (
         <PriceIcon
           color={theme.palette.primary.dark}
@@ -83,7 +98,7 @@ const AssessmentKitAside = (props: any) => {
       description: "common.free",
     },
     {
-      field: purchased,
+      field: status === "purchased",
       icon: (
         <PurchasedIcon
           color={theme.palette.primary.dark}
@@ -95,13 +110,13 @@ const AssessmentKitAside = (props: any) => {
       description: "common.purchased",
     },
     {
-      field: paid,
+      field: status === "paid",
       icon: (
         <PaidOutlinedIcon
           sx={{
             color: theme.palette.primary.dark,
-            width:"33px",
-            height:"33px"
+            width: "33px",
+            height: "33px",
           }}
         />
       ),
@@ -172,15 +187,15 @@ const AssessmentKitAside = (props: any) => {
     }
   };
 
-    const handleClick = (e: any) =>{
-      e.preventDefault();
-      e.stopPropagation();
-      if(paid){
-        dialogPurchaseProps.openDialog({})
-      }else {
-        createAssessment(e)
-      }
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (status === "paid") {
+      dialogPurchaseProps.openDialog({});
+    } else {
+      createAssessment(e);
     }
+  };
 
   const toggleLike = async () => {
     await likeQueryData.query();
@@ -199,9 +214,11 @@ const AssessmentKitAside = (props: any) => {
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
-            {listOfItems.filter(filter => filter.field).map((item) => {
-              return <InfoBox {...item} key={item.title} />;
-            })}
+            {listOfItems
+              .filter((filter) => filter.field)
+              .map((item) => {
+                return <InfoBox {...item} key={item.title} />;
+              })}
           </Box>
           <Box>
             <LoadingButton
@@ -213,7 +230,13 @@ const AssessmentKitAside = (props: any) => {
                 width: "100%",
               }}
             >
-              {paid ? <Trans i18nKey="common.purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
+              <Trans
+                i18nKey={
+                  status === "paid"
+                    ? "common.purchase"
+                    : "assessment.createNewAssessment"
+                }
+              />
             </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
@@ -248,7 +271,11 @@ const AssessmentKitAside = (props: any) => {
               }}
             >
               <Trans
-                i18nKey={likeStatus ? "assessmentKit.youLikedThisKit" : "assessmentKit.didYouLikeThisKit"}
+                i18nKey={
+                  likeStatus
+                    ? "assessmentKit.youLikedThisKit"
+                    : "assessmentKit.didYouLikeThisKit"
+                }
               />
               <IconButton
                 size="small"

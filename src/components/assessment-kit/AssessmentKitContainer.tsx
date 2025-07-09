@@ -27,6 +27,16 @@ import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKi
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
 
+type PurchaseStatus = "free" | "paid" | "purchased";
+
+const getPurchaseStatus = (
+  isFree: boolean,
+  hasAccess: boolean,
+): PurchaseStatus => {
+  if (isFree && hasAccess) return "free";
+  return hasAccess ? "purchased" : "paid";
+};
+
 const AssessmentKitContainer = () => {
   const { service } = useServiceContext();
   const { assessmentKitId } = useParams();
@@ -50,12 +60,12 @@ const AssessmentKitContainer = () => {
   const { config } = useConfigContext();
 
   useEffect(() => {
-    if(ref.current){
+    if (ref.current) {
       assessmentKitQuery.query();
-    }else{
-      ref.current = assessmentKitId
+    } else {
+      ref.current = assessmentKitId;
     }
-}, [assessmentKitId]);
+  }, [assessmentKitId]);
 
   return (
     <PermissionControl error={[assessmentKitQuery.errorObject]}>
@@ -89,7 +99,7 @@ const AssessmentKit = (props: any) => {
     metadata,
     languages,
     isFree,
-    hasAccess
+    hasAccess,
   } = assessmentKitQueryData ?? {};
 
   const isMobileScreen = useScreenResize("md");
@@ -157,9 +167,7 @@ const AssessmentKit = (props: any) => {
               title={assessmentTitle}
               metadata={metadata}
               languages={languages}
-              paid={!isFree && !hasAccess}
-              purchased={!isFree && hasAccess}
-              free={isFree && hasAccess}
+              status={getPurchaseStatus(isFree, hasAccess)}
             />
           </Grid>
           <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>

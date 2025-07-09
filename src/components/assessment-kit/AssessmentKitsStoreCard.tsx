@@ -18,7 +18,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { ILanguage } from "@/types";
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import PurchasedIcon from "@utils/icons/purchasedIcon";
 
 const AssessmentKitsStoreCard = (props: any) => {
@@ -33,7 +33,7 @@ const AssessmentKitsStoreCard = (props: any) => {
     dialogPurchaseProps,
     small,
     isFree,
-    hasAccess
+    hasAccess,
   } = props;
 
   const navigate = useNavigate();
@@ -80,15 +80,15 @@ const AssessmentKitsStoreCard = (props: any) => {
       keycloakService.doLogin();
     }
   };
-  const handleClick = (e: any, id: any, title: any) =>{
+  const handleClick = (e: any, id: any, title: any) => {
     e.preventDefault();
     e.stopPropagation();
-    if(paid){
-      dialogPurchaseProps.openDialog()
-    }else {
-      createAssessment(e, id, title)
+    if (paid) {
+      dialogPurchaseProps.openDialog();
+    } else {
+      createAssessment(e, id, title);
     }
-  }
+  };
 
   useEffect(() => {
     if (window.location.hash.startsWith("#createAssessment")) {
@@ -280,12 +280,12 @@ const AssessmentKitsStoreCard = (props: any) => {
               gap: small ? "4px" : 1,
             }}
           >
-         <CheckStatus
-          small={small}
-          isPrivate={isPrivate}
-          isFree={isFree}
-          hasAccess={hasAccess}
-         />
+            <CheckStatus
+              small={small}
+              isPrivate={isPrivate}
+              isFree={isFree}
+              hasAccess={hasAccess}
+            />
           </Box>
 
           <Box
@@ -325,71 +325,70 @@ const AssessmentKitsStoreCard = (props: any) => {
             },
           }}
         >
-          {paid ? <Trans i18nKey="common.purchase" /> : <Trans i18nKey="assessment.createNewAssessment" />}
+          {paid ? (
+            <Trans i18nKey="common.purchase" />
+          ) : (
+            <Trans i18nKey="assessment.createNewAssessment" />
+          )}
         </LoadingButton>
       </Box>
     </Box>
   );
 };
 
-const CheckStatus = (props: any) =>{
-  const {isPrivate, small, isFree, hasAccess} = props
+interface CheckStatusProps {
+  isPrivate: boolean;
+  small?: boolean;
+  isFree: boolean;
+  hasAccess: boolean;
+}
 
-  const purchased = !isFree && hasAccess
-  const paid = !isFree && !hasAccess
+type StatusType = "free" | "paid" | "purchased";
 
-  const icon = () =>{
-    if(isFree){
-      return (
-        <PriceIcon
-          color={
-            isPrivate
-              ? theme.palette.secondary.main
-              : theme.palette.primary.main
-          }
-          width={small ? "16px" : "32px"}
-          height={small ? "16px" : "32px"}
-        />
-      )
-    }else if(paid){
-      return (
-        <PaidOutlinedIcon
-          sx={{
-            color:
-              isPrivate
-              ? theme.palette.secondary.main
-              : theme.palette.primary.main,
-            width: small ? "16px" : "32px",
-            height: small ? "16px" : "32px"
-          }}
-        />
-      )
-    }else if(purchased){
-      return (
-      <PurchasedIcon
-        color={
-          isPrivate
-            ? theme.palette.secondary.main
-            : theme.palette.primary.main
-        }
-        width={small ? "16px" : "32px"}
-        height={small ? "16px" : "32px"}
+const CheckStatus: React.FC<CheckStatusProps> = ({
+  isPrivate,
+  small = false,
+  isFree,
+  hasAccess,
+}) => {
+  const getStatus = (): StatusType => {
+    if (isFree) return "free";
+    return hasAccess ? "purchased" : "paid";
+  };
+
+  const status = getStatus();
+  const iconColor = isPrivate
+    ? theme.palette.secondary.main
+    : theme.palette.primary.main;
+  const iconSize = small ? "16px" : "32px";
+  const typographyVariant = small ? "bodySmall" : "titleSmall";
+
+  const statusIcons = {
+    free: <PriceIcon color={iconColor} width={iconSize} height={iconSize} />,
+    paid: (
+      <PaidOutlinedIcon
+        sx={{ color: iconColor, width: iconSize, height: iconSize }}
       />
-      )
-    }
-  }
+    ),
+    purchased: (
+      <PurchasedIcon color={iconColor} width={iconSize} height={iconSize} />
+    ),
+  };
 
+  const statusLabels = {
+    free: <Trans i18nKey="common.free" />,
+    paid: <Trans i18nKey="common.paid" />,
+    purchased: <Trans i18nKey="common.purchased" />,
+  };
 
   return (
-    <>
-      {icon()}
-      <Typography variant={small ? "bodySmall" : "titleSmall"}>
-        {isFree && <Trans i18nKey="common.free" />}
-        {paid && <Trans i18nKey="common.paid" />}
-        {purchased && <Trans i18nKey="common.purchased" />}
+    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      {statusIcons[status]}
+      <Typography variant={typographyVariant}>
+        {statusLabels[status]}
       </Typography>
-    </>
-  )
-}
+    </div>
+  );
+};
 
 export default AssessmentKitsStoreCard;

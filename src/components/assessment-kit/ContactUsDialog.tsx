@@ -83,13 +83,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
       icon: whatsApp,
       bg: "#3D8F3D14",
       link: { WhatsappLink, WhatsappWebLink },
-    },
-    {
-      id: 1,
-      icon: telegram,
-      bg: "#2466A814",
-      link: { WhatsappLink, WhatsappWebLink },
-    },
+    }
   ];
 
   return (
