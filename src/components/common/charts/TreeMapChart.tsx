@@ -103,7 +103,6 @@ const CustomNode: any = (props: any) => {
             fontSize={adjustedFontSize}
             fontWeight={5}
             letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
-            style={{fontWeight:100}}
           >
             {truncatedName}
           </text>

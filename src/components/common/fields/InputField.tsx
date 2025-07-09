@@ -105,7 +105,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
 
       event.target.dir = direction;
       event.target.style.fontFamily = isFarsiText
-        ? primaryFontFamily
+        ? farsiFontFamily
         : primaryFontFamily;
     }
 
