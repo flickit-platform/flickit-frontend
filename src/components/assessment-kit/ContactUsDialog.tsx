@@ -150,7 +150,6 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <Typography
                 variant="bodyLarge"
-                sx={{ mb: 2 }}
                 textAlign="justify"
               >
                 {children}
