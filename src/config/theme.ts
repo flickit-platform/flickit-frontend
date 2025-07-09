@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
 export const primaryFontFamily = "NotoSans";
 export const secondaryFontFamily = "OpenSans";
-export const farsiFontFamily = "'Vazirmatn','Arial','sans-serif'";
+export const farsiFontFamily = "'Sahel','Arial','sans-serif'";
 
 declare module "@mui/material/styles/createPalette" {
   interface TypeBackground {

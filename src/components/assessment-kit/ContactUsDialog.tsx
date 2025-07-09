@@ -21,7 +21,7 @@ interface IContactUsDialogProps extends DialogProps {
 }
 
 const TelegramLink = 'https://web.telegram.org/a/#8179187991';
-const EitaaWebLink = 'https://web.eitaa.com/#67786801';
+const EitaaWebLink = 'https://web.eitaa.com/#@flickit';
 const socialIcon = [
   {
     id: 1,

@@ -38,7 +38,7 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { AssessmentKitDetailsType } from "@/types/index";
 import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
 
@@ -991,7 +991,7 @@ const SubjectQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? "VazirMatn" : primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? farsiFontFamily: primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",
@@ -1215,7 +1215,7 @@ const QuestionnairesQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? "VazirMatn" : primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? farsiFontFamily : primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",
@@ -1279,7 +1279,7 @@ const QuestionnairesQuestionList = (props: any) => {
                       key={option.index}
                       sx={{
                         mx: 2,
-                        fontFamily: `${is_farsi ? "Vazirmatn" : primaryFontFamily}`,
+                        fontFamily: `${is_farsi ? farsiFontFamily : primaryFontFamily}`,
                       }}
                       variant="body2"
                     >
