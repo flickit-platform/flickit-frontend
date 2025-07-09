@@ -222,7 +222,7 @@ const AssessmentCard = ({
             )}
           </Grid>
           {/* Confidence */}
-          {permissions.canViewReport && (
+          {permissions.canViewReport && !isQuickMode && (
             <Grid item xs={12} mt="-4rem">
               <Typography
                 variant="titleSmall"
