@@ -184,7 +184,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                 >
                   <Trans i18nKey="common.moreWaysToReachUs" />
                 </Typography>
-                <Box sx={{ display: "flex", gap: 2 }}>
+                <Box sx={{ display: "flex", gap: 2,mt:"auto" }}>
                   {socialIcon.map((chat) => {
                     return (
                       <Box
