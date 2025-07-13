@@ -22,7 +22,7 @@ const useDialog = (props: IUseDialogProps = {}) => {
 
   const openDialog = (context: any) => {
     setOpen(true);
-    if (context?.type && !context.target) {
+    if (context.type && !context.target) {
       setContext(context);
     }
   };

@@ -158,7 +158,7 @@ const Uploader = (props: IUploadProps) => {
       shouldFetchFileInfo
     ) {
       defaultValueQuery.query().then((data) => {
-        const myFile = new File([data], "image.jpeg", { type: data?.type });
+        const myFile = new File([data], "image.jpeg", { type: data.type });
         fieldProps.onChange(myFile);
       });
     }

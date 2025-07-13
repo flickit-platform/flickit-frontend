@@ -40,7 +40,7 @@ const checkTypeUpload = (
   if (!dropZoneData || dropZoneData.length === 0) return;
 
   const file = dropZoneData[0];
-  const fileType = file?.type;
+  const fileType = file.type;
   setDisplayFile(URL.createObjectURL(file) && fileType);
 
   const typeMapping = {
