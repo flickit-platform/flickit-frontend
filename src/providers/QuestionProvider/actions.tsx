@@ -1,5 +1,4 @@
-import { IQuestionInfo, TQuestionsInfo } from "@/types/index";
-import { EAssessmentStatus } from "./provider";
+import { EAssessmentStatus, IQuestionInfo, TQuestionsInfo } from "@/types/index";
 
 export enum QUESTION_ACTIONS_TYPE {
   GO_TO_QUESTION = "GO_TO_QUESTION",

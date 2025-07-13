@@ -1,5 +1,5 @@
+import { IAuthContext } from "@/types";
 import { AUTH_ACTIONS_TYPE } from "./actions";
-import { IAuthContext } from "./provider";
 
 const authReducer = (
   prevState: any,

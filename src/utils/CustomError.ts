@@ -1,5 +1,5 @@
+import { FieldErrorData } from "@/types";
 import { AxiosError } from "axios";
-import { FieldErrorData } from "./setServerFieldError";
 
 interface IResponseData {
   code: string;

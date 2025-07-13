@@ -1,17 +1,11 @@
 import React, { useReducer, FC, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { TQuestionsInfo } from "@/types/index";
+import { EAssessmentStatus, TQuestionsInfo } from "@/types/index";
 import { questionActions } from "./actions";
 import appReducer from "./reducer";
 
 interface IQuestionProviderProps {
   children?: JSX.Element | JSX.Element[];
-}
-
-export enum EAssessmentStatus {
-  "NOT_STARTED" = "NOT_STARTED",
-  "INPROGRESS" = "INPROGRESS",
-  "DONE" = "DONE",
 }
 
 export interface IQuestionContext {

@@ -273,23 +273,7 @@ const AutocompleteBaseField = (
     setOpen(false);
   };
 
-  const getChipProps = (
-    label: React.ReactNode,
-    color?: "default" | "primary" | "secondary",
-    sx?: SxProps<Theme>,
-  ) => ({
-    size: "small",
-    sx: {
-      marginInlineStart: "auto",
-      ...sx,
-    },
-    color,
-    label: (
-      <Typography sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}>
-        {label}
-      </Typography>
-    ),
-  });
+
   return (
     <Autocomplete
       {...restFields}

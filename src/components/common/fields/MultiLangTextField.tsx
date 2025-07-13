@@ -47,7 +47,6 @@ const MultiLangTextField = ({
 }: MultiLangTextFieldProps) => {
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
-  const mainLangCode = kitState.mainLanguage?.code;
 
   const [internalShow, setInternalShow] = useState(false);
   const showTranslation = controlledShow ?? internalShow;

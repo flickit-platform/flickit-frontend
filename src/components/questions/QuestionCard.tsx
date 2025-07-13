@@ -65,7 +65,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
-import { toCamelCase } from "@common/makeCamelcaseString";
+import { toCamelCase } from "@/utils/MakeCamelcaseString";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import CheckOutlined from "@mui/icons-material/CheckOutlined";
@@ -1491,7 +1491,6 @@ const Evidence = (props: any) => {
   const is_farsi = languageDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
-  const { assessmentInfo } = useAssessmentContext();
 
   const {
     questionInfo,
