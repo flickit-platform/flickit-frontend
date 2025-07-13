@@ -209,7 +209,6 @@ const QuestionDescription = ({ description, collapse }: any) => {
           <Box
             sx={{
               flex: 1,
-              mr: { xs: 0, md: 4 },
               position: "relative",
               display: "flex",
               flexDirection: "column",
