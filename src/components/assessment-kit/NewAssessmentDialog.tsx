@@ -290,6 +290,7 @@ const LangField = ({ lang }: { lang: any }) => {
       options={lang}
       data-cy="language"
       required={lang?.length > 1}
+      defaultValue={lang[0]}
     />
   );
 };
