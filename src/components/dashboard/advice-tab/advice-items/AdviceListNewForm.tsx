@@ -203,7 +203,7 @@ const AdviceListNewForm = ({
                   <FormControl key={item} sx={{ width: { xs: "100%" } }}>
                     <InputLabel id="demo-multiple-name-label">
                       {" "}
-                      <Trans i18nKey={item} />
+                      <Trans i18nKey={`common.${item}`} />
                     </InputLabel>
                     <Select
                       size="small"
