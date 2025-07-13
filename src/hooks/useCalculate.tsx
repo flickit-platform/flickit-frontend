@@ -26,8 +26,10 @@ const useCalculate = () => {
         if (onSuccessCallback) {
           onSuccessCallback();
         }
+        return true;
       } catch (e) {
         console.error("Error in calculate:", e);
+        return false;
       }
     },
     [calculateMaturityLevelQuery],
@@ -40,8 +42,10 @@ const useCalculate = () => {
         if (onSuccessCallback) {
           onSuccessCallback();
         }
+        return true;
       } catch (e) {
         console.error("Error in calculateConfidence:", e);
+        return false;
       }
     },
     [calculateConfidenceLevelQuery],
