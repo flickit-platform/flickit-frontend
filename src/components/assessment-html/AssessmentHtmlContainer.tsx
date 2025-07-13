@@ -102,23 +102,30 @@ const AssessmentHtmlContainer = () => {
   });
 
   const handleErrorResponse = async (errorCode: any) => {
+    let shouldRefetch = false;
+
     switch (errorCode) {
       case ErrorCodes.CalculateNotValid:
-        await calculate();
+        shouldRefetch = await calculate();
         break;
       case ErrorCodes.ConfidenceCalculationNotValid:
-        await calculateConfidence();
+        shouldRefetch = await calculateConfidence();
         break;
       case "DEPRECATED":
-        await service.assessments.info.migrateKitVersion({ assessmentId });
+        await service.assessments.info
+          .migrateKitVersion({ assessmentId })
+          .catch(() => {
+            shouldRefetch = false;
+          });
         break;
       default:
         break;
     }
     if (
-      errorCode === ErrorCodes.CalculateNotValid ||
-      errorCode === ErrorCodes.ConfidenceCalculationNotValid ||
-      errorCode === "DEPRECATED"
+      (errorCode === ErrorCodes.CalculateNotValid ||
+        errorCode === ErrorCodes.ConfidenceCalculationNotValid ||
+        errorCode === "DEPRECATED") &&
+      shouldRefetch
     ) {
       fetchGraphicalReport.query();
     }
@@ -233,7 +240,7 @@ const AssessmentHtmlContainer = () => {
             const newPath = `${basePath}${linkHash}/`;
             window.history.replaceState({}, "", newPath);
           }
-          
+
           return (
             <>
               {isInvalid(subjects, advice, isQuickMode) && (
