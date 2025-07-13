@@ -129,9 +129,6 @@ export const useQuery = <T extends any = any, A extends any = any>(
       setErrorObject(err);
       setLoading(false);
       setError(true);
-      if (typeof err != "string") {
-        return Promise.reject(err);
-      }
     }
   };
 

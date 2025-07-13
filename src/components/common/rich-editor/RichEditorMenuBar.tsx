@@ -53,7 +53,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
             e.stopPropagation();
           }}
         >
-          {menuItem.type === "divider" ? (
+          {menuItem?.type === "divider" ? (
             <Box
               sx={{
                 height: "20px",

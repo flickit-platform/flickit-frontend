@@ -182,7 +182,7 @@ const CreateSpaceDialog = (props: any) => {
             >
               {list.map((item) => (
                 <BoxType
-                  key={item.type}
+                  key={item?.type}
                   {...item}
                   selectedType={selectedType}
                   setSelectedType={setSelectedType}
