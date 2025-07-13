@@ -5,6 +5,7 @@ import { useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import Tooltip from "@mui/material/Tooltip";
+import { t } from "i18next";
 
 interface TitleWithTranslationProps {
   title: string;
@@ -69,7 +70,7 @@ const RenderText = ({
     >
       {text}{" "}
       {isHovered && showCopyIcon && (
-        <Tooltip title="common.copy">
+        <Tooltip title={t("common.copy")}>
           <IconButton
             size="small"
             sx={{

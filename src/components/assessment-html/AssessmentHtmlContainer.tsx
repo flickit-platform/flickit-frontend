@@ -37,11 +37,10 @@ import Share from "@mui/icons-material/Share";
 import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
-import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
@@ -64,11 +63,6 @@ const AssessmentHtmlContainer = () => {
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
-  const { assessmentInfo } = useAssessmentContext();
-
-  const isAdvanceMode = useMemo(() => {
-    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-  }, [assessmentInfo?.mode?.code]);
 
   const dialogProps = useDialog();
 
@@ -417,7 +411,7 @@ const AssessmentHtmlContainer = () => {
                             >
                               {assessment.title}
                             </Typography>
-                            {isAdvanceMode && (
+                            {!isQuickMode && (
                               <>
                                 <Typography
                                   component="div"
@@ -494,7 +488,7 @@ const AssessmentHtmlContainer = () => {
                               }
                               confidence_value={assessment.confidenceValue}
                               confidence_text={
-                                isAdvanceMode
+                                !isQuickMode
                                   ? t("common.withPercentConfidence", {
                                       lng: lang.code.toLowerCase(),
                                     })
@@ -568,7 +562,7 @@ const AssessmentHtmlContainer = () => {
                           spacing={2}
                           marginLeft={0}
                         >
-                          {isAdvanceMode && (
+                          {!isQuickMode && (
                             <Grid item xs={12} md={10}>
                               <Typography
                                 sx={{
@@ -608,7 +602,7 @@ const AssessmentHtmlContainer = () => {
                             </Grid>
                           )}
 
-                          <Grid item xs={12} md={isAdvanceMode ? 2 : 12}>
+                          <Grid item xs={12} md={!isQuickMode ? 2 : 12}>
                             <Typography
                               sx={{
                                 ...theme.typography.titleSmall,
@@ -629,7 +623,7 @@ const AssessmentHtmlContainer = () => {
                               container
                               xs={12}
                               sx={{
-                                flexDirection: isAdvanceMode ? "column" : "row",
+                                flexDirection: !isQuickMode ? "column" : "row",
                               }}
                               mt={2}
                             >
