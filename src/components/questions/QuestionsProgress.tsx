@@ -3,10 +3,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { styles } from "@styles";
-import {
-  EAssessmentStatus,
-  useQuestionContext,
-} from "@/providers/QuestionProvider";
+import { useQuestionContext } from "@/providers/QuestionProvider";
 import Typography from "@mui/material/Typography";
 import { QuestionThumb } from "./QuestionThumb";
 import { QuestionPopover } from "./QuestionPopover";
@@ -15,6 +12,7 @@ import uniqueId from "@/utils/uniqueId";
 import usePopover from "@/hooks/usePopover";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
+import { EAssessmentStatus } from "@/types";
 
 const QuestionsProgress = () => {
   const { assessmentStatus, questionIndex, questionsInfo, isSubmitting } =
@@ -24,16 +22,16 @@ const QuestionsProgress = () => {
   return (
     <Box position="relative" sx={{ my: { xs: 1, sm: 3 } }}>
       <Box
-      sx={{
-      display:{
-        xs: "none",
-        sm: "none",
-        md: questions.length > 20 ? "none": "inherit",
-        lg: questions.length > 23 ? "none": "inherit",
-        xl: questions.length > 32 ? "none": "inherit",
-        xxl: questions.length > 40 ? "none": "inherit",
-      }
-      }}
+        sx={{
+          display: {
+            xs: "none",
+            sm: "none",
+            md: questions.length > 20 ? "none" : "inherit",
+            lg: questions.length > 23 ? "none" : "inherit",
+            xl: questions.length > 32 ? "none" : "inherit",
+            xxl: questions.length > 40 ? "none" : "inherit",
+          },
+        }}
       >
         <Box
           position={"absolute"}

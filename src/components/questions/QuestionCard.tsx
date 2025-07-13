@@ -9,12 +9,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
-  EAssessmentStatus,
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
 import {
+  EAssessmentStatus,
   IAnswerHistory,
   IPermissions,
   IQuestionInfo,
@@ -720,7 +720,7 @@ const AnswerTemplate = (props: {
   const dispatch = useQuestionDispatch();
   const { assessmentInfo } = useAssessmentContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
-  const [notApp,setNotApp] = useState<boolean>(false)
+  const [notApp, setNotApp] = useState<boolean>(false);
   const questionsResultQueryData = useQuery<IQuestionsModel>({
     service: (args, config) =>
       service.assessments.questionnaire.getQuestionnaireAnswers(
@@ -880,12 +880,12 @@ const AnswerTemplate = (props: {
         replace: true,
       });
     }
-    setNotApp(false)
+    setNotApp(false);
   };
 
   useEffect(() => {
-    if(notApp && !value?.id && !isAdvanceMode) {
-      submitQuestion()
+    if (notApp && !value?.id && !isAdvanceMode) {
+      submitQuestion();
     }
   }, [notApp, value?.id]);
 
@@ -911,7 +911,7 @@ const AnswerTemplate = (props: {
 
   const notApplicableonChanhe = (e: any) => {
     setNotApplicable(e.target.checked || false);
-    setNotApp(true)
+    setNotApp(true);
     if (e.target.checked) {
       setDisabledConfidence(false);
     } else {
