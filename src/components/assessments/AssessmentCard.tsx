@@ -352,6 +352,7 @@ const Header = ({
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
           flexShrink: 1,
+          direction: languageDetector(itemTitle) ? "rtl" : "ltr",
         }}
       >
         {itemTitle}
