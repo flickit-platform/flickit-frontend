@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { Box, IconButton, Link, Typography } from "@mui/material";
+import { Box, IconButton, Link } from "@mui/material";
 import { Trans } from "react-i18next";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";

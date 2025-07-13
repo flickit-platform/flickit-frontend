@@ -1,8 +1,6 @@
+import { FieldErrorData } from "@/types";
 import { ICustomError } from "./CustomError";
 import { UseFormReturn } from "react-hook-form";
-export interface FieldErrorData {
-  [key: string]: string[];
-}
 
 const setServerFieldErrors = (e: unknown, formMethods: UseFormReturn<any>) => {
   const { response, status } = e as ICustomError;

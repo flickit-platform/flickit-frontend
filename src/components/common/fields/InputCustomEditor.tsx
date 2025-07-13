@@ -13,7 +13,6 @@ const InputCustomEditor = (props: any) => {
     inputProps,
     hasError,
     name,
-    data,
     inputHandler,
     value,
     handleDone,

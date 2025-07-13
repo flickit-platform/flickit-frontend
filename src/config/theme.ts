@@ -625,6 +625,13 @@ export const theme = createTheme({
         },
       },
     },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          fontFamily: "Sahel !important",
+        },
+      },
+    },
     MuiListItemText: {
       styleOverrides: {
         root: {

@@ -65,14 +65,12 @@ const accessOptions = {
 export const ShareDialog = ({
   open,
   onClose,
-  assessment,
   fetchGraphicalReportUsers,
   visibility,
   permissions,
   linkHash,
 }: IDialogProps) => {
   const { t } = useTranslation();
-  const { title } = assessment;
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
   const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();

@@ -24,7 +24,7 @@ import {
   TQueryFunction,
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
 import peopleIcon from "@/assets/svg/peopleIcon.svg";

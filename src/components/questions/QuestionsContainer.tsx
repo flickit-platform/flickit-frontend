@@ -2,7 +2,6 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  EAssessmentStatus,
   questionActions,
   useQuestionDispatch,
 } from "@/providers/QuestionProvider";
@@ -11,7 +10,7 @@ import { useQuery } from "@utils/useQuery";
 import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuestions";
 import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
-import { IQuestion, IQuestionnaireModel, IQuestionsModel } from "@/types/index";
+import { EAssessmentStatus, IQuestion, IQuestionnaireModel, IQuestionsModel } from "@/types/index";
 import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuestion } from "./QuestionContainer";

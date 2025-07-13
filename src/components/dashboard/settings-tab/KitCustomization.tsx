@@ -366,7 +366,7 @@ const OnHoverInputCustomTitle = (props: any) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setLocalInputData((prev: any) => ({
       ...prev,
       title: value,

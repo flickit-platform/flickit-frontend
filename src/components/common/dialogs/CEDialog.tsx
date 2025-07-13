@@ -104,7 +104,6 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
   if (!onClose) {
     throw new Error("onClose or closeDialog not provided for CEDialogActions");
   }
-  const isMobile = useScreenResize("sm");
 
   return (
     <DialogActions
