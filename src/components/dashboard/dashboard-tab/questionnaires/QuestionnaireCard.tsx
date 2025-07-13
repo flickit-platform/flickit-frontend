@@ -170,7 +170,10 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
             />
           )}
           {originalItem.includes("unapprovedAnswers") && (
-            <ErrorChip i18nKey="dashboard.unapprovedAnswers" value={unapprovedAnswers} />
+            <ErrorChip
+              i18nKey="dashboard.unapprovedAnswers"
+              value={unapprovedAnswers}
+            />
           )}
           {originalItem.includes("unanswered") && (
             <ErrorChip i18nKey="dashboard.unanswered" value={unanswered} />
@@ -219,7 +222,16 @@ const QuestionDescription = ({ description, collapse }: any) => {
             }}
           >
             <Box display="flex" alignItems={"baseline"} sx={{ width: "100%" }}>
-              <Typography variant="bodyLarge">{description}</Typography>
+              <Typography
+                variant="bodyLarge"
+                fontFamily={
+                  languageDetector(description)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+                }
+              >
+                {description}
+              </Typography>
             </Box>
           </Box>
         </Collapse>
