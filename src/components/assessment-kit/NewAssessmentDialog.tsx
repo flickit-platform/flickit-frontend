@@ -321,6 +321,9 @@ const SpaceField = ({
   const defaultValue = queryDataSpaces?.options?.find(
     (item: any) => item.isDefault,
   );
+  const defaultSpaceList = spaces?.find(
+    (item: any) => item.isDefault,
+  );
 
   return (
     <AutocompleteAsyncField
@@ -328,7 +331,7 @@ const SpaceField = ({
       name="space"
       required={true}
       disabled={!!spaceId}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue ?? defaultSpaceList}
       label={<Trans i18nKey="spaces.space" />}
       data-cy="space"
       hasAddBtn={true}
