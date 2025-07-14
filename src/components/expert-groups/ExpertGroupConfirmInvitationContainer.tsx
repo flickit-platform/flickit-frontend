@@ -57,7 +57,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
   const decline = async () => {
     try {
       await declineInvitationQueryData.query();
-      navigate("/spaces/0", { replace: true });
+      navigate("/spaces", { replace: true });
     } catch (e) {
       const err = e as ICustomError;
       toastError(err);

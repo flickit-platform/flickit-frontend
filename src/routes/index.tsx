@@ -119,7 +119,7 @@ const Routes = () => {
           />
 
           {/* Spaces and assessments related routes */}
-          <Route path="/spaces/:page" element={<SpacesScreen />} />
+          <Route path="/spaces" element={<SpacesScreen />} />
           <Route path="/:spaceId/setting" element={<SpaceSettingScreen />} />
           <Route
             path="/:spaceId/assessments/:page"

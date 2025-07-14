@@ -28,6 +28,7 @@ import NewAssessmentIcon from "@/assets/icons/newAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
 import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
+import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -36,7 +37,7 @@ const AssessmentContainer = () => {
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, ...rest } = useFetchAssessments();
+  const { fetchAssessments, ...rest } = useFetchAssessments(Number(page) - 1);
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -221,6 +222,7 @@ const AssessmentContainer = () => {
 
         <QueryData
           {...rest}
+          renderLoading={() => <LoadingAssessmentCards />}
           emptyDataComponent={
             <ErrorEmptyData
               emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
@@ -277,14 +279,14 @@ const AssessmentContainer = () => {
   );
 };
 
-const useFetchAssessments = () => {
+export const useFetchAssessments = (page = 0) => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { spaceId, page } = useParams();
+  const { spaceId = "1329" } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
@@ -296,7 +298,7 @@ const useFetchAssessments = () => {
     setErrorObject(undefined);
     try {
       const { data: res } = await service.assessments.info.getList(
-        { spaceId: spaceId, size: 4, page: parseInt(page ?? "1", 10) - 1 },
+        { spaceId: spaceId, size: 8, page },
         { signal: abortController.current.signal },
       );
       if (res) {

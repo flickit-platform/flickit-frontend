@@ -127,7 +127,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const handleCreateSpaceWithSave = () => {
     dispatch(assessmentActions.setPendingKit(staticData.assessment_kit));
     closeDialog();
-    navigate("/spaces/0#createSpace");
+    navigate("/spaces/#createSpace");
   };
 
   return (

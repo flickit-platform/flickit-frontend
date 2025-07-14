@@ -44,7 +44,7 @@ const SpaceSettingContainer = () => {
           <SupTitleBreadcrumb
             routes={[
               {
-                to: "/spaces/0",
+                to: "/spaces",
                 title: "spaces",
                 sup: "spaces",
               },
