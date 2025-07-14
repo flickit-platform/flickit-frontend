@@ -5,13 +5,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@utils/useMenu";
-import IconButton from "@mui/material/IconButton";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
@@ -27,10 +26,8 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
-import peopleIcon from "@/assets/svg/peopleIcon.svg";
-import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { t } from "i18next";
+import Grid from "@mui/material/Grid";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -42,10 +39,10 @@ const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
 
   return (
-    <Box sx={{ overflowX: "hidden", pb: 1, px: "6px" }}>
-      <Box>
-        {data.map((item: any) => {
-          return (
+    <Grid container spacing={3} mt={4}>
+      {data.map((item: any) => {
+        return (
+          <Grid item xs={12} sm={6} md={4}>
             <SpaceCard
               key={item?.id}
               item={item}
@@ -54,10 +51,10 @@ const SpacesList = (props: ISpaceListProps) => {
               dialogProps={dialogProps}
               fetchSpaces={fetchSpaces}
             />
-          );
-        })}
-      </Box>
-    </Box>
+          </Grid>
+        );
+      })}
+    </Grid>
   );
 };
 
@@ -83,8 +80,6 @@ export const SpaceCard = (props: ISpaceCardProps) => {
   const {
     title,
     id: spaceId,
-    membersCount = 0,
-    assessmentsCount = 0,
     is_default_space_for_current_user,
     type,
   } = item ?? {};
@@ -110,185 +105,71 @@ export const SpaceCard = (props: ISpaceCardProps) => {
       sx={{
         ...styles.centerV,
         justifyContent: "space-between",
-        flexDirection: { xs: "column", md: "row" },
         boxShadow: "0 0 8px 0 #0A234240",
         borderRadius: 2,
-        px: { xs: 1, sm: 2, md: 4 },
-        py: { xs: 1, md: 1.5 },
-        mb: { xs: 1, md: 2 },
+        paddingInlineStart: 3,
+        paddingInlineEnd: 1,
+        py: 1,
         bgcolor: "white",
         cursor: "pointer",
-        textDecoration: "none",
-        height: { xs: "auto", md: 56 },
-        gap: { xs: 1.5, md: 0 },
       }}
     >
-      <Box
-        sx={{
-          ...styles.centerV,
-          gap: { xs: 1, sm: 2 },
-          width: { xs: "100%", md: "auto" },
-        }}
-      >
-        <Typography
-          variant="h6"
+      <Box>
+        <Box
           sx={{
-            fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
-            fontWeight: 700,
-            flexShrink: 0,
-            color: (t) => t.palette.primary.dark,
-            fontFamily: languageDetector(title)
+            ...styles.centerV,
+            gap: 1,
+          }}
+        >
+          <Typography
+            variant="semiBoldLarge"
+            color="primary.dark"
+            sx={{
+              fontFamily: languageDetector(title)
+                ? farsiFontFamily
+                : primaryFontFamily,
+            }}
+            data-testid={"space-card-title-test"}
+          >
+            {loading ? <CircularProgress size={20} /> : title}
+          </Typography>
+
+          {type?.code === SPACE_LEVELS.PREMIUM && (
+            <Tooltip
+              title={t("spaces.premiumSpace")}
+              data-testid={"space-card-premium-test"}
+            >
+              <Box
+                component="img"
+                src={premium}
+                alt="premium"
+                sx={{ width: 24, height: 24 }}
+              />
+            </Tooltip>
+          )}
+        </Box>
+        <Typography
+          variant="bodyMedium"
+          color="#2B333B"
+          sx={{
+            fontFamily: languageDetector(owner.displayName)
               ? farsiFontFamily
               : primaryFontFamily,
           }}
           data-testid={"space-card-title-test"}
         >
-          {loading ? <CircularProgress size={20} /> : title}
+          {t("common.owner")}: {isOwner ? t("common.you") : owner.displayName}
         </Typography>
-
-        {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip
-            title={t("spaces.premiumSpace")}
-            data-testid={"space-card-premium-test"}
-          >
-            <Box
-              component="img"
-              src={premium}
-              alt="premium"
-              sx={{ width: 32, height: 32 }}
-            />
-          </Tooltip>
-        )}
       </Box>
-
       <Box
         sx={{
           ...styles.centerV,
           flexWrap: "wrap",
           justifyContent: { xs: "space-between", md: "flex-end" },
           gap: { xs: 0.5, sm: 2, md: 6 },
-          width: { xs: "100%", md: "auto" },
         }}
       >
-        <Box sx={{ ...styles.centerV, gap: { xs: 0.5, sm: 2, md: 2 } }}>
-          <Tooltip title={<Trans i18nKey={owner.displayName} />}>
-            <Chip
-              size="small"
-              variant="outlined"
-              color={isOwner ? "primary" : "default"}
-              label={
-                <>
-                  <Trans i18nKey="owner" />:{" "}
-                  {isOwner ? (
-                    <Trans i18nKey="common.you" />
-                  ) : (
-                    <span
-                      style={{
-                        fontFamily: languageDetector(owner?.displayName)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                      data-testid={"space-card-show-displayName"}
-                    >
-                      <Trans i18nKey={owner?.displayName} />
-                    </span>
-                  )}
-                </>
-              }
-            />
-          </Tooltip>
-
-          <Tooltip title={<Trans i18nKey="common.membersCount" />}>
-            <Box
-              sx={{
-                ...styles.centerV,
-                gap: 0.5,
-                opacity: 0.8,
-                textDecoration: "none",
-                color: "initial",
-                width: { sm: "52px" },
-                alignItems: "center",
-              }}
-            >
-              <IconButton sx={{ padding: "5px" }} component="span">
-                <img
-                  style={{
-                    marginInlineStart: 0.5,
-                    width: "24px",
-                    height: "24px",
-                  }}
-                  src={peopleIcon}
-                  alt={"peopleIcon"}
-                />
-              </IconButton>
-              <Typography
-                data-testid={"space-card-test-membersCount"}
-                color="#2B333B"
-                fontWeight={"bold"}
-              >
-                {membersCount}
-              </Typography>
-            </Box>
-          </Tooltip>
-
-          <Tooltip title={<Trans i18nKey="assessment.assessmentsCount" />}>
-            <Box
-              sx={{
-                ...styles.centerV,
-                gap: 0.5,
-                opacity: 0.8,
-                textDecoration: "none",
-                color: "initial",
-                width: { sm: "52px" },
-                alignItems: "center",
-              }}
-            >
-              <IconButton sx={{ padding: "5px" }} component="span">
-                <img
-                  style={{
-                    marginInlineStart: 0.5,
-                    width: "24px",
-                    height: "24px",
-                  }}
-                  src={descriptionIcon}
-                  alt={"descriptionIcon"}
-                />
-              </IconButton>
-              <Typography
-                data-testid={"space-card-test-assessmentsCount"}
-                color="#2B333B"
-                fontWeight={"bold"}
-              >
-                {assessmentsCount}
-              </Typography>
-            </Box>
-          </Tooltip>
-        </Box>
-
         <Box sx={{ ...styles.centerV, gap: 0.5 }}>
-          {isActiveSpace && (
-            <Chip
-              data-testid={"space-card-test-isActiveSpace"}
-              label={<Trans i18nKey="current" />}
-              color="info"
-              size="small"
-            />
-          )}
-
-          <Tooltip title={<Trans i18nKey="spaces.spaceSetting" />}>
-            <IconButton
-              size="small"
-              component={Link}
-              to={`/${spaceId}/setting`}
-              onClick={(e) => {
-                e.stopPropagation();
-                trackSeen();
-              }}
-            >
-              <SettingsOutlinedIcon />
-            </IconButton>
-          </Tooltip>
-
           <Tooltip
             open={showTooltip}
             onMouseEnter={() => setShowTooltip(true)}

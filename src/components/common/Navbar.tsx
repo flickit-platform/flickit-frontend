@@ -435,7 +435,7 @@ const Navbar = () => {
           background: theme.palette.primary.main,
         }}
         component={NavLink}
-        to={spaceId ? `/${spaceId}/assessments/1` : `/spaces/1`}
+        to={spaceId ? `/${spaceId}/assessments/1` : `/spaces/0`}
       >
         <img
           src={config.appLogoUrl}
@@ -450,7 +450,7 @@ const Navbar = () => {
           <ListItemButton
             sx={{ textAlign: "left", borderRadius: 1.5 }}
             component={NavLink}
-            to="/spaces/1"
+            to="/spaces/0"
           >
             <ListItemText primary={<Trans i18nKey="spaces.spaces" />} />
           </ListItemButton>
@@ -571,7 +571,7 @@ const Navbar = () => {
                 width: "110px",
               },
             }}
-            to={`/spaces/1`}
+            to={`/spaces/0`}
           >
             <img
               src={config.appLogoUrl}
@@ -725,13 +725,13 @@ const SpacesButton = (props: any) => {
   };
 
   const navigate = useNavigate();
-  const isActive = location.pathname.startsWith("/spaces/1");
+  const isActive = location.pathname.startsWith("/spaces/0");
 
   return (
     <>
       <Button
         data-cy="spaces"
-        onClick={() => navigate("/spaces/1")}
+        onClick={() => navigate("/spaces/0")}
         startIcon={
           <FolderRounded sx={{ opacity: 0.8, fontSize: "18px !important" }} />
         }
@@ -830,7 +830,7 @@ const SpacesButton = (props: any) => {
           dense
           onClick={handleClose}
           component={NavLink}
-          to={`/spaces/1`}
+          to={`/spaces/0`}
         >
           <Trans i18nKey="spaces.spaceDirectory" />
         </MenuItem>

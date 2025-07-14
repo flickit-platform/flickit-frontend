@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { SpaceLayout } from "./SpaceLayout";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import Title from "@common/Title";
@@ -12,41 +11,44 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import Skeleton from "@mui/material/Skeleton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
-import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import SpaceEmptyStateSVG from "@assets/svg/spaceEmptyState.svg";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { styles, animations } from "@styles";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { useNavigate, useParams } from "react-router-dom";
+import { animations } from "@styles";
+import { Grid, TablePagination } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
+import { t } from "i18next";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
   const navigate = useNavigate();
-  const { page } = useParams();
-  const pageNumber = Number(page);
-  const { fetchSpace, ...rest } = useFetchSpace();
-  const { data, size, total, allowCreateBasic } = rest;
 
-  const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
-    if (
-      Math.ceil(total / size) > Number(page) ||
-      Math.ceil(total / size) == Number(page)
-    ) {
-      navigate(`/spaces/${value}`);
-    }
+  const [rowsPerPage, setRowsPerPage] = useState<number>(6);
+  const [page, setPage] = useState<number>(0);
+
+  const {
+    data,
+    total,
+    loading,
+    error,
+    errorObject,
+    allowCreateBasic,
+    fetchSpace,
+  } = useFetchSpace(page, rowsPerPage);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+    navigate(`/spaces/${newPage}`);
   };
 
-  const pageCount = size === 0 ? 1 : Math.ceil(total / size);
-  if (Math.ceil(total / size) < Number(page) && pageCount) {
-    navigate(`/spaces/${pageCount}`);
-  }
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newSize = parseInt(event.target.value, 10);
+    setRowsPerPage(newSize);
+    setPage(0);
+  };
 
   useEffect(() => {
     if (window.location.hash === "#createSpace") {
@@ -66,51 +68,28 @@ const SpaceContainer = () => {
   };
 
   return (
-    <SpaceLayout
-      title={
-        <Box sx={{ ...styles.centerVH, mb: "40px" }}>
-          <Title
-            borderBottom={true}
-            size="large"
-            sx={{ width: "100%" }}
-            toolbarProps={{ whiteSpace: "nowrap" }}
-            toolbar={
-              data?.length !== 0 ? (
-                <ToolbarCreateItemBtn
-                  icon={
-                    <CreateNewFolderOutlinedIcon
-                      sx={{ marginInlineStart: 1, marginInlineEnd: 0 }}
-                    />
-                  }
-                  onClick={handleOpenDialog}
-                  shouldAnimate={data?.length === 0}
-                  text="spaces.newSpace"
-                />
-              ) : (
-                <></>
-              )
-            }
-          >
-            <Trans i18nKey="spaces.spaces" />
-          </Title>
-          {}
-        </Box>
-      }
-    >
+    <Box>
+      <Title borderBottom size="large" sx={{ width: "100%" }}>
+        <Trans i18nKey="assessment.assessments" />
+      </Title>
+
       <QueryData
-        {...rest}
+        data={data}
+        loading={loading}
+        error={error}
+        errorObject={errorObject}
+        loaded={!loading && !!data}
         renderLoading={() => (
-          <Box mt={5}>
-            {[1, 2, 3, 4, 5].map((item) => {
-              return (
+          <Grid container spacing={3}>
+            {[...Array(6)].map((_, i) => (
+              <Grid item xs={12} sm={6} md={4} key={i}>
                 <Skeleton
-                  key={item}
                   variant="rectangular"
                   sx={{ borderRadius: 2, height: "60px", mb: 1 }}
                 />
-              );
-            })}
-          </Box>
+              </Grid>
+            ))}
+          </Grid>
         )}
         emptyDataComponent={
           <ErrorEmptyData
@@ -122,97 +101,77 @@ const SpaceContainer = () => {
             }
           />
         }
-        render={(data) => {
-          return (
-            <>
-              {data?.length == 0 && (
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    mt: 6,
-                    gap: 4,
-                  }}
-                >
-                  <img
-                    src={SpaceEmptyStateSVG}
-                    alt={"Oh! You have no space?"}
-                    width="240px"
-                  />
-                  <Typography
-                    textAlign="center"
-                    variant="headlineLarge"
-                    sx={{
-                      color: "#9DA7B3",
-                      fontSize: "3rem",
-                      fontWeight: "900",
-                      width: "60%",
-                    }}
-                  >
-                    <Trans i18nKey="spaces.noSpaceHere" />
-                  </Typography>
-                  <Typography
-                    textAlign="center"
-                    variant="h1"
-                    sx={{
-                      color: "#9DA7B3",
-                      fontSize: "1rem",
-                      fontWeight: "500",
-                      width: "60%",
-                    }}
-                  >
-                    <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
-                  </Typography>
-                  <Box>
-                    <Button
-                      startIcon={<AddRoundedIcon />}
-                      variant="contained"
-                      onClick={() => dialogProps.openDialog({ type: "create" })}
-                      sx={{
-                        animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
-                        "&:hover": {
-                          animation: `${animations.noPomp}`,
-                        },
-                      }}
-                    >
-                      <Typography fontSize="1.25rem" variant="button">
-                        <Trans i18nKey="spaces.createYourFirstSpace" />
-                      </Typography>
-                    </Button>
-                  </Box>
-                </Box>
-              )}
-              <SpacesList
-                dialogProps={dialogProps}
-                data={data}
-                fetchSpaces={fetchSpace}
-              />
-            </>
-          );
-        }}
+        render={(data) =>
+          data.length === 0 ? (
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
+                mt: 6,
+                gap: 4,
+              }}
+            >
+              <img src={SpaceEmptyStateSVG} width="240px" />
+              <Typography
+                textAlign="center"
+                variant="headlineLarge"
+                sx={{ color: "#9DA7B3", fontSize: "3rem", fontWeight: "900" }}
+              >
+                <Trans i18nKey="spaces.noSpaceHere" />
+              </Typography>
+              <Typography
+                textAlign="center"
+                sx={{ color: "#9DA7B3", fontSize: "1rem", fontWeight: 500 }}
+              >
+                <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
+              </Typography>
+              <Button
+                startIcon={<AddRoundedIcon />}
+                variant="contained"
+                onClick={handleOpenDialog}
+                sx={{
+                  animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
+                  "&:hover": {
+                    animation: `${animations.noPomp}`,
+                  },
+                }}
+              >
+                <Typography fontSize="1.25rem" variant="button">
+                  <Trans i18nKey="spaces.createYourFirstSpace" />
+                </Typography>
+              </Button>
+            </Box>
+          ) : (
+            <SpacesList
+              dialogProps={dialogProps}
+              data={data}
+              fetchSpaces={fetchSpace}
+            />
+          )
+        }
       />
+
       {data.length !== 0 && (
-        <Stack
-          spacing={2}
-          sx={{
-            mt: 3,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Pagination
-            variant="outlined"
-            color="primary"
-            count={pageCount}
-            onChange={handleChangePage}
-            page={pageNumber}
-          />
-        </Stack>
+        <TablePagination
+          component="div"
+          count={total}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[6, 12, 24, 48]} 
+          labelRowsPerPage={t("common.rowsPerPage")}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to}  ${t("common.of")} ${
+              count !== -1 ? count : `${t("common.moreThan")} ${to}`
+            }`
+          }
+        />
       )}
+
       <CreateSpaceDialog
         {...dialogProps}
         allowCreateBasic={allowCreateBasic}
@@ -221,11 +180,11 @@ const SpaceContainer = () => {
         contentStyle={{ p: 0 }}
         onClose={handleCloseDialog}
       />
-    </SpaceLayout>
+    </Box>
   );
 };
 
-const useFetchSpace = () => {
+const useFetchSpace = (page: number, size: number) => {
   const [data, setData] = useState<any>({});
   const [allowCreateBasic, setAllowCreateBasic] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
@@ -233,15 +192,34 @@ const useFetchSpace = () => {
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { page } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
-  const pageNumber = Number(page);
-  const PAGESIZE: number = 10;
 
-  useEffect(() => {
-    fetchSpace();
-  }, [pageNumber]);
+  const fetchSpace = async () => {
+    setLoading(true);
+    setErrorObject(undefined);
+    try {
+      checkLimitExceeded();
+      const { data: res } = await service.space.getList(
+        { size, page: page + 1 }, // +1 چون API صفحه‌ها رو از 1 می‌شماره
+        { signal: abortController.current.signal },
+      );
+      if (res) {
+        setData(res);
+        setError(false);
+      } else {
+        setData({});
+        setError(true);
+      }
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err, { filterByStatus: [404] });
+      setError(true);
+      setErrorObject(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const checkLimitExceeded = async () => {
     try {
@@ -256,41 +234,15 @@ const useFetchSpace = () => {
       toastError(err, { filterByStatus: [404] });
     }
   };
-  const fetchSpace = async () => {
-    setLoading(true);
-    setErrorObject(undefined);
-    try {
-      checkLimitExceeded();
-      const { data: res } = await service.space.getList(
-        { size: PAGESIZE, page: pageNumber },
-        { signal: abortController.current.signal },
-      );
-      if (res) {
-        setData(res);
-        setError(false);
-      } else {
-        setData({});
-        setError(true);
-      }
 
-      setLoading(false);
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err, { filterByStatus: [404] });
-      setLoading(false);
-      setError(true);
-      setErrorObject(err);
-    }
-  };
+  useEffect(() => {
+    fetchSpace();
+  }, [page, size]);
 
   return {
     data: data.items ?? [],
-    page: data.page ?? 0,
-    size: data.size ?? 0,
     total: data.total ?? 0,
-    requested_space: data.requested_space,
     loading,
-    loaded: !!data,
     error,
     errorObject,
     allowCreateBasic,

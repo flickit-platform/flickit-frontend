@@ -23,7 +23,7 @@ const ErrorNotFoundPage = () => {
           variant="contained"
           size="large"
           onClick={() => {
-            window.location.href = "/spaces/1";
+            window.location.href = "/spaces/0";
           }}
         >
           <Trans i18nKey="common.backToHome" />
