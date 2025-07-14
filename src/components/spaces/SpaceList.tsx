@@ -26,7 +26,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import Grid from "@mui/material/Grid";
 
 interface ISpaceListProps {
@@ -39,7 +39,7 @@ const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
 
   return (
-    <Grid container spacing={3} mt={4}>
+    <Grid container spacing={3}>
       {data.map((item: any) => {
         return (
           <Grid item xs={12} sm={6} md={4}>
@@ -152,9 +152,10 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           variant="bodyMedium"
           color="#2B333B"
           sx={{
-            fontFamily: languageDetector(owner.displayName)
-              ? farsiFontFamily
-              : primaryFontFamily,
+            fontFamily:
+              languageDetector(owner.displayName) || i18next.language === "fa"
+                ? farsiFontFamily
+                : primaryFontFamily,
           }}
           data-testid={"space-card-title-test"}
         >

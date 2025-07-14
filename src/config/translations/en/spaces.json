@@ -41,5 +41,6 @@
   "unlimitedPremiumSpace": "<strong>Unlimited</strong> premium space.",
   "updateSpace": "Update space",
   "upgradeToPremiumSpace": "Upgrade to a Premium space for access to more assessments",
-  "veryLimitedNumberOfSpaces": "Very <strong>limited</strong> number of spaces."
+  "veryLimitedNumberOfSpaces": "Very <strong>limited</strong> number of spaces.",
+  "workSpaces": "Work spaces"
 }

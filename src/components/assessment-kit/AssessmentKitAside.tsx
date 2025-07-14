@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { theme } from "@config/theme";
 import LanguageIcon from "@mui/icons-material/Language";
-import PriceIcon from "@utils/icons/priceIcon";
+import PriceIcon from "@/assets/icons/priceIcon";
 import { Trans } from "react-i18next";
 import useDialog from "@utils/useDialog";
 import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
-import PurchasedIcon from "@utils/icons/purchasedIcon";
+import PurchasedIcon from "@/assets/icons/purchasedIcon";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 

@@ -19,6 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
 import { t } from "i18next";
+import ExpandableSection from "../common/buttons/ExpandableSection";
+import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
+import NewAssessmentIcon from "@/assets/icons/newAssessment";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
@@ -70,108 +73,132 @@ const SpaceContainer = () => {
   return (
     <Box>
       <Title borderBottom size="large" sx={{ width: "100%" }}>
-        <Trans i18nKey="assessment.assessments" />
+        <Trans i18nKey="assessment.myAssessments" />
       </Title>
-
-      <QueryData
-        data={data}
-        loading={loading}
-        error={error}
-        errorObject={errorObject}
-        loaded={!loading && !!data}
-        renderLoading={() => (
-          <Grid container spacing={3}>
-            {[...Array(6)].map((_, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i}>
-                <Skeleton
-                  variant="rectangular"
-                  sx={{ borderRadius: 2, height: "60px", mb: 1 }}
-                />
+      <ExpandableSection
+        title={t("spaces.workSpaces")}
+        endButtonText={t("spaces.newSpace") ?? ""}
+        onEndButtonClick={() => {
+          handleOpenDialog();
+        }}
+        endButtonIcon={<CreateNewFolderRoundedIcon />}
+      >
+        <Box>
+          <QueryData
+            data={data}
+            loading={loading}
+            error={error}
+            errorObject={errorObject}
+            loaded={!loading && !!data}
+            renderLoading={() => (
+              <Grid container spacing={3}>
+                {[...Array(6)].map((_, i) => (
+                  <Grid item xs={12} sm={6} md={4} key={i}>
+                    <Skeleton
+                      variant="rectangular"
+                      sx={{ borderRadius: 2, height: "60px", mb: 1 }}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        )}
-        emptyDataComponent={
-          <ErrorEmptyData
-            emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
-            suggests={
-              <Typography variant="subtitle1" textAlign="center">
-                <Trans i18nKey="spaces.tryCreatingNewSpace" />
-              </Typography>
+            )}
+            emptyDataComponent={
+              <ErrorEmptyData
+                emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
+                suggests={
+                  <Typography variant="subtitle1" textAlign="center">
+                    <Trans i18nKey="spaces.tryCreatingNewSpace" />
+                  </Typography>
+                }
+              />
+            }
+            render={(data) =>
+              data.length === 0 ? (
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    mt: 6,
+                    gap: 4,
+                  }}
+                >
+                  <img src={SpaceEmptyStateSVG} width="240px" />
+                  <Typography
+                    textAlign="center"
+                    variant="headlineLarge"
+                    sx={{
+                      color: "#9DA7B3",
+                      fontSize: "3rem",
+                      fontWeight: "900",
+                    }}
+                  >
+                    <Trans i18nKey="spaces.noSpaceHere" />
+                  </Typography>
+                  <Typography
+                    textAlign="center"
+                    sx={{ color: "#9DA7B3", fontSize: "1rem", fontWeight: 500 }}
+                  >
+                    <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
+                  </Typography>
+                  <Button
+                    startIcon={<AddRoundedIcon />}
+                    variant="contained"
+                    onClick={handleOpenDialog}
+                    sx={{
+                      animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
+                      "&:hover": {
+                        animation: `${animations.noPomp}`,
+                      },
+                    }}
+                  >
+                    <Typography fontSize="1.25rem" variant="button">
+                      <Trans i18nKey="spaces.createYourFirstSpace" />
+                    </Typography>
+                  </Button>
+                </Box>
+              ) : (
+                <SpacesList
+                  dialogProps={dialogProps}
+                  data={data}
+                  fetchSpaces={fetchSpace}
+                />
+              )
             }
           />
-        }
-        render={(data) =>
-          data.length === 0 ? (
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "center",
-                mt: 6,
-                gap: 4,
-              }}
-            >
-              <img src={SpaceEmptyStateSVG} width="240px" />
-              <Typography
-                textAlign="center"
-                variant="headlineLarge"
-                sx={{ color: "#9DA7B3", fontSize: "3rem", fontWeight: "900" }}
-              >
-                <Trans i18nKey="spaces.noSpaceHere" />
-              </Typography>
-              <Typography
-                textAlign="center"
-                sx={{ color: "#9DA7B3", fontSize: "1rem", fontWeight: 500 }}
-              >
-                <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
-              </Typography>
-              <Button
-                startIcon={<AddRoundedIcon />}
-                variant="contained"
-                onClick={handleOpenDialog}
-                sx={{
-                  animation: `${animations.pomp} 1.6s infinite cubic-bezier(0.280, 0.840, 0.420, 1)`,
-                  "&:hover": {
-                    animation: `${animations.noPomp}`,
-                  },
-                }}
-              >
-                <Typography fontSize="1.25rem" variant="button">
-                  <Trans i18nKey="spaces.createYourFirstSpace" />
-                </Typography>
-              </Button>
-            </Box>
-          ) : (
-            <SpacesList
-              dialogProps={dialogProps}
-              data={data}
-              fetchSpaces={fetchSpace}
+
+          {data.length !== 0 && (
+            <TablePagination
+              sx={{ mt: 2 }}
+              component="div"
+              count={total}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={[6, 12, 24, 48]}
+              labelRowsPerPage={t("common.rowsPerPage")}
+              labelDisplayedRows={({ from, to, count }) =>
+                `${from}-${to}  ${t("common.of")} ${
+                  count !== -1 ? count : `${t("common.moreThan")} ${to}`
+                }`
+              }
             />
-          )
-        }
-      />
-
-      {data.length !== 0 && (
-        <TablePagination
-          component="div"
-          count={total}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[6, 12, 24, 48]} 
-          labelRowsPerPage={t("common.rowsPerPage")}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to}  ${t("common.of")} ${
-              count !== -1 ? count : `${t("common.moreThan")} ${to}`
-            }`
-          }
-        />
-      )}
-
+          )}
+        </Box>
+      </ExpandableSection>
+      <ExpandableSection
+        title={t("assessment.assessments")}
+        endButtonText={t("assessment.newAssessment") ?? ""}
+        onEndButtonClick={() => {
+          handleOpenDialog();
+        }}
+        endButtonIcon={<NewAssessmentIcon width={20}/>}
+      >
+        {" "}
+      </ExpandableSection>
       <CreateSpaceDialog
         {...dialogProps}
         allowCreateBasic={allowCreateBasic}
@@ -201,7 +228,7 @@ const useFetchSpace = (page: number, size: number) => {
     try {
       checkLimitExceeded();
       const { data: res } = await service.space.getList(
-        { size, page: page + 1 }, // +1 چون API صفحه‌ها رو از 1 می‌شماره
+        { size, page: page + 1 },
         { signal: abortController.current.signal },
       );
       if (res) {

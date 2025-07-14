@@ -38,6 +38,7 @@
   "regenerateViaAI": "Regenerate via AI",
   "regenerateViaAIDescription": "The current insight will be lost. Generate a new one with AI?",
   "learnWhyThisIsUnavailable": "Learn why this action is unavailable?",
+  "myAssessments": "My assessments",
   "newAssessment": "New assessment",
   "noAssesmentHere": "No assessment here!",
   "availableLanguage": "Only available in this language",
