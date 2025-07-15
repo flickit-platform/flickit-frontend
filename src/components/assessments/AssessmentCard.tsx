@@ -26,7 +26,7 @@ import {
   IQuestionnairesModel,
   TQueryFunction,
 } from "@/types/index";
-import { TDialogProps } from "@utils/useDialog";
+import useDialog, { TDialogProps } from "@utils/useDialog";
 import Button from "@mui/material/Button";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
@@ -46,6 +46,7 @@ import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
+import MoveAssessmentDialog from "./MoveAssessmentDialog";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -495,6 +496,7 @@ const Actions = ({
   abortController: React.MutableRefObject<AbortController>;
 }) => {
   const navigate = useNavigate();
+  const moveAssessmentDialogProps = useDialog();
 
   const deleteItem = async () => {
     try {
@@ -524,6 +526,9 @@ const Actions = ({
     });
   };
 
+  const handleMoveToAssessment = () => {
+    moveAssessmentDialogProps.openDialog({});
+  };
   const actions = hasStatus(item.status)
     ? [
         {
@@ -542,7 +547,7 @@ const Actions = ({
         {
           icon: <DriveFileMoveOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="assessment.moveAssessment" />,
-          onClick: goToAssessmentSettings,
+          onClick: handleMoveToAssessment,
         },
         {
           icon: <SettingsIcon fontSize="small" />,
@@ -558,10 +563,18 @@ const Actions = ({
       ];
 
   return (
-    <MoreActions
-      {...useMenu()}
-      boxProps={{ position: "absolute", top: "10px", right: "10px", zIndex: 2 }}
-      items={actions}
-    />
+    <>
+      <MoreActions
+        {...useMenu()}
+        boxProps={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 2,
+        }}
+        items={actions}
+      />
+      <MoveAssessmentDialog {...moveAssessmentDialogProps} />
+    </>
   );
 };
