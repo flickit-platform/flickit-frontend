@@ -157,7 +157,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                 ? farsiFontFamily
                 : primaryFontFamily,
           }}
-          data-testid={"space-card-title-test"}
+          data-testid="space-card-show-displayName"
         >
           {t("common.owner")}: {isOwner ? t("common.you") : owner.displayName}
         </Typography>
