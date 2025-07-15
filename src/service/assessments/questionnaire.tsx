@@ -42,7 +42,7 @@ export const questionnaire = {
     },
     config?: AxiosRequestConfig<any>,
   ) {
-    const { assessmentId, questionnaireId, size, page } = args;
+    const { assessmentId, questionnaireId } = args;
     return axios.get(
       `/api/v1/assessments/${assessmentId}/questionnaires/${questionnaireId}/next`,
       {

@@ -14,7 +14,6 @@ import { useQuery } from "@/utils/useQuery";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import { styles } from "@styles";
-import { IQuestionnairesInfo } from "@/types";
 import languageDetector from "@/utils/languageDetector";
 
 export const Review = () => {
