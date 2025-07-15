@@ -35,8 +35,9 @@ export const Review = () => {
   const { questionsInfo } = useQuestionContext();
   const [answeredQuestions, setAnsweredQuestions] = useState<number>();
   const [questionnaireTitle, setQuestionnaireTitle] = useState<string>("");
-  const [nextQuestionnaire, setNextQuestionnaire] =
-    useState<IQuestionnairesInfo | null>(null);
+  const [nextQuestionnaire, setNextQuestionnaire] = useState<number | null>(
+    null,
+  );
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,18 +54,18 @@ export const Review = () => {
       }
     }
   }, []);
-  const { assessmentTotalProgress, fetchPathInfo, questionnaireQueryData } =
+  const { assessmentTotalProgress, fetchPathInfo, getNextQuestionnaire } =
     useQuestionnaire();
   useEffect(() => {
-    fetchPathInfo.query({ questionnaireId }).then((data) => {
-      setQuestionnaireTitle(data?.questionnaire?.title);
-    });
-    questionnaireQueryData.query().then((data) => {
-      const questionnaireIndex = data.items.findIndex(
-        (item: any) => item.id == questionnaireId,
-      );
-      setNextQuestionnaire(data.items[questionnaireIndex + 1]);
-    });
+    if (questionnaireId) {
+      fetchPathInfo.query({ questionnaireId }).then((data) => {
+        setQuestionnaireTitle(data?.questionnaire?.title);
+      });
+      getNextQuestionnaire.query({ questionnaireId }).then((res) => {
+        const nextQuestionnaireId = res.data.id;
+        setNextQuestionnaire(nextQuestionnaireId);
+      });
+    }
   }, [questionnaireId]);
 
   const progress =
@@ -302,9 +303,9 @@ export const Review = () => {
                 to={
                   "./../../../questionnaires" +
                   "/" +
-                  (nextQuestionnaire?.id ?? "") +
+                  (nextQuestionnaire ?? "") +
                   "/" +
-                  (nextQuestionnaire?.nextQuestion ?? 1)
+                  1
                 }
               >
                 <Trans i18nKey="questions.nextQuestionnaire" />

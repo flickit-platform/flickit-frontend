@@ -11,7 +11,6 @@ const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =
     useQuestionnaire();
 
-
   return (
     <PermissionControl
       error={[questionnaireQueryData.errorObject?.response?.data]}
@@ -55,6 +54,15 @@ export const useQuestionnaire = () => {
       ),
   });
 
+  const getNextQuestionnaire = useQuery<IQuestionnairesModel>({
+    service: (args, config) =>
+      service.assessments.questionnaire.getNext(
+        { assessmentId, ...(args ?? {}) },
+        config,
+      ),
+    runOnMount: false,
+  });
+
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
       service.assessments.info.getProgress(
@@ -71,6 +79,7 @@ export const useQuestionnaire = () => {
     questionnaireQueryData,
     assessmentTotalProgress,
     fetchPathInfo,
+    getNextQuestionnaire,
   };
 };
 
