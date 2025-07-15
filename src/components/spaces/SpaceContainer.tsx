@@ -1,30 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
-  Button,
   Grid,
   Skeleton,
   TablePagination,
-  Typography,
   Pagination,
 } from "@mui/material";
 import { Trans } from "react-i18next";
-import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { useSearchParams } from "react-router-dom";
 import Title from "@common/Title";
 import QueryData from "@common/QueryData";
-import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import { SpacesList } from "./SpaceList";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import toastError from "@utils/toastError";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import NewAssessmentIcon from "@/assets/icons/newAssessment";
-import SpaceEmptyStateSVG from "@assets/svg/spaceEmptyState.svg";
-import { animations } from "@styles";
 import ExpandableSection from "../common/buttons/ExpandableSection";
 import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentCEFromDialog from "../assessments/AssessmentCEFromDialog";
@@ -33,12 +26,12 @@ import { useFetchAssessments } from "../assessments/AssessmentContainer";
 import { t } from "i18next";
 import { AssessmentsList } from "../assessments/AssessmentList";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
+import EmptyState from "../kit-designer/common/EmptyState";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
   const assessmentDialogProps = useDialog();
   const infoDialogProps = useDialog();
-  const navigate = useNavigate();
   const { currentSpace } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const assessmentPage = Number(searchParams.get("assessmentPage") ?? 1);
@@ -64,7 +57,7 @@ const SpaceContainer = () => {
     errorObject: assessmentsErrorObject,
     deleteAssessment,
     fetchAssessments,
-  } = useFetchAssessments(assessmentPage - 1);
+  } = useFetchAssessments(assessmentPage - 1, 6);
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -96,7 +89,7 @@ const SpaceContainer = () => {
     }
   }, []);
 
-  const handleOpenDialog = () => {
+  const handleAddNewSpace = () => {
     dialogProps.openDialog({ type: "create" });
     window.location.hash = "#createSpace";
   };
@@ -104,6 +97,18 @@ const SpaceContainer = () => {
   const handleCloseDialog = () => {
     dialogProps.onClose();
     window.location.hash = "";
+  };
+
+  const handleAddNewAssessment = () => {
+    assessmentDialogProps.openDialog({
+      type: "create",
+      data: {
+        space: {
+          id: currentSpace?.id,
+          title: currentSpace?.title,
+        },
+      },
+    });
   };
 
   return (
@@ -116,7 +121,7 @@ const SpaceContainer = () => {
       <ExpandableSection
         title={t("spaces.workSpaces")}
         endButtonText={t("spaces.newSpace") ?? ""}
-        onEndButtonClick={handleOpenDialog}
+        onEndButtonClick={spaceData.length ? handleAddNewSpace : undefined}
         endButtonIcon={<CreateNewFolderRoundedIcon />}
       >
         <QueryData
@@ -137,63 +142,14 @@ const SpaceContainer = () => {
               ))}
             </Grid>
           )}
-          emptyDataComponent={
-            <ErrorEmptyData
-              emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
-              suggests={
-                <Typography variant="subtitle1" textAlign="center">
-                  <Trans i18nKey="spaces.tryCreatingNewSpace" />
-                </Typography>
-              }
-            />
-          }
           render={(data) =>
             data.length === 0 ? (
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  mt: 6,
-                  gap: 4,
-                }}
-              >
-                <img src={SpaceEmptyStateSVG} width="240px" />
-                <Typography
-                  textAlign="center"
-                  variant="headlineLarge"
-                  sx={{
-                    color: "#9DA7B3",
-                    fontSize: "3rem",
-                    fontWeight: "900",
-                  }}
-                >
-                  <Trans i18nKey="spaces.noSpaceHere" />
-                </Typography>
-                <Typography
-                  textAlign="center"
-                  sx={{ color: "#9DA7B3", fontSize: "1rem", fontWeight: 500 }}
-                >
-                  <Trans i18nKey="spaces.spacesAreEssentialForCreating" />
-                </Typography>
-                <Button
-                  startIcon={<AddRoundedIcon />}
-                  variant="contained"
-                  onClick={handleOpenDialog}
-                  sx={{
-                    animation: `${animations.pomp} 1.6s infinite`,
-                    "&:hover": {
-                      animation: animations.noPomp,
-                    },
-                  }}
-                >
-                  <Typography fontSize="1.25rem" variant="button">
-                    <Trans i18nKey="spaces.createYourFirstSpace" />
-                  </Typography>
-                </Button>
-              </Box>
+              <EmptyState
+                btnTitle="spaces.newSpace"
+                title="spaces.noSpaceHere"
+                SubTitle="spaces.noSpacesHereDesc"
+                onAddNewRow={handleAddNewSpace}
+              />
             ) : (
               <>
                 <SpacesList
@@ -227,16 +183,8 @@ const SpaceContainer = () => {
       <ExpandableSection
         title={t("assessment.assessments")}
         endButtonText={t("assessment.newAssessment") ?? ""}
-        onEndButtonClick={() =>
-          assessmentDialogProps.openDialog({
-            type: "create",
-            data: {
-              space: {
-                id: currentSpace?.id,
-                title: currentSpace?.title,
-              },
-            },
-          })
+        onEndButtonClick={
+          assessments.length ? handleAddNewAssessment : undefined
         }
         endButtonIcon={<NewAssessmentIcon width={20} />}
       >
@@ -247,34 +195,36 @@ const SpaceContainer = () => {
           errorObject={assessmentsErrorObject}
           loaded={!assessmentsLoading && !!assessments}
           renderLoading={() => <LoadingAssessmentCards />}
-          emptyDataComponent={
-            <ErrorEmptyData
-              emptyMessage={<Trans i18nKey="notification.nothingToSeeHere" />}
-              suggests={
-                <Typography variant="subtitle1" textAlign="center">
-                  <Trans i18nKey="assessment.tryCreatingNewAssessment" />
-                </Typography>
-              }
-            />
-          }
           render={(data) => (
             <>
-              <AssessmentsList
-                data={data}
-                dialogProps={assessmentDialogProps}
-                space={{ id: 1329, title: "draft" }}
-                deleteAssessment={deleteAssessment}
-              />
-              {assessmentsTotal > 8 && (
-                <Box mt={2} display="flex" justifyContent="center">
-                  <Pagination
-                    variant="outlined"
-                    color="primary"
-                    count={Math.ceil(assessmentsTotal / 8)}
-                    page={assessmentPage}
-                    onChange={handleAssessmentPagination}
+              {!data.length ? (
+                <EmptyState
+                  btnTitle="assessment.newAssessment"
+                  title="assessment.noAssesmentHere"
+                  SubTitle="assessment.createAnAssessmentWith"
+                  onAddNewRow={handleAddNewAssessment}
+                />
+              ) : (
+                <>
+                  {" "}
+                  <AssessmentsList
+                    data={data}
+                    dialogProps={assessmentDialogProps}
+                    space={{ id: 6, title: "draft" }}
+                    deleteAssessment={deleteAssessment}
                   />
-                </Box>
+                  {assessmentsTotal > 8 && (
+                    <Box mt={2} display="flex" justifyContent="center">
+                      <Pagination
+                        variant="outlined"
+                        color="primary"
+                        count={Math.ceil(assessmentsTotal / 8)}
+                        page={assessmentPage}
+                        onChange={handleAssessmentPagination}
+                      />
+                    </Box>
+                  )}
+                </>
               )}
             </>
           )}

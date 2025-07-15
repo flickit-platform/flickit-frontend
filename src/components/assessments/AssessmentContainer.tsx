@@ -37,7 +37,10 @@ const AssessmentContainer = () => {
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, ...rest } = useFetchAssessments(Number(page) - 1);
+  const { fetchAssessments, ...rest } = useFetchAssessments(
+    Number(page) - 1,
+    Number(spaceId),
+  );
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -279,14 +282,13 @@ const AssessmentContainer = () => {
   );
 };
 
-export const useFetchAssessments = (page = 0) => {
+export const useFetchAssessments = (page = 0, spaceId: any) => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorObject, setErrorObject] = useState<undefined | ICustomError>(
     undefined,
   );
-  const { spaceId = "1329" } = useParams();
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
@@ -298,7 +300,7 @@ export const useFetchAssessments = (page = 0) => {
     setErrorObject(undefined);
     try {
       const { data: res } = await service.assessments.info.getList(
-        { spaceId: spaceId, size: 8, page },
+        { spaceId, size: 8, page },
         { signal: abortController.current.signal },
       );
       if (res) {
