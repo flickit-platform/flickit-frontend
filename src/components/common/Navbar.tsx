@@ -201,7 +201,11 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
       data?.assessment?.title
     ) {
       titleToLink = data.assessment.title;
-      href = `/${data.assessment.spaceId}/assessments/1/${data.assessment.id}/dashboard`;
+      if(payload?.title === "Report Access Granted"){
+        href = `/${data.assessment.spaceId}/assessments/${data.assessment.id}/graphical-report`;
+      }else {
+        href = `/${data.assessment.spaceId}/assessments/1/${data.assessment.id}/dashboard`;
+      }
     } else {
       return content;
     }
