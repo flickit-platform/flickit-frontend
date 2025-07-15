@@ -45,6 +45,7 @@ import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -367,7 +368,6 @@ const Header = ({
           borderRadius: "4px",
           border: "0.5px solid #C7CCD1",
           p: 0.5,
-          pb: 0,
         }}
       >
         <Typography variant="labelSmall" color="#6C8093">
@@ -513,8 +513,13 @@ const Actions = ({
     });
   };
 
-  const assessmentSetting = () => {
-    navigate(`${item.id}/settings/`, {
+  const goToAssessmentSettings = () => {
+    const isInSpaces = location.pathname.startsWith("/spaces");
+    const targetPath = isInSpaces
+      ? `/1605/assessments/1/${item.id}/settings/`
+      : `${item.id}/settings/`;
+
+    navigate(targetPath, {
       state: item?.color ?? { code: "#073B4C", id: 6 },
     });
   };
@@ -535,9 +540,14 @@ const Actions = ({
       ]
     : [
         {
+          icon: <DriveFileMoveOutlinedIcon fontSize="small" />,
+          text: <Trans i18nKey="assessment.moveAssessment" />,
+          onClick: goToAssessmentSettings,
+        },
+        {
           icon: <SettingsIcon fontSize="small" />,
           text: <Trans i18nKey="common.settings" />,
-          onClick: assessmentSetting,
+          onClick: goToAssessmentSettings,
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
