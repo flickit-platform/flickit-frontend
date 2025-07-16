@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
@@ -8,7 +7,7 @@ import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@utils/useMenu";
 import { ICustomError } from "@utils/CustomError";
@@ -28,6 +27,7 @@ import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
 import i18next, { t } from "i18next";
 import Grid from "@mui/material/Grid";
+import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -114,53 +114,61 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         cursor: "pointer",
       }}
     >
-      <Box>
-        <Box
-          sx={{
-            ...styles.centerV,
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="semiBoldLarge"
-            color="primary.dark"
+      <Box
+        sx={{
+          ...styles.centerV,
+          gap: 2,
+        }}
+      >
+        <FolderRoundedIcon color="primary" fontSize="large" />
+        <Box>
+          <Box
             sx={{
-              fontFamily: languageDetector(title)
-                ? farsiFontFamily
-                : primaryFontFamily,
+              ...styles.centerV,
+              gap: 1,
             }}
-            data-testid={"space-card-title-test"}
           >
-            {loading ? <CircularProgress size={20} /> : title}
-          </Typography>
-
-          {type?.code === SPACE_LEVELS.PREMIUM && (
-            <Tooltip
-              title={t("spaces.premiumSpace")}
-              data-testid={"space-card-premium-test"}
+            <Typography
+              variant="semiBoldLarge"
+              color="primary.dark"
+              sx={{
+                fontFamily: languageDetector(title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+              data-testid={"space-card-title-test"}
             >
-              <Box
-                component="img"
-                src={premium}
-                alt="premium"
-                sx={{ width: 24, height: 24 }}
-              />
-            </Tooltip>
-          )}
+              {loading ? <CircularProgress size={20} /> : title}
+            </Typography>
+
+            {type?.code === SPACE_LEVELS.PREMIUM && (
+              <Tooltip
+                title={t("spaces.premiumSpace")}
+                data-testid={"space-card-premium-test"}
+              >
+                <Box
+                  component="img"
+                  src={premium}
+                  alt="premium"
+                  sx={{ width: 24, height: 24 }}
+                />
+              </Tooltip>
+            )}
+          </Box>
+          <Typography
+            variant="bodyMedium"
+            color="#2B333B"
+            sx={{
+              fontFamily:
+                languageDetector(owner.displayName) || i18next.language === "fa"
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+            }}
+            data-testid="space-card-show-displayName"
+          >
+            {t("common.owner")}: {isOwner ? t("common.you") : owner.displayName}
+          </Typography>
         </Box>
-        <Typography
-          variant="bodyMedium"
-          color="#2B333B"
-          sx={{
-            fontFamily:
-              languageDetector(owner.displayName) || i18next.language === "fa"
-                ? farsiFontFamily
-                : primaryFontFamily,
-          }}
-          data-testid="space-card-show-displayName"
-        >
-          {t("common.owner")}: {isOwner ? t("common.you") : owner.displayName}
-        </Typography>
       </Box>
       <Box
         sx={{
@@ -266,8 +274,8 @@ const Actions = (props: any) => {
       loading={loading || editLoading || leaveSpaceQuery.loading}
       items={[
         isOwner && {
-          icon: <EditRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="common.edit" />,
+          icon: <SettingsIcon fontSize="small" />,
+          text: <Trans i18nKey="common.settings" />,
           onClick: openEditDialog,
         },
         isOwner && {

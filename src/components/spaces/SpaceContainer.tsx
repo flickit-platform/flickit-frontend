@@ -112,8 +112,8 @@ const SpaceContainer = () => {
   };
 
   return (
-    <Box>
-      <Title borderBottom size="large" sx={{ width: "100%" }}>
+    <Box pt={2}>
+      <Title borderBottom size="large">
         <Trans i18nKey="assessment.myAssessments" />
       </Title>
 
@@ -187,6 +187,7 @@ const SpaceContainer = () => {
           assessments.length ? handleAddNewAssessment : undefined
         }
         endButtonIcon={<NewAssessmentIcon width={20} />}
+        sx={{ mt: 4 }}
       >
         <QueryData
           data={assessments}
