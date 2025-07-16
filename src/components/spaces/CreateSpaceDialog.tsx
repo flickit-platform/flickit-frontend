@@ -523,6 +523,7 @@ const BoxType = ({
             alignItems: "center",
             gap: "8px",
             bottom: { xs: "-45px", md: "-54px" },
+            cursor: "text"
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
