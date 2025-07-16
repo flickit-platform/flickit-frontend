@@ -152,6 +152,7 @@ const AutocompleteBaseField = (
     setError,
     searchable = true,
     disabled,
+    filterSelectedOptions = true,
     ...rest
   } = props;
   const { name, onChange, ref, value, ...restFields } = field;
@@ -307,7 +308,7 @@ const AutocompleteBaseField = (
       autoComplete
       disablePortal={false}
       includeInputInList
-      filterSelectedOptions={true}
+      filterSelectedOptions={filterSelectedOptions}
       filterOptions={(options, params) => {
         const filtered = getFilteredOptions(options, params);
         const exactMatch = optionsData?.find(
