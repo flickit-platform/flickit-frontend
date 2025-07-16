@@ -714,7 +714,6 @@ export const AssessmentSettingMemberBox = (props: {
                               }
                             >
                               <div>
-                                {/*todo*/}
                                 <SelectionRole
                                   row={row}
                                   listOfRoles={listOfRoles}
