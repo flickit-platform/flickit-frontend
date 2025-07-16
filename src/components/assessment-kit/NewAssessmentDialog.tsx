@@ -293,6 +293,8 @@ const LangField = ({ lang }: { lang: { code: string, title: string }[]}) => {
       data-cy="language"
       required={lang?.length > 1}
       defaultValue={defaultLang}
+      disableClearable={true}
+      filterSelectedOptions={false}
     />
   );
 };
