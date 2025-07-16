@@ -809,7 +809,7 @@ export const AssessmentSettingMemberBox = (props: {
                   <TableRow
                     sx={{
                       display: "inline-flex",
-                      justifyContent: "center",
+                      justifyContent: {xs: "space-evenly", md: "center"},
                       width: "100%",
                     }}
                   >
@@ -846,7 +846,7 @@ export const AssessmentSettingMemberBox = (props: {
                         <TableCell
                           sx={{
                             display: "flex",
-                            justifyContent: "center",
+                            justifyContent: {xs: "space-evenly", md: "center"},
                             alignItems: "center",
                             border: "none",
                             gap: { xs: "0px", md: "1.3rem" },
@@ -882,7 +882,7 @@ export const AssessmentSettingMemberBox = (props: {
                               justifyContent: "center",
                               alignItems: "center",
                               gap: { xs: "0px", md: ".7rem" },
-                              width: { xs: "10rem", md: "28vw" },
+                              width: { xs: "15rem", md: "28vw" },
                             }}
                           >
                             <FormControl
