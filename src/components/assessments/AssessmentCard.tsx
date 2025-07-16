@@ -338,6 +338,7 @@ const Header = ({
         fontFamily: languageDetector(itemTitle)
           ? farsiFontFamily
           : primaryFontFamily,
+        direction: languageDetector(itemTitle) ? "rtl" : "ltr",
         ...styles.centerVH,
         gap: "10px",
       }}
