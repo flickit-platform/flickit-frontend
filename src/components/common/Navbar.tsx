@@ -186,7 +186,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
   };
 
   const getLinkedContent = (message: any): string => {
-    const { content, payload } = message;
+    const { content, payload, templateIdentifier } = message;
     const data = payload?.data;
 
     let titleToLink = "";
@@ -201,7 +201,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
       data?.assessment?.title
     ) {
       titleToLink = data.assessment.title;
-      if(payload?.title === "Report Access Granted"){
+      if(templateIdentifier === "grantaccesstoreport"){
         href = `/${data.assessment.spaceId}/assessments/${data.assessment.id}/graphical-report`;
       }else {
         href = `/${data.assessment.spaceId}/assessments/1/${data.assessment.id}/dashboard`;
