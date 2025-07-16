@@ -444,7 +444,7 @@ export const AssessmentSettingMemberBox = (props: {
   });
 
   const columns: readonly Column[] = [
-    { id: "displayName", label: "user.name", minWidth: "24%", position: "center" },
+    { id: "displayName", label: "user.name", minWidth: "24%", position: "start" },
     {
       id: "email",
       label: "user.email",
@@ -456,7 +456,7 @@ export const AssessmentSettingMemberBox = (props: {
       id: "role",
       label: "user.role",
       minWidth: "22%",
-      position: "start",
+      position: "center",
     },
   ];
 
@@ -556,7 +556,7 @@ export const AssessmentSettingMemberBox = (props: {
               <TableRow
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "space-evenly",
                   width: "100%",
                   px: "1rem",
                   gap: { xs: "0px", md: "1.3rem" },
@@ -688,7 +688,7 @@ export const AssessmentSettingMemberBox = (props: {
                           justifyContent: "flex-start",
                           alignItems: "center",
                           gap: { xs: "0px", md: ".7rem" },
-                          width: { xs: "10.1rem", md: "20vw" },
+                          width: { xs: "16.1rem", md: "20vw" },
                         }}
                       >
                         <FormControl
@@ -714,6 +714,7 @@ export const AssessmentSettingMemberBox = (props: {
                               }
                             >
                               <div>
+                                {/*todo*/}
                                 <SelectionRole
                                   row={row}
                                   listOfRoles={listOfRoles}
@@ -1108,6 +1109,7 @@ const SelectionRole = (props: any) => {
       IconComponent={KeyboardArrowDownIcon}
       sx={{
         width: "100%",
+        minWidth: "160px",
         height: "100%",
         boxShadow: "none",
         border: row.editable ? "1px solid #2974B4" : "1px solid #2974b442",
