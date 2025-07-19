@@ -4,7 +4,6 @@ import Collapse from "@mui/material/Collapse";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Box from "@mui/material/Box";
 import {
-  EAssessmentStatus,
   questionActions,
   useQuestionContext,
   useQuestionDispatch,
@@ -18,6 +17,7 @@ import { styles } from "@styles";
 import { QuestionsProgress } from "./QuestionsProgress";
 import EmptyState from "../kit-designer/common/EmptyState";
 import { t } from "i18next";
+import { EAssessmentStatus } from "@/types";
 
 export const QuestionContainer = () => {
   const {

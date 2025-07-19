@@ -28,11 +28,6 @@ const AnaweRangeContent = () => {
     runOnMount: false,
   });
 
-  const deleteQuestionnairesKit = useQuery({
-    service: (args, config) => service.kitVersions.questionnaires.remove(args, config),
-    runOnMount: false,
-  });
-
   const updateKitAnswerRange = useQuery({
     service: (args, config) => service.kitVersions.answerRanges.update(args, config),
     runOnMount: false,

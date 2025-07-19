@@ -40,21 +40,28 @@ const AssessmentAdviceContainer = (props: any) => {
 
   const handleErrorResponse = async (errorCode: any) => {
     setLoading(true);
+    let shouldRefetch = false;
 
     switch (errorCode) {
       case ErrorCodes.CalculateNotValid:
-        await calculate();
+        shouldRefetch = await calculate();
         break;
       case ErrorCodes.ConfidenceCalculationNotValid:
-        await calculateConfidence();
+        shouldRefetch = await calculateConfidence();
         break;
       case "DEPRECATED":
-        await service.assessments.info.migrateKitVersion({ assessmentId });
+        await service.assessments.info
+          .migrateKitVersion({ assessmentId })
+          .catch(() => {
+            shouldRefetch = false;
+          });
         break;
       default:
         break;
     }
-    fetchPreAdviceInfo.query();
+    if (shouldRefetch) {
+      fetchPreAdviceInfo.query();
+    }
     setLoading(false);
   };
 
@@ -94,7 +101,6 @@ const AssessmentAdviceContainer = (props: any) => {
       queryBatchData={[fetchAdviceNarration]}
       renderLoading={() => <Skeleton height={160} />}
       render={([narrationComponent]) => {
-
         return (
           <Box>
             <AdviceDialog

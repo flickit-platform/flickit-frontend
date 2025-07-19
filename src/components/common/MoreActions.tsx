@@ -45,7 +45,6 @@ const MoreActions = (props: IMoreActionsProps) => {
     fontSize = "inherit",
     setShowTooltip,
     color,
-    IconButtonProps,
   } = props;
 
   const menuItems = items.filter((item) => !!item) as {

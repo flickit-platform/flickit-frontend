@@ -5,7 +5,7 @@ import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
 import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
-import { primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
 import languageDetector from "@utils/languageDetector";
 import { t } from "i18next";
@@ -64,7 +64,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     errors,
     name,
     minLength,
-    maxLength
+    maxLength,
   );
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       const inputValue = inputRef.current.value;
       const isFarsiText = languageDetector(inputValue);
       inputRef.current.style.fontFamily = isFarsiText
-        ? "VazirMatn"
+        ? farsiFontFamily
         : primaryFontFamily;
     }
   }, [inputRef.current?.value, isFocused]);
@@ -105,7 +105,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
 
       event.target.dir = direction;
       event.target.style.fontFamily = isFarsiText
-        ? "VazirMatn"
+        ? farsiFontFamily
         : primaryFontFamily;
     }
 
@@ -163,9 +163,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               ? evidenceAttachmentInput.paddingTop
               : "",
           paddingBottom:
-            name === "evidence"
-              ? evidenceAttachmentInput.paddingBottom
-              : "",
+            name === "evidence" ? evidenceAttachmentInput.paddingBottom : "",
         },
       }}
       InputLabelProps={{ ...InputLabelProps, required }}

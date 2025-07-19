@@ -1,7 +1,6 @@
 import { IDefaultModel, TId, TImages } from "./common";
 import { TAnswerTemplates, TAnswer } from "./answer";
 import { IPermissions } from "./permissions";
-import { MultiLangs } from "@/types/kitDesigner";
 
 export interface IAssessmentResult {
   assessment_project: string;
@@ -21,6 +20,12 @@ export interface IQuestionsModel {
   assessment_result_id: string;
   permissions: any;
   total: number;
+}
+
+export enum EAssessmentStatus {
+  "NOT_STARTED" = "NOT_STARTED",
+  "INPROGRESS" = "INPROGRESS",
+  "DONE" = "DONE",
 }
 
 export interface IQuestionInfo {

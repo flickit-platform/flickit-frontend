@@ -18,6 +18,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { ILanguage } from "@/types";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import PurchasedIcon from "@utils/icons/purchasedIcon";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
@@ -28,11 +30,15 @@ const AssessmentKitsStoreCard = (props: any) => {
     summary,
     languages,
     dialogProps,
+    dialogPurchaseProps,
     small,
+    isFree,
+    hasAccess,
   } = props;
 
   const navigate = useNavigate();
   const { config } = useConfigContext();
+  const paid = !isFree && !hasAccess;
 
   const filteredLanguages = config.languages.filter((kitLang: ILanguage) =>
     languages.includes(kitLang.title),
@@ -72,6 +78,15 @@ const AssessmentKitsStoreCard = (props: any) => {
       setLoading(false);
       window.location.hash = `#createAssessment?id=${id}`;
       keycloakService.doLogin();
+    }
+  };
+  const handleClick = (e: any, id: any, title: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (paid) {
+      dialogPurchaseProps.openDialog();
+    } else {
+      createAssessment(e, id, title);
     }
   };
 
@@ -265,18 +280,12 @@ const AssessmentKitsStoreCard = (props: any) => {
               gap: small ? "4px" : 1,
             }}
           >
-            <PriceIcon
-              color={
-                isPrivate
-                  ? theme.palette.secondary.main
-                  : theme.palette.primary.main
-              }
-              width={small ? "16px" : "32px"}
-              height={small ? "16px" : "32px"}
+            <CheckStatus
+              small={small}
+              isPrivate={isPrivate}
+              isFree={isFree}
+              hasAccess={hasAccess}
             />
-            <Typography variant={small ? "bodySmall" : "titleSmall"}>
-              <Trans i18nKey="common.free" />
-            </Typography>
           </Box>
 
           <Box
@@ -300,7 +309,7 @@ const AssessmentKitsStoreCard = (props: any) => {
         </Box>
 
         <LoadingButton
-          onClick={(e) => createAssessment(e, id, title)}
+          onClick={(e) => handleClick(e, id, title)}
           loading={loading}
           variant="contained"
           size={small ? "small" : "large"}
@@ -316,10 +325,69 @@ const AssessmentKitsStoreCard = (props: any) => {
             },
           }}
         >
-          <Trans i18nKey="assessment.createNewAssessment" />
+          {paid ? (
+            <Trans i18nKey="common.purchase" />
+          ) : (
+            <Trans i18nKey="assessment.createNewAssessment" />
+          )}
         </LoadingButton>
       </Box>
     </Box>
+  );
+};
+
+interface CheckStatusProps {
+  isPrivate: boolean;
+  small?: boolean;
+  isFree: boolean;
+  hasAccess: boolean;
+}
+
+type StatusType = "free" | "paid" | "purchased";
+
+const CheckStatus: React.FC<CheckStatusProps> = ({
+  isPrivate,
+  small = false,
+  isFree,
+  hasAccess,
+}) => {
+  const getStatus = (): StatusType => {
+    if (isFree) return "free";
+    return hasAccess ? "purchased" : "paid";
+  };
+
+  const status = getStatus();
+  const iconColor = isPrivate
+    ? theme.palette.secondary.main
+    : theme.palette.primary.main;
+  const iconSize = small ? "16px" : "32px";
+  const typographyVariant = small ? "bodySmall" : "titleSmall";
+
+  const statusIcons = {
+    free: <PriceIcon color={iconColor} width={iconSize} height={iconSize} />,
+    paid: (
+      <PaidOutlinedIcon
+        sx={{ color: iconColor, width: iconSize, height: iconSize }}
+      />
+    ),
+    purchased: (
+      <PurchasedIcon color={iconColor} width={iconSize} height={iconSize} />
+    ),
+  };
+
+  const statusLabels = {
+    free: <Trans i18nKey="common.free" />,
+    paid: <Trans i18nKey="common.paid" />,
+    purchased: <Trans i18nKey="common.purchased" />,
+  };
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      {statusIcons[status]}
+      <Typography variant={typographyVariant}>
+        {statusLabels[status]}
+      </Typography>
+    </div>
   );
 };
 

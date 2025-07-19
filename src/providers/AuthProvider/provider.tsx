@@ -1,20 +1,11 @@
-import { useReducer, FC, useContext, Dispatch, createContext } from "react";
-import { IUserInfo } from "@/types/index";
+import { useReducer, FC, useContext, createContext } from "react";
 import authReducer from "./reducer";
+import { IAuthContext } from "@/types";
 
 interface IAuthProviderProps {
   children?: JSX.Element | JSX.Element[];
 }
 
-export interface IAuthContext {
-  isAuthenticatedUser: boolean | null;
-  userInfo: IUserInfo;
-  accessToken: string;
-  loadingUserInfo: boolean;
-  redirectRoute: string;
-  currentSpace: any;
-  dispatch: Dispatch<any>;
-}
 
 export const defaultUserInfo = {
   displayName: "",

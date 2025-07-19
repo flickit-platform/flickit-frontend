@@ -86,7 +86,7 @@ const PopoverContent = ({
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("missedScore")} ({t("common.ascending")})
+              {t("subject.missedScore")} ({t("common.ascending")})
             </Typography>
           }
         />
@@ -95,7 +95,7 @@ const PopoverContent = ({
           control={<Radio sx={{ padding: "4px" }} />}
           label={
             <Typography variant="bodySmall">
-              {t("missedScore")} ({t("common.descending")})
+              {t("subject.missedScore")} ({t("common.descending")})
             </Typography>
           }
         />

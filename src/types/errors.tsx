@@ -21,3 +21,7 @@ export enum ErrorCodes {
   ConfidenceCalculationNotValid = "CONFIDENCE_CALCULATION_NOT_VALID",
   NotFound = "NOT_FOUND",
 }
+
+export interface FieldErrorData {
+  [key: string]: string[];
+}

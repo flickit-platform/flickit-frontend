@@ -1,4 +1,3 @@
-import flagsmith from "flagsmith";
 import Keycloak, { KeycloakInstance } from "keycloak-js";
 
 const _kc: KeycloakInstance = new Keycloak({

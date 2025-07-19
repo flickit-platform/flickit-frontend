@@ -34,12 +34,6 @@ const QuestionnairesContent = () => {
     runOnMount: false,
   });
 
-  const deleteQuestionnairesKit = useQuery({
-    service: (args, config) =>
-      service.kitVersions.questionnaires.remove(args, config),
-    runOnMount: false,
-  });
-
   const updateKitQuestionnaires = useQuery({
     service: (args, config) =>
       service.kitVersions.questionnaires.update(args, config),

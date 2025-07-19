@@ -24,12 +24,13 @@ import {
   TQueryFunction,
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
 import peopleIcon from "@/assets/svg/peopleIcon.svg";
 import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { t } from "i18next";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -146,7 +147,10 @@ export const SpaceCard = (props: ISpaceCardProps) => {
         </Typography>
 
         {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip title="spaces.premiumSpace" data-testid={"space-card-premium-test"}>
+          <Tooltip
+            title={t("spaces.premiumSpace")}
+            data-testid={"space-card-premium-test"}
+          >
             <Box
               component="img"
               src={premium}

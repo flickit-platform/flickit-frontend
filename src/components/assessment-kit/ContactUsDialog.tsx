@@ -10,22 +10,38 @@ import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
-import whatsApp from "@assets/svg/whatsApp.svg";
+import telegramIcon from "@assets/svg/telegram.svg";
+import eitaaIcon from "@assets/svg/eitaa_logo.svg";
+import { styles } from "@styles";
+import { toast } from "react-toastify";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
   context?: any;
 }
 
-const phoneNumber = "+989966529108";
-const WhatsappLink = `whatsapp://send?phone=${phoneNumber}`;
-const WhatsappWebLink = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
+const TelegramLink = 'https://web.telegram.org/a/#8179187991';
+const EitaaWebLink = 'https://web.eitaa.com/#@flickit';
+const socialIcon = [
+  {
+    id: 1,
+    icon: telegramIcon,
+    bg: "#2466A814",
+    link: TelegramLink,
+  },
+  {
+    id: 2,
+    icon: eitaaIcon,
+    bg: "#f7632314",
+    link: EitaaWebLink,
+  },
+];
 
 const ContactUsDialog = (props: IContactUsDialogProps) => {
   const { onClose, context, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { data = {}, type } = context ?? {};
-  const { email, dialogTitle, content, primaryActionButtonText, children } =
+  const { email, dialogTitle, primaryActionButtonText, children } =
     data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
@@ -67,18 +83,17 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   }, []);
 
   const onSubmit = async (data: any) => {
-    handleSubmitSpree(data);
+    handleSubmitSpree(data).then(() =>{
+      if(type == "purchased"){
+        handleSucceeded()
+        toast(t("common.thankYouForYourMessage"),{type: "success"})
+      }
+    });
   };
 
-  const socialIcon = [
-    {
-      id: 1,
-      icon: whatsApp,
-      bg: "#3D8F3D14",
-      link: { WhatsappLink, WhatsappWebLink },
-    },
-  ];
-
+  const openChat = (link: any) => {
+      window.open(link, "_blank");
+  };
   return (
     <CEDialog
       key={dialogKey}
@@ -90,7 +105,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         </Typography>
       }
     >
-      {state.succeeded ? (
+      {state.succeeded && type != "purchased" ? (
         <Box
           mt={2}
           sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}
@@ -98,10 +113,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
           <Box
             height="94%"
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
+              ...styles.centerCVH,
               textAlign: "center",
             }}
           >
@@ -129,7 +141,6 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <Typography
                 variant="bodyLarge"
-                sx={{ mb: 2 }}
                 textAlign="justify"
               >
                 {children}
@@ -138,7 +149,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               {type !== "requestAnExpertReview" && (
                 <InputFieldUC
                   name="email"
-                  label={t("user.yourEmail")}
+                  label={t("user.yourEmailAddress")}
                   required
                 />
               )}
@@ -146,26 +157,68 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={t("common.yourMessage")}
+                  label={t("assessmentKit.tellUsWhatYouLookingFor")}
                   multiline
                   rows={4}
                   required
                 />
               </Box>
             </form>
-
-            <CEDialogActions
-              cancelLabel={t("common.cancel")}
-              contactSection={socialIcon}
-              submitButtonLabel={primaryActionButtonText ?? t("common.confirm")}
-              onClose={close}
-              loading={state.submitting}
-              onSubmit={methods.handleSubmit(onSubmit)}
+            <Box
               sx={{
-                flexDirection: { xs: "column-reverse", sm: "row" },
+                display: "flex",
+                alignItems: "center",
+                flexDirection: { xs: "column", md: "row" },
+                justifyContent: "space-between",
                 gap: 2,
+                ml: -1,
               }}
-            />
+            >
+              <Box sx={{ ...styles.centerVH, gap: 2, mt: 3 }}>
+                <Typography
+                  sx={{
+                    ...theme.typography.semiBoldLarge,
+                    color: "#000",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <Trans i18nKey="common.moreWaysToReachUs" />
+                </Typography>
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  {socialIcon.map((chat) => {
+                    return (
+                      <Box
+                        key={chat.id}
+                        onClick={() => openChat(chat.link)}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <img
+                          style={{
+                            height: 24,
+                            width: 24,
+                          }}
+                          src={chat.icon}
+                          alt={`chat icon`}
+                        />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+              <CEDialogActions
+                cancelLabel={t("common.cancel")}
+                submitButtonLabel={
+                  primaryActionButtonText ?? t("common.confirm")
+                }
+                onClose={close}
+                loading={state.submitting}
+                onSubmit={methods.handleSubmit(onSubmit)}
+                sx={{
+                  flexDirection: { xs: "column-reverse", sm: "row" },
+                  gap: 2,
+                }}
+              />
+            </Box>
           </Box>
         </FormProvider>
       )}

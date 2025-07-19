@@ -49,5 +49,7 @@
   "updateDSL": "Update DSL",
   "viaDSL": "Via DSL",
   "viaKitDesigner": "Via kit designer",
-  "youLikedThisKit": "You liked this kit!"
+  "youLikedThisKit": "You liked this kit!",
+  "interestedThisKit": "Interested in this kit?",
+  "tellUsWhatYouLookingFor": "Tell us what you were looking for?"
 }

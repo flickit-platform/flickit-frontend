@@ -152,6 +152,7 @@ const AutocompleteBaseField = (
     setError,
     searchable = true,
     disabled,
+    filterSelectedOptions = true,
     ...rest
   } = props;
   const { name, onChange, ref, value, ...restFields } = field;
@@ -273,23 +274,7 @@ const AutocompleteBaseField = (
     setOpen(false);
   };
 
-  const getChipProps = (
-    label: React.ReactNode,
-    color?: "default" | "primary" | "secondary",
-    sx?: SxProps<Theme>,
-  ) => ({
-    size: "small",
-    sx: {
-      marginInlineStart: "auto",
-      ...sx,
-    },
-    color,
-    label: (
-      <Typography sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}>
-        {label}
-      </Typography>
-    ),
-  });
+
   return (
     <Autocomplete
       {...restFields}
@@ -323,7 +308,7 @@ const AutocompleteBaseField = (
       autoComplete
       disablePortal={false}
       includeInputInList
-      filterSelectedOptions={true}
+      filterSelectedOptions={filterSelectedOptions}
       filterOptions={(options, params) => {
         const filtered = getFilteredOptions(options, params);
         const exactMatch = optionsData?.find(

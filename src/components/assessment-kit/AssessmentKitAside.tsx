@@ -21,17 +21,22 @@ import { useEffect, useState } from "react";
 import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import PurchasedIcon from "@utils/icons/purchasedIcon";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 
 interface IlistOfItems {
+  field: boolean;
   icon: any;
   title: string;
   description: string;
 }
 
 const AssessmentKitAside = (props: any) => {
-  const { id, title, like, languages } = props;
+  const { id, title, like, languages, status } = props;
   const dialogProps = useDialog();
   const contactusDialogProps = useDialog();
+  const dialogPurchaseProps = usePurchaseDialog();
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
 
@@ -43,6 +48,7 @@ const AssessmentKitAside = (props: any) => {
 
   const listOfItems: IlistOfItems[] = [
     {
+      field: status === "free",
       icon: (
         <PriceIcon
           color={theme.palette.primary.dark}
@@ -53,8 +59,34 @@ const AssessmentKitAside = (props: any) => {
       title: "common.price",
       description: "common.free",
     },
-
     {
+      field: status === "purchased",
+      icon: (
+        <PurchasedIcon
+          color={theme.palette.primary.dark}
+          width={"33px"}
+          height={"33px"}
+        />
+      ),
+      title: "common.price",
+      description: "common.purchased",
+    },
+    {
+      field: status === "paid",
+      icon: (
+        <PaidOutlinedIcon
+          sx={{
+            color: theme.palette.primary.dark,
+            width: "33px",
+            height: "33px",
+          }}
+        />
+      ),
+      title: "common.price",
+      description: "common.paid",
+    },
+    {
+      field: true,
       icon: (
         <LanguageIcon
           sx={{
@@ -102,8 +134,6 @@ const AssessmentKitAside = (props: any) => {
   }, []);
   const createAssessment = async (e: any) => {
     setLoading(true);
-    e.preventDefault();
-    e.stopPropagation();
 
     if (keycloakService.isLoggedIn()) {
       createOrOpenDialog({
@@ -116,6 +146,16 @@ const AssessmentKitAside = (props: any) => {
       setLoading(false);
       window.location.hash = `#createAssessment?id=${id}`;
       keycloakService.doLogin();
+    }
+  };
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (status === "paid") {
+      dialogPurchaseProps.openDialog({});
+    } else {
+      createAssessment(e);
     }
   };
 
@@ -136,13 +176,15 @@ const AssessmentKitAside = (props: any) => {
           }}
         >
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
-            {listOfItems.map((item) => {
-              return <InfoBox {...item} key={item.title} />;
-            })}
+            {listOfItems
+              .filter((filter) => filter.field)
+              .map((item) => {
+                return <InfoBox {...item} key={item.title} />;
+              })}
           </Box>
           <Box>
             <LoadingButton
-              onClick={(e) => createAssessment(e)}
+              onClick={(e) => handleClick(e)}
               loading={loading}
               variant="contained"
               size="large"
@@ -150,7 +192,13 @@ const AssessmentKitAside = (props: any) => {
                 width: "100%",
               }}
             >
-              <Trans i18nKey="assessment.createNewAssessment" />
+              <Trans
+                i18nKey={
+                  status === "paid"
+                    ? "common.purchase"
+                    : "assessment.createNewAssessment"
+                }
+              />
             </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
@@ -185,7 +233,11 @@ const AssessmentKitAside = (props: any) => {
               }}
             >
               <Trans
-                i18nKey={likeStatus ? "assessmentKit.youLikedThisKit" : "assessmentKit.didYouLikeThisKit"}
+                i18nKey={
+                  likeStatus
+                    ? "assessmentKit.youLikedThisKit"
+                    : "assessmentKit.didYouLikeThisKit"
+                }
               />
               <IconButton
                 size="small"
@@ -214,6 +266,7 @@ const AssessmentKitAside = (props: any) => {
       </Box>
       {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
       <ContactUsDialog {...contactusDialogProps} />
+      {dialogPurchaseProps.open && <ContactUsDialog {...dialogPurchaseProps} />}
     </>
   );
 };

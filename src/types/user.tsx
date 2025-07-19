@@ -1,3 +1,4 @@
+import { Dispatch } from "react";
 import { IDefaultModel, TId } from "./common";
 
 export interface IUserInfo {
@@ -26,9 +27,19 @@ export interface IUserPermissions {
   canShareReport: boolean;
   canViewDashboard: boolean;
   canViewQuestionnaires: boolean;
-  canManageVisibility: boolean
+  canManageVisibility: boolean;
 }
 
 export enum FLAGS {
   display_expert_groups = "display_expert_groups",
+}
+
+export interface IAuthContext {
+  isAuthenticatedUser: boolean | null;
+  userInfo: IUserInfo;
+  accessToken: string;
+  loadingUserInfo: boolean;
+  redirectRoute: string;
+  currentSpace: any;
+  dispatch: Dispatch<any>;
 }

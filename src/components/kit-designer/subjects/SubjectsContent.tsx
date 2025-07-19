@@ -32,12 +32,6 @@ const SubjectsContent = () => {
     runOnMount: false,
   });
 
-  const deleteSubjectKit = useQuery({
-    service: (args, config) =>
-      service.kitVersions.subjects.remove(args, config),
-    runOnMount: false,
-  });
-
   const updateKitSubject = useQuery({
     service: (args, config) =>
       service.kitVersions.subjects.update(args, config),

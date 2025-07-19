@@ -26,6 +26,7 @@ import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
+import i18next from "i18next";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -282,7 +283,8 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
 export default NewAssessmentDialog;
 
-const LangField = ({ lang }: { lang: any }) => {
+const LangField = ({ lang }: { lang: { code: string, title: string }[]}) => {
+  const defaultLang =  lang.find((findItem: {code: string, title: string}) => findItem.code === i18next.language.toUpperCase());
   return (
     <AutocompleteAsyncField
       name="language"
@@ -290,6 +292,9 @@ const LangField = ({ lang }: { lang: any }) => {
       options={lang}
       data-cy="language"
       required={lang?.length > 1}
+      defaultValue={defaultLang}
+      disableClearable={true}
+      filterSelectedOptions={false}
     />
   );
 };
@@ -321,6 +326,9 @@ const SpaceField = ({
   const defaultValue = queryDataSpaces?.options?.find(
     (item: any) => item.isDefault,
   );
+  const defaultSpaceList = spaces?.find(
+    (item: any) => item.isDefault,
+  );
 
   return (
     <AutocompleteAsyncField
@@ -328,7 +336,7 @@ const SpaceField = ({
       name="space"
       required={true}
       disabled={!!spaceId}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue ?? defaultSpaceList}
       label={<Trans i18nKey="spaces.space" />}
       data-cy="space"
       hasAddBtn={true}
