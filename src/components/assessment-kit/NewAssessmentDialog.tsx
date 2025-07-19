@@ -15,7 +15,7 @@ import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
-import NewAssessmentIcon from "@utils/icons/newAssessment";
+import NewAssessmentIcon from "@/assets/icons/newAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutline";
@@ -128,7 +128,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const handleCreateSpaceWithSave = () => {
     dispatch(assessmentActions.setPendingKit(staticData.assessment_kit));
     closeDialog();
-    navigate("/spaces/1#createSpace");
+    navigate("/spaces/#createSpace");
   };
 
   return (
