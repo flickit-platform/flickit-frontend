@@ -49,7 +49,7 @@ const CustomTooltip = ({
         }}
       >
         {[
-          { score: missedScore, label: "missedScore" },
+          { score: missedScore, label: "subject.missedScore" },
           { score: gainedScore, label: "subject.gainedScore" },
         ].map(({ score, label }) => (
           <Box key={label} sx={{ ...styles.centerCVH }}>
@@ -90,7 +90,7 @@ const legendFormatter = (value: string, language: string) => (
   >
     {value === "uv"
       ? t("subject.gainedScore", { lng: language })
-      : t("missedScore", { lng: language })}
+      : t("subject.missedScore", { lng: language })}
   </span>
 );
 
@@ -121,7 +121,7 @@ export default function ScoreImpactBarChart({
     Math.max(compact ? 12 : 14, 220 / (chartData?.length ?? 1) + 1),
   );
 
-  const heightPerItem = compact ? 36 : 50;
+  const heightPerItem = compact ? 40 : 60;
   const chartHeight = Math.max(240, measures.length * heightPerItem);
 
   return (
