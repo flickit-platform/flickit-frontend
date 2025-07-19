@@ -22,9 +22,6 @@ interface IAssessmentCEFromDialogProps extends DialogProps {
 }
 
 const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
-  const [loading, setLoading] = useState(false);
-  const [createdKitSpaceId, setCreatedKitSpaceId] = useState(undefined);
-  const { service } = useServiceContext();
   const {
     onClose: closeDialog,
     onSubmitForm,
@@ -40,9 +37,6 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const close = () => {
     abortController.abort();
     closeDialog();
-    !!staticData.assessment_kit &&
-      createdKitSpaceId &&
-      navigate(`/${createdKitSpaceId}/assessments/1`);
     if (window.location.hash) {
       history.replaceState(
         null,
@@ -93,7 +87,6 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       <CEDialogActions
         closeDialog={close}
         submitButtonLabel="common.move"
-        loading={loading}
         type={type}
         onSubmit={formMethods.handleSubmit(onSubmit)}
       />

@@ -282,7 +282,7 @@ const AssessmentContainer = () => {
   );
 };
 
-export const useFetchAssessments = (page = 0, spaceId: any) => {
+export const useFetchAssessments = (page: any, spaceId: any) => {
   const [data, setData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);

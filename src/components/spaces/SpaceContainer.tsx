@@ -27,6 +27,7 @@ import { t } from "i18next";
 import { AssessmentsList } from "../assessments/AssessmentList";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import EmptyState from "../kit-designer/common/EmptyState";
+import uniqueId from "@/utils/uniqueId";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
@@ -133,7 +134,7 @@ const SpaceContainer = () => {
           renderLoading={() => (
             <Grid container spacing={3}>
               {[...Array(6)].map((_, i) => (
-                <Grid item xs={12} sm={6} md={4} key={i}>
+                <Grid item xs={12} sm={6} md={4} key={uniqueId()}>
                   <Skeleton
                     variant="rectangular"
                     sx={{ borderRadius: 2, height: "60px", mb: 1 }}

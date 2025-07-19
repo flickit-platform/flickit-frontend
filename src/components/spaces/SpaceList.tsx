@@ -42,7 +42,7 @@ const SpacesList = (props: ISpaceListProps) => {
     <Grid container spacing={3}>
       {data.map((item: any) => {
         return (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={4} key={item?.id}>
             <SpaceCard
               key={item?.id}
               item={item}
