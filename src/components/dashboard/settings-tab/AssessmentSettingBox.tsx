@@ -444,7 +444,7 @@ export const AssessmentSettingMemberBox = (props: {
   });
 
   const columns: readonly Column[] = [
-    { id: "displayName", label: "user.name", minWidth: "24%", position: "center" },
+    { id: "displayName", label: "user.name", minWidth: "24%", position: "start" },
     {
       id: "email",
       label: "user.email",
@@ -456,7 +456,7 @@ export const AssessmentSettingMemberBox = (props: {
       id: "role",
       label: "user.role",
       minWidth: "22%",
-      position: "start",
+      position: "center",
     },
   ];
 
@@ -556,7 +556,7 @@ export const AssessmentSettingMemberBox = (props: {
               <TableRow
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "space-evenly",
                   width: "100%",
                   px: "1rem",
                   gap: { xs: "0px", md: "1.3rem" },
@@ -688,7 +688,7 @@ export const AssessmentSettingMemberBox = (props: {
                           justifyContent: "flex-start",
                           alignItems: "center",
                           gap: { xs: "0px", md: ".7rem" },
-                          width: { xs: "10.1rem", md: "20vw" },
+                          width: { xs: "16.1rem", md: "20vw" },
                         }}
                       >
                         <FormControl
@@ -809,7 +809,7 @@ export const AssessmentSettingMemberBox = (props: {
                   <TableRow
                     sx={{
                       display: "inline-flex",
-                      justifyContent: "center",
+                      justifyContent: {xs: "space-evenly", md: "center"},
                       width: "100%",
                     }}
                   >
@@ -846,7 +846,7 @@ export const AssessmentSettingMemberBox = (props: {
                         <TableCell
                           sx={{
                             display: "flex",
-                            justifyContent: "center",
+                            justifyContent: {xs: "space-evenly", md: "center"},
                             alignItems: "center",
                             border: "none",
                             gap: { xs: "0px", md: "1.3rem" },
@@ -882,7 +882,7 @@ export const AssessmentSettingMemberBox = (props: {
                               justifyContent: "center",
                               alignItems: "center",
                               gap: { xs: "0px", md: ".7rem" },
-                              width: { xs: "10rem", md: "28vw" },
+                              width: { xs: "15rem", md: "28vw" },
                             }}
                           >
                             <FormControl
@@ -1108,6 +1108,7 @@ const SelectionRole = (props: any) => {
       IconComponent={KeyboardArrowDownIcon}
       sx={{
         width: "100%",
+        minWidth: "160px",
         height: "100%",
         boxShadow: "none",
         border: row.editable ? "1px solid #2974B4" : "1px solid #2974b442",
