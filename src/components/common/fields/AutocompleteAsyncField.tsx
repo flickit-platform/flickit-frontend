@@ -216,16 +216,6 @@ const AutocompleteBaseField = (
     };
   }, [loaded]);
 
-  useEffect(() => {
-    const exactMatch = options.find(
-      (option) =>
-        getOptionLabel(option).toLowerCase() === inputValue.toLowerCase(),
-    );
-    if (exactMatch) {
-      onChange(exactMatch);
-    }
-  }, [inputValue, options]);
-
   const getFilteredOptions = (options: any[], params: any) => {
     return options
       .filter(filterOptionsByProperty)
@@ -264,17 +254,19 @@ const AutocompleteBaseField = (
   };
 
   const handleBlur = () => {
-    if (
-      inputValue &&
-      hasAddBtn &&
-      !optionsData?.some((opt) => getOptionLabel(opt) === inputValue)
-    ) {
+    const exactMatch = options.find(
+      (option) =>
+        getOptionLabel(option).toLowerCase() === inputValue.toLowerCase(),
+    );
+
+    if (exactMatch) {
+      onChange(exactMatch);
+    } else if (inputValue && hasAddBtn) {
       createSpaceQuery();
     }
+
     setOpen(false);
   };
-
-
   return (
     <Autocomplete
       {...restFields}
@@ -337,7 +329,6 @@ const AutocompleteBaseField = (
       }}
       onChange={(event: any, newValue: any) => {
         if (newValue?.inputValue) {
-          // handle the case where the "Add" button is clicked
           onChange({ [filterFields[0]]: newValue.inputValue });
         } else {
           onChange(newValue);
