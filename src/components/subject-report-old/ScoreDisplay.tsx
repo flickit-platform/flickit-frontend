@@ -54,7 +54,7 @@ const ScoreDisplay = ({ data }: any) => {
                 {missedScore} ({missedScorePercentage}%)
               </Typography>
               <Typography variant="bodySmall" sx={{ color: "white" }}>
-                <Trans i18nKey="missedScore" />
+                <Trans i18nKey="subject.missedScore" />
               </Typography>
             </Box>
             <Divider

@@ -450,7 +450,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: questionnairesCount,
-                      title: t("assessmentKit.questionnairesCount"),
+                      title: t("common.questionnairesCount"),
                     }}
                   />
                 </Box>
