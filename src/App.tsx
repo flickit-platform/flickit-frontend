@@ -40,7 +40,8 @@ function App() {
       script.appendChild(document.createTextNode(code));
       document.body.appendChild(script);
     }
-
+    // @ts-ignore
+    window._paq.push(['setUserId', customId]);
     // @ts-ignore
   }, [window.clarity]);
 
