@@ -11,7 +11,7 @@ import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import telegramIcon from "@assets/svg/telegram.svg";
-import eitaaIcon from "@assets/svg/eitaa_logo.svg";
+import splusIcon from "@assets/svg/splusLogo.svg";
 import { styles } from "@styles";
 import { toast } from "react-toastify";
 import { title } from "process";
@@ -21,8 +21,8 @@ interface IContactUsDialogProps extends DialogProps {
   context?: any;
 }
 
-const TelegramLink = "https://web.telegram.org/a/#8179187991";
-const EitaaWebLink = "https://web.eitaa.com/#@flickit";
+const TelegramLink = 'https://web.telegram.org/a/#8179187991';
+const SplusWebLink = 'https://web.splus.ir/#45047257';
 const socialIcon = [
   {
     id: 1,
@@ -32,9 +32,9 @@ const socialIcon = [
   },
   {
     id: 2,
-    icon: eitaaIcon,
-    bg: "#f7632314",
-    link: EitaaWebLink,
+    icon: splusIcon,
+    bg: "#196ff014",
+    link: SplusWebLink,
   },
 ];
 
