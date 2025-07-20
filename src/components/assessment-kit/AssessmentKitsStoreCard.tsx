@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import languageDetector from "@utils/languageDetector";
-import i18next from "i18next";
+import i18next, { t } from "i18next";
 import { Avatar } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
@@ -84,7 +84,13 @@ const AssessmentKitsStoreCard = (props: any) => {
     e.preventDefault();
     e.stopPropagation();
     if (paid) {
-      dialogPurchaseProps.openDialog();
+      dialogPurchaseProps.openDialog({
+        ...dialogPurchaseProps.context,
+        data: {
+          ...dialogPurchaseProps.context.data,
+          title,
+        },
+      });
     } else {
       createAssessment(e, id, title);
     }

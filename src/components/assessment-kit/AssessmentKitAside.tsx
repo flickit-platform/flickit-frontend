@@ -36,7 +36,7 @@ const AssessmentKitAside = (props: any) => {
   const { id, title, like, languages, status } = props;
   const dialogProps = useDialog();
   const contactusDialogProps = useDialog();
-  const dialogPurchaseProps = usePurchaseDialog();
+  const dialogPurchaseProps = usePurchaseDialog(title);
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
 
@@ -266,7 +266,9 @@ const AssessmentKitAside = (props: any) => {
       </Box>
       {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
       <ContactUsDialog {...contactusDialogProps} />
-      {dialogPurchaseProps.open && <ContactUsDialog {...dialogPurchaseProps} />}
+      {dialogPurchaseProps.open && (
+        <ContactUsDialog {...dialogPurchaseProps} title={title} />
+      )}
     </>
   );
 };
