@@ -670,8 +670,8 @@ export const theme = createTheme({
           left: is_farsi ? "7px" : "unset",
         },
         select: {
-          paddingLeft: is_farsi ? "32px" : "16px",
-          paddingRight: !is_farsi ? "32px !important" : "16px !important",
+          paddingLeft: is_farsi ? "32px" : "10px",
+          paddingRight: !is_farsi ? "32px !important" : "10px !important",
         },
       },
     },
