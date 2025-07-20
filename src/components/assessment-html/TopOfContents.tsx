@@ -32,7 +32,7 @@ export const AssessmentTOC = ({
   graphicalReport: IGraphicalReport;
 }) => {
   const { assessmentInfo } = useAssessmentContext();
-  const contactusDialogProps = useDialog({
+  const requestAnExpertDialogProps = useDialog({
     context: {
       type: "requestAnExpertReview",
       data: {
@@ -282,7 +282,7 @@ export const AssessmentTOC = ({
       {isAuthenticatedUser && (
         <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
           <Button
-            onClick={() => contactusDialogProps.openDialog({})}
+            onClick={() => requestAnExpertDialogProps.openDialog({})}
             variant="contained"
             sx={{
               width: "100%",
@@ -302,7 +302,7 @@ export const AssessmentTOC = ({
         </Box>
       )}
 
-      <ContactUsDialog {...contactusDialogProps} />
+      <ContactUsDialog {...requestAnExpertDialogProps} />
     </Box>
   );
 };

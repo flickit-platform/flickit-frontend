@@ -14,6 +14,7 @@ import telegramIcon from "@assets/svg/telegram.svg";
 import splusIcon from "@assets/svg/splusLogo.svg";
 import { styles } from "@styles";
 import { toast } from "react-toastify";
+import { title } from "process";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -38,11 +39,11 @@ const socialIcon = [
 ];
 
 const ContactUsDialog = (props: IContactUsDialogProps) => {
-  const { onClose, context, ...rest } = props;
+  console.log(props)
+  const { title, onClose, context, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
   const { data = {}, type } = context ?? {};
-  const { email, dialogTitle, primaryActionButtonText, children } =
-    data;
+  const { email, dialogTitle, primaryActionButtonText, children } = data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
   );
@@ -65,6 +66,8 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         "type" as any,
         `Expert Review - ${window.location.href}`,
       );
+    } else if (type === "purchased") {
+      methods.setValue("type" as any, "");
     }
   };
 
@@ -74,25 +77,30 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
   };
 
   useEffect(() => {
-    methods.setValue(
-      "type" as any,
-      type === "requestAnExpertReview"
-        ? `Expert Review - ${window.location.href}`
-        : "Contact Us - Flickit",
-    );
+    const getDefaultValue = () => {
+      if (type === "requestAnExpertReview") {
+        return `Expert Review - ${window.location.href}`;
+      }
+      if (type === "purchased") {
+        return `Purchase - ${title}`;
+      }
+      return "Contact Us - Flickit";
+    };
+
+    methods.setValue("type" as any, getDefaultValue());
   }, []);
 
   const onSubmit = async (data: any) => {
-    handleSubmitSpree(data).then(() =>{
-      if(type == "purchased"){
-        handleSucceeded()
-        toast(t("common.thankYouForYourMessage"),{type: "success"})
+    handleSubmitSpree(data).then(() => {
+      if (type == "purchased") {
+        handleSucceeded();
+        toast(t("common.thankYouForYourMessage"), { type: "success" });
       }
     });
   };
 
   const openChat = (link: any) => {
-      window.open(link, "_blank");
+    window.open(link, "_blank");
   };
   return (
     <CEDialog
@@ -139,10 +147,7 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
         <FormProvider {...methods}>
           <Box px={1} pt={3}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Typography
-                variant="bodyLarge"
-                textAlign="justify"
-              >
+              <Typography variant="bodyLarge" textAlign="justify">
                 {children}
               </Typography>
 

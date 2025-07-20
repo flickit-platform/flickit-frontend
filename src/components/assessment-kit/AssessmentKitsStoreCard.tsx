@@ -84,7 +84,13 @@ const AssessmentKitsStoreCard = (props: any) => {
     e.preventDefault();
     e.stopPropagation();
     if (paid) {
-      dialogPurchaseProps.openDialog();
+      dialogPurchaseProps.openDialog({
+        ...dialogPurchaseProps.context,
+        data: {
+          ...dialogPurchaseProps.context.data,
+          title,
+        },
+      });
     } else {
       createAssessment(e, id, title);
     }
