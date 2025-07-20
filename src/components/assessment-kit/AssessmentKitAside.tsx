@@ -28,7 +28,7 @@ import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 interface IlistOfItems {
   field: boolean;
   icon: any;
-  title: string;
+  title?: string;
   description: string;
 }
 
@@ -56,7 +56,6 @@ const AssessmentKitAside = (props: any) => {
           height={"33px"}
         />
       ),
-      title: "common.price",
       description: "common.free",
     },
     {
@@ -179,7 +178,7 @@ const AssessmentKitAside = (props: any) => {
             {listOfItems
               .filter((filter) => filter.field)
               .map((item) => {
-                return <InfoBox {...item} key={item.title} />;
+                return <InfoBox {...item} key={item.field} />;
               })}
           </Box>
           <Box>
@@ -281,15 +280,15 @@ const InfoBox = (props: any) => {
     <Box sx={{ ...styles.centerV, gap: "12px" }}>
       {icon}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+        {title && (
+          <Typography variant="semiBoldSmall" color="#6C8093">
+            {t(`${title}`)}
+          </Typography>
+        )}
         <Typography
-          sx={{ ...theme.typography.semiBoldSmall, color: "#6C8093" }}
-        >
-          {t(`${title}`)}
-        </Typography>
-        <Typography
+          variant="bodyLarge"
+          color="#2B333B"
           sx={{
-            ...theme.typography.bodyLarge,
-            color: "#2B333B",
             textAlign: "justify",
           }}
         >
