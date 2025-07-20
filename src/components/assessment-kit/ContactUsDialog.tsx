@@ -14,7 +14,6 @@ import telegramIcon from "@assets/svg/telegram.svg";
 import splusIcon from "@assets/svg/splusLogo.svg";
 import { styles } from "@styles";
 import { toast } from "react-toastify";
-import { title } from "process";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;

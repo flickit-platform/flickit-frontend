@@ -194,7 +194,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       {...rest}
       closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="common.save" />}
+      title={<Trans i18nKey="common.editQuestion" />}
     >
       <NavigationButtons
         onPrevious={handlePrevious}

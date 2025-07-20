@@ -194,5 +194,6 @@
     "getInTouch": "Please fill out the short form below, and we’ll get in touch with you soon to help you decide whether this kit is the right fit for you."
   },
   "paid": "Paid",
-  "send": "Send"
+  "send": "Send",
+  "editQuestion": "Edit question"
 }

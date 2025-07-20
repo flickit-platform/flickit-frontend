@@ -38,7 +38,6 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
           }}
         />
         <Typography
-          textTransform="uppercase"
           variant={"semiBoldLarge"}
           sx={{ fontSize: "12px" }}
         >
