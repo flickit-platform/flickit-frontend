@@ -67,7 +67,6 @@ const AssessmentKitAside = (props: any) => {
           height={"33px"}
         />
       ),
-      title: "common.price",
       description: "common.purchased",
     },
     {
@@ -81,7 +80,6 @@ const AssessmentKitAside = (props: any) => {
           }}
         />
       ),
-      title: "common.price",
       description: "common.paid",
     },
     {
