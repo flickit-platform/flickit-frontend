@@ -12,13 +12,13 @@ import MaturityLevelList from "./MaturityLevelList";
 import CompetencesTable from "./CompetencesTable";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import KitDesignerHeader from "../common/KitHeader";
 import EmptyState from "../common/EmptyState";
+import showToast from "@/utils/toastError";
 
 const MaturityLevelsContent = () => {
   const { service } = useServiceContext();
@@ -114,7 +114,7 @@ const MaturityLevelsContent = () => {
         value: (maturityLevels.data?.items.length ?? 0) + 1,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -153,7 +153,7 @@ const MaturityLevelsContent = () => {
         value: (maturityLevels.data?.items.length ?? 0) + 1,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -167,7 +167,7 @@ const MaturityLevelsContent = () => {
       maturityLevelsCompetences.query();
       handleCancel();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -186,7 +186,7 @@ const MaturityLevelsContent = () => {
 
       handleCancel();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   }, 2000);
 

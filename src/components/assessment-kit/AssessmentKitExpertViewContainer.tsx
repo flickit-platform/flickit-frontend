@@ -27,7 +27,6 @@ import { t } from "i18next";
 import useDialog from "@utils/useDialog";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import languageDetector from "@utils/languageDetector";
-import toastError from "@utils/toastError";
 import { ICustomError } from "@utils/CustomError";
 import CloudDownloadRoundedIcon from "@mui/icons-material/CloudDownloadRounded";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
@@ -41,6 +40,7 @@ import { useConfigContext } from "@/providers/ConfgProvider";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
+import showToast from "@utils/toastError";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -77,7 +77,7 @@ const AssessmentKitExpertViewContainer = () => {
       a.remove();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const handleExport = async () => {
@@ -99,7 +99,7 @@ const AssessmentKitExpertViewContainer = () => {
       .catch((e) => {
         setLoadingExportBtn(false);
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       });
   };
   useEffect(() => {
@@ -799,7 +799,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
         e?.response?.status !== 422 &&
         e?.response?.data?.code !== "UNSUPPORTED_DSL_CONTENT_CHANGE"
       ) {
-        toastError(err.message);
+        showToast(err.message);
       }
       setLoaded(false);
       formMethods.clearErrors();

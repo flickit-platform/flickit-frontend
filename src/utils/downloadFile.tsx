@@ -1,5 +1,5 @@
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
+import showToast from "@utils/toastError";
 
 export const downloadFile = async ({ link }: { link: string }) => {
   try {
@@ -27,6 +27,6 @@ export const downloadFile = async ({ link }: { link: string }) => {
     URL.revokeObjectURL(urlBlob);
   } catch (e) {
     const err = e as ICustomError;
-    toastError(err);
+    showToast(err);
   }
 };

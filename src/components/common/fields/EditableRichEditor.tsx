@@ -13,8 +13,8 @@ import RichEditorField from "@common/fields/RichEditorField";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import { Trans, useTranslation } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import toastError from "@/utils/toastError";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
+import showToast from "@/utils/toastError";
 
 const MAX_HEIGHT = 210;
 
@@ -71,7 +71,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
       setShowEditor(false);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

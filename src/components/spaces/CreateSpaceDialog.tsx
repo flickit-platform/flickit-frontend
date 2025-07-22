@@ -9,7 +9,6 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
-import toastError from "@utils/toastError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
@@ -28,6 +27,7 @@ import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
+import showToast from "@utils/toastError";
 
 const PremiumBox = [
   {
@@ -120,12 +120,13 @@ const CreateSpaceDialog = (props: any) => {
       } else {
         const res = await service.space.create(data);
         setSpaceIdNum(res.data.id);
-        setStep(3);
+        showToast(t("spaces.spaceCreatedSuccessfully"), { variant: "success" });
+        close();
       }
       onSubmitForm();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setServerFieldErrors(err, formMethods);
     } finally {
       setLoading(false);
@@ -339,7 +340,9 @@ const CreateSpaceDialog = (props: any) => {
           <>
             <CreateNewFolderRoundedIcon sx={{ marginInlineEnd: 1 }} />
             <Trans
-              i18nKey={type === "update" ? "spaces.updateSpace" : "spaces.createSpace"}
+              i18nKey={
+                type === "update" ? "spaces.updateSpace" : "spaces.createSpace"
+              }
             />
             <IconButton
               sx={{ color: "#fff", marginInlineStart: "auto" }}
@@ -354,7 +357,7 @@ const CreateSpaceDialog = (props: any) => {
     >
       {step === 1 && renderStepOne()}
       {step === 2 && renderStepTwo()}
-      {step === 3 && renderStepThree()}
+      {/* {step === 3 && renderStepThree()} */}
     </CEDialog>
   );
 };
@@ -523,7 +526,7 @@ const BoxType = ({
             alignItems: "center",
             gap: "8px",
             bottom: { xs: "-45px", md: "-54px" },
-            cursor: "text"
+            cursor: "text",
           }}
         >
           <InfoOutlinedIcon fontSize="small" />

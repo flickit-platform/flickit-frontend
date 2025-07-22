@@ -1,53 +1,48 @@
-import { toast } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 import { AxiosError } from "axios";
 import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "./CustomError";
 import { t } from "i18next";
+import React, { ReactNode } from "react";
 
-export interface IToastErrorOptions {
-  /**
-   * Don't show error if status is one of
-   */
+export interface IToastOptions {
+  variant?: "error" | "success" | "info" | "warning";
   filterByStatus?: number[];
-  /**
-   * Don't show error if its type is one of
-   */
   filterByType?: ECustomErrorType[];
-  /**
-   * Don't show error if it has any data
-   */
   filterIfHasData?: boolean;
+  toastOptions?: ToastOptions;
 }
 
-const toastError = (
-  err: ICustomError | AxiosError | string | true,
-  options?: IToastErrorOptions,
-) => {
-  if (typeof err === "boolean" && err) {
-    toast.error(t("errors.someThingWentWrong") as string);
-    return;
-  }
-  if (typeof err === "string") {
-    toast.error(err);
-    return;
-  }
+type ToastInput = ICustomError | AxiosError | string | true | ReactNode;
 
+const showToast = (
+  err: ToastInput,
+  options?: IToastOptions,
+) => {
   const {
+    variant = "error",
     filterByStatus = [],
     filterByType = [],
     filterIfHasData = true,
+    toastOptions = {},
   } = options ?? {};
 
-  if (!err) {
+  if (typeof err === "string" || React.isValidElement(err)) {
+    toast[variant](err, toastOptions);
     return;
   }
+  if (typeof err === "boolean" && err) {
+    toast.error(t("errors.someThingWentWrong") as string, toastOptions);
+    return;
+  }
+  if (!err) return;
 
   let status: number | undefined;
   let data: any;
   let type: ECustomErrorType | undefined;
   let message: string | undefined;
 
-  if (err.isAxiosError) {
+  if ((err as AxiosError).isAxiosError) {
     const axiosError = err as AxiosError;
     status = axiosError.response?.status;
     data = axiosError.response?.data;
@@ -62,15 +57,11 @@ const toastError = (
   }
 
   if (filterByStatus.length > 0 && status) {
-    if (filterByStatus.includes(status)) {
-      return;
-    }
+    if (filterByStatus.includes(status)) return;
   }
 
   if (filterByType.length > 0 && type) {
-    if (filterByType.includes(type)) {
-      return;
-    }
+    if (filterByType.includes(type)) return;
   }
 
   if (filterIfHasData) {
@@ -96,13 +87,15 @@ const toastError = (
     return;
   }
 
-  toast.error(
+  const toastMessage =
     data?.error ??
-      data?.message ??
-      data?.detail ??
-      data?.non_field_errors?.[0] ??
-      message
-  );
+    data?.message ??
+    data?.detail ??
+    data?.non_field_errors?.[0] ??
+    message ??
+    t("errors.someThingWentWrong");
+
+  toast[variant](toastMessage, toastOptions);
 };
 
-export default toastError;
+export default showToast;

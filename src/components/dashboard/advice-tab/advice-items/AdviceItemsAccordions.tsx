@@ -20,10 +20,10 @@ import AdviceListNewForm from "./AdviceListNewForm";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import toastError from "@utils/toastError";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import showToast from "@utils/toastError";
 
 enum ELevel {
   HIGH = "HIGH",
@@ -272,7 +272,7 @@ const AdviceItemAccordion: React.FC<{
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

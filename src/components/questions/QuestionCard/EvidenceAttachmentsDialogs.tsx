@@ -18,7 +18,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import DialogTitle from "@mui/material/DialogTitle";
-import toastError from "@utils/toastError";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -31,6 +30,7 @@ import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 import FileType from "@components/questions/iconFiles/fileType";
 import { AcceptFile } from "@utils/acceptFile";
+import showToast from "@utils/toastError";
 
 const checkTypeUpload = (
   dropZoneData: any,
@@ -315,7 +315,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       }
     } catch (e: any) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

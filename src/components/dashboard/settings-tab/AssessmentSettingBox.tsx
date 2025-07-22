@@ -18,7 +18,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import firstCharDetector from "@utils/firstCharDetector";
 import Grid from "@mui/material/Grid";
 import TableContainer from "@mui/material/TableContainer";
@@ -53,6 +52,7 @@ import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
+import showToast from "@utils/toastError";
 
 type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";
 
@@ -330,7 +330,11 @@ const QuickAssessmentSwitch = () => {
             >
               <Trans i18nKey="assessment.quickAssessmentMode" />
             </Typography>
-            <Tooltip title={<Trans i18nKey="assessment.quickAssessmentModeDescription" />}>
+            <Tooltip
+              title={
+                <Trans i18nKey="assessment.quickAssessmentModeDescription" />
+              }
+            >
               <InfoOutlined
                 fontSize="small"
                 color="inherit"
@@ -444,7 +448,12 @@ export const AssessmentSettingMemberBox = (props: {
   });
 
   const columns: readonly Column[] = [
-    { id: "displayName", label: "user.name", minWidth: "24%", position: "start" },
+    {
+      id: "displayName",
+      label: "user.name",
+      minWidth: "24%",
+      position: "start",
+    },
     {
       id: "email",
       label: "user.email",
@@ -486,7 +495,7 @@ export const AssessmentSettingMemberBox = (props: {
       setChangeData((prev: boolean) => !prev);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -809,7 +818,7 @@ export const AssessmentSettingMemberBox = (props: {
                   <TableRow
                     sx={{
                       display: "inline-flex",
-                      justifyContent: {xs: "space-evenly", md: "center"},
+                      justifyContent: { xs: "space-evenly", md: "center" },
                       width: "100%",
                     }}
                   >
@@ -846,7 +855,10 @@ export const AssessmentSettingMemberBox = (props: {
                         <TableCell
                           sx={{
                             display: "flex",
-                            justifyContent: {xs: "space-evenly", md: "center"},
+                            justifyContent: {
+                              xs: "space-evenly",
+                              md: "center",
+                            },
                             alignItems: "center",
                             border: "none",
                             gap: { xs: "0px", md: "1.3rem" },
@@ -1087,7 +1099,7 @@ const SelectionRole = (props: any) => {
       await editUserRole.query({ userId: name, roleId: value.id });
       setChangeData((prev: boolean) => !prev);
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -1254,7 +1266,7 @@ const OnHoverInputTitleSetting = (props: any) => {
   const updateAssessmentTitle = async () => {
     try {
       const res = await updateAssessmentQuery.query();
-      res.message && toast.success(res.message);
+      res.message && showToast(res.message, { variant: "success" });
       await infoQuery();
       if (assessmentInfo) {
         dispatch(
@@ -1269,9 +1281,9 @@ const OnHoverInputTitleSetting = (props: any) => {
       const err = e as ICustomError;
       setHasError(true);
       if (Array.isArray(err.response?.data?.message)) {
-        toastError(err.response?.data?.message[0]);
+        showToast(err.response?.data?.message[0]);
       } else if (err.response?.data?.hasOwnProperty("message")) {
-        toastError(err.response?.data?.message);
+        showToast(err.response?.data?.message);
       }
     }
   };

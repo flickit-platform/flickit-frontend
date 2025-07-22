@@ -12,11 +12,11 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
 import AdviceListNewForm from "./AdviceListNewForm";
 import QueryData from "@/components/common/QueryData";
+import showToast from "@utils/toastError";
 
 const AdviceItems = () => {
   const { service } = useServiceContext();
@@ -68,7 +68,7 @@ const AdviceItems = () => {
       await deleteAdviceItem.query({ adviceItemId });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -159,7 +159,7 @@ const AdviceItems = () => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   return (

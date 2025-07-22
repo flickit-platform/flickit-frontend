@@ -13,7 +13,6 @@ import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@utils/useMenu";
 import IconButton from "@mui/material/IconButton";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
@@ -31,6 +30,7 @@ import peopleIcon from "@/assets/svg/peopleIcon.svg";
 import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { t } from "i18next";
+import showToast from "@utils/toastError";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -353,7 +353,7 @@ const Actions = (props: any) => {
       })
       .catch((e) => {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
         setEditLoading(false);
       });
   };
@@ -364,7 +364,7 @@ const Actions = (props: any) => {
       await fetchSpaces();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const leaveSpace = async (e: any) => {
@@ -373,7 +373,7 @@ const Actions = (props: any) => {
       await fetchSpaces();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

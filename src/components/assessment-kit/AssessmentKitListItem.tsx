@@ -6,7 +6,6 @@ import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { FLAGS, TId, TQueryFunction } from "@/types/index";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import useMenu from "@utils/useMenu";
 import { useQuery } from "@utils/useQuery";
 import MoreActions from "@common/MoreActions";
@@ -18,6 +17,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
+import showToast from "@utils/toastError";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -186,7 +186,7 @@ const Actions = (props: any) => {
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

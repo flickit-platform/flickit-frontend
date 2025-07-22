@@ -11,13 +11,13 @@ import OptionList from "./OptionsList";
 import OptionForm from "./OptionForm";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { dropdownStyle } from "./ImpactForm";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
+import showToast from "@/utils/toastError";
 
 const OptionsSection = ({
   question,
@@ -85,7 +85,7 @@ const OptionsSection = ({
         });
     } catch (err) {
       const error = err as ICustomError;
-      toastError(error);
+      showToast(error);
     }
   };
   const handleAddNewRow = () => setShowNewOptionForm(true);
@@ -117,7 +117,7 @@ const OptionsSection = ({
         id: null,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -145,7 +145,7 @@ const OptionsSection = ({
         });
     } catch (err) {
       const error = err as ICustomError;
-      toastError(error);
+      showToast(error);
     }
   };
 

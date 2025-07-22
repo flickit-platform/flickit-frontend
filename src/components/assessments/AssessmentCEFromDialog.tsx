@@ -10,7 +10,6 @@ import setServerFieldErrors from "@utils/setServerFieldError";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@utils/CustomError";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useQuery } from "@utils/useQuery";
@@ -22,6 +21,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -115,7 +115,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       setLoading(false);
       setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
-      toastError(err);
+      showToast(err);
       return () => {
         abortController.abort();
       };
