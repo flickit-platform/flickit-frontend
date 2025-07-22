@@ -59,6 +59,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
             edge="end"
             size="small"
             sx={{ ml: 2, color: "#fff" }}
+            data-testid="close-btn"
           >
             <Close />
           </IconButton>
