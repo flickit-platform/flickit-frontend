@@ -353,7 +353,7 @@ const QuickAssessmentSwitch = () => {
 
       <CEDialog
         open={dialogProps.open}
-        onClose={dialogProps.onClose}
+        closeDialog={dialogProps.onClose}
         title={
           <Trans
             i18nKey="common.switchTo"

@@ -27,6 +27,7 @@ import { styles } from "@styles";
 import Settings from "@mui/icons-material/Settings";
 import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
+import { CEDialog } from "@/components/common/dialogs/CEDialog";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -222,15 +223,13 @@ const AddMemberDialog = (props: {
   const fullScreen = useScreenResize("sm");
 
   return (
-    <Dialog
+    <CEDialog
       open={expanded}
-      onClose={closeDialog}
+      closeDialog={closeDialog}
       fullWidth
       maxWidth="md"
       fullScreen={fullScreen}
-    >
-      <DialogTitle textTransform={"uppercase"} sx={{ ...styles.centerV }}>
-        {" "}
+      title={
         <>
           <Settings
             sx={{
@@ -240,201 +239,187 @@ const AddMemberDialog = (props: {
           />
           <Trans i18nKey="settings.assignRole" />
         </>
-      </DialogTitle>
-      <DialogContent
-        sx={{
-          padding: "unset",
-          background: "#fff",
-          overflowX: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          gap: 3,
-          p: 1,
-        }}
+      }
+    >
+      <Box
+        display="flex"
+        flexDirection={{ xs: "column", sm: "row" }}
+        alignItems="center"
+        justifyContent={"flex-start"}
+        px={3}
+        sx={{ gap: { xs: "0rem", sm: "1rem" } }}
+        width="100%"
+        mt={1}
       >
-        <Box
-          display="flex"
-          flexDirection={{ xs: "column", sm: "row" }}
-          alignItems="center"
-          justifyContent={"flex-start"}
-          px={3}
-          sx={{ gap: { xs: "0rem", sm: "1rem" } }}
-          width="100%"
-          mt={1}
-        >
-          <Typography sx={{ whiteSpace: "noWrap" }}>
-            <Trans i18nKey="common.add" />
-          </Typography>
-          <Box width="50%">
-            <FormProviderWithForm formMethods={formMethods}>
-              <EmailField
-                memberOfSpace={memberOfSpace}
-                setAddedEmailType={setAddedEmailType}
-              />
-            </FormProviderWithForm>
-          </Box>
-          <Typography sx={{ whiteSpace: "nowrap" }}>
-            <Trans i18nKey="common.as" />
-          </Typography>
-          <FormControl sx={{ width: "40%" }}>
-            <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              value={roleSelected?.title}
-              displayEmpty
-              onChange={handleChangeRole}
-              sx={{
-                height: "40px",
-              }}
-              IconComponent={KeyboardArrowDownIcon}
-              inputProps={{
-                renderValue: () =>
-                  roleSelected?.title == "" ? (
-                    <Box
-                      sx={{
-                        color: "#6C7B8E",
-                        fontSize: "0.6rem",
-                        textAlign: "left",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Trans i18nKey="settings.chooseARole" />
-                    </Box>
-                  ) : (
-                    roleSelected.title
-                  ),
-              }}
-              MenuProps={MenuProps}
-            >
-              <Box
-                sx={{
-                  paddingY: "16px",
-                  color: "#9DA7B3",
-                  textAlign: "center",
-                  borderBottom: "1px solid #9DA7B3",
-                }}
-              >
-                <Typography sx={{ fontSize: "0.875rem" }}>
-                  <Trans i18nKey="settings.chooseARole" />
-                </Typography>
-              </Box>
-              {listOfRoles?.map((role: any, index: number) => {
-                return (
-                  <MenuItem
-                    style={{ display: "block" }}
-                    key={role.title}
-                    value={role}
-                    id={role.id}
+        <Typography sx={{ whiteSpace: "noWrap" }}>
+          <Trans i18nKey="common.add" />
+        </Typography>
+        <Box width="50%">
+          <FormProviderWithForm formMethods={formMethods}>
+            <EmailField
+              memberOfSpace={memberOfSpace}
+              setAddedEmailType={setAddedEmailType}
+            />
+          </FormProviderWithForm>
+        </Box>
+        <Typography sx={{ whiteSpace: "nowrap" }}>
+          <Trans i18nKey="common.as" />
+        </Typography>
+        <FormControl sx={{ width: "40%" }}>
+          <Select
+            labelId="demo-multiple-name-label"
+            id="demo-multiple-name"
+            value={roleSelected?.title}
+            displayEmpty
+            onChange={handleChangeRole}
+            sx={{
+              height: "40px",
+            }}
+            IconComponent={KeyboardArrowDownIcon}
+            inputProps={{
+              renderValue: () =>
+                roleSelected?.title == "" ? (
+                  <Box
                     sx={{
-                      "&.MuiMenuItem-root:hover": {
-                        ...(roleSelected?.title == role.title
-                          ? {
-                              backgroundColor: "#9CCAFF",
-                              color: "#004F83",
-                            }
-                          : {
-                              backgroundColor: "#EFEDF0",
-                              color: "#1B1B1E",
-                            }),
-                      },
-                      background:
-                        roleSelected?.title == role.title ? "#9CCAFF" : "",
+                      color: "#6C7B8E",
+                      fontSize: "0.6rem",
+                      textAlign: "left",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    <Box
-                      sx={{
-                        maxWidth: "240px",
+                    <Trans i18nKey="settings.chooseARole" />
+                  </Box>
+                ) : (
+                  roleSelected.title
+                ),
+            }}
+            MenuProps={MenuProps}
+          >
+            <Box
+              sx={{
+                paddingY: "16px",
+                color: "#9DA7B3",
+                textAlign: "center",
+                borderBottom: "1px solid #9DA7B3",
+              }}
+            >
+              <Typography sx={{ fontSize: "0.875rem" }}>
+                <Trans i18nKey="settings.chooseARole" />
+              </Typography>
+            </Box>
+            {listOfRoles?.map((role: any, index: number) => {
+              return (
+                <MenuItem
+                  style={{ display: "block" }}
+                  key={role.title}
+                  value={role}
+                  id={role.id}
+                  sx={{
+                    "&.MuiMenuItem-root:hover": {
+                      ...(roleSelected?.title == role.title
+                        ? {
+                            backgroundColor: "#9CCAFF",
+                            color: "#004F83",
+                          }
+                        : {
+                            backgroundColor: "#EFEDF0",
+                            color: "#1B1B1E",
+                          }),
+                    },
+                    background:
+                      roleSelected?.title == role.title ? "#9CCAFF" : "",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      maxWidth: "240px",
+                      color: "#2B333B",
+                      fontSize: "0.875rem",
+                      lineHeight: "21px",
+                      fontWeight: 500,
+                      paddingY: "1rem",
+                    }}
+                  >
+                    <Typography>{role.title}</Typography>
+                    <div
+                      style={{
                         color: "#2B333B",
                         fontSize: "0.875rem",
                         lineHeight: "21px",
-                        fontWeight: 500,
-                        paddingY: "1rem",
+                        fontWeight: 300,
+                        whiteSpace: "break-spaces",
+                        paddingTop: "1rem",
                       }}
                     >
-                      <Typography>{role.title}</Typography>
-                      <div
-                        style={{
-                          color: "#2B333B",
-                          fontSize: "0.875rem",
-                          lineHeight: "21px",
-                          fontWeight: 300,
-                          whiteSpace: "break-spaces",
-                          paddingTop: "1rem",
-                        }}
-                      >
-                        {role.description}
-                      </div>
-                    </Box>
-                    {listOfRoles && listOfRoles.length > index + 1 && (
-                      <Box
-                        sx={{
-                          height: "0.5px",
-                          width: "80%",
-                          backgroundColor: "#9DA7B3",
-                          mx: "auto",
-                        }}
-                      ></Box>
-                    )}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Box>
-        {addedEmailType !== EUserType.DEFAULT && (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "flex-start",
-              backgroundColor: "rgba(255, 249, 196, 0.31)",
-              padding: 1,
-              borderRadius: 2,
-              marginInline: 3,
-              maxWidth: "100%",
-            }}
-          >
-            <InfoOutlinedIcon
-              color="primary"
-              sx={{
-                marginRight: theme.direction === "ltr" ? 1 : "unset",
-                marginLeft: theme.direction === "rtl" ? 1 : "unset",
-              }}
-            />
-            <Typography variant="bodyLarge" textAlign="left">
-              {addedEmailType === EUserType.EXISTED ? (
-                <Trans i18nKey="user.emailExistsInApp" />
-              ) : (
-                <Trans i18nKey="user.emailDoesNotExistInApp" />
-              )}
-            </Typography>
-          </Box>
-        )}
+                      {role.description}
+                    </div>
+                  </Box>
+                  {listOfRoles && listOfRoles.length > index + 1 && (
+                    <Box
+                      sx={{
+                        height: "0.5px",
+                        width: "80%",
+                        backgroundColor: "#9DA7B3",
+                        mx: "auto",
+                      }}
+                    ></Box>
+                  )}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </Box>
+      {addedEmailType !== EUserType.DEFAULT && (
         <Box
           sx={{
-            width: "100%",
             display: "flex",
-            gap: 2,
-            padding: "16px",
-            justifyContent: "flex-end",
+            alignItems: "flex-start",
+            backgroundColor: "rgba(255, 249, 196, 0.31)",
+            padding: 1,
+            borderRadius: 2,
+            marginInline: 3,
+            maxWidth: "100%",
           }}
         >
-          <Button onClick={closeDialog}>{cancelText}</Button>
-          <LoadingButton
-            variant="contained"
-            onClick={handleClick}
-            loading={loading}
-            ref={buttonRef}
-          >
-            {confirmText}
-          </LoadingButton>
+          <InfoOutlinedIcon
+            color="primary"
+            sx={{
+              marginRight: theme.direction === "ltr" ? 1 : "unset",
+              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+            }}
+          />
+          <Typography variant="bodyLarge" textAlign="left">
+            {addedEmailType === EUserType.EXISTED ? (
+              <Trans i18nKey="user.emailExistsInApp" />
+            ) : (
+              <Trans i18nKey="user.emailDoesNotExistInApp" />
+            )}
+          </Typography>
         </Box>
-      </DialogContent>
-    </Dialog>
+      )}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          gap: 2,
+          padding: "16px",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button onClick={closeDialog}>{cancelText}</Button>
+        <LoadingButton
+          variant="contained"
+          onClick={handleClick}
+          loading={loading}
+          ref={buttonRef}
+        >
+          {confirmText}
+        </LoadingButton>
+      </Box>
+    </CEDialog>
   );
 };
 const EmailField = ({

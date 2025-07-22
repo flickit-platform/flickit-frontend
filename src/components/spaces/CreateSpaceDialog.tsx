@@ -273,13 +273,6 @@ const CreateSpaceDialog = (props: any) => {
                 type === "update" ? "spaces.updateSpace" : "spaces.createSpace"
               }
             />
-            <IconButton
-              sx={{ color: "#fff", marginInlineStart: "auto" }}
-              onClick={close}
-              data-testid={"close-btn"}
-            >
-              <CloseIcon style={{ width: 24, height: 24 }} />
-            </IconButton>
           </>
         )
       }

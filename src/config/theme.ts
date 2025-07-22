@@ -460,12 +460,24 @@ export const theme = createTheme({
 
       `,
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: "8px",
+        }
+      }
+    },    
     MuiDialogTitle: {
       defaultProps: {
         bgcolor: palette.primary.main,
         color: palette.primary.contrastText,
         fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
         marginBottom: "8px",
+      },
+      styleOverrides: {
+        root: {
+          opacity: "1",
+        },
       },
     },
     MuiDialogActions: {

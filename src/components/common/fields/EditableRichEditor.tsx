@@ -294,7 +294,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
       <CEDialog
         open={showUnsavedDialog}
-        onClose={cancelLeaveEditor}
+        closeDialog={cancelLeaveEditor}
         title={<Trans i18nKey="common.warning" />}
         maxWidth="sm"
       >
