@@ -20,7 +20,6 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { alpha } from "@mui/material/styles";
@@ -32,6 +31,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import showToast from "@utils/toastError";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -173,7 +173,7 @@ const ListOfItems = ({
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     };
 
@@ -190,7 +190,7 @@ const ListOfItems = ({
       );
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   }, 2000);
 
@@ -267,7 +267,7 @@ const ListOfItems = ({
         });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

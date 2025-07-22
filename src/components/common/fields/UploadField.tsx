@@ -15,7 +15,6 @@ import FilePresentRoundedIcon from "@mui/icons-material/FilePresentRounded";
 import { styles } from "@styles";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { TQueryServiceFunction, useQuery } from "@utils/useQuery";
-import toastError from "@utils/toastError";
 import { t } from "i18next";
 import { ICustomError } from "@utils/CustomError";
 import {
@@ -31,6 +30,7 @@ import { Trans } from "react-i18next";
 import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
@@ -207,10 +207,10 @@ const Uploader = (props: IUploadProps) => {
                   type: "application/json",
                 }).text();
                 blob.then((res: any) => {
-                  toastError(JSON.parse(res)?.message);
+                  showToast(JSON.parse(res)?.message);
                 });
               } else {
-                toastError(err);
+                showToast(err);
               }
               setMyFiles([]);
               setIsValid(false);
@@ -242,14 +242,14 @@ const Uploader = (props: IUploadProps) => {
             }) as string,
           };
         } else if (rejectedFiles.length == 1 && error[0]?.message) {
-          toastError(error?.pop()?.message as string);
+          showToast(error?.pop()?.message as string);
         } else {
-          toastError(t("errors.oneFileOnly") as string);
+          showToast(t("errors.oneFileOnly") as string);
         }
       }
     },
     onError(err) {
-      toastError(err.message);
+      showToast(err.message);
     },
   });
 

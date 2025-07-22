@@ -11,9 +11,9 @@ import LoadingSkeletonOfQuestions from "@common/loadings/LoadingSkeletonOfQuesti
 import QuestionsTitle from "./QuestionsTitle";
 import QueryBatchData from "@common/QueryBatchData";
 import { EAssessmentStatus, IQuestion, IQuestionnaireModel, IQuestionsModel } from "@/types/index";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuestion } from "./QuestionContainer";
+import showToast from "@/utils/toastError";
 
 const QuestionsContainer = (
   props: PropsWithChildren<{ isReview?: boolean }>,
@@ -169,7 +169,7 @@ export const useQuestions = () => {
       })
       .catch((e) => {
         console.error("Failed to load initial questions", e);
-        toastError(e as ICustomError);
+        showToast(e as ICustomError);
       });
   }, [questionnaireId]);
 
@@ -191,7 +191,7 @@ export const useQuestions = () => {
       }
     } catch (e) {
       console.error("Failed to load more questions", e);
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

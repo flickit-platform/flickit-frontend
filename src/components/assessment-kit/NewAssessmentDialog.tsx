@@ -7,7 +7,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import { ICustomError } from "@utils/CustomError";
 import { useNavigate, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useQuery } from "@utils/useQuery";
@@ -27,6 +26,7 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import i18next from "i18next";
+import showToast from "@utils/toastError";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -112,7 +112,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       setLoading(false);
       setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
-      toastError(err);
+      showToast(err);
       return () => {
         abortController.abort();
       };

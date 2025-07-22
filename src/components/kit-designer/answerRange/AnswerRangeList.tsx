@@ -16,7 +16,6 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
 import Add from "@mui/icons-material/Add";
@@ -31,6 +30,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import showToast from "@utils/toastError";
 
 interface ListOfItemsProps {
   items: any;
@@ -144,7 +144,7 @@ const ListOfItems = ({
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     };
 
@@ -200,7 +200,7 @@ const ListOfItems = ({
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

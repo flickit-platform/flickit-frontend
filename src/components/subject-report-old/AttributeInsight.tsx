@@ -3,7 +3,6 @@ import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
@@ -13,6 +12,7 @@ import { t } from "i18next";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
+import showToast from "@utils/toastError";
 
 const AttributeInsight = ({
   attributeId,
@@ -72,7 +72,7 @@ const AttributeInsight = ({
       await fetchSubjectInsight.query();
       await reloadQuery();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

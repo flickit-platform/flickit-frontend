@@ -21,7 +21,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
+import showToast from "@utils/toastError";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
@@ -253,7 +253,7 @@ const useFetchSpace = () => {
       setAllowCreateBasic(allowCreateBasic);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err, { filterByStatus: [404] });
+      showToast(err, { filterByStatus: [404] });
     }
   };
   const fetchSpace = async () => {
@@ -276,7 +276,7 @@ const useFetchSpace = () => {
       setLoading(false);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err, { filterByStatus: [404] });
+      showToast(err, { filterByStatus: [404] });
       setLoading(false);
       setError(true);
       setErrorObject(err);

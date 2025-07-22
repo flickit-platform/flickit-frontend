@@ -24,7 +24,6 @@ import { useForm } from "react-hook-form";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { t } from "i18next";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
@@ -32,6 +31,7 @@ import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
 import { theme } from "@config/theme";
+import showToast from "@utils/toastError";
 
 const tableCellStyles = {
   minWidth: {
@@ -336,7 +336,7 @@ const useEGPermision = (props: any) => {
       await query.query();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -364,7 +364,7 @@ const AddMemberModal = (props: any) => {
         assessmentKitId: assessmentKitId,
         email: inputRef.current?.value,
       });
-      res?.message && toast.success(res.message);
+      res?.message && showToast(res.message, { variant: "success" });
       await query.query();
       close();
     } catch (e) {
@@ -372,9 +372,9 @@ const AddMemberModal = (props: any) => {
       close();
       if (error?.response?.data.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
-          toastError(error.response?.data?.message[0]);
+          showToast(error.response?.data?.message[0]);
         } else {
-          toastError(error);
+          showToast(error);
         }
       }
     }

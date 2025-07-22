@@ -14,7 +14,6 @@ import {
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -45,6 +44,7 @@ import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import showToast from "@utils/toastError";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -500,7 +500,7 @@ const Actions = ({
     try {
       await deleteAssessment(item.id);
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

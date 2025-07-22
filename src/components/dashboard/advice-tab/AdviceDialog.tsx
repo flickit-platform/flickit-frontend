@@ -11,13 +11,13 @@ import Setting from "@assets/svg/setting.svg";
 import AdviceSlider from "@/components/common/AdviceSlider";
 import { theme } from "@/config/theme";
 import { useEffect, useState } from "react";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuery } from "@/utils/useQuery";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
+import showToast from "@/utils/toastError";
 
 const AdviceDialog = ({
   open,
@@ -60,7 +60,7 @@ const AdviceDialog = ({
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -78,7 +78,7 @@ const AdviceDialog = ({
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

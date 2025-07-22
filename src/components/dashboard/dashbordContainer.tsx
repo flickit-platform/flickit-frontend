@@ -23,7 +23,7 @@ import {
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
 import { toast } from "react-toastify";
-import toastError from "@/utils/toastError";
+import showToast from "@/utils/toastError";
 
 const maxLength = 40;
 
@@ -78,7 +78,7 @@ const DashbordContainer: React.FC = () => {
   const handleSaveEdit = async () => {
     try {
       const res = await updateAssessmentQuery.query();
-      res.message && toast.success(res.message);
+      res.message && showToast(res.message, { variant: "success" });
       if (assessmentInfo) {
         dispatch(
           assessmentActions.setAssessmentInfo({
@@ -90,7 +90,7 @@ const DashbordContainer: React.FC = () => {
       setIsEditing(false);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err.message);
+      showToast(err.message);
     }
   };
   const handleCancelEdit = () => {

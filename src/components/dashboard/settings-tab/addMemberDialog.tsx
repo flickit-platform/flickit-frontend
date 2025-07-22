@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import DialogTitle from "@mui/material/DialogTitle";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { SelectHeight } from "@utils/selectHeight";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -27,6 +26,7 @@ import useScreenResize from "@/utils/useScreenResize";
 import { styles } from "@styles";
 import Settings from "@mui/icons-material/Settings";
 import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -141,7 +141,7 @@ const AddMemberDialog = (props: {
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     })();
   }, [expanded]);
@@ -165,7 +165,7 @@ const AddMemberDialog = (props: {
       closeDialog();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const handleClick = async (e: any) => {

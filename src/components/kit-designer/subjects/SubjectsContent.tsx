@@ -10,13 +10,13 @@ import ListOfItems from "../common/GeneralList";
 import EmptyState from "../common/EmptyState";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectForm from "./SubjectForm";
 import { t } from "i18next";
+import showToast from "@/utils/toastError";
 
 const SubjectsContent = () => {
   const { service } = useServiceContext();
@@ -111,7 +111,7 @@ const SubjectsContent = () => {
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -159,7 +159,7 @@ const SubjectsContent = () => {
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -175,7 +175,7 @@ const SubjectsContent = () => {
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   }, 2000);
 

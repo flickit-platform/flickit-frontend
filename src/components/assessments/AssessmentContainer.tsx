@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ICustomError } from "@utils/CustomError";
 import { useParams, useNavigate } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { ToolbarCreateItemBtn } from "@common/buttons/ToolbarCreateItemBtn";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { styles, animations } from "@styles";
@@ -28,6 +27,7 @@ import NewAssessmentIcon from "@utils/icons/newAssessment";
 import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog";
 import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
+import showToast from "@utils/toastError";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -310,7 +310,7 @@ const useFetchAssessments = () => {
       setLoading(false);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err, { filterByStatus: [404] });
+      showToast(err, { filterByStatus: [404] });
       setLoading(false);
       setError(true);
       setErrorObject(err);
@@ -327,7 +327,7 @@ const useFetchAssessments = () => {
       fetchAssessments();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setLoading(false);
       setError(true);
     }

@@ -9,7 +9,6 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
-import toastError from "@utils/toastError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
@@ -28,6 +27,7 @@ import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
+import showToast from "@utils/toastError";
 
 const PremiumBox = [
   {
@@ -125,7 +125,7 @@ const CreateSpaceDialog = (props: any) => {
       onSubmitForm();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setServerFieldErrors(err, formMethods);
     } finally {
       setLoading(false);

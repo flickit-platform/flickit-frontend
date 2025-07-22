@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { Trans } from "react-i18next";
@@ -12,6 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Warning from "@mui/icons-material/Warning";
 import { styles } from "@styles";
 import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 const ConfirmRemoveMemberDialog = (props: any) => {
   const {
@@ -54,7 +54,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

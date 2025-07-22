@@ -10,7 +10,6 @@ import setServerFieldErrors from "@utils/setServerFieldError";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@utils/CustomError";
 import { useNavigate, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField, {
@@ -31,6 +30,7 @@ import { theme } from "@/config/theme";
 import SelectLanguage from "@utils/selectLanguage";
 import uniqueId from "@/utils/uniqueId";
 import i18n from "i18next";
+import showToast from "@utils/toastError";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -154,7 +154,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       shouldView && res?.kitId && navigate(`assessment-kits/${res.kitId}`);
     } catch (e: any) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setLoading(false);
       setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();

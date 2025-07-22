@@ -23,13 +23,13 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import Impact from "@common/icons/Impact";
 import languageDetector from "@utils/languageDetector";
 import { t } from "i18next";
 import RichEditorField from "@/components/common/fields/RichEditorField";
+import showToast from "@utils/toastError";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -96,7 +96,7 @@ const AdviceListNewForm = ({
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     };
     fetchAdviceOptions();

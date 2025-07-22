@@ -11,7 +11,6 @@ import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
 import { useQuery } from "@/utils/useQuery";
 import { styles } from "@styles";
 import {
@@ -31,6 +30,7 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { theme } from "@/config/theme";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
+import showToast from "@/utils/toastError";
 
 interface ITempValue {
   title: string;
@@ -142,7 +142,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       setIsSaving(false);
     } catch (err) {
       setIsSaving(false);
-      toastError(err as ICustomError);
+      showToast(err as ICustomError);
     }
   };
 

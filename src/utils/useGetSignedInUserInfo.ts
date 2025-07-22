@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import keycloakService from "@/service//keycloakService";
-import toastError from "@utils/toastError";
+import showToast from "@utils/toastError";
 /**
  * Checks if any token is available and then checks if the user with the founded token is still authenticated or not.
  *
@@ -79,7 +79,7 @@ const useGetSignedInUserInfo = (
       dispatch(authActions.setUserInfoLoading(false));
       dispatch(authActions.setUserInfo());
       setError(true);
-      toastError(err);
+      showToast(err);
       return false;
     }
   };

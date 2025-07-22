@@ -9,7 +9,6 @@ import { useQuery } from "@/utils/useQuery";
 import EmptyState from "../common/EmptyState";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
@@ -17,6 +16,7 @@ import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import SubjectTable from "./SubjectTable";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { MultiLangs } from "@/types";
+import showToast from "@/utils/toastError";
 
 interface INewAttribute {
   title: string;
@@ -140,7 +140,7 @@ const AttributesContent = () => {
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -190,7 +190,7 @@ const AttributesContent = () => {
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -202,7 +202,7 @@ const AttributesContent = () => {
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -221,7 +221,7 @@ const AttributesContent = () => {
         handleCancel();
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     },
     2000,

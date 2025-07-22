@@ -7,11 +7,11 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
 import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import showToast from "@/utils/toastError";
 
 interface CompetencesTableProps {
   data: Array<{ id: number; title: string; competences: any[] }>;
@@ -104,7 +104,7 @@ const CompetencesTable = ({
       maturityLevelsCompetences.query(); // Refresh data
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
