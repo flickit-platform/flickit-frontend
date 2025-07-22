@@ -165,7 +165,7 @@ export const ShareDialog = ({
   return (
     <CEDialog
       open={open}
-      onClose={onClose}
+      closeDialog={onClose}
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />

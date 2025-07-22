@@ -330,7 +330,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
   return (
     <CEDialog
       open={expanded.expended}
-      onClose={closeDialog}
+      closeDialog={closeDialog}
       maxWidth={"sm"}
       fullWidth
       sx={{
