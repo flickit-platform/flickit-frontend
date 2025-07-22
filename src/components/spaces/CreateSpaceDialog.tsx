@@ -15,8 +15,6 @@ import { theme } from "@/config/theme";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { t } from "i18next";
 import Check from "@components/spaces/Icons/check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";

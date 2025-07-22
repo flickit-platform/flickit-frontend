@@ -676,8 +676,9 @@ const NavigationButton = ({
   icon: Icon,
   marginStyle,
   isActive,
+  id,
 }: any) => (
-  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle}>
+  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle} id={id}>
     <Icon sx={{ color: getArrowColor(isActive), fontSize: "48px" }} />
   </IconButton>
 );
@@ -999,6 +1000,7 @@ const AnswerTemplate = (props: {
           icon={ArrowForward}
           marginStyle={{ marginInlineStart: { sm: 0, md: "-30px" } }}
           isActive={isLTR ? true : questionIndex !== 1}
+          id="next"
         />
         <Box
           display={"flex"}
@@ -1118,6 +1120,7 @@ const AnswerTemplate = (props: {
           icon={ArrowBack}
           marginStyle={{ marginInlineEnd: { sm: 0, md: "-30px" } }}
           isActive={isLTR ? questionIndex !== 1 : true}
+          id="back"
         />
       </Box>
       {notApplicable && (
