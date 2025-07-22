@@ -120,7 +120,8 @@ const CreateSpaceDialog = (props: any) => {
       } else {
         const res = await service.space.create(data);
         setSpaceIdNum(res.data.id);
-        setStep(3);
+        showToast(t("spaces.spaceCreatedSuccessfully"), { variant: "success" });
+        close();
       }
       onSubmitForm();
     } catch (e) {
@@ -339,7 +340,9 @@ const CreateSpaceDialog = (props: any) => {
           <>
             <CreateNewFolderRoundedIcon sx={{ marginInlineEnd: 1 }} />
             <Trans
-              i18nKey={type === "update" ? "spaces.updateSpace" : "spaces.createSpace"}
+              i18nKey={
+                type === "update" ? "spaces.updateSpace" : "spaces.createSpace"
+              }
             />
             <IconButton
               sx={{ color: "#fff", marginInlineStart: "auto" }}
@@ -354,7 +357,7 @@ const CreateSpaceDialog = (props: any) => {
     >
       {step === 1 && renderStepOne()}
       {step === 2 && renderStepTwo()}
-      {step === 3 && renderStepThree()}
+      {/* {step === 3 && renderStepThree()} */}
     </CEDialog>
   );
 };
@@ -523,7 +526,7 @@ const BoxType = ({
             alignItems: "center",
             gap: "8px",
             bottom: { xs: "-45px", md: "-54px" },
-            cursor: "text"
+            cursor: "text",
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
