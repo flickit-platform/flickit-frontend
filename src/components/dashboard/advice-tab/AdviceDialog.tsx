@@ -18,6 +18,8 @@ import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import showToast from "@/utils/toastError";
+import { IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 const AdviceDialog = ({
   open,
@@ -39,7 +41,8 @@ const AdviceDialog = ({
   });
 
   const createAINarrationQueryData = useQuery<any>({
-    service: (args, config) => service.assessments.advice.createAI(args, config),
+    service: (args, config) =>
+      service.assessments.advice.createAI(args, config),
     runOnMount: false,
   });
 
@@ -97,8 +100,8 @@ const AdviceDialog = ({
       fullScreen={false}
       sx={{ overflowY: "auto" }}
     >
-      <DialogTitle sx={{ ...styles.centerV }}>
-        <>
+      <DialogTitle sx={{ ...styles.centerV, justifyContent: "space-between" }}>
+        <Box sx={{ ...styles.centerV }}>
           <img
             src={Setting}
             alt="settings"
@@ -109,7 +112,16 @@ const AdviceDialog = ({
             }}
           />
           <Trans i18nKey="advice.adviceAssistant" />
-        </>
+        </Box>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          edge="end"
+          size="small"
+          sx={{ ml: 2, color: "#fff" }}
+        >
+          <Close />
+        </IconButton>
       </DialogTitle>
 
       <Box
@@ -125,7 +137,11 @@ const AdviceDialog = ({
         }}
       >
         <Typography variant="titleMedium" fontWeight={400}>
-          <Trans i18nKey={step === 1 ? "advice.whichAttYouWant" : "advice.reviewAdvice"} />
+          <Trans
+            i18nKey={
+              step === 1 ? "advice.whichAttYouWant" : "advice.reviewAdvice"
+            }
+          />
         </Typography>
       </Box>
 
@@ -238,7 +254,9 @@ const AdviceDialog = ({
                   : createAINarrationQueryData.loading
               }
             >
-              <Trans i18nKey={step === 1 ? "common.continue" : "common.finish"} />
+              <Trans
+                i18nKey={step === 1 ? "common.continue" : "common.finish"}
+              />
             </LoadingButton>
           </Box>
         </Box>

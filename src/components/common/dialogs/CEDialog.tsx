@@ -11,6 +11,8 @@ import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { TDialogContextType } from "@/types/index";
 import { t } from "i18next";
+import { Box, IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 interface ICEDialogProps extends Omit<DialogProps, "title"> {
   closeDialog?: () => void;
@@ -44,11 +46,22 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
       {title && (
         <DialogTitle
           sx={{
-            ...styles.centerV,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
             ...titleStyle,
           }}
         >
-          {title}
+          <Box sx={{ ...styles.centerVH }}>{title}</Box>
+          <IconButton
+            aria-label="close"
+            onClick={closeDialog}
+            edge="end"
+            size="small"
+            sx={{ ml: 2, color: "#fff" }}
+          >
+            <Close />
+          </IconButton>
         </DialogTitle>
       )}
       <DialogContent
