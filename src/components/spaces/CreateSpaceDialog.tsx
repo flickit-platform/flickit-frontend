@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { theme } from "@/config/theme";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import greenCheckmark from "@/assets/svg/greenCheckmark.svg";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -261,76 +260,6 @@ const CreateSpaceDialog = (props: any) => {
     </Box>
   );
 
-  const renderStepThree = () => (
-    <CEDialog {...rest} closeDialog={close} title={null}>
-      <Box
-        sx={{
-          display: "flex",
-          pt: 4,
-          px: 4,
-          height: "100%",
-          flexDirection: { xs: "column", sm: "row" },
-          alignItems: "center",
-          gap: { xs: 4, sm: 0 },
-        }}
-      >
-        <img
-          style={{ padding: "0px 15px" }}
-          src={greenCheckmark}
-          alt="greenCheckmark"
-        />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "32px",
-            px: 4,
-            pb: 4,
-          }}
-        >
-          <Typography
-            sx={{
-              ...theme.typography.headlineMedium,
-              WebkitTextFillColor: "transparent",
-              WebkitBackgroundClip: "text",
-              backgroundImage:
-                "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )",
-            }}
-          >
-            <Trans i18nKey="spaces.congratulation" />
-          </Typography>
-          <Typography sx={{ ...theme.typography.bodyLarge }}>
-            <Trans
-              i18nKey={
-                selectedType === "PREMIUM"
-                  ? "spaces.createPremiumSpaceCongratulation"
-                  : "spaces.createBasicSpaceCongratulation"
-              }
-            />
-          </Typography>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginInlineStart: "auto",
-          p: 2,
-          gap: 2,
-        }}
-      >
-        <Button onClick={close}>
-          <Trans i18nKey="common.close" />
-        </Button>
-        <Button onClick={goToSpace} variant="contained">
-          <Typography>
-            <Trans i18nKey="spaces.goToSpace" />
-          </Typography>
-        </Button>
-      </Box>
-    </CEDialog>
-  );
-
   return (
     <CEDialog
       {...rest}
@@ -357,7 +286,6 @@ const CreateSpaceDialog = (props: any) => {
     >
       {step === 1 && renderStepOne()}
       {step === 2 && renderStepTwo()}
-      {/* {step === 3 && renderStepThree()} */}
     </CEDialog>
   );
 };
