@@ -19,10 +19,8 @@ import { useAuthContext } from "@providers/AuthProvider";
 import Chip from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
-import { toast } from "react-toastify";
 import MoreActions from "@common/MoreActions";
 import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
-import toastError from "@utils/toastError";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { IDialogProps, IMemberModel, TQueryProps } from "@/types/index";
@@ -136,7 +134,7 @@ export const SpaceMembers = (props: any) => {
               } catch (e) {
                 const err = e as ICustomError;
                 if (err.response?.data.code !== "NOT_FOUND") {
-                  toastError(err);
+                  showToast(err);
                 } else {
                   dialogProps.openDialog({
                     type: "invite",

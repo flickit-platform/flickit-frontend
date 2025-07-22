@@ -22,7 +22,6 @@ import {
 } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
-import { toast } from "react-toastify";
 import showToast from "@/utils/toastError";
 
 const maxLength = 40;
