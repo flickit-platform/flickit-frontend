@@ -3,28 +3,13 @@ import { AxiosError } from "axios";
 import { ECustomErrorType } from "@/types/index";
 import { ICustomError } from "./CustomError";
 import { t } from "i18next";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 export interface IToastOptions {
-  /**
-   * Show toast of this type. Default: 'error'
-   */
   variant?: "error" | "success" | "info" | "warning";
-  /**
-   * Don't show toast if status is one of
-   */
   filterByStatus?: number[];
-  /**
-   * Don't show toast if its type is one of
-   */
   filterByType?: ECustomErrorType[];
-  /**
-   * Don't show toast if it has any data
-   */
   filterIfHasData?: boolean;
-  /**
-   * Toast options from react-toastify
-   */
   toastOptions?: ToastOptions;
 }
 
@@ -42,24 +27,15 @@ const showToast = (
     toastOptions = {},
   } = options ?? {};
 
-  // Simple success usage: showToast('عملیات موفق بود', { variant: 'success' })
-  if (typeof err === "string" && variant !== "error") {
+  if (typeof err === "string" || React.isValidElement(err)) {
     toast[variant](err, toastOptions);
     return;
   }
-
   if (typeof err === "boolean" && err) {
-    showToast(t("errors.someThingWentWrong"))
+    toast.error(t("errors.someThingWentWrong") as string, toastOptions);
     return;
   }
-  if (typeof err === "string") {
-    showToast(err)
-    return;
-  }
-
-  if (!err) {
-    return;
-  }
+  if (!err) return;
 
   let status: number | undefined;
   let data: any;
@@ -81,15 +57,11 @@ const showToast = (
   }
 
   if (filterByStatus.length > 0 && status) {
-    if (filterByStatus.includes(status)) {
-      return;
-    }
+    if (filterByStatus.includes(status)) return;
   }
 
   if (filterByType.length > 0 && type) {
-    if (filterByType.includes(type)) {
-      return;
-    }
+    if (filterByType.includes(type)) return;
   }
 
   if (filterIfHasData) {
