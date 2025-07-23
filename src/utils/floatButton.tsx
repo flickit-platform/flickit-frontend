@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { theme } from "@config/theme";
@@ -9,27 +9,42 @@ import { Trans } from "react-i18next";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { questionActions } from "@providers/QuestionProvider";
+import { Close } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 const FloatButton = (props: any) => {
   const { dialogProps } = props;
   const [showFeedback, setShowFeadback] = useState(false);
+  const { pathname } = useLocation();
 
-  const closeFeadbackBox = (e: any) => {};
+  const closeFeadbackBox = (e: any) => {
+    setShowFeadback(false)
+  };
+
+  useEffect(() => {
+    if(pathname.includes("graphical-report")){
+      setShowFeadback(true)
+    }
+  }, [pathname]);
+
 
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
-        bottom: { xs: 0, md: "55px" },
-      }}
-    >
+
+    <>
+      <Box
+        sx={{
+          position: "fixed",
+          right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
+          bottom: { xs: 0, md: "55px" },
+          display: showFeedback ? "flex" : "none"
+        }}
+      >
       <Box
         sx={{
           position: "relative",
           background: theme.palette.primary.main,
-          bottom: "9px",
+          bottom: "65px",
+          right: 0,
           borderRadius: "8px",
           px: "32px",
           pt: "28px",
@@ -37,6 +52,18 @@ const FloatButton = (props: any) => {
           maxWidth: "320px",
         }}
       >
+        <IconButton
+          aria-label="close"
+          onClick={closeFeadbackBox}
+          edge="end"
+          size="small"
+          sx={{ color: "#fff", position: "absolute", left: 2.5, top: 2.5 }}
+          data-testid="close-btn"
+        >
+          <Close />
+        </IconButton>
+
+
         <Typography sx={{ ...theme.typography.semiBoldXLarge, color: "#fff" }}>
           <Trans i18nKey={"common.gotMinute"} />
         </Typography>
@@ -93,22 +120,38 @@ const FloatButton = (props: any) => {
           sx={{ position: "absolute", bottom: "-10px", right: "20px" }}
         />
       </Box>
-      <IconButton
-        edge="start"
+      </Box>
+      <Box
         sx={{
-          background: theme.palette.primary.main,
-          "&:hover": {
-            background: theme.palette.primary.dark,
-          },
-          borderRadius: "50%",
-          width: "56px",
-          height: "56px",
+          position: "fixed",
+          right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
+          bottom: { xs: 0, md: "55px" },
         }}
-        onClick={() => dialogProps.openDialog({})}
       >
-        <img src={ContactSupport} alt={"ContactSupport"} />
-      </IconButton>
-    </Box>
+
+        <IconButton
+          edge="start"
+          sx={{
+            background: theme.palette.primary.main,
+            "&:hover": {
+              background: theme.palette.primary.dark,
+            },
+            borderRadius: "50%",
+            width: "56px",
+            height: "56px",
+          }}
+          onClick={() => dialogProps.openDialog({})}
+        >
+          <img src={ContactSupport} alt={"ContactSupport"} />
+        </IconButton>
+      </Box>
+
+
+    </>
+
+
+
+
   );
 };
 
