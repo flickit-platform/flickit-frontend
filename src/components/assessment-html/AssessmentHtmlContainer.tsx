@@ -37,7 +37,7 @@ import Share from "@mui/icons-material/Share";
 import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
@@ -63,6 +63,7 @@ const AssessmentHtmlContainer = () => {
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
+  const [showMessage, setShowMessage] = useState(false);
 
   const dialogProps = useDialog();
 
@@ -94,6 +95,30 @@ const AssessmentHtmlContainer = () => {
       ),
     runOnMount: false,
   });
+
+
+  useEffect(() => {
+    const targetElement = document.getElementById("recommendations")
+    if (!targetElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowMessage(entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0.5,
+      }
+    );
+
+    observer.observe(targetElement);
+
+    return () => {
+      observer.unobserve(targetElement);
+    };
+
+  });
+
 
   const handleErrorResponse = async (errorCode: any) => {
     let shouldRefetch = false;
