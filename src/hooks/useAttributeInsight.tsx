@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@/utils/useQuery";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
+import showToast from "@/utils/toastError";
 
 interface UseAttributeInsightProps {
   id: string;
@@ -57,7 +57,7 @@ const useAttributeInsight = ({
         await ApprovedAIAttribute.query();
         await loadAttributeInsight.query();
       } catch (e) {
-        toastError(e as ICustomError);
+        showToast(e as ICustomError);
       }
     },
     [ApprovedAIAttribute, loadAttributeInsight],

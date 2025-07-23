@@ -33,7 +33,6 @@ import Grid from "@mui/material/Grid";
 import { FormProvider, useForm } from "react-hook-form";
 import { styles } from "@styles";
 import { InputFieldUC } from "@common/fields/InputField";
-import toastError from "@utils/toastError";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
@@ -80,6 +79,7 @@ import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import { getReadableDate } from "@utils/readableDate";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
+import showToast from "@utils/toastError";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -676,8 +676,9 @@ const NavigationButton = ({
   icon: Icon,
   marginStyle,
   isActive,
+  id,
 }: any) => (
-  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle}>
+  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle} id={id}>
     <Icon sx={{ color: getArrowColor(isActive), fontSize: "48px" }} />
   </IconButton>
 );
@@ -866,7 +867,7 @@ const AnswerTemplate = (props: {
     } catch (e) {
       dispatch(questionActions.setIsSubmitting(false));
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
     if (submitOnAnswerSelection) {
       const newQuestionIndex = questionIndex + 1;
@@ -905,7 +906,7 @@ const AnswerTemplate = (props: {
     } catch (e) {
       dispatch(questionActions.setIsSubmitting(false));
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -973,7 +974,7 @@ const AnswerTemplate = (props: {
       });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -999,6 +1000,7 @@ const AnswerTemplate = (props: {
           icon={ArrowForward}
           marginStyle={{ marginInlineStart: { sm: 0, md: "-30px" } }}
           isActive={isLTR ? true : questionIndex !== 1}
+          id="next"
         />
         <Box
           display={"flex"}
@@ -1118,6 +1120,7 @@ const AnswerTemplate = (props: {
           icon={ArrowBack}
           marginStyle={{ marginInlineEnd: { sm: 0, md: "-30px" } }}
           isActive={isLTR ? questionIndex !== 1 : true}
+          id="back"
         />
       </Box>
       {notApplicable && (
@@ -1597,7 +1600,7 @@ const Evidence = (props: any) => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err?.response?.data.description[0]);
+      showToast(err?.response?.data.description[0]);
     } finally {
       formMethods.reset();
     }
@@ -1641,7 +1644,7 @@ const Evidence = (props: any) => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const deleteAttachment = async () => {
@@ -1659,7 +1662,7 @@ const Evidence = (props: any) => {
       setAttachmentData(true);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const fetchAttachments = async (args: any) => {
@@ -2094,7 +2097,7 @@ const EvidenceDetail = (props: any) => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err?.response?.data.description[0]);
+      showToast(err?.response?.data.description[0]);
     } finally {
       formMethods.reset();
       setLoadingEvidence(false);
@@ -2145,7 +2148,7 @@ const EvidenceDetail = (props: any) => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err?.response?.data.description[0]);
+      showToast(err?.response?.data.description[0]);
     } finally {
       formMethods.reset();
       setLoadingEvidence(false);

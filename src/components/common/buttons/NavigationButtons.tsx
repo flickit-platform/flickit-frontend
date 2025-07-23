@@ -37,10 +37,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
             transform: direction === "rtl" ? "scaleX(-1)" : "none",
           }}
         />
-        <Typography
-          variant={"semiBoldLarge"}
-          sx={{ fontSize: "12px" }}
-        >
+        <Typography variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
           <Trans i18nKey={previousTextKey} />
         </Typography>
       </Button>
@@ -50,7 +47,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         disabled={isNextDisabled}
         sx={{ ...styles.centerVH, gap: 1, cursor: "pointer" }}
       >
-        <Typography variant={"semiBoldLarge"} sx={{ fontSize: "12px" }}>
+        <Typography variant="semiBoldLarge" sx={{ fontSize: "12px" }}>
           <Trans i18nKey={nextTextKey} />
         </Typography>
         <ArrowForwardIos

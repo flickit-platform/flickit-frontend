@@ -20,11 +20,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import toastError from "@utils/toastError";
 import formatBytes from "@utils/formatBytes";
 import { ICustomError } from "@utils/CustomError";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
+import showToast from "@utils/toastError";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);
@@ -66,7 +66,7 @@ const UserAccount = () => {
       reader.readAsDataURL(file);
       const maxSize = 2097152;
       if (file.size > maxSize) {
-        toastError(`Maximum upload file size is ${formatBytes(maxSize)}.`);
+        showToast(`Maximum upload file size is ${formatBytes(maxSize)}.`);
         return;
       }
       setHover(false);
@@ -81,7 +81,7 @@ const UserAccount = () => {
         onSubmit().then();
       } catch (e: any) {
         setIsLoading(false);
-        toastError(e as ICustomError);
+        showToast(e as ICustomError);
       }
     }
   };

@@ -12,8 +12,6 @@ import { useParams } from "react-router";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import toastError from "@utils/toastError";
-import { toast } from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import { useState, useRef } from "react";
@@ -39,6 +37,7 @@ import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
+import showToast from "@utils/toastError";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -96,7 +95,7 @@ const AssessmentKitSectionGeneralInfo = (
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const handleLanguageChange = async (e: any) => {
@@ -117,7 +116,7 @@ const AssessmentKitSectionGeneralInfo = (
       await fetchAssessmentKitInfoQuery.query();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -541,14 +540,14 @@ const OnHoverInput = (props: any) => {
   const updateAssessmentKit = async () => {
     try {
       const res = await updateAssessmentKitQuery.query();
-      res.message && toast.success(res.message);
+      res.message && showToast(res.message, { variant: "success" });
       await infoQuery();
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
-        toastError(err.response?.data?.message[0]);
+        showToast(err.response?.data?.message[0]);
       } else if (err.response?.data?.hasOwnProperty("message")) {
-        toastError(error);
+        showToast(error);
       }
       setError(err);
       setHasError(true);
@@ -727,7 +726,7 @@ const OnHoverStatus = (props: any) => {
   });
   const updateAssessmentKit = async () => {
     const res = await updateAssessmentKitQuery.query();
-    res.message && toast.success(res.message);
+    res.message && showToast(res.message, { variant: "success" });
     await infoQuery();
   };
   return (
@@ -832,7 +831,7 @@ const OnHoverVisibilityStatus = (props: any) => {
   });
   const updateAssessmentKit = async () => {
     const res = await updateAssessmentKitQuery.query();
-    res.message && toast.success(res.message);
+    res.message && showToast(res.message, { variant: "success" });
     await infoQuery();
   };
   return (

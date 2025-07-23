@@ -9,11 +9,11 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { theme } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
+import showToast from "@utils/toastError";
 
 interface IUserCEFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -71,7 +71,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
       const err = e as ICustomError;
       setLoading(false);
       setServerFieldErrors(err, formMethods);
-      toastError(err);
+      showToast(err);
     }
   };
 

@@ -1,17 +1,14 @@
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { Trans } from "react-i18next";
-import DialogTitle from "@mui/material/DialogTitle";
 import Warning from "@mui/icons-material/Warning";
-import { styles } from "@styles";
 import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
+import { CEDialog } from "@/components/common/dialogs/CEDialog";
 
 const ConfirmRemoveMemberDialog = (props: any) => {
   const {
@@ -54,14 +51,14 @@ const ConfirmRemoveMemberDialog = (props: any) => {
       }
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
   return (
-    <Dialog
+    <CEDialog
       open={expandedRemoveDialog.display}
-      onClose={onCloseRemoveDialog}
+      closeDialog={onCloseRemoveDialog}
       maxWidth={"sm"}
       fullWidth
       sx={{
@@ -71,8 +68,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
           msOverflowStyle: "none",
         },
       }}
-    >
-      <DialogTitle textTransform="uppercase" sx={{ ...styles.centerV }}>
+      title={
         <>
           <Warning
             sx={{
@@ -82,46 +78,36 @@ const ConfirmRemoveMemberDialog = (props: any) => {
           />
           <Trans i18nKey="common.warning" />
         </>
-      </DialogTitle>
-      <DialogContent
-        sx={{
-          overflowX: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          textAlign: "left",
-        }}
-      >
-        <Typography sx={{ color: "#0A2342" }}>
-          {expandedRemoveDialog.invited ? (
-            <Trans
-              i18nKey="settings.areYouSureYouWantDeleteThisMemberInvited"
-              values={{
-                name: expandedRemoveDialog?.name,
-              }}
-            />
-          ) : (
-            <Trans
-              i18nKey="settings.areYouSureYouWantDeleteThisMember"
-              values={{
-                name: expandedRemoveDialog?.name,
-                assessment: assessmentName,
-              }}
-            />
-          )}
-        </Typography>
+      }
+    >
+      <Typography sx={{ color: "#0A2342" }}>
+        {expandedRemoveDialog.invited ? (
+          <Trans
+            i18nKey="settings.areYouSureYouWantDeleteThisMemberInvited"
+            values={{
+              name: expandedRemoveDialog?.name,
+            }}
+          />
+        ) : (
+          <Trans
+            i18nKey="settings.areYouSureYouWantDeleteThisMember"
+            values={{
+              name: expandedRemoveDialog?.name,
+              assessment: assessmentName,
+            }}
+          />
+        )}
+      </Typography>
 
-        <Box mt={2} alignSelf="flex-end" sx={{ display: "flex", gap: 2 }}>
-          <Button onClick={onCloseRemoveDialog}>
-            <Trans i18nKey="common.cancel" />
-          </Button>
-          <Button variant="contained" onClick={DeletePerson}>
-            <Trans i18nKey="common.confirm" />
-          </Button>
-        </Box>
-      </DialogContent>
-    </Dialog>
+      <Box mt={2} alignSelf="flex-end" sx={{ display: "flex", gap: 2 }}>
+        <Button onClick={onCloseRemoveDialog}>
+          <Trans i18nKey="common.cancel" />
+        </Button>
+        <Button variant="contained" onClick={DeletePerson}>
+          <Trans i18nKey="common.confirm" />
+        </Button>
+      </Box>
+    </CEDialog>
   );
 };
 

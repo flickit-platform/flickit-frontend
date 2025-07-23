@@ -14,11 +14,11 @@ import { styles } from "@styles";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
 import { ErrorCodes } from "@/types/index";
+import showToast from "@utils/toastError";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -268,7 +268,7 @@ export const IssuesItem = ({
       await approveInsights.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -283,7 +283,7 @@ export const IssuesItem = ({
       await fetchDashboard();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -294,7 +294,7 @@ export const IssuesItem = ({
       await approveAllAnswers.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -303,7 +303,7 @@ export const IssuesItem = ({
       await approveExpiredInsights.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
   const handleSolvedComments = async (event: any) => {
@@ -313,7 +313,7 @@ export const IssuesItem = ({
       await resolvedAllComments.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

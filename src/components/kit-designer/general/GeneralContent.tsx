@@ -17,10 +17,10 @@ import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
-import toastError from "@/utils/toastError";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import showToast from "@/utils/toastError";
 
 const generalFields = [
   { name: "title", label: "common.title", multiline: false, useRichEditor: false },
@@ -184,7 +184,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         fetchAssessmentKitInfoQuery.query();
         setEditableFields(new Set());
       })
-      .catch((e) => toastError(e));
+      .catch((e) => showToast(e));
   }, [
     kitVersion.assessmentKit.id,
     updatedValues,

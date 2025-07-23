@@ -8,11 +8,11 @@ import { styles } from "@styles";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
 import { useQuery } from "@/utils/useQuery";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { EditableRichEditor } from "../../../common/fields/EditableRichEditor";
 import ActionPopup from "../../../common/buttons/ActionPopup";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
+import showToast from "@/utils/toastError";
 
 export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
   const { service } = useServiceContext();
@@ -60,7 +60,7 @@ export const AssessmentInsight = ({ defaultInsight, reloadQuery }: any) => {
       await fetchAssessmentInsight.query();
       await reloadQuery();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

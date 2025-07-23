@@ -7,11 +7,11 @@ import { useQuery } from "@/utils/useQuery";
 import ListOfItems from "./AnswerRangeList";
 import EmptyState from "../common/EmptyState";
 import { useParams } from "react-router-dom";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import KitDesignerHeader from "@components/kit-designer/common/KitHeader";
 import AnswerRangeForm from "./AnswerRangeForm";
+import showToast from "@/utils/toastError";
 
 const AnaweRangeContent = () => {
   const { service } = useServiceContext();
@@ -93,7 +93,7 @@ const AnaweRangeContent = () => {
       setChangeData((prev) => !prev);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -133,7 +133,7 @@ const AnaweRangeContent = () => {
       setChangeData((prev) => !prev);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -149,7 +149,7 @@ const AnaweRangeContent = () => {
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   }, 2000);
 

@@ -16,10 +16,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
-import { toast } from "react-toastify";
 import { styles } from "@styles";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
+import showToast from "@/utils/toastError";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -149,11 +148,12 @@ const KitCustomization = (props: any) => {
           });
           setKitData(items);
           setHasChanges(false);
-          toast.success(
+          showToast(
             <Trans
               i18nKey="spaces.spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
+            { variant: "success" },
           );
         } else {
           const customData = inputData;
@@ -168,16 +168,14 @@ const KitCustomization = (props: any) => {
           setKitData(items);
           setEdit({ allow: true, idC: kitCustomId });
           setHasChanges(false);
-          toast.success(
-            <Trans
-              i18nKey="spaces.spaceCreatedSuccessMessage"
-              values={{ title: inputData.title }}
-            />,
+          showToast(
+            <Trans i18nKey="spaces.spaceCreatedSuccessMessage" values={{ title: inputData.title }} />,
+            { variant: "success" }
           );
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     })();
   };

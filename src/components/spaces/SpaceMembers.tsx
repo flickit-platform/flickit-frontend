@@ -19,10 +19,8 @@ import { useAuthContext } from "@providers/AuthProvider";
 import Chip from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
-import { toast } from "react-toastify";
 import MoreActions from "@common/MoreActions";
 import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
-import toastError from "@utils/toastError";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { IDialogProps, IMemberModel, TQueryProps } from "@/types/index";
@@ -38,6 +36,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
+import showToast from "@utils/toastError";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -123,7 +122,7 @@ export const SpaceMembers = (props: any) => {
           onSubmit={async (e) => {
             e.preventDefault();
             if (!user_id_ref.current?.value) {
-              toast.error(t("errors.pleaseEnterEmailAddress") as string);
+              showToast(t("errors.pleaseEnterEmailAddress"))
             } else {
               try {
                 await addMember({
@@ -135,7 +134,7 @@ export const SpaceMembers = (props: any) => {
               } catch (e) {
                 const err = e as ICustomError;
                 if (err.response?.data.code !== "NOT_FOUND") {
-                  toastError(err);
+                  showToast(err);
                 } else {
                   dialogProps.openDialog({
                     type: "invite",
@@ -513,7 +512,7 @@ const Actions = (props: any) => {
       await fetchSpaceMembers();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -523,17 +522,17 @@ const Actions = (props: any) => {
       await fetchSpaceMembers();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
   const inviteMember = async () => {
     try {
       await inviteMemberQueryData.query();
-      toast.success(t("spaces.invitationSentSuccessfully"));
+      showToast(t("spaces.invitationSentSuccessfully"), { variant: "success" });
       fetchSpaceMembers();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -595,13 +594,13 @@ const InviteSpaceMemberDialog = (
   const onInvite = async () => {
     try {
       await inviteMemberQuery();
-      toast.success(t("spaces.invitationSentSuccessfully"));
+      showToast(t("spaces.invitationSentSuccessfully"), { variant: "success" });
       resetForm();
       rest.onClose();
       spaceMembersQueryData.query();
       spaceMembersInviteeQueryData.query();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

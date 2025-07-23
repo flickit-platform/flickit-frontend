@@ -20,11 +20,11 @@ import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { FLAGS } from "@/types";
 import flagsmith from "flagsmith";
+import showToast from "@utils/toastError";
 
 interface IExpertGroupsItemProps {
   data: any;
@@ -57,9 +57,9 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
       const err = e as ICustomError;
       if (err.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(err.response?.data?.message)) {
-          toastError(err.response?.data?.message[0]);
+          showToast(err.response?.data?.message[0]);
         } else {
-          toastError(err);
+          showToast(err);
         }
       }
     }
@@ -202,9 +202,9 @@ const Actions = (props: any) => {
       const err = e as ICustomError;
       if (err.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(err.response?.data?.message)) {
-          toastError(err.response?.data?.message[0]);
+          showToast(err.response?.data?.message[0]);
         } else {
-          toastError(err);
+          showToast(err);
         }
       }
     }

@@ -17,7 +17,6 @@ import stringAvatar from "@/utils/stringAvatar";
 import { useQuery } from "@/utils/useQuery";
 import { useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import QueryBatchData from "../common/QueryBatchData";
 import IconButton from "@mui/material/IconButton";
@@ -35,6 +34,7 @@ import { VISIBILITY } from "@/utils/enumType";
 import { IGraphicalReport, IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
+import showToast from "@/utils/toastError";
 
 interface IDialogProps extends IGraphicalReport {
   open: boolean;
@@ -113,7 +113,7 @@ export const ShareDialog = ({
       if (window.location.pathname !== finalPath)
         window.history.replaceState({}, "", finalPath);
     } catch (error) {
-      toastError(error as ICustomError);
+      showToast(error as ICustomError);
     }
 
     setAccess(newAccess);
@@ -146,7 +146,7 @@ export const ShareDialog = ({
       fetchGraphicalReportUsers.query();
       reset();
     } catch (error) {
-      toastError(error as ICustomError);
+      showToast(error as ICustomError);
     }
   };
 
@@ -155,7 +155,7 @@ export const ShareDialog = ({
       navigator.clipboard.writeText(window.location.href);
       setSnackbarOpen(true);
     } catch (error) {
-      toastError(error as ICustomError);
+      showToast(error as ICustomError);
     }
   };
 
@@ -165,7 +165,7 @@ export const ShareDialog = ({
   return (
     <CEDialog
       open={open}
-      onClose={onClose}
+      closeDialog={onClose}
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />

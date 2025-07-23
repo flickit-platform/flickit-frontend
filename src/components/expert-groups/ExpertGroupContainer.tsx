@@ -27,7 +27,6 @@ import { t } from "i18next";
 import forLoopComponent from "@utils/forLoopComponent";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import AssessmentKitListItem from "../assessment-kit/AssessmentKitListItem";
-import toastError from "@utils/toastError";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import MinimizeRoundedIcon from "@mui/icons-material/MinimizeRounded";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -35,7 +34,6 @@ import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import useDialog from "@utils/useDialog";
 import AssessmentKitCEFromDialog from "../assessment-kit/AssessmentKitCEFromDialog";
-import { toast } from "react-toastify";
 import ErrorEmptyData from "@common/errors/ErrorEmptyData";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import { useAuthContext } from "@providers/AuthProvider";
@@ -67,6 +65,7 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import { FLAGS } from "@/types";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
+import showToast from "@utils/toastError";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -128,7 +127,7 @@ const ExpertGroupContainer = () => {
       setRemoveMemberDialog({ status: false, id: "" });
     } catch (e: any) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setRemoveMemberDialog({ status: false, id: "" });
     }
   };
@@ -343,7 +342,8 @@ const ExpertGroupContainer = () => {
                             fontSize: "inherit",
                           }}
                         >
-                          {numberOfMembers} {t("expertGroups.members").toLowerCase()}
+                          {numberOfMembers}{" "}
+                          {t("expertGroups.members").toLowerCase()}
                         </Typography>
                       </Box>
                       <Box
@@ -530,7 +530,7 @@ const AvatarComponent = (props: any) => {
       reader.readAsDataURL(file);
       const maxSize = 2097152;
       if (file.size > maxSize) {
-        toastError(`Maximum upload file size is ${formatBytes(maxSize)}.`);
+        showToast(`Maximum upload file size is ${formatBytes(maxSize)}.`);
         return;
       }
 
@@ -548,7 +548,7 @@ const AvatarComponent = (props: any) => {
         setIsLoading(false);
       } catch (e: any) {
         setIsLoading(false);
-        toastError(e as ICustomError);
+        showToast(e as ICustomError);
       }
     }
   };
@@ -567,7 +567,7 @@ const AvatarComponent = (props: any) => {
       setIsLoading(false);
     } catch (e: any) {
       setIsLoading(false);
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -921,16 +921,16 @@ const MemberActions = (props: any) => {
         id: expertGroupId,
         email,
       });
-      res?.message && toast.success(res.message);
+      res?.message && showToast(res.message, { variant: "success" });
       query();
       inviteeQuery();
     } catch (e) {
       const error = e as ICustomError;
       if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
-          toastError(error.response?.data?.message[0]);
+          showToast(error.response?.data?.message[0]);
         } else {
-          toastError(error);
+          showToast(error);
         }
       }
     }
@@ -1009,15 +1009,15 @@ const AddMember = (props: any) => {
         id: expertGroupId,
         email: inputRef.current?.value,
       });
-      res?.message && toast.success(res.message);
+      res?.message && showToast(res.message, { variant: "success" });
       query();
     } catch (e) {
       const error = e as ICustomError;
       if (error.response?.data?.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
-          toastError(error.response?.data?.message[0]);
+          showToast(error.response?.data?.message[0]);
         } else {
-          toastError(error);
+          showToast(error);
         }
       }
     }
@@ -1030,7 +1030,7 @@ const AddMember = (props: any) => {
       onSubmit={(e) => {
         e.preventDefault();
         if (!inputRef.current?.value) {
-          toastError(t("errors.pleaseEnterEmailAddress") as string);
+          showToast(t("errors.pleaseEnterEmailAddress") as string);
         } else addMember();
       }}
     >
@@ -1352,7 +1352,9 @@ const ExpertGroupMembersDetail = (props: any) => {
                               }}
                             >
                               {deletable && (
-                                <Tooltip title={<Trans i18nKey="common.remove" />}>
+                                <Tooltip
+                                  title={<Trans i18nKey="common.remove" />}
+                                >
                                   <IconButton
                                     onClick={() =>
                                       setRemoveMemberDialog({

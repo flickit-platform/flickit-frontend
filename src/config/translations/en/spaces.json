@@ -1,6 +1,5 @@
 {
   "basicSpace": "Basic space",
-  "congratulation": "Congratulations!",
   "createBasicSpaceCongratulation": "Your space is ready! You can now invite team members and start creating assessments right away.",
   "createLimitedAssessments": "Can create a <strong>limited</strong> number of assessments.",
   "createPremiumSpaceCongratulation": "Your space has been successfully created. Please note that your premium space is temporarily active. We will contact you shortly. Kindly check your email for further details.",
@@ -26,6 +25,7 @@
   "setAName": "Set a name",
   "simpleStart": "A simple start, a smart choice.",
   "space": "Space",
+  "spaceCreatedSuccessfully": "Space created successfully!",
   "spaceCreatedSuccessMessage": "{{title}} created successfully.",
   "spaceDirectory": "Space directory",
   "spaceName": "Space name",

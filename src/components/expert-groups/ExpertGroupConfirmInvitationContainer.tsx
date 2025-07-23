@@ -2,15 +2,14 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
 import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -41,7 +40,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
       navigate(`/user/expert-groups/${expertGroupId}`, {
         replace: true,
       });
-      toast.success("You have joined this expert group successfully.");
+      showToast(<Trans i18nKey="expertGroups.sueccessJoinToExpertGroup"/>, { variant: "success" });
     } catch (e) {
       const err = e as ICustomError;
       if (err?.response?.data?.code === "ALREADY_EXISTS") {
@@ -49,7 +48,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
           replace: true,
         });
       } else {
-        toastError(err);
+        showToast(err);
       }
     }
   };
@@ -60,7 +59,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
       navigate("/spaces/1", { replace: true });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

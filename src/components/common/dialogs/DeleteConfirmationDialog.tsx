@@ -27,7 +27,7 @@ export const DeleteConfirmationDialog = ({
   return (
     <CEDialog
       open={open}
-      onClose={onClose}
+      closeDialog={onClose}
       title={
         <>
           <Warning />

@@ -7,7 +7,6 @@ import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
 import { IKitVersion } from "@/types/index";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
@@ -18,6 +17,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import showToast from "@/utils/toastError";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { service } = useServiceContext();
@@ -35,7 +35,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       );
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -50,7 +50,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       navigate(`/user/expert-groups/${expertGroupId}/`);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 

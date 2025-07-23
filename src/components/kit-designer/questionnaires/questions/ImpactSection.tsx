@@ -9,8 +9,8 @@ import { useQuery } from "@/utils/useQuery";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
 import { t } from "i18next";
+import showToast from "@/utils/toastError";
 
 const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
   const { kitVersionId = "" } = useParams();
@@ -65,7 +65,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
       setShowForm(false);
       resetForm();
     } catch (err) {
-      toastError(err as ICustomError);
+      showToast(err as ICustomError);
     }
   };
 
@@ -83,7 +83,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
       });
       fetchImpacts.query();
     } catch (err) {
-      toastError(err as ICustomError);
+      showToast(err as ICustomError);
     }
   };
 
@@ -95,7 +95,7 @@ const ImpactSection: React.FC<{ question: any }> = ({ question }) => {
       });
       fetchImpacts.query();
     } catch (err) {
-      toastError(err as ICustomError);
+      showToast(err as ICustomError);
     }
   };
 

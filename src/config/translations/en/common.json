@@ -190,8 +190,8 @@
   "purchase": "Purchase",
   "purchaseModal": {
     "accessToKit": "Access to this assessment kit requires a payment.",
-    "makeSureFitsYourNeeds": "We want to make sure it truly fits your needs and is worth the investment.",
-    "getInTouch": "Please fill out the short form below, and we’ll get in touch with you soon to help you decide whether this kit is the right fit for you."
+    "makeSureFitsYourNeeds": " To make sure it’s the right match for your needs.",
+    "getInTouch": "Please tell us a bit about the software you’d like to assess. We’ll get back to you shortly to help you choose the best-fit kit."
   },
   "paid": "Paid",
   "send": "Send",

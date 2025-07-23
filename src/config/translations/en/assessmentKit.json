@@ -24,6 +24,7 @@
   "downloadDSL": "Download DSL",
   "didYouLikeThisKit": "Did you like this kit?",
   "draft": "Draft",
+  "dragYourFile": "Drag your file in here",
   "dropUsNote": "Drop us a note!",
   "dsl": "DSL",
   "dslDownloadGuide": "If you don’t have the appropriate Excel template, you can download it.",
@@ -51,5 +52,5 @@
   "viaKitDesigner": "Via kit designer",
   "youLikedThisKit": "You liked this kit!",
   "interestedThisKit": "Interested in this kit?",
-  "tellUsWhatYouLookingFor": "Tell us what you were looking for?"
+  "tellUsWhatYouLookingFor": "Briefly describe the software you’d like to assess."
 }
