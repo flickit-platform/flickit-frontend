@@ -37,7 +37,7 @@ import Share from "@mui/icons-material/Share";
 import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getReadableDate } from "@utils/readableDate";
 import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
@@ -96,29 +96,30 @@ const AssessmentHtmlContainer = () => {
     runOnMount: false,
   });
 
+
+  const setupIntersectionObserver = (targetElement: HTMLElement) => {
+    observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasIntersected) {
+            hasIntersected = true;
+            dispatch(setSurveyBox(true));
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.5,
+        rootMargin: '100px 0px -50px 0px',
+      }
+    );
+    observer.observe(targetElement);
+  };
+
   useEffect(() => {
     let hasIntersected = false;
     let observer: IntersectionObserver | null = null;
-
-    const setupIntersectionObserver = (targetElement: HTMLElement) => {
-      observer = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && !hasIntersected) {
-              hasIntersected = true;
-              dispatch(setSurveyBox(true));
-              obs.unobserve(entry.target);
-            }
-          });
-        },
-        {
-          root: null,
-          threshold: 0.5,
-          rootMargin: '100px 0px -50px 0px',
-        }
-      );
-      observer.observe(targetElement);
-    };
 
     const targetElement = document.getElementById("recommendations");
 
@@ -143,37 +144,6 @@ const AssessmentHtmlContainer = () => {
       observer?.disconnect();
     };
   }, []);
-
-
-
-  // useEffect(() => {
-  //   setTimeout(()=>{
-  //     const targetElement = document.getElementById("recommendations")
-  //     if (!targetElement) return;
-  //     let hasIntersected = false;
-  //     const observer = new IntersectionObserver(
-  //       (entries, observer) => {
-  //
-  //         entries.forEach(entry => {
-  //           if (entry.isIntersecting && !hasIntersected) {
-  //             hasIntersected = true;
-  //             dispatch(setSurveyBox(entry.isIntersecting))
-  //             observer.unobserve(entry.target);
-  //           }
-  //         });
-  //       },
-  //       {
-  //         root: null,
-  //         threshold: 0.5,
-  //         rootMargin: '100px 0px -50px 0px'
-  //       }
-  //     );
-  //     observer.observe(targetElement);
-  //     return () => {
-  //       observer.unobserve(targetElement);
-  //     };
-  //   },1000)
-  // },[]);
 
   const handleErrorResponse = async (errorCode: any) => {
     let shouldRefetch = false;
