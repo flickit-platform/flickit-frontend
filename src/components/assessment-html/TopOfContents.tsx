@@ -26,6 +26,18 @@ interface OpenItemsState {
   [key: string]: boolean;
 }
 
+const SCROLL_OFFSET = -60;
+
+const scrollToWithOffset = (id: string) => {
+  const el = document.getElementById(id);
+  if (el) {
+    const y =
+      el.getBoundingClientRect().top + window.pageYOffset + SCROLL_OFFSET;
+    window.scrollTo({ top: y, behavior: "smooth" });
+    window.history.pushState(null, "", `#${id}`);
+  }
+};
+
 export const AssessmentTOC = ({
   graphicalReport,
 }: {
@@ -199,9 +211,14 @@ export const AssessmentTOC = ({
                   }}
                 >
                   <ListItemButton
-                    component="a"
-                    href={`#${item.id}`}
+                    component="button"
+                    onClick={
+                      hasSubItems
+                        ? () => handleToggle(item.id)
+                        : () => scrollToWithOffset(item.id)
+                    }
                     sx={{
+                      width: "100%",
                       backgroundColor: hasSubItems
                         ? "rgba(36, 102, 168, 0.08)"
                         : "initial",
@@ -213,9 +230,6 @@ export const AssessmentTOC = ({
                         color: theme.palette.primary.dark,
                       },
                     }}
-                    onClick={
-                      hasSubItems ? () => handleToggle(item.id) : undefined
-                    }
                   >
                     <ListItemText
                       primary={t(hasSubItems ? item.id : item.label, {
@@ -249,7 +263,10 @@ export const AssessmentTOC = ({
                     >
                       {item.subItems?.map((subItem: any) => (
                         <ListItem key={uniqueId()} disablePadding>
-                          <ListItemButton component="a" href={`#${subItem}`}>
+                          <ListItemButton
+                            component="button"
+                            onClick={() => scrollToWithOffset(subItem)}
+                          >
                             <ListItemText
                               primary={t(subItem, {
                                 lng: lang.code.toLowerCase(),
