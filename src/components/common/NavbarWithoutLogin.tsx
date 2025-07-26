@@ -130,25 +130,9 @@ const NavbarWithoutLogin = () => {
         >
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
           <Button
-            variant={"outlined"}
-            size={"medium"}
-            onClick={login}
-            sx={{
-              height: "32px",
-              color: "#fff",
-              textTransform: "capitalize",
-              borderColor: "#fff",
-              "&:hover": {
-                borderColor: "#fff",
-              },
-            }}
-          >
-            <Trans i18nKey="common.login" />
-          </Button>
-          <Button
             variant={"contained"}
             size={"medium"}
-            onClick={() => keycloakService._kc.register()}
+            onClick={login}
             sx={{
               height: "32px",
               color: theme.palette.primary.main,
@@ -160,7 +144,7 @@ const NavbarWithoutLogin = () => {
               },
             }}
           >
-            <Trans i18nKey="common.createAccount" />
+            <Trans i18nKey="common.loginOrSignup" />
           </Button>
         </Box>
       </Toolbar>
