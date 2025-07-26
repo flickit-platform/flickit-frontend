@@ -301,10 +301,10 @@ export const Review = () => {
                 component={Link}
                 to={
                   "./../../../questionnaires" +
-                    "/" +
-                    (nextQuestionnaire.id ?? "") +
-                    "/" +
-                    nextQuestionnaire.index ?? 1
+                  "/" +
+                  (nextQuestionnaire.id ?? "") +
+                  "/" +
+                  (nextQuestionnaire.index ?? 1)
                 }
               >
                 <Trans i18nKey="questions.nextQuestionnaire" />
