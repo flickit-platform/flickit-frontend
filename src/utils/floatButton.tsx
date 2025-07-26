@@ -12,33 +12,28 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 
-const FloatButton = (props: any) => {
-  const { dialogProps } = props;
+const SurveyBox = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(false);
   const { pathname } = useLocation();
 
   const closeFeadbackBox = (e: any) => {
-    setShowFeadback(false)
+    setShowFeadback(false);
   };
 
   useEffect(() => {
-    if(pathname.includes("graphical-report")){
-      setShowFeadback(true)
+    if (pathname.includes("graphical-report")) {
+      setShowFeadback(true);
     }
   }, [pathname]);
-
-
   return (
-
-    <>
-      <Box
-        sx={{
-          position: "fixed",
-          right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
-          bottom: { xs: 0, md: "55px" },
-          display: showFeedback ? "flex" : "none"
-        }}
-      >
+    <Box
+      sx={{
+        position: "fixed",
+        right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
+        bottom: { xs: 0, md: "55px" },
+        display: showFeedback ? "flex" : "none",
+      }}
+    >
       <Box
         sx={{
           position: "relative",
@@ -62,8 +57,6 @@ const FloatButton = (props: any) => {
         >
           <Close />
         </IconButton>
-
-
         <Typography sx={{ ...theme.typography.semiBoldXLarge, color: "#fff" }}>
           <Trans i18nKey={"common.gotMinute"} />
         </Typography>
@@ -120,7 +113,16 @@ const FloatButton = (props: any) => {
           sx={{ position: "absolute", bottom: "-10px", right: "20px" }}
         />
       </Box>
-      </Box>
+    </Box>
+  );
+};
+
+const FloatButton = (props: any) => {
+  const { dialogProps } = props;
+
+  return (
+    <>
+      <SurveyBox {...props} />
       <Box
         sx={{
           position: "fixed",
@@ -128,7 +130,6 @@ const FloatButton = (props: any) => {
           bottom: { xs: 0, md: "55px" },
         }}
       >
-
         <IconButton
           edge="start"
           sx={{
@@ -145,13 +146,7 @@ const FloatButton = (props: any) => {
           <img src={ContactSupport} alt={"ContactSupport"} />
         </IconButton>
       </Box>
-
-
     </>
-
-
-
-
   );
 };
 

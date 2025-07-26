@@ -96,29 +96,32 @@ const AssessmentHtmlContainer = () => {
     runOnMount: false,
   });
 
-
   useEffect(() => {
     const targetElement = document.getElementById("recommendations")
     if (!targetElement) return;
-
+    let hasIntersected = false;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setShowMessage(entry.isIntersecting);
+      (entries, observer) => {
+
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasIntersected) {
+            hasIntersected = true;
+            setShowMessage(entry.isIntersecting);
+            observer.unobserve(entry.target);
+          }
+        });
       },
       {
         root: null,
         threshold: 0.5,
+        rootMargin: '100px 0px -50px 0px'
       }
     );
-
     observer.observe(targetElement);
-
     return () => {
       observer.unobserve(targetElement);
     };
-
   });
-
 
   const handleErrorResponse = async (errorCode: any) => {
     let shouldRefetch = false;
