@@ -46,6 +46,7 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 
 const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -63,8 +64,7 @@ const AssessmentHtmlContainer = () => {
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
-  const [showMessage, setShowMessage] = useState(false);
-
+  const { dispatch }  = useConfigContext()
   const dialogProps = useDialog();
 
   const fetchPathInfo = useQuery<PathInfo>({
@@ -97,31 +97,83 @@ const AssessmentHtmlContainer = () => {
   });
 
   useEffect(() => {
-    const targetElement = document.getElementById("recommendations")
-    if (!targetElement) return;
     let hasIntersected = false;
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
+    let observer: IntersectionObserver | null = null;
 
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !hasIntersected) {
-            hasIntersected = true;
-            setShowMessage(entry.isIntersecting);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.5,
-        rootMargin: '100px 0px -50px 0px'
-      }
-    );
-    observer.observe(targetElement);
-    return () => {
-      observer.unobserve(targetElement);
+    const setupIntersectionObserver = (targetElement: HTMLElement) => {
+      observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !hasIntersected) {
+              hasIntersected = true;
+              dispatch(setSurveyBox(true));
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          root: null,
+          threshold: 0.5,
+          rootMargin: '100px 0px -50px 0px',
+        }
+      );
+      observer.observe(targetElement);
     };
-  });
+
+    const targetElement = document.getElementById("recommendations");
+
+    if (targetElement) {
+      setupIntersectionObserver(targetElement);
+    } else {
+      const domObserver = new MutationObserver(() => {
+        const el = document.getElementById("recommendations");
+        if (el) {
+          setupIntersectionObserver(el);
+          domObserver.disconnect();
+        }
+      });
+
+      domObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return () => {
+      observer?.disconnect();
+    };
+  }, []);
+
+
+
+  // useEffect(() => {
+  //   setTimeout(()=>{
+  //     const targetElement = document.getElementById("recommendations")
+  //     if (!targetElement) return;
+  //     let hasIntersected = false;
+  //     const observer = new IntersectionObserver(
+  //       (entries, observer) => {
+  //
+  //         entries.forEach(entry => {
+  //           if (entry.isIntersecting && !hasIntersected) {
+  //             hasIntersected = true;
+  //             dispatch(setSurveyBox(entry.isIntersecting))
+  //             observer.unobserve(entry.target);
+  //           }
+  //         });
+  //       },
+  //       {
+  //         root: null,
+  //         threshold: 0.5,
+  //         rootMargin: '100px 0px -50px 0px'
+  //       }
+  //     );
+  //     observer.observe(targetElement);
+  //     return () => {
+  //       observer.unobserve(targetElement);
+  //     };
+  //   },1000)
+  // },[]);
 
   const handleErrorResponse = async (errorCode: any) => {
     let shouldRefetch = false;

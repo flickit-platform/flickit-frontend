@@ -11,27 +11,31 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
+import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 
 const SurveyBox = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(false);
   const { pathname } = useLocation();
-
-  const closeFeadbackBox = (e: any) => {
+  const { config : { SurveyBox }, dispatch } = useConfigContext();
+  const closeFeadbackBox = () => {
     setShowFeadback(false);
   };
-
   useEffect(() => {
     if (pathname.includes("graphical-report")) {
       setShowFeadback(true);
+    }else {
+      setShowFeadback(false);
+      dispatch(setSurveyBox(false))
     }
   }, [pathname]);
+
   return (
     <Box
       sx={{
         position: "fixed",
         right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
         bottom: { xs: 0, md: "55px" },
-        display: showFeedback ? "flex" : "none",
+        display: showFeedback && SurveyBox ? "flex" : "none",
       }}
     >
       <Box
