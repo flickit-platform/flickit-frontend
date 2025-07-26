@@ -96,30 +96,29 @@ const AssessmentHtmlContainer = () => {
     runOnMount: false,
   });
 
-
-  const setupIntersectionObserver = (targetElement: HTMLElement) => {
-    observer = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !hasIntersected) {
-            hasIntersected = true;
-            dispatch(setSurveyBox(true));
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.5,
-        rootMargin: '100px 0px -50px 0px',
-      }
-    );
-    observer.observe(targetElement);
-  };
-
   useEffect(() => {
     let hasIntersected = false;
     let observer: IntersectionObserver | null = null;
+
+    const setupIntersectionObserver = (targetElement: HTMLElement) => {
+      observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !hasIntersected) {
+              hasIntersected = true;
+              dispatch(setSurveyBox(true));
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          root: null,
+          threshold: 0.5,
+          rootMargin: '100px 0px -50px 0px',
+        }
+      );
+      observer.observe(targetElement);
+    };
 
     const targetElement = document.getElementById("recommendations");
 

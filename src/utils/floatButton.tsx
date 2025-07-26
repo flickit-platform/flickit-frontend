@@ -100,7 +100,7 @@ const SurveyBox = (props: any) => {
                   color: "#fff",
                 },
               }}
-              onChange={(e) => setShowFeadback(e.target.checked ?? false)}
+              onChange={(e) => setShowFeadback(e.target.checked)}
             />
           }
           label={
