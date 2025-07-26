@@ -7,6 +7,7 @@ export interface IQuestionnaire {
   progress: number;
   title: string;
   last_updated?: string;
+  index?: number
 }
 
 export interface IQuestionnairesInfo {

@@ -15,6 +15,7 @@ import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
+import { IQuestionnaire } from "@/types";
 
 export const Review = () => {
   const { service } = useServiceContext();
@@ -34,9 +35,8 @@ export const Review = () => {
   const { questionsInfo } = useQuestionContext();
   const [answeredQuestions, setAnsweredQuestions] = useState<number>();
   const [questionnaireTitle, setQuestionnaireTitle] = useState<string>("");
-  const [nextQuestionnaire, setNextQuestionnaire] = useState<number | null>(
-    null,
-  );
+  const [nextQuestionnaire, setNextQuestionnaire] =
+    useState<IQuestionnaire | null>(null);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   useEffect(() => {
@@ -61,8 +61,8 @@ export const Review = () => {
         setQuestionnaireTitle(data?.questionnaire?.title);
       });
       getNextQuestionnaire.query({ questionnaireId }).then((res) => {
-        const nextQuestionnaireId = res.data.id;
-        setNextQuestionnaire(nextQuestionnaireId);
+        const nextQuestionnaire = res.data;
+        setNextQuestionnaire(nextQuestionnaire);
       });
     }
   }, [questionnaireId]);
@@ -301,10 +301,10 @@ export const Review = () => {
                 component={Link}
                 to={
                   "./../../../questionnaires" +
-                  "/" +
-                  (nextQuestionnaire ?? "") +
-                  "/" +
-                  1
+                    "/" +
+                    (nextQuestionnaire.id ?? "") +
+                    "/" +
+                    nextQuestionnaire.index ?? 1
                 }
               >
                 <Trans i18nKey="questions.nextQuestionnaire" />
