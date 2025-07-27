@@ -45,6 +45,7 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import FaWandMagicSparkles from "../common/icons/FaWandMagicSparkles";
 
 const getBasePath = (path: string): string => {
@@ -63,7 +64,7 @@ const AssessmentHtmlContainer = () => {
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
-
+  const { dispatch }  = useConfigContext()
   const dialogProps = useDialog();
 
   const fetchPathInfo = useQuery<PathInfo>({
@@ -94,6 +95,54 @@ const AssessmentHtmlContainer = () => {
       ),
     runOnMount: false,
   });
+
+  useEffect(() => {
+    let hasIntersected = false;
+    let observer: IntersectionObserver | null = null;
+
+    const setupIntersectionObserver = (targetElement: HTMLElement) => {
+      observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !hasIntersected) {
+              hasIntersected = true;
+              dispatch(setSurveyBox(true));
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          root: null,
+          threshold: 0.5,
+          rootMargin: '100px 0px -50px 0px',
+        }
+      );
+      observer.observe(targetElement);
+    };
+
+    const targetElement = document.getElementById("recommendations");
+
+    if (targetElement) {
+      setupIntersectionObserver(targetElement);
+    } else {
+      const domObserver = new MutationObserver(() => {
+        const el = document.getElementById("recommendations");
+        if (el) {
+          setupIntersectionObserver(el);
+          domObserver.disconnect();
+        }
+      });
+
+      domObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return () => {
+      observer?.disconnect();
+    };
+  }, []);
 
   const handleErrorResponse = async (errorCode: any) => {
     let shouldRefetch = false;

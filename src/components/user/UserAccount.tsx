@@ -33,9 +33,10 @@ const UserAccount = () => {
   const { service } = useServiceContext();
   const userQueryData = useQuery({
     service: (args, config) => service.user.getProfile(config),
-    runOnMount: true,
+    runOnMount: false,
   });
-  const [userInfo, setUserInfo] = useState({
+  const { userInfo : userProfileInfo } = useAuthContext()
+  const [userInfo, setUserInfo] = useState<any>({
     id: 1,
     displayName: "",
     email: "",
@@ -44,8 +45,8 @@ const UserAccount = () => {
     bio: undefined,
   });
   useEffect(() => {
-    setUserInfo(userQueryData.data);
-  }, [userQueryData.loaded]);
+    setUserInfo(userProfileInfo);
+  }, []);
 
   const dialogProps = useDialog();
   useDocumentTitle(`${t("user.userProfile")}: ${getUserName(userInfo)}`);
