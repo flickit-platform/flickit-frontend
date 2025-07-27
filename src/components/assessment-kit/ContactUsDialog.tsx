@@ -14,7 +14,6 @@ import telegramIcon from "@assets/svg/telegram.svg";
 import splusIcon from "@assets/svg/splusLogo.svg";
 import { styles } from "@styles";
 import { toast } from "react-toastify";
-import { title } from "process";
 
 interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
@@ -157,6 +156,16 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                   label={t("user.yourEmailAddress")}
                   required
                 />
+              )}
+              {type !== "requestAnExpertReview" && (
+                <Box sx={{ mt: 2 }}>
+                    <InputFieldUC
+                      name="mobile"
+                      label={t("user.yourPhoneNumber")}
+                      placeholder={t("user.pleaseEnterYourPhoneNumber")}
+                      type={"tel"}
+                    />
+                </Box>
               )}
 
               <Box sx={{ mt: 2 }}>

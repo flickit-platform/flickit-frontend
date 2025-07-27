@@ -28,6 +28,7 @@ interface IInputFieldUCProps extends Omit<OutlinedTextFieldProps, "variant"> {
   valueCount?: string;
   rtl?: boolean;
   error?: boolean;
+  placeholder?: any;
 }
 
 const InputFieldUC = (props: IInputFieldUCProps) => {
@@ -49,6 +50,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     valueCount,
     rtl,
     error,
+    placeholder,
     ...rest
   } = props;
 
@@ -142,12 +144,14 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       size="small"
       variant="outlined"
       inputRef={inputRef}
+      placeholder={placeholder}
       onChange={handleInputChange}
       sx={{
         "& ::placeholder": { ...theme.typography.bodyMedium },
         background: pallet?.background,
         borderRadius: borderRadius,
         "& .MuiOutlinedInput-root": {
+          "& ::placeholder": { ...theme.typography.bodyMedium, textAlign: languageDetector(placeholder) ? "right" : "left"},
           "& fieldset": {
             borderColor: pallet?.borderColor,
             borderRadius: borderRadius,

@@ -6,11 +6,13 @@
   "emailIsNotOnAppTitleYet": "{{email}} هنوز عضو {{title}} نشده است.",
   "enterEmailOfTheUserYouWantToAdd": "آدرس ایمیل کاربر موردنظر را وارد کنید",
   "name": "نام",
+  "pleaseEnterYourPhoneNumber": "در صورت تمایل شماره موبایل خود را وارد کنید تا بتوانیم سریع‌تر و راحت‌تر با شما در ارتباط باشیم.",
   "role": "نقش",
   "updateUser": "به‌روزرسانی کاربر",
   "userEmail": "ایمیل کاربر",
   "userProfile": "پروفایل کاربری",
   "wouldYouLikeToInviteThemToJoin": "آیا می‌خواهید او را دعوت کنید؟",
   "yourEmail": "ایمیل شما",
-  "yourEmailAddress": "نشانی رایانامه خود را بنویسید"
+  "yourEmailAddress": "نشانی ایمیل خود را بنویسید.",
+  "yourPhoneNumber": "شماره موبایل خود را بنویسید."
 }
