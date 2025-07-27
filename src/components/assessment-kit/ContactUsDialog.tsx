@@ -163,7 +163,6 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                       name="mobile"
                       label={t("user.yourPhoneNumber")}
                       placeholder={t("user.pleaseEnterYourPhoneNumber")}
-                      type={"tel"}
                     />
                 </Box>
               )}
