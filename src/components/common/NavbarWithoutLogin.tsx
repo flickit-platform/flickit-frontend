@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
-import { BASE_URL, MULTILINGUALITY } from "@constants";
+import { MULTILINGUALITY } from "@constants";
 import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -141,7 +141,7 @@ const NavbarWithoutLogin = () => {
             variant={"contained"}
             size={"medium"}
             component="a"
-            href={BASE_URL}
+            href={import.meta.env.VITE_LOCAL_BASE_URL}
             onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
