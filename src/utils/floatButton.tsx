@@ -16,7 +16,7 @@ import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 const SurveyBox = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(false);
   const { pathname } = useLocation();
-  const { config : { SurveyBox }, dispatch } = useConfigContext();
+  const { config : { SurveyBox, appTitle }, dispatch } = useConfigContext();
   const closeFeadbackBox = () => {
     setShowFeadback(false);
   };
@@ -67,7 +67,7 @@ const SurveyBox = (props: any) => {
         <Typography
           sx={{ ...theme.typography.bodyMedium, color: "#fff", mb: 2 }}
         >
-          <Trans i18nKey={"common.helpUsToImprove"} />
+          <Trans i18nKey={"common.helpUsToImprove"} values={{appName: appTitle}} />
         </Typography>
         <Button
           variant={"contained"}
