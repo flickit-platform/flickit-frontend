@@ -70,8 +70,8 @@ export const AssessmentTOC = ({
                 t("assessmentReport.requestAnExpertReviewContent.listItems", {
                   returnObjects: true,
                 }) as string[]
-              ).map((item, idx) => (
-                <li key={idx} style={{ marginBottom: 6 }}>
+              ).map((item) => (
+                <li key={uniqueId()} style={{ marginBottom: 6 }}>
                   • {item}
                 </li>
               ))}
@@ -338,8 +338,8 @@ export const AssessmentTOC = ({
                 lng: lang.code.toLowerCase(),
                 returnObjects: true,
               }) as string[]
-            ).map((item, idx) => (
-              <li key={idx}>• {item}</li>
+            ).map((item) => (
+              <li key={uniqueId()}>• {item}</li>
             ))}
           </ul>
 

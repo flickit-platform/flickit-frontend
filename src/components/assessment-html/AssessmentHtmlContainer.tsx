@@ -34,7 +34,6 @@ import { ShareDialog } from "./ShareDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import Share from "@mui/icons-material/Share";
-import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
 import { useEffect } from "react";
@@ -46,7 +45,6 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
-import { AutoFixHigh } from "@mui/icons-material";
 import FaWandMagicSparkles from "../common/icons/FaWandMagicSparkles";
 
 const getBasePath = (path: string): string => {
