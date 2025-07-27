@@ -8,15 +8,12 @@ import Button from "@mui/material/Button";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import { styles } from "@styles";
 import { Trans } from "react-i18next";
-import { MULTILINGUALITY } from "@constants";
+import { BASE_URL, MULTILINGUALITY } from "@constants";
 import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
-import keycloakService from "@/service/keycloakService";
 
-const login = () => {
-  keycloakService.doLogin();
-};
+
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
 const LandingPage =
   rawLandingPage && rawLandingPage !== "PLATFORM_LANDING_PAGE"
@@ -25,6 +22,17 @@ const LandingPage =
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
+
+  const handleButtonClick = (e: any, name: string) => {
+    (window as any).dataLayer.push({
+      event: "ppms.cm:trackEvent",
+      parameters: {
+        category: "Button",
+        action: "Click",
+        name: name,
+      },
+    });
+  };
   return (
     <AppBar
       component="nav"
@@ -130,25 +138,11 @@ const NavbarWithoutLogin = () => {
         >
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
           <Button
-            variant={"outlined"}
-            size={"medium"}
-            onClick={login}
-            sx={{
-              height: "32px",
-              color: "#fff",
-              textTransform: "capitalize",
-              borderColor: "#fff",
-              "&:hover": {
-                borderColor: "#fff",
-              },
-            }}
-          >
-            <Trans i18nKey="common.login" />
-          </Button>
-          <Button
             variant={"contained"}
             size={"medium"}
-            onClick={() => keycloakService._kc.register()}
+            component="a"
+            href={BASE_URL}
+            onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
               color: theme.palette.primary.main,
@@ -160,7 +154,7 @@ const NavbarWithoutLogin = () => {
               },
             }}
           >
-            <Trans i18nKey="common.createAccount" />
+            <Trans i18nKey="common.loginOrSignup" />
           </Button>
         </Box>
       </Toolbar>

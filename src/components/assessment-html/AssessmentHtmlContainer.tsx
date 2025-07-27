@@ -27,14 +27,13 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { getMaturityLevelColors, styles } from "@styles";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
 import { ShareDialog } from "./ShareDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import Share from "@mui/icons-material/Share";
-import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
 import { useEffect } from "react";
@@ -47,6 +46,7 @@ import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
+import FaWandMagicSparkles from "../common/icons/FaWandMagicSparkles";
 
 const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -382,15 +382,36 @@ const AssessmentHtmlContainer = () => {
                   <>
                     <LoadingButton
                       variant="contained"
-                      startIcon={<Share fontSize="small" />}
+                      startIcon={
+                        <Share
+                          fontSize="small"
+                          sx={{
+                            marginInlineStart:
+                              i18next.language.toLowerCase() ===
+                              lang.code.toLowerCase()
+                                ? "initial"
+                                : -1,
+                            marginInlineEnd:
+                              i18next.language.toLowerCase() ===
+                              lang.code.toLowerCase()
+                                ? "initial"
+                                : 1,
+                          }}
+                        />
+                      }
                       size="small"
                       onClick={() => dialogProps.openDialog({})}
                       disabled={
                         !permissions.canShareReport &&
                         !permissions.canManageVisibility
                       }
+                      sx={{
+                        ...styles.rtlStyle(rtlLanguage),
+                      }}
                     >
-                      <Trans i18nKey="assessmentReport.shareReport" />
+                      {t("assessmentReport.shareReport", {
+                        lng: lang.code.toLowerCase(),
+                      })}
                     </LoadingButton>
                     <ShareDialog
                       {...dialogProps}
@@ -448,18 +469,50 @@ const AssessmentHtmlContainer = () => {
                             )}
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={8}>
-                            <Typography
-                              sx={{
-                                color: theme.palette.primary.main,
-                                ...theme.typography.headlineSmall,
-                                fontWeight: "bold",
-                                ...styles.rtlStyle(
-                                  languageDetector(assessment.title),
-                                ),
-                              }}
-                            >
-                              {assessment.title}
-                            </Typography>
+                            <Box display="flex" gap={1.5}>
+                              <Typography
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  color: theme.palette.primary.main,
+                                  ...theme.typography.headlineSmall,
+                                  fontWeight: "bold",
+                                  ...styles.rtlStyle(
+                                    languageDetector(assessment.title),
+                                  ),
+                                }}
+                              >
+                                {assessment.title}
+                              </Typography>
+
+                              {isQuickMode && (
+                                <Chip
+                                  icon={
+                                    <FaWandMagicSparkles
+                                      styles={{
+                                        color: "#6B7A90",
+                                      }}
+                                    />
+                                  }
+                                  label={t("common.AIAssissted", {
+                                    lng: lang.code.toLowerCase(),
+                                  })}
+                                  sx={{
+                                    border: "1px solid #C6CDD7",
+                                    backgroundColor: "#ffffff",
+                                    color: "#6B7A90",
+                                    px: 1.5,
+                                    height: 32,
+                                    ".MuiChip-label": {
+                                      padding: 0,
+                                      marginInlineStart: 1,
+                                    },
+                                    ...theme.typography.semiBoldMedium,
+                                  }}
+                                />
+                              )}
+                            </Box>
+
                             {!isQuickMode && (
                               <>
                                 <Typography
