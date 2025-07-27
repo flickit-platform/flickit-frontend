@@ -27,7 +27,7 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { getMaturityLevelColors, styles } from "@styles";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
 import { ShareDialog } from "./ShareDialog";
@@ -333,15 +333,36 @@ const AssessmentHtmlContainer = () => {
                   <>
                     <LoadingButton
                       variant="contained"
-                      startIcon={<Share fontSize="small" />}
+                      startIcon={
+                        <Share
+                          fontSize="small"
+                          sx={{
+                            marginInlineStart:
+                              i18next.language.toLowerCase() ===
+                              lang.code.toLowerCase()
+                                ? "initial"
+                                : -1,
+                            marginInlineEnd:
+                              i18next.language.toLowerCase() ===
+                              lang.code.toLowerCase()
+                                ? "initial"
+                                : 1,
+                          }}
+                        />
+                      }
                       size="small"
                       onClick={() => dialogProps.openDialog({})}
                       disabled={
                         !permissions.canShareReport &&
                         !permissions.canManageVisibility
                       }
+                      sx={{
+                        ...styles.rtlStyle(rtlLanguage),
+                      }}
                     >
-                      <Trans i18nKey="assessmentReport.shareReport" />
+                      {t("assessmentReport.shareReport", {
+                        lng: lang.code.toLowerCase(),
+                      })}
                     </LoadingButton>
                     <ShareDialog
                       {...dialogProps}

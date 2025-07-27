@@ -7,6 +7,15 @@
   "accessStatus": "Access status",
   "assessmentReport": "Assessment report",
   "copyReportLink": "Copy report link",
+  "contactExpertGroup": "Contact expert group",
+  "contactExpertBoxText": {
+    "intro": "This report has been generated using <strong>AI</strong>, based on your responses.",
+    "points": [
+      "If you have any questions or encounter issues,",
+      "If you require a deeper, more detailed assessment by experts,"
+    ],
+    "outro": "Feel free to contact the expert group that developed the kit used in this assessment."
+  },
   "disclaimer": "Clarification and Disclaimer",
   "disclaimerDescription": "This report was produced with an evidence-based evaluation approach and partially relies on the information provided by the interviewees. The findings of this report are not 100% certain. If the managers approve, the evaluation process will continue to examine the evidence more deeply and increase the confidence factor.",
   "evaluation_process": "Evaluation process (How was this report built?)",
