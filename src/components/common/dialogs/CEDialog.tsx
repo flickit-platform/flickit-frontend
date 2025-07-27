@@ -91,7 +91,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   backType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
-  saveWithSave?: boolean;
+  hasContinueBtn?: boolean;
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -113,7 +113,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     submitAndViewButtonLabel,
     backType = "contained",
     disablePrimaryButton = false,
-    saveWithSave,
+    hasContinueBtn,
     children,
   } = props;
   const fullScreen = useScreenResize("sm");
@@ -154,7 +154,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               variant="contained"
               loading={loading}
               onClick={(e: any) => {
-                if(saveWithSave) {
+                if(hasContinueBtn) {
                   onClose()
                 }
                 e.preventDefault();
@@ -188,7 +188,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
             </LoadingButton>
           </Grid>
         )}
-        {saveWithSave && (
+        {hasContinueBtn && (
           <Grid item>
             <LoadingButton
               data-testid="submit-and-countinue"

@@ -331,7 +331,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         loading={isSaving}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        saveWithSave={true}
+        hasContinueBtn={true}
         submitButtonLabel={t("common.save")}
         type="create"
         disablePrimaryButton={!isDirty()}
