@@ -211,21 +211,17 @@ const ProgressButton = (props: any) => {
       {leftQuestions > 0 ? (
         <Box>
           <Button
-            sx={{
-              borderRadius: "4px",
-              background: "#C2CCD680",
-              height: "40px",
-              width: "176px",
-              position: "relative",
-              overflow: "hidden",
-              "&:hover": {
-                background: "#C2CCD680",
-              },
-            }}
+            variant="contained"
+            color="info"
+            fullWidth
+            disableFocusRipple
+            disableTouchRipple
+            sx={{ cursor: "default" }}
           >
             <Box
               sx={{
-                background: "#C2CCD680",
+                background: theme.palette.primary.main,
+                opacity: "50%",
                 height: "100%",
                 position: "absolute",
                 top: 0,
@@ -238,13 +234,8 @@ const ProgressButton = (props: any) => {
                 transition: "all 1s ease-in-out",
               }}
             ></Box>
-            <Typography
-              sx={{
-                color: "#3D4D5C80",
-              }}
-            >
-              <Trans i18nKey="assessmentReport.viewReport" />
-            </Typography>
+
+            <Trans i18nKey="assessmentReport.viewReport" />
           </Button>
           <Typography
             sx={{
@@ -259,15 +250,14 @@ const ProgressButton = (props: any) => {
             />
           </Typography>
         </Box>
-      ) : (
+      ) : leftQuestions === 0 ? (
         <Button
           component={Link}
           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
           state={{ from: location.pathname }}
+          fullWidth
           sx={{
-            borderRadius: "4px",
             background: "#F3F5F6",
-            height: "40px",
             width: "176px",
             position: "relative",
             overflow: "hidden",
@@ -285,6 +275,8 @@ const ProgressButton = (props: any) => {
             <Trans i18nKey="assessmentReport.viewReport" />
           </Typography>
         </Button>
+      ) : (
+        <></>
       )}
     </Box>
   );
