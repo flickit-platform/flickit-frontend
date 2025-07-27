@@ -46,6 +46,8 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { AutoFixHigh } from "@mui/icons-material";
+import FaWandMagicSparkles from "../common/icons/FaWandMagicSparkles";
 
 const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -420,18 +422,50 @@ const AssessmentHtmlContainer = () => {
                             )}
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={8}>
-                            <Typography
-                              sx={{
-                                color: theme.palette.primary.main,
-                                ...theme.typography.headlineSmall,
-                                fontWeight: "bold",
-                                ...styles.rtlStyle(
-                                  languageDetector(assessment.title),
-                                ),
-                              }}
-                            >
-                              {assessment.title}
-                            </Typography>
+                            <Box display="flex" gap={1.5}>
+                              <Typography
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  color: theme.palette.primary.main,
+                                  ...theme.typography.headlineSmall,
+                                  fontWeight: "bold",
+                                  ...styles.rtlStyle(
+                                    languageDetector(assessment.title),
+                                  ),
+                                }}
+                              >
+                                {assessment.title}
+                              </Typography>
+
+                              {isQuickMode && (
+                                <Chip
+                                  icon={
+                                    <FaWandMagicSparkles
+                                      styles={{
+                                        color: "#6B7A90",
+                                      }}
+                                    />
+                                  }
+                                  label={t("common.AIAssissted", {
+                                    lng: lang.code.toLowerCase(),
+                                  })}
+                                  sx={{
+                                    border: "1px solid #C6CDD7",
+                                    backgroundColor: "#ffffff",
+                                    color: "#6B7A90",
+                                    px: 1.5,
+                                    height: 32,
+                                    ".MuiChip-label": {
+                                      padding: 0,
+                                      marginInlineStart: 1,
+                                    },
+                                    ...theme.typography.semiBoldMedium,
+                                  }}
+                                />
+                              )}
+                            </Box>
+
                             {!isQuickMode && (
                               <>
                                 <Typography

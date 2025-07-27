@@ -93,9 +93,6 @@ export const AssessmentTOC = ({
       },
     },
   });
-  const isAdvanceMode = useMemo(() => {
-    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-  }, [assessmentInfo?.mode?.code]);
 
   const theme = useTheme();
 
@@ -107,8 +104,12 @@ export const AssessmentTOC = ({
       [itemKey]: !prevState[itemKey],
     }));
   };
-  const { lang } = graphicalReport;
+  const { lang, assessment } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
+
+  const isAdvanceMode = useMemo(() => {
+    return assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
 
   const subjects: any = useMemo(() => {
     return (
@@ -297,7 +298,7 @@ export const AssessmentTOC = ({
         </List>
       </Box>
 
-      {isAuthenticatedUser && (
+      {isAuthenticatedUser && !isAdvanceMode && (
         <Box
           sx={{
             mt: 2,
@@ -366,7 +367,7 @@ export const AssessmentTOC = ({
                 background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
                 opacity: 0.9,
               },
-              fontFamily: "inherit"
+              fontFamily: "inherit",
             }}
           >
             {t("assessmentReport.contactExpertGroup", {
