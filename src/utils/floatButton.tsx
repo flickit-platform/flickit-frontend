@@ -15,25 +15,30 @@ import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import { useAuthContext } from "@providers/AuthProvider";
 
 const SurveyBoxSection = (props: any) => {
-  const [showFeedback, setShowFeadback] = useState(false);
+  const [showFeedback, setShowFeadback] = useState(true);
   const { pathname } = useLocation();
-  const { config : { SurveyBox, appTitle }, dispatch } = useConfigContext();
-  const { userInfo : {email} } = useAuthContext();
+  const {
+    config: { SurveyBox, appTitle },
+    dispatch,
+  } = useConfigContext();
+  const {
+    userInfo: { email },
+  } = useAuthContext();
   const closeFeadbackBox = () => {
     setShowFeadback(false);
   };
   useEffect(() => {
     if (pathname.includes("graphical-report")) {
       setShowFeadback(true);
-    }else {
+    } else {
       setShowFeadback(false);
-      dispatch(setSurveyBox(false))
+      dispatch(setSurveyBox(false));
     }
   }, [pathname]);
 
-  const goToSurvey = () =>{
-    window.open(`https://formafzar.com/form/zzn90?email=${email}`,"_blank")
-  }
+  const goToSurvey = () => {
+    window.open(`https://formafzar.com/form/zzn90?email=${email}`, "_blank");
+  };
 
   return (
     <Box
@@ -73,11 +78,15 @@ const SurveyBoxSection = (props: any) => {
         <Typography
           sx={{ ...theme.typography.bodyMedium, color: "#fff", mb: 2 }}
         >
-          <Trans i18nKey={"common.helpUsToImprove"} values={{appName: appTitle}} />
+          <Trans
+            i18nKey={"common.helpUsToImprove"}
+            values={{ appName: appTitle }}
+          />
         </Typography>
         <Button
           onClick={goToSurvey}
           variant={"contained"}
+          size="small"
           sx={{
             background: "#F3F5F6",
             color: theme.palette.primary.main,
@@ -87,13 +96,11 @@ const SurveyBoxSection = (props: any) => {
             },
           }}
         >
-          <Typography>
-            <Trans i18nKey={"common.giveFeedback"} />
-          </Typography>
+          <Trans i18nKey={"common.giveFeedback"} />
         </Button>
         <FormControlLabel
           sx={{
-            mr: 0,
+            marginInlineEnd: 0,
             color: "#fff",
             display: props?.disabled ? "none" : "block",
           }}
