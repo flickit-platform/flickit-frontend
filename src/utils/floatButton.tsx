@@ -12,11 +12,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
+import { useAuthContext } from "@providers/AuthProvider";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(false);
   const { pathname } = useLocation();
   const { config : { SurveyBox, appTitle }, dispatch } = useConfigContext();
+  const { userInfo : {email} } = useAuthContext();
   const closeFeadbackBox = () => {
     setShowFeadback(false);
   };
@@ -28,6 +30,10 @@ const SurveyBoxSection = (props: any) => {
       dispatch(setSurveyBox(false))
     }
   }, [pathname]);
+
+  const goToSurvey = () =>{
+    window.open(`https://formafzar.com/form/zzn90?email=${email}`,"_blank")
+  }
 
   return (
     <Box
@@ -70,6 +76,7 @@ const SurveyBoxSection = (props: any) => {
           <Trans i18nKey={"common.helpUsToImprove"} values={{appName: appTitle}} />
         </Typography>
         <Button
+          onClick={goToSurvey}
           variant={"contained"}
           sx={{
             background: "#F3F5F6",
