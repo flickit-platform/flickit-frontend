@@ -38,7 +38,7 @@ const reducer = (state: AppState, action: any): AppState => {
         ...state,
         isAuthenticated: action.payload,
       };
-    case ActionTypes.SurveyBox_STATUS:
+    case ActionTypes.SURVEY_BOX_STATUS:
       return {
         ...state,
         SurveyBox: action.payload,

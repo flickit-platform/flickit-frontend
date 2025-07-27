@@ -13,7 +13,7 @@ import { Close } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 
-const SurveyBox = (props: any) => {
+const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(false);
   const { pathname } = useLocation();
   const { config : { SurveyBox, appTitle }, dispatch } = useConfigContext();
@@ -126,7 +126,7 @@ const FloatButton = (props: any) => {
 
   return (
     <>
-      <SurveyBox {...props} />
+      <SurveyBoxSection {...props} />
       <Box
         sx={{
           position: "fixed",
