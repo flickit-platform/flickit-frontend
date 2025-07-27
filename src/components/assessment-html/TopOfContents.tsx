@@ -70,8 +70,8 @@ export const AssessmentTOC = ({
                 t("assessmentReport.requestAnExpertReviewContent.listItems", {
                   returnObjects: true,
                 }) as string[]
-              ).map((item, idx) => (
-                <li key={idx} style={{ marginBottom: 6 }}>
+              ).map((item) => (
+                <li key={uniqueId()} style={{ marginBottom: 6 }}>
                   • {item}
                 </li>
               ))}
@@ -93,9 +93,6 @@ export const AssessmentTOC = ({
       },
     },
   });
-  const isAdvanceMode = useMemo(() => {
-    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-  }, [assessmentInfo?.mode?.code]);
 
   const theme = useTheme();
 
@@ -107,8 +104,12 @@ export const AssessmentTOC = ({
       [itemKey]: !prevState[itemKey],
     }));
   };
-  const { lang } = graphicalReport;
+  const { lang, assessment } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
+
+  const isAdvanceMode = useMemo(() => {
+    return assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessmentInfo?.mode?.code]);
 
   const subjects: any = useMemo(() => {
     return (
@@ -169,7 +170,7 @@ export const AssessmentTOC = ({
           borderRadius: 2,
           p: 2,
           overflowY: "auto",
-          maxHeight: "80vh",
+          maxHeight: "50vh",
           textAlign: rtlLanguage ? "right" : "left",
           ...styles.rtlStyle(rtlLanguage),
         }}
@@ -296,15 +297,69 @@ export const AssessmentTOC = ({
           })}
         </List>
       </Box>
-      {isAuthenticatedUser && (
-        <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+
+      {isAuthenticatedUser && !isAdvanceMode && (
+        <Box
+          sx={{
+            mt: 2,
+            p: 2,
+            borderRadius: 2,
+            bgcolor: "#EAF2FB",
+            boxShadow: "0px 0px 8px 0px rgba(10, 35, 66, 0.25)",
+            flexShrink: 0,
+            ...styles.rtlStyle(rtlLanguage),
+          }}
+        >
+          <Typography
+            textAlign="justify"
+            variant="bodySmall"
+            sx={{ fontFamily: "inherit" }}
+          >
+            <Trans
+              i18nKey="assessmentReport.contactExpertBoxText.intro"
+              components={{ strong: <strong /> }}
+              t={(key: any, options?: any) =>
+                t(key, { lng: lang.code.toLowerCase(), ...options })
+              }
+            />
+          </Typography>
+
+          <ul
+            style={{
+              listStyle: "none",
+              padding: 0,
+              marginBlock: 0,
+              ...theme.typography.bodySmall,
+              fontFamily: "inherit",
+            }}
+          >
+            {(
+              t("assessmentReport.contactExpertBoxText.points", {
+                lng: lang.code.toLowerCase(),
+                returnObjects: true,
+              }) as string[]
+            ).map((item) => (
+              <li key={uniqueId()}>• {item}</li>
+            ))}
+          </ul>
+
+          <Typography
+            textAlign="justify"
+            variant="bodySmall"
+            sx={{ fontFamily: "inherit" }}
+          >
+            {t("assessmentReport.contactExpertBoxText.outro", {
+              lng: lang.code.toLowerCase(),
+            })}
+          </Typography>
+
           <Button
+            size="medium"
             onClick={() => requestAnExpertDialogProps.openDialog({})}
             variant="contained"
             sx={{
+              mt: 2,
               width: "100%",
-              height: 48,
-              borderRadius: "16px !important",
               background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
               color: "#fff",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
@@ -312,9 +367,12 @@ export const AssessmentTOC = ({
                 background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
                 opacity: 0.9,
               },
+              fontFamily: "inherit",
             }}
           >
-            {t("assessmentReport.requestAnExpertReview")}
+            {t("assessmentReport.contactExpertGroup", {
+              lng: lang.code.toLowerCase(),
+            })}
           </Button>
         </Box>
       )}

@@ -12,7 +12,6 @@ import { BASE_URL, MULTILINGUALITY } from "@constants";
 import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
-import keycloakService from "@/service/keycloakService";
 
 
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
