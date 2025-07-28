@@ -31,14 +31,14 @@ export const QuestionContainer = () => {
   return (
     <>
       {loaded && (
-        <Box overflow="hidden">
+        <Box overflow="hidden" width="100%">
           {questionsInfo.questions?.[realIndex - 1] && <QuestionsProgress />}
           {assessmentStatus === EAssessmentStatus.DONE ? (
             <Review />
           ) : (
-            <Box position="relative" sx={{ ...styles.centerVH }}>
+            <Box position="relative" sx={{ ...styles.centerVH }} width="100%">
               {questionsInfo.questions?.[realIndex - 1] ? (
-                <Box>
+                <Box width="100%">
                   <Box
                     display="flex"
                     flexDirection={"column"}
