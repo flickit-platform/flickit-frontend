@@ -281,9 +281,12 @@ export const AssessmentTOC = ({
           }}
         >
           <Typography
-            textAlign="justify"
             variant="bodySmall"
-            sx={{ fontFamily: "inherit" }}
+            sx={{
+              textAlign: "justify",
+              fontFamily: "inherit",
+              display: "block",
+            }}
           >
             <Trans
               i18nKey="assessmentReport.contactExpertBoxText.intro"
@@ -297,10 +300,10 @@ export const AssessmentTOC = ({
           <ul
             style={{
               listStyle: "none",
-              padding: 0,
-              marginBlock: 0,
+              paddingInline: 8,
               ...theme.typography.bodySmall,
               fontFamily: "inherit",
+              textAlign: "justify",
             }}
           >
             {(
@@ -314,9 +317,12 @@ export const AssessmentTOC = ({
           </ul>
 
           <Typography
-            textAlign="justify"
             variant="bodySmall"
-            sx={{ fontFamily: "inherit" }}
+            sx={{
+              textAlign: "justify",
+              fontFamily: "inherit",
+              display: "block",
+            }}
           >
             {t("assessmentReport.contactExpertBoxText.outro", {
               lng: lang.code.toLowerCase(),
