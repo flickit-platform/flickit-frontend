@@ -201,5 +201,7 @@
     "getInTouch": "Please tell us a bit about the software you’d like to assess. We’ll get back to you shortly to help you choose the best-fit kit."
   },
   "paid": "Paid",
-  "send": "Send"
+  "send": "Send",
+  "editQuestion": "Edit question",
+  "andContinue": "and continue"
 }
