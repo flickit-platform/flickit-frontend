@@ -126,12 +126,18 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
         gap: { xs: 4, sm: "unset" },
         marginTop: fullScreen ? "auto" : 3,
         marginLeft: 0,
+        fontFamily: "inherit",
       }}
     >
       <Grid container spacing={2} justifyContent="flex-end">
         {!hideCancelButton && (
           <Grid item>
-            <Button onClick={onClose} data-cy="cancel" data-testid="cancel">
+            <Button
+              onClick={onClose}
+              data-cy="cancel"
+              data-testid="cancel"
+              sx={{ fontFamily: "inherit" }}
+            >
               <Trans i18nKey={cancelLabel ?? ""} />
             </Button>
           </Grid>
@@ -155,6 +161,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
                 e.preventDefault();
                 onSubmit?.(e)?.();
               }}
+              sx={{ fontFamily: "inherit" }}
               disabled={disablePrimaryButton}
             >
               <Trans i18nKey={submitButtonLabel as string} />

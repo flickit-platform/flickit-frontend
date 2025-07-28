@@ -274,7 +274,8 @@ const AssessmentHtmlContainer = () => {
             visibility,
             linkHash,
           } = graphicalReport as IGraphicalReport;
-          const rtlLanguage = lang.code.toLowerCase() === "fa";
+          const lng = lang?.code?.toLowerCase();
+          const rtlLanguage = lng === "fa";
           const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
           const currentPath = window.location.pathname;
           const basePath = getBasePath(currentPath);
@@ -376,7 +377,7 @@ const AssessmentHtmlContainer = () => {
                       </IconButton>
                     )}
                     {t("assessmentReport.assessmentReport", {
-                      lng: lang.code.toLowerCase(),
+                      lng,
                     })}
                   </Typography>
                   <>
@@ -386,16 +387,7 @@ const AssessmentHtmlContainer = () => {
                         <Share
                           fontSize="small"
                           sx={{
-                            marginInlineStart:
-                              i18next.language.toLowerCase() ===
-                              lang.code.toLowerCase()
-                                ? "initial"
-                                : -1,
-                            marginInlineEnd:
-                              i18next.language.toLowerCase() ===
-                              lang.code.toLowerCase()
-                                ? "initial"
-                                : 1,
+                            ...styles.iconDirectionStyle(lng),
                           }}
                         />
                       }
@@ -410,7 +402,7 @@ const AssessmentHtmlContainer = () => {
                       }}
                     >
                       {t("assessmentReport.shareReport", {
-                        lng: lang.code.toLowerCase(),
+                        lng,
                       })}
                     </LoadingButton>
                     <ShareDialog
@@ -418,6 +410,7 @@ const AssessmentHtmlContainer = () => {
                       onClose={() => dialogProps.onClose()}
                       fetchGraphicalReportUsers={fetchGraphicalReportUsers}
                       {...graphicalReport}
+                      lang={lang}
                     />
                   </>{" "}
                 </Box>
@@ -463,10 +456,7 @@ const AssessmentHtmlContainer = () => {
                       <Box padding={3} width="100%">
                         <Grid container spacing={4} sx={{ mb: "40px" }}>
                           <Grid item xs={12} sm={12}>
-                            {renderChips(
-                              graphicalReport,
-                              lang.code.toLowerCase(),
-                            )}
+                            {renderChips(graphicalReport, lng)}
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={8}>
                             <Box display="flex" gap={1.5}>
@@ -495,7 +485,7 @@ const AssessmentHtmlContainer = () => {
                                     />
                                   }
                                   label={t("common.AIAssissted", {
-                                    lng: lang.code.toLowerCase(),
+                                    lng,
                                   })}
                                   sx={{
                                     border: "1px solid #C6CDD7",
@@ -527,7 +517,7 @@ const AssessmentHtmlContainer = () => {
                                   }}
                                 >
                                   {t("assessmentReport.introduction", {
-                                    lng: lang.code.toLowerCase(),
+                                    lng,
                                   })}
                                 </Typography>
                                 <Typography
@@ -542,7 +532,7 @@ const AssessmentHtmlContainer = () => {
                                     __html:
                                       assessment.intro ??
                                       t("common.unavailable", {
-                                        lng: lang.code.toLowerCase(),
+                                        lng,
                                       }),
                                   }}
                                   className="tiptap"
@@ -560,7 +550,7 @@ const AssessmentHtmlContainer = () => {
                               }}
                             >
                               {t("common.summary", {
-                                lng: lang.code.toLowerCase(),
+                                lng,
                               })}
                             </Typography>
                             <Typography
@@ -575,7 +565,7 @@ const AssessmentHtmlContainer = () => {
                                 __html:
                                   assessment.overallInsight ??
                                   t("common.unavailable", {
-                                    lng: lang.code.toLowerCase(),
+                                    lng,
                                   }),
                               }}
                             ></Typography>
@@ -593,7 +583,7 @@ const AssessmentHtmlContainer = () => {
                               confidence_text={
                                 !isQuickMode
                                   ? t("common.withPercentConfidence", {
-                                      lng: lang.code.toLowerCase(),
+                                      lng,
                                     })
                                   : ""
                               }
@@ -635,7 +625,7 @@ const AssessmentHtmlContainer = () => {
                           }}
                         >
                           {t("assessmentReport.prosAndCons", {
-                            lng: lang.code.toLowerCase(),
+                            lng,
                           })}
                         </Typography>
 
@@ -682,7 +672,7 @@ const AssessmentHtmlContainer = () => {
                               >
                                 <InfoOutlinedIcon fontSize="small" />
                                 {t("common.treeMapChart", {
-                                  lng: lang.code.toLowerCase(),
+                                  lng,
                                 })}
                               </Typography>
                               <Typography
@@ -698,7 +688,7 @@ const AssessmentHtmlContainer = () => {
                                   __html:
                                     assessment.prosAndCons ??
                                     t("common.unavailable", {
-                                      lng: lang.code.toLowerCase(),
+                                      lng,
                                     }),
                                 }}
                               ></Typography>
@@ -719,7 +709,7 @@ const AssessmentHtmlContainer = () => {
                               }}
                             >
                               {t("common.maturityLevels", {
-                                lng: lang.code.toLowerCase(),
+                                lng,
                               })}
                             </Typography>
                             <Grid
@@ -804,7 +794,7 @@ const AssessmentHtmlContainer = () => {
                         }}
                       >
                         {t("assessmentReport.recommendations", {
-                          lng: lang.code.toLowerCase(),
+                          lng,
                         })}
                       </Typography>
                       {advice?.narration || advice?.adviceItems?.length ? (
@@ -841,7 +831,7 @@ const AssessmentHtmlContainer = () => {
                           }}
                         >
                           {t("common.unavailable", {
-                            lng: lang.code.toLowerCase(),
+                            lng,
                           })}
                         </Typography>
                       )}

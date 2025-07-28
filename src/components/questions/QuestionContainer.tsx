@@ -140,9 +140,7 @@ export const useQuestion = () => {
     hasAnyQuestion && realIndex < questionsInfo.total_number_of_questions;
   const hasPreviousQuestion = hasAnyQuestion && realIndex > 1;
   const container = useRef(null);
-  useEffect(() => {
-    console.log(questionsInfo);
-  }, [questionsInfo]);
+
   return {
     hasAnyQuestion,
     questionInfo,

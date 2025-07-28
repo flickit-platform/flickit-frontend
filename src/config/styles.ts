@@ -2,6 +2,7 @@ import { keyframes, SxProps, Theme } from "@mui/material/styles";
 import { TStatus } from "@/types/index";
 import hasStatus from "@utils/hasStatus";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
+import i18next from "i18next";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
@@ -71,6 +72,17 @@ const commonStyles = {
     overflow: "hidden",
     textOverflow: "ellipsis",
   }),
+  rtlStyle: (isRTL = true) => ({
+    direction: isRTL ? "rtl" : "ltr",
+    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
+  }),
+  iconDirectionStyle: (lng?: string) => {
+    const isCurrentLang = lng === i18next.language.toLowerCase();
+    return {
+      marginInlineStart: isCurrentLang ? "initial" : -1,
+      marginInlineEnd: isCurrentLang ? "initial" : 1,
+    };
+  },
 };
 
 const sharedChipStyles = {
@@ -86,10 +98,6 @@ const sharedChipStyles = {
     gap: 0.5,
     fontWeight: "bold",
   },
-  rtlStyle: (isRTL = true) => ({
-    direction: isRTL ? "rtl" : "ltr",
-    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
-  }),
 };
 
 const cards = {

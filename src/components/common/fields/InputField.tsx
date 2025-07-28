@@ -151,10 +151,15 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
         background: pallet?.background,
         borderRadius: borderRadius,
         "& .MuiOutlinedInput-root": {
-          "& ::placeholder": { ...theme.typography.bodyMedium, textAlign: languageDetector(placeholder) ? "right" : "left"},
+          "& ::placeholder": {
+            ...theme.typography.bodyMedium,
+            textAlign: languageDetector(placeholder) ? "right" : "left",
+            fontFamily:"inherit"
+          },
           "& fieldset": {
             borderColor: pallet?.borderColor,
             borderRadius: borderRadius,
+            textAlign: "initial",
           },
           "&:hover fieldset": {
             borderColor: pallet?.borderHover,
