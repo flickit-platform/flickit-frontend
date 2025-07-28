@@ -72,12 +72,16 @@ const ContactUsDialog = ({
   }, [email]);
 
   useEffect(() => {
-    const typeValue =
-      type === "requestAnExpertReview"
-        ? `Expert Review - ${window.location.href}`
-        : type === "purchased"
-          ? `Purchase - ${title}`
-          : "Contact Us - Flickit";
+    let typeValue = "Contact Us - Flickit";
+
+    if (type === "requestAnExpertReview") {
+      typeValue = `Expert Review - ${window.location.href}`;
+    } else if (type === "purchased") {
+      typeValue = `Purchase - ${title}`;
+    }
+
+    methods.setValue("type" as any, typeValue);
+
     methods.setValue("type" as any, typeValue);
   }, []);
 
