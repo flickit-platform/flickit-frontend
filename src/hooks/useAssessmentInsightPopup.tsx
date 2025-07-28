@@ -136,7 +136,7 @@ const useInsightPopup = ({
     if (insight) {
       return AIEnabled
         ? t("assessment.regenerateViaAI")
-        : t("assessment.regenerate");
+        : t("common.regenerate");
     }
     return AIEnabled
       ? t("assessment.generateInsightViaAI")
