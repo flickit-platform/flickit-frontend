@@ -52,6 +52,9 @@ const AssessmentAdviceContainer = (props: any) => {
       case "DEPRECATED":
         await service.assessments.info
           .migrateKitVersion({ assessmentId })
+          .then(() => {
+            shouldRefetch = true;
+          })
           .catch(() => {
             shouldRefetch = false;
           });
