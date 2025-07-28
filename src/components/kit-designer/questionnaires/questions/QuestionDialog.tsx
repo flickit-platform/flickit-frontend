@@ -119,7 +119,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       }
       resultFunc()
     }
-  }, [rest.open, question.id]);
+  }, [rest.open, question.id, isSaving]);
 
   const handleSubmit = async (data: any) => {
     try {
