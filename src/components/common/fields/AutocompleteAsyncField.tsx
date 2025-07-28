@@ -24,9 +24,9 @@ import { t } from "i18next";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import { SxProps, Theme } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import showToast from "@/utils/toastError";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -188,7 +188,9 @@ const AutocompleteBaseField = (
       setOptions((prevOptions) => [...prevOptions, newOption]);
       onChange(newOption);
     } catch (e) {
-      console.error(e);
+      const err = e as any;
+      onChange( () => getOptionLabel(defaultValue));
+      showToast(err);
     }
   };
 
