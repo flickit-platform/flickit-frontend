@@ -373,7 +373,7 @@ const AssessmentKitSectionGeneralInfo = (
 
                 <OnHoverRichEditor
                   data={about}
-                  title={<Trans i18nKey="common.about" />}
+                  title={<Trans i18nKey="common.what" />}
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
