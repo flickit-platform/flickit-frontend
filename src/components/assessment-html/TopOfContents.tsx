@@ -51,45 +51,15 @@ export const AssessmentTOC = ({
         email:
           keycloakService._kc.tokenParsed?.preferred_username ??
           keycloakService._kc.tokenParsed?.sub,
-        dialogTitle: t("assessmentReport.expertReassessmentService"),
+        dialogTitle: t("assessmentReport.contactExpertGroup"),
         children: (
-          <Box>
-            <Typography textAlign="justify" variant="bodyLarge">
-              <Trans
-                i18nKey="assessmentReport.requestAnExpertReviewContent.intro"
-                components={{ strong: <strong /> }}
-              />
-            </Typography>
-
-            <Typography mt={2} variant="bodyLarge" fontWeight="bold">
-              {t("assessmentReport.requestAnExpertReviewContent.listTitle")}
-            </Typography>
-
-            <ul style={{ listStyle: "none", padding: 0, marginTop: 8 }}>
-              {(
-                t("assessmentReport.requestAnExpertReviewContent.listItems", {
-                  returnObjects: true,
-                }) as string[]
-              ).map((item) => (
-                <li key={uniqueId()} style={{ marginBottom: 6 }}>
-                  • {item}
-                </li>
-              ))}
-            </ul>
-
-            <Typography mt={2} textAlign="justify" variant="bodyLarge">
-              <Trans
-                i18nKey="assessmentReport.requestAnExpertReviewContent.note"
-                components={{ strong: <strong /> }}
-              />
-            </Typography>
-
-            <Typography mt={1} textAlign="justify" variant="bodyLarge">
-              {t("assessmentReport.requestAnExpertReviewContent.instruction")}
-            </Typography>
-          </Box>
+          <Typography textAlign="justify" variant="bodyLarge">
+            <Trans
+              i18nKey="assessmentReport.requestAnExpertReviewContent"
+              components={{ strong: <strong /> }}
+            />
+          </Typography>
         ),
-        primaryActionButtonText: t("assessmentReport.submitRequest"),
       },
     },
   });

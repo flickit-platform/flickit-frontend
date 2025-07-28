@@ -19,7 +19,6 @@
   "disclaimer": "Clarification and Disclaimer",
   "disclaimerDescription": "This report was produced with an evidence-based evaluation approach and partially relies on the information provided by the interviewees. The findings of this report are not 100% certain. If the managers approve, the evaluation process will continue to examine the evidence more deeply and increase the confidence factor.",
   "evaluation_process": "Evaluation process (How was this report built?)",
-  "expertReassessmentService": "Expert re-assessment service",
   "how_was_this_report_built": "How was this report built?",
   "introduction": "Introduction",
   "introductionReport": "Report introduction",
@@ -40,22 +39,11 @@
   "report": "report",
   "reportTitle": "Report",
   "requestAnExpertReview": "Request an expert review",
-  "requestAnExpertReviewContent": {
-    "intro": "Want a deeper, more precise assessment of your software’s maturity? With our <strong>Expert re-assessment service,</strong> a seasoned specialist will personally review your assessment using <strong>advanced platform features,</strong> combined with their <strong>real-world experience and deep understanding of common challenges and solutions in this domain.</strong>",
-    "listTitle": " You’ll receive:",
-    "listItems": [
-      "A more accurate maturity-level score",
-      "A tailored roadmap for improving your product",
-      "Direct feedback from a qualified assessor"
-    ],
-    "note": "<strong>Note:</strong> This is a paid service.",
-    "instruction": " To get started, briefly describe your situation or concerns in the field below. Our team will review your request and contact you by email to see if this service is right for you, and if so, guide you through the next steps."
-  },
+  "requestAnExpertReviewContent":"We can share your questionnaire responses with a team of experienced assessors who have domain-specific expertise aligned with your software. Their involvement can result in an assessment with greater accuracy, depth, and quality than the current AI-assisted report. <br/>Our specialists will be in direct contact with you throughout the process. <br/>Please note that this is a <strong>paid</strong> service. To explore a potential collaboration, please share your contact details and brief information about your software—such as business domain, brand name, and other relevant context.",
   "shareReport": "Share report",
   "shareReportViaEmail": "Share the report with new people via email...",
   "strengths_and_weaknesses": "Strengths and weaknesses",
   "strengthsAndAreasForImprovement": "Strengths and areas for improvement",
-  "submitRequest": "Submit request",
   "topicsAndIndicators": "Topics and indicators",
   "topicsTable": "The table below explains each of the topics and indicators.",
   "viewReport": "View report",
