@@ -64,7 +64,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
 
   const handleContinue = useCallback(() => {
     if (kit?.id) {
-      navigate(`/assessment-kits#createAssessment?id=${kit.id}}`);
+      navigate(`/assessment-kits#createAssessment?id=${kit.id}`);
     }
     clearAll();
   }, [kit, clearAll]);

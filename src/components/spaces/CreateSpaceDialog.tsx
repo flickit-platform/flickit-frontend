@@ -87,7 +87,7 @@ const CreateSpaceDialog = (props: any) => {
   }, [spaceDefaultType?.code]);
 
   const close = () => {
-    if (step === 3) {
+    if (step === 2) {
       if (pendingKitData?.id) {
         dispatch(
           assessmentActions.setPendingKit({
