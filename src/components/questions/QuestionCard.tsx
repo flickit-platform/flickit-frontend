@@ -989,7 +989,7 @@ const AnswerTemplate = (props: {
     <>
       <Box
         display={"flex"}
-        justifyContent="flex-start"
+        justifyContent="space-around"
         mt={4}
         sx={{ direction: "rtl" }}
       >
