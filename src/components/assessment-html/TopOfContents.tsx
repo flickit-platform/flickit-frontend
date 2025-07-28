@@ -44,6 +44,10 @@ export const AssessmentTOC = ({
   graphicalReport: IGraphicalReport;
 }) => {
   const { assessmentInfo } = useAssessmentContext();
+  const { lang, assessment } = graphicalReport;
+  const lng = lang.code.toLowerCase();
+  const rtlLanguage = lang.code.toLowerCase() === "fa";
+
   const requestAnExpertDialogProps = useDialog({
     context: {
       type: "requestAnExpertReview",
@@ -51,14 +55,18 @@ export const AssessmentTOC = ({
         email:
           keycloakService._kc.tokenParsed?.preferred_username ??
           keycloakService._kc.tokenParsed?.sub,
-        dialogTitle: t("assessmentReport.contactExpertGroup"),
+        dialogTitle: t("assessmentReport.contactExpertGroup", { lng }),
         children: (
-          <Typography textAlign="justify" variant="bodyLarge">
-            <Trans
-              i18nKey="assessmentReport.requestAnExpertReviewContent"
-              components={{ strong: <strong /> }}
-            />
-          </Typography>
+          <Typography
+            textAlign="justify"
+            variant="bodyLarge"
+            fontFamily="inherit"
+            dangerouslySetInnerHTML={{
+              __html: t("assessmentReport.requestAnExpertReviewContent", {
+                lng,
+              }),
+            }}
+          ></Typography>
         ),
       },
     },
@@ -74,8 +82,6 @@ export const AssessmentTOC = ({
       [itemKey]: !prevState[itemKey],
     }));
   };
-  const { lang, assessment } = graphicalReport;
-  const rtlLanguage = lang.code.toLowerCase() === "fa";
 
   const isAdvanceMode = useMemo(() => {
     return assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
@@ -154,7 +160,7 @@ export const AssessmentTOC = ({
             ...styles.rtlStyle(rtlLanguage),
           }}
         >
-          {t("assessmentReport.quickAccess", { lng: lang.code.toLowerCase() })}
+          {t("assessmentReport.quickAccess", { lng })}
         </Typography>
         <List
           sx={{
@@ -204,7 +210,7 @@ export const AssessmentTOC = ({
                   >
                     <ListItemText
                       primary={t(hasSubItems ? item.id : item.label, {
-                        lng: lang.code.toLowerCase(),
+                        lng,
                       })}
                       sx={{
                         "& .MuiTypography-root": {
@@ -240,7 +246,7 @@ export const AssessmentTOC = ({
                           >
                             <ListItemText
                               primary={t(subItem, {
-                                lng: lang.code.toLowerCase(),
+                                lng,
                                 title: "",
                               })}
                               sx={{
@@ -291,9 +297,7 @@ export const AssessmentTOC = ({
             <Trans
               i18nKey="assessmentReport.contactExpertBoxText.intro"
               components={{ strong: <strong /> }}
-              t={(key: any, options?: any) =>
-                t(key, { lng: lang.code.toLowerCase(), ...options })
-              }
+              t={(key: any, options?: any) => t(key, { lng, ...options })}
             />
           </Typography>
 
@@ -308,7 +312,7 @@ export const AssessmentTOC = ({
           >
             {(
               t("assessmentReport.contactExpertBoxText.points", {
-                lng: lang.code.toLowerCase(),
+                lng,
                 returnObjects: true,
               }) as string[]
             ).map((item) => (
@@ -325,7 +329,7 @@ export const AssessmentTOC = ({
             }}
           >
             {t("assessmentReport.contactExpertBoxText.outro", {
-              lng: lang.code.toLowerCase(),
+              lng,
             })}
           </Typography>
 
@@ -347,13 +351,17 @@ export const AssessmentTOC = ({
             }}
           >
             {t("assessmentReport.contactExpertGroup", {
-              lng: lang.code.toLowerCase(),
+              lng,
             })}
           </Button>
         </Box>
       )}
 
-      <ContactUsDialog {...requestAnExpertDialogProps} />
+      <ContactUsDialog
+        {...requestAnExpertDialogProps}
+        lng={lng}
+        sx={{ ...styles.rtlStyle(rtlLanguage) }}
+      />
     </Box>
   );
 };
