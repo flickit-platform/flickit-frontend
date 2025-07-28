@@ -28,7 +28,6 @@ import {
   Check,
   Language,
 } from "@mui/icons-material";
-import i18next, { t } from "i18next";
 import { VISIBILITY } from "@/utils/enumType";
 import { IGraphicalReport, IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";

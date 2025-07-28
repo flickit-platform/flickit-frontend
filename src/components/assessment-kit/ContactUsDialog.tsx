@@ -29,32 +29,41 @@ const socialIcon = [
   { id: 2, icon: splusIcon, bg: "#196ff014", link: SplusWebLink },
 ];
 
-// 🧩 helper for InputLabelProps styling
-const getInputLabelSx = (isRTL: boolean, isSameLang: boolean) => ({
-  ...styles.rtlStyle(isRTL),
-  marginInlineStart: isSameLang
-    ? "initial"
-    : isRTL
-    ? "32px !important"
-    : "16px !important",
-  "&.Mui-focused": {
-    ...styles.rtlStyle(isRTL),
-    marginInlineStart: isSameLang
-      ? "initial"
-      : isRTL
-      ? "10px !important"
-      : "-10px !important",
-  },
-});
+const getInputLabelSx = (isRTL: boolean, isSameLang: boolean) => {
+  let marginInlineStart = "initial";
+  let focusedMarginInlineStart = "initial";
 
-const ContactUsDialog = ({ title, onClose, context, lng, ...rest }: IContactUsDialogProps) => {
+  if (!isSameLang) {
+    marginInlineStart = isRTL ? "32px !important" : "16px !important";
+    focusedMarginInlineStart = isRTL ? "10px !important" : "-10px !important";
+  }
+
+  return {
+    ...styles.rtlStyle(isRTL),
+    marginInlineStart,
+    "&.Mui-focused": {
+      ...styles.rtlStyle(isRTL),
+      marginInlineStart: focusedMarginInlineStart,
+    },
+  };
+};
+
+const ContactUsDialog = ({
+  title,
+  onClose,
+  context,
+  lng,
+  ...rest
+}: IContactUsDialogProps) => {
   const { data = {}, type = "contactUs" } = context ?? {};
   const { email, dialogTitle, primaryActionButtonText, children } = data;
   const isRTL = lng === "fa" || (!lng && i18next.language === "fa");
   const isSameLang = lng === i18next.language || !lng;
 
   const abortController = useMemo(() => new AbortController(), [rest.open]);
-  const [state, handleSubmitSpree] = useFormSpree(import.meta.env.VITE_FORM_SPREE);
+  const [state, handleSubmitSpree] = useFormSpree(
+    import.meta.env.VITE_FORM_SPREE,
+  );
   const methods = useForm({ defaultValues: { email: email ?? "" } });
   const [dialogKey, setDialogKey] = useState(0);
 
@@ -67,8 +76,8 @@ const ContactUsDialog = ({ title, onClose, context, lng, ...rest }: IContactUsDi
       type === "requestAnExpertReview"
         ? `Expert Review - ${window.location.href}`
         : type === "purchased"
-        ? `Purchase - ${title}`
-        : "Contact Us - Flickit";
+          ? `Purchase - ${title}`
+          : "Contact Us - Flickit";
     methods.setValue("type" as any, typeValue);
   }, []);
 
@@ -136,16 +145,25 @@ const ContactUsDialog = ({ title, onClose, context, lng, ...rest }: IContactUsDi
       {...rest}
       closeDialog={state.succeeded ? handleSucceeded : close}
       title={
-        <Typography variant="semiBoldXLarge" sx={styles.rtlStyle(isRTL)} fontFamily="inherit">
+        <Typography
+          variant="semiBoldXLarge"
+          sx={styles.rtlStyle(isRTL)}
+          fontFamily="inherit"
+        >
           {dialogTitle ?? <Trans i18nKey="common.contactUs" />}
         </Typography>
       }
       sx={styles.rtlStyle(isRTL)}
     >
       {state.succeeded && type !== "purchased" ? (
-        <Box mt={2} sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}>
+        <Box
+          mt={2}
+          sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}
+        >
           <Box height="94%" sx={{ ...styles.centerCVH, textAlign: "center" }}>
-            <CheckCircleOutlineRoundedIcon sx={{ fontSize: 64, color: "success.main", mb: 1 }} />
+            <CheckCircleOutlineRoundedIcon
+              sx={{ fontSize: 64, color: "success.main", mb: 1 }}
+            />
             <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
               {t("common.thankYouForYourMessage", { lng })}
             </Typography>
@@ -165,7 +183,11 @@ const ContactUsDialog = ({ title, onClose, context, lng, ...rest }: IContactUsDi
         <FormProvider {...methods}>
           <Box px={1} pt={3} fontFamily="inherit">
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Typography variant="bodyLarge" textAlign="justify" fontFamily="inherit">
+              <Typography
+                variant="bodyLarge"
+                textAlign="justify"
+                fontFamily="inherit"
+              >
                 {children}
               </Typography>
 
@@ -202,8 +224,16 @@ const ContactUsDialog = ({ title, onClose, context, lng, ...rest }: IContactUsDi
 
                 <Box sx={{ display: "flex", gap: 2 }}>
                   {socialIcon.map((chat) => (
-                    <Box key={chat.id} onClick={() => window.open(chat.link, "_blank")} sx={{ cursor: "pointer" }}>
-                      <img src={chat.icon} alt="chat icon" style={{ width: 24, height: 24 }} />
+                    <Box
+                      key={chat.id}
+                      onClick={() => window.open(chat.link, "_blank")}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <img
+                        src={chat.icon}
+                        alt="chat icon"
+                        style={{ width: 24, height: 24 }}
+                      />
                     </Box>
                   ))}
                 </Box>
@@ -211,7 +241,9 @@ const ContactUsDialog = ({ title, onClose, context, lng, ...rest }: IContactUsDi
 
               <CEDialogActions
                 cancelLabel={t("common.cancel", { lng })}
-                submitButtonLabel={primaryActionButtonText ?? t("common.confirm", { lng })}
+                submitButtonLabel={
+                  primaryActionButtonText ?? t("common.confirm", { lng })
+                }
                 onClose={close}
                 loading={state.submitting}
                 onSubmit={methods.handleSubmit(onSubmit)}

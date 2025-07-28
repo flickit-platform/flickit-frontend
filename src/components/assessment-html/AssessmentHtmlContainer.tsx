@@ -27,7 +27,7 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { getMaturityLevelColors, styles } from "@styles";
-import i18next, { t } from "i18next";
+import { t } from "i18next";
 import PieChart from "../common/charts/PieChart";
 import useDialog from "@/utils/useDialog";
 import { ShareDialog } from "./ShareDialog";
