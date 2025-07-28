@@ -12,7 +12,7 @@ import { MULTILINGUALITY } from "@constants";
 import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import keycloakService from "@/service/keycloakService";
 
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
 const LandingPage =
@@ -24,6 +24,7 @@ const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
 
   const handleButtonClick = (e: any, name: string) => {
+    keycloakService.doLogin();
     (window as any).dataLayer.push({
       event: "ppms.cm:trackEvent",
       parameters: {
@@ -140,8 +141,6 @@ const NavbarWithoutLogin = () => {
           <Button
             variant={"contained"}
             size={"medium"}
-            component="a"
-            href={import.meta.env.VITE_LOCAL_BASE_URL}
             onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
