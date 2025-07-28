@@ -20,8 +20,8 @@ interface IContactUsDialogProps extends DialogProps {
   context?: any;
 }
 
-const TelegramLink = 'https://web.telegram.org/a/#8179187991';
-const SplusWebLink = 'https://web.splus.ir/#45047257';
+const TelegramLink = "https://web.telegram.org/a/#8179187991";
+const SplusWebLink = "https://web.splus.ir/#45047257";
 const socialIcon = [
   {
     id: 1,
@@ -38,10 +38,9 @@ const socialIcon = [
 ];
 
 const ContactUsDialog = (props: IContactUsDialogProps) => {
-  console.log(props)
   const { title, onClose, context, ...rest } = props;
   const abortController = useMemo(() => new AbortController(), [rest.open]);
-  const { data = {}, type } = context ?? {};
+  const { data = {}, type = "contactUs" } = context ?? {};
   const { email, dialogTitle, primaryActionButtonText, children } = data;
   const [state, handleSubmitSpree] = useFormSpree(
     import.meta.env.VITE_FORM_SPREE,
@@ -149,7 +148,11 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               <Typography variant="bodyLarge" textAlign="justify">
                 {children}
               </Typography>
-
+              {type === "contactUs" && (
+                <Typography component="div" variant="bodyLarge" sx={{ mb: 2 }}>
+                  <Trans i18nKey="common.contactUsIntroText" />
+                </Typography>
+              )}
               {type !== "requestAnExpertReview" && (
                 <InputFieldUC
                   name="email"
@@ -159,18 +162,22 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
               )}
               {type !== "requestAnExpertReview" && (
                 <Box sx={{ mt: 2 }}>
-                    <InputFieldUC
-                      name="mobile"
-                      label={t("user.yourPhoneNumber")}
-                      placeholder={t("user.pleaseEnterYourPhoneNumber")}
-                    />
+                  <InputFieldUC
+                    name="mobile"
+                    label={t("user.yourPhoneNumber")}
+                    placeholder={t("user.pleaseEnterYourPhoneNumber")}
+                  />
                 </Box>
               )}
 
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
                   name="message"
-                  label={t("assessmentKit.tellUsWhatYouLookingFor")}
+                  label={
+                    type === "purchased"
+                      ? t("assessmentKit.tellUsWhatYouLookingFor")
+                      : t("common.yourMessage")
+                  }
                   multiline
                   rows={4}
                   required
