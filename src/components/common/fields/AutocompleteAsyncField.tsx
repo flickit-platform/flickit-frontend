@@ -15,7 +15,7 @@ import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
 import forLoopComponent from "@utils/forLoopComponent";
 import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
-import { SPACE_LEVELS, TQueryProps } from "@/types/index";
+import { ICustomError, SPACE_LEVELS, TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
@@ -27,6 +27,7 @@ import languageDetector from "@utils/languageDetector";
 import { SxProps, Theme } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import showToast from "@/utils/toastError";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -188,7 +189,9 @@ const AutocompleteBaseField = (
       setOptions((prevOptions) => [...prevOptions, newOption]);
       onChange(newOption);
     } catch (e) {
-      console.error(e);
+      const err = e as any;
+      onChange( () => getOptionLabel(defaultValue));
+      showToast(err);
     }
   };
 
