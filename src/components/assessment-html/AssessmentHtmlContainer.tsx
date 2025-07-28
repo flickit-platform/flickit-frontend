@@ -64,7 +64,7 @@ const AssessmentHtmlContainer = () => {
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
-  const { dispatch }  = useConfigContext()
+  const { dispatch } = useConfigContext();
   const dialogProps = useDialog();
 
   const fetchPathInfo = useQuery<PathInfo>({
@@ -103,7 +103,7 @@ const AssessmentHtmlContainer = () => {
     const setupIntersectionObserver = (targetElement: HTMLElement) => {
       observer = new IntersectionObserver(
         (entries, obs) => {
-          entries.forEach(entry => {
+          entries.forEach((entry) => {
             if (entry.isIntersecting && !hasIntersected) {
               hasIntersected = true;
               dispatch(setSurveyBox(true));
@@ -114,8 +114,8 @@ const AssessmentHtmlContainer = () => {
         {
           root: null,
           threshold: 0.5,
-          rootMargin: '100px 0px -50px 0px',
-        }
+          rootMargin: "100px 0px -50px 0px",
+        },
       );
       observer.observe(targetElement);
     };
@@ -506,6 +506,7 @@ const AssessmentHtmlContainer = () => {
                                     ".MuiChip-label": {
                                       padding: 0,
                                       marginInlineStart: 1,
+                                      ...styles.rtlStyle(rtlLanguage),
                                     },
                                     ...theme.typography.semiBoldMedium,
                                   }}
