@@ -160,15 +160,13 @@ const ContactUsDialog = (props: IContactUsDialogProps) => {
                   required
                 />
               )}
-              {type !== "requestAnExpertReview" && (
-                <Box sx={{ mt: 2 }}>
-                  <InputFieldUC
-                    name="mobile"
-                    label={t("user.yourPhoneNumber")}
-                    placeholder={t("user.pleaseEnterYourPhoneNumber")}
-                  />
-                </Box>
-              )}
+              <Box sx={{ mt: 2 }}>
+                <InputFieldUC
+                  name="mobile"
+                  label={t("user.yourPhoneNumber")}
+                  placeholder={t("user.pleaseEnterYourPhoneNumber")}
+                />
+              </Box>
 
               <Box sx={{ mt: 2 }}>
                 <InputFieldUC
