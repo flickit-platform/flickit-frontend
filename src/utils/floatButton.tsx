@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { theme } from "@config/theme";
@@ -22,8 +22,10 @@ const SurveyBoxSection = (props: any) => {
     dispatch,
   } = useConfigContext();
   const {
-    userInfo: { email },
+    userInfo: { email, showSurvey },
   } = useAuthContext();
+  const { isAuthenticatedUser } = useAuthContext();
+
   const closeFeadbackBox = () => {
     setShowFeadback(false);
   };
@@ -39,6 +41,9 @@ const SurveyBoxSection = (props: any) => {
   const goToSurvey = () => {
     window.open(`https://formafzar.com/form/zzn90?email=${email}`, "_blank");
   };
+  const  showSurveyBox  = useMemo(() => {
+    return showSurvey && showFeedback && SurveyBox && isAuthenticatedUser
+  }, [showSurvey, showFeedback, SurveyBox, isAuthenticatedUser]);
 
   return (
     <Box
@@ -46,7 +51,7 @@ const SurveyBoxSection = (props: any) => {
         position: "fixed",
         right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
         bottom: { xs: 0, md: "55px" },
-        display: showFeedback && SurveyBox ? "flex" : "none",
+        display: showSurveyBox ? "flex" : "none",
       }}
     >
       <Box
