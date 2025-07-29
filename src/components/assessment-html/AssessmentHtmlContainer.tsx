@@ -157,6 +157,9 @@ const AssessmentHtmlContainer = () => {
       case "DEPRECATED":
         await service.assessments.info
           .migrateKitVersion({ assessmentId })
+          .then(() => {
+            shouldRefetch = true;
+          })
           .catch(() => {
             shouldRefetch = false;
           });
