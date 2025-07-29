@@ -189,7 +189,7 @@ const AutocompleteBaseField = (
       onChange(newOption);
     } catch (e) {
       const err = e as any;
-      onChange( () => getOptionLabel(defaultValue));
+      onChange(value);
       showToast(err);
     }
   };
@@ -256,7 +256,7 @@ const AutocompleteBaseField = (
   };
 
   const handleBlur = () => {
-    const exactMatch = options.find(
+    const exactMatch = optionsData.find(
       (option) =>
         getOptionLabel(option).toLowerCase() === inputValue.toLowerCase(),
     );
