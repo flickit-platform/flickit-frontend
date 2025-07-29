@@ -10,12 +10,17 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import { useAuthContext } from "@providers/AuthProvider";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(true);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const { service } = useServiceContext();
+  const { assessmentId } = useParams()
   const { pathname } = useLocation();
   const {
     config: { SurveyBox, appTitle },
@@ -26,8 +31,17 @@ const SurveyBoxSection = (props: any) => {
   } = useAuthContext();
   const { isAuthenticatedUser } = useAuthContext();
 
+  const dontShowSurvey = useQuery({
+    service: (args= { assessmentId }, config) =>
+      service.common.dontShowSurvey( args, config),
+    runOnMount: false,
+  });
+
   const closeFeadbackBox = () => {
     setShowFeadback(false);
+    if(dontShowAgain){
+      dontShowSurvey.query()
+    }
   };
   useEffect(() => {
     if (pathname.includes("graphical-report")) {
@@ -112,14 +126,14 @@ const SurveyBoxSection = (props: any) => {
           data-cy="automatic-submit-check"
           control={
             <Checkbox
-              checked={showFeedback}
+              checked={dontShowAgain}
               sx={{
                 color: "#fff",
                 "&.Mui-checked": {
                   color: "#fff",
                 },
               }}
-              onChange={(e) => setShowFeadback(e.target.checked)}
+              onChange={(e) => setDontShowAgain(e.target.checked)}
             />
           }
           label={
