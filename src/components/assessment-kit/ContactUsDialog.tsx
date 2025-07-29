@@ -111,6 +111,7 @@ const ContactUsDialog = ({
       {type !== "requestAnExpertReview" && (
         <InputFieldUC
           name="email"
+          type={"email"}
           label={t("user.yourEmailAddress", { lng })}
           required
           InputLabelProps={{ sx: getInputLabelSx(isRTL, isSameLang) }}

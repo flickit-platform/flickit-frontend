@@ -150,6 +150,9 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
         "& ::placeholder": { ...theme.typography.bodyMedium },
         background: pallet?.background,
         borderRadius: borderRadius,
+        '& .MuiOutlinedInput-input':{
+          textAlign: type === "email" ? "left" : "inherit",
+        },
         "& .MuiOutlinedInput-root": {
           "& ::placeholder": {
             ...theme.typography.bodyMedium,
