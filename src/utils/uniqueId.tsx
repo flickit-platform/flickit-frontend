@@ -11,8 +11,10 @@ export const getOrCreateVisitorId = () => {
   const key = "visitor_id";
   let id = localStorage.getItem(key);
   if (!id) {
-    id = [...Array(16)]
-      .map(() => Math.floor(Math.random() * 16).toString(16))
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    id = Array.from(array)
+      .map((b) => b.toString(16).padStart(2, "0"))
       .join("");
     localStorage.setItem(key, id);
   }
