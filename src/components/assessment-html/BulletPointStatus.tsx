@@ -26,7 +26,7 @@ const BulletPointStatus = (props: IBulletPointStatus) => {
   const colorCode = colorPallet[value - 1];
   return (
     <Grid container display="flex" alignItems="flex-start">
-      <Grid item xs={6} sm={5} md={3} display="flex" alignItems="flex-start">
+      <Grid item xs={6} sm={5} md={3.5} display="flex" alignItems="flex-start">
         <Typography
           variant="bodyMedium"
           fontWeight={400}
