@@ -115,6 +115,7 @@ const ContactUsDialog = ({
           label={t("user.yourEmailAddress", { lng })}
           required
           InputLabelProps={{ sx: getInputLabelSx(isRTL, isSameLang) }}
+          defaultValue={email}
         />
       )}
 

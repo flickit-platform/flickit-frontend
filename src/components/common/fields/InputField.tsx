@@ -2,7 +2,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
-import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
+import { ReactNode, useState, useRef, useEffect, ChangeEvent, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
@@ -29,6 +29,7 @@ interface IInputFieldUCProps extends Omit<OutlinedTextFieldProps, "variant"> {
   rtl?: boolean;
   error?: boolean;
   placeholder?: any;
+  defaultValue?: any;
 }
 
 const InputFieldUC = (props: IInputFieldUCProps) => {
@@ -51,6 +52,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     rtl,
     error,
     placeholder,
+    defaultValue,
     ...rest
   } = props;
 
@@ -62,6 +64,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   } = useFormContext();
 
   const [showPassword, toggleShowPassword] = usePasswordFieldAdornment();
+  const [inputValue,setInputValue] = useState("")
   const { hasError, errorMessage } = getFieldError(
     errors,
     name,
@@ -89,7 +92,9 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-
+    if(type === "email"){
+      setInputValue(value)
+    }
     if (setValueCount) {
       setValueCount(value);
     }
@@ -134,6 +139,10 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   if (minLength) validationRules.minLength = minLength;
   if (maxLength) validationRules.maxLength = maxLength;
 
+  const checkEmailDir: boolean = useMemo(() => {
+    return  type === "email" && defaultValue && (!inputValue || !languageDetector(inputValue))
+  }, [type, defaultValue, inputValue]);
+
   return (
     <TextField
       {...rest}
@@ -151,7 +160,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
         background: pallet?.background,
         borderRadius: borderRadius,
         '& .MuiOutlinedInput-input':{
-          textAlign: type === "email" ? "left" : "inherit",
+          textAlign: checkEmailDir ? "left" : "inherit",
         },
         "& .MuiOutlinedInput-root": {
           "& ::placeholder": {
