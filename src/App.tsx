@@ -11,6 +11,7 @@ import flagsmith from "flagsmith";
 import { useLocation } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import { getOrCreateVisitorId } from "./utils/uniqueId";
+import { getCookie } from "./utils/getCookie";
 
 function App() {
   const { pathname = "" } = useLocation();
@@ -19,6 +20,10 @@ function App() {
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
+    const lang = getCookie("NEXT_LOCALE");
+    if (lang) {
+      localStorage.setItem("lang", lang);
+    }
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
       keycloakService._kc.tokenParsed?.sub;
