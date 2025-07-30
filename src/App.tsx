@@ -24,6 +24,7 @@ function App() {
   useEffect(() => {
     if (lang) {
       localStorage.setItem("lang", lang);
+      document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
     }
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
