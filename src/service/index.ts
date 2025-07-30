@@ -37,6 +37,7 @@ export const createService = (
   axios.interceptors.request.use(async (req: any) => {
     const currentLocale = getCurrentLocale();
     req.headers["Accept-Language"] = currentLocale;
+    document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
 
     if (req.skipAuth && !keycloakService.getToken()) {
       return req;
