@@ -146,7 +146,7 @@ export const AssessmentTOC = ({
           borderRadius: 2,
           p: 2,
           overflowY: "auto",
-          maxHeight: "50vh",
+          maxHeight: isAuthenticatedUser && !isAdvanceMode ? "50vh" : "88vh",
           textAlign: rtlLanguage ? "right" : "left",
           ...styles.rtlStyle(rtlLanguage),
         }}
