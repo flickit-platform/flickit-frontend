@@ -61,25 +61,6 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     formState: { errors },
   } = useFormContext();
 
-  useEffect(() => {
-    if (!inputRef.current) return;
-  
-    const inputValue = inputRef.current.value;
-    const isFarsiText = languageDetector(inputValue);
-    const valueIsEmpty = inputValue.length === 0;
-  
-    inputRef.current.dir = valueIsEmpty
-      ? rtl ? "rtl" : "ltr"
-      : isFarsiText
-      ? "rtl"
-      : "ltr";
-  
-    inputRef.current.style.fontFamily = isFarsiText
-      ? farsiFontFamily
-      : primaryFontFamily;
-  }, []);
-  
-
   const [showPassword, toggleShowPassword] = usePasswordFieldAdornment();
   const { hasError, errorMessage } = getFieldError(
     errors,
@@ -97,14 +78,25 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   }, [isFocused]);
 
   useEffect(() => {
-    if (inputRef.current) {
-      const inputValue = inputRef.current.value;
-      const isFarsiText = languageDetector(inputValue);
-      inputRef.current.style.fontFamily = isFarsiText
-        ? farsiFontFamily
-        : primaryFontFamily;
+    const inputEl = inputRef.current;
+    if (!inputEl) return;
+
+    const inputValue = inputEl.value;
+    const isFarsiText = languageDetector(inputValue);
+    const valueIsEmpty = inputValue.length === 0;
+
+    let direction: "rtl" | "ltr";
+    if (valueIsEmpty) {
+      direction = rtl ? "rtl" : "ltr";
+    } else {
+      direction = isFarsiText ? "rtl" : "ltr";
     }
-  }, [inputRef.current?.value, isFocused]);
+    inputEl.dir = direction;
+
+    inputEl.style.fontFamily = isFarsiText
+      ? farsiFontFamily
+      : primaryFontFamily;
+  }, [isFocused]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
