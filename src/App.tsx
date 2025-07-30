@@ -8,19 +8,18 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import ErrorBoundary from "@common/errors/ErrorBoundry";
 import { useEffect } from "react";
 import flagsmith from "flagsmith";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import { getOrCreateVisitorId } from "./utils/uniqueId";
 import { getCookie } from "./utils/getCookie";
 
 function App() {
   const { pathname = "" } = useLocation();
-
+  const { lang } = useParams();
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
-    const lang = getCookie("NEXT_LOCALE");
     if (lang) {
       localStorage.setItem("lang", lang);
     }

@@ -14,6 +14,7 @@ export const setupAxiosDefaults = () => {
 
     const currentLocale = i18next.language ?? navigator.language ?? "en-US";
     req.headers["Accept-Language"] = currentLocale;
+    document.cookie = `NEXT_LOCALE=${currentLocale}; max-age=31536000; path=/`;
 
     if (!hasTenantInUrl) {
       req.headers["Authorization"] = `Bearer ${accessToken}`;
