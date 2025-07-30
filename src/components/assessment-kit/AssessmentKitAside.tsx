@@ -109,10 +109,9 @@ const AssessmentKitAside = (props: any) => {
 
   useEffect(() => {
     const openModalAuto = async () => {
+      const params = new URLSearchParams(window.location.hash.split("?")[1]);
+      const idParam = params?.get("id");
       if (window.location.hash.startsWith("#createAssessment")) {
-        const params = new URLSearchParams(window.location.hash.split("?")[1]);
-        const idParam = params.get("id");
-
         if (idParam && !dialogProps.open) {
           if (keycloakService.isLoggedIn()) {
             createOrOpenDialog({
@@ -121,6 +120,14 @@ const AssessmentKitAside = (props: any) => {
               languages,
               setLoading,
             });
+          } else {
+            keycloakService.doLogin();
+          }
+        }
+      } else if (window.location.hash.startsWith("#purchaseAssessment")) {
+        if (idParam && !dialogPurchaseProps.open) {
+          if (keycloakService.isLoggedIn()) {
+            dialogPurchaseProps.openDialog({});
           } else {
             keycloakService.doLogin();
           }
