@@ -477,34 +477,6 @@ const AssessmentHtmlContainer = () => {
                               >
                                 {assessment.title}
                               </Typography>
-
-                              {isQuickMode && (
-                                <Chip
-                                  icon={
-                                    <FaWandMagicSparkles
-                                      styles={{
-                                        color: "#6B7A90",
-                                      }}
-                                    />
-                                  }
-                                  label={t("common.AIAssissted", {
-                                    lng,
-                                  })}
-                                  sx={{
-                                    border: "1px solid #C6CDD7",
-                                    backgroundColor: "#ffffff",
-                                    color: "#6B7A90",
-                                    px: 1.5,
-                                    height: 32,
-                                    ".MuiChip-label": {
-                                      padding: 0,
-                                      marginInlineStart: 1,
-                                      ...styles.rtlStyle(rtlLanguage),
-                                    },
-                                    ...theme.typography.semiBoldMedium,
-                                  }}
-                                />
-                              )}
                             </Box>
 
                             {!isQuickMode && (
