@@ -29,7 +29,7 @@ interface IInputFieldUCProps extends Omit<OutlinedTextFieldProps, "variant"> {
   rtl?: boolean;
   error?: boolean;
   placeholder?: any;
-  defaultValue?: any;
+  defValue?: any;
 }
 
 const InputFieldUC = (props: IInputFieldUCProps) => {
@@ -52,7 +52,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     rtl,
     error,
     placeholder,
-    defaultValue,
+    defValue,
     ...rest
   } = props;
 
@@ -140,8 +140,8 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   if (maxLength) validationRules.maxLength = maxLength;
 
   const checkEmailDir: boolean = useMemo(() => {
-    return  type === "email" && defaultValue && (!inputValue || !languageDetector(inputValue))
-  }, [type, defaultValue, inputValue]);
+    return  type === "email" && defValue && (!inputValue || !languageDetector(inputValue))
+  }, [type, defValue, inputValue]);
 
   return (
     <TextField
