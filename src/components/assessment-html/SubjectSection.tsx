@@ -5,9 +5,7 @@ import GeneralLayout from "./layout/GeneralLayout";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
 import BulletPointStatus from "./BulletPointStatus";
-import AssessmentSubjectRadarChart from "@/components/common/charts/RadarChart";
 import BoxReportLayout from "./layout/BoxReportLayout";
-import AssessmentSubjectRadialChart from "@/components/common/charts/BarChart";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types/index";
@@ -75,12 +73,10 @@ const SubjectReport = ({
                   width="100%"
                 />
               </Grid>
-            </Grid>
-            <Grid container>
               <Grid
                 item
                 xs={12}
-                md={6}
+                md={12}
                 spacing={2}
                 sx={{ ...styles.centerCVH, gap: 2 }}
               >
@@ -95,30 +91,6 @@ const SubjectReport = ({
                     />
                   );
                 })}
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                spacing={2}
-                m={"auto"}
-                sx={{ height: "300px" }}
-              >
-                {item?.attributes?.length <= 2 ? (
-                  <AssessmentSubjectRadialChart
-                    data={item.attributes}
-                    maturityLevelsCount={maturityLevelCount ?? 5}
-                    loading={false}
-                  />
-                ) : (
-                  <AssessmentSubjectRadarChart
-                    data={item.attributes}
-                    maturityLevelsCount={maturityLevelCount ?? 5}
-                    loading={false}
-                    chartHeight={300}
-                    lng={lang.code.toLowerCase()}
-                  />
-                )}
               </Grid>
             </Grid>
             {item?.attributes?.map((attribute: any) => {
