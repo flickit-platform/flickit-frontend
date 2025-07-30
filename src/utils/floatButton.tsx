@@ -12,7 +12,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
 import { useLocation, useParams } from "react-router-dom";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
-import { useAuthContext } from "@providers/AuthProvider";
+import { authActions, useAuthContext } from "@providers/AuthProvider";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 
@@ -27,10 +27,10 @@ const SurveyBoxSection = (props: any) => {
     dispatch,
   } = useConfigContext();
   const {
-    userInfo: { email, showSurvey },
+    userInfo, dispatch : dispatchAuth
   } = useAuthContext();
   const { isAuthenticatedUser } = useAuthContext();
-
+  const { email, showSurvey } = userInfo
   const dontShowSurvey = useQuery({
     service: (args= { assessmentId }, config) =>
       service.common.dontShowSurvey( args, config),
@@ -41,6 +41,11 @@ const SurveyBoxSection = (props: any) => {
     setShowFeadback(false);
     if(dontShowAgain){
       dontShowSurvey.query()
+      dispatchAuth(authActions.setUserInfo({
+      ...userInfo,
+      showSurvey: false
+      })
+      )
     }
   };
   useEffect(() => {
