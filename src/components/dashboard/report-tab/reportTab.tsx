@@ -49,7 +49,7 @@ const ReportTab = () => {
     },
     {
       name: "prosAndCons",
-      title: "assessmentReport.strengthsAndAreasForImprovement",
+      title: "assessmentReport.maturityMapOfAssessedAttributes",
       placeholder: "assessmentReport.writeStrengthAndAreas",
     },
     {

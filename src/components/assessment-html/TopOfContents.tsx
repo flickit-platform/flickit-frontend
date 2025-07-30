@@ -111,9 +111,14 @@ export const AssessmentTOC = ({
       label: "common.summary",
       subItems: [],
       id: "summary",
+    },   
+    {
+      label: "assessmentReport.subjectsOverview",
+      subItems: [],
+      id: "subjectsOverview",
     },
     {
-      label: "assessmentReport.prosAndCons",
+      label: "assessmentReport.maturityMapOfAssessedAttributes",
       subItems: [],
       id: "strengthsAndWeaknesses",
     },
