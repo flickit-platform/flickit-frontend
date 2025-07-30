@@ -61,6 +61,25 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     formState: { errors },
   } = useFormContext();
 
+  useEffect(() => {
+    if (!inputRef.current) return;
+  
+    const inputValue = inputRef.current.value;
+    const isFarsiText = languageDetector(inputValue);
+    const valueIsEmpty = inputValue.length === 0;
+  
+    inputRef.current.dir = valueIsEmpty
+      ? rtl ? "rtl" : "ltr"
+      : isFarsiText
+      ? "rtl"
+      : "ltr";
+  
+    inputRef.current.style.fontFamily = isFarsiText
+      ? farsiFontFamily
+      : primaryFontFamily;
+  }, []);
+  
+
   const [showPassword, toggleShowPassword] = usePasswordFieldAdornment();
   const { hasError, errorMessage } = getFieldError(
     errors,
@@ -154,7 +173,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
           "& ::placeholder": {
             ...theme.typography.bodyMedium,
             textAlign: languageDetector(placeholder) ? "right" : "left",
-            fontFamily:"inherit"
+            fontFamily: "inherit",
           },
           "& fieldset": {
             borderColor: pallet?.borderColor,
