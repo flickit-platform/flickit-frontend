@@ -125,7 +125,7 @@ const AssessmentKitAside = (props: any) => {
           }
         }
       } else if (window.location.hash.startsWith("#purchaseAssessment")) {
-        if (idParam && !dialogPurchaseProps.open) {
+        if (!dialogPurchaseProps.open) {
           if (keycloakService.isLoggedIn()) {
             dialogPurchaseProps.openDialog({});
           } else {
