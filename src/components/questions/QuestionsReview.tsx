@@ -297,7 +297,7 @@ export const Review = () => {
               <Button
                 variant="outlined"
                 component={Link}
-                to="../../../questionnaires"
+                to="./../../../questionnaires"
               >
                 <Trans i18nKey="questions.allQuestionnaires" />
               </Button>
