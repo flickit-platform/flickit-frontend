@@ -8,27 +8,23 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import ErrorBoundary from "@common/errors/ErrorBoundry";
 import { useEffect } from "react";
 import flagsmith from "flagsmith";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import { getOrCreateVisitorId } from "./utils/uniqueId";
-import { getCookie } from "./utils/getCookie";
 
 function App() {
   const { pathname = "" } = useLocation();
-  const [searchParams] = useSearchParams();
-  const lang = searchParams.get("lang");
+  // const [searchParams] = useSearchParams();
+  // const lang = searchParams.get("lang");
 
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
-    if (lang) {
-      localStorage.setItem("lang", lang);
-      document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
-      const url = new URL(window.location.href);
-      url.searchParams.delete("lang");
-      window.location.replace(url.toString());
-    }
+    // if (lang) {
+    //   localStorage.setItem("lang", lang);
+    //   document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
+    // }
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
       keycloakService._kc.tokenParsed?.sub;
