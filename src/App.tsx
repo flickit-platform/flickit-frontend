@@ -25,6 +25,9 @@ function App() {
     if (lang) {
       localStorage.setItem("lang", lang);
       document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
+      const url = new URL(window.location.href);
+      url.searchParams.delete("lang");
+      window.location.replace(url.toString());
     }
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
