@@ -297,7 +297,7 @@ export const Review = () => {
               <Button
                 variant="outlined"
                 component={Link}
-                to="../../../questionnaires"
+                to="../../questionnaires"
               >
                 <Trans i18nKey="questions.allQuestionnaires" />
               </Button>
@@ -306,7 +306,7 @@ export const Review = () => {
               <Button
                 variant="contained"
                 component={Link}
-                to={`../../../questionnaires/${nextQuestionnaire}/1`}
+                to={`../../questionnaires/${nextQuestionnaire}/1`}
               >
                 <Trans i18nKey="questions.nextQuestionnaire" />
               </Button>
