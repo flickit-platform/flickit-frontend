@@ -77,7 +77,7 @@ const calculate = (inputNumber: any) => {
     case number < 80:
       id = 80;
       break;
-    case number <= 100:
+    case number < 100:
       id = 90;
       break;
     default:
