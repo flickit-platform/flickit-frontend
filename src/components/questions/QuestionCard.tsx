@@ -1215,6 +1215,7 @@ const AnswerTemplate = (props: {
             <FormControlLabel
               sx={{ color: "#fff" }}
               data-cy="automatic-submit-check"
+              id="not-applicable"
               control={
                 <Checkbox
                   checked={notApplicable}

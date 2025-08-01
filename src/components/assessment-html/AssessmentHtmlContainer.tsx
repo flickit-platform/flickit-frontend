@@ -456,18 +456,18 @@ const AssessmentHtmlContainer = () => {
                         }}
                       />
                       <Box padding={3} width="100%">
-                        <Grid container spacing={4} sx={{ mb: "40px" }}>
+                        <Grid container spacing={4}>
                           <Grid item xs={12} sm={12}>
                             {renderChips(graphicalReport, lng)}
                           </Grid>
                           <Grid item xs={12} sm={6} md={6} lg={8}>
                             <Box display="flex" gap={1.5}>
                               <Typography
+                                variant="headlineSmall"
                                 sx={{
                                   display: "flex",
                                   alignItems: "center",
                                   color: theme.palette.primary.main,
-                                  ...theme.typography.headlineSmall,
                                   fontWeight: "bold",
                                   ...styles.rtlStyle(
                                     languageDetector(assessment.title),
@@ -483,8 +483,8 @@ const AssessmentHtmlContainer = () => {
                                 <Typography
                                   component="div"
                                   id="introduction"
+                                  variant="titleSmall"
                                   sx={{
-                                    ...theme.typography.titleSmall,
                                     color: "#6C8093",
                                     mt: 2,
                                     ...styles.rtlStyle(rtlLanguage),
@@ -497,8 +497,8 @@ const AssessmentHtmlContainer = () => {
                                 <Typography
                                   component="div"
                                   textAlign="justify"
+                                  variant="bodyMedium"
                                   sx={{
-                                    ...theme.typography.bodyMedium,
                                     mt: 1,
                                     ...styles.rtlStyle(rtlLanguage),
                                   }}
@@ -516,8 +516,8 @@ const AssessmentHtmlContainer = () => {
                             <Typography
                               component="div"
                               id="summary"
+                              variant="titleSmall"
                               sx={{
-                                ...theme.typography.titleSmall,
                                 color: "#6C8093",
                                 mt: 2,
                                 ...styles.rtlStyle(rtlLanguage),
@@ -530,8 +530,8 @@ const AssessmentHtmlContainer = () => {
                             <Typography
                               component="div"
                               textAlign="justify"
+                              variant="bodyMedium"
                               sx={{
-                                ...theme.typography.bodyMedium,
                                 mt: 1,
                                 ...styles.rtlStyle(rtlLanguage),
                               }}
@@ -544,7 +544,7 @@ const AssessmentHtmlContainer = () => {
                               }}
                             ></Typography>
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
+                          <Grid item xs={12} sm={6} md={6} lg={4}>
                             <Gauge
                               level_value={assessment.maturityLevel?.value ?? 0}
                               maturity_level_status={
@@ -568,55 +568,99 @@ const AssessmentHtmlContainer = () => {
                             />
                           </Grid>
                         </Grid>
-                        <PieChart
-                          data={subjects?.map((subject: any) => ({
-                            name: subject.title,
-                            value: 1,
-                            color: getMaturityLevelColors(
-                              assessment.assessmentKit.maturityLevelCount,
-                            )[subject.maturityLevel.value - 1],
-                            label:
-                              subject.maturityLevel.title +
-                              ": " +
-                              subject.maturityLevel.value +
-                              "/" +
-                              assessment.assessmentKit.maturityLevelCount,
-                            bgColor: getMaturityLevelColors(
-                              assessment.assessmentKit.maturityLevelCount,
-                              true,
-                            )[subject.maturityLevel.value - 1],
-                          }))}
-                          language={lang.code.toLowerCase()}
-                        />
-                        <Typography
-                          component="div"
-                          id="strengthsAndWeaknesses"
-                          sx={{
-                            ...theme.typography.titleMedium,
-                            color: "#6C8093",
-                            my: 1,
-                            ...styles.rtlStyle(rtlLanguage),
-                          }}
-                        >
-                          {t("assessmentReport.prosAndCons", {
-                            lng,
-                          })}
-                        </Typography>
+                        {subjects.length > 1 && (
+                          <Box sx={{ ...styles.centerCV }} gap={2}>
+                            <Typography
+                              component="div"
+                              id="subjectsOverview"
+                              variant="titleMedium"
+                              sx={{
+                                color: "#6C8093",
+                                mt: 2,
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                            >
+                              {t("assessmentReport.subjectsOverview", {
+                                lng,
+                              })}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              variant="bodyMedium"
+                              textAlign="justify"
+                            >
+                              {t("assessmentReport.subjectGuidance", {
+                                lng,
+                              })}
+                            </Typography>
+                            <PieChart
+                              data={subjects?.map((subject: any) => ({
+                                name: subject.title,
+                                value: 1,
+                                color: getMaturityLevelColors(
+                                  assessment.assessmentKit.maturityLevelCount,
+                                )[subject.maturityLevel.value - 1],
+                                label:
+                                  subject.maturityLevel.title +
+                                  ": " +
+                                  subject.maturityLevel.value +
+                                  "/" +
+                                  assessment.assessmentKit.maturityLevelCount,
+                                bgColor: getMaturityLevelColors(
+                                  assessment.assessmentKit.maturityLevelCount,
+                                  true,
+                                )[subject.maturityLevel.value - 1],
+                              }))}
+                              language={lang.code.toLowerCase()}
+                            />
+                          </Box>
+                        )}
+                        <Box sx={{ ...styles.centerCV }} gap={2}>
+                          <Typography
+                            component="div"
+                            id="strengthsAndWeaknesses"
+                            variant="titleMedium"
+                            sx={{
+                              color: "#6C8093",
+                              my: 1,
+                              ...styles.rtlStyle(rtlLanguage),
+                            }}
+                          >
+                            {t(
+                              "assessmentReport.maturityMapOfAssessedAttributes",
+                              {
+                                lng,
+                              },
+                            )}
+                          </Typography>
+                          <Typography
+                            component="div"
+                            variant="bodyMedium"
+                            textAlign="justify"
+                            dangerouslySetInnerHTML={{
+                              __html: t(
+                                "assessmentReport.maturityMapOfAssessedAttributesGuidance",
+                                {
+                                  lng,
+                                },
+                              ),
+                            }}
+                          />
 
-                        <TreeMapChart
-                          data={subjects.flatMap((subject: any) =>
-                            subject.attributes.map((attribute: any) => ({
-                              name: attribute.title,
-                              description: attribute.description,
-                              id: attribute.id,
-                              count: attribute.weight,
-                              label: attribute.maturityLevel.value.toString(),
-                            })),
-                          )}
-                          levels={assessment.assessmentKit.maturityLevelCount}
-                          lang={lang}
-                        />
-
+                          <TreeMapChart
+                            data={subjects.flatMap((subject: any) =>
+                              subject.attributes.map((attribute: any) => ({
+                                name: attribute.title,
+                                description: attribute.description,
+                                id: attribute.id,
+                                count: attribute.weight,
+                                label: attribute.maturityLevel.value.toString(),
+                              })),
+                            )}
+                            levels={assessment.assessmentKit.maturityLevelCount}
+                            lang={lang}
+                          />
+                        </Box>
                         <Grid
                           xs={12}
                           md={12}
@@ -632,8 +676,8 @@ const AssessmentHtmlContainer = () => {
                           {!isQuickMode && (
                             <Grid item xs={12} md={10}>
                               <Typography
+                                variant="titleSmall"
                                 sx={{
-                                  ...theme.typography.titleSmall,
                                   color: "#2B333B",
                                   my: 1,
                                   ...styles.centerV,
@@ -652,8 +696,8 @@ const AssessmentHtmlContainer = () => {
                               <Typography
                                 component="div"
                                 textAlign="justify"
+                                variant="bodyMedium"
                                 sx={{
-                                  ...theme.typography.bodyMedium,
                                   fontWeight: "light",
                                   mt: 1,
                                   ...styles.rtlStyle(rtlLanguage),
@@ -671,8 +715,8 @@ const AssessmentHtmlContainer = () => {
 
                           <Grid item xs={12} md={!isQuickMode ? 2 : 12}>
                             <Typography
+                              variant="titleSmall"
                               sx={{
-                                ...theme.typography.titleSmall,
                                 color: "#2B333B",
                                 my: 1,
                                 ...styles.centerV,
@@ -720,8 +764,8 @@ const AssessmentHtmlContainer = () => {
 
                                     <Typography
                                       component="span"
+                                      variant="body2"
                                       sx={{
-                                        ...theme.typography.body2,
                                         color: "#2B333B",
                                         direction: rtlLanguage ? "rtl" : "ltr",
                                         fontFamily: rtlLanguage
@@ -760,9 +804,9 @@ const AssessmentHtmlContainer = () => {
                       <Typography
                         component="div"
                         id="recommendations"
+                        variant="headlineSmall"
                         sx={{
                           color: theme.palette.primary.main,
-                          ...theme.typography.headlineSmall,
                           fontWeight: "bold",
                           ...styles.rtlStyle(rtlLanguage),
                         }}
@@ -776,8 +820,8 @@ const AssessmentHtmlContainer = () => {
                           {" "}
                           <Typography
                             textAlign="justify"
+                            variant="bodyMedium"
                             sx={{
-                              ...theme.typography.bodyMedium,
                               my: 1,
                               ...styles.rtlStyle(rtlLanguage),
                             }}
@@ -797,8 +841,8 @@ const AssessmentHtmlContainer = () => {
                       ) : (
                         <Typography
                           textAlign="justify"
+                          variant="titleSmall"
                           sx={{
-                            ...theme.typography.titleSmall,
                             fontWeight: "light",
                             my: 1,
                             ...styles.rtlStyle(rtlLanguage),

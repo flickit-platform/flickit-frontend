@@ -47,8 +47,8 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
           wrapperStyle={{ outline: "none" }}
           content={
             <ChartTooltip
-              getPrimary={(d) => d.name}
-              getSecondary={(d) => d.description}
+              getPrimary={(d) => d.description}
+              getSecondary={(d) => ""}
             />
           }
         />
@@ -88,6 +88,8 @@ const CustomNode: any = (props: any) => {
       <rect
         x={x}
         y={y}
+        rx={8}
+        ry={8}
         width={width}
         height={height}
         fill={color}
