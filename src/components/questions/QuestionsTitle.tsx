@@ -19,6 +19,9 @@ import { QuestionsFilteringDropdown } from "../dashboard/dashboard-tab/questionn
 import IconButton from "@mui/material/IconButton";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
+import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
+import OutlinedProgressButton from "../common/buttons/OutlinedProgressButton";
+import { Skeleton } from "@mui/material";
 
 const itemNames = [
   {
@@ -54,6 +57,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   const { questionsInfo } = useQuestionContext();
   const [didMount, setDidMount] = useState(false);
   const initialQuestionsRef = useRef<any[]>([]);
+  const { assessmentTotalProgress } = useQuestionnaire();
 
   useEffect(() => {
     setDidMount(true);
@@ -113,6 +117,14 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
     }
   }, [originalItem, questionsInfo]);
 
+  useEffect(() => {
+    assessmentTotalProgress.query();
+  }, [questionIndex]);
+
+  const answersCount = assessmentTotalProgress?.data?.answersCount ?? 0;
+  const questionsCount = assessmentTotalProgress?.data?.questionsCount ?? 0;
+  const percent = questionsCount ? (answersCount / questionsCount) * 100 : 0;
+
   return (
     <Box>
       <Title
@@ -171,6 +183,26 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                 >
                   {questionnaire.title}
                 </Typography>{" "}
+                {assessmentTotalProgress.loading && percent == 0 ? (
+                  <Skeleton width={80} />
+                ) : (
+                  <OutlinedProgressButton
+                    label={`${answersCount} / ${questionsCount}`}
+                    progressPercent={percent}
+                    variant="outlined"
+                    fillColor="#D0E4FF"
+                    fullWidth={false}
+                    sx={{
+                      marginInlineStart: 1,
+                      mt: 0.5,
+                      p: 0,
+                      background: theme.palette.primary.light,
+                      cursor: "default",
+
+                    }}
+                    disabled
+                  />
+                )}
               </Box>
             </Box>
           </>
