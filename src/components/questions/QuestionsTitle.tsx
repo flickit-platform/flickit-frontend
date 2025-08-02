@@ -183,8 +183,8 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                 >
                   {questionnaire.title}
                 </Typography>{" "}
-                {assessmentTotalProgress.loading ? (
-                  <Skeleton width={80}/>
+                {assessmentTotalProgress.loading && percent == 0 ? (
+                  <Skeleton width={80} />
                 ) : (
                   <OutlinedProgressButton
                     label={`${answersCount} / ${questionsCount}`}
