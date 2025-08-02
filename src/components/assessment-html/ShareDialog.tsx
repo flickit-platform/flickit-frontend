@@ -1,4 +1,4 @@
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -10,8 +10,7 @@ import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
-import { useEffect, useState } from "react";
-import { styles } from "@/config/styles";
+import { useEffect, useMemo, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/stringAvatar";
 import { useQuery } from "@/utils/useQuery";
@@ -29,12 +28,12 @@ import {
   Check,
   Language,
 } from "@mui/icons-material";
-import { t } from "i18next";
 import { VISIBILITY } from "@/utils/enumType";
 import { IGraphicalReport, IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import showToast from "@/utils/toastError";
+import { styles } from "@styles";
 
 interface IDialogProps extends IGraphicalReport {
   open: boolean;
@@ -45,23 +44,6 @@ interface IDialogProps extends IGraphicalReport {
   permissions: IUserPermissions;
 }
 
-const accessOptions = {
-  [VISIBILITY.RESTRICTED]: {
-    title: t("assessmentReport.accessRestricted"),
-    titleMenu: t("assessmentReport.accessRestricted"),
-    description: t("assessmentReport.accessRestrictedDescription"),
-    icon: <LockOutlinedIcon />,
-    bgColor: "#E2E5E9",
-  },
-  [VISIBILITY.PUBLIC]: {
-    title: t("assessmentReport.accessAnyone"),
-    titleMenu: t("assessmentReport.accessAnyoneWithLink"),
-    description: t("assessmentReport.accessAnyoneDescription"),
-    icon: <Language />,
-    bgColor: "#D5E5F6",
-  },
-};
-
 export const ShareDialog = ({
   open,
   onClose,
@@ -69,6 +51,7 @@ export const ShareDialog = ({
   visibility,
   permissions,
   linkHash,
+  lang,
 }: IDialogProps) => {
   const { t } = useTranslation();
   const { assessmentId = "" } = useParams();
@@ -78,6 +61,28 @@ export const ShareDialog = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const methods = useForm();
   const { reset, handleSubmit } = methods;
+
+  const lng = lang?.code?.toLowerCase();
+
+  const accessOptions = useMemo(
+    () => ({
+      [VISIBILITY.RESTRICTED]: {
+        title: t("assessmentReport.accessRestricted", { lng }),
+        titleMenu: t("assessmentReport.accessRestricted", { lng }),
+        description: t("assessmentReport.accessRestrictedDescription", { lng }),
+        icon: <LockOutlinedIcon />,
+        bgColor: "#E2E5E9",
+      },
+      [VISIBILITY.PUBLIC]: {
+        title: t("assessmentReport.accessAnyone", { lng }),
+        titleMenu: t("assessmentReport.accessAnyoneWithLink", { lng }),
+        description: t("assessmentReport.accessAnyoneDescription", { lng }),
+        icon: <Language />,
+        bgColor: "#D5E5F6",
+      },
+    }),
+    [lng],
+  );
 
   const getBasePath = (path: string): string => {
     const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -169,10 +174,11 @@ export const ShareDialog = ({
       title={
         <Box sx={{ ...styles.centerV, gap: 1 }}>
           <Share />
-          <Trans i18nKey="assessmentReport.shareReport" />
+          {t("assessmentReport.shareReport", { lng })}
         </Box>
       }
       maxWidth="sm"
+      sx={{ ...styles.rtlStyle(lng === "fa") }}
     >
       {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
         <>
@@ -188,17 +194,21 @@ export const ShareDialog = ({
                   <InputFieldUC
                     name="email"
                     size="small"
-                    placeholder={
-                      t("assessmentReport.shareReportViaEmail") ?? ""
-                    }
+                    placeholder={t("assessmentReport.shareReportViaEmail", {
+                      lng,
+                    })}
                     fullWidth
                     required
                   />
                 </Grid>
                 <Grid item xs={0.5}></Grid>
                 <Grid item xs={1.8}>
-                  <LoadingButton variant="contained" type="submit">
-                    <Trans i18nKey="common.add" />
+                  <LoadingButton
+                    variant="contained"
+                    type="submit"
+                    sx={{ fontFamily: "inherit" }}
+                  >
+                    {t("common.add", { lng })}
                   </LoadingButton>
                 </Grid>
               </Grid>
@@ -206,8 +216,12 @@ export const ShareDialog = ({
           </FormProvider>
 
           <Box sx={{ mt: 3 }}>
-            <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
-              <Trans i18nKey="assessmentReport.peopleWithAccess" />
+            <Typography
+              variant="bodyMedium"
+              color="rgba(61, 77, 92, 0.5)"
+              fontFamily="inherit"
+            >
+              {t("assessmentReport.peopleWithAccess", { lng })}
             </Typography>
             <Divider sx={{ my: 1 }} />
           </Box>
@@ -251,7 +265,15 @@ export const ShareDialog = ({
                         ></Avatar>
                         {email}
                         {graphicalReportUsers.invitees.includes(member) && (
-                          <Chip label={t("common.invited")} size="small" />
+                          <Chip
+                            label={t("common.invited", { lng })}
+                            size="small"
+                            sx={{
+                              ".MuiChip-label": {
+                                fontFamily: "inherit",
+                              },
+                            }}
+                          />
                         )}
                       </Box>
                     );
@@ -264,14 +286,19 @@ export const ShareDialog = ({
       )}
 
       <Box sx={{ mt: 3 }}>
-        <Typography variant="bodyMedium" color="rgba(61, 77, 92, 0.5)">
-          <Trans i18nKey="assessmentReport.accessStatus" />
+        <Typography
+          variant="bodyMedium"
+          color="rgba(61, 77, 92, 0.5)"
+          fontFamily="inherit"
+        >
+          {t("assessmentReport.accessStatus", { lng })}
         </Typography>
         <Divider sx={{ mt: 1 }} />
       </Box>
       <Tooltip
         disableHoverListener={permissions.canManageVisibility}
-        title={<Trans i18nKey="notification.youDontHavePermission" />}
+        title={t("notification.youDontHavePermission", { lng })}
+        sx={{ fontFamily: "inherit" }}
       >
         <div>
           <Box
@@ -306,6 +333,7 @@ export const ShareDialog = ({
                   color: permissions.canManageVisibility ? "unset" : "#B0B0B0",
                 }}
                 variant="semiBoldMedium"
+                fontFamily="inherit"
               >
                 {current?.title}
                 {permissions.canManageVisibility && (
@@ -319,7 +347,11 @@ export const ShareDialog = ({
                 )}
               </Typography>
 
-              <Typography variant="bodySmall" color="#6C8093">
+              <Typography
+                variant="bodySmall"
+                color="#6C8093"
+                fontFamily="inherit"
+              >
                 {current?.description}
               </Typography>
             </Box>
@@ -345,7 +377,10 @@ export const ShareDialog = ({
                       gap: 2,
                     }}
                   >
-                    <Typography variant="bodyMedium">
+                    <Typography
+                      variant="bodyMedium"
+                      sx={{ ...styles.rtlStyle(lng === "fa") }}
+                    >
                       {accessOptions[key].titleMenu}
                     </Typography>
                     {isSelected && (
@@ -367,22 +402,35 @@ export const ShareDialog = ({
         hideCancelButton
       >
         <LoadingButton
-          startIcon={<LinkIcon fontSize="small" />}
+          startIcon={
+            <LinkIcon
+              fontSize="small"
+              sx={{
+                ...styles.iconDirectionStyle(lng),
+              }}
+            />
+          }
           onClick={() => handleCopyClick()}
           variant="outlined"
+          sx={{ fontFamily: "inherit" }}
         >
-          <Trans i18nKey="assessmentReport.copyReportLink" />
+          {t("assessmentReport.copyReportLink", { lng })}
         </LoadingButton>
 
-        <LoadingButton variant="contained" onClick={onClose} sx={{ mx: 1 }}>
-          <Trans i18nKey="common.done" />
+        <LoadingButton
+          variant="contained"
+          onClick={onClose}
+          sx={{ mx: 1, fontFamily: "inherit" }}
+        >
+          {t("common.done", { lng })}
         </LoadingButton>
       </CEDialogActions>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
-        message={t("common.linkCopied")}
+        message={t("common.linkCopied", { lng })}
+        sx={{ fontFamily: "inherit" }}
       />
     </CEDialog>
   );

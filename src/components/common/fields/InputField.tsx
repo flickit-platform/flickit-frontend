@@ -78,14 +78,25 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
   }, [isFocused]);
 
   useEffect(() => {
-    if (inputRef.current) {
-      const inputValue = inputRef.current.value;
-      const isFarsiText = languageDetector(inputValue);
-      inputRef.current.style.fontFamily = isFarsiText
-        ? farsiFontFamily
-        : primaryFontFamily;
+    const inputEl = inputRef.current;
+    if (!inputEl) return;
+
+    const inputValue = inputEl.value;
+    const isFarsiText = languageDetector(inputValue);
+    const valueIsEmpty = inputValue.length === 0;
+
+    let direction: "rtl" | "ltr";
+    if (valueIsEmpty) {
+      direction = rtl ? "rtl" : "ltr";
+    } else {
+      direction = isFarsiText ? "rtl" : "ltr";
     }
-  }, [inputRef.current?.value, isFocused]);
+    inputEl.dir = direction;
+
+    inputEl.style.fontFamily = isFarsiText
+      ? farsiFontFamily
+      : primaryFontFamily;
+  }, [isFocused]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -151,10 +162,15 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
         background: pallet?.background,
         borderRadius: borderRadius,
         "& .MuiOutlinedInput-root": {
-          "& ::placeholder": { ...theme.typography.bodyMedium, textAlign: languageDetector(placeholder) ? "right" : "left"},
+          "& ::placeholder": {
+            ...theme.typography.bodyMedium,
+            textAlign: languageDetector(placeholder) ? "right" : "left",
+            fontFamily: "inherit",
+          },
           "& fieldset": {
             borderColor: pallet?.borderColor,
             borderRadius: borderRadius,
+            textAlign: "initial",
           },
           "&:hover fieldset": {
             borderColor: pallet?.borderHover,

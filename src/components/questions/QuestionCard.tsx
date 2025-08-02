@@ -989,7 +989,7 @@ const AnswerTemplate = (props: {
     <>
       <Box
         display={"flex"}
-        justifyContent="flex-start"
+        justifyContent="space-around"
         mt={4}
         sx={{ direction: "rtl" }}
       >
@@ -1215,6 +1215,7 @@ const AnswerTemplate = (props: {
             <FormControlLabel
               sx={{ color: "#fff" }}
               data-cy="automatic-submit-check"
+              id="not-applicable"
               control={
                 <Checkbox
                   checked={notApplicable}

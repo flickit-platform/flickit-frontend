@@ -91,6 +91,7 @@ interface ICEDialogActionsProps extends PropsWithChildren<DialogActionsProps> {
   backType?: any;
   cancelLabel?: string | null;
   disablePrimaryButton?: boolean;
+  hasContinueBtn?: boolean;
 }
 
 export const CEDialogActions = (props: ICEDialogActionsProps) => {
@@ -112,6 +113,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
     submitAndViewButtonLabel,
     backType = "contained",
     disablePrimaryButton = false,
+    hasContinueBtn,
     children,
   } = props;
   const fullScreen = useScreenResize("sm");
@@ -126,12 +128,18 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
         gap: { xs: 4, sm: "unset" },
         marginTop: fullScreen ? "auto" : 3,
         marginLeft: 0,
+        fontFamily: "inherit",
       }}
     >
       <Grid container spacing={2} justifyContent="flex-end">
         {!hideCancelButton && (
           <Grid item>
-            <Button onClick={onClose} data-cy="cancel" data-testid="cancel">
+            <Button
+              onClick={onClose}
+              data-cy="cancel"
+              data-testid="cancel"
+              sx={{ fontFamily: "inherit" }}
+            >
               <Trans i18nKey={cancelLabel ?? ""} />
             </Button>
           </Grid>
@@ -152,9 +160,13 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               variant="contained"
               loading={loading}
               onClick={(e: any) => {
+                if(hasContinueBtn) {
+                  onClose()
+                }
                 e.preventDefault();
                 onSubmit?.(e)?.();
               }}
+              sx={{ fontFamily: "inherit" }}
               disabled={disablePrimaryButton}
             >
               <Trans i18nKey={submitButtonLabel as string} />
@@ -180,6 +192,26 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
                   i18nKey={`${submitButtonLabel} ${t("common.andView")}`}
                 />
               )}
+            </LoadingButton>
+          </Grid>
+        )}
+        {hasContinueBtn && (
+          <Grid item>
+            <LoadingButton
+              data-testid="submit-and-countinue"
+              type="submit"
+              variant="contained"
+              loading={loading}
+              data-cy="submit-and-countinue"
+              onClick={(e: any) => {
+                e.preventDefault();
+                onSubmit?.(e, true)();
+              }}
+              disabled={disablePrimaryButton}
+            >
+             <Trans
+               i18nKey={`${submitButtonLabel} ${t("common.andContinue")}`}
+             />
             </LoadingButton>
           </Grid>
         )}

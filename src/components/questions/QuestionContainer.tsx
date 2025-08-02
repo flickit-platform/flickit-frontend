@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -31,14 +31,14 @@ export const QuestionContainer = () => {
   return (
     <>
       {loaded && (
-        <Box overflow="hidden">
+        <Box overflow="hidden" width="100%">
           {questionsInfo.questions?.[realIndex - 1] && <QuestionsProgress />}
           {assessmentStatus === EAssessmentStatus.DONE ? (
             <Review />
           ) : (
-            <Box position="relative" sx={{ ...styles.centerVH }}>
+            <Box position="relative" sx={{ ...styles.centerVH }} width="100%">
               {questionsInfo.questions?.[realIndex - 1] ? (
-                <Box>
+                <Box width="100%">
                   <Box
                     display="flex"
                     flexDirection={"column"}
@@ -140,9 +140,7 @@ export const useQuestion = () => {
     hasAnyQuestion && realIndex < questionsInfo.total_number_of_questions;
   const hasPreviousQuestion = hasAnyQuestion && realIndex > 1;
   const container = useRef(null);
-  useEffect(() => {
-    console.log(questionsInfo);
-  }, [questionsInfo]);
+
   return {
     hasAnyQuestion,
     questionInfo,

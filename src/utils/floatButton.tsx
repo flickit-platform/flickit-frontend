@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import { theme } from "@config/theme";
@@ -10,22 +10,43 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Close } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
-import { useAuthContext } from "@providers/AuthProvider";
+import { authActions, useAuthContext } from "@providers/AuthProvider";
+import { useQuery } from "@utils/useQuery";
+import { useServiceContext } from "@providers/ServiceProvider";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(true);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const { service } = useServiceContext();
+  const { assessmentId } = useParams()
   const { pathname } = useLocation();
   const {
     config: { SurveyBox, appTitle },
     dispatch,
   } = useConfigContext();
   const {
-    userInfo: { email },
+    userInfo, dispatch : dispatchAuth
   } = useAuthContext();
+  const { isAuthenticatedUser } = useAuthContext();
+  const { email, showSurvey } = userInfo
+  const dontShowSurvey = useQuery({
+    service: (args= { assessmentId }, config) =>
+      service.common.dontShowSurvey( args, config),
+    runOnMount: false,
+  });
+
   const closeFeadbackBox = () => {
     setShowFeadback(false);
+    if(dontShowAgain){
+      dontShowSurvey.query()
+      dispatchAuth(authActions.setUserInfo({
+      ...userInfo,
+      showSurvey: false
+      })
+      )
+    }
   };
   useEffect(() => {
     if (pathname.includes("graphical-report")) {
@@ -39,6 +60,9 @@ const SurveyBoxSection = (props: any) => {
   const goToSurvey = () => {
     window.open(`https://formafzar.com/form/zzn90?email=${email}`, "_blank");
   };
+  const  showSurveyBox  = useMemo(() => {
+    return showSurvey && showFeedback && SurveyBox && isAuthenticatedUser
+  }, [showSurvey, showFeedback, SurveyBox, isAuthenticatedUser]);
 
   return (
     <Box
@@ -46,7 +70,7 @@ const SurveyBoxSection = (props: any) => {
         position: "fixed",
         right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
         bottom: { xs: 0, md: "55px" },
-        display: showFeedback && SurveyBox ? "flex" : "none",
+        display: showSurveyBox ? "flex" : "none",
       }}
     >
       <Box
@@ -107,14 +131,14 @@ const SurveyBoxSection = (props: any) => {
           data-cy="automatic-submit-check"
           control={
             <Checkbox
-              checked={showFeedback}
+              checked={dontShowAgain}
               sx={{
                 color: "#fff",
                 "&.Mui-checked": {
                   color: "#fff",
                 },
               }}
-              onChange={(e) => setShowFeadback(e.target.checked)}
+              onChange={(e) => setDontShowAgain(e.target.checked)}
             />
           }
           label={
