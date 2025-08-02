@@ -197,7 +197,10 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                       mt: 0.5,
                       p: 0,
                       background: theme.palette.primary.light,
+                      cursor: "default",
+
                     }}
+                    disabled
                   />
                 )}
               </Box>
