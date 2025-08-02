@@ -138,6 +138,7 @@ const ContactUsDialog = ({
           rows={4}
           required
           InputLabelProps={{ sx: getInputLabelSx(isRTL, isSameLang) }}
+          lng={lng}
         />
       </Box>
     </>

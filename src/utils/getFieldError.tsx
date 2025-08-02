@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { FieldErrorsImpl } from "react-hook-form";
 import { Trans } from "react-i18next";
 
@@ -34,11 +35,12 @@ const getFieldError = (
   name: string,
   minLength?: number,
   maxLength?: number,
+  lng?: string,
 ) => {
   const error = errors?.[name];
   const hasError = !!error?.type;
   const errorMessagesBaseOnErrorTypes: TErrorMessagesBaseOnErrorTypes = {
-    required: <Trans i18nKey="errors.requiredFieldError" />,
+    required: t("errors.requiredFieldError", { lng }) as any,
 
     minLength: (
       <Trans
