@@ -49,13 +49,13 @@ import showToast from "@utils/toastError";
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
-  deleteAssessment: TQueryFunction<any, TId>;
+  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
-  deleteAssessment,
+  setOpenDeleteDialog
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
@@ -175,7 +175,7 @@ const AssessmentCard = ({
       >
         {permissions.canManageSettings && (
           <Actions
-            deleteAssessment={deleteAssessment}
+            setOpenDeleteDialog={setOpenDeleteDialog}
             item={item}
             dialogProps={dialogProps}
             abortController={abortController}
@@ -485,23 +485,19 @@ const CardButton = ({
 
 // --- Actions ---
 const Actions = ({
-  deleteAssessment,
+   setOpenDeleteDialog,
   item,
   abortController,
 }: {
-  deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
+  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
 }) => {
   const navigate = useNavigate();
 
-  const deleteItem = async () => {
-    try {
-      await deleteAssessment(item.id);
-    } catch (e) {
-      showToast(e as ICustomError);
-    }
+  const deleteItem = () => {
+     setOpenDeleteDialog({status: true, id: item.id});
   };
 
   const addToCompare = () => {
