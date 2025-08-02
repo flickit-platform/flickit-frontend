@@ -371,12 +371,13 @@ const AssessmentKitSectionGeneralInfo = (
                   )}
                 </Box>
 
-                <OnHoverRichEditor
-                  data={about}
-                  title={<Trans i18nKey="common.what" />}
-                  infoQuery={fetchAssessmentKitInfoQuery.query}
-                  editable={editable}
-                />
+                {/*<OnHoverRichEditor*/}
+                {/*  data={about}*/}
+                {/*  title={<Trans i18nKey="common.what" />}*/}
+                {/*  infoQuery={fetchAssessmentKitInfoQuery.query}*/}
+                {/*  editable={editable}*/}
+                {/*/>*/}
+
                 <Box
                   my={1.5}
                   sx={{
