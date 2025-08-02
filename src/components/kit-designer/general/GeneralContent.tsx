@@ -21,6 +21,7 @@ import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@/utils/toastError";
+import { renderEditableFieldTest } from "@common/editableField";
 
 const generalFields = [
   { name: "title", label: "common.title", multiline: false, useRichEditor: false },
@@ -353,11 +354,26 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      {renderEditableField(
-                        name as any,
+                      {/*{renderEditableField(*/}
+                      {/*  name as any,*/}
+                      {/*  data,*/}
+                      {/*  multiline,*/}
+                      {/*  useRichEditor,*/}
+                      {/*)}*/}
+
+
+                      {renderEditableFieldTest(
+                        name,
                         data,
                         multiline,
                         useRichEditor,
+                        editableFields,
+                        langCode,
+                        updatedValues,
+                        setUpdatedValues,
+                        showTranslations,
+                        toggleTranslation,
+                        handleFieldEdit,
                       )}
                     </Box>
                   </Box>
