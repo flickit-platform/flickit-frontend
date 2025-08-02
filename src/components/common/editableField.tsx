@@ -5,9 +5,10 @@ import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+type fieldName = "title" | "summary" | "about" | "goal" | "context" | "who" | "when" | "what"
 
-export const renderEditableFieldTest : any = (
-  field: "title" | "summary" | "about" | "goal" | "context",
+export const renderEditableField : any = (
+  field: fieldName,
   data: any,
   multiline = false,
   useRichEditor = false,
@@ -18,10 +19,9 @@ export const renderEditableFieldTest : any = (
   showTranslations: any,
   toggleTranslation: any,
   handleFieldEdit: any,
-
 )=>{
   const { updateTranslation } = useTranslationUpdater(langCode);
-  const test = useCallback(() => {
+  const renderField = useCallback(() => {
       const isEditing = editableFields.has(field);
       const isMetadataField = field === "goal" || field === "context";
 
@@ -93,5 +93,5 @@ export const renderEditableFieldTest : any = (
       handleFieldEdit,
     ],
   )
-  return test()
+  return renderField()
 };

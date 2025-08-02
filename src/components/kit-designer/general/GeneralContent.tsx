@@ -21,7 +21,7 @@ import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@/utils/toastError";
-import { renderEditableFieldTest } from "@common/editableField";
+import { renderEditableField } from "@common/editableField";
 
 const generalFields = [
   { name: "title", label: "common.title", multiline: false, useRichEditor: false },
@@ -207,85 +207,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     [],
   );
 
-  const renderEditableField = useCallback(
-    (
-      field: "title" | "summary" | "about" | "goal" | "context",
-      data: any,
-      multiline = false,
-      useRichEditor = false,
-    ) => {
-      const isEditing = editableFields.has(field);
-      const isMetadataField = field === "goal" || field === "context";
-
-      const fieldValue = isMetadataField
-        ? (data.metadata?.[field] ?? "")
-        : (data[field] ?? "");
-
-      let translationFieldValue = "";
-
-      if (langCode) {
-        if (isMetadataField) {
-          translationFieldValue =
-            data?.translations?.[langCode]?.metadata?.[field] ?? "";
-        } else {
-          translationFieldValue = data?.translations?.[langCode]?.[field] ?? "";
-        }
-      }
-
-      return isEditing ? (
-        <Box sx={{ flexGrow: 1 }}>
-          <MultiLangTextField
-            name={field}
-            value={updatedValues[field] ?? ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUpdatedValues((prev: any) => ({
-                ...prev,
-                [field]: e.target.value,
-              }))
-            }
-            label={""}
-            translationValue={
-              langCode
-                ? (updatedValues.translations?.[langCode]?.[field] ?? "")
-                : ""
-            }
-            onTranslationChange={updateTranslation(field, setUpdatedValues)}
-            showTranslation={showTranslations[field]}
-            setShowTranslation={() => toggleTranslation(field)}
-            fullWidth
-            multiline={multiline}
-            minRows={multiline ? 3 : undefined}
-            useRichEditor={useRichEditor}
-          />
-        </Box>
-      ) : (
-        <>
-          <TitleWithTranslation
-            title={fieldValue ?? ""}
-            translation={translationFieldValue}
-            variant="semiBoldMedium"
-            multiline
-          />
-          <IconButton
-            onClick={() => handleFieldEdit(field)}
-            sx={{ width: 40, height: 40, borderRadius: "50%", p: 0 }}
-          >
-            <EditIcon />
-          </IconButton>
-        </>
-      );
-    },
-    [
-      editableFields,
-      updatedValues,
-      showTranslations,
-      langCode,
-      updateTranslation,
-      toggleTranslation,
-      handleFieldEdit,
-    ],
-  );
-
   const skeletonItems = useMemo(
     () =>
       [1, 2, 3].map((number) => (
@@ -354,15 +275,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      {/*{renderEditableField(*/}
-                      {/*  name as any,*/}
-                      {/*  data,*/}
-                      {/*  multiline,*/}
-                      {/*  useRichEditor,*/}
-                      {/*)}*/}
-
-
-                      {renderEditableFieldTest(
+                      {renderEditableField(
                         name,
                         data,
                         multiline,
