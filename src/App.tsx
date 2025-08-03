@@ -14,10 +14,23 @@ import { getOrCreateVisitorId } from "./utils/uniqueId";
 import i18next from "i18next";
 import { useLangDispatch } from "./providers/LangProvider";
 
+function getLangFromHash() {
+  const hash = window.location.hash;
+  const paramsString = hash.split("?")[1];
+  if (!paramsString) return null;
+  const params = new URLSearchParams(paramsString);
+  return params.get("lang");
+}
+
 function App() {
   const { pathname = "" } = useLocation();
   const [searchParams] = useSearchParams();
-  const lang = searchParams.get("lang");
+  let lang = searchParams.get("lang");
+  if (!lang && window.location.hash) {
+    const hashLang = getLangFromHash();
+    if (hashLang) lang = hashLang;
+  }
+
   const dispatch = useLangDispatch();
 
   const { error, loading } = useGetSignedInUserInfo({
@@ -28,13 +41,7 @@ function App() {
       localStorage.setItem("lang", lang);
       document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
       i18next.changeLanguage(lang);
-      const url = new URL(window.location.href);
-      url.searchParams.delete("lang");
-      window.history.replaceState(
-        {},
-        document.title,
-        url.pathname + url.search,
-      );
+
       dispatch({ type: "SET_LANG", payload: lang });
     }
     const customId =
