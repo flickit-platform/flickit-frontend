@@ -11,7 +11,7 @@ const LanguageSelector = () => {
 
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
-    dispatch({ type: "SET_LANG", payload: language });
+    window.location.reload();
   };
 
   return (
