@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
@@ -13,6 +12,7 @@ import uniqueId from "@/utils/uniqueId";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import useScreenResize from "@utils/useScreenResize";
+import { useTheme } from "@mui/material";
 
 interface IStepperSection {
   setActiveStep: (value: React.SetStateAction<number>) => void;
@@ -31,15 +31,25 @@ const StepperSection = (props: IStepperSection) => {
   const { setActiveStep, activeStep, stepData } = props;
 
   return (
-    <Box sx={{ ...styles.boxStyle, display: "flex", flexDirection: {xs: "row", md: "column"} }}>
+    <Box
+      sx={{
+        ...styles.boxStyle,
+        display: "flex",
+        flexDirection: { xs: "row", md: "column" },
+      }}
+    >
       <Stepper
-        sx={{ width: {md: "80%"}, mx: "auto", mt: {xs: 8, md: "unset"}, mb: {xs: 8, md : "30px"},
+        sx={{
+          width: { md: "80%" },
+          mx: "auto",
+          mt: { xs: 8, md: "unset" },
+          mb: { xs: 8, md: "30px" },
           "& .MuiStepConnector-line": {
-            height: "100%"
-          }
+            height: "100%",
+          },
         }}
         activeStep={activeStep}
-        orientation={useScreenResize("md") ? "vertical" : "horizontal" }
+        orientation={useScreenResize("md") ? "vertical" : "horizontal"}
       >
         {stepData.map((label: any) => (
           <Step key={uniqueId()}>
@@ -79,6 +89,8 @@ const StepperSection = (props: IStepperSection) => {
 };
 
 const StepBox = (props: IStepBox) => {
+  const theme = useTheme();
+
   const { category, metrics, setActiveStep, activeStep } = props;
   const [localStep, setLocalStep] = React.useState(activeStep);
 
@@ -173,11 +185,13 @@ const StepBox = (props: IStepBox) => {
       <Chip
         label={
           <Box sx={{ ...styles.centerVH, gap: 1 }}>
-            <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Typography variant="labelMedium">
               {`  ${calcOfIssues()}  `}
             </Typography>
-            <Typography sx={{ ...theme.typography.labelSmall }}>
-              {t((calcOfIssues() ?? 0) > 1 ? "common.issues" : "common.issue").toUpperCase()}
+            <Typography variant="labelSmall">
+              {t(
+                (calcOfIssues() ?? 0) > 1 ? "common.issues" : "common.issue",
+              ).toUpperCase()}
             </Typography>
           </Box>
         }
@@ -323,9 +337,7 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Typography sx={{ ...theme.typography.headlineLarge }}>
-            {total}
-          </Typography>
+          <Typography variant="headlineLarge">{total}</Typography>
           {(completed || hasIssues) && (
             <Box sx={{ ...styles.centerCVH, gap: 1 }}>
               {completed && completedTag}
@@ -407,8 +419,8 @@ const StepBox = (props: IStepBox) => {
       }}
     >
       <Typography
+        variant="semiBoldLarge"
         sx={{
-          ...theme.typography.semiBoldLarge,
           color: "#6C8093",
           textAlign: "center",
           mb: "36px",

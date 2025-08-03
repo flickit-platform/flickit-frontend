@@ -19,9 +19,10 @@ import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import { theme } from "@/config/theme";
+import { useTheme } from "@mui/material";
 
 const SpaceSettingContainer = () => {
+  const theme = useTheme();
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
 

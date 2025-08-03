@@ -9,7 +9,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Divider from "@mui/material/Divider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@utils/useQuery";
 import { useParams } from "react-router-dom";
@@ -31,6 +31,7 @@ import AttributeInsight from "./AttributeInsight";
 import i18next, { t } from "i18next";
 import ScoreImpactBarChart from "./ScoreImpactBarChart";
 import DropDownContent from "./DropDownContent";
+import { useTheme } from "@mui/material";
 
 const SubjectAttributeCard = (props: any) => {
   const {
@@ -177,6 +178,8 @@ const SubjectAttributeCard = (props: any) => {
       order: sortOrder,
     });
   };
+  const theme = useTheme();
+
 
   return (
     <Box
@@ -237,8 +240,8 @@ const SubjectAttributeCard = (props: any) => {
             <Grid item xs={12} sm={9} sx={{ p: 4 }}>
               <Title>
                 <Typography
+                  variant="headlineSmall"
                   sx={{
-                    ...theme.typography.headlineSmall,
                     textTransform: "none",
                     fontFamily: languageDetector(title)
                       ? farsiFontFamily
@@ -248,8 +251,8 @@ const SubjectAttributeCard = (props: any) => {
                   {title}
                 </Typography>
                 <Typography
+                  variant="bodyMedium"
                   sx={{
-                    ...theme.typography.bodyMedium,
                     textTransform: "none",
                   }}
                   marginX={2}
@@ -260,8 +263,8 @@ const SubjectAttributeCard = (props: any) => {
                 </Typography>
               </Title>
               <Typography
+                variant="bodyMedium"
                 sx={{
-                  ...theme.typography.bodyMedium,
                   color: "#6C8093",
                   mt: 1,
                   fontFamily: languageDetector(description)
@@ -523,6 +526,8 @@ export const AttributeStatusBarContainer = (props: any) => {
   const { status, ml, cl, mn, document } = props;
   const colorPallet = getMaturityLevelColors(mn);
   const statusColor = colorPallet[ml - 1];
+  const theme = useTheme();
+
   return (
     <Box
       display={"flex"}
@@ -563,6 +568,7 @@ export const AttributeStatusBarContainer = (props: any) => {
 };
 
 export const AttributeStatusBar = (props: any) => {
+  const theme = useTheme();
   const { ml, cl, isMl, mn } = props;
   const width = isMl
     ? ml
@@ -610,7 +616,9 @@ export const AttributeStatusBar = (props: any) => {
         textTransform="uppercase"
         variant="h6"
       >
-        <Trans i18nKey={isMl ? "common.maturityLevel" : "common.confidenceLevel"} />
+        <Trans
+          i18nKey={isMl ? "common.maturityLevel" : "common.confidenceLevel"}
+        />
       </Typography>
       <Typography
         sx={{
@@ -632,6 +640,8 @@ export const MaturityLevelDetailsBar = (props: any) => {
   const width = `${score ?? 100}%`;
   const bg_color = is_passed ? "#1769aa" : "#545252";
   const color = is_passed ? "#d1e6f8" : "#808080";
+  const theme = useTheme();
+
   return (
     <Box
       height={"38px"}

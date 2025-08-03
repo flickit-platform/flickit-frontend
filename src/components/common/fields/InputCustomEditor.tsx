@@ -1,12 +1,11 @@
-import React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import { theme } from "@config/theme";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 const InputCustomEditor = (props: any) => {
   const {
@@ -18,6 +17,7 @@ const InputCustomEditor = (props: any) => {
     handleDone,
     handleCancel,
   } = props;
+  const theme = useTheme();
 
   const isRTL = languageDetector(value);
 

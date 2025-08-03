@@ -8,23 +8,35 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import ErrorBoundary from "@common/errors/ErrorBoundry";
 import { useEffect } from "react";
 import flagsmith from "flagsmith";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import { getOrCreateVisitorId } from "./utils/uniqueId";
+import i18next from "i18next";
+import { useLangDispatch } from "./providers/LangProvider";
 
 function App() {
   const { pathname = "" } = useLocation();
-  // const [searchParams] = useSearchParams();
-  // const lang = searchParams.get("lang");
+  const [searchParams] = useSearchParams();
+  const lang = searchParams.get("lang");
+  const dispatch = useLangDispatch();
 
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
-    // if (lang) {
-    //   localStorage.setItem("lang", lang);
-    //   document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
-    // }
+    if (lang) {
+      localStorage.setItem("lang", lang);
+      document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
+      i18next.changeLanguage(lang);
+      const url = new URL(window.location.href);
+      url.searchParams.delete("lang");
+      window.history.replaceState(
+        {},
+        document.title,
+        url.pathname + url.search,
+      );
+      dispatch({ type: "SET_LANG", payload: lang });
+    }
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
       keycloakService._kc.tokenParsed?.sub;

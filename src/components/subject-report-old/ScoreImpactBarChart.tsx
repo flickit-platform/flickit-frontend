@@ -1,4 +1,4 @@
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from "recharts";
 import { styles } from "@styles";
+import { useTheme } from "@mui/material";
 
 const CustomTooltip = ({
   active,
@@ -80,19 +81,23 @@ const CustomTooltip = ({
   );
 };
 
-const legendFormatter = (value: string, language: string) => (
-  <span
-    style={{
-      ...theme.typography.labelSmall,
-      fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
-      marginInline: 2,
-    }}
-  >
-    {value === "uv"
-      ? t("subject.gainedScore", { lng: language })
-      : t("subject.missedScore", { lng: language })}
-  </span>
-);
+const legendFormatter = (value: string, language: string) => {
+  const theme = useTheme();
+
+  return (
+    <span
+      style={{
+        ...theme.typography.labelSmall,
+        fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
+        marginInline: 2,
+      }}
+    >
+      {value === "uv"
+        ? t("subject.gainedScore", { lng: language })
+        : t("subject.missedScore", { lng: language })}
+    </span>
+  );
+};
 
 interface Measure {
   title: string;

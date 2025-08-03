@@ -8,7 +8,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -17,7 +17,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import Button from "@mui/material/Button";
-import { alpha } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 import Add from "@mui/icons-material/Add";
 import EmptyStateOptions from "@components/kit-designer/answerRange/options/emptyStateOptions";
 import Divider from "@mui/material/Divider";
@@ -217,6 +217,9 @@ const ListOfItems = ({
       id: null,
     });
   };
+
+  const theme = useTheme();
+
   return (
     <>
       {items?.map((item: any, index: number) => (
@@ -332,7 +335,9 @@ const ListOfItems = ({
                     )}
                     <Box sx={{ width: "60%", px: 3 }}>
                       <Chip
-                        label={t("common.options") + " " + item.answerOptions.length}
+                        label={
+                          t("common.options") + " " + item.answerOptions.length
+                        }
                         size="small"
                         sx={{
                           backgroundColor: "#EAF2FB",

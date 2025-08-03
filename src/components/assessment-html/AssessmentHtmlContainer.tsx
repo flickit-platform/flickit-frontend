@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
 import AdviceItemsAccordion from "../dashboard/advice-tab/advice-items/AdviceItemsAccordions";
@@ -42,7 +42,7 @@ import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
 import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
 import ReplayIcon from "@mui/icons-material/Replay";
-import { Button } from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
@@ -58,6 +58,7 @@ const getBasePath = (path: string): string => {
 };
 
 const AssessmentHtmlContainer = () => {
+  const theme = useTheme()
   const { calculate, calculateConfidence } = useCalculate();
   const { isAuthenticatedUser } = useAuthContext();
 

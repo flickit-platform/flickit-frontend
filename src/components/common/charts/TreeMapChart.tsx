@@ -2,9 +2,9 @@ import React from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
+import { useTheme } from "@mui/material";
 
 interface TreeMapNode {
   name: string;
@@ -58,6 +58,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
 };
 
 const CustomNode: any = (props: any) => {
+  const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { x, y, width, height, name, color, label, levels, lang } = props;

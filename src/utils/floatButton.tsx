@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { theme } from "@config/theme";
 import ContactSupport from "@assets/svg/ContactSupport.svg";
 import polygon from "@assets/svg/dialogPolygon.svg";
 import Typography from "@mui/material/Typography";
@@ -15,6 +14,7 @@ import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
+import { useTheme } from "@mui/material";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(true);
@@ -36,6 +36,8 @@ const SurveyBoxSection = (props: any) => {
       service.common.dontShowSurvey( args, config),
     runOnMount: false,
   });
+
+  const theme = useTheme();
 
   const closeFeadbackBox = () => {
     setShowFeadback(false);
@@ -161,6 +163,7 @@ const SurveyBoxSection = (props: any) => {
 
 const FloatButton = (props: any) => {
   const { dialogProps } = props;
+  const theme = useTheme();
 
   return (
     <>

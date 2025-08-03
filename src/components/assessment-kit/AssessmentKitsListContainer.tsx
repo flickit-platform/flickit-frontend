@@ -13,7 +13,6 @@ import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import { Trans, useTranslation } from "react-i18next";
-import { theme } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
@@ -25,8 +24,10 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import Chip from "@mui/material/Chip";
 import { IMapper } from "@/types/index";
 import keycloakService from "@/service/keycloakService";
+import { useTheme } from "@mui/material";
 
 const AssessmentKitsListContainer = () => {
+  const theme = useTheme();
   const { service } = useServiceContext();
   const [value, setValue] = useState("public");
   const { i18n } = useTranslation();

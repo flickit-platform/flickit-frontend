@@ -1,10 +1,8 @@
-import { theme } from "@/config/theme";
-
 const languageDetector = (text?: string | null) => {
   const farsiChars = new Set("ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی");
 
   if (!text || text === undefined) {
-    if (theme.direction === "rtl") {
+    if (document.body.style.direction === "rtl") {
       return true;
     } else {
       return false;

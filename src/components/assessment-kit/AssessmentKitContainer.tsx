@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
@@ -26,6 +26,7 @@ import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
+import { useTheme } from "@mui/material";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 
@@ -189,8 +190,9 @@ const AssessmentKitBanner = (props: any) => {
     id: expertGroupId,
     pictureLink,
   } = props;
-
+  const theme = useTheme();
   const navigate = useNavigate();
+  
   return (
     <Box
       sx={{

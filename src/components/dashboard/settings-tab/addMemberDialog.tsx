@@ -21,9 +21,9 @@ import AutocompleteAsyncField, {
 import LoadingButton from "@mui/lab/LoadingButton";
 import useScreenResize from "@/utils/useScreenResize";
 import Settings from "@mui/icons-material/Settings";
-import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
+import { useTheme } from "@mui/material";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -217,6 +217,7 @@ const AddMemberDialog = (props: {
     };
   }, []);
   const fullScreen = useScreenResize("sm");
+  const theme = useTheme();
 
   return (
     <CEDialog

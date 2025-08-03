@@ -8,8 +8,8 @@ import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
 import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
-import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -30,7 +30,10 @@ const ExpertGroupConfirmInvitationContainer = () => {
 
   const declineInvitationQueryData = useQuery({
     service: (args, config) =>
-      service.expertGroups.member.declineInvitation(args ?? { expertGroupId }, config),
+      service.expertGroups.member.declineInvitation(
+        args ?? { expertGroupId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -40,7 +43,9 @@ const ExpertGroupConfirmInvitationContainer = () => {
       navigate(`/user/expert-groups/${expertGroupId}`, {
         replace: true,
       });
-      showToast(<Trans i18nKey="expertGroups.sueccessJoinToExpertGroup"/>, { variant: "success" });
+      showToast(<Trans i18nKey="expertGroups.sueccessJoinToExpertGroup" />, {
+        variant: "success",
+      });
     } catch (e) {
       const err = e as ICustomError;
       if (err?.response?.data?.code === "ALREADY_EXISTS") {
@@ -62,6 +67,8 @@ const ExpertGroupConfirmInvitationContainer = () => {
       showToast(err);
     }
   };
+
+  const theme = useTheme();
 
   return (
     <QueryData

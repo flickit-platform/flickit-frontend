@@ -11,7 +11,6 @@ import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import { useNavigate } from "react-router-dom";
-import { theme } from "@/config/theme";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -25,6 +24,7 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const PremiumBox = [
   {
@@ -165,7 +165,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
         <Trans i18nKey="spaces.selectYourSpaceType" />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
@@ -209,7 +209,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
         <Trans i18nKey="spaces.setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
@@ -333,6 +333,7 @@ const BoxType = ({
       setSelectedType("PREMIUM");
     }
   }, []);
+  const theme = useTheme();
 
   const isSelected = selectedType === type;
   const isPremium = type === "PREMIUM";
@@ -370,8 +371,8 @@ const BoxType = ({
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
+            variant="semiBoldMedium"
             sx={{
-              ...theme.typography.semiBoldMedium,
               WebkitBackgroundClip: isPremium ? "text" : undefined,
               WebkitTextFillColor: isPremium ? "transparent" : undefined,
               backgroundImage: isPremium
@@ -384,8 +385,8 @@ const BoxType = ({
           </Typography>
         </Box>
         <Typography
+          variant="labelSmall"
           sx={{
-            ...theme.typography.labelSmall,
             color: "#6C8093",
             mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
@@ -408,8 +409,8 @@ const BoxType = ({
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography
+              variant="labelSmall"
               sx={{
-                ...theme.typography.labelSmall,
                 WebkitBackgroundClip: isPremium ? "text" : undefined,
                 WebkitTextFillColor: isPremium ? "transparent" : undefined,
                 backgroundImage: isPremium
@@ -421,8 +422,8 @@ const BoxType = ({
               <Trans i18nKey={text} />
               {!allowCreateBasic && isBasic && index === 1 && (
                 <Typography
+                  variant="labelSmall"
                   sx={{
-                    ...theme.typography.labelSmall,
                     color: theme.palette.error.main,
                     display: "inline-block",
                   }}
@@ -449,7 +450,7 @@ const BoxType = ({
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
-          <Typography sx={{ ...theme.typography.labelSmall }}>
+          <Typography variant="labelSmall">
             <Trans i18nKey="spaces.spacePremiumInfo" />
           </Typography>
         </Box>

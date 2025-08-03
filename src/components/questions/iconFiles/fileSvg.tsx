@@ -1,4 +1,4 @@
-import { theme } from "@/config/theme";
+import { useTheme } from "@mui/material";
 
 export default function FileSvg({
   mainColor,
@@ -11,6 +11,8 @@ export default function FileSvg({
   setExpandedDeleteAttachmentDialog,
   item,
 }: any) {
+  const theme = useTheme();
+
   return (
     <div style={{ position: "relative" }}>
       <svg

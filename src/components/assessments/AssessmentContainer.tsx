@@ -20,7 +20,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentTitle from "./AssessmentTitle";
-import { theme } from "@/config/theme";
 import PermissionControl from "../common/PermissionControl";
 import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
@@ -31,8 +30,10 @@ import showToast from "@utils/toastError";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 import { t } from "i18next";
 import { TId } from "@/types";
+import { useTheme } from "@mui/material";
 
 const AssessmentContainer = () => {
+  const theme = useTheme()
   const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();

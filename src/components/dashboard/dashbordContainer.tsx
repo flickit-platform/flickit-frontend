@@ -11,10 +11,10 @@ import { ICustomError, PathInfo } from "@/types/index";
 import { Link, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import { t } from "i18next";
-import { IconButton } from "@mui/material";
+import { IconButton, useTheme } from "@mui/material";
 import { ArrowForward, EditOutlined } from "@mui/icons-material";
 import {
   assessmentActions,
@@ -96,6 +96,7 @@ const DashbordContainer: React.FC = () => {
     setEditedValue(title);
     setIsEditing(false);
   };
+  const theme = useTheme();
 
   return (
     <QueryBatchData

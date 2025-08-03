@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import { theme } from "@config/theme";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
@@ -13,6 +12,7 @@ import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import keycloakService from "@/service/keycloakService";
+import { useTheme } from "@mui/material";
 
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
 const LandingPage =
@@ -22,6 +22,7 @@ const LandingPage =
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
+  const theme = useTheme();
 
   const handleButtonClick = (e: any, name: string) => {
     keycloakService.doLogin();

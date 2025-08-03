@@ -6,6 +6,7 @@ import {
   Divider,
   Switch,
   DialogProps,
+  useTheme,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -28,7 +29,6 @@ import AutocompleteAsyncField, {
 import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { theme } from "@/config/theme";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import showToast from "@/utils/toastError";
 
@@ -192,6 +192,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
      (!!currentValues.advisable && currentValues.advisable) !== (question.advisable ?? false)
     );
   };
+  const theme = useTheme();
 
   return (
     <CEDialog
