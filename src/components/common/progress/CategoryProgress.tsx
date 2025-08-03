@@ -22,7 +22,7 @@ const progressToColorMap: Record<number, LinearProgressProps["color"]> = {
 };
 
 const progressToColorMapColor: Record<number, string> = {
-  0: theme.palette.error.main,
+  0: "#8A0F24",
   100: "#2e7d32",
 };
 
@@ -45,14 +45,18 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
         />
       </Box>
       <Box pl={is_farsi ? 0 : "8px"} pr={is_farsi ? "8px" : 0} mr="-2px">
-          <Typography
-            color={progressToColorMapColor[progress] ?? "#1976d2"}
-            sx={{
-              ...theme.typography.semiBoldSmall,
-              position:"relative", [is_farsi ? "left" : "right"]: "-16px"}}
-          >
-            <Trans i18nKey={progressToLabelMap[progress] ?? "common.inProgress"} />
-          </Typography>
+        <Typography
+          color={progressToColorMapColor[progress] ?? "#1976d2"}
+          sx={{
+            ...theme.typography.semiBoldSmall,
+            position: "relative",
+            [is_farsi ? "left" : "right"]: "-16px",
+          }}
+        >
+          <Trans
+            i18nKey={progressToLabelMap[progress] ?? "common.inProgress"}
+          />
+        </Typography>
       </Box>
     </Box>
   );
