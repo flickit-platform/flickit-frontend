@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { getMaturityLevelColors, styles } from "@/config/styles";
 import { IGraphicalReport, ISubject } from "@/types/index";
 import { t } from "i18next";
@@ -10,6 +10,7 @@ import uniqueId from "@/utils/uniqueId";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import { useMemo } from "react";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { useTheme } from "@mui/material";
 
 const sectionStyle = {
   marginTop: "16px",
@@ -28,34 +29,38 @@ const sectionTitleStyle = {
   marginBottom: "12px",
 };
 
-const TitleBox = ({ language }: { language: string }) => (
-  <Box
-    sx={{
-      position: "absolute",
-      top: "-24px",
-      left: "24px",
-      backgroundColor: theme.palette.primary.main,
-      color: "white",
-      padding: "16px 24px",
-      border: "1px solid #ddd",
-      borderRadius: 5,
-    }}
-  >
-    <Typography
-      variant="h5"
+const TitleBox = ({ language }: { language: string }) => {
+  const theme = useTheme();
+
+  return (
+    <Box
       sx={{
-        fontWeight: "bold",
-        margin: 0,
-        textAlign: language === "fa" ? "right" : "left",
-        ...styles.rtlStyle(language === "fa"),
+        position: "absolute",
+        top: "-24px",
+        left: "24px",
+        backgroundColor: theme.palette.primary.main,
+        color: "white",
+        padding: "16px 24px",
+        border: "1px solid #ddd",
+        borderRadius: 5,
       }}
     >
-      {t("assessmentReport.how_was_this_report_built", {
-        lng: language,
-      })}
-    </Typography>
-  </Box>
-);
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: "bold",
+          margin: 0,
+          textAlign: language === "fa" ? "right" : "left",
+          ...styles.rtlStyle(language === "fa"),
+        }}
+      >
+        {t("assessmentReport.how_was_this_report_built", {
+          lng: language,
+        })}
+      </Typography>
+    </Box>
+  );
+};
 
 const Section = ({ title, children, rtlLanguage }: any) => (
   <Box sx={sectionStyle}>
@@ -193,7 +198,9 @@ const QuestionnaireList = ({
             }}
           >
             {item.questionCount}{" "}
-            {t("common.question", { lng: graphicalReport?.lang.code.toLowerCase() })}
+            {t("common.question", {
+              lng: graphicalReport?.lang.code.toLowerCase(),
+            })}
           </Typography>
           <Divider
             orientation="vertical"
@@ -233,6 +240,8 @@ const ReportCard = ({
     return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
   }, [assessmentInfo?.mode?.code]);
 
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -255,7 +264,9 @@ const ReportCard = ({
       {isAdvanceMode && (
         <>
           <Section
-            title={t("assessmentReport.disclaimer", { lng: lang.code.toLowerCase() })}
+            title={t("assessmentReport.disclaimer", {
+              lng: lang.code.toLowerCase(),
+            })}
             rtlLanguage={rtlLanguage}
           >
             <Typography
@@ -268,12 +279,16 @@ const ReportCard = ({
                 textAlign: "justify",
               }}
             >
-              {t("assessmentReport.disclaimerDescription", { lng: lang.code.toLowerCase() })}
+              {t("assessmentReport.disclaimerDescription", {
+                lng: lang.code.toLowerCase(),
+              })}
             </Typography>
           </Section>
 
           <Section
-            title={t("assessment.assessmentSteps", { lng: lang.code.toLowerCase() })}
+            title={t("assessment.assessmentSteps", {
+              lng: lang.code.toLowerCase(),
+            })}
             rtlLanguage={rtlLanguage}
           >
             {assessmentProcess.steps ? (
@@ -298,7 +313,9 @@ const ReportCard = ({
             )}
           </Section>
           <Section
-            title={t("assessmentKit.participant", { lng: lang.code.toLowerCase() })}
+            title={t("assessmentKit.participant", {
+              lng: lang.code.toLowerCase(),
+            })}
             rtlLanguage={rtlLanguage}
           >
             {assessmentProcess.participant ? (
@@ -326,7 +343,9 @@ const ReportCard = ({
       )}
 
       <Section
-        title={t("assessmentKit.assessmentKit", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentKit.assessmentKit", {
+          lng: lang.code.toLowerCase(),
+        })}
         rtlLanguage={rtlLanguage}
       >
         {t("assessmentKit.assessmentKitDescription", {
@@ -337,7 +356,8 @@ const ReportCard = ({
           subjects: subjects
             ?.map((elem: ISubject, index: number) =>
               index === subjects?.length - 1 && subjects?.length !== 1
-                ? t("common.and", { lng: lang.code.toLowerCase() }) + elem?.title
+                ? t("common.and", { lng: lang.code.toLowerCase() }) +
+                  elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
@@ -411,7 +431,9 @@ const ReportCard = ({
       </Section>
 
       <Section
-        title={t("assessmentReport.topicsAndIndicators", { lng: lang.code.toLowerCase() })}
+        title={t("assessmentReport.topicsAndIndicators", {
+          lng: lang.code.toLowerCase(),
+        })}
         rtlLanguage={rtlLanguage}
       >
         {t("assessmentReport.topicsTable", {

@@ -6,9 +6,9 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { Trans } from "react-i18next";
 import Warning from "@mui/icons-material/Warning";
-import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
+import { useTheme } from "@mui/material";
 
 const ConfirmRemoveMemberDialog = (props: any) => {
   const {
@@ -21,6 +21,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
   } = props;
 
   const { service } = useServiceContext();
+  const theme = useTheme();
 
   const deleteUserRole = useQuery({
     service: (args, config) =>

@@ -5,12 +5,11 @@ import ArrowBackIosRounded from "@mui/icons-material/ArrowBackIosRounded";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { styles } from "@styles";
-import { theme } from "@config/theme";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
 import uniqueId from "@/utils/uniqueId";
 
-const DIRECTION = theme.direction === "rtl" ? "+" : "-";
+const DIRECTION = document.body.style.direction === "rtl" ? "+" : "-";
 const ARROW_COLOR = "#1B4D7E";
 
 interface Banner {

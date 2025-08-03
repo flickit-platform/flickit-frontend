@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 export const QuestionThumb = (props: any) => {
   const {
@@ -16,6 +17,7 @@ export const QuestionThumb = (props: any) => {
     isSubmitting,
   } = props;
   const { total_number_of_questions, permissions } = questionsInfo;
+  const theme = useTheme();
 
   const navigate = useNavigate();
   return (

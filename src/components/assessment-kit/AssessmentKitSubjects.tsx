@@ -8,8 +8,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import { styles } from "@styles";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 interface Attribute {
   id: number;
@@ -31,6 +32,7 @@ interface Props {
 const AssessmentKitSubjects = ({ subjects }: Props) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const subject = subjects[selectedTab];
+  const theme = useTheme()
 
   return (
     <Box>

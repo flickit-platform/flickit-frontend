@@ -12,12 +12,13 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
 import { KitDesignListItems } from "@/types/index";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { useTheme } from "@mui/material";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -118,6 +119,9 @@ const ListOfItems = ({
       [name]: value,
     }));
   };
+
+  const theme = useTheme();
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="subjects">
@@ -228,7 +232,7 @@ const ListOfItems = ({
                                   : ""
                               }
                               variant="semiBoldMedium"
-                             showCopyIcon
+                              showCopyIcon
                             />
                           )}
                         </Box>

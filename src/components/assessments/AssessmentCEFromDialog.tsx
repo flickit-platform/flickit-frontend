@@ -20,8 +20,8 @@ import CheckmarkGif from "../common/success/Checkmark";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -31,6 +31,7 @@ interface IAssessmentCEFromDialogProps extends DialogProps {
 }
 
 const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
+  const theme = useTheme()
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedTitle, setSubmittedTitle] = useState("");

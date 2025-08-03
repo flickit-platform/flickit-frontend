@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import uniqueId from "@/utils/uniqueId";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ import {
 } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 import { styles } from "@styles";
-import { Button, ListItemText, Menu, MenuItem } from "@mui/material";
+import { Button, ListItemText, Menu, MenuItem, useTheme } from "@mui/material";
 import useScreenResize from "@/utils/useScreenResize";
 import { ArrowDropDownRounded, ArrowDropUpRounded } from "@mui/icons-material";
 import languageDetector from "@/utils/languageDetector";
@@ -32,7 +32,11 @@ type TabItem = {
 };
 
 const tabListTitle: TabItem[] = [
-  { label: "dashboard.dashboard", address: "dashboard", permission: "viewDashboard" },
+  {
+    label: "dashboard.dashboard",
+    address: "dashboard",
+    permission: "viewDashboard",
+  },
   {
     label: "common.questions",
     address: "questionnaires",
@@ -53,6 +57,7 @@ const tabListTitle: TabItem[] = [
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
+  const theme = useTheme();
 
   const { onTabChange, selectedTab, flexColumn } = props;
   const { service } = useServiceContext();

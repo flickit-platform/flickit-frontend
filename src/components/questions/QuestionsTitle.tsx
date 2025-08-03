@@ -12,7 +12,7 @@ import {
 import { t } from "i18next";
 import setDocumentTitle from "@utils/setDocumentTitle";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { QuestionsFilteringDropdown } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireList";
@@ -21,7 +21,7 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
 import OutlinedProgressButton from "../common/buttons/OutlinedProgressButton";
-import { Skeleton } from "@mui/material";
+import { Skeleton, useTheme } from "@mui/material";
 
 const itemNames = [
   {
@@ -124,6 +124,7 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
   const answersCount = assessmentTotalProgress?.data?.answersCount ?? 0;
   const questionsCount = assessmentTotalProgress?.data?.questionsCount ?? 0;
   const percent = questionsCount ? (answersCount / questionsCount) * 100 : 0;
+  const theme = useTheme();
 
   return (
     <Box>

@@ -60,7 +60,7 @@ import PreAttachment from "@components/questions/iconFiles/preAttachments";
 import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -143,6 +143,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  const theme = useTheme();
 
   return (
     <Box>
@@ -164,8 +165,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
       >
         <Box>
           <Typography
+            variant="semiBoldSmall"
             sx={{
-              ...theme.typography.semiBoldSmall,
               color: "#6C8093",
               opacity: 0.65,
               px: 6,
@@ -176,8 +177,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           </Typography>
           <Typography
             letterSpacing={is_farsi ? "0" : ".05em"}
+            variant="semiBoldXLarge"
             sx={{
-              ...theme.typography.semiBoldXLarge,
               fontFamily: languageDetector(title)
                 ? farsiFontFamily
                 : primaryFontFamily,
@@ -542,6 +543,7 @@ export const QuestionTabsTemplate = (props: any) => {
       });
     }
   }, [counts.evidences, counts.history, counts.comments]);
+  const theme = useTheme();
 
   return (
     <TabContext value={value}>
@@ -919,6 +921,8 @@ const AnswerTemplate = (props: {
       setDisabledConfidence(true);
     }
   };
+  const theme = useTheme();
+
 
   const isLTR = theme.direction === "ltr";
 
@@ -1495,7 +1499,7 @@ const Evidence = (props: any) => {
   const is_farsi = languageDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
-
+  const theme = useTheme();
   const {
     questionInfo,
     permissions,

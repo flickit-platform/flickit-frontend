@@ -5,11 +5,12 @@ import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
 import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
 import languageDetector from "@utils/languageDetector";
 import i18next, { t } from "i18next";
 import { styles } from "@styles";
+import { useTheme } from "@mui/material";
 
 const InputField = () => {
   return <TextField />;
@@ -56,6 +57,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     lng,
     ...rest
   } = props;
+  const theme = useTheme();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 

@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { theme } from "@config/theme";
 import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@utils/icons/priceIcon";
 import { Trans } from "react-i18next";
@@ -24,6 +23,7 @@ import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import PurchasedIcon from "@utils/icons/purchasedIcon";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
+import { useTheme } from "@mui/material";
 
 interface IlistOfItems {
   field: boolean;
@@ -39,6 +39,7 @@ const AssessmentKitAside = (props: any) => {
   const dialogPurchaseProps = usePurchaseDialog(title);
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
+  const theme = useTheme();
 
   const {
     config: { isAuthenticated },

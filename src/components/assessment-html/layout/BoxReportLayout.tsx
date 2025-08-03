@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import FlatGauge from "@/components/common/charts/flatGauge/FlatGauge";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Grid from "@mui/material/Grid";
 import lens from "@assets/svg/lens.svg";
 import { getMaturityLevelColors, styles } from "@styles";
@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
+import { useTheme } from "@mui/material";
 
 interface IBoxReport {
   title: string;
@@ -109,6 +110,7 @@ const TopBox = (props: ITopBoxReport) => {
   const isAdvanceMode = useMemo(() => {
     return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
   }, [assessmentInfo?.mode?.code]);
+  const theme = useTheme();
 
   return (
     <Grid
@@ -175,6 +177,7 @@ const BottomBox = ({
   const isFarsi = language === "fa";
   const fontFamily = isFarsi ? farsiFontFamily : primaryFontFamily;
   const textAlign = isFarsi ? "right" : "left";
+  const theme = useTheme();
 
   return (
     <Box

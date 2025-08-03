@@ -34,13 +34,13 @@ import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SelectHeight } from "@utils/selectHeight";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
 import { getReadableDate } from "@utils/readableDate";
-import { FormControlLabel, Switch } from "@mui/material";
+import { FormControlLabel, Switch, useTheme } from "@mui/material";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import {
   CEDialog,
@@ -139,7 +139,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
               alignItems: "center",
             }}
           >
-            <Typography sx={theme.typography.semiBoldLarge} color="#2B333B">
+            <Typography variant="semiBoldLarge" color="#2B333B">
               <Trans i18nKey="assessment.assessmentTitle" />
             </Typography>
             <Box
@@ -169,7 +169,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
             >
               <Box sx={{ ...styles.centerVH }} color="#6C8093" gap={1}>
                 <Typography
-                  sx={theme.typography.semiBoldLarge}
+                  variant="semiBoldLarge"
                   color="#2B333B"
                   lineHeight="normal"
                 >
@@ -323,10 +323,7 @@ const QuickAssessmentSwitch = () => {
         }
         label={
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography
-              sx={{ ...theme.typography.semiBoldLarge }}
-              color="#2B333B"
-            >
+            <Typography variant="semiBoldLarge" color="#2B333B">
               <Trans i18nKey="assessment.quickAssessmentMode" />
             </Typography>
             <Tooltip
@@ -502,6 +499,7 @@ export const AssessmentSettingMemberBox = (props: {
   const ITEM_PADDING_TOP = 8;
 
   const MenuProps = SelectHeight(ITEM_HEIGHT, ITEM_PADDING_TOP);
+  const theme = useTheme();
 
   return (
     <Box

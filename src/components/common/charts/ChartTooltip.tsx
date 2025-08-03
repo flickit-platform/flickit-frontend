@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { Box, Typography, useTheme } from "@mui/material";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { styles } from "@styles";
 
@@ -17,6 +17,7 @@ const ChartTooltip = ({ active, payload, getPrimary, getSecondary }: ChartToolti
   const primary = getPrimary(data);
   const secondary = getSecondary(data);
   const isFarsi = languageDetector(primary + secondary);
+  const theme = useTheme();
 
   return (
     <Box

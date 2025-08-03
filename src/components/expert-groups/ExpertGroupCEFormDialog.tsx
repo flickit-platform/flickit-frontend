@@ -16,8 +16,8 @@ import RichEditorField from "@common/fields/RichEditorField";
 import UploadField from "@common/fields/UploadField";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
-import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IExpertGroupCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -30,6 +30,8 @@ interface IExpertGroupCEFromDialogProps extends DialogProps {
 
 const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,

@@ -22,8 +22,9 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 enum ELevel {
   HIGH = "HIGH",
@@ -99,6 +100,8 @@ const CustomChip: React.FC<{
   readOnly: boolean;
   language?: string;
 }> = ({ type, level, readOnly, language }) => {
+  const theme = useTheme();
+
   const { backgroundColor, color, iconColor, label } = getChipData(
     type,
     level,

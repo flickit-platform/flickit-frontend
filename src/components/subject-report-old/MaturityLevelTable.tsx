@@ -10,12 +10,13 @@ import Rating from "@mui/material/Rating";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import TablePagination from "@mui/material/TablePagination";
 import Popover from "@mui/material/Popover";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
@@ -150,6 +151,8 @@ const MaturityLevelTable = ({
   sortOrder: any;
   setSortOrder: any;
 }) => {
+  const theme = useTheme();
+
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
@@ -353,7 +356,7 @@ const MaturityLevelTable = ({
           <Typography sx={{ textAlign: "center" }} variant="bodyMedium">
             <Trans i18nKey={item.label} />:
           </Typography>
-          <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+          <Typography variant="semiBoldMedium">
             {formatMaturityNumber(item.value)}
           </Typography>
         </Grid>

@@ -11,7 +11,6 @@ import { Trans } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "i18next";
-import { theme } from "@config/theme";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useMemo, useState } from "react";
@@ -20,6 +19,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import { useTheme } from "@mui/material";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -58,6 +58,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
     allSelected,
     filteredItem,
   } = props;
+  const theme = useTheme();
   const { assessmentInfo } = useAssessmentContext();
   const [issues, setIssues] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
@@ -97,17 +98,13 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
     if (selected.length == 0) {
       return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
-        >
+        <Typography variant="semiBoldMedium" sx={{ color: "#333333" }}>
           <Trans i18nKey="common.none" />
         </Typography>
       );
     } else if (isAllSelected) {
       return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
-        >
+        <Typography variant="semiBoldMedium" sx={{ color: "#333333" }}>
           <Trans i18nKey="common.all" />
         </Typography>
       );
@@ -205,6 +202,7 @@ const ProgressButton = (props: any) => {
     const answered = answersCount ?? 0;
     return Number((answered / total).toFixed(2)) * 100;
   }, [questionsCount, answersCount]);
+  const theme = useTheme();
 
   return (
     <Box>
@@ -382,8 +380,8 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                   ) : (
                     <Box sx={{ ...styles.centerVH, width: "100%" }}>
                       <Typography
+                        variant="headlineLarge"
                         sx={{
-                          ...theme.typography.headlineLarge,
                           color: "#C2CCD680",
                         }}
                       >

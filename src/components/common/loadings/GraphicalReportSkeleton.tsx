@@ -4,49 +4,51 @@ import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styles } from "@styles";
-import { theme } from "@/config/theme";
 import MatirytySkeleton from "@assets/svg/matirytySkeleton.svg";
 import { t } from "i18next";
+import { useTheme } from "@mui/material";
 
-const DotsLoading = () => (
-  <Box
-    component="span"
-    sx={{
-      display: "inline-flex",
-      alignItems: "center",
-      ml: 1,
-      verticalAlign: "middle",
-      height: "1em",
-      lineHeight: 1,
-      fontSize: "inherit",
-    }}
-  >
-    <span
-      className="dot"
-      style={{ animation: "blink 1.4s infinite both", fontSize: "2.5rem" }}
-    >
-      .
-    </span>
-    <span
-      className="dot"
-      style={{
-        animation: "blink 1.4s infinite both 0.2s",
-        fontSize: "2.5rem",
+const DotsLoading = () => {
+  const theme = useTheme();
+  return (
+    <Box
+      component="span"
+      sx={{
+        display: "inline-flex",
+        alignItems: "center",
+        ml: 1,
+        verticalAlign: "middle",
+        height: "1em",
+        lineHeight: 1,
+        fontSize: "inherit",
       }}
     >
-      .
-    </span>
-    <span
-      className="dot"
-      style={{
-        animation: "blink 1.4s infinite both 0.4s",
-        fontSize: "2.5rem",
-      }}
-    >
-      .
-    </span>
-    <style>
-      {`
+      <span
+        className="dot"
+        style={{ animation: "blink 1.4s infinite both", fontSize: "2.5rem" }}
+      >
+        .
+      </span>
+      <span
+        className="dot"
+        style={{
+          animation: "blink 1.4s infinite both 0.2s",
+          fontSize: "2.5rem",
+        }}
+      >
+        .
+      </span>
+      <span
+        className="dot"
+        style={{
+          animation: "blink 1.4s infinite both 0.4s",
+          fontSize: "2.5rem",
+        }}
+      >
+        .
+      </span>
+      <style>
+        {`
       @keyframes blink {
         0% { opacity: .3; }
         20% { opacity: 1; }
@@ -62,12 +64,16 @@ const DotsLoading = () => (
         top:${theme.direction === "rtl" ? "-0.15em" : "-0.25em"} ;
       }
       `}
-    </style>
-  </Box>
-);
+      </style>
+    </Box>
+  );
+};
 
 const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
-  <Box dir={lang === "FA" ? "rtl": "ltr"} sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}>
+  <Box
+    dir={lang === "FA" ? "rtl" : "ltr"}
+    sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}
+  >
     <Box
       sx={{
         backgroundColor: "#D5E5F6",

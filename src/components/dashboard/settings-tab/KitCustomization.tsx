@@ -10,7 +10,6 @@ import { useQuery } from "@utils/useQuery";
 import firstCharDetector from "@utils/firstCharDetector";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
-import { theme } from "@config/theme";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
@@ -169,8 +168,11 @@ const KitCustomization = (props: any) => {
           setEdit({ allow: true, idC: kitCustomId });
           setHasChanges(false);
           showToast(
-            <Trans i18nKey="spaces.spaceCreatedSuccessMessage" values={{ title: inputData.title }} />,
-            { variant: "success" }
+            <Trans
+              i18nKey="spaces.spaceCreatedSuccessMessage"
+              values={{ title: inputData.title }}
+            />,
+            { variant: "success" },
           );
         }
       } catch (e) {
@@ -248,8 +250,8 @@ const KitCustomization = (props: any) => {
             />
             <Box sx={{ mb: 2 }}>
               <Typography
+                variant="titleMedium"
                 sx={{
-                  ...theme.typography.titleMedium,
                   color: "#2B333B",
                   mb: 1,
                 }}
@@ -257,8 +259,8 @@ const KitCustomization = (props: any) => {
                 <Trans i18nKey="dashboard.customizingSubjectAndAttributes" />
               </Typography>
               <Typography
+                variant="bodyMedium"
                 sx={{
-                  ...theme.typography.bodyMedium,
                   color: "#2B333B",
                 }}
               >

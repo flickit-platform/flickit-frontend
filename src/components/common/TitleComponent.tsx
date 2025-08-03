@@ -8,9 +8,10 @@ import AnchorRoundedIcon from "@mui/icons-material/AnchorRounded";
 import { styles } from "@styles";
 import HomeIcon from "@mui/icons-material/Home";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
+import { useTheme } from "@mui/material";
 interface ITitle extends Omit<TypographyProps, "borderBottom"> {
   sup?: JSX.Element | string;
   sub?: JSX.Element | string;
@@ -48,6 +49,7 @@ const Title = (props: ITitle) => {
     ...rest
   } = props;
 
+  const theme = useTheme();
   return (
     <Box
       display="flex"

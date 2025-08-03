@@ -51,7 +51,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import formatBytes from "@utils/formatBytes";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import ArrowDropUpRoundedIcon from "@mui/icons-material/ArrowDropUpRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import Menu from "@mui/material/Menu";
@@ -66,6 +66,7 @@ import { FLAGS } from "@/types";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const ExpertGroupContainer = () => {
   const { service } = useServiceContext();
@@ -134,6 +135,7 @@ const ExpertGroupContainer = () => {
 
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const theme = useTheme();
 
   return (
     <>
@@ -512,6 +514,8 @@ const useFetchAssessmentKit = () => {
 };
 
 const AvatarComponent = (props: any) => {
+  const theme = useTheme();
+
   const { title, picture } = props;
   const [hover, setHover] = useState(false);
   const [profilePicture, setProfilePicture] = useState(picture);
@@ -800,6 +804,8 @@ const ExpertGroupMembers = (props: any) => {
 };
 
 const Invitees = (props: any) => {
+  const theme = useTheme();
+
   const { users, query, inviteeQuery, setOpenInvitees, openInvitees } = props;
   const hasInvitees = users.length > 0;
   return (
@@ -960,6 +966,7 @@ const MemberActions = (props: any) => {
 
 const AddingNewMember = (props: any) => {
   const { queryData, inviteeQuery, setOpenAddMembers, openAddMembers } = props;
+  const theme = useTheme();
 
   return (
     <Box>
@@ -1053,6 +1060,8 @@ const AddMember = (props: any) => {
 };
 
 const AddMemberButton = ({ loading }: { loading: boolean }) => {
+  const theme = useTheme();
+
   return (
     <InputAdornment position="end">
       <LoadingButton
@@ -1277,6 +1286,7 @@ const ExpertGroupMembersDetail = (props: any) => {
     setNumberOfMembers,
     setRemoveMemberDialog,
   } = props;
+  const theme = useTheme();
 
   return (
     <>

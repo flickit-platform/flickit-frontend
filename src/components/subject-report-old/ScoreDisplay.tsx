@@ -2,9 +2,9 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { theme as customTheme } from "@/config/theme";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import { useTheme } from "@mui/material";
 
 const ScoreDisplay = ({ data }: any) => {
   const {
@@ -28,6 +28,7 @@ const ScoreDisplay = ({ data }: any) => {
 
   const width = missedWidth + gainedWidth;
   const height = 12;
+  const theme = useTheme();
 
   return (
     <Tooltip
@@ -103,7 +104,7 @@ const ScoreDisplay = ({ data }: any) => {
           sx={{
             width: `${missedWidth}px`,
             height: "100%",
-            backgroundColor: customTheme.palette.secondary.main,
+            backgroundColor: theme.palette.secondary.main,
             position: "absolute",
             right: "50%",
             top: 0,
@@ -116,7 +117,7 @@ const ScoreDisplay = ({ data }: any) => {
           sx={{
             width: `${gainedWidth}px`,
             height: "100%",
-            backgroundColor: customTheme.palette.primary.main,
+            backgroundColor: theme.palette.primary.main,
             position: "absolute",
             left: "50%",
             top: 0,

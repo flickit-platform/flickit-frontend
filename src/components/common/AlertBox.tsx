@@ -1,4 +1,4 @@
-import { theme } from "@/config/theme";
+import { useTheme } from "@mui/material";
 import Alert, { AlertProps } from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import useScreenResize from "@utils/useScreenResize";
@@ -8,6 +8,8 @@ interface IAlertBox extends AlertProps {}
 const AlertBox = (props: IAlertBox) => {
   const { children, action, ...rest } = props;
   const isSmall = useScreenResize("md");
+  const theme = useTheme()
+
   return (
     <Alert
       {...rest}

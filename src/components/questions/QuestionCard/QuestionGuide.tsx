@@ -5,13 +5,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import Title from "@common/Title";
-import { theme } from "@/config/theme";
 import { Trans } from "react-i18next";
+import { useTheme } from "@mui/material";
 
 export const QuestionGuide = (props: any) => {
   const [collapse, setCollapse] = useState<boolean>(false);
   const { hint } = props;
   const is_farsi = languageDetector(hint);
+  const theme = useTheme();
+
   return (
     <Box>
       <Box mt={1} width="100%">

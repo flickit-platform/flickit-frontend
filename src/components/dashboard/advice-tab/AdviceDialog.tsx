@@ -9,7 +9,6 @@ import { Trans } from "react-i18next";
 import { styles } from "@/config/styles";
 import Setting from "@assets/svg/setting.svg";
 import AdviceSlider from "@/components/common/AdviceSlider";
-import { theme } from "@/config/theme";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@/utils/CustomError";
 import { useQuery } from "@/utils/useQuery";
@@ -18,7 +17,7 @@ import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import showToast from "@/utils/toastError";
-import { IconButton } from "@mui/material";
+import { IconButton, useTheme } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 const AdviceDialog = ({
@@ -90,6 +89,8 @@ const AdviceDialog = ({
       setStep(1);
     }
   };
+  const theme = useTheme();
+
 
   return (
     <Dialog

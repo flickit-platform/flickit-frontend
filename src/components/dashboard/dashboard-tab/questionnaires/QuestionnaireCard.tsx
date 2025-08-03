@@ -16,9 +16,10 @@ import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
 import { useRef, useState } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Grid from "@mui/material/Grid";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useTheme } from "@mui/material";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -49,6 +50,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   } = data ?? {};
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   const [collapse, setCollapse] = useState<boolean>(false);
+  const theme = useTheme();
 
   const titleRef = useRef<any>(null);
   const mainBoxRef = useRef<any>(null);
@@ -319,9 +321,9 @@ const ActionButton = ({
     {...rest}
   >
     <Typography
+      variant="semiBoldMedium"
       sx={{
         color: variant ? "#fff" : "#2466A8",
-        ...theme.typography.semiBoldMedium,
       }}
       textTransform={"capitalize"}
     >
@@ -332,6 +334,7 @@ const ActionButton = ({
 
 const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
   if (!value) return null;
+  const theme = useTheme();
 
   return (
     <Chip
@@ -351,9 +354,9 @@ const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
               style={{ fill: theme.palette.error.main }}
             />
             <Typography
+              variant="bodyMedium"
               style={{
                 color: theme.palette.error.main,
-                ...theme.typography.bodyMedium,
               }}
             >
               <Trans i18nKey={i18nKey} />: {value}

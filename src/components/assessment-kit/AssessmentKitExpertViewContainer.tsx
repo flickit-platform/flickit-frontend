@@ -37,10 +37,11 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { AssessmentKitDetailsType } from "@/types/index";
 import convertToBytes from "@/utils/convertToBytes";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -742,6 +743,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
     loaded,
     ...rest
   } = props;
+  const theme = useTheme();
 
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
@@ -952,6 +954,8 @@ const SubjectQuestionList = (props: any) => {
     (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel?.title : false);
     };
+  const theme = useTheme();
+
   return (
     <Box>
       {questions[0] && (
@@ -991,7 +995,7 @@ const SubjectQuestionList = (props: any) => {
               <Typography
                 sx={{
                   flex: 1,
-                  fontFamily: `${is_farsi ? farsiFontFamily: primaryFontFamily}`,
+                  fontFamily: `${is_farsi ? farsiFontFamily : primaryFontFamily}`,
                   fontWeight: "bold",
                   opacity: 1,
                   display: "flex",
@@ -1154,6 +1158,8 @@ const QuestionnairesQuestionList = (props: any) => {
   const [questionsDetails, setQuestionsDetails] = useState<any>();
   const { fetchAssessmentKitQuestionnairesQuestionsQuery } = useAssessmentKit();
   const { assessmentKitId } = useParams();
+  const theme = useTheme();
+
   const handleChange =
     (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setQuestionId(panel.id);
@@ -1486,6 +1492,8 @@ const MaturityLevelsDetails = (props: any) => {
   const colorPallet = getMaturityLevelColors(
     maturity_levels ? maturity_levels.length : 5,
   );
+  const theme = useTheme();
+
   return (
     <Box sx={{ background: "#fff", px: 4, py: 4, borderRadius: "8px" }}>
       <Typography fontWeight={900} fontSize="1.5rem" mb={8}>

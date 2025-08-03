@@ -1,9 +1,11 @@
-import { theme } from "@/config/theme";
+import { useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styles } from "@styles";
 
 const LoadingSkeletonOfQuestions = () => {
+  const theme = useTheme();
+
   return (
     <Box py={3}>
       <Box
