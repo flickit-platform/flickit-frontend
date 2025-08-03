@@ -11,7 +11,15 @@ const LanguageSelector = () => {
 
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("lang");
+    window.history.replaceState(
+      {},
+      document.title,
+      url.pathname + url.search,
+    );
     window.location.reload();
+
   };
 
   return (
