@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-type fieldName = "title" | "summary" | "about" | "goal" | "context" | "who" | "when" | "what"
+type fieldName = "title" | "summary" | "about" | "goal" | "context"
 
 export const renderEditableField : any = (
   field: fieldName,

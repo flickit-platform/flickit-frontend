@@ -224,6 +224,7 @@ export interface AssessmentKitInfoType {
   editable?: boolean;
   hasActiveVersion?: boolean;
   mainLanguage?: { code: string; title: string };
+  metadata?: { context: string; goal: string };
 }
 
 export interface IAssessmentModel extends IDefaultModel<IAssessment> {

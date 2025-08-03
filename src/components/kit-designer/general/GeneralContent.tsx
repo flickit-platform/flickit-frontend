@@ -33,6 +33,7 @@ const generalFields = [
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { kitState } = useKitDesignerContext();
+
   const langCode = kitState.translatedLanguage?.code ?? "";
   const { updateTranslation } = useTranslationUpdater(langCode);
   const { dispatch } = useKitDesignerContext();

@@ -14,7 +14,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -30,7 +30,7 @@ import firstCharDetector from "@/utils/firstCharDetector";
 import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
-import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
+import { AssessmentKitStatsType, AssessmentKitInfoType, ILanguage } from "@/types/index";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
@@ -39,12 +39,19 @@ import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
 import { renderEditableField } from "@common/editableField";
+import { kitActions, useKitDesignerContext } from "../../providers/KitProvider";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
   setAssessmentKitTitle: any;
   setHasActiveVersion: any;
 }
+
+const TextFields = [
+  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
+  { name: "context", label: "common.who", multiline: true, useRichEditor: true },
+  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
+] as const;
 
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
@@ -53,9 +60,24 @@ const AssessmentKitSectionGeneralInfo = (
   const {
     config: { languages },
   }: any = useConfigContext();
+  const { kitState, dispatch } = useKitDesignerContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
+  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
+
+  const [updatedValues, setUpdatedValues] = useState<any>({
+    about: "",
+    goal: "",
+    context: "",
+  });
+  const [showTranslations, setShowTranslations] = useState({
+    about: false,
+    goal: false,
+    context: false,
+  });
+
   const fetchAssessmentKitInfoQuery = useQuery({
     service: (args, config) =>
       service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
@@ -66,6 +88,38 @@ const AssessmentKitSectionGeneralInfo = (
       service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
+  const data = fetchAssessmentKitInfoQuery.data;
+  const translations = data?.translations ?? {};
+
+  useEffect(() => {
+    if (data) {
+      const defaultTranslatedLanguage = data.languages?.find(
+        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
+      );
+      // setTranslatedLang(defaultTranslatedLanguage);
+      dispatch(kitActions.setMainLanguage(data.mainLanguage));
+      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
+      setShowTranslations({
+        about: !!translations[langCode]?.about,
+        goal: !!translations[langCode]?.metadata?.goal,
+        context: !!translations[langCode]?.metadata?.context,
+      });
+      setUpdatedValues({
+        about: data.about ?? "",
+        goal: data?.metadata?.goal ?? "",
+        context: data?.metadata?.context ?? "",
+        translations: langCode
+          ? {
+            [langCode]: {
+              ...translations[langCode],
+              goal: data?.translations?.[langCode]?.metadata?.goal,
+              context: data?.translations?.[langCode]?.metadata?.context,
+            },
+          }
+          : {},
+      });
+    }
+  }, [data, langCode]);
 
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
@@ -121,30 +175,12 @@ const AssessmentKitSectionGeneralInfo = (
     }
   };
 
-  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
-
-  const [updatedValues, setUpdatedValues] = useState<any>({
-    what: "",
-  });
-  const [showTranslations, setShowTranslations] = useState({
-    what: false,
-  });
-
-  const toggleTranslation = useCallback((field: "what") => {
+  const toggleTranslation = useCallback((field: "about") => {
     setShowTranslations((prev) => ({
       ...prev,
       [field]: !prev[field],
     }));
   }, []);
-  const handleFieldEdit = useCallback((field: "what") => {
-    setEditableFields((prev) => new Set(prev).add(field));
-  }, []);
-
-  const TextFields = [
-    { name: "what", label: "common.what", multiline: true, useRichEditor: true },
-    { name: "who", label: "common.who", multiline: true, useRichEditor: true },
-    { name: "when", label: "common.when", multiline: true, useRichEditor: true },
-  ] as const;
 
   return (
     <QueryBatchData
@@ -170,6 +206,7 @@ const AssessmentKitSectionGeneralInfo = (
           editable,
           hasActiveVersion,
           mainLanguage,
+          metadata
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -186,6 +223,13 @@ const AssessmentKitSectionGeneralInfo = (
         setAssessmentKitTitle(title);
         setHasActiveVersion(hasActiveVersion);
         setExpertGroup(expertGroup);
+
+        const handleFieldEdit = useCallback((field: "about") => {
+          if(editable){
+            setEditableFields((prev) => new Set(prev).add(field));
+          }
+        }, []);
+
         return (
           <Grid container spacing={4}>
             <Grid item xs={12} md={7}>
@@ -405,6 +449,7 @@ const AssessmentKitSectionGeneralInfo = (
                 {/*/>*/}
                 {TextFields.map((field)=>{
                   const  { name, label, multiline, useRichEditor } = field
+                  const data = {about,metadata}
 
                   return (
                     <Box key={name}>
@@ -425,11 +470,11 @@ const AssessmentKitSectionGeneralInfo = (
                         </Typography>
                         {renderEditableField(
                           name,
-                          about,
+                          data,
                           multiline,
                           useRichEditor,
                           editableFields,
-                          mainLanguage?.code,
+                          langCode,
                           updatedValues,
                           setUpdatedValues,
                           showTranslations,
