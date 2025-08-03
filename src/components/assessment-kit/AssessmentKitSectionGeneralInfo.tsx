@@ -429,7 +429,7 @@ const AssessmentKitSectionGeneralInfo = (
                           multiline,
                           useRichEditor,
                           editableFields,
-                          "EN",
+                          mainLanguage?.code,
                           updatedValues,
                           setUpdatedValues,
                           showTranslations,

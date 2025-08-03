@@ -64,6 +64,7 @@ export const renderEditableField : any = (
             multiline={multiline}
             minRows={multiline ? 3 : undefined}
             useRichEditor={useRichEditor}
+            lang={langCode}
           />
         </Box>
       ) : (

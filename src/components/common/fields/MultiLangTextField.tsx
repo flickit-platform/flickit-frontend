@@ -26,6 +26,7 @@ interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   showTranslation?: boolean;
   setShowTranslation?: (val: boolean) => void;
   useRichEditor?: boolean;
+  lang?: string;
 }
 
 const MultiLangTextField = ({
@@ -43,10 +44,12 @@ const MultiLangTextField = ({
   multiline = false,
   minRows,
   maxRows,
+  lang,
   ...rest
 }: MultiLangTextFieldProps) => {
   const { kitState } = useKitDesignerContext();
-  const langCode = kitState.translatedLanguage?.code;
+  const changeLang = lang === "EN" ? "FA" : "EN";
+  const langCode = kitState.translatedLanguage?.code ?? changeLang;
 
   const [internalShow, setInternalShow] = useState(false);
   const showTranslation = controlledShow ?? internalShow;
