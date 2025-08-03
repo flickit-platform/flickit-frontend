@@ -588,6 +588,9 @@ const AssessmentHtmlContainer = () => {
                               component="div"
                               variant="bodyMedium"
                               textAlign="justify"
+                              sx={{
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
                             >
                               {t("assessmentReport.subjectGuidance", {
                                 lng,
@@ -637,6 +640,9 @@ const AssessmentHtmlContainer = () => {
                             component="div"
                             variant="bodyMedium"
                             textAlign="justify"
+                            sx={{
+                              ...styles.rtlStyle(rtlLanguage),
+                            }}
                             dangerouslySetInnerHTML={{
                               __html: t(
                                 "assessmentReport.maturityMapOfAssessedAttributesGuidance",
