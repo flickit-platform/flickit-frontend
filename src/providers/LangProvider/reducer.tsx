@@ -8,11 +8,13 @@ export const initialLangState: LangState = {
   lang: localStorage.getItem("lang") || "fa",
 };
 
-export function langReducer(state: LangState, action: LANG_ACTION_TYPES): LangState {
-  switch (action.type) {
-    case "SET_LANG":
-      return { ...state, lang: action.payload };
-    default:
-      return state;
+export function langReducer(
+  state: LangState,
+  action: LANG_ACTION_TYPES,
+): LangState {
+  if (action.type === "SET_LANG") {
+    return { ...state, lang: action.payload };
+  } else {
+    return state;
   }
 }

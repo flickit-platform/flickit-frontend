@@ -333,8 +333,9 @@ const ActionButton = ({
 );
 
 const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
-  if (!value) return null;
   const theme = useTheme();
+
+  if (!value) return null;
 
   return (
     <Chip

@@ -26,7 +26,6 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
     ...node,
     color: colorPallet[Number(node.label) - 1],
   }));
-  const theme = useTheme();
 
   return (
     <ResponsiveContainer width="100%" height={300}>
