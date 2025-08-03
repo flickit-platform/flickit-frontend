@@ -14,7 +14,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -38,6 +38,7 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
+import { renderEditableField } from "@common/editableField";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -119,6 +120,31 @@ const AssessmentKitSectionGeneralInfo = (
       showToast(err);
     }
   };
+
+  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
+
+  const [updatedValues, setUpdatedValues] = useState<any>({
+    what: "",
+  });
+  const [showTranslations, setShowTranslations] = useState({
+    what: false,
+  });
+
+  const toggleTranslation = useCallback((field: "what") => {
+    setShowTranslations((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  }, []);
+  const handleFieldEdit = useCallback((field: "what") => {
+    setEditableFields((prev) => new Set(prev).add(field));
+  }, []);
+
+  const TextFields = [
+    { name: "what", label: "common.what", multiline: true, useRichEditor: true },
+    { name: "who", label: "common.who", multiline: true, useRichEditor: true },
+    { name: "when", label: "common.when", multiline: true, useRichEditor: true },
+  ] as const;
 
   return (
     <QueryBatchData
@@ -377,6 +403,44 @@ const AssessmentKitSectionGeneralInfo = (
                 {/*  infoQuery={fetchAssessmentKitInfoQuery.query}*/}
                 {/*  editable={editable}*/}
                 {/*/>*/}
+                {TextFields.map((field)=>{
+                  const  { name, label, multiline, useRichEditor } = field
+
+                  return (
+                    <Box key={name}>
+                      <Box
+                        my={1.5}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="body2"
+                          mr={4}
+                          sx={{ minWidth: "64px !important" }}
+                        >
+                          <Trans i18nKey={label} />:
+                        </Typography>
+                        {renderEditableField(
+                          name,
+                          about,
+                          multiline,
+                          useRichEditor,
+                          editableFields,
+                          "EN",
+                          updatedValues,
+                          setUpdatedValues,
+                          showTranslations,
+                          toggleTranslation,
+                          handleFieldEdit,
+                        )}
+                      </Box>
+                    </Box>
+                  )
+                })}
+
 
                 <Box
                   my={1.5}
