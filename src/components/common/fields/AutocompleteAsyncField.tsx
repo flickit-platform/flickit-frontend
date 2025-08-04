@@ -407,11 +407,11 @@ const AutocompleteBaseField = (
                   color: "#3D4D5C80",
                 }}
               >
-                (
-                {option?.[filterFields[1]].code
-                  ? option?.[filterFields[1]].code
-                  : option?.[filterFields[1]]}
-                )
+                ({
+                option?.[filterFields[1]].code ?
+                option?.languages.map((lang: {code: string, title: string}) => lang.code).join(", ") :
+                option?.[filterFields[1]]
+                })
               </Box>
             )}
             {(option?.isPrivate ||
