@@ -104,8 +104,8 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
-  deleteSpace: any;
+  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  deleteSpace?: any;
 }
 
 export const SpaceCard = (props: ISpaceCardProps) => {

@@ -30,7 +30,7 @@ import React from "react";
 interface IExpertGroupsItemProps {
   data: any;
   disableActions?: boolean;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
 }
 
 const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
