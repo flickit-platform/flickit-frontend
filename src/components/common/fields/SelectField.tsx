@@ -166,7 +166,7 @@ const defaultRenderOption = (option: any) => {
   return (
     <MenuItem
       value={option.id}
-      key={option.id}
+      key={uniqueId()}
       sx={{
         display: "flex",
         alignItems: "center",

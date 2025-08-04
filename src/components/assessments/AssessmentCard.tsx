@@ -42,13 +42,15 @@ import { ASSESSMENT_MODE } from "@utils/enumType";
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  setOpenDeleteDialog: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId }>
+  >;
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
-  setOpenDeleteDialog
+  setOpenDeleteDialog,
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
@@ -92,8 +94,9 @@ const AssessmentCard = ({
   });
 
   useEffect(() => {
+    setShow(isCalculateValid);
+
     const fetchGaugeAndProgress = async () => {
-      setShow(isCalculateValid);
       if (!isCalculateValid) {
         try {
           const data = await calculateMaturityLevelQuery.query();
@@ -109,7 +112,9 @@ const AssessmentCard = ({
         setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
       }
     };
-    fetchGaugeAndProgress();
+    if (permissions.canViewQuestionnaires) {
+      fetchGaugeAndProgress();
+    }
     // eslint-disable-next-line
   }, [isCalculateValid]);
 
@@ -478,19 +483,21 @@ const CardButton = ({
 
 // --- Actions ---
 const Actions = ({
-   setOpenDeleteDialog,
+  setOpenDeleteDialog,
   item,
   abortController,
 }: {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  setOpenDeleteDialog: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId }>
+  >;
 }) => {
   const navigate = useNavigate();
 
   const deleteItem = () => {
-     setOpenDeleteDialog({status: true, id: item.id});
+    setOpenDeleteDialog({ status: true, id: item.id });
   };
 
   const addToCompare = () => {

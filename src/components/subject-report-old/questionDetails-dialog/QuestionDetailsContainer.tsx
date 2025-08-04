@@ -33,15 +33,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
     onPreviousQuestion,
     onNextQuestion,
     context = {},
+    open,
     ...rest
   } = props;
   const { questionInfo = {}, questionsInfo, index } = context;
 
-  const [value, setValue] = useState(undefined);
-
-  const close = () => {
-    closeDialog();
-  };
+  const [value, setValue] = useState("");
 
   const renderQuestionDetails = () => (
     <Box sx={{ ...styles.centerCV, gap: 2 }}>
@@ -167,35 +164,36 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           </AlertBox>
         )}
 
-        <QuestionTabsTemplate
-          key={questionInfo?.question?.id}
-          value={value}
-          setValue={setValue}
-          questionsInfo={{
-            ...questionsInfo,
-            permissions: {
-              addEvidence: false,
-              viewAnswerHistory: true,
-              viewEvidenceList: true,
-              readonly: true,
-            },
-          }}
-          questionInfo={{
-            ...questionInfo?.question,
-            questionId: questionInfo?.question?.id,
-          }}
-          position={position}
-        />
+        {open && (
+          <QuestionTabsTemplate
+            value={value}
+            setValue={setValue}
+            questionsInfo={{
+              ...questionsInfo,
+              permissions: {
+                addEvidence: false,
+                viewAnswerHistory: true,
+                viewEvidenceList: true,
+                readonly: true,
+              },
+            }}
+            questionInfo={{
+              ...questionInfo?.question,
+              questionId: questionInfo?.question?.id,
+            }}
+            position={position}
+          />
+        )}
       </Box>
     );
   };
   const theme = useTheme();
 
-
   return (
     <CEDialog
       {...rest}
-      closeDialog={close}
+      open={open}
+      closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
       title={<Trans i18nKey="questions.questionDetails" />}
     >

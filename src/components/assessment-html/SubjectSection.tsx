@@ -9,7 +9,7 @@ import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types/index";
 import uniqueId from "@/utils/uniqueId";
-import { useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 const SubjectReport = ({
   graphicalReport,
@@ -27,7 +27,7 @@ const SubjectReport = ({
       {subjects?.map((item: any, index: number) => {
         const { title, insight, maturityLevel } = item;
         return (
-          <>
+          <Box key={uniqueId()}>
             <Grid
               component="div"
               id={title}
@@ -75,13 +75,7 @@ const SubjectReport = ({
                   width="100%"
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                spacing={2}
-                sx={{ ...styles.centerCVH, gap: 2 }}
-              >
+              <Grid item xs={12} md={12} sx={{ ...styles.centerCVH, gap: 2 }}>
                 {item?.attributes?.map((attribute: any) => {
                   return (
                     <BulletPointStatus
@@ -106,7 +100,7 @@ const SubjectReport = ({
                 />
               );
             })}
-          </>
+          </Box>
         );
       })}
     </GeneralLayout>

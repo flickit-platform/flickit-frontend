@@ -20,20 +20,18 @@ const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeadback] = useState(true);
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const { service } = useServiceContext();
-  const { assessmentId } = useParams()
+  const { assessmentId } = useParams();
   const { pathname } = useLocation();
   const {
     config: { SurveyBox, appTitle },
     dispatch,
   } = useConfigContext();
-  const {
-    userInfo, dispatch : dispatchAuth
-  } = useAuthContext();
+  const { userInfo, dispatch: dispatchAuth } = useAuthContext();
   const { isAuthenticatedUser } = useAuthContext();
-  const { email, showSurvey } = userInfo
+  const { email, showSurvey } = userInfo;
   const dontShowSurvey = useQuery({
-    service: (args= { assessmentId }, config) =>
-      service.common.dontShowSurvey( args, config),
+    service: (args = { assessmentId }, config) =>
+      service.common.dontShowSurvey(args, config),
     runOnMount: false,
   });
 
@@ -41,13 +39,14 @@ const SurveyBoxSection = (props: any) => {
 
   const closeFeadbackBox = () => {
     setShowFeadback(false);
-    if(dontShowAgain){
-      dontShowSurvey.query()
-      dispatchAuth(authActions.setUserInfo({
-      ...userInfo,
-      showSurvey: false
-      })
-      )
+    if (dontShowAgain) {
+      dontShowSurvey.query();
+      dispatchAuth(
+        authActions.setUserInfo({
+          ...userInfo,
+          showSurvey: false,
+        }),
+      );
     }
   };
   useEffect(() => {
@@ -62,8 +61,8 @@ const SurveyBoxSection = (props: any) => {
   const goToSurvey = () => {
     window.open(`https://formafzar.com/form/zzn90?email=${email}`, "_blank");
   };
-  const  showSurveyBox  = useMemo(() => {
-    return showSurvey && showFeedback && SurveyBox && isAuthenticatedUser
+  const showSurveyBox = useMemo(() => {
+    return showSurvey && showFeedback && SurveyBox && isAuthenticatedUser;
   }, [showSurvey, showFeedback, SurveyBox, isAuthenticatedUser]);
 
   return (
@@ -162,12 +161,12 @@ const SurveyBoxSection = (props: any) => {
 };
 
 const FloatButton = (props: any) => {
-  const { dialogProps } = props;
+  const { onClick, disabled } = props;
   const theme = useTheme();
 
   return (
     <>
-      <SurveyBoxSection {...props} />
+      <SurveyBoxSection disabled={disabled} />
       <Box
         sx={{
           position: "fixed",
@@ -186,7 +185,7 @@ const FloatButton = (props: any) => {
             width: "56px",
             height: "56px",
           }}
-          onClick={() => dialogProps.openDialog({})}
+          onClick={onClick}
         >
           <img src={ContactSupport} alt={"ContactSupport"} />
         </IconButton>

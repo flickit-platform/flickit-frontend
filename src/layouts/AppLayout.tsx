@@ -49,10 +49,9 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         >
           {children}
         </Suspense>
-        <FloatButton dialogProps={dialogProps} />
+        <FloatButton onClick={() => dialogProps.openDialog({})} />
       </Box>
-      <PendingKitBanner/>
-
+      <PendingKitBanner />
       <ContactUsDialog {...dialogProps} />
     </Box>
   );
