@@ -18,6 +18,7 @@ interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
   context?: any;
   lng?: string;
+  openDialog?: (context: any) => void;
 }
 
 const TelegramLink = "https://web.telegram.org/a/#8179187991";
@@ -52,9 +53,10 @@ const ContactUsDialog = ({
   onClose,
   context,
   lng,
+  openDialog,
   ...rest
 }: IContactUsDialogProps) => {
-  const theme = useTheme()
+  const theme = useTheme();
 
   const { data = {}, type = "contactUs" } = context ?? {};
   const { email, dialogTitle, primaryActionButtonText, children } = data;

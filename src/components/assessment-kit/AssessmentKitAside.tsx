@@ -24,6 +24,7 @@ import PurchasedIcon from "@utils/icons/purchasedIcon";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 import { useTheme } from "@mui/material";
+import uniqueId from "@/utils/uniqueId";
 
 interface IlistOfItems {
   field: boolean;
@@ -180,7 +181,7 @@ const AssessmentKitAside = (props: any) => {
             {listOfItems
               .filter((filter) => filter.field)
               .map((item) => {
-                return <InfoBox {...item} key={item.field} />;
+                return <InfoBox {...item} key={uniqueId()} />;
               })}
           </Box>
           <Box>

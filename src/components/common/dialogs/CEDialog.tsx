@@ -160,11 +160,11 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               variant="contained"
               loading={loading}
               onClick={(e: any) => {
-                if(hasContinueBtn) {
-                  onClose()
+                if (hasContinueBtn) {
+                  onClose();
                 }
                 e.preventDefault();
-                onSubmit?.(e)?.();
+                onSubmit?.(e);
               }}
               sx={{ fontFamily: "inherit" }}
               disabled={disablePrimaryButton}
@@ -184,7 +184,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               data-cy="submit-and-view"
               onClick={(e: any) => {
                 e.preventDefault();
-                onSubmit?.(e, true)();
+                onSubmit?.(e, true);
               }}
             >
               {submitAndViewButtonLabel ?? (
@@ -205,13 +205,13 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
               data-cy="submit-and-countinue"
               onClick={(e: any) => {
                 e.preventDefault();
-                onSubmit?.(e, true)();
+                onSubmit?.(e, true);
               }}
               disabled={disablePrimaryButton}
             >
-             <Trans
-               i18nKey={`${submitButtonLabel} ${t("common.andContinue")}`}
-             />
+              <Trans
+                i18nKey={`${submitButtonLabel} ${t("common.andContinue")}`}
+              />
             </LoadingButton>
           </Grid>
         )}

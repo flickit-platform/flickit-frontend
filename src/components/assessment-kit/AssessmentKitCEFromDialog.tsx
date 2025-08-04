@@ -417,7 +417,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           onBack={handleBack}
           hasViewBtn={true}
           onSubmit={(...args) =>
-            formMethods.handleSubmit((data) => onSubmit(data, ...args))
+            formMethods.handleSubmit((data) => onSubmit(data, ...args))()
           }
         />
       </Box>
@@ -527,10 +527,16 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          {type === "update" && <Trans i18nKey="assessmentKit.updateAssessmentKit" />}
+          {type === "update" && (
+            <Trans i18nKey="assessmentKit.updateAssessmentKit" />
+          )}
           {type === "draft" && <Trans i18nKey="assessmentKit.createDraft" />}
-          {type === "create" && <Trans i18nKey="assessmentKit.createAssessmentKit" />}
-          {type === "convert" && <Trans i18nKey="assessmentKit.convertExcelToDsl" />}
+          {type === "create" && (
+            <Trans i18nKey="assessmentKit.createAssessmentKit" />
+          )}
+          {type === "convert" && (
+            <Trans i18nKey="assessmentKit.convertExcelToDsl" />
+          )}
         </>
       }
     >

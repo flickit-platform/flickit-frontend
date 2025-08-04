@@ -250,6 +250,7 @@ const KitCustomization = (props: any) => {
             />
             <Box sx={{ mb: 2 }}>
               <Typography
+                component="div"
                 variant="titleMedium"
                 sx={{
                   color: "#2B333B",

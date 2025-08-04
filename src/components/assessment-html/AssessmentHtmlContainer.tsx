@@ -58,7 +58,7 @@ const getBasePath = (path: string): string => {
 };
 
 const AssessmentHtmlContainer = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const { calculate, calculateConfidence } = useCalculate();
   const { isAuthenticatedUser } = useAuthContext();
 
@@ -668,20 +668,55 @@ const AssessmentHtmlContainer = () => {
                             lang={lang}
                           />
                         </Box>
-                        <Grid
-                          xs={12}
-                          md={12}
+                        <Box
                           bgcolor="#F3F5F6"
                           borderRadius="8px"
                           paddingX={2}
                           paddingBottom={2}
-                          my={2}
-                          container
-                          spacing={2}
-                          marginLeft={0}
+                          mt={4}
                         >
-                          {!isQuickMode && (
-                            <Grid item xs={12} md={10}>
+                          <Grid container spacing={2}>
+                            {!isQuickMode && (
+                              <Grid item xs={12} md={9.7}>
+                                <Typography
+                                  variant="titleSmall"
+                                  sx={{
+                                    color: "#2B333B",
+                                    my: 1,
+                                    ...styles.centerV,
+                                    direction: rtlLanguage ? "rtl" : "ltr",
+                                    fontFamily: rtlLanguage
+                                      ? farsiFontFamily
+                                      : primaryFontFamily,
+                                    gap: "4px",
+                                  }}
+                                >
+                                  <InfoOutlinedIcon fontSize="small" />
+                                  {t("common.treeMapChart", {
+                                    lng,
+                                  })}
+                                </Typography>
+                                <Typography
+                                  component="div"
+                                  textAlign="justify"
+                                  variant="bodyMedium"
+                                  sx={{
+                                    fontWeight: "light",
+                                    mt: 1,
+                                    ...styles.rtlStyle(rtlLanguage),
+                                  }}
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      assessment.prosAndCons ??
+                                      t("common.unavailable", {
+                                        lng,
+                                      }),
+                                  }}
+                                ></Typography>
+                              </Grid>
+                            )}
+
+                            <Grid item xs={12} md={!isQuickMode ? 2.3 : 12}>
                               <Typography
                                 variant="titleSmall"
                                 sx={{
@@ -692,104 +727,71 @@ const AssessmentHtmlContainer = () => {
                                   fontFamily: rtlLanguage
                                     ? farsiFontFamily
                                     : primaryFontFamily,
-                                  gap: "4px",
                                 }}
                               >
-                                <InfoOutlinedIcon fontSize="small" />
-                                {t("common.treeMapChart", {
+                                {t("common.maturityLevels", {
                                   lng,
                                 })}
                               </Typography>
-                              <Typography
-                                component="div"
-                                textAlign="justify"
-                                variant="bodyMedium"
+                              <Grid
+                                item
+                                xs={12}
                                 sx={{
-                                  fontWeight: "light",
-                                  mt: 1,
-                                  ...styles.rtlStyle(rtlLanguage),
+                                  flexDirection: !isQuickMode
+                                    ? "column"
+                                    : "row",
                                 }}
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    assessment.prosAndCons ??
-                                    t("common.unavailable", {
-                                      lng,
-                                    }),
-                                }}
-                              ></Typography>
-                            </Grid>
-                          )}
-
-                          <Grid item xs={12} md={!isQuickMode ? 2 : 12}>
-                            <Typography
-                              variant="titleSmall"
-                              sx={{
-                                color: "#2B333B",
-                                my: 1,
-                                ...styles.centerV,
-                                direction: rtlLanguage ? "rtl" : "ltr",
-                                fontFamily: rtlLanguage
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                              }}
-                            >
-                              {t("common.maturityLevels", {
-                                lng,
-                              })}
-                            </Typography>
-                            <Grid
-                              container
-                              xs={12}
-                              sx={{
-                                flexDirection: !isQuickMode ? "column" : "row",
-                              }}
-                              mt={2}
-                            >
-                              {assessment.assessmentKit.maturityLevels.map(
-                                (level: any, index: number) => (
-                                  <Box
-                                    key={uniqueId()}
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      rowGap: 2,
-                                    }}
-                                  >
+                                mt={2}
+                              >
+                                {assessment.assessmentKit.maturityLevels.map(
+                                  (level: any, index: number) => (
                                     <Box
+                                      key={uniqueId()}
                                       sx={{
-                                        backgroundColor: getMaturityLevelColors(
-                                          assessment.assessmentKit
-                                            .maturityLevelCount,
-                                        )[level.value - 1],
-                                        height: "10px",
-                                        width: "27px",
-                                        borderRadius: "16px",
-                                        color: "#fff",
-                                        fontWeight: "bold",
-                                      }}
-                                    ></Box>
-
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                      sx={{
-                                        color: "#2B333B",
-                                        direction: rtlLanguage ? "rtl" : "ltr",
-                                        fontFamily: rtlLanguage
-                                          ? farsiFontFamily
-                                          : primaryFontFamily,
-                                        paddingInlineEnd: 1,
-                                        paddingInlineStart: 0.25,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        rowGap: 2,
                                       }}
                                     >
-                                      {level.title}
-                                    </Typography>
-                                  </Box>
-                                ),
-                              )}
+                                      <Box
+                                        sx={{
+                                          backgroundColor:
+                                            getMaturityLevelColors(
+                                              assessment.assessmentKit
+                                                .maturityLevelCount,
+                                            )[level.value - 1],
+                                          height: "10px",
+                                          width: "27px",
+                                          borderRadius: "16px",
+                                          color: "#fff",
+                                          fontWeight: "bold",
+                                        }}
+                                      ></Box>
+
+                                      <Typography
+                                        component="span"
+                                        variant="body2"
+                                        sx={{
+                                          color: "#2B333B",
+                                          direction: rtlLanguage
+                                            ? "rtl"
+                                            : "ltr",
+                                          fontFamily: rtlLanguage
+                                            ? farsiFontFamily
+                                            : primaryFontFamily,
+                                          paddingInlineEnd: 1,
+                                          paddingInlineStart: 0.25,
+                                        }}
+                                      >
+                                        {level.title}
+                                      </Typography>
+                                    </Box>
+                                  ),
+                                )}
+                              </Grid>
                             </Grid>
                           </Grid>
-                        </Grid>
+                        </Box>
                         <SubjectReport graphicalReport={graphicalReport} />
                       </Box>
                     </Paper>

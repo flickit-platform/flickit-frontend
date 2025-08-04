@@ -53,6 +53,11 @@ const tabListTitle: TabItem[] = [
     address: "report",
     permission: "manageReportMetadata",
   },
+  {
+    label: "assessmentReport.reportTitle",
+    address: "settings",
+    permission: "viewDashboard",
+  },
 ];
 
 const MainTabs = (props: any) => {
@@ -208,6 +213,8 @@ const MainTabs = (props: any) => {
                           value={tab.address}
                           sx={{
                             ...theme.typography.semiBoldLarge,
+                            display:
+                              tab.address == "settings" ? "none" : "initial",
                             flexGrow: flexColumn ? 0 : 1,
                             border: "none",
                             textTransform: "none",
