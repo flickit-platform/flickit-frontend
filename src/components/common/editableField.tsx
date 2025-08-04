@@ -19,6 +19,8 @@ export const renderEditableField : any = (
   showTranslations: any,
   toggleTranslation: any,
   handleFieldEdit: any,
+  handleSave?: any,
+  handleCancelTextBox?: any,
 )=>{
   const { updateTranslation } = useTranslationUpdater(langCode);
   const renderField = useCallback(() => {
@@ -65,6 +67,8 @@ export const renderEditableField : any = (
             minRows={multiline ? 3 : undefined}
             useRichEditor={useRichEditor}
             lang={langCode}
+            handleSave={handleSave}
+            handleCancelTextBox={handleCancelTextBox}
           />
         </Box>
       ) : (

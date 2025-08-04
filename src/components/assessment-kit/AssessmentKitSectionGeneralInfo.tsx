@@ -182,6 +182,59 @@ const AssessmentKitSectionGeneralInfo = (
     }));
   }, []);
 
+
+  const updateKitInfoQuery = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.updateStats(args, config),
+    runOnMount: false,
+  });
+
+  const handleCancelTextBox = (field: any) => {
+    editableFields.delete(field);
+    setUpdatedValues((prev: any) => ({
+      ...prev,
+      [field]: "",
+    }))
+  };
+
+  const handleSave = () => {
+    const goal = updatedValues.goal;
+    const context = updatedValues.context;
+    const translations: Record<string, any> = updatedValues.translations ?? {};
+
+    const updatedValuesWithMetadata = {
+      ...updatedValues,
+      metadata: {
+        goal,
+        context,
+      },
+      translations: {
+        ...translations,
+        [langCode]: {
+          ...translations[langCode],
+          metadata: {
+            context: translations?.[langCode].context,
+            goal: translations?.[langCode].goal,
+          },
+        },
+      },
+    };
+
+    delete updatedValuesWithMetadata.goal;
+    delete updatedValuesWithMetadata.context;
+
+    updateKitInfoQuery
+      .query({
+        assessmentKitId: assessmentKitId,
+        data: updatedValuesWithMetadata,
+      })
+      .then(() => {
+        fetchAssessmentKitInfoQuery.query();
+        setEditableFields(new Set());
+      })
+      .catch((e) => showToast(e));
+  };
+
   return (
     <QueryBatchData
       queryBatchData={[
@@ -441,12 +494,6 @@ const AssessmentKitSectionGeneralInfo = (
                   )}
                 </Box>
 
-                {/*<OnHoverRichEditor*/}
-                {/*  data={about}*/}
-                {/*  title={<Trans i18nKey="common.what" />}*/}
-                {/*  infoQuery={fetchAssessmentKitInfoQuery.query}*/}
-                {/*  editable={editable}*/}
-                {/*/>*/}
                 {TextFields.map((field)=>{
                   const  { name, label, multiline, useRichEditor } = field
                   const data = {about,metadata}
@@ -480,6 +527,8 @@ const AssessmentKitSectionGeneralInfo = (
                           showTranslations,
                           toggleTranslation,
                           handleFieldEdit,
+                          handleSave,
+                          handleCancelTextBox
                         )}
                       </Box>
                     </Box>
@@ -782,7 +831,7 @@ const OnHoverInput = (props: any) => {
               }}
               variant="body2"
               fontWeight="700"
-            >
+             >
               {data?.replace(/<\/?p>/g, "")}
             </Typography>
             {isHovering && (
