@@ -373,7 +373,7 @@ const Actions = (props: any) => {
   const { id: spaceId } = space;
   const { service } = useServiceContext();
   const [editLoading, setEditLoading] = useState(false);
-  const {abortController, loading } = deleteSpace
+  const { loading } = deleteSpace
 
   const leaveSpaceQuery = useQuery({
     service: (args, config) => service.space.leave({ spaceId }, config),
@@ -382,7 +382,7 @@ const Actions = (props: any) => {
   const openEditDialog = (e: any) => {
     setEditLoading(true);
     service.space
-      .getById({ spaceId }, { signal: abortController.signal })
+      .getById({ spaceId })
       .then(({ data }) => {
         setEditLoading(false);
         dialogProps.openDialog({ data, type: "update" });
