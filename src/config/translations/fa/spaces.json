@@ -1,4 +1,5 @@
 {
+  "areYouSureYouWantDeleteSpace": "فضای کاری شما حذف خواهد شد. آیا مایل به ادامه هستید؟",
   "basicSpace": "فضای کاری پایه",
   "createBasicSpaceCongratulation": "فضای کاری شما آماده است! اکنون می‌توانید اعضای تیم را دعوت و ارزیابی را شروع کنید.",
   "createLimitedAssessments": "امکان ایجاد تعداد <strong>محدود</strong> ارزیابی",
