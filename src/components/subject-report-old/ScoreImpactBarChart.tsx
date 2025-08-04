@@ -15,7 +15,6 @@ import {
   Tooltip,
 } from "recharts";
 import { styles } from "@styles";
-import { useTheme } from "@mui/material";
 
 const CustomTooltip = ({
   active,
@@ -82,12 +81,12 @@ const CustomTooltip = ({
 };
 
 const legendFormatter = (value: string, language: string) => {
-  const theme = useTheme();
 
   return (
-    <span
-      style={{
-        ...theme.typography.labelSmall,
+    <Typography
+      component="span"
+      variant="labelSmall"
+      sx={{
         fontFamily: language === "fa" ? farsiFontFamily : primaryFontFamily,
         marginInline: 2,
       }}
@@ -95,7 +94,7 @@ const legendFormatter = (value: string, language: string) => {
       {value === "uv"
         ? t("subject.gainedScore", { lng: language })
         : t("subject.missedScore", { lng: language })}
-    </span>
+    </Typography>
   );
 };
 
