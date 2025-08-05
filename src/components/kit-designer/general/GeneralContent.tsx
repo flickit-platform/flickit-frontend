@@ -14,8 +14,9 @@ import PermissionControl from "@/components/common/PermissionControl";
 import LanguageSelectorChips from "./components/LanguageSelectorChips";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { useRenderEditableField } from "@common/editableField";
+import { renderEditableField } from "@common/editableField";
 import useEditableField from "@/hooks/useEditableField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 const generalFields = [
   { name: "title", label: "common.title", multiline: false, useRichEditor: false },
@@ -58,7 +59,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
 
   const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation, showTranslations, updatedValues, setUpdatedValues} = useEditableField({setTranslatedLang, assessmentKitId : kitVersion.assessmentKit.id, fetchAssessmentKitInfoQuery})
-
+  const { updateTranslation } = useTranslationUpdater(langCode);
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
       if (
@@ -162,7 +163,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      {useRenderEditableField({
+                      {renderEditableField(
                         name,
                         data,
                         editableFields,
@@ -174,7 +175,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         handleFieldEdit,
                         multiline,
                         useRichEditor,
-                      })}
+                        updateTranslation
+                      )}
                     </Box>
                   </Box>
                 ),

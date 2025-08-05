@@ -4,27 +4,25 @@ import TitleWithTranslation from "@common/fields/TranslationText";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
-import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+type fieldName = "title" | "summary" | "about" | "goal" | "context"
 
-export function useRenderEditableField(
- props: any){
-  const  {
-    field,
-    data,
-    editableFields,
-    langCode,
-    updatedValues,
-    setUpdatedValues,
-    showTranslations,
-    toggleTranslation,
-    handleFieldEdit,
-    handleSaveEdit,
-    handleCancelTextBox,
-    multiline = false,
-    useRichEditor = false,
-} = props
+export function renderEditableField(
+  field: fieldName,
+  data: any,
+  editableFields: any,
+  langCode: any,
+  updatedValues: any,
+  setUpdatedValues: any,
+  showTranslations: any,
+  toggleTranslation: any,
+  handleFieldEdit: any,
+  multiline = false,
+  useRichEditor = false,
+  updateTranslation: any,
+  handleSaveEdit?: any,
+  handleCancelTextBox?: any,
+  ){
 
-  const { updateTranslation } = useTranslationUpdater(langCode);
   const renderField = useCallback(() => {
       const isEditing = editableFields.has(field);
       const isMetadataField = field === "goal" || field === "context";
@@ -43,52 +41,8 @@ export function useRenderEditableField(
           translationFieldValue = data?.translations?.[langCode]?.[field] ?? "";
         }
       }
+return {isEditing, fieldValue, translationFieldValue }
 
-      return isEditing ? (
-        <Box sx={{ flexGrow: 1 }}>
-          <MultiLangTextField
-            name={field}
-            value={updatedValues[field] ?? ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUpdatedValues((prev: any) => ({
-                ...prev,
-                [field]: e.target.value,
-              }))
-            }
-            label={""}
-            translationValue={
-              langCode
-                ? (updatedValues.translations?.[langCode]?.[field] ?? "")
-                : ""
-            }
-            onTranslationChange={updateTranslation(field, setUpdatedValues)}
-            showTranslation={showTranslations[field]}
-            setShowTranslation={() => toggleTranslation(field)}
-            fullWidth
-            multiline={multiline}
-            minRows={multiline ? 3 : undefined}
-            useRichEditor={useRichEditor}
-            lang={langCode}
-            handleSaveEdit={handleSaveEdit}
-            handleCancelTextBox={handleCancelTextBox}
-          />
-        </Box>
-      ) : (
-        <>
-          <TitleWithTranslation
-            title={fieldValue ?? ""}
-            translation={translationFieldValue}
-            variant="semiBoldMedium"
-            multiline
-          />
-          <IconButton
-            onClick={() => handleFieldEdit(field)}
-            sx={{ width: 40, height: 40, borderRadius: "50%", p: 0 }}
-          >
-            <EditIcon />
-          </IconButton>
-        </>
-      );
     },
     [
       editableFields,
@@ -100,5 +54,51 @@ export function useRenderEditableField(
       handleFieldEdit,
     ],
   )
-  return renderField()
+
+  const {isEditing, fieldValue, translationFieldValue } = renderField()
+  return isEditing ? (
+    <Box sx={{ flexGrow: 1 }}>
+      <MultiLangTextField
+        name={field}
+        value={updatedValues[field] ?? ""}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setUpdatedValues((prev: any) => ({
+            ...prev,
+            [field]: e.target.value,
+          }))
+        }
+        label={""}
+        translationValue={
+          langCode
+            ? (updatedValues.translations?.[langCode]?.[field] ?? "")
+            : ""
+        }
+        onTranslationChange={updateTranslation(field, setUpdatedValues)}
+        showTranslation={showTranslations[field]}
+        setShowTranslation={() => toggleTranslation(field)}
+        fullWidth
+        multiline={multiline}
+        minRows={multiline ? 3 : undefined}
+        useRichEditor={useRichEditor}
+        lang={langCode}
+        handleSaveEdit={handleSaveEdit}
+        handleCancelTextBox={handleCancelTextBox}
+      />
+    </Box>
+  ) : (
+    <>
+      <TitleWithTranslation
+        title={fieldValue ?? ""}
+        translation={translationFieldValue}
+        variant="semiBoldMedium"
+        multiline
+      />
+      <IconButton
+        onClick={() => handleFieldEdit(field)}
+        sx={{ width: 40, height: 40, borderRadius: "50%", p: 0 }}
+      >
+        <EditIcon />
+      </IconButton>
+    </>
+  );
 };

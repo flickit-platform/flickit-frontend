@@ -38,8 +38,9 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
-import { useRenderEditableField } from "@common/editableField";
+import { renderEditableField } from "@common/editableField";
 import useEditableField from "@/hooks/useEditableField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -76,7 +77,7 @@ const AssessmentKitSectionGeneralInfo = (
   });
 
   const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation , showTranslations, updatedValues, setUpdatedValues} = useEditableField({ assessmentKitId, fetchAssessmentKitInfoQuery})
-
+  const { updateTranslation } = useTranslationUpdater(langCode);
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -419,7 +420,7 @@ const AssessmentKitSectionGeneralInfo = (
                         >
                           <Trans i18nKey={label} />:
                         </Typography>
-                        {useRenderEditableField({
+                        {renderEditableField(
                           name,
                           data,
                           editableFields,
@@ -431,9 +432,10 @@ const AssessmentKitSectionGeneralInfo = (
                           handleFieldEdit,
                           multiline,
                           useRichEditor,
+                          updateTranslation,
                           handleSaveEdit,
                           handleCancelTextBox,
-                        })}
+                        )}
                       </Box>
                     </Box>
                   );
