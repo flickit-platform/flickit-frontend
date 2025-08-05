@@ -13,6 +13,7 @@ import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import { getOrCreateVisitorId } from "./utils/uniqueId";
 import i18next from "i18next";
 import { useLangDispatch } from "./providers/LangProvider";
+import { initClarity } from "./utils/clarity";
 
 function getLangFromHash() {
   const hash = window.location.hash;
@@ -21,6 +22,8 @@ function getLangFromHash() {
   const params = new URLSearchParams(paramsString);
   return params.get("lang");
 }
+
+initClarity();
 
 function App() {
   const { pathname = "" } = useLocation();
@@ -47,10 +50,6 @@ function App() {
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
       keycloakService._kc.tokenParsed?.sub;
-    const visitorId = getOrCreateVisitorId();
-
-    // @ts-ignore
-    window._paq.push(["setVisitorId", visitorId]);
 
     // @ts-ignore
     if (customId && window.clarity) {
