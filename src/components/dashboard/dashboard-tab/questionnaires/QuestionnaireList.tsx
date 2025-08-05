@@ -336,7 +336,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          permissions.viewGraphicalReport && (
+          permissions?.viewGraphicalReport && (
             <ProgressButton {...assessmentTotalProgress?.data} />
           )
         ) : (
