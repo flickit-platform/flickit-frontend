@@ -284,7 +284,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
 
-  const { assessmentInfo } = useAssessmentContext();
+  const { assessmentInfo, permissions } = useAssessmentContext();
 
   const [isQuickMode, setIsQuickMode] = useState(false);
 
@@ -336,7 +336,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton {...assessmentTotalProgress?.data} />
+          permissions.viewGraphicalReport && (
+            <ProgressButton {...assessmentTotalProgress?.data} />
+          )
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}
