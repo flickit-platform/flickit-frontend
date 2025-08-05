@@ -14,17 +14,12 @@ import { getOrCreateVisitorId } from "./utils/uniqueId";
 
 function App() {
   const { pathname = "" } = useLocation();
-  // const [searchParams] = useSearchParams();
-  // const lang = searchParams.get("lang");
 
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
-    // if (lang) {
-    //   localStorage.setItem("lang", lang);
-    //   document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
-    // }
+
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
       keycloakService._kc.tokenParsed?.sub;

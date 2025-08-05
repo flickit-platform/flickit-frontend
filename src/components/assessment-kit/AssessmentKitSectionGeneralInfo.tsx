@@ -14,7 +14,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -181,11 +181,11 @@ const AssessmentKitSectionGeneralInfo = (
         setHasActiveVersion(hasActiveVersion);
         setExpertGroup(expertGroup);
 
-        const handleFieldEdit = useCallback((field: "about") => {
+        const handleFieldEdit = (field: "about") => {
           if(editable){
             setEditableFields((prev) => new Set(prev).add(field));
           }
-        }, []);
+        };
 
         return (
           <Grid container spacing={4}>
@@ -422,8 +422,6 @@ const AssessmentKitSectionGeneralInfo = (
                         {renderEditableField(
                           name,
                           data,
-                          multiline,
-                          useRichEditor,
                           editableFields,
                           langCode,
                           updatedValues,
@@ -432,7 +430,9 @@ const AssessmentKitSectionGeneralInfo = (
                           toggleTranslation,
                           handleFieldEdit,
                           handleSaveEdit,
-                          handleCancelTextBox
+                          handleCancelTextBox,
+                          multiline,
+                          useRichEditor,
                         )}
                       </Box>
                     </Box>
