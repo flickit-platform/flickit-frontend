@@ -22,17 +22,19 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { ICustomError } from "@utils/CustomError";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
-import { FLAGS } from "@/types";
+import { FLAGS, TId } from "@/types";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
+import React from "react";
 
 interface IExpertGroupsItemProps {
   data: any;
   disableActions?: boolean;
+  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
 }
 
 const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
-  const { data, disableActions = false } = props;
+  const { data, disableActions = false, ...rest } = props;
   const {
     id,
     title,
@@ -93,7 +95,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
           }
           action={
             !disableActions && (
-              <Actions editable={editable} expertGroup={data} />
+              <Actions editable={editable} expertGroup={data} {...rest} />
             )
           }
           title={
@@ -170,7 +172,7 @@ const ExpertGroupsItem = (props: IExpertGroupsItemProps) => {
 };
 
 const Actions = (props: any) => {
-  const { expertGroup, editable } = props;
+  const { expertGroup, editable , setOpenDeleteDialog } = props;
   const { query: fetchExpertGroups } = useQueryDataContext();
   const { service } = useServiceContext();
   const { id } = expertGroup;
@@ -178,11 +180,6 @@ const Actions = (props: any) => {
     service: (args, config) =>
       service.expertGroups.info.getById(args ?? { id }, config),
     runOnMount: false,
-  });
-  const deleteExpertGroupQuery = useQuery({
-    service: (args, config) => service.expertGroups.info.remove({ id }, config),
-    runOnMount: false,
-    toastError: false,
   });
   const dialogProps = useDialog();
 
@@ -193,50 +190,39 @@ const Actions = (props: any) => {
       type: "update",
     });
   };
-  const deleteExpertGroup = async (e: any) => {
-    try {
-      e.stopPropagation();
-      await deleteExpertGroupQuery.query();
-      await fetchExpertGroups();
-    } catch (e) {
-      const err = e as ICustomError;
-      if (err.response?.data?.hasOwnProperty("message")) {
-        if (Array.isArray(err.response?.data?.message)) {
-          showToast(err.response?.data?.message[0]);
-        } else {
-          showToast(err);
-        }
-      }
-    }
-  };
+  
   const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const menu  = useMenu();
 
-
-  return editable && showGroups ? (
+  return (
     <>
-      <MoreActions
-        {...useMenu()}
-        boxProps={{ ml: 0.2 }}
-        loading={loading}
-        items={[
-          {
-            icon: <EditRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="common.edit" />,
-            onClick: openEditDialog,
-          },
-          {
-            icon: <DeleteRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="common.delete" />,
-            onClick: (e) => deleteExpertGroup(e),
-          },
-        ]}
-      />
-      <ExpertGroupCEFormDialog
-        {...dialogProps}
-        onSubmitForm={fetchExpertGroups}
-      />
+      {editable && showGroups && (
+        <>
+          <MoreActions
+            {...menu}
+            boxProps={{ ml: 0.2 }}
+            loading={loading}
+            items={[
+              {
+                icon: <EditRoundedIcon fontSize="small" />,
+                text: <Trans i18nKey="common.edit" />,
+                onClick: openEditDialog,
+              },
+              {
+                icon: <DeleteRoundedIcon fontSize="small" />,
+                text: <Trans i18nKey="common.delete" />,
+                onClick: () => setOpenDeleteDialog({status: open, id}),
+              },
+            ]}
+          />
+          <ExpertGroupCEFormDialog
+            {...dialogProps}
+            onSubmitForm={fetchExpertGroups}
+          />
+        </>
+        )}
     </>
-  ) : null;
+  )
 };
 
 export default ExpertGroupsItem;
