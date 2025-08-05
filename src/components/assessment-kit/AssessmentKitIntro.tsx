@@ -4,7 +4,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 
 const MAX_HEIGHT = 210;
 
