@@ -83,9 +83,9 @@ export default function useEditableField(props: any){
       const defaultTranslatedLanguage = data.languages?.find(
         (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
       );
-      if(!!setTranslatedLang){
-        setTranslatedLang(defaultTranslatedLanguage);
-      }
+
+      setTranslatedLang(defaultTranslatedLanguage);
+
       dispatch(kitActions.setMainLanguage(data.mainLanguage));
       dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
       setShowTranslations({

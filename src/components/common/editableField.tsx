@@ -17,10 +17,10 @@ export function renderEditableField(
   showTranslations: any,
   toggleTranslation: any,
   handleFieldEdit: any,
-  handleSaveEdit?: any,
-  handleCancelTextBox?: any,
   multiline = false,
   useRichEditor = false,
+  handleSaveEdit?: any,
+  handleCancelTextBox?: any,
 ){
   const { updateTranslation } = useTranslationUpdater(langCode);
   const renderField = useCallback(() => {

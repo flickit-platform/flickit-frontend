@@ -429,10 +429,10 @@ const AssessmentKitSectionGeneralInfo = (
                           showTranslations,
                           toggleTranslation,
                           handleFieldEdit,
-                          handleSaveEdit,
-                          handleCancelTextBox,
                           multiline,
                           useRichEditor,
+                          handleSaveEdit,
+                          handleCancelTextBox,
                         )}
                       </Box>
                     </Box>

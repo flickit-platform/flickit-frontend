@@ -165,8 +165,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                       {renderEditableField(
                         name,
                         data,
-                        multiline,
-                        useRichEditor,
                         editableFields,
                         langCode,
                         updatedValues,
@@ -174,6 +172,8 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         showTranslations,
                         toggleTranslation,
                         handleFieldEdit,
+                        multiline,
+                        useRichEditor,
                       )}
                     </Box>
                   </Box>
