@@ -54,21 +54,10 @@ function App() {
 
     // @ts-ignore
     if (customId && window.clarity) {
-      const script = document.createElement("script");
-      script.setAttribute("type", "text/javascript");
-      script.setAttribute("id", import.meta.env.VITE_CLARITY_KEY);
-      script.setAttribute("defer", "");
-      let code = `
-              window.clarity('set', 'user_id', '${customId}');
-              window.clarity("identify", "${customId}");
-          `;
       // @ts-ignore
       window.clarity("set", "user_id", customId);
       // @ts-ignore
       window.clarity("identify", customId);
-
-      script.appendChild(document.createTextNode(code));
-      document.body.appendChild(script);
     }
     // @ts-ignore
     window._paq.push(["setUserId", customId]);
