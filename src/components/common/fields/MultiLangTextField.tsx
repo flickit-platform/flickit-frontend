@@ -31,7 +31,7 @@ interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   useRichEditor?: boolean;
   lang?: string;
   handleCancelTextBox?: any
-  handleSave?: any
+  handleSaveEdit?: any
 }
 
 const MultiLangTextField = ({
@@ -51,7 +51,7 @@ const MultiLangTextField = ({
   maxRows,
   lang,
   handleCancelTextBox,
-  handleSave,
+  handleSaveEdit,
   ...rest
 }: MultiLangTextFieldProps) => {
   const { kitState } = useKitDesignerContext();
@@ -161,11 +161,11 @@ const MultiLangTextField = ({
               />
             </IconButton>
           )}
-          {!!handleSave && !!handleCancelTextBox &&
+          {!!handleSaveEdit && !!handleCancelTextBox &&
             <>
               <IconButton
                 size="small"
-                onClick={handleSave}
+                onClick={handleSaveEdit}
                 color="success"
                 sx={{ ...styles.fixedIconButtonStyle }}
                 data-testid="check-icon-id"

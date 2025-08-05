@@ -40,6 +40,7 @@ import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
 import { renderEditableField } from "@common/editableField";
 import { kitActions, useKitDesignerContext } from "../../providers/KitProvider";
+import useEditableField from "@/hooks/useEditableField";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -65,7 +66,6 @@ const AssessmentKitSectionGeneralInfo = (
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
-  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
 
   const [updatedValues, setUpdatedValues] = useState<any>({
     about: "",
@@ -88,6 +88,8 @@ const AssessmentKitSectionGeneralInfo = (
       service.assessmentKit.info.getStats(args ?? { assessmentKitId }, config),
     runOnMount: true,
   });
+
+  const {handleSaveEdit, editableFields, setEditableFields} = useEditableField({updatedValues, langCode, assessmentKitId, fetchAssessmentKitInfoQuery})
   const data = fetchAssessmentKitInfoQuery.data;
   const translations = data?.translations ?? {};
 
@@ -183,11 +185,11 @@ const AssessmentKitSectionGeneralInfo = (
   }, []);
 
 
-  const updateKitInfoQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.updateStats(args, config),
-    runOnMount: false,
-  });
+  // const updateKitInfoQuery = useQuery({
+  //   service: (args, config) =>
+  //     service.assessmentKit.info.updateStats(args, config),
+  //   runOnMount: false,
+  // });
 
   const handleCancelTextBox = (field: any) => {
     editableFields.delete(field);
@@ -197,43 +199,43 @@ const AssessmentKitSectionGeneralInfo = (
     }))
   };
 
-  const handleSave = () => {
-    const goal = updatedValues.goal;
-    const context = updatedValues.context;
-    const translations: Record<string, any> = updatedValues.translations ?? {};
-
-    const updatedValuesWithMetadata = {
-      ...updatedValues,
-      metadata: {
-        goal,
-        context,
-      },
-      translations: {
-        ...translations,
-        [langCode]: {
-          ...translations[langCode],
-          metadata: {
-            context: translations?.[langCode].context,
-            goal: translations?.[langCode].goal,
-          },
-        },
-      },
-    };
-
-    delete updatedValuesWithMetadata.goal;
-    delete updatedValuesWithMetadata.context;
-
-    updateKitInfoQuery
-      .query({
-        assessmentKitId: assessmentKitId,
-        data: updatedValuesWithMetadata,
-      })
-      .then(() => {
-        fetchAssessmentKitInfoQuery.query();
-        setEditableFields(new Set());
-      })
-      .catch((e) => showToast(e));
-  };
+  // const handleSave = () => {
+  //   const goal = updatedValues.goal;
+  //   const context = updatedValues.context;
+  //   const translations: Record<string, any> = updatedValues.translations ?? {};
+  //
+  //   const updatedValuesWithMetadata = {
+  //     ...updatedValues,
+  //     metadata: {
+  //       goal,
+  //       context,
+  //     },
+  //     translations: {
+  //       ...translations,
+  //       [langCode]: {
+  //         ...translations[langCode],
+  //         metadata: {
+  //           context: translations?.[langCode].context,
+  //           goal: translations?.[langCode].goal,
+  //         },
+  //       },
+  //     },
+  //   };
+  //
+  //   delete updatedValuesWithMetadata.goal;
+  //   delete updatedValuesWithMetadata.context;
+  //
+  //   updateKitInfoQuery
+  //     .query({
+  //       assessmentKitId: assessmentKitId,
+  //       data: updatedValuesWithMetadata,
+  //     })
+  //     .then(() => {
+  //       fetchAssessmentKitInfoQuery.query();
+  //       setEditableFields(new Set());
+  //     })
+  //     .catch((e) => showToast(e));
+  // };
 
   return (
     <QueryBatchData
@@ -527,7 +529,7 @@ const AssessmentKitSectionGeneralInfo = (
                           showTranslations,
                           toggleTranslation,
                           handleFieldEdit,
-                          handleSave,
+                          handleSaveEdit,
                           handleCancelTextBox
                         )}
                       </Box>
