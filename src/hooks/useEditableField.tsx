@@ -5,7 +5,6 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { ILanguage } from "@/types";
 import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 
-
 export default function useEditableField(props: any){
 
   const { assessmentKitId, fetchAssessmentKitInfoQuery, setTranslatedLang } = props
@@ -69,7 +68,6 @@ export default function useEditableField(props: any){
 
     updateKitInfoQuery
       .query({
-        // assessmentKitId: kitVersion.assessmentKit.id,
         assessmentKitId: assessmentKitId,
         data: updatedValuesWithMetadata,
       })

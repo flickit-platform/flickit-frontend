@@ -14,7 +14,7 @@ import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
@@ -63,17 +63,6 @@ const AssessmentKitSectionGeneralInfo = (
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
-
-  // const [updatedValues, setUpdatedValues] = useState<any>({
-  //   about: "",
-  //   goal: "",
-  //   context: "",
-  // });
-  // const [showTranslations, setShowTranslations] = useState({
-  //   about: false,
-  //   goal: false,
-  //   context: false,
-  // });
 
   const fetchAssessmentKitInfoQuery = useQuery({
     service: (args, config) =>
