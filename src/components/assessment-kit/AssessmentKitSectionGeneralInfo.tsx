@@ -162,7 +162,8 @@ const AssessmentKitSectionGeneralInfo = (
           editable,
           hasActiveVersion,
           mainLanguage,
-          metadata
+          metadata,
+          translations
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -399,7 +400,7 @@ const AssessmentKitSectionGeneralInfo = (
 
                 {TextFields.map((field)=>{
                   const  { name, label, multiline, useRichEditor } = field
-                  const data = {about,metadata}
+                  const data = {about,metadata, translations}
 
                   return (
                     <Box key={name}>
