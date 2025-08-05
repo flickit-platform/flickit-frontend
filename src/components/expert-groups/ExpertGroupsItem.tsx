@@ -194,8 +194,7 @@ const Actions = (props: any) => {
   const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
 
-  return editable && showGroups ? (
-    <>
+  return editable && showGroups && <>
       <MoreActions
         {...useMenu()}
         boxProps={{ ml: 0.2 }}
@@ -218,7 +217,6 @@ const Actions = (props: any) => {
         onSubmitForm={fetchExpertGroups}
       />
     </>
-  ) : null;
 };
 
 export default ExpertGroupsItem;
