@@ -30,7 +30,7 @@ import firstCharDetector from "@/utils/firstCharDetector";
 import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
-import { AssessmentKitStatsType, AssessmentKitInfoType, ILanguage } from "@/types/index";
+import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
 import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
@@ -39,7 +39,6 @@ import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
 import { renderEditableField } from "@common/editableField";
-import { kitActions, useKitDesignerContext } from "../../providers/KitProvider";
 import useEditableField from "@/hooks/useEditableField";
 
 interface IAssessmentKitSectionAuthorInfo {
@@ -61,8 +60,6 @@ const AssessmentKitSectionGeneralInfo = (
   const {
     config: { languages },
   }: any = useConfigContext();
-  const { kitState, dispatch } = useKitDesignerContext();
-  const langCode = kitState.translatedLanguage?.code ?? "";
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
@@ -89,39 +86,7 @@ const AssessmentKitSectionGeneralInfo = (
     runOnMount: true,
   });
 
-  const {handleSaveEdit, editableFields, setEditableFields} = useEditableField({updatedValues, langCode, assessmentKitId, fetchAssessmentKitInfoQuery})
-  const data = fetchAssessmentKitInfoQuery.data;
-  const translations = data?.translations ?? {};
-
-  useEffect(() => {
-    if (data) {
-      const defaultTranslatedLanguage = data.languages?.find(
-        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
-      );
-      // setTranslatedLang(defaultTranslatedLanguage);
-      dispatch(kitActions.setMainLanguage(data.mainLanguage));
-      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
-      setShowTranslations({
-        about: !!translations[langCode]?.about,
-        goal: !!translations[langCode]?.metadata?.goal,
-        context: !!translations[langCode]?.metadata?.context,
-      });
-      setUpdatedValues({
-        about: data.about ?? "",
-        goal: data?.metadata?.goal ?? "",
-        context: data?.metadata?.context ?? "",
-        translations: langCode
-          ? {
-            [langCode]: {
-              ...translations[langCode],
-              goal: data?.translations?.[langCode]?.metadata?.goal,
-              context: data?.translations?.[langCode]?.metadata?.context,
-            },
-          }
-          : {},
-      });
-    }
-  }, [data, langCode]);
+  const {handleSaveEdit, editableFields, setEditableFields, langCode} = useEditableField({updatedValues, assessmentKitId, fetchAssessmentKitInfoQuery, setShowTranslations, setUpdatedValues})
 
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);

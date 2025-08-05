@@ -1,14 +1,20 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import showToast from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
+import { ILanguage } from "@/types";
+import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 
 
 export default function useEditableField(props: any){
 
-  const { updatedValues, langCode, assessmentKitId, fetchAssessmentKitInfoQuery } = props
+  const { updatedValues, assessmentKitId, fetchAssessmentKitInfoQuery, setUpdatedValues, setShowTranslations } = props
   const { service } = useServiceContext();
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
+  const data = fetchAssessmentKitInfoQuery.data;
+  const translations = data?.translations ?? {};
+  const { kitState, dispatch } = useKitDesignerContext();
+  const langCode = kitState.translatedLanguage?.code ?? "";
 
   const updateKitInfoQuery = useQuery({
     service: (args, config) =>
@@ -56,10 +62,41 @@ export default function useEditableField(props: any){
       .catch((e) => showToast(e));
   }
 
+  useEffect(() => {
+    if (data) {
+      const defaultTranslatedLanguage = data.languages?.find(
+        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
+      );
+      // setTranslatedLang(defaultTranslatedLanguage);
+      dispatch(kitActions.setMainLanguage(data.mainLanguage));
+      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
+      setShowTranslations({
+        about: !!translations[langCode]?.about,
+        goal: !!translations[langCode]?.metadata?.goal,
+        context: !!translations[langCode]?.metadata?.context,
+      });
+      setUpdatedValues({
+        about: data.about ?? "",
+        goal: data?.metadata?.goal ?? "",
+        context: data?.metadata?.context ?? "",
+        translations: langCode
+          ? {
+            [langCode]: {
+              ...translations[langCode],
+              goal: data?.translations?.[langCode]?.metadata?.goal,
+              context: data?.translations?.[langCode]?.metadata?.context,
+            },
+          }
+          : {},
+      });
+    }
+  }, [data, langCode]);
+
   return {
     handleSaveEdit,
     setEditableFields,
     editableFields,
+    langCode
   }
 
 }
