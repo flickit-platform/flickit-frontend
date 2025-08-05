@@ -63,8 +63,8 @@ const NotificationIndicator = ({ seen }: { seen: boolean }) => (
       height: "24px",
       backgroundColor: seen ? "#6C8093" : "#2D80D2",
       borderRadius: "2px",
-      marginRight: document.body.style.direction === "ltr" ? 1 : "unset",
-      marginLeft: document.body.style.direction === "rtl" ? 1 : "unset",
+      marginRight: document.dir === "ltr" ? 1 : "unset",
+      marginLeft: document.dir === "rtl" ? 1 : "unset",
     }}
   />
 );

@@ -230,10 +230,16 @@ const AssessmentHtmlContainer = () => {
     </>
   );
 
-  const isInvalid = (subjects: ISubject[], advice: any, quickMode: boolean) => {
+  const isInvalid = (
+    subjects: ISubject[],
+    advice: any,
+    isAdvisable: boolean,
+    quickMode: boolean,
+  ) => {
     const isAnyInsightMissing = subjects.some((s) => !s?.insight);
     const isAdviceMissing =
-      !advice || advice.narration == null || !advice.adviceItems?.length;
+      (!advice || advice.narration == null || !advice.adviceItems?.length) &&
+      isAdvisable;
     return (
       (isAnyInsightMissing || isAdviceMissing) &&
       quickMode &&
@@ -276,6 +282,7 @@ const AssessmentHtmlContainer = () => {
             lang,
             visibility,
             linkHash,
+            isAdvisable,
           } = graphicalReport as IGraphicalReport;
           const lng = lang?.code?.toLowerCase();
           const rtlLanguage = lng === "fa";
@@ -290,7 +297,7 @@ const AssessmentHtmlContainer = () => {
 
           return (
             <>
-              {isInvalid(subjects, advice, isQuickMode) && (
+              {isInvalid(subjects, advice, isAdvisable, isQuickMode) && (
                 <Box
                   sx={{
                     backgroundColor: theme.palette.error.main,
@@ -334,7 +341,7 @@ const AssessmentHtmlContainer = () => {
                 sx={{
                   textAlign: rtlLanguage ? "right" : "left",
                   ...styles.rtlStyle(rtlLanguage),
-                  p: isInvalid(subjects, advice, isQuickMode)
+                  p: isInvalid(subjects, advice, isAdvisable, isQuickMode)
                     ? 1
                     : { xs: 1, sm: 1, md: 4 },
                   px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },

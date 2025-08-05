@@ -111,11 +111,12 @@ export const AssessmentTOC = ({
       label: "common.summary",
       subItems: [],
       id: "summary",
-    },   
+    },
     {
       label: "assessmentReport.subjectsOverview",
       subItems: [],
       id: "subjectsOverview",
+      hideItem: subjects.length === 1,
     },
     {
       label: "assessmentReport.maturityMapOfAssessedAttributes",
@@ -178,7 +179,7 @@ export const AssessmentTOC = ({
         >
           {items?.map((item) => {
             const hasSubItems = item.subItems.length > 0;
-            if (item.isAdvanceMode && !isAdvanceMode) {
+            if ((item.isAdvanceMode && !isAdvanceMode) || item.hideItem) {
               return;
             }
             return (

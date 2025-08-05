@@ -91,8 +91,8 @@ const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
           display: "flex",
           justifyContent: "start",
           flexWrap: "wrap",
-          ml: document.body.style.direction === "ltr" ? 4 : "unset",
-          mr: document.body.style.direction == "rtl" ? 4 : "unset",
+          ml: document.dir === "ltr" ? 4 : "unset",
+          mr: document.dir == "rtl" ? 4 : "unset",
         }}
       >
         {items?.length !== 0
