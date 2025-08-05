@@ -37,7 +37,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIos from "@mui/icons-material/ArrowForwardIos";
 import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n from "i18next";
 import { MULTILINGUALITY } from "@/config/constants";
@@ -46,6 +46,7 @@ import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
+import { useTheme } from "@mui/material";
 
 const NotificationCenter = lazy(() =>
   import("@novu/notification-center").then((module) => ({
@@ -62,12 +63,11 @@ const NotificationIndicator = ({ seen }: { seen: boolean }) => (
       height: "24px",
       backgroundColor: seen ? "#6C8093" : "#2D80D2",
       borderRadius: "2px",
-      marginRight: theme.direction === "ltr" ? 1 : "unset",
-      marginLeft: theme.direction === "rtl" ? 1 : "unset",
+      marginRight: document.dir === "ltr" ? 1 : "unset",
+      marginLeft: document.dir === "rtl" ? 1 : "unset",
     }}
   />
 );
-
 const NotificationItem = ({
   message,
   onNotificationClick,
@@ -75,6 +75,8 @@ const NotificationItem = ({
   message: any;
   onNotificationClick: any;
 }) => {
+  const theme = useTheme();
+
   return (
     <Box
       onClick={onNotificationClick}
@@ -168,6 +170,7 @@ const NotificationItem = ({
 
 const NotificationCenterComponent = ({ setNotificationCount }: any) => {
   const [selectedMessage, setSelectedMessage] = useState<IMessage | null>(null);
+  const theme = useTheme();
 
   const handleUnseenCountChanged = (unseenCount: number) => {
     setNotificationCount(unseenCount);
@@ -201,9 +204,9 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
       data?.assessment?.title
     ) {
       titleToLink = data.assessment.title;
-      if(templateIdentifier === "grantaccesstoreport"){
+      if (templateIdentifier === "grantaccesstoreport") {
         href = `/${data.assessment.spaceId}/assessments/${data.assessment.id}/graphical-report`;
-      }else {
+      } else {
         href = `/${data.assessment.spaceId}/assessments/1/${data.assessment.id}/dashboard`;
       }
     } else {
@@ -369,6 +372,7 @@ const Navbar = () => {
   const notificationCenterRef = useRef(null);
   const bellButtonRef = useRef(null);
   const { service } = useServiceContext();
+  const theme = useTheme();
 
   const spacesQueryData = useQuery<ISpacesModel>({
     service: (args?: { page?: number; size?: number }, config?: any) =>
@@ -713,6 +717,7 @@ const Navbar = () => {
 };
 
 const SpacesButton = (props: any) => {
+  const theme = useTheme();
   const { spacesQueryData } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -854,6 +859,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   };
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const theme = useTheme();
 
   return (
     <>

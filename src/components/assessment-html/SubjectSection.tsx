@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import { theme } from "@config/theme";
 import GeneralLayout from "./layout/GeneralLayout";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
@@ -10,12 +9,15 @@ import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types/index";
 import uniqueId from "@/utils/uniqueId";
+import { Box, useTheme } from "@mui/material";
 
 const SubjectReport = ({
   graphicalReport,
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
+  const theme = useTheme();
+
   const [maturityLevelCount] = useState<number>(
     graphicalReport?.assessment?.assessmentKit?.maturityLevelCount,
   );
@@ -25,7 +27,7 @@ const SubjectReport = ({
       {subjects?.map((item: any, index: number) => {
         const { title, insight, maturityLevel } = item;
         return (
-          <>
+          <Box key={uniqueId()}>
             <Grid
               component="div"
               id={title}
@@ -73,13 +75,7 @@ const SubjectReport = ({
                   width="100%"
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                spacing={2}
-                sx={{ ...styles.centerCVH, gap: 2 }}
-              >
+              <Grid item xs={12} md={12} sx={{ ...styles.centerCVH, gap: 2 }}>
                 {item?.attributes?.map((attribute: any) => {
                   return (
                     <BulletPointStatus
@@ -104,7 +100,7 @@ const SubjectReport = ({
                 />
               );
             })}
-          </>
+          </Box>
         );
       })}
     </GeneralLayout>

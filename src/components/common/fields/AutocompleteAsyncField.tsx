@@ -17,7 +17,7 @@ import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
 import { SPACE_LEVELS, TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
@@ -27,6 +27,7 @@ import languageDetector from "@utils/languageDetector";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import showToast from "@/utils/toastError";
+import { useTheme } from "@mui/material";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -155,6 +156,7 @@ const AutocompleteBaseField = (
     filterSelectedOptions = true,
     ...rest
   } = props;
+  const theme = useTheme();
   const { name, onChange, ref, value, ...restFields } = field;
   const {
     formState: { errors },
@@ -405,11 +407,11 @@ const AutocompleteBaseField = (
                   color: "#3D4D5C80",
                 }}
               >
-                (
-                {option?.[filterFields[1]].code
-                  ? option?.[filterFields[1]].code
-                  : option?.[filterFields[1]]}
-                )
+                ({
+                option?.[filterFields[1]].code ?
+                option?.languages.map((lang: {code: string, title: string}) => lang.code).join(", ") :
+                option?.[filterFields[1]]
+                })
               </Box>
             )}
             {(option?.isPrivate ||

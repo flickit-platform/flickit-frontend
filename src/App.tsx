@@ -8,18 +8,45 @@ import GettingThingsReadyLoading from "@common/loadings/GettingThingsReadyLoadin
 import ErrorBoundary from "@common/errors/ErrorBoundry";
 import { useEffect } from "react";
 import flagsmith from "flagsmith";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
 import { getOrCreateVisitorId } from "./utils/uniqueId";
+import i18next from "i18next";
+import { useLangDispatch } from "./providers/LangProvider";
+
+function getLangFromHash() {
+  const hash = window.location.hash;
+  const paramsString = hash.split("?")[1];
+  if (!paramsString) return null;
+  const params = new URLSearchParams(paramsString);
+  return params.get("lang");
+}
 
 function App() {
   const { pathname = "" } = useLocation();
+
+  const [searchParams] = useSearchParams();
+  let lang = searchParams.get("lang");
+  if (!lang && window.location.hash) {
+    const hashLang = getLangFromHash();
+    if (hashLang) lang = hashLang;
+  }
+
+  const dispatch = useLangDispatch();
+
 
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
 
+    if (lang) {
+      localStorage.setItem("lang", lang);
+      document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
+      i18next.changeLanguage(lang);
+
+      dispatch({ type: "SET_LANG", payload: lang });
+    }
     const customId =
       keycloakService._kc.tokenParsed?.preferred_username ??
       keycloakService._kc.tokenParsed?.sub;
@@ -30,21 +57,10 @@ function App() {
 
     // @ts-ignore
     if (customId && window.clarity) {
-      const script = document.createElement("script");
-      script.setAttribute("type", "text/javascript");
-      script.setAttribute("id", import.meta.env.VITE_CLARITY_KEY);
-      script.setAttribute("defer", "");
-      let code = `
-              window.clarity('set', 'user_id', '${customId}');
-              window.clarity("identify", "${customId}");
-          `;
       // @ts-ignore
       window.clarity("set", "user_id", customId);
       // @ts-ignore
       window.clarity("identify", customId);
-
-      script.appendChild(document.createTextNode(code));
-      document.body.appendChild(script);
     }
     // @ts-ignore
     window._paq.push(["setUserId", customId]);

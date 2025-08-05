@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Trans } from "react-i18next";
-import { Box, Button, Typography, Paper, Hidden, Rating } from "@mui/material";
+import { Box, Button, Typography, Paper, Hidden, Rating, useTheme } from "@mui/material";
 import {
   RadioButtonCheckedRounded,
   RadioButtonUncheckedRounded,
@@ -15,7 +15,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
 import { useQuestionContext } from "@/providers/QuestionProvider";
 import { useQuestionnaire } from "../dashboard/dashboard-tab/questionnaires/QuestionnaireContainer";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { toCamelCase } from "@/utils/MakeCamelcaseString";
@@ -49,6 +49,8 @@ const AnswerStatusImage = ({ status }: { status: string }) => {
 };
 
 export const Review = () => {
+  const theme = useTheme();
+
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
   const navigate = useNavigate();
@@ -101,16 +103,38 @@ export const Review = () => {
   }, [assessmentTotalProgress]);
 
   useEffect(() => {
-    if (questionnaireId) {
-      fetchPathInfo.query({ questionnaireId }).then((data) => {
+    if (!questionnaireId) return;
+  
+    const controller = new AbortController();
+  
+    fetchPathInfo
+      .query({ questionnaireId }, { signal: controller.signal })
+      .then((data) => {
         setQuestionnaireTitle(data?.questionnaire?.title ?? "");
+      })
+      .catch((error) => {
+        if (error.name === "CanceledError") {
+          // درخواست لغو شده، نگران نباش
+          return;
+        }
+        // handle other errors
       });
-      getNextQuestionnaire.query({ questionnaireId }).then((res) => {
+  
+    getNextQuestionnaire
+      .query({ questionnaireId }, { signal: controller.signal })
+      .then((res) => {
         setNextQuestionnaire(res.data?.id ?? null);
+      })
+      .catch((error) => {
+        if (error.name === "CanceledError") return;
+        // handle other errors
       });
-    }
+  
+    return () => {
+      controller.abort(); // وقتی کامپوننت آن‌مانت میشه، درخواست‌ها کنسل میشن
+    };
   }, [questionnaireId]);
-
+  
   const renderStatusText = () => {
     switch (status) {
       case "complete":

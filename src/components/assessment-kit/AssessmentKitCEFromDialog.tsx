@@ -26,11 +26,11 @@ import { keyframes } from "@emotion/react";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { theme } from "@/config/theme";
 import SelectLanguage from "@utils/selectLanguage";
 import uniqueId from "@/utils/uniqueId";
 import i18n from "i18next";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -51,6 +51,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const [dropNewFile, setDropNewFile] = useState<any>(null);
   const [buttonStep, setButtonStep] = useState<any>(0);
   const { service } = useServiceContext();
+  const theme = useTheme();
 
   const {
     onClose: closeDialog,
@@ -416,7 +417,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           onBack={handleBack}
           hasViewBtn={true}
           onSubmit={(...args) =>
-            formMethods.handleSubmit((data) => onSubmit(data, ...args))
+            formMethods.handleSubmit((data) => onSubmit(data, ...args))()
           }
         />
       </Box>
@@ -526,10 +527,16 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
             }}
           />
-          {type === "update" && <Trans i18nKey="assessmentKit.updateAssessmentKit" />}
+          {type === "update" && (
+            <Trans i18nKey="assessmentKit.updateAssessmentKit" />
+          )}
           {type === "draft" && <Trans i18nKey="assessmentKit.createDraft" />}
-          {type === "create" && <Trans i18nKey="assessmentKit.createAssessmentKit" />}
-          {type === "convert" && <Trans i18nKey="assessmentKit.convertExcelToDsl" />}
+          {type === "create" && (
+            <Trans i18nKey="assessmentKit.createAssessmentKit" />
+          )}
+          {type === "convert" && (
+            <Trans i18nKey="assessmentKit.convertExcelToDsl" />
+          )}
         </>
       }
     >

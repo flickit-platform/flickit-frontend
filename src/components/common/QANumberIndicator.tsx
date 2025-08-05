@@ -1,5 +1,5 @@
+import { useTheme } from "@mui/material";
 import Typography, { TypographyProps } from "@mui/material/Typography";
-import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
 
 interface IQANumberIndicatorProps extends TypographyProps {
@@ -8,6 +8,8 @@ interface IQANumberIndicatorProps extends TypographyProps {
 }
 
 const QANumberIndicator = (props: IQANumberIndicatorProps) => {
+  const theme = useTheme();
+
   const { q = 0,variant="labelSmall" , ...rest } = props;
   const isFarsi = theme.direction === "rtl";
   return q === undefined ? null : (

@@ -31,14 +31,17 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 export const SpaceMembers = (props: any) => {
+  const theme = useTheme();
+
   const { editable } = props;
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();

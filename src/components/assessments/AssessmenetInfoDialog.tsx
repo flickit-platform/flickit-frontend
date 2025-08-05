@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { CEDialog } from "@common/dialogs/CEDialog";
-import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AssessmentError from "@/assets/svg/AssessmentError.svg";
 import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
+import { useTheme } from "@mui/material";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -25,6 +25,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
+  const theme = useTheme()
 
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 

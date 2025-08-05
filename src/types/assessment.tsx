@@ -150,6 +150,7 @@ export interface IGraphicalReport {
   lang: ILanguage;
   visibility: VISIBILITY;
   linkHash: string;
+  isAdvisable: boolean
 }
 
 type insight = {

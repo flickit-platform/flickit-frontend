@@ -1,10 +1,12 @@
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { Trans } from "react-i18next";
-import { theme } from "@/config/theme";
 import FaWandMagicSparkles from "../icons/FaWandMagicSparkles";
+import { useTheme } from "@mui/material";
 
 const AIGenerated = ({ type, title, icon }: any) => {
+  const theme = useTheme();
+
   return (
     <Chip
       label={

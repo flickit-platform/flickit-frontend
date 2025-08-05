@@ -13,18 +13,12 @@ import {
 } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { ICustomError } from "@utils/CustomError";
 import MoreActions from "@common/MoreActions";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import {
-  IAssessment,
-  TId,
-  IQuestionnairesModel,
-  TQueryFunction,
-} from "@/types/index";
+import { IAssessment, TId, IQuestionnairesModel } from "@/types/index";
 import { TDialogProps } from "@utils/useDialog";
 import Button from "@mui/material/Button";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
@@ -44,18 +38,19 @@ import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
-import showToast from "@utils/toastError";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
-  deleteAssessment: TQueryFunction<any, TId>;
+  setOpenDeleteDialog: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId }>
+  >;
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
-  deleteAssessment,
+  setOpenDeleteDialog,
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
@@ -99,8 +94,9 @@ const AssessmentCard = ({
   });
 
   useEffect(() => {
+    setShow(isCalculateValid);
+
     const fetchGaugeAndProgress = async () => {
-      setShow(isCalculateValid);
       if (!isCalculateValid) {
         try {
           const data = await calculateMaturityLevelQuery.query();
@@ -116,7 +112,9 @@ const AssessmentCard = ({
         setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
       }
     };
-    fetchGaugeAndProgress();
+    if (permissions.canViewQuestionnaires) {
+      fetchGaugeAndProgress();
+    }
     // eslint-disable-next-line
   }, [isCalculateValid]);
 
@@ -175,7 +173,7 @@ const AssessmentCard = ({
       >
         {permissions.canManageSettings && (
           <Actions
-            deleteAssessment={deleteAssessment}
+            setOpenDeleteDialog={setOpenDeleteDialog}
             item={item}
             dialogProps={dialogProps}
             abortController={abortController}
@@ -485,23 +483,21 @@ const CardButton = ({
 
 // --- Actions ---
 const Actions = ({
-  deleteAssessment,
+  setOpenDeleteDialog,
   item,
   abortController,
 }: {
-  deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
+  setOpenDeleteDialog: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId }>
+  >;
 }) => {
   const navigate = useNavigate();
 
-  const deleteItem = async () => {
-    try {
-      await deleteAssessment(item.id);
-    } catch (e) {
-      showToast(e as ICustomError);
-    }
+  const deleteItem = () => {
+    setOpenDeleteDialog({ status: true, id: item.id });
   };
 
   const addToCompare = () => {

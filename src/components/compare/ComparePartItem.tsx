@@ -17,7 +17,6 @@ import {
   useCompareContext,
   useCompareDispatch,
 } from "@providers/CompareProvider";
-import { theme } from "@/config/theme";
 
 interface IComparePartsItemProps {
   data: any;

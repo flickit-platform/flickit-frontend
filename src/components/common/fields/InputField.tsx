@@ -5,10 +5,12 @@ import TextField, { OutlinedTextFieldProps } from "@mui/material/TextField";
 import { ReactNode, useState, useRef, useEffect, ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import getFieldError from "@utils/getFieldError";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { evidenceAttachmentInput } from "@utils/enumType";
 import languageDetector from "@utils/languageDetector";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
+import { styles } from "@styles";
+import { useTheme } from "@mui/material";
 
 const InputField = () => {
   return <TextField />;
@@ -29,6 +31,7 @@ interface IInputFieldUCProps extends Omit<OutlinedTextFieldProps, "variant"> {
   rtl?: boolean;
   error?: boolean;
   placeholder?: any;
+  lng?: string;
 }
 
 const InputFieldUC = (props: IInputFieldUCProps) => {
@@ -51,8 +54,10 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     rtl,
     error,
     placeholder,
+    lng,
     ...rest
   } = props;
+  const theme = useTheme();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -67,6 +72,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     name,
     minLength,
     maxLength,
+    lng,
   );
 
   useEffect(() => {
@@ -184,6 +190,11 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               : "",
           paddingBottom:
             name === "evidence" ? evidenceAttachmentInput.paddingBottom : "",
+        },
+        "& .MuiFormHelperText-root": {
+          textAlign:
+            lng === "fa" || i18next.language === "fa" ? "right" : "left",
+          ...styles.rtlStyle(lng === "fa" || i18next.language === "fa"),
         },
       }}
       InputLabelProps={{ ...InputLabelProps, required }}

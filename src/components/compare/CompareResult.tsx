@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 interface ICompareResultProps {
   data: any;
 }
@@ -96,10 +96,15 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
           "& .MuiChip-label": {
             whiteSpace: "pre-wrap",
           },
-          fontFamily: languageDetector(assessmentKit.title) ? farsiFontFamily : primaryFontFamily
+          fontFamily: languageDetector(assessmentKit.title)
+            ? farsiFontFamily
+            : primaryFontFamily,
         }}
       />
-      <Trans i18nKey="common.whichHasNamed" values={{ value: subjects.length }} />
+      <Trans
+        i18nKey="common.whichHasNamed"
+        values={{ value: subjects.length }}
+      />
       {subjects?.map((subject: any, index: number) => (
         <MuiLink
           key={subject?.id}
@@ -109,7 +114,9 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
             cursor: "default",
             color: "#004F83",
             textDecorationColor: "#004F83",
-            fontFamily: languageDetector(assessmentKit.title) ? farsiFontFamily : primaryFontFamily,
+            fontFamily: languageDetector(assessmentKit.title)
+              ? farsiFontFamily
+              : primaryFontFamily,
             ":hover": {
               color: "#004F83",
               textDecorationColor: "#004F83",

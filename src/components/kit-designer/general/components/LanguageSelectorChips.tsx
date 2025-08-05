@@ -1,10 +1,9 @@
-import { Stack, Chip, Button, Menu, MenuItem } from "@mui/material";
+import { Stack, Chip, Button, Menu, MenuItem, useTheme } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ILanguage } from "@/types";
 import CheckIcon from "@mui/icons-material/Check";
-import { theme } from "@/config/theme";
 
 interface LanguageSelectorChipsProps {
   mainLanguage: ILanguage;
@@ -43,6 +42,8 @@ const LanguageSelectorChips = ({
     }
     setMenuAnchor(null);
   };
+
+  const theme = useTheme();
 
   return (
     <Stack direction="row" alignItems="center" gap={2}>

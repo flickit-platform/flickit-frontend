@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import { getMaturityLevelColors, styles } from "@styles";
@@ -58,10 +58,10 @@ const DonutChart = (props: IGaugeProps) => {
           </Box>
           {displayTitle && (
             <Typography
+              variant="titleMedium"
               sx={{
                 display: "flex",
                 gap: "5px",
-                ...theme.typography.titleMedium,
                 fontWeight: "bold",
                 fontSize: "1.37rem",
                 color: colorCode,

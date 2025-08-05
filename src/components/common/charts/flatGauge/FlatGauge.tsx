@@ -1,12 +1,13 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { confidenceColor, getMaturityLevelColors } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 type TPosition = "top" | "left";
 
@@ -44,6 +45,7 @@ const FlatGauge = (props: IGaugeProps) => {
     lng,
     ...rest
   } = props;
+  const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const FlatGaugeComponent = useMemo(

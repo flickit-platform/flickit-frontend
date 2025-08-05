@@ -13,5 +13,6 @@
   "sueccessJoinToExpertGroup": "شما با موفقیت به این گروه خبرگی افزوده شدید.",
   "unpublishedAssessmentKits": "کیت‌های ارزیابی منتشر‌نشده",
   "updateExpertGroup": "به‌روزرسانی گروه خبرگی",
-  "youHaveBeenInvitedToExpertGroup": "شما به این گروه دعوت شده‌اید. آیا می‌خواهید این دعوت‌نامه را بپذیرید؟"
+  "youHaveBeenInvitedToExpertGroup": "شما به این گروه دعوت شده‌اید. آیا می‌خواهید این دعوت‌نامه را بپذیرید؟",
+  "areYouSureYouWantDeleteExpertGroup": "گروه خبرگی شما حذف خواهد شد. آیا مایل به ادامه هستید؟"
 }

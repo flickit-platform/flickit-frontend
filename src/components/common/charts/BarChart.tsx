@@ -9,9 +9,10 @@ import {
 } from "recharts";
 import Skeleton from "@mui/material/Skeleton";
 import { convertToRadialChartData } from "@/utils/convertToAssessmentChartData";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material";
 
 interface CustomBarChartProps {
   loading: boolean;
@@ -45,6 +46,8 @@ const SubjectRadial: React.FC<SubjectRadialProps> = ({
   data,
   maturityLevelsCount,
 }) => {
+  const theme = useTheme();
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wordLimit = !isSmallScreen ? 18 : 12;
   const formatXAxisTick = (tick: string) => {

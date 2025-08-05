@@ -13,8 +13,8 @@ import { LoadingSkeleton } from "../loadings/LoadingSkeleton";
 import ListItemButton from "@mui/material/ListItemButton";
 import { Trans } from "react-i18next";
 import { useEffect } from "react";
-import { theme } from "@/config/theme";
 import uniqueId from "@/utils/uniqueId";
+import { useTheme } from "@mui/material";
 
 const selectField = () => {
   return <div>selectField</div>;
@@ -92,6 +92,7 @@ export const SelectField = (props: ISelectField) => {
     children,
     ...rest
   } = props;
+  const theme = useTheme();
 
   useEffect(() => {
     if (totalItem) {
@@ -165,7 +166,7 @@ const defaultRenderOption = (option: any) => {
   return (
     <MenuItem
       value={option.id}
-      key={option.id}
+      key={uniqueId()}
       sx={{
         display: "flex",
         alignItems: "center",

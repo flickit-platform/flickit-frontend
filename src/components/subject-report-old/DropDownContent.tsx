@@ -5,7 +5,7 @@ import { t } from "i18next";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import { theme } from "@/config/theme";
+import { useTheme } from "@mui/material";
 
 const sortOptions = [
   { value: "impact_percentage", label: t("common.impact") },
@@ -36,6 +36,7 @@ const DropdownContent = ({
   sortBy: any;
   sortOrder: any;
 }) => {
+  const theme = useTheme();
   const isRTL = theme.direction === "rtl";
 
   const getSelectedValue = () => {

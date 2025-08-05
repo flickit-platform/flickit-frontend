@@ -10,11 +10,12 @@ import EditRounded from "@mui/icons-material/EditRounded";
 import { ICustomError } from "@utils/CustomError";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { Trans, useTranslation } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
 import showToast from "@/utils/toastError";
+import { useTheme } from "@mui/material";
 
 const MAX_HEIGHT = 210;
 
@@ -38,7 +39,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     placeholder,
     required = true,
   } = props;
-
+  const theme = useTheme();
   const { t } = useTranslation();
   const [isHovering, setIsHovering] = useState(false);
   const [showEditor, setShowEditor] = useState(false);

@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
-import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
 import i18next, { t } from "i18next";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
@@ -19,6 +18,7 @@ interface IContactUsDialogProps extends DialogProps {
   onClose: () => void;
   context?: any;
   lng?: string;
+  openDialog?: (context: any) => void;
 }
 
 const TelegramLink = "https://web.telegram.org/a/#8179187991";
@@ -53,8 +53,11 @@ const ContactUsDialog = ({
   onClose,
   context,
   lng,
+  openDialog,
   ...rest
 }: IContactUsDialogProps) => {
+  const theme = useTheme();
+
   const { data = {}, type = "contactUs" } = context ?? {};
   const { email, dialogTitle, primaryActionButtonText, children } = data;
   const isRTL = lng === "fa" || (!lng && i18next.language === "fa");
@@ -138,6 +141,7 @@ const ContactUsDialog = ({
           rows={4}
           required
           InputLabelProps={{ sx: getInputLabelSx(isRTL, isSameLang) }}
+          lng={lng}
         />
       </Box>
     </>

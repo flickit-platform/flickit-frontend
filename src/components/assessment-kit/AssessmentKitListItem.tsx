@@ -11,13 +11,14 @@ import { useQuery } from "@utils/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -36,7 +37,10 @@ interface IAssessmentKitListItemProps {
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
-  const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const theme = useTheme();
+
+  const showGroups =
+    flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
   const { service } = useServiceContext();
   const cloneAssessmentKit = useQuery({
     service: (args, config) => service.assessmentKit.info.clone(args, config),
@@ -128,7 +132,11 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
             <Chip label={<Trans i18nKey="common.unpublished" />} size="small" />
           )}
           <Tooltip
-            title={!draftVersionId && <Trans i18nKey="assessmentKit.noDraftVersion" />}
+            title={
+              !draftVersionId && (
+                <Trans i18nKey="assessmentKit.noDraftVersion" />
+              )
+            }
           >
             <div>
               {hasAccess && showGroups && (
@@ -139,7 +147,13 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
                   onClick={draftClicked}
                   loading={cloneAssessmentKit.loading}
                 >
-                  <Trans i18nKey={!draftVersionId ? "assessmentKit.newDraft" : "assessmentKit.draft"} />
+                  <Trans
+                    i18nKey={
+                      !draftVersionId
+                        ? "assessmentKit.newDraft"
+                        : "assessmentKit.draft"
+                    }
+                  />
                 </LoadingButton>
               )}
             </div>

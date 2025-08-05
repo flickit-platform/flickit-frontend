@@ -29,8 +29,8 @@ import getFieldError from "@utils/getFieldError";
 import { Trans } from "react-i18next";
 import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { theme } from "@/config/theme";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
@@ -259,6 +259,7 @@ const Uploader = (props: IUploadProps) => {
   const { errorMessage, hasError } = getFieldError(errors, fieldProps.name);
 
   const selectedFile = dropNewFile?.[0] ?? acceptedFiles?.[0] ?? file;
+  const theme = useTheme();
 
   return (
     <FormControl sx={{ width: "100%" }} error={hasError}>

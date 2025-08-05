@@ -34,6 +34,8 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
   const { service } = useServiceContext();
 
   useEffect(() => {
+    const isAuthenticated = keycloakService.isLoggedIn();
+
     service.common.getTenantInfo(undefined).then((res: any) => {
       dispatch({
         type: ActionTypes.SET_APP_LOGO_URL,
@@ -61,14 +63,15 @@ export const ConfigProvider: React.FC<AppProviderProps> = ({ children }) => {
 
       // Update title tag
       document.title = appTitle;
-      service.common.getKitLanguages({}).then((res: any)=>{
-        dispatch({
-          type: ActionTypes.App_Languages,
-          payload: res.data.kitLanguages,
+      if (isAuthenticated) {
+        service.common.getKitLanguages({}).then((res: any) => {
+          dispatch({
+            type: ActionTypes.App_Languages,
+            payload: res.data.kitLanguages,
+          });
         });
-      });
+      }
     });
-    const isAuthenticated = keycloakService.isLoggedIn();
     dispatch({
       type: ActionTypes.App_Authenticated,
       payload: isAuthenticated,
