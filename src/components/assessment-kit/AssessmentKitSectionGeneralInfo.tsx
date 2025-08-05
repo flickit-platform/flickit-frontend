@@ -64,16 +64,16 @@ const AssessmentKitSectionGeneralInfo = (
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
 
-  const [updatedValues, setUpdatedValues] = useState<any>({
-    about: "",
-    goal: "",
-    context: "",
-  });
-  const [showTranslations, setShowTranslations] = useState({
-    about: false,
-    goal: false,
-    context: false,
-  });
+  // const [updatedValues, setUpdatedValues] = useState<any>({
+  //   about: "",
+  //   goal: "",
+  //   context: "",
+  // });
+  // const [showTranslations, setShowTranslations] = useState({
+  //   about: false,
+  //   goal: false,
+  //   context: false,
+  // });
 
   const fetchAssessmentKitInfoQuery = useQuery({
     service: (args, config) =>
@@ -86,7 +86,7 @@ const AssessmentKitSectionGeneralInfo = (
     runOnMount: true,
   });
 
-  const {handleSaveEdit, editableFields, setEditableFields, langCode} = useEditableField({updatedValues, assessmentKitId, fetchAssessmentKitInfoQuery, setShowTranslations, setUpdatedValues})
+  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation , showTranslations, updatedValues, setUpdatedValues} = useEditableField({ assessmentKitId, fetchAssessmentKitInfoQuery})
 
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
@@ -141,14 +141,6 @@ const AssessmentKitSectionGeneralInfo = (
       showToast(err);
     }
   };
-
-  const toggleTranslation = useCallback((field: "about") => {
-    setShowTranslations((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
-  }, []);
-
 
   const handleCancelTextBox = (field: any) => {
     editableFields.delete(field);

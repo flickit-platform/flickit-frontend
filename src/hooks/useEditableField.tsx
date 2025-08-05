@@ -8,7 +8,25 @@ import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 
 export default function useEditableField(props: any){
 
-  const { updatedValues, assessmentKitId, fetchAssessmentKitInfoQuery, setUpdatedValues, setShowTranslations } = props
+  const { assessmentKitId, fetchAssessmentKitInfoQuery, setTranslatedLang } = props
+
+  const [updatedValues, setUpdatedValues] = useState<any>({
+    title: "",
+    summary: "",
+    about: "",
+    goal: undefined,
+    context: undefined,
+    translations: undefined,
+  });
+
+  const [showTranslations, setShowTranslations] = useState({
+    title: false,
+    summary: false,
+    about: false,
+    goal: false,
+    context: false,
+  });
+
   const { service } = useServiceContext();
   const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
   const data = fetchAssessmentKitInfoQuery.data;
@@ -67,15 +85,21 @@ export default function useEditableField(props: any){
       const defaultTranslatedLanguage = data.languages?.find(
         (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
       );
-      // setTranslatedLang(defaultTranslatedLanguage);
+      if(!!setTranslatedLang){
+        setTranslatedLang(defaultTranslatedLanguage);
+      }
       dispatch(kitActions.setMainLanguage(data.mainLanguage));
       dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
       setShowTranslations({
+        title: !!translations[langCode]?.title,
+        summary: !!translations[langCode]?.summary,
         about: !!translations[langCode]?.about,
         goal: !!translations[langCode]?.metadata?.goal,
         context: !!translations[langCode]?.metadata?.context,
       });
       setUpdatedValues({
+        title: data.title ?? "",
+        summary: data.summary ?? "",
         about: data.about ?? "",
         goal: data?.metadata?.goal ?? "",
         context: data?.metadata?.context ?? "",
@@ -92,11 +116,25 @@ export default function useEditableField(props: any){
     }
   }, [data, langCode]);
 
+  const toggleTranslation = useCallback(
+    (field: "title" | "summary" | "about" | "goal" | "context") => {
+      setShowTranslations((prev: any) => ({
+        ...prev,
+        [field]: !prev[field],
+      }));
+    },
+    [],
+  );
+
   return {
     handleSaveEdit,
     setEditableFields,
     editableFields,
-    langCode
+    langCode,
+    toggleTranslation,
+    showTranslations,
+    setUpdatedValues,
+    updatedValues
   }
 
 }

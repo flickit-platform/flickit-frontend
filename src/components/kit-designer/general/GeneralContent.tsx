@@ -22,6 +22,7 @@ import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@/utils/toastError";
 import { renderEditableField } from "@common/editableField";
+import useEditableField from "@/hooks/useEditableField";
 
 const generalFields = [
   { name: "title", label: "common.title", multiline: false, useRichEditor: false },
@@ -32,10 +33,10 @@ const generalFields = [
 ] as const;
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
-  const { kitState } = useKitDesignerContext();
-
-  const langCode = kitState.translatedLanguage?.code ?? "";
-  const { updateTranslation } = useTranslationUpdater(langCode);
+  // const { kitState } = useKitDesignerContext();
+  //
+  // const langCode = kitState.translatedLanguage?.code ?? "";
+  // const { updateTranslation } = useTranslationUpdater(langCode);
   const { dispatch } = useKitDesignerContext();
   const { service } = useServiceContext();
   const {
@@ -64,60 +65,62 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   });
 
   const data = fetchAssessmentKitInfoQuery.data;
-  const translations = data?.translations ?? {};
+  // const translations = data?.translations ?? {};
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
-  const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
-  const [updatedValues, setUpdatedValues] = useState<any>({
-    title: "",
-    summary: "",
-    about: "",
-    goal: undefined,
-    context: undefined,
-    translations: undefined,
-  });
+  // const [editableFields, setEditableFields] = useState<Set<string>>(new Set());
+  // const [updatedValues, setUpdatedValues] = useState<any>({
+  //   title: "",
+  //   summary: "",
+  //   about: "",
+  //   goal: undefined,
+  //   context: undefined,
+  //   translations: undefined,
+  // });
+  //
+  // const [showTranslations, setShowTranslations] = useState({
+  //   title: false,
+  //   summary: false,
+  //   about: false,
+  //   goal: false,
+  //   context: false,
+  // });
 
-  const [showTranslations, setShowTranslations] = useState({
-    title: false,
-    summary: false,
-    about: false,
-    goal: false,
-    context: false,
-  });
+  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation, showTranslations, updatedValues, setUpdatedValues} = useEditableField({setTranslatedLang, assessmentKitId : kitVersion.assessmentKit.id, fetchAssessmentKitInfoQuery})
 
-  useEffect(() => {
-    if (data) {
-      const defaultTranslatedLanguage = data.languages?.find(
-        (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
-      );
-      setTranslatedLang(defaultTranslatedLanguage);
-      dispatch(kitActions.setMainLanguage(data.mainLanguage));
-      dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
-      setShowTranslations({
-        title: !!translations[langCode]?.title,
-        summary: !!translations[langCode]?.summary,
-        about: !!translations[langCode]?.about,
-        goal: !!translations[langCode]?.metadata?.goal,
-        context: !!translations[langCode]?.metadata?.context,
-      });
-      setUpdatedValues({
-        title: data.title ?? "",
-        summary: data.summary ?? "",
-        about: data.about ?? "",
-        goal: data?.metadata?.goal ?? "",
-        context: data?.metadata?.context ?? "",
-        translations: langCode
-          ? {
-              [langCode]: {
-                ...translations[langCode],
-                goal: data?.translations?.[langCode]?.metadata?.goal,
-                context: data?.translations?.[langCode]?.metadata?.context,
-              },
-            }
-          : {},
-      });
-    }
-  }, [data, langCode]);
+  // useEffect(() => {
+  //   if (data) {
+  //     const defaultTranslatedLanguage = data.languages?.find(
+  //       (lang: ILanguage) => lang.code !== data.mainLanguage?.code,
+  //     );
+  //     setTranslatedLang(defaultTranslatedLanguage);
+  //     dispatch(kitActions.setMainLanguage(data.mainLanguage));
+  //     dispatch(kitActions.setTranslatedLanguage(defaultTranslatedLanguage));
+  //     setShowTranslations({
+  //       title: !!translations[langCode]?.title,
+  //       summary: !!translations[langCode]?.summary,
+  //       about: !!translations[langCode]?.about,
+  //       goal: !!translations[langCode]?.metadata?.goal,
+  //       context: !!translations[langCode]?.metadata?.context,
+  //     });
+  //     setUpdatedValues({
+  //       title: data.title ?? "",
+  //       summary: data.summary ?? "",
+  //       about: data.about ?? "",
+  //       goal: data?.metadata?.goal ?? "",
+  //       context: data?.metadata?.context ?? "",
+  //       translations: langCode
+  //         ? {
+  //             [langCode]: {
+  //               ...translations[langCode],
+  //               goal: data?.translations?.[langCode]?.metadata?.goal,
+  //               context: data?.translations?.[langCode]?.metadata?.context,
+  //             },
+  //           }
+  //         : {},
+  //     });
+  //   }
+  // }, [data, langCode]);
 
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -150,63 +153,63 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     [],
   );
 
-  const handleSaveEdit = useCallback(() => {
-    const goal = updatedValues.goal;
-    const context = updatedValues.context;
-
-    const translations: Record<string, any> = updatedValues.translations ?? {};
-
-    const updatedValuesWithMetadata = {
-      ...updatedValues,
-      metadata: {
-        goal,
-        context,
-      },
-      translations: {
-        ...translations,
-        [langCode]: {
-          ...translations[langCode],
-          metadata: {
-            context: translations?.[langCode].context,
-            goal: translations?.[langCode].goal,
-          },
-        },
-      },
-    };
-
-    delete updatedValuesWithMetadata.goal;
-    delete updatedValuesWithMetadata.context;
-
-    updateKitInfoQuery
-      .query({
-        assessmentKitId: kitVersion.assessmentKit.id,
-        data: updatedValuesWithMetadata,
-      })
-      .then(() => {
-        fetchAssessmentKitInfoQuery.query();
-        setEditableFields(new Set());
-      })
-      .catch((e) => showToast(e));
-  }, [
-    kitVersion.assessmentKit.id,
-    updatedValues,
-    updateKitInfoQuery,
-    fetchAssessmentKitInfoQuery,
-  ]);
+  // const handleSaveEdit = useCallback(() => {
+  //   const goal = updatedValues.goal;
+  //   const context = updatedValues.context;
+  //
+  //   const translations: Record<string, any> = updatedValues.translations ?? {};
+  //
+  //   const updatedValuesWithMetadata = {
+  //     ...updatedValues,
+  //     metadata: {
+  //       goal,
+  //       context,
+  //     },
+  //     translations: {
+  //       ...translations,
+  //       [langCode]: {
+  //         ...translations[langCode],
+  //         metadata: {
+  //           context: translations?.[langCode].context,
+  //           goal: translations?.[langCode].goal,
+  //         },
+  //       },
+  //     },
+  //   };
+  //
+  //   delete updatedValuesWithMetadata.goal;
+  //   delete updatedValuesWithMetadata.context;
+  //
+  //   updateKitInfoQuery
+  //     .query({
+  //       assessmentKitId: kitVersion.assessmentKit.id,
+  //       data: updatedValuesWithMetadata,
+  //     })
+  //     .then(() => {
+  //       fetchAssessmentKitInfoQuery.query();
+  //       setEditableFields(new Set());
+  //     })
+  //     .catch((e) => showToast(e));
+  // }, [
+  //   kitVersion.assessmentKit.id,
+  //   updatedValues,
+  //   updateKitInfoQuery,
+  //   fetchAssessmentKitInfoQuery,
+  // ]);
 
   const handleCancelEdit = useCallback(() => {
     setEditableFields(new Set());
   }, []);
 
-  const toggleTranslation = useCallback(
-    (field: "title" | "summary" | "about" | "goal" | "context") => {
-      setShowTranslations((prev) => ({
-        ...prev,
-        [field]: !prev[field],
-      }));
-    },
-    [],
-  );
+  // const toggleTranslation = useCallback(
+  //   (field: "title" | "summary" | "about" | "goal" | "context") => {
+  //     setShowTranslations((prev) => ({
+  //       ...prev,
+  //       [field]: !prev[field],
+  //     }));
+  //   },
+  //   [],
+  // );
 
   const skeletonItems = useMemo(
     () =>
