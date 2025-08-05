@@ -169,9 +169,11 @@ const DashbordContainer: React.FC = () => {
                       }}
                     >
                       {title}
-                      <IconButton color="primary" onClick={handleStartEdit}>
-                        <EditOutlined />
-                      </IconButton>
+                      {permissions?.grantUserAssessmentRole && (
+                        <IconButton color="primary" onClick={handleStartEdit}>
+                          <EditOutlined />
+                        </IconButton>
+                      )}
                     </Typography>
                   )}
                 </Box>
