@@ -192,31 +192,37 @@ const Actions = (props: any) => {
   };
   
   const showGroups = flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const menu  = useMenu();
 
-
-  return editable && showGroups && <>
-      <MoreActions
-        {...useMenu()}
-        boxProps={{ ml: 0.2 }}
-        loading={loading}
-        items={[
-          {
-            icon: <EditRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="common.edit" />,
-            onClick: openEditDialog,
-          },
-          {
-            icon: <DeleteRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="common.delete" />,
-            onClick: () => setOpenDeleteDialog({status: open, id}),
-          },
-        ]}
-      />
-      <ExpertGroupCEFormDialog
-        {...dialogProps}
-        onSubmitForm={fetchExpertGroups}
-      />
+  return (
+    <>
+      {editable && showGroups && (
+        <>
+          <MoreActions
+            {...menu}
+            boxProps={{ ml: 0.2 }}
+            loading={loading}
+            items={[
+              {
+                icon: <EditRoundedIcon fontSize="small" />,
+                text: <Trans i18nKey="common.edit" />,
+                onClick: openEditDialog,
+              },
+              {
+                icon: <DeleteRoundedIcon fontSize="small" />,
+                text: <Trans i18nKey="common.delete" />,
+                onClick: () => setOpenDeleteDialog({status: open, id}),
+              },
+            ]}
+          />
+          <ExpertGroupCEFormDialog
+            {...dialogProps}
+            onSubmitForm={fetchExpertGroups}
+          />
+        </>
+        )}
     </>
+  )
 };
 
 export default ExpertGroupsItem;
