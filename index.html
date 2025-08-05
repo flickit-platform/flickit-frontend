@@ -20,7 +20,7 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
   <script type="text/javascript">
-    (function (c, l, a, r, i, t, y) {
+    (function (c, l, a, r, i) {
       c[a] =
         c[a] ||
         function () {
@@ -29,13 +29,14 @@
       const scriptElement = l.createElement(r);
       scriptElement.async = 1;
       scriptElement.src = "https://www.clarity.ms/tag/" + i;
+      scriptElement.onload = function () {
+        window.clarity && window.clarity("consent");
+      };
       const firstScriptElement = l.getElementsByTagName(r)[0];
       firstScriptElement.parentNode.insertBefore(
         scriptElement,
         firstScriptElement,
       );
-
-      window.clarity("consent");
     })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
   </script>
   <script type="text/javascript">
