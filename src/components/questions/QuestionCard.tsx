@@ -828,29 +828,43 @@ const AnswerTemplate = (props: {
         );
       }
 
-      if (questionsInfo.permissions?.viewAnswerHistory) {
-        await service.assessments.questionnaire
-          .getQuestionIssues(
-            {
-              assessmentId,
-              questionId: questionInfo?.id,
-            },
-            { signal: abortController.current.signal },
-          )
-          .then((res: any) => {
-            dispatch(
-              questionActions.setQuestionInfo({
-                ...questionInfo,
-                answer: {
-                  selectedOption: value,
-                  isNotApplicable: notApplicable,
-                  confidenceLevel:
-                    confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
-                } as TAnswer,
-                issues: res.data,
-              }),
-            );
-          });
+      if (isAdvanceMode) {
+        if (questionsInfo.permissions?.viewAnswerHistory) {
+          await service.assessments.questionnaire
+            .getQuestionIssues(
+              {
+                assessmentId,
+                questionId: questionInfo?.id,
+              },
+              { signal: abortController.current.signal },
+            )
+            .then((res: any) => {
+              dispatch(
+                questionActions.setQuestionInfo({
+                  ...questionInfo,
+                  answer: {
+                    selectedOption: value,
+                    isNotApplicable: notApplicable,
+                    confidenceLevel:
+                      confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+                  } as TAnswer,
+                  issues: res.data,
+                }),
+              );
+            });
+        } else {
+          dispatch(
+            questionActions.setQuestionInfo({
+              ...questionInfo,
+              answer: {
+                selectedOption: value,
+                isNotApplicable: notApplicable,
+                confidenceLevel:
+                  confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+              } as TAnswer,
+            }),
+          );
+        }
       } else {
         dispatch(
           questionActions.setQuestionInfo({
@@ -861,6 +875,10 @@ const AnswerTemplate = (props: {
               confidenceLevel:
                 confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
             } as TAnswer,
+            issues: {
+              ...questionInfo.issues,
+              isUnanswered: !value || notApplicable,
+            },
           }),
         );
       }
@@ -1005,10 +1023,10 @@ const AnswerTemplate = (props: {
         <NavigationButton
           direction={theme.direction}
           onClick={handleForwardClick}
-          disabled={isLTR ? false : questionIndex === 1}
+          disabled={isSubmitting ? true : isLTR ? false : questionIndex === 1}
           icon={ArrowForward}
           marginStyle={{ marginInlineStart: { sm: 0, md: "-30px" } }}
-          isActive={isLTR ? true : questionIndex !== 1}
+          isActive={isSubmitting ? false : isLTR ? true : questionIndex !== 1}
           id="next"
         />
         <Box
@@ -1125,10 +1143,10 @@ const AnswerTemplate = (props: {
         <NavigationButton
           direction={theme.direction}
           onClick={handleBackwardClick}
-          disabled={isLTR ? questionIndex === 1 : false}
+          disabled={isSubmitting ? true : isLTR ? questionIndex === 1 : false}
           icon={ArrowBack}
           marginStyle={{ marginInlineEnd: { sm: 0, md: "-30px" } }}
-          isActive={isLTR ? questionIndex !== 1 : true}
+          isActive={isSubmitting ? false : isLTR ? questionIndex !== 1 : true}
           id="back"
         />
       </Box>
