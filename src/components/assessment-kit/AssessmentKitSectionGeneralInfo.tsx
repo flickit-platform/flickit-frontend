@@ -185,57 +185,12 @@ const AssessmentKitSectionGeneralInfo = (
   }, []);
 
 
-  // const updateKitInfoQuery = useQuery({
-  //   service: (args, config) =>
-  //     service.assessmentKit.info.updateStats(args, config),
-  //   runOnMount: false,
-  // });
-
   const handleCancelTextBox = (field: any) => {
     editableFields.delete(field);
     setUpdatedValues((prev: any) => ({
       ...prev,
-      [field]: "",
     }))
   };
-
-  // const handleSave = () => {
-  //   const goal = updatedValues.goal;
-  //   const context = updatedValues.context;
-  //   const translations: Record<string, any> = updatedValues.translations ?? {};
-  //
-  //   const updatedValuesWithMetadata = {
-  //     ...updatedValues,
-  //     metadata: {
-  //       goal,
-  //       context,
-  //     },
-  //     translations: {
-  //       ...translations,
-  //       [langCode]: {
-  //         ...translations[langCode],
-  //         metadata: {
-  //           context: translations?.[langCode].context,
-  //           goal: translations?.[langCode].goal,
-  //         },
-  //       },
-  //     },
-  //   };
-  //
-  //   delete updatedValuesWithMetadata.goal;
-  //   delete updatedValuesWithMetadata.context;
-  //
-  //   updateKitInfoQuery
-  //     .query({
-  //       assessmentKitId: assessmentKitId,
-  //       data: updatedValuesWithMetadata,
-  //     })
-  //     .then(() => {
-  //       fetchAssessmentKitInfoQuery.query();
-  //       setEditableFields(new Set());
-  //     })
-  //     .catch((e) => showToast(e));
-  // };
 
   return (
     <QueryBatchData
