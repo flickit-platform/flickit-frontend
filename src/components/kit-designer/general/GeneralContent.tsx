@@ -162,7 +162,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      {renderEditableField(
+                      {renderEditableField({
                         name,
                         data,
                         editableFields,
@@ -174,7 +174,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         handleFieldEdit,
                         multiline,
                         useRichEditor,
-                      )}
+                      })}
                     </Box>
                   </Box>
                 ),

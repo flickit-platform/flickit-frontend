@@ -419,7 +419,7 @@ const AssessmentKitSectionGeneralInfo = (
                         >
                           <Trans i18nKey={label} />:
                         </Typography>
-                        {renderEditableField(
+                        {renderEditableField({
                           name,
                           data,
                           editableFields,
@@ -433,10 +433,10 @@ const AssessmentKitSectionGeneralInfo = (
                           useRichEditor,
                           handleSaveEdit,
                           handleCancelTextBox,
-                        )}
+                        })}
                       </Box>
                     </Box>
-                  )
+                  );
                 })}
 
 

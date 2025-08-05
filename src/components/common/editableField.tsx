@@ -5,23 +5,25 @@ import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
-type fieldName = "title" | "summary" | "about" | "goal" | "context"
 
 export function renderEditableField(
-  field: fieldName,
-  data: any,
-  editableFields: any,
-  langCode: any,
-  updatedValues: any,
-  setUpdatedValues: any,
-  showTranslations: any,
-  toggleTranslation: any,
-  handleFieldEdit: any,
-  multiline = false,
-  useRichEditor = false,
-  handleSaveEdit?: any,
-  handleCancelTextBox?: any,
-){
+ props: any){
+  const  {
+    field,
+    data,
+    editableFields,
+    langCode,
+    updatedValues,
+    setUpdatedValues,
+    showTranslations,
+    toggleTranslation,
+    handleFieldEdit,
+    handleSaveEdit,
+    handleCancelTextBox,
+    multiline = false,
+    useRichEditor = false,
+} = props
+
   const { updateTranslation } = useTranslationUpdater(langCode);
   const renderField = useCallback(() => {
       const isEditing = editableFields.has(field);
