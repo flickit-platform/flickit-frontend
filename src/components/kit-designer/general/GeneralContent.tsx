@@ -14,7 +14,7 @@ import PermissionControl from "@/components/common/PermissionControl";
 import LanguageSelectorChips from "./components/LanguageSelectorChips";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { renderEditableField } from "@common/editableField";
+import { useRenderEditableField } from "@common/editableField";
 import useEditableField from "@/hooks/useEditableField";
 
 const generalFields = [
@@ -162,7 +162,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      {renderEditableField({
+                      {useRenderEditableField({
                         name,
                         data,
                         editableFields,

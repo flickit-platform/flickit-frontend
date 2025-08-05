@@ -38,7 +38,7 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
-import { renderEditableField } from "@common/editableField";
+import { useRenderEditableField } from "@common/editableField";
 import useEditableField from "@/hooks/useEditableField";
 
 interface IAssessmentKitSectionAuthorInfo {
@@ -419,7 +419,7 @@ const AssessmentKitSectionGeneralInfo = (
                         >
                           <Trans i18nKey={label} />:
                         </Typography>
-                        {renderEditableField({
+                        {useRenderEditableField({
                           name,
                           data,
                           editableFields,

@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
-export function renderEditableField(
+export function useRenderEditableField(
  props: any){
   const  {
     field,
