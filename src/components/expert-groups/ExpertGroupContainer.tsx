@@ -1274,7 +1274,7 @@ const AssessmentKitsList = (props: any) => {
                         data={assessment_kit}
                         hasAccess={hasAccess}
                         is_member={is_member}
-                        is_active={is_member ? false : true}
+                        is_active={!is_member}
                         setOpenDeleteDialog={setOpenDeleteDialog}
                         deleteAssessmentKitQuery={deleteAssessmentKitQuery}
                       />

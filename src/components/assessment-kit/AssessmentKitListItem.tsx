@@ -10,7 +10,7 @@ import useMenu from "@utils/useMenu";
 import { useQuery } from "@utils/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -179,9 +179,10 @@ const Actions = (props: any) => {
   const { assessment_kit, hasAccess, deleteAssessmentKitQuery, setOpenDeleteDialog } = props;
   const { id } = assessment_kit;
 
+  const menuProps = useMenu();
   return hasAccess ? (
     <MoreActions
-      {...useMenu()}
+      {...menuProps}
       loading={deleteAssessmentKitQuery.loading}
       items={[
         {
