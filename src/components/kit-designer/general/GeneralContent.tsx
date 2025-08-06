@@ -14,7 +14,7 @@ import PermissionControl from "@/components/common/PermissionControl";
 import LanguageSelectorChips from "./components/LanguageSelectorChips";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { renderEditableField } from "@common/editableField";
+import { RenderEditableField } from "@common/editableField";
 import useEditableField from "@/hooks/useEditableField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
@@ -163,20 +163,20 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      {renderEditableField(
-                        name,
-                        data,
-                        editableFields,
-                        langCode,
-                        updatedValues,
-                        setUpdatedValues,
-                        showTranslations,
-                        toggleTranslation,
-                        handleFieldEdit,
-                        multiline,
-                        useRichEditor,
-                        updateTranslation
-                      )}
+                      <RenderEditableField
+                      field={name}
+                      data={data}
+                      editableFields={editableFields}
+                      langCode={langCode}
+                      updatedValues={updatedValues}
+                      setUpdatedValues={setUpdatedValues}
+                      showTranslations={showTranslations}
+                      toggleTranslation={toggleTranslation}
+                      handleFieldEdit={handleFieldEdit}
+                      multiline={multiline}
+                      useRichEditor={useRichEditor}
+                      updateTranslation={updateTranslation}
+                      />
                     </Box>
                   </Box>
                 ),

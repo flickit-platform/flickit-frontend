@@ -6,22 +6,23 @@ import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 type fieldName = "title" | "summary" | "about" | "goal" | "context"
 
-export function renderEditableField(
-  field: fieldName,
-  data: any,
-  editableFields: any,
-  langCode: any,
-  updatedValues: any,
-  setUpdatedValues: any,
-  showTranslations: any,
-  toggleTranslation: any,
-  handleFieldEdit: any,
+export function RenderEditableField(props: any){
+const {
+  field,
+  data,
+  editableFields,
+  langCode,
+  updatedValues,
+  setUpdatedValues,
+  showTranslations,
+  toggleTranslation,
+  handleFieldEdit,
+  updateTranslation,
+  handleSaveEdit,
+  handleCancelTextBox,
   multiline = false,
   useRichEditor = false,
-  updateTranslation: any,
-  handleSaveEdit?: any,
-  handleCancelTextBox?: any,
-  ){
+  } = props
 
   const renderField = useCallback(() => {
       const isEditing = editableFields.has(field);

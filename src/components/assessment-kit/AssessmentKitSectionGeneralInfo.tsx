@@ -38,7 +38,7 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
-import { renderEditableField } from "@common/editableField";
+import { RenderEditableField } from "@common/editableField";
 import useEditableField from "@/hooks/useEditableField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useTheme } from "@mui/material";
@@ -424,22 +424,22 @@ const AssessmentKitSectionGeneralInfo = (
                         >
                           <Trans i18nKey={label} />:
                         </Typography>
-                        {renderEditableField(
-                          name,
-                          data,
-                          editableFields,
-                          langCode,
-                          updatedValues,
-                          setUpdatedValues,
-                          showTranslations,
-                          toggleTranslation,
-                          handleFieldEdit,
-                          multiline,
-                          useRichEditor,
-                          updateTranslation,
-                          handleSaveEdit,
-                          handleCancelTextBox,
-                        )}
+                        <RenderEditableField
+                            field={name}
+                            data={data}
+                            editableFields={editableFields}
+                            langCode={langCode}
+                            updatedValues={updatedValues}
+                            setUpdatedValues={setUpdatedValues}
+                            showTranslations={showTranslations}
+                            toggleTranslation={toggleTranslation}
+                            handleFieldEdit={handleFieldEdit}
+                            multiline={multiline}
+                            useRichEditor={useRichEditor}
+                            updateTranslation={updateTranslation}
+                            handleSaveEdit={handleSaveEdit}
+                            handleCancelTextBox={handleCancelTextBox}
+                        />
                       </Box>
                     </Box>
                   );
