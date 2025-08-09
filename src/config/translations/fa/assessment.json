@@ -10,8 +10,6 @@
   "assessmentSettings": "تنظیمات ارزیابی",
   "assessmentSteps": "گام‌های ارزیابی",
   "assessmentTitle": "عنوان ارزیابی",
-  "areYouSureYouWantDeleteAssessment": "ارزیابی شما حذف خواهد شد. آیا مایل به ادامه هستید؟",
-  "areYouSureYouWantDeleteAssessmentKit": "کیت ارزیابی شما حذف خواهد شد. آیا مایل به ادامه هستید؟",
   "createAnAssessmentWith": "با استفاده از کیت ارزیابی دلخواه خود، یک ارزیابی بسازید، به پرسش‌ها پاسخ دهید و گزارش نتایج را مشاهده کنید.",
   "createAssessment": "ایجاد ارزیابی",
   "createNewAssessment": "ایجاد ارزیابی",
@@ -54,5 +52,6 @@
   "successCreatedAssessmentTitleFirstPart": "این ارزیابی ",
   "successCreatedAssessmentTitleSecondPart": "با موفقیت ایجاد شد.",
   "tryCreatingNewAssessment": "در این فضای کاری هیچ ارزیابی‌ای وجود ندارد. می‌توانید یکی ایجاد کنید.",
-  "updateAssessment": "به‌روزرسانی ارزیابی"
+  "updateAssessment": "به‌روزرسانی ارزیابی",
+  "areYouSureYouWantDeleteAssessment": "ارزیابی شما حذف خواهد شد. آیا مایل به ادامه هستید؟"
 }
