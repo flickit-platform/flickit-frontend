@@ -47,6 +47,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const [showBtn, setShowBtn] = useState(false);
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
   const paragraphRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const formMethods = useForm({
     defaultValues: { [fieldName]: defaultValue ?? "" },
@@ -81,9 +82,10 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   }, [formMethods.watch(fieldName)]);
 
   useEffect(() => {
-    if (paragraphRef.current) {
+    if (paragraphRef.current && containerRef.current) {
       const isOverflowing =
-        paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight;
+        paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight ||
+        containerRef.current.scrollHeight > containerRef.current.clientHeight;
       setShowBtn(isOverflowing);
     }
   }, [tempData]);
@@ -214,6 +216,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
             onMouseOut={handleMouseOut}
           >
             <Box
+              ref={containerRef}
               sx={{
                 width: "100%",
 
