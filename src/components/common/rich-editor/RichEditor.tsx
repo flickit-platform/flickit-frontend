@@ -175,6 +175,11 @@ const RichEditor = (props: IRichEditorProps) => {
                       textAlign: "initial",
                     },
               },
+              "& .ProseMirror table": {
+                direction: theme.direction,
+                width: "100%",
+                borderCollapse: "collapse",
+              },
             }
           : { ...(boxProps.sx ?? {}) }
       }
