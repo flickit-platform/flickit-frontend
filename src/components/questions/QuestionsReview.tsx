@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Trans } from "react-i18next";
-import { Box, Button, Typography, Paper, Hidden, Rating, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Paper,
+  Hidden,
+  Rating,
+  useTheme,
+} from "@mui/material";
 import {
   RadioButtonCheckedRounded,
   RadioButtonUncheckedRounded,
@@ -57,9 +65,8 @@ export const Review = () => {
   const navigate = useNavigate();
   const { questionsInfo } = useQuestionContext();
   const [questionnaireTitle, setQuestionnaireTitle] = useState("");
-  const [nextQuestionnaire, setNextQuestionnaire] = useState<IQuestionnaire | null>(
-    null,
-  );
+  const [nextQuestionnaire, setNextQuestionnaire] =
+    useState<IQuestionnaire | null>(null);
 
   const AssessmentInfo = useQuery({
     service: (args, config) =>
@@ -96,17 +103,6 @@ export const Review = () => {
 
   const { assessmentTotalProgress, fetchPathInfo, getNextQuestionnaire } =
     useQuestionnaire();
-  useEffect(() => {
-    if (questionnaireId && window.location.pathname.includes("/completed")) {
-      fetchPathInfo.query({ questionnaireId }).then((data) => {
-        setQuestionnaireTitle(data?.questionnaire?.title);
-      });
-      getNextQuestionnaire.query({ questionnaireId }).then((res) => {
-        const nextQuestionnaire = res.data;
-        setNextQuestionnaire(nextQuestionnaire);
-      });
-    }
-  }, [questionnaireId]);
 
   const progress = useMemo(() => {
     const total = assessmentTotalProgress?.data?.questionsCount || 1;
@@ -115,10 +111,10 @@ export const Review = () => {
   }, [assessmentTotalProgress]);
 
   useEffect(() => {
-    if (!questionnaireId) return;
-  
+    if (!questionnaireId || !window.location.pathname.includes("/completed")) return;
+
     const controller = new AbortController();
-  
+
     fetchPathInfo
       .query({ questionnaireId }, { signal: controller.signal })
       .then((data) => {
@@ -126,27 +122,25 @@ export const Review = () => {
       })
       .catch((error) => {
         if (error.name === "CanceledError") {
-          // درخواست لغو شده، نگران نباش
           return;
         }
-        // handle other errors
       });
-  
+
     getNextQuestionnaire
-      .query({ questionnaireId }, { signal: controller.signal })
+      .query({ questionnaireId })
       .then((res) => {
-        setNextQuestionnaire(res.data?.id ?? null);
+        const nextQuestionnaire = res.data;
+        setNextQuestionnaire(nextQuestionnaire);
       })
       .catch((error) => {
         if (error.name === "CanceledError") return;
-        // handle other errors
       });
-  
+
     return () => {
-      controller.abort(); // وقتی کامپوننت آن‌مانت میشه، درخواست‌ها کنسل میشن
+      controller.abort(); 
     };
   }, [questionnaireId]);
-  
+
   const renderStatusText = () => {
     switch (status) {
       case "complete":
@@ -338,17 +332,11 @@ export const Review = () => {
                 <Trans i18nKey="questions.allQuestionnaires" />
               </Button>
             )}
-            {nextQuestionnaire && (
+            {nextQuestionnaire && nextQuestionnaire.id && (
               <Button
                 variant="contained"
                 component={Link}
-                to={
-                  "./../../../questionnaires" +
-                  "/" +
-                  (nextQuestionnaire.id ?? "") +
-                  "/" +
-                  (nextQuestionnaire.questionIndex ?? 1)
-                }
+                to={`../../questionnaires/${nextQuestionnaire.id}/${nextQuestionnaire.questionIndex ?? 1}`}
               >
                 <Trans i18nKey="questions.nextQuestionnaire" />
               </Button>
@@ -361,7 +349,9 @@ export const Review = () => {
       <Box mt={2}>
         {questionsInfo.questions.map((q) => {
           const is_farsi_title = languageDetector(q.title);
-          const is_farsi_option = languageDetector(q?.answer?.selectedOption?.title);
+          const is_farsi_option = languageDetector(
+            q?.answer?.selectedOption?.title,
+          );
           return (
             <Paper
               key={q.id}
@@ -381,7 +371,9 @@ export const Review = () => {
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                fontFamily={is_farsi_title ? farsiFontFamily : primaryFontFamily}
+                fontFamily={
+                  is_farsi_title ? farsiFontFamily : primaryFontFamily
+                }
               >
                 {q.index}.{q.title}
               </Typography>
@@ -393,8 +385,12 @@ export const Review = () => {
                     <Trans i18nKey="common.yourAnswer" />
                   </Typography>
                   <Typography
-                    fontFamily={is_farsi_option ? farsiFontFamily : primaryFontFamily}
-                    variant="h6" fontWeight="bold">
+                    fontFamily={
+                      is_farsi_option ? farsiFontFamily : primaryFontFamily
+                    }
+                    variant="h6"
+                    fontWeight="bold"
+                  >
                     {q.answer.selectedOption.index}.
                     {q.answer.selectedOption.title}
                   </Typography>
