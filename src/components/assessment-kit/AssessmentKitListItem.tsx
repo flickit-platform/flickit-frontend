@@ -1,24 +1,24 @@
-import React from "react";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { FLAGS, TId } from "@/types/index";
+import { FLAGS, TId, TQueryFunction } from "@/types/index";
+import { ICustomError } from "@utils/CustomError";
 import useMenu from "@utils/useMenu";
 import { useQuery } from "@utils/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
+import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
-
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -28,12 +28,11 @@ interface IAssessmentKitListItemProps {
     isPrivate?: boolean;
     draftVersionId?: TId;
   };
-  deleteAssessmentKitQuery?: any;
+  fetchAssessmentKits?: TQueryFunction;
   link?: string;
   hasAccess?: boolean;
   is_member?: boolean;
   is_active?: boolean;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
 }
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
@@ -47,7 +46,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
     service: (args, config) => service.assessmentKit.info.clone(args, config),
     runOnMount: false,
   });
-  const { data, deleteAssessmentKitQuery, hasAccess, link, is_member, is_active, setOpenDeleteDialog } =
+  const { data, fetchAssessmentKits, hasAccess, link, is_member, is_active } =
     props;
   const { id, title, lastModificationTime, isPrivate, draftVersionId } =
     data ?? {};
@@ -162,11 +161,10 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
           {showGroups && (
             <Actions
               assessment_kit={data}
+              fetchAssessmentKits={fetchAssessmentKits}
               hasAccess={hasAccess}
               is_member={is_member}
               is_active={is_active}
-              setOpenDeleteDialog={setOpenDeleteDialog}
-              deleteAssessmentKitQuery={deleteAssessmentKitQuery}
             />
           )}
         </Box>
@@ -176,19 +174,45 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
 };
 
 const Actions = (props: any) => {
-  const { assessment_kit, hasAccess, deleteAssessmentKitQuery, setOpenDeleteDialog } = props;
+  const { expertGroupId = "" } = useParams();
+  const { assessment_kit, fetchAssessmentKits, hasAccess } = props;
   const { id } = assessment_kit;
+  const { service } = useServiceContext();
+  const deleteAssessmentKitQuery = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.remove({ id }, config),
+    runOnMount: false,
+  });
 
-  const menuProps = useMenu();
+  if (!fetchAssessmentKits) {
+    console.warn(
+      "fetchAssessmentKits not provided. assessment kit list won't be updated on any action",
+    );
+  }
+
+  const deleteItem = async (e: any) => {
+    try {
+      await deleteAssessmentKitQuery.query();
+      await fetchAssessmentKits?.query({
+        id: expertGroupId,
+        size: 10,
+        page: 1,
+      });
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
+
   return hasAccess ? (
     <MoreActions
-      {...menuProps}
+      {...useMenu()}
       loading={deleteAssessmentKitQuery.loading}
       items={[
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          onClick: ()=> setOpenDeleteDialog({status: true, id}),
+          onClick: deleteItem,
         },
       ]}
     />
