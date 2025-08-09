@@ -51,16 +51,19 @@ export default function useEditableField(props: any){
         goal,
         context,
       },
-      translations: {
-        ...translations,
-        [langCode]: {
-          ...translations[langCode],
-          metadata: {
-            context: translations?.[langCode].context,
-            goal: translations?.[langCode].goal,
-          },
-        },
-      },
+      ...(langCode
+        ? {
+          translations: {
+            ...translations,
+            [langCode]: {
+              ...translations[langCode],
+              metadata: {
+                context: translations?.[langCode]?.context,
+                goal: translations?.[langCode]?.goal,
+              },
+            },
+          }
+        } : {})
     };
 
     delete updatedValuesWithMetadata.goal;
@@ -80,9 +83,8 @@ export default function useEditableField(props: any){
 
   useEffect(() => {
     if (data) {
-
       const defaultTranslatedLanguage = data.languages?.find(
-        (lang: ILanguage) => (lang.code !== data.mainLanguage?.code) || data.mainLanguage?.code ,
+        (lang: ILanguage) => lang.code !== data.mainLanguage?.code
       );
 
       setTranslatedLang?.(defaultTranslatedLanguage);
