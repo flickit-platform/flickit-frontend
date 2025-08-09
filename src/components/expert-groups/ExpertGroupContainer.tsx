@@ -1261,7 +1261,7 @@ const AssessmentKitsList = (props: any) => {
             return (
               <>
                 {items
-                  ?.filter((item: any) => is_member ? !item.published : item.published)
+                  ?.filter((item: any) => item.published)
                   ?.map((assessment_kit: any) => {
                     return (
                       <AssessmentKitListItem
@@ -1274,16 +1274,38 @@ const AssessmentKitsList = (props: any) => {
                         data={assessment_kit}
                         hasAccess={hasAccess}
                         is_member={is_member}
-                        is_active={!is_member}
+                        is_active={true}
                         setOpenDeleteDialog={setOpenDeleteDialog}
                         deleteAssessmentKitQuery={deleteAssessmentKitQuery}
                       />
                     );
                   })}
+                {is_member &&
+                  items
+                    ?.filter((item: any) => !item.published)
+                    ?.map((assessment_kit: any) => {
+                      return (
+                        <AssessmentKitListItem
+                          link={
+                            is_member
+                              ? `assessment-kits/${assessment_kit?.id}`
+                              : `/assessment-kits/${assessment_kit?.id}`
+                          }
+                          key={assessment_kit?.id}
+                          data={assessment_kit}
+                          hasAccess={hasAccess}
+                          is_member={is_member}
+                          is_active={false}
+                          setOpenDeleteDialog={setOpenDeleteDialog}
+                          deleteAssessmentKitQuery={deleteAssessmentKitQuery}
+                        />
+                      );
+                    })}
               </>
             );
           }}
         />
+        {/*todo*/}
         <DeleteConfirmationDialog
           open={openDeleteDialog.status}
           onClose={() =>
