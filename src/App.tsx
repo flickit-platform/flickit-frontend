@@ -27,6 +27,7 @@ initClarity();
 
 function App() {
   const { pathname = "" } = useLocation();
+
   const [searchParams] = useSearchParams();
   let lang = searchParams.get("lang");
   if (!lang && window.location.hash) {
@@ -36,10 +37,12 @@ function App() {
 
   const dispatch = useLangDispatch();
 
+
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
+
     if (lang) {
       localStorage.setItem("lang", lang);
       document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
