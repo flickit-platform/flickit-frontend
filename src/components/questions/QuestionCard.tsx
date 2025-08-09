@@ -970,7 +970,7 @@ const AnswerTemplate = (props: {
         return;
       }
       isSelectedValueTheSameAsAnswer
-        ? goToQuestion("asc")
+        ? goToQuestion("desc")
         : setOpenDeleteDialog({ ...openDeleteDialog, status: true });
     } else {
       goToQuestion("asc");
