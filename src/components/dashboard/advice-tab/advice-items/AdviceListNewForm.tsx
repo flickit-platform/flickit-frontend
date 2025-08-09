@@ -275,7 +275,7 @@ const AdviceListNewForm = ({
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
                 type={errormessage?.description ? "reportTab" : ""}
-                showEditorMenu={false}
+                showEditorMenu={true}
               />
             </Box>
           </FormProviderWithForm>
