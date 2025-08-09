@@ -124,7 +124,7 @@ const Gauge = ({
             <Typography
               variant="subtitle2"
               color="black"
-              fontSize={{ xs: "1.35rem", sm: "1.35rem", md: "0.875rem" }}
+              fontSize={{ xs: "1rem", sm: "1rem", md: "0.875rem" }}
             >
               <Trans i18nKey="common.maturityGuidanceFirst" />
             </Typography>
@@ -184,7 +184,7 @@ const Gauge = ({
             <Typography
               variant="subtitle2"
               color="black"
-              fontSize={{ xs: "1.35rem", sm: "1.35rem", md: "0.875rem" }}
+              fontSize={{ xs: "1rem", sm: "1rem", md: "0.875rem" }}
             >
               <Trans i18nKey="common.maturityGuidanceSecond" />
             </Typography>
