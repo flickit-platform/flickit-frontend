@@ -237,10 +237,11 @@ const ReportCard = ({
   const { assessmentInfo } = useAssessmentContext();
 
   const isAdvanceMode = useMemo(() => {
-    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-  }, [assessmentInfo?.mode?.code]);
+    return assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessment.mode]);
 
   const theme = useTheme();
+
 
   return (
     <Box
