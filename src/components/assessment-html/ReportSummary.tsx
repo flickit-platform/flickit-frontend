@@ -7,7 +7,6 @@ import { IGraphicalReport, ISubject } from "@/types/index";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import uniqueId from "@/utils/uniqueId";
-import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import { useMemo } from "react";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import { useTheme } from "@mui/material";
@@ -234,13 +233,13 @@ const ReportCard = ({
 }) => {
   const { assessment, subjects, assessmentProcess, lang } = graphicalReport;
   const rtlLanguage = lang.code.toLowerCase() === "fa";
-  const { assessmentInfo } = useAssessmentContext();
 
   const isAdvanceMode = useMemo(() => {
-    return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
-  }, [assessmentInfo?.mode?.code]);
+    return assessment?.mode?.code === ASSESSMENT_MODE.ADVANCED;
+  }, [assessment.mode]);
 
   const theme = useTheme();
+
 
   return (
     <Box
