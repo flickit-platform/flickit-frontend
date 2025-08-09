@@ -215,27 +215,30 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           >
             <Box
               sx={{
+                width: "100%",
+
                 overflow: "hidden",
                 position: "relative",
                 maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
                 transition: "max-height 0.4s ease",
                 "&::after": !showMore
                   ? {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: "40px",
-                    background: showBtn
-                      ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
-                      : "none",
-                    pointerEvents: "none",
-                  }
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: "40px",
+                      background: showBtn
+                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
+                        : "none",
+                      pointerEvents: "none",
+                    }
                   : undefined,
               }}
             >
               <Typography
+                component="div"
                 textAlign="justify"
                 sx={{
                   fontFamily: languageDetector(tempData)
@@ -248,6 +251,26 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
+                  "& table": {
+                    direction: theme.direction,
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    tableLayout: "auto",
+                    maxWidth: "100%",
+                  },
+                  "& th, & td": {
+                    direction: "inherit",
+                    unicodeBidi: "plaintext",
+                    verticalAlign: "top",
+                    border: "1px solid rgba(0,0,0,0.12)",
+                    padding: "6px 8px",
+                  },
+                  "& td p, & th p": {
+                    direction: "inherit",
+                    textAlign: "inherit",
+                    unicodeBidi: "plaintext",
+                    margin: 0,
+                  },
                 }}
                 variant="bodyMedium"
                 dangerouslySetInnerHTML={{
