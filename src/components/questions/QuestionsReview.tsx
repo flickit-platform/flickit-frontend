@@ -56,7 +56,7 @@ export const Review = () => {
   const { assessmentTotalProgress, fetchPathInfo, getNextQuestionnaire } =
     useQuestionnaire();
   useEffect(() => {
-    if (questionnaireId) {
+    if (questionnaireId && window.location.pathname.includes("/completed")) {
       fetchPathInfo.query({ questionnaireId }).then((data) => {
         setQuestionnaireTitle(data?.questionnaire?.title);
       });
@@ -304,7 +304,7 @@ export const Review = () => {
                   "/" +
                   (nextQuestionnaire.id ?? "") +
                   "/" +
-                  (nextQuestionnaire.index ?? 1)
+                  (nextQuestionnaire.questionIndex ?? 1)
                 }
               >
                 <Trans i18nKey="questions.nextQuestionnaire" />
