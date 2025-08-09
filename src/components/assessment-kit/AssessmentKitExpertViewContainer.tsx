@@ -851,7 +851,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
         closeDialog={close}
         loading={loaded}
         type="submit"
-        submitButtonLabel={t("common.saveChanges") as string}
+        submitButtonLabel={t("common.save") as string}
         onSubmit={formMethods.handleSubmit(onSubmit)}
       />
     </FormProviderWithForm>
