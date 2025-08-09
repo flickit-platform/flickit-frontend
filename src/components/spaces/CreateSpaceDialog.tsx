@@ -11,12 +11,9 @@ import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import { useNavigate } from "react-router-dom";
-import { theme } from "@/config/theme";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { t } from "i18next";
 import Check from "@components/spaces/Icons/check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -27,6 +24,7 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const PremiumBox = [
   {
@@ -89,7 +87,7 @@ const CreateSpaceDialog = (props: any) => {
   }, [spaceDefaultType?.code]);
 
   const close = () => {
-    if (step === 3) {
+    if (step === 2) {
       if (pendingKitData?.id) {
         dispatch(
           assessmentActions.setPendingKit({
@@ -167,7 +165,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
         <Trans i18nKey="spaces.selectYourSpaceType" />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
@@ -211,7 +209,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
         <Trans i18nKey="spaces.setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
@@ -250,9 +248,7 @@ const CreateSpaceDialog = (props: any) => {
               onBack={() => setStep(1)}
               backType="text"
               type={type}
-              onSubmit={(event) =>
-                formMethods.handleSubmit((data) => onSubmit(data, event))
-              }
+              onSubmit={() => formMethods.handleSubmit(onSubmit)()}
             />
           </Box>
         </Box>
@@ -273,13 +269,6 @@ const CreateSpaceDialog = (props: any) => {
                 type === "update" ? "spaces.updateSpace" : "spaces.createSpace"
               }
             />
-            <IconButton
-              sx={{ color: "#fff", marginInlineStart: "auto" }}
-              onClick={close}
-              data-testid={"close-btn"}
-            >
-              <CloseIcon style={{ width: 24, height: 24 }} />
-            </IconButton>
           </>
         )
       }
@@ -342,6 +331,7 @@ const BoxType = ({
       setSelectedType("PREMIUM");
     }
   }, []);
+  const theme = useTheme();
 
   const isSelected = selectedType === type;
   const isPremium = type === "PREMIUM";
@@ -379,8 +369,8 @@ const BoxType = ({
         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
+            variant="semiBoldMedium"
             sx={{
-              ...theme.typography.semiBoldMedium,
               WebkitBackgroundClip: isPremium ? "text" : undefined,
               WebkitTextFillColor: isPremium ? "transparent" : undefined,
               backgroundImage: isPremium
@@ -393,8 +383,8 @@ const BoxType = ({
           </Typography>
         </Box>
         <Typography
+          variant="labelSmall"
           sx={{
-            ...theme.typography.labelSmall,
             color: "#6C8093",
             mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
@@ -417,8 +407,8 @@ const BoxType = ({
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography
+              variant="labelSmall"
               sx={{
-                ...theme.typography.labelSmall,
                 WebkitBackgroundClip: isPremium ? "text" : undefined,
                 WebkitTextFillColor: isPremium ? "transparent" : undefined,
                 backgroundImage: isPremium
@@ -430,8 +420,8 @@ const BoxType = ({
               <Trans i18nKey={text} />
               {!allowCreateBasic && isBasic && index === 1 && (
                 <Typography
+                  variant="labelSmall"
                   sx={{
-                    ...theme.typography.labelSmall,
                     color: theme.palette.error.main,
                     display: "inline-block",
                   }}
@@ -458,7 +448,7 @@ const BoxType = ({
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
-          <Typography sx={{ ...theme.typography.labelSmall }}>
+          <Typography variant="labelSmall">
             <Trans i18nKey="spaces.spacePremiumInfo" />
           </Typography>
         </Box>

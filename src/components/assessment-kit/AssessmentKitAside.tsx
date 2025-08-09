@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { theme } from "@config/theme";
 import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@utils/icons/priceIcon";
 import { Trans } from "react-i18next";
@@ -24,6 +23,8 @@ import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import PurchasedIcon from "@utils/icons/purchasedIcon";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
+import { useTheme } from "@mui/material";
+import uniqueId from "@/utils/uniqueId";
 
 interface IlistOfItems {
   field: boolean;
@@ -39,6 +40,7 @@ const AssessmentKitAside = (props: any) => {
   const dialogPurchaseProps = usePurchaseDialog(title);
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
+  const theme = useTheme();
 
   const {
     config: { isAuthenticated },
@@ -109,10 +111,9 @@ const AssessmentKitAside = (props: any) => {
 
   useEffect(() => {
     const openModalAuto = async () => {
+      const params = new URLSearchParams(window.location.hash.split("?")[1]);
+      const idParam = params?.get("id");
       if (window.location.hash.startsWith("#createAssessment")) {
-        const params = new URLSearchParams(window.location.hash.split("?")[1]);
-        const idParam = params.get("id");
-
         if (idParam && !dialogProps.open) {
           if (keycloakService.isLoggedIn()) {
             createOrOpenDialog({
@@ -124,6 +125,10 @@ const AssessmentKitAside = (props: any) => {
           } else {
             keycloakService.doLogin();
           }
+        }
+      } else if (window.location.hash.startsWith("#purchaseAssessment")) {
+        if (!dialogPurchaseProps.open) {
+          dialogPurchaseProps.openDialog({});
         }
       }
     };
@@ -176,7 +181,7 @@ const AssessmentKitAside = (props: any) => {
             {listOfItems
               .filter((filter) => filter.field)
               .map((item) => {
-                return <InfoBox {...item} key={item.field} />;
+                return <InfoBox {...item} key={uniqueId()} />;
               })}
           </Box>
           <Box>

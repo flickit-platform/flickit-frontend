@@ -1,16 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Skeleton } from "@mui/material";
+import { Box, Button, Skeleton, useTheme } from "@mui/material";
 import ArrowForwardIosRounded from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRounded from "@mui/icons-material/ArrowBackIosRounded";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import { styles } from "@styles";
-import { theme } from "@config/theme";
 import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
 import uniqueId from "@/utils/uniqueId";
 
-const DIRECTION = theme.direction === "rtl" ? "+" : "-";
 const ARROW_COLOR = "#1B4D7E";
 
 interface Banner {
@@ -129,6 +127,8 @@ const AssessmentKitsStoreBanner = (props: any) => {
       startXRef.current = null;
     }
   };
+  const theme = useTheme();
+  const DIRECTION = theme.direction === "rtl" ? "+" : "-";
 
   const handleImageLoad = (index: number) => {
     setLoadedImages((prev) => {

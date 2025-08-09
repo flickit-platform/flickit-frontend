@@ -29,8 +29,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
-import { theme } from "@config/theme";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const tableCellStyles = {
   minWidth: {
@@ -51,8 +51,8 @@ const avatarStyles = {
 };
 
 const chipStyles = {
-  marginRight: theme.direction === "ltr" ? 1 : "unset",
-  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+  marginRight: document.dir === "ltr" ? 1 : "unset",
+  marginLeft: document.dir === "rtl" ? 1 : "unset",
   opacity: 0.7,
   color: "#9A003C",
   borderColor: "#9A003C",
@@ -75,6 +75,7 @@ export default function MemberList(props: any) {
   const { title, btnLabel, listOfUser, columns, query, hasBtn } = props;
   const { openEGModal, setOpenEGModal, deleteEGMember, onCloseEGModal } =
     useEGPermision({ query });
+  const theme = useTheme();
 
   return (
     <Box

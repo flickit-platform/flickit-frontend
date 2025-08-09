@@ -9,16 +9,22 @@ import {
 } from "recharts";
 import Skeleton from "@mui/material/Skeleton";
 import { convertToRadialChartData } from "@/utils/convertToAssessmentChartData";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily, } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material";
 
 interface CustomBarChartProps {
   loading: boolean;
   data: any[];
+  maturityLevelsCount: number;
 }
 
-const CustomBarChart: React.FC<CustomBarChartProps> = ({ loading, data }) => {
+const CustomBarChart: React.FC<CustomBarChartProps> = ({
+  loading,
+  data,
+  maturityLevelsCount,
+}) => {
   return loading ? (
     <Skeleton
       height={"620px"}
@@ -27,15 +33,21 @@ const CustomBarChart: React.FC<CustomBarChartProps> = ({ loading, data }) => {
       sx={{ margin: "auto" }}
     />
   ) : (
-    <SubjectRadial data={data} />
+    <SubjectRadial data={data} maturityLevelsCount={maturityLevelsCount} />
   );
 };
 
 interface SubjectRadialProps {
   data: any[];
+  maturityLevelsCount: number;
 }
 
-const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
+const SubjectRadial: React.FC<SubjectRadialProps> = ({
+  data,
+  maturityLevelsCount,
+}) => {
+  const theme = useTheme();
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const wordLimit = !isSmallScreen ? 18 : 12;
   const formatXAxisTick = (tick: string) => {
@@ -43,13 +55,21 @@ const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
       ? `${tick?.substring(0, wordLimit)}...`
       : tick;
   };
-  const chartData = useMemo(() => convertToRadialChartData(data), [data]);
+
+  const chartData = useMemo(
+    () => convertToRadialChartData(data, maturityLevelsCount),
+    [data],
+  );
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart cx="50%" cy="50%" barSize={30} data={chartData}>
+      <BarChart cx="50%" cy="50%" barSize={30} data={chartData.items}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="title" interval={0} tickFormatter={formatXAxisTick} />
-        <YAxis type="number" domain={[0, 5]} tickCount={6} />
+        <YAxis
+          type="number"
+          domain={[0, chartData.maturityLevelsCount]}
+          tickCount={chartData.maturityLevelsCount + 1}
+        />
         <Bar
           min={15}
           dataKey="ml"
@@ -57,7 +77,7 @@ const SubjectRadial: React.FC<SubjectRadialProps> = ({ data }) => {
             position: "middle",
             fill: "#fff",
             fontSize: "1.75rem",
-            fontFamily: languageDetector(chartData[0]?.title)
+            fontFamily: languageDetector(chartData.items[0]?.title)
               ? farsiFontFamily
               : primaryFontFamily,
           }}

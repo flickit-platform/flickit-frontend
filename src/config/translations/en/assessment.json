@@ -52,5 +52,6 @@
   "successCreatedAssessmentTitleFirstPart": "The ",
   "successCreatedAssessmentTitleSecondPart": " created successfully",
   "tryCreatingNewAssessment": "There is no assessment in this space. Try creating one.",
-  "updateAssessment": "Update assessment"
+  "updateAssessment": "Update assessment",
+  "areYouSureYouWantDeleteAssessment": "Your assessment will be deleted. Do you want to continue?"
 }

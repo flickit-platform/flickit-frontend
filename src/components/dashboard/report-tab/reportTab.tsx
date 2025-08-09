@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { t } from "i18next";
@@ -17,6 +16,7 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import Switch from "@mui/material/Switch";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { styles } from "@styles";
+import { useTheme } from "@mui/material";
 const ReportTab = () => {
   const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
@@ -49,7 +49,7 @@ const ReportTab = () => {
     },
     {
       name: "prosAndCons",
-      title: "assessmentReport.strengthsAndAreasForImprovement",
+      title: "assessmentReport.maturityMapOfAssessedAttributes",
       placeholder: "assessmentReport.writeStrengthAndAreas",
     },
     {
@@ -63,6 +63,8 @@ const ReportTab = () => {
       placeholder: "assessmentReport.writeAboutParticipants",
     },
   ];
+  const theme = useTheme();
+
   return (
     <QueryData
       {...fetchReportFields}

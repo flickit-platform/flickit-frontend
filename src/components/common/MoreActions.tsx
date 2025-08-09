@@ -6,6 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import uniqueId from "@/utils/uniqueId";
 
 interface IMoreActionsProps {
   boxProps?: BoxProps;
@@ -89,7 +90,7 @@ const MoreActions = (props: IMoreActionsProps) => {
           } = item ?? {};
           return (
             <MenuItem
-              key={item.text.key}
+              key={uniqueId()}
               {...menuItemProps}
               onClick={(e: any) => {
                 closeMenu(e);

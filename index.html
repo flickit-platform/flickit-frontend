@@ -9,80 +9,75 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="This Platform makes it easy to evaluate software systems. You can publish your evaluation assessment kit or use available assessment kits and get helpful insights."
+      content="Identify and resolve your software systems’ issues and drive their growth with assessment kits crafted by seasoned experts."
     />
     <link rel="manifest" href="/manifest.json" />
-    <title>Loading...</title>
+    <title>Flickit</title>
+    <script type="text/javascript">
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
+    </script>
   </head>
   <body>
+    <script type="text/javascript">
+      (function (window, document, dataLayerName, id) {
+        window[dataLayerName] = window[dataLayerName] || [];
+        window[dataLayerName].push({
+          start: new Date().getTime(),
+          event: "stg.start",
+        });
+        var scripts = document.getElementsByTagName("script")[0],
+          tags = document.createElement("script");
+        var qP = [];
+        dataLayerName !== "dataLayer" &&
+          qP.push("data_layer_name=" + dataLayerName);
+        var qPString = qP.length > 0 ? "?" + qP.join("&") : "";
+        var scripts = document.getElementsByTagName("script")[0],
+          tags = document.createElement("script");
+
+        tags.async = true;
+        tags.src =
+          "https://flickit.containers.piwik.pro/" + id + ".js" + qPString;
+
+        scripts.parentNode.insertBefore(tags, scripts);
+
+        scripts.parentNode.insertBefore(tags, scripts);
+        !(function (a, n, i) {
+          a[n] = a[n] || {};
+          for (var c = 0; c < i.length; c++)
+            !(function (i) {
+              (a[n][i] = a[n][i] || {})(
+                (a[n][i].api =
+                  a[n][i].api ||
+                  function () {
+                    var a = [].slice.call(arguments, 0);
+                    "string" == typeof a[0] &&
+                      window[dataLayerName].push({
+                        event: n + "." + i + ":" + a[0],
+                        parameters: [].slice.call(arguments, 1),
+                      });
+                  }),
+              );
+            })(i[c]);
+        })(window, "ppms", ["tm", "cm"]);
+      })(window, document, "dataLayer", "%VITE_PIWIK_KEY%");
+    </script>
+    <script>
+      window._paq = window._paq || [];
+      _paq.push(["disableCookies"]);
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
-  <script type="text/javascript">
-    (function (c, l, a, r, i, t, y) {
-      c[a] =
-        c[a] ||
-        function () {
-          (c[a].q = c[a].q ?? []).push(arguments);
-        };
-      const scriptElement = l.createElement(r);
-      scriptElement.async = 1;
-      scriptElement.src = "https://www.clarity.ms/tag/" + i;
-      const firstScriptElement = l.getElementsByTagName(r)[0];
-      firstScriptElement.parentNode.insertBefore(
-        scriptElement,
-        firstScriptElement,
-      );
-
-      window.clarity("consent");
-    })(window, document, "clarity", "script", "%VITE_CLARITY_KEY%");
-  </script>
-  <script type="text/javascript">
-    (function (window, document, dataLayerName, id) {
-      window[dataLayerName] = window[dataLayerName] || [];
-      window[dataLayerName].push({
-        start: new Date().getTime(),
-        event: "stg.start",
-      });
-      var scripts = document.getElementsByTagName("script")[0],
-        tags = document.createElement("script");
-      var qP = [];
-      dataLayerName !== "dataLayer" &&
-        qP.push("data_layer_name=" + dataLayerName);
-      var qPString = qP.length > 0 ? "?" + qP.join("&") : "";
-      var scripts = document.getElementsByTagName("script")[0],
-        tags = document.createElement("script");
-
-      tags.async = true;
-      tags.src =
-        "https://flickit.containers.piwik.pro/" + id + ".js" + qPString;
-
-      scripts.parentNode.insertBefore(tags, scripts);
-
-      scripts.parentNode.insertBefore(tags, scripts);
-      !(function (a, n, i) {
-        a[n] = a[n] || {};
-        for (var c = 0; c < i.length; c++)
-          !(function (i) {
-            (a[n][i] = a[n][i] || {})(
-              (a[n][i].api =
-                a[n][i].api ||
-                function () {
-                  var a = [].slice.call(arguments, 0);
-                  "string" == typeof a[0] &&
-                    window[dataLayerName].push({
-                      event: n + "." + i + ":" + a[0],
-                      parameters: [].slice.call(arguments, 1),
-                    });
-                }),
-            );
-          })(i[c]);
-      })(window, "ppms", ["tm", "cm"]);
-    })(window, document, "dataLayer", "%VITE_PIWIK_KEY%");
-  </script>
-  <script>
-    window._paq = window._paq || [];
-    _paq.push(["disableCookies"]);
-  </script>
 </html>

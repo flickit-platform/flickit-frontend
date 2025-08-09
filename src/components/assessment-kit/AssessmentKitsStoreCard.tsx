@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, secondaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import PriceIcon from "@utils/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
-import { Avatar } from "@mui/material";
+import { Avatar, useTheme } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
@@ -36,6 +36,7 @@ const AssessmentKitsStoreCard = (props: any) => {
     hasAccess,
   } = props;
 
+  const theme = useTheme();
   const navigate = useNavigate();
   const { config } = useConfigContext();
   const paid = !isFree && !hasAccess;
@@ -361,6 +362,8 @@ const CheckStatus: React.FC<CheckStatusProps> = ({
     if (isFree) return "free";
     return hasAccess ? "purchased" : "paid";
   };
+  const theme = useTheme()
+
 
   const status = getStatus();
   const iconColor = isPrivate

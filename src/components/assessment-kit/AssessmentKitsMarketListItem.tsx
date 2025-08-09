@@ -10,11 +10,13 @@ import Title from "@common/Title";
 import ThumbUpOffAltRoundedIcon from "@mui/icons-material/ThumbUpOffAltRounded";
 import { Trans } from "react-i18next";
 import Tooltip from "@mui/material/Tooltip";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
   const HEIGHT_TITLE: number = 12;
+  const theme = useTheme();
 
   return (
     <Box

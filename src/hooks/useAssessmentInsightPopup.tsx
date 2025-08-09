@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import Typography from "@mui/material/Typography";
-import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
+import { useTheme } from "@mui/material";
 
 interface InsightStatus {
   status: "default" | "expired" | "approved" | "pending";
@@ -50,6 +50,7 @@ const useInsightPopup = ({
   AIEnabled,
 }: UseInsightPopupProps) => {
   const { config } = useConfigContext();
+  const theme = useTheme();
 
   const getInsightStatus = useCallback((): InsightStatus["status"] => {
     if (!insight) return "default";
@@ -136,7 +137,7 @@ const useInsightPopup = ({
     if (insight) {
       return AIEnabled
         ? t("assessment.regenerateViaAI")
-        : t("assessment.regenerate");
+        : t("common.regenerate");
     }
     return AIEnabled
       ? t("assessment.generateInsightViaAI")

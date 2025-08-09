@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
 import uniqueId from "@/utils/uniqueId";
@@ -19,6 +18,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
 import { ErrorCodes } from "@/types/index";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -33,11 +33,7 @@ const TodoBox = (props: any) => {
         >
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
-            <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-              }}
-            >
+            <Typography variant="headlineSmall">
               <Trans i18nKey="dashboard.whatToDoNow" />
             </Typography>
             <Tooltip title={<Trans i18nKey="dashboard.whatToDoNowTooltip" />}>
@@ -59,9 +55,7 @@ const TodoBox = (props: any) => {
                     mt: "32px",
                   }}
                 >
-                  <Typography
-                    sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
-                  >
+                  <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
                     )}
@@ -110,8 +104,8 @@ const TodoBox = (props: any) => {
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
             <Typography
+              variant="headlineSmall"
               sx={{
-                ...theme.typography.headlineSmall,
                 color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
               }}
             >
@@ -140,8 +134,8 @@ const TodoBox = (props: any) => {
                   id={item.name}
                 >
                   <Typography
+                    variant="semiBoldLarge"
                     sx={{
-                      ...theme.typography.semiBoldLarge,
                       color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
                     }}
                   >
@@ -327,20 +321,38 @@ export const IssuesItem = ({
     if (errorCode === ErrorCodes.ConfidenceCalculationNotValid)
       calculateConfidence(handleGenerateAll);
   }, [generateInsights.errorObject]);
+  const theme = useTheme();
 
   const issueTextMap = {
-    unanswered: value > 1 ? "dashboard.needForAnswers" : "dashboard.needsForAnswer",
+    unanswered:
+      value > 1 ? "dashboard.needForAnswers" : "dashboard.needsForAnswer",
     unapprovedAnswers:
-      value > 1 ? "dashboard.answersNeedApproval" : "dashboard.answerNeedsApproval",
+      value > 1
+        ? "dashboard.answersNeedApproval"
+        : "dashboard.answerNeedsApproval",
     answeredWithLowConfidence:
-      value > 1 ? "dashboard.questionsConfidenceAnswers" : "dashboard.questionConfidenceAnswer",
-    withoutEvidence: value > 1 ? "dashboard.lackForEvidences" : "dashboard.lackForEvidence",
-    unresolvedComments: value > 1 ? "dashboard.commentsAreUnresolved" : "dashboard.commentIsUnresolved",
+      value > 1
+        ? "dashboard.questionsConfidenceAnswers"
+        : "dashboard.questionConfidenceAnswer",
+    withoutEvidence:
+      value > 1 ? "dashboard.lackForEvidences" : "dashboard.lackForEvidence",
+    unresolvedComments:
+      value > 1
+        ? "dashboard.commentsAreUnresolved"
+        : "dashboard.commentIsUnresolved",
     notGenerated: "dashboard.insightsNeedToBeGenerated",
-    unapproved: value > 1 ? "dashboard.insightsNeedApproval" : "dashboard.insightNeedsApproval",
-    expired: value > 1 ? "dashboard.expiredDueToNewAnswers" : "dashboard.expiredDueToNewAnswer",
+    unapproved:
+      value > 1
+        ? "dashboard.insightsNeedApproval"
+        : "dashboard.insightNeedsApproval",
+    expired:
+      value > 1
+        ? "dashboard.expiredDueToNewAnswers"
+        : "dashboard.expiredDueToNewAnswer",
     unprovidedMetadata:
-      value > 1 ? "dashboard.metadataAreNotProvided" : "dashboard.metadataIsNotProvided",
+      value > 1
+        ? "dashboard.metadataAreNotProvided"
+        : "dashboard.metadataIsNotProvided",
     unpublished: "dashboard.unpublishedReport",
     total: "dashboard.suggestAnyAdvicesSoFar",
   } as any;
@@ -391,7 +403,7 @@ export const IssuesItem = ({
           color={color === "info" ? "primary" : color}
           variant="outlined"
         >
-          <Typography sx={{ ...theme.typography.labelMedium }}>
+          <Typography variant="labelMedium">
             <Trans i18nKey="common.approveAll" />
           </Typography>
         </Button>
@@ -413,7 +425,7 @@ export const IssuesItem = ({
                 padding: "4px 10px",
               }}
             >
-              <Typography sx={{ ...theme.typography.labelMedium }}>
+              <Typography variant="labelMedium">
                 <Trans i18nKey="dashboard.generateAll" />
               </Typography>
             </LoadingButton>
@@ -439,9 +451,7 @@ export const IssuesItem = ({
                 loading={regenerateInsights.loading}
                 color={color === "info" ? "primary" : color}
               >
-                <Typography
-                  sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
-                >
+                <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
                   <Trans i18nKey={"common.regenerateAll"} />
                 </Typography>
               </LoadingButton>
@@ -458,9 +468,7 @@ export const IssuesItem = ({
               color={color === "info" ? "primary" : color}
               variant="outlined"
             >
-              <Typography
-                sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
-              >
+              <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
                 <Trans i18nKey="common.approveAll" />
               </Typography>
             </LoadingButton>
@@ -477,7 +485,7 @@ export const IssuesItem = ({
           color={color === "info" ? "primary" : color}
           variant="outlined"
         >
-          <Typography sx={{ ...theme.typography.labelMedium }}>
+          <Typography variant="labelMedium">
             <Trans i18nKey="common.resolveAll" />
           </Typography>
         </Button>
@@ -493,7 +501,7 @@ export const IssuesItem = ({
               padding: "4px 10px",
             }}
           >
-            <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Typography variant="labelMedium">
               <Trans i18nKey="common.approveAll" />
             </Typography>
           </LoadingButton>

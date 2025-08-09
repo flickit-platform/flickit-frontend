@@ -13,7 +13,6 @@ import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { theme } from "@/config/theme";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
@@ -27,6 +26,7 @@ import {
 } from "@/providers/AssessmentProvider";
 import i18next from "i18next";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -46,6 +46,8 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
+  const theme = useTheme()
+
   const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id;
   const { langList, spaceList, queryDataSpaces } = staticData;

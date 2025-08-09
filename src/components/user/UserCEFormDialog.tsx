@@ -11,9 +11,9 @@ import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
 import { ICustomError } from "@utils/CustomError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { theme } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IUserCEFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -74,6 +74,8 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
       showToast(err);
     }
   };
+
+  const theme = useTheme();
 
   return (
     <CEDialog

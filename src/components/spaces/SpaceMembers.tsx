@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Title from "@common/Title";
 import QueryData from "@common/QueryData";
@@ -31,14 +31,18 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 export const SpaceMembers = (props: any) => {
+  const theme = useTheme();
+
   const { editable } = props;
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
@@ -46,6 +50,10 @@ export const SpaceMembers = (props: any) => {
   const userId = userInfo?.id;
   const user_id_ref = useRef<HTMLInputElement>(null);
   const [page, setPage] = useState(1);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
   const spaceMembersQueryData = useQuery({
     service: (args, config) =>
       service.space.getMembers({ spaceId, page: page - 1, size: 10 }, config),
@@ -53,6 +61,24 @@ export const SpaceMembers = (props: any) => {
   const spaceMembersInviteeQueryData = useQuery<IMemberModel>({
     service: (args, config) => service.space.getInvitees({ spaceId }, config),
   });
+  const deleteSpaceMember = useQuery({
+    service: (arg, config) =>
+      service.space.removeMember({ spaceId, memberId: openDeleteDialog.id }, config),
+    runOnMount: false,
+    toastError: false,
+  });
+
+  const deleteItem = async () => {
+    try {
+      await deleteSpaceMember.query();
+      await spaceMembersQueryData.query();
+      setOpenDeleteDialog({status: false, id: ""})
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
+
   const dialogProps = useDialog();
   const {
     query: addMember,
@@ -283,6 +309,8 @@ export const SpaceMembers = (props: any) => {
                               member={member}
                               editable={editable}
                               fetchSpaceMembers={spaceMembersQueryData.query}
+                              setOpenDeleteDialog={setOpenDeleteDialog}
+                              deleteSpaceMember={deleteSpaceMember}
                             />
                           }
                         </Box>
@@ -310,6 +338,16 @@ export const SpaceMembers = (props: any) => {
               </Box>
             );
           }}
+        />
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
+          onConfirm={deleteItem}
+          title="common.warning"
+          content="spaces.areYouSureYouWantDeleteThisMember"
+          confirmButtonText={t("common.continue")}
         />
         <QueryData
           {...spaceMembersInviteeQueryData}
@@ -483,15 +521,11 @@ const Actions = (props: any) => {
     email,
     editable,
     inviteId,
+    setOpenDeleteDialog,
+    deleteSpaceMember
   } = props;
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
-  const { query: deleteSpaceMember, loading } = useQuery({
-    service: (arg, config) =>
-      service.space.removeMember({ spaceId, memberId: member.id }, config),
-    runOnMount: false,
-    toastError: false,
-  });
   const { query: deleteSpaceInvite } = useQuery({
     service: (config) => service.space.removeInvite({ inviteId }, config),
     runOnMount: false,
@@ -505,16 +539,6 @@ const Actions = (props: any) => {
       ),
     runOnMount: false,
   });
-
-  const deleteItem = async (e: any) => {
-    try {
-      await deleteSpaceMember();
-      await fetchSpaceMembers();
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
 
   const deleteItemInvite = async (e: any) => {
     try {
@@ -539,7 +563,7 @@ const Actions = (props: any) => {
   return (
     <MoreActions
       {...useMenu()}
-      loading={loading || inviteMemberQueryData.loading}
+      loading={deleteSpaceMember.loading || inviteMemberQueryData.loading}
       items={[
         isInvitees && isInvitationExpired && editable
           ? {
@@ -559,7 +583,7 @@ const Actions = (props: any) => {
           editable && {
             icon: <DeleteRoundedIcon fontSize="small" />,
             text: <Trans i18nKey="common.remove" />,
-            onClick: deleteItem,
+            onClick: ()=> setOpenDeleteDialog({ status: true, id: member.id }),
           },
       ]}
     />

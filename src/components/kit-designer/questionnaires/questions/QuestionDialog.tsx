@@ -6,6 +6,7 @@ import {
   Divider,
   Switch,
   DialogProps,
+  useTheme,
 } from "@mui/material";
 import { Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -28,7 +29,6 @@ import AutocompleteAsyncField, {
 import { kitActions, useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
-import { theme } from "@/config/theme";
 import NavigationButtons from "@/components/common/buttons/NavigationButtons";
 import showToast from "@/utils/toastError";
 
@@ -96,26 +96,30 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
 
   useEffect(() => {
     if (rest.open && question.id) {
-      Promise.all([fetchOptions.query(), fetchMeasures.query()]);
-      const initial = {
-        options: question.options ?? [{ text: "" }],
-        mayNotBeApplicable: question.mayNotBeApplicable ?? false,
-        advisable: question.advisable ?? false,
-        measure:
-          fetchMeasures.data?.items?.find(
-            (m: any) => m.id === question.measureId,
-          ) ?? null,
-      };
-      setInitialData(initial);
-      formMethods.reset(initial);
-      setTempValue({
-        title: question.title ?? "",
-        hint: question.hint ?? "",
-        translations: question.translations ?? "",
-      });
-      setSelectedAnswerRange(question.answerRangeId);
+      const resultFunc = async () => {
+        const [,fetchMeasure] = await Promise.all([fetchOptions.query(), fetchMeasures.query()])
+        const initial = {
+          options: question.options ?? [{ text: "" }],
+          mayNotBeApplicable: question.mayNotBeApplicable ?? false,
+          advisable: question.advisable ?? false,
+          measure:
+            fetchMeasure?.items?.find(
+              (m: any) => m.id === question.measureId,
+            ) ?? null,
+        };
+
+        setInitialData(initial);
+        formMethods.reset(initial);
+        setTempValue({
+          title: question.title ?? "",
+          hint: question.hint ?? "",
+          translations: question.translations ?? "",
+        });
+        setSelectedAnswerRange(question.answerRangeId);
+      }
+      resultFunc()
     }
-  }, [rest.open, question.id]);
+  }, [rest.open, question.id, isSaving]);
 
   const handleSubmit = async (data: any) => {
     try {
@@ -183,18 +187,19 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         JSON.stringify(question.translations ?? {}) ||
       selectedAnswerRange !== question.answerRangeId ||
       measureId !== initialMeasureId ||
-      currentValues.mayNotBeApplicable !==
+     (!!currentValues.mayNotBeApplicable && currentValues.mayNotBeApplicable )!==
         (question.mayNotBeApplicable ?? false) ||
-      currentValues.advisable !== (question.advisable ?? false)
+     (!!currentValues.advisable && currentValues.advisable) !== (question.advisable ?? false)
     );
   };
+  const theme = useTheme();
 
   return (
     <CEDialog
       {...rest}
       closeDialog={closeDialog}
       sx={{ width: "100%", paddingInline: 4 }}
-      title={<Trans i18nKey="common.save" />}
+      title={<Trans i18nKey="common.editQuestion" />}
     >
       <NavigationButtons
         onPrevious={handlePrevious}
@@ -327,7 +332,8 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         loading={isSaving}
         onClose={closeDialog}
         onSubmit={formMethods.handleSubmit(handleSubmit)}
-        submitButtonLabel="common.save"
+        hasContinueBtn={true}
+        submitButtonLabel={t("common.save")}
         type="create"
         disablePrimaryButton={!isDirty()}
       />

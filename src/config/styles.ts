@@ -2,6 +2,7 @@ import { keyframes, SxProps, Theme } from "@mui/material/styles";
 import { TStatus } from "@/types/index";
 import hasStatus from "@utils/hasStatus";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
+import i18next from "i18next";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
@@ -71,6 +72,17 @@ const commonStyles = {
     overflow: "hidden",
     textOverflow: "ellipsis",
   }),
+  rtlStyle: (isRTL = true) => ({
+    direction: isRTL ? "rtl" : "ltr",
+    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
+  }),
+  iconDirectionStyle: (lng?: string) => {
+    const isCurrentLang = lng === i18next.language.toLowerCase();
+    return {
+      marginInlineStart: isCurrentLang ? "initial" : -1,
+      marginInlineEnd: isCurrentLang ? "initial" : 1,
+    };
+  },
 };
 
 const sharedChipStyles = {
@@ -86,10 +98,6 @@ const sharedChipStyles = {
     gap: 0.5,
     fontWeight: "bold",
   },
-  rtlStyle: (isRTL = true) => ({
-    direction: isRTL ? "rtl" : "ltr",
-    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
-  }),
 };
 
 const cards = {
@@ -275,7 +283,7 @@ export const C2 = "#D74427";
 export const C3 = "#F55C3D";
 export const C4 = "#F2995A";
 export const C5 = "#FFBC00";
-export const C6 = "#FFD900";
+export const C6 = "#D2C931";
 export const C7 = "#99CB34";
 export const C8 = "#4FB34C";
 export const C9 = "#168345";
@@ -286,7 +294,7 @@ export const C2BG = "#D7442715";
 export const C3BG = "#F55C3D15";
 export const C4BG = "#F2995A15";
 export const C5BG = "#FFBC0015";
-export const C6BG = "#FFD90015";
+export const C6BG = "#D2C93115";
 export const C7BG = "#99CB3415";
 export const C8BG = "#4FB34C15";
 export const C9BG = "#16834515";

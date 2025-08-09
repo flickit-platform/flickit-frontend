@@ -20,7 +20,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentTitle from "./AssessmentTitle";
-import { theme } from "@/config/theme";
 import PermissionControl from "../common/PermissionControl";
 import SettingIcon from "@utils/icons/settingIcon";
 import NewAssessmentIcon from "@utils/icons/newAssessment";
@@ -28,15 +27,20 @@ import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog
 import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
 import showToast from "@utils/toastError";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import { t } from "i18next";
+import { TId } from "@/types";
+import { useTheme } from "@mui/material";
 
 const AssessmentContainer = () => {
+  const theme = useTheme()
   const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, ...rest } = useFetchAssessments();
+  const { fetchAssessments, deleteAssessment, ...rest } = useFetchAssessments();
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -52,11 +56,24 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{status: boolean, id: TId}>({ status: false, id: "" });
+
   const fetchSpaceInfo = useQuery({
     service: (args = { spaceId }, config) =>
       service.space.getById(args, config),
     runOnMount: false,
   });
+
+  const deleteAssessmentById = async() =>{
+   try {
+    await deleteAssessment(openDeleteDialog?.id)
+     setOpenDeleteDialog({ status: false, id: "" })
+   }catch(e){
+     const err = e as ICustomError;
+     setOpenDeleteDialog({ status: false, id: "" })
+     showToast(err);
+    }
+  }
 
   useEffect(() => {
     fetchSpaceInfo.query();
@@ -239,6 +256,7 @@ const AssessmentContainer = () => {
                   data={data}
                   space={{ id: spaceId, title: currentSpace?.title }}
                   dialogProps={dialogProps}
+                  setOpenDeleteDialog={setOpenDeleteDialog}
                 />
                 {pageCount > 1 && !isEmpty && (
                   <Stack
@@ -271,6 +289,16 @@ const AssessmentContainer = () => {
           {...infoDialogProps}
           titleStyle={{ mb: 0 }}
           contentStyle={{ p: 0 }}
+        />
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
+          onConfirm={deleteAssessmentById}
+          title="common.warning"
+          content="assessment.areYouSureYouWantDeleteAssessment"
+          confirmButtonText={t("common.continue")}
         />
       </Box>
     </PermissionControl>
@@ -317,7 +345,7 @@ const useFetchAssessments = () => {
     }
   };
 
-  const deleteAssessment = async (id: any) => {
+  const deleteAssessment = async (id: TId) => {
     setLoading(true);
     try {
       await service.assessments.info.remove(

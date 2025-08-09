@@ -36,7 +36,16 @@ const useGetSignedInUserInfo = (
             }
           : axios.defaults.headers,
       });
-
+      const { data : profileData } = await service.user.getProfile({
+        signal: abortController.current.signal,
+        //@ts-expect-error
+        headers: accessToken
+          ? {
+              ...axios.defaults.headers,
+              Authorization: `Bearer ${accessToken}`,
+            }
+          : axios.defaults.headers,
+      });
       service.user
         .getNotificationHash({
           signal: abortController.current.signal,
@@ -54,6 +63,7 @@ const useGetSignedInUserInfo = (
           dispatch(
             authActions.setUserInfo({
               ...data,
+              ...profileData,
               subscriberHash: res.data.novuSubscriberHash,
             }),
           );

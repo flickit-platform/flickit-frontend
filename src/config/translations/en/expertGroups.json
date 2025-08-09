@@ -13,5 +13,6 @@
   "sueccessJoinToExpertGroup": "You have joined this expert group successfully.",
   "unpublishedAssessmentKits": "Unpublished assessment kits",
   "updateExpertGroup": "Update the expert group",
-  "youHaveBeenInvitedToExpertGroup": "You have been invited to this group. Do you want to accept this invitation?"
+  "youHaveBeenInvitedToExpertGroup": "You have been invited to this group. Do you want to accept this invitation?",
+  "areYouSureYouWantDeleteExpertGroup": "Your Expert group will be Delete. Do you want to continue?"
 }

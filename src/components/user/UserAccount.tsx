@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { useEffect, useState } from "react";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
@@ -25,6 +25,7 @@ import { ICustomError } from "@utils/CustomError";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);
@@ -33,9 +34,10 @@ const UserAccount = () => {
   const { service } = useServiceContext();
   const userQueryData = useQuery({
     service: (args, config) => service.user.getProfile(config),
-    runOnMount: true,
+    runOnMount: false,
   });
-  const [userInfo, setUserInfo] = useState({
+  const { userInfo : userProfileInfo } = useAuthContext()
+  const [userInfo, setUserInfo] = useState<any>({
     id: 1,
     displayName: "",
     email: "",
@@ -44,8 +46,8 @@ const UserAccount = () => {
     bio: undefined,
   });
   useEffect(() => {
-    setUserInfo(userQueryData.data);
-  }, [userQueryData.loaded]);
+    setUserInfo(userProfileInfo);
+  }, []);
 
   const dialogProps = useDialog();
   useDocumentTitle(`${t("user.userProfile")}: ${getUserName(userInfo)}`);
@@ -85,6 +87,8 @@ const UserAccount = () => {
       }
     }
   };
+  const theme = useTheme();
+
   return (
     <Box>
       <Box

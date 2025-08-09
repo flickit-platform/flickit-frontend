@@ -7,13 +7,14 @@ import Link from "@tiptap/extension-link";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Placeholder from "@tiptap/extension-placeholder";
 import languageDetector from "@/utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -45,6 +46,7 @@ const RichEditor = (props: IRichEditorProps) => {
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
+  const theme = useTheme();
 
   useEffect(() => {
     setIsFarsi(checkLang);
@@ -172,6 +174,11 @@ const RichEditor = (props: IRichEditorProps) => {
                       unicodeBidi: "plaintext",
                       textAlign: "initial",
                     },
+              },
+              "& .ProseMirror table": {
+                direction: theme.direction,
+                width: "100%",
+                borderCollapse: "collapse",
               },
             }
           : { ...(boxProps.sx ?? {}) }

@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import { theme } from "@config/theme";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
@@ -13,10 +12,8 @@ import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import keycloakService from "@/service/keycloakService";
+import { useTheme } from "@mui/material";
 
-const login = () => {
-  keycloakService.doLogin();
-};
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
 const LandingPage =
   rawLandingPage && rawLandingPage !== "PLATFORM_LANDING_PAGE"
@@ -25,6 +22,19 @@ const LandingPage =
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
+  const theme = useTheme();
+
+  const handleButtonClick = (e: any, name: string) => {
+    keycloakService.doLogin();
+    (window as any).dataLayer.push({
+      event: "ppms.cm:trackEvent",
+      parameters: {
+        category: "Button",
+        action: "Click",
+        name: name,
+      },
+    });
+  };
   return (
     <AppBar
       component="nav"
@@ -130,25 +140,9 @@ const NavbarWithoutLogin = () => {
         >
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
           <Button
-            variant={"outlined"}
-            size={"medium"}
-            onClick={login}
-            sx={{
-              height: "32px",
-              color: "#fff",
-              textTransform: "capitalize",
-              borderColor: "#fff",
-              "&:hover": {
-                borderColor: "#fff",
-              },
-            }}
-          >
-            <Trans i18nKey="common.login" />
-          </Button>
-          <Button
             variant={"contained"}
             size={"medium"}
-            onClick={() => keycloakService._kc.register()}
+            onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
               color: theme.palette.primary.main,
@@ -160,7 +154,7 @@ const NavbarWithoutLogin = () => {
               },
             }}
           >
-            <Trans i18nKey="common.createAccount" />
+            <Trans i18nKey="common.loginOrSignup" />
           </Button>
         </Box>
       </Toolbar>

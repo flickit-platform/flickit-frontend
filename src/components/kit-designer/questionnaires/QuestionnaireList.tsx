@@ -11,7 +11,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
 import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -22,7 +21,7 @@ import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { alpha } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 import debounce from "lodash/debounce";
 import EmptyStateQuestion from "@components/kit-designer/questionnaires/questions/EmptyStateQuestion";
 import Add from "@mui/icons-material/Add";
@@ -63,6 +62,8 @@ const ListOfItems = ({
   onReorder,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
+  const theme = useTheme();
+
   const { kitState, dispatch } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 

@@ -18,9 +18,9 @@ import QueryData from "@common/QueryData";
 import ExpertGroupCEFormDialog from "./ExpertGroupCEFormDialog";
 import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
-import { theme } from "@/config/theme";
 import flagsmith from "flagsmith";
 import uniqueId from "@/utils/uniqueId";
+import { useTheme } from "@mui/material";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -56,6 +56,7 @@ const ExpertGroupsContainer = () => {
   useDocumentTitle(t("expertGroups.expertGroups") as string);
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
+  const theme = useTheme();
 
   return (
     <Box>
@@ -129,6 +130,8 @@ const ExpertGroupsContainer = () => {
 const CreateExpertGroupButton = (props: { onSubmitForm: TQueryFunction }) => {
   const { onSubmitForm } = props;
   const dialogProps = useDialog();
+  const theme = useTheme();
+
   return (
     <>
       <Button

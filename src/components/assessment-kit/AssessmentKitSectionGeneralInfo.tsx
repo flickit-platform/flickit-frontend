@@ -31,13 +31,14 @@ import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
@@ -48,6 +49,8 @@ interface IAssessmentKitSectionAuthorInfo {
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
 ) => {
+  const theme = useTheme();
+
   const { setExpertGroup, setAssessmentKitTitle, setHasActiveVersion } = props;
   const {
     config: { languages },
@@ -505,6 +508,7 @@ const AssessmentKitSectionGeneralInfo = (
 };
 
 const OnHoverInput = (props: any) => {
+  const theme = useTheme();
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = () => {
@@ -933,6 +937,7 @@ const OnHoverVisibilityStatus = (props: any) => {
   );
 };
 const OnHoverRichEditor = (props: any) => {
+  const theme = useTheme();
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);

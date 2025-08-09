@@ -18,7 +18,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Grid from "@mui/material/Grid";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { theme } from "@config/theme";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useEffect, useState } from "react";
@@ -30,6 +29,7 @@ import languageDetector from "@utils/languageDetector";
 import { t } from "i18next";
 import RichEditorField from "@/components/common/fields/RichEditorField";
 import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -51,6 +51,8 @@ const AdviceListNewForm = ({
   postAdviceItem,
   errormessage,
 }: IAdviceListProps) => {
+  const theme = useTheme();
+
   const formMethods = useForm({ shouldUnregister: true });
   const selectAdvice = ["priority", "impact", "cost"];
   const { service } = useServiceContext();
@@ -260,7 +262,7 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt: 2,
+                mt:{xs: 26, sm: 17, md: 11, xl: 7 }
               }}
             >
               <RichEditorField
@@ -273,7 +275,7 @@ const AdviceListNewForm = ({
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
                 type={errormessage?.description ? "reportTab" : ""}
-                showEditorMenu={false}
+                showEditorMenu={true}
               />
             </Box>
           </FormProviderWithForm>

@@ -2,9 +2,9 @@ import React from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { theme } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
+import { useTheme } from "@mui/material";
 
 interface TreeMapNode {
   name: string;
@@ -47,8 +47,8 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
           wrapperStyle={{ outline: "none" }}
           content={
             <ChartTooltip
-              getPrimary={(d) => d.name}
-              getSecondary={(d) => d.description}
+              getPrimary={(d) => d.description}
+              getSecondary={(d) => ""}
             />
           }
         />
@@ -58,6 +58,7 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
 };
 
 const CustomNode: any = (props: any) => {
+  const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { x, y, width, height, name, color, label, levels, lang } = props;
@@ -88,6 +89,8 @@ const CustomNode: any = (props: any) => {
       <rect
         x={x}
         y={y}
+        rx={8}
+        ry={8}
         width={width}
         height={height}
         fill={color}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
@@ -19,8 +19,8 @@ import { TDialogProps } from "@utils/useDialog";
 import {
   ISpaceModel,
   ISpacesModel,
-  SPACE_LEVELS,
-  TQueryFunction,
+  SPACE_LEVELS, TId,
+  TQueryFunction
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -31,6 +31,7 @@ import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { t } from "i18next";
 import showToast from "@utils/toastError";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -40,6 +41,30 @@ interface ISpaceListProps {
 
 const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
+  const { service } = useServiceContext();
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: TId;
+  }>({ status: false, id: "" });
+
+  const deleteSpace
+  = useQuery({
+    service: (args, config) => service.space.remove(args, config),
+    runOnMount: false,
+  });
+
+
+  const deleteItem = async () => {
+    try {
+      const { id: spaceId } = openDeleteDialog
+      await deleteSpace.query({spaceId});
+      await fetchSpaces();
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
 
   return (
     <Box sx={{ overflowX: "hidden", pb: 1, px: "6px" }}>
@@ -53,10 +78,22 @@ const SpacesList = (props: ISpaceListProps) => {
               owner={item?.owner}
               dialogProps={dialogProps}
               fetchSpaces={fetchSpaces}
+              setOpenDeleteDialog={setOpenDeleteDialog}
+              deleteSpace={deleteSpace}
             />
           );
         })}
       </Box>
+      <DeleteConfirmationDialog
+        open={openDeleteDialog.status}
+        onClose={() =>
+          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+        }
+        onConfirm={deleteItem}
+        title="common.warning"
+        content="spaces.areYouSureYouWantDeleteSpace"
+        confirmButtonText={t("common.continue")}
+      />
     </Box>
   );
 };
@@ -67,10 +104,12 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
+  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  deleteSpace?: any;
 }
 
 export const SpaceCard = (props: ISpaceCardProps) => {
-  const { item, isActiveSpace, dialogProps, fetchSpaces, owner } = props;
+  const { item, isActiveSpace, dialogProps, fetchSpaces, owner, ...rest } = props;
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { service } = useServiceContext();
   const isOwner = owner?.isCurrentUserOwner;
@@ -301,6 +340,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           >
             <Box>
               <Actions
+                {...rest}
                 isActiveSpace={isActiveSpace}
                 dialogProps={dialogProps}
                 space={item}
@@ -327,18 +367,14 @@ const Actions = (props: any) => {
     isOwner,
     is_default_space_for_current_user,
     setShowTooltip,
+    setOpenDeleteDialog,
+    deleteSpace
   } = props;
   const { id: spaceId } = space;
   const { service } = useServiceContext();
   const [editLoading, setEditLoading] = useState(false);
-  const {
-    query: deleteSpace,
-    loading,
-    abortController,
-  } = useQuery({
-    service: (args, config) => service.space.remove({ spaceId }, config),
-    runOnMount: false,
-  });
+  const {abortController, loading } = deleteSpace
+
   const leaveSpaceQuery = useQuery({
     service: (args, config) => service.space.leave({ spaceId }, config),
     runOnMount: false,
@@ -358,15 +394,6 @@ const Actions = (props: any) => {
       });
   };
 
-  const deleteItem = async (e: any) => {
-    try {
-      await deleteSpace();
-      await fetchSpaces();
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
   const leaveSpace = async (e: any) => {
     try {
       await leaveSpaceQuery.query();
@@ -391,7 +418,8 @@ const Actions = (props: any) => {
         isOwner && {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          onClick: deleteItem,
+          // onClick: deleteItem,
+          onClick: ()=> setOpenDeleteDialog({status: open, id: spaceId}),
         },
         !is_default_space_for_current_user &&
           !isOwner && {

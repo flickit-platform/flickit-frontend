@@ -60,7 +60,7 @@ import PreAttachment from "@components/questions/iconFiles/preAttachments";
 import FileSvg from "@components/questions/iconFiles/fileSvg";
 import Tooltip from "@mui/material/Tooltip";
 import Skeleton from "@mui/material/Skeleton";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { ASSESSMENT_MODE, evidenceAttachmentType } from "@utils/enumType";
 import { downloadFile } from "@utils/downloadFile";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -80,6 +80,7 @@ import Pagination from "@mui/material/Pagination";
 import { getReadableDate } from "@utils/readableDate";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import showToast from "@utils/toastError";
+import uniqueId from "@/utils/uniqueId";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -143,6 +144,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+  const theme = useTheme();
 
   return (
     <Box>
@@ -163,39 +165,39 @@ export const QuestionCard = (props: IQuestionCardProps) => {
         elevation={3}
       >
         <Box>
-          <Typography
-            sx={{
-              ...theme.typography.semiBoldSmall,
-              color: "#6C8093",
-              opacity: 0.65,
-              px: 6,
-              textAlign: [is_farsi ? "right" : "left"],
-            }}
-          >
-            <Trans i18nKey="common.question" />
-          </Typography>
-          <Typography
-            letterSpacing={is_farsi ? "0" : ".05em"}
-            sx={{
-              ...theme.typography.semiBoldXLarge,
-              fontFamily: languageDetector(title)
-                ? farsiFontFamily
-                : primaryFontFamily,
-              color: "#F9FAFB",
-              pt: 0.5,
-              px: 6,
-              direction: is_farsi ? "rtl" : "ltr",
-            }}
-          >
-            {title.split("\n").map((line) => (
-              <React.Fragment key={line}>
-                {questionIndex}. {line}
-                <br />
-              </React.Fragment>
-            ))}
-          </Typography>
+          <Box sx={{ px: 6, ...styles.rtlStyle(languageDetector(title)) }}>
+            <Typography
+              component="div"
+              variant="semiBoldSmall"
+              sx={{
+                color: "#6C8093",
+                opacity: 0.65,
+                textAlign: [is_farsi ? "right" : "left"],
+              }}
+            >
+              <Trans i18nKey="common.question" />
+            </Typography>
+            <Typography
+              letterSpacing={is_farsi ? "0" : ".05em"}
+              variant="semiBoldXLarge"
+              sx={{
+                fontFamily: languageDetector(title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+                color: "#F9FAFB",
+                pt: 0.5,
+              }}
+            >
+              {title.split("\n").map((line) => (
+                <React.Fragment key={line}>
+                  {questionIndex}. {line}
+                  <br />
+                </React.Fragment>
+              ))}
+            </Typography>
 
-          <Box sx={{ px: 6 }}>{hint && <QuestionGuide hint={hint} />}</Box>
+            {hint && <QuestionGuide hint={hint} />}
+          </Box>
 
           {/* Answer template */}
           <AnswerTemplate
@@ -376,7 +378,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           handleChange={handleChange}
           questionsInfo={questionsInfo}
           questionInfo={questionInfo}
-          key={questionInfo.id}
         />
       )}
     </Box>
@@ -384,7 +385,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, setValue, questionsInfo, questionInfo, key, position } = props;
+  const { value, setValue, questionsInfo, questionInfo, position } = props;
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -405,7 +406,7 @@ export const QuestionTabsTemplate = (props: any) => {
             ? "history"
             : counts.comments
               ? "comments"
-              : null,
+              : "",
       );
     }
   };
@@ -494,7 +495,7 @@ export const QuestionTabsTemplate = (props: any) => {
 
   useEffect(() => {
     if (!isExpanded && questionsInfo.permissions.readonly) {
-      setValue(null);
+      setValue("");
     }
   }, [isExpanded]);
 
@@ -542,6 +543,7 @@ export const QuestionTabsTemplate = (props: any) => {
       });
     }
   }, [counts.evidences, counts.history, counts.comments]);
+  const theme = useTheme();
 
   return (
     <TabContext value={value}>
@@ -550,7 +552,7 @@ export const QuestionTabsTemplate = (props: any) => {
           scrollButtons="auto"
           variant="scrollable"
           sx={{ display: "flex", alignItems: "center" }}
-          key={key}
+          key={uniqueId()}
         >
           <Tab
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
@@ -587,6 +589,12 @@ export const QuestionTabsTemplate = (props: any) => {
               </Box>
             }
             value="comments"
+            onClick={() => setValue("comments")}
+            disabled={questionsInfo.permissions.readonly && !counts.comments}
+          />
+          <Tab
+            sx={{ display: "none" }}
+            value={""}
             onClick={() => setValue("comments")}
             disabled={questionsInfo.permissions.readonly && !counts.comments}
           />
@@ -676,8 +684,9 @@ const NavigationButton = ({
   icon: Icon,
   marginStyle,
   isActive,
+  id,
 }: any) => (
-  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle}>
+  <IconButton onClick={onClick} disabled={disabled} sx={marginStyle} id={id}>
     <Icon sx={{ color: getArrowColor(isActive), fontSize: "48px" }} />
   </IconButton>
 );
@@ -819,29 +828,43 @@ const AnswerTemplate = (props: {
         );
       }
 
-      if (questionsInfo.permissions?.viewAnswerHistory) {
-        await service.assessments.questionnaire
-          .getQuestionIssues(
-            {
-              assessmentId,
-              questionId: questionInfo?.id,
-            },
-            { signal: abortController.current.signal },
-          )
-          .then((res: any) => {
-            dispatch(
-              questionActions.setQuestionInfo({
-                ...questionInfo,
-                answer: {
-                  selectedOption: value,
-                  isNotApplicable: notApplicable,
-                  confidenceLevel:
-                    confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
-                } as TAnswer,
-                issues: res.data,
-              }),
-            );
-          });
+      if (isAdvanceMode) {
+        if (questionsInfo.permissions?.viewAnswerHistory) {
+          await service.assessments.questionnaire
+            .getQuestionIssues(
+              {
+                assessmentId,
+                questionId: questionInfo?.id,
+              },
+              { signal: abortController.current.signal },
+            )
+            .then((res: any) => {
+              dispatch(
+                questionActions.setQuestionInfo({
+                  ...questionInfo,
+                  answer: {
+                    selectedOption: value,
+                    isNotApplicable: notApplicable,
+                    confidenceLevel:
+                      confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+                  } as TAnswer,
+                  issues: res.data,
+                }),
+              );
+            });
+        } else {
+          dispatch(
+            questionActions.setQuestionInfo({
+              ...questionInfo,
+              answer: {
+                selectedOption: value,
+                isNotApplicable: notApplicable,
+                confidenceLevel:
+                  confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
+              } as TAnswer,
+            }),
+          );
+        }
       } else {
         dispatch(
           questionActions.setQuestionInfo({
@@ -852,6 +875,10 @@ const AnswerTemplate = (props: {
               confidenceLevel:
                 confidenceLebels[selcetedConfidenceLevel - 1] ?? null,
             } as TAnswer,
+            issues: {
+              ...questionInfo.issues,
+              isUnanswered: !value || notApplicable,
+            },
           }),
         );
       }
@@ -918,6 +945,7 @@ const AnswerTemplate = (props: {
       setDisabledConfidence(true);
     }
   };
+  const theme = useTheme();
 
   const isLTR = theme.direction === "ltr";
 
@@ -988,17 +1016,18 @@ const AnswerTemplate = (props: {
     <>
       <Box
         display={"flex"}
-        justifyContent="flex-start"
+        justifyContent="space-around"
         mt={4}
         sx={{ direction: "rtl" }}
       >
         <NavigationButton
           direction={theme.direction}
           onClick={handleForwardClick}
-          disabled={isLTR ? false : questionIndex === 1}
+          disabled={isSubmitting ? true : isLTR ? false : questionIndex === 1}
           icon={ArrowForward}
           marginStyle={{ marginInlineStart: { sm: 0, md: "-30px" } }}
-          isActive={isLTR ? true : questionIndex !== 1}
+          isActive={isSubmitting ? false : isLTR ? true : questionIndex !== 1}
+          id="next"
         />
         <Box
           display={"flex"}
@@ -1114,10 +1143,11 @@ const AnswerTemplate = (props: {
         <NavigationButton
           direction={theme.direction}
           onClick={handleBackwardClick}
-          disabled={isLTR ? questionIndex === 1 : false}
+          disabled={isSubmitting ? true : isLTR ? questionIndex === 1 : false}
           icon={ArrowBack}
           marginStyle={{ marginInlineEnd: { sm: 0, md: "-30px" } }}
-          isActive={isLTR ? questionIndex !== 1 : true}
+          isActive={isSubmitting ? false : isLTR ? questionIndex !== 1 : true}
+          id="back"
         />
       </Box>
       {notApplicable && (
@@ -1212,6 +1242,7 @@ const AnswerTemplate = (props: {
             <FormControlLabel
               sx={{ color: "#fff" }}
               data-cy="automatic-submit-check"
+              id="not-applicable"
               control={
                 <Checkbox
                   checked={notApplicable}
@@ -1491,7 +1522,7 @@ const Evidence = (props: any) => {
   const is_farsi = languageDetector(valueCount);
   const { service } = useServiceContext();
   const [evidenceId, setEvidenceId] = useState("");
-
+  const theme = useTheme();
   const {
     questionInfo,
     permissions,

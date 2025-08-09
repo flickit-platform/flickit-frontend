@@ -6,11 +6,13 @@
   "emailIsNotOnAppTitleYet": "{{email}} has not joined {{title}} yet.",
   "enterEmailOfTheUserYouWantToAdd": "Enter the email address of the user you want to add.",
   "name": "Name",
+  "pleaseEnterYourPhoneNumber": "Please enter your mobile number so that we can contact you more easily and promptly.",
   "role": "Role",
   "updateUser": "Update user",
   "userEmail": "User email address",
   "userProfile": "User profile",
   "wouldYouLikeToInviteThemToJoin": "Would you like to invite them to join?",
   "yourEmail": "Your email",
-  "yourEmailAddress": "Your e-mail address"
+  "yourEmailAddress": "Your e-mail address",
+  "yourPhoneNumber": "Your phone number"
 }
