@@ -23,11 +23,26 @@ import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@/utils/toastError";
 
 const generalFields = [
-  { name: "title", label: "common.title", multiline: false, useRichEditor: false },
-  { name: "summary", label: "common.summary", multiline: false, useRichEditor: false },
+  {
+    name: "title",
+    label: "common.title",
+    multiline: false,
+    useRichEditor: false,
+  },
+  {
+    name: "summary",
+    label: "common.summary",
+    multiline: false,
+    useRichEditor: false,
+  },
   { name: "about", label: "common.what", multiline: true, useRichEditor: true },
   { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
-  { name: "context", label: "common.who", multiline: true, useRichEditor: true },
+  {
+    name: "context",
+    label: "common.who",
+    multiline: true,
+    useRichEditor: true,
+  },
 ] as const;
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
@@ -72,7 +87,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     about: "",
     goal: undefined,
     context: undefined,
-    translations: undefined,
+    translations: {},
   });
 
   const [showTranslations, setShowTranslations] = useState({
@@ -115,7 +130,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           : {},
       });
     }
-  }, [data, langCode]);
+  }, [data, langCode, dispatch, translations]);
 
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -152,25 +167,47 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     const goal = updatedValues.goal;
     const context = updatedValues.context;
 
-    const translations: Record<string, any> = updatedValues.translations ?? {};
+    const translationsObj: Record<string, any> =
+      updatedValues.translations ?? {};
 
-    const updatedValuesWithMetadata = {
+    const updatedValuesWithMetadata: any = {
       ...updatedValues,
       metadata: {
         goal,
         context,
       },
-      translations: {
-        ...translations,
-        [langCode]: {
-          ...translations[langCode],
-          metadata: {
-            context: translations?.[langCode].context,
-            goal: translations?.[langCode].goal,
-          },
-        },
-      },
+      translations: langCode
+        ? {
+            ...translationsObj,
+            [langCode]: {
+              ...translationsObj[langCode],
+              metadata: {
+                context: translationsObj?.[langCode]?.context,
+                goal: translationsObj?.[langCode]?.goal,
+              },
+            },
+          }
+        : {},
     };
+
+    try {
+      const tForLang = updatedValuesWithMetadata.translations?.[langCode];
+      if (tForLang) {
+        const meta = tForLang.metadata ?? {};
+        const cleanedMeta: Record<string, any> = {};
+        if (meta.goal) cleanedMeta.goal = meta.goal;
+        if (meta.context) cleanedMeta.context = meta.context;
+
+        if (Object.keys(cleanedMeta).length > 0) {
+          updatedValuesWithMetadata.translations[langCode].metadata =
+            cleanedMeta;
+        } else {
+          delete updatedValuesWithMetadata.translations[langCode].metadata;
+        }
+      }
+    } catch {
+      // ignore
+    }
 
     delete updatedValuesWithMetadata.goal;
     delete updatedValuesWithMetadata.context;
@@ -190,6 +227,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
     updatedValues,
     updateKitInfoQuery,
     fetchAssessmentKitInfoQuery,
+    langCode,
   ]);
 
   const handleCancelEdit = useCallback(() => {
@@ -245,10 +283,14 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             label={""}
             translationValue={
               langCode
-                ? (updatedValues.translations?.[langCode]?.[field] ?? "")
+                ? (updatedValues.translations?.[langCode]?.[field] ??
+                  updatedValues.translations?.[langCode]?.metadata?.[field] ??
+                  "")
                 : ""
             }
-            onTranslationChange={updateTranslation(field, setUpdatedValues)}
+            onTranslationChange={useTranslationUpdater(
+              langCode,
+            ).updateTranslation(field, setUpdatedValues)}
             showTranslation={showTranslations[field]}
             setShowTranslation={() => toggleTranslation(field)}
             fullWidth
@@ -279,7 +321,6 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       updatedValues,
       showTranslations,
       langCode,
-      updateTranslation,
       toggleTranslation,
       handleFieldEdit,
     ],
