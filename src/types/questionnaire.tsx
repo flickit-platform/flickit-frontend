@@ -7,6 +7,8 @@ export interface IQuestionnaire {
   progress: number;
   title: string;
   last_updated?: string;
+  index?: number;
+  questionIndex?: number; 
 }
 
 export interface IQuestionnairesInfo {
@@ -57,15 +59,6 @@ export interface IQuestionnairesInfo {
     unapprovedAnswers?: number;
     unapprovedAnswer?: number;
   };
-}
-
-export interface IQuestionnaire {
-  answered_question: number;
-  id: TId;
-  question_number: number;
-  progress: number;
-  title: string;
-  last_updated?: string;
 }
 
 export interface IQuestionnaireModel {
