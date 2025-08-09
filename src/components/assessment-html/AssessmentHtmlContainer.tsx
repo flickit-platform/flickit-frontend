@@ -468,7 +468,7 @@ const AssessmentHtmlContainer = () => {
                           <Grid item xs={12} sm={12}>
                             {renderChips(graphicalReport, lng)}
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={8}>
+                          <Grid item xs={12} sm={6} md={12} lg={8}>
                             <Box display="flex" gap={1.5}>
                               <Typography
                                 variant="headlineSmall"
@@ -552,7 +552,7 @@ const AssessmentHtmlContainer = () => {
                               }}
                             ></Typography>
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={4}>
+                          <Grid item xs={12} sm={6} md={12} lg={4}>
                             <Gauge
                               level_value={assessment.maturityLevel?.value ?? 0}
                               maturity_level_status={

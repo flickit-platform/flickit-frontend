@@ -342,7 +342,8 @@ export const Review = () => {
       {/* Answer Review List */}
       <Box mt={2}>
         {questionsInfo.questions.map((q) => {
-          const is_farsi = languageDetector(q.title);
+          const is_farsi_title = languageDetector(q.title);
+          const is_farsi_option = languageDetector(q?.answer?.selectedOption?.title);
           return (
             <Paper
               key={q.id}
@@ -352,7 +353,7 @@ export const Review = () => {
                 color: "white",
                 mb: 2,
                 borderRadius: "8px",
-                direction: is_farsi ? "rtl" : "ltr",
+                direction: is_farsi_title ? "rtl" : "ltr",
               }}
               elevation={3}
             >
@@ -362,7 +363,7 @@ export const Review = () => {
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                fontFamily={is_farsi ? farsiFontFamily : primaryFontFamily}
+                fontFamily={is_farsi_title ? farsiFontFamily : primaryFontFamily}
               >
                 {q.index}.{q.title}
               </Typography>
@@ -373,7 +374,9 @@ export const Review = () => {
                   <Typography variant="subMedium" sx={{ color: "#b3b3b3" }}>
                     <Trans i18nKey="common.yourAnswer" />
                   </Typography>
-                  <Typography variant="h6" fontWeight="bold">
+                  <Typography
+                    fontFamily={is_farsi_option ? farsiFontFamily : primaryFontFamily}
+                    variant="h6" fontWeight="bold">
                     {q.answer.selectedOption.index}.
                     {q.answer.selectedOption.title}
                   </Typography>

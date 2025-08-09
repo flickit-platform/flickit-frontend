@@ -30,7 +30,7 @@ import AssessmentKitListItem from "../assessment-kit/AssessmentKitListItem";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import MinimizeRoundedIcon from "@mui/icons-material/MinimizeRounded";
 import LoadingButton from "@mui/lab/LoadingButton";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import useDialog from "@utils/useDialog";
 import AssessmentKitCEFromDialog from "../assessment-kit/AssessmentKitCEFromDialog";
@@ -62,7 +62,7 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
-import { FLAGS, TId } from "@/types";
+import { FLAGS } from "@/types";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
@@ -1093,33 +1093,9 @@ const AssessmentKitsList = (props: any) => {
     languages,
   } = props;
   const { expertGroupId } = useParams();
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{status: boolean, id: TId}>({ status: false, id: "" });
-  const { service } = useServiceContext();
-
   const kitDesignerDialogProps = useDialog({
     context: { type: "draft", data: { expertGroupId, dsl_id: 959, languages } },
   });
-  const deleteAssessmentKitQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.remove(args, config),
-    runOnMount: false,
-  });
-
-  const deleteItem = async () => {
-    try {
-      const id = openDeleteDialog.id
-      await deleteAssessmentKitQuery.query({id});
-      await assessmentKitQuery?.query({
-        id: expertGroupId,
-        size: 10,
-        page: 1,
-      });
-      setOpenDeleteDialog({ status: false, id: "" })
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -1133,12 +1109,6 @@ const AssessmentKitsList = (props: any) => {
   };
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
-
-  if (!assessmentKitQuery) {
-    console.warn(
-      "fetchAssessmentKits not provided. assessment kit list won't be updated on any action",
-    );
-  }
 
   return (
     <>
@@ -1272,6 +1242,7 @@ const AssessmentKitsList = (props: any) => {
                         }
                         key={assessment_kit?.id}
                         data={assessment_kit}
+                        fetchAssessmentKits={assessmentKitQuery}
                         hasAccess={hasAccess}
                         is_member={is_member}
                         is_active={true}
@@ -1305,7 +1276,6 @@ const AssessmentKitsList = (props: any) => {
             );
           }}
         />
-        {/*todo*/}
         <DeleteConfirmationDialog
           open={openDeleteDialog.status}
           onClose={() =>
