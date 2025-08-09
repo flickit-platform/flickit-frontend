@@ -294,7 +294,7 @@ const KitCustomization = (props: any) => {
                         sendKitCustomization.loading
                       }
                     >
-                      <Trans i18nKey="common.saveChanges" />
+                      <Trans i18nKey="common.save" />
                     </LoadingButton>
                   </Box>
                 </Tooltip>

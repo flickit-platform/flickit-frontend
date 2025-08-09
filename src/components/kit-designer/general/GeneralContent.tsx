@@ -288,9 +288,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                   "")
                 : ""
             }
-            onTranslationChange={useTranslationUpdater(
-              langCode,
-            ).updateTranslation(field, setUpdatedValues)}
+            onTranslationChange={updateTranslation(field, setUpdatedValues)}
             showTranslation={showTranslations[field]}
             setShowTranslation={() => toggleTranslation(field)}
             fullWidth
@@ -428,11 +426,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           onClick={handleSaveEdit}
           disabled={updateKitInfoQuery.loading || editableFields.size === 0}
         >
-          {updateKitInfoQuery.loading ? (
-            <Trans i18nKey="saving" />
-          ) : (
-            <Trans i18nKey="common.saveChanges" />
-          )}
+          <Trans i18nKey="common.save" />
         </Button>
       </Box>
     </>
