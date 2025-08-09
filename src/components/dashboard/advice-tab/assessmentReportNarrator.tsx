@@ -34,6 +34,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
       textAlign="start"
       gap={0.5}
       py={2}
+      mt={{xs: 23, sm: 16, md: 10, lg: 11, xl: 7 }}
     >
       {fetchAdviceNarration.loading ? (
         <Box
