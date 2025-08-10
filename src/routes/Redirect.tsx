@@ -1,6 +1,7 @@
 import { Location, Navigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "@providers/AuthProvider";
 import { IAuthContext } from "@/types";
+import { HOME_URL } from "@/config/constants";
 
 const Redirect = () => {
   const location = useLocation();
@@ -24,7 +25,7 @@ const getWhereToGo = (location: Location, authContext: IAuthContext) => {
   }
   if (isRoot) {
     // If user has current space navigate to it otherwise navigate to spaces
-    return "/spaces/1";
+    return HOME_URL;
   }
   return location.pathname;
 };

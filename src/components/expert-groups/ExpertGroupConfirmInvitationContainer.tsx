@@ -10,6 +10,7 @@ import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
+import { HOME_URL } from "@/config/constants";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -61,7 +62,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
   const decline = async () => {
     try {
       await declineInvitationQueryData.query();
-      navigate("/spaces/1", { replace: true });
+      navigate(HOME_URL, { replace: true });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
