@@ -4,9 +4,9 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import i18next, { t } from "i18next";
+import { t } from "i18next";
 
-const MAX_HEIGHT = 210;
+const MAX_HEIGHT = 200;
 
 const sections = [
   { key: "what", title: "assessmentKit.whatIsThisKit" },
@@ -65,7 +65,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
     if (!el) return;
 
     const timeout = setTimeout(() => {
-      const fullHeight = el.scrollHeight;
+      const fullHeight = el.scrollHeight + 15;
       setShowBtn(fullHeight > MAX_HEIGHT);
     }, 0);
 
