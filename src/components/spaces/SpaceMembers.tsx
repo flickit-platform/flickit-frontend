@@ -563,7 +563,7 @@ const Actions = (props: any) => {
   return (
     <MoreActions
       {...useMenu()}
-      loading={deleteSpaceMember.loading || inviteMemberQueryData.loading}
+      loading={deleteSpaceMember?.loading || inviteMemberQueryData?.loading}
       items={[
         isInvitees && isInvitationExpired && editable
           ? {
