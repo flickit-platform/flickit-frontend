@@ -27,6 +27,7 @@ interface EditableRichEditorProps {
   infoQuery: any;
   placeholder?: string;
   required?: boolean;
+  showEditorMenu?: boolean;
 }
 
 export const EditableRichEditor = (props: EditableRichEditorProps) => {
@@ -38,6 +39,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     infoQuery,
     placeholder,
     required = true,
+    showEditorMenu
   } = props;
   const theme = useTheme();
   const { t } = useTranslation();
@@ -152,6 +154,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               required={required}
               defaultValue={defaultValue ?? ""}
               textAlign="justify"
+              showEditorMenu={showEditorMenu}
             />
             <Box
               sx={{
