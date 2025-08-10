@@ -1277,7 +1277,6 @@ const AssessmentKitsList = (props: any) => {
                         is_member={is_member}
                         is_active={true}
                         setOpenDeleteDialog={setOpenDeleteDialog}
-                        deleteAssessmentKitQuery={deleteAssessmentKitQuery}
                       />
                     );
                   })}
@@ -1298,7 +1297,6 @@ const AssessmentKitsList = (props: any) => {
                           is_member={is_member}
                           is_active={false}
                           setOpenDeleteDialog={setOpenDeleteDialog}
-                          deleteAssessmentKitQuery={deleteAssessmentKitQuery}
                         />
                       );
                     })}

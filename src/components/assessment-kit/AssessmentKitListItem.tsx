@@ -27,7 +27,6 @@ interface IAssessmentKitListItemProps {
     isPrivate?: boolean;
     draftVersionId?: TId;
   };
-  deleteAssessmentKitQuery?: any;
   link?: string;
   hasAccess?: boolean;
   is_member?: boolean;
@@ -46,7 +45,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
     service: (args, config) => service.assessmentKit.info.clone(args, config),
     runOnMount: false,
   });
-  const { data, hasAccess, link, is_member, is_active, deleteAssessmentKitQuery, setOpenDeleteDialog } =
+  const { data, hasAccess, link, is_member, is_active, setOpenDeleteDialog } =
     props;
   const { id, title, lastModificationTime, isPrivate, draftVersionId } =
     data ?? {};
@@ -165,7 +164,6 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
               is_member={is_member}
               is_active={is_active}
               setOpenDeleteDialog={setOpenDeleteDialog}
-              deleteAssessmentKitQuery={deleteAssessmentKitQuery}
             />
           )}
         </Box>
@@ -175,14 +173,13 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
 };
 
 const Actions = (props: any) => {
-  const { assessment_kit, hasAccess, deleteAssessmentKitQuery, setOpenDeleteDialog } = props;
+  const { assessment_kit, hasAccess, setOpenDeleteDialog } = props;
   const { id } = assessment_kit;
   const menuProps = useMenu();
 
   return hasAccess ? (
     <MoreActions
       {...menuProps}
-      loading={deleteAssessmentKitQuery.loading}
       items={[
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
