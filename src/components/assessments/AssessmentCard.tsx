@@ -521,12 +521,14 @@ const Actions = ({
           icon: <CompareRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="addToCompare" />,
           onClick: addToCompare,
+          id: "assessmentCard-addToCompare-btn",
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
+          id: "assessmentCard-delete-btn",
         },
       ]
     : [
@@ -534,12 +536,14 @@ const Actions = ({
           icon: <SettingsIcon fontSize="small" />,
           text: <Trans i18nKey="common.settings" />,
           onClick: assessmentSetting,
+          id: "assessmentCard-setting-btn"
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
+          id: "assessmentCard-delete-btn",
         },
       ];
 
