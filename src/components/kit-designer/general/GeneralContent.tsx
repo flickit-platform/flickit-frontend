@@ -14,8 +14,8 @@ import PermissionControl from "@/components/common/PermissionControl";
 import LanguageSelectorChips from "./components/LanguageSelectorChips";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { RenderEditableField } from "@common/editableField";
-import useEditableField from "@/hooks/useEditableField";
+import { RenderGeneralField } from "@common/RenderGeneralField";
+import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 const generalFields = [
@@ -58,7 +58,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
 
-  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation, showTranslations, updatedValues, setUpdatedValues} = useEditableField({setTranslatedLang, assessmentKitId : kitVersion.assessmentKit.id, fetchAssessmentKitInfoQuery})
+  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation, showTranslations, updatedValues, setUpdatedValues} = useGeneralInfoField({setTranslatedLang, assessmentKitId : kitVersion.assessmentKit.id, fetchAssessmentKitInfoQuery})
   const { updateTranslation } = useTranslationUpdater(langCode);
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -163,7 +163,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                         width: "100%",
                       }}
                     >
-                      <RenderEditableField
+                      <RenderGeneralField
                       field={name}
                       data={data}
                       editableFields={editableFields}

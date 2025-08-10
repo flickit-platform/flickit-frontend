@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 type fieldName = "title" | "summary" | "about" | "goal" | "context"
 
-export function RenderEditableField(props: any){
+export function RenderGeneralField(props: any){
 const {
   field,
   data,

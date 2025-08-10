@@ -38,8 +38,8 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
-import { RenderEditableField } from "@common/editableField";
-import useEditableField from "@/hooks/useEditableField";
+import { RenderGeneralField } from "@common/RenderGeneralField";
+import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useTheme } from "@mui/material";
 
@@ -80,7 +80,7 @@ const AssessmentKitSectionGeneralInfo = (
     runOnMount: true,
   });
 
-  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation , showTranslations, updatedValues, setUpdatedValues} = useEditableField({ assessmentKitId, fetchAssessmentKitInfoQuery})
+  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation , showTranslations, updatedValues, setUpdatedValues} = useGeneralInfoField({ assessmentKitId, fetchAssessmentKitInfoQuery})
   const { updateTranslation } = useTranslationUpdater(langCode);
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
@@ -424,7 +424,7 @@ const AssessmentKitSectionGeneralInfo = (
                         >
                           <Trans i18nKey={label} />:
                         </Typography>
-                        <RenderEditableField
+                        <RenderGeneralField
                             field={name}
                             data={data}
                             editableFields={editableFields}
