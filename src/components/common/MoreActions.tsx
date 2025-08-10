@@ -53,6 +53,7 @@ const MoreActions = (props: IMoreActionsProps) => {
     onClick?: React.MouseEventHandler<HTMLLIElement>;
     text: JSX.Element;
     menuItemProps?: MenuItemProps & { "data-cy"?: string };
+    id: string
   }[];
 
   return menuItems.length > 0 ? (
@@ -87,7 +88,9 @@ const MoreActions = (props: IMoreActionsProps) => {
             icon,
             text,
             menuItemProps = {},
+            id= ""
           } = item ?? {};
+          console.log(id,"test text");
           return (
             <MenuItem
               key={uniqueId()}
@@ -96,6 +99,7 @@ const MoreActions = (props: IMoreActionsProps) => {
                 closeMenu(e);
                 onClick(e);
               }}
+              id={id}
             >
               {icon && <ListItemIcon>{icon}</ListItemIcon>}
               <ListItemText>{text}</ListItemText>
