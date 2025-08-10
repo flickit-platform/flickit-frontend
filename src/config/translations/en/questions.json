@@ -21,6 +21,7 @@
   "dragYourFile": "Drag your file here or ",
   "emptyAnswerHistoryDescription": "Here you can see if any assessor has answered this question and what answer they chose.<br/> If you don't see any answer, it means no assessor has answered this question so far.",
   "emptyAnswerHistoryTitle": "No answer has been recorded",
+  "evidence": "evidence",
   "evidenceIsLimited": "Each evidence is limited to five attachments. If you need more, simply create a new evidence and continue.",
   "evidencePlaceholder": "Write your text here...",
   "goodJob": "Good job!",
