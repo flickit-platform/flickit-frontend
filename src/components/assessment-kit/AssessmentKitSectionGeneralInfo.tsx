@@ -38,13 +38,23 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
+import { RenderGeneralField } from "@common/RenderGeneralField";
+import useGeneralInfoField from "@/hooks/useGeneralInfoField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { useTheme } from "@mui/material";
+
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
   setAssessmentKitTitle: any;
   setHasActiveVersion: any;
 }
+
+const TextFields = [
+  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
+  { name: "context", label: "common.who", multiline: true, useRichEditor: true },
+  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
+] as const;
 
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
@@ -58,6 +68,7 @@ const AssessmentKitSectionGeneralInfo = (
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
+
   const fetchAssessmentKitInfoQuery = useQuery({
     service: (args, config) =>
       service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
@@ -69,6 +80,8 @@ const AssessmentKitSectionGeneralInfo = (
     runOnMount: true,
   });
 
+  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation , showTranslations, updatedValues, setUpdatedValues} = useGeneralInfoField({ assessmentKitId, fetchAssessmentKitInfoQuery})
+  const { updateTranslation } = useTranslationUpdater(langCode);
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -123,6 +136,13 @@ const AssessmentKitSectionGeneralInfo = (
     }
   };
 
+  const handleCancelTextBox = (field: any) => {
+    editableFields.delete(field);
+    setUpdatedValues((prev: any) => ({
+      ...prev,
+    }))
+  };
+
   return (
     <QueryBatchData
       queryBatchData={[
@@ -147,6 +167,8 @@ const AssessmentKitSectionGeneralInfo = (
           editable,
           hasActiveVersion,
           mainLanguage,
+          metadata,
+          translations
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -163,6 +185,13 @@ const AssessmentKitSectionGeneralInfo = (
         setAssessmentKitTitle(title);
         setHasActiveVersion(hasActiveVersion);
         setExpertGroup(expertGroup);
+
+        const handleFieldEdit = (field: "about") => {
+          if(editable){
+            setEditableFields((prev) => new Set(prev).add(field));
+          }
+        };
+
         return (
           <Grid container spacing={4}>
             <Grid item xs={12} md={7}>
@@ -374,12 +403,49 @@ const AssessmentKitSectionGeneralInfo = (
                   )}
                 </Box>
 
-                <OnHoverRichEditor
-                  data={about}
-                  title={<Trans i18nKey="common.about" />}
-                  infoQuery={fetchAssessmentKitInfoQuery.query}
-                  editable={editable}
-                />
+                {TextFields.map((field)=>{
+                  const  { name, label, multiline, useRichEditor } = field
+                  const data = {about,metadata, translations}
+
+                  return (
+                    <Box key={name}>
+                      <Box
+                        my={1.5}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="body2"
+                          mr={4}
+                          sx={{ minWidth: "64px !important" }}
+                        >
+                          <Trans i18nKey={label} />:
+                        </Typography>
+                        <RenderGeneralField
+                            field={name}
+                            data={data}
+                            editableFields={editableFields}
+                            langCode={langCode}
+                            updatedValues={updatedValues}
+                            setUpdatedValues={setUpdatedValues}
+                            showTranslations={showTranslations}
+                            toggleTranslation={toggleTranslation}
+                            handleFieldEdit={handleFieldEdit}
+                            multiline={multiline}
+                            useRichEditor={useRichEditor}
+                            updateTranslation={updateTranslation}
+                            handleSaveEdit={handleSaveEdit}
+                            handleCancelTextBox={handleCancelTextBox}
+                        />
+                      </Box>
+                    </Box>
+                  );
+                })}
+
+
                 <Box
                   my={1.5}
                   sx={{
@@ -676,7 +742,7 @@ const OnHoverInput = (props: any) => {
               }}
               variant="body2"
               fontWeight="700"
-            >
+             >
               {data?.replace(/<\/?p>/g, "")}
             </Typography>
             {isHovering && (
