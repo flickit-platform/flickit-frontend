@@ -67,7 +67,10 @@ export const getReadableDate = (
   const now = new Date();
   const date = new Date(time);
 
-  const calendar: string = MiladiCalendar(date);
+  const adjustedDate = new Date(date);
+  adjustedDate.setUTCMinutes(adjustedDate.getUTCMinutes() + (3 * 60 + 30));
+
+  const calendar: string = MiladiCalendar(adjustedDate);
   const localizedDate: string =
     lang === "fa" ? ShamsiCalendar(calendar) : calendar;
 
@@ -77,9 +80,9 @@ export const getReadableDate = (
     now.getDate()
   );
   const dateMidnight = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
+    adjustedDate.getFullYear(),
+    adjustedDate.getMonth(),
+    adjustedDate.getDate()
   );
 
   const diffDays = Math.floor(
@@ -87,8 +90,8 @@ export const getReadableDate = (
   );
 
   const diffMonths =
-    (date.getFullYear() - now.getFullYear()) * 12 +
-    (date.getMonth() - now.getMonth());
+    (adjustedDate.getFullYear() - now.getFullYear()) * 12 +
+    (adjustedDate.getMonth() - now.getMonth());
 
   let relativeStr = "";
 
@@ -128,7 +131,7 @@ export const getReadableDate = (
   }
 
   const timeStr = withTime
-    ? ` - ${date.getHours().toString().padStart(2, "0")}:${date
+    ? ` - ${adjustedDate.getHours().toString().padStart(2, "0")}:${adjustedDate
         .getMinutes()
         .toString()
         .padStart(2, "0")}`
