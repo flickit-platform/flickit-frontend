@@ -242,7 +242,7 @@ const Uploader = (props: IUploadProps) => {
             }) as string,
           };
         } else if (rejectedFiles.length == 1 && error[0]?.message) {
-          showToast(error?.pop()?.message as string);
+          showToast((error as any)?.pop()?.message as string);
         } else {
           showToast(t("errors.oneFileOnly") as string);
         }
@@ -349,9 +349,8 @@ const Uploader = (props: IUploadProps) => {
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  title={`${selectedFile} - ${
-                    selectedFile?.size ? formatBytes(selectedFile?.size) : ""
-                  }`}
+                  title={`${selectedFile} - ${selectedFile?.size ? formatBytes(selectedFile?.size) : ""
+                    }`}
                   primaryTypographyProps={{
                     sx: { ...styles.ellipsis, width: "95%" },
                   }}

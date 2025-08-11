@@ -15,7 +15,7 @@ import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
 
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
@@ -255,8 +255,8 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                   >
                                     {/* Conditionally render editable fields */}
                                     {editAttributeId ===
-                                    String(attribute.id) ? (
-                                      <TableCell sx={{width: "100%"}}>
+                                      String(attribute.id) ? (
+                                      <TableCell sx={{ width: "100%" }}>
                                         <AttributeForm
                                           newAttribute={newAttribute}
                                           handleCancel={handleCancelEdit}
@@ -269,12 +269,12 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                       </TableCell>
                                     ) : (
                                       <>
-                                        <TableCell sx={{alignContent: "center",  }}>
+                                        <TableCell sx={{ alignContent: "center", }}>
                                           <Box
                                             sx={{
                                               display: "flex",
                                               alignItems: "center",
-                                              background: theme.palette.background.container,
+                                              background: "background.container",
                                               borderRadius: "0.5rem",
                                               width: { xs: "50px", md: "64px" },
                                               justifyContent: "space-around",
@@ -339,7 +339,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             showCopyIcon
                                           />
                                         </TableCell>
-                                        <TableCell  sx={{alignContent: "center"}} data-testid="display-attribute-weight">
+                                        <TableCell sx={{ alignContent: "center" }} data-testid="display-attribute-weight">
                                           {attribute.weight}
                                         </TableCell>
                                         <TableCell
@@ -390,17 +390,17 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                       width: "100%"
                                     }}
                                   >
-                                      <AttributeForm
-                                        newAttribute={newAttribute}
-                                        handleInputChange={handleInputChange}
-                                        handleSave={() =>
-                                          handleSave(subject.id)
-                                        } // Pass the subject ID to add
-                                        handleCancel={handleCancel}
-                                        langCode={langCode}
-                                        setNewAttribute={setNewAttribute}
-                                        updateTranslation={updateTranslation}
-                                      />
+                                    <AttributeForm
+                                      newAttribute={newAttribute}
+                                      handleInputChange={handleInputChange}
+                                      handleSave={() =>
+                                        handleSave(subject.id)
+                                      } // Pass the subject ID to add
+                                      handleCancel={handleCancel}
+                                      langCode={langCode}
+                                      setNewAttribute={setNewAttribute}
+                                      updateTranslation={updateTranslation}
+                                    />
                                   </Box>
                                 )}
                               </Draggable>
