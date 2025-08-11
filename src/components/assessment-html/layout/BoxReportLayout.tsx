@@ -299,11 +299,12 @@ const BottomBox = ({
 
             {showGuide && (
               <Typography
+                component="div"
+                textAlign="justify"
                 mt={1}
                 color="#4A4A4A"
                 variant="bodyMedium"
                 sx={{
-                  textAlign: "justify",
                   fontFamily,
                 }}
               >
