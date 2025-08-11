@@ -252,7 +252,6 @@ const AssessmentHtmlContainer = () => {
   const navigate = useNavigate();
   const from = state?.location?.from;
   const lang = state?.language?.code;
-  const isRTL = lang?.code.toLowerCase() === "fa"
 
   const handleBack = () => {
     if (from) {
@@ -284,6 +283,8 @@ const AssessmentHtmlContainer = () => {
             isAdvisable,
           } = graphicalReport as IGraphicalReport;
           const lng = lang?.code?.toLowerCase();
+          const isRTL = lang?.code?.toLowerCase() === "fa"
+
           const rtlLanguage = lng === "fa";
           const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
           const currentPath = window.location.pathname;
@@ -344,7 +345,7 @@ const AssessmentHtmlContainer = () => {
                       return (
                         <AssessmentHtmlTitle
                           pathInfo={pathInfo}
-                          language={lang?.code.toLowerCase()}
+                          language={lang?.code?.toLowerCase()}
                         />
                       );
                     }}
@@ -564,7 +565,7 @@ const AssessmentHtmlContainer = () => {
                                   true,
                                 )[subject.maturityLevel.value - 1],
                               }))}
-                              language={lang?.code.toLowerCase()}
+                              language={lang?.code?.toLowerCase()}
                             />
                           </Box>
                         )}
@@ -747,7 +748,7 @@ const AssessmentHtmlContainer = () => {
                             setDisplayedItems={() => { }}
                             query={undefined}
                             readOnly
-                            language={lang?.code.toLowerCase()}
+                            language={lang?.code?.toLowerCase()}
                           />
                         </>
                       ) : (
