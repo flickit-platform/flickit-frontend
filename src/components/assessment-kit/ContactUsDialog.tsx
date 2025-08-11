@@ -3,7 +3,7 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { Trans } from "react-i18next";
 import i18next, { t } from "i18next";
 import Typography from "@mui/material/Typography";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
@@ -56,8 +56,6 @@ const ContactUsDialog = ({
   openDialog,
   ...rest
 }: IContactUsDialogProps) => {
-  const theme = useTheme();
-
   const { data = {}, type = "contactUs" } = context ?? {};
   const { email, dialogTitle, primaryActionButtonText, children } = data;
   const isRTL = lng === "fa" || (!lng && i18next.language === "fa");

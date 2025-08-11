@@ -95,8 +95,6 @@ const MyDropzone = (props: any) => {
     checkTypeUpload(dropZoneData, setDisplayFile, setTypeFile);
   }, [dropZoneData]);
 
-  const theme = useTheme();
-
   const fileTypeImages: Record<string, string> = {
     gif: gif,
     png: png,

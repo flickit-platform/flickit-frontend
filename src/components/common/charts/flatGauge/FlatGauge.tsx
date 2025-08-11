@@ -3,12 +3,11 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { confidenceColor, getMaturityLevelColors } from "@styles";
+import { confidenceColor, getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import { useTheme } from "@mui/material";
-import { styles } from "@styles"
 
 type TPosition = "top" | "left";
 

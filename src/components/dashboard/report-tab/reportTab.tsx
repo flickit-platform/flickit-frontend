@@ -16,7 +16,6 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import Switch from "@mui/material/Switch";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { styles } from "@styles";
-import { useTheme } from "@mui/material";
 const ReportTab = () => {
   const { spaceId = "", assessmentId = "" } = useParams();
   const { service } = useServiceContext();
@@ -63,8 +62,6 @@ const ReportTab = () => {
       placeholder: "assessmentReport.writeAboutParticipants",
     },
   ];
-  const theme = useTheme();
-
   return (
     <QueryData
       {...fetchReportFields}

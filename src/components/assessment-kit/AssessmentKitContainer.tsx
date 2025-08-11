@@ -26,7 +26,6 @@ import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
-import { useTheme } from "@mui/material";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 
@@ -190,7 +189,6 @@ const AssessmentKitBanner = (props: any) => {
     id: expertGroupId,
     pictureLink,
   } = props;
-  const theme = useTheme();
   const navigate = useNavigate();
 
   return (
