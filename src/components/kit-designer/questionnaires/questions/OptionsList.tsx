@@ -42,91 +42,63 @@ const OptionList = (props: OptionListProps) => {
 
   const [reorderedItems, setReorderedItems] = useState(Options);
   const [editMode, setEditMode] = useState<number | null>(null);
-  const [tempValues, setTempValues] = useState({
-    title: "",
-    translations: null,
-    value: 1,
-    index: reorderedItems?.length + 1,
-  });
+  const [tempValues, setTempValues] = useState(defaultTempValues());
 
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
+  useEffect(() => setReorderedItems(Options), [Options]);
+
+  useEffect(() => {
+    if (!isAddingNew) {
+      resetTempValues();
+    }
+  }, [isAddingNew]);
+
+  function defaultTempValues() {
+    return {
+      title: "",
+      translations: null,
+      value: 1,
+      index: reorderedItems?.length + 1,
+    };
+  }
+
+  function resetTempValues() {
+    setTempValues(defaultTempValues());
+    setIsAddingNew(false);
+  }
+
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
-    const newReorderedItems = Array.from(reorderedItems);
-    const [movedItem] = newReorderedItems.splice(result.source.index, 1);
-    newReorderedItems.splice(result.destination.index, 0, movedItem);
-
-    setReorderedItems(newReorderedItems);
-    onReorder(newReorderedItems);
+    const items = Array.from(reorderedItems);
+    const [movedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, movedItem);
+    setReorderedItems(items);
+    onReorder(items);
   };
 
   const handleSaveClick = (item: IOption) => {
-    onEdit({
-      ...item,
-      title: tempValues.title,
-      value: tempValues.value,
-      translations: tempValues.translations,
-    });
+    onEdit({ ...item, ...tempValues });
     setEditMode(null);
   };
 
-  const handleCancelClick = () => {
-    setEditMode(null);
-    setTempValues({
-      title: "",
-      translations: null,
-      value: 1,
-      index: reorderedItems?.length + 1,
-    });
-  };
+  const handleCancelClick = resetTempValues;
 
   const handleAddNewClick = () => {
     setIsAddingNew(true);
-    setTempValues({
-      title: "",
-      translations: null,
-      value: 1,
-      index: reorderedItems?.length + 1,
-    });
+    setTempValues(defaultTempValues());
   };
 
   const handleSaveNewOption = () => {
     onAdd({
-      index: reorderedItems?.length + 1,
+      ...tempValues,
       id: reorderedItems?.length + 1,
-      title: tempValues.title,
-      value: tempValues.value,
-      translations: tempValues.translations,
-    });
-  };
-
-  useEffect(() => {
-    if (isAddingNew === false) {
-      setTempValues({
-        title: "",
-        translations: null,
-        value: 1,
-        index: reorderedItems?.length + 1,
-      });
-      setIsAddingNew(false);
-    }
-  }, [isAddingNew]);
-
-  useEffect(() => {
-    setReorderedItems(Options);
-  }, [Options]);
-
-  const handleCancelNewOption = () => {
-    setIsAddingNew(false);
-    setTempValues({
-      title: "",
-      translations: null,
-      value: 1,
       index: reorderedItems?.length + 1,
     });
   };
+
+  const handleCancelNewOption = resetTempValues;
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
@@ -140,191 +112,225 @@ const OptionList = (props: OptionListProps) => {
             overflow="auto"
           >
             {reorderedItems?.map((item, index) => (
-              <Draggable
+              <OptionRow
                 key={item.id}
-                draggableId={item.id.toString()}
+                item={item}
                 index={index}
-              >
-                {(provided: any) => (
-                  <>
-                    <Box
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        py: 1.5,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          flexGrow: 1,
-                        }}
-                      >
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            ml: 1,
-                            paddingInlineEnd: 1.5,
-                            backgroundColor: "#F3F5F6",
-                            borderRadius: "8px",
-                          }}
-                        >
-                          <IconButton
-                            size="small"
-                            sx={{ display: "inline-flex", mr: 0.5 }}
-                          >
-                            <SwapVertRoundedIcon fontSize="small" />
-                          </IconButton>
-                          {`${t("option")} ${index + 1}:`}
-                        </Typography>
-                        {editMode === item.id ? (
-                          <TextField
-                            required
-                            value={tempValues.title}
-                            onChange={(e) =>
-                              setTempValues({
-                                ...tempValues,
-                                title: e.target.value,
-                              })
-                            }
-                            variant="outlined"
-                            fullWidth
-                            size="small"
-                            sx={{
-                              marginInline: 2,
-                              fontSize: 14,
-                              ml: 2,
-                              "& .MuiInputBase-root": {
-                                fontSize: 14,
-                                overflow: "auto",
-                              },
-                              "& .MuiFormLabel-root": { fontSize: 14 },
-                            }}
-                            label={<Trans i18nKey="common.title" />}
-                          />
-                        ) : (
-                          <Box sx={{ display: "flex", flexGrow: 1 }}>
-                            <TitleWithTranslation
-                              title={item.title}
-                              translation={
-                                langCode
-                                  ? item.translations?.[langCode]?.title
-                                  : ""
-                              }
-                              variant="semiBoldMedium"
-                              showCopyIcon
-                            />
-                          </Box>
-                        )}
-                      </Box>
-
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {editMode === item.id ? (
-                          <TextField
-                            type="number"
-                            required
-                            value={tempValues?.value}
-                            onChange={(e) =>
-                              setTempValues({
-                                ...tempValues,
-                                value: Number(e.target.value),
-                              })
-                            }
-                            variant="outlined"
-                            size="small"
-                            label={<Trans i18nKey="common.value" />}
-                            sx={{
-                              fontSize: 14,
-                              "& .MuiInputBase-root": {
-                                fontSize: 14,
-                                overflow: "auto",
-                              },
-                              "& .MuiFormLabel-root": { fontSize: 14 },
-                            }}
-                          />
-                        ) : (
-                          <Chip
-                            label={t("common.value") + ": " + item.value}
-                            color="primary"
-                            size="small"
-                            sx={{ ml: 2, fontSize: 12 }}
-                          />
-                        )}
-
-                        {editMode === item.id ? (
-                          <>
-                            <IconButton
-                              size="small"
-                              onClick={() => handleSaveClick(item)}
-                              sx={{ ml: 1 }}
-                              color="success"
-                            >
-                              <CheckRoundedIcon fontSize="small" />
-                            </IconButton>
-                            <IconButton
-                              size="small"
-                              onClick={handleCancelClick}
-                              sx={{ ml: 1 }}
-                              color="secondary"
-                            >
-                              <CloseRoundedIcon fontSize="small" />
-                            </IconButton>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
-                    </Box>
-                    <Divider />
-                  </>
-                )}
-              </Draggable>
+                editMode={editMode}
+                tempValues={tempValues}
+                setTempValues={setTempValues}
+                handleSaveClick={handleSaveClick}
+                handleCancelClick={handleCancelClick}
+                langCode={langCode}
+              />
             ))}
             {provided.placeholder}
           </Box>
         )}
       </Droppable>
+
       {isAddingNew ? (
         <OptionForm
           newItem={tempValues}
           setNewItem={setTempValues}
           handleInputChange={(e) =>
-            setTempValues({
-              ...tempValues,
-              [e.target.name]: e.target.value,
-            })
+            setTempValues({ ...tempValues, [e.target.name]: e.target.value })
           }
           handleSave={handleSaveNewOption}
           handleCancel={handleCancelNewOption}
         />
       ) : (
-        <Box
-          sx={{
-            display: disableAddOption ? "none" : "flex",
-            justifyContent: "center",
-            mt: 2,
-          }}
-        >
-          <Button
-            onClick={handleAddNewClick}
-            variant="outlined"
-            color="primary"
-            size="small"
-          >
-            <Add fontSize="small" />
-            <Trans i18nKey="kitDesigner.newOption" />
-          </Button>
-        </Box>
+        !disableAddOption && (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Button
+              onClick={handleAddNewClick}
+              variant="outlined"
+              color="primary"
+              size="small"
+            >
+              <Add fontSize="small" />
+              <Trans i18nKey="kitDesigner.newOption" />
+            </Button>
+          </Box>
+        )
       )}
     </DragDropContext>
   );
 };
+
+const OptionRow = ({
+  item,
+  index,
+  editMode,
+  tempValues,
+  setTempValues,
+  handleSaveClick,
+  handleCancelClick,
+  langCode,
+}: {
+  item: IOption;
+  index: number;
+  editMode: number | null;
+  tempValues: any;
+  setTempValues: React.Dispatch<any>;
+  handleSaveClick: (item: IOption) => void;
+  handleCancelClick: () => void;
+  langCode: string;
+}) => {
+  const isEditing = editMode === item.id;
+  return (
+    <Draggable draggableId={item.id.toString()} index={index}>
+      {(draggableProvided: any) => (
+        <>
+          <Box
+            ref={draggableProvided.innerRef}
+            {...draggableProvided.draggableProps}
+            {...draggableProvided.dragHandleProps}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              py: 1.5,
+            }}
+          >
+            <OptionTitleSection
+              item={item}
+              index={index}
+              isEditing={isEditing}
+              tempValues={tempValues}
+              setTempValues={setTempValues}
+              langCode={langCode}
+            />
+
+            <OptionValueSection
+              item={item}
+              isEditing={isEditing}
+              tempValues={tempValues}
+              setTempValues={setTempValues}
+              handleSaveClick={handleSaveClick}
+              handleCancelClick={handleCancelClick}
+            />
+          </Box>
+          <Divider />
+        </>
+      )}
+    </Draggable>
+  );
+};
+
+const OptionTitleSection = ({
+  item,
+  index,
+  isEditing,
+  tempValues,
+  setTempValues,
+  langCode,
+}: any) => (
+  <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+    <Typography
+      variant="body2"
+      sx={{
+        display: "inline-flex",
+        alignItems: "center",
+        ml: 1,
+        paddingInlineEnd: 1.5,
+        backgroundColor: "#F3F5F6",
+        borderRadius: "8px",
+      }}
+    >
+      <IconButton size="small" sx={{ display: "inline-flex", mr: 0.5 }}>
+        <SwapVertRoundedIcon fontSize="small" />
+      </IconButton>
+      {`${t("option")} ${index + 1}:`}
+    </Typography>
+    {isEditing ? (
+      <TextField
+        required
+        value={tempValues.title}
+        onChange={(e) =>
+          setTempValues({ ...tempValues, title: e.target.value })
+        }
+        variant="outlined"
+        fullWidth
+        size="small"
+        sx={{
+          marginInline: 2,
+          fontSize: 14,
+          ml: 2,
+          "& .MuiInputBase-root": { fontSize: 14, overflow: "auto" },
+          "& .MuiFormLabel-root": { fontSize: 14 },
+        }}
+        label={<Trans i18nKey="common.title" />}
+      />
+    ) : (
+      <Box sx={{ display: "flex", flexGrow: 1 }}>
+        <TitleWithTranslation
+          title={item.title}
+          translation={langCode ? item.translations?.[langCode]?.title : ""}
+          variant="semiBoldMedium"
+          showCopyIcon
+        />
+      </Box>
+    )}
+  </Box>
+);
+
+const OptionValueSection = ({
+  item,
+  isEditing,
+  tempValues,
+  setTempValues,
+  handleSaveClick,
+  handleCancelClick,
+}: any) => (
+  <Box sx={{ display: "flex", alignItems: "center" }}>
+    {isEditing ? (
+      <TextField
+        type="number"
+        required
+        value={tempValues?.value}
+        onChange={(e) =>
+          setTempValues({ ...tempValues, value: Number(e.target.value) })
+        }
+        variant="outlined"
+        size="small"
+        label={<Trans i18nKey="common.value" />}
+        sx={{
+          fontSize: 14,
+          "& .MuiInputBase-root": { fontSize: 14, overflow: "auto" },
+          "& .MuiFormLabel-root": { fontSize: 14 },
+        }}
+      />
+    ) : (
+      <Chip
+        label={t("common.value") + ": " + item.value}
+        color="primary"
+        size="small"
+        sx={{ ml: 2, fontSize: 12 }}
+      />
+    )}
+
+    {isEditing && (
+      <>
+        <IconButton
+          size="small"
+          onClick={() => handleSaveClick(item)}
+          sx={{ ml: 1 }}
+          color="success"
+        >
+          <CheckRoundedIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          size="small"
+          onClick={handleCancelClick}
+          sx={{ ml: 1 }}
+          color="secondary"
+        >
+          <CloseRoundedIcon fontSize="small" />
+        </IconButton>
+      </>
+    )}
+  </Box>
+);
 
 export default OptionList;
