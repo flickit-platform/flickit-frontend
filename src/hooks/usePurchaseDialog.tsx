@@ -14,7 +14,7 @@ export const usePurchaseDialog = (kitTitle?: string) => {
           keycloakService._kc.tokenParsed?.sub,
         dialogTitle: t("assessmentKit.interestedThisKit"),
         children: (
-          <Box sx={{ color: "#2B333B", mb: 3 }}>
+          <Box sx={{ color: "text.primary", mb: 3 }}>
             <Typography textAlign="justify" variant="semiBoldLarge">
               {t("common.purchaseModal.accessToKit")}
             </Typography>{" "}

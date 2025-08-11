@@ -40,7 +40,7 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
       <Box
         sx={{
           ...styles.rtlStyle(languageDetector(subject.title)),
-          borderBottom: "1px solid #C7CCD1",
+          borderBottom: `1px solid ${theme.palette.outline?.variant}`,
         }}
       >
         <Tabs

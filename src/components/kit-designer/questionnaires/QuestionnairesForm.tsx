@@ -48,7 +48,7 @@ const QuestionnairesForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: "background.container",
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -57,7 +57,7 @@ const QuestionnairesForm = ({
       }}
     >
       <Box
-        sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+        sx={{ ...styles.centerCVH, background: "background.container" }}
         borderRadius="0.5rem"
         mr={2}
         p={0.25}
@@ -80,7 +80,7 @@ const QuestionnairesForm = ({
             "& .MuiInputBase-root": {
               fontSize: 14,
             },
-            background: "#fff",
+            background: (theme) => theme.palette.background.containerLowest
           }}
         />
       </Box>

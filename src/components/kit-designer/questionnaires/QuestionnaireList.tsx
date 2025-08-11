@@ -152,31 +152,31 @@ const ListOfItems = ({
 
   const handelChangeAccordion =
     ({ id }: { id: TId }) =>
-    async (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpandedId(id);
-      setQuestionnaireId(id as any);
-      try {
-        if (isExpanded) {
-          const data = await fetchQuestionListKit.query({
-            kitVersionId,
-            questionnaireId: id,
-          });
-          setNewQuestion({
-            title: "",
-            index: (data?.items.length ?? 0) + 1,
-            value: (data?.items.length ?? 0) + 1,
-            id: null,
-          });
-          dispatch(kitActions.setQuestions(data?.items));
-        } else {
-          setExpandedId(null);
-          handleCancel(id);
+      async (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpandedId(id);
+        setQuestionnaireId(id as any);
+        try {
+          if (isExpanded) {
+            const data = await fetchQuestionListKit.query({
+              kitVersionId,
+              questionnaireId: id,
+            });
+            setNewQuestion({
+              title: "",
+              index: (data?.items.length ?? 0) + 1,
+              value: (data?.items.length ?? 0) + 1,
+              id: null,
+            });
+            dispatch(kitActions.setQuestions(data?.items));
+          } else {
+            setExpandedId(null);
+            handleCancel(id);
+          }
+        } catch (e) {
+          const err = e as ICustomError;
+          showToast(err);
         }
-      } catch (e) {
-        const err = e as ICustomError;
-        showToast(err);
-      }
-    };
+      };
 
   const debouncedHandleReorder = debounce(async (newOrder: any[]) => {
     try {
@@ -303,7 +303,7 @@ const ListOfItems = ({
                     mt={1.5}
                     sx={{
                       backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
+                        editMode === item.id ? theme.palette.background.container : theme.palette.background.containerLowest,
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
@@ -324,10 +324,10 @@ const ListOfItems = ({
                         sx={{
                           backgroundColor:
                             editMode === item.id
-                              ? "#F3F5F6"
+                              ? theme.palette.background.container
                               : item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.04)
-                                : "#fff",
+                                : theme.palette.background.containerLowest,
                           borderRadius:
                             kitState.questions.length != 0
                               ? "8px"
@@ -341,7 +341,7 @@ const ListOfItems = ({
                             backgroundColor:
                               item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.08)
-                                : "#F3F5F6",
+                                : theme.palette.background.container,
                           },
                           "& .MuiAccordionSummary-content": {
                             margin: 0,
@@ -368,7 +368,7 @@ const ListOfItems = ({
                               background:
                                 item.questionsCount == 0
                                   ? alpha(theme.palette.error.main, 0.12)
-                                  : "#F3F5F6",
+                                  : theme.palette.background.container,
                               width: { xs: "50px", md: "64px" },
                               justifyContent: "space-around",
                             }}
@@ -422,7 +422,7 @@ const ListOfItems = ({
                                     translationValue={
                                       langCode
                                         ? (tempValues.translations?.[langCode]
-                                            ?.title ?? "")
+                                          ?.title ?? "")
                                         : ""
                                     }
                                     onTranslationChange={updateTranslation(
@@ -530,7 +530,7 @@ const ListOfItems = ({
                                   translationValue={
                                     langCode
                                       ? (tempValues.translations?.[langCode]
-                                          ?.description ?? "")
+                                        ?.description ?? "")
                                       : ""
                                   }
                                   onTranslationChange={updateTranslation(
@@ -548,7 +548,7 @@ const ListOfItems = ({
                                   translation={
                                     langCode
                                       ? item.translations?.[langCode]
-                                          ?.description
+                                        ?.description
                                       : ""
                                   }
                                   variant="bodyMedium"
@@ -567,9 +567,9 @@ const ListOfItems = ({
                                 }}
                               >
                                 <Typography
+                                  variant="labelCondensed"
+                                  color="background.onVariant"
                                   sx={{
-                                    ...theme.typography.labelCondensed,
-                                    color: "#6C8093",
                                     width: "100%",
                                   }}
                                 >
@@ -584,11 +584,11 @@ const ListOfItems = ({
                                     backgroundColor:
                                       item.questionsCount == 0
                                         ? theme.palette.error.main
-                                        : "#E2E5E9",
+                                        : theme.palette.background.variant,
                                     color:
                                       item.questionsCount == 0
-                                        ? "#FAD1D8"
-                                        : "#2B333B",
+                                        ? theme.palette.error.contrastText
+                                        : theme.palette.text.primary,
                                     display: "flex",
                                     alignItems: " center",
                                     justifyContent: "center",

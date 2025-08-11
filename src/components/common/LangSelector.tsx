@@ -26,11 +26,11 @@ const LanguageSelector = () => {
     <Box display="flex" justifyContent="center">
       {i18n.language === "fa" ? (
         <Typography
+          variant="titleMedium"
           onClick={() => handleLanguageChange("en")}
           sx={{
             cursor: "pointer",
             fontWeight: "bold",
-            ...theme.typography.titleMedium,
           }}
           color="white"
         >
@@ -38,11 +38,11 @@ const LanguageSelector = () => {
         </Typography>
       ) : (
         <Typography
+          variant="titleMedium"
           onClick={() => handleLanguageChange("fa")}
           sx={{
             cursor: "pointer",
             fontWeight: "bold",
-            ...theme.typography.titleMedium,
           }}
           color="white"
         >

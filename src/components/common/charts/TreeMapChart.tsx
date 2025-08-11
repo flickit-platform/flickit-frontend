@@ -5,6 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
 import { useTheme } from "@mui/material";
+import { v3Tokens } from "@/config/tokens";
 
 interface TreeMapNode {
   name: string;
@@ -32,8 +33,8 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
       <Treemap
         data={treeMapData}
         dataKey="count"
-        stroke="#fff"
-        fill="white"
+        stroke={v3Tokens.surface.containerLowest}
+        fill={v3Tokens.surface.containerLowest}
         content={<CustomNode levels={levels} lang={lang} />}
         onClick={(props) => {
           const { id }: any = props;
@@ -102,7 +103,7 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 - 10}
             textAnchor="middle"
-            fill="#fff"
+            fill={v3Tokens.surface.containerLowest}
             fontSize={adjustedFontSize}
             fontWeight={5}
             letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
@@ -113,7 +114,7 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 + 10}
             textAnchor="middle"
-            fill="#fff"
+            fill={v3Tokens.surface.containerLowest}
             fontSize={11}
             fontWeight={5}
             alignmentBaseline="middle"

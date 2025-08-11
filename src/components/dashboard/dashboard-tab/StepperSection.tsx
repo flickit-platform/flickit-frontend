@@ -59,15 +59,15 @@ const StepperSection = (props: IStepperSection) => {
                 ".MuiSvgIcon-root.Mui-active": {
                   padding: "0",
                   borderRadius: "50%",
-                  border: "1px dashed #2466A8",
+                  border: (theme) => `1px dashed ${theme.palette.primary.main}`,
                   marginY: "-4px",
-                  color: "#EAF2FB",
+                  color: (theme) => theme.palette.primary.bg,
                 },
                 "& .Mui-active .MuiStepIcon-text": {
-                  fill: "#2466A8",
+                  fill: (theme) => theme.palette.primary.main,
                 },
                 "& .Mui-disabled .MuiStepIcon-text": {
-                  fill: "#fff",
+                  fill: (theme) => theme.palette.background.containerLowest,
                 },
               }}
             />
@@ -198,8 +198,8 @@ const StepBox = (props: IStepBox) => {
         size="small"
         sx={{
           ...theme.typography.labelMedium,
-          color: "#B8144B",
-          background: "#FCE8EF",
+          color: theme.palette.secondary.main,
+          background: theme.palette.secondary.bg,
           direction: theme.direction,
           cursor: "pointer",
         }}
@@ -214,7 +214,7 @@ const StepBox = (props: IStepBox) => {
       sx={{
         ...theme.typography.labelMedium,
         color: "#2D80D2",
-        background: "#EAF2FB",
+        background: theme.palette.primary.bg,
       }}
     />
   );
@@ -225,8 +225,8 @@ const StepBox = (props: IStepBox) => {
       size="small"
       sx={{
         ...theme.typography.labelMedium,
-        color: "#3D8F3D",
-        background: "#EDF7ED",
+        color: theme.palette.success.bg,
+        background: theme.palette.success.bg,
       }}
     />
   );
@@ -272,10 +272,10 @@ const StepBox = (props: IStepBox) => {
             gap: "4px",
           }}
         >
-          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
+          <Typography variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * answered) / total)}%
           </Typography>
-          <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
+          <Typography variant="labelMedium" color="#3D4D5C80">
             {t("dashboard.fromTotalQuestionsCount")}
           </Typography>
         </Box>
@@ -310,10 +310,10 @@ const StepBox = (props: IStepBox) => {
           </Box>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
-          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
+          <Typography variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * result) / expected)}%
           </Typography>
-          <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
+          <Typography variant="labelMedium" color="#3D4D5C80">
             {t("dashboard.totalInsightsCount")}
           </Typography>
         </Box>
@@ -405,12 +405,12 @@ const StepBox = (props: IStepBox) => {
         px: "20px",
         py: "10px",
         height: "190px",
-        borderInlineEnd: !report ? "1px solid #C7CCD1" : "",
+        borderInlineEnd: !report ? `1px solid ${theme.palette.outline?.variant}` : "",
         borderTop: {
-          xs: insights || report ? "1px solid #C7CCD1" : "",
+          xs: insights || report ? `1px solid ${theme.palette.outline?.variant}` : "",
           md: "none",
         },
-        borderBottom: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
+        borderBottom: { xs: insights ? `1px solid ${theme.palette.outline?.variant}` : "", md: "none" },
         width: "100%",
         textAlign: "center",
         cursor: "pointer",
@@ -420,8 +420,8 @@ const StepBox = (props: IStepBox) => {
     >
       <Typography
         variant="semiBoldLarge"
+        color="background.onVariant"
         sx={{
-          color: "#6C8093",
           textAlign: "center",
           mb: "36px",
         }}

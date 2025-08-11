@@ -167,7 +167,7 @@ const AssessmentKitExpertViewContainer = () => {
                 onClick={handleExport}
               >
                 <Typography sx={{ marginInlineEnd: 1 }} variant="button">
-                  <Trans i18nKey="exportDSL" />
+                  <Trans i18nKey="assessmentKit.exportDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
               </LoadingButton>
@@ -687,9 +687,8 @@ const AssessmentKitQuestionsList = (props: {
               onChange={handleTabChange}
               sx={{
                 "& .MuiTabs-indicator": {
-                  backgroundColor: `${
-                    colorPallet[selectedTabIndex ?? 0]
-                  } !important`,
+                  backgroundColor: `${colorPallet[selectedTabIndex ?? 0]
+                    } !important`,
                 },
               }}
             >
@@ -708,7 +707,7 @@ const AssessmentKitQuestionsList = (props: {
                           color: `${colorPallet[index]} !important`,
                         },
                         background: `${colorPallet[index]}  !important`,
-                        color: "#fff !important",
+                        color: (theme) => theme.palette.background.containerLowest + " !important",
                       }}
                       label={
                         <Box sx={{ ...styles.centerV }}>
@@ -1013,7 +1012,7 @@ const SubjectQuestionList = (props: any) => {
                       alignItems: "center",
                       borderRadius: "8px",
                       background: "#1976D2",
-                      color: "#fff",
+                      color: "background.containerLowest",
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1030,7 +1029,7 @@ const SubjectQuestionList = (props: any) => {
                     alignItems: "center",
                     borderRadius: "8px",
                     background: "#273248",
-                    color: "#fff",
+                    color: theme.palette.background.containerLowest,
                     fontSize: ".75rem",
                     px: "12px",
                     mx: "4px",
@@ -1046,7 +1045,7 @@ const SubjectQuestionList = (props: any) => {
                     alignItems: "center",
                     borderRadius: "8px",
                     background: "#7954B3",
-                    color: "#fff",
+                    color: theme.palette.background.containerLowest,
                     fontSize: ".75rem",
                     px: "12px",
                     mx: "4px",
@@ -1066,7 +1065,7 @@ const SubjectQuestionList = (props: any) => {
                       alignItems: "center",
                       borderRadius: "8px",
                       background: "#004F83",
-                      color: "#fff",
+                      color: theme.palette.background.containerLowest,
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1239,7 +1238,7 @@ const QuestionnairesQuestionList = (props: any) => {
                       alignItems: "center",
                       borderRadius: "8px",
                       background: "#1976D2",
-                      color: "#fff",
+                      color: theme.palette.background.containerLowest,
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1257,7 +1256,7 @@ const QuestionnairesQuestionList = (props: any) => {
                       alignItems: "center",
                       borderRadius: "8px",
                       background: "#004F83",
-                      color: "#fff",
+                      color: theme.palette.background.containerLowest,
                       fontSize: ".75rem",
                       px: "12px",
                       mx: "4px",
@@ -1309,10 +1308,8 @@ const QuestionnairesQuestionList = (props: any) => {
                       </Typography>
                       <Typography
                         sx={{
+                          ...styles.centerVH,
                           width: "20%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
                           pb: "4px",
                           color: "#767676",
                           fontSize: "0.8rem",
@@ -1322,10 +1319,8 @@ const QuestionnairesQuestionList = (props: any) => {
                       </Typography>
                       <Typography
                         sx={{
+                          ...styles.centerVH,
                           width: "10%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
                           pb: "4px",
                           color: "#767676",
                           fontSize: "0.8rem",
@@ -1369,9 +1364,8 @@ const QuestionnairesQuestionList = (props: any) => {
                               sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
-                                borderTop: `${
-                                  index !== 0 && "1px solid #D3D3D3"
-                                }`,
+                                borderTop: `${index !== 0 && "1px solid #D3D3D3"
+                                  }`,
                                 py: 1,
                               }}
                             >
@@ -1495,7 +1489,7 @@ const MaturityLevelsDetails = (props: any) => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ background: "#fff", px: 4, py: 4, borderRadius: "8px" }}>
+    <Box sx={{ background: theme.palette.background.containerLowest, px: 4, py: 4, borderRadius: "8px" }}>
       <Typography fontWeight={900} fontSize="1.5rem" mb={8}>
         <Trans i18nKey="common.maturityLevels" />
       </Typography>
@@ -1520,7 +1514,7 @@ const MaturityLevelsDetails = (props: any) => {
                 sx={{ transform: "skew(30deg);" }}
                 fontSize="1.5rem"
                 fontWeight={900}
-                color="#fff"
+                color="background.containerLowest"
               >
                 {index}.{title}
               </Typography>
@@ -1535,7 +1529,7 @@ const MaturityLevelsDetails = (props: any) => {
                 <Typography
                   sx={{ transform: "skew(30deg)" }}
                   fontSize=".875rem"
-                  color="#fff"
+                  color="background.containerLowest"
                   fontWeight={900}
                   mr={"4px"}
                 >
@@ -1548,7 +1542,7 @@ const MaturityLevelsDetails = (props: any) => {
                       key={uniqueId()}
                       sx={{ transform: "skew(30deg)" }}
                       fontSize=".75rem"
-                      color="#fff"
+                      color="background.containerLowest"
                     >
                       {theme.direction == "ltr" && key != 0 && "   ,"} {title}:{" "}
                       {value}%{" "}

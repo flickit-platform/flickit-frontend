@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Theme } from '@mui/material/styles'; 
+import { Theme } from '@mui/material/styles';
 import FlatGauge from '../common/charts/flatGauge/FlatGauge';
 import languageDetector from '@/utils/languageDetector';
 import { Trans } from 'react-i18next';
@@ -38,9 +38,8 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
     <Grid container sx={{ width: "100%", direction: theme.direction, borderRadius: "16px" }}>
       <Grid item xs={12} sm={9} sx={{ p: 4 }}>
         <Box>
-          <Typography
+          <Typography variant="headlineSmall"
             sx={{
-              ...theme.typography.headlineSmall,
               textTransform: "none",
               fontFamily: languageDetector(title) ? farsiFontFamily : primaryFontFamily,
             }}
@@ -48,8 +47,8 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
             {title}
           </Typography>
           <Typography
+            variant='bodyMedium'
             sx={{
-              ...theme.typography.bodyMedium,
               textTransform: "none",
             }}
             marginX={2}
@@ -60,9 +59,9 @@ const AttributeHeader: React.FC<AttributeHeaderProps> = ({
           </Typography>
         </Box>
         <Typography
+          variant="bodyMedium"
+          color="background.onVariant"
           sx={{
-            ...theme.typography.bodyMedium,
-            color: "#6C8093",
             mt: 1,
             fontFamily: languageDetector(description) ? farsiFontFamily : primaryFontFamily,
           }}

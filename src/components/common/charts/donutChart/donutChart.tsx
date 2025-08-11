@@ -59,12 +59,12 @@ const DonutChart = (props: IGaugeProps) => {
           {displayTitle && (
             <Typography
               variant="titleMedium"
+              color={colorCode}
               sx={{
                 display: "flex",
                 gap: "5px",
                 fontWeight: "bold",
                 fontSize: "1.37rem",
-                color: colorCode,
                 fontFamily: languageDetector(text ?? "")
                   ? farsiFontFamily
                   : primaryFontFamily,

@@ -204,14 +204,15 @@ const AssessmentKitAside = (props: any) => {
             </LoadingButton>
             <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
               <Typography
-                sx={{ ...theme.typography.bodySmall, color: "#2B333B" }}
+                color="text.primary"
+                variant="bodySmall"
               >
                 <Trans i18nKey="assessmentKit.haveAnyQuestions" />
               </Typography>
               <Typography
+                variant="bodySmall"
+                color="primary.main"
                 sx={{
-                  ...theme.typography.bodySmall,
-                  color: theme.palette.primary.main,
                   cursor: "pointer",
                   textDecoration: "underline",
                 }}
@@ -225,11 +226,11 @@ const AssessmentKitAside = (props: any) => {
           </Box>
           {isAuthenticated && (
             <Typography
+              color="text.primary"
+              variant="bodySmall"
               sx={{
-                ...theme.typography.bodySmall,
                 ...styles.centerVH,
                 gap: 1,
-                color: "#2B333B",
                 mt: "8px",
                 textAlign: "center",
               }}
@@ -247,12 +248,12 @@ const AssessmentKitAside = (props: any) => {
                 sx={{
                   transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
                   background: likeStatus
-                    ? theme.palette.primary.light
+                    ? theme.palette.primary.states.selected
                     : "inherit",
                   "&:hover": {
                     background: likeStatus
-                      ? theme.palette.primary.light
-                      : "#EAF2FB",
+                      ? theme.palette.primary.states.selected
+                      : theme.palette.primary.bg,
                   },
                 }}
               >
@@ -265,12 +266,14 @@ const AssessmentKitAside = (props: any) => {
             </Typography>
           )}
         </Box>
-      </Box>
+      </Box >
       {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
-      <ContactUsDialog {...contactusDialogProps} />
-      {dialogPurchaseProps.open && (
-        <ContactUsDialog {...dialogPurchaseProps} title={title} />
-      )}
+      < ContactUsDialog {...contactusDialogProps} />
+      {
+        dialogPurchaseProps.open && (
+          <ContactUsDialog {...dialogPurchaseProps} title={title} />
+        )
+      }
     </>
   );
 };
@@ -284,13 +287,13 @@ const InfoBox = (props: any) => {
       {icon}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
         {title && (
-          <Typography variant="semiBoldSmall" color="#6C8093">
+          <Typography variant="semiBoldSmall" color="background.onVariant">
             {t(`${title}`)}
           </Typography>
         )}
         <Typography
           variant="bodyLarge"
-          color="#2B333B"
+          color="text.primary"
           sx={{
             textAlign: "justify",
           }}

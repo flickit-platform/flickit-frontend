@@ -176,7 +176,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={formMethods.handleSubmit(handleSubmit)}
               >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
+                <CheckCircleOutlineRounded sx={{ color: theme.palette.background.containerLowest }} />
               </IconButton>
               <IconButton
                 sx={{
@@ -189,7 +189,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={handleCancel}
               >
-                <CancelRounded sx={{ color: "#fff" }} />
+                <CancelRounded sx={{ color: theme.palette.background.containerLowest }} />
               </IconButton>
             </Box>
           </Box>
@@ -207,7 +207,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               wordBreak: "break-word",
               pr: languageDetector(tempData) ? 1 : 5,
               pl: languageDetector(tempData) ? 5 : 1,
-              border: "1px solid #fff",
+              border: `1px solid ${theme.palette.primary.contrastText}`,
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
                 borderColor: editable ? theme.palette.primary.main : "unset",
@@ -229,17 +229,17 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 transition: "max-height 0.4s ease",
                 "&::after": !showMore
                   ? {
-                      content: '""',
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: "40px",
-                      background: showBtn
-                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
-                        : "none",
-                      pointerEvents: "none",
-                    }
+                    content: '""',
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: "40px",
+                    background: showBtn
+                      ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.containerLowest} 100%)`
+                      : "none",
+                    pointerEvents: "none",
+                  }
                   : undefined,
               }}
             >
@@ -306,7 +306,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={() => setShowEditor(true)}
               >
-                <EditRounded sx={{ color: "#fff" }} />
+                <EditRounded sx={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
             )}
           </Box>
@@ -328,7 +328,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         title={<Trans i18nKey="common.warning" />}
         maxWidth="sm"
       >
-        <Typography sx={{ color: "#0A2342" }}>
+        <Typography color="#0A2342">
           <Trans
             i18nKey="notification.editorActionRestriction"
             components={{

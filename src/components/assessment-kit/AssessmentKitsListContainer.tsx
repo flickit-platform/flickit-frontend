@@ -80,14 +80,15 @@ const AssessmentKitsListContainer = () => {
     if (selected.length == 0) {
       return (
         <Typography
-          sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
+          color="text.primary"
+          variant="semiBoldLarge"
         >
           <Trans i18nKey="common.language" />
         </Typography>
       );
     } else if (selected.length >= 1) {
       return (
-        <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#fff" }}>
+        <Typography color="primary.contrastText" variant="semiBoldLarge">
           <Trans i18nKey="common.language" /> ({selected.length})
         </Typography>
       );
@@ -141,12 +142,12 @@ const AssessmentKitsListContainer = () => {
               displayEmpty={true}
               renderValue={(selected) => handleSelected(selected)}
               sx={{
-                background: "#fff",
+                background: theme.palette.background.containerLowest,
                 px: "0px",
                 backgroundColor:
                   langsCode.length >= 1 ? theme.palette.primary.main : "",
                 "& .MuiSelect-icon": {
-                  color: langsCode.length >= 1 ? "#fff" : "unset",
+                  color: langsCode.length >= 1 ? theme.palette.primary.contrastText : "unset",
                 },
                 "& .MuiTypography-root": {
                   ...theme.typography.semiBoldMedium,
@@ -178,12 +179,13 @@ const AssessmentKitsListContainer = () => {
                   key={uniqueId()}
                   color="primary"
                   variant="outlined"
-                  sx={{ background: "#EAF2FB" }}
+                  sx={{ background: theme.palette.primary.bg }}
                   label={
                     <Box sx={{ ...styles.centerVH, gap: "10px" }}>
                       <Typography
                         variant="labelSmall"
-                        sx={{ ...styles.centerVH, color: "#6C8093" }}
+                        color="background.onVariant"
+                        sx={{ ...styles.centerVH, }}
                       >
                         <Trans i18nKey="common.language" />:
                       </Typography>

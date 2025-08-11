@@ -274,7 +274,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                             sx={{
                                               display: "flex",
                                               alignItems: "center",
-                                              background: "#F3F5F6",
+                                              background: theme.palette.background.container,
                                               borderRadius: "0.5rem",
                                               width: { xs: "50px", md: "64px" },
                                               justifyContent: "space-around",

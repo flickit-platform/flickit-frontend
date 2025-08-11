@@ -51,7 +51,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             src={AssessmentError}
             alt={"AssessmentError"}
           />
-          <Typography sx={{ ...theme.typography.semiBoldXLarge }}>
+          <Typography variant="semiBoldXLarge">
             <Trans i18nKey="assessment.assessmentLimitExceeded" />
           </Typography>
         </>
@@ -69,7 +69,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                 listStyleType: "disc",
                 fontSize: "1.2rem",
                 gap: "2px",
-                color: "#2B333B",
+                color: theme.palette.text.primary,
               }}
             >
               <Typography

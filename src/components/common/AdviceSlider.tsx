@@ -119,14 +119,12 @@ const AdviceSlider = (props: any) => {
         >
           <Box
             position={"relative"}
-            left={`${
-              ((defaultValue - 1) * 99) /
+            left={`${((defaultValue - 1) * 99) /
               (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-            }%`}
-            right={`${
-              ((defaultValue - 1) * 99) /
+              }%`}
+            right={`${((defaultValue - 1) * 99) /
               (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-            }%`}
+              }%`}
           >
             <svg
               width="20"
@@ -141,14 +139,12 @@ const AdviceSlider = (props: any) => {
           <Box
             sx={{
               position: "relative",
-              left: `${
-                ((defaultValue - 1) * 99) /
+              left: `${((defaultValue - 1) * 99) /
                 (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-              }%`,
-              right: `${
-                ((defaultValue - 1) * 99) /
+                }%`,
+              right: `${((defaultValue - 1) * 99) /
                 (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-              }%`,
+                }%`,
               marginInlineStart: "-20px",
               mt: "-5px",
               whiteSpace: "nowrap",
@@ -167,14 +163,12 @@ const AdviceSlider = (props: any) => {
           display: "flex",
           textAlign: "center",
           justifyContent: "center",
-          width: {xs: "90%", sm: "20%"} ,
-          mt:1
+          width: { xs: "90%", sm: "20%" },
+          mt: 1
         }}
       >
         <Typography
-          sx={{
-            color: "#6C8093",
-          }}
+          color="background.onVariant"
           variant="bodySmall"
         >
           <Trans

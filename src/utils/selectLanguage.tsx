@@ -27,7 +27,7 @@ const SelectLanguage = (props: any) => {
         onChange={(e) => handleChange(e)}
         sx={{
           fontSize: "14px",
-          background: "#fff",
+          background: (theme) => theme.palette.background.containerLowest,
           px: "0px",
           height: "40px",
           "& .MuiSelect-select": {
@@ -43,7 +43,7 @@ const SelectLanguage = (props: any) => {
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </FormControl >
   );
 };
 

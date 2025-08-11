@@ -82,15 +82,15 @@ export const SubmitOnSelectCheckBox = (props: any) => {
 
   return (
     <FormControlLabel
-      sx={{ mr: 0, color: "#fff", display: props?.disabled ? "none" : "block" }}
+      sx={{ mr: 0, color: (theme) => theme.palette.background.containerLowest, display: props?.disabled ? "none" : "block" }}
       data-cy="automatic-submit-check"
       control={
         <Checkbox
           checked={submitOnAnswerSelection}
           sx={{
-            color: "#fff",
+            color: (theme) => theme.palette.background.containerLowest,
             "&.Mui-checked": {
-              color: "#fff",
+              color: (theme) => theme.palette.background.containerLowest,
             },
           }}
           onChange={(e) => {

@@ -135,7 +135,7 @@ const AdviceListNewForm = ({
       mt={1.5}
       p={{ xs: 0.2, sm: 1.5 }}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: theme.palette.background.container,
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -149,7 +149,7 @@ const AdviceListNewForm = ({
           ...styles.centerVH,
           flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-evenly",
-          background: "#F3F5F6",
+          background: theme.palette.background.container,
           width: "100%",
         }}
         borderRadius={2}
@@ -179,7 +179,7 @@ const AdviceListNewForm = ({
                   "& .MuiFormLabel-root": {
                     fontSize: 14,
                   },
-                  background: "#fff",
+                  background: theme.palette.background.containerLowest
                 }}
               />
               {errormessage?.title && (
@@ -219,7 +219,7 @@ const AdviceListNewForm = ({
                       onChange={(e) => handleInputChange(e)}
                       sx={{
                         fontSize: "14px",
-                        background: "#fff",
+                        background: theme.palette.background.containerLowest,
                         px: "0px",
                         height: "36px",
                         "& .MuiSelect-select": {
@@ -230,9 +230,9 @@ const AdviceListNewForm = ({
                     >
                       <MenuItem disabled value="">
                         <Typography
+                          color="primary"
+                          variant="labelMedium"
                           sx={{
-                            ...theme.typography.labelMedium,
-                            color: "#2466A8",
                             display: "flex",
                             alignItems: "center",
                             height: "24px",
@@ -262,7 +262,7 @@ const AdviceListNewForm = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                mt:{xs: 26, sm: 17, md: 11, xl: 7 }
+                mt: { xs: 26, sm: 17, md: 11, xl: 7 }
               }}
             >
               <RichEditorField

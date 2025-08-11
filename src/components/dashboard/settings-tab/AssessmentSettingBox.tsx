@@ -112,6 +112,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
   fetchPathInfo,
   color,
 }) => {
+  const theme = useTheme()
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentInfo } = useAssessmentContext();
 
@@ -119,8 +120,8 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
     <Box sx={{ ...styles.boxStyle }} gap={2}>
       <Box height={"100%"} width={"100%"}>
         <Typography
+          color="text.primary"
           sx={{ width: "100%", display: "inline-block" }}
-          color="#2B333B"
           variant="headlineSmall"
         >
           <Trans i18nKey="common.general" />
@@ -139,7 +140,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
               alignItems: "center",
             }}
           >
-            <Typography variant="semiBoldLarge" color="#2B333B">
+            <Typography variant="semiBoldLarge" color="text.primary">
               <Trans i18nKey="assessment.assessmentTitle" />
             </Typography>
             <Box
@@ -167,10 +168,10 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                 alignItems: "center",
               }}
             >
-              <Box sx={{ ...styles.centerVH }} color="#6C8093" gap={1}>
+              <Box sx={{ ...styles.centerVH }} color={theme.palette.background.onVariant} gap={1}>
                 <Typography
                   variant="semiBoldLarge"
-                  color="#2B333B"
+                  color="text.primary"
                   lineHeight="normal"
                 >
                   <Trans i18nKey="assessment.shortTitle" />
@@ -230,7 +231,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
               }}
             >
               <Typography
-                color="#6C8093"
+                color="background.onVariant"
                 whiteSpace="nowrap"
                 sx={{
                   width: "250px",
@@ -242,7 +243,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                 <Trans i18nKey={field.i18n} />
               </Typography>
               <Typography
-                color="#2B333B"
+                color="text.primary"
                 variant="semiBoldLarge"
                 sx={{
                   display: "flex",
@@ -316,14 +317,14 @@ const QuickAssessmentSwitch = () => {
   });
 
   return (
-    <Box sx={{ ...styles.centerV }} color="#6C8093" gap={1}>
+    <Box sx={{ ...styles.centerV }} color="background.onVariant" gap={1}>
       <FormControlLabel
         control={
           <Switch checked={isQuickMode} onChange={handleToggleQuickMode} />
         }
         label={
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography variant="semiBoldLarge" color="#2B333B">
+            <Typography variant="semiBoldLarge" color="text.primary">
               <Trans i18nKey="assessment.quickAssessmentMode" />
             </Typography>
             <Tooltip
@@ -365,7 +366,7 @@ const QuickAssessmentSwitch = () => {
         }
         maxWidth="sm"
       >
-        <Typography sx={{ color: "#2B333B" }}>
+        <Typography color="text.primary">
           <Trans
             i18nKey={
               assessmentInfo?.mode?.code === ASSESSMENT_MODE.QUICK
@@ -519,7 +520,7 @@ export const AssessmentSettingMemberBox = (props: {
             width: "100%",
           }}
         >
-          <Typography color="#2B333B" variant="headlineSmall">
+          <Typography color="text.primary" variant="headlineSmall">
             <Trans i18nKey="settings.grantedRoles" />
           </Typography>
           <Button
@@ -556,7 +557,7 @@ export const AssessmentSettingMemberBox = (props: {
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
-                backgroundColor: "#fff",
+                backgroundColor: theme.palette.background.containerLowest,
               }}
             >
               <TableRow
@@ -636,12 +637,12 @@ export const AssessmentSettingMemberBox = (props: {
                             }}
                           />
                           <Typography
+                            color="#1B1B1E"
                             sx={{
                               textOverflow: "ellipsis",
                               overflow: "hidden",
                               whiteSpace: "nowrap",
                               fontSize: "0.875rem",
-                              color: "#1B1B1E",
                               fontWeight: 500,
                               fontFamily: languageDetector(row.displayName)
                                 ? farsiFontFamily
@@ -676,11 +677,11 @@ export const AssessmentSettingMemberBox = (props: {
                         }}
                       >
                         <Typography
+                          color="#1B1B1E"
                           sx={{
                             textOverflow: "ellipsis",
                             overflow: "hidden",
                             whiteSpace: "nowrap",
-                            color: "#1B1B1E",
                             fontSize: "0.875",
                             wight: 300,
                           }}
@@ -809,7 +810,7 @@ export const AssessmentSettingMemberBox = (props: {
                     position: "sticky",
                     top: 0,
                     zIndex: 3,
-                    backgroundColor: "#fff",
+                    backgroundColor: theme.palette.background.containerLowest,
                   }}
                 >
                   <TableRow
@@ -873,11 +874,11 @@ export const AssessmentSettingMemberBox = (props: {
                             }}
                           >
                             <Typography
+                              color="#1B1B1E"
                               sx={{
                                 textOverflow: "ellipsis",
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
-                                color: "#1B1B1E",
                                 fontSize: "0.875",
                                 wight: 300,
                               }}
@@ -932,13 +933,13 @@ export const AssessmentSettingMemberBox = (props: {
                                       border: 0,
                                     },
                                     "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                                      {
-                                        border: 0,
-                                      },
+                                    {
+                                      border: 0,
+                                    },
                                     "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                      {
-                                        border: 0,
-                                      },
+                                    {
+                                      border: 0,
+                                    },
                                     ".MuiSvgIcon-root": {
                                       fill: row.editable
                                         ? "#2974B4 !important"
@@ -980,20 +981,20 @@ export const AssessmentSettingMemberBox = (props: {
                                           "&.MuiMenuItem-root:hover": {
                                             ...(role.id === row.role.id
                                               ? {
-                                                  backgroundColor: "#9CCAFF",
-                                                  color: "#004F83",
-                                                }
+                                                backgroundColor: "#9CCAFF",
+                                                color: "#004F83",
+                                              }
                                               : {
-                                                  backgroundColor: "#EFEDF0",
-                                                  color: "#1B1B1E",
-                                                }),
+                                                backgroundColor: "#EFEDF0",
+                                                color: "#1B1B1E",
+                                              }),
                                           },
                                         }}
                                       >
                                         <Box
                                           sx={{
                                             maxWidth: "240px",
-                                            color: "#2B333B",
+                                            color: "text.primary",
                                             fontSize: "0.875rem",
                                             lineHeight: "21px",
                                             fontWeight: 500,
@@ -1001,15 +1002,9 @@ export const AssessmentSettingMemberBox = (props: {
                                           }}
                                         >
                                           <Typography
+                                            color={role.id === row.role.id ? "#004F83" : "#1B1B1E"}
                                             sx={{
                                               fontSize: "0.875rem",
-                                              ...(role.id === row.role.id
-                                                ? {
-                                                    color: "#004F83",
-                                                  }
-                                                : {
-                                                    color: "#1B1B1E",
-                                                  }),
                                             }}
                                           >
                                             {role.title}
@@ -1017,7 +1012,7 @@ export const AssessmentSettingMemberBox = (props: {
 
                                           <div
                                             style={{
-                                              color: "#2B333B",
+                                              color: "text.primary",
                                               fontSize: "0.875rem",
                                               lineHeight: "21px",
                                               fontWeight: 300,
@@ -1173,17 +1168,17 @@ const SelectionRole = (props: any) => {
             }}
           >
             <Typography
+              color={role.id === row.role.id ? "#004F83" : "#1B1B1E"}
               sx={{
                 fontSize: "0.875rem",
                 fontWeight: 500,
-                color: role.id === row.role.id ? "#004F83" : "#1B1B1E",
               }}
             >
               {role.title}
             </Typography>
             <Typography
+              color="text.primary"
               sx={{
-                color: "#2B333B",
                 fontSize: "0.875rem",
                 fontWeight: 300,
                 paddingTop: "1rem",

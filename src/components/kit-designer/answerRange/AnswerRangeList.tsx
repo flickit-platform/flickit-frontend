@@ -126,27 +126,27 @@ const ListOfItems = ({
 
   const handelChangeAccordion =
     ({ id }: { id: TId }) =>
-    async (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? id : null);
-      try {
-        if (isExpanded) {
-          setNewOptions({
-            title: "",
-            translations: null,
-            index:
-              items.find((item: any) => item.id === id).answerOptions.length +
-              1,
-            value: 1,
-            id: null,
-          });
-        } else {
-          handleCancel(id);
+      async (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpanded(isExpanded ? id : null);
+        try {
+          if (isExpanded) {
+            setNewOptions({
+              title: "",
+              translations: null,
+              index:
+                items.find((item: any) => item.id === id).answerOptions.length +
+                1,
+              value: 1,
+              id: null,
+            });
+          } else {
+            handleCancel(id);
+          }
+        } catch (e) {
+          const err = e as ICustomError;
+          showToast(err);
         }
-      } catch (e) {
-        const err = e as ICustomError;
-        showToast(err);
-      }
-    };
+      };
 
   const handleQuestionDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -227,7 +227,7 @@ const ListOfItems = ({
           key={index}
           mt={1.5}
           sx={{
-            backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",
+            backgroundColor: editMode === item.id ? theme.palette.background.container : theme.palette.background.containerLowest,
             borderRadius: "8px",
             border: "0.3px solid #73808c30",
             display: "flex",
@@ -249,10 +249,10 @@ const ListOfItems = ({
               sx={{
                 backgroundColor:
                   editMode === item.id
-                    ? "#F3F5F6"
+                    ? theme.palette.background.container
                     : item.questionsCount == 0
                       ? alpha(theme.palette.error.main, 0.04)
-                      : "#fff",
+                      : theme.palette.background.containerLowest,
                 borderRadius: questionData.length != 0 ? "8px" : "8px 8px 0 0",
                 border: "0.3px solid #73808c30",
                 display: "flex",
@@ -263,7 +263,7 @@ const ListOfItems = ({
                   backgroundColor:
                     item.questionsCount == 0
                       ? alpha(theme.palette.error.main, 0.08)
-                      : "#F3F5F6",
+                      : theme.palette.background.container,
                 },
                 "& .MuiAccordionSummary-content": {
                   margin: 0,
@@ -340,7 +340,7 @@ const ListOfItems = ({
                         }
                         size="small"
                         sx={{
-                          backgroundColor: "#EAF2FB",
+                          backgroundColor: theme.palette.primary.bg,
                           fontSize: 14,
                           py: 1.4,
                         }}
@@ -418,7 +418,7 @@ const ListOfItems = ({
                     alignItems: "center",
                     justifyContent: "flex-start",
                     px: "1rem",
-                    color: "#6C8093",
+                    color: theme.palette.background.onVariant,
                     ...theme.typography.semiBoldMedium,
                   }}
                 >
@@ -533,7 +533,7 @@ const ListOfItems = ({
               )}
             </AccordionDetails>
           </Accordion>
-        </Box>
+        </Box >
       ))}
     </>
   );

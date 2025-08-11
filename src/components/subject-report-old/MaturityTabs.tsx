@@ -31,7 +31,7 @@ const MaturityTabs: React.FC<MaturityTabsProps> = ({
   return (
     <Box
       sx={{
-        background: "#E2E5E9",
+        background: (theme) => theme.palette.background.variant,
         width: "100%",
         borderRadius: "16px",
         display: "flex",
@@ -66,17 +66,17 @@ const MaturityTabs: React.FC<MaturityTabsProps> = ({
                 mr: 1,
                 border: "none",
                 textTransform: "none",
-                color:
+                color: (theme) =>
                   maturityLevelOfScores?.value > maturityLevel?.value
-                    ? "#6C8093"
-                    : "#2B333B",
+                    ? theme.palette.background.onVariant
+                    : theme.palette.text.primary,
                 "&.Mui-selected": {
                   boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                   borderRadius: "8px !important",
                   color: theme.palette.primary.main,
-                  background: "#fff",
+                  background: (theme) => theme.palette.background.containerLowest,
                   "&:hover": {
-                    background: "#fff",
+                    background: (theme) => theme.palette.background.containerLowest,
                     border: "none",
                   },
                 },

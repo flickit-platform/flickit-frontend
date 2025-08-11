@@ -220,7 +220,7 @@ const SubjectAttributeCard = (props: any) => {
               boxShadow: "none",
             },
             "&.Mui-focusVisible": {
-              background: "#fff",
+              background: theme.palette.background.containerLowest,
             },
             "& .MuiAccordionSummary-content .Mui-expanded": {
               margin: "0px !important",
@@ -264,8 +264,8 @@ const SubjectAttributeCard = (props: any) => {
               </Title>
               <Typography
                 variant="bodyMedium"
+                color="background.onVariant"
                 sx={{
-                  color: "#6C8093",
                   mt: 1,
                   fontFamily: languageDetector(description)
                     ? farsiFontFamily
@@ -333,7 +333,7 @@ const SubjectAttributeCard = (props: any) => {
         <AccordionDetails
           sx={{
             padding: "0 !important",
-            backgroundColor: "#fff",
+            backgroundColor: theme.palette.background.containerLowest,
             borderRadius: "16px",
           }}
         >
@@ -362,7 +362,7 @@ const SubjectAttributeCard = (props: any) => {
                   color: "rgba(0, 0, 0, 0.6)", // Default text color
 
                   "& .Mui-selected": {
-                    color: "#2466A8 !important",
+                    color: "primary.main !important",
                   },
 
                   "& .MuiTabs-indicator": {
@@ -381,7 +381,7 @@ const SubjectAttributeCard = (props: any) => {
                 <Box>
                   <Box
                     sx={{
-                      background: "#E2E5E9",
+                      background: theme.palette.background.variant,
                       width: "100%",
                       borderRadius: "16px",
                       display: "flex",
@@ -421,15 +421,15 @@ const SubjectAttributeCard = (props: any) => {
                               mr: 1,
                               border: "none",
                               textTransform: "none",
-                              color: "#2B333B",
+                              color: theme.palette.text.primary,
                               "&.Mui-selected": {
                                 boxShadow:
                                   "0 1px 4px rgba(0,0,0,25%) !important",
                                 borderRadius: "8px !important",
                                 color: theme.palette.primary.main,
-                                background: "#fff",
+                                background: theme.palette.background.containerLowest,
                                 "&:hover": {
-                                  background: "#fff",
+                                  background: theme.palette.background.containerLowest,
                                   border: "none",
                                 },
                               },
@@ -451,12 +451,12 @@ const SubjectAttributeCard = (props: any) => {
                               >
                                 {maturityLevelOfScores?.value ==
                                   maturityLevel?.value && (
-                                  <WorkspacePremiumIcon fontSize={"small"} />
-                                )}
+                                    <WorkspacePremiumIcon fontSize={"small"} />
+                                  )}
                                 {maturityLevelOfScores?.value <
                                   maturityLevel?.value && (
-                                  <DoneIcon fontSize={"small"} />
-                                )}
+                                    <DoneIcon fontSize={"small"} />
+                                  )}
                                 {maturityLevelOfScores.title} (
                                 {Math.ceil(score)}%)
                               </Box>
@@ -548,6 +548,7 @@ export const AttributeStatusBarContainer = (props: any) => {
       >
         <Typography
           variant="headlineLarge"
+          color={statusColor}
           sx={{
             borderLeft:
               theme.direction == "ltr" ? `2px solid ${statusColor}` : "unset",
@@ -557,7 +558,6 @@ export const AttributeStatusBarContainer = (props: any) => {
             pr: theme.direction == "rtl" ? 1 : "unset",
             ml: theme.direction == "ltr" ? { xs: -2, sm: 0 } : "unset",
             mr: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
-            color: statusColor,
           }}
         >
           <Trans i18nKey={`${status}`} />
@@ -676,8 +676,8 @@ export const MaturityLevelDetailsBar = (props: any) => {
           right: theme.direction === "rtl" ? "12px" : "unset",
           opacity: 0.8,
           fontSize: { xs: "12px", sm: "16px" },
-          color: theme.palette.getContrastText(color),
         }}
+        color={theme.palette.getContrastText(color)}
         textTransform="uppercase"
         variant="h6"
       >
@@ -689,8 +689,8 @@ export const MaturityLevelDetailsBar = (props: any) => {
           zIndex: 1,
           right: theme.direction === "ltr" ? "12px" : "unset",
           left: theme.direction === "rtl" ? "12px" : "unset",
-          color: theme.palette.getContrastText(color),
         }}
+        color={theme.palette.getContrastText(color)}
         variant="h6"
       >
         {score != null && Math.ceil(score)}

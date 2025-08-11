@@ -89,10 +89,7 @@ const AssessmentKitsMarketListItem = ({ bg1, bg2, data = {} }: any) => {
           <Typography
             sx={{
               wordBreak: "break-word",
-              fontFamily: languageDetector(data.summary)
-                ? farsiFontFamily
-                : primaryFontFamily,
-              direction: languageDetector(data.summary) ? "rtl" : "ltr",
+              ...styles.rtlStyle(languageDetector(data.summary))
             }}
           >
             {`${data.summary?.substring(0, 55)} ${data?.summary.length > 55 ? "..." : ""}`}

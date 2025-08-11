@@ -85,7 +85,7 @@ const NavbarWithoutLogin = () => {
                 justifyContent: "center",
               }}
             >
-              <CircularProgress size={20} sx={{ color: "#fff" }} />
+              <CircularProgress size={20} sx={{ color: theme.palette.background.containerLowest, }} />
             </Box>
           )}
         </Typography>
@@ -103,7 +103,7 @@ const NavbarWithoutLogin = () => {
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
-                color: "#fff",
+                color: theme.palette.background.containerLowest,
               }}
               size="small"
             >
@@ -121,7 +121,7 @@ const NavbarWithoutLogin = () => {
             sx={{
               ...styles.activeNavbarLink,
               textTransform: "uppercase",
-              color: "#fff",
+              color: theme.palette.background.containerLowest,
             }}
             size="small"
           >
@@ -147,10 +147,10 @@ const NavbarWithoutLogin = () => {
               height: "32px",
               color: theme.palette.primary.main,
               textTransform: "capitalize",
-              background: "#F3F5F6",
+              background: theme.palette.background.container,
               boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
               "&:hover": {
-                background: "#F3F5F6",
+                background: theme.palette.background.container,
               },
             }}
           >

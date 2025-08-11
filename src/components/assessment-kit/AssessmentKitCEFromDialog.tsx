@@ -133,18 +133,18 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       const { data: res } =
         type === "update"
           ? await service.assessmentKit.info.updateByDSL(
-              { data: formattedData, assessmentKitId: id },
-              { signal: abortController.signal },
-            )
+            { data: formattedData, assessmentKitId: id },
+            { signal: abortController.signal },
+          )
           : type === "create"
             ? await service.assessmentKit.dsl.createKitFromDsl(
-                { data: formattedData },
-                { signal: abortController.signal },
-              )
+              { data: formattedData },
+              { signal: abortController.signal },
+            )
             : await service.assessmentKit.info.create(
-                { data: formattedData },
-                { signal: abortController.signal },
-              );
+              { data: formattedData },
+              { signal: abortController.signal },
+            );
       setLoading(false);
       close();
       assessmentKits.query({
@@ -239,7 +239,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               <Box
                 sx={{
                   ...styles.centerV,
-                  background: "#E8EBEE",
+                  background: theme.palette.background.containerHigher,
                   width: "fit-content",
                   px: 1,
                 }}
@@ -268,7 +268,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
               <Box
                 sx={{
                   ...styles.centerV,
-                  background: "#E8EBEE",
+                  background:  theme.palette.background.containerHigher,
                   width: "fit-content",
                   px: 1,
                 }}
@@ -585,8 +585,8 @@ const IsPrivateSwitch = (props: any) => {
             onClick={() => handleToggle(true)}
             sx={{
               padding: 0.5,
-              backgroundColor: isPrivate ? "#7954B3;" : "transparent",
-              color: isPrivate ? "#fff" : "#000",
+              backgroundColor: isPrivate ? "#7954B3" : "transparent",
+              color: isPrivate ? "background.containerLowest," : "text.primary",
               cursor: "pointer",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
@@ -616,7 +616,7 @@ const IsPrivateSwitch = (props: any) => {
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
               borderRadius: "6px",
-              color: !isPrivate ? "#fff" : "#000",
+              color: !isPrivate ? "background.containerLowest" : "text.primary",
               width: "50%",
               display: "flex",
               justifyContent: "center",

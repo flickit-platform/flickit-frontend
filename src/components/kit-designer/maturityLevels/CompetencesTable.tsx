@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import { ICustomError } from "@/utils/CustomError";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import showToast from "@/utils/toastError";
 
 interface CompetencesTableProps {
@@ -116,9 +116,11 @@ const CompetencesTable = ({
             <TableCell></TableCell>
             {data.map((row) => (
               <TableCell sx={{ textAlign: "center" }} key={row.id}>
-                <Typography  sx={{fontFamily: languageDetector(row.title as string)
-                      ? farsiFontFamily
-                      : primaryFontFamily }} variant="semiBoldMedium">{row.title}</Typography>
+                <Typography sx={{
+                  fontFamily: languageDetector(row.title as string)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+                }} variant="semiBoldMedium">{row.title}</Typography>
               </TableCell>
             ))}
           </TableRow>
@@ -128,13 +130,15 @@ const CompetencesTable = ({
             <TableRow
               key={row.index}
               sx={{
-                backgroundColor: row.index % 2 === 0 ? "#ffffff" : "#2466a812",
+                backgroundColor: (theme) => row.index % 2 === 0 ? theme.palette.background.containerLowest : "#2466a812",
               }}
             >
               <TableCell>
-                <Typography variant="semiBoldMedium" sx={{fontFamily: languageDetector(row.title as string)
-                      ? farsiFontFamily
-                      : primaryFontFamily }} >{row.title}</Typography>
+                <Typography variant="semiBoldMedium" sx={{
+                  fontFamily: languageDetector(row.title as string)
+                    ? farsiFontFamily
+                    : primaryFontFamily
+                }} >{row.title}</Typography>
               </TableCell>
               {data.map((column, colIndex) => {
                 const competence = row.competences.find(

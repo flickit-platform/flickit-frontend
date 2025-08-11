@@ -80,7 +80,7 @@ const AssessmentKitSectionGeneralInfo = (
     runOnMount: true,
   });
 
-  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation , showTranslations, updatedValues, setUpdatedValues} = useGeneralInfoField({ assessmentKitId, fetchAssessmentKitInfoQuery})
+  const { handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation, showTranslations, updatedValues, setUpdatedValues } = useGeneralInfoField({ assessmentKitId, fetchAssessmentKitInfoQuery })
   const { updateTranslation } = useTranslationUpdater(langCode);
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
@@ -187,7 +187,7 @@ const AssessmentKitSectionGeneralInfo = (
         setExpertGroup(expertGroup);
 
         const handleFieldEdit = (field: "about") => {
-          if(editable){
+          if (editable) {
             setEditableFields((prev) => new Set(prev).add(field));
           }
         };
@@ -317,7 +317,7 @@ const AssessmentKitSectionGeneralInfo = (
                             onClick={formMethods.handleSubmit(onSubmit)}
                           >
                             <CheckCircleOutlineRoundedIcon
-                              sx={{ color: "#fff" }}
+                              sx={{ color: theme.palette.background.containerLowest }}
                             />
                           </IconButton>
                           <IconButton
@@ -333,7 +333,7 @@ const AssessmentKitSectionGeneralInfo = (
                             }}
                             onClick={handleCancel}
                           >
-                            <CancelRoundedIcon sx={{ color: "#fff" }} />
+                            <CancelRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
                           </IconButton>
                         </Box>
                       </Box>
@@ -396,16 +396,16 @@ const AssessmentKitSectionGeneralInfo = (
                           }}
                           onClick={() => setShow(!show)}
                         >
-                          <EditRoundedIcon sx={{ color: "#fff" }} />
+                          <EditRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
                         </IconButton>
                       )}
                     </Box>
                   )}
                 </Box>
 
-                {TextFields.map((field)=>{
-                  const  { name, label, multiline, useRichEditor } = field
-                  const data = {about,metadata, translations}
+                {TextFields.map((field) => {
+                  const { name, label, multiline, useRichEditor } = field
+                  const data = { about, metadata, translations }
 
                   return (
                     <Box key={name}>
@@ -425,20 +425,20 @@ const AssessmentKitSectionGeneralInfo = (
                           <Trans i18nKey={label} />:
                         </Typography>
                         <RenderGeneralField
-                            field={name}
-                            data={data}
-                            editableFields={editableFields}
-                            langCode={langCode}
-                            updatedValues={updatedValues}
-                            setUpdatedValues={setUpdatedValues}
-                            showTranslations={showTranslations}
-                            toggleTranslation={toggleTranslation}
-                            handleFieldEdit={handleFieldEdit}
-                            multiline={multiline}
-                            useRichEditor={useRichEditor}
-                            updateTranslation={updateTranslation}
-                            handleSaveEdit={handleSaveEdit}
-                            handleCancelTextBox={handleCancelTextBox}
+                          field={name}
+                          data={data}
+                          editableFields={editableFields}
+                          langCode={langCode}
+                          updatedValues={updatedValues}
+                          setUpdatedValues={setUpdatedValues}
+                          showTranslations={showTranslations}
+                          toggleTranslation={toggleTranslation}
+                          handleFieldEdit={handleFieldEdit}
+                          multiline={multiline}
+                          useRichEditor={useRichEditor}
+                          updateTranslation={updateTranslation}
+                          handleSaveEdit={handleSaveEdit}
+                          handleCancelTextBox={handleCancelTextBox}
                         />
                       </Box>
                     </Box>
@@ -687,7 +687,7 @@ const OnHoverInput = (props: any) => {
                     }}
                     onClick={updateAssessmentKit}
                   >
-                    <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                    <CheckCircleOutlineRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
@@ -702,7 +702,7 @@ const OnHoverInput = (props: any) => {
                     }}
                     onClick={handleCancel}
                   >
-                    <CancelRoundedIcon sx={{ color: "#fff" }} />
+                    <CancelRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
                   </IconButton>
                 </InputAdornment>
               }
@@ -742,7 +742,7 @@ const OnHoverInput = (props: any) => {
               }}
               variant="body2"
               fontWeight="700"
-             >
+            >
               {data?.replace(/<\/?p>/g, "")}
             </Typography>
             {isHovering && (
@@ -759,7 +759,7 @@ const OnHoverInput = (props: any) => {
                 }}
                 onClick={() => setShow(!show)}
               >
-                <EditRoundedIcon sx={{ color: "#fff" }} />
+                <EditRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
             )}
           </Box>
@@ -828,7 +828,7 @@ const OnHoverStatus = (props: any) => {
             sx={{
               padding: 0.5,
               backgroundColor: selected ? "#2e7d32" : "transparent",
-              color: selected ? "#fff" : "#000",
+              color: selected ? "background.containerLowest" : "text.primary",
               cursor: editable ? "pointer" : "default",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
@@ -856,7 +856,7 @@ const OnHoverStatus = (props: any) => {
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
               borderRadius: "6px",
-              color: !selected ? "#fff" : "#000",
+              color: !selected ? "background.containerLowest" : "text.primary",
               width: "100px",
               textAlign: "center",
             }}
@@ -939,7 +939,7 @@ const OnHoverVisibilityStatus = (props: any) => {
               sx={{
                 padding: 0.5,
                 backgroundColor: selected ? "#7954B3;" : "transparent",
-                color: selected ? "#fff" : "#000",
+                color: selected ? "background.containerLowest" : "text.primary",
                 cursor: editable ? "pointer" : "default",
                 transition: "background-color 0.3s ease",
                 animation: `${fadeIn} 0.5s ease`,
@@ -962,12 +962,12 @@ const OnHoverVisibilityStatus = (props: any) => {
               onClick={() => handleToggle(false)}
               sx={{
                 padding: 0.5,
-                backgroundColor: !selected ? "gray" : "transparent",
+                backgroundColor: !selected ? "background.onVariant" : "transparent",
                 cursor: editable ? "pointer" : "default",
                 transition: "background-color 0.3s ease",
                 animation: `${fadeIn} 0.5s ease`,
                 borderRadius: "6px",
-                color: !selected ? "#fff" : "#000",
+                color: !selected ? "background.containerLowest" : "text.primary",
                 width: "100px",
                 textAlign: "center",
               }}
@@ -1092,7 +1092,7 @@ const OnHoverRichEditor = (props: any) => {
                   }}
                   onClick={formMethods.handleSubmit(onSubmit)}
                 >
-                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                  <CheckCircleOutlineRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
                 </IconButton>
                 <IconButton
                   sx={{
@@ -1107,7 +1107,7 @@ const OnHoverRichEditor = (props: any) => {
                   }}
                   onClick={handleCancel}
                 >
-                  <CancelRoundedIcon sx={{ color: "#fff" }} />
+                  <CancelRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
                 </IconButton>
               </Box>
               {hasError && (
@@ -1129,12 +1129,12 @@ const OnHoverRichEditor = (props: any) => {
               wordBreak: "break-word",
               pr: languageDetector(data) ? 1 : 5,
               pl: languageDetector(data) ? 5 : 1,
-              border: "1px solid #fff",
+              border: `1px solid ${theme.palette.primary.contrastText}`,
               "&:hover": {
-                border: editable ? "1px solid #1976d299" : "1px solid #fff",
+                border: editable ? "1px solid #1976d299" : `1px solid ${theme.palette.primary.contrastText}`,
                 borderColor: editable
                   ? theme.palette.primary.main
-                  : "1px solid #fff",
+                  : `1px solid ${theme.palette.primary.contrastText}`,
               },
               position: "relative",
             }}
@@ -1171,7 +1171,7 @@ const OnHoverRichEditor = (props: any) => {
                 }}
                 onClick={() => setShow(!show)}
               >
-                <EditRoundedIcon sx={{ color: "#fff" }} />
+                <EditRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
             )}
           </Box>

@@ -87,8 +87,8 @@ const MultiLangTextField = ({
           value: val,
           onChange: (v: string) =>
             handleChange?.({ target: { name, value: v } } as any),
-          onBlur: () => {},
-          ref: () => {},
+          onBlur: () => { },
+          ref: () => { },
         }}
         defaultValue={val}
         placeholder={typeof labelText === "string" ? labelText : undefined}
@@ -120,7 +120,7 @@ const MultiLangTextField = ({
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#fff",
+            backgroundColor: (theme) => theme.palette.background.containerLowest,
             fontSize: 14,
             ...(multiline ? {} : { height: 40 }),
           },
@@ -141,7 +141,7 @@ const MultiLangTextField = ({
         <Box sx={{ flexGrow: 1, width: "100%" }}>
           {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
-        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {!!langCode && (
             <IconButton
               onClick={(e) => handleShowTranslation(e, !showTranslation)}
@@ -173,7 +173,7 @@ const MultiLangTextField = ({
               </IconButton>
               <IconButton
                 size="small"
-                onClick={()=>handleCancelTextBox(name)}
+                onClick={() => handleCancelTextBox(name)}
                 color="secondary"
                 sx={{ ...styles.fixedIconButtonStyle }}
                 data-testid="close-icon-id"
@@ -192,7 +192,7 @@ const MultiLangTextField = ({
         <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
           <Box
             sx={{
-              backgroundColor: "#F3F5F6",
+              backgroundColor: (theme) => theme.palette.background.container,
               borderRadius: 2,
               px: 1,
               py: 0.5,

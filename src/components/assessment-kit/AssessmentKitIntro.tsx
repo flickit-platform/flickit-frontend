@@ -115,8 +115,8 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                 px: 1,
                 textAlign: "center",
                 cursor: "pointer",
-                backgroundColor: isActive ? "#E5EDF5" : "#F9FAFB",
-                color: isActive ? theme.palette.primary.main : "#2B333B",
+                backgroundColor: isActive ? "#E5EDF5" : theme.palette.background.default,
+                color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
                 transition: "all 0.3s ease",
                 userSelect: "none",
                 "&:not(:last-child)": {
@@ -132,7 +132,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
 
       {/* Content */}
       <Box sx={{ flex: 1, p: 4 }}>
-        <Typography variant="titleLarge" color="#2B333B">
+        <Typography variant="titleLarge" color="text.primary">
           <Trans
             i18nKey={currentSection.title}
             components={{
@@ -155,17 +155,17 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
             transition: "max-height 0.4s ease",
             "&::after": !showMore
               ? {
-                  content: '""',
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: "40px",
-                  background: showBtn
-                    ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
-                    : "none",
-                  pointerEvents: "none",
-                }
+                content: '""',
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: "40px",
+                background: showBtn
+                  ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.containerLowest} 100%)`
+                  : "none",
+                pointerEvents: "none",
+              }
               : undefined,
           }}
         >
@@ -200,7 +200,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
           </Button>
         )}
       </Box>
-    </Box>
+    </Box >
   );
 };
 

@@ -34,6 +34,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import showToast from "@/utils/toastError";
 import { styles } from "@styles";
+import { v3Tokens } from "@/config/tokens";
 
 interface IDialogProps extends IGraphicalReport {
   open: boolean;
@@ -71,14 +72,14 @@ export const ShareDialog = ({
         titleMenu: t("assessmentReport.accessRestricted", { lng }),
         description: t("assessmentReport.accessRestrictedDescription", { lng }),
         icon: <LockOutlinedIcon />,
-        bgColor: "#E2E5E9",
+        bgColor: v3Tokens.surface.variant
       },
       [VISIBILITY.PUBLIC]: {
         title: t("assessmentReport.accessAnyone", { lng }),
         titleMenu: t("assessmentReport.accessAnyoneWithLink", { lng }),
         description: t("assessmentReport.accessAnyoneDescription", { lng }),
         icon: <Language />,
-        bgColor: "#D5E5F6",
+        bgColor: v3Tokens.primary.bgVar
       },
     }),
     [lng],
@@ -172,7 +173,7 @@ export const ShareDialog = ({
       open={open}
       closeDialog={onClose}
       title={
-        <Box sx={{ ...styles.centerV, gap: 1 }}>
+        <Box sx={{ ...styles.centerV }} gap={1}>
           <Share />
           {t("assessmentReport.shareReport", { lng })}
         </Box>
@@ -194,9 +195,7 @@ export const ShareDialog = ({
                   <InputFieldUC
                     name="email"
                     size="small"
-                    placeholder={t("assessmentReport.shareReportViaEmail", {
-                      lng,
-                    })}
+                    placeholder={t("assessmentReport.shareReportViaEmail", { lng })}
                     fullWidth
                     required
                   />
@@ -244,25 +243,19 @@ export const ShareDialog = ({
             }}
             render={([graphicalReportUsers]) => {
               return (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Box display="flex" flexDirection="column" gap={2}>
                   {[
                     ...graphicalReportUsers.users,
                     ...graphicalReportUsers.invitees,
                   ].map((member: any) => {
                     const { displayName, id, pictureLink, email } = member;
                     return (
-                      <Box
-                        key={id}
-                        sx={{
-                          ...styles.centerV,
-                          gap: 1,
-                        }}
-                      >
+                      <Box key={id} sx={{ ...styles.centerV }} gap={1}>
                         <Avatar
                           {...stringAvatar(displayName?.toUpperCase())}
                           src={pictureLink}
                           sx={{ width: 24, height: 24, fontSize: 12 }}
-                        ></Avatar>
+                        />
                         {email}
                         {graphicalReportUsers.invitees.includes(member) && (
                           <Chip
@@ -285,7 +278,7 @@ export const ShareDialog = ({
         </>
       )}
 
-      <Box sx={{ mt: 3 }}>
+      <Box mt={3}>
         <Typography
           variant="bodyMedium"
           color="rgba(61, 77, 92, 0.5)"
@@ -303,9 +296,9 @@ export const ShareDialog = ({
         <div>
           <Box
             mt={1}
+            gap={1}
             sx={{
               ...styles.centerV,
-              gap: 1,
               pointerEvents: permissions.canManageVisibility ? "auto" : "none",
             }}
           >
@@ -324,13 +317,13 @@ export const ShareDialog = ({
             <Box>
               <Typography
                 onClick={openMenu}
+                color={permissions.canManageVisibility ? "unset" : "#B0B0B0"}
+                gap={1}
                 sx={{
                   ...styles.centerV,
                   cursor: permissions.canManageVisibility
                     ? "pointer"
                     : "default",
-                  gap: 1,
-                  color: permissions.canManageVisibility ? "unset" : "#B0B0B0",
                 }}
                 variant="semiBoldMedium"
                 fontFamily="inherit"
@@ -339,9 +332,9 @@ export const ShareDialog = ({
                 {permissions.canManageVisibility && (
                   <>
                     {menuOpened ? (
-                      <ArrowDropUp sx={{ color: "#6C8093" }} />
+                      <ArrowDropUp sx={{ color: "background.onVariant" }} />
                     ) : (
-                      <ArrowDropDown sx={{ color: "#6C8093" }} />
+                      <ArrowDropDown sx={{ color: "background.onVariant" }} />
                     )}
                   </>
                 )}
@@ -349,7 +342,7 @@ export const ShareDialog = ({
 
               <Typography
                 variant="bodySmall"
-                color="#6C8093"
+                color="background.onVariant"
                 fontFamily="inherit"
               >
                 {current?.description}
@@ -370,10 +363,8 @@ export const ShareDialog = ({
                     selected={isSelected}
                     onClick={() => handleSelect(key)}
                     sx={{
-                      display: "flex",
+                      ...styles.centerV,
                       justifyContent: "space-between",
-                      alignItems: "center",
-                      flexDirection: "row",
                       gap: 2,
                     }}
                   >

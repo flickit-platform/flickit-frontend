@@ -74,7 +74,7 @@ const Gauge = ({
     const fontSizeRem =
       maxFontSizeRem -
       ((length - minLength) / (maxLength - minLength)) *
-        (maxFontSizeRem - minFontSizeRem);
+      (maxFontSizeRem - minFontSizeRem);
     return `${fontSizeRem}rem`;
   };
 
@@ -155,7 +155,7 @@ const Gauge = ({
           {confidence_text && (
             <Typography
               variant={maturity_status_guide_variant}
-              color="#6C8093"
+              color="background.onVariant"
               mt={!isMobileScreen ? "1.5rem" : "unset"}
               display="flex"
               justifyContent="center"

@@ -98,13 +98,13 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
     if (selected.length == 0) {
       return (
-        <Typography variant="semiBoldMedium" sx={{ color: "#333333" }}>
+        <Typography variant="semiBoldMedium" color="#333333">
           <Trans i18nKey="common.none" />
         </Typography>
       );
     } else if (isAllSelected) {
       return (
-        <Typography variant="semiBoldMedium" sx={{ color: "#333333" }}>
+        <Typography variant="semiBoldMedium" color="#333333">
           <Trans i18nKey="common.all" />
         </Typography>
       );
@@ -139,7 +139,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         gap: 2,
       }}
     >
-      <Typography sx={{ ...theme.typography.semiBoldLarge }}>
+      <Typography variant="semiBoldLarge">
         {dropdownLabel ?? (
           <Trans i18nKey="dashboard.filterQuestionsWithIssues" />
         )}
@@ -155,7 +155,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
           renderValue={(selected) => handelSelected(selected)}
           sx={{
             ...theme.typography.semiBoldMedium,
-            background: "#fff",
+            background: theme.palette.background.containerLowest,
             px: "0px",
             height: "40px",
           }}
@@ -236,9 +236,9 @@ const ProgressButton = (props: any) => {
             <Trans i18nKey="assessmentReport.viewReport" />
           </Button>
           <Typography
+            variant="labelMedium"
+            color="tertiary.light"
             sx={{
-              ...theme.typography.labelMedium,
-              color: "#FF9000",
               textAlign: "center",
             }}
           >
@@ -255,21 +255,17 @@ const ProgressButton = (props: any) => {
           state={{ from: location.pathname }}
           fullWidth
           sx={{
-            background: "#F3F5F6",
+            background: theme.palette.background.container,
             width: "176px",
             position: "relative",
             overflow: "hidden",
             boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
             "&:hover": {
-              background: "#F3F5F6",
+              background: theme.palette.background.container,
             },
           }}
         >
-          <Typography
-            sx={{
-              color: theme.palette.primary.main,
-            }}
-          >
+          <Typography color="primary.main">
             <Trans i18nKey="assessmentReport.viewReport" />
           </Typography>
         </Button>
@@ -323,7 +319,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             },
           }}
         >
-          <Typography variant={"titleLarge"} color="white">
+          <Typography variant="titleLarge" color="white">
             <Trans i18nKey="common.questionnaires" />
             {"  "}(
             <QANumberIndicator
@@ -361,9 +357,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                 originalItem.length === 0
                   ? item
                   : Object.keys(item.issues).some(
-                      (key) =>
-                        originalItem.includes(key) && item.issues[key] > 0,
-                    ),
+                    (key) =>
+                      originalItem.includes(key) && item.issues[key] > 0,
+                  ),
               );
               return (
                 <Grid container spacing={2} sx={{ minHeight: "250px" }}>
@@ -381,12 +377,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                     })
                   ) : (
                     <Box sx={{ ...styles.centerVH, width: "100%" }}>
-                      <Typography
-                        variant="headlineLarge"
-                        sx={{
-                          color: "#C2CCD680",
-                        }}
-                      >
+                      <Typography variant="headlineLarge" color="#C2CCD680">
                         {originalItem.length == 1 && (
                           <Trans i18nKey="dashboard.noIssueFound" />
                         )}

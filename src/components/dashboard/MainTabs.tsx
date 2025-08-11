@@ -218,15 +218,15 @@ const MainTabs = (props: any) => {
                             flexGrow: flexColumn ? 0 : 1,
                             border: "none",
                             textTransform: "none",
-                            color: "#2B333B",
+                            color: theme.palette.text.primary,
                             maxWidth: "unset",
                             "&.Mui-selected": {
                               boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                               borderRadius: 1,
                               color: theme.palette.primary.main,
-                              background: "#fff",
+                              background: theme.palette.background.containerLowest,
                               "&:hover": {
-                                background: "#fff",
+                                background: theme.palette.background.containerLowest,
                                 border: "none",
                               },
                             },

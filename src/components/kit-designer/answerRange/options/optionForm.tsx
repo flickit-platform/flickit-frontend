@@ -41,7 +41,7 @@ const OptionForm = ({
     <Box
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: (theme) => theme.palette.background.container,
         borderRadius: "0px 0px 8px 8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -88,7 +88,7 @@ const OptionForm = ({
             "& .MuiInputBase-root": {
               fontSize: 14,
             },
-            background: "#fff",
+            background: (theme) => theme.palette.background.containerLowest,
             width: "100%",
           }}
         />

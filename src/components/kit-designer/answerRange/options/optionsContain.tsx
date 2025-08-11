@@ -84,7 +84,7 @@ const OptionContain = (props: any) => {
         <Box
           sx={{
             ...styles.centerVH,
-            background: "#F3F5F6",
+            background: (theme) => theme.palette.background.container,
             width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}
@@ -159,7 +159,7 @@ const OptionContain = (props: any) => {
                 fontSize: 14,
               },
               width: { xs: "20%", md: "10%" },
-              background: "#fff",
+              background: (theme) => theme.palette.background.containerLowest,
               borderRadius: "8px",
             }}
             name="title"

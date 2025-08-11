@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useTheme } from "@mui/material";
+import { v3Tokens } from "@/config/tokens";
 
 interface IQuestionnaireProgress extends BoxProps {
   progress: number;
@@ -22,7 +23,7 @@ const progressToColorMap: Record<number, LinearProgressProps["color"]> = {
 };
 
 const progressToColorMapColor: Record<number, string> = {
-  0: "#8A0F24",
+  0: v3Tokens.error.main,
   100: "#2e7d32",
 };
 
@@ -47,8 +48,8 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
       <Box pl={is_farsi ? 0 : "8px"} pr={is_farsi ? "8px" : 0} mr="-2px">
         <Typography
           color={progressToColorMapColor[progress] ?? "#1976d2"}
+          variant="semiBoldSmall"
           sx={{
-            ...theme.typography.semiBoldSmall,
             position: "relative",
             [is_farsi ? "left" : "right"]: "-16px",
           }}

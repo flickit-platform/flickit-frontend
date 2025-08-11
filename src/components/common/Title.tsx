@@ -141,7 +141,7 @@ const Title = (props: ITitle) => {
           variant={
             size === "small" ? "h6" : size === "large" ? "headlineLarge" : "h5"
           }
-          color={size === "large" ? "#2466A8" : "inherit"}
+          color={size === "large" ? "primary" : "inherit"}
           {...titleProps}
           sx={{
             ...styles.centerV,

@@ -225,10 +225,8 @@ const AssessmentCard = ({
               <Typography
                 variant="titleSmall"
                 color="#243342"
-                justifyContent="center"
-                alignItems="center"
-                display="flex"
                 gap="0.125rem"
+                sx={{ ...styles.centerVH }}
               >
                 <Trans i18nKey="common.withConfidence" />:
                 <ConfidenceLevel
@@ -307,7 +305,7 @@ const Header = ({
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          border: `0.5px solid #2466A8`,
+          border: (theme) => `0.5px solid ${theme.palette.primary.main}`,
           textTransform: "none",
           color: "#101c32",
           background: "transparent",
@@ -320,14 +318,13 @@ const Header = ({
     </Tooltip>
     <Typography
       variant="h5"
-      color="CaptionText"
-      textTransform={"uppercase"}
+      color={color?.code ?? "#101c32"}
+      textTransform="uppercase"
       sx={{
         padding: "8px 28px",
         fontWeight: "bold",
         pb: 0,
         textAlign: "center",
-        color: color?.code ?? "#101c32",
         maxWidth: "320px",
         margin: "0 auto",
         width: "100%",
@@ -361,22 +358,22 @@ const Header = ({
       <Box
         sx={{
           ...styles.centerVH,
-          backgroundColor: "#F9FAFB",
+          backgroundColor: "background.default",
           borderRadius: "4px",
-          border: "0.5px solid #C7CCD1",
+          border: (theme) => `0.5px solid ${theme.palette.outline?.variant}`,
           p: 0.5,
           pb: 0,
         }}
       >
-        <Typography variant="labelSmall" color="#6C8093">
+        <Typography variant="labelSmall" color="background.onVariant">
           {language.code}
         </Typography>
       </Box>
       <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
       <Typography
         variant="labelSmall"
+        color="background.onVariant"
         sx={{ textAlign: "center" }}
-        color="#6C8093"
       >
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}
@@ -447,7 +444,7 @@ const CardButton = ({
         zIndex: 1,
         ...(key === "dashboard" && {
           background: "#01221e",
-          color: "#fff",
+          color: "background.containerLowest",
           "&:hover": {
             background: "#01221ecc",
           },
@@ -517,35 +514,35 @@ const Actions = ({
 
   const actions = hasStatus(item.status)
     ? [
-        {
-          icon: <CompareRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="addToCompare" />,
-          onClick: addToCompare,
-          id: "assessmentCard-addToCompare-btn",
-        },
-        {
-          icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="common.delete" />,
-          onClick: deleteItem,
-          menuItemProps: { "data-cy": "delete-action-btn" },
-          id: "assessmentCard-delete-btn",
-        },
-      ]
+      {
+        icon: <CompareRoundedIcon fontSize="small" />,
+        text: <Trans i18nKey="addToCompare" />,
+        onClick: addToCompare,
+        id: "assessmentCard-addToCompare-btn",
+      },
+      {
+        icon: <DeleteRoundedIcon fontSize="small" />,
+        text: <Trans i18nKey="common.delete" />,
+        onClick: deleteItem,
+        menuItemProps: { "data-cy": "delete-action-btn" },
+        id: "assessmentCard-delete-btn",
+      },
+    ]
     : [
-        {
-          icon: <SettingsIcon fontSize="small" />,
-          text: <Trans i18nKey="common.settings" />,
-          onClick: assessmentSetting,
-          id: "assessmentCard-setting-btn"
-        },
-        {
-          icon: <DeleteRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="common.delete" />,
-          onClick: deleteItem,
-          menuItemProps: { "data-cy": "delete-action-btn" },
-          id: "assessmentCard-delete-btn",
-        },
-      ];
+      {
+        icon: <SettingsIcon fontSize="small" />,
+        text: <Trans i18nKey="common.settings" />,
+        onClick: assessmentSetting,
+        id: "assessmentCard-setting-btn"
+      },
+      {
+        icon: <DeleteRoundedIcon fontSize="small" />,
+        text: <Trans i18nKey="common.delete" />,
+        onClick: deleteItem,
+        menuItemProps: { "data-cy": "delete-action-btn" },
+        id: "assessmentCard-delete-btn",
+      },
+    ];
 
   return (
     <MoreActions

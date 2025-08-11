@@ -3,6 +3,7 @@ import { TStatus } from "@/types/index";
 import hasStatus from "@utils/hasStatus";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
 import i18next from "i18next";
+import { v3Tokens } from "./tokens";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
@@ -43,7 +44,7 @@ const commonStyles = {
   }),
   activeNavbarLink: style({
     "&.active": {
-      color: "#fff",
+      color: v3Tokens.surface.containerLowest,
     },
     "&.active::after": {
       content: '""',
@@ -53,7 +54,7 @@ const commonStyles = {
       transform: "translateX(-50%)",
       width: "90%",
       height: "2px",
-      backgroundColor: "#fff",
+      backgroundColor: v3Tokens.surface.containerLowest,
       borderRadius: 1,
     },
   }),
@@ -157,18 +158,18 @@ const buttons = {
 
 const box = {
   shadowStyle: style({
-    background: "#fff",
+    background: v3Tokens.surface.containerLowest,
     borderRadius: "12px",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: v3Tokens.surface.containerLowest,
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
   }),
   boxStyle: style({
-    background: "#fff",
+    background: v3Tokens.surface.containerLowest,
     borderRadius: "12px",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: v3Tokens.surface.containerLowest,
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
     p: { xs: 3, sm: 4 },

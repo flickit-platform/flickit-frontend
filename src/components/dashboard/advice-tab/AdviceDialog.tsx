@@ -119,7 +119,7 @@ const AdviceDialog = ({
           onClick={handleClose}
           edge="end"
           size="small"
-          sx={{ ml: 2, color: "#fff" }}
+          sx={{ ml: 2, color: theme.palette.primary.contrastText }}
         >
           <Close />
         </IconButton>
@@ -149,7 +149,7 @@ const AdviceDialog = ({
       <DialogContent
         sx={{
           padding: "unset",
-          background: "#fff",
+          background: theme.palette.background.containerLowest,
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
@@ -176,7 +176,7 @@ const AdviceDialog = ({
             px={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              background: "#fff",
+              background: theme.palette.background.containerLowest,
               height: "300px",
               overflow: "auto",
               overflowX: "hidden",
@@ -208,7 +208,7 @@ const AdviceDialog = ({
             mt={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              background: "#fff",
+              background: theme.palette.background.containerLowest,
               maxHeight: "70vh",
               overflow: "hidden",
               overflowX: "auto",

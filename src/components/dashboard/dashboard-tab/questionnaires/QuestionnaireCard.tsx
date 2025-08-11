@@ -87,8 +87,8 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     textTransform: "lowercase",
                     "&::first-letter": !languageDetector(title)
                       ? {
-                          textTransform: "uppercase",
-                        }
+                        textTransform: "uppercase",
+                      }
                       : {},
                   }}
                   ref={titleRef}
@@ -129,7 +129,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                 >
                   <QANumberIndicator
                     q={number_of_questions}
-                    color={"#6C8093"}
+                    color={theme.palette.background.onVariant}
                     variant={"labelSmall"}
                   />
                 </Box>
@@ -322,10 +322,8 @@ const ActionButton = ({
   >
     <Typography
       variant="semiBoldMedium"
-      sx={{
-        color: variant ? "#fff" : "#2466A8",
-      }}
-      textTransform={"capitalize"}
+      color={variant ? "primary.contrastText" : "primary.main"}
+      textTransform="capitalize"
     >
       <Trans i18nKey={text} />
     </Typography>
@@ -356,9 +354,7 @@ const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
             />
             <Typography
               variant="bodyMedium"
-              style={{
-                color: theme.palette.error.main,
-              }}
+              color="error.main"
             >
               <Trans i18nKey={i18nKey} />: {value}
             </Typography>

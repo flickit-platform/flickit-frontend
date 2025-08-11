@@ -67,7 +67,7 @@ const SubjectForm = ({
           ...(testId ? { "data-testid": testId } : {}),
         }}
         sx={{
-          background: "#fff",
+          background: (theme) => theme.palette.background.containerLowest,
           borderRadius: "8px",
         }}
       />
@@ -79,7 +79,7 @@ const SubjectForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: "background.container",
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -89,7 +89,7 @@ const SubjectForm = ({
     >
       {/* Index Number */}
       <Box
-        sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+        sx={{ ...styles.centerCVH, background: "background.container" }}
         borderRadius="0.5rem"
       >
         {renderNumericField("value", newSubject.value, "value-id")}

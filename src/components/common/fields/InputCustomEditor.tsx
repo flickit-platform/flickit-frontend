@@ -54,7 +54,7 @@ const InputCustomEditor = (props: any) => {
             sx={buttonStyle}
             onClick={handleDone}
           >
-            <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+            <CheckCircleOutlineRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
           </IconButton>
           <IconButton
             title="Cancel Edit"
@@ -62,7 +62,7 @@ const InputCustomEditor = (props: any) => {
             sx={buttonStyle}
             onClick={handleCancel}
           >
-            <CancelRoundedIcon sx={{ color: "#fff" }} />
+            <CancelRoundedIcon sx={{ color: theme.palette.primary.contrastText }} />
           </IconButton>
         </InputAdornment>
       }

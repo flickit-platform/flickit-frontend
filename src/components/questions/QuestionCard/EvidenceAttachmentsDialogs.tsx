@@ -29,6 +29,7 @@ import FileType from "@components/questions/iconFiles/fileType";
 import { AcceptFile } from "@utils/acceptFile";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
+import { styles } from "@styles"
 
 const checkTypeUpload = (
   dropZoneData: any,
@@ -159,13 +160,13 @@ const MyDropzone = (props: any) => {
               )
             )}
 
-            <Typography sx={{ ...theme.typography.titleMedium }}>
+            <Typography variant="titleMedium">
               {dropZoneData[0]?.name?.length > 14
                 ? dropZoneData[0]?.name?.substring(0, 10) +
-                  "..." +
-                  dropZoneData[0]?.name?.substring(
-                    dropZoneData[0]?.name?.lastIndexOf("."),
-                  )
+                "..." +
+                dropZoneData[0]?.name?.substring(
+                  dropZoneData[0]?.name?.lastIndexOf("."),
+                )
                 : dropZoneData[0]?.name}
             </Typography>
           </Box>
@@ -199,19 +200,15 @@ const MyDropzone = (props: any) => {
                   style={{ width: "80px", height: "80px" }}
                 />
                 <Typography
+                  variant="titleMedium"
+                  color="#243342"
                   sx={{
-                    ...theme.typography.titleMedium,
-                    color: "#243342",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    ...styles.centerVH,
                     gap: "5px",
                   }}
                 >
                   <Trans i18nKey="assessmentKit.dragYourFile" />
-                  <Typography
-                    sx={{ ...theme.typography.titleMedium, color: "#205F94" }}
-                  >
+                  <Typography variant="titleMedium" color="#205F94">
                     <Trans i18nKey="common.locateIt" />
                   </Typography>
                 </Typography>
@@ -349,24 +346,23 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       >
         <Box sx={{ width: "100%", height: "auto" }}>
           <Typography
+            variant="headlineSmall"
             sx={{
-              ...theme.typography.headlineSmall,
+              ...styles.centerH,
               mx: "auto",
-              display: "flex",
-              justifyContent: "center",
               paddingBottom: "24px",
               gap: "5px",
             }}
           >
             <Trans i18nKey="common.uploadAttachment" />
-            <Typography sx={{ ...theme.typography.headlineSmall }}>
+            <Typography variant="headlineSmall">
               {expanded.count} <Trans i18nKey="common.of" /> 5{" "}
             </Typography>
           </Typography>
           <Typography
+            color="outline.outline"
             sx={{
               fontSize: "11px",
-              color: "#73808C",
               maxWidth: "300px",
               textAlign: theme.direction == "rtl" ? "right" : "left",
               mx: "auto",
@@ -374,7 +370,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
           >
             <Box sx={{ display: "flex", gap: "2px", mx: "auto" }}>
               <InfoOutlinedIcon
-                style={{ color: "#73808C" }}
+                style={{ color: theme.palette.outline?.outline }}
                 sx={{
                   marginRight: theme.direction === "ltr" ? 1 : "unset",
                   marginLeft: theme.direction === "rtl" ? 1 : "unset",
@@ -397,9 +393,9 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
             </Box>
           </Typography>
           <Typography
+            color="outline.outline"
             sx={{
               fontSize: "11px",
-              color: "#73808C",
               maxWidth: "300px",
               textAlign: "left",
               paddingBottom: "1rem",
@@ -408,7 +404,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
           >
             <Box sx={{ display: "flex", gap: "2px" }}>
               <InfoOutlinedIcon
-                style={{ color: "#73808C" }}
+                style={{ color: theme.palette.outline?.outline }}
                 sx={{
                   marginRight: theme.direction === "ltr" ? 1 : "unset",
                   marginLeft: theme.direction === "rtl" ? 1 : "unset",
@@ -433,13 +429,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
           />
         </Box>
         <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
-          <Typography
-            sx={{
-              ...theme.typography.headlineSmall,
-              color: "#243342",
-              paddingBottom: "1rem",
-            }}
-          >
+          <Typography variant="headlineSmall" color="#243342" sx={{ paddingBottom: "1rem", }}>
             <Trans i18nKey="questions.additionalInfo" />
           </Typography>
           <TextField
@@ -447,7 +437,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
               overflow: "auto",
               "&::placeholder": {
                 ...theme.typography.bodySmall,
-                color: "#000",
+                color: theme.palette.text.primary,
               },
             }}
             rows={3}

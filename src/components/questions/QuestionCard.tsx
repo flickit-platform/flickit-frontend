@@ -81,6 +81,7 @@ import { getReadableDate } from "@utils/readableDate";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import showToast from "@utils/toastError";
 import uniqueId from "@/utils/uniqueId";
+import { blue } from "@/config/colors";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -155,7 +156,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           backgroundColor: `${notApplicable ? "#000000cc" : "#273248"}`,
           flex: 1,
           color: "white",
-          background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
+          background: `radial-gradient(circle, ${blue[20]} 50%, #0D263F 100%)`,
           position: "relative",
           overflow: "hidden",
           mx: { xs: 2, sm: "auto" },
@@ -169,8 +170,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             <Typography
               component="div"
               variant="semiBoldSmall"
+              color="background.onVariant"
               sx={{
-                color: "#6C8093",
                 opacity: 0.65,
                 textAlign: [is_farsi ? "right" : "left"],
               }}
@@ -180,11 +181,11 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             <Typography
               letterSpacing={is_farsi ? "0" : ".05em"}
               variant="semiBoldXLarge"
+              color="background.default"
               sx={{
                 fontFamily: languageDetector(title)
                   ? farsiFontFamily
                   : primaryFontFamily,
-                color: "#F9FAFB",
                 pt: 0.5,
               }}
             >
@@ -258,7 +259,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                             marginRight:
                               theme.direction === "ltr" ? 2 : "unset",
                             marginLeft: theme.direction === "rtl" ? 2 : "unset",
-                            color: "#fff",
+                            color: theme.palette.background.containerLowest,
                           }}
                         >
                           <Box
@@ -287,7 +288,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                         <Box
                           sx={{
                             marginInlineEnd: 1,
-                            color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
+                            color: `${disabledConfidence ? theme.palette.background.containerLowest : theme.palette.secondary.light}`,
                           }}
                         >
                           <Typography>
@@ -319,7 +320,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                           }
                           emptyIcon={
                             <RadioButtonUncheckedRoundedIcon
-                              sx={{ mx: 0.25, color: "#fff" }}
+                              sx={{ mx: 0.25, color: theme.palette.background.containerLowest }}
                               fontSize="inherit"
                             />
                           }
@@ -1062,43 +1063,42 @@ const AnswerTemplate = (props: {
                   }
                   sx={{
                     ...theme.typography.titleMedium,
-                    color: "#F9FAFB",
+                    color: theme.palette.background.default,
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
                     justifyContent: "flex-start",
-                    boxShadow: `0 0 3px ${
-                      !!answer?.approved &&
+                    boxShadow: `0 0 3px ${!!answer?.approved &&
                       answer?.selectedOption?.index === defaultSelectedIndex
-                        ? !answer?.approved && permissions?.approveAnswer
-                          ? "#CC7400"
-                          : "#0acb89"
-                        : "white"
-                    }`,
+                      ? !answer?.approved && permissions?.approveAnswer
+                        ? theme.palette.tertiary.main
+                        : "#0acb89"
+                      : "white"
+                      }`,
                     borderWidth: "2px",
                     borderColor:
                       !!answer?.approved &&
-                      answer?.selectedOption?.index === defaultSelectedIndex &&
-                      !answer?.approved &&
-                      permissions?.approveAnswer
-                        ? "#CC7400"
+                        answer?.selectedOption?.index === defaultSelectedIndex &&
+                        !answer?.approved &&
+                        permissions?.approveAnswer
+                        ? theme.palette.tertiary.main
                         : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
                           ? theme.palette.success.main
                           : !!answer?.approved &&
-                              !answer?.approved &&
-                              permissions?.approveAnswer
-                            ? "#CC7400"
+                            !answer?.approved &&
+                            permissions?.approveAnswer
+                            ? theme.palette.tertiary.main
                             : theme.palette.success.main,
                       },
                       color: "white",
                       backgroundColor: !isSelectedValueTheSameAsAnswer
                         ? theme.palette.success.main
                         : !!answer?.approved &&
-                            !answer?.approved &&
-                            permissions?.approveAnswer
-                          ? "#CC7400"
+                          !answer?.approved &&
+                          permissions?.approveAnswer
+                          ? theme.palette.tertiary.main
                           : theme.palette.success.main,
                       borderColor: "transparent",
                       zIndex: 2,
@@ -1207,7 +1207,7 @@ const AnswerTemplate = (props: {
             <Box
               sx={{
                 ...styles.centerVH,
-                background: "#CC74004D",
+                background: theme.palette.tertiary.main,
                 borderRadius: "4px",
                 p: 2,
                 gap: 4,
@@ -1215,23 +1215,21 @@ const AnswerTemplate = (props: {
                 boxSizing: "border-box",
               }}
             >
-              <Typography
-                sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
-              >
+              <Typography variant="labelMedium" color="teritary.light">
                 <Trans i18nKey="questions.answerNeedApprove" />
               </Typography>
               <Button
                 onClick={onApprove}
                 sx={{
-                  background: "#CC7400",
+                  background: theme.palette.tertiary.main,
                   boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
                   "&:hover": {
                     boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                    background: "#CC7400",
+                    background: theme.palette.tertiary.main,
                   },
                 }}
               >
-                <Typography variant="bodySmall" sx={{ color: "#fff" }}>
+                <Typography variant="bodySmall" color="background.containerLowest">
                   <Trans i18nKey="common.approve" />
                 </Typography>
               </Button>
@@ -1240,7 +1238,7 @@ const AnswerTemplate = (props: {
         {may_not_be_applicable && (
           <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
-              sx={{ color: "#fff" }}
+              sx={{ color: theme.palette.background.containerLowest, }}
               data-cy="automatic-submit-check"
               id="not-applicable"
               control={
@@ -1248,9 +1246,9 @@ const AnswerTemplate = (props: {
                   checked={notApplicable}
                   onChange={(e) => notApplicableonChanhe(e)}
                   sx={{
-                    color: "#fff",
+                    color: theme.palette.background.containerLowest,
                     "&.Mui-checked": {
-                      color: "#fff",
+                      color: theme.palette.background.containerLowest,
                     },
                   }}
                 />
@@ -1353,17 +1351,17 @@ const AnswerDetails = ({
           ))}
           {queryData?.data?.total >
             queryData?.data?.size * (queryData?.data?.page + 1) && (
-            <Button onClick={handleShowMore}>
-              <Trans i18nKey="showMore" />
-            </Button>
-          )}
+              <Button onClick={handleShowMore}>
+                <Trans i18nKey="showMore" />
+              </Button>
+            )}
         </Box>
       ) : (
         <Box sx={{ ...styles.centerCVH }} textAlign="center">
-          <Typography variant="displayMedium" color="#6C8093">
+          <Typography variant="displayMedium" color="background.onVariant">
             <Trans i18nKey="questions.emptyAnswerHistoryTitle" />
           </Typography>
-          <Typography variant="bodyLarge" color="#6C8093">
+          <Typography variant="bodyLarge" color="background.onVariant">
             <Trans i18nKey="questions.emptyAnswerHistoryDescription" />
           </Typography>
         </Box>
@@ -1397,7 +1395,7 @@ const AnswerHistoryItem = (props: any) => {
         ></Avatar>
         <Typography
           variant="titleMedium"
-          color="#1B4D7E"
+          color="primary.dark"
           sx={{
             fontFamily: languageDetector(item?.createdBy?.displayName)
               ? farsiFontFamily
@@ -1409,7 +1407,7 @@ const AnswerHistoryItem = (props: any) => {
       </Grid>
       {item.answer.isNotApplicable ? (
         <Grid item xs={12} md={12} lg={5} xl={5}>
-          <Typography variant="titleMedium" color="#1B4D7E">
+          <Typography variant="titleMedium" color="primary.dark">
             <Trans i18nKey="questions.uestionIsMarkedAsNotApplicable" />:
           </Typography>
         </Grid>
@@ -1561,7 +1559,7 @@ const Evidence = (props: any) => {
   const [evidenceBG, setEvidenceBG] = useState<any>({
     background: theme.palette.primary.main,
     borderColor: theme.palette.primary.dark,
-    borderHover: theme.palette.primary.light,
+    borderHover: theme.palette.primary.states.selected,
   });
   useEffect(() => {
     if (value === null) {
@@ -1854,24 +1852,19 @@ const Evidence = (props: any) => {
                     />
                   }
                   label={
-                    <Typography
-                      sx={{
-                        ...theme.typography.titleSmall,
-                        color: "#2B333B",
-                      }}
-                    >
+                    <Typography color="text.primary" variant="titleSmall" >
                       <Trans i18nKey="questions.needsToAddAttachments" />
                     </Typography>
                   }
                 />
                 <Typography
+                  color={valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3"}
                   style={is_farsi || rtl ? { left: 10 } : { right: 10 }}
                   sx={{
                     position: "absolute",
                     top: 20,
                     fontSize: ".875rem",
                     fontWeight: 300,
-                    color: valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
                   }}
                 >
                   {valueCount.length ?? 0} / {LIMITED}
@@ -1883,10 +1876,10 @@ const Evidence = (props: any) => {
                     is_farsi
                       ? { position: "absolute", top: 15, left: 5 }
                       : {
-                          position: "absolute",
-                          top: 15,
-                          right: 5,
-                        }
+                        position: "absolute",
+                        top: 15,
+                        right: 5,
+                      }
                   }
                 ></Grid>
               </Grid>
@@ -2269,6 +2262,7 @@ const EvidenceDetail = (props: any) => {
                 <Grid container display={"flex"} justifyContent={"end"}>
                   <Grid item xs={12} position={"relative"}>
                     <Typography
+                      color={evidenceBG.borderColor}
                       sx={{
                         fontSize: "1.125rem",
                         fontWeight: "bold",
@@ -2277,7 +2271,6 @@ const EvidenceDetail = (props: any) => {
                         left: theme.direction === "ltr" ? 15 : "unset",
                         right: theme.direction === "rtl" ? 15 : "unset",
                         zIndex: 1,
-                        color: evidenceBG.borderColor,
                       }}
                     >
                       <Trans i18nKey="common.edit" />
@@ -2301,14 +2294,13 @@ const EvidenceDetail = (props: any) => {
                       isEditing={isEditing}
                     />
                     <Typography
+                      color={valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3"}
                       style={is_farsi ? { left: 20 } : { right: 20 }}
                       sx={{
                         position: "absolute",
                         top: 7,
                         fontSize: ".875rem",
                         fontWeight: 300,
-                        color:
-                          valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
                       }}
                     >
                       {valueCount.length ?? 0} / {LIMITED}
@@ -2320,10 +2312,10 @@ const EvidenceDetail = (props: any) => {
                         is_farsi
                           ? { position: "absolute", top: 15, left: 5 }
                           : {
-                              position: "absolute",
-                              top: 15,
-                              right: 5,
-                            }
+                            position: "absolute",
+                            top: 15,
+                            right: 5,
+                          }
                       }
                     ></Grid>
                   </Grid>
@@ -2414,8 +2406,8 @@ const EvidenceDetail = (props: any) => {
                   }}
                 >
                   <Typography
+                    variant="bodyLarge"
                     sx={{
-                      ...theme?.typography?.bodyLarge,
                       fontWeight: "normal",
                       fontFamily: languageDetector(description)
                         ? farsiFontFamily
@@ -2439,8 +2431,8 @@ const EvidenceDetail = (props: any) => {
                       >
                         {!attachmentsCount ? (
                           <Typography
+                            variant="titleMedium"
                             sx={{
-                              ...theme.typography?.titleMedium,
                               fontSize: { xs: "10px", sm: "unset" },
                             }}
                           >
@@ -2448,8 +2440,8 @@ const EvidenceDetail = (props: any) => {
                           </Typography>
                         ) : (
                           <Typography
+                            variant="titleMedium"
                             sx={{
-                              ...theme.typography?.titleMedium,
                               display: "flex",
                               gap: "5px",
                             }}
@@ -2463,9 +2455,9 @@ const EvidenceDetail = (props: any) => {
                           style={
                             expandedEvidenceBox
                               ? {
-                                  rotate: "180deg",
-                                  transition: "all .2s ease",
-                                }
+                                rotate: "180deg",
+                                transition: "all .2s ease",
+                              }
                               : { rotate: "0deg", transition: "all .2s ease" }
                           }
                           src={arrowBtn}
@@ -2479,9 +2471,9 @@ const EvidenceDetail = (props: any) => {
                         expandedEvidenceBox
                           ? {}
                           : {
-                              maxHeight: 0,
-                              overflow: "hidden",
-                            }
+                            maxHeight: 0,
+                            overflow: "hidden",
+                          }
                       }
                       sx={{
                         transition: "all .2s ease",
@@ -2495,9 +2487,9 @@ const EvidenceDetail = (props: any) => {
                       >
                         {(permissions?.viewEvidenceAttachment ||
                           permissions.readonly) && (
-                          <>
-                            {loadingFile
-                              ? skeleton.map((item) => {
+                            <>
+                              {loadingFile
+                                ? skeleton.map((item) => {
                                   return (
                                     <Skeleton
                                       key={item}
@@ -2508,7 +2500,7 @@ const EvidenceDetail = (props: any) => {
                                     />
                                   );
                                 })
-                              : attachments.map((item) => {
+                                : attachments.map((item) => {
                                   return (
                                     <FileIcon
                                       evidenceId={id}
@@ -2523,8 +2515,8 @@ const EvidenceDetail = (props: any) => {
                                     />
                                   );
                                 })}
-                          </>
-                        )}
+                            </>
+                          )}
                         {attachments.length < 5 &&
                           permissions?.addEvidenceAttachment && (
                             <Grid
@@ -2546,9 +2538,9 @@ const EvidenceDetail = (props: any) => {
                       {attachments.length == 5 && (
                         <Box>
                           <Typography
+                            color="#821237"
                             sx={{
                               fontSize: "11px",
-                              color: "#821237",
                               display: "flex",
                               alignItems: "start",
                               justifyContent: "center",

@@ -4,6 +4,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@/utils/languageDetector";
 import ChartTooltip from "./ChartTooltip";
 import uniqueId from "@/utils/uniqueId";
+import { v3Tokens } from "@/config/tokens";
 
 interface SemiCircleChartProps {
   items: {
@@ -16,10 +17,10 @@ interface SemiCircleChartProps {
 }
 
 const subjectColors = [
-  { main: "#2466A8", attribute: "rgba(36, 102, 168, 0.12)" },
-  { main: "#3D8F3D", attribute: "rgba(61, 143, 61, 0.12)" },
-  { main: "#CC7400", attribute: "rgba(204, 116, 0, 0.12)" },
-  { main: "#B8144B", attribute: "rgba(138, 15, 56, 0.12)" },
+  { main: v3Tokens.primary.main, attribute: "rgba(36, 102, 168, 0.12)" },
+  { main: v3Tokens.success.main, attribute: "rgba(61, 143, 61, 0.12)" },
+  { main: v3Tokens.tertiary.main, attribute: "rgba(204, 116, 0, 0.12)" },
+  { main: v3Tokens.secondary.main, attribute: "rgba(138, 15, 56, 0.12)" },
 ];
 
 const useResponsiveRadius = () => {
@@ -197,7 +198,7 @@ const renderMainLabel = (props: any, count: number) => {
           key={idx}
           x={0}
           y={idx * (fontSize + 3) - ((lines.length - 1) * (fontSize + 3)) / 2}
-          fill="#fff"
+          fill={v3Tokens.surface.containerLowest}
           fontSize={fontSize}
           fontWeight={500}
           textAnchor="middle"

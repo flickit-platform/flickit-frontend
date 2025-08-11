@@ -81,7 +81,7 @@ const ConfirmRemoveMemberDialog = (props: any) => {
         </>
       }
     >
-      <Typography sx={{ color: "#0A2342" }}>
+      <Typography color="#0A2342">
         {expandedRemoveDialog.invited ? (
           <Trans
             i18nKey="settings.areYouSureYouWantDeleteThisMemberInvited"

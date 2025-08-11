@@ -201,7 +201,7 @@ const AssessmentReportContainer = (props: any) => {
                 </Box>
               </Box>
 
-              <Typography color="#73808C" variant="semiBoldMedium">
+              <Typography color="outline.outline" variant="semiBoldMedium">
                 <Trans i18nKey="common.subjects" />
               </Typography>
               <AssessmentSubjectList

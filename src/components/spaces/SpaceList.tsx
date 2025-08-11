@@ -32,6 +32,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { t } from "i18next";
 import showToast from "@utils/toastError";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import { v3Tokens } from "@/config/tokens";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -49,16 +50,16 @@ const SpacesList = (props: ISpaceListProps) => {
   }>({ status: false, id: "" });
 
   const deleteSpace
-  = useQuery({
-    service: (args, config) => service.space.remove(args, config),
-    runOnMount: false,
-  });
+    = useQuery({
+      service: (args, config) => service.space.remove(args, config),
+      runOnMount: false,
+    });
 
 
   const deleteItem = async () => {
     try {
       const { id: spaceId } = openDeleteDialog
-      await deleteSpace.query({spaceId});
+      await deleteSpace.query({ spaceId });
       await fetchSpaces();
     } catch (e) {
       const err = e as ICustomError;
@@ -104,7 +105,7 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
-  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{ status: boolean, id: TId }>>;
   deleteSpace?: any;
 }
 
@@ -139,7 +140,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
       .then(({ data }) => {
         navigate(`/${spaceId}/assessments/1`);
       })
-      .catch((e) => {});
+      .catch((e) => { });
   };
   return (
     <Box
@@ -171,11 +172,11 @@ export const SpaceCard = (props: ISpaceCardProps) => {
       >
         <Typography
           variant="h6"
+          color="primary.dark"
           sx={{
             fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
             fontWeight: 700,
             flexShrink: 0,
-            color: (t) => t.palette.primary.dark,
             fontFamily: languageDetector(title)
               ? farsiFontFamily
               : primaryFontFamily,
@@ -261,9 +262,9 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                 />
               </IconButton>
               <Typography
-                data-testid={"space-card-test-membersCount"}
-                color="#2B333B"
-                fontWeight={"bold"}
+                data-testid="space-card-test-membersCount"
+                color="text.primary"
+                fontWeight="bold"
               >
                 {membersCount}
               </Typography>
@@ -294,9 +295,9 @@ export const SpaceCard = (props: ISpaceCardProps) => {
                 />
               </IconButton>
               <Typography
-                data-testid={"space-card-test-assessmentsCount"}
-                color="#2B333B"
-                fontWeight={"bold"}
+                data-testid="space-card-test-assessmentsCount"
+                color="text.primary"
+                fontWeight="bold"
               >
                 {assessmentsCount}
               </Typography>
@@ -373,7 +374,7 @@ const Actions = (props: any) => {
   const { id: spaceId } = space;
   const { service } = useServiceContext();
   const [editLoading, setEditLoading] = useState(false);
-  const {abortController, loading } = deleteSpace
+  const { abortController, loading } = deleteSpace
 
   const leaveSpaceQuery = useQuery({
     service: (args, config) => service.space.leave({ spaceId }, config),
@@ -419,17 +420,17 @@ const Actions = (props: any) => {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           // onClick: deleteItem,
-          onClick: ()=> setOpenDeleteDialog({status: open, id: spaceId}),
+          onClick: () => setOpenDeleteDialog({ status: open, id: spaceId }),
         },
         !is_default_space_for_current_user &&
-          !isOwner && {
-            icon: <ExitToAppRoundedIcon fontSize="small" />,
-            text: <Trans i18nKey="spaces.leaveSpace" />,
-            onClick: leaveSpace,
-          },
+        !isOwner && {
+          icon: <ExitToAppRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="spaces.leaveSpace" />,
+          onClick: leaveSpace,
+        },
       ]}
       setShowTooltip={setShowTooltip}
-      color={"#2B333B"}
+      color={v3Tokens.surface.on}
       IconButtonProps={{ width: "20px", height: "20px" }}
     />
   );

@@ -140,7 +140,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       title={
         <Box sx={{ ...styles.centerVH, gap: "6px" }}>
           {type === "create" ? (
-            <NewAssessmentIcon width="20px" height="20px" color="#fff" />
+            <NewAssessmentIcon width="20px" height="20px" color={theme.palette.background.containerLowest} />
           ) : (
             <img
               alt="error"
@@ -160,14 +160,14 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       }
       titleStyle={{ marginBottom: 0 }}
       contentStyle={{ padding: "32px 32px 16px" }}
-      style={{ paddingTop: "32px", background: "#F3F5F6" }}
+      style={{ paddingTop: "32px", background: theme.palette.background.container }}
     >
       {type === "create" ? (
         <FormProviderWithForm formMethods={formMethods}>
           <Typography
+            color="text.primary"
+            variant="semiBoldLarge"
             sx={{
-              ...theme.typography.semiBoldLarge,
-              color: "#2B333B",
               pb: "32px",
             }}
           >
@@ -189,16 +189,16 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                 }}
               >
                 <FolderOutlinedIcon
-                  sx={{ color: "#6C8093", background: "transparent" }}
+                  sx={{ color: theme.palette.background.onVariant, background: "transparent" }}
                 />
                 <Typography>
                   <Trans i18nKey="spaces.targetSpace" />
                 </Typography>
               </Box>
               <Typography
+                color="text.primary"
+                variant="bodySmall"
                 sx={{
-                  ...theme.typography.bodySmall,
-                  color: "#2B333B",
                   mb: "42px",
                   minHeight: "55px",
                 }}
@@ -230,16 +230,16 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
                 }}
               >
                 <LanguageIcon
-                  sx={{ color: "#6C8093", background: "transparent" }}
+                  sx={{ color: theme.palette.background.onVariant, background: "transparent" }}
                 />
                 <Typography>
                   <Trans i18nKey="assessmentKit.assessmentLanguage" />
                 </Typography>
               </Box>
               <Typography
+                color="text.primary"
+                variant="bodySmall"
                 sx={{
-                  ...theme.typography.bodySmall,
-                  color: "#2B333B",
                   mb: "42px",
                   minHeight: "55px",
                 }}
@@ -285,8 +285,8 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
 export default NewAssessmentDialog;
 
-const LangField = ({ lang }: { lang: { code: string, title: string }[]}) => {
-  const defaultLang =  lang.find((findItem: {code: string, title: string}) => findItem.code === i18next.language.toUpperCase());
+const LangField = ({ lang }: { lang: { code: string, title: string }[] }) => {
+  const defaultLang = lang.find((findItem: { code: string, title: string }) => findItem.code === i18next.language.toUpperCase());
   return (
     <AutocompleteAsyncField
       name="language"

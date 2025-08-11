@@ -98,24 +98,19 @@ const ReportTab = () => {
                     }}
                   >
                     <Typography
-                      style={{ ...theme.typography.semiBoldLarge }}
+                      color="text.primary"
+                      variant="semiBoldLarge"
                       sx={{
                         display: "flex",
                         justifyContent: "flex-start",
                         alignItems: "center",
-                        color: "#2B333B",
                         gap: 2,
                         mb: 2,
                       }}
                     >
                       <Trans i18nKey={title} />
                       {!metadata[name] && (
-                        <Typography
-                          sx={{
-                            ...theme.typography.semiBoldLarge,
-                            color: theme.palette.error.main,
-                          }}
-                        >
+                        <Typography variant="semiBoldLarge" color="error.main">
                           (<Trans i18nKey="common.empty" />)
                         </Typography>
                       )}
@@ -181,9 +176,7 @@ const ReportTab = () => {
                             width: "100%",
                           }}
                         >
-                          <Typography
-                            sx={{ ...theme.typography.semiBoldLarge }}
-                          >
+                          <Typography variant="semiBoldLarge">
                             <Trans i18nKey="assessmentReport.publishReport" />
                           </Typography>
                           <Switch
@@ -206,12 +199,10 @@ const ReportTab = () => {
                               }}
                             >
                               <Typography
+                                variant="semiBoldSmall"
+                                color="error.main"
                                 sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  ...theme.typography.semiBoldSmall,
-                                  color: theme.palette.error.main,
+                                  ...styles.centerVH,
                                   mt: 2,
                                   px: 2,
                                   gap: 1,

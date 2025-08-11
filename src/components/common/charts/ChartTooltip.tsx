@@ -23,7 +23,7 @@ const ChartTooltip = ({ active, payload, getPrimary, getSecondary }: ChartToolti
     <Box
       sx={{
         backgroundColor: "rgba(97, 97, 97, 0.92)",
-        color: "#fff",
+        color: theme.palette.background.containerLowest,
         p: "4px 8px",
         borderRadius: "4px",
         maxWidth: "300px",

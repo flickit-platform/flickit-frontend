@@ -93,7 +93,7 @@ const SpaceContainer = () => {
           >
             <Trans i18nKey="spaces.spaces" />
           </Title>
-          {}
+          { }
         </Box>
       }
     >
@@ -145,8 +145,8 @@ const SpaceContainer = () => {
                   <Typography
                     textAlign="center"
                     variant="headlineLarge"
+                    color="#9DA7B3"
                     sx={{
-                      color: "#9DA7B3",
                       fontSize: "3rem",
                       fontWeight: "900",
                       width: "60%",
@@ -157,8 +157,8 @@ const SpaceContainer = () => {
                   <Typography
                     textAlign="center"
                     variant="h1"
+                    color="#9DA7B3"
                     sx={{
-                      color: "#9DA7B3",
                       fontSize: "1rem",
                       fontWeight: "500",
                       width: "60%",

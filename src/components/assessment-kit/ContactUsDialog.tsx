@@ -175,7 +175,7 @@ const ContactUsDialog = ({
             <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
               {t("common.thankYouForYourMessage", { lng })}
             </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            <Typography variant="body2" color="text.secondary">
               {t("common.weWillGetBackToYouSoon", { lng })}
             </Typography>
           </Box>
@@ -220,9 +220,9 @@ const ContactUsDialog = ({
             >
               <Box sx={{ ...styles.centerVH, gap: 2, mt: 3 }}>
                 <Typography
+                  color="text.primary"
+                  variant="semiBoldLarge"
                   sx={{
-                    ...theme.typography.semiBoldLarge,
-                    color: "#000",
                     whiteSpace: "nowrap",
                     ...styles.rtlStyle(isRTL),
                   }}

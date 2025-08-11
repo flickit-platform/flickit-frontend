@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { useTheme } from "@mui/material";
 
 const SIZE = 40;
 const STROKE = 4;
@@ -24,6 +25,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
   const [counter, setCounter] = useState(seconds);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
+  const theme = useTheme()
 
   useEffect(() => {
     const check = () => {
@@ -158,7 +160,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
                   href={`/assessment-kits/${kit?.id}`}
                   style={{
                     textDecoration: "none",
-                    color: "#2466A8",
+                    color: theme.palette.primary.main,
                     fontWeight: 600,
                     cursor: "pointer",
                     fontFamily: languageDetector(kit?.title)

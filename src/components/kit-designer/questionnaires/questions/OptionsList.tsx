@@ -167,12 +167,12 @@ const OptionList = (props: OptionListProps) => {
                       >
                         <Typography
                           variant="body2"
+                          color="background.container"
                           sx={{
                             display: "inline-flex",
                             alignItems: "center",
                             ml: 1,
                             paddingInlineEnd: 1.5,
-                            backgroundColor: "#F3F5F6",
                             borderRadius: "8px",
                           }}
                         >

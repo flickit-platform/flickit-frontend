@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { Box, IconButton, Link } from "@mui/material";
+import { Box, IconButton, Link, useTheme } from "@mui/material";
 import { Trans } from "react-i18next";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
@@ -32,13 +32,13 @@ const MeasureForm = ({
   const { kitState } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code;
   const { updateTranslation } = useTranslationUpdater(langCode);
-
+  const theme = useTheme()
   return (
     <Box
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: "background.container",
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -49,7 +49,7 @@ const MeasureForm = ({
       {/* Value field */}
       <Box
         sx={{
-          background: "#F3F5F6",
+          background: "background.container",
           borderRadius: "0.5rem",
           px: 1.25,
           display: "flex",
@@ -72,7 +72,7 @@ const MeasureForm = ({
             fontSize: "14px",
             border: "1px solid #ccc",
             borderRadius: "6px",
-            backgroundColor: "#fff",
+            backgroundColor: theme.palette.background.containerLowest,
           }}
         />
       </Box>

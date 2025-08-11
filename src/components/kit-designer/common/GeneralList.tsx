@@ -91,11 +91,11 @@ const ListOfItems = ({
       weight: tempValues?.weight,
       translations: langCode
         ? {
-            [langCode]: {
-              title: tempValues.translations?.[langCode]?.title,
-              description: tempValues.translations?.[langCode]?.description,
-            },
-          }
+          [langCode]: {
+            title: tempValues.translations?.[langCode]?.title,
+            description: tempValues.translations?.[langCode]?.description,
+          },
+        }
         : undefined,
     });
     setEditMode(null);
@@ -142,7 +142,7 @@ const ListOfItems = ({
                     p={1.5}
                     sx={{
                       backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
+                        editMode === item.id ? theme.palette.background.container : theme.palette.background.containerLowest,
                       borderRadius: "8px",
                       border: "0.3px solid #73808c30",
                       display: "flex",
@@ -153,7 +153,7 @@ const ListOfItems = ({
                     <Box
                       sx={{
                         ...styles.centerVH,
-                        background: "#F3F5F6",
+                        background: theme.palette.background.container,
                         width: { xs: "50px", md: "64px" },
                         justifyContent: "space-around",
                       }}
@@ -214,7 +214,7 @@ const ListOfItems = ({
                               translationValue={
                                 langCode
                                   ? (tempValues.translations?.[langCode]
-                                      ?.title ?? "")
+                                    ?.title ?? "")
                                   : ""
                               }
                               onTranslationChange={updateTranslation(
@@ -323,7 +323,7 @@ const ListOfItems = ({
                               translationValue={
                                 langCode
                                   ? (tempValues.translations?.[langCode]
-                                      ?.description ?? "")
+                                    ?.description ?? "")
                                   : ""
                               }
                               onTranslationChange={updateTranslation(
@@ -366,9 +366,9 @@ const ListOfItems = ({
                               }}
                             >
                               <Typography
+                                variant="labelCondensed"
+                                color="background.onVariant"
                                 sx={{
-                                  ...theme.typography.labelCondensed,
-                                  color: "#6C8093",
                                   width: "100%",
                                 }}
                               >
@@ -412,7 +412,7 @@ const ListOfItems = ({
                                     "& .MuiFormLabel-root": {
                                       fontSize: 14,
                                     },
-                                    background: "#fff",
+                                    background: theme.palette.background.containerLowest,
                                     borderRadius: "8px",
                                   }}
                                 />
@@ -423,8 +423,8 @@ const ListOfItems = ({
                                     width: "3.75rem",
                                     height: "3.75rem",
                                     borderRadius: "50%",
-                                    backgroundColor: "#E2E5E9",
-                                    color: "#2B333B",
+                                    backgroundColor: theme.palette.background.variant,
+                                    color: "text.primary",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",

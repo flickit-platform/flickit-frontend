@@ -90,7 +90,7 @@ export default function MemberList(props: any) {
         height: "auto",
         minHeight: "350px",
         width: "100%",
-        bgcolor: "#FFF",
+        bgcolor: theme.palette.background.containerLowest,
         borderRadius: 2,
         py: "32px",
       }}
@@ -159,7 +159,7 @@ export default function MemberList(props: any) {
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
-                backgroundColor: "#fff",
+                backgroundColor: theme.palette.background.containerLowest,
               }}
             >
               <TableRow

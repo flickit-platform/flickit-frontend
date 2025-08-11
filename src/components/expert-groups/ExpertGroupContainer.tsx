@@ -378,10 +378,9 @@ const ExpertGroupContainer = () => {
                           {assessmentKitsCounts.filter(
                             (item: any) => item.published,
                           ) &&
-                            `${
-                              assessmentKitsCounts.filter(
-                                (item: any) => item.published,
-                              ).length
+                            `${assessmentKitsCounts.filter(
+                              (item: any) => item.published,
+                            ).length
                             } ${t("expertGroups.publishedAssessmentKits").toLowerCase()}`}
                         </Typography>
                         {editable && (
@@ -436,10 +435,9 @@ const ExpertGroupContainer = () => {
                             {assessmentKitsCounts.filter(
                               (item: any) => !item.published,
                             ) &&
-                              `${
-                                assessmentKitsCounts.filter(
-                                  (item: any) => !item.published,
-                                ).length
+                              `${assessmentKitsCounts.filter(
+                                (item: any) => !item.published,
+                              ).length
                               } ${t("expertGroups.unpublishedAssessmentKits").toLowerCase()}`}
                           </Typography>
                         </Box>
@@ -745,11 +743,9 @@ const ExpertGroupMembers = (props: any) => {
             <Box>
               <Typography
                 variant="h6"
-                display="flex"
-                alignItems={"center"}
                 component="a"
                 href="#members"
-                sx={{ textDecoration: "none", mb: 2, color: "inherit" }}
+                sx={{ ...styles.centerV, textDecoration: "none", mb: 2, color: "inherit" }}
               >
                 <Trans i18nKey="expertGroups.members" />
               </Typography>
@@ -813,9 +809,7 @@ const Invitees = (props: any) => {
       {hasInvitees && (
         <Typography
           variant="h6"
-          display="flex"
-          alignItems={"center"}
-          sx={{ fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
+          sx={{ ...styles.centerV, fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
           onClick={() => setOpenInvitees((state: boolean) => !state)}
         >
           <Trans i18nKey="common.invited" />
@@ -949,10 +943,10 @@ const MemberActions = (props: any) => {
       items={[
         isInvitationExpired
           ? {
-              icon: <EmailRoundedIcon fontSize="small" />,
-              text: <Trans i18nKey="common.resendInvitation" />,
-              onClick: inviteMember,
-            }
+            icon: <EmailRoundedIcon fontSize="small" />,
+            text: <Trans i18nKey="common.resendInvitation" />,
+            onClick: inviteMember,
+          }
           : undefined,
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
@@ -972,9 +966,7 @@ const AddingNewMember = (props: any) => {
     <Box>
       <Typography
         variant="h6"
-        display="flex"
-        alignItems={"center"}
-        sx={{ mb: 2, fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
+        sx={{ ...styles.centerV, mb: 2, fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
         onClick={() => setOpenAddMembers((state: boolean) => !state)}
       >
         <Trans i18nKey="expertGroups.addMember" />

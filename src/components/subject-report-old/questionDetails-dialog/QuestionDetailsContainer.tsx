@@ -56,6 +56,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
       />
       <Typography
         variant="semiBoldXLarge"
+        color="text.primary"
         sx={{
           textAlign: languageDetector(questionInfo?.question?.title ?? "")
             ? "right"
@@ -63,8 +64,6 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           ...styles.rtlStyle(
             languageDetector(questionInfo?.question?.title ?? ""),
           ),
-
-          color: "#2B333B",
         }}
         data-testid={"question-detail-title"}
       >
@@ -75,7 +74,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
           sx={{
             ...styles.centerVH,
             marginInlineEnd: "auto",
-            color: "#6C8093",
+            color: "background.onVariant",
           }}
         >
           <Typography
@@ -109,12 +108,12 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         width="100%"
         sx={{ ...styles.centerCH, alignItems: "flex-start", gap: 2 }}
       >
-        <Typography variant="semiBoldMedium" color="#6C8093">
+        <Typography variant="semiBoldMedium" color="background.onVariant">
           <Trans i18nKey="questions.selectedOption" />:
         </Typography>
         {questionInfo?.answer?.index ? (
           <>
-            <Box sx={{ p: 1, border: "1px solid #C7CCD1", borderRadius: 2 }}>
+            <Box sx={{ p: 1, border: `1px solid ${theme.palette.outline?.variant}`, borderRadius: 2 }}>
               <Typography
                 variant="bodyMedium"
                 sx={{
@@ -141,7 +140,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             variant="filled"
             sx={{
               backgroundColor: "rgba(138, 15, 36, 0.04)",
-              color: "#8A0F24",
+              color: theme.palette.error.main,
               borderRadius: "8px",
               mb: 2,
               width: "100%",

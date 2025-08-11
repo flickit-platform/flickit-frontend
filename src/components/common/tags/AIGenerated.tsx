@@ -35,8 +35,8 @@ const AIGenerated = ({ type, title, icon }: any) => {
         borderRadius: "8px",
         background:
           type === "error"
-            ? theme.palette.error.light
-            : theme.palette.warning.light,
+            ? theme.palette.error.states.selected
+            : theme.palette.warning.states.selected,
         color:
           type === "error"
             ? theme.palette.error.main

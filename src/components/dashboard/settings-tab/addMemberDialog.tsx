@@ -153,10 +153,10 @@ const AddMemberDialog = (props: {
     try {
       addedEmailType === EUserType.NONE
         ? await inviteMemberToAssessment.query({
-            email: memberSelectedEmail,
-            assessmentId,
-            roleId: roleSelected.id,
-          })
+          email: memberSelectedEmail,
+          assessmentId,
+          roleId: roleSelected.id,
+        })
         : await addRoleMemberQueryData.query();
       setChangeData((prev: boolean) => !prev);
       closeDialog();
@@ -317,13 +317,13 @@ const AddMemberDialog = (props: {
                     "&.MuiMenuItem-root:hover": {
                       ...(roleSelected?.title == role.title
                         ? {
-                            backgroundColor: "#9CCAFF",
-                            color: "#004F83",
-                          }
+                          backgroundColor: "#9CCAFF",
+                          color: "#004F83",
+                        }
                         : {
-                            backgroundColor: "#EFEDF0",
-                            color: "#1B1B1E",
-                          }),
+                          backgroundColor: "#EFEDF0",
+                          color: "#1B1B1E",
+                        }),
                     },
                     background:
                       roleSelected?.title == role.title ? "#9CCAFF" : "",
@@ -332,7 +332,7 @@ const AddMemberDialog = (props: {
                   <Box
                     sx={{
                       maxWidth: "240px",
-                      color: "#2B333B",
+                      color: "text.primary",
                       fontSize: "0.875rem",
                       lineHeight: "21px",
                       fontWeight: 500,
@@ -342,7 +342,7 @@ const AddMemberDialog = (props: {
                     <Typography>{role.title}</Typography>
                     <div
                       style={{
-                        color: "#2B333B",
+                        color: theme.palette.text.primary,
                         fontSize: "0.875rem",
                         lineHeight: "21px",
                         fontWeight: 300,

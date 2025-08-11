@@ -198,7 +198,7 @@ const KitCustomization = (props: any) => {
                 width: "100%",
                 display: "inline-block",
               }}
-              color="#2B333B"
+              color="text.primary"
               variant="headlineSmall"
             >
               <Trans i18nKey="settings.kitCustomization" />
@@ -218,7 +218,7 @@ const KitCustomization = (props: any) => {
                   ...styles.centerVH,
                 }}
               >
-                <Typography color="#2B333B" variant="semiBoldLarge">
+                <Typography color="text.primary" variant="semiBoldLarge">
                   <Trans i18nKey="settings.kitCustomTitle" />
                 </Typography>
 
@@ -252,8 +252,8 @@ const KitCustomization = (props: any) => {
               <Typography
                 component="div"
                 variant="titleMedium"
+                color="text.primary"
                 sx={{
-                  color: "#2B333B",
                   mb: 1,
                 }}
               >
@@ -261,9 +261,7 @@ const KitCustomization = (props: any) => {
               </Typography>
               <Typography
                 variant="bodyMedium"
-                sx={{
-                  color: "#2B333B",
-                }}
+                color="text.primary"
               >
                 <Trans i18nKey="settings.viewTheWeightAndSubject" />
               </Typography>

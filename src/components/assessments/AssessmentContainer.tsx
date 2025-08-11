@@ -56,7 +56,7 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{status: boolean, id: TId}>({ status: false, id: "" });
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{ status: boolean, id: TId }>({ status: false, id: "" });
 
   const fetchSpaceInfo = useQuery({
     service: (args = { spaceId }, config) =>
@@ -64,14 +64,14 @@ const AssessmentContainer = () => {
     runOnMount: false,
   });
 
-  const deleteAssessmentById = async() =>{
-   try {
-    await deleteAssessment(openDeleteDialog?.id)
-     setOpenDeleteDialog({ status: false, id: "" })
-   }catch(e){
-     const err = e as ICustomError;
-     setOpenDeleteDialog({ status: false, id: "" })
-     showToast(err);
+  const deleteAssessmentById = async () => {
+    try {
+      await deleteAssessment(openDeleteDialog?.id)
+      setOpenDeleteDialog({ status: false, id: "" })
+    } catch (e) {
+      const err = e as ICustomError;
+      setOpenDeleteDialog({ status: false, id: "" })
+      showToast(err);
     }
   }
 
@@ -85,9 +85,9 @@ const AssessmentContainer = () => {
         <AssessmentTitle data={currentSpace} />
         {!fetchSpaceInfo.data?.canCreateAssessment && (
           <Typography
+            variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
             sx={{
-              ...theme.typography.semiBoldSmall,
               textDecoration: "underline",
               cursor: "pointer",
               textAlign: "end",
@@ -136,7 +136,7 @@ const AssessmentContainer = () => {
                         color={
                           !fetchSpaceInfo.data?.canCreateAssessment
                             ? "#3D4D5C80"
-                            : "#fff"
+                            : theme.palette.background.containerLowest
                         }
                       />
                     }
@@ -166,7 +166,7 @@ const AssessmentContainer = () => {
           >
             <Trans i18nKey="assessment.assessments" />
           </Title>
-          {}
+          { }
         </Box>
         {isEmpty && !loading && (
           <Box
@@ -188,8 +188,8 @@ const AssessmentContainer = () => {
             <Typography
               textAlign="center"
               variant="h3"
+              color="#9DA7B3"
               sx={{
-                color: "#9DA7B3",
                 fontSize: "3rem",
                 fontWeight: "900",
                 width: "60%",
@@ -200,8 +200,8 @@ const AssessmentContainer = () => {
             <Typography
               textAlign="center"
               variant="h1"
+              color="#9DA7B3"
               sx={{
-                color: "#9DA7B3",
                 fontSize: "1rem",
                 fontWeight: "500",
                 width: "60%",

@@ -48,7 +48,7 @@ const MaturityLevelForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: "background.container",
         borderRadius: 2,
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -57,7 +57,7 @@ const MaturityLevelForm = ({
       }}
     >
       <Box
-        sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+        sx={{ ...styles.centerCVH, background: "background.container" }}
         borderRadius="0.5rem"
       >
         <TextField
@@ -72,7 +72,7 @@ const MaturityLevelForm = ({
             style: { textAlign: "center", width: 40 },
           }}
           sx={{
-            backgroundColor: "#fff",
+            backgroundColor: (theme) => theme.palette.background.containerLowest,
             "& .MuiInputBase-root": { fontSize: 14 },
           }}
         />

@@ -7,6 +7,7 @@ import { IQuestionnairesModel } from "@/types/index";
 import { useParams, useSearchParams } from "react-router-dom";
 import PermissionControl from "@common/PermissionControl";
 import { useMemo } from "react";
+import { blue } from "@/config/colors";
 
 const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =
@@ -22,7 +23,7 @@ const QuestionnaireContainer = () => {
           sx={{
             ...styles.centerCV,
             transition: "height 1s ease",
-            background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
+            background: `radial-gradient(circle, ${blue[20]} 50%, #0D263F 100%)`,
             px: { xs: 1, sm: 2, md: 3, lg: 4 },
             pt: { xs: 5, sm: 3 },
             pb: 5,

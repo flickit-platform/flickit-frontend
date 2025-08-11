@@ -102,7 +102,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
       const updatedData = { ...prevData };
       const targetArray =
         updatedData.customData?.[
-          type === "subject" ? "subjects" : "attributes"
+        type === "subject" ? "subjects" : "attributes"
         ] ?? [];
       const targetIndex = targetArray.findIndex((item: any) => item.id === id);
 
@@ -153,7 +153,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
           "& .MuiFormLabel-root": {
             fontSize: 14,
           },
-          background: "#fff",
+          background: (theme) => theme.palette.background.containerLowest,
         }}
       />
     );
@@ -273,7 +273,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         "attribute",
                         attribute.id,
                         attribute.weight.customValue ??
-                          attribute.weight.defaultValue,
+                        attribute.weight.defaultValue,
                       )
                     ) : (
                       <Box sx={{ display: "flex", gap: 1 }}>
@@ -290,7 +290,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         )?.weight &&
                           !attribute.weight.customValue && (
                             <Box>
-                            (<Trans i18nKey="common.default" />)
+                              (<Trans i18nKey="common.default" />)
                             </Box>
                           )}
                       </Box>

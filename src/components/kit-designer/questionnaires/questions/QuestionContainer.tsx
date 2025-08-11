@@ -60,7 +60,7 @@ const QuestionContain = (props: any) => {
         <Box
           sx={{
             ...styles.centerVH,
-            background: "#F3F5F6",
+            background: theme.palette.background.container,
             width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}

@@ -55,7 +55,7 @@ const TodoBox = (props: any) => {
                     mt: "32px",
                   }}
                 >
-                  <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
+                  <Typography variant="semiBoldLarge" color="text.primary">
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
                     )}
@@ -104,10 +104,8 @@ const TodoBox = (props: any) => {
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
             <Typography
+              color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
               variant="headlineSmall"
-              sx={{
-                color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-              }}
             >
               <Trans i18nKey="dashboard.whatToDoNext" />
             </Typography>
@@ -135,9 +133,7 @@ const TodoBox = (props: any) => {
                 >
                   <Typography
                     variant="semiBoldLarge"
-                    sx={{
-                      color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-                    }}
+                    color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
                   >
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
@@ -365,7 +361,7 @@ export const IssuesItem = ({
       sx={{
         borderRadius: 2,
         border: `0.1px solid ${colorPalette.main}`,
-        background: colorPalette.light,
+        background: colorPalette.states.selected,
         display: "flex",
         alignItems: "center",
         gap: 1,
@@ -381,10 +377,10 @@ export const IssuesItem = ({
       />
       <Typography
         sx={{
-          color: colorPalette.dark,
           display: "flex",
           gap: 1,
         }}
+        color={colorPalette.dark}
         variant={textVariant}
       >
         {typeof value === "number" && value !== 0 && (

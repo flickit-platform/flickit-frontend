@@ -52,7 +52,7 @@ const AttributeForm = ({
           ...(testId ? { "data-testid": testId } : {}),
         }}
         sx={{
-          background: "#fff",
+          background: (theme) => theme.palette.background.containerLowest,
           borderRadius: "8px",
         }}
       />
@@ -64,7 +64,7 @@ const AttributeForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: "background.container",
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -75,13 +75,13 @@ const AttributeForm = ({
     >
       {/* Index Number */}
       <Box
-        sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+        sx={{ ...styles.centerCVH, background: "background.container" }}
         borderRadius="0.5rem"
       >
         <Box
           sx={{
             ...styles.centerVH,
-            background: "#F3F5F6",
+            background: "background.container",
             width: { xs: "40px" },
             justifyContent: "space-around",
           }}

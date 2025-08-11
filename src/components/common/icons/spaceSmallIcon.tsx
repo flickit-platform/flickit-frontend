@@ -1,3 +1,5 @@
+import { v3Tokens } from "@/config/tokens";
+
 export const SpaceSmallIcon = (props: any) => {
   const { type, allowCreateBasic } = props;
 
@@ -5,7 +7,7 @@ export const SpaceSmallIcon = (props: any) => {
     if (type == "PREMIUM") {
       return "url(#paint0_linear_11642_19953)";
     } else if (type == "BASIC" && allowCreateBasic) {
-      return "#2B333B";
+      return v3Tokens.surface.on;
     } else if (type == "BASIC" && !allowCreateBasic) {
       return "#3D4D5C";
     }

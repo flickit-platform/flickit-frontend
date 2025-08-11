@@ -58,7 +58,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
             onClick={closeDialog}
             edge="end"
             size="small"
-            sx={{ ml: 2, color: "#fff" }}
+            sx={{ ml: 2, color: (theme) => theme.palette.primary.contrastText }}
             data-testid="close-btn"
           >
             <Close />

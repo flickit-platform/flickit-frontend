@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
 import uniqueId from "@/utils/uniqueId";
 
-const ARROW_COLOR = "#1B4D7E";
-
 interface Banner {
   kitId: number;
   smallBanner: string;
@@ -46,10 +44,10 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
       alignItems: "center",
       justifyContent:
         (side === "left" && i18next.language === "en") ||
-        (side === "right" && i18next.language === "fa")
+          (side === "right" && i18next.language === "fa")
           ? "flex-start"
           : "flex-end",
-      color: ARROW_COLOR,
+      color: "primary.dark",
     }}
   >
     {Icon}
@@ -148,8 +146,8 @@ const AssessmentKitsStoreBanner = (props: any) => {
       sx={styles.carousel}
     >
       {loading ||
-      !banners.length ||
-      (loadedImages.length > 0 && !loadedImages[currentIndex]) ? (
+        !banners.length ||
+        (loadedImages.length > 0 && !loadedImages[currentIndex]) ? (
         <Skeleton
           variant="rectangular"
           width="100%"
@@ -161,7 +159,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
       <Box
         sx={{
           display: "flex",
-          width: {xs: `${banners.length * 95}%`, sm: `${banners.length * 100}%` },
+          width: { xs: `${banners.length * 95}%`, sm: `${banners.length * 100}%` },
           height: "100%",
           transition: "transform 0.5s ease-in-out",
           transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
@@ -216,7 +214,7 @@ const AssessmentKitsStoreBanner = (props: any) => {
                 sx={{
                   width: currentIndex === i ? "2rem" : "1rem",
                   height: "0.75rem",
-                  backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
+                  backgroundColor: currentIndex === i ? theme.palette.background.onVariant : "#668099",
                   borderRadius: currentIndex === i ? "20px" : "50%",
                   cursor: "pointer",
                   transition: "all 0.3s ease",

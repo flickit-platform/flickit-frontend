@@ -72,11 +72,11 @@ const DotsLoading = () => {
 const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
   <Box
     dir={lang === "FA" ? "rtl" : "ltr"}
-    sx={{ backgroundColor: "#F3F5F6", minHeight: "100vh" }}
+    sx={{ backgroundColor: (theme) => theme.palette.background.container, minHeight: "100vh" }}
   >
     <Box
       sx={{
-        backgroundColor: "#D5E5F6",
+        backgroundColor: (theme) => theme.palette.primary.bgVariant,
         height: 48,
         ...styles.centerVH,
       }}
@@ -121,11 +121,11 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                 sx={{
                   width: "100%",
                   height: 48,
-                  borderRadius: "16px",
+                  borderRadius: "4px",
                   position: "relative",
                   overflow: "hidden",
-                  background:
-                    "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
+                  background: (theme) =>
+                    `linear-gradient(to right, ${theme.palette.primary.main}, #2D80D2, ${theme.palette.primary.main} )`,
                   backgroundSize: "600% 600%",
                   animation: "gradientShift 4s ease infinite",
                   boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
@@ -148,7 +148,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
             elevation={3}
             sx={{
               position: "relative",
-              backgroundColor: "#fff",
+              backgroundColor: (theme) => theme.palette.background.containerLowest,
               borderStartEndRadius: 2,
               borderStartStartRadius: 2,
               boxShadow: "none",
@@ -167,7 +167,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                 top: { md: "60px", xs: "6px" },
                 bottom: { md: "40px", xs: "4px" },
                 width: { md: "8px", xs: "2px" },
-                backgroundColor: "#D5E5F6",
+                backgroundColor: (theme) => theme.palette.primary.bgVariant,
                 borderRadius: 1,
               }}
             />
@@ -178,7 +178,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                 top: { md: "60px", xs: "6px" },
                 bottom: { md: "40px", xs: "4px" },
                 width: { md: "8px", xs: "2px" },
-                backgroundColor: "#D5E5F6",
+                backgroundColor: (theme) => theme.palette.primary.bgVariant,
                 borderRadius: 1,
               }}
             />
@@ -257,7 +257,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
           <Paper
             elevation={3}
             sx={{
-              backgroundColor: "#fff",
+              backgroundColor: (theme) => theme.palette.background.containerLowest,
               borderEndStartRadius: 2,
               borderEndEndRadius: 2,
               boxShadow: "none",

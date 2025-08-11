@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
 import { useTheme } from "@mui/material";
+import { styles } from "@styles"
 
 type TPosition = "top" | "left";
 
@@ -84,6 +85,7 @@ const FlatGauge = (props: IGaugeProps) => {
         >
           {textPosition === "top" && (
             <Typography
+              color={colorCode}
               sx={{
                 color: colorCode,
                 fontSize: "1.25rem",
@@ -107,8 +109,8 @@ const FlatGauge = (props: IGaugeProps) => {
             <FlatGaugeComponent colorCode={colorCode} value={levelValue} />
             {textPosition === "left" && (
               <Typography
+                color={colorCode}
                 sx={{
-                  color: colorCode,
                   fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
                   ml: 0.5,
                   textAlign: "right",
@@ -121,12 +123,10 @@ const FlatGauge = (props: IGaugeProps) => {
 
           {textPosition === "top" && confidenceText && (
             <Typography
+              variant="bodyMedium"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                ...styles.centerVH,
                 gap: "5px",
-                ...theme.typography.bodyMedium,
                 fontWeight: 300,
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily
@@ -135,9 +135,9 @@ const FlatGauge = (props: IGaugeProps) => {
             >
               {confidenceText}
               <Typography
+                variant="titleMedium"
+                color={checkColor(confidenceLevelNum)}
                 sx={{
-                  color: checkColor(confidenceLevelNum),
-                  ...theme.typography.titleMedium,
                   fontFamily: languageDetector(confidenceText ?? "")
                     ? farsiFontFamily
                     : primaryFontFamily,

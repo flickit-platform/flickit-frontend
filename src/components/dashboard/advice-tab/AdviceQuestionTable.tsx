@@ -31,18 +31,18 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
         px={{ xs: 0.7, sm: 4 }}
         sx={{
           height: "300px",
-          width: {xs: "600px",sm: "unset"},
+          width: { xs: "600px", sm: "unset" },
           overflow: "auto",
         }}
       >
         <Grid
           container
-          spacing={{xs: 1, md: 2}}
+          spacing={{ xs: 1, md: 2 }}
           sx={{
             my: { xs: 2, sm: 4 },
             textAlign: "center",
             fontWeight: "700",
-            color: "#6C8093",
+            color: (theme) => theme.palette.background.onVariant,
           }}
         >
           <Grid item xs={0.5} md={0.5}>
@@ -96,7 +96,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
           return (
             <Grid
               container
-              spacing={{xs: 1, sm: 2}}
+              spacing={{ xs: 1, sm: 2 }}
               sx={{ alignItems: "center", mb: 2 }}
               key={uniqueId()}
             >
@@ -239,7 +239,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
         sx={{
           position: "sticky",
           bottom: 0,
-          background: "#fff",
+          background: (theme) => theme.palette.background.containerLowest,
           zIndex: 1000,
         }}
       >

@@ -92,16 +92,18 @@ const SurveyBoxSection = (props: any) => {
           onClick={closeFeadbackBox}
           edge="end"
           size="small"
-          sx={{ color: "#fff", position: "absolute", left: 2.5, top: 2.5 }}
+          sx={{ color: theme.palette.background.containerLowest, position: "absolute", left: 2.5, top: 2.5 }}
           data-testid="close-btn"
         >
           <Close />
         </IconButton>
-        <Typography sx={{ ...theme.typography.semiBoldXLarge, color: "#fff" }}>
+        <Typography color="background.containerLowest" variant="semiBoldXLarge">
           <Trans i18nKey={"common.gotMinute"} />
         </Typography>
         <Typography
-          sx={{ ...theme.typography.bodyMedium, color: "#fff", mb: 2 }}
+          variant="bodyMedium"
+          color="background.containerLowest"
+          sx={{ mb: 2 }}
         >
           <Trans
             i18nKey={"common.helpUsToImprove"}
@@ -113,11 +115,11 @@ const SurveyBoxSection = (props: any) => {
           variant={"contained"}
           size="small"
           sx={{
-            background: "#F3F5F6",
+            background: theme.palette.background.container,
             color: theme.palette.primary.main,
             width: "100%",
             "&:hover": {
-              background: "#F3F5F6",
+              background: theme.palette.background.container,
             },
           }}
         >
@@ -126,7 +128,7 @@ const SurveyBoxSection = (props: any) => {
         <FormControlLabel
           sx={{
             marginInlineEnd: 0,
-            color: "#fff",
+            color: theme.palette.background.containerLowest,
             display: props?.disabled ? "none" : "block",
           }}
           data-cy="automatic-submit-check"
@@ -134,18 +136,16 @@ const SurveyBoxSection = (props: any) => {
             <Checkbox
               checked={dontShowAgain}
               sx={{
-                color: "#fff",
+                color: theme.palette.background.containerLowest,
                 "&.Mui-checked": {
-                  color: "#fff",
+                  color: theme.palette.background.containerLowest,
                 },
               }}
               onChange={(e) => setDontShowAgain(e.target.checked)}
             />
           }
           label={
-            <Typography
-              sx={{ ...theme.typography.bodySmall, display: "inline-block" }}
-            >
+            <Typography variant="bodySmall" sx={{ display: "inline-block" }}>
               <Trans i18nKey={"common.dontShowAgain"} />
             </Typography>
           }

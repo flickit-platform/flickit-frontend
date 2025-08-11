@@ -312,8 +312,8 @@ const MaturityLevelTable = ({
       missedScore: item?.answer?.missedScore,
       weightedScore: item.answer.weightedScore?.toString()
         ? parseFloat(
-            parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2),
-          )
+          parseFloat(item.answer.weightedScore?.toString() ?? "").toFixed(2),
+        )
         : "",
       confidence: item.answer.confidenceLevel,
       evidenceCount: item.question.evidenceCount,
@@ -393,7 +393,7 @@ const MaturityLevelTable = ({
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                boxShadow: "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1",
+                boxShadow: `inset 0 1px 0 0 ${theme.palette.outline?.variant}, inset 0 -1px 0 0 ${theme.palette.outline?.variant}`,
                 "&:first-child": {
                   borderEndStartRadius: "8px !important",
                   borderStartStartRadius: "8px !important",
@@ -417,13 +417,13 @@ const MaturityLevelTable = ({
                     column.field === "gainedScore"
                       ? handlePopoverOpen
                       : handleSort(
-                          column.serverKey,
-                          getSortOrder(
-                            tempData.sort,
-                            tempData.order,
-                            column.field,
-                          ),
-                        )
+                        column.serverKey,
+                        getSortOrder(
+                          tempData.sort,
+                          tempData.order,
+                          column.field,
+                        ),
+                      )
                   }
                   sx={{
                     color: isActive

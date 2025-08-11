@@ -61,7 +61,7 @@ const NotificationIndicator = ({ seen }: { seen: boolean }) => (
     sx={{
       minWidth: "4px",
       height: "24px",
-      backgroundColor: seen ? "#6C8093" : "#2D80D2",
+      backgroundColor: (theme) => seen ? theme.palette.background.onVariant : "#2D80D2",
       borderRadius: "2px",
       marginRight: document.dir === "ltr" ? 1 : "unset",
       marginLeft: document.dir === "rtl" ? 1 : "unset",
@@ -86,8 +86,8 @@ const NotificationItem = ({
         alignItems: "center",
         justifyContent: "space-between",
         padding: "12px 16px",
-        border: "0.5px solid #C7CCD1",
-        backgroundColor: message.seen ? "#ffffff" : "#F3F5F6",
+        border: `0.5px solid ${theme.palette.outline?.variant}`,
+        backgroundColor: message.seen ? theme.palette.background.containerLowest : theme.palette.background.container,
         cursor: "pointer",
         position: "relative",
         flexDirection: theme.direction === "rtl" ? "row-reverse" : "row", // Handle RTL/LTR
@@ -113,9 +113,9 @@ const NotificationItem = ({
       >
         <Typography
           variant="titleSmall"
+          color="text.primary"
           sx={{
             fontWeight: message.seen ? 400 : 600,
-            color: "#2B333B",
             overflow: "hidden",
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
@@ -129,8 +129,8 @@ const NotificationItem = ({
       {/* Relative Time Ago */}
       <Typography
         variant="labelSmall"
+        color="#3D4D5C"
         sx={{
-          color: "#3D4D5C",
           marginLeft: theme.direction === "rtl" ? "0" : "8px",
           marginRight: theme.direction === "rtl" ? "8px" : "0",
           whiteSpace: "nowrap",
@@ -159,7 +159,7 @@ const NotificationItem = ({
           right: theme.direction === "ltr" ? "8px" : "unset",
           width: "8px",
           height: "8px",
-          backgroundColor: "#B8144B",
+          backgroundColor: theme.palette.secondary.main,
           borderRadius: "50%",
           display: message.seen ? "none" : "block",
         }}
@@ -239,8 +239,8 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
           >
             <Typography
               className="nc-header-title"
+              color="#525266"
               sx={{
-                color: "#525266",
                 fontSize: "20px",
                 fontStyle: "normal",
                 fontWeight: 700,
@@ -269,7 +269,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: "12px 16px",
-                backgroundColor: "#FFFFFF",
+                backgroundColor: theme.palette.background.containerLowest,
                 position: "relative",
               }}
             >
@@ -282,7 +282,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   top: 8,
                   bottom: 0,
                   width: "4px",
-                  backgroundColor: selectedMessage.seen ? "#6C8093" : "#2D80D2",
+                  backgroundColor: selectedMessage.seen ? theme.palette.background.onVariant : "#2D80D2",
                   borderRadius: "2px",
                 }}
               />
@@ -315,7 +315,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   />
                 </Box>
 
-                <Typography variant="labelSmall" sx={{ color: "#3D4D5C" }}>
+                <Typography variant="labelSmall" color="#3D4D5C">
                   {getReadableDate(
                     selectedMessage?.createdAt,
                     "relativeWithDate",
@@ -339,7 +339,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
-              <Typography variant="bodyMedium" color="#2466A8">
+              <Typography variant="bodyMedium" color="primary">
                 <Trans i18nKey="notification.notificationEmptyState" />
               </Typography>
             </Box>
@@ -562,7 +562,7 @@ const Navbar = () => {
               marginRight: theme.direction === "ltr" ? 1 : "unset",
               marginLeft: theme.direction === "rtl" ? 1 : "unset",
               display: { md: "none" },
-              color: "#fff",
+              color: theme.palette.background.containerLowest,
             }}
           >
             <MenuIcon />
@@ -607,7 +607,7 @@ const Navbar = () => {
                 textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff",
+                color: theme.palette.background.containerLowest,
               }}
               size="small"
             >
@@ -626,7 +626,7 @@ const Navbar = () => {
                 textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff",
+                color: theme.palette.background.containerLowest,
               }}
               size="small"
             >
@@ -652,7 +652,7 @@ const Navbar = () => {
                 overlap="circular"
                 sx={{
                   "& .MuiBadge-badge": {
-                    backgroundColor: "#B8144B",
+                    backgroundColor: theme.palette.secondary.main,
                     minWidth: "16px",
                     padding: 0,
                     height: "16px",
@@ -758,13 +758,13 @@ const SpacesButton = (props: any) => {
               bottom: 0,
               left: "50%",
               transform: "translateX(-50%)",
-              width: "90%", // 👈 smaller underline
+              width: "90%",
               height: "2px",
-              backgroundColor: "#fff",
+              backgroundColor: theme.palette.background.containerLowest,
               borderRadius: 1,
             },
           }),
-          color: "#fff",
+          color: theme.palette.background.containerLowest,
         }}
         size="small"
         endIcon={
@@ -873,7 +873,7 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           ...styles.activeNavbarLink,
           marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
           marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
-          color: "#fff",
+          color: theme.palette.background.containerLowest,
           fontFamily: languageDetector(userInfo.displayName)
             ? farsiFontFamily
             : primaryFontFamily,

@@ -132,9 +132,8 @@ const AssessmentKitsStoreCard = (props: any) => {
         borderRadius: 2,
         height: "100%",
         mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
-        borderLeft: `4px solid ${
-          isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
-        }`,
+        borderLeft: `4px solid ${isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
+          }`,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -157,13 +156,9 @@ const AssessmentKitsStoreCard = (props: any) => {
             }}
           >
             <Typography
+              variant={small ? "titleMedium" : "headlineSmall"}
+              color={isPrivate ? "secondary.main" : "primary.main"}
               sx={{
-                ...(small
-                  ? theme.typography.titleMedium
-                  : theme.typography.headlineSmall),
-                color: isPrivate
-                  ? theme.palette.secondary.main
-                  : theme.palette.primary.main,
                 fontFamily: languageDetector(title)
                   ? farsiFontFamily
                   : secondaryFontFamily,
@@ -196,11 +191,9 @@ const AssessmentKitsStoreCard = (props: any) => {
                 }}
               />
               <Typography
+                variant={small ? "labelSmall" : "semiBoldLarge"}
+                color="background.onVariant"
                 sx={{
-                  ...(small
-                    ? theme.typography.labelSmall
-                    : theme.typography.semiBoldLarge),
-                  color: "#6C8093",
                   textDecoration: "none",
                   fontFamily: languageDetector(expertGroup.title)
                     ? farsiFontFamily
@@ -230,8 +223,8 @@ const AssessmentKitsStoreCard = (props: any) => {
               label={<Trans i18nKey="common.private" />}
               size={small ? "small" : "medium"}
               sx={{
-                background: "#FCE8EF",
-                color: "#B8144B",
+                background: theme.palette.secondary.bg,
+                color: theme.palette.secondary.main,
                 ...(small
                   ? theme.typography.semiBoldMedium
                   : theme.typography.semiBoldLarge),
@@ -243,10 +236,8 @@ const AssessmentKitsStoreCard = (props: any) => {
           <Typography
             component="div"
             textAlign="justify"
+            variant={small ? "bodyMedium" : "bodyLarge"}
             sx={{
-              ...(small
-                ? theme.typography.bodyMedium
-                : theme.typography.bodyLarge),
               fontFamily: languageDetector(summary)
                 ? farsiFontFamily
                 : secondaryFontFamily,
@@ -274,7 +265,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             width: { xs: "100%", sm: "unset" },
             justifyContent: "center",
             gap: small ? "4px" : { xs: "48px", md: "8px", lg: "48px" },
-            bgcolor: "#EDF0F2",
+            bgcolor: theme.palette.background.containerHigh,
             borderRadius: 2,
             px: small ? 1 : 2,
             py: small ? 0.5 : 1,

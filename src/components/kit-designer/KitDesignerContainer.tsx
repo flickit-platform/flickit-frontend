@@ -137,7 +137,7 @@ const KitDesignerContainer = () => {
                       color: "rgba(0, 0, 0, 0.6)", // Default text color
 
                       "& .Mui-selected": {
-                        color: "#2466A8 !important",
+                        color: "primary.main",
                         fontWeight: "bold",
                       },
 
