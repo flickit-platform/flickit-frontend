@@ -251,6 +251,12 @@ const ItemAccordion = ({
     }));
   };
 
+  const getAccordionBgColor = () => {
+    if (editMode) return '#F3F5F6';
+    if (item.questionsCount === 0) return alpha(theme.palette.error.main, 0.04);
+    return '#fff';
+  };
+
   return (
     <Draggable
       key={item.id}
@@ -282,11 +288,7 @@ const ItemAccordion = ({
           >
             <AccordionSummary
               sx={{
-                backgroundColor: editMode
-                  ? '#F3F5F6'
-                  : item.questionsCount === 0
-                    ? alpha(theme.palette.error.main, 0.04)
-                    : '#fff',
+                backgroundColor: getAccordionBgColor(),
                 borderRadius: questionnaireLogic.kitState.questions.length !== 0 ? '8px' : '8px 8px 0 0',
                 border: '0.3px solid #73808c30',
                 display: 'flex',
@@ -337,177 +339,195 @@ const ItemAccordion = ({
   );
 };
 
-const SummaryContent = ({
-                          item,
-                          index,
-                          editMode,
-                          tempValues,
-                          handleChange,
-                          langCode,
-                          updateTranslation,
-                          theme,
-                          handleEditClick,
-                          handleSaveClick,
-                          handleCancelClick,
-                          setOpenDeleteDialog,
-                          setTempValues
-                        }: {
-  item: KitDesignListItems;
-  index: number;
-  editMode: boolean;
-  tempValues: ITempValues;
-  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  langCode: string;
-  updateTranslation: any;
-  theme: any;
-  handleEditClick: (e: React.MouseEvent) => void;
-  handleSaveClick: (e: React.MouseEvent) => void;
-  handleCancelClick: (e: React.MouseEvent) => void;
-  setOpenDeleteDialog?: (dialog: { status: boolean; id: TId }) => void;
-  setTempValues?: any
-}) => (
+const IndexBox = ({ index, item, theme }: { index: number; item: KitDesignListItems; theme: any }) => (
   <Box
     sx={{
-      display: 'flex',
-      alignItems: 'flex-start',
-      position: 'relative',
-      pb: '1rem',
-      width: '100%',
+      ...styles.centerVH,
+      background: item.questionsCount === 0 ? alpha(theme.palette.error.main, 0.12) : '#F3F5F6',
+      width: { xs: '50px', md: '64px' },
+      justifyContent: 'space-around',
     }}
-    pt={1.5}
+    borderRadius="0.5rem"
+    mr={2}
     px={1.5}
   >
-    <Box
-      sx={{
-        ...styles.centerVH,
-        background: item.questionsCount === 0 ? alpha(theme.palette.error.main, 0.12) : '#F3F5F6',
-        width: { xs: '50px', md: '64px' },
-        justifyContent: 'space-around',
-      }}
-      borderRadius="0.5rem"
-      mr={2}
-      px={1.5}
+    <Typography variant="semiBoldLarge">{index + 1}</Typography>
+    <IconButton
+      disableRipple
+      disableFocusRipple
+      sx={{ '&:hover': { backgroundColor: 'transparent', color: 'inherit' } }}
+      size="small"
     >
-      <Typography variant="semiBoldLarge">{index + 1}</Typography>
-      <IconButton
-        disableRipple
-        disableFocusRipple
-        sx={{ '&:hover': { backgroundColor: 'transparent', color: 'inherit' } }}
-        size="small"
-      >
-        <SwapVertRoundedIcon fontSize="small" />
+      <SwapVertRoundedIcon fontSize="small" />
+    </IconButton>
+  </Box>
+);
+
+const TitleSection = ({
+                        editMode,
+                        item,
+                        tempValues,
+                        handleChange,
+                        langCode,
+                        updateTranslation,
+                        setTempValues
+                      }: any) =>
+  editMode ? (
+    <MultiLangTextField
+      name="title"
+      value={tempValues.title}
+      onChange={handleChange}
+      translationValue={langCode ? (tempValues.translations?.[langCode]?.title ?? '') : ''}
+      onTranslationChange={updateTranslation('title', setTempValues)}
+      label={<Trans i18nKey="common.title" />}
+    />
+  ) : (
+    <TitleWithTranslation
+      title={item.title}
+      translation={langCode ? item.translations?.[langCode]?.title : ''}
+      variant="semiBoldMedium"
+      showCopyIcon
+    />
+  );
+
+const DescriptionSection = ({
+                              editMode,
+                              item,
+                              tempValues,
+                              handleChange,
+                              langCode,
+                              updateTranslation,
+                              setTempValues
+                            }: any) =>
+  editMode ? (
+    <MultiLangTextField
+      name="description"
+      value={tempValues.description}
+      onChange={handleChange}
+      translationValue={langCode ? (tempValues.translations?.[langCode]?.description ?? '') : ''}
+      onTranslationChange={updateTranslation('description', setTempValues)}
+      label={<Trans i18nKey="common.description" />}
+      multiline
+      minRows={2}
+      maxRows={5}
+    />
+  ) : (
+    <TitleWithTranslation
+      title={item.description}
+      translation={langCode ? item.translations?.[langCode]?.description : ''}
+      variant="bodyMedium"
+      showCopyIcon
+    />
+  );
+
+const ActionButtons = ({
+                         editMode,
+                         handleEditClick,
+                         handleSaveClick,
+                         handleCancelClick,
+                         item,
+                         setOpenDeleteDialog,
+                         theme
+                       }: any) =>
+  editMode ? (
+    <Box sx={{ mr: theme.direction === 'rtl' ? 'auto' : 'unset', ml: theme.direction === 'ltr' ? 'auto' : 'unset' }}>
+      <IconButton size="small" onClick={handleSaveClick} sx={{ mx: 1 }} color="success" data-testid="items-check-icon">
+        <CheckRoundedIcon fontSize="small" />
+      </IconButton>
+      <IconButton size="small" onClick={handleCancelClick} sx={{ mx: 1 }} color="secondary">
+        <CloseRoundedIcon fontSize="small" />
       </IconButton>
     </Box>
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexDirection: 'row', gap: 1 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          {editMode ? (
-            <MultiLangTextField
-              name="title"
-              value={tempValues.title}
-              onChange={handleChange}
-              translationValue={langCode ? (tempValues.translations?.[langCode]?.title ?? '') : ''}
-              onTranslationChange={updateTranslation('title', setTempValues)}
-              label={<Trans i18nKey="common.title" />}
-            />
-          ) : (
-            <TitleWithTranslation
-              title={item.title}
-              translation={langCode ? item.translations?.[langCode]?.title : ''}
-              variant="semiBoldMedium"
-              showCopyIcon
-            />
-          )}
-        </Box>
-        {editMode ? (
-          <Box sx={{ mr: theme.direction === 'rtl' ? 'auto' : 'unset', ml: theme.direction === 'ltr' ? 'auto' : 'unset' }}>
-            <IconButton size="small" onClick={handleSaveClick} sx={{ mx: 1 }} color="success" data-testid="items-check-icon">
-              <CheckRoundedIcon fontSize="small" />
-            </IconButton>
-            <IconButton size="small" onClick={handleCancelClick} sx={{ mx: 1 }} color="secondary">
-              <CloseRoundedIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        ) : (
-          <>
-            <IconButton
-              size="small"
-              onClick={handleEditClick}
-              sx={{ mx: 1 }}
-              color={item.questionsCount === 0 ? 'error' : 'success'}
-              data-testid="items-edit-icon"
-            >
-              <EditRoundedIcon fontSize="small" />
-            </IconButton>
-            {setOpenDeleteDialog && (
-              <IconButton
-                size="small"
-                onClick={() => setOpenDeleteDialog({ status: true, id: item.id })}
-                sx={{ mx: 1 }}
-                color="secondary"
-                data-testid="items-delete-icon"
-              >
-                <DeleteRoundedIcon fontSize="small" />
-              </IconButton>
-            )}
-          </>
-        )}
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {editMode ? (
-          <MultiLangTextField
-            name="description"
-            value={tempValues.description}
-            onChange={handleChange}
-            translationValue={langCode ? (tempValues.translations?.[langCode]?.description ?? '') : ''}
-            onTranslationChange={updateTranslation('description', setTempValues)}
-            label={<Trans i18nKey="common.description" />}
-            multiline
-            minRows={2}
-            maxRows={5}
-          />
-        ) : (
-          <TitleWithTranslation
-            title={item.description}
-            translation={langCode ? item.translations?.[langCode]?.description : ''}
-            variant="bodyMedium"
-            showCopyIcon
-          />
-        )}
-        <Box
-          sx={{
-            width: 'fit-content',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            flexDirection: 'column',
-            gap: '0.5rem',
-            textAlign: editMode ? 'end' : 'center',
-          }}
+  ) : (
+    <>
+      <IconButton
+        size="small"
+        onClick={handleEditClick}
+        sx={{ mx: 1 }}
+        color={item.questionsCount === 0 ? 'error' : 'success'}
+        data-testid="items-edit-icon"
+      >
+        <EditRoundedIcon fontSize="small" />
+      </IconButton>
+      {setOpenDeleteDialog && (
+        <IconButton
+          size="small"
+          onClick={() => setOpenDeleteDialog({ status: true, id: item.id })}
+          sx={{ mx: 1 }}
+          color="secondary"
+          data-testid="items-delete-icon"
         >
-          <Typography sx={{ ...theme.typography.labelCondensed, color: '#6C8093', width: '100%' }}>
-            <Trans i18nKey="common.questions" />
-          </Typography>
-          <Box
-            aria-label="questionnaires"
-            sx={{
-              width: '3.75rem',
-              height: '3.75rem',
-              borderRadius: '50%',
-              backgroundColor: item.questionsCount === 0 ? theme.palette.error.main : '#E2E5E9',
-              color: item.questionsCount === 0 ? '#FAD1D8' : '#2B333B',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {item.questionsCount}
-          </Box>
-        </Box>
-      </Box>
+          <DeleteRoundedIcon fontSize="small" />
+        </IconButton>
+      )}
+    </>
+  );
+
+const QuestionsCount = ({ item, theme }: { item: KitDesignListItems; theme: any }) => (
+  <Box
+    sx={{
+      width: 'fit-content',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+      flexDirection: 'column',
+      gap: '0.5rem',
+      textAlign: 'center',
+    }}
+  >
+    <Typography sx={{ ...theme.typography.labelCondensed, color: '#6C8093', width: '100%' }}>
+      <Trans i18nKey="common.questions" />
+    </Typography>
+    <Box
+      aria-label="questionnaires"
+      sx={{
+        width: '3.75rem',
+        height: '3.75rem',
+        borderRadius: '50%',
+        backgroundColor: item.questionsCount === 0 ? theme.palette.error.main : '#E2E5E9',
+        color: item.questionsCount === 0 ? '#FAD1D8' : '#2B333B',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {item.questionsCount}
     </Box>
   </Box>
 );
+
+const SummaryContent = (props: any) => {
+  const { item, index, editMode, tempValues, handleChange, langCode, updateTranslation, theme, handleEditClick, handleSaveClick, handleCancelClick, setOpenDeleteDialog, setTempValues } = props;
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        position: 'relative',
+        pb: '1rem',
+        width: '100%',
+      }}
+      pt={1.5}
+      px={1.5}
+    >
+      <IndexBox index={index} item={item} theme={theme} />
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexDirection: 'row', gap: 1 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <TitleSection {...{ editMode, item, tempValues, handleChange, langCode, updateTranslation, setTempValues }} />
+          </Box>
+          <ActionButtons {...{ editMode, handleEditClick, handleSaveClick, handleCancelClick, item, setOpenDeleteDialog, theme }} />
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <DescriptionSection {...{ editMode, item, tempValues, handleChange, langCode, updateTranslation, setTempValues }} />
+          <QuestionsCount item={item} theme={theme} />
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
 
 const QuestionsSection = ({
                             item,
