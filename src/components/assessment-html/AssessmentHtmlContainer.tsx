@@ -677,9 +677,8 @@ const AssessmentHtmlContainer = () => {
                               >
                                 {t("common.maturityLevels", { lng })}
                               </Typography>
-                              <Grid
-                                item
-                                xs={12}
+                              <Box
+                                display="flex"
                                 sx={{
                                   flexDirection: !isQuickMode
                                     ? "column"
@@ -719,7 +718,7 @@ const AssessmentHtmlContainer = () => {
                                     </Box>
                                   ),
                                 )}
-                              </Grid>
+                              </Box>
                             </Grid>
                           </Grid>
                         </Box>
