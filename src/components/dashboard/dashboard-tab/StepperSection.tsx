@@ -90,122 +90,95 @@ const StepperSection = (props: IStepperSection) => {
 
 const StepBox = (props: IStepBox) => {
   const theme = useTheme();
-
   const { category, metrics, setActiveStep, activeStep } = props;
   const [localStep, setLocalStep] = React.useState(activeStep);
 
-  const questions = category === "questions";
-  const insights = category === "insights";
-  const advices = category === "advices";
-  const report = category === "report";
+  const isCategory = (name: string) => category === name;
+  const questions = isCategory("questions");
+  const insights = isCategory("insights");
+  const advices = isCategory("advices");
+  const report = isCategory("report");
 
   useEffect(() => {
     setLocalStep(activeStep);
   }, [activeStep]);
 
   useEffect(() => {
-    if (questions) {
-      const { answered, total } = metrics;
-      if (answered === total && localStep === 0) {
-        setActiveStep(1);
-      }
+    const stepProgressMap: Record<string, () => boolean> = {
+      questions: () => metrics.answered === metrics.total && localStep === 0,
+      insights: () => {
+        const { expected, notGenerated } = metrics;
+        const result = expected - notGenerated;
+        return expected === result && localStep === 1;
+      },
+      advices: () => metrics.total !== 0 && localStep === 2,
+      report: () => {
+        const { providedMetadata, totalMetadata, unpublished } = metrics;
+        return (
+          providedMetadata === totalMetadata && !unpublished && localStep === 3
+        );
+      },
+    };
+    if (stepProgressMap[category]?.()) {
+      setActiveStep(localStep + 1);
     }
-
-    if (insights) {
-      const { expected, notGenerated } = metrics;
-      const result = expected - notGenerated;
-      if (expected === result && localStep === 1) {
-        setActiveStep(2);
-      }
-    }
-
-    if (advices) {
-      const { total } = metrics;
-      if (total !== 0 && localStep === 2) {
-        setActiveStep(3);
-      }
-    }
-
-    if (report) {
-      const { providedMetadata, totalMetadata, unpublished } = metrics;
-      if (
-        providedMetadata === totalMetadata &&
-        !unpublished &&
-        localStep === 3
-      ) {
-        setActiveStep(4);
-      }
-    }
-  }, [metrics, localStep, setActiveStep, questions, insights, advices, report]);
-
-  useEffect(() => {
-    setLocalStep(activeStep);
-  }, [activeStep]);
+  }, [metrics, localStep, setActiveStep, category]);
 
   const calcOfIssues = () => {
-    if (questions) {
-      return Object.entries(metrics)
-        .filter(
-          ([key]) => key !== "total" && key !== "answered" && metrics[key],
-        )
-        .reduce((acc, [_, value]) => acc + value, 0);
-    }
-    if (insights) {
-      return Object.entries(metrics)
-        .filter(([key]) => key !== "expected" && metrics[key])
-        .reduce((acc, [_, value]) => acc + value, 0);
-    }
+    const filters: Record<string, (key: string) => boolean> = {
+      questions: (key) => key !== "total" && key !== "answered",
+      insights: (key) => key !== "expected",
+      advices: () => true,
+      report: (key) => key !== "totalMetadata" && key !== "providedMetadata",
+    };
+
+    const filterFn = filters[category] || (() => false);
     if (advices) {
       return Object.keys(metrics).filter((item) => item).length;
     }
-    if (report) {
-      return Object.entries(metrics)
-        .filter(
-          ([key]) =>
-            key !== "totalMetadata" &&
-            key !== "providedMetadata" &&
-            metrics[key],
-        )
-        .reduce((acc, [_, value]) => acc + value, 0);
-    }
-    return 0;
+    return Object.entries(metrics)
+      .filter(([key]) => filterFn(key) && metrics[key])
+      .reduce((acc, [, value]) => acc + value, 0);
   };
 
-  const issuesTag = (text: string) => (
-    <Box
-      sx={{ textDecoration: "none", cursor: "pointer" }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        document
-          .querySelector(`#${text}`)
-          ?.scrollIntoView({ behavior: "smooth" });
-      }}
-    >
-      <Chip
-        label={
-          <Box sx={{ ...styles.centerVH, gap: 1 }}>
-            <Typography variant="labelMedium">
-              {`  ${calcOfIssues()}  `}
-            </Typography>
-            <Typography variant="labelSmall">
-              {t(
-                (calcOfIssues() ?? 0) > 1 ? "common.issues" : "common.issue",
-              ).toUpperCase()}
-            </Typography>
-          </Box>
-        }
-        size="small"
-        sx={{
-          ...theme.typography.labelMedium,
-          color: "#B8144B",
-          background: "#FCE8EF",
-          direction: theme.direction,
-          cursor: "pointer",
-        }}
-      />
-    </Box>
-  );
+  const issuesTag = (text: string) => {
+    const count = calcOfIssues();
+    return (
+      count > 0 && (
+        <Box
+          sx={{ textDecoration: "none", cursor: "pointer" }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            document
+              .querySelector(`#${text}`)
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          <Chip
+            label={
+              <Box sx={{ ...styles.centerVH, gap: 1 }}>
+                <Typography variant="labelMedium">{count}</Typography>
+                <Typography variant="labelSmall">
+                  {t(
+                    count > 1 ? "common.issues" : "common.issue",
+                  ).toUpperCase()}
+                </Typography>
+              </Box>
+            }
+            size="small"
+            sx={{
+              ...theme.typography.labelMedium,
+              color: "#B8144B",
+              background: "#FCE8EF",
+              direction: theme.direction,
+              cursor: "pointer",
+            }}
+          />
+        </Box>
+      )
+    );
+  };
 
   const currentTag = (
     <Chip
@@ -218,7 +191,6 @@ const StepBox = (props: IStepBox) => {
       }}
     />
   );
-
   const completedTag = (
     <Chip
       label={t("common.completed") + "!"}
@@ -231,15 +203,10 @@ const StepBox = (props: IStepBox) => {
     />
   );
 
-  let content = null;
-  let completed = false;
-
-  if (questions) {
+  const renderQuestions = () => {
     const { answered, total } = metrics;
-    completed = answered === total;
-    const hasIssues = calcOfIssues() > 0;
-
-    content = (
+    const completed = answered === total;
+    return (
       <Box
         sx={{
           display: "flex",
@@ -256,12 +223,13 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
-            {`${answered} / ${total} `}
-          </Typography>
+          <Typography
+            sx={{ direction: "ltr" }}
+            variant="headlineLarge"
+          >{`${answered} / ${total} `}</Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed ? completedTag : localStep === 0 && currentTag}
-            {hasIssues && issuesTag("questions")}
+            {issuesTag("questions")}
           </Box>
         </Box>
         <Box
@@ -281,15 +249,14 @@ const StepBox = (props: IStepBox) => {
         </Box>
       </Box>
     );
-  }
+  };
 
-  if (insights) {
+  const renderInsights = () => {
     const { unapproved, expired, notGenerated, expected } = metrics;
     const result = expected - notGenerated;
-    completed = localStep >= 1 && expected === result;
+    const completed = localStep >= 1 && expected === result;
     const hasIssues = unapproved || expired || notGenerated;
-
-    content = (
+    return (
       <Box
         sx={{
           display: "flex",
@@ -300,13 +267,14 @@ const StepBox = (props: IStepBox) => {
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
-            {`${result} / ${expected}`}
-          </Typography>
+          <Typography
+            sx={{ direction: "ltr" }}
+            variant="headlineLarge"
+          >{`${result} / ${expected}`}</Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
-            {!completed && localStep === 1 ? currentTag : ""}
-            {hasIssues ? issuesTag("insights") : ""}
+            {!completed && localStep === 1 && currentTag}
+            {hasIssues && issuesTag("insights")}
           </Box>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
@@ -319,14 +287,12 @@ const StepBox = (props: IStepBox) => {
         </Box>
       </Box>
     );
-  }
-
-  if (advices) {
+  };
+  const renderAdvices = () => {
     const { total } = metrics;
-    completed = localStep >= 2 && total !== 0;
+    const completed = localStep >= 2 && total !== 0;
     const hasIssues = total === 0;
-
-    content = (
+    return (
       <Box
         sx={{
           display: "flex",
@@ -338,26 +304,23 @@ const StepBox = (props: IStepBox) => {
       >
         <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
           <Typography variant="headlineLarge">{total}</Typography>
-          {(completed || hasIssues) && (
-            <Box sx={{ ...styles.centerCVH, gap: 1 }}>
-              {completed && completedTag}
-              {!completed && localStep === 2 && currentTag}
-              {hasIssues && !completed && issuesTag("advices")}
-            </Box>
-          )}
+          <Box sx={{ ...styles.centerCVH, gap: 1 }}>
+            {completed && completedTag}
+            {!completed && localStep === 2 && currentTag}
+            {hasIssues && !completed && issuesTag("advices")}
+          </Box>
         </Box>
       </Box>
     );
-  }
+  };
 
-  if (report) {
+  const renderReport = () => {
     const { unprovidedMetadata, unpublished, providedMetadata, totalMetadata } =
       metrics;
-    completed =
+    const completed =
       localStep >= 3 && providedMetadata === totalMetadata && !unpublished;
     const hasIssues = unprovidedMetadata >= 1 || unpublished;
-
-    content = (
+    return (
       <Box
         sx={{
           display: "flex",
@@ -374,9 +337,10 @@ const StepBox = (props: IStepBox) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
-            {`${providedMetadata} / ${totalMetadata} `}
-          </Typography>
+          <Typography
+            sx={{ direction: "ltr" }}
+            variant="headlineLarge"
+          >{`${providedMetadata} / ${totalMetadata} `}</Typography>
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && localStep === 3 && currentTag}
@@ -385,20 +349,34 @@ const StepBox = (props: IStepBox) => {
         </Box>
       </Box>
     );
-  }
+  };
+
+  const content = questions
+    ? renderQuestions()
+    : insights
+      ? renderInsights()
+      : advices
+        ? renderAdvices()
+        : renderReport();
+
+  const titleMap: Record<string, string> = {
+    questions: "dashboard.answeringQuestionsTitle",
+    insights: "dashboard.submittingInsights",
+    advices: "dashboard.providingAdvice",
+    report: "dashboard.preparingReport",
+  };
+
+  const linkMap: Record<string, string> = {
+    questions: "../questionnaires/",
+    insights: "../insights",
+    advices: "../advice",
+    report: "../report",
+  };
 
   return (
     <Grid
       component={Link}
-      to={
-        questions
-          ? "../questionnaires/"
-          : insights
-            ? "../insights"
-            : advices
-              ? "../advice"
-              : "../report"
-      }
+      to={linkMap[category]}
       item
       md={3}
       sx={{
@@ -420,32 +398,11 @@ const StepBox = (props: IStepBox) => {
     >
       <Typography
         variant="semiBoldLarge"
-        sx={{
-          color: "#6C8093",
-          textAlign: "center",
-          mb: "36px",
-        }}
+        sx={{ color: "#6C8093", mb: "36px", textAlign: "center" }}
       >
-        {questions && (
-          <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="dashboard.answeringQuestionsTitle" />
-          </Typography>
-        )}
-        {insights && (
-          <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="dashboard.submittingInsights" />
-          </Typography>
-        )}
-        {advices && (
-          <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="dashboard.providingAdvice" />
-          </Typography>
-        )}
-        {report && (
-          <Typography variant="semiBoldXLarge">
-            <Trans i18nKey="dashboard.preparingReport" />
-          </Typography>
-        )}
+        <Typography variant="semiBoldXLarge">
+          <Trans i18nKey={titleMap[category]} />
+        </Typography>
       </Typography>
       {content}
     </Grid>

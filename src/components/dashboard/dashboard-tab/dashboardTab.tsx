@@ -60,39 +60,26 @@ const DashboardTab = () => {
     }));
 
     updatedData.forEach(
-      (item: { category: string; metrics: { [p: string]: any } }) => {
-        if (Object.keys(item.metrics).length > 0) {
-          item.metrics.name = item.category;
-          if (activeStep == 0) {
-            if (item.category == "questions" && item.metrics.unanswered) {
-              todoData.now.push(item.metrics);
-            } else {
-              todoData.next.push(item.metrics);
-            }
-          } else if (activeStep == 1) {
-            if (
-              (item.category == "insights" && item.metrics.notGenerated) ||
-              item.category == "questions"
-            ) {
-              todoData.now.push(item.metrics);
-            } else {
-              todoData.next.push(item.metrics);
-            }
-          } else if (activeStep == 2) {
-            if (
-              item.category == "advices" ||
-              item.category == "insights" ||
-              item.category == "questions"
-            ) {
-              todoData.now.push(item.metrics);
-            } else {
-              todoData.next.push(item.metrics);
-            }
-          } else {
-            todoData.now.push(item.metrics);
-          }
-        }
-      },
+      (item: { category: string; metrics: Record<string, any> }) => {
+        if (Object.keys(item.metrics).length === 0) return;
+
+        item.metrics.name = item.category;
+
+        const stepConditions: Record<
+          number,
+          (cat: string, metrics: Record<string, any>) => boolean
+        > = {
+          0: (cat, m) => cat === "questions" && m.unanswered,
+          1: (cat, m) =>
+            (cat === "insights" && m.notGenerated) || cat === "questions",
+          2: (cat) => ["advices", "insights", "questions"].includes(cat),
+        };
+
+        const isNow =
+          stepConditions[activeStep]?.(item.category, item.metrics) ?? true;
+
+        (isNow ? todoData.now : todoData.next).push(item.metrics);
+      }
     );
 
     setTodoBoxData(todoData);
