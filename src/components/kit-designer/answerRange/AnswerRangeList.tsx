@@ -220,15 +220,29 @@ const ListOfItems = ({
 
   const theme = useTheme();
 
+  function getSummaryBg(isEditing: boolean, hasNoQuestions: boolean) {
+    if (isEditing) return "#F3F5F6";
+    if (hasNoQuestions) return alpha(theme.palette.error.main, 0.04);
+    return "#fff";
+  }
+  function getExpandedBg(hasNoQuestions: boolean) {
+    if (hasNoQuestions) return alpha(theme.palette.error.main, 0.08);
+    return "#F3F5F6";
+  }
+  function getDetailsPy() {
+    if(questionData.length != 0) return "20px"
+    return "unset"
+  }
+
   return (
     <>
       {items?.map((item: any, index: number) => {
         const isEditing = editMode === item.id;
         const hasNoQuestions = item.questionsCount == 0;
-        const summaryBg = isEditing ? "#F3F5F6" : hasNoQuestions ? alpha(theme.palette.error.main, 0.04) : "#fff";
-        const expandedBg = hasNoQuestions ? alpha(theme.palette.error.main, 0.08) : "#F3F5F6";
+        const summaryBg = getSummaryBg(isEditing, hasNoQuestions);
+        const expandedBg =  getExpandedBg(hasNoQuestions);
         const borderRadius = questionData.length != 0 ? "8px" : "8px 8px 0 0";
-        const detailsPy = questionData.length != 0 ? "20px" : "unset";
+        const detailsPy = getDetailsPy();
         const hasOptions = item?.answerOptions?.length >= 1;
         const showForm = showNewAnswerRangeForm[item.id];
 
@@ -317,7 +331,7 @@ const ListOfItems = ({
           </>
         );
 
-        const headerElement = hasOptions ? (
+        const headerElement = hasOptions && (
           <Box
             sx={{
               width: "100%",
@@ -352,7 +366,7 @@ const ListOfItems = ({
               <Trans i18nKey="common.value" />
             </Box>
           </Box>
-        ) : null;
+        );
 
         const optionsList = (
           <DragDropContext onDragEnd={handleQuestionDragEnd}>
@@ -395,7 +409,7 @@ const ListOfItems = ({
           </DragDropContext>
         );
 
-        const addButton = !showForm ? (
+        const addButton = !showForm && (
           <Box
             sx={{
               display: "flex",
@@ -413,16 +427,16 @@ const ListOfItems = ({
               <Trans i18nKey="kitDesigner.newOption" />
             </Button>
           </Box>
-        ) : null;
+        );
 
-        const emptyState = !showForm ? (
+        const emptyState = !showForm && (
           <EmptyStateOptions
             btnTitle="kitDesigner.addFirstOption"
             title="kitDesigner.noOptionHere"
             SubTitle="kitDesigner.noOptionAtTheMoment"
             onAddNewRow={() => handleAddNewOptionClick(item.id)}
           />
-        ) : null;
+        );
 
         const contentElement = hasOptions ? (
           <>
@@ -433,7 +447,7 @@ const ListOfItems = ({
           emptyState
         );
 
-        const newFormElement = showForm ? (
+        const newFormElement = showForm && (
           <Box>
             <OptionForm
               newItem={newOptions}
@@ -443,7 +457,7 @@ const ListOfItems = ({
               handleCancel={() => handleCancel(item.id)}
             />
           </Box>
-        ) : null;
+        );
 
         return (
           <Box
