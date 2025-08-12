@@ -50,8 +50,8 @@ const avatarStyles = {
 };
 
 const chipStyles = {
-  marginRight: document.dir === "ltr" ? 1 : "unset",
-  marginLeft: document.dir === "rtl" ? 1 : "unset",
+  marginInlineStart: "unset",
+  marginInlineEnd: 1,
   opacity: 0.7,
   color: "#9A003C",
   borderColor: "#9A003C",
