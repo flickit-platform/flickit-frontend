@@ -222,319 +222,334 @@ const ListOfItems = ({
 
   return (
     <>
-      {items?.map((item: any, index: number) => (
-        <Box
-          key={index}
-          mt={1.5}
-          sx={{
-            backgroundColor: editMode === item.id ? "#F3F5F6" : "#fff",
-            borderRadius: "8px",
-            border: "0.3px solid #73808c30",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Accordion
-            onChange={handelChangeAccordion(item)}
-            expanded={expanded === item?.id}
-            sx={{
-              boxShadow: "none",
-              "&:before": {
-                display: "none",
+      {items?.map((item: any, index: number) => {
+        const isEditing = editMode === item.id;
+        const hasNoQuestions = item.questionsCount == 0;
+        const summaryBg = isEditing ? "#F3F5F6" : hasNoQuestions ? alpha(theme.palette.error.main, 0.04) : "#fff";
+        const expandedBg = hasNoQuestions ? alpha(theme.palette.error.main, 0.08) : "#F3F5F6";
+        const borderRadius = questionData.length != 0 ? "8px" : "8px 8px 0 0";
+        const detailsPy = questionData.length != 0 ? "20px" : "unset";
+        const hasOptions = item?.answerOptions?.length >= 1;
+        const showForm = showNewAnswerRangeForm[item.id];
+
+        const titleElement = isEditing ? (
+          <MultiLangTextField
+            name="title"
+            value={tempValues.title}
+            onChange={(e) => handelChange(e)}
+            inputProps={{
+              style: {
+                fontFamily: languageDetector(tempValues.title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
               },
             }}
+            translationValue={
+              langCode
+                ? (tempValues.translations?.[langCode]?.title ?? "")
+                : ""
+            }
+            onTranslationChange={updateTranslation(
+              "title",
+              setTempValues,
+            )}
+            label={<Trans i18nKey="common.title" />}
+          />
+        ) : (
+          <TitleWithTranslation
+            title={item.title}
+            translation={
+              langCode ? item.translations?.[langCode]?.title : ""
+            }
+            variant="semiBoldMedium"
+            showCopyIcon
+          />
+        );
+
+        const iconsElement = isEditing ? (
+          <Box
+            sx={{
+              display: "flex",
+              mr: theme.direction == "rtl" ? "auto" : "unset",
+              ml: theme.direction == "ltr" ? "auto" : "unset",
+            }}
           >
-            <AccordionSummary
-              data-testid="accordion-summary-answer-range"
+            <IconButton
+              size="small"
+              onClick={(e) => handleSaveClick(e, item)}
+              sx={{ mx: 1 }}
+              color="success"
+              data-testid="check-icon-id"
+            >
+              <CheckRoundedIcon fontSize="small" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={handleCancelClick}
+              sx={{ mx: 1 }}
+              color="secondary"
+            >
+              <CloseRoundedIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        ) : (
+          <>
+            <IconButton
+              size="small"
+              onClick={(e) => handleEditClick(e, item)}
+              sx={{ mx: 1 }}
+              color={hasNoQuestions ? "error" : "success"}
+              data-testid="edit-icon-id"
+            >
+              <EditRoundedIcon fontSize="small" />
+            </IconButton>
+            {onDelete && (
+              <IconButton
+                size="small"
+                onClick={() => onDelete(item.id)}
+                sx={{ mx: 1 }}
+                color="secondary"
+                data-testid="delete-icon-id"
+              >
+                <DeleteRoundedIcon fontSize="small" />
+              </IconButton>
+            )}
+          </>
+        );
+
+        const headerElement = hasOptions ? (
+          <Box
+            sx={{
+              width: "100%",
+              height: 36,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              px: "1rem",
+              color: "#6C8093",
+              ...theme.typography.semiBoldMedium,
+            }}
+          >
+            <Box
               sx={{
-                backgroundColor:
-                  editMode === item.id
-                    ? "#F3F5F6"
-                    : item.questionsCount == 0
-                      ? alpha(theme.palette.error.main, 0.04)
-                      : "#fff",
-                borderRadius: questionData.length != 0 ? "8px" : "8px 8px 0 0",
-                border: "0.3px solid #73808c30",
-                display: "flex",
-                position: "relative",
-                margin: 0,
-                padding: 0,
-                "&.Mui-expanded": {
-                  backgroundColor:
-                    item.questionsCount == 0
-                      ? alpha(theme.palette.error.main, 0.08)
-                      : "#F3F5F6",
-                },
-                "& .MuiAccordionSummary-content": {
-                  margin: 0,
-                },
-                "& .MuiAccordionSummary-content.Mui-expanded": {
-                  margin: 0,
+                width: { xs: "65px", md: "95px" },
+                textAlign: "center",
+              }}
+              mr={2}
+              px={0.2}
+            >
+              <Trans i18nKey="common.index" />
+            </Box>
+            <Box sx={{ width: { xs: "50%", md: "60%" } }}>
+              <Trans i18nKey="common.title" />
+            </Box>
+            <Box
+              sx={{
+                width: { xs: "20%", md: "10%" },
+                textAlign: "center",
+              }}
+            >
+              <Trans i18nKey="common.value" />
+            </Box>
+          </Box>
+        ) : null;
+
+        const optionsList = (
+          <DragDropContext onDragEnd={handleQuestionDragEnd}>
+            <Droppable droppableId={`questions-${item.id}`}>
+              {(provided) => (
+                <Box
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {item.answerOptions?.map(
+                    (answerOption: any, index: number) => (
+                      <Draggable
+                        key={answerOption.id}
+                        draggableId={answerOption.id.toString()}
+                        index={index}
+                        isDragDisabled={true}
+                      >
+                        {(provided) => (
+                          <Box
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            sx={{ marginBottom: 1 }}
+                          >
+                            <OptionContain
+                              fetchQuery={fetchQuery}
+                              key={answerOption.id}
+                              answerOption={answerOption}
+                              setChangeData={setChangeData}
+                            />
+                          </Box>
+                        )}
+                      </Draggable>
+                    ),
+                  )}
+                  {provided.placeholder}
+                </Box>
+              )}
+            </Droppable>
+          </DragDropContext>
+        );
+
+        const addButton = !showForm ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+            }}
+          >
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              onClick={() => handleAddNewOptionClick(item.id)}
+            >
+              <Add fontSize="small" />
+              <Trans i18nKey="kitDesigner.newOption" />
+            </Button>
+          </Box>
+        ) : null;
+
+        const emptyState = !showForm ? (
+          <EmptyStateOptions
+            btnTitle="kitDesigner.addFirstOption"
+            title="kitDesigner.noOptionHere"
+            SubTitle="kitDesigner.noOptionAtTheMoment"
+            onAddNewRow={() => handleAddNewOptionClick(item.id)}
+          />
+        ) : null;
+
+        const contentElement = hasOptions ? (
+          <>
+            {optionsList}
+            {addButton}
+          </>
+        ) : (
+          emptyState
+        );
+
+        const newFormElement = showForm ? (
+          <Box>
+            <OptionForm
+              newItem={newOptions}
+              handleInputChange={handleInputChange}
+              setNewOptions={setNewOptions}
+              handleSave={() => handleSave(item.id)}
+              handleCancel={() => handleCancel(item.id)}
+            />
+          </Box>
+        ) : null;
+
+        return (
+          <Box
+            key={index}
+            mt={1.5}
+            sx={{
+              backgroundColor: isEditing ? "#F3F5F6" : "#fff",
+              borderRadius: "8px",
+              border: "0.3px solid #73808c30",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Accordion
+              onChange={handelChangeAccordion(item)}
+              expanded={expanded === item?.id}
+              sx={{
+                boxShadow: "none",
+                "&:before": {
+                  display: "none",
                 },
               }}
             >
-              <Box
+              <AccordionSummary
+                data-testid="accordion-summary-answer-range"
                 sx={{
+                  backgroundColor: summaryBg,
+                  borderRadius: borderRadius,
+                  border: "0.3px solid #73808c30",
                   display: "flex",
-                  alignItems: "flex-start",
                   position: "relative",
-                  pb: "1rem",
-                  width: "100%",
+                  margin: 0,
+                  padding: 0,
+                  "&.Mui-expanded": {
+                    backgroundColor: expandedBg,
+                  },
+                  "& .MuiAccordionSummary-content": {
+                    margin: 0,
+                  },
+                  "& .MuiAccordionSummary-content.Mui-expanded": {
+                    margin: 0,
+                  },
                 }}
-                pt={1.5}
-                px={1.5}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    position: "relative",
+                    pb: "1rem",
                     width: "100%",
                   }}
+                  pt={1.5}
+                  px={1.5}
                 >
-                  {/* Title and icons in the same row */}
                   <Box
                     sx={{
                       display: "flex",
-                      alignItems: "center",
                       justifyContent: "space-between",
                       width: "100%",
                     }}
                   >
-                    {editMode === item.id ? (
-                      <MultiLangTextField
-                        name="title"
-                        value={tempValues.title}
-                        onChange={(e) => handelChange(e)}
-                        inputProps={{
-                          style: {
-                            fontFamily: languageDetector(tempValues.title)
-                              ? farsiFontFamily
-                              : primaryFontFamily,
-                          },
-                        }}
-                        translationValue={
-                          langCode
-                            ? (tempValues.translations?.[langCode]?.title ?? "")
-                            : ""
-                        }
-                        onTranslationChange={updateTranslation(
-                          "title",
-                          setTempValues,
-                        )}
-                        label={<Trans i18nKey="common.title" />}
-                      />
-                    ) : (
-                      <TitleWithTranslation
-                        title={item.title}
-                        translation={
-                          langCode ? item.translations?.[langCode]?.title : ""
-                        }
-                        variant="semiBoldMedium"
-                        showCopyIcon
-                      />
-                    )}
-                    <Box sx={{ width: "60%", px: 3 }}>
-                      <Chip
-                        label={
-                          t("common.options") + " " + item.answerOptions.length
-                        }
-                        size="small"
-                        sx={{
-                          backgroundColor: "#EAF2FB",
-                          fontSize: 14,
-                          py: 1.4,
-                        }}
-                      />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                    >
+                      {titleElement}
+                      <Box sx={{ width: "60%", px: 3 }}>
+                        <Chip
+                          label={
+                            t("common.options") + " " + item.answerOptions.length
+                          }
+                          size="small"
+                          sx={{
+                            backgroundColor: "#EAF2FB",
+                            fontSize: 14,
+                            py: 1.4,
+                          }}
+                        />
+                      </Box>
+                      {iconsElement}
                     </Box>
-                    {/* Icons (Edit/Delete or Check/Close) */}
-                    {editMode === item.id ? (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          mr: theme.direction == "rtl" ? "auto" : "unset",
-                          ml: theme.direction == "ltr" ? "auto" : "unset",
-                        }}
-                      >
-                        <IconButton
-                          size="small"
-                          onClick={(e) => handleSaveClick(e, item)}
-                          sx={{ mx: 1 }}
-                          color="success"
-                          data-testid="check-icon-id"
-                        >
-                          <CheckRoundedIcon fontSize="small" />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          onClick={handleCancelClick}
-                          sx={{ mx: 1 }}
-                          color="secondary"
-                        >
-                          <CloseRoundedIcon fontSize="small" />
-                        </IconButton>
-                      </Box>
-                    ) : (
-                      <>
-                        <IconButton
-                          size="small"
-                          onClick={(e) => handleEditClick(e, item)}
-                          sx={{ mx: 1 }}
-                          color={item.questionsCount == 0 ? "error" : "success"}
-                          data-testid="edit-icon-id"
-                        >
-                          <EditRoundedIcon fontSize="small" />
-                        </IconButton>
-                        {onDelete && (
-                          <IconButton
-                            size="small"
-                            onClick={() => onDelete(item.id)}
-                            sx={{ mx: 1 }}
-                            color="secondary"
-                            data-testid="delete-icon-id"
-                          >
-                            <DeleteRoundedIcon fontSize="small" />
-                          </IconButton>
-                        )}
-                      </>
-                    )}
                   </Box>
                 </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails
-              data-testid="accordion-details-answer-range"
-              sx={{
-                margin: 0,
-                padding: 0,
-                py: questionData.length != 0 ? "20px" : "unset",
-              }}
-            >
-              {item?.answerOptions?.length >= 1 && (
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: 36,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    px: "1rem",
-                    color: "#6C8093",
-                    ...theme.typography.semiBoldMedium,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: { xs: "65px", md: "95px" },
-                      textAlign: "center",
-                    }}
-                    mr={2}
-                    px={0.2}
-                  >
-                    <Trans i18nKey="common.index" />
-                  </Box>
-                  <Box sx={{ width: { xs: "50%", md: "60%" } }}>
-                    <Trans i18nKey="common.title" />
-                  </Box>
-                  <Box
-                    sx={{
-                      width: { xs: "20%", md: "10%" },
-                      textAlign: "center",
-                    }}
-                  >
-                    <Trans i18nKey="common.value" />
-                  </Box>
-                </Box>
-              )}
-              <Divider />
-              <>
-                {item?.answerOptions?.length >= 1 ? (
-                  <>
-                    <DragDropContext onDragEnd={handleQuestionDragEnd}>
-                      <Droppable droppableId={`questions-${item.id}`}>
-                        {(provided) => (
-                          <Box
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                          >
-                            {item.answerOptions?.map(
-                              (answerOption: any, index: number) => (
-                                <Draggable
-                                  key={answerOption.id}
-                                  draggableId={answerOption.id.toString()}
-                                  index={index}
-                                  isDragDisabled={true}
-                                >
-                                  {(provided) => (
-                                    <Box
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      sx={{ marginBottom: 1 }}
-                                    >
-                                      <OptionContain
-                                        fetchQuery={fetchQuery}
-                                        key={answerOption.id}
-                                        answerOption={answerOption}
-                                        setChangeData={setChangeData}
-                                      />
-                                    </Box>
-                                  )}
-                                </Draggable>
-                              ),
-                            )}
-                            {provided.placeholder}
-                          </Box>
-                        )}
-                      </Droppable>
-                    </DragDropContext>
-                    {!showNewAnswerRangeForm[item.id] && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          mt: 2,
-                        }}
-                      >
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => handleAddNewOptionClick(item.id)}
-                        >
-                          <Add fontSize="small" />
-                          <Trans i18nKey="kitDesigner.newOption" />
-                        </Button>
-                      </Box>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {!showNewAnswerRangeForm[item.id] && (
-                      <EmptyStateOptions
-                        btnTitle="kitDesigner.addFirstOption"
-                        title="kitDesigner.noOptionHere"
-                        SubTitle="kitDesigner.noOptionAtTheMoment"
-                        onAddNewRow={() => handleAddNewOptionClick(item.id)}
-                      />
-                    )}
-                  </>
-                )}
-              </>
-              {showNewAnswerRangeForm[item.id] && (
-                <Box>
-                  <OptionForm
-                    newItem={newOptions}
-                    handleInputChange={handleInputChange}
-                    setNewOptions={setNewOptions}
-                    handleSave={() => handleSave(item.id)}
-                    handleCancel={() => handleCancel(item.id)}
-                  />
-                </Box>
-              )}
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-      ))}
+              </AccordionSummary>
+              <AccordionDetails
+                data-testid="accordion-details-answer-range"
+                sx={{
+                  margin: 0,
+                  padding: 0,
+                  py: detailsPy,
+                }}
+              >
+                {headerElement}
+                <Divider />
+                {contentElement}
+                {newFormElement}
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        );
+      })}
     </>
   );
 };
