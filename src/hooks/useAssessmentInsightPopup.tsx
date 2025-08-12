@@ -168,7 +168,7 @@ const useInsightPopup = ({
       primaryAction: getPrimaryAction(),
       secondaryAction: t("assessment.approveInsight"),
       confirmMessage: getConfirmMessage(),
-      confirmButtonLabel: t("assessment.regenerate"),
+      confirmButtonLabel: t("common.regenerate"),
       cancelButtonLabel: t("assessment.no"),
     };
   }, [insight, isExpired, isApproved, getButtonLabelText]);
