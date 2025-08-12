@@ -494,16 +494,6 @@ export const AssessmentSettingMemberBox = (props: {
       showToast(err);
     }
   };
-  
-  const labelDisplayedRows = ( from: string, to: string, count: number ): string =>{
-    let countLabel: string | number = ""
-    if(count !== -1){
-      countLabel = count
-    }else {
-      countLabel = `${t("common.moreThan")} ${to}`
-    }
-    return `${from}-${to} ${t("common.of")} ${countLabel}`
-  }
 
   function getLabelDisplayedRows(t: any) {
     return ({ from, to, count }: { from: number; to: number; count: number }) => {
@@ -516,7 +506,6 @@ export const AssessmentSettingMemberBox = (props: {
       return `${from}-${to} ${t("common.of")} ${countLabel}`;
     };
   }
-
 
   const ITEM_HEIGHT = 59;
   const ITEM_PADDING_TOP = 8;
