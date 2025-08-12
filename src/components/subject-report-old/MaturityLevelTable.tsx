@@ -367,7 +367,7 @@ const MaturityLevelTable = ({
     <TableHead
       sx={{
         ...theme.typography.semiBoldMedium,
-        backgroundColor: "grey[100]",
+        backgroundColor: "grey.100",
         width: "100%",
       }}
     >
@@ -391,7 +391,7 @@ const MaturityLevelTable = ({
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                boxShadow: `inset 0 1px 0 0 ${theme.palette.outline?.variant}, inset 0 -1px 0 0 ${theme.palette.outline?.variant}`,
+                boxShadow: `inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1`,
                 "&:first-child": {
                   borderEndStartRadius: "8px !important",
                   borderStartStartRadius: "8px !important",

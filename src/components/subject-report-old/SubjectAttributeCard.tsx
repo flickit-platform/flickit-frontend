@@ -341,12 +341,12 @@ const SubjectAttributeCard = (props: any) => {
                 reloadQuery={reloadQuery}
               />
             )}
-            <Box display={{ xs: "none", sm: "block" }}>
+            <Box display={{ xs: "none", sm: "block" }} width="100%">
               <Tabs
                 value={topTab}
                 onChange={handleTopTabChange}
                 sx={{
-                  color: "rgba(0, 0, 0, 0.6)", // Default text color
+                  color: "rgba(0, 0, 0, 0.6)", 
 
                   "& .Mui-selected": {
                     color: "primary.main !important",

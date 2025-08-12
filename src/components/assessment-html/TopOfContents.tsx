@@ -328,11 +328,11 @@ export const AssessmentTOC = ({
             sx={{
               mt: 2,
               width: "100%",
-              background: `linear-gradient(45deg, ${theme.palette.primary.dark}, #2D80D2,  ${theme.palette.primary.dark})`,
+              background: `linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)`,
               color: "background.containerLowest",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               "&:hover": {
-                background: `linear-gradient(45deg, ${theme.palette.primary.dark}, #2D80D2,  ${theme.palette.primary.dark})`,
+                background: `linear-gradient(45deg, $#1B4D7E, #2D80D2, #1B4D7E)`,
                 opacity: 0.9,
               },
               fontFamily: "inherit",
