@@ -1,10 +1,8 @@
-import { useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { styles } from "@styles";
 
 const LoadingSkeletonOfQuestions = () => {
-  const theme = useTheme();
 
   return (
     <Box py={3}>
@@ -22,8 +20,8 @@ const LoadingSkeletonOfQuestions = () => {
           <Skeleton
             width="110px"
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: 1,
             }}
             height="80%"
           />

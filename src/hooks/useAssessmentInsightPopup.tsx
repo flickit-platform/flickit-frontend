@@ -75,20 +75,20 @@ const useInsightPopup = ({
       return {
         muiColor: "primary",
         main: theme.palette.primary.main,
-        light: theme.palette.primary.light,
+        light: theme.palette.primary.states.hover,
       };
     }
     if (isApproved && !isExpired) {
       return {
         muiColor: "success",
         main: theme.palette.success.main,
-        light: theme.palette.success.light,
+        light: theme.palette.success.states.hover,
       };
     }
     return {
       muiColor: "error",
       main: theme.palette.error.main,
-      light: theme.palette.error.light,
+      light: theme.palette.error.states.hover,
     };
   }, [insight, isApproved, isExpired, theme]);
 

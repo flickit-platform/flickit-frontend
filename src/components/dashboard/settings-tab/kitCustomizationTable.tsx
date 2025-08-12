@@ -153,7 +153,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
           "& .MuiFormLabel-root": {
             fontSize: 14,
           },
-          background: "#fff",
+          bgcolor: "background.containerLowest",
         }}
       />
     );
@@ -179,7 +179,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
           {subjects?.map((subject, index) => (
             <React.Fragment key={subject.id}>
               <TableRow
-                sx={{ background: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
+                sx={{ bgcolor: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
               >
                 <TableCell>
                   <Typography variant="semiBoldLarge">{index + 1}</Typography>
@@ -290,7 +290,7 @@ const KitCustomizationTable: React.FC<SubjectTableProps> = ({
                         )?.weight &&
                           !attribute.weight.customValue && (
                             <Box>
-                            (<Trans i18nKey="common.default" />)
+                              (<Trans i18nKey="common.default" />)
                             </Box>
                           )}
                       </Box>

@@ -21,7 +21,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -31,7 +30,6 @@ interface IAssessmentCEFromDialogProps extends DialogProps {
 }
 
 const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
-  const theme = useTheme()
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedTitle, setSubmittedTitle] = useState("");
@@ -173,8 +171,8 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
         <>
           <NoteAddRoundedIcon
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineEnd: 1,
+              marginInlineStart: "unset",
             }}
           />
           {type === "update" ? (
@@ -223,7 +221,9 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               {" "}
               <AutocompleteAsyncField
                 name="language"
-                label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
+                label={
+                  <Trans i18nKey="assessment.assessmentAndReportLanguage" />
+                }
                 options={languages}
                 data-cy="language"
                 disabled={languages.length === 1}
@@ -247,7 +247,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
         </FormProviderWithForm>
       ) : (
         <FormProviderWithForm formMethods={formMethods}>
-          <Box sx={{ ...styles.centerCVH, textAlign: "center" }}>
+          <Box textAlign="center" sx={{ ...styles.centerCVH }}>
             <CheckmarkGif />
             <Typography variant="titleLarge">
               <Trans

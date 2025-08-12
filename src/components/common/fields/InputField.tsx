@@ -165,7 +165,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
       onChange={handleInputChange}
       sx={{
         "& ::placeholder": { ...theme.typography.bodyMedium },
-        background: pallet?.background,
+        bgcolor: pallet?.background,
         borderRadius: borderRadius,
         "& .MuiOutlinedInput-root": {
           "& ::placeholder": {

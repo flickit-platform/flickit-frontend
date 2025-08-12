@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import Link from "@mui/material/Link";
+import { styles } from "@styles";
 
 interface KitDesignerHeaderProps {
   onAddNewRow: () => void;
@@ -29,21 +30,15 @@ const KitDesignerHeader = ({
         <Trans i18nKey={`${description}`} />
       </Typography>
     </div>
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      mt={4}
-    >
+    <Box justifyContent="space-between" mt={4} sx={{ ...styles.centerV }}>
       {hasBtn ? (
         <Link
           href="#new-item"
           sx={{
+            ...styles.centerV,
             textDecoration: "none",
             opacity: 0.9,
             fontWeight: "bold",
-            display: "flex",
-            alignItems: "center",
             marginInlineStart: "auto",
           }}
         >

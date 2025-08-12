@@ -26,7 +26,6 @@ import AssessmentKitSubjects from "./AssessmentKitSubjects";
 import LoadingAssessmentKit from "../common/loadings/LoadingSkeletonAssessmentKit";
 import keycloakService from "@/service/keycloakService";
 import useScreenResize from "@/utils/useScreenResize";
-import { useTheme } from "@mui/material";
 
 type PurchaseStatus = "free" | "paid" | "purchased";
 
@@ -108,12 +107,7 @@ const AssessmentKit = (props: any) => {
   return (
     <>
       <AssessmentKitBanner assessmentTitle={assessmentTitle} {...expertGroup} />
-      <Box
-        sx={{
-          py: 4,
-          px: { xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 },
-        }}
-      >
+      <Box py={4} px={{ xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 }}>
         <Grid container>
           <Grid
             container
@@ -121,23 +115,16 @@ const AssessmentKit = (props: any) => {
             xs={12}
             md={12}
             lg={9}
-            sx={{
-              paddingInlineEnd: { xs: 0, md: 3 },
-              paddingBlockEnd: { xs: 2, md: 0 },
-            }}
+            paddingInlineEnd={{ xs: 0, md: 3 }}
+            paddingBlockEnd={{ xs: 2, md: 0 }}
           >
             <Grid item xs={12} md={12} lg={12}>
               <AssessmentKitIntro {...assessmentKitQueryData} />
             </Grid>
-            <Typography
-              sx={{ color: "#2B333B" }}
-              variant="titleLarge"
-              mt={5}
-              mb={1}
-            >
+            <Typography color="text.primary" variant="titleLarge" mt={5} mb={1}>
               <Trans i18nKey="assessmentKit.kitStructure" />
             </Typography>
-            <Typography sx={{ color: "#2B333B" }} variant="bodyMedium">
+            <Typography color="text.primary" variant="bodyMedium">
               <Trans
                 i18nKey={
                   isMobileScreen
@@ -171,7 +158,7 @@ const AssessmentKit = (props: any) => {
               status={getPurchaseStatus(isFree, hasAccess)}
             />
           </Grid>
-          <Typography sx={{ color: "#2B333B" }} variant="titleLarge" my={4}>
+          <Typography color="text.primary" variant="titleLarge" my={4}>
             <Trans i18nKey="assessmentKit.exploreOtherKits" />
           </Typography>
           <Grid item xs={12} md={12} lg={12}>
@@ -190,21 +177,18 @@ const AssessmentKitBanner = (props: any) => {
     id: expertGroupId,
     pictureLink,
   } = props;
-  const theme = useTheme();
   const navigate = useNavigate();
-  
+
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        background: "#2466A814",
-        width: "100%",
-        pt: 4,
-        pb: 2,
-        gap: 2,
-        px: { xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 },
-      }}
+      display="flex"
+      flexDirection="column"
+      bgcolor="#2466A814"
+      width="100%"
+      pt={4}
+      pb={2}
+      gap={2}
+      px={{ xxl: 30, xl: 20, lg: 12, xs: 2, sm: 3 }}
     >
       <Title
         backLink={"/"}
@@ -228,16 +212,11 @@ const AssessmentKitBanner = (props: any) => {
           />
         }
       ></Title>
-      <Box
-        sx={{
-          ...styles.centerCV,
-        }}
-        gap={2}
-      >
+      <Box sx={{ ...styles.centerCV }} gap={2}>
         <Typography
+          variant="headlineLarge"
+          color="primary.main"
           sx={{
-            ...theme.typography.headlineLarge,
-            color: theme.palette.primary.main,
             fontFamily: languageDetector(assessmentTitle)
               ? farsiFontFamily
               : primaryFontFamily,
@@ -261,9 +240,9 @@ const AssessmentKitBanner = (props: any) => {
                 keycloakService.doLogin();
               }
             }}
+            variant="semiBoldLarge"
+            color="text.primary"
             sx={{
-              ...theme.typography.semiBoldLarge,
-              color: "#2B333B",
               textDecoration: "none",
               cursor: "pointer",
             }}

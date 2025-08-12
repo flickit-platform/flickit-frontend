@@ -198,7 +198,7 @@ const KitCustomization = (props: any) => {
                 width: "100%",
                 display: "inline-block",
               }}
-              color="#2B333B"
+              color="text.primary"
               variant="headlineSmall"
             >
               <Trans i18nKey="settings.kitCustomization" />
@@ -210,7 +210,7 @@ const KitCustomization = (props: any) => {
                 marginBottom: "10px !important",
               }}
             />
-            <Grid sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid sx={{ ...styles.centerH }}>
               <Grid
                 item
                 xs={12}
@@ -218,18 +218,11 @@ const KitCustomization = (props: any) => {
                   ...styles.centerVH,
                 }}
               >
-                <Typography color="#2B333B" variant="semiBoldLarge">
+                <Typography color="text.primary" variant="semiBoldLarge">
                   <Trans i18nKey="settings.kitCustomTitle" />
                 </Typography>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: { md: "350px" },
-                  }}
-                >
+                <Box width={{ md: "350px" }} sx={{ ...styles.centerVH }}>
                   <OnHoverInputCustomTitle
                     formMethods={formMethods}
                     inputData={inputData}
@@ -252,19 +245,14 @@ const KitCustomization = (props: any) => {
               <Typography
                 component="div"
                 variant="titleMedium"
+                color="text.primary"
                 sx={{
-                  color: "#2B333B",
                   mb: 1,
                 }}
               >
                 <Trans i18nKey="dashboard.customizingSubjectAndAttributes" />
               </Typography>
-              <Typography
-                variant="bodyMedium"
-                sx={{
-                  color: "#2B333B",
-                }}
-              >
+              <Typography variant="bodyMedium" color="text.primary">
                 <Trans i18nKey="settings.viewTheWeightAndSubject" />
               </Typography>
             </Box>
@@ -379,11 +367,10 @@ const OnHoverInputCustomTitle = (props: any) => {
     <Box>
       <Box
         my={1.5}
+        justifyContent="space-between"
+        position="relative"
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "relative",
+          ...styles.centerV,
           cursor: "pointer",
         }}
         width="100%"
@@ -414,15 +401,14 @@ const OnHoverInputCustomTitle = (props: any) => {
           </Box>
         ) : (
           <Box
+            minHeight="38px"
+            borderRadius="4px"
+            paddingLeft="8px"
+            paddingRight="12px"
+            width="100%"
+            justifyContent="space-between"
             sx={{
-              minHeight: "38px",
-              borderRadius: "4px",
-              paddingLeft: "8px;",
-              paddingRight: "12px;",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              ...styles.centerV,
               wordBreak: "break-word",
             }}
             onClick={() => setShow(!show)}

@@ -17,6 +17,7 @@ import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { styles } from "@styles";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -151,28 +152,19 @@ const OptionList = (props: OptionListProps) => {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        py: 1.5,
-                      }}
+                      justifyContent="space-between"
+                      py={1.5}
+                      sx={{ ...styles.centerV }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          flexGrow: 1,
-                        }}
-                      >
+                      <Box flexGrow={1} sx={{ ...styles.centerV }}>
                         <Typography
                           variant="body2"
+                          color="background.container"
                           sx={{
                             display: "inline-flex",
                             alignItems: "center",
                             ml: 1,
                             paddingInlineEnd: 1.5,
-                            backgroundColor: "#F3F5F6",
                             borderRadius: "8px",
                           }}
                         >
@@ -225,7 +217,7 @@ const OptionList = (props: OptionListProps) => {
                         )}
                       </Box>
 
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Box sx={{ ...styles.centerV }}>
                         {editMode === item.id ? (
                           <TextField
                             type="number"
@@ -306,10 +298,10 @@ const OptionList = (props: OptionListProps) => {
         />
       ) : (
         <Box
+          mt={2}
           sx={{
             display: disableAddOption ? "none" : "flex",
             justifyContent: "center",
-            mt: 2,
           }}
         >
           <Button

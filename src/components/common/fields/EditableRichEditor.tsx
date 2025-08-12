@@ -16,6 +16,7 @@ import languageDetector from "@utils/languageDetector";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
 import showToast from "@/utils/toastError";
 import { useTheme } from "@mui/material";
+import { styles } from "@styles";
 
 const MAX_HEIGHT = 210;
 
@@ -39,7 +40,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     infoQuery,
     placeholder,
     required = true,
-    showEditorMenu
+    showEditorMenu,
   } = props;
   const theme = useTheme();
   const { t } = useTranslation();
@@ -124,12 +125,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
   return (
     <Box
+      height="100%"
+      width="100%"
       sx={{
-        display: "flex",
-        alignItems: "center",
+        ...styles.centerV,
         direction: languageDetector(tempData) ? "rtl" : "ltr",
-        height: "100%",
-        width: "100%",
       }}
     >
       {editable && showEditor ? (
@@ -158,17 +158,14 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
             />
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
+                ...styles.centerCVH,
                 height: !tempData ? "100%" : "initial",
               }}
             >
               <IconButton
                 sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": { background: theme.palette.primary.dark },
+                  bgcolor: "primary.main",
+                  "&:hover": { bgcolor: "primary.dark" },
                   borderRadius: languageDetector(tempData)
                     ? "8px 0 0 0"
                     : "0 8px 0 0",
@@ -176,12 +173,14 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={formMethods.handleSubmit(handleSubmit)}
               >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
+                <CheckCircleOutlineRounded
+                  sx={{ color: "primary.contrastText" }}
+                />
               </IconButton>
               <IconButton
                 sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": { background: theme.palette.primary.dark },
+                  bgcolor: "primary.main",
+                  "&:hover": { bgcolor: "primary.dark" },
                   borderRadius: languageDetector(tempData)
                     ? "0 0 0 8px"
                     : "0 0 8px 0",
@@ -189,30 +188,29 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={handleCancel}
               >
-                <CancelRounded sx={{ color: "#fff" }} />
+                <CancelRounded sx={{ color: "primary.contrastText" }} />
               </IconButton>
             </Box>
           </Box>
         </FormProviderWithForm>
       ) : (
-        <Box sx={{ width: "100%" }}>
+        <Box width="100%">
           <Box
+            minHeight="38px"
+            borderRadius="8px"
+            width="100%"
+            justifyContent="space-between"
+            border={`1px solid ${theme.palette.primary.contrastText}`}
+            position="relative"
             sx={{
-              minHeight: "38px",
-              borderRadius: "8px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              ...styles.centerV,
               wordBreak: "break-word",
               pr: languageDetector(tempData) ? 1 : 5,
               pl: languageDetector(tempData) ? 5 : 1,
-              border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
-                borderColor: editable ? theme.palette.primary.main : "unset",
+                borderColor: editable ? "primary.main" : "unset",
               },
-              position: "relative",
             }}
             onClick={() => editable && setShowEditor(true)}
             onMouseOver={handleMouseOver}
@@ -220,12 +218,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
           >
             <Box
               ref={containerRef}
+              width="100%"
+              overflow="hidden"
+              position="relative"
+              maxHeight={!showMore ? `${MAX_HEIGHT}px` : "none"}
               sx={{
-                width: "100%",
-
-                overflow: "hidden",
-                position: "relative",
-                maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
                 transition: "max-height 0.4s ease",
                 "&::after": !showMore
                   ? {
@@ -236,7 +233,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                       right: 0,
                       height: "40px",
                       background: showBtn
-                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
+                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
                         : "none",
                       pointerEvents: "none",
                     }
@@ -293,8 +290,8 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               <IconButton
                 title="Edit"
                 sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": { background: theme.palette.primary.dark },
+                  bgcolor: "primary.main",
+                  "&:hover": { bgcolor: "primary.dark" },
                   borderRadius: languageDetector(tempData)
                     ? "8px 0 0 8px"
                     : "0 8px 8px 0",
@@ -306,7 +303,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={() => setShowEditor(true)}
               >
-                <EditRounded sx={{ color: "#fff" }} />
+                <EditRounded sx={{ color: "primary.contrastText" }} />
               </IconButton>
             )}
           </Box>
@@ -328,7 +325,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
         title={<Trans i18nKey="common.warning" />}
         maxWidth="sm"
       >
-        <Typography sx={{ color: "#0A2342" }}>
+        <Typography color="#0A2342">
           <Trans
             i18nKey="notification.editorActionRestriction"
             components={{

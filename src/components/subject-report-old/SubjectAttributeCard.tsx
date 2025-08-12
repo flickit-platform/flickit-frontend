@@ -180,7 +180,6 @@ const SubjectAttributeCard = (props: any) => {
   };
   const theme = useTheme();
 
-
   return (
     <Box
       sx={{
@@ -216,11 +215,11 @@ const SubjectAttributeCard = (props: any) => {
             padding: "0 !important",
             alignItems: "flex-start",
             "&.Mui-expanded": {
-              backgroundColor: "#EDF0F3",
+              bgcolor: "#EDF0F3",
               boxShadow: "none",
             },
             "&.Mui-focusVisible": {
-              background: "#fff",
+              bgcolor: "background.containerLowest",
             },
             "& .MuiAccordionSummary-content .Mui-expanded": {
               margin: "0px !important",
@@ -264,8 +263,8 @@ const SubjectAttributeCard = (props: any) => {
               </Title>
               <Typography
                 variant="bodyMedium"
+                color="background.onVariant"
                 sx={{
-                  color: "#6C8093",
                   mt: 1,
                   fontFamily: languageDetector(description)
                     ? farsiFontFamily
@@ -277,24 +276,22 @@ const SubjectAttributeCard = (props: any) => {
             </Grid>
             <Grid item xs={12} sm={3}>
               <Box
+                width="100%"
+                height="100%"
+                bgcolor={backgroundColor}
+                mt={0}
+                boxShadow="0 0 4px 0 #0A234240"
                 sx={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: backgroundColor,
+                  ...styles.centerVH,
                   borderEndEndRadius: "16px",
                   borderStartEndRadius: {
                     sm: "16px",
                     xs: 0,
                   },
-                  mt: 0,
                   borderEndStartRadius: {
                     sm: 0,
                     xs: "16px",
                   },
-                  boxShadow: "0 0 4px 0 #0A234240",
                 }}
               >
                 <FlatGauge
@@ -304,9 +301,7 @@ const SubjectAttributeCard = (props: any) => {
                   confidenceLevelNum={Math.floor(confidenceValue)}
                   textPosition="top"
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    ...styles.centerVH,
                     width: "100%",
                     height: "100%",
                     borderRadius:
@@ -333,19 +328,11 @@ const SubjectAttributeCard = (props: any) => {
         <AccordionDetails
           sx={{
             padding: "0 !important",
-            backgroundColor: "#fff",
+            bgcolor: "background.containerLowest",
             borderRadius: "16px",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              justifyItems: "center",
-              flexDirection: "column",
-              padding: { xs: 2, sm: 5 },
-            }}
-          >
+          <Box p={{ xs: 2, sm: 5 }} sx={{ ...styles.centerCVH }}>
             {expandedAttribute && (
               <AttributeInsight
                 progress={progress}
@@ -354,15 +341,15 @@ const SubjectAttributeCard = (props: any) => {
                 reloadQuery={reloadQuery}
               />
             )}
-            <Box display={{ xs: "none", sm: "block" }}>
+            <Box display={{ xs: "none", sm: "block" }} width="100%">
               <Tabs
                 value={topTab}
                 onChange={handleTopTabChange}
                 sx={{
-                  color: "rgba(0, 0, 0, 0.6)", // Default text color
+                  color: "rgba(0, 0, 0, 0.6)", 
 
                   "& .Mui-selected": {
-                    color: "#2466A8 !important",
+                    color: "primary.main !important",
                   },
 
                   "& .MuiTabs-indicator": {
@@ -380,17 +367,13 @@ const SubjectAttributeCard = (props: any) => {
               {topTab === 0 && (
                 <Box>
                   <Box
-                    sx={{
-                      background: "#E2E5E9",
-                      width: "100%",
-                      borderRadius: "16px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      my: 2,
-                      paddingBlock: 0.5,
-                      pt: 1,
-                    }}
+                    bgcolor="background.variant"
+                    width="100%"
+                    borderRadius="16px"
+                    my={2}
+                    paddingBlock={0.5}
+                    pt={1}
+                    sx={{ ...styles.centerVH }}
                   >
                     <Tabs
                       value={TopNavValue}
@@ -421,15 +404,15 @@ const SubjectAttributeCard = (props: any) => {
                               mr: 1,
                               border: "none",
                               textTransform: "none",
-                              color: "#2B333B",
+                              color: "text.primary",
                               "&.Mui-selected": {
                                 boxShadow:
                                   "0 1px 4px rgba(0,0,0,25%) !important",
                                 borderRadius: "8px !important",
-                                color: theme.palette.primary.main,
-                                background: "#fff",
+                                color: "primary.main",
+                                bgcolor: "background.containerLowest",
                                 "&:hover": {
-                                  background: "#fff",
+                                  bgcolor: "background.containerLowest",
                                   border: "none",
                                 },
                               },
@@ -437,17 +420,13 @@ const SubjectAttributeCard = (props: any) => {
                             disabled={score === null}
                             label={
                               <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  gap: 1,
-                                  fontFamily: languageDetector(
-                                    maturityLevelOfScores.title,
-                                  )
+                                gap={1}
+                                fontFamily={
+                                  languageDetector(maturityLevelOfScores.title)
                                     ? farsiFontFamily
-                                    : primaryFontFamily,
-                                }}
+                                    : primaryFontFamily
+                                }
+                                sx={{ ...styles.centerVH }}
                               >
                                 {maturityLevelOfScores?.value ==
                                   maturityLevel?.value && (
@@ -518,184 +497,6 @@ const SubjectAttributeCard = (props: any) => {
           </Box>
         </AccordionDetails>
       </Accordion>
-    </Box>
-  );
-};
-
-export const AttributeStatusBarContainer = (props: any) => {
-  const { status, ml, cl, mn, document } = props;
-  const colorPallet = getMaturityLevelColors(mn);
-  const statusColor = colorPallet[ml - 1];
-  const theme = useTheme();
-
-  return (
-    <Box
-      display={"flex"}
-      sx={{
-        flexDirection: { xs: "column", md: "row" },
-      }}
-    >
-      <Box display={"flex"} flex={document ? 0.8 : 1}>
-        <Box width="100%">
-          {ml && <AttributeStatusBar ml={ml} isMl={true} mn={mn} />}
-          {(cl == 0 || cl) && <AttributeStatusBar cl={cl} mn={mn} />}
-        </Box>
-      </Box>
-      <Box
-        sx={{ ...styles.centerV, pl: 2, pr: { xs: 0, sm: 2 } }}
-        minWidth={"245px"}
-        flex={document ? 0.2 : 0}
-      >
-        <Typography
-          variant="headlineLarge"
-          sx={{
-            borderLeft:
-              theme.direction == "ltr" ? `2px solid ${statusColor}` : "unset",
-            borderRight:
-              theme.direction == "rtl" ? `2px solid ${statusColor}` : "unset",
-            pl: theme.direction == "ltr" ? 1 : "unset",
-            pr: theme.direction == "rtl" ? 1 : "unset",
-            ml: theme.direction == "ltr" ? { xs: -2, sm: 0 } : "unset",
-            mr: theme.direction == "ltr" ? { xs: 0, sm: 1 } : "unset",
-            color: statusColor,
-          }}
-        >
-          <Trans i18nKey={`${status}`} />
-        </Typography>
-      </Box>
-    </Box>
-  );
-};
-
-export const AttributeStatusBar = (props: any) => {
-  const theme = useTheme();
-  const { ml, cl, isMl, mn } = props;
-  const width = isMl
-    ? ml
-      ? `${(ml / mn) * 100}%`
-      : "0%"
-    : cl
-      ? `${cl}%`
-      : "0%";
-  return (
-    <Box
-      height={"38px"}
-      width="100%"
-      sx={{
-        my: 0.5,
-        background: "gray",
-        borderTopRightRadius: theme.direction == "rtl" ? "unset" : "8px",
-        borderTopLeftRadius: theme.direction == "ltr" ? "unset" : "8px",
-        borderBottomRightRadius: theme.direction == "rtl" ? "unset" : "8px",
-        borderBottomLeftRadius: theme.direction == "ltr" ? "unset" : "8px",
-        position: "relative",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Box
-        height="100%"
-        width={width}
-        sx={{
-          background: isMl ? "#6035A1" : "#3596A1",
-          borderTopRightRadius: theme.direction == "rtl" ? "unset" : "8px",
-          borderTopLeftRadius: theme.direction == "ltr" ? "unset" : "8px",
-          borderBottomRightRadius: theme.direction == "rtl" ? "unset" : "8px",
-          borderBottomLeftRadius: theme.direction == "ltr" ? "unset" : "8px",
-        }}
-      ></Box>
-      <Typography
-        sx={{
-          position: "absolute",
-          zIndex: 1,
-          left: theme.direction === "ltr" ? "12px" : "unset",
-          right: theme.direction === "rtl" ? "12px" : "unset",
-          opacity: 0.8,
-        }}
-        textTransform="uppercase"
-        variant="h6"
-      >
-        <Trans
-          i18nKey={isMl ? "common.maturityLevel" : "common.confidenceLevel"}
-        />
-      </Typography>
-      <Typography
-        sx={{
-          position: "absolute",
-          zIndex: 1,
-          right: theme.direction == "rtl" ? "unset" : "12px",
-          left: theme.direction == "ltr" ? "unset" : "12px",
-        }}
-        variant="h6"
-      >
-        {isMl ? `${ml} / ${mn}` : `${cl !== null ? cl : "--"}%`}
-      </Typography>
-    </Box>
-  );
-};
-
-export const MaturityLevelDetailsBar = (props: any) => {
-  const { score, is_passed, text } = props;
-  const width = `${score ?? 100}%`;
-  const bg_color = is_passed ? "#1769aa" : "#545252";
-  const color = is_passed ? "#d1e6f8" : "#808080";
-  const theme = useTheme();
-
-  return (
-    <Box
-      height={"38px"}
-      width="100%"
-      sx={{
-        my: 0.5,
-        background: color,
-        borderTopRightRadius: theme.direction == "rtl" ? "unset" : "8px",
-        borderBottomRightRadius: theme.direction == "rtl" ? "unset" : "8px",
-        borderTopLeftRadius: theme.direction == "ltr" ? "unset" : "8px",
-        borderBottomLeftRadius: theme.direction == "ltr" ? "unset" : "8px",
-        position: "relative",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Box
-        height="70%"
-        width={width}
-        sx={{
-          background: `${score != null ? bg_color : ""}`,
-          borderTopRightRadius: "8px",
-          borderBottomRightRadius: "8px",
-        }}
-      ></Box>
-      <Typography
-        sx={{
-          position: "absolute",
-          zIndex: 1,
-          left: theme.direction === "ltr" ? "12px" : "unset",
-          right: theme.direction === "rtl" ? "12px" : "unset",
-          opacity: 0.8,
-          fontSize: { xs: "12px", sm: "16px" },
-          color: theme.palette.getContrastText(color),
-        }}
-        textTransform="uppercase"
-        variant="h6"
-      >
-        {text}
-      </Typography>
-      <Typography
-        sx={{
-          position: "absolute",
-          zIndex: 1,
-          right: theme.direction === "ltr" ? "12px" : "unset",
-          left: theme.direction === "rtl" ? "12px" : "unset",
-          color: theme.palette.getContrastText(color),
-        }}
-        variant="h6"
-      >
-        {score != null && Math.ceil(score)}
-        {score != null ? "%" : ""}
-      </Typography>
     </Box>
   );
 };

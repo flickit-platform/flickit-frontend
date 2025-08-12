@@ -15,7 +15,6 @@ import IconButton from "@mui/material/IconButton";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useAssessmentContext } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
-import { useTheme } from "@mui/material";
 
 interface IBoxReport {
   title: string;
@@ -47,7 +46,7 @@ interface ITopBoxReport {
   maturityLevelCount: number;
   language: string;
 }
-const BoxReportLayout = (props: IBoxReport) => {
+const AttributeLayout = (props: IBoxReport) => {
   const {
     confidenceValue,
     insight,
@@ -64,18 +63,15 @@ const BoxReportLayout = (props: IBoxReport) => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        background: "#F9FAFB",
-        borderRadius: "32px",
-        paddingY: "32px",
-        gap: "24px",
-        border: `1px solid ${colorCode}`,
-        mb: 4,
-        width: "100%",
-        paddingX: 4,
-      }}
+      display="flex"
+      flexDirection="column"
+      bgcolor="background.containerLow"
+      borderRadius="32px"
+      p={4}
+      gap={3}
+      border={`1px solid ${colorCode}`}
+      mb={4}
+      width="100%"
       id={`${id}`}
     >
       <TopBox
@@ -110,24 +106,20 @@ const TopBox = (props: ITopBoxReport) => {
   const isAdvanceMode = useMemo(() => {
     return assessmentInfo?.mode?.code === ASSESSMENT_MODE.ADVANCED;
   }, [assessmentInfo?.mode?.code]);
-  const theme = useTheme();
 
   return (
     <Grid
       spacing={2}
       container
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+      justifyContent="space-between"
+      sx={{ ...styles.centerV }}
       textAlign="center"
     >
       <Grid xs={12} sm={4} item component="div" id={title}>
         <Typography
+          variant="titleLarge"
+          color={ConfidenceColor}
           sx={{
-            ...theme.typography.titleLarge,
-            color: `${ConfidenceColor}`,
             ...styles.rtlStyle(language === "fa"),
           }}
         >
@@ -136,8 +128,8 @@ const TopBox = (props: ITopBoxReport) => {
       </Grid>
       <Grid xs={12} sm={4.5} item>
         <Typography
+          variant="bodyMedium"
           sx={{
-            ...theme.typography.bodyMedium,
             ...styles.rtlStyle(language === "fa"),
           }}
         >
@@ -177,19 +169,16 @@ const BottomBox = ({
   const isFarsi = language === "fa";
   const fontFamily = isFarsi ? farsiFontFamily : primaryFontFamily;
   const textAlign = isFarsi ? "right" : "left";
-  const theme = useTheme();
 
   return (
     <Box
-      sx={{
-        width: "100%",
-        mx: "auto",
-        borderRadius: "1rem",
-        backgroundColor: "#2466A80A",
-        py: "24px",
-        px: { xs: "16px", sm: "32px" },
-        position: "relative",
-      }}
+      width="100%"
+      mx="auto"
+      borderRadius="16px"
+      bgcolor="#2466A80A"
+      py={3}
+      px={{ xs: "16px", sm: "32px" }}
+      position="relative"
     >
       <img
         src={lens}
@@ -204,10 +193,9 @@ const BottomBox = ({
       />
 
       <Typography
+        variant="semiBoldLarge"
+        color="primary.main"
         sx={{
-          ...theme.typography.labelMedium,
-          color: "#2466A8",
-          fontSize: "1rem",
           ...styles.rtlStyle(language === "fa"),
           textAlign,
         }}
@@ -218,10 +206,10 @@ const BottomBox = ({
       <Typography
         component="div"
         textAlign="justify"
+        color="text.primary"
+        variant="bodyMedium"
         sx={{
-          ...theme.typography.bodyMedium,
           mt: 1,
-          color: "#2B333B",
           ...styles.rtlStyle(language === "fa"),
         }}
         dangerouslySetInnerHTML={{
@@ -230,25 +218,21 @@ const BottomBox = ({
       />
 
       <Box
+        display={{ xs: "none", sm: "flex" }}
+        alignItems="center"
+        justifyContent={isFarsi ? "flex-end" : "flex-start"}
         onClick={() => setExpanded((prev) => !prev)}
-        sx={{
-          display: { xs: "none", sm: "flex" },
-          alignItems: "center",
-          justifyContent: isFarsi ? "flex-end" : "flex-start",
-          cursor: "pointer",
-        }}
+        sx={{ cursor: "pointer" }}
       >
-        <Divider
-          sx={{ flexGrow: 1, borderColor: theme.palette.primary.main }}
-        />
+        <Divider sx={{ flexGrow: 1, borderColor: "primary.main" }} />
 
         <IconButton size="small" color="primary">
           {expanded ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
         </IconButton>
 
         <Typography
+          color="primary.main"
           sx={{
-            color: "#2466A8",
             fontFamily,
             whiteSpace: "nowrap",
           }}
@@ -262,11 +246,9 @@ const BottomBox = ({
         <Box mt={1} display={{ xs: "none", sm: "block" }}>
           <Typography
             variant="labelSmall"
-            sx={{
-              color: "#6C8093",
-              whiteSpace: "nowrap",
-              fontFamily,
-            }}
+            color="background.onVariant"
+            whiteSpace="nowrap"
+            sx={{ fontFamily }}
           >
             {t("assessmentReport.measureTitle", { lng: language })}
           </Typography>
@@ -282,21 +264,18 @@ const BottomBox = ({
           <Box>
             <Box
               onClick={() => setShowGuide((prev) => !prev)}
+              justifyContent={isFarsi ? "flex-end" : "flex-start"}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: isFarsi ? "flex-end" : "flex-start",
+                ...styles.centerV,
                 cursor: "pointer",
               }}
             >
               <InfoOutlined fontSize="small" color="action" />
               <Typography
                 variant="labelSmall"
-                sx={{
-                  fontFamily,
-                  color: "#6C8093",
-                  marginInlineStart: "4px",
-                }}
+                color="background.onVariant"
+                marginInlineStart="4px"
+                sx={{ fontFamily }}
               >
                 {t("common.hint", { lng: language })}
               </Typography>
@@ -308,13 +287,12 @@ const BottomBox = ({
 
             {showGuide && (
               <Typography
+                component="div"
+                textAlign="justify"
                 mt={1}
-                sx={{
-                  color: "#4A4A4A",
-                  textAlign: "justify",
-                  ...theme.typography.bodyMedium,
-                  fontFamily,
-                }}
+                color="#4A4A4A"
+                variant="bodyMedium"
+                sx={{ fontFamily }}
               >
                 {t("assessmentReport.helpDescription", { lng: language })}
               </Typography>
@@ -326,4 +304,4 @@ const BottomBox = ({
   );
 };
 
-export default BoxReportLayout;
+export default AttributeLayout;

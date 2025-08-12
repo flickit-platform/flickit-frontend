@@ -32,16 +32,14 @@ interface Props {
 const AssessmentKitSubjects = ({ subjects }: Props) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const subject = subjects[selectedTab];
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <Box>
       {/* Tabs */}
       <Box
-        sx={{
-          ...styles.rtlStyle(languageDetector(subject.title)),
-          borderBottom: "1px solid #C7CCD1",
-        }}
+        borderBottom={`1px solid ${theme.palette.outline?.variant}`}
+        sx={{ ...styles.rtlStyle(languageDetector(subject.title)) }}
       >
         <Tabs
           value={selectedTab}
@@ -80,8 +78,8 @@ const AssessmentKitSubjects = ({ subjects }: Props) => {
       <Box py={3} sx={{ ...styles.rtlStyle(languageDetector(subject.title)) }}>
         <Typography
           variant="bodyLarge"
+          mb={2}
           sx={{
-            mb: 2,
             fontFamily: languageDetector(subject.description)
               ? farsiFontFamily
               : primaryFontFamily,

@@ -57,11 +57,10 @@ export const ShamsiCalendar = (MiladiDate: any) => {
 
 type DateDisplayMode = "relative" | "relativeWithDate" | "absolute";
 
-
 export const getReadableDate = (
   time: Date | string | number,
   mode: DateDisplayMode = "absolute",
-  withTime: boolean = false
+  withTime: boolean = false,
 ): string => {
   const lang = i18next.language;
   const now = new Date();
@@ -77,16 +76,16 @@ export const getReadableDate = (
   const nowMidnight = new Date(
     now.getFullYear(),
     now.getMonth(),
-    now.getDate()
+    now.getDate(),
   );
   const dateMidnight = new Date(
     adjustedDate.getFullYear(),
     adjustedDate.getMonth(),
-    adjustedDate.getDate()
+    adjustedDate.getDate(),
   );
 
   const diffDays = Math.floor(
-    (dateMidnight.getTime() - nowMidnight.getTime()) / (1000 * 60 * 60 * 24)
+    (dateMidnight.getTime() - nowMidnight.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   const diffMonths =
@@ -105,7 +104,7 @@ export const getReadableDate = (
       relativeStr = t("2daysAgo");
     } else if (absDays <= 6) {
       relativeStr = t("common.thisWeek");
-    } else if (absMonths === 1) {
+    } else if (absMonths <= 1) {
       relativeStr = t("common.lastMonth");
     } else if (absMonths > 1 && absMonths < 12) {
       relativeStr = t("common.monthsAgo", { count: absMonths });
@@ -138,6 +137,7 @@ export const getReadableDate = (
     : "";
 
   if (mode === "relative") return relativeStr + timeStr;
-  if (mode === "relativeWithDate") return `${relativeStr} (${localizedDate}${withTime ? timeStr : ""})`;
+  if (mode === "relativeWithDate")
+    return `${relativeStr} (${localizedDate}${withTime ? timeStr : ""})`;
   return `${localizedDate}${timeStr}`;
 };

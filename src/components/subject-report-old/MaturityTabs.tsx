@@ -1,10 +1,11 @@
-import React from 'react';
-import { Box, Tabs, Tab } from '@mui/material';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import DoneIcon from '@mui/icons-material/Done';
-import { Theme } from '@mui/material/styles';
-import languageDetector from '@/utils/languageDetector';
-import { farsiFontFamily, primaryFontFamily } from '@/config/theme';
+import React from "react";
+import { Box, Tabs, Tab } from "@mui/material";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
+import DoneIcon from "@mui/icons-material/Done";
+import { Theme } from "@mui/material/styles";
+import languageDetector from "@/utils/languageDetector";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import { styles } from "@styles";
 
 interface MaturityScoreModel {
   maturityLevel: { id: number; value: number; title: string };
@@ -30,17 +31,13 @@ const MaturityTabs: React.FC<MaturityTabsProps> = ({
 }) => {
   return (
     <Box
-      sx={{
-        background: "#E2E5E9",
-        width: "100%",
-        borderRadius: "16px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        my: 2,
-        paddingBlock: 0.5,
-        pt: 1,
-      }}
+      bgcolor="background.variant"
+      width="100%"
+      borderRadius="16px"
+      my={2}
+      paddingBlock={0.5}
+      pt={1}
+      sx={{ ...styles.centerVH }}
     >
       <Tabs
         value={TopNavValue}
@@ -68,30 +65,28 @@ const MaturityTabs: React.FC<MaturityTabsProps> = ({
                 textTransform: "none",
                 color:
                   maturityLevelOfScores?.value > maturityLevel?.value
-                    ? "#6C8093"
-                    : "#2B333B",
+                    ? "background.onVariant"
+                    : "text.primary",
                 "&.Mui-selected": {
                   boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                   borderRadius: "8px !important",
-                  color: theme.palette.primary.main,
-                  background: "#fff",
+                  color: "primary.main",
+                  bgcolor: "background.containerLowest",
                   "&:hover": {
-                    background: "#fff",
+                    bgcolor: "background.containerLowest",
                     border: "none",
                   },
                 },
               }}
               label={
                 <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 1,
-                    fontFamily: languageDetector(maturityLevelOfScores.title)
+                  gap={1}
+                  fontFamily={
+                    languageDetector(maturityLevelOfScores.title)
                       ? farsiFontFamily
-                      : primaryFontFamily,
-                  }}
+                      : primaryFontFamily
+                  }
+                  sx={{ ...styles.centerVH }}
                 >
                   {maturityLevelOfScores?.value == maturityLevel?.value && (
                     <WorkspacePremiumIcon fontSize={"small"} />

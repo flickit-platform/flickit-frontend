@@ -44,6 +44,7 @@ const AddMemberDialog = (props: {
   listOfRoles: any[];
   assessmentId: any;
 }) => {
+  const theme = useTheme();
   const {
     expanded,
     onClose,
@@ -217,7 +218,6 @@ const AddMemberDialog = (props: {
     };
   }, []);
   const fullScreen = useScreenResize("sm");
-  const theme = useTheme();
 
   return (
     <CEDialog
@@ -230,8 +230,8 @@ const AddMemberDialog = (props: {
         <>
           <Settings
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              scrollMarginInlineEnd: 1,
             }}
           />
           <Trans i18nKey="settings.assignRole" />
@@ -325,14 +325,13 @@ const AddMemberDialog = (props: {
                             color: "#1B1B1E",
                           }),
                     },
-                    background:
-                      roleSelected?.title == role.title ? "#9CCAFF" : "",
+                    bgcolor: roleSelected?.title == role.title ? "#9CCAFF" : "",
                   }}
                 >
                   <Box
                     sx={{
                       maxWidth: "240px",
-                      color: "#2B333B",
+                      color: "text.primary",
                       fontSize: "0.875rem",
                       lineHeight: "21px",
                       fontWeight: 500,
@@ -342,7 +341,7 @@ const AddMemberDialog = (props: {
                     <Typography>{role.title}</Typography>
                     <div
                       style={{
-                        color: "#2B333B",
+                        color: theme.palette.text.primary,
                         fontSize: "0.875rem",
                         lineHeight: "21px",
                         fontWeight: 300,
@@ -384,8 +383,8 @@ const AddMemberDialog = (props: {
           <InfoOutlinedIcon
             color="primary"
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: 1,
             }}
           />
           <Typography variant="bodyLarge" textAlign="left">

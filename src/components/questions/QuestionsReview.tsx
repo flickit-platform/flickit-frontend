@@ -1,20 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Trans } from "react-i18next";
-import {
-  Box,
-  Button,
-  Typography,
-  Paper,
-  Hidden,
-  Rating,
-  useTheme,
-} from "@mui/material";
-import {
-  RadioButtonCheckedRounded,
-  RadioButtonUncheckedRounded,
-} from "@mui/icons-material";
-
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Hidden from "@mui/material/Hidden";
+import Rating from "@mui/material/Rating";
+import RadioButtonCheckedRounded from "@mui/icons-material/RadioButtonCheckedRounded";
+import RadioButtonUncheckedRounded from "@mui/icons-material/RadioButtonUncheckedRounded";
 import doneSvg from "@assets/svg/Done.svg";
 import noQuestionSvg from "@assets/svg/noQuestion.svg";
 import someQuestionSvg from "@assets/svg/someQuestion.svg";
@@ -58,8 +52,6 @@ const AnswerStatusImage = ({ status }: { status: string }) => {
 };
 
 export const Review = () => {
-  const theme = useTheme();
-
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
   const navigate = useNavigate();
@@ -111,7 +103,8 @@ export const Review = () => {
   }, [assessmentTotalProgress]);
 
   useEffect(() => {
-    if (!questionnaireId || !window.location.pathname.includes("/completed")) return;
+    if (!questionnaireId || !window.location.pathname.includes("/completed"))
+      return;
 
     const controller = new AbortController();
 
@@ -137,7 +130,7 @@ export const Review = () => {
       });
 
     return () => {
-      controller.abort(); 
+      controller.abort();
     };
   }, [questionnaireId]);
 
@@ -150,14 +143,14 @@ export const Review = () => {
               component="div"
               variant="headlineMedium"
               mb={1}
-              color={theme.palette.primary.main}
+              color="primary.main"
             >
               <Trans i18nKey="questions.goodJob" />
             </Typography>
             <Typography
               component="div"
               variant="headlineSmall"
-              color={theme.palette.primary.main}
+              color="primary.main"
             >
               <Trans
                 i18nKey="questions.allQuestionsHaveBeenAnswered"
@@ -167,9 +160,9 @@ export const Review = () => {
                     <Box
                       component={Link}
                       to="../questionnaires"
-                      style={{
-                        display: "inline",
-                        color: theme.palette.secondary.main,
+                      display="inline"
+                      color="secondary.main"
+                      sx={{
                         textDecoration: "none",
                         fontFamily: languageDetector(questionnaireTitle)
                           ? farsiFontFamily
@@ -183,7 +176,8 @@ export const Review = () => {
             <Typography
               component="div"
               variant="semiBoldLarge"
-              sx={{ mt: 2, mb: 4, color: "#0A2342" }}
+              color="#0A2342"
+              sx={{ mt: 2, mb: 4 }}
             >
               <Trans
                 i18nKey={
@@ -200,22 +194,22 @@ export const Review = () => {
           <>
             <Typography
               variant="h4"
+              color="#D81E5B"
               sx={{
                 fontSize: "2.2rem",
                 mb: 1,
                 fontWeight: 600,
-                color: "#D81E5B",
               }}
             >
               <Trans i18nKey="questions.hmmm" />
             </Typography>
             <Typography
               variant="h4"
+              color="#D81E5B"
               sx={{
                 fontSize: "1.5rem",
                 mb: 4,
                 fontWeight: 600,
-                color: "#D81E5B",
               }}
             >
               <Trans
@@ -225,7 +219,8 @@ export const Review = () => {
             </Typography>
             <Typography
               variant="h4"
-              sx={{ opacity: 0.8, mb: 4, fontWeight: 600, color: "#0A2342" }}
+              color="#0A2342"
+              sx={{ opacity: 0.8, mb: 4, fontWeight: 600 }}
             >
               <Trans i18nKey="questions.weHighlyRecommendAnsweringMoreQuestions" />
             </Typography>
@@ -236,22 +231,22 @@ export const Review = () => {
           <>
             <Typography
               variant="h4"
+              color="#F9A03F"
               sx={{
                 fontSize: "2.2rem",
                 mb: 1,
                 fontWeight: 600,
-                color: "#F9A03F",
               }}
             >
               <Trans i18nKey="questions.nice" />
             </Typography>
             <Typography
               variant="h4"
+              color="#F9A03F"
               sx={{
                 fontSize: "1.25rem",
                 mb: 4,
                 fontWeight: 600,
-                color: "#F9A03F",
               }}
             >
               <Trans
@@ -266,9 +261,9 @@ export const Review = () => {
                     <Box
                       component={Link}
                       to="../questionnaires"
+                      color="secondary.main"
+                      display="inline"
                       style={{
-                        display: "inline",
-                        color: theme.palette.secondary.main,
                         textDecoration: "none",
                         fontFamily: languageDetector(questionnaireTitle)
                           ? farsiFontFamily
@@ -281,12 +276,12 @@ export const Review = () => {
             </Typography>
             <Typography
               variant="h4"
+              color="#0A2342"
               sx={{
                 opacity: 0.8,
                 fontSize: "16px",
                 mb: 4,
                 fontWeight: 600,
-                color: "#0A2342",
               }}
             >
               <Trans i18nKey="questions.someQuestionsHaveNotBeenAnswered" />
@@ -301,7 +296,7 @@ export const Review = () => {
       <Box
         my={4}
         sx={{
-          background: "white",
+          bgcolor: "background.containerLowest",
           borderRadius: 2,
           p: { xs: 2, sm: 3, md: 6 },
           display: "flex",
@@ -310,19 +305,13 @@ export const Review = () => {
         }}
       >
         <Hidden smDown>
-          <Box mt="-28px" display="flex" alignItems="center">
+          <Box mt="-28px" sx={{ ...styles.centerV }}>
             <AnswerStatusImage status={status} />
           </Box>
         </Hidden>
         <Box sx={{ ml: { xs: 0, sm: 2, md: 6, lg: 8 } }}>
           {renderStatusText()}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1, sm: 2 },
-            }}
-          >
+          <Box gap={{ xs: 1, sm: 2 }} sx={{ ...styles.centerV }}>
             {isPermitted && (
               <Button
                 variant="outlined"
@@ -365,7 +354,7 @@ export const Review = () => {
               }}
               elevation={3}
             >
-              <Typography variant="subMedium" sx={{ color: "#b3b3b3" }}>
+              <Typography variant="subMedium" color="#b3b3b3">
                 <Trans i18nKey="common.question" />
               </Typography>
               <Typography
@@ -381,7 +370,7 @@ export const Review = () => {
               {/* Answer */}
               {q.answer?.selectedOption && (
                 <Box mt={3}>
-                  <Typography variant="subMedium" sx={{ color: "#b3b3b3" }}>
+                  <Typography variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourAnswer" />
                   </Typography>
                   <Typography
@@ -400,7 +389,7 @@ export const Review = () => {
               {/* N/A */}
               {q.answer?.isNotApplicable && (
                 <Box mt={3}>
-                  <Typography variant="subMedium" sx={{ color: "#b3b3b3" }}>
+                  <Typography variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourAnswer" />
                   </Typography>
                   <Typography variant="h6" fontWeight="bold">
@@ -412,10 +401,10 @@ export const Review = () => {
               {/* Confidence */}
               {q.answer?.confidenceLevel && isAdvancedMode && (
                 <Box mt={3}>
-                  <Typography variant="subMedium" sx={{ color: "#b3b3b3" }}>
+                  <Typography variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourConfidence" />
                   </Typography>
-                  <Box display="flex" mt={1} alignItems="center">
+                  <Box mt={1} sx={{ ...styles.centerV }}>
                     <Typography variant="h6" fontWeight="bold" mr={1}>
                       <Trans
                         i18nKey={toCamelCase(
@@ -431,7 +420,10 @@ export const Review = () => {
                       }
                       emptyIcon={
                         <RadioButtonUncheckedRounded
-                          sx={{ color: "#fff", opacity: 0.55 }}
+                          sx={{
+                            color: "background.containerLowest",
+                            opacity: 0.55,
+                          }}
                         />
                       }
                     />

@@ -38,7 +38,7 @@ const DefaultInfoItemComponent = (
       variant="body2"
       sx={{
         ...styles.centerV,
-        background: bg ?? "#f5f2f2",
+        bgcolor: bg ?? "#f5f2f2",
         py: 0.6,
         px: 1,
         borderRadius: 1,
@@ -49,13 +49,11 @@ const DefaultInfoItemComponent = (
       {title}:{" "}
       <Box
         component="strong"
-        sx={{
-          py: 0.2,
-          px: 0.6,
-          background: itemBg ?? "white",
-          ...styles.centerV,
-          borderRadius: 1,
-        }}
+        py={0.2}
+        px={0.6}
+        bgcolor={itemBg ?? "background.containerLowest"}
+        borderRadius={1}
+        sx={{ ...styles.centerV }}
       >
         {action && (
           <Box mx={0.5} component="span" display="block">
@@ -87,13 +85,11 @@ const defaultRenderMap: Record<string, (...args: any) => JSX.Element> = {
   array: (title: string, items: string[], props: any) => (
     <DefaultInfoItemComponent title={title} {...props}>
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "start",
-          flexWrap: "wrap",
-          ml: document.dir === "ltr" ? 4 : "unset",
-          mr: document.dir == "rtl" ? 4 : "unset",
-        }}
+        display="flex"
+        justifyContent="start"
+        flexWrap="wrap"
+        marginInlineStart={4}
+        marginInlineEnd="unset"
       >
         {items?.length !== 0
           ? items?.map(

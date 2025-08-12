@@ -17,7 +17,6 @@ import UploadField from "@common/fields/UploadField";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 interface IExpertGroupCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -30,7 +29,6 @@ interface IExpertGroupCEFromDialogProps extends DialogProps {
 
 const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
-  const theme = useTheme();
 
   const { service } = useServiceContext();
   const {
@@ -108,8 +106,8 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
         <>
           <NoteAddRoundedIcon
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: 1,
             }}
           />
           {type === "update" ? (

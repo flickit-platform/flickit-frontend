@@ -30,7 +30,6 @@ import { Trans } from "react-i18next";
 import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
@@ -242,7 +241,7 @@ const Uploader = (props: IUploadProps) => {
             }) as string,
           };
         } else if (rejectedFiles.length == 1 && error[0]?.message) {
-          showToast(error?.pop()?.message as string);
+          showToast((error as any)?.pop()?.message as string);
         } else {
           showToast(t("errors.oneFileOnly") as string);
         }
@@ -259,7 +258,6 @@ const Uploader = (props: IUploadProps) => {
   const { errorMessage, hasError } = getFieldError(errors, fieldProps.name);
 
   const selectedFile = dropNewFile?.[0] ?? acceptedFiles?.[0] ?? file;
-  const theme = useTheme();
 
   return (
     <FormControl sx={{ width: "100%" }} error={hasError}>
@@ -267,7 +265,7 @@ const Uploader = (props: IUploadProps) => {
         sx={{
           minHeight: "40px",
           border: (t) =>
-            `1px dashed ${hasError ? t.palette.error.main : "gray"}`,
+            `1px dashed ${hasError ? t.palette.error.main : t.palette.disabled?.main}`,
           "&:hover": {
             border: (t) =>
               disabled
@@ -367,8 +365,8 @@ const Uploader = (props: IUploadProps) => {
               <FormLabel
                 sx={{
                   ...styles.centerV,
-                  pl: theme.direction == "ltr" ? 2 : "unset",
-                  pr: theme.direction == "rtl" ? 2 : "unset",
+                  paddingInlineStart: 2,
+                  paddingInlineEnd: "unset",
                   height: "40px",
                   fontSize: "1rem",
                   cursor: "pointer",
@@ -378,13 +376,11 @@ const Uploader = (props: IUploadProps) => {
                 {label}
               </FormLabel>
               <Box
-                sx={{
-                  px: 2,
-                  ...styles.centerV,
-                  color: (t) => t.palette.info.dark,
-                }}
-                ml={theme.direction === "rtl" ? "unset" : "auto"}
-                mr={theme.direction !== "rtl" ? "unset" : "auto"}
+                px={2}
+                color="disabled.main"
+                marginInlineStart="auto"
+                marginInlineEnd="unset"
+                sx={{ ...styles.centerV }}
               >
                 <FileUploadRoundedIcon sx={{ mr: hideDropText ? 0 : 1 }} />
                 {!hideDropText && (

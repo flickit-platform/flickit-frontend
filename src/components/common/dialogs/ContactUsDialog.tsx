@@ -3,12 +3,12 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import { Trans } from "react-i18next";
 import i18next, { t } from "i18next";
 import Typography from "@mui/material/Typography";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { DialogProps } from "@mui/material/Dialog";
 import { useForm as useFormSpree } from "@formspree/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { InputFieldUC } from "../common/fields/InputField";
+import { InputFieldUC } from "../fields/InputField";
 import telegramIcon from "@assets/svg/telegram.svg";
 import splusIcon from "@assets/svg/splusLogo.svg";
 import { styles } from "@styles";
@@ -56,8 +56,6 @@ const ContactUsDialog = ({
   openDialog,
   ...rest
 }: IContactUsDialogProps) => {
-  const theme = useTheme();
-
   const { data = {}, type = "contactUs" } = context ?? {};
   const { email, dialogTitle, primaryActionButtonText, children } = data;
   const isRTL = lng === "fa" || (!lng && i18next.language === "fa");
@@ -164,18 +162,15 @@ const ContactUsDialog = ({
       sx={styles.rtlStyle(isRTL)}
     >
       {state.succeeded && type !== "purchased" ? (
-        <Box
-          mt={2}
-          sx={{ minHeight: { xs: "calc(100vh - 100px)", sm: "unset" } }}
-        >
-          <Box height="94%" sx={{ ...styles.centerCVH, textAlign: "center" }}>
+        <Box mt={2} minHeight={{ xs: "calc(100vh - 100px)", sm: "unset" }}>
+          <Box height="94%" textAlign="center" sx={{ ...styles.centerCVH }}>
             <CheckCircleOutlineRoundedIcon
               sx={{ fontSize: 64, color: "success.main", mb: 1 }}
             />
-            <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
+            <Typography variant="h5" fontWeight="bold" mb={1}>
               {t("common.thankYouForYourMessage", { lng })}
             </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            <Typography variant="body2" color="text.secondary">
               {t("common.weWillGetBackToYouSoon", { lng })}
             </Typography>
           </Box>
@@ -200,7 +195,7 @@ const ContactUsDialog = ({
               </Typography>
 
               {type === "contactUs" && (
-                <Typography component="div" variant="bodyLarge" sx={{ mb: 2 }}>
+                <Typography component="div" variant="bodyLarge" mb={2}>
                   <Trans i18nKey="common.contactUsIntroText" />
                 </Typography>
               )}
@@ -209,28 +204,24 @@ const ContactUsDialog = ({
             </form>
 
             <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: { xs: "column", md: "row" },
-                justifyContent: "space-between",
-                gap: 2,
-                ml: -1,
-              }}
+              display="flex"
+              alignItems="center"
+              flexDirection={{ xs: "column", md: "row" }}
+              justifyContent="space-between"
+              gap={2}
+              ml={-1}
             >
-              <Box sx={{ ...styles.centerVH, gap: 2, mt: 3 }}>
+              <Box gap={2} mt={3} sx={{ ...styles.centerVH }}>
                 <Typography
-                  sx={{
-                    ...theme.typography.semiBoldLarge,
-                    color: "#000",
-                    whiteSpace: "nowrap",
-                    ...styles.rtlStyle(isRTL),
-                  }}
+                  color="text.primary"
+                  variant="semiBoldLarge"
+                  whiteSpace="nowrap"
+                  sx={{ ...styles.rtlStyle(isRTL) }}
                 >
                   {t("common.moreWaysToReachUs", { lng })}
                 </Typography>
 
-                <Box sx={{ display: "flex", gap: 2 }}>
+                <Box display="flex" gap={2}>
                   {socialIcon.map((chat) => (
                     <Box
                       key={chat.id}

@@ -58,7 +58,7 @@ return {isEditing, fieldValue, translationFieldValue }
 
   const {isEditing, fieldValue, translationFieldValue } = renderField()
   return isEditing ? (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box flexGrow={1}>
       <MultiLangTextField
         name={field}
         value={updatedValues[field] ?? ""}
