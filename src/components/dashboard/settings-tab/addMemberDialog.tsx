@@ -75,7 +75,7 @@ const AddMemberDialog = (props: {
       service.space.getMembers({ spaceId, page: 0, size: 100 }, config),
   });
   const fetchAssessmentMembers = useQuery({
-    service: (args: { page?: number; size?: number } = {}, config) =>
+    service: (args, config) =>
       service.assessments.member.getUsers(
         {
           assessmentId,
@@ -113,34 +113,37 @@ const AddMemberDialog = (props: {
   };
 
   useEffect(() => {
-    (async () => {
+    if (!expanded) return;
+
+    const loadMembers = async () => {
       try {
         setAddedEmailType(EUserType.DEFAULT);
 
-        if (expanded) {
-          const { data } = spaceMembersQueryData;
+        const { data } = spaceMembersQueryData;
+        const result = await fetchAssessmentMembers.query({
+          page: 0,
+          size: 100,
+        });
 
-          const result = await fetchAssessmentMembers.query({
-            page: 0,
-            size: 100,
-          });
+        const member = result?.items ?? [];
+        const spaceItems = data?.items ?? [];
 
-          const member = result?.items ?? [];
-
-          if (data?.items?.length) {
-            const filteredItem = data.items.filter((item: any) =>
-              member.some((userListItem: any) => item.id === userListItem.id),
-            );
-            setMemberOfSpace(filteredItem);
-          } else {
-            setMemberOfSpace([]);
-          }
+        if (!spaceItems.length) {
+          setMemberOfSpace([]);
+          return;
         }
+
+        const filteredItem = spaceItems.filter((item: any) =>
+          member.some((userListItem: any) => item.id === userListItem.id)
+        );
+
+        setMemberOfSpace(filteredItem);
       } catch (e) {
-        const err = e as ICustomError;
-        showToast(err);
+        showToast(e as ICustomError);
       }
-    })();
+    };
+
+    loadMembers();
   }, [expanded]);
 
   const closeDialog = () => {
