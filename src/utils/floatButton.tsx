@@ -17,7 +17,7 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { useTheme } from "@mui/material";
 
 const SurveyBoxSection = (props: any) => {
-  const [showFeedback, setShowFeadback] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(true);
   const [dontShowAgain, setDontShowAgain] = useState(false);
   const { service } = useServiceContext();
   const { assessmentId } = useParams();
@@ -30,15 +30,15 @@ const SurveyBoxSection = (props: any) => {
   const { isAuthenticatedUser } = useAuthContext();
   const { email, showSurvey } = userInfo;
   const dontShowSurvey = useQuery({
-    service: (args = { assessmentId }, config) =>
-      service.common.dontShowSurvey(args, config),
+    service: (args, config) =>
+      service.common.dontShowSurvey({ assessmentId }, config),
     runOnMount: false,
   });
 
   const theme = useTheme();
 
   const closeFeadbackBox = () => {
-    setShowFeadback(false);
+    setShowFeedback(false);
     if (dontShowAgain) {
       dontShowSurvey.query();
       dispatchAuth(
@@ -51,9 +51,9 @@ const SurveyBoxSection = (props: any) => {
   };
   useEffect(() => {
     if (pathname.includes("graphical-report")) {
-      setShowFeadback(true);
+      setShowFeedback(true);
     } else {
-      setShowFeadback(false);
+      setShowFeedback(false);
       dispatch(setSurveyBox(false));
     }
   }, [pathname]);
