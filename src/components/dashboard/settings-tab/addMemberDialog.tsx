@@ -112,37 +112,37 @@ const AddMemberDialog = (props: {
     setRoleSelected({ id, title });
   };
 
+  const loadMembers = async () => {
+    try {
+      setAddedEmailType(EUserType.DEFAULT);
+
+      const { data } = spaceMembersQueryData;
+      const result = await fetchAssessmentMembers.query({
+        page: 0,
+        size: 100,
+      });
+
+      const member = result?.items ?? [];
+      const spaceItems = data?.items ?? [];
+
+      if (!spaceItems.length) {
+        setMemberOfSpace([]);
+        return;
+      }
+
+      const filteredItem = spaceItems.filter((item: any) =>
+        member.some((userListItem: any) => item.id === userListItem.id)
+      );
+
+      setMemberOfSpace(filteredItem);
+    } catch (e) {
+      showToast(e as ICustomError);
+    }
+  };
+
+
   useEffect(() => {
     if (!expanded) return;
-
-    const loadMembers = async () => {
-      try {
-        setAddedEmailType(EUserType.DEFAULT);
-
-        const { data } = spaceMembersQueryData;
-        const result = await fetchAssessmentMembers.query({
-          page: 0,
-          size: 100,
-        });
-
-        const member = result?.items ?? [];
-        const spaceItems = data?.items ?? [];
-
-        if (!spaceItems.length) {
-          setMemberOfSpace([]);
-          return;
-        }
-
-        const filteredItem = spaceItems.filter((item: any) =>
-          member.some((userListItem: any) => item.id === userListItem.id)
-        );
-
-        setMemberOfSpace(filteredItem);
-      } catch (e) {
-        showToast(e as ICustomError);
-      }
-    };
-
     loadMembers();
   }, [expanded]);
 
