@@ -23,7 +23,7 @@ const RichEditorMenuBar = (props: IRichEditorMenuBarProps) => {
         display: "flex",
         flexWrap: "wrap",
         position: "absolute",
-        background: "background.containerLowest",
+        bgcolor: "background.containerLowest",
         zIndex: -1,
         right: 0,
         opacity: 0,

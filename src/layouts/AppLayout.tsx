@@ -43,7 +43,7 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         <Suspense
           fallback={
             <Box sx={{ ...styles.centerVH }}>
-              <GettingThingsReadyLoading color={"gray"} />
+              <GettingThingsReadyLoading color={"disabled.main"} />
             </Box>
           }
         >

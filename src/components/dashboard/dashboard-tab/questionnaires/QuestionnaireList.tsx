@@ -206,11 +206,10 @@ const ProgressButton = (props: any) => {
   return (
     <Box>
       {leftQuestions > 0 ? (
-        <Box>
+        <Box sx={{ ...styles.centerCV }}>
           <Button
             variant="contained"
             color="info"
-            fullWidth
             disableFocusRipple
             disableTouchRipple
             sx={{ cursor: "default" }}
@@ -381,7 +380,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                           <Trans i18nKey="dashboard.noIssueFound" />
                         )}
                         {originalItem.length > 1 && (
-                          <Trans i18nKey="dashboard.NoIssuesFound" />
+                          <Trans i18nKey="dashboard.noIssuesFound" />
                         )}
                       </Typography>
                     </Box>

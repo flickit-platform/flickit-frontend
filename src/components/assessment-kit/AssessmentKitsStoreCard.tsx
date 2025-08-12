@@ -129,7 +129,7 @@ const AssessmentKitsStoreCard = (props: any) => {
       component={Link}
       borderRadius={2}
       height="100%"
-      mb={small ? "8px !important" : { xs: "12px", sm: "40px  !important" }}
+      mb={small ? "8px !important" : { xs: "12px", sm: "30px  !important" }}
       borderLeft={`4px solid ${
         isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
       }`}

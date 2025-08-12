@@ -46,7 +46,7 @@ interface ITopBoxReport {
   maturityLevelCount: number;
   language: string;
 }
-const BoxReportLayout = (props: IBoxReport) => {
+const AttributeLayout = (props: IBoxReport) => {
   const {
     confidenceValue,
     insight,
@@ -65,7 +65,7 @@ const BoxReportLayout = (props: IBoxReport) => {
     <Box
       display="flex"
       flexDirection="column"
-      bgcolor="background.default"
+      bgcolor="background.containerLow"
       borderRadius="32px"
       p={4}
       gap={3}
@@ -304,4 +304,4 @@ const BottomBox = ({
   );
 };
 
-export default BoxReportLayout;
+export default AttributeLayout;

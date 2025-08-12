@@ -329,6 +329,7 @@ const QuickAssessmentSwitch = () => {
         }
         sx={{
           ...styles.centerV,
+          flexDirection:"row-reverse",
           margin: 0,
           gap: "32px",
         }}
@@ -510,9 +511,8 @@ export const AssessmentSettingMemberBox = (props: {
             }}
           >
             <AddIcon
-              sx={{ width: "1.125rem", height: "1.125rem" }}
+              sx={{ width: "1.125rem", height: "1.125rem", color: "#EDFCFC" }}
               fontSize="small"
-              style={{ color: "#EDFCFC" }}
             />
             <Trans i18nKey="dashboard.grantAccess" />
           </Button>
@@ -528,8 +528,9 @@ export const AssessmentSettingMemberBox = (props: {
         >
           <Table stickyHeader aria-label="sticky table">
             <TableHead
-              sx={{ width: "100%", overflow: "hidden" }}
-              style={{
+              sx={{
+                width: "100%",
+                overflow: "hidden",
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
@@ -761,8 +762,9 @@ export const AssessmentSettingMemberBox = (props: {
             >
               <Table stickyHeader aria-label="sticky table">
                 <TableHead
-                  sx={{ width: "100%", overflow: "hidden" }}
-                  style={{
+                  sx={{
+                    width: "100%",
+                    overflow: "hidden",
                     position: "sticky",
                     top: 0,
                     zIndex: 3,

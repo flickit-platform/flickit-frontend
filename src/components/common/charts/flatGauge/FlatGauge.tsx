@@ -66,7 +66,7 @@ const FlatGauge = (props: IGaugeProps) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
+  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "disabled.main";
   const isFarsi = languageDetector(text ?? "");
 
   return (

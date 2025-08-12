@@ -233,7 +233,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                       right: 0,
                       height: "40px",
                       background: showBtn
-                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.containerLowest} 100%)`
+                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
                         : "none",
                       pointerEvents: "none",
                     }

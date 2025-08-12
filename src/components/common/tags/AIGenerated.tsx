@@ -14,7 +14,7 @@ const AIGenerated = ({ type, title, icon }: any) => {
           {icon ?? (
             <FaWandMagicSparkles
               styles={{
-                color: type === "error" ? "error.main" : "warning.main",
+                color: type === "error" ? theme.palette.error.main : theme.palette.warning.main,
               }}
             />
           )}

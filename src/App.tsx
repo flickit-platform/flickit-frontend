@@ -95,7 +95,7 @@ function App() {
     <ErrorBoundary>
       {loading ? (
         <Box width="100%" mt={10} sx={{ ...styles.centerVH }}>
-          <GettingThingsReadyLoading color="gray" />
+          <GettingThingsReadyLoading color="disabled.main" />
         </Box>
       ) : (
         <Routes />

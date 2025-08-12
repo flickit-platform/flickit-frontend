@@ -319,7 +319,7 @@ const AdviceItemAccordion: React.FC<{
           borderRadius: "8px",
           mb: 1,
           boxShadow: "none",
-          bgcolor: !readOnly ? "background.default" : "initial",
+          bgcolor: !readOnly ? "background.containerLow" : "initial",
           "&:before": { content: "none" },
         }}
       >

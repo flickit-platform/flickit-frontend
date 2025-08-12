@@ -160,7 +160,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
                   href={`/assessment-kits/${kit?.id}`}
                   style={{
                     textDecoration: "none",
-                    color: "primary.main",
+                    color: theme.palette.primary.main,
                     fontWeight: 600,
                     cursor: "pointer",
                     fontFamily: languageDetector(kit?.title)

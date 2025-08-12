@@ -160,9 +160,9 @@ export const Review = () => {
                     <Box
                       component={Link}
                       to="../questionnaires"
-                      style={{
-                        display: "inline",
-                        color: "secondary.main",
+                      display="inline"
+                      color="secondary.main"
+                      sx={{
                         textDecoration: "none",
                         fontFamily: languageDetector(questionnaireTitle)
                           ? farsiFontFamily
@@ -261,9 +261,9 @@ export const Review = () => {
                     <Box
                       component={Link}
                       to="../questionnaires"
+                      color="secondary.main"
+                      display="inline"
                       style={{
-                        display: "inline",
-                        color: "secondary.main",
                         textDecoration: "none",
                         fontFamily: languageDetector(questionnaireTitle)
                           ? farsiFontFamily

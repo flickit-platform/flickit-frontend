@@ -158,7 +158,7 @@ export default function FileSvg({
       <p
         style={{
           position: "absolute",
-          color: "background.containerLowest",
+          color: theme.palette.background.containerLowest,
           bottom: "14px",
           right: "13px",
           fontSize: "6px",

@@ -4,7 +4,7 @@ import GeneralLayout from "./layout/GeneralLayout";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
 import BulletPointStatus from "./BulletPointStatus";
-import BoxReportLayout from "./layout/BoxReportLayout";
+import AttributeLayout from "./layout/AttributeLayout";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types/index";
@@ -85,7 +85,7 @@ const SubjectReport = ({
             </Grid>
             {item?.attributes?.map((attribute: any) => {
               return (
-                <BoxReportLayout
+                <AttributeLayout
                   key={uniqueId()}
                   language={lang.code.toLowerCase()}
                   confidenceValue={attribute.confidenceValue}

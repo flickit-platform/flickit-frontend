@@ -23,6 +23,7 @@ import useScreenResize from "@/utils/useScreenResize";
 import Settings from "@mui/icons-material/Settings";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
+import { useTheme } from "@mui/material";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -43,6 +44,7 @@ const AddMemberDialog = (props: {
   listOfRoles: any[];
   assessmentId: any;
 }) => {
+  const theme = useTheme();
   const {
     expanded,
     onClose,
@@ -339,7 +341,7 @@ const AddMemberDialog = (props: {
                     <Typography>{role.title}</Typography>
                     <div
                       style={{
-                        color: "text.primary",
+                        color: theme.palette.text.primary,
                         fontSize: "0.875rem",
                         lineHeight: "21px",
                         fontWeight: 300,

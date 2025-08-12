@@ -187,10 +187,10 @@ const AssessmentHtmlContainer = () => {
     <Chip
       label={
         <Box
-          fontWeight={200}
           sx={{
             ...styles.box,
             ...styles.rtlStyle(language === "fa"),
+            fontWeight: "lighter",
           }}
         >
           {icon}

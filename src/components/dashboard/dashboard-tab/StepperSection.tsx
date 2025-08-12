@@ -214,7 +214,7 @@ const StepBox = (props: IStepBox) => {
       sx={{
         ...theme.typography.labelMedium,
         color: "#2D80D2",
-        bgcolor: "primary.bg",
+        bgcolor: "primary.states.hover",
       }}
     />
   );
@@ -225,7 +225,7 @@ const StepBox = (props: IStepBox) => {
       size="small"
       sx={{
         ...theme.typography.labelMedium,
-        color: "success.bg",
+        color: "success.main",
         bgcolor: "success.bg",
       }}
     />

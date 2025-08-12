@@ -265,7 +265,7 @@ const Uploader = (props: IUploadProps) => {
         sx={{
           minHeight: "40px",
           border: (t) =>
-            `1px dashed ${hasError ? t.palette.error.main : "gray"}`,
+            `1px dashed ${hasError ? t.palette.error.main : t.palette.disabled?.main}`,
           "&:hover": {
             border: (t) =>
               disabled
@@ -377,7 +377,7 @@ const Uploader = (props: IUploadProps) => {
               </FormLabel>
               <Box
                 px={2}
-                color="info.dark"
+                color="disabled.main"
                 marginInlineStart="auto"
                 marginInlineEnd="unset"
                 sx={{ ...styles.centerV }}

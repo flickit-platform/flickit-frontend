@@ -349,7 +349,7 @@ const Header = ({
 
     <Box sx={{ ...styles.centerVH }}>
       <Box
-        bgcolor="background.default"
+        bgcolor="background.containerLow"
         borderRadius="4px"
         p={0.5}
         pb={0}

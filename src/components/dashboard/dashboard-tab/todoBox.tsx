@@ -354,7 +354,7 @@ export const IssuesItem = ({
       onClick={handleNavigation}
       borderRadius={2}
       border={`0.1px solid ${colorPalette.main}`}
-      bgcolor={colorPalette.states.selected}
+      bgcolor={colorPalette.states.hover}
       gap={1}
       sx={{
         ...styles.centerV,
@@ -430,7 +430,7 @@ export const IssuesItem = ({
             <div
               style={{
                 marginInlineStart: "auto",
-                color: "primary.main",
+                color: theme.palette.primary.main,
               }}
             >
               <LoadingButton

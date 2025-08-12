@@ -109,7 +109,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               py={2}
               px={1}
               textAlign="center"
-              bgcolor={isActive ? "#E5EDF5" : "background.default"}
+              bgcolor={isActive ? "#E5EDF5" : "background.containerLow"}
               color={isActive ? "primary.main" : "text.primary"}
               sx={{
                 ...theme.typography.titleMedium,
@@ -154,7 +154,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                   right: 0,
                   height: "40px",
                   background: showBtn
-                    ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.containerLowest} 100%)`
+                    ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
                     : "none",
                   pointerEvents: "none",
                 }

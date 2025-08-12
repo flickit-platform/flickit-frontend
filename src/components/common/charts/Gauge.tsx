@@ -43,7 +43,7 @@ const Gauge = ({
   ...rest
 }: IGaugeProps) => {
   const colorPallet = getMaturityLevelColors(maturity_level_number);
-  const colorCode = colorPallet?.[level_value - 1] ?? "gray";
+  const colorCode = colorPallet?.[level_value - 1] ?? "disabled.main";
 
   const gaugeComponentCache = useRef<any>({});
 

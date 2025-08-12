@@ -573,7 +573,7 @@ const IsPrivateSwitch = (props: any) => {
           <Box
             onClick={() => handleToggle(false)}
             padding={0.5}
-            bgcolor={!isPrivate ? "gray" : "transparent"}
+            bgcolor={!isPrivate ? "disabled.main" : "transparent"}
             color={!isPrivate ? "background.containerLowest" : "text.primary"}
             borderRadius="6px"
             width="50%"

@@ -168,7 +168,7 @@ export const QuestionProgressItem = (props: any) => {
               question?.answer?.isNotApplicable ||
               (hasIssue && questionsInfo.permissions.viewDashboard)
               ? `white`
-              : "gray"}
+              : "disabled.main"}
             sx={{
               fontSize: question.index == questionIndex ? ".75rem" : ".7rem",
               textAlign: "center",

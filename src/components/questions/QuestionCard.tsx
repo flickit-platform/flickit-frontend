@@ -180,7 +180,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             <Typography
               letterSpacing={is_farsi ? "0" : ".05em"}
               variant="semiBoldXLarge"
-              color="background.default"
+              color="background.containerLow"
               sx={{
                 fontFamily: languageDetector(title)
                   ? farsiFontFamily
@@ -665,7 +665,7 @@ export const QuestionTabsTemplate = (props: any) => {
   );
 };
 
-const getArrowColor = (isActive: boolean) => (isActive ? "white" : "gray");
+const getArrowColor = (isActive: boolean) => (isActive ? "white" : "disabled.main");
 
 const NavigationButton = ({
   onClick,
@@ -1051,7 +1051,7 @@ const AnswerTemplate = (props: {
                   }
                   sx={{
                     ...theme.typography.titleMedium,
-                    color: "background.default",
+                    color: "background.containerLow",
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
                     justifyContent: "flex-start",
@@ -1117,7 +1117,7 @@ const AnswerTemplate = (props: {
                       "&.Mui-disabled": {
                         color:
                           notApplicable || !permissions?.answerQuestion
-                            ? "gray"
+                            ? "disabled.main"
                             : "white",
                       },
                     }}
@@ -1522,27 +1522,27 @@ const Evidence = (props: any) => {
   const [loadingEvidence, setLoadingEvidence] = useState(false);
 
   const [evidenceBG, setEvidenceBG] = useState<any>({
-    bgcolor: theme.palette.primary.main,
+    background: theme.palette.primary.main,
     borderColor: theme.palette.primary.dark,
     borderHover: theme.palette.primary.states.selected,
   });
   useEffect(() => {
     if (value === null) {
       setEvidenceBG({
-        bgcolor: "rgba(25, 28, 31, 0.08)",
+        background: "rgba(25, 28, 31, 0.08)",
         borderColor: "#191C1F",
         borderHover: "#061528",
       });
     }
     if (value === "POSITIVE") {
       setEvidenceBG({
-        bgcolor: "rgba(32, 95, 148, 0.08)",
+        background: "rgba(32, 95, 148, 0.08)",
         borderColor: "#205F94",
         borderHover: "#117476",
       });
     } else if (value === "NEGATIVE") {
       setEvidenceBG({
-        bgcolor: "rgba(139, 0, 53, 0.08)",
+        background: "rgba(139, 0, 53, 0.08)",
         borderColor: "#8B0035",
         borderHover: "#821237",
       });
@@ -2143,20 +2143,20 @@ const EvidenceDetail = (props: any) => {
   useEffect(() => {
     if (type === "Positive") {
       setEvidenceBG({
-        bgcolor: "rgba(32, 95, 148, 0.08)",
+        background: "rgba(32, 95, 148, 0.08)",
         borderColor: "#205F94",
         borderHover: "#117476",
       });
     } else if (type === "Negative") {
       setEvidenceBG({
-        bgcolor: "rgba(139, 0, 53, 0.08)",
+        background: "rgba(139, 0, 53, 0.08)",
         borderColor: "#8B0035",
         borderHover: "#821237",
       });
     } else {
       setValue(null);
       setEvidenceBG({
-        bgcolor: "rgba(25, 28, 31, 0.08)",
+        background: "rgba(25, 28, 31, 0.08)",
         borderColor: "#191C1F",
         borderHover: "#061528",
       });
@@ -2300,7 +2300,7 @@ const EvidenceDetail = (props: any) => {
                   sx={{
                     boxShadow: 2,
                     p: 1,
-                    bgcolor: evidenceBG?.bgcolor,
+                    bgcolor: evidenceBG?.background,
                   }}
                   onClick={EditEvidence}
                 >
@@ -2328,7 +2328,7 @@ const EvidenceDetail = (props: any) => {
               height="fit-content"
               display="flex"
               flexDirection="column"
-              bgcolor={evidenceBG?.bgcolor}
+              bgcolor={evidenceBG?.background}
               color="#0A2342"
               borderRadius={
                 theme.direction == "ltr"
@@ -2628,7 +2628,7 @@ const FileIcon = (props: any): any => {
           item={item}
           name={name}
           mainColor={evidenceBG?.borderColor}
-          backgroundColor={evidenceBG?.bgcolor}
+          backgroundColor={evidenceBG?.background}
           hover={hover}
           exp={exp}
         />
