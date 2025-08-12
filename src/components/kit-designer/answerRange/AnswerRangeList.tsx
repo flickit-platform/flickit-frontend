@@ -220,18 +220,28 @@ const ListOfItems = ({
 
   const theme = useTheme();
 
-  function getSummaryBg(isEditing: boolean, hasNoQuestions: boolean) {
-    if (isEditing) return "#F3F5F6";
-    if (hasNoQuestions) return alpha(theme.palette.error.main, 0.04);
-    return "#fff";
-  }
-  function getExpandedBg(hasNoQuestions: boolean) {
-    if (hasNoQuestions) return alpha(theme.palette.error.main, 0.08);
-    return "#F3F5F6";
-  }
-  function getDetailsPy() {
-    if(questionData.length != 0) return "20px"
-    return "unset"
+  const multiStyles : Record<string, any> = {
+    summaryBg: (isEditing: boolean, hasNoQuestions: boolean)=>{
+      if (isEditing) return "#F3F5F6";
+      if (hasNoQuestions) return alpha(theme.palette.error.main, 0.04);
+      return "#fff";
+    },
+    expandedBg: (hasNoQuestions: boolean)=>{
+      if (hasNoQuestions) return alpha(theme.palette.error.main, 0.08);
+      return "#F3F5F6";
+    },
+    getDetailsPy: ()=>{
+      if(questionData.length != 0) return "20px";
+      return "unset";
+    },
+    borderRadius: ()=>{
+      if(questionData.length != 0) return "8px";
+      return "8px 8px 0 0";
+    },
+    accordionBg: (isEditing: boolean)=>{
+      if(isEditing) return "#F3F5F6";
+      return "#fff";
+    }
   }
 
   return (
@@ -239,10 +249,11 @@ const ListOfItems = ({
       {items?.map((item: any, index: number) => {
         const isEditing = editMode === item.id;
         const hasNoQuestions = item.questionsCount == 0;
-        const summaryBg = getSummaryBg(isEditing, hasNoQuestions);
-        const expandedBg =  getExpandedBg(hasNoQuestions);
-        const borderRadius = questionData.length != 0 ? "8px" : "8px 8px 0 0";
-        const detailsPy = getDetailsPy();
+        const summaryBg = multiStyles["summaryBg"]?.(isEditing, hasNoQuestions);
+        const expandedBg = multiStyles["expandedBg"]?.(hasNoQuestions);
+        const borderRadius = multiStyles["borderRadius"]?.();
+        const detailsPy = multiStyles["getDetailsPy"]?.();
+        const accordionBg = multiStyles["accordionBg"]?.(isEditing);
         const hasOptions = item?.answerOptions?.length >= 1;
         const showForm = showNewAnswerRangeForm[item.id];
 
@@ -464,7 +475,7 @@ const ListOfItems = ({
             key={index}
             mt={1.5}
             sx={{
-              backgroundColor: isEditing ? "#F3F5F6" : "#fff",
+              backgroundColor: accordionBg,
               borderRadius: "8px",
               border: "0.3px solid #73808c30",
               display: "flex",
