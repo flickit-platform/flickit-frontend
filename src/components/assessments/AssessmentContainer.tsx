@@ -40,7 +40,7 @@ const AssessmentContainer = () => {
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, deleteAssessment, ...rest } = useFetchAssessments();
+  const { fetchAssessments, deleteAssessment, fetchSpaceInfo, ...rest } = useFetchAssessments();
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -61,20 +61,14 @@ const AssessmentContainer = () => {
     id: TId;
   }>({ status: false, id: "" });
 
-  const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) =>
-      service.space.getById(args, config),
-    runOnMount: false,
-  });
-
-  const deleteAssessmentById = async () => {
-    try {
-      await deleteAssessment(openDeleteDialog?.id);
-      setOpenDeleteDialog({ status: false, id: "" });
-    } catch (e) {
-      const err = e as ICustomError;
-      setOpenDeleteDialog({ status: false, id: "" });
-      showToast(err);
+  const deleteAssessmentById = async() =>{
+   try {
+    await deleteAssessment(openDeleteDialog?.id)
+     setOpenDeleteDialog({ status: false, id: "" })
+   }catch(e){
+     const err = e as ICustomError;
+     setOpenDeleteDialog({ status: false, id: "" })
+     showToast(err);
     }
   };
 
@@ -299,6 +293,12 @@ const useFetchAssessments = () => {
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
+  const fetchSpaceInfo = useQuery({
+    service: (args = { spaceId }, config) =>
+      service.space.getById(args, config),
+    runOnMount: false,
+  });
+
   useEffect(() => {
     fetchAssessments();
   }, [page, spaceId]);
@@ -313,6 +313,7 @@ const useFetchAssessments = () => {
       if (res) {
         setData(res);
         setError(false);
+        fetchSpaceInfo.query()
       } else {
         setData({});
         setError(true);
@@ -336,6 +337,7 @@ const useFetchAssessments = () => {
         { signal: abortController.current.signal },
       );
       fetchAssessments();
+      fetchSpaceInfo.query()
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -356,6 +358,7 @@ const useFetchAssessments = () => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
+    fetchSpaceInfo
   };
 };
 

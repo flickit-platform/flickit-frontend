@@ -522,20 +522,22 @@ export const QuestionTabsTemplate = (props: any) => {
   }, [currentPage]);
 
   useEffect(() => {
-    if (counts.evidences) {
-      setValue("evidences");
-    } else if (counts.history) {
-      setValue("history");
-    } else if (counts.comments) {
-      setValue("comments");
-    } else {
-      setValue(() => {
-        if (position == "dialog") {
-          return "";
-        } else {
-          return "evidences";
-        }
-      });
+    if(position == "dialog"){
+      if (counts.evidences) {
+        setValue("evidences");
+      } else if (counts.history) {
+        setValue("history");
+      } else if (counts.comments) {
+        setValue("comments");
+      } else {
+        setValue(() => {
+          if (position == "dialog") {
+            return "";
+          } else {
+            return "evidences";
+          }
+        });
+      }
     }
   }, [counts.evidences, counts.history, counts.comments]);
   const theme = useTheme();
