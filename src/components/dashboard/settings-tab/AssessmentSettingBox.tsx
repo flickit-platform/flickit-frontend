@@ -40,7 +40,7 @@ import TablePagination from "@mui/material/TablePagination";
 import { t } from "i18next";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
 import { getReadableDate } from "@utils/readableDate";
-import { FormControlLabel, Switch, useTheme } from "@mui/material";
+import { FormControlLabel, Switch } from "@mui/material";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import {
   CEDialog,
@@ -112,7 +112,6 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
   fetchPathInfo,
   color,
 }) => {
-  const theme = useTheme();
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentInfo } = useAssessmentContext();
 
@@ -487,7 +486,6 @@ export const AssessmentSettingMemberBox = (props: {
   const ITEM_PADDING_TOP = 8;
 
   const MenuProps = SelectHeight(ITEM_HEIGHT, ITEM_PADDING_TOP);
-  const theme = useTheme();
 
   return (
     <Box

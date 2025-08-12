@@ -129,7 +129,6 @@ export const SpaceMembers = (props: any) => {
     [spaceMembersQueryData?.data?.size],
   );
 
-  const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
     <Box mt={1} p={3} borderRadius={1} bgcolor="background.containerLowest">
       <Box>

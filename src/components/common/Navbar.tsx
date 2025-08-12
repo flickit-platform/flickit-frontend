@@ -808,7 +808,6 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   };
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
-  const theme = useTheme();
 
   return (
     <>

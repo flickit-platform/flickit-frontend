@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import AdviceQuestionTable from "./AdviceQuestionTable";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
 import showToast from "@/utils/toastError";
-import { IconButton, useTheme } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 const AdviceDialog = ({
@@ -89,7 +89,6 @@ const AdviceDialog = ({
       setStep(1);
     }
   };
-  const theme = useTheme();
 
   return (
     <Dialog

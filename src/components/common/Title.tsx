@@ -7,7 +7,6 @@ import { SvgIconProps } from "@mui/material/SvgIcon";
 import AnchorRoundedIcon from "@mui/icons-material/AnchorRounded";
 import { styles } from "@styles";
 import HomeIcon from "@mui/icons-material/Home";
-import { useTheme } from "@mui/material";
 interface ITitle extends Omit<TypographyProps, "borderBottom"> {
   sup?: JSX.Element | string;
   sub?: JSX.Element | string;
@@ -42,7 +41,6 @@ const Title = (props: ITitle) => {
     avatar,
     ...rest
   } = props;
-  const theme = useTheme();
 
   return (
     <Box

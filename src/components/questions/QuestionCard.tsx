@@ -145,7 +145,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const theme = useTheme();
 
   return (
     <Box>
