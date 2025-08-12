@@ -61,7 +61,7 @@ const StepperSection = (props: IStepperSection) => {
                   borderRadius: "50%",
                   border: (theme) => `1px dashed ${theme.palette.primary.main}`,
                   marginY: "-4px",
-                  color: (theme) => theme.palette.primary.bg,
+                  color: "primary.bg",
                 },
                 "& .Mui-active .MuiStepIcon-text": {
                   fill: (theme) => theme.palette.primary.main,
@@ -198,8 +198,8 @@ const StepBox = (props: IStepBox) => {
         size="small"
         sx={{
           ...theme.typography.labelMedium,
-          color: theme.palette.secondary.main,
-          background: theme.palette.secondary.bg,
+          color: "secondary.main",
+          bgcolor: "secondary.bg",
           direction: theme.direction,
           cursor: "pointer",
         }}
@@ -214,7 +214,7 @@ const StepBox = (props: IStepBox) => {
       sx={{
         ...theme.typography.labelMedium,
         color: "#2D80D2",
-        background: theme.palette.primary.bg,
+        bgcolor: "primary.bg",
       }}
     />
   );
@@ -225,8 +225,8 @@ const StepBox = (props: IStepBox) => {
       size="small"
       sx={{
         ...theme.typography.labelMedium,
-        color: theme.palette.success.bg,
-        background: theme.palette.success.bg,
+        color: "success.bg",
+        bgcolor: "success.bg",
       }}
     />
   );
@@ -241,13 +241,9 @@ const StepBox = (props: IStepBox) => {
 
     content = (
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "calc(100% - 60px)",
-        }}
+        justifyContent="space-between"
+        height="calc(100% - 60px)"
+        sx={{ ...styles.centerCH }}
       >
         <Box
           sx={{
@@ -264,14 +260,7 @@ const StepBox = (props: IStepBox) => {
             {hasIssues && issuesTag("questions")}
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "4px",
-          }}
-        >
+        <Box gap="4px" sx={{ ...styles.centerVH }}>
           <Typography variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * answered) / total)}%
           </Typography>
@@ -299,7 +288,7 @@ const StepBox = (props: IStepBox) => {
           height: "calc(100% - 60px)",
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+        <Box gap={2} sx={{ ...styles.centerH }}>
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
@@ -359,13 +348,9 @@ const StepBox = (props: IStepBox) => {
 
     content = (
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "calc(100% - 60px)",
-        }}
+        justifyContent="space-between"
+        height="calc(100% - 60px)"
+        sx={{ ...styles.centerCH }}
       >
         <Box
           sx={{
@@ -405,12 +390,20 @@ const StepBox = (props: IStepBox) => {
         px: "20px",
         py: "10px",
         height: "190px",
-        borderInlineEnd: !report ? `1px solid ${theme.palette.outline?.variant}` : "",
+        borderInlineEnd: !report
+          ? `1px solid ${theme.palette.outline?.variant}`
+          : "",
         borderTop: {
-          xs: insights || report ? `1px solid ${theme.palette.outline?.variant}` : "",
+          xs:
+            insights || report
+              ? `1px solid ${theme.palette.outline?.variant}`
+              : "",
           md: "none",
         },
-        borderBottom: { xs: insights ? `1px solid ${theme.palette.outline?.variant}` : "", md: "none" },
+        borderBottom: {
+          xs: insights ? `1px solid ${theme.palette.outline?.variant}` : "",
+          md: "none",
+        },
         width: "100%",
         textAlign: "center",
         cursor: "pointer",

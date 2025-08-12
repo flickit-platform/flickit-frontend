@@ -43,13 +43,7 @@ const DonutChart = (props: IGaugeProps) => {
             gap: "1rem",
           }}
         >
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "3px",
-            }}
-          >
+          <Box gap="3px" sx={{ ...styles.centerV }}>
             <CircleGaugeComponent
               colorCode={colorCode}
               value={levelValue}

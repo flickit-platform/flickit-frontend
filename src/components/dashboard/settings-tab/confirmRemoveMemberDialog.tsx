@@ -8,7 +8,6 @@ import { Trans } from "react-i18next";
 import Warning from "@mui/icons-material/Warning";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
-import { useTheme } from "@mui/material";
 
 const ConfirmRemoveMemberDialog = (props: any) => {
   const {
@@ -21,7 +20,6 @@ const ConfirmRemoveMemberDialog = (props: any) => {
   } = props;
 
   const { service } = useServiceContext();
-  const theme = useTheme();
 
   const deleteUserRole = useQuery({
     service: (args, config) =>
@@ -73,8 +71,8 @@ const ConfirmRemoveMemberDialog = (props: any) => {
         <>
           <Warning
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: 1,
             }}
           />
           <Trans i18nKey="common.warning" />

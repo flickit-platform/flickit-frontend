@@ -18,7 +18,6 @@ import languageDetector from "@/utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -37,7 +36,6 @@ interface IAssessmentKitListItemProps {
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
-  const theme = useTheme();
 
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
@@ -59,39 +57,37 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   };
   return (
     <Box
+      borderRadius={2}
+      p={2}
+      bgcolor="#fbf8fb"
+      mb={1}
       sx={{
         ...styles.centerV,
         boxShadow: (t) => `0 5px 8px -8px ${t.palette.grey[400]}`,
-        borderRadius: 2,
-        p: 2,
-        backgroundColor: "#fbf8fb",
-        mb: 1,
       }}
     >
-      <Box sx={{ ...styles.centerV, flex: 1 }} alignSelf="stretch">
+      <Box flex={1} alignSelf="stretch" sx={{ ...styles.centerV }}>
         <Box
-          sx={{
-            ...styles.centerCV,
-
-            textDecoration: "none",
-            color: (t) => t.palette.primary.dark,
-          }}
+          color="primary.dark"
           alignSelf="stretch"
           component={Link}
           to={link ?? `${id}`}
+          sx={{
+            ...styles.centerCV,
+            textDecoration: "none",
+          }}
         >
           <Typography
             variant="h6"
+            fontWeight="bold"
+            height="100%"
+            alignSelf="stretch"
             sx={{
-              fontWeight: "bold",
               textDecoration: "none",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              alignSelf: "stretch",
               fontFamily: languageDetector(title)
                 ? farsiFontFamily
                 : primaryFontFamily,
+              ...styles.centerV,
             }}
           >
             {title}
@@ -103,22 +99,19 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
         </Box>
 
         <Box
-          sx={{
-            ...styles.centerV,
-            color: "#525252",
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
-            gap: 1,
-          }}
+          gap={1}
+          color="#525252"
+          marginInlineStart="auto"
           alignSelf="stretch"
+          sx={{ ...styles.centerV }}
         >
           {isPrivate && (
             <Chip
               label={<Trans i18nKey="common.private" />}
               size="small"
               sx={{
-                background: "#7954B3",
-                color:theme.palette.background.containerLowest,
+                bgcolor: "#7954B3",
+                color: "background.containerLowest",
               }}
             />
           )}

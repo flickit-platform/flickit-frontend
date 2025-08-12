@@ -34,7 +34,7 @@ const AttributeForm = ({
     testId?: string,
     label?: string,
   ) => (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={0.5}>
+    <Box gap={0.5} sx={{ ...styles.centerCH }}>
       {label && (
         <Typography variant="caption" color="textSecondary">
           <Trans i18nKey={label} />
@@ -52,7 +52,7 @@ const AttributeForm = ({
           ...(testId ? { "data-testid": testId } : {}),
         }}
         sx={{
-          background: (theme) => theme.palette.background.containerLowest,
+          bgcolor: "background.containerLowest",
           borderRadius: "8px",
         }}
       />
@@ -75,13 +75,13 @@ const AttributeForm = ({
     >
       {/* Index Number */}
       <Box
-        sx={{ ...styles.centerCVH, background: "background.container" }}
+        sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
         borderRadius="0.5rem"
       >
         <Box
           sx={{
             ...styles.centerVH,
-            background: "background.container",
+            bgcolor: "background.container",
             width: { xs: "40px" },
             justifyContent: "space-around",
           }}
@@ -142,12 +142,10 @@ const AttributeForm = ({
 
       {/* Save, Cancel, and Weight */}
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
         justifyContent="flex-start"
         gap={0.6}
         mt={0.5}
+        sx={{ ...styles.centerCH }}
       >
         <Box display="flex">
           <IconButton
@@ -168,7 +166,12 @@ const AttributeForm = ({
           </IconButton>
         </Box>
 
-        {renderNumericField("weight", newAttribute.weight, "weight-id", "weight")}
+        {renderNumericField(
+          "weight",
+          newAttribute.weight,
+          "weight-id",
+          "weight",
+        )}
       </Box>
     </Box>
   );

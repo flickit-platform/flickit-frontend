@@ -37,12 +37,9 @@ import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 export const SpaceMembers = (props: any) => {
-  const theme = useTheme();
-
   const { editable } = props;
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
@@ -63,7 +60,10 @@ export const SpaceMembers = (props: any) => {
   });
   const deleteSpaceMember = useQuery({
     service: (arg, config) =>
-      service.space.removeMember({ spaceId, memberId: openDeleteDialog.id }, config),
+      service.space.removeMember(
+        { spaceId, memberId: openDeleteDialog.id },
+        config,
+      ),
     runOnMount: false,
     toastError: false,
   });
@@ -72,7 +72,7 @@ export const SpaceMembers = (props: any) => {
     try {
       await deleteSpaceMember.query();
       await spaceMembersQueryData.query();
-      setOpenDeleteDialog({status: false, id: ""})
+      setOpenDeleteDialog({ status: false, id: "" });
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -131,7 +131,7 @@ export const SpaceMembers = (props: any) => {
 
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
-    <Box mt={1} p={3} sx={{ borderRadius: 1, background: "white" }}>
+    <Box mt={1} p={3} borderRadius={1} bgcolor="background.containerLowest">
       <Box>
         <Title
           size="small"
@@ -148,7 +148,7 @@ export const SpaceMembers = (props: any) => {
           onSubmit={async (e) => {
             e.preventDefault();
             if (!user_id_ref.current?.value) {
-              showToast(t("errors.pleaseEnterEmailAddress"))
+              showToast(t("errors.pleaseEnterEmailAddress"));
             } else {
               try {
                 await addMember({
@@ -195,11 +195,11 @@ export const SpaceMembers = (props: any) => {
             letterSpacing: ".05rem",
           }}
           toolbar={
-            <Box sx={{ ...styles.centerV, opacity: 0.8, mb: "auto" }}>
+            <Box mb="auto" sx={{ ...styles.centerV, opacity: 0.8 }}>
               <PeopleOutlineRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 0.5,
                 }}
                 fontSize="small"
               />
@@ -257,14 +257,12 @@ export const SpaceMembers = (props: any) => {
                             ></Avatar>
                           </Box>
                           <Box
-                            style={{
-                              marginRight:
-                                theme.direction == "rtl" ? "1rem" : "unset",
-                              marginLeft:
-                                theme.direction == "rtl" ? "unset" : "1rem",
-                              width: "35%",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
+                            marginInlineStart={2}
+                            marginInlineEnd="unset"
+                            width="35%"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            sx={{
                               fontFamily: languageDetector(displayName)
                                 ? farsiFontFamily
                                 : primaryFontFamily,
@@ -273,22 +271,18 @@ export const SpaceMembers = (props: any) => {
                             {displayName}
                           </Box>
                           <Box
-                            style={{
-                              marginRight:
-                                theme.direction == "rtl" ? "1rem" : "unset",
-                              marginLeft:
-                                theme.direction == "rtl" ? "unset" : "1rem",
-                              width: "45%",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
+                            marginInlineStart={2}
+                            marginInlineEnd="unset"
+                            width="45%"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
                           >
                             {email}
                           </Box>
                         </Box>
                         <Box
-                          ml={`${is_farsi ? 0 : "auto"}`}
-                          mr={`${is_farsi ? "auto" : 0}`}
+                          marginInlineStart="auto"
+                          marginInlineEnd={0}
                           sx={{ ...styles.centerV }}
                         >
                           {isOwner && (
@@ -296,10 +290,8 @@ export const SpaceMembers = (props: any) => {
                               label={<Trans i18nKey="common.owner" />}
                               size="small"
                               sx={{
-                                marginRight:
-                                  theme.direction === "ltr" ? 1.5 : "unset",
-                                marginLeft:
-                                  theme.direction === "rtl" ? 1.5 : "unset",
+                                marginInlineStart: "unset",
+                                marginInlineEnd: 1.5,
                               }}
                             />
                           )}
@@ -318,15 +310,7 @@ export const SpaceMembers = (props: any) => {
                     )
                   );
                 })}
-                <Stack
-                  spacing={2}
-                  sx={{
-                    mt: 3,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
                   <Pagination
                     variant="outlined"
                     color="primary"
@@ -396,21 +380,17 @@ export const SpaceMembers = (props: any) => {
                         return (
                           <Box
                             key={id}
-                            sx={{
-                              ...styles.centerV,
-                              boxShadow: 1,
-                              borderRadius: 2,
-                              flexDirection: { xs: "column", sm: "row" },
-                              my: 1,
-                              py: 0.8,
-                              px: 1.5,
-                            }}
+                            boxShadow={1}
+                            borderRadius={2}
+                            flexDirection={{ xs: "column", sm: "row" }}
+                            my={1}
+                            py={0.8}
+                            px={1.5}
+                            sx={{ ...styles.centerV }}
                           >
                             <Box
-                              sx={{
-                                ...styles.centerV,
-                                mr: { xs: "auto", sm: "0px" },
-                              }}
+                              mr={{ xs: "auto", sm: "0px" }}
+                              sx={{ ...styles.centerV }}
                             >
                               <Box>
                                 <Avatar sx={{ width: 34, height: 34 }}>
@@ -420,28 +400,24 @@ export const SpaceMembers = (props: any) => {
                               <Box ml={2}>{name}</Box>
                             </Box>
                             <Box
-                              ml={theme.direction === "rtl" ? "unset" : "auto"}
-                              mr={theme.direction !== "rtl" ? "unset" : "auto"}
+                              marginInlineStart="auto"
+                              marginInlineEnd="unset"
                               sx={{ ...styles.centerV }}
                             >
                               <Box
+                                px={0.4}
+                                marginInlineStart="unset"
+                                marginInlineEnd={2}
                                 sx={{
                                   ...styles.centerV,
                                   opacity: 0.8,
-                                  px: 0.4,
-                                  marginRight:
-                                    theme.direction === "ltr" ? 2 : "unset",
-                                  marginLeft:
-                                    theme.direction === "rtl" ? 2 : "unset",
                                 }}
                               >
                                 <EventBusyRoundedIcon
                                   fontSize="small"
                                   sx={{
-                                    marginRight:
-                                      theme.direction === "ltr" ? 0.5 : "unset",
-                                    marginLeft:
-                                      theme.direction === "rtl" ? 0.5 : "unset",
+                                    marginInlineStart: "unset",
+                                    marginInlineEnd: 0.5,
                                   }}
                                 />
                                 <Typography variant="body2">
@@ -522,7 +498,7 @@ const Actions = (props: any) => {
     editable,
     inviteId,
     setOpenDeleteDialog,
-    deleteSpaceMember
+    deleteSpaceMember,
   } = props;
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
@@ -583,7 +559,7 @@ const Actions = (props: any) => {
           editable && {
             icon: <DeleteRoundedIcon fontSize="small" />,
             text: <Trans i18nKey="common.remove" />,
-            onClick: ()=> setOpenDeleteDialog({ status: true, id: member.id }),
+            onClick: () => setOpenDeleteDialog({ status: true, id: member.id }),
           },
       ]}
     />

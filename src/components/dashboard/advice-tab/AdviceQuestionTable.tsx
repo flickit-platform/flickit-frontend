@@ -8,6 +8,7 @@ import languageDetector from "@/utils/languageDetector";
 import Typography from "@mui/material/Typography";
 import CustomTablePagination from "@components/common/CustomTablePagination";
 import uniqueId from "@/utils/uniqueId";
+import { styles } from "@styles";
 
 const AdviceQuestionTable = ({ adviceResult }: any) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -38,12 +39,10 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
         <Grid
           container
           spacing={{ xs: 1, md: 2 }}
-          sx={{
-            my: { xs: 2, sm: 4 },
-            textAlign: "center",
-            fontWeight: "700",
-            color: (theme) => theme.palette.background.onVariant,
-          }}
+          color="background.onVariant"
+          my={{ xs: 2, sm: 4 }}
+          textAlign="center"
+          fontWeight={700}
         >
           <Grid item xs={0.5} md={0.5}>
             <Typography variant="semiBoldLarge"># </Typography>
@@ -179,11 +178,8 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                 item
                 xs={2}
                 md={2}
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                }}
+                flexWrap="wrap"
+                sx={{ ...styles.centerH }}
               >
                 {attributes.map((attribute: any, index: number) => (
                   <Box
@@ -191,7 +187,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                     sx={{
                       px: "10px",
                       color: attributeColorPallet[Math.ceil(index % 3)],
-                      background: attributeBGColorPallet[Math.ceil(index % 3)],
+                      bgcolor: attributeBGColorPallet[Math.ceil(index % 3)],
                       fontSize: "11px",
                       border: `1px solid ${attributeColorPallet[Math.ceil(index % 3)]}`,
                       borderRadius: "8px",
@@ -207,7 +203,9 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
                 ))}
               </Grid>
               <Grid
-                item xs={0} md={2}
+                item
+                xs={0}
+                md={2}
                 sx={{
                   display: {
                     md: "block",
@@ -239,7 +237,7 @@ const AdviceQuestionTable = ({ adviceResult }: any) => {
         sx={{
           position: "sticky",
           bottom: 0,
-          background: (theme) => theme.palette.background.containerLowest,
+          bgcolor: "background.containerLowest",
           zIndex: 1000,
         }}
       >

@@ -49,7 +49,7 @@ const SubjectForm = ({
     testId?: string,
     label?: string,
   ) => (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={0.5}>
+    <Box gap={0.5} sx={{ ...styles.centerCH }}>
       {label && (
         <Typography variant="caption" color="textSecondary">
           <Trans i18nKey={label} />
@@ -67,7 +67,7 @@ const SubjectForm = ({
           ...(testId ? { "data-testid": testId } : {}),
         }}
         sx={{
-          background: (theme) => theme.palette.background.containerLowest,
+          bgcolor: "background.containerLowest",
           borderRadius: "8px",
         }}
       />
@@ -89,7 +89,7 @@ const SubjectForm = ({
     >
       {/* Index Number */}
       <Box
-        sx={{ ...styles.centerCVH, background: "background.container" }}
+        sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
         borderRadius="0.5rem"
       >
         {renderNumericField("value", newSubject.value, "value-id")}
@@ -134,12 +134,10 @@ const SubjectForm = ({
 
       {/* Save, Cancel, and Weight */}
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
         justifyContent="flex-start"
         gap={1.5}
         mt={0.5}
+        sx={{ ...styles.centerCH }}
       >
         <Box display="flex">
           <IconButton

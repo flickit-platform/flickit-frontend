@@ -12,7 +12,6 @@ import LanguageSelector from "@common/LangSelector";
 import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import keycloakService from "@/service/keycloakService";
-import { useTheme } from "@mui/material";
 
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
 const LandingPage =
@@ -22,7 +21,6 @@ const LandingPage =
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
-  const theme = useTheme();
 
   const handleButtonClick = (e: any, name: string) => {
     keycloakService.doLogin();
@@ -40,7 +38,7 @@ const NavbarWithoutLogin = () => {
       component="nav"
       sx={{
         borderRadius: "0px",
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: "primary.main",
         position: "sticky",
         px: { xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
         boxShadow: "0 0px 8px rgba(10, 35, 66, 0.25)",
@@ -50,7 +48,7 @@ const NavbarWithoutLogin = () => {
       <Toolbar
         variant="dense"
         sx={{
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: "primary.main",
           borderRadius: 1,
           justifyContent: "space-between",
           p: 0,
@@ -77,25 +75,15 @@ const NavbarWithoutLogin = () => {
               style={{ maxWidth: "120px", height: "100%" }}
             />
           ) : (
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <CircularProgress size={20} sx={{ color: theme.palette.background.containerLowest, }} />
+            <Box height="100" sx={{ ...styles.centerVH }}>
+              <CircularProgress
+                size={20}
+                sx={{ color: "background.containerLowest" }}
+              />
             </Box>
           )}
         </Typography>
-        <Box
-          sx={{
-            display: { xs: "none", md: "flex" },
-            gap: 2,
-            mx: "auto",
-          }}
-        >
+        <Box display={{ xs: "none", md: "flex" }} gap={2} mx="auto">
           {LandingPage && (
             <Button
               component={NavLink}
@@ -103,7 +91,7 @@ const NavbarWithoutLogin = () => {
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
-                color: theme.palette.background.containerLowest,
+                color: "background.containerLowest",
               }}
               size="small"
             >
@@ -121,23 +109,17 @@ const NavbarWithoutLogin = () => {
             sx={{
               ...styles.activeNavbarLink,
               textTransform: "uppercase",
-              color: theme.palette.background.containerLowest,
+              color: "background.containerLowest",
             }}
             size="small"
           >
             <Trans i18nKey="common.kitLibrary" />
           </Button>
         </Box>
-        <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
+        <Box display={{ xs: "none", md: "block" }} ml={3}>
           {/* Other buttons */}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: { xs: 0.8, sm: 2 },
-          }}
-        >
+        <Box gap={{ xs: 0.8, sm: 2 }} sx={{ ...styles.centerV }}>
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
           <Button
             variant={"contained"}
@@ -145,12 +127,12 @@ const NavbarWithoutLogin = () => {
             onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
-              color: theme.palette.primary.main,
+              color: "primary.main",
               textTransform: "capitalize",
-              background: theme.palette.background.container,
+              bgcolor: "background.container",
               boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
               "&:hover": {
-                background: theme.palette.background.container,
+                bgcolor: "background.container",
               },
             }}
           >

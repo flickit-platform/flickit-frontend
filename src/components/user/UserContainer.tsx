@@ -41,7 +41,7 @@ const UserContainer = () => {
   return (
     <Box m="auto">
       <Box>
-        <Box sx={{ width: "100%", typography: "body1" }}>
+        <Box typography="body1" width="100%">
           <TabContext value={value}>
             <Box>
               <TabList

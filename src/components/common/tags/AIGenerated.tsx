@@ -10,20 +10,11 @@ const AIGenerated = ({ type, title, icon }: any) => {
   return (
     <Chip
       label={
-        <Box
-          sx={{
-            display: "flex",
-            gap: 1,
-            paddingBlock: 1,
-          }}
-        >
+        <Box display="flex" gap={1} paddingBlock={1}>
           {icon ?? (
             <FaWandMagicSparkles
               styles={{
-                color:
-                  type === "error"
-                    ? theme.palette.error.main
-                    : theme.palette.warning.main,
+                color: type === "error" ? "error.main" : "warning.main",
               }}
             />
           )}
@@ -33,14 +24,11 @@ const AIGenerated = ({ type, title, icon }: any) => {
       size="small"
       sx={{
         borderRadius: "8px",
-        background:
+        bgcolor:
           type === "error"
-            ? theme.palette.error.states.selected
-            : theme.palette.warning.states.selected,
-        color:
-          type === "error"
-            ? theme.palette.error.main
-            : theme.palette.warning.main,
+            ? "error.states.selected"
+            : "warning.states.selected",
+        color: type === "error" ? "error.main" : "warning.main",
         "& .MuiChip-label": {
           ...theme.typography.labelMedium,
           fontWeight: "bold",

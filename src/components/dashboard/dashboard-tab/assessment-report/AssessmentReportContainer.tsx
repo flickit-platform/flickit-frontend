@@ -176,14 +176,10 @@ const AssessmentReportContainer = (props: any) => {
                 </Box>
 
                 <Box
-                  sx={{
-                    width: "180px",
-                    minWidth: { xs: "100%", sm: "180px" },
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    mt: 1,
-                  }}
+                  width="180px"
+                  minWidth={{ xs: "100%", sm: "180px" }}
+                  mt={1}
+                  sx={{ ...styles.centerVH }}
                 >
                   <Gauge
                     maturity_level_number={kit?.maturityLevelsCount}

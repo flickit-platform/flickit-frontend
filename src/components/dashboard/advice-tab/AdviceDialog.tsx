@@ -91,7 +91,6 @@ const AdviceDialog = ({
   };
   const theme = useTheme();
 
-
   return (
     <Dialog
       open={open}
@@ -108,8 +107,8 @@ const AdviceDialog = ({
             alt="settings"
             width="24px"
             style={{
-              marginRight: theme.direction === "ltr" ? "6px" : "unset",
-              marginLeft: theme.direction === "rtl" ? "6px" : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: "6px",
             }}
           />
           <Trans i18nKey="advice.adviceAssistant" />
@@ -119,7 +118,7 @@ const AdviceDialog = ({
           onClick={handleClose}
           edge="end"
           size="small"
-          sx={{ ml: 2, color: theme.palette.primary.contrastText }}
+          sx={{ ml: 2, color: "primary.contrastText" }}
         >
           <Close />
         </IconButton>
@@ -127,9 +126,8 @@ const AdviceDialog = ({
 
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          background: "rgba(36, 102, 168, 0.08)",
+          ...styles.centerV,
+          bgcolor: "rgba(36, 102, 168, 0.08)",
           color: "#6C7B8E",
           paddingY: 1,
           paddingX: 4,
@@ -148,26 +146,15 @@ const AdviceDialog = ({
 
       <DialogContent
         sx={{
+          ...styles.centerCVH,
           padding: "unset",
-          background: theme.palette.background.containerLowest,
+          bgcolor: "background.containerLowest",
           overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           textAlign: "center",
           gap: 3,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            width: "100%",
-            margin: "0 auto",
-          }}
-        >
+        <Box width="100%" margin="0 auto" sx={{ ...styles.centerCV }}>
           {(fetchPreAdviceInfo.loading || loading) && (
             <LoadingSkeletonKitCard />
           )}
@@ -176,7 +163,7 @@ const AdviceDialog = ({
             px={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              background: theme.palette.background.containerLowest,
+              bgcolor: "background.containerLowest",
               height: "300px",
               overflow: "auto",
               overflowX: "hidden",
@@ -208,7 +195,7 @@ const AdviceDialog = ({
             mt={2}
             sx={{
               borderRadius: { xs: 0, sm: "0 0 12px 12px" },
-              background: theme.palette.background.containerLowest,
+              bgcolor: "background.containerLowest",
               maxHeight: "70vh",
               overflow: "hidden",
               overflowX: "auto",

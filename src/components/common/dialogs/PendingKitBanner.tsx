@@ -25,7 +25,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
   const [counter, setCounter] = useState(seconds);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
-  const theme = useTheme()
+  const theme = useTheme();
 
   useEffect(() => {
     const check = () => {
@@ -93,7 +93,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
           ...styles.centerV,
           boxShadow: "0px 4px 8px rgba(0,0,0,0.25)",
           borderRadius: 1,
-          background: "#f7f9fa",
+          bgcolor: "#f7f9fa",
           gap: 2,
           px: 3,
           py: 2,
@@ -160,7 +160,7 @@ const PendingKitBanner: React.FC<{ seconds?: number }> = ({ seconds = 10 }) => {
                   href={`/assessment-kits/${kit?.id}`}
                   style={{
                     textDecoration: "none",
-                    color: theme.palette.primary.main,
+                    color: "primary.main",
                     fontWeight: 600,
                     cursor: "pointer",
                     fontFamily: languageDetector(kit?.title)

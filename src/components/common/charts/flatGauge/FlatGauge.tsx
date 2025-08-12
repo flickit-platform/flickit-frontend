@@ -45,8 +45,9 @@ const FlatGauge = (props: IGaugeProps) => {
     lng,
     ...rest
   } = props;
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("sm"),
+  );
 
   const FlatGaugeComponent = useMemo(
     () => lazy(() => import(`./flatGauge${maturityLevelNumber}.tsx`)),
@@ -72,15 +73,12 @@ const FlatGauge = (props: IGaugeProps) => {
     <Suspense fallback={<Box>fallback</Box>}>
       <Box sx={{ height: "100%", textAlign: "center" }} {...rest}>
         <Box
-          sx={{
-            display: "flex",
-            flexDirection:
-              textPosition === "top" || isSmallScreen ? "column" : "row",
-            gap: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            mx: "auto",
-          }}
+          flexDirection={
+            textPosition === "top" || isSmallScreen ? "column" : "row"
+          }
+          gap="1rem"
+          mx="auto"
+          sx={{ ...styles.centerVH }}
         >
           {textPosition === "top" && (
             <Typography
@@ -97,13 +95,10 @@ const FlatGauge = (props: IGaugeProps) => {
           )}
 
           <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "3px",
-              width: "fit-content",
-              flexDirection: isSmallScreen ? "column" : "row",
-            }}
+            gap="3px"
+            width="fit-content"
+            flexDirection={isSmallScreen ? "column" : "row"}
+            sx={{ ...styles.centerV }}
           >
             <FlatGaugeComponent colorCode={colorCode} value={levelValue} />
             {textPosition === "left" && (

@@ -26,6 +26,7 @@ import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
+import { styles } from "@styles";
 
 enum ELevel {
   HIGH = "HIGH",
@@ -34,11 +35,23 @@ enum ELevel {
 }
 
 const COLORS = {
-  primary: { background: v3Tokens.success.bg, text: v3Tokens.success.dark, icon: "#388E3C" },
-  secondary: { background: v3Tokens.tertiary.bg, text: v3Tokens.tertiary.dark, icon: v3Tokens.tertiary.dark },
+  primary: {
+    background: v3Tokens.success.bg,
+    text: v3Tokens.success.dark,
+    icon: "#388E3C",
+  },
+  secondary: {
+    background: v3Tokens.tertiary.bg,
+    text: v3Tokens.tertiary.dark,
+    icon: v3Tokens.tertiary.dark,
+  },
   error: { background: "#FFEBEE", text: "#B86A77", icon: "#B86A77" },
   border: "#E0E0E0",
-  unknown: { background: "#E0E0E0", text: v3Tokens.surface.on, icon: v3Tokens.surface.on },
+  unknown: {
+    background: "#E0E0E0",
+    text: v3Tokens.surface.on,
+    icon: v3Tokens.surface.on,
+  },
 };
 
 const getPriorityColor = (priority: string) => {
@@ -188,296 +201,300 @@ const AdviceItemAccordion: React.FC<{
   readOnly,
   language,
 }) => {
-    const { service } = useServiceContext();
-    const { assessmentId = "" } = useParams();
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const isFarsi = i18next.language === "fa";
-    const [errorMessage, setErrorMessage] = useState({});
+  const { service } = useServiceContext();
+  const { assessmentId = "" } = useParams();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const isFarsi = i18next.language === "fa";
+  const [errorMessage, setErrorMessage] = useState({});
 
-    const [newAdvice, setNewAdvice] = useState({
-      title: "",
-      description: "",
-      priority: "",
-      cost: "",
-      impact: "",
+  const [newAdvice, setNewAdvice] = useState({
+    title: "",
+    description: "",
+    priority: "",
+    cost: "",
+    impact: "",
+  });
+
+  const updateAdviceItem = useQuery({
+    service: (args, config) =>
+      service.advice.update(
+        args ?? { adviceItemId: item.id, data: newAdvice },
+        config,
+      ),
+    runOnMount: false,
+  });
+
+  const removeDescriptionAdvice = useRef(false);
+
+  useEffect(() => {
+    setNewAdvice({
+      title: item.title,
+      description: item.description,
+      priority: item.priority.code,
+      cost: item.cost.code,
+      impact: item.impact.code,
     });
+  }, [isEditing, item, assessmentId]);
 
-    const updateAdviceItem = useQuery({
-      service: (args, config) =>
-        service.advice.update(
-          args ?? { adviceItemId: item.id, data: newAdvice },
-          config,
-        ),
-      runOnMount: false,
+  const handleCancel = () => {
+    setNewAdvice({
+      title: item.title,
+      description: item.description,
+      priority: item.priority.code,
+      cost: item.cost.code,
+      impact: item.impact.code,
     });
+    setEditingItemId(null);
+  };
 
-    const removeDescriptionAdvice = useRef(false);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAdvice((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-    useEffect(() => {
-      setNewAdvice({
-        title: item.title,
-        description: item.description,
-        priority: item.priority.code,
-        cost: item.cost.code,
-        impact: item.impact.code,
-      });
-    }, [isEditing, item, assessmentId]);
+  const handleSave = async () => {
+    try {
+      let errorOccurred = false;
+      const updatedErrorMessage: any = {};
 
-    const handleCancel = () => {
-      setNewAdvice({
-        title: item.title,
-        description: item.description,
-        priority: item.priority.code,
-        cost: item.cost.code,
-        impact: item.impact.code,
-      });
-      setEditingItemId(null);
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setNewAdvice((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    };
-
-    const handleSave = async () => {
-      try {
-        let errorOccurred = false;
-        const updatedErrorMessage: any = {};
-
-        if (!newAdvice.title) {
-          updatedErrorMessage.title = "errors.requiredFieldError";
-          errorOccurred = true;
-        } else {
-          updatedErrorMessage.title = null;
-        }
-
-        if (!newAdvice.description || newAdvice.description === "<p></p>") {
-          updatedErrorMessage.description = "errors.requiredFieldError";
-          errorOccurred = true;
-        } else {
-          updatedErrorMessage.description = null;
-        }
-        if (errorOccurred) {
-          setErrorMessage((prevState: any) => ({
-            ...prevState,
-            ...updatedErrorMessage,
-          }));
-          return;
-        } else {
-          await updateAdviceItem.query();
-          removeDescriptionAdvice.current = true;
-          query.query();
-
-          setDisplayedItems([]);
-          setEditingItemId(null);
-        }
-      } catch (e) {
-        const err = e as ICustomError;
-        showToast(err);
+      if (!newAdvice.title) {
+        updatedErrorMessage.title = "errors.requiredFieldError";
+        errorOccurred = true;
+      } else {
+        updatedErrorMessage.title = null;
       }
-    };
 
-    if (isEditing) {
-      return (
-        <AdviceListNewForm
-          newAdvice={newAdvice}
-          handleInputChange={handleInputChange}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-          setNewAdvice={setNewAdvice}
-          removeDescriptionAdvice={removeDescriptionAdvice}
-          postAdviceItem={updateAdviceItem}
-          errormessage={errorMessage}
-        />
-      );
+      if (!newAdvice.description || newAdvice.description === "<p></p>") {
+        updatedErrorMessage.description = "errors.requiredFieldError";
+        errorOccurred = true;
+      } else {
+        updatedErrorMessage.description = null;
+      }
+      if (errorOccurred) {
+        setErrorMessage((prevState: any) => ({
+          ...prevState,
+          ...updatedErrorMessage,
+        }));
+        return;
+      } else {
+        await updateAdviceItem.query();
+        removeDescriptionAdvice.current = true;
+        query.query();
+
+        setDisplayedItems([]);
+        setEditingItemId(null);
+      }
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
     }
+  };
 
+  if (isEditing) {
     return (
-      <>
-        <Accordion
+      <AdviceListNewForm
+        newAdvice={newAdvice}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
+        setNewAdvice={setNewAdvice}
+        removeDescriptionAdvice={removeDescriptionAdvice}
+        postAdviceItem={updateAdviceItem}
+        errormessage={errorMessage}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Accordion
+        sx={{
+          borderBottom: `1px solid ${COLORS.border}`,
+          borderInlineStart: (theme) =>
+            readOnly ? `4px solid ${theme.palette.background.onVariant}` : "",
+          border: readOnly ? "" : `1px solid ${COLORS.border}`,
+          borderRadius: "8px",
+          mb: 1,
+          boxShadow: "none",
+          bgcolor: !readOnly ? "background.default" : "initial",
+          "&:before": { content: "none" },
+        }}
+      >
+        <AccordionSummary
+          expandIcon={readOnly ? null : <ExpandMoreIcon fontSize="small" />}
           sx={{
-            borderBottom: `1px solid ${COLORS.border}`,
-            borderInlineStart: (theme) => readOnly ? `4px solid ${theme.palette.background.onVariant}` : "",
-            border: readOnly ? "" : `1px solid ${COLORS.border}`,
-            borderRadius: "8px",
-            mb: 1,
-            boxShadow: "none",
-            background: (theme) => !readOnly ? theme.palette.background.default : "initial",
-            "&:before": { content: "none" },
+            "& .MuiAccordionSummary-content": {
+              alignItems: "center",
+              minWidth: readOnly ? "20%" : "unset",
+              width: "100%",
+            },
+            padding: "0 16px",
           }}
         >
-          <AccordionSummary
-            expandIcon={readOnly ? null : <ExpandMoreIcon fontSize="small" />}
-            sx={{
-              "& .MuiAccordionSummary-content": {
-                alignItems: "center",
-                minWidth: readOnly ? "20%" : "unset",
-                width: "100%",
-              },
-              padding: "0 16px",
-            }}
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+            spacing={1}
           >
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="space-between"
-              width="100%"
-              spacing={1}
-            >
-              <Grid item xs={12} md={readOnly ? 7 : 8.3}>
-                <Grid container alignItems="center" spacing={1}>
-                  <Grid item xs={12} alignItems="center" display="flex">
-                    <Typography
-                      sx={{
-                        display: "inline-block",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        wordBreak: "break-word",
-                        marginInline: "8px",
-                        fontWeight: 500,
-                        letterSpacing: "0.15px",
-                        fontSize: readOnly ? "1rem" : "1.25rem",
-                      }}
-                      title={item.title}
-                      dir={languageDetector(item.title) ? "rtl" : "ltr"}
-                      fontFamily={
-                        languageDetector(item.title)
-                          ? farsiFontFamily
-                          : primaryFontFamily
-                      }
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography
-                      color={getPriorityColor(item.priority.code)}
-                      sx={{
-                        display: "inline-block",
-                        whiteSpace: "nowrap",
-                        fontWeight: 500,
-                        letterSpacing: "0.15px",
-                        fontSize: "1rem",
-                      }}
-                      fontFamily={
-                        isFarsi || readOnly ? farsiFontFamily : primaryFontFamily
-                      }
-                    >
-                      (
-                      {!isFarsi && !readOnly
-                        ? t(item.priority.code.toLowerCase()) +
+            <Grid item xs={12} md={readOnly ? 7 : 8.3}>
+              <Grid container alignItems="center" spacing={1}>
+                <Grid item xs={12} sx={{ ...styles.centerV }}>
+                  <Typography
+                    sx={{
+                      display: "inline-block",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      wordBreak: "break-word",
+                      marginInline: "8px",
+                      fontWeight: 500,
+                      letterSpacing: "0.15px",
+                      fontSize: readOnly ? "1rem" : "1.25rem",
+                    }}
+                    title={item.title}
+                    dir={languageDetector(item.title) ? "rtl" : "ltr"}
+                    fontFamily={
+                      languageDetector(item.title)
+                        ? farsiFontFamily
+                        : primaryFontFamily
+                    }
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    color={getPriorityColor(item.priority.code)}
+                    sx={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                      fontWeight: 500,
+                      letterSpacing: "0.15px",
+                      fontSize: "1rem",
+                    }}
+                    fontFamily={
+                      isFarsi || readOnly ? farsiFontFamily : primaryFontFamily
+                    }
+                  >
+                    (
+                    {!isFarsi && !readOnly
+                      ? t(item.priority.code.toLowerCase()) +
                         " " +
                         t("common.priority")
-                        : t("common.priority", !readOnly ? {} : { lng: language }) +
+                      : t(
+                          "common.priority",
+                          !readOnly ? {} : { lng: language },
+                        ) +
                         " " +
                         t(
                           `common.${item.priority.code.toLowerCase()}`,
                           !readOnly ? {} : { lng: language },
                         )}
-                      )
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={12} md={readOnly ? 2.8 : 3.7}>
-                <Grid
-                  container
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid
-                    item
-                    display="flex"
-                    xs={readOnly ? 12 : 9}
-                    alignItems={{ xs: "flex-start", md: "center" }}
-                    justifyContent={{ xs: "flex-start", md: "flex-end" }}
-                    gap={1}
-                    flexDirection={{ xs: "column", md: "row" }}
-                  >
-                    <CustomChip
-                      type="impact"
-                      level={item.impact.code}
-                      readOnly={readOnly}
-                      language={language}
-                    />
-
-                    <CustomChip
-                      type="cost"
-                      level={item.cost.code}
-                      readOnly={readOnly}
-                      language={language}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={3}
-                    alignItems="center"
-                    display={readOnly ? "none" : "flex"}
-                  >
-                    <IconButton
-                      size="small"
-                      color="primary"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onEdit(item.id);
-                      }}
-                    >
-                      <EditRounded fontSize="small" />
-                    </IconButton>
-
-                    <IconButton
-                      size="small"
-                      color="primary"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsDeleteDialogOpen(true);
-                      }}
-                    >
-                      <DeleteRounded fontSize="small" />
-                    </IconButton>
-                  </Grid>
+                    )
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
-          </AccordionSummary>
 
-          <AccordionDetails sx={{ padding: "8px 16px" }}>
-            <Divider sx={{ marginBottom: "8px" }} />
-            <Typography
-              textAlign="justify"
-              variant={readOnly ? "bodyMedium" : "body1"}
-              component="div"
-              dangerouslySetInnerHTML={{ __html: item.description }}
-              dir={languageDetector(item.description) ? "rtl" : "ltr"}
-              fontFamily={
-                languageDetector(item.description)
-                  ? farsiFontFamily
-                  : primaryFontFamily
-              }
-            />
-          </AccordionDetails>
-        </Accordion>
+            <Grid item xs={12} md={readOnly ? 2.8 : 3.7}>
+              <Grid
+                container
+                justifyContent="flex-start"
+                alignItems="center"
+                spacing={1}
+              >
+                <Grid
+                  item
+                  display="flex"
+                  xs={readOnly ? 12 : 9}
+                  alignItems={{ xs: "flex-start", md: "center" }}
+                  justifyContent={{ xs: "flex-start", md: "flex-end" }}
+                  gap={1}
+                  flexDirection={{ xs: "column", md: "row" }}
+                >
+                  <CustomChip
+                    type="impact"
+                    level={item.impact.code}
+                    readOnly={readOnly}
+                    language={language}
+                  />
 
-        <DeleteConfirmationDialog
-          open={isDeleteDialogOpen}
-          onClose={() => setIsDeleteDialogOpen(false)}
-          onConfirm={() => {
-            onDelete(item.id);
-            const updatedItems = items.filter(
-              (currentItem: any) => currentItem.id !== item.id,
-            );
-            setDisplayedItems(updatedItems);
-          }}
-          title={t("deleteItem")}
-          content={t("advice.deleteItemConfirmation", { title: item.title })}
-        />
-      </>
-    );
-  };
+                  <CustomChip
+                    type="cost"
+                    level={item.cost.code}
+                    readOnly={readOnly}
+                    language={language}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                  alignItems="center"
+                  display={readOnly ? "none" : "flex"}
+                >
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(item.id);
+                    }}
+                  >
+                    <EditRounded fontSize="small" />
+                  </IconButton>
+
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDeleteDialogOpen(true);
+                    }}
+                  >
+                    <DeleteRounded fontSize="small" />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </AccordionSummary>
+
+        <AccordionDetails sx={{ padding: "8px 16px" }}>
+          <Divider sx={{ marginBottom: "8px" }} />
+          <Typography
+            textAlign="justify"
+            variant={readOnly ? "bodyMedium" : "body1"}
+            component="div"
+            dangerouslySetInnerHTML={{ __html: item.description }}
+            dir={languageDetector(item.description) ? "rtl" : "ltr"}
+            fontFamily={
+              languageDetector(item.description)
+                ? farsiFontFamily
+                : primaryFontFamily
+            }
+          />
+        </AccordionDetails>
+      </Accordion>
+
+      <DeleteConfirmationDialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={() => {
+          onDelete(item.id);
+          const updatedItems = items.filter(
+            (currentItem: any) => currentItem.id !== item.id,
+          );
+          setDisplayedItems(updatedItems);
+        }}
+        title={t("deleteItem")}
+        content={t("advice.deleteItemConfirmation", { title: item.title })}
+      />
+    </>
+  );
+};
 
 const AdviceItemsAccordion: React.FC<{
   items: AdviceItem[];

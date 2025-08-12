@@ -49,40 +49,37 @@ const AdviceSlider = (props: any) => {
   const colorPallet = getMaturityLevelColors(maturityLevels?.length ?? 5);
   return (
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        px: { xs: 1, sm: 4 },
-        width: "100%",
-        margin: "0 auto",
-        flexDirection: { xs: "column", sm: "row" },
-        mb: { xs: 4, sm: 2 },
-        textAlign: "start",
-      }}
+      justifyContent="space-between"
+      px={{ xs: 1, sm: 4 }}
+      width="100%"
+      margin="0 auto"
+      flexDirection={{ xs: "column", sm: "row" }}
+      mb={{ xs: 4, sm: 2 }}
+      textAlign="start"
+      sx={{ ...styles.centerH }}
     >
       <Box sx={{ ...styles.centerVH }} gap={2} width="30%">
         <Box
-          sx={{
-            px: "10px",
-            color: "#D81E5B",
-            background: "#FDF1F5",
-            fontSize: ".75rem",
-            border: "1px solid #D81E5B",
-            borderRadius: "8px",
-            textAlign: "center",
-            fontFamily: languageDetector(subject?.title)
+          px="10px"
+          color="#D81E5B"
+          bgcolor="#FDF1F5"
+          fontSize=".75rem"
+          border="1px solid #D81E5B"
+          borderRadius="8px"
+          textAlign="center"
+          fontFamily={
+            languageDetector(subject?.title)
               ? farsiFontFamily
-              : primaryFontFamily,
-          }}
+              : primaryFontFamily
+          }
         >
           {subject.title}
         </Box>
         <Typography
           variant="semiBoldXLarge"
+          width="100%"
+          maxWidth="260px"
           sx={{
-            width: "100%",
-            maxWidth: "260px",
             fontFamily: languageDetector(attribute?.title)
               ? farsiFontFamily
               : primaryFontFamily,
@@ -91,7 +88,7 @@ const AdviceSlider = (props: any) => {
           {attribute.title}
         </Typography>
       </Box>
-      <Box sx={{ width: { xs: "100%", md: "320px" } }} mt={4}>
+      <Box width={{ xs: "100%", md: "320px" }} mt={4}>
         <Box px={2}>
           <Slider
             defaultValue={defaultValue}
@@ -108,23 +105,23 @@ const AdviceSlider = (props: any) => {
           />
         </Box>
         <Box
-          display={"flex"}
-          flexDirection={"column"}
-          width={"91%"}
-          mt={"-10px"}
-          sx={{
-            marginInlineStart: "2%",
-            marginInlineEnd: "4%",
-          }}
+          display="flex"
+          flexDirection="column"
+          width="91%"
+          mt="-10px"
+          marginInlineStart="2%"
+          marginInlineEnd="4%"
         >
           <Box
             position={"relative"}
-            left={`${((defaultValue - 1) * 99) /
+            left={`${
+              ((defaultValue - 1) * 99) /
               (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-              }%`}
-            right={`${((defaultValue - 1) * 99) /
+            }%`}
+            right={`${
+              ((defaultValue - 1) * 99) /
               (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-              }%`}
+            }%`}
           >
             <svg
               width="20"
@@ -139,12 +136,14 @@ const AdviceSlider = (props: any) => {
           <Box
             sx={{
               position: "relative",
-              left: `${((defaultValue - 1) * 99) /
+              left: `${
+                ((defaultValue - 1) * 99) /
                 (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-                }%`,
-              right: `${((defaultValue - 1) * 99) /
+              }%`,
+              right: `${
+                ((defaultValue - 1) * 99) /
                 (maturityLevels?.length ? maturityLevels?.length - 1 : 4)
-                }%`,
+              }%`,
               marginInlineStart: "-20px",
               mt: "-5px",
               whiteSpace: "nowrap",
@@ -158,19 +157,8 @@ const AdviceSlider = (props: any) => {
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          textAlign: "center",
-          justifyContent: "center",
-          width: { xs: "90%", sm: "20%" },
-          mt: 1
-        }}
-      >
-        <Typography
-          color="background.onVariant"
-          variant="bodySmall"
-        >
+      <Box width={{ xs: "90%", sm: "20%" }} mt={1} sx={{ ...styles.centerVH }}>
+        <Typography color="background.onVariant" variant="bodySmall">
           <Trans
             i18nKey="advice.fromTo"
             values={{

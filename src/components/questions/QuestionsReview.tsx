@@ -1,20 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Trans } from "react-i18next";
-import {
-  Box,
-  Button,
-  Typography,
-  Paper,
-  Hidden,
-  Rating,
-  useTheme,
-} from "@mui/material";
-import {
-  RadioButtonCheckedRounded,
-  RadioButtonUncheckedRounded,
-} from "@mui/icons-material";
-
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Hidden from "@mui/material/Hidden";
+import Rating from "@mui/material/Rating";
+import RadioButtonCheckedRounded from "@mui/icons-material/RadioButtonCheckedRounded";
+import RadioButtonUncheckedRounded from "@mui/icons-material/RadioButtonUncheckedRounded";
 import doneSvg from "@assets/svg/Done.svg";
 import noQuestionSvg from "@assets/svg/noQuestion.svg";
 import someQuestionSvg from "@assets/svg/someQuestion.svg";
@@ -58,8 +52,6 @@ const AnswerStatusImage = ({ status }: { status: string }) => {
 };
 
 export const Review = () => {
-  const theme = useTheme();
-
   const { service } = useServiceContext();
   const { assessmentId = "", questionnaireId = "" } = useParams();
   const navigate = useNavigate();
@@ -111,7 +103,8 @@ export const Review = () => {
   }, [assessmentTotalProgress]);
 
   useEffect(() => {
-    if (!questionnaireId || !window.location.pathname.includes("/completed")) return;
+    if (!questionnaireId || !window.location.pathname.includes("/completed"))
+      return;
 
     const controller = new AbortController();
 
@@ -150,14 +143,14 @@ export const Review = () => {
               component="div"
               variant="headlineMedium"
               mb={1}
-              color={theme.palette.primary.main}
+              color="primary.main"
             >
               <Trans i18nKey="questions.goodJob" />
             </Typography>
             <Typography
               component="div"
               variant="headlineSmall"
-              color={theme.palette.primary.main}
+              color="primary.main"
             >
               <Trans
                 i18nKey="questions.allQuestionsHaveBeenAnswered"
@@ -169,7 +162,7 @@ export const Review = () => {
                       to="../questionnaires"
                       style={{
                         display: "inline",
-                        color: theme.palette.secondary.main,
+                        color: "secondary.main",
                         textDecoration: "none",
                         fontFamily: languageDetector(questionnaireTitle)
                           ? farsiFontFamily
@@ -270,7 +263,7 @@ export const Review = () => {
                       to="../questionnaires"
                       style={{
                         display: "inline",
-                        color: theme.palette.secondary.main,
+                        color: "secondary.main",
                         textDecoration: "none",
                         fontFamily: languageDetector(questionnaireTitle)
                           ? farsiFontFamily
@@ -292,7 +285,7 @@ export const Review = () => {
               }}
             >
               <Trans i18nKey="questions.someQuestionsHaveNotBeenAnswered" />
-            </Typography >
+            </Typography>
           </>
         );
     }
@@ -303,7 +296,7 @@ export const Review = () => {
       <Box
         my={4}
         sx={{
-          background: "white",
+          bgcolor: "background.containerLowest",
           borderRadius: 2,
           p: { xs: 2, sm: 3, md: 6 },
           display: "flex",
@@ -312,19 +305,13 @@ export const Review = () => {
         }}
       >
         <Hidden smDown>
-          <Box mt="-28px" display="flex" alignItems="center">
+          <Box mt="-28px" sx={{ ...styles.centerV }}>
             <AnswerStatusImage status={status} />
           </Box>
         </Hidden>
         <Box sx={{ ml: { xs: 0, sm: 2, md: 6, lg: 8 } }}>
           {renderStatusText()}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 1, sm: 2 },
-            }}
-          >
+          <Box gap={{ xs: 1, sm: 2 }} sx={{ ...styles.centerV }}>
             {isPermitted && (
               <Button
                 variant="outlined"
@@ -417,7 +404,7 @@ export const Review = () => {
                   <Typography variant="subMedium" color="#b3b3b3">
                     <Trans i18nKey="common.yourConfidence" />
                   </Typography>
-                  <Box display="flex" mt={1} alignItems="center">
+                  <Box mt={1} sx={{ ...styles.centerV }}>
                     <Typography variant="h6" fontWeight="bold" mr={1}>
                       <Trans
                         i18nKey={toCamelCase(
@@ -433,7 +420,10 @@ export const Review = () => {
                       }
                       emptyIcon={
                         <RadioButtonUncheckedRounded
-                          sx={{ color: theme.palette.background.containerLowest, opacity: 0.55 }}
+                          sx={{
+                            color: "background.containerLowest",
+                            opacity: 0.55,
+                          }}
                         />
                       }
                     />
@@ -450,8 +440,8 @@ export const Review = () => {
                   }}
                 >
                   {q.answer ||
-                    !questionsInfo?.permissions?.answerQuestion ||
-                    q.is_not_applicable ? (
+                  !questionsInfo?.permissions?.answerQuestion ||
+                  q.is_not_applicable ? (
                     <Trans i18nKey="common.edit" />
                   ) : (
                     <Trans i18nKey="common.submit" />

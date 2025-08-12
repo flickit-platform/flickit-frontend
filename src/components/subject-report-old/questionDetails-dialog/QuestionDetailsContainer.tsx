@@ -113,7 +113,13 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
         </Typography>
         {questionInfo?.answer?.index ? (
           <>
-            <Box sx={{ p: 1, border: `1px solid ${theme.palette.outline?.variant}`, borderRadius: 2 }}>
+            <Box
+              sx={{
+                p: 1,
+                border: `1px solid ${theme.palette.outline?.variant}`,
+                borderRadius: 2,
+              }}
+            >
               <Typography
                 variant="bodyMedium"
                 sx={{
@@ -140,7 +146,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             variant="filled"
             sx={{
               backgroundColor: "rgba(138, 15, 36, 0.04)",
-              color: theme.palette.error.main,
+              color: "error.main",
               borderRadius: "8px",
               mb: 2,
               width: "100%",

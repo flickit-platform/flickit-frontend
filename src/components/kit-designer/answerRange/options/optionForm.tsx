@@ -11,6 +11,7 @@ import React from "react";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { styles } from "@styles";
 
 interface OptionFormProps {
   newItem: {
@@ -40,16 +41,14 @@ const OptionForm = ({
   return (
     <Box
       p={1.5}
-      sx={{
-        backgroundColor: (theme) => theme.palette.background.container,
-        borderRadius: "0px 0px 8px 8px",
-        border: "0.3px solid #73808c30",
-        display: "flex",
-        alignItems: "flex-start",
-        position: "relative",
-      }}
+      bgcolor="background.container"
+      borderRadius="0px 0px 8px 8px"
+      border="0.3px solid #73808c30"
+      display="flex"
+      alignItems="flex-start"
+      position="relative"
     >
-      <Box sx={{ width: { xs: "65%", md: "70%" } }} mx={1}>
+      <Box width={{ xs: "65%", md: "70%" }} mx={1}>
         <MultiLangTextField
           name="title"
           value={newItem.title}
@@ -70,7 +69,7 @@ const OptionForm = ({
           label={<Trans i18nKey="common.title" />}
         />
       </Box>
-      <Box sx={{ width: { xs: "20%", md: "10%" } }}>
+      <Box width={{ xs: "20%", md: "10%" }}>
         <TextField
           required
           label={<Trans i18nKey="common.value" />}
@@ -88,27 +87,20 @@ const OptionForm = ({
             "& .MuiInputBase-root": {
               fontSize: 14,
             },
-            background: (theme) => theme.palette.background.containerLowest,
+            bgcolor: "background.containerLowest",
             width: "100%",
           }}
         />
       </Box>
       {/* Check and Close Buttons */}
-      <Box
-        sx={{ marginLeft: "auto" }}
-        display="flex"
-        alignItems="center"
-        flexDirection={"column"}
-        gap={"20px"}
-      >
+      <Box marginLeft="auto" gap="20px" sx={{ ...styles.centerCH }}>
         <Link
           href="#subject-header"
           sx={{
+            ...styles.centerV,
             textDecoration: "none",
             opacity: 0.9,
             fontWeight: "bold",
-            display: "flex",
-            alignItems: "center",
             gap: "20px",
           }}
         >

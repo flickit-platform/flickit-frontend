@@ -123,7 +123,7 @@ const MainTabs = (props: any) => {
           sx={{
             ...styles.centerVH,
             mt: 1,
-            background: "#2466A814",
+            bgcolor: "#2466A814",
             borderRadius: "16px",
             p: 1.3,
           }}
@@ -184,7 +184,7 @@ const MainTabs = (props: any) => {
               ) : (
                 <Box
                   sx={{
-                    background: "#2466A814",
+                    bgcolor: "#2466A814",
                     borderRadius: "16px",
                     alignItems: "center",
                     justifyContent: "center",
@@ -218,28 +218,21 @@ const MainTabs = (props: any) => {
                             flexGrow: flexColumn ? 0 : 1,
                             border: "none",
                             textTransform: "none",
-                            color: theme.palette.text.primary,
+                            color: "text.primary",
                             maxWidth: "unset",
                             "&.Mui-selected": {
                               boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                               borderRadius: 1,
-                              color: theme.palette.primary.main,
-                              background: theme.palette.background.containerLowest,
+                              color: "primary.main",
+                              bgcolor: "background.containerLowest",
                               "&:hover": {
-                                background: theme.palette.background.containerLowest,
+                                bgcolor: "background.containerLowest",
                                 border: "none",
                               },
                             },
                           }}
                           label={
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 1,
-                              }}
-                            >
+                            <Box gap={1} sx={{ ...styles.centerVH }}>
                               <Typography variant="semiBoldLarge">
                                 <Trans i18nKey={tab.label} />
                               </Typography>

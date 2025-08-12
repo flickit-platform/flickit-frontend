@@ -33,7 +33,7 @@ import { TId } from "@/types";
 import { useTheme } from "@mui/material";
 
 const AssessmentContainer = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
@@ -56,7 +56,10 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{ status: boolean, id: TId }>({ status: false, id: "" });
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: TId;
+  }>({ status: false, id: "" });
 
   const fetchSpaceInfo = useQuery({
     service: (args = { spaceId }, config) =>
@@ -66,14 +69,14 @@ const AssessmentContainer = () => {
 
   const deleteAssessmentById = async () => {
     try {
-      await deleteAssessment(openDeleteDialog?.id)
-      setOpenDeleteDialog({ status: false, id: "" })
+      await deleteAssessment(openDeleteDialog?.id);
+      setOpenDeleteDialog({ status: false, id: "" });
     } catch (e) {
       const err = e as ICustomError;
-      setOpenDeleteDialog({ status: false, id: "" })
+      setOpenDeleteDialog({ status: false, id: "" });
       showToast(err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchSpaceInfo.query();
@@ -87,18 +90,18 @@ const AssessmentContainer = () => {
           <Typography
             variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
+            textAlign="end"
+            mb={{ xs: "5px", sm: "unset" }}
             sx={{
               textDecoration: "underline",
               cursor: "pointer",
-              textAlign: "end",
-              mb: { xs: "5px", sm: "unset" },
             }}
             color="primary"
           >
             <Trans i18nKey="assessment.learnWhyThisIsUnavailable" />
           </Typography>
         )}
-        <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
+        <Box mb="40px" mt={1} sx={{ ...styles.centerVH }}>
           <Title
             borderBottom={true}
             size="large"
@@ -106,9 +109,7 @@ const AssessmentContainer = () => {
             toolbarProps={{ whiteSpace: "nowrap" }}
             toolbar={
               data?.length !== 0 ? (
-                <Box
-                  sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
-                >
+                <Box gap="9px" position="relative" sx={{ ...styles.centerVH }}>
                   <ToolbarCreateItemBtn
                     icon={
                       <SettingIcon
@@ -166,20 +167,10 @@ const AssessmentContainer = () => {
           >
             <Trans i18nKey="assessment.assessments" />
           </Title>
-          { }
+          {}
         </Box>
         {isEmpty && !loading && (
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-              mt: 6,
-              gap: 4,
-            }}
-          >
+          <Box width="100%" mt={6} gap={4} sx={{ ...styles.centerCVH }}>
             <img
               src={AssessmentEmptyState}
               alt={"No assesment here!"}
@@ -259,15 +250,7 @@ const AssessmentContainer = () => {
                   setOpenDeleteDialog={setOpenDeleteDialog}
                 />
                 {pageCount > 1 && !isEmpty && (
-                  <Stack
-                    spacing={2}
-                    sx={{
-                      mt: 3,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
+                  <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
                     <Pagination
                       variant="outlined"
                       color="primary"

@@ -24,8 +24,8 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
+import { styles } from "@styles";
 
 const PremiumBox = [
   {
@@ -286,7 +286,9 @@ const getBorderStyle = (
   isBasic: boolean,
 ) => {
   if (isSelected) {
-    return isPremium ? `1px solid ${v3Tokens.primary.main}` : "1px solid #668099";
+    return isPremium
+      ? `1px solid ${v3Tokens.primary.main}`
+      : "1px solid #668099";
   }
   return `1px solid ${v3Tokens.outline?.variant}`;
 };
@@ -332,8 +334,6 @@ const BoxType = ({
       setSelectedType("PREMIUM");
     }
   }, []);
-  const theme = useTheme();
-
   const isSelected = selectedType === type;
   const isPremium = type === "PREMIUM";
   const isBasic = type === "BASIC";
@@ -367,7 +367,7 @@ const BoxType = ({
       onClick={handleSelect}
     >
       <Box sx={{ mb: { xs: 0.1, sm: 1 } }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        <Box gap={0.5} sx={{ ...styles.centerV }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
             variant="semiBoldMedium"
@@ -399,12 +399,9 @@ const BoxType = ({
         {bullets.map((text: string, index: number) => (
           <Box
             key={UniqueId()}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 0.1, sm: 1 },
-              mb: { xs: 0.1, sm: 1 },
-            }}
+            gap={{ xs: 0.1, sm: 1 }}
+            mb={{ xs: 0.1, sm: 1 }}
+            sx={{ ...styles.centerV }}
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography
@@ -420,7 +417,11 @@ const BoxType = ({
             >
               <Trans i18nKey={text} />
               {!allowCreateBasic && isBasic && index === 1 && (
-                <Typography variant="labelSmall" color="error.main" sx={{ display: "inline-block", }}>
+                <Typography
+                  variant="labelSmall"
+                  color="error.main"
+                  sx={{ display: "inline-block" }}
+                >
                   (<Trans i18nKey="spaces.reachedLimit" />)
                 </Typography>
               )}
@@ -431,14 +432,12 @@ const BoxType = ({
 
       {isSelected && isPremium && (
         <Box
+          color="primary.main"
+          position="absolute"
+          gap="8px"
+          bottom={{ xs: "-45px", md: "-54px" }}
           sx={{
-            color: theme.palette.primary.main,
-            position: "absolute",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "8px",
-            bottom: { xs: "-45px", md: "-54px" },
+            ...styles.centerVH,
             cursor: "text",
           }}
         >

@@ -17,7 +17,7 @@ import { ASSESSMENT_MODE } from "@/utils/enumType";
 import { Button } from "@mui/material";
 import keycloakService from "@/service/keycloakService";
 import useDialog from "@/utils/useDialog";
-import ContactUsDialog from "../assessment-kit/ContactUsDialog";
+import ContactUsDialog from "../common/dialogs/ContactUsDialog";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
 import { useAuthContext } from "@/providers/AuthProvider";

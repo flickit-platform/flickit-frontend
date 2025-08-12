@@ -10,7 +10,12 @@ interface ChartTooltipProps {
   getSecondary: (id: any) => string;
 }
 
-const ChartTooltip = ({ active, payload, getPrimary, getSecondary }: ChartTooltipProps) => {
+const ChartTooltip = ({
+  active,
+  payload,
+  getPrimary,
+  getSecondary,
+}: ChartTooltipProps) => {
   if (!active || !payload?.length) return null;
 
   const data = payload[0].payload;
@@ -21,19 +26,18 @@ const ChartTooltip = ({ active, payload, getPrimary, getSecondary }: ChartToolti
 
   return (
     <Box
-      sx={{
-        backgroundColor: "rgba(97, 97, 97, 0.92)",
-        color: theme.palette.background.containerLowest,
-        p: "4px 8px",
-        borderRadius: "4px",
-        maxWidth: "300px",
-        boxShadow: theme.shadows[1],
-        ...styles.rtlStyle(isFarsi),
-      }}
+      bgcolor="rgba(97, 97, 97, 0.92)"
+      color="background.containerLowest"
+      p="4px 8px"
+      borderRadius="4px"
+      maxWidth="300px"
+      boxShadow={theme.shadows[1]}
+      sx={{ ...styles.rtlStyle(isFarsi) }}
     >
       {primary && (
         <Typography
           variant="labelSmall"
+          whiteSpace="pre-wrap"
           sx={{
             fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
             textAlign: isFarsi ? "right" : "left",
@@ -47,11 +51,11 @@ const ChartTooltip = ({ active, payload, getPrimary, getSecondary }: ChartToolti
       {secondary && (
         <Typography
           variant="labelSmall"
+          whiteSpace="pre-wrap"
+          mt={primary ? 0.5 : 0}
           sx={{
-            mt: primary ? 0.5 : 0,
             fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
             textAlign: isFarsi ? "right" : "left",
-            whiteSpace: "pre-wrap",
           }}
         >
           {secondary}

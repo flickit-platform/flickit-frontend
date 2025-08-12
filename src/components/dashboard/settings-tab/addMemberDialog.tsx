@@ -23,7 +23,6 @@ import useScreenResize from "@/utils/useScreenResize";
 import Settings from "@mui/icons-material/Settings";
 import showToast from "@utils/toastError";
 import { CEDialog } from "@/components/common/dialogs/CEDialog";
-import { useTheme } from "@mui/material";
 
 export enum EUserInfo {
   "NAME" = "displayName",
@@ -153,10 +152,10 @@ const AddMemberDialog = (props: {
     try {
       addedEmailType === EUserType.NONE
         ? await inviteMemberToAssessment.query({
-          email: memberSelectedEmail,
-          assessmentId,
-          roleId: roleSelected.id,
-        })
+            email: memberSelectedEmail,
+            assessmentId,
+            roleId: roleSelected.id,
+          })
         : await addRoleMemberQueryData.query();
       setChangeData((prev: boolean) => !prev);
       closeDialog();
@@ -217,7 +216,6 @@ const AddMemberDialog = (props: {
     };
   }, []);
   const fullScreen = useScreenResize("sm");
-  const theme = useTheme();
 
   return (
     <CEDialog
@@ -230,8 +228,8 @@ const AddMemberDialog = (props: {
         <>
           <Settings
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              scrollMarginInlineEnd: 1,
             }}
           />
           <Trans i18nKey="settings.assignRole" />
@@ -317,16 +315,15 @@ const AddMemberDialog = (props: {
                     "&.MuiMenuItem-root:hover": {
                       ...(roleSelected?.title == role.title
                         ? {
-                          backgroundColor: "#9CCAFF",
-                          color: "#004F83",
-                        }
+                            backgroundColor: "#9CCAFF",
+                            color: "#004F83",
+                          }
                         : {
-                          backgroundColor: "#EFEDF0",
-                          color: "#1B1B1E",
-                        }),
+                            backgroundColor: "#EFEDF0",
+                            color: "#1B1B1E",
+                          }),
                     },
-                    background:
-                      roleSelected?.title == role.title ? "#9CCAFF" : "",
+                    bgcolor: roleSelected?.title == role.title ? "#9CCAFF" : "",
                   }}
                 >
                   <Box
@@ -342,7 +339,7 @@ const AddMemberDialog = (props: {
                     <Typography>{role.title}</Typography>
                     <div
                       style={{
-                        color: theme.palette.text.primary,
+                        color: "text.primary",
                         fontSize: "0.875rem",
                         lineHeight: "21px",
                         fontWeight: 300,
@@ -384,8 +381,8 @@ const AddMemberDialog = (props: {
           <InfoOutlinedIcon
             color="primary"
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: 1,
             }}
           />
           <Typography variant="bodyLarge" textAlign="left">

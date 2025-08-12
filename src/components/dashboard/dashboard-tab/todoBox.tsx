@@ -47,13 +47,10 @@ const TodoBox = (props: any) => {
               <React.Fragment key={uniqueId()}>
                 <Box
                   id={item.name}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    mb: "23px",
-                    mt: "32px",
-                  }}
+                  justifyContent="space-between"
+                  mb="23px"
+                  mt="32px"
+                  sx={{ ...styles.centerV }}
                 >
                   <Typography variant="semiBoldLarge" color="text.primary">
                     {item.name == "questions" && (
@@ -122,13 +119,10 @@ const TodoBox = (props: any) => {
             return (
               <Box key={uniqueId()}>
                 <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    mb: "23px",
-                    mt: "32px",
-                  }}
+                  justifyContent="space-between"
+                  mb="23px"
+                  mt="32px"
+                  sx={{ ...styles.centerV }}
                   id={item.name}
                 >
                   <Typography
@@ -358,13 +352,12 @@ export const IssuesItem = ({
   return (
     <Box
       onClick={handleNavigation}
+      borderRadius={2}
+      border={`0.1px solid ${colorPalette.main}`}
+      bgcolor={colorPalette.states.selected}
+      gap={1}
       sx={{
-        borderRadius: 2,
-        border: `0.1px solid ${colorPalette.main}`,
-        background: colorPalette.states.selected,
-        display: "flex",
-        alignItems: "center",
-        gap: 1,
+        ...styles.centerV,
         textDecoration: "none",
         cursor: originalName === "questions" ? "pointer" : "unset",
       }}
@@ -437,7 +430,7 @@ export const IssuesItem = ({
             <div
               style={{
                 marginInlineStart: "auto",
-                color: theme.palette.primary.main,
+                color: "primary.main",
               }}
             >
               <LoadingButton

@@ -11,6 +11,7 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 import { v3Tokens } from "@/config/tokens";
+import { styles } from "@styles";
 
 interface ImpactFormProps {
   newItem: Record<string, any>;
@@ -52,14 +53,11 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
     <Box
       mt={1.5}
       p={1.5}
-      sx={{
-        backgroundColor: (theme) => theme.palette.background.container,
-        borderRadius: "8px",
-        border: "0.3px solid #73808c30",
-        display: "flex",
-        alignItems: "center",
-        gap: 2,
-      }}
+      borderRadius="8px"
+      border="0.3px solid #73808c30"
+      bgcolor="background.container"
+      gap={2}
+      sx={{ ...styles.centerV }}
     >
       {fields.map((field, idx) => (
         <Select
@@ -100,10 +98,15 @@ const ImpactForm: React.FC<ImpactFormProps> = ({
         fullWidth
         type="number"
         size="small"
-        sx={{ mx: 1, backgroundColor: (theme) => theme.palette.background.containerLowest, textFieldStyle, width: "50%" }}
+        sx={{
+          mx: 1,
+          backgroundColor: "background.containerLowest",
+          textFieldStyle,
+          width: "50%",
+        }}
       />
 
-      <Box display="flex" alignItems="center">
+      <Box sx={{ ...styles.centerV }}>
         <IconButton size="small" color="primary" onClick={handleSave}>
           <CheckIcon />
         </IconButton>

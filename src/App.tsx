@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import flagsmith from "flagsmith";
 import { useLocation, useSearchParams } from "react-router-dom";
 import keycloakService, { isPublicRoute } from "@/service/keycloakService";
-import { getOrCreateVisitorId } from "./utils/uniqueId";
 import i18next from "i18next";
 import { useLangDispatch } from "./providers/LangProvider";
 import { initClarity } from "./utils/clarity";
@@ -37,12 +36,10 @@ function App() {
 
   const dispatch = useLangDispatch();
 
-
   const { error, loading } = useGetSignedInUserInfo({
     runOnMount: !isPublicRoute(pathname) || keycloakService.isLoggedIn(),
   });
   useEffect(() => {
-
     if (lang) {
       localStorage.setItem("lang", lang);
       document.cookie = `NEXT_LOCALE=${lang}; max-age=31536000; path=/`;
@@ -97,7 +94,7 @@ function App() {
   ) : (
     <ErrorBoundary>
       {loading ? (
-        <Box width="100%" sx={{ mt: 10, ...styles.centerVH }}>
+        <Box width="100%" mt={10} sx={{ ...styles.centerVH }}>
           <GettingThingsReadyLoading color="gray" />
         </Box>
       ) : (

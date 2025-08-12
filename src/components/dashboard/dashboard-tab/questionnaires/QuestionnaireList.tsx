@@ -113,12 +113,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
     } else {
       return (
         <Box
+          color="#333333"
+          gap={1}
           sx={{
             ...theme.typography.semiBoldMedium,
-            color: "#333333",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
+            ...styles.centerV,
           }}
         >
           <Trans i18nKey="dashboard.selectedIssuesType" />:
@@ -155,7 +154,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
           renderValue={(selected) => handelSelected(selected)}
           sx={{
             ...theme.typography.semiBoldMedium,
-            background: theme.palette.background.containerLowest,
+            bgcolor: "background.containerLowest",
             px: "0px",
             height: "40px",
           }}
@@ -218,7 +217,7 @@ const ProgressButton = (props: any) => {
           >
             <Box
               sx={{
-                background: theme.palette.primary.main,
+                bgcolor: "primary.main",
                 opacity: "50%",
                 height: "100%",
                 position: "absolute",
@@ -255,13 +254,13 @@ const ProgressButton = (props: any) => {
           state={{ from: location.pathname }}
           fullWidth
           sx={{
-            background: theme.palette.background.container,
+            bgcolor: "background.container",
             width: "176px",
             position: "relative",
             overflow: "hidden",
             boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
             "&:hover": {
-              background: theme.palette.background.container,
+              bgcolor: "background.container",
             },
           }}
         >
@@ -357,9 +356,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                 originalItem.length === 0
                   ? item
                   : Object.keys(item.issues).some(
-                    (key) =>
-                      originalItem.includes(key) && item.issues[key] > 0,
-                  ),
+                      (key) =>
+                        originalItem.includes(key) && item.issues[key] > 0,
+                    ),
               );
               return (
                 <Grid container spacing={2} sx={{ minHeight: "250px" }}>

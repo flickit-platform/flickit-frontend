@@ -1,15 +1,14 @@
 import Box from "@mui/material/Box";
 import useDialog from "@/utils/useDialog";
 import { t } from "i18next";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import contactUs from "@/assets/svg/contactUs.svg";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
+import { styles } from "@styles";
 
 const AssessmentKitsContactUs = () => {
-  const theme = useTheme();
-
   const dialogProps = useDialog();
   const isMobileScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm"),
@@ -17,42 +16,36 @@ const AssessmentKitsContactUs = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", sm: "row-reverse" },
-        justifyContent: "space-between",
-        width: "100%",
-        background: theme.palette.primary.bgVariant,
-        borderRadius: 4,
-        px: 4,
-        pb: { xs: 4, sm: "unset" }
-      }}
+      display="flex"
+      flexDirection={{ xs: "column", sm: "row-reverse" }}
+      justifyContent="space-between"
+      width="100%"
+      bgcolor="primary.bgVariant"
+      borderRadius={4}
+      px={4}
+      pb={{ xs: 4, sm: "unset" }}
     >
       <Box
         component={"img"}
         src={contactUs}
         alt="Contact Us"
-        sx={{ width: { xs: "100%", md: "495px" }, height: { xs: "256px", md: "291px" } }}
+        width={{ xs: "100%", md: "495px" }}
+        height={{ xs: "256px", md: "291px" }}
         onClick={() => dialogProps.openDialog({})}
-      >
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      />
+      <Box sx={{ ...styles.centerCV }}>
         <Typography
           color="text.primary"
           variant="headlineMedium"
-          sx={{
-            maxWidth: { xs: "80%", sm: "unset" },
-            mb: { xs: "12px", sm: 4 },
-          }}
+          maxWidth={{ xs: "80%", sm: "unset" }}
+          mb={{ xs: "12px", sm: 4 }}
         >
           {t("assessmentKit.lookingForSomethingSpecific")}
         </Typography>
         <Typography
           variant="semiBoldXLarge"
           color="background.onVariant"
-          sx={{
-            mb: { xs: 2, sm: 4 },
-          }}
+          mb={{ xs: 2, sm: 4 }}
         >
           {t("assessmentKit.dropUsNote")}
         </Typography>
@@ -63,9 +56,9 @@ const AssessmentKitsContactUs = () => {
           sx={{
             mt: { xs: 0, md: 0 },
             alignSelf: "flex-start",
-            backgroundColor: "primary.main",
+            bgcolor: "primary.main",
             "&:hover": {
-              backgroundColor: "primary.dark",
+              bgcolor: "primary.dark",
             },
           }}
           size="large"

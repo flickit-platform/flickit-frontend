@@ -74,7 +74,7 @@ const Gauge = ({
     const fontSizeRem =
       maxFontSizeRem -
       ((length - minLength) / (maxLength - minLength)) *
-      (maxFontSizeRem - minFontSizeRem);
+        (maxFontSizeRem - minFontSizeRem);
     return `${fontSizeRem}rem`;
   };
 
@@ -157,11 +157,9 @@ const Gauge = ({
               variant={maturity_status_guide_variant}
               color="background.onVariant"
               mt={!isMobileScreen ? "1.5rem" : "unset"}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
               gap="0.125rem"
               sx={{
+                ...styles.centerVH,
                 fontFamily: languageDetector(confidence_text)
                   ? farsiFontFamily
                   : primaryFontFamily,

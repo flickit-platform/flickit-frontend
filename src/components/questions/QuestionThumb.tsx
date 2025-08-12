@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
-import { useTheme } from "@mui/material";
 
 export const QuestionThumb = (props: any) => {
   const {
@@ -17,7 +16,6 @@ export const QuestionThumb = (props: any) => {
     isSubmitting,
   } = props;
   const { total_number_of_questions, permissions } = questionsInfo;
-  const theme = useTheme();
 
   const navigate = useNavigate();
   return (
@@ -71,8 +69,8 @@ export const QuestionThumb = (props: any) => {
         <Button
           sx={{
             mt: 1,
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
+            marginInlineStart: "auto",
+            marginInlineEnd: "unset",
           }}
           disabled={isSubmitting}
           onClick={(e: any) => {

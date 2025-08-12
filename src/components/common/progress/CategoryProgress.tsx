@@ -5,7 +5,6 @@ import LinearProgress, {
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
-import { useTheme } from "@mui/material";
 import { v3Tokens } from "@/config/tokens";
 
 interface IQuestionnaireProgress extends BoxProps {
@@ -30,7 +29,6 @@ const progressToColorMapColor: Record<number, string> = {
 const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
   const { progress = 0, ...rest } = props;
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
-  const theme = useTheme();
 
   return (
     <Box sx={{ ...styles.centerV }} flex="1" {...rest}>
@@ -41,7 +39,7 @@ const QuestionnaireProgress = (props: IQuestionnaireProgress) => {
           variant="determinate"
           sx={{
             borderRadius: is_farsi ? "8px 0 0 8px" : "0 8px 8px 0px",
-            color: progress === 0 ? theme.palette.error.main : undefined,
+            color: progress === 0 ? "error.main" : undefined,
           }}
         />
       </Box>

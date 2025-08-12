@@ -45,9 +45,9 @@ const TitleBox = ({ language }: { language: string }) => {
         textAlign={language === "fa" ? "right" : "left"}
         sx={{ ...styles.rtlStyle(language === "fa") }}
       >
-        {t("assessmentReport.how_was_this_report_built", { lng: language, })}
+        {t("assessmentReport.how_was_this_report_built", { lng: language })}
       </Typography>
-    </Box >
+    </Box>
   );
 };
 
@@ -75,50 +75,46 @@ const TopicsList = ({
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
-  const isRTL = graphicalReport?.lang.code.toLowerCase() === "fa"
-  return (<Box>
-    {graphicalReport?.subjects?.map((subject: any) => (
-      <Box key={uniqueId()} marginBottom="16px">
-        <Typography
-          color="primary.main"
-          fontWeight="bold"
-          marginBottom="8px"
-          textAlign={isRTL ? "right" : "left"}
-          sx={{ ...styles.rtlStyle(isRTL) }}
-        >
-          {subject.title}
-        </Typography>
-        {subject.attributes.map((attribute: any) => (
-          <Box
-            key={uniqueId()}
-            sx={{
-              ...styles.centerV,
-              mt: 2,
-            }}
+  const isRTL = graphicalReport?.lang.code.toLowerCase() === "fa";
+  return (
+    <Box>
+      {graphicalReport?.subjects?.map((subject: any) => (
+        <Box key={uniqueId()} marginBottom="16px">
+          <Typography
+            color="primary.main"
+            fontWeight="bold"
+            marginBottom="8px"
+            textAlign={isRTL ? "right" : "left"}
+            sx={{ ...styles.rtlStyle(isRTL) }}
           >
-            <Typography
-              variant="bodyMedium"
-              fontWeight="bold"
-              width="20%"
-              marginRight="8px"
-              textAlign={isRTL ? "right" : "left"}
-              sx={{ ...styles.rtlStyle(isRTL) }}
-            >
-              {attribute.title}
-            </Typography>
-            <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-            <Typography
-              width="80%"
-              sx={{ ...textStyle, ...styles.rtlStyle(isRTL) }}
-            >
-              {attribute.description}
-            </Typography>
-            <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
-          </Box>
-        ))}
-      </Box>
-    ))}
-  </Box>)
+            {subject.title}
+          </Typography>
+          {subject.attributes.map((attribute: any) => (
+            <Box key={uniqueId()} mt={2} sx={{ ...styles.centerV }}>
+              <Typography
+                variant="bodyMedium"
+                fontWeight="bold"
+                width="20%"
+                marginRight="8px"
+                textAlign={isRTL ? "right" : "left"}
+                sx={{ ...styles.rtlStyle(isRTL) }}
+              >
+                {attribute.title}
+              </Typography>
+              <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+              <Typography
+                width="80%"
+                sx={{ ...textStyle, ...styles.rtlStyle(isRTL) }}
+              >
+                {attribute.description}
+              </Typography>
+              <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
+            </Box>
+          ))}
+        </Box>
+      ))}
+    </Box>
+  );
 };
 
 const QuestionnaireList = ({
@@ -126,8 +122,8 @@ const QuestionnaireList = ({
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
-  const lng = graphicalReport?.lang.code.toLowerCase()
-  const isRTL = lng === "fa"
+  const lng = graphicalReport?.lang.code.toLowerCase();
+  const isRTL = lng === "fa";
 
   return (
     <Box>
@@ -153,8 +149,7 @@ const QuestionnaireList = ({
               width="120px"
               sx={{ ...textStyle, ...styles.rtlStyle(isRTL) }}
             >
-              {item.questionCount}{" "}
-              {t("common.question", { lng })}
+              {item.questionCount} {t("common.question", { lng })}
             </Typography>
             <Divider
               orientation="vertical"
@@ -173,8 +168,8 @@ const QuestionnaireList = ({
           </Box>
         ),
       )}
-    </Box >
-  )
+    </Box>
+  );
 };
 
 const ReportCard = ({
@@ -183,7 +178,7 @@ const ReportCard = ({
   graphicalReport: IGraphicalReport;
 }) => {
   const { assessment, subjects, assessmentProcess, lang } = graphicalReport;
-  const lng = lang.code.toLowerCase()
+  const lng = lang.code.toLowerCase();
   const rtlLanguage = lng === "fa";
 
   const isAdvanceMode = useMemo(() => {
@@ -234,8 +229,7 @@ const ReportCard = ({
                 }}
                 dangerouslySetInnerHTML={{
                   __html:
-                    assessmentProcess.steps ??
-                    t("common.unavailable", { lng }),
+                    assessmentProcess.steps ?? t("common.unavailable", { lng }),
                 }}
                 className={"tiptap"}
               />
@@ -267,8 +261,7 @@ const ReportCard = ({
             )}
           </Section>
         </>
-      )
-      }
+      )}
 
       <Section
         title={t("assessmentKit.assessmentKit", { lng })}
@@ -283,7 +276,7 @@ const ReportCard = ({
             ?.map((elem: ISubject, index: number) =>
               index === subjects?.length - 1 && subjects?.length !== 1
                 ? t("common.and", { lng: lang.code.toLowerCase() }) +
-                elem?.title
+                  elem?.title
                 : index === 0
                   ? elem?.title
                   : ", " + elem?.title,
@@ -303,15 +296,13 @@ const ReportCard = ({
           maturityLevelCount: assessment.assessmentKit.maturityLevelCount,
         })}
         {assessment.assessmentKit.maturityLevels.map((level: any) => (
-          <Box
-            key={uniqueId()}
-            sx={{ ...styles.centerV }}
-            gap={2}
-          >
+          <Box key={uniqueId()} sx={{ ...styles.centerV }} gap={2}>
             <Box
-              bgcolor={getMaturityLevelColors(
-                assessment.assessmentKit.maturityLevelCount,
-              )[level.value - 1]}
+              bgcolor={
+                getMaturityLevelColors(
+                  assessment.assessmentKit.maturityLevelCount,
+                )[level.value - 1]
+              }
               height="10px"
               width="27px"
               borderRadius="16px"
@@ -320,9 +311,11 @@ const ReportCard = ({
             />
             <Typography
               component="span"
-              color={getMaturityLevelColors(
-                assessment.assessmentKit.maturityLevelCount,
-              )[level.value - 1]}
+              color={
+                getMaturityLevelColors(
+                  assessment.assessmentKit.maturityLevelCount,
+                )[level.value - 1]
+              }
               variant="body2"
               minWidth="70px"
               sx={{ ...styles.rtlStyle(rtlLanguage) }}
@@ -356,7 +349,7 @@ const ReportCard = ({
       >
         <QuestionnaireList graphicalReport={graphicalReport} />
       </Section>
-    </Box >
+    </Box>
   );
 };
 

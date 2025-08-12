@@ -19,8 +19,9 @@ import { TDialogProps } from "@utils/useDialog";
 import {
   ISpaceModel,
   ISpacesModel,
-  SPACE_LEVELS, TId,
-  TQueryFunction
+  SPACE_LEVELS,
+  TId,
+  TQueryFunction,
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
@@ -49,16 +50,14 @@ const SpacesList = (props: ISpaceListProps) => {
     id: TId;
   }>({ status: false, id: "" });
 
-  const deleteSpace
-    = useQuery({
-      service: (args, config) => service.space.remove(args, config),
-      runOnMount: false,
-    });
-
+  const deleteSpace = useQuery({
+    service: (args, config) => service.space.remove(args, config),
+    runOnMount: false,
+  });
 
   const deleteItem = async () => {
     try {
-      const { id: spaceId } = openDeleteDialog
+      const { id: spaceId } = openDeleteDialog;
       await deleteSpace.query({ spaceId });
       await fetchSpaces();
     } catch (e) {
@@ -105,12 +104,15 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
-  setOpenDeleteDialog?: React.Dispatch<React.SetStateAction<{ status: boolean, id: TId }>>;
+  setOpenDeleteDialog?: React.Dispatch<
+    React.SetStateAction<{ status: boolean; id: TId }>
+  >;
   deleteSpace?: any;
 }
 
 export const SpaceCard = (props: ISpaceCardProps) => {
-  const { item, isActiveSpace, dialogProps, fetchSpaces, owner, ...rest } = props;
+  const { item, isActiveSpace, dialogProps, fetchSpaces, owner, ...rest } =
+    props;
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { service } = useServiceContext();
   const isOwner = owner?.isCurrentUserOwner;
@@ -140,7 +142,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
       .then(({ data }) => {
         navigate(`/${spaceId}/assessments/1`);
       })
-      .catch((e) => { });
+      .catch((e) => {});
   };
   return (
     <Box
@@ -240,14 +242,13 @@ export const SpaceCard = (props: ISpaceCardProps) => {
 
           <Tooltip title={<Trans i18nKey="common.membersCount" />}>
             <Box
+              gap={0.5}
+              color="initial"
+              width={{ sm: "52px" }}
               sx={{
                 ...styles.centerV,
-                gap: 0.5,
                 opacity: 0.8,
                 textDecoration: "none",
-                color: "initial",
-                width: { sm: "52px" },
-                alignItems: "center",
               }}
             >
               <IconButton sx={{ padding: "5px" }} component="span">
@@ -273,14 +274,13 @@ export const SpaceCard = (props: ISpaceCardProps) => {
 
           <Tooltip title={<Trans i18nKey="assessment.assessmentsCount" />}>
             <Box
+              gap={0.5}
+              color="initial"
+              width={{ sm: "52px" }}
               sx={{
                 ...styles.centerV,
-                gap: 0.5,
                 opacity: 0.8,
                 textDecoration: "none",
-                color: "initial",
-                width: { sm: "52px" },
-                alignItems: "center",
               }}
             >
               <IconButton sx={{ padding: "5px" }} component="span">
@@ -369,12 +369,12 @@ const Actions = (props: any) => {
     is_default_space_for_current_user,
     setShowTooltip,
     setOpenDeleteDialog,
-    deleteSpace
+    deleteSpace,
   } = props;
   const { id: spaceId } = space;
   const { service } = useServiceContext();
   const [editLoading, setEditLoading] = useState(false);
-  const { abortController, loading } = deleteSpace
+  const { abortController, loading } = deleteSpace;
 
   const leaveSpaceQuery = useQuery({
     service: (args, config) => service.space.leave({ spaceId }, config),
@@ -423,11 +423,11 @@ const Actions = (props: any) => {
           onClick: () => setOpenDeleteDialog({ status: open, id: spaceId }),
         },
         !is_default_space_for_current_user &&
-        !isOwner && {
-          icon: <ExitToAppRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="spaces.leaveSpace" />,
-          onClick: leaveSpace,
-        },
+          !isOwner && {
+            icon: <ExitToAppRoundedIcon fontSize="small" />,
+            text: <Trans i18nKey="spaces.leaveSpace" />,
+            onClick: leaveSpace,
+          },
       ]}
       setShowTooltip={setShowTooltip}
       color={v3Tokens.surface.on}

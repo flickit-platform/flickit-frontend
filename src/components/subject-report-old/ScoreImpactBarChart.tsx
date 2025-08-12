@@ -32,21 +32,17 @@ const CustomTooltip = ({
 
   return (
     <Box
-      sx={{
-        textAlign: "center",
-        backgroundColor: "#5F6E7C",
-        color: "white",
-        borderRadius: "4px",
-        p: 1,
-      }}
+      textAlign="center"
+      bgcolor="#5F6E7C"
+      color="background.containerLowest"
+      borderRadius="4px"
+      p={1}
     >
       <Box
+        gap={2}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          ...styles.centerVH,
           direction: "ltr",
-          gap: 2,
         }}
       >
         {[
@@ -82,7 +78,6 @@ const CustomTooltip = ({
 };
 
 const legendFormatter = (value: string, language: string) => {
-
   return (
     <Typography
       component="span"
@@ -129,7 +124,7 @@ export default function ScoreImpactBarChart({
   const heightPerItem = compact ? 40 : 60;
   const chartHeight = Math.max(240, measures.length * heightPerItem);
 
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <div
       style={{

@@ -26,7 +26,6 @@ import {
 } from "@/providers/AssessmentProvider";
 import i18next from "i18next";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -46,7 +45,6 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
-  const theme = useTheme()
 
   const { type, staticData = {} } = context;
   const assessmentId = staticData?.assessment_kit?.id;
@@ -140,7 +138,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       title={
         <Box sx={{ ...styles.centerVH, gap: "6px" }}>
           {type === "create" ? (
-            <NewAssessmentIcon width="20px" height="20px" color={theme.palette.background.containerLowest} />
+            <NewAssessmentIcon width="20px" height="20px" color="#fff" />
           ) : (
             <img
               alt="error"
@@ -160,17 +158,11 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       }
       titleStyle={{ marginBottom: 0 }}
       contentStyle={{ padding: "32px 32px 16px" }}
-      style={{ paddingTop: "32px", background: theme.palette.background.container }}
+      style={{ paddingTop: "32px", background: "#F3F5F6" }}
     >
       {type === "create" ? (
         <FormProviderWithForm formMethods={formMethods}>
-          <Typography
-            color="text.primary"
-            variant="semiBoldLarge"
-            sx={{
-              pb: "32px",
-            }}
-          >
+          <Typography variant="semiBoldLarge" color="text.primary" pb={4}>
             <Trans i18nKey="assessment.createAssessmentConfirmSettings" />
           </Typography>
           <Grid container display="flex" alignItems="start">
@@ -178,31 +170,23 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               xs={12}
               sm={langSec ? 5.5 : 12}
               item
-              sx={{ py: "18px", display: spaceSec ? "relative" : "none" }}
+              py="18px"
+              display={spaceSec ? "relative" : "none"}
             >
               <Box
-                sx={{
-                  ...styles.centerVH,
-                  justifyContent: "flex-start",
-                  gap: "8px",
-                  mb: "8px",
-                }}
+                justifyContent="flex-start"
+                gap="8px"
+                mb="8px"
+                sx={{ ...styles.centerV }}
               >
                 <FolderOutlinedIcon
-                  sx={{ color: theme.palette.background.onVariant, background: "transparent" }}
+                  sx={{ color: "surface.onVariant", background: "transparent" }}
                 />
                 <Typography>
                   <Trans i18nKey="spaces.targetSpace" />
                 </Typography>
               </Box>
-              <Typography
-                color="text.primary"
-                variant="bodySmall"
-                sx={{
-                  mb: "42px",
-                  minHeight: "55px",
-                }}
-              >
+              <Typography variant="bodySmall" color="text.primary">
                 <Trans i18nKey="assessment.chooseSpace" />
               </Typography>
               <SpaceField
@@ -219,31 +203,23 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               item
               xs={12}
               sm={spaceSec ? 5.5 : 12}
-              sx={{ py: "18px", display: langSec ? "relative" : "none" }}
+              py="18px"
+              display={langSec ? "relative" : "none"}
             >
               <Box
-                sx={{
-                  ...styles.centerVH,
-                  justifyContent: "flex-start",
-                  gap: "8px",
-                  mb: "8px",
-                }}
+                justifyContent="flex-start"
+                gap="8px"
+                mb="8px"
+                sx={{ ...styles.centerV }}
               >
                 <LanguageIcon
-                  sx={{ color: theme.palette.background.onVariant, background: "transparent" }}
+                  sx={{ color: "surface.onVariant", background: "transparent" }}
                 />
                 <Typography>
                   <Trans i18nKey="assessmentKit.assessmentLanguage" />
                 </Typography>
               </Box>
-              <Typography
-                color="text.primary"
-                variant="bodySmall"
-                sx={{
-                  mb: "42px",
-                  minHeight: "55px",
-                }}
-              >
+              <Typography variant="bodySmall" color="text.primary">
                 <Trans i18nKey="assessmentKit.assessmentSupportsMultipleLanguages" />
               </Typography>
               <LangField lang={langList} />
@@ -285,8 +261,11 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
 export default NewAssessmentDialog;
 
-const LangField = ({ lang }: { lang: { code: string, title: string }[] }) => {
-  const defaultLang = lang.find((findItem: { code: string, title: string }) => findItem.code === i18next.language.toUpperCase());
+const LangField = ({ lang }: { lang: { code: string; title: string }[] }) => {
+  const defaultLang = lang.find(
+    (findItem: { code: string; title: string }) =>
+      findItem.code === i18next.language.toUpperCase(),
+  );
   return (
     <AutocompleteAsyncField
       name="language"
@@ -297,6 +276,7 @@ const LangField = ({ lang }: { lang: { code: string, title: string }[] }) => {
       defaultValue={defaultLang}
       disableClearable={true}
       filterSelectedOptions={false}
+      sx={{ mt: "42px" }}
     />
   );
 };
@@ -328,9 +308,7 @@ const SpaceField = ({
   const defaultValue = queryDataSpaces?.options?.find(
     (item: any) => item.isDefault,
   );
-  const defaultSpaceList = spaces?.find(
-    (item: any) => item.isDefault,
-  );
+  const defaultSpaceList = spaces?.find((item: any) => item.isDefault);
 
   return (
     <AutocompleteAsyncField
@@ -344,6 +322,7 @@ const SpaceField = ({
       hasAddBtn={true}
       createItemQuery={createItemQuery}
       searchable={false}
+      sx={{ mt: "42px" }}
     />
   );
 };

@@ -127,33 +127,30 @@ const AssessmentKitsStoreCard = (props: any) => {
     <Box
       to={small ? `./../${id}/` : `${id}/`}
       component={Link}
+      borderRadius={2}
+      height="100%"
+      mb={small ? "8px !important" : { xs: "12px", sm: "40px  !important" }}
+      borderLeft={`4px solid ${
+        isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
+      }`}
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      color="inherit"
+      p={small ? "12px 24px" : { xs: "24px", sm: "32px" }}
       sx={{
         ...styles.shadowStyle,
-        borderRadius: 2,
-        height: "100%",
-        mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
-        borderLeft: `4px solid ${isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
-          }`,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
         cursor: "pointer",
         textDecoration: "unset",
-        color: "inherit",
-        p: small ? "12px 24px" : { xs: "24px", sm: "32px" },
       }}
     >
       <Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box display="flex" justifyContent="space-between">
           <Box
             mb={small ? 0.5 : ""}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              gap: 1,
-            }}
+            alignItems="flex-start"
+            gap={1}
+            sx={{ ...styles.centerCV }}
           >
             <Typography
               variant={small ? "titleMedium" : "headlineSmall"}
@@ -167,9 +164,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               {title}
             </Typography>
             <Box
-              sx={{
-                ...styles.centerV,
-              }}
+              sx={{ ...styles.centerV }}
               gap={small ? 0.5 : 1}
               onClick={(e) => {
                 e.preventDefault();
@@ -223,8 +218,8 @@ const AssessmentKitsStoreCard = (props: any) => {
               label={<Trans i18nKey="common.private" />}
               size={small ? "small" : "medium"}
               sx={{
-                background: theme.palette.secondary.bg,
-                color: theme.palette.secondary.main,
+                bgcolor: "secondary.bg",
+                color: "secondary.main",
                 ...(small
                   ? theme.typography.semiBoldMedium
                   : theme.typography.semiBoldLarge),
@@ -237,11 +232,11 @@ const AssessmentKitsStoreCard = (props: any) => {
             component="div"
             textAlign="justify"
             variant={small ? "bodyMedium" : "bodyLarge"}
+            mt={{ xs: "8px", sm: small ? "8px" : "32px" }}
             sx={{
               fontFamily: languageDetector(summary)
                 ? farsiFontFamily
                 : secondaryFontFamily,
-              mt: { xs: "8px", sm: small ? "8px" : "32px" },
             }}
             dangerouslySetInnerHTML={{
               __html: `${truncatedSummary}${isSummaryTruncated}`,
@@ -250,34 +245,25 @@ const AssessmentKitsStoreCard = (props: any) => {
         </Box>
       </Box>
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: small ? 1 : 2,
-          mt: small ? 1 : undefined,
-        }}
+        display="flex"
+        flexDirection={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        alignItems="center"
+        gap={small ? 1 : 2}
+        mt={small ? 1 : undefined}
       >
         <Box
-          sx={{
-            display: "flex",
-            width: { xs: "100%", sm: "unset" },
-            justifyContent: "center",
-            gap: small ? "4px" : { xs: "48px", md: "8px", lg: "48px" },
-            bgcolor: theme.palette.background.containerHigh,
-            borderRadius: 2,
-            px: small ? 1 : 2,
-            py: small ? 0.5 : 1,
-            flexWrap: "wrap",
-          }}
+          display="flex"
+          width={{ xs: "100%", sm: "unset" }}
+          gap={small ? "4px" : { xs: "48px", md: "8px", lg: "48px" }}
+          bgcolor="background.containerHigh"
+          borderRadius={2}
+          px={small ? 1 : 2}
+          py={small ? 0.5 : 1}
+          flexWrap="wrap"
+          sx={{ ...styles.centerH }}
         >
-          <Box
-            sx={{
-              ...styles.centerV,
-              gap: small ? "4px" : 1,
-            }}
-          >
+          <Box gap={small ? "4px" : 1} sx={{ ...styles.centerV }}>
             <CheckStatus
               small={small}
               isPrivate={isPrivate}
@@ -286,12 +272,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             />
           </Box>
 
-          <Box
-            sx={{
-              ...styles.centerV,
-              gap: small ? "4px" : 1,
-            }}
-          >
+          <Box gap={small ? "4px" : 1} sx={{ ...styles.centerV }}>
             <LanguageIcon
               sx={{
                 fontSize: small ? "1rem" : { xs: "20px", sm: "26px" },
@@ -313,13 +294,9 @@ const AssessmentKitsStoreCard = (props: any) => {
           size={small ? "small" : "large"}
           sx={{
             width: { xs: "100%", sm: "unset" },
-            backgroundColor: isPrivate
-              ? theme.palette.secondary.main
-              : theme.palette.primary.main,
+            backgroundColor: isPrivate ? "secondary.main" : "primary.main",
             "&:hover": {
-              backgroundColor: isPrivate
-                ? theme.palette.secondary.dark
-                : theme.palette.primary.dark,
+              backgroundColor: isPrivate ? "secondary.dark" : "primary.dark",
             },
           }}
         >
@@ -353,8 +330,7 @@ const CheckStatus: React.FC<CheckStatusProps> = ({
     if (isFree) return "free";
     return hasAccess ? "purchased" : "paid";
   };
-  const theme = useTheme()
-
+  const theme = useTheme();
 
   const status = getStatus();
   const iconColor = isPrivate

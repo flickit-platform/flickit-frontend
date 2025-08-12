@@ -66,11 +66,11 @@ const RichEditorFieldBase = (props: any) => {
     <FormControl
       fullWidth
       variant="outlined"
-      onMouseDown={()=>{
-        setHover(true)
+      onMouseDown={() => {
+        setHover(true);
       }}
-      onMouseOut={()=>{
-        setHover(false)
+      onMouseOut={() => {
+        setHover(false);
       }}
       onFocus={(e) => {
         if (e.target?.id === "proseMirror") {
@@ -98,7 +98,7 @@ const RichEditorFieldBase = (props: any) => {
         <InputLabel
           className={focus ? "Mui-focused" : ""}
           shrink={shrink}
-          sx={{ background: "white", px: 0.2 }}
+          sx={{ bgcolor: "background.containerLowest", px: 0.2 }}
           required={required}
         >
           {label}

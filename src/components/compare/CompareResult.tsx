@@ -52,7 +52,7 @@ const CompareResult = (props: ICompareResultProps) => {
                 sx={{
                   py: 1.5,
                   px: { xs: 1, sm: 2, md: 3 },
-                  background: "white",
+                  bgcolor: "background.containerLowest",
                   borderRadius: 2,
                   mt: 1,
                 }}
@@ -90,7 +90,7 @@ const CompareResultCommonBaseInfo = (props: { data: any }) => {
           height: "fit-content",
           textTransform: "none",
           color: "#004F83",
-          background: "#D0E4FF",
+          bgcolor: "#D0E4FF",
           cursor: "pointer",
           mx: "0.2rem",
           "& .MuiChip-label": {

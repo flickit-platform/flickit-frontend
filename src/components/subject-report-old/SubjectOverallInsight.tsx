@@ -40,20 +40,29 @@ const SubjectOverallInsight = ({
 
   const fetchSubjectInsight = useQuery<any>({
     service: (args, config) =>
-      service.assessments.subjects.getInsight({ assessmentId, subjectId }, config),
+      service.assessments.subjects.getInsight(
+        { assessmentId, subjectId },
+        config,
+      ),
     toastError: false,
     runOnMount: false,
   });
 
   const ApproveAISubject = useQuery({
     service: (args, config) =>
-      service.assessments.subjects.approveInsight(args ?? { assessmentId, subjectId }, config),
+      service.assessments.subjects.approveInsight(
+        args ?? { assessmentId, subjectId },
+        config,
+      ),
     runOnMount: false,
   });
 
   const InitInsight = useQuery({
     service: (args, config) =>
-      service.assessments.subjects.initInsight(args ?? { assessmentId, subjectId }, config),
+      service.assessments.subjects.initInsight(
+        args ?? { assessmentId, subjectId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -130,12 +139,7 @@ const SubjectOverallInsight = ({
         mt={1}
       >
         {fetchSubjectInsight.loading ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-          >
+          <Box height="100%" sx={{ ...styles.centerVH }}>
             <CircularProgress />
           </Box>
         ) : (

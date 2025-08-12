@@ -35,7 +35,7 @@ const DashboardTitle = (props: any) => {
         hasAccessTonSettings && (
           <IconButton component={Link} to={"settings"}>
             <SettingsOutlinedIcon
-              sx={{ ...styles.centerCVH, color: (theme) => theme.palette.background.onVariant }}
+              sx={{ ...styles.centerCVH, color: "background.onVariant" }}
             />
           </IconButton>
         )

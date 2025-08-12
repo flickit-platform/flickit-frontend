@@ -60,7 +60,7 @@ const QuestionContain = (props: any) => {
         <Box
           sx={{
             ...styles.centerVH,
-            background: "background.container",
+            bgcolor: "background.container",
             width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}
@@ -79,13 +79,7 @@ const QuestionContain = (props: any) => {
           variant="semiBoldMedium"
           showCopyIcon
         />{" "}
-        <Box
-          sx={{
-            width: { xs: "20%", md: "10%" },
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <Box width={{ xs: "20%", md: "10%" }} sx={{ ...styles.centerH }}>
           <IconButton
             data-testid="question-handel-edit"
             onClick={() => handleQuestionClick(index)}

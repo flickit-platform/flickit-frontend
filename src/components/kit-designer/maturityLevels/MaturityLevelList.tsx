@@ -111,7 +111,7 @@ const MaturityLevelList = ({
             }}
           >
             <Box
-              sx={{ ...styles.centerCVH, background: "background.container" }}
+              sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
               borderRadius="0.5rem"
               mr={2}
               p={0.25}

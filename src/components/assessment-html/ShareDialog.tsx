@@ -214,7 +214,7 @@ export const ShareDialog = ({
             </form>
           </FormProvider>
 
-          <Box sx={{ mt: 3 }}>
+          <Box mt={3}>
             <Typography
               variant="bodyMedium"
               color="rgba(61, 77, 92, 0.5)"

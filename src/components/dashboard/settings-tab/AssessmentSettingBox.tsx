@@ -112,7 +112,7 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
   fetchPathInfo,
   color,
 }) => {
-  const theme = useTheme()
+  const theme = useTheme();
   const formMethods = useForm({ shouldUnregister: true });
   const { assessmentInfo } = useAssessmentContext();
 
@@ -134,11 +134,8 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
             item
             xs={12}
             md={6}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
+            justifyContent="space-between"
+            sx={{ ...styles.centerV }}
           >
             <Typography variant="semiBoldLarge" color="text.primary">
               <Trans i18nKey="assessment.assessmentTitle" />
@@ -161,14 +158,12 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Grid
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box sx={{ ...styles.centerVH }} color={theme.palette.background.onVariant} gap={1}>
+            <Grid justifyContent="space-between" sx={{ ...styles.centerV }}>
+              <Box
+                sx={{ ...styles.centerVH }}
+                color="background.onVariant"
+                gap={1}
+              >
                 <Typography
                   variant="semiBoldLarge"
                   color="text.primary"
@@ -185,13 +180,9 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
                 </Tooltip>
               </Box>
               <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  width: { md: "350px" },
-                  flexDirection: "column",
-                }}
+                alignItems="flex-start"
+                width={{ md: "350px" }}
+                sx={{ ...styles.centerCV }}
               >
                 <OnHoverInputTitleSetting
                   formMethods={formMethods}
@@ -223,12 +214,9 @@ export const AssessmentSettingGeneralBox: React.FC<Props> = ({
               item
               xs={12}
               md={6}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: "10px",
-              }}
+              justifyContent="space-between"
+              mb="10px"
+              sx={{ ...styles.centerV }}
             >
               <Typography
                 color="background.onVariant"
@@ -323,7 +311,7 @@ const QuickAssessmentSwitch = () => {
           <Switch checked={isQuickMode} onChange={handleToggleQuickMode} />
         }
         label={
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box gap={1} sx={{ ...styles.centerV }}>
             <Typography variant="semiBoldLarge" color="text.primary">
               <Trans i18nKey="assessment.quickAssessmentMode" />
             </Typography>
@@ -341,9 +329,8 @@ const QuickAssessmentSwitch = () => {
           </Box>
         }
         sx={{
+          ...styles.centerV,
           margin: 0,
-          display: "flex",
-          alignItems: "center",
           gap: "32px",
         }}
         labelPlacement="start"
@@ -511,15 +498,7 @@ export const AssessmentSettingMemberBox = (props: {
       gap={2}
     >
       <Box height={"100%"} width={"100%"}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative",
-            width: "100%",
-          }}
-        >
+        <Box position="relative" width="100%" sx={{ ...styles.centerVH }}>
           <Typography color="text.primary" variant="headlineSmall">
             <Trans i18nKey="settings.grantedRoles" />
           </Typography>
@@ -527,10 +506,9 @@ export const AssessmentSettingMemberBox = (props: {
             variant="contained"
             onClick={openModal}
             sx={{
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
-              display: "flex",
-              alignItems: "center",
+              marginInlineStart: "auto",
+              marginInlineEnd: "unset",
+              ...styles.centerV,
             }}
           >
             <AddIcon
@@ -557,7 +535,7 @@ export const AssessmentSettingMemberBox = (props: {
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
-                backgroundColor: theme.palette.background.containerLowest,
+                backgroundColor: "background.containerLowest",
               }}
             >
               <TableRow
@@ -606,13 +584,12 @@ export const AssessmentSettingMemberBox = (props: {
                   <TableRow
                     tabIndex={-1}
                     key={row.id}
-                    sx={{ background: !row.editable ? "#ebe8e85c" : "", p: 0 }}
+                    sx={{ bgcolor: !row.editable ? "#ebe8e85c" : "", p: 0 }}
                   >
                     <TableCell
                       sx={{
-                        display: "flex",
+                        ...styles.centerV,
                         justifyContent: "space-evenly",
-                        alignItems: "center",
                         border: "none",
                         gap: { xs: "0px", md: "1.3rem" },
                         paddingX: { xs: "0px", md: "1rem" },
@@ -620,12 +597,9 @@ export const AssessmentSettingMemberBox = (props: {
                     >
                       <Box sx={{ width: "20vw" }}>
                         <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: { xs: "flex-start" },
-                            alignItems: "center",
-                            gap: ".5rem",
-                          }}
+                          justifyContent={{ xs: "flex-start" }}
+                          gap=".5rem"
+                          sx={{ ...styles.centerV }}
                         >
                           <Avatar
                             {...stringAvatar(row.displayName.toUpperCase())}
@@ -638,12 +612,12 @@ export const AssessmentSettingMemberBox = (props: {
                           />
                           <Typography
                             color="#1B1B1E"
+                            textOverflow="ellipsis"
+                            overflow="hidden"
+                            whiteSpace="nowrap"
+                            fontSize="0.875rem"
+                            fontWeight={500}
                             sx={{
-                              textOverflow: "ellipsis",
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              fontSize: "0.875rem",
-                              fontWeight: 500,
                               fontFamily: languageDetector(row.displayName)
                                 ? farsiFontFamily
                                 : primaryFontFamily,
@@ -654,10 +628,8 @@ export const AssessmentSettingMemberBox = (props: {
                           {!row.editable && (
                             <Chip
                               sx={{
-                                marginRight:
-                                  theme.direction === "ltr" ? 1 : "unset",
-                                marginLeft:
-                                  theme.direction === "rtl" ? 1 : "unset",
+                                marginInlineStart: "unset",
+                                marginInlineEnd: 1,
                                 opacity: 0.7,
                                 color: "#9A003C",
                                 borderColor: "#9A003C",
@@ -670,33 +642,26 @@ export const AssessmentSettingMemberBox = (props: {
                         </Box>
                       </Box>
                       <Box
-                        sx={{
-                          display: { xs: "none", md: "flex" },
-                          justifyContent: "center",
-                          width: { xs: "5rem", md: "20vw" },
-                        }}
+                        display={{ xs: "none", md: "flex" }}
+                        justifyContent="center"
+                        width={{ xs: "5rem", md: "20vw" }}
                       >
                         <Typography
                           color="#1B1B1E"
-                          sx={{
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            fontSize: "0.875",
-                            wight: 300,
-                          }}
+                          textOverflow="ellipsis"
+                          overflow="hidden"
+                          whiteSpace="nowrap"
+                          fontSize="0.875rem"
+                          fontWeight={300}
                         >
                           {row.email}
                         </Typography>
                       </Box>
                       <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "center",
-                          gap: { xs: "0px", md: ".7rem" },
-                          width: { xs: "16.1rem", md: "20vw" },
-                        }}
+                        justifyContent="flex-start"
+                        gap={{ xs: "0px", md: ".7rem" }}
+                        width={{ xs: "16.1rem", md: "20vw" }}
+                        sx={{ ...styles.centerV }}
                       >
                         <FormControl
                           sx={{
@@ -712,7 +677,7 @@ export const AssessmentSettingMemberBox = (props: {
                           <Grid
                             item
                             lg={8}
-                            sx={{ minWidth: { xs: "100%", md: "160px" } }}
+                            minWidth={{ xs: "100%", md: "160px" }}
                           >
                             <Tooltip
                               disableHoverListener={row.editable}
@@ -738,12 +703,7 @@ export const AssessmentSettingMemberBox = (props: {
                             <Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />
                           }
                         >
-                          <Box
-                            width="30%"
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
+                          <Box width="30%" sx={{ ...styles.centerVH }}>
                             <IconButton
                               sx={{ "&:hover": { color: "#d32f2f" } }}
                               size="small"
@@ -780,15 +740,13 @@ export const AssessmentSettingMemberBox = (props: {
         {inviteesMemberList?.data?.items?.length > 0 && (
           <>
             <Box
-              sx={{
-                display: "flex",
-                justifyContent: { xs: "flex-start", sm: "center" },
-                position: "relative",
-                gap: "10px",
-              }}
+              display="flex"
+              justifyContent={{ xs: "flex-start", sm: "center" }}
+              position="relative"
+              gap="10px"
             >
               <Typography color="#78818b" variant="headlineSmall">
-                <Trans i18nKey={`invitees`} />
+                <Trans i18nKey="invitees" />
               </Typography>
             </Box>
 
@@ -810,7 +768,7 @@ export const AssessmentSettingMemberBox = (props: {
                     position: "sticky",
                     top: 0,
                     zIndex: 3,
-                    backgroundColor: theme.palette.background.containerLowest,
+                    backgroundColor: "background.containerLowest",
                   }}
                 >
                   <TableRow
@@ -864,36 +822,28 @@ export const AssessmentSettingMemberBox = (props: {
                           }}
                         >
                           <Box
-                            sx={{
-                              m: 1,
-                              textAlign: "center",
-                              display: "inline-flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              width: { xs: "10rem", md: "30vw" },
-                            }}
+                            m={1}
+                            textAlign="center"
+                            display="inline-flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            width={{ xs: "10rem", md: "30vw" }}
                           >
                             <Typography
                               color="#1B1B1E"
-                              sx={{
-                                textOverflow: "ellipsis",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                fontSize: "0.875",
-                                wight: 300,
-                              }}
+                              textOverflow="ellipsis"
+                              overflow="hidden"
+                              whiteSpace="nowrap"
+                              fontSize="0.875rem"
+                              fontWeight={300}
                             >
                               {row.email}
                             </Typography>
                           </Box>
                           <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              gap: { xs: "0px", md: ".7rem" },
-                              width: { xs: "15rem", md: "28vw" },
-                            }}
+                            gap={{ xs: "0px", md: ".7rem" }}
+                            width={{ xs: "15rem", md: "28vw" }}
+                            sx={{ ...styles.centerVH }}
                           >
                             <FormControl
                               sx={{
@@ -933,13 +883,13 @@ export const AssessmentSettingMemberBox = (props: {
                                       border: 0,
                                     },
                                     "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                                    {
-                                      border: 0,
-                                    },
+                                      {
+                                        border: 0,
+                                      },
                                     "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                                    {
-                                      border: 0,
-                                    },
+                                      {
+                                        border: 0,
+                                      },
                                     ".MuiSvgIcon-root": {
                                       fill: row.editable
                                         ? "#2974B4 !important"
@@ -955,14 +905,12 @@ export const AssessmentSettingMemberBox = (props: {
                                   }}
                                 >
                                   <Box
-                                    sx={{
-                                      paddingY: "16px",
-                                      color: "#78818b",
-                                      textAlign: "center",
-                                      borderBottom: "1px solid #78818b",
-                                    }}
+                                    paddingY="16px"
+                                    color="#78818b"
+                                    textAlign="center"
+                                    borderBottom="1px solid #78818b"
                                   >
-                                    <Typography sx={{ fontSize: "0.875rem" }}>
+                                    <Typography fontSize="0.875rem">
                                       <Trans i18nKey="settings.chooseARole" />
                                     </Typography>
                                   </Box>
@@ -981,31 +929,31 @@ export const AssessmentSettingMemberBox = (props: {
                                           "&.MuiMenuItem-root:hover": {
                                             ...(role.id === row.role.id
                                               ? {
-                                                backgroundColor: "#9CCAFF",
-                                                color: "#004F83",
-                                              }
+                                                  backgroundColor: "#9CCAFF",
+                                                  color: "#004F83",
+                                                }
                                               : {
-                                                backgroundColor: "#EFEDF0",
-                                                color: "#1B1B1E",
-                                              }),
+                                                  backgroundColor: "#EFEDF0",
+                                                  color: "#1B1B1E",
+                                                }),
                                           },
                                         }}
                                       >
                                         <Box
-                                          sx={{
-                                            maxWidth: "240px",
-                                            color: "text.primary",
-                                            fontSize: "0.875rem",
-                                            lineHeight: "21px",
-                                            fontWeight: 500,
-                                            paddingY: "1rem",
-                                          }}
+                                          maxWidth="240px"
+                                          color="text.primary"
+                                          fontSize="0.875rem"
+                                          lineHeight="21px"
+                                          fontWeight={500}
+                                          paddingY="1rem"
                                         >
                                           <Typography
-                                            color={role.id === row.role.id ? "#004F83" : "#1B1B1E"}
-                                            sx={{
-                                              fontSize: "0.875rem",
-                                            }}
+                                            color={
+                                              role.id === row.role.id
+                                                ? "#004F83"
+                                                : "#1B1B1E"
+                                            }
+                                            fontSize="0.875rem"
                                           >
                                             {role.title}
                                           </Typography>
@@ -1026,12 +974,10 @@ export const AssessmentSettingMemberBox = (props: {
                                         {listOfRoles &&
                                           listOfRoles.length > index + 1 && (
                                             <Box
-                                              sx={{
-                                                height: "0.5px",
-                                                width: "80%",
-                                                backgroundColor: "#78818b",
-                                                mx: "auto",
-                                              }}
+                                              height="0.5px"
+                                              width="80%"
+                                              bgcolor="#78818b"
+                                              mx="auto"
                                             ></Box>
                                           )}
                                       </MenuItem>
@@ -1040,11 +986,7 @@ export const AssessmentSettingMemberBox = (props: {
                                 </Select>
                               </Grid>
                             </FormControl>
-                            <Box
-                              display="flex"
-                              justifyContent="center"
-                              alignItems="center"
-                            >
+                            <Box sx={{ ...styles.centerVH }}>
                               <IconButton
                                 sx={{ "&:hover": { color: "#d32f2f" } }}
                                 size="small"
@@ -1125,22 +1067,20 @@ const SelectionRole = (props: any) => {
           color: "#2974B4",
         },
         "& .MuiSelect-select": {
-          padding: "4px 5px",
           display: "flex",
-          justifyContent: "center",
           alignItems: "center",
+          justifyContent: "center",
+          padding: "4px 5px",
         },
       }}
     >
       <Box
-        sx={{
-          paddingY: "16px",
-          color: "#78818b",
-          textAlign: "center",
-          borderBottom: "1px solid #78818b",
-        }}
+        paddingY="16px"
+        color="#78818b"
+        textAlign="center"
+        borderBottom="1px solid #78818b"
       >
-        <Typography sx={{ fontSize: "0.875rem" }}>
+        <Typography fontSize="0.875rem">
           <Trans i18nKey="settings.chooseARole" />
         </Typography>
       </Box>
@@ -1161,42 +1101,26 @@ const SelectionRole = (props: any) => {
             },
           }}
         >
-          <Box
-            sx={{
-              maxWidth: "240px",
-              paddingY: "1rem",
-            }}
-          >
+          <Box maxWidth="240px" paddingY="1rem">
             <Typography
               color={role.id === row.role.id ? "#004F83" : "#1B1B1E"}
-              sx={{
-                fontSize: "0.875rem",
-                fontWeight: 500,
-              }}
+              fontSize="0.875rem"
+              fontWeight={500}
             >
               {role.title}
             </Typography>
             <Typography
               color="text.primary"
-              sx={{
-                fontSize: "0.875rem",
-                fontWeight: 300,
-                paddingTop: "1rem",
-                whiteSpace: "break-spaces",
-              }}
+              fontSize="0.875rem"
+              fontWeight={300}
+              paddingTop="1rem"
+              whiteSpace="break-spaces"
             >
               {role.description}
             </Typography>
           </Box>
           {listOfRoles.length > index + 1 && (
-            <Box
-              sx={{
-                height: "0.5px",
-                width: "80%",
-                backgroundColor: "#78818b",
-                mx: "auto",
-              }}
-            />
+            <Box height="0.5px" width="80%" bgcolor="#78818b" mx="auto" />
           )}
         </MenuItem>
       ))}
@@ -1298,19 +1222,13 @@ const OnHoverInputTitleSetting = (props: any) => {
     <Box>
       <Box
         my={1.5}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "relative",
-          cursor: "pointer",
-        }}
+        justifyContent="space-between"
+        position="relative"
         width="100%"
+        sx={{ cursor: "pointer", ...styles.centerV }}
       >
         {editable && show ? (
-          <Box
-            sx={{ display: "flex", flexDirection: "column", width: "100% " }}
-          >
+          <Box display="flex" flexDirection="column" width="100%">
             <InputCustomEditor
               inputProps={inputProps}
               hasError={hasError}
@@ -1325,17 +1243,13 @@ const OnHoverInputTitleSetting = (props: any) => {
           </Box>
         ) : (
           <Box
-            sx={{
-              minHeight: "38px",
-              borderRadius: "4px",
-              paddingLeft: "8px;",
-              paddingRight: "12px;",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              wordBreak: "break-word",
-            }}
+            minHeight="38px"
+            borderRadius="4px"
+            paddingLeft="8px"
+            paddingRight="12px"
+            width="100%"
+            justifyContent="space-between"
+            sx={{ wordBreak: "break-word", ...styles.centerV }}
             onClick={() => setShow(!show)}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}

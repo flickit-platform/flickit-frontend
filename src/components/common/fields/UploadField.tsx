@@ -30,7 +30,6 @@ import { Trans } from "react-i18next";
 import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
@@ -259,7 +258,6 @@ const Uploader = (props: IUploadProps) => {
   const { errorMessage, hasError } = getFieldError(errors, fieldProps.name);
 
   const selectedFile = dropNewFile?.[0] ?? acceptedFiles?.[0] ?? file;
-  const theme = useTheme();
 
   return (
     <FormControl sx={{ width: "100%" }} error={hasError}>
@@ -349,8 +347,9 @@ const Uploader = (props: IUploadProps) => {
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  title={`${selectedFile} - ${selectedFile?.size ? formatBytes(selectedFile?.size) : ""
-                    }`}
+                  title={`${selectedFile} - ${
+                    selectedFile?.size ? formatBytes(selectedFile?.size) : ""
+                  }`}
                   primaryTypographyProps={{
                     sx: { ...styles.ellipsis, width: "95%" },
                   }}
@@ -366,8 +365,8 @@ const Uploader = (props: IUploadProps) => {
               <FormLabel
                 sx={{
                   ...styles.centerV,
-                  pl: theme.direction == "ltr" ? 2 : "unset",
-                  pr: theme.direction == "rtl" ? 2 : "unset",
+                  paddingInlineStart: 2,
+                  paddingInlineEnd: "unset",
                   height: "40px",
                   fontSize: "1rem",
                   cursor: "pointer",
@@ -377,13 +376,11 @@ const Uploader = (props: IUploadProps) => {
                 {label}
               </FormLabel>
               <Box
-                sx={{
-                  px: 2,
-                  ...styles.centerV,
-                  color: (t) => t.palette.info.dark,
-                }}
-                ml={theme.direction === "rtl" ? "unset" : "auto"}
-                mr={theme.direction !== "rtl" ? "unset" : "auto"}
+                px={2}
+                color="info.dark"
+                marginInlineStart="auto"
+                marginInlineEnd="unset"
+                sx={{ ...styles.centerV }}
               >
                 <FileUploadRoundedIcon sx={{ mr: hideDropText ? 0 : 1 }} />
                 {!hideDropText && (

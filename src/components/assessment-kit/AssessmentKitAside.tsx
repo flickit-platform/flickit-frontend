@@ -4,7 +4,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import PriceIcon from "@utils/icons/priceIcon";
 import { Trans } from "react-i18next";
 import useDialog from "@utils/useDialog";
-import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import { styles } from "@styles";
 import i18next, { t } from "i18next";
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,7 @@ import { formatLanguageCodes } from "@/utils/languageUtils";
 import { useConfigContext } from "@providers/ConfgProvider";
 import keycloakService from "@/service/keycloakService";
 import { useEffect, useState } from "react";
-import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
+import NewAssessmentDialog from "@/components/common/dialogs/NewAssessmentDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import PurchasedIcon from "@utils/icons/purchasedIcon";
@@ -170,14 +170,12 @@ const AssessmentKitAside = (props: any) => {
     <>
       <Box position="sticky" top={60}>
         <Box
-          sx={{
-            ...styles.shadowStyle,
-            pb: isAuthenticated ? 2 : 4,
-            px: 3,
-            pt: 4,
-          }}
+          pb={isAuthenticated ? 2 : 4}
+          px={3}
+          pt={4}
+          sx={{ ...styles.shadowStyle }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mb: 3 }}>
+          <Box display="flex" flexDirection="column" gap={3} mb={3}>
             {listOfItems
               .filter((filter) => filter.field)
               .map((item) => {
@@ -190,9 +188,7 @@ const AssessmentKitAside = (props: any) => {
               loading={loading}
               variant="contained"
               size="large"
-              sx={{
-                width: "100%",
-              }}
+              fullWidth
             >
               <Trans
                 i18nKey={
@@ -202,11 +198,8 @@ const AssessmentKitAside = (props: any) => {
                 }
               />
             </LoadingButton>
-            <Box sx={{ ...styles.centerVH, mt: 1, gap: 1 }}>
-              <Typography
-                color="text.primary"
-                variant="bodySmall"
-              >
+            <Box mt={1} gap={1} sx={{ ...styles.centerVH }}>
+              <Typography color="text.primary" variant="bodySmall">
                 <Trans i18nKey="assessmentKit.haveAnyQuestions" />
               </Typography>
               <Typography
@@ -228,12 +221,10 @@ const AssessmentKitAside = (props: any) => {
             <Typography
               color="text.primary"
               variant="bodySmall"
-              sx={{
-                ...styles.centerVH,
-                gap: 1,
-                mt: "8px",
-                textAlign: "center",
-              }}
+              textAlign="center"
+              mt="8px"
+              gap={1}
+              sx={{ ...styles.centerVH }}
             >
               <Trans
                 i18nKey={
@@ -247,13 +238,11 @@ const AssessmentKitAside = (props: any) => {
                 onClick={toggleLike}
                 sx={{
                   transform: theme.direction === "rtl" ? "scaleX(-1)" : "none",
-                  background: likeStatus
-                    ? theme.palette.primary.states.selected
-                    : "inherit",
+                  bgcolor: likeStatus ? "primary.states.selected" : "inherit",
                   "&:hover": {
-                    background: likeStatus
-                      ? theme.palette.primary.states.selected
-                      : theme.palette.primary.bg,
+                    bgcolor: likeStatus
+                      ? "primary.states.selected"
+                      : "primary.bg",
                   },
                 }}
               >
@@ -266,14 +255,12 @@ const AssessmentKitAside = (props: any) => {
             </Typography>
           )}
         </Box>
-      </Box >
+      </Box>
       {dialogProps.open && <NewAssessmentDialog {...dialogProps} />}
-      < ContactUsDialog {...contactusDialogProps} />
-      {
-        dialogPurchaseProps.open && (
-          <ContactUsDialog {...dialogPurchaseProps} title={title} />
-        )
-      }
+      <ContactUsDialog {...contactusDialogProps} />
+      {dialogPurchaseProps.open && (
+        <ContactUsDialog {...dialogPurchaseProps} title={title} />
+      )}
     </>
   );
 };
@@ -283,9 +270,9 @@ export default AssessmentKitAside;
 const InfoBox = (props: any) => {
   const { icon, title, description } = props;
   return (
-    <Box sx={{ ...styles.centerV, gap: "12px" }}>
+    <Box gap="12px" sx={{ ...styles.centerV }}>
       {icon}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+      <Box display="flex" flexDirection="column" gap={0.5}>
         {title && (
           <Typography variant="semiBoldSmall" color="background.onVariant">
             {t(`${title}`)}
@@ -294,9 +281,7 @@ const InfoBox = (props: any) => {
         <Typography
           variant="bodyLarge"
           color="text.primary"
-          sx={{
-            textAlign: "justify",
-          }}
+          textAlign="justify"
         >
           {t(`${description}`)}
         </Typography>

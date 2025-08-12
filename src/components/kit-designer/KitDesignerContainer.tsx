@@ -164,7 +164,7 @@ const KitDesignerContainer = () => {
                   item
                   sm={9}
                   xs={12}
-                  sx={{ height: "100%", padding: 3, background: "white" }}
+                  sx={{ height: "100%", padding: 3, bgcolor: "background.containerLowest" }}
                 >
                   <CurrentComponent kitVersion={kitVersion} />
                 </Grid>

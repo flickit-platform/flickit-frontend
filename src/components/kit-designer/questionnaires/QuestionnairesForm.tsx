@@ -57,7 +57,7 @@ const QuestionnairesForm = ({
       }}
     >
       <Box
-        sx={{ ...styles.centerCVH, background: "background.container" }}
+        sx={{ ...styles.centerCVH, bgcolor: "background.container" }}
         borderRadius="0.5rem"
         mr={2}
         p={0.25}
@@ -80,7 +80,7 @@ const QuestionnairesForm = ({
             "& .MuiInputBase-root": {
               fontSize: 14,
             },
-            background: (theme) => theme.palette.background.containerLowest
+            bgcolor: "background.containerLowest",
           }}
         />
       </Box>
@@ -114,20 +114,14 @@ const QuestionnairesForm = ({
       </Box>
 
       {/* Check and Close Buttons */}
-      <Box
-        display="flex"
-        alignItems="center"
-        flexDirection={"column"}
-        gap={"20px"}
-      >
+      <Box gap="20px" sx={{ ...styles.centerCH }}>
         <Link
           href="#subject-header"
           sx={{
+            ...styles.centerV,
             textDecoration: "none",
             opacity: 0.9,
             fontWeight: "bold",
-            display: "flex",
-            alignItems: "center",
             gap: "20px",
           }}
         >

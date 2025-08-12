@@ -243,11 +243,9 @@ const AssessmentCard = ({
               item
               xs={12}
               mt={1}
-              sx={{
-                ...styles.centerCH,
-                gap: 1,
-                flexDirection: "column",
-              }}
+              flexDirection="column"
+              gap={1}
+              sx={{ ...styles.centerCH }}
             >
               {buttonTypes.map((type) => (
                 <CardButton
@@ -287,10 +285,7 @@ const Header = ({
   <Box
     sx={{
       textDecoration: "none",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
+      ...styles.centerCVH,
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}
@@ -308,7 +303,7 @@ const Header = ({
           border: (theme) => `0.5px solid ${theme.palette.primary.main}`,
           textTransform: "none",
           color: "#101c32",
-          background: "transparent",
+          bgcolor: "transparent",
           fontFamily: languageDetector(kit?.title)
             ? farsiFontFamily
             : primaryFontFamily,
@@ -337,18 +332,16 @@ const Header = ({
       data-cy="assessment-card-title"
     >
       {!isQuickMode && (
-        <Box sx={{ flexShrink: 0, ...styles.centerVH }}>
+        <Box flexShrink={0} sx={{ ...styles.centerVH }}>
           <img alt="star" src={Star} height={24} />
         </Box>
       )}
       <Box
-        sx={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          flexShrink: 1,
-          direction: languageDetector(itemTitle) ? "rtl" : "ltr",
-        }}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+        flexShrink={1}
+        sx={{ ...styles.rtlStyle(languageDetector(itemTitle)) }}
       >
         {itemTitle}
       </Box>
@@ -356,13 +349,13 @@ const Header = ({
 
     <Box sx={{ ...styles.centerVH }}>
       <Box
+        bgcolor="background.default"
+        borderRadius="4px"
+        p={0.5}
+        pb={0}
         sx={{
           ...styles.centerVH,
-          backgroundColor: "background.default",
-          borderRadius: "4px",
           border: (theme) => `0.5px solid ${theme.palette.outline?.variant}`,
-          p: 0.5,
-          pb: 0,
         }}
       >
         <Typography variant="labelSmall" color="background.onVariant">
@@ -373,7 +366,7 @@ const Header = ({
       <Typography
         variant="labelSmall"
         color="background.onVariant"
-        sx={{ textAlign: "center" }}
+        textAlign="center"
       >
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}
@@ -443,10 +436,10 @@ const CardButton = ({
         position: "relative",
         zIndex: 1,
         ...(key === "dashboard" && {
-          background: "#01221e",
+          bgcolor: "#01221e",
           color: "background.containerLowest",
           "&:hover": {
-            background: "#01221ecc",
+            bgcolor: "#01221ecc",
           },
         }),
       }}
@@ -458,20 +451,19 @@ const CardButton = ({
       }
     >
       <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          left: 0,
-          bottom: 0,
-          background: "rgba(102, 128, 153, 0.3)",
-          zIndex: -1,
-          width:
-            key === "questionnaires" && progressPercent
-              ? `${progressPercent}%`
-              : "0%",
-          transition: "all 1s ease-in-out",
-        }}
+        position="absolute"
+        top={0}
+        right={0}
+        left={0}
+        bottom={0}
+        bgcolor="rgba(102, 128, 153, 0.3)"
+        zIndex={-1}
+        width={
+          key === "questionnaires" && progressPercent
+            ? `${progressPercent}%`
+            : "0%"
+        }
+        sx={{ transition: "all 1s ease-in-out" }}
       />
       <Trans i18nKey={label} />
     </Button>
@@ -514,35 +506,35 @@ const Actions = ({
 
   const actions = hasStatus(item.status)
     ? [
-      {
-        icon: <CompareRoundedIcon fontSize="small" />,
-        text: <Trans i18nKey="addToCompare" />,
-        onClick: addToCompare,
-        id: "assessmentCard-addToCompare-btn",
-      },
-      {
-        icon: <DeleteRoundedIcon fontSize="small" />,
-        text: <Trans i18nKey="common.delete" />,
-        onClick: deleteItem,
-        menuItemProps: { "data-cy": "delete-action-btn" },
-        id: "assessmentCard-delete-btn",
-      },
-    ]
+        {
+          icon: <CompareRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="addToCompare" />,
+          onClick: addToCompare,
+          id: "assessmentCard-addToCompare-btn",
+        },
+        {
+          icon: <DeleteRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="common.delete" />,
+          onClick: deleteItem,
+          menuItemProps: { "data-cy": "delete-action-btn" },
+          id: "assessmentCard-delete-btn",
+        },
+      ]
     : [
-      {
-        icon: <SettingsIcon fontSize="small" />,
-        text: <Trans i18nKey="common.settings" />,
-        onClick: assessmentSetting,
-        id: "assessmentCard-setting-btn"
-      },
-      {
-        icon: <DeleteRoundedIcon fontSize="small" />,
-        text: <Trans i18nKey="common.delete" />,
-        onClick: deleteItem,
-        menuItemProps: { "data-cy": "delete-action-btn" },
-        id: "assessmentCard-delete-btn",
-      },
-    ];
+        {
+          icon: <SettingsIcon fontSize="small" />,
+          text: <Trans i18nKey="common.settings" />,
+          onClick: assessmentSetting,
+          id: "assessmentCard-setting-btn",
+        },
+        {
+          icon: <DeleteRoundedIcon fontSize="small" />,
+          text: <Trans i18nKey="common.delete" />,
+          onClick: deleteItem,
+          menuItemProps: { "data-cy": "delete-action-btn" },
+          id: "assessmentCard-delete-btn",
+        },
+      ];
 
   return (
     <MoreActions

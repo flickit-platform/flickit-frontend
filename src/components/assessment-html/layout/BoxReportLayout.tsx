@@ -111,11 +111,8 @@ const TopBox = (props: ITopBoxReport) => {
     <Grid
       spacing={2}
       container
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+      justifyContent="space-between"
+      sx={{ ...styles.centerV }}
       textAlign="center"
     >
       <Grid xs={12} sm={4} item component="div" id={title}>
@@ -221,17 +218,13 @@ const BottomBox = ({
       />
 
       <Box
+        display={{ xs: "none", sm: "flex" }}
+        alignItems="center"
+        justifyContent={isFarsi ? "flex-end" : "flex-start"}
         onClick={() => setExpanded((prev) => !prev)}
-        sx={{
-          display: { xs: "none", sm: "flex" },
-          alignItems: "center",
-          justifyContent: isFarsi ? "flex-end" : "flex-start",
-          cursor: "pointer",
-        }}
+        sx={{ cursor: "pointer" }}
       >
-        <Divider
-          sx={{ flexGrow: 1, borderColor: "primary.main" }}
-        />
+        <Divider sx={{ flexGrow: 1, borderColor: "primary.main" }} />
 
         <IconButton size="small" color="primary">
           {expanded ? <ArrowDropUpRounded /> : <ArrowDropDownRounded />}
@@ -254,10 +247,8 @@ const BottomBox = ({
           <Typography
             variant="labelSmall"
             color="background.onVariant"
-            sx={{
-              whiteSpace: "nowrap",
-              fontFamily,
-            }}
+            whiteSpace="nowrap"
+            sx={{ fontFamily }}
           >
             {t("assessmentReport.measureTitle", { lng: language })}
           </Typography>
@@ -273,10 +264,9 @@ const BottomBox = ({
           <Box>
             <Box
               onClick={() => setShowGuide((prev) => !prev)}
+              justifyContent={isFarsi ? "flex-end" : "flex-start"}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: isFarsi ? "flex-end" : "flex-start",
+                ...styles.centerV,
                 cursor: "pointer",
               }}
             >
@@ -284,10 +274,8 @@ const BottomBox = ({
               <Typography
                 variant="labelSmall"
                 color="background.onVariant"
-                sx={{
-                  fontFamily,
-                  marginInlineStart: "4px",
-                }}
+                marginInlineStart="4px"
+                sx={{ fontFamily }}
               >
                 {t("common.hint", { lng: language })}
               </Typography>
@@ -304,9 +292,7 @@ const BottomBox = ({
                 mt={1}
                 color="#4A4A4A"
                 variant="bodyMedium"
-                sx={{
-                  fontFamily,
-                }}
+                sx={{ fontFamily }}
               >
                 {t("assessmentReport.helpDescription", { lng: language })}
               </Typography>

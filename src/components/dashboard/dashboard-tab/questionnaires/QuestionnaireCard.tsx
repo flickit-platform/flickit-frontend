@@ -68,12 +68,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
         <Box>
           <Box flex={1}>
             <Title size="small" fontWeight={"bold"}>
-              <Box
-                ref={mainBoxRef}
-                flex="1"
-                display="flex"
-                alignItems={"center"}
-              >
+              <Box ref={mainBoxRef} flex="1" sx={{ ...styles.centerV }}>
                 <Title
                   fontWeight={"bold"}
                   size="small"
@@ -87,8 +82,8 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                     textTransform: "lowercase",
                     "&::first-letter": !languageDetector(title)
                       ? {
-                        textTransform: "uppercase",
-                      }
+                          textTransform: "uppercase",
+                        }
                       : {},
                   }}
                   ref={titleRef}
@@ -121,8 +116,8 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   display="inline-block"
                   sx={{
                     float: theme.direction === "ltr" ? "right" : "left",
-                    marginLeft: theme.direction === "ltr" ? "auto" : "unset",
-                    marginRight: theme.direction === "ltr" ? "unset" : "auto",
+                    marginInlineStart: "auto",
+                    marginInlineEnd: "unset",
                     minWidth: "80px",
                     textAlign: "end",
                   }}
@@ -337,25 +332,15 @@ const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
 
   return (
     <Chip
-      sx={{ background: "#8A0F240A" }}
+      sx={{ bgcolor: "#8A0F240A" }}
       label={
         <Grid>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-            }}
-          >
+          <Box gap={1} sx={{ ...styles.centerVH }}>
             <ErrorOutlineIcon
               fontSize={"small"}
               style={{ fill: theme.palette.error.main }}
             />
-            <Typography
-              variant="bodyMedium"
-              color="error.main"
-            >
+            <Typography variant="bodyMedium" color="error.main">
               <Trans i18nKey={i18nKey} />: {value}
             </Typography>
           </Box>

@@ -72,21 +72,14 @@ const DotsLoading = () => {
 const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
   <Box
     dir={lang === "FA" ? "rtl" : "ltr"}
-    sx={{ backgroundColor: (theme) => theme.palette.background.container, minHeight: "100vh" }}
+    bgcolor="background.container"
+    minHeight="100vh"
   >
-    <Box
-      sx={{
-        backgroundColor: (theme) => theme.palette.primary.bgVariant,
-        height: 48,
-        ...styles.centerVH,
-      }}
-    >
+    <Box bgcolor="primary.bgVariant" height={48} sx={{ ...styles.centerVH }}>
       <Typography
         variant="semiBoldLarge"
         color="primary"
-        sx={{
-          ...styles.centerV,
-        }}
+        sx={{ ...styles.centerV }}
       >
         {t("notification.generatingFinalReport")}
       </Typography>
@@ -101,12 +94,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
     >
       <Box>
         <Skeleton variant="text" width={170} height={28} sx={{ mb: 2 }} />
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          my={2}
-        >
+        <Box justifyContent="space-between" my={2} sx={{ ...styles.centerV }}>
           <Skeleton variant="rectangular" width={100} height={36} />{" "}
           <Skeleton variant="rectangular" width={140} height={36} />{" "}
         </Box>
@@ -116,19 +104,19 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
         <Grid item lg={2.5} md={2.5} sm={12} xs={12}>
           <Skeleton variant="rounded" height={420} sx={{ borderRadius: 2 }} />
           {isAuthenticatedUser && (
-            <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+            <Box mt={2} sx={{ ...styles.centerH }}>
               <Box
+                width="100%"
+                height={48}
+                borderRadius="4px"
+                position="relative"
+                overflow="hidden"
+                boxShadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
                 sx={{
-                  width: "100%",
-                  height: 48,
-                  borderRadius: "4px",
-                  position: "relative",
-                  overflow: "hidden",
                   background: (theme) =>
                     `linear-gradient(to right, ${theme.palette.primary.main}, #2D80D2, ${theme.palette.primary.main} )`,
                   backgroundSize: "600% 600%",
                   animation: "gradientShift 4s ease infinite",
-                  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
                 }}
               />
               <style>
@@ -148,7 +136,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
             elevation={3}
             sx={{
               position: "relative",
-              backgroundColor: (theme) => theme.palette.background.containerLowest,
+              bgcolor: "background.containerLowest",
               borderStartEndRadius: 2,
               borderStartStartRadius: 2,
               boxShadow: "none",
@@ -161,29 +149,25 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
           >
             {/* کناره‌ها */}
             <Box
-              sx={{
-                position: "absolute",
-                right: { md: "40px", xs: "12px" },
-                top: { md: "60px", xs: "6px" },
-                bottom: { md: "40px", xs: "4px" },
-                width: { md: "8px", xs: "2px" },
-                backgroundColor: (theme) => theme.palette.primary.bgVariant,
-                borderRadius: 1,
-              }}
+              position="absolute"
+              right={{ md: "40px", xs: "12px" }}
+              top={{ md: "60px", xs: "6px" }}
+              bottom={{ md: "40px", xs: "4px" }}
+              width={{ md: "8px", xs: "2px" }}
+              bgcolor="primary.bgVariant"
+              borderRadius={1}
             />
             <Box
-              sx={{
-                position: "absolute",
-                left: { md: "40px", xs: "12px" },
-                top: { md: "60px", xs: "6px" },
-                bottom: { md: "40px", xs: "4px" },
-                width: { md: "8px", xs: "2px" },
-                backgroundColor: (theme) => theme.palette.primary.bgVariant,
-                borderRadius: 1,
-              }}
+              position="absolute"
+              left={{ md: "40px", xs: "12px" }}
+              top={{ md: "60px", xs: "6px" }}
+              bottom={{ md: "40px", xs: "4px" }}
+              width={{ md: "8px", xs: "2px" }}
+              bgcolor="primary.bgVariant"
+              borderRadius={1}
             />
             <Box width="100%" px={2}>
-              <Grid container spacing={4} sx={{ mb: "40px" }}>
+              <Grid container spacing={4} mb="40px">
                 <Grid item xs={12}>
                   <Skeleton
                     variant="rounded"
@@ -219,7 +203,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                     sx={{ mt: 2, borderRadius: 2 }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} sx={{ mt: { xs: 2, md: 10 } }}>
+                <Grid item xs={12} sm={6} md={4} mt={{ xs: 2, md: 10 }}>
                   <img
                     src={MatirytySkeleton}
                     alt="MatirytySkeleton"
@@ -257,7 +241,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
           <Paper
             elevation={3}
             sx={{
-              backgroundColor: (theme) => theme.palette.background.containerLowest,
+              bgcolor: "background.containerLowest",
               borderEndStartRadius: 2,
               borderEndEndRadius: 2,
               boxShadow: "none",

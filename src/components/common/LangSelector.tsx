@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { styles } from "@styles";
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
@@ -9,17 +10,12 @@ const LanguageSelector = () => {
     i18n.changeLanguage(language);
     const url = new URL(window.location.href);
     url.searchParams.delete("lang");
-    window.history.replaceState(
-      {},
-      document.title,
-      url.pathname + url.search,
-    );
+    window.history.replaceState({}, document.title, url.pathname + url.search);
     window.location.reload();
-
   };
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box sx={{ ...styles.centerH }}>
       {i18n.language === "fa" ? (
         <Typography
           variant="titleMedium"

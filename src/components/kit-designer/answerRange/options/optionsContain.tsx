@@ -84,7 +84,7 @@ const OptionContain = (props: any) => {
         <Box
           sx={{
             ...styles.centerVH,
-            background: (theme) => theme.palette.background.container,
+            bgcolor: "background.container",
             width: { xs: "65px", md: "95px" },
             justifyContent: "space-around",
           }}
@@ -159,7 +159,7 @@ const OptionContain = (props: any) => {
                 fontSize: 14,
               },
               width: { xs: "20%", md: "10%" },
-              background: (theme) => theme.palette.background.containerLowest,
+              bgcolor: "background.containerLowest",
               borderRadius: "8px",
             }}
             name="title"
@@ -171,12 +171,9 @@ const OptionContain = (props: any) => {
           </Box>
         )}
         <Box
-          sx={{
-            width: { xs: "20%", md: "10%" },
-            display: "flex",
-            justifyContent: "center",
-            marginLeft: "auto",
-          }}
+          width={{ xs: "20%", md: "10%" }}
+          marginLeft="auto"
+          sx={{ ...styles.centerH }}
         >
           {editMode === answerOption.id ? (
             <>

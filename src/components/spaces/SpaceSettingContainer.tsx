@@ -19,10 +19,8 @@ import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import { useTheme } from "@mui/material";
 
 const SpaceSettingContainer = () => {
-  const theme = useTheme();
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
 
@@ -70,8 +68,8 @@ const SpaceSettingContainer = () => {
               variant="rounded"
               width="110px"
               sx={{
-                marginRight: theme.direction === "ltr" ? 1 : "unset",
-                marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                marginInlineStart: "unset",
+                marginInlineEnd: 1,
               }}
             />
           ) : (

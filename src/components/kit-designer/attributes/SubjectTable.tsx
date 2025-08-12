@@ -14,7 +14,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AttributeForm from "./AttributeForm";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-
+import { styles } from "@styles";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
@@ -32,7 +32,7 @@ interface Attribute {
   weight: number;
   index: number;
   isEditing?: boolean;
-  translations: MultiLangs | null
+  translations: MultiLangs | null;
 }
 
 interface Subject {
@@ -67,7 +67,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   showNewAttributeForm,
   handleEdit,
 }) => {
-
   const [attributes, setAttributes] = useState<Attribute[]>(initialAttributes);
   const [targetSubjectId, setTargetSubjectId] = useState<number | null>(null);
   const [editAttributeId, setEditAttributeId] = useState<string | null>(null);
@@ -75,7 +74,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
   const langCode = kitState.translatedLanguage?.code ?? "";
 
   const { updateTranslation } = useTranslationUpdater(langCode);
-
 
   useEffect(() => {
     setAttributes(initialAttributes);
@@ -196,7 +194,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
             {subjects?.map((subject, index) => (
               <React.Fragment key={subject.id}>
                 <TableRow
-                  sx={{ background: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
+                  sx={{ bgcolor: "#F9F9F9", borderRadius: "0.5rem", mb: 1 }}
                 >
                   <TableCell>
                     <Typography variant="semiBoldLarge">{index + 1}</Typography>
@@ -255,7 +253,7 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                   >
                                     {/* Conditionally render editable fields */}
                                     {editAttributeId ===
-                                      String(attribute.id) ? (
+                                    String(attribute.id) ? (
                                       <TableCell sx={{ width: "100%" }}>
                                         <AttributeForm
                                           newAttribute={newAttribute}
@@ -269,18 +267,16 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                       </TableCell>
                                     ) : (
                                       <>
-                                        <TableCell sx={{ alignContent: "center", }}>
+                                        <TableCell
+                                          sx={{ alignContent: "center" }}
+                                        >
                                           <Box
-                                            sx={{
-                                              display: "flex",
-                                              alignItems: "center",
-                                              background: "background.container",
-                                              borderRadius: "0.5rem",
-                                              width: { xs: "50px", md: "64px" },
-                                              justifyContent: "space-around",
-                                              px: 1.5,
-
-                                            }}
+                                            bgcolor="background.container"
+                                            width={{ xs: "50px", md: "64px" }}
+                                            borderRadius="0.5rem"
+                                            px={1.5}
+                                            justifyContent="space-around"
+                                            sx={{ ...styles.centerV }}
                                           >
                                             <Typography variant="semiBoldLarge">
                                               {attrIndex + 1}
@@ -296,7 +292,6 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                         </TableCell>
                                         <TableCell
                                           sx={{
-
                                             width: "100%",
                                             flexGrow: 1,
                                             mt: 0.5,
@@ -311,7 +306,11 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           <TitleWithTranslation
                                             title={attribute.title}
                                             translation={
-                                              langCode ? attribute.translations?.[langCode]?.title : ""
+                                              langCode
+                                                ? attribute.translations?.[
+                                                    langCode
+                                                  ]?.title
+                                                : ""
                                             }
                                             variant="semiBoldMedium"
                                             showCopyIcon
@@ -333,19 +332,26 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                           <TitleWithTranslation
                                             title={attribute.description}
                                             translation={
-                                              langCode ? attribute.translations?.[langCode]?.description : ""
+                                              langCode
+                                                ? attribute.translations?.[
+                                                    langCode
+                                                  ]?.description
+                                                : ""
                                             }
                                             variant="semiBoldMedium"
                                             showCopyIcon
                                           />
                                         </TableCell>
-                                        <TableCell sx={{ alignContent: "center" }} data-testid="display-attribute-weight">
+                                        <TableCell
+                                          sx={{ alignContent: "center" }}
+                                          data-testid="display-attribute-weight"
+                                        >
                                           {attribute.weight}
                                         </TableCell>
                                         <TableCell
                                           sx={{
                                             display: "flex",
-                                            alignContent: "center"
+                                            alignContent: "center",
                                           }}
                                         >
                                           <IconButton
@@ -383,19 +389,17 @@ const SubjectTable: React.FC<SubjectTableProps> = ({
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     sx={{
-                                      background: "#F9F9F9",
+                                      bgcolor: "#F9F9F9",
                                       borderColor: "white",
                                       borderRadius: "0.5rem",
                                       mb: 1,
-                                      width: "100%"
+                                      width: "100%",
                                     }}
                                   >
                                     <AttributeForm
                                       newAttribute={newAttribute}
                                       handleInputChange={handleInputChange}
-                                      handleSave={() =>
-                                        handleSave(subject.id)
-                                      } // Pass the subject ID to add
+                                      handleSave={() => handleSave(subject.id)} // Pass the subject ID to add
                                       handleCancel={handleCancel}
                                       langCode={langCode}
                                       setNewAttribute={setNewAttribute}

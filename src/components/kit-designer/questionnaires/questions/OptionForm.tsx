@@ -12,6 +12,7 @@ import React from "react";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { MultiLangs } from "@/types";
+import { styles } from "@styles";
 
 interface OptionFormProps {
   newItem: {
@@ -96,25 +97,19 @@ const OptionForm = (props: OptionFormProps) => {
             "& .MuiFormLabel-root": {
               fontSize: 14,
             },
-            background: (theme) => theme.palette.background.containerLowest
+            bgcolor: "background.containerLowest",
           }}
         />
       </Box>
       {/* Check and Close Buttons */}
-      <Box
-        display="flex"
-        alignItems="center"
-        flexDirection={"column"}
-        gap={"20px"}
-      >
+      <Box gap="20px" sx={{ ...styles.centerCH }}>
         <Link
           href="#subject-header"
           sx={{
+            ...styles.centerV,
             textDecoration: "none",
             opacity: 0.9,
             fontWeight: "bold",
-            display: "flex",
-            alignItems: "center",
             gap: "20px",
           }}
         >

@@ -9,7 +9,6 @@ import QueryData from "@common/QueryData";
 import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -68,7 +67,6 @@ const ExpertGroupConfirmInvitationContainer = () => {
     }
   };
 
-  const theme = useTheme();
 
   return (
     <QueryData
@@ -90,8 +88,8 @@ const ExpertGroupConfirmInvitationContainer = () => {
             <Box>
               <LoadingButton
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
                 }}
                 loading={confirmInvitationQueryData.loading}
                 variant="contained"

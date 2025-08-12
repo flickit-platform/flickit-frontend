@@ -6,9 +6,9 @@ import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
 import NavbarWithoutLogin from "@/components/common/NavbarWithoutLogin";
 import keycloakService from "@/service/keycloakService";
-import FloatButton from "@utils/floatButton";
+import FloatButton from "@/components/common/buttons/FloatButton";
 import useDialog from "@utils/useDialog";
-import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import { isPathMatching } from "@/utils/pathMatcher";
 import PendingKitBanner from "@/components/common/dialogs/PendingKitBanner";
 

@@ -97,13 +97,10 @@ const ReportTab = () => {
                     <Typography
                       color="text.primary"
                       variant="semiBoldLarge"
-                      sx={{
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                        gap: 2,
-                        mb: 2,
-                      }}
+                      justifyContent="flex-start"
+                      gap={2}
+                      mb={2}
+                      sx={{ ...styles.centerV }}
                     >
                       <Trans i18nKey={title} />
                       {!metadata[name] && (
@@ -144,14 +141,7 @@ const ReportTab = () => {
                         alignSelf: "flex-start",
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          width: "100%",
-                        }}
-                      >
+                      <Box width="100%" sx={{ ...styles.centerCH }}>
                         <Button
                           component={Link}
                           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
@@ -166,12 +156,9 @@ const ReportTab = () => {
                         </Button>
                         <Divider sx={{ width: "100%", my: 2 }} />
                         <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            width: "100%",
-                          }}
+                          width="100%"
+                          justifyContent="space-between"
+                          sx={{ ...styles.centerV }}
                         >
                           <Typography variant="semiBoldLarge">
                             <Trans i18nKey="assessmentReport.publishReport" />
@@ -190,11 +177,7 @@ const ReportTab = () => {
 
                         {Object.values(metadata).includes(null) &&
                           !published && (
-                            <Box
-                              sx={{
-                                background: "transparent",
-                              }}
-                            >
+                            <Box bgcolor="transparent">
                               <Typography
                                 variant="semiBoldSmall"
                                 color="error.main"
