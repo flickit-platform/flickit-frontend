@@ -332,7 +332,7 @@ const SubjectAttributeCard = (props: any) => {
             borderRadius: "16px",
           }}
         >
-          <Box p={{ xs: 2, sm: 5 }} sx={{ ...styles.centerCVH }}>
+          <Box p={{ xs: 2, sm: 5 }} sx={{ ...styles.centerCVH }} width="100%">
             {expandedAttribute && (
               <AttributeInsight
                 progress={progress}
