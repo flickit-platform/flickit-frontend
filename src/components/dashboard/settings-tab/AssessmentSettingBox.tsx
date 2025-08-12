@@ -494,6 +494,29 @@ export const AssessmentSettingMemberBox = (props: {
       showToast(err);
     }
   };
+  
+  const labelDisplayedRows = ( from: string, to: string, count: number ): string =>{
+    let countLabel: string | number = ""
+    if(count !== -1){
+      countLabel = count
+    }else {
+      countLabel = `${t("common.moreThan")} ${to}`
+    }
+    return `${from}-${to} ${t("common.of")} ${countLabel}`
+  }
+
+  function getLabelDisplayedRows(t: any) {
+    return ({ from, to, count }: { from: number; to: number; count: number }) => {
+      let countLabel: string | number = ""
+      if(count !== -1){
+        countLabel = count
+      }else {
+        countLabel = `${t("common.moreThan")} ${to}`
+      }
+      return `${from}-${to} ${t("common.of")} ${countLabel}`;
+    };
+  }
+
 
   const ITEM_HEIGHT = 59;
   const ITEM_PADDING_TOP = 8;
@@ -770,9 +793,7 @@ export const AssessmentSettingMemberBox = (props: {
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelRowsPerPage={t("common.rowsPerPage")}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to}  ${t("common.of")} ${count !== -1 ? count : `${t("common.moreThan")} ${to}`}`
-          }
+          labelDisplayedRows={getLabelDisplayedRows(t)}
         />
         <Divider sx={{ width: "100%", marginBlock: "24px" }} />
 
@@ -1284,18 +1305,22 @@ const OnHoverInputTitleSetting = (props: any) => {
       }
     }
   };
+
+  function getTextAlign(type: string, inputData: string, inputDataShortTitle: any) {
+    if (type === "title") {
+      return firstCharDetector(inputData) ? "right" : "left";
+    }
+    if (type === "shortTitle") {
+      return firstCharDetector(inputDataShortTitle) ? "right" : "left";
+    }
+    return "left";
+  }
+
+  const textAlign = getTextAlign(type, inputData, inputDataShortTitle);
+
   const inputProps: React.HTMLProps<HTMLInputElement> = {
     style: {
-      textAlign:
-        type == "title"
-          ? firstCharDetector(inputData)
-            ? "right"
-            : "left"
-          : type == "shortTitle"
-            ? firstCharDetector(inputDataShortTitle)
-              ? "right"
-              : "left"
-            : "left",
+      textAlign
     },
   };
 
