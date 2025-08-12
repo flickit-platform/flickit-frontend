@@ -241,6 +241,10 @@ const ListOfItems = ({
     accordionBg: (isEditing: boolean)=>{
       if(isEditing) return "#F3F5F6";
       return "#fff";
+    },
+    fontFamilyDetect: (text: string) => {
+      if(languageDetector(text)) return farsiFontFamily;
+      return primaryFontFamily
     }
   }
 
@@ -264,15 +268,11 @@ const ListOfItems = ({
             onChange={(e) => handelChange(e)}
             inputProps={{
               style: {
-                fontFamily: languageDetector(tempValues.title)
-                  ? farsiFontFamily
-                  : primaryFontFamily,
+                fontFamily: multiStyles["fontFamilyDetect"]?.(tempValues?.title)
               },
             }}
             translationValue={
-              langCode
-                ? (tempValues.translations?.[langCode]?.title ?? "")
-                : ""
+              langCode && (tempValues.translations?.[langCode]?.title ?? "")
             }
             onTranslationChange={updateTranslation(
               "title",
@@ -284,7 +284,7 @@ const ListOfItems = ({
           <TitleWithTranslation
             title={item.title}
             translation={
-              langCode ? item.translations?.[langCode]?.title : ""
+              langCode && item.translations?.[langCode]?.title
             }
             variant="semiBoldMedium"
             showCopyIcon

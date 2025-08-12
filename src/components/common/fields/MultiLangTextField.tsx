@@ -40,7 +40,7 @@ const MultiLangTextField = ({
   onChange,
   label,
   inputProps,
-  translationValue,
+  translationValue= "",
   onTranslationChange,
   translationLabel = t("common.translation") ?? "",
   showTranslation: controlledShow,
