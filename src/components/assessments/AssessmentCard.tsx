@@ -352,10 +352,10 @@ const Header = ({
         bgcolor="background.containerLow"
         borderRadius="4px"
         p={0.5}
-        pb={0}
+        paddingBlock={0.25}
         sx={{
           ...styles.centerVH,
-          border: (theme) => `0.5px solid ${theme.palette.outline?.variant}`,
+          border: `0.5px solid rgb(199, 204, 209)`,
         }}
       >
         <Typography variant="labelSmall" color="background.onVariant">

@@ -376,7 +376,7 @@ const BoxType = ({
               WebkitBackgroundClip: isPremium ? "text" : undefined,
               WebkitTextFillColor: isPremium ? "transparent" : undefined,
               backgroundImage: isPremium
-                ? `linear-gradient(to right, ${v3Tokens.primary.main}, #2D80D2, ${v3Tokens.primary.main} )`
+                ? `linear-gradient(to right, #2466A8, #2D80D2, #2466A8 )`
                 : undefined,
             }}
           >

@@ -59,7 +59,7 @@ const StepperSection = (props: IStepperSection) => {
                 ".MuiSvgIcon-root.Mui-active": {
                   padding: "0",
                   borderRadius: "50%",
-                  border: (theme) => `1px dashed ${theme.palette.primary.main}`,
+                  border: "1px dashed #2466A8",
                   marginY: "-4px",
                   color: "primary.bg",
                 },
@@ -391,17 +391,17 @@ const StepBox = (props: IStepBox) => {
         py: "10px",
         height: "190px",
         borderInlineEnd: !report
-          ? `1px solid ${theme.palette.outline?.variant}`
+          ? `1px solid #8F99A3`
           : "",
         borderTop: {
           xs:
             insights || report
-              ? `1px solid ${theme.palette.outline?.variant}`
+              ? `1px solid #8F99A3`
               : "",
           md: "none",
         },
         borderBottom: {
-          xs: insights ? `1px solid ${theme.palette.outline?.variant}` : "",
+          xs: insights ? `1px solid #8F99A3` : "",
           md: "none",
         },
         width: "100%",

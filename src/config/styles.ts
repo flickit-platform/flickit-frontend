@@ -114,8 +114,7 @@ const cards = {
 
 const auth = {
   authLayout: style({
-    background: (theme) =>
-      `radial-gradient(${theme.palette.background.secondary},${theme.palette.background.secondaryDark})`,
+    background: "radial-gradient(#F3F5F6, #2B333B)",
     minHeight: "100vh",
     ...commonStyles.centerCH,
   }),

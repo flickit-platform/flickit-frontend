@@ -155,7 +155,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
           backgroundColor: `${notApplicable ? "#000000cc" : "#273248"}`,
           flex: 1,
           color: "white",
-          background: `radial-gradient(circle, ${blue[20]} 50%, #0D263F 100%)`,
+          background: `radial-gradient(circle, #123354 50%, #0D263F 100%)`,
           position: "relative",
           overflow: "hidden",
           mx: { xs: 2, sm: "auto" },

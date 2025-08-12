@@ -116,7 +116,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
             <Box
               sx={{
                 p: 1,
-                border: `1px solid ${theme.palette.outline?.variant}`,
+                border: "1px solid #E2E5E9",
                 borderRadius: 2,
               }}
             >

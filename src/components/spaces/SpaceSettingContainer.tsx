@@ -143,8 +143,8 @@ function SpaceSettings(props: any) {
                   <GroupsRoundedIcon
                     fontSize="small"
                     sx={{
-                      mr: `${is_farsi ? 0 : "8px"}`,
-                      ml: `${is_farsi ? "8px" : 0}`,
+                      marginInlineStart: 0,
+                      marginInlineEnd: "8px",
                     }}
                   />
                   <Trans i18nKey="expertGroups.members" />

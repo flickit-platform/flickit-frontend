@@ -192,7 +192,7 @@ const ReportCard = ({
       borderRadius="16px"
       width="100%"
       mt={8}
-      border={(theme) => `3px solid ${theme.palette.primary.main}`}
+      border="3px solid #2466A8"
       px={{ md: 2, xs: 1 }}
       py={6}
       display={{ md: "block", xs: "none" }}

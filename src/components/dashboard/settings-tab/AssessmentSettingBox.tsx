@@ -329,7 +329,7 @@ const QuickAssessmentSwitch = () => {
         }
         sx={{
           ...styles.centerV,
-          flexDirection:"row-reverse",
+          flexDirection: "row-reverse",
           margin: 0,
           gap: "32px",
         }}

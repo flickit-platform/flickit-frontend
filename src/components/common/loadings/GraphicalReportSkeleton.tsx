@@ -114,7 +114,7 @@ const GraphicalReportSkeleton = ({ isAuthenticatedUser, lang }: any) => (
                 boxShadow="0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
                 sx={{
                   background: (theme) =>
-                    `linear-gradient(to right, ${theme.palette.primary.main}, #2D80D2, ${theme.palette.primary.main} )`,
+                    `linear-gradient(to right, #2466A8, #2D80D2, #2466A8 )`,
                   backgroundSize: "600% 600%",
                   animation: "gradientShift 4s ease infinite",
                 }}

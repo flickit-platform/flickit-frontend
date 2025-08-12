@@ -146,7 +146,7 @@ export const AssessmentTOC = ({
     >
       <Box
         bgcolor="background.containerLowest"
-        border={(theme) => `2px solid ${theme.palette.primary.main}`}
+        border="2px solid #2466A8"
         borderRadius={2}
         p={2}
         maxHeight={isAuthenticatedUser && !isAdvanceMode ? "50vh" : "88vh"}
@@ -167,7 +167,7 @@ export const AssessmentTOC = ({
         <List
           sx={{
             width: "100%",
-            borderInlineStart: (theme) => `2px solid ${theme.palette.primary.main}`,
+            borderInlineStart: "2px solid #2466A8",
             padding: 0,
             bgcolor: "background.containerLowest",
           }}

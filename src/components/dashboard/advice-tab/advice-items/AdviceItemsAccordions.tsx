@@ -312,10 +312,9 @@ const AdviceItemAccordion: React.FC<{
     <>
       <Accordion
         sx={{
-          borderBottom: `1px solid ${COLORS.border}`,
-          borderInlineStart: (theme) =>
-            readOnly ? `4px solid ${theme.palette.background.onVariant}` : "",
-          border: readOnly ? "" : `1px solid ${COLORS.border}`,
+          borderBottom: `1px solid #E0E0E0"`,
+          borderInlineStart: readOnly ? `4px solid #6C8093` : "",
+          border: readOnly ? "" : `1px solid #E0E0E0"`,
           borderRadius: "8px",
           mb: 1,
           boxShadow: "none",
