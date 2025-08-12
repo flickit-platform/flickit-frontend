@@ -7,7 +7,6 @@ import { confidenceColor, getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
-import { useTheme } from "@mui/material";
 
 type TPosition = "top" | "left";
 
