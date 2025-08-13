@@ -25,7 +25,7 @@ const getWhereToGo = (location: Location, authContext: IAuthContext) => {
   }
   if (isRoot) {
     // If user has current space navigate to it otherwise navigate to spaces
-    return HOME_URL;
+    return "/assessment-kits";
   }
   return location.pathname;
 };
