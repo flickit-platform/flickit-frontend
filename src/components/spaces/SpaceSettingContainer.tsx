@@ -19,10 +19,8 @@ import useDialog from "@utils/useDialog";
 import CreateSpaceDialog from "./CreateSpaceDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import { useTheme } from "@mui/material";
 
 const SpaceSettingContainer = () => {
-  const theme = useTheme();
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
 
@@ -70,8 +68,8 @@ const SpaceSettingContainer = () => {
               variant="rounded"
               width="110px"
               sx={{
-                marginRight: theme.direction === "ltr" ? 1 : "unset",
-                marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                marginInlineStart: "unset",
+                marginInlineEnd: 1,
               }}
             />
           ) : (
@@ -145,8 +143,8 @@ function SpaceSettings(props: any) {
                   <GroupsRoundedIcon
                     fontSize="small"
                     sx={{
-                      mr: `${is_farsi ? 0 : "8px"}`,
-                      ml: `${is_farsi ? "8px" : 0}`,
+                      marginInlineStart: 0,
+                      marginInlineEnd: "8px",
                     }}
                   />
                   <Trans i18nKey="expertGroups.members" />

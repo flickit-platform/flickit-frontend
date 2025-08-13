@@ -58,14 +58,12 @@ const drawerWidth = 240;
 
 const NotificationIndicator = ({ seen }: { seen: boolean }) => (
   <Box
-    sx={{
-      minWidth: "4px",
-      height: "24px",
-      backgroundColor: seen ? "#6C8093" : "#2D80D2",
-      borderRadius: "2px",
-      marginRight: document.dir === "ltr" ? 1 : "unset",
-      marginLeft: document.dir === "rtl" ? 1 : "unset",
-    }}
+    minWidth="4px"
+    height="24px"
+    bgcolor={seen ? "background.onVariant" : "#2D80D2"}
+    borderRadius="2px"
+    marginInlineStart={1}
+    marginInlineEnd="unset"
   />
 );
 const NotificationItem = ({
@@ -80,17 +78,18 @@ const NotificationItem = ({
   return (
     <Box
       onClick={onNotificationClick}
+      marginBlock="4px"
+      justifyContent="space-between"
+      padding="12px 16px"
+      border={`0.5px solid ${theme.palette.outline?.variant}`}
+      bgcolor={
+        message.seen ? "background.containerLowest" : "background.container"
+      }
+      position="relative"
+      flexDirection={theme.direction === "rtl" ? "row-reverse" : "row"}
       sx={{
-        marginBlock: "4px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "12px 16px",
-        border: "0.5px solid #C7CCD1",
-        backgroundColor: message.seen ? "#ffffff" : "#F3F5F6",
+        ...styles.centerV,
         cursor: "pointer",
-        position: "relative",
-        flexDirection: theme.direction === "rtl" ? "row-reverse" : "row", // Handle RTL/LTR
         "&:hover": {
           backgroundColor: "#f1f1f1",
         },
@@ -101,25 +100,20 @@ const NotificationItem = ({
 
       {/* Notification Content */}
       <Box
-        sx={{
-          flexGrow: 1,
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: theme.direction === "rtl" ? "flex-end" : "flex-start",
-        }}
+        flexGrow={1}
+        overflow="hidden"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
+        justifyContent={theme.direction === "rtl" ? "flex-end" : "flex-start"}
+        sx={{ ...styles.centerV }}
       >
         <Typography
           variant="titleSmall"
-          sx={{
-            fontWeight: message.seen ? 400 : 600,
-            color: "#2B333B",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-          }}
+          color="text.primary"
+          fontWeight={message.seen ? 400 : 600}
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
           dangerouslySetInnerHTML={{
             __html: message.content,
           }}
@@ -129,12 +123,10 @@ const NotificationItem = ({
       {/* Relative Time Ago */}
       <Typography
         variant="labelSmall"
-        sx={{
-          color: "#3D4D5C",
-          marginLeft: theme.direction === "rtl" ? "0" : "8px",
-          marginRight: theme.direction === "rtl" ? "8px" : "0",
-          whiteSpace: "nowrap",
-        }}
+        color="#3D4D5C"
+        marginInlineStart="8px"
+        marginInlineEnd="0"
+        whiteSpace="nowrap"
       >
         {getReadableDate(message.createdAt, "relative")}
       </Typography>
@@ -144,25 +136,23 @@ const NotificationItem = ({
         sx={{
           fontSize: "16px",
           color: "#2962FF",
-          marginLeft: theme.direction === "rtl" ? "0" : "8px",
-          marginRight: theme.direction === "rtl" ? "8px" : "0",
+          marginInlineStart: "8px",
+          marginInlineEnd: "0",
           transform: theme.direction === "rtl" ? "rotate(180deg)" : "none", // Rotate for RTL
         }}
       />
 
       {/* Red Dot Indicator for Unseen Message */}
       <Box
-        sx={{
-          position: "absolute",
-          top: "8px",
-          left: theme.direction === "rtl" ? "8px" : "unset",
-          right: theme.direction === "ltr" ? "8px" : "unset",
-          width: "8px",
-          height: "8px",
-          backgroundColor: "#B8144B",
-          borderRadius: "50%",
-          display: message.seen ? "none" : "block",
-        }}
+        position="absolute"
+        top="8px"
+        left={theme.direction === "rtl" ? "8px" : "unset"}
+        right={theme.direction === "ltr" ? "8px" : "unset"}
+        width="8px"
+        height="8px"
+        bgcolor="secondary.main"
+        borderRadius="50%"
+        display={message.seen ? "none" : "block"}
       />
     </Box>
   );
@@ -228,25 +218,18 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
       {selectedMessage ? (
         <Box
           className="nc-layout-wrapper"
-          sx={{
-            borderRadius: 1,
-            width: { md: 420, sm: 320 },
-          }}
+          borderRadius={1}
+          width={{ md: 420, sm: 320 }}
         >
-          <Box
-            className="nc-header"
-            sx={{ display: "flex", height: "55px", alignItems: "center" }}
-          >
+          <Box className="nc-header" height="55px" sx={{ ...styles.centerV }}>
             <Typography
               className="nc-header-title"
-              sx={{
-                color: "#525266",
-                fontSize: "20px",
-                fontStyle: "normal",
-                fontWeight: 700,
-                lineHeight: "24px",
-                textAlign: "left",
-              }}
+              color="#525266"
+              textAlign="left"
+              lineHeight="24px"
+              fontSize="20px"
+              fontStyle="normal"
+              fontWeight={700}
             >
               <IconButton onClick={handleBackClick}>
                 <ArrowBackIos
@@ -261,50 +244,43 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
             </Typography>
           </Box>
 
-          <Box className="nc-notifications-list" sx={{ height: 400 }}>
+          <Box className="nc-notifications-list" height={400}>
             <Box
-              sx={{
-                marginBlock: "4px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "12px 16px",
-                backgroundColor: "#FFFFFF",
-                position: "relative",
-              }}
+              marginBlock="4px"
+              justifyContent="space-between"
+              padding="12px 16px"
+              bgcolor="background.containerLowest"
+              position="relative"
+              sx={{ ...styles.centerV }}
             >
               {/* Indicator */}
               <Box
-                sx={{
-                  position: "absolute",
-                  left: theme.direction === "ltr" ? 8 : "unset",
-                  right: theme.direction === "rtl" ? 8 : "unset",
-                  top: 8,
-                  bottom: 0,
-                  width: "4px",
-                  backgroundColor: selectedMessage.seen ? "#6C8093" : "#2D80D2",
-                  borderRadius: "2px",
-                }}
+                position="absolute"
+                left={theme.direction === "ltr" ? 8 : "unset"}
+                right={theme.direction === "rtl" ? 8 : "unset"}
+                top={8}
+                bottom={0}
+                width="4px"
+                bgcolor={
+                  selectedMessage.seen ? "background.onVariant" : "#2D80D2"
+                }
+                borderRadius="2px"
               />
 
               <Box
-                sx={{
-                  paddingLeft: "12px",
-                  gap: "4px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+                paddingLeft="12px"
+                gap="4px"
+                display="flex"
+                flexDirection="column"
               >
                 <Typography variant="titleMedium">
                   {(selectedMessage as any)?.payload?.title}
                 </Typography>
 
                 <Box
-                  sx={{
-                    flexGrow: 1,
-                    display: "flex",
-                    alignItems: "flex-start",
-                  }}
+                  flexGrow={1}
+                  display="flex"
+                  alignItems="flex-start"
                   gap={1}
                 >
                   <Typography
@@ -315,7 +291,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
                   />
                 </Box>
 
-                <Typography variant="labelSmall" sx={{ color: "#3D4D5C" }}>
+                <Typography variant="labelSmall" color="#3D4D5C">
                   {getReadableDate(
                     selectedMessage?.createdAt,
                     "relativeWithDate",
@@ -339,7 +315,7 @@ const NotificationCenterComponent = ({ setNotificationCount }: any) => {
               gap={1}
             >
               <img src={NotificationEmptyState} alt={"No assesment here!"} />
-              <Typography variant="bodyMedium" color="#2466A8">
+              <Typography variant="bodyMedium" color="primary">
                 <Trans i18nKey="notification.notificationEmptyState" />
               </Typography>
             </Box>
@@ -427,21 +403,14 @@ const Navbar = () => {
   }, [notificationCenterOpen]);
 
   const drawer = (
-    <Box
-      onClick={handleDrawerToggle}
-      sx={{
-        textAlign: "center",
-      }}
-    >
+    <Box onClick={handleDrawerToggle} textAlign="center">
       {/* Drawer content */}
       <Typography
         variant="h6"
-        sx={{
-          height: "56px",
-          width: "100%",
-          ...styles.centerVH,
-          background: theme.palette.primary.main,
-        }}
+        bgcolor="primary.main"
+        height="56px"
+        width="100%"
+        sx={{ ...styles.centerVH }}
         component={NavLink}
         to={HOME_URL}
       >
@@ -483,17 +452,12 @@ const Navbar = () => {
                               {space?.title && (
                                 <Typography
                                   variant="caption"
-                                  textTransform={"none"}
-                                  sx={{
-                                    paddingLeft:
-                                      theme.direction === "ltr" ? 0.5 : "unset",
-                                    paddingRight:
-                                      theme.direction === "rtl" ? 0.5 : "unset",
-                                    ml: 0.5,
-                                    lineHeight: "1",
-                                    borderLeft: (t) =>
-                                      `1px solid ${t.palette.grey[300]}`,
-                                  }}
+                                  textTransform="none"
+                                  paddingInlineStart={0.5}
+                                  paddingInlineEnd="unset"
+                                  ml={0.5}
+                                  lineHeight="1"
+                                  borderLeft={`1px solid ${theme.palette.grey[300]}`}
                                 >
                                   {space?.title}
                                 </Typography>
@@ -538,7 +502,7 @@ const Navbar = () => {
         component="nav"
         sx={{
           borderRadius: "0px",
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: "primary.main",
           position: "sticky",
           px: { xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
           boxShadow: "0 0px 8px rgba(10, 35, 66, 0.25)",
@@ -548,7 +512,7 @@ const Navbar = () => {
         <Toolbar
           variant="dense"
           sx={{
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: "primary.main",
             borderRadius: 1,
             justifyContent: "space-between",
           }}
@@ -559,10 +523,10 @@ const Navbar = () => {
             edge="start"
             onClick={handleDrawerToggle}
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineEnd: 1,
+              marginInlineStart: "unset",
               display: { md: "none" },
-              color: "#fff",
+              color: "background.containerLowest",
             }}
           >
             <MenuIcon />
@@ -587,12 +551,7 @@ const Navbar = () => {
               style={{ maxWidth: "120px", height: "100%" }}
             />
           </Typography>
-          <Box
-            sx={{
-              display: { xs: "none", md: "block" },
-              mx: "auto",
-            }}
-          >
+          <Box mx="auto" display={{ xs: "none", md: "block" }}>
             <SpacesButton spacesQueryData={spacesQueryData} />
             {/* <Button
               component={NavLink}
@@ -607,7 +566,7 @@ const Navbar = () => {
                 textTransform: "uppercase",
                 marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
                 marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff",
+                color: theme.palette.background.containerLowest,
               }}
               size="small"
             >
@@ -624,25 +583,19 @@ const Navbar = () => {
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
-                marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
-                marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
-                color: "#fff",
+                marginInlineStart: 0.8,
+                marginInlineEnd: 0.1,
+                color: "background.containerLowest",
               }}
               size="small"
             >
               <Trans i18nKey="common.kitLibrary" />
             </Button>
           </Box>
-          <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
+          <Box display={{ xs: "none", md: "block" }} ml={3}>
             {/* Other buttons */}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: ".7rem",
-            }}
-          >
+          <Box gap="0.7rem" sx={{ ...styles.centerV }}>
             {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
             <IconButton onClick={toggleNotificationCenter} ref={bellButtonRef}>
               <Badge
@@ -652,7 +605,7 @@ const Navbar = () => {
                 overlap="circular"
                 sx={{
                   "& .MuiBadge-badge": {
-                    backgroundColor: "#B8144B",
+                    backgroundColor: "secondary.main",
                     minWidth: "16px",
                     padding: 0,
                     height: "16px",
@@ -692,13 +645,11 @@ const Navbar = () => {
       {notificationCenterOpen && (
         <Box
           ref={notificationCenterRef}
-          sx={{
-            position: "fixed",
-            top: 60,
-            right: theme.direction === "ltr" ? 20 : "unset",
-            left: theme.direction === "rtl" ? 20 : "unset",
-            zIndex: 1300,
-          }}
+          position="fixed"
+          top={60}
+          right={theme.direction === "ltr" ? 20 : "unset"}
+          left={theme.direction === "rtl" ? 20 : "unset"}
+          zIndex={1300}
         >
           <NotificationCenterComponent
             setNotificationCount={setNotificationCount}
@@ -707,7 +658,7 @@ const Navbar = () => {
       )}
 
       {/* Hidden Notification Center for Count Update */}
-      <Box sx={{ display: "none" }}>
+      <Box display="none">
         <NotificationCenterComponent
           setNotificationCount={setNotificationCount}
         />
@@ -746,8 +697,8 @@ const SpacesButton = (props: any) => {
         }
         sx={{
           textTransform: "uppercase",
-          marginRight: theme.direction === "rtl" ? 0.8 : 0.1,
-          marginLeft: theme.direction === "ltr" ? 0.8 : 0.1,
+          marginInlineStart: 0.8,
+          marginInlineEnd: 0.1,
           "&:hover .MuiButton-endIcon > div": {
             borderLeftColor: "#8080802b",
           },
@@ -758,23 +709,21 @@ const SpacesButton = (props: any) => {
               bottom: 0,
               left: "50%",
               transform: "translateX(-50%)",
-              width: "90%", // 👈 smaller underline
+              width: "90%",
               height: "2px",
-              backgroundColor: "#fff",
+              backgroundColor: "background.containerLowest",
               borderRadius: 1,
             },
           }),
-          color: "#fff",
+          color: "background.containerLowest",
         }}
         size="small"
         endIcon={
           <Box
-            sx={{
-              minWidth: "8px",
-              borderLeft: "1px solid #80808000",
-              transition: "border .1s ease",
-              display: "flex",
-            }}
+            minWidth="8px"
+            borderLeft="1px solid #80808000"
+            display="flex"
+            sx={{ transition: "border .1s ease" }}
             onClick={(e: any) => {
               e.stopPropagation();
               handleClick(e);
@@ -859,7 +808,6 @@ const AccountDropDownButton = ({ userInfo }: any) => {
   };
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
-  const theme = useTheme();
 
   return (
     <>
@@ -871,9 +819,9 @@ const AccountDropDownButton = ({ userInfo }: any) => {
         }}
         sx={{
           ...styles.activeNavbarLink,
-          marginRight: theme.direction === "ltr" ? 0.8 : 0.1,
-          marginLeft: theme.direction === "rtl" ? 0.8 : 0.1,
-          color: "#fff",
+          marginInlineEnd: 0.8,
+          marginInlineStart: 0.1,
+          color: "background.containerLowest",
           fontFamily: languageDetector(userInfo.displayName)
             ? farsiFontFamily
             : primaryFontFamily,
@@ -887,8 +835,8 @@ const AccountDropDownButton = ({ userInfo }: any) => {
           sx={{
             width: 26,
             height: 26,
-            marginRight: theme.direction === "ltr" ? 1.3 : "unset",
-            marginLeft: theme.direction === "rtl" ? 1.3 : "unset",
+            marginInlineEnd: 1.3,
+            marginInlineStart: "unset",
           }}
           alt={userInfo.displayName}
           src={userInfo.pictureLink ?? ""}

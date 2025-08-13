@@ -57,38 +57,40 @@ export const ShamsiCalendar = (MiladiDate: any) => {
 
 type DateDisplayMode = "relative" | "relativeWithDate" | "absolute";
 
-
 export const getReadableDate = (
   time: Date | string | number,
   mode: DateDisplayMode = "absolute",
-  withTime: boolean = false
+  withTime: boolean = false,
 ): string => {
   const lang = i18next.language;
   const now = new Date();
   const date = new Date(time);
 
-  const calendar: string = MiladiCalendar(date);
+  const adjustedDate = new Date(date);
+  adjustedDate.setUTCMinutes(adjustedDate.getUTCMinutes() + (3 * 60 + 30));
+
+  const calendar: string = MiladiCalendar(adjustedDate);
   const localizedDate: string =
     lang === "fa" ? ShamsiCalendar(calendar) : calendar;
 
   const nowMidnight = new Date(
     now.getFullYear(),
     now.getMonth(),
-    now.getDate()
+    now.getDate(),
   );
   const dateMidnight = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
+    adjustedDate.getFullYear(),
+    adjustedDate.getMonth(),
+    adjustedDate.getDate(),
   );
 
   const diffDays = Math.floor(
-    (dateMidnight.getTime() - nowMidnight.getTime()) / (1000 * 60 * 60 * 24)
+    (dateMidnight.getTime() - nowMidnight.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   const diffMonths =
-    (date.getFullYear() - now.getFullYear()) * 12 +
-    (date.getMonth() - now.getMonth());
+    (adjustedDate.getFullYear() - now.getFullYear()) * 12 +
+    (adjustedDate.getMonth() - now.getMonth());
 
   let relativeStr = "";
 
@@ -102,7 +104,7 @@ export const getReadableDate = (
       relativeStr = t("2daysAgo");
     } else if (absDays <= 6) {
       relativeStr = t("common.thisWeek");
-    } else if (absMonths === 1) {
+    } else if (absMonths <= 1) {
       relativeStr = t("common.lastMonth");
     } else if (absMonths > 1 && absMonths < 12) {
       relativeStr = t("common.monthsAgo", { count: absMonths });
@@ -128,13 +130,14 @@ export const getReadableDate = (
   }
 
   const timeStr = withTime
-    ? ` - ${date.getHours().toString().padStart(2, "0")}:${date
+    ? ` - ${adjustedDate.getHours().toString().padStart(2, "0")}:${adjustedDate
         .getMinutes()
         .toString()
         .padStart(2, "0")}`
     : "";
 
   if (mode === "relative") return relativeStr + timeStr;
-  if (mode === "relativeWithDate") return `${relativeStr} (${localizedDate}${withTime ? timeStr : ""})`;
+  if (mode === "relativeWithDate")
+    return `${relativeStr} (${localizedDate}${withTime ? timeStr : ""})`;
   return `${localizedDate}${timeStr}`;
 };

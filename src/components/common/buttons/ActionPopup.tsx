@@ -196,10 +196,9 @@ const ConfirmDialog = ({
 }: any) => (
   <>
     <Typography
-      color={colorScheme.muiColor}
+      color={colorScheme.main}
       textAlign="justify"
       variant="bodySmall"
-      sx={{ color: colorScheme.main }}
       mb={1}
     >
       {texts.confirmMessage}
@@ -252,10 +251,9 @@ const ActionContent = ({
 }: any) => (
   <>
     <Typography
-      color={colorScheme.muiColor}
+      color={colorScheme.main}
       textAlign="justify"
       variant="bodySmall"
-      sx={{ color: colorScheme.main }}
       mb={1}
     >
       {texts.description}

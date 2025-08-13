@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import { styles } from "@styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useTheme } from "@mui/material";
 
 interface IListAccordion {
   items: any[];
@@ -39,7 +38,6 @@ const UnOrderedListAccordionItem = (props: {
 }) => {
   const { render } = props;
   const [expanded, setExpanded] = useState<boolean>(false);
-  const theme = useTheme();
 
   return (
     <Box
@@ -67,8 +65,8 @@ const UnOrderedListAccordionItem = (props: {
       >
         <ExpandMoreIcon
           sx={{
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
+            marginInlineStart: "auto",
+            marginInlineEnd: "unset",
             color: "#287c71",
             transition: "transform .5s ease",
             transform: expanded ? "rotate(540deg)" : "rotate(0)",

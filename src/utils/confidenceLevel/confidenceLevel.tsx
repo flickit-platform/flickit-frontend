@@ -25,13 +25,11 @@ const ConfidenceLevel = ({
   return (
     <Suspense fallback={<Box>fallback</Box>}>
       <Box
-        sx={{
-          display: "inline-flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "2px",
-          marginInlineStart: 0.5,
-        }}
+        display="inline-flex"
+        justifyContent="center"
+        alignItems="center"
+        gap="2px"
+        marginInlineStart={0.5}
       >
         {displayNumber && (
           <Typography

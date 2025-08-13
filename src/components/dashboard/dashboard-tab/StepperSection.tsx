@@ -61,13 +61,13 @@ const StepperSection = (props: IStepperSection) => {
                   borderRadius: "50%",
                   border: "1px dashed #2466A8",
                   marginY: "-4px",
-                  color: "#EAF2FB",
+                  color: "primary.bg",
                 },
                 "& .Mui-active .MuiStepIcon-text": {
-                  fill: "#2466A8",
+                  fill: (theme) => theme.palette.primary.main,
                 },
                 "& .Mui-disabled .MuiStepIcon-text": {
-                  fill: "#fff",
+                  fill: (theme) => theme.palette.background.containerLowest,
                 },
               }}
             />
@@ -198,8 +198,8 @@ const StepBox = (props: IStepBox) => {
         size="small"
         sx={{
           ...theme.typography.labelMedium,
-          color: "#B8144B",
-          background: "#FCE8EF",
+          color: "secondary.main",
+          bgcolor: "secondary.bg",
           direction: theme.direction,
           cursor: "pointer",
         }}
@@ -214,7 +214,7 @@ const StepBox = (props: IStepBox) => {
       sx={{
         ...theme.typography.labelMedium,
         color: "#2D80D2",
-        background: "#EAF2FB",
+        bgcolor: "primary.states.hover",
       }}
     />
   );
@@ -225,8 +225,8 @@ const StepBox = (props: IStepBox) => {
       size="small"
       sx={{
         ...theme.typography.labelMedium,
-        color: "#3D8F3D",
-        background: "#EDF7ED",
+        color: "success.main",
+        bgcolor: "success.bg",
       }}
     />
   );
@@ -241,13 +241,9 @@ const StepBox = (props: IStepBox) => {
 
     content = (
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "calc(100% - 60px)",
-        }}
+        justifyContent="space-between"
+        height="calc(100% - 60px)"
+        sx={{ ...styles.centerCH }}
       >
         <Box
           sx={{
@@ -264,18 +260,11 @@ const StepBox = (props: IStepBox) => {
             {hasIssues && issuesTag("questions")}
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "4px",
-          }}
-        >
-          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
+        <Box gap="4px" sx={{ ...styles.centerVH }}>
+          <Typography variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * answered) / total)}%
           </Typography>
-          <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
+          <Typography variant="labelMedium" color="#3D4D5C80">
             {t("dashboard.fromTotalQuestionsCount")}
           </Typography>
         </Box>
@@ -299,7 +288,7 @@ const StepBox = (props: IStepBox) => {
           height: "calc(100% - 60px)",
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+        <Box gap={2} sx={{ ...styles.centerH }}>
           <Typography sx={{ direction: "ltr" }} variant="headlineLarge">
             {`${result} / ${expected}`}
           </Typography>
@@ -310,10 +299,10 @@ const StepBox = (props: IStepBox) => {
           </Box>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>
-          <Typography variant="labelMedium" sx={{ color: "#2D80D2" }}>
+          <Typography variant="labelMedium" color="#2D80D2">
             {Math.floor((100 * result) / expected)}%
           </Typography>
-          <Typography variant="labelMedium" sx={{ color: "#3D4D5C80" }}>
+          <Typography variant="labelMedium" color="#3D4D5C80">
             {t("dashboard.totalInsightsCount")}
           </Typography>
         </Box>
@@ -359,13 +348,9 @@ const StepBox = (props: IStepBox) => {
 
     content = (
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "calc(100% - 60px)",
-        }}
+        justifyContent="space-between"
+        height="calc(100% - 60px)"
+        sx={{ ...styles.centerCH }}
       >
         <Box
           sx={{
@@ -405,12 +390,20 @@ const StepBox = (props: IStepBox) => {
         px: "20px",
         py: "10px",
         height: "190px",
-        borderInlineEnd: !report ? "1px solid #C7CCD1" : "",
+        borderInlineEnd: !report
+          ? `1px solid #8F99A3`
+          : "",
         borderTop: {
-          xs: insights || report ? "1px solid #C7CCD1" : "",
+          xs:
+            insights || report
+              ? `1px solid #8F99A3`
+              : "",
           md: "none",
         },
-        borderBottom: { xs: insights ? "1px solid #C7CCD1" : "", md: "none" },
+        borderBottom: {
+          xs: insights ? `1px solid #8F99A3` : "",
+          md: "none",
+        },
         width: "100%",
         textAlign: "center",
         cursor: "pointer",
@@ -420,8 +413,8 @@ const StepBox = (props: IStepBox) => {
     >
       <Typography
         variant="semiBoldLarge"
+        color="background.onVariant"
         sx={{
-          color: "#6C8093",
           textAlign: "center",
           mb: "36px",
         }}

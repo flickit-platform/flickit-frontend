@@ -24,14 +24,12 @@ import AlertBox from "@common/AlertBox";
 import { useState } from "react";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
-import { useTheme } from "@mui/material";
 
 interface ICompareItemCEFormDialog
   extends Omit<ICompareItemCEForm, "closeDialog"> {}
 
 const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
   const { onClose, context, open, openDialog, onSubmitForm, ...rest } = props;
-  const theme = useTheme();
 
   const closeDialog = () => {
     onClose();
@@ -48,8 +46,8 @@ const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
             <>
               <BorderColorRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
                 }}
               />
               <Trans i18nKey="compare.changeSelectedAssessment" />
@@ -58,8 +56,8 @@ const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
             <>
               <AddBoxRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
                 }}
               />
               <Trans i18nKey="compare.selectAssessment" />
@@ -140,8 +138,6 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
       closeDialog();
     }
   };
-  const theme = useTheme();
-
 
   return (
     <FormProviderWithForm formMethods={formMethods}>
@@ -174,7 +170,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                 <MenuItem
                   value={option}
                   key={option.id}
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{ ...styles.centerV }}
                 >
                   {option.id === "" ? (
                     option.title
@@ -188,11 +184,9 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                         {option.title}
                       </Title>
                       <Box
-                        sx={{
-                          ...styles.centerV,
-                          ml: theme.direction == "rtl" ? "unset" : "auto",
-                          mr: theme.direction == "rtl" ? "auto" : "unset",
-                        }}
+                        marginInlineStart="auto"
+                        marginInlineEnd="unset"
+                        sx={{ ...styles.centerV }}
                       >
                         <Chip
                           sx={{

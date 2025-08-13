@@ -23,7 +23,7 @@ import Divider from "@mui/material/Divider";
 import AssessmentKitSectionGeneralInfo from "./AssessmentKitSectionGeneralInfo";
 import ListAccordion from "@common/lists/ListAccordion";
 import setDocumentTitle from "@utils/setDocumentTitle";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import useDialog from "@utils/useDialog";
 import SupTitleBreadcrumb from "@common/SupTitleBreadcrumb";
 import languageDetector from "@utils/languageDetector";
@@ -41,7 +41,6 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LoadingButton from "@mui/lab/LoadingButton";
 import uniqueId from "@/utils/uniqueId";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 const AssessmentKitExpertViewContainer = () => {
   const { fetchAssessmentKitDetailsQuery, fetchAssessmentKitDownloadUrlQuery } =
@@ -116,7 +115,7 @@ const AssessmentKitExpertViewContainer = () => {
   }, [assessmentKitTitle]);
   return (
     <Box>
-      <Box sx={{ flexDirection: { xs: "column", sm: "row" } }}>
+      <Box flexDirection={{ xs: "column", sm: "row" }}>
         <Title
           backLink={"/"}
           size="large"
@@ -154,7 +153,7 @@ const AssessmentKitExpertViewContainer = () => {
                   dialogProps.openDialog({});
                 }}
               >
-                <Typography sx={{ marginInlineEnd: 1 }} variant="button">
+                <Typography marginInlineEnd={1} variant="button">
                   <Trans i18nKey="assessmentKit.updateDSL" />
                 </Typography>
                 <CloudUploadRoundedIcon />
@@ -166,8 +165,8 @@ const AssessmentKitExpertViewContainer = () => {
                 sx={{ ml: 2 }}
                 onClick={handleExport}
               >
-                <Typography sx={{ marginInlineEnd: 1 }} variant="button">
-                  <Trans i18nKey="exportDSL" />
+                <Typography marginInlineEnd={1} variant="button">
+                  <Trans i18nKey="assessmentKit.exportDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
               </LoadingButton>
@@ -177,7 +176,7 @@ const AssessmentKitExpertViewContainer = () => {
                 sx={{ ml: 2 }}
                 onClick={handleDownload}
               >
-                <Typography sx={{ marginInlineEnd: 1 }} variant="button">
+                <Typography marginInlineEnd={1} variant="button">
                   <Trans i18nKey="assessmentKit.downloadDSL" />
                 </Typography>
                 <CloudDownloadRoundedIcon />
@@ -312,7 +311,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
             sx={{
               mb: 1,
               borderRadius: 2,
-              background: "white",
+              bgcolor: "background.containerLowest",
               boxShadow: "none",
               border: "none,",
               "&::before": {
@@ -326,12 +325,9 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
               id="panel1bh-header"
             >
               <Typography
-                sx={{
-                  flex: 1,
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  opacity: 1,
-                }}
+                flex={1}
+                fontSize="1.2rem"
+                fontWeight="bold"
                 variant="h6"
               >
                 {subject.index}.{subject.title}
@@ -339,25 +335,19 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
             </AccordionSummary>
             <AccordionDetails>
               <Box p={1}>
-                <Grid container spacing={2} sx={{ mb: 1 }}>
+                <Grid container spacing={2} mb={1}>
                   <Grid item xs={12} sm={7} md={8} lg={9}>
                     <Box
                       display="flex"
-                      sx={{
-                        background: "white",
-                        py: 0.6,
-                        px: 1,
-                        borderRadius: 1,
-                      }}
+                      bgcolor="background.containerLowest"
+                      py={0.6}
+                      px={1}
+                      borderRadius={1}
                     >
                       <Typography variant="body2">
                         <Trans i18nKey="assessmentKit.numberOfQuestions" />:
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ ml: 2 }}
-                        fontWeight="bold"
-                      >
+                      <Typography variant="body2" ml={2} fontWeight="bold">
                         {assessmentKitSubjectDetails?.questionsCount}
                       </Typography>
                     </Box>
@@ -365,21 +355,15 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                   <Grid item xs={12} sm={7} md={8} lg={9}>
                     <Box
                       display="flex"
-                      sx={{
-                        background: "white",
-                        py: 0.6,
-                        px: 1,
-                        borderRadius: 1,
-                      }}
+                      bgcolor="background.containerLowest"
+                      py={0.6}
+                      px={1}
+                      borderRadius={1}
                     >
                       <Typography variant="body2">
                         <Trans i18nKey="common.description" />:
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ ml: 2 }}
-                        fontWeight="bold"
-                      >
+                      <Typography variant="body2" ml={2} fontWeight="bold">
                         {assessmentKitSubjectDetails?.description}
                       </Typography>
                     </Box>
@@ -388,7 +372,7 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
               </Box>
               <Divider />
               <Box m={1} mt={2}>
-                <Typography variant="h6" fontWeight={"bold"} fontSize="1rem">
+                <Typography variant="titleMedium">
                   <Trans i18nKey="common.attributes" />
                 </Typography>
                 {assessmentKitSubjectDetails && (
@@ -398,15 +382,13 @@ const AssessmentKitSubjects = (props: { details: any[]; update: boolean }) => {
                       return (
                         <React.Fragment key={item?.id}>
                           <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: isExpanded ? "stretch" : "center",
-                              flexDirection: isExpanded ? "column" : "row",
-                            }}
+                            display="flex"
+                            alignItems={isExpanded ? "stretch" : "center"}
+                            flexDirection={isExpanded ? "column" : "row"}
                           >
                             <Typography
                               variant="body1"
-                              fontWeight={"bold"}
+                              fontWeight="bold"
                               minWidth="180px"
                             >
                               {index + 1}.{item.title}
@@ -468,7 +450,7 @@ const AssessmentKitQuestionnaires = (props: {
             sx={{
               mb: 1,
               borderRadius: 2,
-              background: "white",
+              bgcolor: "background.containerLowest",
               boxShadow: "none",
               border: "none,",
               "&::before": {
@@ -482,12 +464,9 @@ const AssessmentKitQuestionnaires = (props: {
               id="panel1bh-header"
             >
               <Typography
-                sx={{
-                  flex: 1,
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  opacity: 1,
-                }}
+                flex={1}
+                fontWeight="bold"
+                fontSize="1.2rem"
                 variant="h6"
               >
                 {questionnaire.index}.{questionnaire.title}
@@ -497,17 +476,15 @@ const AssessmentKitQuestionnaires = (props: {
               <Grid item xs={12} sm={7} md={8} lg={9}>
                 <Box
                   display="flex"
-                  sx={{
-                    background: "white",
-                    py: 0.6,
-                    px: 1,
-                    borderRadius: 1,
-                  }}
+                  bgcolor="background.containerLowest"
+                  py={0.6}
+                  px={1}
+                  borderRadius={1}
                 >
                   <Typography variant="body2">
                     <Trans i18nKey="assessmentKit.numberOfQuestions" />:
                   </Typography>
-                  <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
+                  <Typography variant="body2" ml={2} fontWeight="bold">
                     {questionnaireDetails?.questionsCount}
                   </Typography>
                 </Box>
@@ -515,13 +492,10 @@ const AssessmentKitQuestionnaires = (props: {
               <Grid item xs={12} sm={7} md={8} lg={9}>
                 <Box
                   display="flex"
-                  sx={{
-                    background: "white",
-                    py: 0.6,
-                    px: 1,
-                    borderRadius: 1,
-                    my: "16px",
-                  }}
+                  bgcolor="background.containerLowest"
+                  py={0.6}
+                  px={1}
+                  borderRadius={1}
                 >
                   <Typography variant="body2">
                     <Trans i18nKey="assessmentKit.relatedSubjects" />:
@@ -530,7 +504,7 @@ const AssessmentKitQuestionnaires = (props: {
                     (subject: string) => (
                       <Typography
                         variant="body2"
-                        sx={{ ml: 2 }}
+                        ml={2}
                         fontWeight="bold"
                         key={uniqueId()}
                       >
@@ -543,13 +517,11 @@ const AssessmentKitQuestionnaires = (props: {
               <Grid item xs={12} sm={7} md={8} lg={9}>
                 <Box
                   display="flex"
-                  sx={{
-                    background: "white",
-                    py: 0.6,
-                    px: 1,
-                    borderRadius: 1,
-                    my: "16px",
-                  }}
+                  bgcolor="background.containerLowest"
+                  py={0.6}
+                  px={1}
+                  borderRadius={1}
+                  my={2}
                 >
                   <Typography variant="body2">
                     <Trans i18nKey="common.description" />:
@@ -628,17 +600,15 @@ const AssessmentKitQuestionsList = (props: {
       <Grid item xs={12} sm={7} md={8} lg={9}>
         <Box
           display="flex"
-          sx={{
-            background: "white",
-            py: 0.6,
-            px: 1,
-            borderRadius: 1,
-          }}
+          bgcolor="background.containerLowest"
+          py={0.6}
+          px={1}
+          borderRadius={1}
         >
           <Typography variant="body2">
             <Trans i18nKey="assessmentKit.numberOfQuestions" />:
           </Typography>
-          <Typography variant="body2" sx={{ ml: 2 }} fontWeight="bold">
+          <Typography variant="body2" ml={2} fontWeight="bold">
             {attributesDetails?.questionCount}
           </Typography>
         </Box>
@@ -646,12 +616,10 @@ const AssessmentKitQuestionsList = (props: {
       <Grid item xs={12} sm={7} md={8} lg={9}>
         <Box
           display="flex"
-          sx={{
-            background: "white",
-            py: 0.6,
-            px: 1,
-            borderRadius: 1,
-          }}
+          bgcolor="background.containerLowest"
+          py={0.6}
+          px={1}
+          borderRadius={1}
         >
           <Typography variant="body2">
             <Trans i18nKey="common.weight" />:
@@ -664,12 +632,10 @@ const AssessmentKitQuestionsList = (props: {
       <Grid item xs={12} sm={7} md={8} lg={9}>
         <Box
           display="flex"
-          sx={{
-            background: "white",
-            py: 0.6,
-            px: 1,
-            borderRadius: 1,
-          }}
+          bgcolor="background.containerLowest"
+          py={0.6}
+          px={1}
+          borderRadius={1}
         >
           <Typography variant="body2">
             <Trans i18nKey="common.description" />:
@@ -701,14 +667,16 @@ const AssessmentKitQuestionsList = (props: {
                       sx={{
                         "&.Mui-selected": {
                           color: `${colorPallet[index]}  !important`,
-                          background: `transparent  !important`,
+                          bgcolor: `transparent  !important`,
                         },
                         "&:hover": {
                           backgroundColor: "#e1dede !important",
                           color: `${colorPallet[index]} !important`,
                         },
-                        background: `${colorPallet[index]}  !important`,
-                        color: "#fff !important",
+                        bgcolor: `${colorPallet[index]}  !important`,
+                        color: (theme) =>
+                          theme.palette.background.containerLowest +
+                          " !important",
                       }}
                       label={
                         <Box sx={{ ...styles.centerV }}>
@@ -743,8 +711,6 @@ const UpdateAssessmentKitDialog = (props: any) => {
     loaded,
     ...rest
   } = props;
-  const theme = useTheme();
-
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
@@ -815,7 +781,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
       <Typography variant="body1">
         <Trans i18nKey="assessmentKit.pleaseNoteThatThereAreSomeLimitations" />
       </Typography>
-      <Box sx={{ ml: 4, my: 2 }}>
+      <Box ml={4} my={2}>
         <Typography component="li" variant="body1" fontWeight={"bold"}>
           <Trans i18nKey="assessmentKit.deletingAQuestionnaire" />
         </Typography>
@@ -869,12 +835,12 @@ const UpdateAssessmentKitDialog = (props: any) => {
         </Typography>
       )}
       <Divider />
-      <Box mt={4} sx={{ maxHeight: "260px", overflow: "scroll" }}>
+      <Box mt={4} maxHeight="260px" overflow="scroll">
         {syntaxErrorObject?.map((e: any) => {
           return (
             <Box key={uniqueId()} sx={{ ml: 1 }}>
               <Alert severity="error" sx={{ my: 2 }}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Box display="flex" flexDirection="column">
                   <Typography variant="subtitle2" color="error">
                     <Trans
                       i18nKey="errors.errorAtLine"
@@ -901,9 +867,9 @@ const UpdateAssessmentKitDialog = (props: any) => {
         })}
         {updateErrorObject?.map((e: any) => {
           return (
-            <Box key={uniqueId()} sx={{ ml: 1 }}>
+            <Box key={uniqueId()} ml={1}>
               <Alert severity="error" sx={{ my: 2 }}>
-                <Box sx={{ display: "flex" }}>
+                <Box display="flex">
                   <Typography variant="subtitle2" color="error">
                     {e}
                   </Typography>
@@ -934,10 +900,7 @@ const UpdateAssessmentKitDialog = (props: any) => {
       title={
         <>
           <CloudUploadRoundedIcon
-            sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
-            }}
+            sx={{ marginInlineEnd: 1, marginInlineStart: "unset" }}
           />
           {<Trans i18nKey="assessmentKit.updateDSL" />}
         </>
@@ -954,13 +917,12 @@ const SubjectQuestionList = (props: any) => {
     (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel?.title : false);
     };
-  const theme = useTheme();
 
   return (
     <Box>
       {questions[0] && (
         <Box m={1} mt={2}>
-          <Typography variant="h6" fontWeight={"bold"} fontSize="1rem">
+          <Typography variant="titleMedium">
             <Trans i18nKey="common.questions" />
           </Typography>
         </Box>
@@ -976,12 +938,11 @@ const SubjectQuestionList = (props: any) => {
             sx={{
               mt: 2,
               mb: 1,
-              paddingLeft: theme.direction === "ltr" ? 2 : "unset",
-              paddingRight: theme.direction === "rtl" ? 2 : "unset",
+              paddingInlineStart: 2,
               borderRadius: 2,
-              background: "white",
+              bgcolor: "background.containerLowest",
               boxShadow: "none",
-              border: "none,",
+              border: "none",
               "&::before": {
                 display: "none",
               },
@@ -993,65 +954,49 @@ const SubjectQuestionList = (props: any) => {
               id="panel1bh-header"
             >
               <Typography
-                sx={{
-                  flex: 1,
-                  fontFamily: `${is_farsi ? farsiFontFamily : primaryFontFamily}`,
-                  fontWeight: "bold",
-                  opacity: 1,
-                  display: "flex",
-                  flexWrap: "wrap",
-                  direction: `${is_farsi ? "rtl" : "ltr"}`,
-                }}
+                flex={1}
+                fontWeight="bold"
+                display="flex"
+                flexWrap="wrap"
+                sx={{ ...styles.rtlStyle(is_farsi) }}
                 variant="body2"
               >
                 {index + 1}.{question.title}
                 {question.mayNotBeApplicable && (
                   <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "8px",
-                      background: "#1976D2",
-                      color: "#fff",
-                      fontSize: ".75rem",
-                      px: "12px",
-                      mx: "4px",
-                      height: "24px",
-                    }}
+                    borderRadius="8px"
+                    bgcolor="#1976D2"
+                    color="background.containerLowest"
+                    fontSize=".75rem"
+                    px="12px"
+                    mx="4px"
+                    height="24px"
+                    sx={{ ...styles.centerVH }}
                   >
                     <Trans i18nKey="common.na" />
                   </Box>
                 )}
                 <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: "8px",
-                    background: "#273248",
-                    color: "#fff",
-                    fontSize: ".75rem",
-                    px: "12px",
-                    mx: "4px",
-                    height: "24px",
-                  }}
+                  borderRadius="8px"
+                  bgcolor="#273248"
+                  color="background.containerLowest"
+                  fontSize=".75rem"
+                  px="12px"
+                  mx="4px"
+                  height="24px"
+                  sx={{ ...styles.centerVH }}
                 >
                   {question.questionnaire}
                 </Box>
                 <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: "8px",
-                    background: "#7954B3",
-                    color: "#fff",
-                    fontSize: ".75rem",
-                    px: "12px",
-                    mx: "4px",
-                    height: "24px",
-                  }}
+                  borderRadius="8px"
+                  bgcolor="#7954B3"
+                  color="background.containerLowest"
+                  fontSize=".75rem"
+                  px="12px"
+                  mx="4px"
+                  height="24px"
+                  sx={{ ...styles.centerVH }}
                 >
                   <Trans
                     i18nKey="advice.weightValue"
@@ -1060,18 +1005,14 @@ const SubjectQuestionList = (props: any) => {
                 </Box>
                 {question.advisable && (
                   <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "8px",
-                      background: "#004F83",
-                      color: "#fff",
-                      fontSize: ".75rem",
-                      px: "12px",
-                      mx: "4px",
-                      height: "24px",
-                    }}
+                    borderRadius="8px"
+                    bgcolor="#004F83"
+                    color="background.containerLowest"
+                    fontSize=".75rem"
+                    px="12px"
+                    mx="4px"
+                    height="24px"
+                    sx={{ ...styles.centerVH }}
                   >
                     <Trans i18nKey="advice.advisable" />
                   </Box>
@@ -1081,31 +1022,24 @@ const SubjectQuestionList = (props: any) => {
             <AccordionDetails>
               <Box sx={{ maxWidth: "max-content" }}>
                 <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderBottom: "1px solid #4979D1",
-                    pb: "8px",
-                  }}
+                  justifyContent="space-between"
+                  borderBottom="1px solid #4979D1"
+                  pb="8px"
+                  sx={{ ...styles.centerV }}
                 >
                   <Typography
                     variant="body2"
-                    sx={{
-                      fontWeight: "bold",
-                      opacity: 0.6,
-                      ml: "4px",
-                    }}
+                    fontWeight="bold"
+                    ml="4px"
+                    sx={{ opacity: 0.6 }}
                   >
                     <Trans i18nKey="common.options" />
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{
-                      fontWeight: "bold",
-                      opacity: 0.6,
-                      ml: "4px",
-                    }}
+                    fontWeight="bold"
+                    ml="4px"
+                    sx={{ opacity: 0.6 }}
                   >
                     <Trans i18nKey="common.value" />
                   </Typography>
@@ -1113,32 +1047,19 @@ const SubjectQuestionList = (props: any) => {
                 {question.answerOptions.map((item: any) => (
                   <Box
                     key={uniqueId()}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      px: "16px",
-                      my: "16px",
-                    }}
+                    justifyContent="space-between"
+                    px="16px"
+                    my="16px"
+                    sx={{ ...styles.centerV }}
                   >
                     <Typography
                       variant="subtitle2"
-                      sx={{
-                        fontWeight: "bold",
-                        marginRight:
-                          theme.direction === "ltr" ? "64px" : "unset",
-                        marginLeft:
-                          theme.direction === "rtl" ? "64px" : "unset",
-                      }}
+                      fontWeight="bold"
+                      marginInlineEnd="64px"
                     >
                       {item.index}.{item.title}
                     </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      sx={{
-                        fontWeight: "bold",
-                      }}
-                    >
+                    <Typography variant="subtitle2" fontWeight="bold">
                       {item.value}
                     </Typography>
                   </Box>
@@ -1158,7 +1079,6 @@ const QuestionnairesQuestionList = (props: any) => {
   const [questionsDetails, setQuestionsDetails] = useState<any>();
   const { fetchAssessmentKitQuestionnairesQuestionsQuery } = useAssessmentKit();
   const { assessmentKitId } = useParams();
-  const theme = useTheme();
 
   const handleChange =
     (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -1202,10 +1122,9 @@ const QuestionnairesQuestionList = (props: any) => {
             sx={{
               mt: 2,
               mb: 1,
-              paddingLeft: theme.direction === "ltr" ? 2 : "unset",
-              paddingRight: theme.direction === "rtl" ? 2 : "unset",
+              paddingInlineStart: 2,
               borderRadius: 2,
-              background: "white",
+              bgcolor: "background.containerLowest",
               boxShadow: "none",
               border: "none,",
               "&::before": {
@@ -1219,50 +1138,38 @@ const QuestionnairesQuestionList = (props: any) => {
               id="panel1bh-header"
             >
               <Typography
-                sx={{
-                  flex: 1,
-                  fontFamily: `${is_farsi ? farsiFontFamily : primaryFontFamily}`,
-                  fontWeight: "bold",
-                  opacity: 1,
-                  display: "flex",
-                  flexWrap: "wrap",
-                  direction: `${is_farsi ? "rtl" : "ltr"}`,
-                }}
+                display="flex"
+                flex={1}
+                fontWeight="bold"
+                flexWrap="wrap"
+                sx={{ ...styles.rtlStyle(is_farsi) }}
                 variant="body2"
               >
                 {index + 1}.{question.title}
                 {question.mayNotBeApplicable && (
                   <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "8px",
-                      background: "#1976D2",
-                      color: "#fff",
-                      fontSize: ".75rem",
-                      px: "12px",
-                      mx: "4px",
-                      height: "24px",
-                    }}
+                    borderRadius={1}
+                    bgcolor="#1976D2"
+                    color="background.containerLowest"
+                    fontSize="0.75rem"
+                    px="12px"
+                    mx="4px"
+                    height="24px"
+                    sx={{ ...styles.centerVH }}
                   >
                     <Trans i18nKey="common.na" />
                   </Box>
                 )}
                 {question.advisable && (
                   <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "8px",
-                      background: "#004F83",
-                      color: "#fff",
-                      fontSize: ".75rem",
-                      px: "12px",
-                      mx: "4px",
-                      height: "24px",
-                    }}
+                    borderRadius={1}
+                    bgcolor="#004F83"
+                    color="background.containerLowest"
+                    fontSize="0.75rem"
+                    px="12px"
+                    mx="4px"
+                    height="24px"
+                    sx={{ ...styles.centerVH }}
                   >
                     <Trans i18nKey="advice.advisable" />
                   </Box>
@@ -1272,83 +1179,67 @@ const QuestionnairesQuestionList = (props: any) => {
             {questionsDetails && (
               <AccordionDetails>
                 <Box
-                  sx={{
-                    maxWidth: "max-content",
-                    display: "flex",
-                    mb: 4,
-                    ml: `${is_farsi ? "auto" : "2"}`,
-                    direction: `${is_farsi ? "rtl" : "ltr"}`,
-                  }}
+                  display="flex"
+                  maxWidth="max-content"
+                  mb={4}
+                  ml={is_farsi ? "auto" : "2"}
+                  sx={{ direction: is_farsi ? "rtl" : "ltr" }}
                 >
                   {questionsDetails?.options.map((option: any) => (
                     <Typography
                       key={option.index}
-                      sx={{
-                        mx: 2,
-                        fontFamily: `${is_farsi ? farsiFontFamily : primaryFontFamily}`,
-                      }}
+                      mx={2}
+                      fontFamily={
+                        is_farsi ? farsiFontFamily : primaryFontFamily
+                      }
                       variant="body2"
                     >
                       {option.index}. {option.title}
                     </Typography>
                   ))}
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                  <Box sx={{ width: "90%" }}>
-                    <Box sx={{ display: "flex" }}>
+                <Box sx={{ ...styles.centerH }}>
+                  <Box width="90%">
+                    <Box display="flex">
                       <Typography
-                        sx={{
-                          width: "40%",
-                          pb: "4px",
-                          color: "#767676",
-                          display: "block",
-                          fontSize: "0.8rem",
-                        }}
+                        width="40%"
+                        pb="4px"
+                        color="#767676"
+                        display="block"
+                        fontSize="0.8rem"
                       >
                         <Trans i18nKey="affectedQualityAttribute" />
                       </Typography>
                       <Typography
-                        sx={{
-                          width: "20%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          pb: "4px",
-                          color: "#767676",
-                          fontSize: "0.8rem",
-                        }}
+                        width="20%"
+                        pb="4px"
+                        color="#767676"
+                        fontSize="0.8rem"
+                        sx={{ ...styles.centerVH }}
                       >
                         <Trans i18nKey="assessmentKit.affectedLevel" />
                       </Typography>
                       <Typography
-                        sx={{
-                          width: "10%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          pb: "4px",
-                          color: "#767676",
-                          fontSize: "0.8rem",
-                        }}
+                        width="10%"
+                        pb="4px"
+                        color="#767676"
+                        fontSize="0.8rem"
+                        sx={{ ...styles.centerVH }}
                       >
                         <Trans i18nKey="common.weight" />
                       </Typography>
                       <Box
-                        sx={{
-                          width: "30%",
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
+                        width="30%"
+                        display="flex"
+                        justifyContent="space-between"
                       >
                         {questionsDetails?.options.map(
                           (option: any, index: number) => (
                             <Typography
                               key={uniqueId()}
-                              sx={{
-                                color: "#767676",
-                                fontSize: "0.8rem",
-                                pb: "4px",
-                              }}
+                              color="#767676"
+                              pb="4px"
+                              fontSize="0.8rem"
                             >
                               <Trans
                                 i18nKey="assessmentKit.optionValue"
@@ -1359,46 +1250,37 @@ const QuestionnairesQuestionList = (props: any) => {
                         )}
                       </Box>
                     </Box>
-                    <Divider sx={{ background: "#7A589B" }} />
+                    <Divider sx={{ bgcolor: "#7A589B" }} />
                     <Box>
                       {questionsDetails?.attributeImpacts.map(
                         (attributes: any, index: number) => {
                           return (
                             <Box
                               key={uniqueId()}
-                              sx={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                borderTop: `${
-                                  index !== 0 && "1px solid #D3D3D3"
-                                }`,
-                                py: 1,
-                              }}
+                              display="flex"
+                              justifyContent="space-between"
+                              borderTop={`${
+                                index !== 0 && "1px solid #D3D3D3"
+                              }`}
+                              py={1}
                             >
                               <Typography
-                                sx={{ width: "40%", py: 1 }}
+                                width="40%"
+                                py={1}
                                 variant="body1"
-                                fontWeight={"bold"}
+                                fontWeight="bold"
                               >
                                 {attributes.title}
                               </Typography>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  width: "20%",
-                                }}
-                              >
+                              <Box width="20%" sx={{ ...styles.centerCVH }}>
                                 {attributes?.affectedLevels.map(
                                   (affectedLevel: any) => {
                                     return (
                                       <Typography
                                         key={uniqueId()}
                                         variant="body1"
-                                        fontWeight={"bold"}
-                                        sx={{ py: 1 }}
+                                        fontWeight="bold"
+                                        py={1}
                                       >
                                         {affectedLevel.maturityLevel.title} |{" "}
                                         {affectedLevel.maturityLevel.index}
@@ -1407,15 +1289,7 @@ const QuestionnairesQuestionList = (props: any) => {
                                   },
                                 )}
                               </Box>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  width: "10%",
-                                }}
-                              >
+                              <Box width="10%" sx={{ ...styles.centerCVH }}>
                                 {attributes?.affectedLevels.map(
                                   (affectedLevel: any) => {
                                     return (
@@ -1431,15 +1305,7 @@ const QuestionnairesQuestionList = (props: any) => {
                                   },
                                 )}
                               </Box>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  width: "30%",
-                                }}
-                              >
+                              <Box width="30%" sx={{ ...styles.centerCVH }}>
                                 {attributes?.affectedLevels.map(
                                   (affectedLevel: any) => {
                                     return (
@@ -1492,10 +1358,9 @@ const MaturityLevelsDetails = (props: any) => {
   const colorPallet = getMaturityLevelColors(
     maturity_levels ? maturity_levels.length : 5,
   );
-  const theme = useTheme();
 
   return (
-    <Box sx={{ background: "#fff", px: 4, py: 4, borderRadius: "8px" }}>
+    <Box bgcolor="background.containerLowest" p={4} borderRadius={1}>
       <Typography fontWeight={900} fontSize="1.5rem" mb={8}>
         <Trans i18nKey="common.maturityLevels" />
       </Typography>
@@ -1504,38 +1369,28 @@ const MaturityLevelsDetails = (props: any) => {
           const { title, competences, index } = maturity_level;
           return (
             <Box
-              sx={{
-                transform: "skew(-30deg);",
-                background: colorPallet[key ?? 0],
-                borderRadius: "8px",
-                py: "4px",
-                paddingLeft: theme.direction === "ltr" ? 2 : "unset",
-                paddingRight: theme.direction === "rtl" ? 2 : "unset",
-                margin: "16px",
-                width: { xs: "90%", sm: `${90 - 10 * key}%` },
-              }}
+              bgcolor={colorPallet[key ?? 0]}
+              borderRadius={1}
+              py="4px"
+              paddingInlineStart={2}
+              margin={2}
+              width={{ xs: "90%", sm: `${90 - 10 * key}%` }}
+              sx={{ transform: "skew(-30deg)" }}
               key={key}
             >
               <Typography
-                sx={{ transform: "skew(30deg);" }}
+                sx={{ transform: "skew(30deg)" }}
                 fontSize="1.5rem"
                 fontWeight={900}
-                color="#fff"
+                color="background.containerLowest"
               >
                 {index}.{title}
               </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  ml: "64px",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                }}
-              >
+              <Box ml={8} flexWrap="wrap" sx={{ ...styles.centerV }}>
                 <Typography
                   sx={{ transform: "skew(30deg)" }}
                   fontSize=".875rem"
-                  color="#fff"
+                  color="background.containerLowest"
                   fontWeight={900}
                   mr={"4px"}
                 >
@@ -1548,12 +1403,12 @@ const MaturityLevelsDetails = (props: any) => {
                       key={uniqueId()}
                       sx={{ transform: "skew(30deg)" }}
                       fontSize=".75rem"
-                      color="#fff"
+                      color="background.containerLowest"
                     >
-                      {theme.direction == "ltr" && key != 0 && "   ,"} {title}:{" "}
+                      {i18next.language === "en" && key != 0 && "   ,"} {title}:{" "}
                       {value}%{" "}
                       {competences.length - 1 !== key &&
-                        theme.direction == "rtl" &&
+                        i18next.language === "fa" &&
                         ",   "}{" "}
                     </Typography>
                   );

@@ -15,19 +15,12 @@ const CompareResultAssessmentsSection = (props: {
       sx={{
         py: 2,
         px: { xs: 1, sm: 2, md: 3 },
-        background: "white",
+        bgcolor: "white",
         borderRadius: 2,
         mt: 1,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
+      <Box width="100%" flexWrap="wrap" sx={{ ...styles.centerH }}>
         {data.map((item, index: number) => {
           return (
             <Box
@@ -37,15 +30,11 @@ const CompareResultAssessmentsSection = (props: {
               key={item?.id}
             >
               <Box
-                sx={{
-                  p: { xs: 0.5, sm: 1, md: 2 },
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  textAlign: "center",
-                  flexDirection: "column",
-                }}
+                height="100%"
+                justifyContent="space-between"
+                textAlign="center"
+                p={{ xs: 0.5, sm: 1, md: 2 }}
+                sx={{ ...styles.centerCH }}
               >
                 <Title>{item.title}</Title>
                 <Box

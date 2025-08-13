@@ -137,7 +137,7 @@ const KitDesignerContainer = () => {
                       color: "rgba(0, 0, 0, 0.6)", // Default text color
 
                       "& .Mui-selected": {
-                        color: "#2466A8 !important",
+                        color: "primary.main",
                         fontWeight: "bold",
                       },
 
@@ -164,7 +164,7 @@ const KitDesignerContainer = () => {
                   item
                   sm={9}
                   xs={12}
-                  sx={{ height: "100%", padding: 3, background: "white" }}
+                  sx={{ height: "100%", padding: 3, bgcolor: "background.containerLowest" }}
                 >
                   <CurrentComponent kitVersion={kitVersion} />
                 </Grid>

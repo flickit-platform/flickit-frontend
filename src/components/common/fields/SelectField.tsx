@@ -14,7 +14,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Trans } from "react-i18next";
 import { useEffect } from "react";
 import uniqueId from "@/utils/uniqueId";
-import { useTheme } from "@mui/material";
 
 const selectField = () => {
   return <div>selectField</div>;
@@ -92,7 +91,6 @@ export const SelectField = (props: ISelectField) => {
     children,
     ...rest
   } = props;
-  const theme = useTheme();
 
   useEffect(() => {
     if (totalItem) {
@@ -116,9 +114,9 @@ export const SelectField = (props: ISelectField) => {
         required={required}
         id={`select_label_id_${name}`}
         sx={{
-          backgroundColor: "white",
-          paddingLeft: theme.direction === "ltr" ? "4px" : "unset",
-          paddingRight: theme.direction === "rtl" ? "4px" : "unset",
+          bgcolor: "background.containerLowest",
+          paddingInlineStart: "4px",
+          paddingInlineEnd: "unset",
           pr: "4px",
         }}
       >
@@ -143,7 +141,7 @@ export const SelectField = (props: ISelectField) => {
         {!children && loadMore && (
           <ListItemButton
             onClick={() => loadMoreHandler((prev: number) => prev + 1)}
-            sx={{ display: "flex", justifyContent: "center" }}
+            sx={{ ...styles.centerH }}
           >
             <Trans i18nKey="common.loadMore" />
           </ListItemButton>
@@ -164,22 +162,9 @@ const ColorOption = ({ value }: { value: string }) => {
 
 const defaultRenderOption = (option: any) => {
   return (
-    <MenuItem
-      value={option.id}
-      key={uniqueId()}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
+    <MenuItem value={option.id} key={uniqueId()} sx={{ ...styles.centerV }}>
       {option.code ? <ColorOption value={option.code} /> : null}
-      <Box
-        sx={{
-          background: option.code,
-          width: "100%",
-          color: option.code,
-        }}
-      >
+      <Box bgcolor={option.code} width="100%" color={option.code}>
         {option.title}
       </Box>
     </MenuItem>

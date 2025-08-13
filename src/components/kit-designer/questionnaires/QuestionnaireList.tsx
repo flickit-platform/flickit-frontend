@@ -301,14 +301,15 @@ const ListOfItems = ({
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     mt={1.5}
-                    sx={{
-                      backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
-                      borderRadius: "8px",
-                      border: "0.3px solid #73808c30",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
+                    bgcolor={
+                      editMode === item.id
+                        ? "background.container"
+                        : "background.containerLowest"
+                    }
+                    borderRadius="8px"
+                    border="0.3px solid #73808c30"
+                    display="flex"
+                    flexDirection="column"
                   >
                     <Accordion
                       onChange={handelChangeAccordion(item)}
@@ -324,10 +325,10 @@ const ListOfItems = ({
                         sx={{
                           backgroundColor:
                             editMode === item.id
-                              ? "#F3F5F6"
+                              ? "background.container"
                               : item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.04)
-                                : "#fff",
+                                : "background.containerLowest",
                           borderRadius:
                             kitState.questions.length != 0
                               ? "8px"
@@ -341,7 +342,7 @@ const ListOfItems = ({
                             backgroundColor:
                               item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.08)
-                                : "#F3F5F6",
+                                : "background.container",
                           },
                           "& .MuiAccordionSummary-content": {
                             margin: 0,
@@ -365,10 +366,10 @@ const ListOfItems = ({
                           <Box
                             sx={{
                               ...styles.centerVH,
-                              background:
+                              bgcolor:
                                 item.questionsCount == 0
                                   ? alpha(theme.palette.error.main, 0.12)
-                                  : "#F3F5F6",
+                                  : "background.container",
                               width: { xs: "50px", md: "64px" },
                               justifyContent: "space-around",
                             }}
@@ -447,16 +448,8 @@ const ListOfItems = ({
                               {/* Icons (Edit/Delete or Check/Close) */}
                               {editMode === item.id ? (
                                 <Box
-                                  sx={{
-                                    mr:
-                                      theme.direction == "rtl"
-                                        ? "auto"
-                                        : "unset",
-                                    ml:
-                                      theme.direction == "ltr"
-                                        ? "auto"
-                                        : "unset",
-                                  }}
+                                  marginInlineStart="auto"
+                                  marginInlineEnd="unset"
                                 >
                                   <IconButton
                                     size="small"
@@ -511,11 +504,9 @@ const ListOfItems = ({
                               )}
                             </Box>
                             <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                              }}
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="space-between"
                             >
                               {editMode === item.id ? (
                                 <MultiLangTextField
@@ -556,43 +547,35 @@ const ListOfItems = ({
                                 />
                               )}
                               <Box
-                                sx={{
-                                  width: "fit-content",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "flex-end",
-                                  flexDirection: "column",
-                                  gap: "0.5rem",
-                                  textAlign: editMode ? "end" : "center",
-                                }}
+                                width="fit-content"
+                                alignItems="flex-end"
+                                gap="0.5rem"
+                                textAlign={editMode ? "end" : "center"}
+                                sx={{ ...styles.centerCV }}
                               >
                                 <Typography
-                                  sx={{
-                                    ...theme.typography.labelCondensed,
-                                    color: "#6C8093",
-                                    width: "100%",
-                                  }}
+                                  variant="labelCondensed"
+                                  color="background.onVariant"
+                                  width="100%"
                                 >
                                   <Trans i18nKey="common.questions" />
                                 </Typography>
                                 <Box
                                   aria-label="questionnaires"
-                                  style={{
-                                    width: "3.75rem",
-                                    height: "3.75rem",
-                                    borderRadius: "50%",
-                                    backgroundColor:
-                                      item.questionsCount == 0
-                                        ? theme.palette.error.main
-                                        : "#E2E5E9",
-                                    color:
-                                      item.questionsCount == 0
-                                        ? "#FAD1D8"
-                                        : "#2B333B",
-                                    display: "flex",
-                                    alignItems: " center",
-                                    justifyContent: "center",
-                                  }}
+                                  width="3.75rem"
+                                  height="3.75rem"
+                                  borderRadius="50%"
+                                  bgcolor={
+                                    item.questionsCount == 0
+                                      ? "error.main"
+                                      : "background.variant"
+                                  }
+                                  color={
+                                    item.questionsCount == 0
+                                      ? "error.contrastText"
+                                      : "text.primary"
+                                  }
+                                  sx={{ ...styles.centerVH }}
                                 >
                                   {item.questionsCount}
                                 </Box>
@@ -609,14 +592,7 @@ const ListOfItems = ({
                         }}
                       >
                         {fetchQuestionListKit.loading ? (
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              py: 2,
-                            }}
-                          >
+                          <Box py={2} sx={{ ...styles.centerVH }}>
                             <CircularProgress />
                           </Box>
                         ) : (
@@ -663,13 +639,7 @@ const ListOfItems = ({
                                   </Droppable>
                                 </DragDropContext>
                                 {!showNewQuestionForm[item.id] && (
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      mt: 2,
-                                    }}
-                                  >
+                                  <Box mt={2} sx={{ ...styles.centerH }}>
                                     <Button
                                       size="small"
                                       variant="outlined"
@@ -701,7 +671,7 @@ const ListOfItems = ({
                           </>
                         )}
                         {showNewQuestionForm[item.id] && (
-                          <Box sx={{ mt: 2 }}>
+                          <Box mt={2}>
                             <QuestionForm
                               newItem={newQuestion}
                               handleInputChange={handleInputChange}

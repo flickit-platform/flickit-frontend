@@ -157,14 +157,14 @@ export const AssessmentSubjectAccordion = (
               }}
             >
               <Typography
+                color={getMaturityLevelColors(maturityLevelCount ?? 5)[
+                  (maturityLevel?.value ?? 1) - 1
+                ]}
                 sx={{
                   display: "flex",
                   gap: "5px",
                   fontSize: "1.25rem",
                   fontWeight: "bold",
-                  color: getMaturityLevelColors(maturityLevelCount ?? 5)[
-                    (maturityLevel?.value ?? 1) - 1
-                  ],
                   fontFamily: languageDetector(maturityLevel?.title ?? "")
                     ? farsiFontFamily
                     : primaryFontFamily,
@@ -173,7 +173,7 @@ export const AssessmentSubjectAccordion = (
                 {maturityLevel?.title}
               </Typography>
               <Box sx={{ ...styles.centerVH, marginInlineStart: 1 }}>
-                <Typography variant="bodyMedium" color="#6C8093">
+                <Typography variant="bodyMedium" color="background.onVariant">
                   <Trans i18nKey="common.confidence" />:
                 </Typography>
                 <ConfidenceLevel

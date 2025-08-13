@@ -1,24 +1,22 @@
+import React from "react";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { FLAGS, TId, TQueryFunction } from "@/types/index";
-import { ICustomError } from "@utils/CustomError";
+import { FLAGS, TId } from "@/types/index";
 import useMenu from "@utils/useMenu";
 import { useQuery } from "@utils/useQuery";
 import MoreActions from "@common/MoreActions";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import languageDetector from "@/utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
-import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 interface IAssessmentKitListItemProps {
   data: {
     id: TId;
@@ -28,16 +26,15 @@ interface IAssessmentKitListItemProps {
     isPrivate?: boolean;
     draftVersionId?: TId;
   };
-  fetchAssessmentKits?: TQueryFunction;
   link?: string;
   hasAccess?: boolean;
   is_member?: boolean;
   is_active?: boolean;
+  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
 }
 
 const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   const navigate = useNavigate();
-  const theme = useTheme();
 
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
@@ -46,7 +43,7 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
     service: (args, config) => service.assessmentKit.info.clone(args, config),
     runOnMount: false,
   });
-  const { data, fetchAssessmentKits, hasAccess, link, is_member, is_active } =
+  const { data, hasAccess, link, is_member, is_active, setOpenDeleteDialog } =
     props;
   const { id, title, lastModificationTime, isPrivate, draftVersionId } =
     data ?? {};
@@ -59,39 +56,37 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
   };
   return (
     <Box
+      borderRadius={2}
+      p={2}
+      bgcolor="#fbf8fb"
+      mb={1}
       sx={{
         ...styles.centerV,
         boxShadow: (t) => `0 5px 8px -8px ${t.palette.grey[400]}`,
-        borderRadius: 2,
-        p: 2,
-        backgroundColor: "#fbf8fb",
-        mb: 1,
       }}
     >
-      <Box sx={{ ...styles.centerV, flex: 1 }} alignSelf="stretch">
+      <Box flex={1} alignSelf="stretch" sx={{ ...styles.centerV }}>
         <Box
-          sx={{
-            ...styles.centerCV,
-
-            textDecoration: "none",
-            color: (t) => t.palette.primary.dark,
-          }}
+          color="primary.dark"
           alignSelf="stretch"
           component={Link}
           to={link ?? `${id}`}
+          sx={{
+            ...styles.centerCV,
+            textDecoration: "none",
+          }}
         >
           <Typography
             variant="h6"
+            fontWeight="bold"
+            height="100%"
+            alignSelf="stretch"
             sx={{
-              fontWeight: "bold",
               textDecoration: "none",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              alignSelf: "stretch",
               fontFamily: languageDetector(title)
                 ? farsiFontFamily
                 : primaryFontFamily,
+              ...styles.centerV,
             }}
           >
             {title}
@@ -103,22 +98,19 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
         </Box>
 
         <Box
-          sx={{
-            ...styles.centerV,
-            color: "#525252",
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
-            gap: 1,
-          }}
+          gap={1}
+          color="#525252"
+          marginInlineStart="auto"
           alignSelf="stretch"
+          sx={{ ...styles.centerV }}
         >
           {isPrivate && (
             <Chip
               label={<Trans i18nKey="common.private" />}
               size="small"
               sx={{
-                background: "#7954B3",
-                color: "#fff",
+                bgcolor: "#7954B3",
+                color: "background.containerLowest",
               }}
             />
           )}
@@ -161,10 +153,10 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
           {showGroups && (
             <Actions
               assessment_kit={data}
-              fetchAssessmentKits={fetchAssessmentKits}
               hasAccess={hasAccess}
               is_member={is_member}
               is_active={is_active}
+              setOpenDeleteDialog={setOpenDeleteDialog}
             />
           )}
         </Box>
@@ -174,45 +166,18 @@ const AssessmentKitListItem = (props: IAssessmentKitListItemProps) => {
 };
 
 const Actions = (props: any) => {
-  const { expertGroupId = "" } = useParams();
-  const { assessment_kit, fetchAssessmentKits, hasAccess } = props;
+  const { assessment_kit, hasAccess, setOpenDeleteDialog } = props;
   const { id } = assessment_kit;
-  const { service } = useServiceContext();
-  const deleteAssessmentKitQuery = useQuery({
-    service: (args, config) =>
-      service.assessmentKit.info.remove({ id }, config),
-    runOnMount: false,
-  });
-
-  if (!fetchAssessmentKits) {
-    console.warn(
-      "fetchAssessmentKits not provided. assessment kit list won't be updated on any action",
-    );
-  }
-
-  const deleteItem = async (e: any) => {
-    try {
-      await deleteAssessmentKitQuery.query();
-      await fetchAssessmentKits?.query({
-        id: expertGroupId,
-        size: 10,
-        page: 1,
-      });
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
+  const menuProps = useMenu();
 
   return hasAccess ? (
     <MoreActions
-      {...useMenu()}
-      loading={deleteAssessmentKitQuery.loading}
+      {...menuProps}
       items={[
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          onClick: deleteItem,
+          onClick: ()=> setOpenDeleteDialog({status: true, id}),
         },
       ]}
     />

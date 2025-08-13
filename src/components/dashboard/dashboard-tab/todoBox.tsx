@@ -47,15 +47,12 @@ const TodoBox = (props: any) => {
               <React.Fragment key={uniqueId()}>
                 <Box
                   id={item.name}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    mb: "23px",
-                    mt: "32px",
-                  }}
+                  justifyContent="space-between"
+                  mb="23px"
+                  mt="32px"
+                  sx={{ ...styles.centerV }}
                 >
-                  <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
+                  <Typography variant="semiBoldLarge" color="text.primary">
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
                     )}
@@ -104,10 +101,8 @@ const TodoBox = (props: any) => {
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
             <Typography
+              color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
               variant="headlineSmall"
-              sx={{
-                color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-              }}
             >
               <Trans i18nKey="dashboard.whatToDoNext" />
             </Typography>
@@ -124,20 +119,15 @@ const TodoBox = (props: any) => {
             return (
               <Box key={uniqueId()}>
                 <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    mb: "23px",
-                    mt: "32px",
-                  }}
+                  justifyContent="space-between"
+                  mb="23px"
+                  mt="32px"
+                  sx={{ ...styles.centerV }}
                   id={item.name}
                 >
                   <Typography
                     variant="semiBoldLarge"
-                    sx={{
-                      color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-                    }}
+                    color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
                   >
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
@@ -362,13 +352,12 @@ export const IssuesItem = ({
   return (
     <Box
       onClick={handleNavigation}
+      borderRadius={2}
+      border={`0.1px solid ${colorPalette.main}`}
+      bgcolor={colorPalette.states.hover}
+      gap={1}
       sx={{
-        borderRadius: 2,
-        border: `0.1px solid ${colorPalette.main}`,
-        background: colorPalette.light,
-        display: "flex",
-        alignItems: "center",
-        gap: 1,
+        ...styles.centerV,
         textDecoration: "none",
         cursor: originalName === "questions" ? "pointer" : "unset",
       }}
@@ -381,10 +370,10 @@ export const IssuesItem = ({
       />
       <Typography
         sx={{
-          color: colorPalette.dark,
           display: "flex",
           gap: 1,
         }}
+        color={colorPalette.dark}
         variant={textVariant}
       >
         {typeof value === "number" && value !== 0 && (

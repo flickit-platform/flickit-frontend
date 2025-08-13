@@ -27,7 +27,7 @@ const SelectLanguage = (props: any) => {
         onChange={(e) => handleChange(e)}
         sx={{
           fontSize: "14px",
-          background: "#fff",
+          bgcolor: "background.containerLowest",
           px: "0px",
           height: "40px",
           "& .MuiSelect-select": {

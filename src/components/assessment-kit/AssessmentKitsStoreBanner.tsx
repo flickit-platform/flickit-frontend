@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import i18next from "i18next";
 import uniqueId from "@/utils/uniqueId";
 
-const ARROW_COLOR = "#1B4D7E";
-
 interface Banner {
   kitId: number;
   smallBanner: string;
@@ -31,6 +29,7 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
   <Button
     onClick={onClick}
     sx={{
+      ...styles.centerV,
       position: "absolute",
       top: 0,
       [side]: 0,
@@ -42,14 +41,12 @@ const GradientArrow: React.FC<GradientArrowProps> = ({
       "&:hover": {
         background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(27, 77, 126, 0.4), transparent)`,
       },
-      display: "flex",
-      alignItems: "center",
       justifyContent:
         (side === "left" && i18next.language === "en") ||
         (side === "right" && i18next.language === "fa")
           ? "flex-start"
           : "flex-end",
-      color: ARROW_COLOR,
+      color: "primary.dark",
     }}
   >
     {Icon}
@@ -159,10 +156,13 @@ const AssessmentKitsStoreBanner = (props: any) => {
       ) : null}
 
       <Box
+        display="flex"
+        width={{
+          xs: `${banners.length * 95}%`,
+          sm: `${banners.length * 100}%`,
+        }}
+        height="100%"
         sx={{
-          display: "flex",
-          width: {xs: `${banners.length * 95}%`, sm: `${banners.length * 100}%` },
-          height: "100%",
           transition: "transform 0.5s ease-in-out",
           transform: `translateX(${DIRECTION}${currentIndex * (100 / banners.length)}%)`,
         }}
@@ -173,13 +173,13 @@ const AssessmentKitsStoreBanner = (props: any) => {
             component="button"
             type="button"
             onClick={() => navigate(`/assessment-kits/${item.kitId}/`)}
+            width="100%"
+            height="100%"
+            display="block"
+            paddingInlineStart={2}
             sx={{
               all: "unset",
-              width: "100%",
-              height: "100%",
               cursor: "pointer",
-              display: "block",
-              paddingInlineStart: 2,
             }}
           >
             <img
@@ -213,11 +213,13 @@ const AssessmentKitsStoreBanner = (props: any) => {
             {banners.map((_, i) => (
               <Box
                 key={uniqueId()}
+                width={currentIndex === i ? "2rem" : "1rem"}
+                height="0.75rem"
+                bgcolor={
+                  currentIndex === i ? "background.onVariant" : "#668099"
+                }
+                borderRadius={currentIndex === i ? "20px" : "50%"}
                 sx={{
-                  width: currentIndex === i ? "2rem" : "1rem",
-                  height: "0.75rem",
-                  backgroundColor: currentIndex === i ? "#6C8093" : "#668099",
-                  borderRadius: currentIndex === i ? "20px" : "50%",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   opacity: currentIndex === i ? 1 : 0.7,

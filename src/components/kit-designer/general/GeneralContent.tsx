@@ -19,15 +19,29 @@ import useGeneralInfoField from "@/hooks/useGeneralInfoField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 
 const generalFields = [
-  { name: "title", label: "common.title", multiline: false, useRichEditor: false },
-  { name: "summary", label: "common.summary", multiline: false, useRichEditor: false },
+  {
+    name: "title",
+    label: "common.title",
+    multiline: false,
+    useRichEditor: false,
+  },
+  {
+    name: "summary",
+    label: "common.summary",
+    multiline: false,
+    useRichEditor: false,
+  },
   { name: "about", label: "common.what", multiline: true, useRichEditor: true },
   { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
-  { name: "context", label: "common.who", multiline: true, useRichEditor: true },
+  {
+    name: "context",
+    label: "common.who",
+    multiline: true,
+    useRichEditor: true,
+  },
 ] as const;
 
 const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
-
   const { service } = useServiceContext();
   const {
     config: { languages },
@@ -58,7 +72,20 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   const [translatedLang, setTranslatedLang] = useState<ILanguage>();
 
-  const {handleSaveEdit, editableFields, setEditableFields, langCode, toggleTranslation, showTranslations, updatedValues, setUpdatedValues} = useGeneralInfoField({setTranslatedLang, assessmentKitId : kitVersion.assessmentKit.id, fetchAssessmentKitInfoQuery})
+  const {
+    handleSaveEdit,
+    editableFields,
+    setEditableFields,
+    langCode,
+    toggleTranslation,
+    showTranslations,
+    updatedValues,
+    setUpdatedValues,
+  } = useGeneralInfoField({
+    setTranslatedLang,
+    assessmentKitId: kitVersion.assessmentKit.id,
+    fetchAssessmentKitInfoQuery,
+  });
   const { updateTranslation } = useTranslationUpdater(langCode);
   const handleAddLanguage = useCallback(
     (lang: ILanguage) => {
@@ -109,7 +136,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
         <Typography variant="headlineSmall" fontWeight="bold">
           <Trans i18nKey="common.general" />
         </Typography>
@@ -164,18 +191,18 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
                       }}
                     >
                       <RenderGeneralField
-                      field={name}
-                      data={data}
-                      editableFields={editableFields}
-                      langCode={langCode}
-                      updatedValues={updatedValues}
-                      setUpdatedValues={setUpdatedValues}
-                      showTranslations={showTranslations}
-                      toggleTranslation={toggleTranslation}
-                      handleFieldEdit={handleFieldEdit}
-                      multiline={multiline}
-                      useRichEditor={useRichEditor}
-                      updateTranslation={updateTranslation}
+                        field={name}
+                        data={data}
+                        editableFields={editableFields}
+                        langCode={langCode}
+                        updatedValues={updatedValues}
+                        setUpdatedValues={setUpdatedValues}
+                        showTranslations={showTranslations}
+                        toggleTranslation={toggleTranslation}
+                        handleFieldEdit={handleFieldEdit}
+                        multiline={multiline}
+                        useRichEditor={useRichEditor}
+                        updateTranslation={updateTranslation}
                       />
                     </Box>
                   </Box>
@@ -186,13 +213,7 @@ const GeneralContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         />
       </PermissionControl>
 
-      <Box
-        display="flex"
-        justifyContent="end"
-        alignItems="center"
-        gap={2}
-        mt={2}
-      >
+      <Box justifyContent="end" gap={2} mt={2} sx={{ ...styles.centerV }}>
         <Button
           variant="outlined"
           onClick={handleCancelEdit}

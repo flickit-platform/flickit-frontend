@@ -20,7 +20,6 @@ import ExpertGroupsList from "./ExpertGroupsList";
 import { useEffect, useState } from "react";
 import flagsmith from "flagsmith";
 import uniqueId from "@/utils/uniqueId";
-import { useTheme } from "@mui/material";
 
 const ExpertGroupsContainer = () => {
   const { service } = useServiceContext();
@@ -56,28 +55,20 @@ const ExpertGroupsContainer = () => {
   useDocumentTitle(t("expertGroups.expertGroups") as string);
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
-  const theme = useTheme();
 
   return (
     <Box>
       {showGroups && (
         <Box
-          sx={{
-            background: "white",
-            py: 1,
-            px: 2,
-            ...styles.centerV,
-            borderRadius: 1,
-            mt: 2,
-          }}
+          bgcolor="background.containerLowest"
+          py={1}
+          px={2}
+          mt={2}
+          borderRadius={1}
+          sx={{ ...styles.centerV }}
         >
           <Box></Box>
-          <Box
-            sx={{
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
-            }}
-          >
+          <Box marginInlineStart="auto" marginInlineEnd="unset">
             {<CreateExpertGroupButton onSubmitForm={queryData.query} />}
           </Box>
         </Box>
@@ -106,9 +97,7 @@ const ExpertGroupsContainer = () => {
                 spacing={2}
                 sx={{
                   mt: 3,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  ...styles.centerVH,
                 }}
               >
                 <Pagination
@@ -130,15 +119,14 @@ const ExpertGroupsContainer = () => {
 const CreateExpertGroupButton = (props: { onSubmitForm: TQueryFunction }) => {
   const { onSubmitForm } = props;
   const dialogProps = useDialog();
-  const theme = useTheme();
 
   return (
     <>
       <Button
         variant="contained"
         sx={{
-          ml: theme.direction === "rtl" ? "unset" : "auto",
-          mr: theme.direction !== "rtl" ? "unset" : "auto",
+          marginInlineStart: "auto",
+          marginInlineEnd: "unset",
         }}
         size="small"
         onClick={dialogProps.openDialog}

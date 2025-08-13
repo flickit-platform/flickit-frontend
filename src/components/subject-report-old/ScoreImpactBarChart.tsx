@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from "recharts";
 import { styles } from "@styles";
+import { useTheme } from "@mui/material";
 
 const CustomTooltip = ({
   active,
@@ -31,21 +32,17 @@ const CustomTooltip = ({
 
   return (
     <Box
-      sx={{
-        textAlign: "center",
-        backgroundColor: "#5F6E7C",
-        color: "white",
-        borderRadius: "4px",
-        p: 1,
-      }}
+      textAlign="center"
+      bgcolor="#5F6E7C"
+      color="background.containerLowest"
+      borderRadius="4px"
+      p={1}
     >
       <Box
+        gap={2}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          ...styles.centerVH,
           direction: "ltr",
-          gap: 2,
         }}
       >
         {[
@@ -55,8 +52,8 @@ const CustomTooltip = ({
           <Box key={label} sx={{ ...styles.centerCVH }}>
             <Typography
               variant="semiBoldSmall"
+              color="background.containerLowest"
               sx={{
-                color: "white",
                 fontFamily:
                   language === "fa" ? farsiFontFamily : primaryFontFamily,
               }}
@@ -65,8 +62,8 @@ const CustomTooltip = ({
             </Typography>
             <Typography
               variant="bodySmall"
+              color="background.containerLowest"
               sx={{
-                color: "white",
                 fontFamily:
                   language === "fa" ? farsiFontFamily : primaryFontFamily,
               }}
@@ -81,7 +78,6 @@ const CustomTooltip = ({
 };
 
 const legendFormatter = (value: string, language: string) => {
-
   return (
     <Typography
       component="span"
@@ -128,6 +124,7 @@ export default function ScoreImpactBarChart({
   const heightPerItem = compact ? 40 : 60;
   const chartHeight = Math.max(240, measures.length * heightPerItem);
 
+  const theme = useTheme();
   return (
     <div
       style={{
@@ -195,7 +192,7 @@ export default function ScoreImpactBarChart({
           />
           <Bar
             dataKey="uv"
-            fill="#2466A8"
+            fill={theme.palette.primary.main}
             stackId="stack"
             radius={[0, 4, 4, 0]}
             isAnimationActive={false}
@@ -203,14 +200,14 @@ export default function ScoreImpactBarChart({
             <LabelList
               dataKey="uv"
               position="right"
-              fill="#2466A8"
+              fill={theme.palette.primary.main}
               formatter={(v: any) => (v !== 0 ? `${v}%` : "")}
               style={{ textAnchor: "end", fontSize: compact ? 12 : 14 }}
             />
           </Bar>
           <Bar
             dataKey="pv"
-            fill="#B8144B"
+            fill={theme.palette.secondary.main}
             stackId="stack"
             radius={[0, 4, 4, 0]}
             isAnimationActive={false}
@@ -218,7 +215,7 @@ export default function ScoreImpactBarChart({
             <LabelList
               dataKey="pv"
               position="right"
-              fill="#B8144B"
+              fill={theme.palette.secondary.main}
               formatter={(v: any) => (v !== 0 ? `${Math.abs(v)}%` : "")}
               style={{ textAnchor: "start", fontSize: compact ? 12 : 14 }}
             />

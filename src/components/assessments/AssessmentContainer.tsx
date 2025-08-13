@@ -33,14 +33,14 @@ import { TId } from "@/types";
 import { useTheme } from "@mui/material";
 
 const AssessmentContainer = () => {
-  const theme = useTheme()
+  const theme = useTheme();
   const { service } = useServiceContext();
   const dialogProps = useDialog();
   const infoDialogProps = useDialog();
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
-  const { fetchAssessments, deleteAssessment, ...rest } = useFetchAssessments();
+  const { fetchAssessments, deleteAssessment, fetchSpaceInfo, ...rest } = useFetchAssessments();
   const { data, errorObject, size, total, loading } = rest;
   const isEmpty = data.length === 0;
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -56,13 +56,10 @@ const AssessmentContainer = () => {
     navigate(`/${spaceId}/assessments/${pageCount}`);
   }
 
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{status: boolean, id: TId}>({ status: false, id: "" });
-
-  const fetchSpaceInfo = useQuery({
-    service: (args = { spaceId }, config) =>
-      service.space.getById(args, config),
-    runOnMount: false,
-  });
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: TId;
+  }>({ status: false, id: "" });
 
   const deleteAssessmentById = async() =>{
    try {
@@ -73,7 +70,7 @@ const AssessmentContainer = () => {
      setOpenDeleteDialog({ status: false, id: "" })
      showToast(err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchSpaceInfo.query();
@@ -85,20 +82,20 @@ const AssessmentContainer = () => {
         <AssessmentTitle data={currentSpace} />
         {!fetchSpaceInfo.data?.canCreateAssessment && (
           <Typography
+            variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
+            textAlign="end"
+            mb={{ xs: "5px", sm: "unset" }}
             sx={{
-              ...theme.typography.semiBoldSmall,
               textDecoration: "underline",
               cursor: "pointer",
-              textAlign: "end",
-              mb: { xs: "5px", sm: "unset" },
             }}
             color="primary"
           >
             <Trans i18nKey="assessment.learnWhyThisIsUnavailable" />
           </Typography>
         )}
-        <Box sx={{ ...styles.centerVH, mb: "40px", mt: 1 }}>
+        <Box mb="40px" mt={1} sx={{ ...styles.centerVH }}>
           <Title
             borderBottom={true}
             size="large"
@@ -106,9 +103,7 @@ const AssessmentContainer = () => {
             toolbarProps={{ whiteSpace: "nowrap" }}
             toolbar={
               data?.length !== 0 ? (
-                <Box
-                  sx={{ ...styles.centerVH, gap: "9px", position: "relative" }}
-                >
+                <Box gap="9px" position="relative" sx={{ ...styles.centerVH }}>
                   <ToolbarCreateItemBtn
                     icon={
                       <SettingIcon
@@ -136,7 +131,7 @@ const AssessmentContainer = () => {
                         color={
                           !fetchSpaceInfo.data?.canCreateAssessment
                             ? "#3D4D5C80"
-                            : "#fff"
+                            : theme.palette.background.containerLowest
                         }
                       />
                     }
@@ -169,17 +164,7 @@ const AssessmentContainer = () => {
           {}
         </Box>
         {isEmpty && !loading && (
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-              mt: 6,
-              gap: 4,
-            }}
-          >
+          <Box width="100%" mt={6} gap={4} sx={{ ...styles.centerCVH }}>
             <img
               src={AssessmentEmptyState}
               alt={"No assesment here!"}
@@ -188,8 +173,8 @@ const AssessmentContainer = () => {
             <Typography
               textAlign="center"
               variant="h3"
+              color="#9DA7B3"
               sx={{
-                color: "#9DA7B3",
                 fontSize: "3rem",
                 fontWeight: "900",
                 width: "60%",
@@ -200,8 +185,8 @@ const AssessmentContainer = () => {
             <Typography
               textAlign="center"
               variant="h1"
+              color="#9DA7B3"
               sx={{
-                color: "#9DA7B3",
                 fontSize: "1rem",
                 fontWeight: "500",
                 width: "60%",
@@ -259,15 +244,7 @@ const AssessmentContainer = () => {
                   setOpenDeleteDialog={setOpenDeleteDialog}
                 />
                 {pageCount > 1 && !isEmpty && (
-                  <Stack
-                    spacing={2}
-                    sx={{
-                      mt: 3,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
+                  <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
                     <Pagination
                       variant="outlined"
                       color="primary"
@@ -316,6 +293,12 @@ const useFetchAssessments = () => {
   const { service } = useServiceContext();
   const abortController = useRef(new AbortController());
 
+  const fetchSpaceInfo = useQuery({
+    service: (args = { spaceId }, config) =>
+      service.space.getById(args, config),
+    runOnMount: false,
+  });
+
   useEffect(() => {
     fetchAssessments();
   }, [page, spaceId]);
@@ -330,6 +313,7 @@ const useFetchAssessments = () => {
       if (res) {
         setData(res);
         setError(false);
+        fetchSpaceInfo.query()
       } else {
         setData({});
         setError(true);
@@ -353,6 +337,7 @@ const useFetchAssessments = () => {
         { signal: abortController.current.signal },
       );
       fetchAssessments();
+      fetchSpaceInfo.query()
     } catch (e) {
       const err = e as ICustomError;
       showToast(err);
@@ -373,6 +358,7 @@ const useFetchAssessments = () => {
     errorObject,
     fetchAssessments,
     deleteAssessment,
+    fetchSpaceInfo
   };
 };
 

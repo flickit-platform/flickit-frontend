@@ -4,24 +4,24 @@ import GeneralLayout from "./layout/GeneralLayout";
 import Grid from "@mui/material/Grid";
 import DonutChart from "@common/charts/donutChart/donutChart";
 import BulletPointStatus from "./BulletPointStatus";
-import BoxReportLayout from "./layout/BoxReportLayout";
+import AttributeLayout from "./layout/AttributeLayout";
 import { styles } from "@styles";
 import { t } from "i18next";
 import { IGraphicalReport } from "@/types/index";
 import uniqueId from "@/utils/uniqueId";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 
 const SubjectReport = ({
   graphicalReport,
 }: {
   graphicalReport: IGraphicalReport;
 }) => {
-  const theme = useTheme();
 
   const [maturityLevelCount] = useState<number>(
     graphicalReport?.assessment?.assessmentKit?.maturityLevelCount,
   );
   const { subjects, lang } = graphicalReport;
+  const isRTL = lang.code.toLowerCase() === "fa"
   return (
     <GeneralLayout>
       {subjects?.map((item: any, index: number) => {
@@ -33,19 +33,15 @@ const SubjectReport = ({
               id={title}
               container
               key={item.index}
-              sx={{
-                ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
-                mb: "40px",
-              }}
+              mb="40px"
+              sx={{ ...styles.rtlStyle(isRTL) }}
             >
               <Grid item xs={12} sm={9}>
                 <Typography
-                  sx={{
-                    color: theme.palette.primary.main,
-                    ...theme.typography.headlineSmall,
-                    fontWeight: "bold",
-                    ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
-                  }}
+                  variant="headlineSmall"
+                  color="primary.main"
+                  fontWeight="bold"
+                  sx={{ ...styles.rtlStyle(isRTL) }}
                 >
                   {index + 1}
                   {") "}
@@ -53,11 +49,9 @@ const SubjectReport = ({
                 </Typography>
                 <Typography
                   component="div"
-                  sx={{
-                    ...theme.typography.bodyMedium,
-                    ...styles.rtlStyle(lang.code.toLowerCase() === "fa"),
-                    mt: 2,
-                  }}
+                  variant="bodyMedium"
+                  mt={2}
+                  sx={{ ...styles.rtlStyle(isRTL) }}
                   textAlign="justify"
                   dangerouslySetInnerHTML={{
                     __html:
@@ -91,7 +85,7 @@ const SubjectReport = ({
             </Grid>
             {item?.attributes?.map((attribute: any) => {
               return (
-                <BoxReportLayout
+                <AttributeLayout
                   key={uniqueId()}
                   language={lang.code.toLowerCase()}
                   confidenceValue={attribute.confidenceValue}

@@ -10,7 +10,7 @@ const ErrorRecalculating = (props: IGettingThingsReadyLoadingProps) => {
   const { ...rest } = props;
   return (
     <Box
-      color="gray"
+      color="disabled.main"
       {...rest}
       sx={{
         width: "100%",

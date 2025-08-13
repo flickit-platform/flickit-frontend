@@ -1,4 +1,3 @@
-import { useTheme } from "@mui/material";
 import Alert, { AlertProps } from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import useScreenResize from "@utils/useScreenResize";
@@ -8,7 +7,6 @@ interface IAlertBox extends AlertProps {}
 const AlertBox = (props: IAlertBox) => {
   const { children, action, ...rest } = props;
   const isSmall = useScreenResize("md");
-  const theme = useTheme()
 
   return (
     <Alert
@@ -24,16 +22,14 @@ const AlertBox = (props: IAlertBox) => {
         {children}
         {isSmall && action ? (
           <Box
-            sx={{
-              pt: { xs: 1.5, md: 0.5 },
-              paddingLeft: theme.direction === "ltr" ? 2 : "unset",
-              paddingRight: theme.direction === "rtl" ? 2 : "unset",
-              ml: `${theme.direction === "rtl" ? { xs: 0, md: -1 } : "auto"}`,
-              mr: `${theme.direction === "rtl" ? "auto" : { xs: 0, md: -1 }}`,
-              alignItems: { xs: "flex-end", md: "flex-start" },
-              justifyContent: "flex-end",
-              display: "flex",
-            }}
+            pt={{ xs: 1.5, md: 0.5 }}
+            paddingInlineStart={2}
+            paddingInlineEnd="unset"
+            marginInlineStart="auto"
+            marginInlineEnd={{ xs: 0, md: -1 }}
+            alignItems={{ xs: "flex-end", md: "flex-start" }}
+            justifyContent="flex-end"
+            display="flex"
           >
             {action}
           </Box>

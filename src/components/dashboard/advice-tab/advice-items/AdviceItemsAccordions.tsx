@@ -25,6 +25,8 @@ import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import showToast from "@utils/toastError";
 import { useTheme } from "@mui/material";
+import { v3Tokens } from "@/config/tokens";
+import { styles } from "@styles";
 
 enum ELevel {
   HIGH = "HIGH",
@@ -33,11 +35,23 @@ enum ELevel {
 }
 
 const COLORS = {
-  primary: { background: "#EDF7ED", text: "#2E6B2E", icon: "#388E3C" },
-  secondary: { background: "#F9F3EB", text: "#995700", icon: "#995700" },
+  primary: {
+    background: v3Tokens.success.bg,
+    text: v3Tokens.success.dark,
+    icon: "#388E3C",
+  },
+  secondary: {
+    background: v3Tokens.tertiary.bg,
+    text: v3Tokens.tertiary.dark,
+    icon: v3Tokens.tertiary.dark,
+  },
   error: { background: "#FFEBEE", text: "#B86A77", icon: "#B86A77" },
   border: "#E0E0E0",
-  unknown: { background: "#E0E0E0", text: "#000", icon: "#000" },
+  unknown: {
+    background: "#E0E0E0",
+    text: v3Tokens.surface.on,
+    icon: v3Tokens.surface.on,
+  },
 };
 
 const getPriorityColor = (priority: string) => {
@@ -298,13 +312,13 @@ const AdviceItemAccordion: React.FC<{
     <>
       <Accordion
         sx={{
-          borderBottom: `1px solid ${COLORS.border}`,
-          borderInlineStart: readOnly ? "4px solid #6C8093" : "",
-          border: readOnly ? "" : `1px solid ${COLORS.border}`,
+          borderBottom: `1px solid #E0E0E0"`,
+          borderInlineStart: readOnly ? `4px solid #6C8093` : "",
+          border: readOnly ? "" : `1px solid #E0E0E0"`,
           borderRadius: "8px",
           mb: 1,
           boxShadow: "none",
-          background: !readOnly ? "#F9FAFB" : "initial",
+          bgcolor: !readOnly ? "background.containerLow" : "initial",
           "&:before": { content: "none" },
         }}
       >
@@ -328,7 +342,7 @@ const AdviceItemAccordion: React.FC<{
           >
             <Grid item xs={12} md={readOnly ? 7 : 8.3}>
               <Grid container alignItems="center" spacing={1}>
-                <Grid item xs={12} alignItems="center" display="flex">
+                <Grid item xs={12} sx={{ ...styles.centerV }}>
                   <Typography
                     sx={{
                       display: "inline-block",
@@ -369,10 +383,13 @@ const AdviceItemAccordion: React.FC<{
                       ? t(item.priority.code.toLowerCase()) +
                         " " +
                         t("common.priority")
-                      : t("common.priority", !readOnly ? {} : { lng: language }) +
+                      : t(
+                          "common.priority",
+                          !readOnly ? {} : { lng: language },
+                        ) +
                         " " +
                         t(
-                         `common.${item.priority.code.toLowerCase()}`,
+                          `common.${item.priority.code.toLowerCase()}`,
                           !readOnly ? {} : { lng: language },
                         )}
                     )

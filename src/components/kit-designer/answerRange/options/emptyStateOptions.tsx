@@ -54,10 +54,10 @@ const EmptyStateOptions = ({
           <Button
             variant="outlined"
             sx={{
-              color: theme.palette.error.main,
-              borderColor: theme.palette.error.main,
+              color: "error.main",
+              borderColor: "error.main",
               "&:hover": {
-                borderColor: theme.palette.error.main,
+                borderColor: "error.main",
                 background: alpha(theme.palette.error.main, 0.04),
               },
             }}

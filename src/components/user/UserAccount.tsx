@@ -36,7 +36,7 @@ const UserAccount = () => {
     service: (args, config) => service.user.getProfile(config),
     runOnMount: false,
   });
-  const { userInfo : userProfileInfo } = useAuthContext()
+  const { userInfo: userProfileInfo } = useAuthContext();
   const [userInfo, setUserInfo] = useState<any>({
     id: 1,
     displayName: "",
@@ -75,10 +75,7 @@ const UserAccount = () => {
       setIsLoading(true);
       try {
         const pictureData = { pictureFile: file };
-        await service.user.updatePicture(
-          { data: pictureData },
-          undefined,
-        );
+        await service.user.updatePicture({ data: pictureData }, undefined);
         setIsLoading(false);
         onSubmit().then();
       } catch (e: any) {
@@ -153,11 +150,9 @@ const UserAccount = () => {
                   width="100%"
                   height="100%"
                   bgcolor="rgba(0, 0, 0, 0.6)"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
                   borderRadius="50%"
-                  sx={{ cursor: "pointer", border: "4px solid whitesmoke" }}
+                  border="4px solid whitesmoke"
+                  sx={{ cursor: "pointer", ...styles.centerVH }}
                 />
               )}
               {userInfo?.pictureLink ? (

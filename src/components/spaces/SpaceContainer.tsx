@@ -126,17 +126,7 @@ const SpaceContainer = () => {
           return (
             <>
               {data?.length == 0 && (
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    mt: 6,
-                    gap: 4,
-                  }}
-                >
+                <Box width="100%" mt={6} gap={4} sx={{ ...styles.centerCVH }}>
                   <img
                     src={SpaceEmptyStateSVG}
                     alt={"Oh! You have no space?"}
@@ -145,8 +135,8 @@ const SpaceContainer = () => {
                   <Typography
                     textAlign="center"
                     variant="headlineLarge"
+                    color="#9DA7B3"
                     sx={{
-                      color: "#9DA7B3",
                       fontSize: "3rem",
                       fontWeight: "900",
                       width: "60%",
@@ -157,8 +147,8 @@ const SpaceContainer = () => {
                   <Typography
                     textAlign="center"
                     variant="h1"
+                    color="#9DA7B3"
                     sx={{
-                      color: "#9DA7B3",
                       fontSize: "1rem",
                       fontWeight: "500",
                       width: "60%",
@@ -195,15 +185,7 @@ const SpaceContainer = () => {
         }}
       />
       {data.length !== 0 && (
-        <Stack
-          spacing={2}
-          sx={{
-            mt: 3,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
           <Pagination
             variant="outlined"
             color="primary"
