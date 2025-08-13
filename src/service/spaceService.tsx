@@ -101,7 +101,7 @@ const space = {
   leave({ spaceId }: { spaceId: TId }, config?: AxiosRequestConfig<any>) {
     return axios.delete(`/api/v1/spaces/${spaceId}/leave/`, config);
   },
-  topSpaces(
+  getTopSpaces(
         args?: any,
         config?: AxiosRequestConfig<any>
   ) {

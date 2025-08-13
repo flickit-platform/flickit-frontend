@@ -13,7 +13,7 @@ import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import NewAssessmentIcon from "@/utils/icons/newAssessment";
+import NewAssessmentIcon from "@/assets/icons/newAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutline";
@@ -26,6 +26,7 @@ import {
 } from "@/providers/AssessmentProvider";
 import i18next from "i18next";
 import showToast from "@utils/toastError";
+import { SpaceField } from "../fields/SpaceField";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -192,6 +193,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               <SpaceField
                 queryDataSpaces={queryDataSpaces}
                 spaces={spaceList}
+                sx={{ mt: "42px" }}
               />
             </Grid>
             <Divider
@@ -276,52 +278,6 @@ const LangField = ({ lang }: { lang: { code: string; title: string }[] }) => {
       defaultValue={defaultLang}
       disableClearable={true}
       filterSelectedOptions={false}
-      sx={{ mt: "42px" }}
-    />
-  );
-};
-
-const SpaceField = ({
-  queryDataSpaces,
-  spaces,
-}: {
-  queryDataSpaces: any;
-  spaces: any;
-}) => {
-  const { service } = useServiceContext();
-  const { spaceId } = useParams();
-
-  const createSpaceQueryData = useQuery({
-    service: (args, config) => service.space.create(args, config),
-    runOnMount: false,
-  });
-
-  const createItemQuery = async (inputValue: any) => {
-    const response = await createSpaceQueryData.query({
-      title: inputValue,
-      type: "BASIC",
-    });
-    const newOption = { title: inputValue, id: response.id };
-    return newOption;
-  };
-
-  const defaultValue = queryDataSpaces?.options?.find(
-    (item: any) => item.selected,
-  );
-  const defaultSpaceList = spaces?.find((item: any) => item.selected);
-
-  return (
-    <AutocompleteAsyncField
-      {...{ options: spaces }}
-      name="space"
-      required={true}
-      disabled={!!spaceId}
-      defaultValue={defaultValue ?? defaultSpaceList}
-      label={<Trans i18nKey="spaces.space" />}
-      data-cy="space"
-      hasAddBtn={true}
-      createItemQuery={createItemQuery}
-      searchable={false}
       sx={{ mt: "42px" }}
     />
   );

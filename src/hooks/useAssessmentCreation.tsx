@@ -13,8 +13,8 @@ export function useAssessmentCreation({
   const navigate = useNavigate();
   const { service } = useServiceContext();
 
-  const queryDataSpaces = useConnectAutocompleteField({
-    service: (args, config) => service.space.topSpaces(args, config),
+  const getTopSpaces = useConnectAutocompleteField({
+    service: (args, config) => service.space.getTopSpaces(args, config),
   });
 
   const createOrOpenDialog = useCallback(
@@ -32,7 +32,7 @@ export function useAssessmentCreation({
       setLoading(true);
       let spaces;
       try {
-        spaces = await queryDataSpaces.query();
+        spaces = await getTopSpaces.query();
       } catch (err) {
         setLoading(false);
         openDialog({
@@ -41,7 +41,7 @@ export function useAssessmentCreation({
             assessment_kit: { id, title },
             langList: languages,
             spaceList: spaces,
-            queryDataSpaces,
+            getTopSpaces,
           },
         });
         return;
@@ -85,7 +85,7 @@ export function useAssessmentCreation({
             assessment_kit: { id, title },
             langList: languages,
             spaceList: spaces,
-            queryDataSpaces,
+            getTopSpaces,
           },
         });
         if (window.location.hash) {

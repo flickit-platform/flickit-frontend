@@ -56,6 +56,7 @@ const Title = (props: ITitle) => {
             : (borderBottom as string),
         ...(rest.sx ?? {}),
         ...wrapperProps,
+        paddingBlockEnd: borderBottom ? "32px" : 0,
       }}
       {...wrapperProps}
     >
