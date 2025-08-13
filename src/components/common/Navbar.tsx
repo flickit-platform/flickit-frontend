@@ -40,7 +40,7 @@ import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n from "i18next";
-import { MULTILINGUALITY } from "@/config/constants";
+import { HOME_URL, MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
 import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
@@ -412,7 +412,7 @@ const Navbar = () => {
         width="100%"
         sx={{ ...styles.centerVH }}
         component={NavLink}
-        to={spaceId ? `/${spaceId}/assessments/1` : `/spaces/1`}
+        to={HOME_URL}
       >
         <img
           src={config.appLogoUrl}
@@ -543,7 +543,7 @@ const Navbar = () => {
                 width: "110px",
               },
             }}
-            to={`/spaces/1`}
+            to={HOME_URL}
           >
             <img
               src={config.appLogoUrl}

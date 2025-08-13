@@ -4,6 +4,7 @@ import { styles } from "@styles";
 import Navbar from "@common/Navbar";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
+import { HOME_URL } from "@/config/constants";
 
 const ErrorNotFoundPage = () => {
   return (
@@ -23,7 +24,7 @@ const ErrorNotFoundPage = () => {
           variant="contained"
           size="large"
           onClick={() => {
-            window.location.href = "/spaces/1";
+            window.location.href = HOME_URL;
           }}
         >
           <Trans i18nKey="common.backToHome" />

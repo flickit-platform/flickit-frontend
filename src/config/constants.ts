@@ -8,3 +8,5 @@ export const CDN_DIRECTORY =
   process.env.NODE_ENV === "development"
     ? "https://flickit-cdn.hectora.app/"
     : import.meta.env.VITE_LOCAL_BASE_URL;
+
+export const HOME_URL = "/spaces/1";
