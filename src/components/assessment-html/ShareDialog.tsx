@@ -180,9 +180,21 @@ export const ShareDialog = ({
       }
       maxWidth="sm"
       sx={{ ...styles.rtlStyle(lng === "fa") }}
+      contentStyle={{p: "40px 64px !important"}}
+      titleStyle={{mb: "0px !important"}}
     >
       {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
         <>
+          <Box mt={0}>
+            <Typography
+              variant="bodyMedium"
+              color="rgba(61, 77, 92, 0.5)"
+              fontFamily="inherit"
+            >
+              {t("assessmentReport.shareOptions", { lng })}
+            </Typography>
+            <Divider sx={{ mt: 1 }} />
+          </Box>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid
