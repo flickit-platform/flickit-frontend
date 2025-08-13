@@ -80,6 +80,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               queryDataSpaces={queryDataSpaces}
               spaces={spaceList}
               sx={{ mt: "24px" }}
+              label={<Trans i18nKey="spaces.targetSpace"/>}
             />{" "}
           </Grid>
         </Grid>
