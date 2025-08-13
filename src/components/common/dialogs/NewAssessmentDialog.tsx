@@ -13,7 +13,7 @@ import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import NewAssessmentIcon from "@utils/icons/newAssessment";
+import NewAssessmentIcon from "@/utils/icons/newAssessment";
 import LanguageIcon from "@mui/icons-material/Language";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutline";
@@ -128,7 +128,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const handleCreateSpaceWithSave = () => {
     dispatch(assessmentActions.setPendingKit(staticData.assessment_kit));
     closeDialog();
-    navigate("/spaces/1#createSpace");
+    navigate("/spaces/#createSpace");
   };
 
   return (
@@ -306,9 +306,9 @@ const SpaceField = ({
   };
 
   const defaultValue = queryDataSpaces?.options?.find(
-    (item: any) => item.isDefault,
+    (item: any) => item.selected,
   );
-  const defaultSpaceList = spaces?.find((item: any) => item.isDefault);
+  const defaultSpaceList = spaces?.find((item: any) => item.selected);
 
   return (
     <AutocompleteAsyncField
