@@ -47,6 +47,9 @@ import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import MoveAssessmentDialog from "./MoveAssessmentDialog";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import keycloakService from "@/service/keycloakService";
+import NewAssessmentDialog from "../common/dialogs/NewAssessmentDialog";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -496,8 +499,13 @@ const Actions = ({
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const moveAssessmentDialogProps = useDialog();
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: moveAssessmentDialogProps.openDialog,
+  });
 
   const deleteItem = async () => {
     try {
@@ -527,9 +535,25 @@ const Actions = ({
     });
   };
 
-  const handleMoveToAssessment = () => {
-    moveAssessmentDialogProps.openDialog({});
+  const handleMoveToAssessment = (e: any, id: any, title: any) => {
+    setLoading(true);
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (keycloakService.isLoggedIn()) {
+      createOrOpenDialog({
+        id,
+        title,
+        languages: [],
+        setLoading,
+      });
+    } else {
+      setLoading(false);
+      window.location.hash = `#createAssessment?id=${id}`;
+      keycloakService.doLogin();
+    }
   };
+
   const actions = hasStatus(item.status)
     ? [
         {

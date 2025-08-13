@@ -17,17 +17,7 @@ interface IMoreActionsProps {
   hideInnerIconButton?: boolean;
   anchorEl?: Element | ((element: Element) => Element) | null;
   fontSize?: "inherit" | "small" | "large" | "medium";
-  items: (
-    | {
-        icon?: JSX.Element;
-        onClick?: React.MouseEventHandler<HTMLLIElement>;
-        text: JSX.Element;
-        menuItemProps?: MenuItemProps & { "data-cy"?: string };
-      }
-    | null
-    | undefined
-    | false
-  )[];
+  items: any;
   setShowTooltip?: (e: boolean) => void;
   color?: string;
   IconButtonProps?: any;
@@ -48,12 +38,12 @@ const MoreActions = (props: IMoreActionsProps) => {
     color,
   } = props;
 
-  const menuItems = items.filter((item) => !!item) as {
+  const menuItems = items.filter((item: any) => !!item) as {
     icon?: JSX.Element;
     onClick?: React.MouseEventHandler<HTMLLIElement>;
     text: JSX.Element;
     menuItemProps?: MenuItemProps & { "data-cy"?: string };
-    id: string
+    id: string;
   }[];
 
   return menuItems.length > 0 ? (
@@ -88,9 +78,9 @@ const MoreActions = (props: IMoreActionsProps) => {
             icon,
             text,
             menuItemProps = {},
-            id= ""
+            id = "",
           } = item ?? {};
-          console.log(id,"test text");
+          console.log(id, "test text");
           return (
             <MenuItem
               key={uniqueId()}
