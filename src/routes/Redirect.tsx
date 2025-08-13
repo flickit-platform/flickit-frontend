@@ -1,7 +1,6 @@
 import { Location, Navigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "@providers/AuthProvider";
 import { IAuthContext } from "@/types";
-import { HOME_URL } from "@/config/constants";
 
 const Redirect = () => {
   const location = useLocation();
