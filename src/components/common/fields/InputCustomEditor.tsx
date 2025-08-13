@@ -1,8 +1,6 @@
-import React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import { theme } from "@config/theme";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import { styles } from "@styles";
@@ -22,8 +20,8 @@ const InputCustomEditor = (props: any) => {
   const isRTL = languageDetector(value);
 
   const buttonStyle = {
-    background: theme.palette.primary.main,
-    "&:hover": { background: theme.palette.primary.dark },
+    bgcolor: "primary.main",
+    "&:hover": { bgcolor: "primary.dark" },
     borderRadius: "6px",
     padding: "6px",
     mx: 0.1,
@@ -54,7 +52,9 @@ const InputCustomEditor = (props: any) => {
             sx={buttonStyle}
             onClick={handleDone}
           >
-            <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+            <CheckCircleOutlineRoundedIcon
+              sx={{ color: "primary.contrastText" }}
+            />
           </IconButton>
           <IconButton
             title="Cancel Edit"
@@ -62,7 +62,7 @@ const InputCustomEditor = (props: any) => {
             sx={buttonStyle}
             onClick={handleCancel}
           >
-            <CancelRoundedIcon sx={{ color: "#fff" }} />
+            <CancelRoundedIcon sx={{ color: "primary.contrastText" }} />
           </IconButton>
         </InputAdornment>
       }

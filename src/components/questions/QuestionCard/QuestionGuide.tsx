@@ -5,30 +5,24 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import Title from "@common/Title";
-import { theme } from "@/config/theme";
 import { Trans } from "react-i18next";
+import { styles } from "@styles";
 
 export const QuestionGuide = (props: any) => {
   const [collapse, setCollapse] = useState<boolean>(false);
   const { hint } = props;
   const is_farsi = languageDetector(hint);
+
   return (
     <Box>
       <Box mt={1} width="100%">
         <Title
           sup={
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "white",
-              }}
-            >
+            <Box color="background.containerLowest" sx={{ ...styles.centerVH }}>
               <InfoRounded
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 0.5,
                 }}
               />
               <Trans i18nKey="common.hint" />
@@ -41,26 +35,17 @@ export const QuestionGuide = (props: any) => {
         ></Title>
         <Collapse in={collapse}>
           <Box
-            sx={{
-              flex: 1,
-              mr: { xs: 0, md: 4 },
-              position: "relative",
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              border: "1px dashed #ffffff99",
-              borderRadius: "8px",
-              direction: `${is_farsi ? "rtl" : "ltr"}`,
-            }}
+            flex={1}
+            mr={{ xs: 0, md: 4 }}
+            position="relative"
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            border="1px dashed #ffffff99"
+            borderRadius="8px"
+            sx={{ direction: `${is_farsi ? "rtl" : "ltr"}` }}
           >
-            <Box
-              display="flex"
-              alignItems={"baseline"}
-              sx={{
-                p: 2,
-                width: "100%",
-              }}
-            >
+            <Box display="flex" alignItems={"baseline"} p={2} width="100%">
               <Typography variant="body2">
                 {hint.startsWith("\n")
                   ? hint

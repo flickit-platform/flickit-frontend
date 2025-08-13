@@ -22,16 +22,14 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { styles } from "@styles";
 import { useForm } from "react-hook-form";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { toast } from "react-toastify";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { t } from "i18next";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@utils/useQuery";
 import Avatar from "@mui/material/Avatar";
 import stringAvatar from "@utils/stringAvatar";
-import { theme } from "@config/theme";
+import showToast from "@utils/toastError";
 
 const tableCellStyles = {
   minWidth: {
@@ -52,8 +50,8 @@ const avatarStyles = {
 };
 
 const chipStyles = {
-  marginRight: theme.direction === "ltr" ? 1 : "unset",
-  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+  marginInlineStart: "unset",
+  marginInlineEnd: 1,
   opacity: 0.7,
   color: "#9A003C",
   borderColor: "#9A003C",
@@ -79,52 +77,27 @@ export default function MemberList(props: any) {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        px: { xs: "15px", sm: "51px" },
-        mb: "2rem",
-        gap: 2,
-        textAlign: "center",
-        height: "auto",
-        minHeight: "350px",
-        width: "100%",
-        bgcolor: "#FFF",
-        borderRadius: 2,
-        py: "32px",
-      }}
+      alignItems="flex-start"
+      px={{ xs: "15px", sm: "51px" }}
+      mb={4}
+      gap={2}
+      textAlign="center"
+      height="auto"
+      minHeight="350px"
+      width="100%"
+      bgcolor="background.containerLowest"
+      borderRadius={2}
+      py={4}
+      sx={{ ...styles.centerH }}
     >
       <Box height="100%" width="100%">
         <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative",
-            width: "90%",
-            ml: theme.direction === "rtl" ? "unset" : hasBtn ? "10%" : "",
-            mr: theme.direction !== "rtl" ? "unset" : hasBtn ? "10%" : "",
-          }}
+          width="100%"
+          justifyContent="space-between"
+          sx={{ ...styles.centerV }}
         >
-          <Typography
-            sx={{
-              ml:
-                theme.direction === "rtl"
-                  ? "unset"
-                  : hasBtn
-                    ? "auto"
-                    : "center",
-              mr:
-                theme.direction !== "rtl"
-                  ? "unset"
-                  : hasBtn
-                    ? "auto"
-                    : "center",
-            }}
-            color="#9DA7B3"
-            variant="headlineMedium"
-          >
+          <div></div>
+          <Typography color="#9DA7B3" variant="headlineMedium">
             <Trans i18nKey={title} />
           </Typography>
           {hasBtn && (
@@ -132,17 +105,11 @@ export default function MemberList(props: any) {
               variant="contained"
               onClick={() => setOpenEGModal(true)}
               sx={{
-                ml: theme.direction === "rtl" ? "unset" : "auto",
-                mr: theme.direction !== "rtl" ? "unset" : "auto",
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-end",
               }}
             >
-              <AddIcon
-                sx={{ width: "1.125rem", height: "1.125rem" }}
-                fontSize="small"
-                style={{ color: "#EDFCFC" }}
-              />
+              <AddIcon fontSize="small" />
               <Trans i18nKey={btnLabel} />
             </Button>
           )}
@@ -159,7 +126,7 @@ export default function MemberList(props: any) {
                 position: "sticky",
                 top: 0,
                 zIndex: 3,
-                backgroundColor: "#fff",
+                backgroundColor: "background.containerLowest",
               }}
             >
               <TableRow
@@ -185,13 +152,12 @@ export default function MemberList(props: any) {
                 listOfUser.map((row: any) => (
                   <TableRow
                     key={row.id}
-                    sx={{ background: !row.editable ? "#ebe8e85c" : "" }}
+                    sx={{ bgcolor: !row.editable ? "#ebe8e85c" : "" }}
                   >
                     <TableCell
                       sx={{
-                        display: "flex",
+                        ...styles.centerV,
                         justifyContent: "space-evenly",
-                        alignItems: "center",
                         border: "none",
                         gap: { xs: "0px", md: "1.3rem" },
                         paddingX: { xs: "0px", md: "1rem" },
@@ -199,22 +165,15 @@ export default function MemberList(props: any) {
                     >
                       <UserInfoCell row={row} />
                       <Box
-                        sx={{
-                          display: { xs: "none", md: "flex" },
-                          justifyContent: "center",
-                          minWidth: { xs: "10rem", sm: "14rem", md: "20vw" },
-                          width: { xs: "10rem", sm: "14rem", md: "20vw" },
-                        }}
+                        display={{ xs: "none", md: "flex" }}
+                        justifyContent="center"
+                        width={{ xs: "10rem", sm: "14rem", md: "20vw" }}
                       >
                         <Typography sx={textStyles}>{row.email}</Typography>
                       </Box>
                       <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          minWidth: { xs: "10rem", sm: "14rem", md: "20vw" },
-                          width: { xs: "10rem", sm: "14rem", md: "20vw" },
-                        }}
+                        width={{ xs: "10rem", sm: "14rem", md: "20vw" }}
+                        sx={{ ...styles.centerH }}
                       >
                         <DeleteActionCell
                           row={row}
@@ -250,13 +209,10 @@ const UserInfoCell = ({ row }: any) => (
     }}
   >
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        gap: ".5rem",
-        paddingLeft: { lg: "30%" },
-      }}
+      justifyContent="flex-start"
+      gap={1}
+      paddingLeft={{ lg: "30%" }}
+      sx={{ ...styles.centerV }}
     >
       <Avatar
         {...stringAvatar(
@@ -282,25 +238,15 @@ const UserInfoCell = ({ row }: any) => (
 
 const DeleteActionCell = ({ row, deleteEGMember }: any) => (
   <Box
-    sx={{
-      display: "flex",
-      justifyContent: "flex-start",
-      alignItems: "center",
-      gap: { xs: "0px", md: ".7rem" },
-    }}
+    justifyContent="flex-start"
+    gap={{ xs: "0px", md: ".7rem" }}
+    sx={{ ...styles.centerV }}
   >
     <Tooltip
       disableHoverListener={row.editable}
       title={<Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />}
     >
-      <Box
-        sx={{
-          width: "30%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Box width="30%" sx={{ ...styles.centerVH }}>
         <IconButton
           sx={deleteButtonStyles}
           size="small"
@@ -336,7 +282,7 @@ const useEGPermision = (props: any) => {
       await query.query();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -364,7 +310,7 @@ const AddMemberModal = (props: any) => {
         assessmentKitId: assessmentKitId,
         email: inputRef.current?.value,
       });
-      res?.message && toast.success(res.message);
+      res?.message && showToast(res.message, { variant: "success" });
       await query.query();
       close();
     } catch (e) {
@@ -372,9 +318,9 @@ const AddMemberModal = (props: any) => {
       close();
       if (error?.response?.data.hasOwnProperty("message")) {
         if (Array.isArray(error.response?.data?.message)) {
-          toastError(error.response?.data?.message[0]);
+          showToast(error.response?.data?.message[0]);
         } else {
-          toastError(error);
+          showToast(error);
         }
       }
     }
@@ -412,7 +358,7 @@ const AddMemberModal = (props: any) => {
 const AddMember = (props: any) => {
   const { inputRef } = props;
   return (
-    <Box component="form" sx={{ mb: 2, mt: 0 }}>
+    <Box component="form" mb={2} mt={0}>
       <TextField
         fullWidth
         type="email"

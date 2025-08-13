@@ -3,6 +3,7 @@ import { t } from "i18next";
 import uniqueId from "@/utils/uniqueId";
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { useTheme } from "@mui/material";
 
 interface PieChartNode {
   name: string;
@@ -75,6 +76,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data, language }) => {
 
   const centeredText = `${sliceCount}`;
 
+  const theme = useTheme()
   return (
     <ResponsiveContainer width="100%" height={!isMobileScreen ? 370 : 250}>
       <PieChart>
@@ -84,8 +86,8 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data, language }) => {
               cx="50%"
               cy="50%"
               r="66"
-              fill="#F3F5F6"
-              stroke="#C7CCD1"
+              fill={theme.palette.background.container}
+              stroke={theme.palette.outline?.variant}
               strokeWidth={1}
             />
             <text
@@ -129,7 +131,7 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({ data, language }) => {
           {data.map((item) => (
             <Cell
               key={uniqueId()}
-              fill={item.bgColor ?? "#fff"}
+              fill={item.bgColor ?? theme.palette.background.containerLowest}
               stroke={item.color}
               strokeWidth={2}
             />

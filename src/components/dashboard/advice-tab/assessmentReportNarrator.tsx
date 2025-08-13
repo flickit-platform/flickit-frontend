@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
 import { getReadableDate } from "@utils/readableDate";
+import { styles } from "@styles";
 
 export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
   const [aboutSection, setAboutSection] = useState<any>(null);
@@ -36,12 +37,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
       py={2}
     >
       {fetchAdviceNarration.loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-        >
+        <Box height="100%" sx={{ ...styles.centerVH }}>
           <CircularProgress />
         </Box>
       ) : (
@@ -61,6 +57,7 @@ export const AssessmentReportNarrator = ({ fetchAdviceNarration }: any) => {
             }}
             infoQuery={fetchAdviceNarration.query}
             placeholder={t("advice.writeYourOwnAdvices") ?? ""}
+            showEditorMenu={true}
           />
           {aboutSection?.creationTime && (
             <Typography variant="bodyMedium" mx={1}>

@@ -1,12 +1,13 @@
 import React, { useMemo } from "react";
 import { CEDialog } from "@common/dialogs/CEDialog";
-import { theme } from "@config/theme";
 import { Trans } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AssessmentError from "@/assets/svg/AssessmentError.svg";
 import Button from "@mui/material/Button";
 import { DialogProps } from "@mui/material/Dialog";
+import { useTheme } from "@mui/material";
+import { styles } from "@styles";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -25,6 +26,7 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
     openDialog,
     ...rest
   } = props;
+  const theme = useTheme();
 
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 
@@ -50,26 +52,22 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
             src={AssessmentError}
             alt={"AssessmentError"}
           />
-          <Typography sx={{ ...theme.typography.semiBoldXLarge }}>
+          <Typography variant="semiBoldXLarge">
             <Trans i18nKey="assessment.assessmentLimitExceeded" />
           </Typography>
         </>
       }
     >
-      <Box sx={{ p: 4 }}>
+      <Box p={4}>
         {listOfText.map((text: string, index: number) => {
           return (
             <Box
               key={index}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                listStyleType: "disc",
-                fontSize: "1.2rem",
-                gap: "2px",
-                color: "#2B333B",
-              }}
+              justifyContent="flex-start"
+              color="text.primary"
+              gap="2px"
+              fontSize="1.2rem"
+              sx={{ listStyleType: "disc", ...styles.centerV }}
             >
               <Typography
                 component={index >= 2 ? "li" : "p"}
@@ -85,23 +83,17 @@ const AssessmenetInfoDialog = (props: IAssessmentCEFromDialogProps) => {
                 <Trans i18nKey={text} />
                 {text == "common.youCan" && ":"}
               </Typography>
-              {text == "spaces.upgradeToPremiumSpace" && theme.direction == "ltr" && (
-                <Typography variant="semiBoldLarge">
-                  <Trans i18nKey={"common.comingSoon"} />.
-                </Typography>
-              )}
+              {text == "spaces.upgradeToPremiumSpace" &&
+                theme.direction == "ltr" && (
+                  <Typography variant="semiBoldLarge">
+                    <Trans i18nKey={"common.comingSoon"} />.
+                  </Typography>
+                )}
             </Box>
           );
         })}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          p: 2,
-        }}
-      >
+      <Box justifyContent="flex-end" p={2} sx={{ ...styles.centerV }}>
         <Button onClick={close} variant="contained">
           <Trans i18nKey="common.okGotIt" />
         </Button>

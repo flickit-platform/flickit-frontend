@@ -2,7 +2,6 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { theme as customTheme } from "@/config/theme";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 
@@ -33,40 +32,48 @@ const ScoreDisplay = ({ data }: any) => {
     <Tooltip
       title={
         <Box
-          sx={{
-            textAlign: "center",
-            backgroundColor: "#5F6E7C",
-            color: "white",
-            borderRadius: "4px",
-            p: 0.5,
-          }}
+          textAlign="center"
+          bgcolor="#5F6E7C"
+          color="background.containerLowest"
+          borderRadius="4px"
+          p={0.5}
         >
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              ...styles.centerVH,
               direction: "ltr",
             }}
           >
             <Box sx={{ ...styles.centerCVH }}>
-              <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
+              <Typography
+                variant="semiBoldSmall"
+                color="background.containerLowest"
+              >
                 {missedScore} ({missedScorePercentage}%)
               </Typography>
-              <Typography variant="bodySmall" sx={{ color: "white" }}>
-                <Trans i18nKey="missedScore" />
+              <Typography
+                variant="bodySmall"
+                color="background.containerLowest"
+              >
+                <Trans i18nKey="subject.missedScore" />
               </Typography>
             </Box>
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ mx: "8px", bgcolor: "white" }}
+              sx={{ mx: "8px", bgcolor: "background.containerLowest" }}
             />
             <Box sx={{ ...styles.centerCVH }}>
-              <Typography variant="semiBoldSmall" sx={{ color: "white" }}>
+              <Typography
+                variant="semiBoldSmall"
+                color="background.containerLowest"
+              >
                 {gainedScore} ({gainedScorePercentage}%)
               </Typography>
-              <Typography variant="bodySmall" sx={{ color: "white" }}>
+              <Typography
+                variant="bodySmall"
+                color="background.containerLowest"
+              >
                 <Trans i18nKey="subject.gainedScore" />
               </Typography>
             </Box>
@@ -75,51 +82,47 @@ const ScoreDisplay = ({ data }: any) => {
       }
     >
       <Box
+        width={`${width}px`}
+        height={`${height}px`}
+        borderRadius="4px"
+        overflow="hidden"
+        position="relative"
+        margin="0 auto"
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: `${width}px`,
-          height: `${height}px`,
-          borderRadius: "4px",
-          overflow: "hidden",
+          ...styles.centerVH,
           transition: "all 0.3s ease",
-          position: "relative",
-          margin: "0 auto",
         }}
       >
         <Box
-          sx={{
-            width: "2px",
-            height: "100%",
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 1,
-          }}
+          width="2px"
+          height="100%"
+          position="absolute"
+          left="50%"
+          zIndex={1}
+          sx={{ transform: "translateX(-50%)" }}
         />
 
         <Box
+          width={`${missedWidth}px`}
+          height="100%"
+          bgcolor="secondary.main"
+          position="absolute"
+          right="50%"
+          top={0}
           sx={{
-            width: `${missedWidth}px`,
-            height: "100%",
-            backgroundColor: customTheme.palette.secondary.main,
-            position: "absolute",
-            right: "50%",
-            top: 0,
             borderTopLeftRadius: "4px",
             borderBottomLeftRadius: "4px",
           }}
         />
 
         <Box
+          width={`${gainedWidth}px`}
+          height="100%"
+          bgcolor="primary.main"
+          position="absolute"
+          left="50%"
+          top={0}
           sx={{
-            width: `${gainedWidth}px`,
-            height: "100%",
-            backgroundColor: customTheme.palette.primary.main,
-            position: "absolute",
-            left: "50%",
-            top: 0,
             borderTopRightRadius: "4px",
             borderBottomRightRadius: "4px",
           }}

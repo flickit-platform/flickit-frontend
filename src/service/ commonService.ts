@@ -82,6 +82,11 @@ const commonService = {
       responseType: "blob",
     });
   },
+
+  dontShowSurvey(args?: {assessmentId?: TId}, config?: AxiosRequestConfig<any>) {
+    return axios.post(`api/v1/user-surveys/dont-show-again/`, args , config
+    );
+  },
 };
 
 export default commonService;

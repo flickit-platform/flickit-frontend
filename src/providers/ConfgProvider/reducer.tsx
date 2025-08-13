@@ -5,13 +5,15 @@ export interface AppState {
   appLogoUrl: string;
   languages: any[];
   isAuthenticated: boolean;
+  SurveyBox: boolean
 }
 
 export const initialState: AppState = {
   appTitle: "",
   appLogoUrl: "",
   languages: [],
-  isAuthenticated: false
+  isAuthenticated: false,
+  SurveyBox: false
 };
 
 const reducer = (state: AppState, action: any): AppState => {
@@ -35,6 +37,11 @@ const reducer = (state: AppState, action: any): AppState => {
       return {
         ...state,
         isAuthenticated: action.payload,
+      };
+    case ActionTypes.SURVEY_BOX_STATUS:
+      return {
+        ...state,
+        SurveyBox: action.payload,
       };
     default:
       return state;

@@ -10,7 +10,6 @@ import ListOfItems from "../common/GeneralList";
 import EmptyState from "../common/EmptyState";
 import { Trans } from "react-i18next";
 import { useParams } from "react-router-dom";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import debounce from "lodash/debounce";
 import { LoadingSkeletonKitCard } from "@/components/common/loadings/LoadingSkeletonKitCard";
@@ -18,6 +17,7 @@ import KitDesignerHeader from "@/components/kit-designer/common/KitHeader";
 import MeasureForm from "./MeasureForm";
 import { MultiLangs } from "@/types";
 import { t } from "i18next";
+import showToast from "@/utils/toastError";
 
 const MeasuresContent = () => {
   const { service } = useServiceContext();
@@ -108,7 +108,7 @@ const MeasuresContent = () => {
         translations: null,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -147,7 +147,7 @@ const MeasuresContent = () => {
       await fetchMeasures.query();
       handleCancel();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -161,7 +161,7 @@ const MeasuresContent = () => {
       await service.kitVersions.measures.reorder({ kitVersionId }, { orders });
       handleCancel();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   }, 2000);
 
@@ -198,7 +198,7 @@ const MeasuresContent = () => {
                     onEdit={handleEdit}
                     onReorder={handleReorder}
                     editableFieldKey={"questionsCount"}
-                    editableFieldLabel={t("questions")}
+                    editableFieldLabel={t("common.questions")}
                     editable={false}
                   />
                 </Box>

@@ -15,6 +15,9 @@ import { useKitDesignerContext } from "@/providers/KitProvider";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { t } from "i18next";
+import { styles } from "@styles";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   name: string;
@@ -26,6 +29,9 @@ interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   showTranslation?: boolean;
   setShowTranslation?: (val: boolean) => void;
   useRichEditor?: boolean;
+  lang?: string;
+  handleCancelTextBox?: any;
+  handleSaveEdit?: any;
 }
 
 const MultiLangTextField = ({
@@ -43,6 +49,9 @@ const MultiLangTextField = ({
   multiline = false,
   minRows,
   maxRows,
+  lang,
+  handleCancelTextBox,
+  handleSaveEdit,
   ...rest
 }: MultiLangTextFieldProps) => {
   const { kitState } = useKitDesignerContext();
@@ -109,7 +118,7 @@ const MultiLangTextField = ({
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#fff",
+            bgcolor: "background.containerLowest",
             fontSize: 14,
             ...(multiline ? {} : { height: 40 }),
           },
@@ -130,42 +139,60 @@ const MultiLangTextField = ({
         <Box sx={{ flexGrow: 1, width: "100%" }}>
           {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
-
-        {!!langCode && (
-          <IconButton
-            onClick={(e) => handleShowTranslation(e, !showTranslation)}
-            sx={{
-              width: 40,
-              height: 40,
-              borderRadius: "50%",
-              p: showTranslation ? 1 : 0,
-            }}
-          >
-            <Box
-              component="img"
-              src={showTranslation ? GlobeSub : GlobePlus}
-              alt="Toggle Translation"
-              sx={{ width: "100%", height: "100%", objectFit: "contain" }}
-            />
-          </IconButton>
-        )}
+        <Box sx={{ ...styles.centerCH }}>
+          {!!langCode && (
+            <IconButton
+              onClick={(e) => handleShowTranslation(e, !showTranslation)}
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                p: showTranslation ? 1 : 0,
+              }}
+            >
+              <Box
+                component="img"
+                src={showTranslation ? GlobeSub : GlobePlus}
+                alt="Toggle Translation"
+                sx={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
+            </IconButton>
+          )}
+          {!!handleSaveEdit && !!handleCancelTextBox && (
+            <>
+              <IconButton
+                size="small"
+                onClick={handleSaveEdit}
+                color="success"
+                sx={{ ...styles.fixedIconButtonStyle }}
+                data-testid="check-icon-id"
+              >
+                <CheckRoundedIcon fontSize="small" />
+              </IconButton>
+              <IconButton
+                size="small"
+                onClick={() => handleCancelTextBox(name)}
+                color="secondary"
+                sx={{ ...styles.fixedIconButtonStyle }}
+                data-testid="close-icon-id"
+              >
+                <CloseRoundedIcon fontSize="small" />
+              </IconButton>
+            </>
+          )}
+        </Box>
       </Box>
 
       {/* Translation Field */}
       {!!langCode && showTranslation && (
         <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
           <Box
-            sx={{
-              backgroundColor: "#F3F5F6",
-              borderRadius: 2,
-              px: 1,
-              py: 0.5,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              minWidth: 40,
-            }}
+            bgcolor="background.container"
+            borderRadius={2}
+            px={1}
+            py={0.5}
+            minWidth={40}
+            sx={{ ...styles.centerCVH }}
           >
             <LanguageIcon fontSize="small" color="info" />
             <Typography variant="caption" fontSize={10}>

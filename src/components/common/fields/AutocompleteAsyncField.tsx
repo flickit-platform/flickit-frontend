@@ -17,16 +17,17 @@ import ErrorDataLoading from "../errors/ErrorDataLoading";
 import { styles } from "@styles";
 import { SPACE_LEVELS, TQueryProps } from "@/types/index";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import uniqueId from "@/utils/uniqueId";
 import Chip from "@mui/material/Chip";
 import { t } from "i18next";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import { SxProps, Theme } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import showToast from "@/utils/toastError";
+import { useTheme } from "@mui/material";
 
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -152,8 +153,10 @@ const AutocompleteBaseField = (
     setError,
     searchable = true,
     disabled,
+    filterSelectedOptions = true,
     ...rest
   } = props;
+  const theme = useTheme();
   const { name, onChange, ref, value, ...restFields } = field;
   const {
     formState: { errors },
@@ -187,7 +190,9 @@ const AutocompleteBaseField = (
       setOptions((prevOptions) => [...prevOptions, newOption]);
       onChange(newOption);
     } catch (e) {
-      console.error(e);
+      const err = e as any;
+      onChange(value);
+      showToast(err);
     }
   };
 
@@ -214,16 +219,6 @@ const AutocompleteBaseField = (
       active = false;
     };
   }, [loaded]);
-
-  useEffect(() => {
-    const exactMatch = options.find(
-      (option) =>
-        getOptionLabel(option).toLowerCase() === inputValue.toLowerCase(),
-    );
-    if (exactMatch) {
-      onChange(exactMatch);
-    }
-  }, [inputValue, options]);
 
   const getFilteredOptions = (options: any[], params: any) => {
     return options
@@ -263,17 +258,19 @@ const AutocompleteBaseField = (
   };
 
   const handleBlur = () => {
-    if (
-      inputValue &&
-      hasAddBtn &&
-      !optionsData?.some((opt) => getOptionLabel(opt) === inputValue)
-    ) {
+    const exactMatch = optionsData.find(
+      (option) =>
+        getOptionLabel(option).toLowerCase() === inputValue.toLowerCase(),
+    );
+
+    if (exactMatch) {
+      onChange(exactMatch);
+    } else if (inputValue && hasAddBtn) {
       createSpaceQuery();
     }
+
     setOpen(false);
   };
-
-
   return (
     <Autocomplete
       {...restFields}
@@ -307,7 +304,7 @@ const AutocompleteBaseField = (
       autoComplete
       disablePortal={false}
       includeInputInList
-      filterSelectedOptions={true}
+      filterSelectedOptions={filterSelectedOptions}
       filterOptions={(options, params) => {
         const filtered = getFilteredOptions(options, params);
         const exactMatch = optionsData?.find(
@@ -336,7 +333,6 @@ const AutocompleteBaseField = (
       }}
       onChange={(event: any, newValue: any) => {
         if (newValue?.inputValue) {
-          // handle the case where the "Add" button is clicked
           onChange({ [filterFields[0]]: newValue.inputValue });
         } else {
           onChange(newValue);
@@ -405,15 +401,12 @@ const AutocompleteBaseField = (
               {option?.[filterFields[0]]}
             </Box>
             {!!option?.[filterFields[1]] && (
-              <Box
-                sx={{
-                  ...theme.typography.semiBoldSmall,
-                  color: "#3D4D5C80",
-                }}
-              >
+              <Box color="#3D4D5C80" sx={{ ...theme.typography.semiBoldSmall }}>
                 (
                 {option?.[filterFields[1]].code
-                  ? option?.[filterFields[1]].code
+                  ? option?.languages
+                      .map((lang: { code: string; title: string }) => lang.code)
+                      .join(", ")
                   : option?.[filterFields[1]]}
                 )
               </Box>
@@ -425,14 +418,14 @@ const AutocompleteBaseField = (
                 sx={{
                   marginInlineStart: "auto",
                   ...(option?.type?.code === SPACE_LEVELS.PREMIUM && {
-                    background:
-                      "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
+                    background: `linear-gradient(to right top,${theme.palette.primary.dark} 0%,#2D80D2 33%,${theme.palette.primary.dark} 100%)`,
                   }),
                 }}
                 color={option?.isPrivate ? "secondary" : "default"}
                 label={
                   <Typography
-                    sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
+                    variant="semiBoldSmall"
+                    color="background.containerLowest"
                   >
                     {option?.isPrivate ? (
                       <Trans i18nKey="common.privateTitle" />

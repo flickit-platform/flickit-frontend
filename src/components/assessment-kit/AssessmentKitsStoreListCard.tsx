@@ -8,8 +8,8 @@ import { LoadingSkeleton } from "../common/loadings/LoadingSkeleton";
 import uniqueId from "@/utils/uniqueId";
 import { useParams } from "react-router-dom";
 import keycloakService from "@/service/keycloakService";
-import NewAssessmentDialog from "@components/assessment-kit/NewAssessmentDialog";
-import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import NewAssessmentDialog from "@/components/common/dialogs/NewAssessmentDialog";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import { usePurchaseDialog } from "@/hooks/usePurchaseDialog";
 
 const AssessmentKitsStoreListCard = ({ small = false }: any) => {

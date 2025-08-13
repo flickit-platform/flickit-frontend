@@ -2,13 +2,13 @@ import axios, { AxiosRequestConfig } from "axios";
 import { TId } from "@/types";
 
 export const questionnaire = {
-  getAll(
-    args: { assessmentId: TId },
-    config?: AxiosRequestConfig<any>,
-  ) {
-    return axios.get(`/api/v2/assessments/${args.assessmentId}/questionnaires/`, {
-      ...config,
-    });
+  getAll(args: { assessmentId: TId }, config?: AxiosRequestConfig<any>) {
+    return axios.get(
+      `/api/v2/assessments/${args.assessmentId}/questionnaires/`,
+      {
+        ...config,
+      },
+    );
   },
 
   getQuestionnaireAnswers(
@@ -29,6 +29,24 @@ export const questionnaire = {
           page,
           size,
         },
+      },
+    );
+  },
+
+  getNext(
+    args: {
+      questionnaireId: TId;
+      assessmentId: TId;
+      size: number;
+      page: number;
+    },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    const { assessmentId, questionnaireId } = args;
+    return axios.get(
+      `/api/v1/assessments/${assessmentId}/questionnaires/${questionnaireId}/next`,
+      {
+        ...(config ?? {}),
       },
     );
   },

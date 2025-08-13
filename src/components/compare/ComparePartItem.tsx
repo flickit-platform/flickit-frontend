@@ -17,7 +17,6 @@ import {
   useCompareContext,
   useCompareDispatch,
 } from "@providers/CompareProvider";
-import { theme } from "@/config/theme";
 
 interface IComparePartsItemProps {
   data: any;
@@ -41,12 +40,7 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
       height="100%"
       position="relative"
     >
-      {data?.id && (
-        <DeleteAssessmentIconBtn
-          index={index}
-          id={data?.id}
-        />
-      )}
+      {data?.id && <DeleteAssessmentIconBtn index={index} id={data?.id} />}
       <Button
         fullWidth
         color="inherit"
@@ -56,9 +50,9 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
           height: "100%",
           px: 3.8,
           borderRadius: 2,
-          background: "white",
+          bgcolor: "background.containerLowest",
           border: `1.5px dashed ${
-            disabled ? "#101c324f" : data?.color?.code ?? "#101c32"
+            disabled ? "#101c324f" : (data?.color?.code ?? "#101c32")
           }`,
           ...(data
             ? {
@@ -80,7 +74,7 @@ const ComparePartItem = (props: IComparePartsItemProps) => {
             >
               {data.title}
             </Title>
-            <Box display="flex" justifyContent="center">
+            <Box sx={{ ...styles.centerH }}>
               <Gauge
                 maturity_level_number={data?.kit?.maturityLevelsCount}
                 isMobileScreen={true}

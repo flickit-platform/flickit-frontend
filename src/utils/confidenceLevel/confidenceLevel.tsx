@@ -25,13 +25,11 @@ const ConfidenceLevel = ({
   return (
     <Suspense fallback={<Box>fallback</Box>}>
       <Box
-        sx={{
-          display: "inline-flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "2px",
-          marginInlineStart: 0.5,
-        }}
+        display="inline-flex"
+        justifyContent="center"
+        alignItems="center"
+        gap="2px"
+        marginInlineStart={0.5}
       >
         {displayNumber && (
           <Typography
@@ -77,7 +75,7 @@ const calculate = (inputNumber: any) => {
     case number < 80:
       id = 80;
       break;
-    case number <= 100:
+    case number < 100:
       id = 90;
       break;
     default:

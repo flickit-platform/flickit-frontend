@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import uniqueId from "@/utils/uniqueId";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { Link, NavLink, useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ import {
 } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
 import { styles } from "@styles";
-import { Button, ListItemText, Menu, MenuItem } from "@mui/material";
+import { Button, ListItemText, Menu, MenuItem, useTheme } from "@mui/material";
 import useScreenResize from "@/utils/useScreenResize";
 import { ArrowDropDownRounded, ArrowDropUpRounded } from "@mui/icons-material";
 import languageDetector from "@/utils/languageDetector";
@@ -32,7 +32,11 @@ type TabItem = {
 };
 
 const tabListTitle: TabItem[] = [
-  { label: "dashboard.dashboard", address: "dashboard", permission: "viewDashboard" },
+  {
+    label: "dashboard.dashboard",
+    address: "dashboard",
+    permission: "viewDashboard",
+  },
   {
     label: "common.questions",
     address: "questionnaires",
@@ -49,10 +53,16 @@ const tabListTitle: TabItem[] = [
     address: "report",
     permission: "manageReportMetadata",
   },
+  {
+    label: "assessmentReport.reportTitle",
+    address: "settings",
+    permission: "viewDashboard",
+  },
 ];
 
 const MainTabs = (props: any) => {
   const dispatch = useAssessmentDispatch();
+  const theme = useTheme();
 
   const { onTabChange, selectedTab, flexColumn } = props;
   const { service } = useServiceContext();
@@ -113,7 +123,7 @@ const MainTabs = (props: any) => {
           sx={{
             ...styles.centerVH,
             mt: 1,
-            background: "#2466A814",
+            bgcolor: "#2466A814",
             borderRadius: "16px",
             p: 1.3,
           }}
@@ -174,7 +184,7 @@ const MainTabs = (props: any) => {
               ) : (
                 <Box
                   sx={{
-                    background: "#2466A814",
+                    bgcolor: "#2466A814",
                     borderRadius: "16px",
                     alignItems: "center",
                     justifyContent: "center",
@@ -203,31 +213,26 @@ const MainTabs = (props: any) => {
                           value={tab.address}
                           sx={{
                             ...theme.typography.semiBoldLarge,
+                            display:
+                              tab.address == "settings" ? "none" : "initial",
                             flexGrow: flexColumn ? 0 : 1,
                             border: "none",
                             textTransform: "none",
-                            color: "#2B333B",
+                            color: "text.primary",
                             maxWidth: "unset",
                             "&.Mui-selected": {
                               boxShadow: "0 1px 4px rgba(0,0,0,25%) !important",
                               borderRadius: 1,
-                              color: theme.palette.primary.main,
-                              background: "#fff",
+                              color: "primary.main",
+                              bgcolor: "background.containerLowest",
                               "&:hover": {
-                                background: "#fff",
+                                bgcolor: "background.containerLowest",
                                 border: "none",
                               },
                             },
                           }}
                           label={
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: 1,
-                              }}
-                            >
+                            <Box gap={1} sx={{ ...styles.centerVH }}>
                               <Typography variant="semiBoldLarge">
                                 <Trans i18nKey={tab.label} />
                               </Typography>

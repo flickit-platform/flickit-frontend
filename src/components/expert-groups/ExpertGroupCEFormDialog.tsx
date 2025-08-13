@@ -10,14 +10,13 @@ import setServerFieldErrors from "@utils/setServerFieldError";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@utils/CustomError";
 import { useNavigate } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
 import UploadField from "@common/fields/UploadField";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
-import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 interface IExpertGroupCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -30,6 +29,7 @@ interface IExpertGroupCEFromDialogProps extends DialogProps {
 
 const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
   const [loading, setLoading] = useState(false);
+
   const { service } = useServiceContext();
   const {
     onClose: closeDialog,
@@ -94,7 +94,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
       const err = e as ICustomError;
       setLoading(false);
       setServerFieldErrors(err, formMethods);
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -106,8 +106,8 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
         <>
           <NoteAddRoundedIcon
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineStart: "unset",
+              marginInlineEnd: 1,
             }}
           />
           {type === "update" ? (
@@ -176,7 +176,7 @@ const ExpertGroupCEFormDialog = (props: IExpertGroupCEFromDialogProps) => {
           type={type}
           hasViewBtn={!hideSubmitAndView}
           onSubmit={(...args) =>
-            formMethods.handleSubmit((data) => onSubmit(data, ...args))
+            formMethods.handleSubmit((data) => onSubmit(data, ...args))()
           }
         />
       </FormProviderWithForm>

@@ -11,13 +11,14 @@ import OptionList from "./OptionsList";
 import OptionForm from "./OptionForm";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { useQuery } from "@/utils/useQuery";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { dropdownStyle } from "./ImpactForm";
 import languageDetector from "@/utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
+import showToast from "@/utils/toastError";
+import { styles } from "@styles";
 
 const OptionsSection = ({
   question,
@@ -85,7 +86,7 @@ const OptionsSection = ({
         });
     } catch (err) {
       const error = err as ICustomError;
-      toastError(error);
+      showToast(error);
     }
   };
   const handleAddNewRow = () => setShowNewOptionForm(true);
@@ -117,7 +118,7 @@ const OptionsSection = ({
         id: null,
       });
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -145,7 +146,7 @@ const OptionsSection = ({
         });
     } catch (err) {
       const error = err as ICustomError;
-      toastError(error);
+      showToast(error);
     }
   };
 
@@ -154,13 +155,10 @@ const OptionsSection = ({
       <Box
         mt={1.5}
         p={1.5}
-        sx={{
-          borderRadius: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 2,
-        }}
+        borderRadius="8px"
+        justifyContent="space-between"
+        gap={2}
+        sx={{ ...styles.centerV }}
       >
         <Typography variant="body2">
           <Trans i18nKey="kitDesigner.answerOptions" />

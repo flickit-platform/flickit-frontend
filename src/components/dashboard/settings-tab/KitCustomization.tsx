@@ -10,16 +10,14 @@ import { useQuery } from "@utils/useQuery";
 import firstCharDetector from "@utils/firstCharDetector";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useForm } from "react-hook-form";
-import { theme } from "@config/theme";
 import KitCustomizationTable from "./kitCustomizationTable";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
-import { toast } from "react-toastify";
 import { styles } from "@styles";
 import InputCustomEditor from "@common/fields/InputCustomEditor";
+import showToast from "@/utils/toastError";
 
 const KitCustomization = (props: any) => {
   const { kitInfo } = props;
@@ -149,11 +147,12 @@ const KitCustomization = (props: any) => {
           });
           setKitData(items);
           setHasChanges(false);
-          toast.success(
+          showToast(
             <Trans
               i18nKey="spaces.spaceUpdatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
+            { variant: "success" },
           );
         } else {
           const customData = inputData;
@@ -168,16 +167,17 @@ const KitCustomization = (props: any) => {
           setKitData(items);
           setEdit({ allow: true, idC: kitCustomId });
           setHasChanges(false);
-          toast.success(
+          showToast(
             <Trans
               i18nKey="spaces.spaceCreatedSuccessMessage"
               values={{ title: inputData.title }}
             />,
+            { variant: "success" },
           );
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     })();
   };
@@ -198,7 +198,7 @@ const KitCustomization = (props: any) => {
                 width: "100%",
                 display: "inline-block",
               }}
-              color="#2B333B"
+              color="text.primary"
               variant="headlineSmall"
             >
               <Trans i18nKey="settings.kitCustomization" />
@@ -210,7 +210,7 @@ const KitCustomization = (props: any) => {
                 marginBottom: "10px !important",
               }}
             />
-            <Grid sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid sx={{ ...styles.centerH }}>
               <Grid
                 item
                 xs={12}
@@ -218,18 +218,11 @@ const KitCustomization = (props: any) => {
                   ...styles.centerVH,
                 }}
               >
-                <Typography color="#2B333B" variant="semiBoldLarge">
+                <Typography color="text.primary" variant="semiBoldLarge">
                   <Trans i18nKey="settings.kitCustomTitle" />
                 </Typography>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: { md: "350px" },
-                  }}
-                >
+                <Box width={{ md: "350px" }} sx={{ ...styles.centerVH }}>
                   <OnHoverInputCustomTitle
                     formMethods={formMethods}
                     inputData={inputData}
@@ -250,20 +243,16 @@ const KitCustomization = (props: any) => {
             />
             <Box sx={{ mb: 2 }}>
               <Typography
+                component="div"
+                variant="titleMedium"
+                color="text.primary"
                 sx={{
-                  ...theme.typography.titleMedium,
-                  color: "#2B333B",
                   mb: 1,
                 }}
               >
                 <Trans i18nKey="dashboard.customizingSubjectAndAttributes" />
               </Typography>
-              <Typography
-                sx={{
-                  ...theme.typography.bodyMedium,
-                  color: "#2B333B",
-                }}
-              >
+              <Typography variant="bodyMedium" color="text.primary">
                 <Trans i18nKey="settings.viewTheWeightAndSubject" />
               </Typography>
             </Box>
@@ -378,11 +367,10 @@ const OnHoverInputCustomTitle = (props: any) => {
     <Box>
       <Box
         my={1.5}
+        justifyContent="space-between"
+        position="relative"
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          position: "relative",
+          ...styles.centerV,
           cursor: "pointer",
         }}
         width="100%"
@@ -413,15 +401,14 @@ const OnHoverInputCustomTitle = (props: any) => {
           </Box>
         ) : (
           <Box
+            minHeight="38px"
+            borderRadius="4px"
+            paddingLeft="8px"
+            paddingRight="12px"
+            width="100%"
+            justifyContent="space-between"
             sx={{
-              minHeight: "38px",
-              borderRadius: "4px",
-              paddingLeft: "8px;",
-              paddingRight: "12px;",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              ...styles.centerV,
               wordBreak: "break-word",
             }}
             onClick={() => setShow(!show)}

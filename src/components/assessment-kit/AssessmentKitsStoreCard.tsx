@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, secondaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import PriceIcon from "@/assets/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
-import { Avatar } from "@mui/material";
+import { Avatar, useTheme } from "@mui/material";
 import stringAvatar from "@/utils/stringAvatar";
 import { formatLanguageCodes } from "@/utils/languageUtils";
 import keycloakService from "@/service/keycloakService";
@@ -36,6 +36,7 @@ const AssessmentKitsStoreCard = (props: any) => {
     hasAccess,
   } = props;
 
+  const theme = useTheme();
   const navigate = useNavigate();
   const { config } = useConfigContext();
   const paid = !isFree && !hasAccess;
@@ -84,7 +85,13 @@ const AssessmentKitsStoreCard = (props: any) => {
     e.preventDefault();
     e.stopPropagation();
     if (paid) {
-      dialogPurchaseProps.openDialog();
+      dialogPurchaseProps.openDialog({
+        ...dialogPurchaseProps.context,
+        data: {
+          ...dialogPurchaseProps.context.data,
+          title,
+        },
+      });
     } else {
       createAssessment(e, id, title);
     }
@@ -120,43 +127,35 @@ const AssessmentKitsStoreCard = (props: any) => {
     <Box
       to={small ? `./../${id}/` : `${id}/`}
       component={Link}
+      borderRadius={2}
+      height="100%"
+      borderLeft={`4px solid ${
+        isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
+      }`}
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      color="inherit"
+      p={small ? "12px 24px" : { xs: "24px", sm: "32px" }}
       sx={{
         ...styles.shadowStyle,
-        borderRadius: 2,
-        height: "100%",
-        mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
-        borderLeft: `4px solid ${
-          isPrivate ? theme.palette.secondary.main : theme.palette.primary.main
-        }`,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
         cursor: "pointer",
         textDecoration: "unset",
-        color: "inherit",
-        p: small ? "12px 24px" : { xs: "24px", sm: "32px" },
+        mb: small ? "8px !important" : { xs: "12px", sm: "40px  !important" },
       }}
     >
       <Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box display="flex" justifyContent="space-between">
           <Box
             mb={small ? 0.5 : ""}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              gap: 1,
-            }}
+            alignItems="flex-start"
+            gap={1}
+            sx={{ ...styles.centerCV }}
           >
             <Typography
+              variant={small ? "titleMedium" : "headlineSmall"}
+              color={isPrivate ? "secondary.main" : "primary.main"}
               sx={{
-                ...(small
-                  ? theme.typography.titleMedium
-                  : theme.typography.headlineSmall),
-                color: isPrivate
-                  ? theme.palette.secondary.main
-                  : theme.palette.primary.main,
                 fontFamily: languageDetector(title)
                   ? farsiFontFamily
                   : secondaryFontFamily,
@@ -165,9 +164,7 @@ const AssessmentKitsStoreCard = (props: any) => {
               {title}
             </Typography>
             <Box
-              sx={{
-                ...styles.centerV,
-              }}
+              sx={{ ...styles.centerV }}
               gap={small ? 0.5 : 1}
               onClick={(e) => {
                 e.preventDefault();
@@ -189,11 +186,9 @@ const AssessmentKitsStoreCard = (props: any) => {
                 }}
               />
               <Typography
+                variant={small ? "labelSmall" : "semiBoldLarge"}
+                color="background.onVariant"
                 sx={{
-                  ...(small
-                    ? theme.typography.labelSmall
-                    : theme.typography.semiBoldLarge),
-                  color: "#6C8093",
                   textDecoration: "none",
                   fontFamily: languageDetector(expertGroup.title)
                     ? farsiFontFamily
@@ -223,8 +218,8 @@ const AssessmentKitsStoreCard = (props: any) => {
               label={<Trans i18nKey="common.private" />}
               size={small ? "small" : "medium"}
               sx={{
-                background: "#FCE8EF",
-                color: "#B8144B",
+                bgcolor: "secondary.bg",
+                color: "secondary.main",
                 ...(small
                   ? theme.typography.semiBoldMedium
                   : theme.typography.semiBoldLarge),
@@ -236,14 +231,12 @@ const AssessmentKitsStoreCard = (props: any) => {
           <Typography
             component="div"
             textAlign="justify"
+            variant={small ? "bodyMedium" : "bodyLarge"}
+            mt={{ xs: "8px", sm: small ? "8px" : "32px" }}
             sx={{
-              ...(small
-                ? theme.typography.bodyMedium
-                : theme.typography.bodyLarge),
               fontFamily: languageDetector(summary)
                 ? farsiFontFamily
                 : secondaryFontFamily,
-              mt: { xs: "8px", sm: small ? "8px" : "32px" },
             }}
             dangerouslySetInnerHTML={{
               __html: `${truncatedSummary}${isSummaryTruncated}`,
@@ -252,34 +245,25 @@ const AssessmentKitsStoreCard = (props: any) => {
         </Box>
       </Box>
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: small ? 1 : 2,
-          mt: small ? 1 : undefined,
-        }}
+        display="flex"
+        flexDirection={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        alignItems="center"
+        gap={small ? 1 : 2}
+        mt={small ? 1 : undefined}
       >
         <Box
-          sx={{
-            display: "flex",
-            width: { xs: "100%", sm: "unset" },
-            justifyContent: "center",
-            gap: small ? "4px" : { xs: "48px", md: "8px", lg: "48px" },
-            bgcolor: "#EDF0F2",
-            borderRadius: 2,
-            px: small ? 1 : 2,
-            py: small ? 0.5 : 1,
-            flexWrap: "wrap",
-          }}
+          display="flex"
+          width={{ xs: "100%", sm: "unset" }}
+          gap={small ? "4px" : { xs: "48px", md: "8px", lg: "48px" }}
+          bgcolor="background.containerHigh"
+          borderRadius={2}
+          px={small ? 1 : 2}
+          py={small ? 0.5 : 1}
+          flexWrap="wrap"
+          sx={{ ...styles.centerH }}
         >
-          <Box
-            sx={{
-              ...styles.centerV,
-              gap: small ? "4px" : 1,
-            }}
-          >
+          <Box gap={small ? "4px" : 1} sx={{ ...styles.centerV }}>
             <CheckStatus
               small={small}
               isPrivate={isPrivate}
@@ -288,12 +272,7 @@ const AssessmentKitsStoreCard = (props: any) => {
             />
           </Box>
 
-          <Box
-            sx={{
-              ...styles.centerV,
-              gap: small ? "4px" : 1,
-            }}
-          >
+          <Box gap={small ? "4px" : 1} sx={{ ...styles.centerV }}>
             <LanguageIcon
               sx={{
                 fontSize: small ? "1rem" : { xs: "20px", sm: "26px" },
@@ -315,13 +294,9 @@ const AssessmentKitsStoreCard = (props: any) => {
           size={small ? "small" : "large"}
           sx={{
             width: { xs: "100%", sm: "unset" },
-            backgroundColor: isPrivate
-              ? theme.palette.secondary.main
-              : theme.palette.primary.main,
+            backgroundColor: isPrivate ? "secondary.main" : "primary.main",
             "&:hover": {
-              backgroundColor: isPrivate
-                ? theme.palette.secondary.dark
-                : theme.palette.primary.dark,
+              backgroundColor: isPrivate ? "secondary.dark" : "primary.dark",
             },
           }}
         >
@@ -355,6 +330,7 @@ const CheckStatus: React.FC<CheckStatusProps> = ({
     if (isFree) return "free";
     return hasAccess ? "purchased" : "paid";
   };
+  const theme = useTheme();
 
   const status = getStatus();
   const iconColor = isPrivate

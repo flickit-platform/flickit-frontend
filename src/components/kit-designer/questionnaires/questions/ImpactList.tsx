@@ -19,6 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import uniqueId from "@/utils/uniqueId";
+import { styles } from "@styles";
 
 interface OptionValue {
   optionId: number;
@@ -124,12 +125,9 @@ const AttributeImpactList = ({
           {attribute.impacts.map((item) => (
             <Box
               key={item.questionImpactId}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                py: 1.5,
-              }}
+              justifyContent="space-between"
+              py={1.5}
+              sx={{ ...styles.centerV }}
             >
               <ImpactDetails
                 attribute={attribute}
@@ -161,7 +159,7 @@ const AttributeImpactList = ({
       ))}
 
       {!isAddingNew && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <Box mt={2} sx={{ ...styles.centerH }}>
           <Button
             onClick={() => setIsAddingNew(true)}
             variant="outlined"
@@ -186,14 +184,7 @@ const ImpactDetails = ({
   fields,
   hasWeight,
 }: any) => (
-  <Box
-    sx={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-    }}
-    width="100%"
-  >
+  <Box justifyContent="space-between" width="100%" sx={{ ...styles.centerV }}>
     {editMode === item.questionImpactId ? (
       <>
         {fields.map((field: any, idx: number) => (
@@ -263,7 +254,7 @@ const ActionButtons = ({
   onDelete,
 }: any) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ ...styles.centerV }}>
       {editMode ? (
         <>
           <IconButton

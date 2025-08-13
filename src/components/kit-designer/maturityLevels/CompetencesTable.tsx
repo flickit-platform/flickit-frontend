@@ -7,11 +7,11 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import toastError from "@/utils/toastError";
 import { ICustomError } from "@/utils/CustomError";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import languageDetector from "@utils/languageDetector";
-import {farsiFontFamily, primaryFontFamily} from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import showToast from "@/utils/toastError";
 
 interface CompetencesTableProps {
   data: Array<{ id: number; title: string; competences: any[] }>;
@@ -104,7 +104,7 @@ const CompetencesTable = ({
       maturityLevelsCompetences.query(); // Refresh data
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -116,9 +116,16 @@ const CompetencesTable = ({
             <TableCell></TableCell>
             {data.map((row) => (
               <TableCell sx={{ textAlign: "center" }} key={row.id}>
-                <Typography  sx={{fontFamily: languageDetector(row.title as string)
+                <Typography
+                  sx={{
+                    fontFamily: languageDetector(row.title as string)
                       ? farsiFontFamily
-                      : primaryFontFamily }} variant="semiBoldMedium">{row.title}</Typography>
+                      : primaryFontFamily,
+                  }}
+                  variant="semiBoldMedium"
+                >
+                  {row.title}
+                </Typography>
               </TableCell>
             ))}
           </TableRow>
@@ -128,13 +135,23 @@ const CompetencesTable = ({
             <TableRow
               key={row.index}
               sx={{
-                backgroundColor: row.index % 2 === 0 ? "#ffffff" : "#2466a812",
+                backgroundColor:
+                  row.index % 2 === 0
+                    ? "background.containerLowest"
+                    : "#2466a812",
               }}
             >
               <TableCell>
-                <Typography variant="semiBoldMedium" sx={{fontFamily: languageDetector(row.title as string)
+                <Typography
+                  variant="semiBoldMedium"
+                  sx={{
+                    fontFamily: languageDetector(row.title as string)
                       ? farsiFontFamily
-                      : primaryFontFamily }} >{row.title}</Typography>
+                      : primaryFontFamily,
+                  }}
+                >
+                  {row.title}
+                </Typography>
               </TableCell>
               {data.map((column, colIndex) => {
                 const competence = row.competences.find(

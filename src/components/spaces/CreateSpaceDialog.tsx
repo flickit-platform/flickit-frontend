@@ -9,16 +9,11 @@ import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
 import setServerFieldErrors from "@utils/setServerFieldError";
-import toastError from "@utils/toastError";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 import { useNavigate } from "react-router-dom";
-import { theme } from "@/config/theme";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import greenCheckmark from "@/assets/svg/greenCheckmark.svg";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { t } from "i18next";
 import Check from "@components/spaces/Icons/check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -28,6 +23,9 @@ import {
   assessmentActions,
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
+import showToast from "@utils/toastError";
+import { v3Tokens } from "@/config/tokens";
+import { styles } from "@styles";
 
 const PremiumBox = [
   {
@@ -90,7 +88,7 @@ const CreateSpaceDialog = (props: any) => {
   }, [spaceDefaultType?.code]);
 
   const close = () => {
-    if (step === 3) {
+    if (step === 2) {
       if (pendingKitData?.id) {
         dispatch(
           assessmentActions.setPendingKit({
@@ -120,12 +118,13 @@ const CreateSpaceDialog = (props: any) => {
       } else {
         const res = await service.space.create(data);
         setSpaceIdNum(res.data.id);
-        setStep(3);
+        showToast(t("spaces.spaceCreatedSuccessfully"), { variant: "success" });
+        close();
       }
       onSubmitForm();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setServerFieldErrors(err, formMethods);
     } finally {
       setLoading(false);
@@ -167,7 +166,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" color="text.primary">
         <Trans i18nKey="spaces.selectYourSpaceType" />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
@@ -211,7 +210,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" color="text.primary">
         <Trans i18nKey="spaces.setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
@@ -250,84 +249,12 @@ const CreateSpaceDialog = (props: any) => {
               onBack={() => setStep(1)}
               backType="text"
               type={type}
-              onSubmit={(event) =>
-                formMethods.handleSubmit((data) => onSubmit(data, event))
-              }
+              onSubmit={() => formMethods.handleSubmit(onSubmit)()}
             />
           </Box>
         </Box>
       </FormProviderWithForm>
     </Box>
-  );
-
-  const renderStepThree = () => (
-    <CEDialog {...rest} closeDialog={close} title={null}>
-      <Box
-        sx={{
-          display: "flex",
-          pt: 4,
-          px: 4,
-          height: "100%",
-          flexDirection: { xs: "column", sm: "row" },
-          alignItems: "center",
-          gap: { xs: 4, sm: 0 },
-        }}
-      >
-        <img
-          style={{ padding: "0px 15px" }}
-          src={greenCheckmark}
-          alt="greenCheckmark"
-        />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "32px",
-            px: 4,
-            pb: 4,
-          }}
-        >
-          <Typography
-            sx={{
-              ...theme.typography.headlineMedium,
-              WebkitTextFillColor: "transparent",
-              WebkitBackgroundClip: "text",
-              backgroundImage:
-                "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )",
-            }}
-          >
-            <Trans i18nKey="spaces.congratulation" />
-          </Typography>
-          <Typography sx={{ ...theme.typography.bodyLarge }}>
-            <Trans
-              i18nKey={
-                selectedType === "PREMIUM"
-                  ? "spaces.createPremiumSpaceCongratulation"
-                  : "spaces.createBasicSpaceCongratulation"
-              }
-            />
-          </Typography>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          marginInlineStart: "auto",
-          p: 2,
-          gap: 2,
-        }}
-      >
-        <Button onClick={close}>
-          <Trans i18nKey="common.close" />
-        </Button>
-        <Button onClick={goToSpace} variant="contained">
-          <Typography>
-            <Trans i18nKey="spaces.goToSpace" />
-          </Typography>
-        </Button>
-      </Box>
-    </CEDialog>
   );
 
   return (
@@ -339,22 +266,16 @@ const CreateSpaceDialog = (props: any) => {
           <>
             <CreateNewFolderRoundedIcon sx={{ marginInlineEnd: 1 }} />
             <Trans
-              i18nKey={type === "update" ? "spaces.updateSpace" : "spaces.createSpace"}
+              i18nKey={
+                type === "update" ? "spaces.updateSpace" : "spaces.createSpace"
+              }
             />
-            <IconButton
-              sx={{ color: "#fff", marginInlineStart: "auto" }}
-              onClick={close}
-              data-testid={"close-btn"}
-            >
-              <CloseIcon style={{ width: 24, height: 24 }} />
-            </IconButton>
           </>
         )
       }
     >
       {step === 1 && renderStepOne()}
       {step === 2 && renderStepTwo()}
-      {step === 3 && renderStepThree()}
     </CEDialog>
   );
 };
@@ -365,9 +286,11 @@ const getBorderStyle = (
   isBasic: boolean,
 ) => {
   if (isSelected) {
-    return isPremium ? "1px solid #2466A8" : "1px solid #668099";
+    return isPremium
+      ? `1px solid ${v3Tokens.primary.main}`
+      : "1px solid #668099";
   }
-  return "1px solid #C7CCD1";
+  return `1px solid ${v3Tokens.outline?.variant}`;
 };
 
 const getBackgroundStyle = (
@@ -385,14 +308,14 @@ const getHoverBorderColor = (isPremium: boolean, allowCreateBasic: boolean) => {
   if (isPremium) {
     return "#2D80D2";
   } else if (!allowCreateBasic) {
-    return "#C7CCD1";
+    return v3Tokens.outline.variant;
   }
-  return "#73808C";
+  return v3Tokens.outline.outline;
 };
 
 const getTextColor = (isBasic: boolean, allowCreateBasic: boolean) => {
   if (isBasic) {
-    return !allowCreateBasic ? "#3D4D5C80" : "#2B333B";
+    return !allowCreateBasic ? "#3D4D5C80" : v3Tokens.surface.on;
   }
   return "unset";
 };
@@ -411,7 +334,6 @@ const BoxType = ({
       setSelectedType("PREMIUM");
     }
   }, []);
-
   const isSelected = selectedType === type;
   const isPremium = type === "PREMIUM";
   const isBasic = type === "BASIC";
@@ -445,26 +367,26 @@ const BoxType = ({
       onClick={handleSelect}
     >
       <Box sx={{ mb: { xs: 0.1, sm: 1 } }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        <Box gap={0.5} sx={{ ...styles.centerV }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
+            variant="semiBoldMedium"
+            color={textColor}
             sx={{
-              ...theme.typography.semiBoldMedium,
               WebkitBackgroundClip: isPremium ? "text" : undefined,
               WebkitTextFillColor: isPremium ? "transparent" : undefined,
               backgroundImage: isPremium
-                ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
+                ? `linear-gradient(to right, #2466A8, #2D80D2, #2466A8 )`
                 : undefined,
-              color: textColor,
             }}
           >
             <Trans i18nKey={title} />
           </Typography>
         </Box>
         <Typography
+          variant="labelSmall"
+          color="background.onVariant"
           sx={{
-            ...theme.typography.labelSmall,
-            color: "#6C8093",
             mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
           }}
@@ -477,33 +399,28 @@ const BoxType = ({
         {bullets.map((text: string, index: number) => (
           <Box
             key={UniqueId()}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 0.1, sm: 1 },
-              mb: { xs: 0.1, sm: 1 },
-            }}
+            gap={{ xs: 0.1, sm: 1 }}
+            mb={{ xs: 0.1, sm: 1 }}
+            sx={{ ...styles.centerV }}
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography
+              variant="labelSmall"
+              color={textColor}
               sx={{
-                ...theme.typography.labelSmall,
                 WebkitBackgroundClip: isPremium ? "text" : undefined,
                 WebkitTextFillColor: isPremium ? "transparent" : undefined,
                 backgroundImage: isPremium
                   ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
                   : undefined,
-                color: textColor,
               }}
             >
               <Trans i18nKey={text} />
               {!allowCreateBasic && isBasic && index === 1 && (
                 <Typography
-                  sx={{
-                    ...theme.typography.labelSmall,
-                    color: theme.palette.error.main,
-                    display: "inline-block",
-                  }}
+                  variant="labelSmall"
+                  color="error.main"
+                  sx={{ display: "inline-block" }}
                 >
                   (<Trans i18nKey="spaces.reachedLimit" />)
                 </Typography>
@@ -515,18 +432,17 @@ const BoxType = ({
 
       {isSelected && isPremium && (
         <Box
+          color="primary.main"
+          position="absolute"
+          gap="8px"
+          bottom={{ xs: "-45px", md: "-54px" }}
           sx={{
-            color: theme.palette.primary.main,
-            position: "absolute",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "8px",
-            bottom: { xs: "-45px", md: "-54px" },
+            ...styles.centerVH,
+            cursor: "text",
           }}
         >
           <InfoOutlinedIcon fontSize="small" />
-          <Typography sx={{ ...theme.typography.labelSmall }}>
+          <Typography variant="labelSmall">
             <Trans i18nKey="spaces.spacePremiumInfo" />
           </Typography>
         </Box>

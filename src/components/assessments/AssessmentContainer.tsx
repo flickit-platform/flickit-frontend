@@ -21,7 +21,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useAuthContext } from "@providers/AuthProvider";
 import AssessmentTitle from "./AssessmentTitle";
-import { theme } from "@/config/theme";
 import PermissionControl from "../common/PermissionControl";
 import SettingIcon from "@/assets/icons/settingIcon";
 import NewAssessmentIcon from "@/assets/icons/newAssessment";
@@ -29,6 +28,7 @@ import AssessmenetInfoDialog from "@components/assessments/AssessmenetInfoDialog
 import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
+import { useTheme } from "@mui/material";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -66,15 +66,18 @@ const AssessmentContainer = () => {
     fetchSpaceInfo.query();
   }, []);
   const isSmallScreen = useScreenResize("sm");
+
+  const theme = useTheme();
+
   return (
     <PermissionControl error={[errorObject?.response]}>
       <Box display="flex" flexDirection="column" m="auto">
         <AssessmentTitle data={currentSpace} />
         {!fetchSpaceInfo.data?.canCreateAssessment && (
           <Typography
+            variant="semiBoldSmall"
             onClick={() => infoDialogProps.openDialog({})}
             sx={{
-              ...theme.typography.semiBoldSmall,
               textDecoration: "underline",
               cursor: "pointer",
               textAlign: "end",
@@ -123,7 +126,7 @@ const AssessmentContainer = () => {
                         color={
                           !fetchSpaceInfo.data?.canCreateAssessment
                             ? "#3D4D5C80"
-                            : "#fff"
+                            : theme.palette.background.containerLowest
                         }
                       />
                     }
@@ -156,17 +159,7 @@ const AssessmentContainer = () => {
           {}
         </Box>
         {isEmpty && !loading && (
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-              mt: 6,
-              gap: 4,
-            }}
-          >
+          <Box width="100%" mt={6} gap={4} sx={{ ...styles.centerCVH }}>
             <img
               src={AssessmentEmptyState}
               alt={"No assesment here!"}
@@ -175,8 +168,8 @@ const AssessmentContainer = () => {
             <Typography
               textAlign="center"
               variant="h3"
+              color="#9DA7B3"
               sx={{
-                color: "#9DA7B3",
                 fontSize: "3rem",
                 fontWeight: "900",
                 width: "60%",
@@ -187,8 +180,8 @@ const AssessmentContainer = () => {
             <Typography
               textAlign="center"
               variant="h1"
+              color="#9DA7B3"
               sx={{
-                color: "#9DA7B3",
                 fontSize: "1rem",
                 fontWeight: "500",
                 width: "60%",
@@ -246,15 +239,7 @@ const AssessmentContainer = () => {
                   dialogProps={dialogProps}
                 />
                 {pageCount > 1 && !isEmpty && (
-                  <Stack
-                    spacing={2}
-                    sx={{
-                      mt: 3,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
+                  <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
                     <Pagination
                       variant="outlined"
                       color="primary"

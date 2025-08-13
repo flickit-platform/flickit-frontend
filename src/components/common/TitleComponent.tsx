@@ -8,7 +8,7 @@ import AnchorRoundedIcon from "@mui/icons-material/AnchorRounded";
 import { styles } from "@styles";
 import HomeIcon from "@mui/icons-material/Home";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
 interface ITitle extends Omit<TypographyProps, "borderBottom"> {
@@ -66,7 +66,9 @@ const Title = (props: ITitle) => {
       {...wrapperProps}
     >
       {avatar && (
-        <Box sx={{ ...styles.centerV, alignSelf: "center" }}>{avatar}</Box>
+        <Box alignSelf="center" sx={{ ...styles.centerV }}>
+          {avatar}
+        </Box>
       )}
       <Box
         sx={{ flex: 1 }}
@@ -103,9 +105,9 @@ const Title = (props: ITitle) => {
                     color="inherit"
                     sx={{
                       opacity: 0.85,
-                      color: "gray",
-                      marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                      marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
+                      color: "disabled.main",
+                      marginInlineEnd: 0.5,
+                      marginInlineStart: "unset",
                     }}
                     {...backIconProps}
                   />
@@ -174,9 +176,8 @@ const Title = (props: ITitle) => {
               href={`#${inPageLink}`}
               className="title-hash-link"
               sx={{
-                display: "flex",
+                ...styles.centerV,
                 opacity: 0,
-                alignItems: "center",
                 ml: 1,
                 transition: "opacity .1s ease",
                 position: "relative",
@@ -201,11 +202,7 @@ const Title = (props: ITitle) => {
           </Typography>
         )}
       </Box>
-      <Box
-        ml={theme.direction === "rtl" ? "unset" : "auto"}
-        mr={theme.direction !== "rtl" ? "unset" : "auto"}
-        {...toolbarProps}
-      >
+      <Box marginInlineStart="auto" marginInlineEnd="unset" {...toolbarProps}>
         {toolbar}
       </Box>
     </Box>

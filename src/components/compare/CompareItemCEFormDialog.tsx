@@ -22,7 +22,7 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import AlertBox from "@common/AlertBox";
 import { useState } from "react";
-import {farsiFontFamily, primaryFontFamily, theme} from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
 
 interface ICompareItemCEFormDialog
@@ -46,8 +46,8 @@ const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
             <>
               <BorderColorRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
                 }}
               />
               <Trans i18nKey="compare.changeSelectedAssessment" />
@@ -56,8 +56,8 @@ const CompareItemCEFormDialog = (props: ICompareItemCEFormDialog) => {
             <>
               <AddBoxRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
                 }}
               />
               <Trans i18nKey="compare.selectAssessment" />
@@ -102,11 +102,13 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
   const [PageCount, setPageCount] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
   const calculateMaturityLevelQuery = useQuery<any>({
-    service: (args, config) => service.assessments.info.calculateMaturity(args, config),
+    service: (args, config) =>
+      service.assessments.info.calculateMaturity(args, config),
     runOnMount: false,
   });
   const calculateConfidenceLevelQuery = useQuery({
-    service: (args, config) => service.assessments.info.calculateConfidence(args, config),
+    service: (args, config) =>
+      service.assessments.info.calculateConfidence(args, config),
     runOnMount: false,
   });
   const onSubmit = (data: any) => {
@@ -168,7 +170,7 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                 <MenuItem
                   value={option}
                   key={option.id}
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{ ...styles.centerV }}
                 >
                   {option.id === "" ? (
                     option.title
@@ -182,13 +184,19 @@ const CompareItemCEForm = (props: ICompareItemCEForm) => {
                         {option.title}
                       </Title>
                       <Box
-                        sx={{
-                          ...styles.centerV,
-                          ml: theme.direction == "rtl" ? "unset" : "auto",
-                          mr: theme.direction == "rtl" ? "auto" : "unset",
-                        }}
+                        marginInlineStart="auto"
+                        marginInlineEnd="unset"
+                        sx={{ ...styles.centerV }}
                       >
-                        <Chip sx={{fontFamily: languageDetector(option?.kit?.title) ? farsiFontFamily : primaryFontFamily  }} label={option?.kit?.title} size="small" />
+                        <Chip
+                          sx={{
+                            fontFamily: languageDetector(option?.kit?.title)
+                              ? farsiFontFamily
+                              : primaryFontFamily,
+                          }}
+                          label={option?.kit?.title}
+                          size="small"
+                        />
                       </Box>
                     </>
                   )}

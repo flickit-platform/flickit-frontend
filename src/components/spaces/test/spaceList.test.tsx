@@ -42,6 +42,7 @@ const spaceCardRender = (modalStatus: {modal: boolean}) =>{
                      context: undefined
                    }}
                    fetchSpaces={vi.fn()}
+                   deleteSpace={vi.fn()}
                />
              </MemoryRouter>
           )

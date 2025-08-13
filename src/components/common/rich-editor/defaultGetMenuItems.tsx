@@ -6,7 +6,6 @@ import { Editor } from "@tiptap/react";
 import { t } from "i18next";
 import { useRef } from "react";
 import { Trans } from "react-i18next";
-import toastError from "@utils/toastError";
 import { IRichEditorMenuItem } from "./RichEditorMenuItem";
 import FormatBoldRoundedIcon from "@mui/icons-material/FormatBoldRounded";
 import FormatItalicRoundedIcon from "@mui/icons-material/FormatItalicRounded";
@@ -34,6 +33,7 @@ import TableRowDeleteIcon from "@atlaskit/icon/core/table-row-delete";
 import TableCellClearIcon from "@atlaskit/icon/core/table-cell-clear";
 import TableCellMergeIcon from "@atlaskit/icon/core/table-cell-merge";
 import TableCellSplitIcon from "@atlaskit/icon/core/table-cell-split";
+import showToast from "@utils/toastError";
 
 const defaultGetMenuItems = (
   editor: Editor,
@@ -241,7 +241,7 @@ const PromptLinkBody = (props: { editor: Editor; closePrompt: () => void }) => {
   const addLink = () => {
     const { value } = inputRef.current ?? {};
     if (!value) {
-      toastError(t("pleaseEnterALink") as string);
+      showToast(t("pleaseEnterALink") as string);
       return;
     }
     (editor.chain().focus() as any).toggleLink({ href: value }).run();

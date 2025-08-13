@@ -51,7 +51,7 @@ const PopoverContent = ({
 
   return (
     <Box px={2} py={1}>
-      <Typography variant="bodySmall" sx={{ mb: 1 }} color="#6C8093">
+      <Typography variant="bodySmall" sx={{ mb: 1 }} color="background.onVariant">
         <Trans i18nKey="common.orderBy" />
       </Typography>
       <RadioGroup value={getSelectedValue()} onChange={handleSortChange}>

@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Grid from "@mui/material/Grid";
 import uniqueId from "@/utils/uniqueId";
@@ -14,11 +13,12 @@ import { styles } from "@styles";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LoadingButton from "@mui/lab/LoadingButton";
 import useCalculate from "@/hooks/useCalculate";
 import { ErrorCodes } from "@/types/index";
+import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const TodoBox = (props: any) => {
   const { todoBoxData, fetchDashboard } = props;
@@ -33,11 +33,7 @@ const TodoBox = (props: any) => {
         >
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
-            <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-              }}
-            >
+            <Typography variant="headlineSmall">
               <Trans i18nKey="dashboard.whatToDoNow" />
             </Typography>
             <Tooltip title={<Trans i18nKey="dashboard.whatToDoNowTooltip" />}>
@@ -51,17 +47,12 @@ const TodoBox = (props: any) => {
               <React.Fragment key={uniqueId()}>
                 <Box
                   id={item.name}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    mb: "23px",
-                    mt: "32px",
-                  }}
+                  justifyContent="space-between"
+                  mb="23px"
+                  mt="32px"
+                  sx={{ ...styles.centerV }}
                 >
-                  <Typography
-                    sx={{ ...theme.typography.semiBoldLarge, color: "#2B333B" }}
-                  >
+                  <Typography variant="semiBoldLarge" color="text.primary">
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
                     )}
@@ -110,10 +101,8 @@ const TodoBox = (props: any) => {
           {" "}
           <Box sx={{ ...styles.centerV, mt: "-6px" }}>
             <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-                color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-              }}
+              color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
+              variant="headlineSmall"
             >
               <Trans i18nKey="dashboard.whatToDoNext" />
             </Typography>
@@ -130,20 +119,15 @@ const TodoBox = (props: any) => {
             return (
               <Box key={uniqueId()}>
                 <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    mb: "23px",
-                    mt: "32px",
-                  }}
+                  justifyContent="space-between"
+                  mb="23px"
+                  mt="32px"
+                  sx={{ ...styles.centerV }}
                   id={item.name}
                 >
                   <Typography
-                    sx={{
-                      ...theme.typography.semiBoldLarge,
-                      color: now.length < 0 ? "#2B333B" : "#3D4D5C80",
-                    }}
+                    variant="semiBoldLarge"
+                    color={now.length < 0 ? "text.primary" : "#3D4D5C80"}
                   >
                     {item.name == "questions" && (
                       <Trans i18nKey="dashboard.questionsIssues" />
@@ -268,7 +252,7 @@ export const IssuesItem = ({
       await approveInsights.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -283,7 +267,7 @@ export const IssuesItem = ({
       await fetchDashboard();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -294,7 +278,7 @@ export const IssuesItem = ({
       await approveAllAnswers.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -303,7 +287,7 @@ export const IssuesItem = ({
       await approveExpiredInsights.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
   const handleSolvedComments = async (event: any) => {
@@ -313,7 +297,7 @@ export const IssuesItem = ({
       await resolvedAllComments.query();
       await fetchDashboard();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -327,20 +311,38 @@ export const IssuesItem = ({
     if (errorCode === ErrorCodes.ConfidenceCalculationNotValid)
       calculateConfidence(handleGenerateAll);
   }, [generateInsights.errorObject]);
+  const theme = useTheme();
 
   const issueTextMap = {
-    unanswered: value > 1 ? "dashboard.needForAnswers" : "dashboard.needsForAnswer",
+    unanswered:
+      value > 1 ? "dashboard.needForAnswers" : "dashboard.needsForAnswer",
     unapprovedAnswers:
-      value > 1 ? "dashboard.answersNeedApproval" : "dashboard.answerNeedsApproval",
+      value > 1
+        ? "dashboard.answersNeedApproval"
+        : "dashboard.answerNeedsApproval",
     answeredWithLowConfidence:
-      value > 1 ? "dashboard.questionsConfidenceAnswers" : "dashboard.questionConfidenceAnswer",
-    withoutEvidence: value > 1 ? "dashboard.lackForEvidences" : "dashboard.lackForEvidence",
-    unresolvedComments: value > 1 ? "dashboard.commentsAreUnresolved" : "dashboard.commentIsUnresolved",
+      value > 1
+        ? "dashboard.questionsConfidenceAnswers"
+        : "dashboard.questionConfidenceAnswer",
+    withoutEvidence:
+      value > 1 ? "dashboard.lackForEvidences" : "dashboard.lackForEvidence",
+    unresolvedComments:
+      value > 1
+        ? "dashboard.commentsAreUnresolved"
+        : "dashboard.commentIsUnresolved",
     notGenerated: "dashboard.insightsNeedToBeGenerated",
-    unapproved: value > 1 ? "dashboard.insightsNeedApproval" : "dashboard.insightNeedsApproval",
-    expired: value > 1 ? "dashboard.expiredDueToNewAnswers" : "dashboard.expiredDueToNewAnswer",
+    unapproved:
+      value > 1
+        ? "dashboard.insightsNeedApproval"
+        : "dashboard.insightNeedsApproval",
+    expired:
+      value > 1
+        ? "dashboard.expiredDueToNewAnswers"
+        : "dashboard.expiredDueToNewAnswer",
     unprovidedMetadata:
-      value > 1 ? "dashboard.metadataAreNotProvided" : "dashboard.metadataIsNotProvided",
+      value > 1
+        ? "dashboard.metadataAreNotProvided"
+        : "dashboard.metadataIsNotProvided",
     unpublished: "dashboard.unpublishedReport",
     total: "dashboard.suggestAnyAdvicesSoFar",
   } as any;
@@ -350,13 +352,12 @@ export const IssuesItem = ({
   return (
     <Box
       onClick={handleNavigation}
+      borderRadius={2}
+      border={`0.1px solid ${colorPalette.main}`}
+      bgcolor={colorPalette.states.hover}
+      gap={1}
       sx={{
-        borderRadius: 2,
-        border: `0.1px solid ${colorPalette.main}`,
-        background: colorPalette.light,
-        display: "flex",
-        alignItems: "center",
-        gap: 1,
+        ...styles.centerV,
         textDecoration: "none",
         cursor: originalName === "questions" ? "pointer" : "unset",
       }}
@@ -369,10 +370,10 @@ export const IssuesItem = ({
       />
       <Typography
         sx={{
-          color: colorPalette.dark,
           display: "flex",
           gap: 1,
         }}
+        color={colorPalette.dark}
         variant={textVariant}
       >
         {typeof value === "number" && value !== 0 && (
@@ -391,7 +392,7 @@ export const IssuesItem = ({
           color={color === "info" ? "primary" : color}
           variant="outlined"
         >
-          <Typography sx={{ ...theme.typography.labelMedium }}>
+          <Typography variant="labelMedium">
             <Trans i18nKey="common.approveAll" />
           </Typography>
         </Button>
@@ -413,7 +414,7 @@ export const IssuesItem = ({
                 padding: "4px 10px",
               }}
             >
-              <Typography sx={{ ...theme.typography.labelMedium }}>
+              <Typography variant="labelMedium">
                 <Trans i18nKey="dashboard.generateAll" />
               </Typography>
             </LoadingButton>
@@ -439,9 +440,7 @@ export const IssuesItem = ({
                 loading={regenerateInsights.loading}
                 color={color === "info" ? "primary" : color}
               >
-                <Typography
-                  sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
-                >
+                <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
                   <Trans i18nKey={"common.regenerateAll"} />
                 </Typography>
               </LoadingButton>
@@ -458,9 +457,7 @@ export const IssuesItem = ({
               color={color === "info" ? "primary" : color}
               variant="outlined"
             >
-              <Typography
-                sx={{ ...theme.typography.labelMedium, whiteSpace: "nowrap" }}
-              >
+              <Typography variant="labelMedium" sx={{ whiteSpace: "nowrap" }}>
                 <Trans i18nKey="common.approveAll" />
               </Typography>
             </LoadingButton>
@@ -477,7 +474,7 @@ export const IssuesItem = ({
           color={color === "info" ? "primary" : color}
           variant="outlined"
         >
-          <Typography sx={{ ...theme.typography.labelMedium }}>
+          <Typography variant="labelMedium">
             <Trans i18nKey="common.resolveAll" />
           </Typography>
         </Button>
@@ -493,7 +490,7 @@ export const IssuesItem = ({
               padding: "4px 10px",
             }}
           >
-            <Typography sx={{ ...theme.typography.labelMedium }}>
+            <Typography variant="labelMedium">
               <Trans i18nKey="common.approveAll" />
             </Typography>
           </LoadingButton>

@@ -6,9 +6,9 @@ import { styles } from "@styles";
 import { useLocation, useParams } from "react-router-dom";
 import NavbarWithoutLogin from "@/components/common/NavbarWithoutLogin";
 import keycloakService from "@/service/keycloakService";
-import FloatButton from "@utils/floatButton";
+import FloatButton from "@/components/common/buttons/FloatButton";
 import useDialog from "@utils/useDialog";
-import ContactUsDialog from "@components/assessment-kit/ContactUsDialog";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
 import { isPathMatching } from "@/utils/pathMatcher";
 import PendingKitBanner from "@/components/common/dialogs/PendingKitBanner";
 
@@ -43,16 +43,15 @@ const AppLayout = (props: PropsWithChildren<{}>) => {
         <Suspense
           fallback={
             <Box sx={{ ...styles.centerVH }}>
-              <GettingThingsReadyLoading color={"gray"} />
+              <GettingThingsReadyLoading color={"disabled.main"} />
             </Box>
           }
         >
           {children}
         </Suspense>
-        <FloatButton dialogProps={dialogProps} />
+        <FloatButton onClick={() => dialogProps.openDialog({})} />
       </Box>
-      <PendingKitBanner/>
-
+      <PendingKitBanner />
       <ContactUsDialog {...dialogProps} />
     </Box>
   );

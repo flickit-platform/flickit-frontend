@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import { theme } from "@config/theme";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
@@ -14,9 +13,6 @@ import { useConfigContext } from "@providers/ConfgProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import keycloakService from "@/service/keycloakService";
 
-const login = () => {
-  keycloakService.doLogin();
-};
 const rawLandingPage = import.meta.env.VITE_LANDING_PAGE;
 const LandingPage =
   rawLandingPage && rawLandingPage !== "PLATFORM_LANDING_PAGE"
@@ -25,12 +21,24 @@ const LandingPage =
 
 const NavbarWithoutLogin = () => {
   const { config } = useConfigContext();
+
+  const handleButtonClick = (e: any, name: string) => {
+    keycloakService.doLogin();
+    (window as any).dataLayer.push({
+      event: "ppms.cm:trackEvent",
+      parameters: {
+        category: "Button",
+        action: "Click",
+        name: name,
+      },
+    });
+  };
   return (
     <AppBar
       component="nav"
       sx={{
         borderRadius: "0px",
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: "primary.main",
         position: "sticky",
         px: { xxl: 26, xl: 18, lg: 8, xs: 1, sm: 3 },
         boxShadow: "0 0px 8px rgba(10, 35, 66, 0.25)",
@@ -40,7 +48,7 @@ const NavbarWithoutLogin = () => {
       <Toolbar
         variant="dense"
         sx={{
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: "primary.main",
           borderRadius: 1,
           justifyContent: "space-between",
           p: 0,
@@ -67,25 +75,15 @@ const NavbarWithoutLogin = () => {
               style={{ maxWidth: "120px", height: "100%" }}
             />
           ) : (
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <CircularProgress size={20} sx={{ color: "#fff" }} />
+            <Box height="100" sx={{ ...styles.centerVH }}>
+              <CircularProgress
+                size={20}
+                sx={{ color: "background.containerLowest" }}
+              />
             </Box>
           )}
         </Typography>
-        <Box
-          sx={{
-            display: { xs: "none", md: "flex" },
-            gap: 2,
-            mx: "auto",
-          }}
-        >
+        <Box display={{ xs: "none", md: "flex" }} gap={2} mx="auto">
           {LandingPage && (
             <Button
               component={NavLink}
@@ -93,7 +91,7 @@ const NavbarWithoutLogin = () => {
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
-                color: "#fff",
+                color: "background.containerLowest",
               }}
               size="small"
             >
@@ -111,56 +109,34 @@ const NavbarWithoutLogin = () => {
             sx={{
               ...styles.activeNavbarLink,
               textTransform: "uppercase",
-              color: "#fff",
+              color: "background.containerLowest",
             }}
             size="small"
           >
             <Trans i18nKey="common.kitLibrary" />
           </Button>
         </Box>
-        <Box sx={{ display: { xs: "none", md: "block" }, ml: 3 }}>
+        <Box display={{ xs: "none", md: "block" }} ml={3}>
           {/* Other buttons */}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: { xs: 0.8, sm: 2 },
-          }}
-        >
+        <Box gap={{ xs: 0.8, sm: 2 }} sx={{ ...styles.centerV }}>
           {MULTILINGUALITY.toString() == "true" ? <LanguageSelector /> : ""}
-          <Button
-            variant={"outlined"}
-            size={"medium"}
-            onClick={login}
-            sx={{
-              height: "32px",
-              color: "#fff",
-              textTransform: "capitalize",
-              borderColor: "#fff",
-              "&:hover": {
-                borderColor: "#fff",
-              },
-            }}
-          >
-            <Trans i18nKey="common.login" />
-          </Button>
           <Button
             variant={"contained"}
             size={"medium"}
-            onClick={() => keycloakService._kc.register()}
+            onClick={(e) => handleButtonClick(e, "Login")}
             sx={{
               height: "32px",
-              color: theme.palette.primary.main,
+              color: "primary.main",
               textTransform: "capitalize",
-              background: "#F3F5F6",
+              bgcolor: "background.container",
               boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
               "&:hover": {
-                background: "#F3F5F6",
+                bgcolor: "background.container",
               },
             }}
           >
-            <Trans i18nKey="common.createAccount" />
+            <Trans i18nKey="common.loginOrSignup" />
           </Button>
         </Box>
       </Toolbar>

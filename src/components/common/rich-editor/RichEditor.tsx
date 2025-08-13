@@ -7,13 +7,14 @@ import Link from "@tiptap/extension-link";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import firstCharDetector from "@/utils/firstCharDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Table from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Placeholder from "@tiptap/extension-placeholder";
 import languageDetector from "@/utils/languageDetector";
+import { useTheme } from "@mui/material";
 
 interface IRichEditorProps {
   defaultValue?: string;
@@ -45,6 +46,7 @@ const RichEditor = (props: IRichEditorProps) => {
   } = props;
 
   const [isFarsi, setIsFarsi] = useState<any>(checkLang);
+  const theme = useTheme();
 
   useEffect(() => {
     setIsFarsi(checkLang);
@@ -156,10 +158,10 @@ const RichEditor = (props: IRichEditorProps) => {
               },
               "& .ProseMirror": {
                 outline: "none",
-                minHeight: `${editor?.isEmpty && type === "reportTab" ? "100px" : "80px"}`,
+                minHeight: `${editor?.isEmpty && type === "reportTab" ? "100px" : "110px"}`,
                 border: `1px solid ${editor?.isEmpty && type === "reportTab" ? "#8A0F2480" : "rgba(0, 0, 0, 0.23)"}`,
                 borderRadius: 1,
-                background: "#fff",
+                bgcolor: "white",
                 paddingInline: 1.5,
                 py: 1,
                 "& > p": editor?.isEmpty
@@ -172,6 +174,11 @@ const RichEditor = (props: IRichEditorProps) => {
                       unicodeBidi: "plaintext",
                       textAlign: "initial",
                     },
+              },
+              "& .ProseMirror table": {
+                direction: theme.direction,
+                width: "100%",
+                borderCollapse: "collapse",
               },
             }
           : { ...(boxProps.sx ?? {}) }

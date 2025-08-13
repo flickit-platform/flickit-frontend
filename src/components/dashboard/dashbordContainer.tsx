@@ -11,10 +11,10 @@ import { ICustomError, PathInfo } from "@/types/index";
 import { Link, useLocation, useOutlet, useParams } from "react-router-dom";
 import MainTabs from "@/components/dashboard/MainTabs";
 import languageDetector from "@/utils/languageDetector";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
 import { t } from "i18next";
-import { IconButton } from "@mui/material";
+import { IconButton, useTheme } from "@mui/material";
 import { ArrowForward, EditOutlined } from "@mui/icons-material";
 import {
   assessmentActions,
@@ -22,8 +22,7 @@ import {
 } from "@/providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import InputCustomEditor from "../common/fields/InputCustomEditor";
-import { toast } from "react-toastify";
-import toastError from "@/utils/toastError";
+import showToast from "@/utils/toastError";
 
 const maxLength = 40;
 
@@ -78,7 +77,7 @@ const DashbordContainer: React.FC = () => {
   const handleSaveEdit = async () => {
     try {
       const res = await updateAssessmentQuery.query();
-      res.message && toast.success(res.message);
+      res.message && showToast(res.message, { variant: "success" });
       if (assessmentInfo) {
         dispatch(
           assessmentActions.setAssessmentInfo({
@@ -90,13 +89,14 @@ const DashbordContainer: React.FC = () => {
       setIsEditing(false);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err.message);
+      showToast(err.message);
     }
   };
   const handleCancelEdit = () => {
     setEditedValue(title);
     setIsEditing(false);
   };
+  const theme = useTheme();
 
   return (
     <QueryBatchData
@@ -169,9 +169,11 @@ const DashbordContainer: React.FC = () => {
                       }}
                     >
                       {title}
-                      <IconButton color="primary" onClick={handleStartEdit}>
-                        <EditOutlined />
-                      </IconButton>
+                      {permissions?.grantUserAssessmentRole && (
+                        <IconButton color="primary" onClick={handleStartEdit}>
+                          <EditOutlined />
+                        </IconButton>
+                      )}
                     </Typography>
                   )}
                 </Box>

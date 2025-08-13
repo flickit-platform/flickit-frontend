@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import { t } from "i18next";
 
-const MAX_HEIGHT = 210;
+const MAX_HEIGHT = 200;
 
 const sections = [
   { key: "what", title: "assessmentKit.whatIsThisKit" },
@@ -65,7 +65,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
     if (!el) return;
 
     const timeout = setTimeout(() => {
-      const fullHeight = el.scrollHeight;
+      const fullHeight = el.scrollHeight + 15;
       setShowBtn(fullHeight > MAX_HEIGHT);
     }, 0);
 
@@ -76,27 +76,24 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        borderRadius: 2,
-        overflow: "hidden",
-        bgcolor: "background.paper",
-        border: "1px solid",
-        borderColor: "divider",
-        boxShadow: "0 0 8px 0 rgba(10, 35, 66, 0.25)",
-        minHeight: 330,
-      }}
+      display="flex"
+      flexDirection={{ xs: "column", md: "row" }}
+      borderRadius={2}
+      overflow="hidden"
+      bgcolor="background.paper"
+      border="1px solid"
+      borderColor="divider"
+      boxShadow="0 0 8px 0 rgba(10, 35, 66, 0.25)"
+      minHeight={330}
     >
-      {/* Sidebar */}
       <Box
+        width={{ md: 120 }}
+        borderBottom={{ xs: "1px solid #8DAFD2", md: "none" }}
         sx={{
           ...styles.centerCV,
-          width: { md: 120 },
           [theme.direction === "ltr" ? "borderRight" : "borderLeft"]: {
             md: "1px solid #8DAFD2",
           },
-          borderBottom: { xs: "1px solid #8DAFD2", md: "none" },
         }}
       >
         {sections.map(({ key }) => {
@@ -108,15 +105,15 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
               display="flex"
               alignItems="center"
               justifyContent="center"
+              flex={1}
+              py={2}
+              px={1}
+              textAlign="center"
+              bgcolor={isActive ? "#E5EDF5" : "background.containerLow"}
+              color={isActive ? "primary.main" : "text.primary"}
               sx={{
                 ...theme.typography.titleMedium,
-                flex: 1,
-                py: 2,
-                px: 1,
-                textAlign: "center",
                 cursor: "pointer",
-                backgroundColor: isActive ? "#E5EDF5" : "#F9FAFB",
-                color: isActive ? theme.palette.primary.main : "#2B333B",
                 transition: "all 0.3s ease",
                 userSelect: "none",
                 "&:not(:last-child)": {
@@ -131,27 +128,22 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
       </Box>
 
       {/* Content */}
-      <Box sx={{ flex: 1, p: 4 }}>
-        <Typography variant="titleLarge" color="#2B333B">
+      <Box flex={1} p={4}>
+        <Typography variant="titleLarge" color="text.primary">
           <Trans
             i18nKey={currentSection.title}
             components={{
-              primary: (
-                <Box
-                  component="span"
-                  sx={{ color: theme.palette.primary.main }}
-                />
-              ),
+              primary: <Box component="span" color="primary.main" />,
             }}
           />
         </Typography>
 
         {/* Main content with fade mask */}
         <Box
+          overflow="hidden"
+          position="relative"
+          maxHeight={!showMore ? `${MAX_HEIGHT}px` : "none"}
           sx={{
-            overflow: "hidden",
-            position: "relative",
-            maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
             transition: "max-height 0.4s ease",
             "&::after": !showMore
               ? {
@@ -162,7 +154,7 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
                   right: 0,
                   height: "40px",
                   background: showBtn
-                    ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
+                    ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
                     : "none",
                   pointerEvents: "none",
                 }
@@ -171,12 +163,12 @@ const AssessmentKitIntro = ({ about, metadata }: Props) => {
         >
           <Box
             ref={contentRef}
+            color="text.primary"
+            textAlign="justify"
             sx={{
               fontFamily: languageDetector(content)
                 ? farsiFontFamily
                 : primaryFontFamily,
-              color: "text.primary",
-              textAlign: "justify",
             }}
             dangerouslySetInnerHTML={{
               __html: content || t("common.unavailable"),

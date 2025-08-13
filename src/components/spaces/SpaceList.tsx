@@ -28,6 +28,7 @@ import premium from "@/assets/svg/premium.svg";
 import i18next, { t } from "i18next";
 import Grid from "@mui/material/Grid";
 import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
+import { v3Tokens } from "@/config/tokens";
 
 interface ISpaceListProps {
   dialogProps: TDialogProps;
@@ -157,7 +158,7 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           </Box>
           <Typography
             variant="bodyMedium"
-            color="#2B333B"
+            color="text.primary"
             sx={{
               fontFamily:
                 languageDetector(owner.displayName) || i18next.language === "fa"
@@ -291,7 +292,7 @@ const Actions = (props: any) => {
           },
       ]}
       setShowTooltip={setShowTooltip}
-      color={"#2B333B"}
+      color={v3Tokens.surface.on}
       IconButtonProps={{ width: "20px", height: "20px" }}
     />
   );

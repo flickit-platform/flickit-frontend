@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import keycloakService from "@/service//keycloakService";
-import toastError from "@utils/toastError";
+import showToast from "@utils/toastError";
 /**
  * Checks if any token is available and then checks if the user with the founded token is still authenticated or not.
  *
@@ -36,7 +36,16 @@ const useGetSignedInUserInfo = (
             }
           : axios.defaults.headers,
       });
-
+      const { data : profileData } = await service.user.getProfile({
+        signal: abortController.current.signal,
+        //@ts-expect-error
+        headers: accessToken
+          ? {
+              ...axios.defaults.headers,
+              Authorization: `Bearer ${accessToken}`,
+            }
+          : axios.defaults.headers,
+      });
       service.user
         .getNotificationHash({
           signal: abortController.current.signal,
@@ -54,6 +63,7 @@ const useGetSignedInUserInfo = (
           dispatch(
             authActions.setUserInfo({
               ...data,
+              ...profileData,
               subscriberHash: res.data.novuSubscriberHash,
             }),
           );
@@ -79,7 +89,7 @@ const useGetSignedInUserInfo = (
       dispatch(authActions.setUserInfoLoading(false));
       dispatch(authActions.setUserInfo());
       setError(true);
-      toastError(err);
+      showToast(err);
       return false;
     }
   };

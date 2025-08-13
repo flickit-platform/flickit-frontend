@@ -7,7 +7,7 @@ export const SubjectAttributeList = (props: any) => {
   const { attributes, progress, reloadQuery } = props;
   return (
     <Box mt={5} id="attributes">
-      <Typography color="#73808C" variant="semiBoldMedium">
+      <Typography color="outline.outline" variant="semiBoldMedium">
         <Trans i18nKey="common.attributes" />
       </Typography>
       <Box mt={3}>

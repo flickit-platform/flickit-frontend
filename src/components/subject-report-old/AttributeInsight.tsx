@@ -3,7 +3,6 @@ import { Trans } from "react-i18next";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
@@ -13,6 +12,7 @@ import { t } from "i18next";
 import useInsightPopup from "@/hooks/useAssessmentInsightPopup";
 import ActionPopup from "@/components/common/buttons/ActionPopup";
 import { EditableRichEditor } from "@/components/common/fields/EditableRichEditor";
+import showToast from "@utils/toastError";
 
 const AttributeInsight = ({
   attributeId,
@@ -61,7 +61,10 @@ const AttributeInsight = ({
 
   const InitInsight = useQuery({
     service: (args, config) =>
-      service.assessments.attribute.generateAIInsight(args ?? { assessmentId, attributeId }, config),
+      service.assessments.attribute.generateAIInsight(
+        args ?? { assessmentId, attributeId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -72,7 +75,7 @@ const AttributeInsight = ({
       await fetchSubjectInsight.query();
       await reloadQuery();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
@@ -112,7 +115,7 @@ const AttributeInsight = ({
   });
 
   return (
-    <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
+    <Box width="100%" display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
           <Trans i18nKey="common.insight" />
@@ -129,8 +132,7 @@ const AttributeInsight = ({
             texts={texts}
             disablePrimaryButton={progress !== 100}
             disablePrimaryButtonText={
-              t("assessment.questionsArentCompleteSoAICantBeGenerated") ??
-              ""
+              t("assessment.questionsArentCompleteSoAICantBeGenerated") ?? ""
             }
           />
         )}
@@ -144,12 +146,7 @@ const AttributeInsight = ({
         mt={1}
       >
         {fetchSubjectInsight.loading ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-          >
+          <Box height="100%" sx={{ ...styles.centerV }}>
             <CircularProgress />
           </Box>
         ) : (

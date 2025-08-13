@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Title from "@common/Title";
 import QueryData from "@common/QueryData";
@@ -19,10 +19,8 @@ import { useAuthContext } from "@providers/AuthProvider";
 import Chip from "@mui/material/Chip";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
-import { toast } from "react-toastify";
 import MoreActions from "@common/MoreActions";
 import PeopleOutlineRoundedIcon from "@mui/icons-material/PeopleOutlineRounded";
-import toastError from "@utils/toastError";
 import useScreenResize from "@utils/useScreenResize";
 import { styles } from "@styles";
 import { IDialogProps, IMemberModel, TQueryProps } from "@/types/index";
@@ -33,11 +31,13 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
 import stringAvatar from "@utils/stringAvatar";
 import { useConfigContext } from "@/providers/ConfgProvider";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
+import showToast from "@utils/toastError";
+import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
 
 export const SpaceMembers = (props: any) => {
   const { editable } = props;
@@ -47,6 +47,10 @@ export const SpaceMembers = (props: any) => {
   const userId = userInfo?.id;
   const user_id_ref = useRef<HTMLInputElement>(null);
   const [page, setPage] = useState(1);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
+    status: boolean;
+    id: string;
+  }>({ status: false, id: "" });
   const spaceMembersQueryData = useQuery({
     service: (args, config) =>
       service.space.getMembers({ spaceId, page: page - 1, size: 10 }, config),
@@ -54,6 +58,27 @@ export const SpaceMembers = (props: any) => {
   const spaceMembersInviteeQueryData = useQuery<IMemberModel>({
     service: (args, config) => service.space.getInvitees({ spaceId }, config),
   });
+  const deleteSpaceMember = useQuery({
+    service: (arg, config) =>
+      service.space.removeMember(
+        { spaceId, memberId: openDeleteDialog.id },
+        config,
+      ),
+    runOnMount: false,
+    toastError: false,
+  });
+
+  const deleteItem = async () => {
+    try {
+      await deleteSpaceMember.query();
+      await spaceMembersQueryData.query();
+      setOpenDeleteDialog({ status: false, id: "" });
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
+
   const dialogProps = useDialog();
   const {
     query: addMember,
@@ -104,9 +129,8 @@ export const SpaceMembers = (props: any) => {
     [spaceMembersQueryData?.data?.size],
   );
 
-  const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   return (
-    <Box mt={1} p={3} sx={{ borderRadius: 1, background: "white" }}>
+    <Box mt={1} p={3} borderRadius={1} bgcolor="background.containerLowest">
       <Box>
         <Title
           size="small"
@@ -123,7 +147,7 @@ export const SpaceMembers = (props: any) => {
           onSubmit={async (e) => {
             e.preventDefault();
             if (!user_id_ref.current?.value) {
-              toast.error(t("errors.pleaseEnterEmailAddress") as string);
+              showToast(t("errors.pleaseEnterEmailAddress"));
             } else {
               try {
                 await addMember({
@@ -135,7 +159,7 @@ export const SpaceMembers = (props: any) => {
               } catch (e) {
                 const err = e as ICustomError;
                 if (err.response?.data.code !== "NOT_FOUND") {
-                  toastError(err);
+                  showToast(err);
                 } else {
                   dialogProps.openDialog({
                     type: "invite",
@@ -170,11 +194,11 @@ export const SpaceMembers = (props: any) => {
             letterSpacing: ".05rem",
           }}
           toolbar={
-            <Box sx={{ ...styles.centerV, opacity: 0.8, mb: "auto" }}>
+            <Box mb="auto" sx={{ ...styles.centerV, opacity: 0.8 }}>
               <PeopleOutlineRoundedIcon
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 0.5 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 0.5 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 0.5,
                 }}
                 fontSize="small"
               />
@@ -232,14 +256,12 @@ export const SpaceMembers = (props: any) => {
                             ></Avatar>
                           </Box>
                           <Box
-                            style={{
-                              marginRight:
-                                theme.direction == "rtl" ? "1rem" : "unset",
-                              marginLeft:
-                                theme.direction == "rtl" ? "unset" : "1rem",
-                              width: "35%",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
+                            marginInlineStart={2}
+                            marginInlineEnd="unset"
+                            width="35%"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            sx={{
                               fontFamily: languageDetector(displayName)
                                 ? farsiFontFamily
                                 : primaryFontFamily,
@@ -248,22 +270,18 @@ export const SpaceMembers = (props: any) => {
                             {displayName}
                           </Box>
                           <Box
-                            style={{
-                              marginRight:
-                                theme.direction == "rtl" ? "1rem" : "unset",
-                              marginLeft:
-                                theme.direction == "rtl" ? "unset" : "1rem",
-                              width: "45%",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
+                            marginInlineStart={2}
+                            marginInlineEnd="unset"
+                            width="45%"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
                           >
                             {email}
                           </Box>
                         </Box>
                         <Box
-                          ml={`${is_farsi ? 0 : "auto"}`}
-                          mr={`${is_farsi ? "auto" : 0}`}
+                          marginInlineStart="auto"
+                          marginInlineEnd={0}
                           sx={{ ...styles.centerV }}
                         >
                           {isOwner && (
@@ -271,10 +289,8 @@ export const SpaceMembers = (props: any) => {
                               label={<Trans i18nKey="common.owner" />}
                               size="small"
                               sx={{
-                                marginRight:
-                                  theme.direction === "ltr" ? 1.5 : "unset",
-                                marginLeft:
-                                  theme.direction === "rtl" ? 1.5 : "unset",
+                                marginInlineStart: "unset",
+                                marginInlineEnd: 1.5,
                               }}
                             />
                           )}
@@ -284,6 +300,8 @@ export const SpaceMembers = (props: any) => {
                               member={member}
                               editable={editable}
                               fetchSpaceMembers={spaceMembersQueryData.query}
+                              setOpenDeleteDialog={setOpenDeleteDialog}
+                              deleteSpaceMember={deleteSpaceMember}
                             />
                           }
                         </Box>
@@ -291,15 +309,7 @@ export const SpaceMembers = (props: any) => {
                     )
                   );
                 })}
-                <Stack
-                  spacing={2}
-                  sx={{
-                    mt: 3,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
                   <Pagination
                     variant="outlined"
                     color="primary"
@@ -311,6 +321,16 @@ export const SpaceMembers = (props: any) => {
               </Box>
             );
           }}
+        />
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
+          onConfirm={deleteItem}
+          title="common.warning"
+          content="spaces.areYouSureYouWantDeleteThisMember"
+          confirmButtonText={t("common.continue")}
         />
         <QueryData
           {...spaceMembersInviteeQueryData}
@@ -359,21 +379,17 @@ export const SpaceMembers = (props: any) => {
                         return (
                           <Box
                             key={id}
-                            sx={{
-                              ...styles.centerV,
-                              boxShadow: 1,
-                              borderRadius: 2,
-                              flexDirection: { xs: "column", sm: "row" },
-                              my: 1,
-                              py: 0.8,
-                              px: 1.5,
-                            }}
+                            boxShadow={1}
+                            borderRadius={2}
+                            flexDirection={{ xs: "column", sm: "row" }}
+                            my={1}
+                            py={0.8}
+                            px={1.5}
+                            sx={{ ...styles.centerV }}
                           >
                             <Box
-                              sx={{
-                                ...styles.centerV,
-                                mr: { xs: "auto", sm: "0px" },
-                              }}
+                              mr={{ xs: "auto", sm: "0px" }}
+                              sx={{ ...styles.centerV }}
                             >
                               <Box>
                                 <Avatar sx={{ width: 34, height: 34 }}>
@@ -383,28 +399,24 @@ export const SpaceMembers = (props: any) => {
                               <Box ml={2}>{name}</Box>
                             </Box>
                             <Box
-                              ml={theme.direction === "rtl" ? "unset" : "auto"}
-                              mr={theme.direction !== "rtl" ? "unset" : "auto"}
+                              marginInlineStart="auto"
+                              marginInlineEnd="unset"
                               sx={{ ...styles.centerV }}
                             >
                               <Box
+                                px={0.4}
+                                marginInlineStart="unset"
+                                marginInlineEnd={2}
                                 sx={{
                                   ...styles.centerV,
                                   opacity: 0.8,
-                                  px: 0.4,
-                                  marginRight:
-                                    theme.direction === "ltr" ? 2 : "unset",
-                                  marginLeft:
-                                    theme.direction === "rtl" ? 2 : "unset",
                                 }}
                               >
                                 <EventBusyRoundedIcon
                                   fontSize="small"
                                   sx={{
-                                    marginRight:
-                                      theme.direction === "ltr" ? 0.5 : "unset",
-                                    marginLeft:
-                                      theme.direction === "rtl" ? 0.5 : "unset",
+                                    marginInlineStart: "unset",
+                                    marginInlineEnd: 0.5,
                                   }}
                                 />
                                 <Typography variant="body2">
@@ -484,15 +496,11 @@ const Actions = (props: any) => {
     email,
     editable,
     inviteId,
+    setOpenDeleteDialog,
+    deleteSpaceMember,
   } = props;
   const { spaceId = "" } = useParams();
   const { service } = useServiceContext();
-  const { query: deleteSpaceMember, loading } = useQuery({
-    service: (arg, config) =>
-      service.space.removeMember({ spaceId, memberId: member.id }, config),
-    runOnMount: false,
-    toastError: false,
-  });
   const { query: deleteSpaceInvite } = useQuery({
     service: (config) => service.space.removeInvite({ inviteId }, config),
     runOnMount: false,
@@ -507,40 +515,30 @@ const Actions = (props: any) => {
     runOnMount: false,
   });
 
-  const deleteItem = async (e: any) => {
-    try {
-      await deleteSpaceMember();
-      await fetchSpaceMembers();
-    } catch (e) {
-      const err = e as ICustomError;
-      toastError(err);
-    }
-  };
-
   const deleteItemInvite = async (e: any) => {
     try {
       await deleteSpaceInvite();
       await fetchSpaceMembers();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
   const inviteMember = async () => {
     try {
       await inviteMemberQueryData.query();
-      toast.success(t("spaces.invitationSentSuccessfully"));
+      showToast(t("spaces.invitationSentSuccessfully"), { variant: "success" });
       fetchSpaceMembers();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 
   return (
     <MoreActions
       {...useMenu()}
-      loading={loading || inviteMemberQueryData.loading}
+      loading={deleteSpaceMember?.loading || inviteMemberQueryData?.loading}
       items={[
         isInvitees && isInvitationExpired && editable
           ? {
@@ -560,7 +558,7 @@ const Actions = (props: any) => {
           editable && {
             icon: <DeleteRoundedIcon fontSize="small" />,
             text: <Trans i18nKey="common.remove" />,
-            onClick: deleteItem,
+            onClick: () => setOpenDeleteDialog({ status: true, id: member.id }),
           },
       ]}
     />
@@ -595,13 +593,13 @@ const InviteSpaceMemberDialog = (
   const onInvite = async () => {
     try {
       await inviteMemberQuery();
-      toast.success(t("spaces.invitationSentSuccessfully"));
+      showToast(t("spaces.invitationSentSuccessfully"), { variant: "success" });
       resetForm();
       rest.onClose();
       spaceMembersQueryData.query();
       spaceMembersInviteeQueryData.query();
     } catch (e) {
-      toastError(e as ICustomError);
+      showToast(e as ICustomError);
     }
   };
 

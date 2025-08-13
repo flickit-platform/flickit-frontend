@@ -1,6 +1,7 @@
 {
+  "areYouSureYouWantDeleteSpace": "فضای کاری شما حذف خواهد شد. آیا مایل به ادامه هستید؟",
+  "areYouSureYouWantDeleteThisMember": "این عملیات باعث حذف عضو خواهد شد. آیا مطمئنید که می‌خواهید این عضو را حذف کنید؟",
   "basicSpace": "فضای کاری پایه",
-  "congratulation": "فضای کاری با موفقیت ایجاد شد!",
   "createBasicSpaceCongratulation": "فضای کاری شما آماده است! اکنون می‌توانید اعضای تیم را دعوت و ارزیابی را شروع کنید.",
   "createLimitedAssessments": "امکان ایجاد تعداد <strong>محدود</strong> ارزیابی",
   "createPremiumSpaceCongratulation": "فضای کاری حرفه‌ای شما با موفقیت ایجاد شد! توجه داشته باشید که این فضا به صورت موقت فعال شده است. به‌زودی جهت تکمیل مراحل و ارائه جزئیات بیشتر با شما تماس خواهیم گرفت. لطفا ایمیل خود را برای دریافت اطلاعات تکمیلی بررسی کنید.",
@@ -27,6 +28,7 @@
   "setAName": "تعیین نام فضای کاری",
   "simpleStart": "آغازی ساده، انتخابی هوشمندانه.",
   "space": "فضای کاری",
+  "spaceCreatedSuccessfully": "فضای کاری با موفقیت ایجاد شد!",
   "spaceCreatedSuccessMessage": "{{title}} با موفقیت ایجاد شد",
   "spaceDirectory": "فهرست فضاهای کاری",
   "spaceName": "نام فضای کاری",

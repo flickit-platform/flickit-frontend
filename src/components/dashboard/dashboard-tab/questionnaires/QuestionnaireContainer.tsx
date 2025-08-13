@@ -6,11 +6,12 @@ import { useServiceContext } from "@providers/ServiceProvider";
 import { IQuestionnairesModel } from "@/types/index";
 import { useParams, useSearchParams } from "react-router-dom";
 import PermissionControl from "@common/PermissionControl";
+import { useMemo } from "react";
+import { blue } from "@/config/colors";
 
 const QuestionnaireContainer = () => {
   const { questionnaireQueryData, assessmentTotalProgress } =
     useQuestionnaire();
-
 
   return (
     <PermissionControl
@@ -42,6 +43,8 @@ const QuestionnaireContainer = () => {
 };
 
 export const useQuestionnaire = () => {
+  const abortController = useMemo(() => new AbortController(), []);
+
   const { service } = useServiceContext();
   const [searchParams] = useSearchParams();
   const { assessmentId = "" } = useParams();
@@ -51,26 +54,39 @@ export const useQuestionnaire = () => {
     service: (args, config) =>
       service.assessments.questionnaire.getAll(
         { assessmentId, ...(args ?? { subject_pk: subjectIdParam }) },
-        config,
+        { signal: abortController.signal },
       ),
+  });
+
+  const getNextQuestionnaire = useQuery<IQuestionnairesModel>({
+    service: (args, config) =>
+      service.assessments.questionnaire.getNext(
+        { assessmentId, ...(args ?? {}) },
+        { signal: abortController.signal },
+      ),
+    runOnMount: false,
   });
 
   const assessmentTotalProgress = useQuery<IQuestionnairesModel>({
     service: (args, config) =>
       service.assessments.info.getProgress(
         { assessmentId, ...(args ?? {}) },
-        config,
+        { signal: abortController.signal },
       ),
   });
   const fetchPathInfo = useQuery({
     service: (args, config) =>
-      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
+      service.common.getPathInfo(
+        { assessmentId, ...(args ?? {}) },
+        { signal: abortController.signal },
+      ),
     runOnMount: true,
   });
   return {
     questionnaireQueryData,
     assessmentTotalProgress,
     fetchPathInfo,
+    getNextQuestionnaire,
   };
 };
 

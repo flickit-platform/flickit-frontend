@@ -15,7 +15,6 @@ import FilePresentRoundedIcon from "@mui/icons-material/FilePresentRounded";
 import { styles } from "@styles";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { TQueryServiceFunction, useQuery } from "@utils/useQuery";
-import toastError from "@utils/toastError";
 import { t } from "i18next";
 import { ICustomError } from "@utils/CustomError";
 import {
@@ -30,7 +29,7 @@ import getFieldError from "@utils/getFieldError";
 import { Trans } from "react-i18next";
 import getFileNameFromSrc from "@utils/getFileNameFromSrc";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 const UploadField = (props: any) => {
   const { name, required, defaultValue, ...rest } = props;
@@ -207,10 +206,10 @@ const Uploader = (props: IUploadProps) => {
                   type: "application/json",
                 }).text();
                 blob.then((res: any) => {
-                  toastError(JSON.parse(res)?.message);
+                  showToast(JSON.parse(res)?.message);
                 });
               } else {
-                toastError(err);
+                showToast(err);
               }
               setMyFiles([]);
               setIsValid(false);
@@ -242,14 +241,14 @@ const Uploader = (props: IUploadProps) => {
             }) as string,
           };
         } else if (rejectedFiles.length == 1 && error[0]?.message) {
-          toastError(error?.pop()?.message as string);
+          showToast((error as any)?.pop()?.message as string);
         } else {
-          toastError(t("errors.oneFileOnly") as string);
+          showToast(t("errors.oneFileOnly") as string);
         }
       }
     },
     onError(err) {
-      toastError(err.message);
+      showToast(err.message);
     },
   });
 
@@ -266,7 +265,7 @@ const Uploader = (props: IUploadProps) => {
         sx={{
           minHeight: "40px",
           border: (t) =>
-            `1px dashed ${hasError ? t.palette.error.main : "gray"}`,
+            `1px dashed ${hasError ? t.palette.error.main : t.palette.disabled?.main}`,
           "&:hover": {
             border: (t) =>
               disabled
@@ -366,8 +365,8 @@ const Uploader = (props: IUploadProps) => {
               <FormLabel
                 sx={{
                   ...styles.centerV,
-                  pl: theme.direction == "ltr" ? 2 : "unset",
-                  pr: theme.direction == "rtl" ? 2 : "unset",
+                  paddingInlineStart: 2,
+                  paddingInlineEnd: "unset",
                   height: "40px",
                   fontSize: "1rem",
                   cursor: "pointer",
@@ -377,13 +376,11 @@ const Uploader = (props: IUploadProps) => {
                 {label}
               </FormLabel>
               <Box
-                sx={{
-                  px: 2,
-                  ...styles.centerV,
-                  color: (t) => t.palette.info.dark,
-                }}
-                ml={theme.direction === "rtl" ? "unset" : "auto"}
-                mr={theme.direction !== "rtl" ? "unset" : "auto"}
+                px={2}
+                color="disabled.main"
+                marginInlineStart="auto"
+                marginInlineEnd="unset"
+                sx={{ ...styles.centerV }}
               >
                 <FileUploadRoundedIcon sx={{ mr: hideDropText ? 0 : 1 }} />
                 {!hideDropText && (

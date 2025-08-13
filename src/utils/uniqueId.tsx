@@ -5,6 +5,6 @@ let counter = 0;
  * @param {string} prefix - Optional prefix for the ID.
  * @returns {string} - A unique ID.
  */
-const uniqueId = (prefix = "") => `${prefix}${++counter}`
+const uniqueId = (prefix = "") => `${prefix}${++counter}`;
 
 export default uniqueId;

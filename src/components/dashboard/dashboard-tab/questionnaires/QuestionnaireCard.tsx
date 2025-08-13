@@ -16,9 +16,10 @@ import Typography from "@mui/material/Typography";
 import languageDetector from "@/utils/languageDetector";
 import { useRef, useState } from "react";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import Grid from "@mui/material/Grid";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useTheme } from "@mui/material";
 
 interface IQuestionnaireCardProps {
   data: IQuestionnairesInfo;
@@ -49,6 +50,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
   } = data ?? {};
   const is_farsi = Boolean(localStorage.getItem("lang") === "fa");
   const [collapse, setCollapse] = useState<boolean>(false);
+  const theme = useTheme();
 
   const titleRef = useRef<any>(null);
   const mainBoxRef = useRef<any>(null);
@@ -66,12 +68,7 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
         <Box>
           <Box flex={1}>
             <Title size="small" fontWeight={"bold"}>
-              <Box
-                ref={mainBoxRef}
-                flex="1"
-                display="flex"
-                alignItems={"center"}
-              >
+              <Box ref={mainBoxRef} flex="1" sx={{ ...styles.centerV }}>
                 <Title
                   fontWeight={"bold"}
                   size="small"
@@ -119,15 +116,15 @@ const QuestionnaireCard = (props: IQuestionnaireCardProps) => {
                   display="inline-block"
                   sx={{
                     float: theme.direction === "ltr" ? "right" : "left",
-                    marginLeft: theme.direction === "ltr" ? "auto" : "unset",
-                    marginRight: theme.direction === "ltr" ? "unset" : "auto",
+                    marginInlineStart: "auto",
+                    marginInlineEnd: "unset",
                     minWidth: "80px",
                     textAlign: "end",
                   }}
                 >
                   <QANumberIndicator
                     q={number_of_questions}
-                    color={"#6C8093"}
+                    color={theme.palette.background.onVariant}
                     variant={"labelSmall"}
                   />
                 </Box>
@@ -319,11 +316,9 @@ const ActionButton = ({
     {...rest}
   >
     <Typography
-      sx={{
-        color: variant ? "#fff" : "#2466A8",
-        ...theme.typography.semiBoldMedium,
-      }}
-      textTransform={"capitalize"}
+      variant="semiBoldMedium"
+      color={variant ? "primary.contrastText" : "primary.main"}
+      textTransform="capitalize"
     >
       <Trans i18nKey={text} />
     </Typography>
@@ -331,31 +326,21 @@ const ActionButton = ({
 );
 
 const ErrorChip = ({ i18nKey, value }: { i18nKey: string; value?: number }) => {
+  const theme = useTheme();
+
   if (!value) return null;
 
   return (
     <Chip
-      sx={{ background: "#8A0F240A" }}
+      sx={{ bgcolor: "#8A0F240A" }}
       label={
         <Grid>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-            }}
-          >
+          <Box gap={1} sx={{ ...styles.centerVH }}>
             <ErrorOutlineIcon
               fontSize={"small"}
               style={{ fill: theme.palette.error.main }}
             />
-            <Typography
-              style={{
-                color: theme.palette.error.main,
-                ...theme.typography.bodyMedium,
-              }}
-            >
+            <Typography variant="bodyMedium" color="error.main">
               <Trans i18nKey={i18nKey} />: {value}
             </Typography>
           </Box>

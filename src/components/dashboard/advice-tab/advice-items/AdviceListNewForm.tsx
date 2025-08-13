@@ -18,18 +18,18 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Grid from "@mui/material/Grid";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
-import { theme } from "@config/theme";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useEffect, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import Impact from "@common/icons/Impact";
 import languageDetector from "@utils/languageDetector";
 import { t } from "i18next";
 import RichEditorField from "@/components/common/fields/RichEditorField";
+import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 interface IAdviceListProps {
   newAdvice: any;
@@ -51,6 +51,8 @@ const AdviceListNewForm = ({
   postAdviceItem,
   errormessage,
 }: IAdviceListProps) => {
+  const theme = useTheme();
+
   const formMethods = useForm({ shouldUnregister: true });
   const selectAdvice = ["priority", "impact", "cost"];
   const { service } = useServiceContext();
@@ -96,7 +98,7 @@ const AdviceListNewForm = ({
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     };
     fetchAdviceOptions();
@@ -132,26 +134,22 @@ const AdviceListNewForm = ({
     <Box
       mt={1.5}
       p={{ xs: 0.2, sm: 1.5 }}
-      sx={{
-        backgroundColor: "#F3F5F6",
-        borderRadius: "8px",
-        border: "0.3px solid #73808c30",
-        display: "flex",
-        alignItems: "flex-start",
-        position: "relative",
-        width: "100%",
-      }}
+      bgcolor="background.container"
+      borderRadius="8px"
+      border="0.3px solid #73808c30"
+      display="flex"
+      alignItems="flex-start"
+      position="relative"
+      width="100%"
     >
       <Box
-        sx={{
-          ...styles.centerVH,
-          flexDirection: { xs: "column", sm: "row" },
-          justifyContent: "space-evenly",
-          background: "#F3F5F6",
-          width: "100%",
-        }}
+        width="100%"
+        flexDirection={{ xs: "column", sm: "row" }}
+        justifyContent="space-evenly"
+        bgcolor="background.container"
         borderRadius={2}
         p={2}
+        sx={{ ...styles.centerVH }}
       >
         <Box sx={{ width: "100%" }} mx={1}>
           <Grid container spacing={1.4}>
@@ -177,7 +175,7 @@ const AdviceListNewForm = ({
                   "& .MuiFormLabel-root": {
                     fontSize: 14,
                   },
-                  background: "#fff",
+                  bgcolor: "background.containerLowest",
                 }}
               />
               {errormessage?.title && (
@@ -217,7 +215,7 @@ const AdviceListNewForm = ({
                       onChange={(e) => handleInputChange(e)}
                       sx={{
                         fontSize: "14px",
-                        background: "#fff",
+                        bgcolor: "background.containerLowest",
                         px: "0px",
                         height: "36px",
                         "& .MuiSelect-select": {
@@ -228,11 +226,10 @@ const AdviceListNewForm = ({
                     >
                       <MenuItem disabled value="">
                         <Typography
+                          color="primary"
+                          variant="labelMedium"
                           sx={{
-                            ...theme.typography.labelMedium,
-                            color: "#2466A8",
-                            display: "flex",
-                            alignItems: "center",
+                            ...styles.centerV,
                             height: "24px",
                           }}
                         >
@@ -255,13 +252,10 @@ const AdviceListNewForm = ({
           </Grid>
           <FormProviderWithForm formMethods={formMethods}>
             <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mt: 2,
-              }}
+              width="100%"
+              justifyContent="space-between"
+              mt={{ xs: 26, sm: 17, md: 11, xl: 7 }}
+              sx={{ ...styles.centerV }}
             >
               <RichEditorField
                 name="advice-description"
@@ -273,7 +267,7 @@ const AdviceListNewForm = ({
                 removeDescriptionAdvice={removeDescriptionAdvice}
                 errorMessage={errormessage?.description}
                 type={errormessage?.description ? "reportTab" : ""}
-                showEditorMenu={false}
+                showEditorMenu={true}
               />
             </Box>
           </FormProviderWithForm>
@@ -294,11 +288,10 @@ const AdviceListNewForm = ({
           <Link
             href="#"
             sx={{
+              ...styles.centerV,
               textDecoration: "none",
               opacity: 0.9,
               fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
               gap: "20px",
               flexDirection: { xs: "row-reverse", sm: "column" },
               mt: { xs: 2, sm: "unset" },

@@ -15,16 +15,17 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { useEffect, useState } from "react";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import toastError from "@utils/toastError";
 import formatBytes from "@utils/formatBytes";
 import { ICustomError } from "@utils/CustomError";
 import { styles } from "@styles";
 import languageDetector from "@/utils/languageDetector";
+import showToast from "@utils/toastError";
+import { useTheme } from "@mui/material";
 
 const UserAccount = () => {
   const [hover, setHover] = useState(false);
@@ -33,9 +34,10 @@ const UserAccount = () => {
   const { service } = useServiceContext();
   const userQueryData = useQuery({
     service: (args, config) => service.user.getProfile(config),
-    runOnMount: true,
+    runOnMount: false,
   });
-  const [userInfo, setUserInfo] = useState({
+  const { userInfo: userProfileInfo } = useAuthContext();
+  const [userInfo, setUserInfo] = useState<any>({
     id: 1,
     displayName: "",
     email: "",
@@ -44,8 +46,8 @@ const UserAccount = () => {
     bio: undefined,
   });
   useEffect(() => {
-    setUserInfo(userQueryData.data);
-  }, [userQueryData.loaded]);
+    setUserInfo(userProfileInfo);
+  }, []);
 
   const dialogProps = useDialog();
   useDocumentTitle(`${t("user.userProfile")}: ${getUserName(userInfo)}`);
@@ -66,25 +68,24 @@ const UserAccount = () => {
       reader.readAsDataURL(file);
       const maxSize = 2097152;
       if (file.size > maxSize) {
-        toastError(`Maximum upload file size is ${formatBytes(maxSize)}.`);
+        showToast(`Maximum upload file size is ${formatBytes(maxSize)}.`);
         return;
       }
       setHover(false);
       setIsLoading(true);
       try {
         const pictureData = { pictureFile: file };
-        await service.user.updatePicture(
-          { data: pictureData },
-          undefined,
-        );
+        await service.user.updatePicture({ data: pictureData }, undefined);
         setIsLoading(false);
         onSubmit().then();
       } catch (e: any) {
         setIsLoading(false);
-        toastError(e as ICustomError);
+        showToast(e as ICustomError);
       }
     }
   };
+  const theme = useTheme();
+
   return (
     <Box>
       <Box
@@ -149,11 +150,9 @@ const UserAccount = () => {
                   width="100%"
                   height="100%"
                   bgcolor="rgba(0, 0, 0, 0.6)"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
                   borderRadius="50%"
-                  sx={{ cursor: "pointer", border: "4px solid whitesmoke" }}
+                  border="4px solid whitesmoke"
+                  sx={{ cursor: "pointer", ...styles.centerVH }}
                 />
               )}
               {userInfo?.pictureLink ? (

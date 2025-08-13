@@ -10,11 +10,13 @@ import EditRounded from "@mui/icons-material/EditRounded";
 import { ICustomError } from "@utils/CustomError";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import RichEditorField from "@common/fields/RichEditorField";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import { Trans, useTranslation } from "react-i18next";
 import languageDetector from "@utils/languageDetector";
-import toastError from "@/utils/toastError";
 import { CEDialog, CEDialogActions } from "../dialogs/CEDialog";
+import showToast from "@/utils/toastError";
+import { useTheme } from "@mui/material";
+import { styles } from "@styles";
 
 const MAX_HEIGHT = 210;
 
@@ -26,6 +28,7 @@ interface EditableRichEditorProps {
   infoQuery: any;
   placeholder?: string;
   required?: boolean;
+  showEditorMenu?: boolean;
 }
 
 export const EditableRichEditor = (props: EditableRichEditorProps) => {
@@ -37,8 +40,9 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
     infoQuery,
     placeholder,
     required = true,
+    showEditorMenu,
   } = props;
-
+  const theme = useTheme();
   const { t } = useTranslation();
   const [isHovering, setIsHovering] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
@@ -46,6 +50,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   const [showBtn, setShowBtn] = useState(false);
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
   const paragraphRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const formMethods = useForm({
     defaultValues: { [fieldName]: defaultValue ?? "" },
@@ -71,7 +76,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
       setShowEditor(false);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -80,9 +85,10 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
   }, [formMethods.watch(fieldName)]);
 
   useEffect(() => {
-    if (paragraphRef.current) {
+    if (paragraphRef.current && containerRef.current) {
       const isOverflowing =
-        paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight;
+        paragraphRef.current.scrollHeight > paragraphRef.current.clientHeight ||
+        containerRef.current.scrollHeight > containerRef.current.clientHeight;
       setShowBtn(isOverflowing);
     }
   }, [tempData]);
@@ -119,12 +125,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
   return (
     <Box
+      height="100%"
+      width="100%"
       sx={{
-        display: "flex",
-        alignItems: "center",
+        ...styles.centerV,
         direction: languageDetector(tempData) ? "rtl" : "ltr",
-        height: "100%",
-        width: "100%",
       }}
     >
       {editable && showEditor ? (
@@ -149,20 +154,18 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               required={required}
               defaultValue={defaultValue ?? ""}
               textAlign="justify"
+              showEditorMenu={showEditorMenu}
             />
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
+                ...styles.centerCVH,
                 height: !tempData ? "100%" : "initial",
               }}
             >
               <IconButton
                 sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": { background: theme.palette.primary.dark },
+                  bgcolor: "primary.main",
+                  "&:hover": { bgcolor: "primary.dark" },
                   borderRadius: languageDetector(tempData)
                     ? "8px 0 0 0"
                     : "0 8px 0 0",
@@ -170,12 +173,14 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={formMethods.handleSubmit(handleSubmit)}
               >
-                <CheckCircleOutlineRounded sx={{ color: "#fff" }} />
+                <CheckCircleOutlineRounded
+                  sx={{ color: "primary.contrastText" }}
+                />
               </IconButton>
               <IconButton
                 sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": { background: theme.palette.primary.dark },
+                  bgcolor: "primary.main",
+                  "&:hover": { bgcolor: "primary.dark" },
                   borderRadius: languageDetector(tempData)
                     ? "0 0 0 8px"
                     : "0 0 8px 0",
@@ -183,58 +188,60 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={handleCancel}
               >
-                <CancelRounded sx={{ color: "#fff" }} />
+                <CancelRounded sx={{ color: "primary.contrastText" }} />
               </IconButton>
             </Box>
           </Box>
         </FormProviderWithForm>
       ) : (
-        <Box sx={{ width: "100%" }}>
+        <Box width="100%">
           <Box
+            minHeight="38px"
+            borderRadius="8px"
+            width="100%"
+            justifyContent="space-between"
+            border={`1px solid ${theme.palette.primary.contrastText}`}
+            position="relative"
             sx={{
-              minHeight: "38px",
-              borderRadius: "8px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              ...styles.centerV,
               wordBreak: "break-word",
               pr: languageDetector(tempData) ? 1 : 5,
               pl: languageDetector(tempData) ? 5 : 1,
-              border: "1px solid #fff",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
-                borderColor: editable ? theme.palette.primary.main : "unset",
+                borderColor: editable ? "primary.main" : "unset",
               },
-              position: "relative",
             }}
             onClick={() => editable && setShowEditor(true)}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
             <Box
+              ref={containerRef}
+              width="100%"
+              overflow="hidden"
+              position="relative"
+              maxHeight={!showMore ? `${MAX_HEIGHT}px` : "none"}
               sx={{
-                overflow: "hidden",
-                position: "relative",
-                maxHeight: !showMore ? `${MAX_HEIGHT}px` : "none",
                 transition: "max-height 0.4s ease",
                 "&::after": !showMore
                   ? {
-                    content: '""',
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: "40px",
-                    background: showBtn
-                      ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, ${theme.palette.background.paper} 100%)`
-                      : "none",
-                    pointerEvents: "none",
-                  }
+                      content: '""',
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: "40px",
+                      background: showBtn
+                        ? `linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%)`
+                        : "none",
+                      pointerEvents: "none",
+                    }
                   : undefined,
               }}
             >
               <Typography
+                component="div"
                 textAlign="justify"
                 sx={{
                   fontFamily: languageDetector(tempData)
@@ -247,6 +254,26 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
+                  "& table": {
+                    direction: theme.direction,
+                    width: "100%",
+                    borderCollapse: "collapse",
+                    tableLayout: "auto",
+                    maxWidth: "100%",
+                  },
+                  "& th, & td": {
+                    direction: "inherit",
+                    unicodeBidi: "plaintext",
+                    verticalAlign: "top",
+                    border: "1px solid rgba(0,0,0,0.12)",
+                    padding: "6px 8px",
+                  },
+                  "& td p, & th p": {
+                    direction: "inherit",
+                    textAlign: "inherit",
+                    unicodeBidi: "plaintext",
+                    margin: 0,
+                  },
                 }}
                 variant="bodyMedium"
                 dangerouslySetInnerHTML={{
@@ -263,8 +290,8 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
               <IconButton
                 title="Edit"
                 sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": { background: theme.palette.primary.dark },
+                  bgcolor: "primary.main",
+                  "&:hover": { bgcolor: "primary.dark" },
                   borderRadius: languageDetector(tempData)
                     ? "8px 0 0 8px"
                     : "0 8px 8px 0",
@@ -276,7 +303,7 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
                 }}
                 onClick={() => setShowEditor(true)}
               >
-                <EditRounded sx={{ color: "#fff" }} />
+                <EditRounded sx={{ color: "primary.contrastText" }} />
               </IconButton>
             )}
           </Box>
@@ -294,11 +321,11 @@ export const EditableRichEditor = (props: EditableRichEditorProps) => {
 
       <CEDialog
         open={showUnsavedDialog}
-        onClose={cancelLeaveEditor}
+        closeDialog={cancelLeaveEditor}
         title={<Trans i18nKey="common.warning" />}
         maxWidth="sm"
       >
-        <Typography sx={{ color: "#0A2342" }}>
+        <Typography color="#0A2342">
           <Trans
             i18nKey="notification.editorActionRestriction"
             components={{

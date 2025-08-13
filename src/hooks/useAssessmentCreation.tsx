@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import toastError from "@utils/toastError";
 import { ICustomError } from "@utils/CustomError";
 import { useConnectAutocompleteField } from "@/components/common/fields/AutocompleteAsyncField";
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
+import showToast from "@utils/toastError";
 
 export function useAssessmentCreation({
   openDialog,
@@ -74,7 +74,7 @@ export function useAssessmentCreation({
           navigate(`/${spaceId}/assessments/1/${data?.id}/questionnaires`);
         } catch (e) {
           setLoading(false);
-          toastError(e as ICustomError);
+          showToast(e as ICustomError);
           return () => abortController.abort();
         }
       } else {

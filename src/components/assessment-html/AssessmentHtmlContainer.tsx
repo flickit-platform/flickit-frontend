@@ -17,7 +17,6 @@ import Typography from "@mui/material/Typography";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
 import AdviceItemsAccordion from "../dashboard/advice-tab/advice-items/AdviceItemsAccordions";
@@ -34,7 +33,6 @@ import { ShareDialog } from "./ShareDialog";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import Share from "@mui/icons-material/Share";
-import { Trans } from "react-i18next";
 import uniqueId from "@/utils/uniqueId";
 import useCalculate from "@/hooks/useCalculate";
 import { useEffect } from "react";
@@ -46,6 +44,7 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 
 const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -63,7 +62,7 @@ const AssessmentHtmlContainer = () => {
 
   const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
   const { service } = useServiceContext();
-
+  const { dispatch } = useConfigContext();
   const dialogProps = useDialog();
 
   const fetchPathInfo = useQuery<PathInfo>({
@@ -95,6 +94,54 @@ const AssessmentHtmlContainer = () => {
     runOnMount: false,
   });
 
+  useEffect(() => {
+    let hasIntersected = false;
+    let observer: IntersectionObserver | null = null;
+
+    const setupIntersectionObserver = (targetElement: HTMLElement) => {
+      observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !hasIntersected) {
+              hasIntersected = true;
+              dispatch(setSurveyBox(true));
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          root: null,
+          threshold: 0.5,
+          rootMargin: "100px 0px -50px 0px",
+        },
+      );
+      observer.observe(targetElement);
+    };
+
+    const targetElement = document.getElementById("recommendations");
+
+    if (targetElement) {
+      setupIntersectionObserver(targetElement);
+    } else {
+      const domObserver = new MutationObserver(() => {
+        const el = document.getElementById("recommendations");
+        if (el) {
+          setupIntersectionObserver(el);
+          domObserver.disconnect();
+        }
+      });
+
+      domObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return () => {
+      observer?.disconnect();
+    };
+  }, []);
+
   const handleErrorResponse = async (errorCode: any) => {
     let shouldRefetch = false;
 
@@ -108,6 +155,9 @@ const AssessmentHtmlContainer = () => {
       case "DEPRECATED":
         await service.assessments.info
           .migrateKitVersion({ assessmentId })
+          .then(() => {
+            shouldRefetch = true;
+          })
           .catch(() => {
             shouldRefetch = false;
           });
@@ -140,7 +190,7 @@ const AssessmentHtmlContainer = () => {
           sx={{
             ...styles.box,
             ...styles.rtlStyle(language === "fa"),
-            fontWeight: 200,
+            fontWeight: "lighter",
           }}
         >
           {icon}
@@ -178,10 +228,16 @@ const AssessmentHtmlContainer = () => {
     </>
   );
 
-  const isInvalid = (subjects: ISubject[], advice: any, quickMode: boolean) => {
+  const isInvalid = (
+    subjects: ISubject[],
+    advice: any,
+    isAdvisable: boolean,
+    quickMode: boolean,
+  ) => {
     const isAnyInsightMissing = subjects.some((s) => !s?.insight);
     const isAdviceMissing =
-      !advice || advice.narration == null || !advice.adviceItems?.length;
+      (!advice || advice.narration == null || !advice.adviceItems?.length) &&
+      isAdvisable;
     return (
       (isAnyInsightMissing || isAdviceMissing) &&
       quickMode &&
@@ -224,8 +280,12 @@ const AssessmentHtmlContainer = () => {
             lang,
             visibility,
             linkHash,
+            isAdvisable,
           } = graphicalReport as IGraphicalReport;
-          const rtlLanguage = lang.code.toLowerCase() === "fa";
+          const lng = lang?.code?.toLowerCase();
+          const isRTL = lang?.code?.toLowerCase() === "fa";
+
+          const rtlLanguage = lng === "fa";
           const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
           const currentPath = window.location.pathname;
           const basePath = getBasePath(currentPath);
@@ -237,30 +297,24 @@ const AssessmentHtmlContainer = () => {
 
           return (
             <>
-              {isInvalid(subjects, advice, isQuickMode) && (
+              {isInvalid(subjects, advice, isAdvisable, isQuickMode) && (
                 <Box
-                  sx={{
-                    backgroundColor: theme.palette.error.main,
-                    height: 48,
-                    ...styles.centerVH,
-                  }}
+                  bgcolor="error.main"
+                  height={48}
                   gap={6}
+                  sx={{ ...styles.centerVH }}
                 >
                   <Typography
                     variant="semiBoldLarge"
                     color="error.contrastText"
-                    sx={{
-                      ...styles.centerV,
-                    }}
+                    sx={{ ...styles.centerV }}
                   >
                     {t("notification.incompleteReportDueToDelay")}
                   </Typography>
                   <Box
-                    sx={{
-                      background: "#F3F5F6",
-                      color: theme.palette.error.main,
-                      borderRadius: "4px",
-                    }}
+                    bgcolor="background.container"
+                    color="error.main"
+                    borderRadius="4px"
                   >
                     <Button
                       onClick={handleReloadReport}
@@ -278,14 +332,14 @@ const AssessmentHtmlContainer = () => {
               <Box
                 m="auto"
                 pb={3}
-                sx={{
-                  textAlign: rtlLanguage ? "right" : "left",
-                  ...styles.rtlStyle(rtlLanguage),
-                  p: isInvalid(subjects, advice, isQuickMode)
+                textAlign={rtlLanguage ? "right" : "left"}
+                p={
+                  isInvalid(subjects, advice, isAdvisable, isQuickMode)
                     ? 1
-                    : { xs: 1, sm: 1, md: 4 },
-                  px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
-                }}
+                    : { xs: 1, sm: 1, md: 4 }
+                }
+                px={{ xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 }}
+                sx={{ ...styles.rtlStyle(rtlLanguage) }}
               >
                 {isAuthenticatedUser && (
                   <QueryData
@@ -295,7 +349,7 @@ const AssessmentHtmlContainer = () => {
                       return (
                         <AssessmentHtmlTitle
                           pathInfo={pathInfo}
-                          language={lang.code.toLowerCase()}
+                          language={lang?.code?.toLowerCase()}
                         />
                       );
                     }}
@@ -303,51 +357,52 @@ const AssessmentHtmlContainer = () => {
                 )}
 
                 <Box
-                  display="flex"
                   justifyContent="space-between"
-                  alignItems="center"
                   my={2}
+                  sx={{ ...styles.centerV }}
                 >
                   <Typography
                     color="primary"
                     textAlign="left"
                     variant="headlineLarge"
-                    sx={{
-                      ...styles.rtlStyle(rtlLanguage),
-                    }}
+                    sx={{ ...styles.rtlStyle(rtlLanguage) }}
                   >
                     {isAuthenticatedUser && (
                       <IconButton color="primary" onClick={handleBack}>
                         <ArrowForward
-                          sx={{
+                          sx={(theme) => ({
                             ...theme.typography.headlineMedium,
-                            transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
-                          }}
+                            transform: `scaleX(${isRTL ? 1 : -1})`,
+                          })}
                         />
                       </IconButton>
                     )}
-                    {t("assessmentReport.assessmentReport", {
-                      lng: lang.code.toLowerCase(),
-                    })}
+                    {t("assessmentReport.assessmentReport", { lng })}
                   </Typography>
                   <>
                     <LoadingButton
                       variant="contained"
-                      startIcon={<Share fontSize="small" />}
+                      startIcon={
+                        <Share
+                          fontSize="small"
+                          sx={{ ...styles.iconDirectionStyle(lng) }}
+                        />
+                      }
                       size="small"
                       onClick={() => dialogProps.openDialog({})}
                       disabled={
                         !permissions.canShareReport &&
                         !permissions.canManageVisibility
                       }
+                      sx={{ ...styles.rtlStyle(rtlLanguage) }}
                     >
-                      <Trans i18nKey="assessmentReport.shareReport" />
+                      {t("assessmentReport.shareReport", { lng })}
                     </LoadingButton>
                     <ShareDialog
                       {...dialogProps}
-                      onClose={() => dialogProps.onClose()}
                       fetchGraphicalReportUsers={fetchGraphicalReportUsers}
                       {...graphicalReport}
+                      lang={lang}
                     />
                   </>{" "}
                 </Box>
@@ -359,10 +414,8 @@ const AssessmentHtmlContainer = () => {
                     <Paper
                       elevation={3}
                       sx={{
+                        ...styles.centerV,
                         position: "relative",
-                        backgroundColor: "#ffffff",
-                        display: "flex",
-                        justifyContent: "center",
                         borderStartEndRadius: 16,
                         borderStartStartRadius: 16,
                         boxShadow: "none",
@@ -371,76 +424,70 @@ const AssessmentHtmlContainer = () => {
                       }}
                     >
                       <Box
-                        sx={{
-                          position: "absolute",
-                          right: { md: "40px", xs: "12px" },
-                          top: { md: "60px", xs: "6px" },
-                          bottom: { md: "40px", xs: "4px" },
-                          width: { md: "8px", xs: "2px" },
-                          backgroundColor: "#D5E5F6",
-                        }}
+                        position="absolute"
+                        right={{ md: "40px", xs: "12px" }}
+                        top={{ md: "60px", xs: "6px" }}
+                        bottom={{ md: "40px", xs: "4px" }}
+                        width={{ md: "8px", xs: "2px" }}
+                        bgcolor="primary.bgVariant"
                       />
                       <Box
-                        sx={{
-                          position: "absolute",
-                          left: { md: "40px", xs: "12px" },
-                          top: { md: "60px", xs: "6px" },
-                          bottom: { md: "40px", xs: "4px" },
-                          width: { md: "8px", xs: "2px" },
-                          backgroundColor: "#D5E5F6",
-                        }}
+                        position="absolute"
+                        left={{ md: "40px", xs: "12px" }}
+                        top={{ md: "60px", xs: "6px" }}
+                        bottom={{ md: "40px", xs: "4px" }}
+                        width={{ md: "8px", xs: "2px" }}
+                        bgcolor="primary.bgVariant"
                       />
                       <Box padding={3} width="100%">
-                        <Grid container spacing={4} sx={{ mb: "40px" }}>
+                        <Grid container spacing={4}>
                           <Grid item xs={12} sm={12}>
-                            {renderChips(
-                              graphicalReport,
-                              lang.code.toLowerCase(),
-                            )}
+                            {renderChips(graphicalReport, lng)}
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={8}>
-                            <Typography
-                              sx={{
-                                color: theme.palette.primary.main,
-                                ...theme.typography.headlineSmall,
-                                fontWeight: "bold",
-                                ...styles.rtlStyle(
-                                  languageDetector(assessment.title),
-                                ),
-                              }}
-                            >
-                              {assessment.title}
-                            </Typography>
+                          <Grid item xs={12} sm={6} md={12} lg={8}>
+                            <Box display="flex" gap={1.5}>
+                              <Typography
+                                variant="headlineSmall"
+                                color="primary.main"
+                                display="flex"
+                                alignItems="center"
+                                fontWeight="bold"
+                                sx={{
+                                  ...styles.rtlStyle(
+                                    languageDetector(assessment.title),
+                                  ),
+                                }}
+                              >
+                                {assessment.title}
+                              </Typography>
+                            </Box>
+
                             {!isQuickMode && (
                               <>
                                 <Typography
                                   component="div"
                                   id="introduction"
+                                  variant="titleSmall"
+                                  color="background.onVariant"
                                   sx={{
-                                    ...theme.typography.titleSmall,
-                                    color: "#6C8093",
                                     mt: 2,
                                     ...styles.rtlStyle(rtlLanguage),
                                   }}
                                 >
-                                  {t("assessmentReport.introduction", {
-                                    lng: lang.code.toLowerCase(),
-                                  })}
+                                  {t("assessmentReport.introduction", { lng })}
                                 </Typography>
                                 <Typography
                                   component="div"
                                   textAlign="justify"
+                                  variant="bodyMedium"
                                   sx={{
-                                    ...theme.typography.bodyMedium,
                                     mt: 1,
                                     ...styles.rtlStyle(rtlLanguage),
                                   }}
                                   dangerouslySetInnerHTML={{
                                     __html:
                                       assessment.intro ??
-                                      t("common.unavailable", {
-                                        lng: lang.code.toLowerCase(),
-                                      }),
+                                      t("common.unavailable", { lng }),
                                   }}
                                   className="tiptap"
                                 />
@@ -449,35 +496,31 @@ const AssessmentHtmlContainer = () => {
                             <Typography
                               component="div"
                               id="summary"
+                              variant="titleSmall"
+                              color="background.onVariant"
                               sx={{
-                                ...theme.typography.titleSmall,
-                                color: "#6C8093",
                                 mt: 2,
                                 ...styles.rtlStyle(rtlLanguage),
                               }}
                             >
-                              {t("common.summary", {
-                                lng: lang.code.toLowerCase(),
-                              })}
+                              {t("common.summary", { lng })}
                             </Typography>
                             <Typography
                               component="div"
                               textAlign="justify"
+                              variant="bodyMedium"
                               sx={{
-                                ...theme.typography.bodyMedium,
                                 mt: 1,
                                 ...styles.rtlStyle(rtlLanguage),
                               }}
                               dangerouslySetInnerHTML={{
                                 __html:
                                   assessment.overallInsight ??
-                                  t("common.unavailable", {
-                                    lng: lang.code.toLowerCase(),
-                                  }),
+                                  t("common.unavailable", { lng }),
                               }}
                             ></Typography>
                           </Grid>
-                          <Grid item xs={12} sm={6} md={6} lg={4} mt={10}>
+                          <Grid item xs={12} sm={6} md={12} lg={4}>
                             <Gauge
                               level_value={assessment.maturityLevel?.value ?? 0}
                               maturity_level_status={
@@ -489,9 +532,7 @@ const AssessmentHtmlContainer = () => {
                               confidence_value={assessment.confidenceValue}
                               confidence_text={
                                 !isQuickMode
-                                  ? t("common.withPercentConfidence", {
-                                      lng: lang.code.toLowerCase(),
-                                    })
+                                  ? t("common.withPercentConfidence", { lng })
                                   : ""
                               }
                               isMobileScreen={false}
@@ -501,188 +542,194 @@ const AssessmentHtmlContainer = () => {
                             />
                           </Grid>
                         </Grid>
-                        <PieChart
-                          data={subjects?.map((subject: any) => ({
-                            name: subject.title,
-                            value: 1,
-                            color: getMaturityLevelColors(
-                              assessment.assessmentKit.maturityLevelCount,
-                            )[subject.maturityLevel.value - 1],
-                            label:
-                              subject.maturityLevel.title +
-                              ": " +
-                              subject.maturityLevel.value +
-                              "/" +
-                              assessment.assessmentKit.maturityLevelCount,
-                            bgColor: getMaturityLevelColors(
-                              assessment.assessmentKit.maturityLevelCount,
-                              true,
-                            )[subject.maturityLevel.value - 1],
-                          }))}
-                          language={lang.code.toLowerCase()}
-                        />
-                        <Typography
-                          component="div"
-                          id="strengthsAndWeaknesses"
-                          sx={{
-                            ...theme.typography.titleMedium,
-                            color: "#6C8093",
-                            my: 1,
-                            ...styles.rtlStyle(rtlLanguage),
-                          }}
-                        >
-                          {t("assessmentReport.prosAndCons", {
-                            lng: lang.code.toLowerCase(),
-                          })}
-                        </Typography>
+                        {subjects.length > 1 && (
+                          <Box sx={{ ...styles.centerCV }} gap={2}>
+                            <Typography
+                              component="div"
+                              id="subjectsOverview"
+                              variant="titleMedium"
+                              color="background.onVariant"
+                              mt={2}
+                              sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                            >
+                              {t("assessmentReport.subjectsOverview", { lng })}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              variant="bodyMedium"
+                              textAlign="justify"
+                              sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                            >
+                              {t("assessmentReport.subjectGuidance", { lng })}
+                            </Typography>
+                            <PieChart
+                              data={subjects?.map((subject: any) => ({
+                                name: subject.title,
+                                value: 1,
+                                color: getMaturityLevelColors(
+                                  assessment.assessmentKit.maturityLevelCount,
+                                )[subject.maturityLevel.value - 1],
+                                label:
+                                  subject.maturityLevel.title +
+                                  ": " +
+                                  subject.maturityLevel.value +
+                                  "/" +
+                                  assessment.assessmentKit.maturityLevelCount,
+                                bgColor: getMaturityLevelColors(
+                                  assessment.assessmentKit.maturityLevelCount,
+                                  true,
+                                )[subject.maturityLevel.value - 1],
+                              }))}
+                              language={lang?.code?.toLowerCase()}
+                            />
+                          </Box>
+                        )}
+                        <Box sx={{ ...styles.centerCV }} gap={2}>
+                          <Typography
+                            component="div"
+                            id="strengthsAndWeaknesses"
+                            variant="titleMedium"
+                            color="background.onVariant"
+                            my={1}
+                            sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                          >
+                            {t(
+                              "assessmentReport.maturityMapOfAssessedAttributes",
+                              { lng },
+                            )}
+                          </Typography>
+                          <Typography
+                            component="div"
+                            variant="bodyMedium"
+                            textAlign="justify"
+                            sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                            dangerouslySetInnerHTML={{
+                              __html: t(
+                                "assessmentReport.maturityMapOfAssessedAttributesGuidance",
+                                {
+                                  lng,
+                                },
+                              ),
+                            }}
+                          />
 
-                        <TreeMapChart
-                          data={subjects.flatMap((subject: any) =>
-                            subject.attributes.map((attribute: any) => ({
-                              name: attribute.title,
-                              description: attribute.description,
-                              id: attribute.id,
-                              count: attribute.weight,
-                              label: attribute.maturityLevel.value.toString(),
-                            })),
-                          )}
-                          levels={assessment.assessmentKit.maturityLevelCount}
-                          lang={lang}
-                        />
-
-                        <Grid
-                          xs={12}
-                          md={12}
-                          bgcolor="#F3F5F6"
+                          <TreeMapChart
+                            data={subjects.flatMap((subject: any) =>
+                              subject.attributes.map((attribute: any) => ({
+                                name: attribute.title,
+                                description: attribute.description,
+                                id: attribute.id,
+                                count: attribute.weight,
+                                label: attribute.maturityLevel.value.toString(),
+                              })),
+                            )}
+                            levels={assessment.assessmentKit.maturityLevelCount}
+                            lang={lang}
+                          />
+                        </Box>
+                        <Box
+                          bgcolor="background.container"
                           borderRadius="8px"
                           paddingX={2}
                           paddingBottom={2}
-                          my={2}
-                          container
-                          spacing={2}
-                          marginLeft={0}
+                          mt={4}
                         >
-                          {!isQuickMode && (
-                            <Grid item xs={12} md={10}>
+                          <Grid container spacing={2}>
+                            {!isQuickMode && (
+                              <Grid item xs={12} md={9.7}>
+                                <Typography
+                                  variant="titleSmall"
+                                  color="text.primary"
+                                  display="flex"
+                                  alignItems="center"
+                                  gap="4px"
+                                  sx={{
+                                    ...styles.rtlStyle(rtlLanguage),
+                                  }}
+                                >
+                                  <InfoOutlinedIcon fontSize="small" />
+                                  {t("common.treeMapChart", { lng })}
+                                </Typography>
+                                <Typography
+                                  component="div"
+                                  textAlign="justify"
+                                  variant="bodyMedium"
+                                  mt={1}
+                                  fontWeight="light"
+                                  sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      assessment.prosAndCons ??
+                                      t("common.unavailable", { lng }),
+                                  }}
+                                />
+                              </Grid>
+                            )}
+
+                            <Grid item xs={12} md={!isQuickMode ? 2.3 : 12}>
                               <Typography
-                                sx={{
-                                  ...theme.typography.titleSmall,
-                                  color: "#2B333B",
-                                  my: 1,
-                                  ...styles.centerV,
-                                  direction: rtlLanguage ? "rtl" : "ltr",
-                                  fontFamily: rtlLanguage
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                                  gap: "4px",
-                                }}
+                                variant="titleSmall"
+                                color="text.primary"
+                                my={1}
+                                display="flex"
+                                alignItems="center"
+                                sx={{ ...styles.rtlStyle(rtlLanguage) }}
                               >
-                                <InfoOutlinedIcon fontSize="small" />
-                                {t("common.treeMapChart", {
-                                  lng: lang.code.toLowerCase(),
-                                })}
+                                {t("common.maturityLevels", { lng })}
                               </Typography>
-                              <Typography
-                                component="div"
-                                textAlign="justify"
+                              <Box
+                                display="flex"
                                 sx={{
-                                  ...theme.typography.bodyMedium,
-                                  fontWeight: "light",
-                                  mt: 1,
-                                  ...styles.rtlStyle(rtlLanguage),
+                                  flexDirection: !isQuickMode
+                                    ? "column"
+                                    : "row",
                                 }}
-                                dangerouslySetInnerHTML={{
-                                  __html:
-                                    assessment.prosAndCons ??
-                                    t("common.unavailable", {
-                                      lng: lang.code.toLowerCase(),
-                                    }),
-                                }}
-                              ></Typography>
-                            </Grid>
-                          )}
-
-                          <Grid item xs={12} md={!isQuickMode ? 2 : 12}>
-                            <Typography
-                              sx={{
-                                ...theme.typography.titleSmall,
-                                color: "#2B333B",
-                                my: 1,
-                                ...styles.centerV,
-                                direction: rtlLanguage ? "rtl" : "ltr",
-                                fontFamily: rtlLanguage
-                                  ? farsiFontFamily
-                                  : primaryFontFamily,
-                              }}
-                            >
-                              {t("common.maturityLevels", {
-                                lng: lang.code.toLowerCase(),
-                              })}
-                            </Typography>
-                            <Grid
-                              container
-                              xs={12}
-                              sx={{
-                                flexDirection: !isQuickMode ? "column" : "row",
-                              }}
-                              mt={2}
-                            >
-                              {assessment.assessmentKit.maturityLevels.map(
-                                (level: any, index: number) => (
-                                  <Box
-                                    key={uniqueId()}
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      rowGap: 2,
-                                    }}
-                                  >
+                                mt={2}
+                              >
+                                {assessment.assessmentKit.maturityLevels.map(
+                                  (level: any) => (
                                     <Box
-                                      sx={{
-                                        backgroundColor: getMaturityLevelColors(
-                                          assessment.assessmentKit
-                                            .maturityLevelCount,
-                                        )[level.value - 1],
-                                        height: "10px",
-                                        width: "27px",
-                                        borderRadius: "16px",
-                                        color: "#fff",
-                                        fontWeight: "bold",
-                                      }}
-                                    ></Box>
-
-                                    <Typography
-                                      component="span"
-                                      sx={{
-                                        ...theme.typography.body2,
-                                        color: "#2B333B",
-                                        direction: rtlLanguage ? "rtl" : "ltr",
-                                        fontFamily: rtlLanguage
-                                          ? farsiFontFamily
-                                          : primaryFontFamily,
-                                        paddingInlineEnd: 1,
-                                        paddingInlineStart: 0.25,
-                                      }}
+                                      key={uniqueId()}
+                                      rowGap={2}
+                                      sx={{ ...styles.centerV }}
                                     >
-                                      {level.title}
-                                    </Typography>
-                                  </Box>
-                                ),
-                              )}
+                                      <Box
+                                        bgcolor={
+                                          getMaturityLevelColors(
+                                            assessment.assessmentKit
+                                              .maturityLevelCount,
+                                          )[level.value - 1]
+                                        }
+                                        height="10px"
+                                        width="27px"
+                                        borderRadius="16px"
+                                        color="background.containerLowest"
+                                      />
+                                      <Typography
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                        paddingInlineStart={0.25}
+                                        paddingInlineEnd={1}
+                                        sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                                      >
+                                        {level.title}
+                                      </Typography>
+                                    </Box>
+                                  ),
+                                )}
+                              </Box>
                             </Grid>
                           </Grid>
-                        </Grid>
+                        </Box>
                         <SubjectReport graphicalReport={graphicalReport} />
                       </Box>
                     </Paper>
                     <Paper
                       elevation={3}
                       sx={{
+                        ...styles.centerCV,
                         position: "relative",
-                        backgroundColor: "#ffffff",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
                         borderEndStartRadius: 16,
                         borderEndEndRadius: 16,
                         boxShadow: "none",
@@ -693,15 +740,13 @@ const AssessmentHtmlContainer = () => {
                       <Typography
                         component="div"
                         id="recommendations"
-                        sx={{
-                          color: theme.palette.primary.main,
-                          ...theme.typography.headlineSmall,
-                          fontWeight: "bold",
-                          ...styles.rtlStyle(rtlLanguage),
-                        }}
+                        variant="headlineSmall"
+                        color="primary.main"
+                        fontWeight="bold"
+                        sx={{ ...styles.rtlStyle(rtlLanguage) }}
                       >
                         {t("assessmentReport.recommendations", {
-                          lng: lang.code.toLowerCase(),
+                          lng,
                         })}
                       </Typography>
                       {advice?.narration || advice?.adviceItems?.length ? (
@@ -709,11 +754,9 @@ const AssessmentHtmlContainer = () => {
                           {" "}
                           <Typography
                             textAlign="justify"
-                            sx={{
-                              ...theme.typography.bodyMedium,
-                              my: 1,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
+                            variant="bodyMedium"
+                            my={1}
+                            sx={{ ...styles.rtlStyle(rtlLanguage) }}
                             dangerouslySetInnerHTML={{
                               __html: advice?.narration,
                             }}
@@ -724,21 +767,19 @@ const AssessmentHtmlContainer = () => {
                             setDisplayedItems={() => {}}
                             query={undefined}
                             readOnly
-                            language={lang.code.toLowerCase()}
+                            language={lang?.code?.toLowerCase()}
                           />
                         </>
                       ) : (
                         <Typography
                           textAlign="justify"
-                          sx={{
-                            ...theme.typography.titleSmall,
-                            fontWeight: "light",
-                            my: 1,
-                            ...styles.rtlStyle(rtlLanguage),
-                          }}
+                          variant="titleSmall"
+                          fontWeight="light"
+                          my={1}
+                          sx={{ ...styles.rtlStyle(rtlLanguage) }}
                         >
                           {t("common.unavailable", {
-                            lng: lang.code.toLowerCase(),
+                            lng,
                           })}
                         </Typography>
                       )}

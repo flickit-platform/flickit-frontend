@@ -17,13 +17,9 @@ import { Trans } from "react-i18next";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
-import DialogTitle from "@mui/material/DialogTitle";
-import toastError from "@utils/toastError";
 import { t } from "i18next";
 import { useQuery } from "@utils/useQuery";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
 import { useTheme } from "@mui/material/styles";
 import UploadIcon from "@/assets/svg/UploadIcon.svg";
 import TextField from "@mui/material/TextField";
@@ -31,6 +27,9 @@ import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 import FileType from "@components/questions/iconFiles/fileType";
 import { AcceptFile } from "@utils/acceptFile";
+import showToast from "@utils/toastError";
+import { CEDialog } from "@/components/common/dialogs/CEDialog";
+import { styles } from "@styles";
 
 const checkTypeUpload = (
   dropZoneData: any,
@@ -96,8 +95,6 @@ const MyDropzone = (props: any) => {
     checkTypeUpload(dropZoneData, setDisplayFile, setTypeFile);
   }, [dropZoneData]);
 
-  const theme = useTheme();
-
   const fileTypeImages: Record<string, string> = {
     gif: gif,
     png: png,
@@ -120,19 +117,14 @@ const MyDropzone = (props: any) => {
       {({ getRootProps, getInputProps }: any) =>
         dropZoneData ? (
           <Box
-            sx={{
-              height: "199px",
-              maxWidth: "280px",
-              mx: "auto",
-              width: "100%",
-              border: "1px solid #C4C7C9",
-              borderRadius: "32px",
-              position: "relative",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
+            height="199px"
+            maxWidth="280px"
+            mx="auto"
+            width="100%"
+            border="1px solid #C4C7C9"
+            borderRadius="32px"
+            position="relative"
+            sx={{ ...styles.centerCVH }}
           >
             <Button
               sx={{
@@ -161,7 +153,7 @@ const MyDropzone = (props: any) => {
               )
             )}
 
-            <Typography sx={{ ...theme.typography.titleMedium }}>
+            <Typography variant="titleMedium">
               {dropZoneData[0]?.name?.length > 14
                 ? dropZoneData[0]?.name?.substring(0, 10) +
                   "..." +
@@ -201,19 +193,15 @@ const MyDropzone = (props: any) => {
                   style={{ width: "80px", height: "80px" }}
                 />
                 <Typography
+                  variant="titleMedium"
+                  color="#243342"
                   sx={{
-                    ...theme.typography.titleMedium,
-                    color: "#243342",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    ...styles.centerVH,
                     gap: "5px",
                   }}
                 >
                   <Trans i18nKey="assessmentKit.dragYourFile" />
-                  <Typography
-                    sx={{ ...theme.typography.titleMedium, color: "#205F94" }}
-                  >
+                  <Typography variant="titleMedium" color="#205F94">
                     <Trans i18nKey="common.locateIt" />
                   </Typography>
                 </Typography>
@@ -315,7 +303,7 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
       }
     } catch (e: any) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -327,9 +315,9 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
 
   const theme = useTheme();
   return (
-    <Dialog
+    <CEDialog
       open={expanded.expended}
-      onClose={closeDialog}
+      closeDialog={closeDialog}
       maxWidth={"sm"}
       fullWidth
       sx={{
@@ -339,182 +327,159 @@ export const EvidenceAttachmentsDialogs = (props: any) => {
           msOverflowStyle: "none",
         },
       }}
+      title={<Trans i18nKey="common.uploadAttachment" />}
     >
-      <DialogTitle textTransform="uppercase">
-        <Trans i18nKey="common.uploadAttachment" />
-      </DialogTitle>
-      <DialogContent
+      <Box
         sx={{
-          padding: "unset",
-          background: "#fff",
-          overflowX: "hidden",
           display: "flex",
           flexDirection: "column",
+          gap: "20px",
+          width: "100%",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            width: "100%",
-          }}
-        >
-          <Box sx={{ width: "100%", height: "auto" }}>
-            <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-                mx: "auto",
-                display: "flex",
-                justifyContent: "center",
-                paddingBottom: "24px",
-                gap: "5px",
-              }}
-            >
-              <Trans i18nKey="common.uploadAttachment" />
-              <Typography sx={{ ...theme.typography.headlineSmall }}>
-                {expanded.count} <Trans i18nKey="common.of" /> 5{" "}
+        <Box sx={{ width: "100%", height: "auto" }}>
+          <Typography
+            variant="headlineSmall"
+            sx={{
+              ...styles.centerH,
+              mx: "auto",
+              paddingBottom: "24px",
+              gap: "5px",
+            }}
+          >
+            <Trans i18nKey="common.uploadAttachment" />
+            <Typography variant="headlineSmall">
+              {expanded.count} <Trans i18nKey="common.of" /> 5{" "}
+            </Typography>
+          </Typography>
+          <Typography
+            color="outline.outline"
+            sx={{
+              fontSize: "11px",
+              maxWidth: "300px",
+              textAlign: theme.direction == "rtl" ? "right" : "left",
+              mx: "auto",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: "2px", mx: "auto" }}>
+              <InfoOutlinedIcon
+                sx={{
+                  color: "toutline.outline",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
+                  width: "12px",
+                  height: "12px",
+                  fontSize: "11px",
+                  lineHeight: "12px",
+                  letterSpacing: "0.5px",
+                }}
+              />
+              <Typography
+                sx={{
+                  fontSize: "11px",
+                  lineHeight: "12px",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                <Trans i18nKey="errors.uploadAcceptable" />
               </Typography>
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "11px",
-                color: "#73808C",
-                maxWidth: "300px",
-                textAlign: theme.direction == "rtl" ? "right" : "left",
-                mx: "auto",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "2px", mx: "auto" }}>
-                <InfoOutlinedIcon
-                  style={{ color: "#73808C" }}
-                  sx={{
-                    marginRight: theme.direction === "ltr" ? 1 : "unset",
-                    marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                    width: "12px",
-                    height: "12px",
-                    fontSize: "11px",
-                    lineHeight: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "11px",
-                    lineHeight: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  <Trans i18nKey="errors.uploadAcceptable" />
-                </Typography>
-              </Box>
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "11px",
-                color: "#73808C",
-                maxWidth: "300px",
-                textAlign: "left",
-                paddingBottom: "1rem",
-                mx: "auto",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "2px" }}>
-                <InfoOutlinedIcon
-                  style={{ color: "#73808C" }}
-                  sx={{
-                    marginRight: theme.direction === "ltr" ? 1 : "unset",
-                    marginLeft: theme.direction === "rtl" ? 1 : "unset",
-                    width: "12px",
-                    height: "12px",
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "11px",
-                    lineHeight: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  <Trans i18nKey="errors.uploadAcceptableSize" />
-                </Typography>
-              </Box>
-            </Typography>
-            <MyDropzone
-              setDropZoneData={setDropZoneData}
-              dropZoneData={dropZoneData}
-            />
-          </Box>
-          <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
-            <Typography
-              sx={{
-                ...theme.typography.headlineSmall,
-                color: "#243342",
-                paddingBottom: "1rem",
-              }}
-            >
-              <Trans i18nKey="questions.additionalInfo" />
-            </Typography>
-            <TextField
-              sx={{
-                overflow: "auto",
-                "&::placeholder": {
-                  ...theme.typography.bodySmall,
-                  color: "#000",
-                },
-              }}
-              rows={3}
-              id="outlined-multiline-static"
-              multiline
-              fullWidth
-              value={description}
-              onChange={(e) => handelDescription(e)}
-              variant="standard"
-              inputProps={{
-                sx: {
-                  fontSize: "13px",
-                  marginTop: "4px",
-                  background: "rgba(0,0,0,0.06)",
-                  padding: "5px",
-                },
-              }}
-              placeholder={t("questions.addDescriptionToAttachment") as string}
-              error={error}
-              helperText={
-                description.length >= 1 && error && description.length <= 3
-                  ? "Please enter at least 3 characters"
-                  : description.length >= 1 && error && "maximum 100 characters"
-              }
-            />
-          </Box>
+            </Box>
+          </Typography>
+          <Typography
+            color="outline.outline"
+            sx={{
+              fontSize: "11px",
+              maxWidth: "300px",
+              textAlign: "left",
+              paddingBottom: "1rem",
+              mx: "auto",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: "2px" }}>
+              <InfoOutlinedIcon
+                sx={{
+                  color: "outline.outline",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
+                  width: "12px",
+                  height: "12px",
+                }}
+              />
+              <Typography
+                sx={{
+                  fontSize: "11px",
+                  lineHeight: "12px",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                <Trans i18nKey="errors.uploadAcceptableSize" />
+              </Typography>
+            </Box>
+          </Typography>
+          <MyDropzone
+            setDropZoneData={setDropZoneData}
+            dropZoneData={dropZoneData}
+          />
         </Box>
+        <Box sx={{ width: { xs: "100%", sm: "70%" }, mx: "auto" }}>
+          <Typography
+            variant="headlineSmall"
+            color="#243342"
+            sx={{ paddingBottom: "1rem" }}
+          >
+            <Trans i18nKey="questions.additionalInfo" />
+          </Typography>
+          <TextField
+            sx={{
+              overflow: "auto",
+              "&::placeholder": {
+                ...theme.typography.bodySmall,
+                color: "text.primary",
+              },
+            }}
+            rows={3}
+            id="outlined-multiline-static"
+            multiline
+            fullWidth
+            value={description}
+            onChange={(e) => handelDescription(e)}
+            variant="standard"
+            inputProps={{
+              sx: {
+                fontSize: "13px",
+                marginTop: "4px",
+                background: "rgba(0,0,0,0.06)",
+                padding: "5px",
+              },
+            }}
+            placeholder={t("questions.addDescriptionToAttachment") as string}
+            error={error}
+            helperText={
+              description.length >= 1 && error && description.length <= 3
+                ? "Please enter at least 3 characters"
+                : description.length >= 1 && error && "maximum 100 characters"
+            }
+          />
+        </Box>
+      </Box>
 
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            gap: 2,
-            padding: "16px",
-          }}
-          justifyContent="center"
+      <Box width="100%" gap={2} padding="16px" sx={{ ...styles.centerH }}>
+        <LoadingButton
+          onClick={() => handelSendFile("another")}
+          value={"another"}
+          loading={addEvidenceAttachments.loading && btnState == "another"}
         >
-          <LoadingButton
-            onClick={() => handelSendFile("another")}
-            value={"another"}
-            loading={addEvidenceAttachments.loading && btnState == "another"}
-          >
-            {uploadAnother}
-          </LoadingButton>
-          <LoadingButton
-            variant="contained"
-            onClick={() => handelSendFile("self")}
-            value={"self"}
-            loading={addEvidenceAttachments.loading && btnState == "self"}
-          >
-            {uploadAttachment}
-          </LoadingButton>
-        </Box>
-      </DialogContent>
-    </Dialog>
+          {uploadAnother}
+        </LoadingButton>
+        <LoadingButton
+          variant="contained"
+          onClick={() => handelSendFile("self")}
+          value={"self"}
+          loading={addEvidenceAttachments.loading && btnState == "self"}
+        >
+          {uploadAttachment}
+        </LoadingButton>
+      </Box>
+    </CEDialog>
   );
 };

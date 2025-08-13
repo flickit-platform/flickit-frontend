@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import Typography from "@mui/material/Typography";
-import { theme } from "@/config/theme";
 import { t } from "i18next";
 import { styles } from "@styles";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import FaWandMagicSparkles from "@/components/common/icons/FaWandMagicSparkles";
+import { useTheme } from "@mui/material";
 
 interface InsightStatus {
   status: "default" | "expired" | "approved" | "pending";
@@ -50,6 +50,7 @@ const useInsightPopup = ({
   AIEnabled,
 }: UseInsightPopupProps) => {
   const { config } = useConfigContext();
+  const theme = useTheme();
 
   const getInsightStatus = useCallback((): InsightStatus["status"] => {
     if (!insight) return "default";
@@ -74,20 +75,20 @@ const useInsightPopup = ({
       return {
         muiColor: "primary",
         main: theme.palette.primary.main,
-        light: theme.palette.primary.light,
+        light: theme.palette.primary.states.hover,
       };
     }
     if (isApproved && !isExpired) {
       return {
         muiColor: "success",
         main: theme.palette.success.main,
-        light: theme.palette.success.light,
+        light: theme.palette.success.states.hover,
       };
     }
     return {
       muiColor: "error",
       main: theme.palette.error.main,
-      light: theme.palette.error.light,
+      light: theme.palette.error.states.hover,
     };
   }, [insight, isApproved, isExpired, theme]);
 
@@ -136,7 +137,7 @@ const useInsightPopup = ({
     if (insight) {
       return AIEnabled
         ? t("assessment.regenerateViaAI")
-        : t("assessment.regenerate");
+        : t("common.regenerate");
     }
     return AIEnabled
       ? t("assessment.generateInsightViaAI")
@@ -167,7 +168,7 @@ const useInsightPopup = ({
       primaryAction: getPrimaryAction(),
       secondaryAction: t("assessment.approveInsight"),
       confirmMessage: getConfirmMessage(),
-      confirmButtonLabel: t("assessment.regenerate"),
+      confirmButtonLabel: t("common.regenerate"),
       cancelButtonLabel: t("assessment.no"),
     };
   }, [insight, isExpired, isApproved, getButtonLabelText]);

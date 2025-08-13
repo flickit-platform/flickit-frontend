@@ -6,6 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import uniqueId from "@/utils/uniqueId";
 
 interface IMoreActionsProps {
   boxProps?: BoxProps;
@@ -52,6 +53,7 @@ const MoreActions = (props: IMoreActionsProps) => {
     onClick?: React.MouseEventHandler<HTMLLIElement>;
     text: JSX.Element;
     menuItemProps?: MenuItemProps & { "data-cy"?: string };
+    id: string
   }[];
 
   return menuItems.length > 0 ? (
@@ -86,15 +88,18 @@ const MoreActions = (props: IMoreActionsProps) => {
             icon,
             text,
             menuItemProps = {},
+            id= ""
           } = item ?? {};
+          console.log(id,"test text");
           return (
             <MenuItem
-              key={item.text.key}
+              key={uniqueId()}
               {...menuItemProps}
               onClick={(e: any) => {
                 closeMenu(e);
                 onClick(e);
               }}
+              id={id}
             >
               {icon && <ListItemIcon>{icon}</ListItemIcon>}
               <ListItemText>{text}</ListItemText>

@@ -11,7 +11,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
 import { KitDesignListItems, MultiLangs, TId } from "@/types/index";
 import { Trans } from "react-i18next";
-import { theme } from "@config/theme";
 import QuestionContainer from "@components/kit-designer/questionnaires/questions/QuestionContainer";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -20,10 +19,9 @@ import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useParams } from "react-router-dom";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import { alpha } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 import debounce from "lodash/debounce";
 import EmptyStateQuestion from "@components/kit-designer/questionnaires/questions/EmptyStateQuestion";
 import Add from "@mui/icons-material/Add";
@@ -32,6 +30,7 @@ import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import { kitActions, useKitDesignerContext } from "@/providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import showToast from "@utils/toastError";
 
 interface ListOfItemsProps {
   items: Array<KitDesignListItems>;
@@ -63,6 +62,8 @@ const ListOfItems = ({
   onReorder,
   setOpenDeleteDialog,
 }: ListOfItemsProps) => {
+  const theme = useTheme();
+
   const { kitState, dispatch } = useKitDesignerContext();
   const langCode = kitState.translatedLanguage?.code ?? "";
 
@@ -173,7 +174,7 @@ const ListOfItems = ({
         }
       } catch (e) {
         const err = e as ICustomError;
-        toastError(err);
+        showToast(err);
       }
     };
 
@@ -190,7 +191,7 @@ const ListOfItems = ({
       );
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   }, 2000);
 
@@ -267,7 +268,7 @@ const ListOfItems = ({
         });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -300,14 +301,15 @@ const ListOfItems = ({
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     mt={1.5}
-                    sx={{
-                      backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
-                      borderRadius: "8px",
-                      border: "0.3px solid #73808c30",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
+                    bgcolor={
+                      editMode === item.id
+                        ? "background.container"
+                        : "background.containerLowest"
+                    }
+                    borderRadius="8px"
+                    border="0.3px solid #73808c30"
+                    display="flex"
+                    flexDirection="column"
                   >
                     <Accordion
                       onChange={handelChangeAccordion(item)}
@@ -323,10 +325,10 @@ const ListOfItems = ({
                         sx={{
                           backgroundColor:
                             editMode === item.id
-                              ? "#F3F5F6"
+                              ? "background.container"
                               : item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.04)
-                                : "#fff",
+                                : "background.containerLowest",
                           borderRadius:
                             kitState.questions.length != 0
                               ? "8px"
@@ -340,7 +342,7 @@ const ListOfItems = ({
                             backgroundColor:
                               item.questionsCount == 0
                                 ? alpha(theme.palette.error.main, 0.08)
-                                : "#F3F5F6",
+                                : "background.container",
                           },
                           "& .MuiAccordionSummary-content": {
                             margin: 0,
@@ -364,10 +366,10 @@ const ListOfItems = ({
                           <Box
                             sx={{
                               ...styles.centerVH,
-                              background:
+                              bgcolor:
                                 item.questionsCount == 0
                                   ? alpha(theme.palette.error.main, 0.12)
-                                  : "#F3F5F6",
+                                  : "background.container",
                               width: { xs: "50px", md: "64px" },
                               justifyContent: "space-around",
                             }}
@@ -446,16 +448,8 @@ const ListOfItems = ({
                               {/* Icons (Edit/Delete or Check/Close) */}
                               {editMode === item.id ? (
                                 <Box
-                                  sx={{
-                                    mr:
-                                      theme.direction == "rtl"
-                                        ? "auto"
-                                        : "unset",
-                                    ml:
-                                      theme.direction == "ltr"
-                                        ? "auto"
-                                        : "unset",
-                                  }}
+                                  marginInlineStart="auto"
+                                  marginInlineEnd="unset"
                                 >
                                   <IconButton
                                     size="small"
@@ -510,11 +504,9 @@ const ListOfItems = ({
                               )}
                             </Box>
                             <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                              }}
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="space-between"
                             >
                               {editMode === item.id ? (
                                 <MultiLangTextField
@@ -555,43 +547,35 @@ const ListOfItems = ({
                                 />
                               )}
                               <Box
-                                sx={{
-                                  width: "fit-content",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "flex-end",
-                                  flexDirection: "column",
-                                  gap: "0.5rem",
-                                  textAlign: editMode ? "end" : "center",
-                                }}
+                                width="fit-content"
+                                alignItems="flex-end"
+                                gap="0.5rem"
+                                textAlign={editMode ? "end" : "center"}
+                                sx={{ ...styles.centerCV }}
                               >
                                 <Typography
-                                  sx={{
-                                    ...theme.typography.labelCondensed,
-                                    color: "#6C8093",
-                                    width: "100%",
-                                  }}
+                                  variant="labelCondensed"
+                                  color="background.onVariant"
+                                  width="100%"
                                 >
                                   <Trans i18nKey="common.questions" />
                                 </Typography>
                                 <Box
                                   aria-label="questionnaires"
-                                  style={{
-                                    width: "3.75rem",
-                                    height: "3.75rem",
-                                    borderRadius: "50%",
-                                    backgroundColor:
-                                      item.questionsCount == 0
-                                        ? theme.palette.error.main
-                                        : "#E2E5E9",
-                                    color:
-                                      item.questionsCount == 0
-                                        ? "#FAD1D8"
-                                        : "#2B333B",
-                                    display: "flex",
-                                    alignItems: " center",
-                                    justifyContent: "center",
-                                  }}
+                                  width="3.75rem"
+                                  height="3.75rem"
+                                  borderRadius="50%"
+                                  bgcolor={
+                                    item.questionsCount == 0
+                                      ? "error.main"
+                                      : "background.variant"
+                                  }
+                                  color={
+                                    item.questionsCount == 0
+                                      ? "error.contrastText"
+                                      : "text.primary"
+                                  }
+                                  sx={{ ...styles.centerVH }}
                                 >
                                   {item.questionsCount}
                                 </Box>
@@ -608,14 +592,7 @@ const ListOfItems = ({
                         }}
                       >
                         {fetchQuestionListKit.loading ? (
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              py: 2,
-                            }}
-                          >
+                          <Box py={2} sx={{ ...styles.centerVH }}>
                             <CircularProgress />
                           </Box>
                         ) : (
@@ -662,13 +639,7 @@ const ListOfItems = ({
                                   </Droppable>
                                 </DragDropContext>
                                 {!showNewQuestionForm[item.id] && (
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      mt: 2,
-                                    }}
-                                  >
+                                  <Box mt={2} sx={{ ...styles.centerH }}>
                                     <Button
                                       size="small"
                                       variant="outlined"
@@ -700,7 +671,7 @@ const ListOfItems = ({
                           </>
                         )}
                         {showNewQuestionForm[item.id] && (
-                          <Box sx={{ mt: 2 }}>
+                          <Box mt={2}>
                             <QuestionForm
                               newItem={newQuestion}
                               handleInputChange={handleInputChange}

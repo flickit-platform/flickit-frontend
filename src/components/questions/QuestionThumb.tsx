@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@utils/languageDetector";
 
 export const QuestionThumb = (props: any) => {
@@ -69,8 +69,8 @@ export const QuestionThumb = (props: any) => {
         <Button
           sx={{
             mt: 1,
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
+            marginInlineStart: "auto",
+            marginInlineEnd: "unset",
           }}
           disabled={isSubmitting}
           onClick={(e: any) => {

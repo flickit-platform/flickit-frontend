@@ -1,9 +1,9 @@
 import { lazy, Suspense, useMemo } from "react";
 import Box, { BoxProps } from "@mui/material/Box";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { confidenceColor, getMaturityLevelColors } from "@styles";
+import { confidenceColor, getMaturityLevelColors, styles } from "@styles";
 import { capitalizeFirstLetter } from "@/utils/filterLetter";
 import { t } from "i18next";
 import languageDetector from "@/utils/languageDetector";
@@ -44,7 +44,9 @@ const FlatGauge = (props: IGaugeProps) => {
     lng,
     ...rest
   } = props;
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("sm"),
+  );
 
   const FlatGaugeComponent = useMemo(
     () => lazy(() => import(`./flatGauge${maturityLevelNumber}.tsx`)),
@@ -63,25 +65,23 @@ const FlatGauge = (props: IGaugeProps) => {
   };
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
+  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "disabled.main";
   const isFarsi = languageDetector(text ?? "");
 
   return (
     <Suspense fallback={<Box>fallback</Box>}>
       <Box sx={{ height: "100%", textAlign: "center" }} {...rest}>
         <Box
-          sx={{
-            display: "flex",
-            flexDirection:
-              textPosition === "top" || isSmallScreen ? "column" : "row",
-            gap: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            mx: "auto",
-          }}
+          flexDirection={
+            textPosition === "top" || isSmallScreen ? "column" : "row"
+          }
+          gap="1rem"
+          mx="auto"
+          sx={{ ...styles.centerVH }}
         >
           {textPosition === "top" && (
             <Typography
+              color={colorCode}
               sx={{
                 color: colorCode,
                 fontSize: "1.25rem",
@@ -94,19 +94,16 @@ const FlatGauge = (props: IGaugeProps) => {
           )}
 
           <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "3px",
-              width: "fit-content",
-              flexDirection: isSmallScreen ? "column" : "row",
-            }}
+            gap="3px"
+            width="fit-content"
+            flexDirection={isSmallScreen ? "column" : "row"}
+            sx={{ ...styles.centerV }}
           >
             <FlatGaugeComponent colorCode={colorCode} value={levelValue} />
             {textPosition === "left" && (
               <Typography
+                color={colorCode}
                 sx={{
-                  color: colorCode,
                   fontFamily: isFarsi ? farsiFontFamily : primaryFontFamily,
                   ml: 0.5,
                   textAlign: "right",
@@ -119,12 +116,10 @@ const FlatGauge = (props: IGaugeProps) => {
 
           {textPosition === "top" && confidenceText && (
             <Typography
+              variant="bodyMedium"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                ...styles.centerVH,
                 gap: "5px",
-                ...theme.typography.bodyMedium,
                 fontWeight: 300,
                 fontFamily: languageDetector(confidenceText ?? "")
                   ? farsiFontFamily
@@ -133,9 +128,9 @@ const FlatGauge = (props: IGaugeProps) => {
             >
               {confidenceText}
               <Typography
+                variant="titleMedium"
+                color={checkColor(confidenceLevelNum)}
                 sx={{
-                  color: checkColor(confidenceLevelNum),
-                  ...theme.typography.titleMedium,
                   fontFamily: languageDetector(confidenceText ?? "")
                     ? farsiFontFamily
                     : primaryFontFamily,

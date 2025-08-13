@@ -2,6 +2,8 @@ import { keyframes, SxProps, Theme } from "@mui/material/styles";
 import { TStatus } from "@/types/index";
 import hasStatus from "@utils/hasStatus";
 import { farsiFontFamily, primaryFontFamily } from "./theme";
+import i18next from "i18next";
+import { v3Tokens } from "./tokens";
 
 const style = (style: SxProps<Theme>): SxProps<Theme> => style;
 
@@ -42,7 +44,7 @@ const commonStyles = {
   }),
   activeNavbarLink: style({
     "&.active": {
-      color: "#fff",
+      color: v3Tokens.surface.containerLowest,
     },
     "&.active::after": {
       content: '""',
@@ -52,7 +54,7 @@ const commonStyles = {
       transform: "translateX(-50%)",
       width: "90%",
       height: "2px",
-      backgroundColor: "#fff",
+      backgroundColor: v3Tokens.surface.containerLowest,
       borderRadius: 1,
     },
   }),
@@ -71,6 +73,17 @@ const commonStyles = {
     overflow: "hidden",
     textOverflow: "ellipsis",
   }),
+  rtlStyle: (isRTL = true) => ({
+    direction: isRTL ? "rtl" : "ltr",
+    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
+  }),
+  iconDirectionStyle: (lng?: string) => {
+    const isCurrentLang = lng === i18next.language.toLowerCase();
+    return {
+      marginInlineStart: isCurrentLang ? "initial" : -1,
+      marginInlineEnd: isCurrentLang ? "initial" : 1,
+    };
+  },
 };
 
 const sharedChipStyles = {
@@ -86,10 +99,6 @@ const sharedChipStyles = {
     gap: 0.5,
     fontWeight: "bold",
   },
-  rtlStyle: (isRTL = true) => ({
-    direction: isRTL ? "rtl" : "ltr",
-    fontFamily: isRTL ? farsiFontFamily : primaryFontFamily,
-  }),
 };
 
 const cards = {
@@ -105,8 +114,7 @@ const cards = {
 
 const auth = {
   authLayout: style({
-    background: (theme) =>
-      `radial-gradient(${theme.palette.background.secondary},${theme.palette.background.secondaryDark})`,
+    background: "radial-gradient(#F3F5F6, #2B333B)",
     minHeight: "100vh",
     ...commonStyles.centerCH,
   }),
@@ -149,18 +157,18 @@ const buttons = {
 
 const box = {
   shadowStyle: style({
-    background: "#fff",
+    background: v3Tokens.surface.containerLowest,
     borderRadius: "12px",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: v3Tokens.surface.containerLowest,
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
   }),
   boxStyle: style({
-    background: "#fff",
+    background: v3Tokens.surface.containerLowest,
     borderRadius: "12px",
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: v3Tokens.surface.containerLowest,
     boxShadow: "0 0 8px 0 #0A234240",
     mb: { xs: "10px", sm: "40px" },
     p: { xs: 3, sm: 4 },
@@ -275,7 +283,7 @@ export const C2 = "#D74427";
 export const C3 = "#F55C3D";
 export const C4 = "#F2995A";
 export const C5 = "#FFBC00";
-export const C6 = "#FFD900";
+export const C6 = "#D2C931";
 export const C7 = "#99CB34";
 export const C8 = "#4FB34C";
 export const C9 = "#168345";
@@ -286,7 +294,7 @@ export const C2BG = "#D7442715";
 export const C3BG = "#F55C3D15";
 export const C4BG = "#F2995A15";
 export const C5BG = "#FFBC0015";
-export const C6BG = "#FFD90015";
+export const C6BG = "#D2C93115";
 export const C7BG = "#99CB3415";
 export const C8BG = "#4FB34C15";
 export const C9BG = "#16834515";

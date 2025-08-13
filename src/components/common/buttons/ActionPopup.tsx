@@ -10,7 +10,6 @@ import Tooltip from "@mui/material/Tooltip";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ExpandMoreOutlined from "@mui/icons-material/ExpandMoreOutlined";
 import ExpandLessOutlined from "@mui/icons-material/ExpandLessOutlined";
-import { theme } from "@/config/theme";
 
 interface ActionPopupProps {
   status: "default" | "pending" | "approved" | "expired";
@@ -197,9 +196,9 @@ const ConfirmDialog = ({
 }: any) => (
   <>
     <Typography
-      color={colorScheme.muiColor}
+      color={colorScheme.main}
       textAlign="justify"
-      sx={{ ...theme.typography.bodySmall, color: colorScheme.main }}
+      variant="bodySmall"
       mb={1}
     >
       {texts.confirmMessage}
@@ -252,9 +251,9 @@ const ActionContent = ({
 }: any) => (
   <>
     <Typography
-      color={colorScheme.muiColor}
+      color={colorScheme.main}
       textAlign="justify"
-      sx={{ ...theme.typography.bodySmall, color: colorScheme.main }}
+      variant="bodySmall"
       mb={1}
     >
       {texts.description}

@@ -173,7 +173,7 @@ const AssessmentSettingContainer = () => {
               {isAdvanceMode && (
                 <Grid container columns={12}>
                   <Grid item sm={12} xs={12}>
-                    <KitCustomization kitInfo={kitInfo} />
+                    <KitCustomization kitInfo={assessmentInfo} />
                   </Grid>
                 </Grid>
               )}

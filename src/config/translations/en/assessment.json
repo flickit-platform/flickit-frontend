@@ -10,6 +10,7 @@
   "assessmentSettings": "Assessment settings",
   "assessmentSteps": "Assessment steps",
   "assessmentTitle": "Assessment title",
+  "areYouSureYouWantDeleteAssessmentKit": "Your Assessment kit will be Delete. Do you want to continue?",
   "createAnAssessmentWith": "Create an assessment with your desired assessment kit, answer its questions, and view the insights.",
   "createAssessment": "New assessment",
   "createNewAssessment": "Create assessment",
@@ -55,5 +56,6 @@
   "successCreatedAssessmentTitleFirstPart": "The ",
   "successCreatedAssessmentTitleSecondPart": " created successfully",
   "tryCreatingNewAssessment": "There is no assessment in this space. Try creating one.",
-  "updateAssessment": "Update assessment"
+  "updateAssessment": "Update assessment",
+  "areYouSureYouWantDeleteAssessment": "Your assessment will be deleted. Do you want to continue?"
 }

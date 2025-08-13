@@ -7,7 +7,6 @@ import { Trans } from "react-i18next";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICustomError } from "@/utils/CustomError";
-import toastError from "@/utils/toastError";
 import { IKitVersion } from "@/types/index";
 import { DeleteConfirmationDialog } from "@/components/common/dialogs/DeleteConfirmationDialog";
 import { useState } from "react";
@@ -18,6 +17,8 @@ import ErrorIcon from "@mui/icons-material/Error";
 import CircularProgress from "@mui/material/CircularProgress";
 import languageDetector from "@utils/languageDetector";
 import { farsiFontFamily, primaryFontFamily } from "@config/theme";
+import showToast from "@/utils/toastError";
+import { styles } from "@styles";
 
 const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
   const { service } = useServiceContext();
@@ -35,7 +36,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       );
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
@@ -50,14 +51,14 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
       navigate(`/user/expert-groups/${expertGroupId}/`);
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
 
   return (
     <PermissionControl>
       <>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
           <Typography variant="headlineSmall" fontWeight="bold">
             <Trans i18nKey="kitDesigner.release" />
           </Typography>
@@ -65,12 +66,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
         <Typography variant="bodyMedium">
           <Trans i18nKey="kitDesigner.publishDescription" />
         </Typography>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mt={4}
-        >
+        <Box justifyContent="space-between" mt={4} sx={{ ...styles.centerV }}>
           <Typography variant="headlineSmall" fontWeight="bold">
             <Trans i18nKey="common.validation" />
           </Typography>
@@ -98,12 +94,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           overflow="auto"
         >
           {validateKitVersion.loading ? (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              gap={1}
-            >
+            <Box gap={1} sx={{ ...styles.centerVH }}>
               <CircularProgress size={24} />
               <Typography variant="bodyMedium">
                 <Trans i18nKey="common.loading" />
@@ -111,10 +102,9 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             </Box>
           ) : validateKitVersion?.data?.isValid ? (
             <Box
-              display="flex"
-              alignItems="center"
               gap={1}
               color="color(srgb 0.4176 0.72 0.6025)"
+              sx={{ ...styles.centerV }}
             >
               <CheckCircleIcon color="inherit" />
               <Typography variant="bodyMedium">
@@ -124,10 +114,9 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
           ) : (
             <>
               <Box
-                display="flex"
-                alignItems="center"
                 gap={1}
                 color="color(srgb 0.7198 0.4168 0.4683)"
+                sx={{ ...styles.centerV }}
               >
                 <ErrorIcon color="inherit" />
                 <Typography variant="bodyMedium" fontWeight="bold">
@@ -153,12 +142,7 @@ const PublishContent = ({ kitVersion }: { kitVersion: IKitVersion }) => {
             </>
           )}
         </Box>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mt={2}
-        >
+        <Box justifyContent="space-between" mt={2} sx={{ ...styles.centerV }}>
           <Box display="flex" gap={2}>
             <Button
               color="secondary"

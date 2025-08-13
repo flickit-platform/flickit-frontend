@@ -12,8 +12,6 @@ import { useParams } from "react-router";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import toastError from "@utils/toastError";
-import { toast } from "react-toastify";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useForm } from "react-hook-form";
 import { useState, useRef } from "react";
@@ -22,7 +20,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import QueryBatchData from "@common/QueryBatchData";
-import RichEditorField from "@common/fields/RichEditorField";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import Tooltip from "@mui/material/Tooltip";
 import AutocompleteAsyncField, {
@@ -33,18 +30,34 @@ import { keyframes } from "@emotion/react";
 import { Link } from "react-router-dom";
 import { LoadingSkeleton } from "@common/loadings/LoadingSkeleton";
 import { AssessmentKitStatsType, AssessmentKitInfoType } from "@/types/index";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import SelectLanguage from "@utils/selectLanguage";
 import { useConfigContext } from "@providers/ConfgProvider";
 import uniqueId from "@/utils/uniqueId";
 import { getReadableDate } from "@utils/readableDate";
+import showToast from "@utils/toastError";
+import { RenderGeneralField } from "@common/RenderGeneralField";
+import useGeneralInfoField from "@/hooks/useGeneralInfoField";
+import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { styles } from "@styles";
 
 interface IAssessmentKitSectionAuthorInfo {
   setExpertGroup: any;
   setAssessmentKitTitle: any;
   setHasActiveVersion: any;
 }
+
+const TextFields = [
+  { name: "about", label: "common.what", multiline: true, useRichEditor: true },
+  {
+    name: "context",
+    label: "common.who",
+    multiline: true,
+    useRichEditor: true,
+  },
+  { name: "goal", label: "common.when", multiline: true, useRichEditor: true },
+] as const;
 
 const AssessmentKitSectionGeneralInfo = (
   props: IAssessmentKitSectionAuthorInfo,
@@ -56,6 +69,7 @@ const AssessmentKitSectionGeneralInfo = (
   const { assessmentKitId } = useParams();
   const { service } = useServiceContext();
   const formMethods = useForm({ shouldUnregister: true });
+
   const fetchAssessmentKitInfoQuery = useQuery({
     service: (args, config) =>
       service.assessmentKit.info.getInfo(args ?? { assessmentKitId }, config),
@@ -67,6 +81,17 @@ const AssessmentKitSectionGeneralInfo = (
     runOnMount: true,
   });
 
+  const {
+    handleSaveEdit,
+    editableFields,
+    setEditableFields,
+    langCode,
+    toggleTranslation,
+    showTranslations,
+    updatedValues,
+    setUpdatedValues,
+  } = useGeneralInfoField({ assessmentKitId, fetchAssessmentKitInfoQuery });
+  const { updateTranslation } = useTranslationUpdater(langCode);
   const abortController = useRef(new AbortController());
   const [show, setShow] = useState<boolean>(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -96,7 +121,7 @@ const AssessmentKitSectionGeneralInfo = (
       handleCancel();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
   const handleLanguageChange = async (e: any) => {
@@ -117,8 +142,15 @@ const AssessmentKitSectionGeneralInfo = (
       await fetchAssessmentKitInfoQuery.query();
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
+  };
+
+  const handleCancelTextBox = (field: any) => {
+    editableFields.delete(field);
+    setUpdatedValues((prev: any) => ({
+      ...prev,
+    }));
   };
 
   return (
@@ -145,6 +177,8 @@ const AssessmentKitSectionGeneralInfo = (
           editable,
           hasActiveVersion,
           mainLanguage,
+          metadata,
+          translations,
         } = info as AssessmentKitInfoType;
         const {
           creationTime,
@@ -161,17 +195,22 @@ const AssessmentKitSectionGeneralInfo = (
         setAssessmentKitTitle(title);
         setHasActiveVersion(hasActiveVersion);
         setExpertGroup(expertGroup);
+
+        const handleFieldEdit = (field: "about") => {
+          if (editable) {
+            setEditableFields((prev) => new Set(prev).add(field));
+          }
+        };
+
         return (
           <Grid container spacing={4}>
             <Grid item xs={12} md={7}>
               <Box
-                sx={{
-                  mt: 1,
-                  p: 2.5,
-                  borderRadius: 2,
-                  background: "white",
-                  height: "100%",
-                }}
+                mt={1}
+                p={2.5}
+                borderRadius={2}
+                bgcolor="background.containerLowest"
+                height="100%"
               >
                 <OnHoverInput
                   formMethods={formMethods}
@@ -201,19 +240,8 @@ const AssessmentKitSectionGeneralInfo = (
                   infoQuery={fetchAssessmentKitInfoQuery.query}
                   editable={editable}
                 />
-                <Box
-                  sx={{
-                    height: "38px",
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    mr={4}
-                    sx={{ minWidth: "64px !important" }}
-                  >
+                <Box height="38px" width="100%" sx={{ ...styles.centerV }}>
+                  <Typography variant="body2" mr={4} minWidth="64px !important">
                     <Trans i18nKey="common.price" />
                   </Typography>
                   <Typography variant="body2" fontWeight="700" mr={4} ml={1}>
@@ -222,28 +250,18 @@ const AssessmentKitSectionGeneralInfo = (
                 </Box>
                 <Box
                   my={1.5}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+                  justifyContent="space-between"
+                  sx={{ ...styles.centerV }}
                 >
-                  <Typography
-                    variant="body2"
-                    mr={4}
-                    sx={{ minWidth: "64px !important" }}
-                  >
+                  <Typography variant="body2" mr={4} minWidth="64px !important">
                     <Trans i18nKey="common.tags" />
                   </Typography>
                   {editable && show ? (
                     <FormProviderWithForm formMethods={formMethods}>
                       <Box
-                        sx={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
+                        width="100%"
+                        justifyContent="space-between"
+                        sx={{ ...styles.centerV }}
                       >
                         <AutocompleteAsyncField
                           {...useConnectAutocompleteField({
@@ -259,42 +277,32 @@ const AssessmentKitSectionGeneralInfo = (
                           editable={true}
                           sx={{ width: "100%" }}
                         />
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "100%",
-                          }}
-                        >
+                        <Box height="100%" sx={{ ...styles.centerVH }}>
                           <IconButton
                             edge="end"
                             sx={{
-                              background: theme.palette.primary.main,
+                              bgcolor: "primary.main",
                               "&:hover": {
-                                background: theme.palette.primary.dark,
+                                bgcolor: "primary.dark",
                               },
                               borderRadius: "3px",
                               height: "36px",
                               marginBottom: "2px",
-                              marginRight:
-                                theme.direction === "ltr" ? "3px" : "unset",
-                              marginLeft:
-                                theme.direction === "rtl" ? "3px" : "unset",
+                              marginInlineEnd: "3px",
+                              marginInlineStart: "unset",
                             }}
                             onClick={formMethods.handleSubmit(onSubmit)}
                           >
                             <CheckCircleOutlineRoundedIcon
-                              sx={{ color: "#fff" }}
+                              sx={{ color: "primary.contrastText" }}
                             />
                           </IconButton>
                           <IconButton
                             edge="end"
                             sx={{
-                              background: theme.palette.primary.main,
+                              bgcolor: "primary.main",
                               "&:hover": {
-                                background: theme.palette.primary.dark,
+                                bgcolor: "primary.dark",
                               },
                               borderRadius: "4px",
                               height: "36px",
@@ -302,28 +310,26 @@ const AssessmentKitSectionGeneralInfo = (
                             }}
                             onClick={handleCancel}
                           >
-                            <CancelRoundedIcon sx={{ color: "#fff" }} />
+                            <CancelRoundedIcon
+                              sx={{ color: "primary.contrastText" }}
+                              />
                           </IconButton>
                         </Box>
                       </Box>
                     </FormProviderWithForm>
                   ) : (
                     <Box
+                      height="38px"
+                      borderRadius={0.5}
+                      paddingInlineStart="12px"
+                      paddingInlineEnd="8px"
+                      width="100%"
+                      justifyContent="space-between"
                       sx={{
-                        height: "38px",
-                        borderRadius: "4px",
-                        paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-                        paddingRight:
-                          theme.direction === "rtl" ? "12px" : "8px",
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        ...styles.centerV,
                         "&:hover": {
                           border: editable ? "1px solid #1976d299" : "unset",
-                          borderColor: editable
-                            ? theme.palette.primary.main
-                            : "unset",
+                          borderColor: editable ? "primary.main" : "unset",
                         },
                       }}
                       onClick={() => setShow(!show)}
@@ -335,12 +341,8 @@ const AssessmentKitSectionGeneralInfo = (
                           return (
                             <Box
                               key={uniqueId()}
-                              sx={{
-                                background: "#00000014",
-                                fontSize: "0.875rem",
-                                borderRadius: "8px",
-                                fontWeight: "700",
-                              }}
+                              bgcolor="#00000014"
+                              borderRadius={2}
                               mr={1}
                               px={1}
                             >
@@ -356,41 +358,69 @@ const AssessmentKitSectionGeneralInfo = (
                           title="Edit"
                           edge="end"
                           sx={{
-                            background: theme.palette.primary.main,
+                            bgcolor: "primary.main",
                             "&:hover": {
-                              background: theme.palette.primary.dark,
+                              bgcolor: "primary.dark",
                             },
                             borderRadius: "3px",
                             height: "36px",
                           }}
                           onClick={() => setShow(!show)}
                         >
-                          <EditRoundedIcon sx={{ color: "#fff" }} />
+                          <EditRoundedIcon
+                            sx={{ color: "primary.contrastText" }}
+                          />
                         </IconButton>
                       )}
                     </Box>
                   )}
                 </Box>
 
-                <OnHoverRichEditor
-                  data={about}
-                  title={<Trans i18nKey="common.about" />}
-                  infoQuery={fetchAssessmentKitInfoQuery.query}
-                  editable={editable}
-                />
+                {TextFields.map((field) => {
+                  const { name, label, multiline, useRichEditor } = field;
+                  const data = { about, metadata, translations };
+
+                  return (
+                    <Box key={name}>
+                      <Box
+                        my={1.5}
+                        justifyContent="space-between"
+                        sx={{ ...styles.centerV }}
+                      >
+                        <Typography
+                          variant="body2"
+                          mr={4}
+                          minWidth="64px !important"
+                        >
+                          <Trans i18nKey={label} />:
+                        </Typography>
+                        <RenderGeneralField
+                          field={name}
+                          data={data}
+                          editableFields={editableFields}
+                          langCode={langCode}
+                          updatedValues={updatedValues}
+                          setUpdatedValues={setUpdatedValues}
+                          showTranslations={showTranslations}
+                          toggleTranslation={toggleTranslation}
+                          handleFieldEdit={handleFieldEdit}
+                          multiline={multiline}
+                          useRichEditor={useRichEditor}
+                          updateTranslation={updateTranslation}
+                          handleSaveEdit={handleSaveEdit}
+                          handleCancelTextBox={handleCancelTextBox}
+                        />
+                      </Box>
+                    </Box>
+                  );
+                })}
+
                 <Box
                   my={1.5}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+                  justifyContent="space-between"
+                  sx={{ ...styles.centerV }}
                 >
-                  <Typography
-                    variant="body2"
-                    mr={4}
-                    sx={{ minWidth: "64px !important" }}
-                  >
+                  <Typography variant="body2" mr={4} minWidth="64px !important">
                     <Trans i18nKey="common.language" />
                   </Typography>
                   <SelectLanguage
@@ -404,13 +434,11 @@ const AssessmentKitSectionGeneralInfo = (
             </Grid>
             <Grid item xs={12} md={5}>
               <Box
-                sx={{
-                  mt: 1,
-                  p: 2.5,
-                  borderRadius: 2,
-                  background: "white",
-                  height: "100%",
-                }}
+                mt={1}
+                p={2.5}
+                borderRadius={2}
+                bgcolor="background.containerLowest"
+                height="100%"
               >
                 {creationTime && (
                   <Box my={1.5}>
@@ -450,7 +478,7 @@ const AssessmentKitSectionGeneralInfo = (
                     bg="white"
                     info={{
                       item: questionnairesCount,
-                      title: t("assessmentKit.questionnairesCount"),
+                      title: t("common.questionnairesCount"),
                     }}
                   />
                 </Box>
@@ -482,14 +510,14 @@ const AssessmentKitSectionGeneralInfo = (
                   />
                 </Box>
 
-                <Box sx={{ display: "flex" }} px={1} mt={4}>
-                  <Box sx={{ display: "flex" }} mr={4}>
+                <Box display="flex" px={1} mt={4}>
+                  <Box display="flex" mr={4}>
                     <FavoriteRoundedIcon color="primary" />
                     <Typography color="primary" ml={1}>
                       {likes}
                     </Typography>
                   </Box>
-                  <Box sx={{ display: "flex" }}>
+                  <Box display="flex">
                     <ShoppingCartRoundedIcon color="primary" />
                     <Typography color="primary" ml={1}>
                       {assessmentCounts}
@@ -541,14 +569,14 @@ const OnHoverInput = (props: any) => {
   const updateAssessmentKit = async () => {
     try {
       const res = await updateAssessmentKitQuery.query();
-      res.message && toast.success(res.message);
+      res.message && showToast(res.message, { variant: "success" });
       await infoQuery();
     } catch (e) {
       const err = e as ICustomError;
       if (Array.isArray(err.response?.data?.message)) {
-        toastError(err.response?.data?.message[0]);
+        showToast(err.response?.data?.message[0]);
       } else if (err.response?.data?.hasOwnProperty("message")) {
-        toastError(error);
+        showToast(error);
       }
       setError(err);
       setHasError(true);
@@ -564,27 +592,16 @@ const OnHoverInput = (props: any) => {
     <Box>
       <Box
         my={1.5}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+        justifyContent="space-between"
+        sx={{ ...styles.centerV }}
         width="100%"
       >
-        <Typography
-          variant="body2"
-          mr={4}
-          sx={{
-            minWidth: "64px !important",
-          }}
-        >
+        <Typography variant="body2" mr={4} minWidth="64px !important">
           {title}
         </Typography>
 
         {editable && show ? (
-          <Box
-            sx={{ display: "flex", flexDirection: "column", width: "100% " }}
-          >
+          <Box display="flex" flexDirection="column" width="100%">
             <OutlinedInput
               inputProps={inputProps}
               error={hasError}
@@ -608,9 +625,9 @@ const OnHoverInput = (props: any) => {
                     title="Submit Edit"
                     edge="end"
                     sx={{
-                      background: theme.palette.primary.main,
+                      bgcolor: "primary.main",
                       "&:hover": {
-                        background: theme.palette.primary.dark,
+                        bgcolor: "primary.dark",
                       },
                       borderRadius: "3px",
                       height: "36px",
@@ -618,22 +635,24 @@ const OnHoverInput = (props: any) => {
                     }}
                     onClick={updateAssessmentKit}
                   >
-                    <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
+                    <CheckCircleOutlineRoundedIcon
+                      sx={{ color: "primary.contrastText" }}
+                    />
                   </IconButton>
                   <IconButton
                     title="Cancel Edit"
                     edge="end"
                     sx={{
-                      background: theme.palette.primary.main,
+                      bgcolor: "primary.main",
                       "&:hover": {
-                        background: theme.palette.primary.dark,
+                        bgcolor: "primary.dark",
                       },
                       borderRadius: "4px",
                       height: "36px",
                     }}
                     onClick={handleCancel}
                   >
-                    <CancelRoundedIcon sx={{ color: "#fff" }} />
+                    <CancelRoundedIcon sx={{ color: "primary.contrastText" }} />
                   </IconButton>
                 </InputAdornment>
               }
@@ -646,19 +665,18 @@ const OnHoverInput = (props: any) => {
           </Box>
         ) : (
           <Box
+            minHeight="38px"
+            borderRadius="4px"
+            paddingInlineStart="12px"
+            paddingInlineEnd="8px"
+            width="100%"
+            justifyContent="space-between"
             sx={{
-              minHeight: "38px",
-              borderRadius: "4px",
-              paddingLeft: theme.direction === "ltr" ? "12px" : "0px",
-              paddingRight: theme.direction === "ltr" ? "12px" : "8px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              ...styles.centerV,
               wordBreak: "break-word",
               "&:hover": {
                 border: editable ? "1px solid #1976d299" : "unset",
-                borderColor: editable ? theme.palette.primary.main : "unset",
+                borderColor: editable ? "primary.main" : "unset",
               },
             }}
             onClick={() => setShow(!show)}
@@ -681,16 +699,16 @@ const OnHoverInput = (props: any) => {
                 title="Edit"
                 edge="end"
                 sx={{
-                  background: theme.palette.primary.main,
+                  bgcolor: "primary.main",
                   "&:hover": {
-                    background: theme.palette.primary.dark,
+                    bgcolor: "primary.dark",
                   },
                   borderRadius: "3px",
                   height: "36px",
                 }}
                 onClick={() => setShow(!show)}
               >
-                <EditRoundedIcon sx={{ color: "#fff" }} />
+                <EditRoundedIcon sx={{ color: "primary.contrastText" }} />
               </IconButton>
             )}
           </Box>
@@ -727,51 +745,43 @@ const OnHoverStatus = (props: any) => {
   });
   const updateAssessmentKit = async () => {
     const res = await updateAssessmentKitQuery.query();
-    res.message && toast.success(res.message);
+    res.message && showToast(res.message, { variant: "success" });
     await infoQuery();
   };
   return (
     <Box>
-      <Box
-        my={1.5}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="body2" mr={4} sx={{ minWidth: "64px !important" }}>
+      <Box my={1.5} sx={{ ...styles.centerV }}>
+        <Typography variant="body2" mr={4} minWidth="64px !important">
           {title}
         </Typography>
         <Box
-          sx={{
-            display: "flex",
-            background: "#00000014",
-            borderRadius: "8px",
-            justifyContent: "space-between",
-            width: "fit-content",
-            p: "2px",
-            gap: "4px  ",
-            ml: 0.5,
-          }}
+          display="flex"
+          bgcolor="#00000014"
+          borderRadius={1}
+          justifyContent="space-between"
+          width="fit-content"
+          p="2px"
+          gap="4px"
+          ml={0.5}
         >
           <Box
             onClick={() => handleToggle(true)}
+            p={0.5}
+            bgcolor={selected ? "#2e7d32" : "transparent"}
+            color={selected ? "background.containerLowest" : "text.primary"}
+            borderRadius="6px"
+            width="100px"
+            textAlign="center"
             sx={{
-              padding: 0.5,
-              backgroundColor: selected ? "#2e7d32" : "transparent",
-              color: selected ? "#fff" : "#000",
               cursor: editable ? "pointer" : "default",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
-              borderRadius: "6px",
-              width: "100px",
-              textAlign: "center",
             }}
           >
             <Typography
               variant="body2"
               fontWeight="700"
-              textTransform={"uppercase"}
+              textTransform="uppercase"
               sx={{ userSelect: "none" }}
               fontSize="0.75rem"
             >
@@ -780,22 +790,22 @@ const OnHoverStatus = (props: any) => {
           </Box>
           <Box
             onClick={() => handleToggle(false)}
+            p={0.5}
+            bgcolor={!selected ? "disabled.main" : "transparent"}
+            color={!selected ? "background.containerLowest" : "text.primary"}
+            borderRadius="6px"
+            width="100px"
+            textAlign="center"
             sx={{
-              padding: 0.5,
-              backgroundColor: !selected ? "gray" : "transparent",
               cursor: editable ? "pointer" : "default",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
-              borderRadius: "6px",
-              color: !selected ? "#fff" : "#000",
-              width: "100px",
-              textAlign: "center",
             }}
           >
             <Typography
               variant="body2"
               fontWeight="700"
-              textTransform={"uppercase"}
+              textTransform="uppercase"
               sx={{ userSelect: "none" }}
               fontSize=".75rem"
             >
@@ -832,57 +842,44 @@ const OnHoverVisibilityStatus = (props: any) => {
   });
   const updateAssessmentKit = async () => {
     const res = await updateAssessmentKitQuery.query();
-    res.message && toast.success(res.message);
+    res.message && showToast(res.message, { variant: "success" });
     await infoQuery();
   };
   return (
     <Box>
-      <Box
-        my={1.5}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <Box my={1.5} sx={{ ...styles.centerV }}>
         <Typography variant="body2" mr={4} sx={{ minWidth: "64px !important" }}>
           {title}
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-          }}
-        >
+        <Box display="flex" width="100%">
           <Box
-            sx={{
-              display: "flex",
-              background: "#00000014",
-              borderRadius: "8px",
-              justifyContent: "space-between",
-              width: "fit-content",
-              p: "2px",
-              gap: "4px  ",
-              ml: 0.5,
-            }}
+            display="flex"
+            bgcolor="#00000014"
+            borderRadius={1}
+            justifyContent="space-between"
+            width="fit-content"
+            p="2px"
+            gap="4px"
+            ml={0.5}
           >
             <Box
               onClick={() => handleToggle(true)}
+              p={0.5}
+              bgcolor={selected ? "#7954B3" : "transparent"}
+              color={selected ? "background.containerLowest" : "text.primary"}
+              borderRadius="6px"
+              width="100px"
+              textAlign="center"
               sx={{
-                padding: 0.5,
-                backgroundColor: selected ? "#7954B3;" : "transparent",
-                color: selected ? "#fff" : "#000",
                 cursor: editable ? "pointer" : "default",
                 transition: "background-color 0.3s ease",
                 animation: `${fadeIn} 0.5s ease`,
-                borderRadius: "6px",
-                width: "100px",
-                textAlign: "center",
               }}
             >
               <Typography
                 variant="body2"
                 fontWeight="700"
-                textTransform={"uppercase"}
+                textTransform="uppercase"
                 sx={{ userSelect: "none" }}
                 fontSize=".75rem"
               >
@@ -891,22 +888,22 @@ const OnHoverVisibilityStatus = (props: any) => {
             </Box>
             <Box
               onClick={() => handleToggle(false)}
+              p={0.5}
+              bgcolor={!selected ? "disabled.main" : "transparent"}
+              color={!selected ? "background.containerLowest" : "text.primary"}
+              borderRadius="6px"
+              width="100px"
+              textAlign="center"
               sx={{
-                padding: 0.5,
-                backgroundColor: !selected ? "gray" : "transparent",
                 cursor: editable ? "pointer" : "default",
                 transition: "background-color 0.3s ease",
                 animation: `${fadeIn} 0.5s ease`,
-                borderRadius: "6px",
-                color: !selected ? "#fff" : "#000",
-                width: "100px",
-                textAlign: "center",
               }}
             >
               <Typography
                 variant="body2"
                 fontWeight="700"
-                textTransform={"uppercase"}
+                textTransform="uppercase"
                 sx={{ userSelect: "none" }}
                 fontSize=".75rem"
               >
@@ -915,8 +912,10 @@ const OnHoverVisibilityStatus = (props: any) => {
             </Box>
           </Box>
           {editable && selected && (
-            <Box sx={{ ml: 1 }}>
-              <Tooltip title={<Trans i18nKey="assessmentKit.managePermissions" />}>
+            <Box ml={1}>
+              <Tooltip
+                title={<Trans i18nKey="assessmentKit.managePermissions" />}
+              >
                 <IconButton
                   sx={{ width: "20px", height: "20px" }}
                   color="primary"
@@ -933,183 +932,7 @@ const OnHoverVisibilityStatus = (props: any) => {
     </Box>
   );
 };
-const OnHoverRichEditor = (props: any) => {
-  const abortController = useRef(new AbortController());
-  const [show, setShow] = useState<boolean>(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const handleMouseOver = () => {
-    editable && setIsHovering(true);
-  };
 
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
-  const { data, title, infoQuery, editable } = props;
-  const [hasError, setHasError] = useState<boolean>(false);
-  const [error, setError] = useState<any>({});
-  const handleCancel = () => {
-    setShow(false);
-    setError({});
-    setHasError(false);
-  };
-  const { assessmentKitId } = useParams();
-  const { service } = useServiceContext();
-  const formMethods = useForm({ shouldUnregister: true });
-  const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
-    event.preventDefault();
-    try {
-      await service.assessmentKit.info.updateStats(
-        { assessmentKitId: assessmentKitId ?? "", data: { about: data.about } },
-        { signal: abortController.current.signal },
-      );
-      await infoQuery();
-      await setShow(false);
-    } catch (e) {
-      const err = e as ICustomError;
-      setError(err);
-      setHasError(true);
-    }
-  };
-  return (
-    <Box>
-      <Box
-        my={1.5}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="body2" mr={4} sx={{ minWidth: "64px !important" }}>
-          {title}
-        </Typography>
-        {editable && show ? (
-          <FormProviderWithForm formMethods={formMethods}>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <RichEditorField
-                name="about"
-                label={<Box></Box>}
-                disable_label={true}
-                required={true}
-                defaultValue={data ?? ""}
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <IconButton
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: languageDetector(data)
-                      ? "8px 0 0 0"
-                      : "0 8px 0 0",
-                    height: "49%",
-                  }}
-                  onClick={formMethods.handleSubmit(onSubmit)}
-                >
-                  <CheckCircleOutlineRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-                <IconButton
-                  sx={{
-                    background: theme.palette.primary.main,
-                    "&:hover": {
-                      background: theme.palette.primary.dark,
-                    },
-                    borderRadius: languageDetector(data)
-                      ? "0 0 0 8px"
-                      : "0 0 8px 0",
-                    height: "49%",
-                  }}
-                  onClick={handleCancel}
-                >
-                  <CancelRoundedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Box>
-              {hasError && (
-                <Typography color="#ba000d" variant="caption">
-                  {error?.data?.about}
-                </Typography>
-              )}
-            </Box>
-          </FormProviderWithForm>
-        ) : (
-          <Box
-            sx={{
-              minHeight: "38px",
-              borderRadius: "8px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              wordBreak: "break-word",
-              pr: languageDetector(data) ? 1 : 5,
-              pl: languageDetector(data) ? 5 : 1,
-              border: "1px solid #fff",
-              "&:hover": {
-                border: editable ? "1px solid #1976d299" : "1px solid #fff",
-                borderColor: editable
-                  ? theme.palette.primary.main
-                  : "1px solid #fff",
-              },
-              position: "relative",
-            }}
-            onClick={() => setShow(!show)}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-          >
-            <Typography
-              variant="body2"
-              fontWeight="700"
-              sx={{
-                fontFamily: languageDetector(data?.replace(/<\/?p>/g, ""))
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-              dangerouslySetInnerHTML={{ __html: data }}
-            />
-            {isHovering && (
-              <IconButton
-                title="Edit"
-                sx={{
-                  background: theme.palette.primary.main,
-                  "&:hover": {
-                    background: theme.palette.primary.dark,
-                  },
-                  borderRadius: languageDetector(data)
-                    ? "8px 0 0 8px"
-                    : "0 8px 8px 0",
-                  height: "100%",
-                  position: "absolute",
-                  right: languageDetector(data) ? "unset" : 0,
-                  left: languageDetector(data) ? 0 : "unset",
-                  top: 0,
-                }}
-                onClick={() => setShow(!show)}
-              >
-                <EditRoundedIcon sx={{ color: "#fff" }} />
-              </IconButton>
-            )}
-          </Box>
-        )}
-      </Box>
-    </Box>
-  );
-};
 export default AssessmentKitSectionGeneralInfo;
 
 const fadeIn = keyframes`

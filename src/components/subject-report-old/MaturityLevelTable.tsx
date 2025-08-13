@@ -10,12 +10,13 @@ import Rating from "@mui/material/Rating";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import TablePagination from "@mui/material/TablePagination";
 import Popover from "@mui/material/Popover";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { generateColorFromString } from "@/config/styles";
 import languageDetector from "@/utils/languageDetector";
@@ -26,6 +27,7 @@ import QuestionDetailsContainer from "./questionDetails-dialog/QuestionDetailsCo
 import PopoverContent from "./PopoverContent";
 import ScoreDisplay from "./ScoreDisplay";
 import usePopover from "@/hooks/usePopover";
+import { styles } from "@styles";
 
 interface Item {
   questionnaire: { id: string; title: string };
@@ -150,6 +152,8 @@ const MaturityLevelTable = ({
   sortOrder: any;
   setSortOrder: any;
 }) => {
+  const theme = useTheme();
+
   const { gainedScore, maxPossibleScore, questionsCount } = scoreState;
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<
     number | null
@@ -323,13 +327,12 @@ const MaturityLevelTable = ({
   const renderGridHeader = () => (
     <Grid
       container
+      whiteSpace="nowrap"
+      mb={2}
+      px={1}
       sx={{
+        ...styles.centerH,
         direction: theme.direction,
-        mb: 2,
-        whiteSpace: "nowrap",
-        display: "flex",
-        justifyContent: "center",
-        px: 1,
       }}
     >
       {[
@@ -344,16 +347,14 @@ const MaturityLevelTable = ({
           md={2}
           key={uniqueId()}
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            ...styles.centerVH,
             gap: 1,
           }}
         >
           <Typography sx={{ textAlign: "center" }} variant="bodyMedium">
             <Trans i18nKey={item.label} />:
           </Typography>
-          <Typography sx={{ ...theme.typography.semiBoldMedium }}>
+          <Typography variant="semiBoldMedium">
             {formatMaturityNumber(item.value)}
           </Typography>
         </Grid>
@@ -366,7 +367,7 @@ const MaturityLevelTable = ({
     <TableHead
       sx={{
         ...theme.typography.semiBoldMedium,
-        backgroundColor: theme.palette.grey[100],
+        backgroundColor: "grey.100",
         width: "100%",
       }}
     >
@@ -384,13 +385,13 @@ const MaturityLevelTable = ({
               sx={{
                 py: "4px !important",
                 color: isActive
-                  ? theme.palette.primary.main + " !important"
+                  ? "primary.main" + " !important"
                   : "#939393 !important",
                 width: column.width ?? "auto",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                boxShadow: "inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1",
+                boxShadow: `inset 0 1px 0 0 #C7CCD1, inset 0 -1px 0 0 #C7CCD1`,
                 "&:first-child": {
                   borderEndStartRadius: "8px !important",
                   borderStartStartRadius: "8px !important",
@@ -424,12 +425,12 @@ const MaturityLevelTable = ({
                   }
                   sx={{
                     color: isActive
-                      ? theme.palette.primary.main + " !important"
+                      ? "primary.main" + " !important"
                       : "#939393 !important",
                     "& .MuiTableSortLabel-icon": {
                       opacity: 1,
                       color: isActive
-                        ? theme.palette.primary.main + " !important"
+                        ? "primary.main" + " !important"
                         : "#939393 !important",
                       transform: direction === "asc" ? "scaleY(-1)" : "none",
                     },
@@ -475,7 +476,7 @@ const MaturityLevelTable = ({
               data-testid="open-question-details-dialog"
               sx={{
                 "&:hover": {
-                  backgroundColor: theme.palette.action.hover,
+                  bgcolor: "action.hover",
                 },
                 cursor: "pointer",
               }}

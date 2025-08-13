@@ -1,5 +1,5 @@
-import { Box, IconButton, Typography } from "@mui/material";
-import { farsiFontFamily, primaryFontFamily, theme } from "@/config/theme";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import { useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -32,6 +32,8 @@ const RenderText = ({
   multiline?: boolean;
   showCopyIcon?: boolean;
 }) => {
+  const theme = useTheme();
+
   const baseProps = {
     component: "div" as const,
     variant: variantOverride ?? variant,
@@ -91,6 +93,7 @@ const TitleWithTranslation = ({
   translation,
   ...rest
 }: TitleWithTranslationProps) => {
+  const theme = useTheme()
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
     ? languageDetector(translation)
@@ -102,7 +105,7 @@ const TitleWithTranslation = ({
         <RenderText
           text={translation}
           isFarsi={isFarsiTranslation}
-          color={"#6C8093"}
+          color={theme.palette.background.onVariant}
           variantOverride={"body2"}
           {...rest}
         />

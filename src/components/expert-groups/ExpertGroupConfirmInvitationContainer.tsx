@@ -2,15 +2,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { ICustomError } from "@utils/CustomError";
-import toastError from "@utils/toastError";
 import { useQuery } from "@utils/useQuery";
 import QueryData from "@common/QueryData";
 import Title from "@common/Title";
 import ExpertGroupsItem from "./ExpertGroupsItem";
-import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 const ExpertGroupConfirmInvitationContainer = () => {
   const { service } = useServiceContext();
@@ -31,7 +29,10 @@ const ExpertGroupConfirmInvitationContainer = () => {
 
   const declineInvitationQueryData = useQuery({
     service: (args, config) =>
-      service.expertGroups.member.declineInvitation(args ?? { expertGroupId }, config),
+      service.expertGroups.member.declineInvitation(
+        args ?? { expertGroupId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -41,7 +42,9 @@ const ExpertGroupConfirmInvitationContainer = () => {
       navigate(`/user/expert-groups/${expertGroupId}`, {
         replace: true,
       });
-      toast.success("You have joined this expert group successfully.");
+      showToast(<Trans i18nKey="expertGroups.sueccessJoinToExpertGroup" />, {
+        variant: "success",
+      });
     } catch (e) {
       const err = e as ICustomError;
       if (err?.response?.data?.code === "ALREADY_EXISTS") {
@@ -49,7 +52,7 @@ const ExpertGroupConfirmInvitationContainer = () => {
           replace: true,
         });
       } else {
-        toastError(err);
+        showToast(err);
       }
     }
   };
@@ -60,9 +63,10 @@ const ExpertGroupConfirmInvitationContainer = () => {
       navigate("/spaces", { replace: true });
     } catch (e) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
     }
   };
+
 
   return (
     <QueryData
@@ -84,8 +88,8 @@ const ExpertGroupConfirmInvitationContainer = () => {
             <Box>
               <LoadingButton
                 sx={{
-                  marginRight: theme.direction === "ltr" ? 1 : "unset",
-                  marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                  marginInlineStart: "unset",
+                  marginInlineEnd: 1,
                 }}
                 loading={confirmInvitationQueryData.loading}
                 variant="contained"

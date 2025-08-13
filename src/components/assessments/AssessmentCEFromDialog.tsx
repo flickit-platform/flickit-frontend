@@ -10,7 +10,6 @@ import setServerFieldErrors from "@utils/setServerFieldError";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@utils/CustomError";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import { useQuery } from "@utils/useQuery";
@@ -21,7 +20,7 @@ import CheckmarkGif from "../common/success/Checkmark";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { theme } from "@/config/theme";
+import showToast from "@utils/toastError";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -115,7 +114,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       setLoading(false);
       setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
-      toastError(err);
+      showToast(err);
       return () => {
         abortController.abort();
       };
@@ -172,8 +171,8 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
         <>
           <NoteAddRoundedIcon
             sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
+              marginInlineEnd: 1,
+              marginInlineStart: "unset",
             }}
           />
           {type === "update" ? (
@@ -222,7 +221,9 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
               {" "}
               <AutocompleteAsyncField
                 name="language"
-                label={<Trans i18nKey="assessment.assessmentAndReportLanguage" />}
+                label={
+                  <Trans i18nKey="assessment.assessmentAndReportLanguage" />
+                }
                 options={languages}
                 data-cy="language"
                 disabled={languages.length === 1}
@@ -246,7 +247,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
         </FormProviderWithForm>
       ) : (
         <FormProviderWithForm formMethods={formMethods}>
-          <Box sx={{ ...styles.centerCVH, textAlign: "center" }}>
+          <Box textAlign="center" sx={{ ...styles.centerCVH }}>
             <CheckmarkGif />
             <Typography variant="titleLarge">
               <Trans

@@ -10,7 +10,6 @@ import setServerFieldErrors from "@utils/setServerFieldError";
 import NoteAddRoundedIcon from "@mui/icons-material/NoteAddRounded";
 import { ICustomError } from "@utils/CustomError";
 import { useNavigate, useParams } from "react-router-dom";
-import toastError from "@utils/toastError";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import AutocompleteAsyncField, {
@@ -27,10 +26,10 @@ import { keyframes } from "@emotion/react";
 import convertToBytes from "@/utils/convertToBytes";
 import { useQuery } from "@utils/useQuery";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { theme } from "@/config/theme";
 import SelectLanguage from "@utils/selectLanguage";
 import uniqueId from "@/utils/uniqueId";
 import i18n from "i18next";
+import showToast from "@utils/toastError";
 
 interface IAssessmentKitCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -154,7 +153,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       shouldView && res?.kitId && navigate(`assessment-kits/${res.kitId}`);
     } catch (e: any) {
       const err = e as ICustomError;
-      toastError(err);
+      showToast(err);
       setLoading(false);
       setServerFieldErrors(err, formMethods);
       formMethods.clearErrors();
@@ -226,34 +225,26 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
   const formContent = (
     <FormProviderWithForm formMethods={formMethods}>
       <Grid container spacing={type != "convert" ? 2 : 0} sx={styles.formGrid}>
-        <Grid
-          item
-          xs={12}
-          md={12}
-          sx={{ display: `${activeStep === 0 ? "" : "none"}` }}
-        >
+        <Grid item xs={12} md={12} display={activeStep === 0 ? "" : "none"}>
           {type === "convert" && buttonStep == 0 && !convertData && (
-            <Box sx={{ pb: "10px" }}>
-              {" "}
+            <Box pb="10px">
               <Box
-                sx={{
-                  ...styles.centerV,
-                  background: "#E8EBEE",
-                  width: "fit-content",
-                  px: 1,
-                }}
+                bgcolor="background.containerHigher"
+                width="fit-content"
+                px={1}
+                sx={{ ...styles.centerV }}
               >
                 <Trans i18nKey="assessmentKit.dslDownloadGuide" />
                 <span
-                  style={{
-                    textDecoration: "underline",
-                    color: theme.palette.primary.main,
-                    cursor: "pointer",
-                    paddingLeft: theme.direction === "ltr" ? "4px" : "unset",
-                    paddingRight: theme.direction === "rtl" ? "4px" : "unset",
-                  }}
+                  color="primary.main"
                   aria-hidden={true}
                   onClick={downloadTemplate}
+                  style={{
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    paddingInlineStart: "4px",
+                    paddingInlineEnd: "unset",
+                  }}
                 >
                   <Trans i18nKey="common.here" />
                 </span>
@@ -262,15 +253,12 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           )}
 
           {type === "convert" && buttonStep == 1 && (
-            <Box sx={{ pb: "10px" }}>
-              {" "}
+            <Box pb="10px">
               <Box
-                sx={{
-                  ...styles.centerV,
-                  background: "#E8EBEE",
-                  width: "fit-content",
-                  px: 1,
-                }}
+                bgcolor="background.containerHigher"
+                width="fit-content"
+                px={1}
+                sx={{ ...styles.centerV }}
               >
                 <Trans i18nKey="assessmentKit.dslReadyToDownload" />
               </Box>
@@ -330,7 +318,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           xs={12}
           sm={8}
           md={8}
-          sx={{ display: `${activeStep === 0 ? "none" : ""}` }}
+          display={activeStep === 0 ? "none" : ""}
         >
           <InputFieldUC
             name="title"
@@ -344,7 +332,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           xs={12}
           sm={4}
           md={4}
-          sx={{ display: `${activeStep === 0 ? "none" : ""}` }}
+          display={activeStep === 0 ? "none" : ""}
         >
           <IsPrivateSwitch setIsPrivate={setIsPrivate} isPrivate={isPrivate} />
         </Grid>
@@ -353,7 +341,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           xs={12}
           sm={8}
           md={8}
-          sx={{ display: `${activeStep === 0 ? "none" : ""}` }}
+          display={activeStep === 0 ? "none" : ""}
         >
           <AutocompleteAsyncField
             {...useConnectAutocompleteField({
@@ -372,7 +360,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           xs={12}
           sm={4}
           md={4}
-          sx={{ width: "100%", display: `${activeStep === 0 ? "none" : ""}` }}
+          display={activeStep === 0 ? "none" : ""}
         >
           <SelectLanguage
             handleChange={handleSelectedChange}
@@ -380,12 +368,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             languages={languages}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={12}
-          sx={{ display: `${activeStep === 0 ? "none" : ""}` }}
-        >
+        <Grid item xs={12} md={12} display={activeStep === 0 ? "none" : ""}>
           <InputFieldUC
             name="summary"
             label={<Trans i18nKey="common.summary" />}
@@ -393,12 +376,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
             defaultValue={defaultValues.summary ?? ""}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={12}
-          sx={{ display: `${activeStep === 0 ? "none" : ""}` }}
-        >
+        <Grid item xs={12} md={12} display={activeStep === 0 ? "none" : ""}>
           <RichEditorField
             name="about"
             label={<Trans i18nKey="common.about" />}
@@ -407,7 +385,7 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           />
         </Grid>
       </Grid>
-      <Box sx={{ display: `${activeStep === 0 ? "none" : ""}` }}>
+      <Box display={activeStep === 0 ? "none" : ""}>
         <CEDialogActions
           closeDialog={close}
           loading={loading}
@@ -416,16 +394,14 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
           onBack={handleBack}
           hasViewBtn={true}
           onSubmit={(...args) =>
-            formMethods.handleSubmit((data) => onSubmit(data, ...args))
+            formMethods.handleSubmit((data) => onSubmit(data, ...args))()
           }
         />
       </Box>
       <Box
-        sx={{
-          justifyContent: "flex-end",
-          mt: 4,
-          display: `${activeStep === 0 ? "flex" : "none"}`,
-        }}
+        display={activeStep === 0 ? "flex" : "none"}
+        justifyContent="flex-end"
+        mt={4}
       >
         <Button onClick={close}>
           <Trans i18nKey="common.cancel" />
@@ -469,12 +445,12 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
         <Trans i18nKey="errors.youveGotSyntaxErrorsInYourDslFile" />
       </Typography>
       <Divider />
-      <Box mt={4} sx={{ maxHeight: "260px", overflow: "scroll" }}>
+      <Box mt={4} maxHeight="260px" overflow="scroll">
         {syntaxErrorObject?.map((e: any) => {
           return (
-            <Box sx={{ ml: 1 }} key={uniqueId()}>
+            <Box ml={1} key={uniqueId()}>
               <Alert severity="error" sx={{ my: 2 }}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Box display="flex" flexDirection="column">
                   <Typography variant="subtitle2" color="error">
                     <Trans
                       i18nKey="errors.errorAtLine"
@@ -521,15 +497,18 @@ const AssessmentKitCEFromDialog = (props: IAssessmentKitCEFromDialogProps) => {
       title={
         <>
           <NoteAddRoundedIcon
-            sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
-            }}
+            sx={{ marginInlineEnd: 1, marginInlineStart: "unset" }}
           />
-          {type === "update" && <Trans i18nKey="assessmentKit.updateAssessmentKit" />}
+          {type === "update" && (
+            <Trans i18nKey="assessmentKit.updateAssessmentKit" />
+          )}
           {type === "draft" && <Trans i18nKey="assessmentKit.createDraft" />}
-          {type === "create" && <Trans i18nKey="assessmentKit.createAssessmentKit" />}
-          {type === "convert" && <Trans i18nKey="assessmentKit.convertExcelToDsl" />}
+          {type === "create" && (
+            <Trans i18nKey="assessmentKit.createAssessmentKit" />
+          )}
+          {type === "convert" && (
+            <Trans i18nKey="assessmentKit.convertExcelToDsl" />
+          )}
         </>
       }
     >
@@ -556,38 +535,29 @@ const IsPrivateSwitch = (props: any) => {
   };
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={{ ...styles.centerV }}>
         <Box
-          sx={{
-            display: "flex",
-            background: "#00000014",
-            borderRadius: "8px",
-            justifyContent: "space-between",
-            p: "2px",
-            gap: "4px  ",
-            height: "40px",
-            width: "100%",
-          }}
+          display="flex"
+          bgcolor="#00000014"
+          borderRadius="8px"
+          justifyContent="space-between"
+          p="2px"
+          gap="4px"
+          height="40px"
+          width="100%"
         >
           <Box
             onClick={() => handleToggle(true)}
+            padding={0.5}
+            bgcolor={isPrivate ? "#7954B3" : "transparent"}
+            color={isPrivate ? "background.containerLowest" : "text.primary"}
+            borderRadius="6px"
+            width="50%"
             sx={{
-              padding: 0.5,
-              backgroundColor: isPrivate ? "#7954B3;" : "transparent",
-              color: isPrivate ? "#fff" : "#000",
               cursor: "pointer",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
-              borderRadius: "6px",
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              ...styles.centerVH,
             }}
           >
             <Typography
@@ -602,24 +572,22 @@ const IsPrivateSwitch = (props: any) => {
           </Box>
           <Box
             onClick={() => handleToggle(false)}
+            padding={0.5}
+            bgcolor={!isPrivate ? "disabled.main" : "transparent"}
+            color={!isPrivate ? "background.containerLowest" : "text.primary"}
+            borderRadius="6px"
+            width="50%"
             sx={{
-              padding: 0.5,
-              backgroundColor: !isPrivate ? "gray" : "transparent",
               cursor: "pointer",
               transition: "background-color 0.3s ease",
               animation: `${fadeIn} 0.5s ease`,
-              borderRadius: "6px",
-              color: !isPrivate ? "#fff" : "#000",
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              ...styles.centerVH,
             }}
           >
             <Typography
               variant="body2"
               fontWeight="700"
-              textTransform={"uppercase"}
+              textTransform="uppercase"
               sx={{ userSelect: "none" }}
               fontSize="0.825rem"
             >

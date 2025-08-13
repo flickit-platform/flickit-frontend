@@ -12,7 +12,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { styles } from "@styles";
 import { KitDesignListItems } from "@/types/index";
 import { Trans } from "react-i18next";
-import { farsiFontFamily, primaryFontFamily, theme } from "@config/theme";
+import { farsiFontFamily, primaryFontFamily } from "@config/theme";
 import languageDetector from "@utils/languageDetector";
 import MultiLangTextField from "@common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
@@ -118,6 +118,7 @@ const ListOfItems = ({
       [name]: value,
     }));
   };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="subjects">
@@ -136,23 +137,22 @@ const ListOfItems = ({
                     {...provided.dragHandleProps}
                     mt={1.5}
                     p={1.5}
-                    sx={{
-                      backgroundColor:
-                        editMode === item.id ? "#F3F5F6" : "#fff",
-                      borderRadius: "8px",
-                      border: "0.3px solid #73808c30",
-                      display: "flex",
-                      alignItems: "flex-start",
-                      position: "relative",
-                    }}
+                    borderRadius="8px"
+                    display="flex"
+                    alignItems="flex-start"
+                    position="relative"
+                    border="0.3px solid #73808c30"
+                    bgcolor={
+                      editMode === item.id
+                        ? "background.container"
+                        : "background.containerLowest"
+                    }
                   >
                     <Box
-                      sx={{
-                        ...styles.centerVH,
-                        background: "#F3F5F6",
-                        width: { xs: "50px", md: "64px" },
-                        justifyContent: "space-around",
-                      }}
+                      bgcolor="background.container"
+                      width={{ xs: "50px", md: "64px" }}
+                      justifyContent="space-around"
+                      sx={{ ...styles.centerVH }}
                       borderRadius="0.5rem"
                       mr={2}
                       px={1.5}
@@ -176,23 +176,18 @@ const ListOfItems = ({
                     </Box>
 
                     <Box
-                      sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 2,
-                      }}
+                      flexGrow={1}
+                      display="flex"
+                      flexDirection="column"
+                      gap={2}
                     >
                       <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                          gap: 1,
-                        }}
+                        display="flex"
+                        alignItems="flex-start"
+                        justifyContent="space-between"
+                        gap={1}
                       >
-                        <Box sx={{ flexGrow: 1 }}>
+                        <Box flex={1}>
                           {editMode === item.id ? (
                             <MultiLangTextField
                               name="title"
@@ -228,15 +223,15 @@ const ListOfItems = ({
                                   : ""
                               }
                               variant="semiBoldMedium"
-                             showCopyIcon
+                              showCopyIcon
                             />
                           )}
                         </Box>
                         {editMode === item.id ? (
                           <Box
                             sx={{
-                              mr: theme.direction == "rtl" ? "auto" : "unset",
-                              ml: theme.direction == "ltr" ? "auto" : "unset",
+                              marginInlineStart: "auto",
+                              marginInlineEnd: "unset",
                             }}
                           >
                             <IconButton
@@ -289,14 +284,11 @@ const ListOfItems = ({
                       </Box>
 
                       <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: 3,
-                        }}
+                        justifyContent="space-between"
+                        gap={3}
+                        sx={{ ...styles.centerV }}
                       >
-                        <Box sx={{ flexGrow: 1 }}>
+                        <Box flexGrow={1}>
                           {editMode === item.id ? (
                             <MultiLangTextField
                               name="description"
@@ -347,24 +339,22 @@ const ListOfItems = ({
                         {editableFieldKey &&
                           typeof item[editableFieldKey] === "number" && (
                             <Box
-                              sx={{
-                                width: "fit-content",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "flex-end",
-                                flexDirection: "column",
-                                gap: "0.5rem",
-                                textAlign: editable
+                              width="fit-content"
+                              alignItems="flex-end"
+                              gap="0.5rem"
+                              textAlign={
+                                editable
                                   ? editMode === item.id
                                     ? "end"
                                     : "center"
-                                  : "center",
-                              }}
+                                  : "center"
+                              }
+                              sx={{ ...styles.centerCV }}
                             >
                               <Typography
+                                variant="labelCondensed"
+                                color="background.onVariant"
                                 sx={{
-                                  ...theme.typography.labelCondensed,
-                                  color: "#6C8093",
                                   width: "100%",
                                 }}
                               >
@@ -408,23 +398,19 @@ const ListOfItems = ({
                                     "& .MuiFormLabel-root": {
                                       fontSize: 14,
                                     },
-                                    background: "#fff",
+                                    bgcolor: "background.containerLowest",
                                     borderRadius: "8px",
                                   }}
                                 />
                               ) : (
                                 <Box
+                                  width="3.75rem"
+                                  height="3.75rem"
+                                  borderRadius="50%"
+                                  bgcolor="background.variant"
+                                  color="text.primary"
                                   aria-label={editableFieldKey}
-                                  sx={{
-                                    width: "3.75rem",
-                                    height: "3.75rem",
-                                    borderRadius: "50%",
-                                    backgroundColor: "#E2E5E9",
-                                    color: "#2B333B",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                  }}
+                                  sx={{ ...styles.centerVH }}
                                 >
                                   {item[editableFieldKey]}
                                 </Box>

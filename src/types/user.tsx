@@ -11,6 +11,7 @@ export interface IUserInfo {
   is_active?: boolean;
   default_space?: any;
   subscriberHash?: string;
+  showSurvey?: boolean;
 }
 
 export interface IMemberModel extends IDefaultModel<IMember> {}

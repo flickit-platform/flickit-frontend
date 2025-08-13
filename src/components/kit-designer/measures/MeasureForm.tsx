@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useKitDesignerContext } from "@/providers/KitProvider";
 import MultiLangTextField from "@/components/common/fields/MultiLangTextField";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
+import { styles } from "@styles";
 
 interface MeasureFormProps {
   newMeasure: {
@@ -38,7 +39,7 @@ const MeasureForm = ({
       mt={1.5}
       p={1.5}
       sx={{
-        backgroundColor: "#F3F5F6",
+        backgroundColor: "background.container",
         borderRadius: "8px",
         border: "0.3px solid #73808c30",
         display: "flex",
@@ -48,14 +49,10 @@ const MeasureForm = ({
     >
       {/* Value field */}
       <Box
-        sx={{
-          background: "#F3F5F6",
-          borderRadius: "0.5rem",
-          px: 1.25,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        bgcolor="background.container"
+        borderRadius="0.5rem"
+        px={1.25}
+        sx={{ ...styles.centerH }}
       >
         <Box
           component="input"
@@ -65,15 +62,13 @@ const MeasureForm = ({
           value={newMeasure.value}
           onChange={handleInputChange}
           data-testid="value-id"
-          style={{
-            textAlign: "center",
-            width: "40px",
-            height: "40px",
-            fontSize: "14px",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-            backgroundColor: "#fff",
-          }}
+          textAlign="center"
+          width="40px"
+          height="40px"
+          fontSize="14px"
+          border="1px solid #ccc"
+          borderRadius="6px"
+          bgcolor="background.containerLowest"
         />
       </Box>
 
@@ -109,20 +104,13 @@ const MeasureForm = ({
       </Box>
 
       {/* Action Buttons */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={1.5}
-        mt={1}
-      >
+      <Box gap={1.5} mt={1} sx={{ ...styles.centerCH }}>
         <Link
           href="#measure-header"
           sx={{
+            ...styles.centerV,
             textDecoration: "none",
             opacity: 0.9,
-            display: "flex",
-            alignItems: "center",
             gap: 1,
           }}
         >

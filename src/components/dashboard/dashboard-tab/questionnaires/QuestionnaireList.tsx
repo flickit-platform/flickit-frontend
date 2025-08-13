@@ -11,7 +11,6 @@ import { Trans } from "react-i18next";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { t } from "i18next";
-import { theme } from "@config/theme";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { useEffect, useMemo, useState } from "react";
@@ -20,6 +19,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import { useTheme } from "@mui/material";
 
 interface IQuestionnaireListProps {
   questionnaireQueryData: any;
@@ -58,6 +58,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
     allSelected,
     filteredItem,
   } = props;
+  const theme = useTheme();
   const { assessmentInfo } = useAssessmentContext();
   const [issues, setIssues] = useState<string[]>([]);
   const handleChange = (event: SelectChangeEvent<typeof issues>) => {
@@ -97,17 +98,13 @@ export const QuestionsFilteringDropdown = (props: any) => {
 
     if (selected.length == 0) {
       return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
-        >
+        <Typography variant="semiBoldMedium" color="#333333">
           <Trans i18nKey="common.none" />
         </Typography>
       );
     } else if (isAllSelected) {
       return (
-        <Typography
-          sx={{ ...theme.typography.semiBoldMedium, color: "#333333" }}
-        >
+        <Typography variant="semiBoldMedium" color="#333333">
           <Trans i18nKey="common.all" />
         </Typography>
       );
@@ -116,12 +113,11 @@ export const QuestionsFilteringDropdown = (props: any) => {
     } else {
       return (
         <Box
+          color="#333333"
+          gap={1}
           sx={{
             ...theme.typography.semiBoldMedium,
-            color: "#333333",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
+            ...styles.centerV,
           }}
         >
           <Trans i18nKey="dashboard.selectedIssuesType" />:
@@ -142,7 +138,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
         gap: 2,
       }}
     >
-      <Typography sx={{ ...theme.typography.semiBoldLarge }}>
+      <Typography variant="semiBoldLarge">
         {dropdownLabel ?? (
           <Trans i18nKey="dashboard.filterQuestionsWithIssues" />
         )}
@@ -158,7 +154,7 @@ export const QuestionsFilteringDropdown = (props: any) => {
           renderValue={(selected) => handelSelected(selected)}
           sx={{
             ...theme.typography.semiBoldMedium,
-            background: "#fff",
+            bgcolor: "background.containerLowest",
             px: "0px",
             height: "40px",
           }}
@@ -205,27 +201,23 @@ const ProgressButton = (props: any) => {
     const answered = answersCount ?? 0;
     return Number((answered / total).toFixed(2)) * 100;
   }, [questionsCount, answersCount]);
+  const theme = useTheme();
 
   return (
     <Box>
       {leftQuestions > 0 ? (
-        <Box>
+        <Box sx={{ ...styles.centerCV }}>
           <Button
-            sx={{
-              borderRadius: "4px",
-              background: "#C2CCD680",
-              height: "40px",
-              width: "176px",
-              position: "relative",
-              overflow: "hidden",
-              "&:hover": {
-                background: "#C2CCD680",
-              },
-            }}
+            variant="contained"
+            color="info"
+            disableFocusRipple
+            disableTouchRipple
+            sx={{ cursor: "default" }}
           >
             <Box
               sx={{
-                background: "#C2CCD680",
+                bgcolor: "primary.main",
+                opacity: "50%",
                 height: "100%",
                 position: "absolute",
                 top: 0,
@@ -238,18 +230,13 @@ const ProgressButton = (props: any) => {
                 transition: "all 1s ease-in-out",
               }}
             ></Box>
-            <Typography
-              sx={{
-                color: "#3D4D5C80",
-              }}
-            >
-              <Trans i18nKey="assessmentReport.viewReport" />
-            </Typography>
+
+            <Trans i18nKey="assessmentReport.viewReport" />
           </Button>
           <Typography
+            variant="labelMedium"
+            color="tertiary.light"
             sx={{
-              ...theme.typography.labelMedium,
-              color: "#FF9000",
               textAlign: "center",
             }}
           >
@@ -259,32 +246,29 @@ const ProgressButton = (props: any) => {
             />
           </Typography>
         </Box>
-      ) : (
+      ) : leftQuestions === 0 ? (
         <Button
           component={Link}
           to={`/${spaceId}/assessments/${assessmentId}/graphical-report/`}
           state={{ from: location.pathname }}
+          fullWidth
           sx={{
-            borderRadius: "4px",
-            background: "#F3F5F6",
-            height: "40px",
+            bgcolor: "background.container",
             width: "176px",
             position: "relative",
             overflow: "hidden",
             boxShadow: "0 1px 5px rgba(0,0,0,0.12)",
             "&:hover": {
-              background: "#F3F5F6",
+              bgcolor: "background.container",
             },
           }}
         >
-          <Typography
-            sx={{
-              color: theme.palette.primary.main,
-            }}
-          >
+          <Typography color="primary.main">
             <Trans i18nKey="assessmentReport.viewReport" />
           </Typography>
         </Button>
+      ) : (
+        <></>
       )}
     </Box>
   );
@@ -294,7 +278,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
   const { questionnaireQueryData, assessmentTotalProgress } = props;
   const [originalItem, setOriginalItem] = useState<string[]>([]);
 
-  const { assessmentInfo } = useAssessmentContext();
+  const { assessmentInfo, permissions } = useAssessmentContext();
 
   const [isQuickMode, setIsQuickMode] = useState(false);
 
@@ -333,7 +317,7 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
             },
           }}
         >
-          <Typography variant={"titleLarge"} color="white">
+          <Typography variant="titleLarge" color="white">
             <Trans i18nKey="common.questionnaires" />
             {"  "}(
             <QANumberIndicator
@@ -346,7 +330,9 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
         </Box>
 
         {isQuickMode ? (
-          <ProgressButton {...assessmentTotalProgress?.data} />
+          permissions?.viewGraphicalReport && (
+            <ProgressButton {...assessmentTotalProgress?.data} />
+          )
         ) : (
           <QuestionsFilteringDropdown
             setOriginalItem={setOriginalItem}
@@ -389,17 +375,12 @@ export const QuestionnaireList = (props: IQuestionnaireListProps) => {
                     })
                   ) : (
                     <Box sx={{ ...styles.centerVH, width: "100%" }}>
-                      <Typography
-                        sx={{
-                          ...theme.typography.headlineLarge,
-                          color: "#C2CCD680",
-                        }}
-                      >
+                      <Typography variant="headlineLarge" color="#C2CCD680">
                         {originalItem.length == 1 && (
                           <Trans i18nKey="dashboard.noIssueFound" />
                         )}
                         {originalItem.length > 1 && (
-                          <Trans i18nKey="dashboard.NoIssuesFound" />
+                          <Trans i18nKey="dashboard.noIssuesFound" />
                         )}
                       </Typography>
                     </Box>
