@@ -32,6 +32,7 @@ interface IInputFieldUCProps extends Omit<OutlinedTextFieldProps, "variant"> {
   error?: boolean;
   placeholder?: any;
   lng?: string;
+  stylesProps?: any;
 }
 
 const InputFieldUC = (props: IInputFieldUCProps) => {
@@ -55,6 +56,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
     error,
     placeholder,
     lng,
+    stylesProps,
     ...rest
   } = props;
   const theme = useTheme();
@@ -190,6 +192,7 @@ const InputFieldUC = (props: IInputFieldUCProps) => {
               : "",
           paddingBottom:
             name === "evidence" ? evidenceAttachmentInput.paddingBottom : "",
+          ...stylesProps
         },
         "& .MuiFormHelperText-root": {
           textAlign:
