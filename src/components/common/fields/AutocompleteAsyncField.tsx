@@ -28,7 +28,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import showToast from "@/utils/toastError";
 import { useTheme } from "@mui/material";
-
+import premiumIcon from "@/assets/svg/premium.svg";
+import HomeIcon from "@mui/icons-material/Home";
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
   "serviceQueryData" | "field"
@@ -398,6 +399,9 @@ const AutocompleteBaseField = (
                   : primaryFontFamily,
               }}
             >
+              <HomeIcon
+                sx={{ fontSize: "20px", color: "surface.onVariant" }}
+              />
               {option?.[filterFields[0]]}
             </Box>
             {!!option?.[filterFields[1]] && (
@@ -411,15 +415,11 @@ const AutocompleteBaseField = (
                 )
               </Box>
             )}
-            {(option?.isPrivate ||
-              option?.type?.code === SPACE_LEVELS.PREMIUM) && (
+            {option?.isPrivate && (
               <Chip
                 size="small"
                 sx={{
-                  marginInlineStart: "auto",
-                  ...(option?.type?.code === SPACE_LEVELS.PREMIUM && {
-                    background: `linear-gradient(to right top,${theme.palette.primary.dark} 0%,#2D80D2 33%,${theme.palette.primary.dark} 100%)`,
-                  }),
+                  marginInlineStart: "auto"
                 }}
                 color={option?.isPrivate ? "secondary" : "default"}
                 label={
@@ -427,14 +427,17 @@ const AutocompleteBaseField = (
                     variant="semiBoldSmall"
                     color="background.containerLowest"
                   >
-                    {option?.isPrivate ? (
-                      <Trans i18nKey="common.privateTitle" />
-                    ) : (
-                      option?.type?.title
-                    )}
+                    <Trans i18nKey="common.privateTitle" />
                   </Typography>
                 }
               />
+            )}
+            {option?.type?.code === SPACE_LEVELS.PREMIUM && (
+           <Box
+           component={"img"}
+           src={premiumIcon}
+           sx={{height: "20px", width: "20px"}}
+           />
             )}
           </li>
         )
