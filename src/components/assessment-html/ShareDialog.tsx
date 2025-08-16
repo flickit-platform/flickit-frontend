@@ -283,16 +283,6 @@ export const ShareDialog = ({
                     <PersonAddIcon fontSize={"small"} />
                   </LoadingButton>
                 </Grid>
-                {/*<Grid item xs={1}  sx={{ height: "100%" }}>*/}
-                {/*  <Button*/}
-                {/*    component={Link}*/}
-                {/*    to={"./../settings"}*/}
-                {/*    variant="outlined"*/}
-                {/*    sx={{ fontFamily: "inherit", minWidth: "inherit", padding: "5px" , height: "100%" }}*/}
-                {/*  >*/}
-                {/*    <SettingsIcon fontSize="small" />*/}
-                {/*  </Button>*/}
-                {/*</Grid>*/}
               </Grid>
             </form>
           </FormProvider>
