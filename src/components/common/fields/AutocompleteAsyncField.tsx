@@ -161,7 +161,6 @@ const AutocompleteBaseField = (
     ...rest
   } = props;
   const theme = useTheme();
-  const { userInfo: { defaultSpaceId }} = useAuthContext();
   const { name, onChange, ref, value, ...restFields } = field;
   const {
     formState: { errors },
@@ -293,20 +292,8 @@ const AutocompleteBaseField = (
       autoHighlight
       getOptionLabel={getOptionLabel}
       options={(() => {
-        const myAssessment = {
-          id: defaultSpaceId ,
-          isDefault: false,
-          selected: true,
-          title: t("myAssessments"),
-          type: { code: 'BASIC', title: 'Basic' },
-          myAssessment: true
-        }
-        const optionLists = [...optionsData]
-        if(pathname != "/spaces" && defaultSpaceId){
-          optionLists.unshift(myAssessment)
-        }
         if (!query) {
-          return optionLists;
+          return optionsData;
         } else if (error) {
           return [{}];
         } else if (editable) {
@@ -421,13 +408,7 @@ const AutocompleteBaseField = (
               gap: "5px",
             }}
           >
-            {option?.myAssessment ? (
               <HomeIcon sx={{ fontSize: "20px", color: "surface.onVariant" }} />
-            ) : (
-              <FolderOutlinedIcon
-                sx={{fontSize: "18px !important" }}
-              />
-            )}
             {option?.[filterFields[0]]}
           </Box>
           {!!option?.[filterFields[1]] && (

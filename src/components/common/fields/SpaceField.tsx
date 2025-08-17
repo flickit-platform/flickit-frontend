@@ -36,6 +36,7 @@ export const SpaceField = ({
   ...rest // هر چی خواستی مثل sx, placeholder, size, fullWidth, data-cy و… رو از اینجا پاس بده
 }: SpaceFieldProps) => {
   const { service } = useServiceContext();
+  const { spaceId } = useParams();
 
   const createSpaceQueryData = useQuery({
     service: (args, config) => service.space.create(args, config),
@@ -67,7 +68,7 @@ export const SpaceField = ({
       options={spaces}
       name={name}
       required={required}
-      disabled={disabled}
+      disabled={disabled ?? !!spaceId}
       defaultValue={computedDefault as any}
       label={label ?? <Trans i18nKey="spaces.space" />}
       createItemQuery={createItemQuery}
