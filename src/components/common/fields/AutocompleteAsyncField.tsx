@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { AutocompleteProps } from "@mui/material/Autocomplete";
 import throttle from "lodash/throttle";
 import TextField from "@mui/material/TextField";
@@ -30,6 +30,9 @@ import showToast from "@/utils/toastError";
 import { useTheme } from "@mui/material";
 import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";
+import { useLocation } from "react-router-dom";
+import { useAuthContext } from "@providers/AuthProvider";
+import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
   "serviceQueryData" | "field"
@@ -158,13 +161,14 @@ const AutocompleteBaseField = (
     ...rest
   } = props;
   const theme = useTheme();
+  const { userInfo: { defaultSpaceId }} = useAuthContext();
   const { name, onChange, ref, value, ...restFields } = field;
   const {
     formState: { errors },
   } = useFormContext();
   const isFirstFetchRef = useRef(true);
   const { hasError, errorMessage } = getFieldError(errors, name);
-
+  const {pathname} = useLocation()
   const [inputValue, setInputValue] = useState(
     () => getOptionLabel(defaultValue) ?? "",
   );
@@ -289,8 +293,20 @@ const AutocompleteBaseField = (
       autoHighlight
       getOptionLabel={getOptionLabel}
       options={(() => {
+        const myAssessment = {
+          id: defaultSpaceId ,
+          isDefault: false,
+          selected: true,
+          title: t("myAssessments"),
+          type: { code: 'BASIC', title: 'Basic' },
+          myAssessment: true
+        }
+        const optionLists = [...optionsData]
+        if(pathname != "/spaces" && defaultSpaceId){
+          optionLists.unshift(myAssessment)
+        }
         if (!query) {
-          return optionsData;
+          return optionLists;
         } else if (error) {
           return [{}];
         } else if (editable) {
@@ -378,69 +394,79 @@ const AutocompleteBaseField = (
       popupIcon={
         disabled ? <LockOutlinedIcon /> : <ArrowDropDownOutlinedIcon />
       }
-      renderOption={(props, option) =>
-        option.inputValue ? (
-          <li {...props}>
-            <LoadingButton
-              fullWidth
-              onClick={createSpaceQuery}
-              sx={{ justifyContent: "start", textTransform: "none" }}
-              ref={loadingButtonRef}
-            >
-              <Trans i18nKey="common.add" /> "{option.inputValue}"
-            </LoadingButton>
-          </li>
-        ) : (
-          <li {...props} style={{ display: "flex", gap: "8px" }}>
-            <Box
-              sx={{
-                fontFamily: languageDetector(option?.[filterFields[0]])
-                  ? farsiFontFamily
-                  : primaryFontFamily,
-              }}
-            >
-              <HomeIcon
-                sx={{ fontSize: "20px", color: "surface.onVariant" }}
+      renderOption={(props, option) =>{
+
+      return option.inputValue ? (
+        <li {...props}>
+          <LoadingButton
+            fullWidth
+            onClick={createSpaceQuery}
+            sx={{ justifyContent: "start", textTransform: "none" }}
+            ref={loadingButtonRef}
+          >
+            <Trans i18nKey="common.add" /> "{option.inputValue}"
+          </LoadingButton>
+        </li>
+      ) : (
+        <li {...props} style={{ display: "flex", gap: "8px" }}>
+          <Box
+            sx={{
+              fontFamily: languageDetector(option?.[filterFields[0]])
+                ? farsiFontFamily
+                : primaryFontFamily,
+              color: "surface.onVariant",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "5px",
+            }}
+          >
+            {option?.myAssessment ? (
+              <HomeIcon sx={{ fontSize: "20px", color: "surface.onVariant" }} />
+            ) : (
+              <FolderOutlinedIcon
+                sx={{fontSize: "18px !important" }}
               />
-              {option?.[filterFields[0]]}
+            )}
+            {option?.[filterFields[0]]}
+          </Box>
+          {!!option?.[filterFields[1]] && (
+            <Box color="#3D4D5C80" sx={{ ...theme.typography.semiBoldSmall }}>
+              (
+              {option?.[filterFields[1]].code
+                ? option?.languages
+                    .map((lang: { code: string; title: string }) => lang.code)
+                    .join(", ")
+                : option?.[filterFields[1]]}
+              )
             </Box>
-            {!!option?.[filterFields[1]] && (
-              <Box color="#3D4D5C80" sx={{ ...theme.typography.semiBoldSmall }}>
-                (
-                {option?.[filterFields[1]].code
-                  ? option?.languages
-                      .map((lang: { code: string; title: string }) => lang.code)
-                      .join(", ")
-                  : option?.[filterFields[1]]}
-                )
-              </Box>
-            )}
-            {option?.isPrivate && (
-              <Chip
-                size="small"
-                sx={{
-                  marginInlineStart: "auto"
-                }}
-                color={option?.isPrivate ? "secondary" : "default"}
-                label={
-                  <Typography
-                    variant="semiBoldSmall"
-                    color="background.containerLowest"
-                  >
-                    <Trans i18nKey="common.privateTitle" />
-                  </Typography>
-                }
-              />
-            )}
-            {option?.type?.code === SPACE_LEVELS.PREMIUM && (
-           <Box
-           component={"img"}
-           src={premiumIcon}
-           sx={{height: "20px", width: "20px"}}
-           />
-            )}
-          </li>
-        )
+          )}
+          {option?.isPrivate && (
+            <Chip
+              size="small"
+              sx={{
+                marginInlineStart: "auto",
+              }}
+              color={option?.isPrivate ? "secondary" : "default"}
+              label={
+                <Typography
+                  variant="semiBoldSmall"
+                  color="background.containerLowest"
+                >
+                  <Trans i18nKey="common.privateTitle" />
+                </Typography>
+              }
+            />
+          )}
+          {option?.type?.code === SPACE_LEVELS.PREMIUM && (
+            <Box
+              component={"img"}
+              src={premiumIcon}
+              sx={{ height: "20px", width: "20px" }}
+            />
+          )}
+        </li>
+      );}
       }
       noOptionsText={
         error ? (
