@@ -31,7 +31,6 @@ import { useTheme } from "@mui/material";
 import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";
 import { useLocation } from "react-router-dom";
-import { useAuthContext } from "@providers/AuthProvider";
 import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
@@ -405,10 +404,14 @@ const AutocompleteBaseField = (
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "5px",
+              gap: "4.5px",
             }}
           >
+            {option?.isDefault ?
               <HomeIcon sx={{ fontSize: "20px", color: "surface.onVariant" }} />
+            :
+              <FolderOutlinedIcon sx={{ color: "surface.onVariant", fontSize: "20px", }} />
+            }
             {option?.[filterFields[0]]}
           </Box>
           {!!option?.[filterFields[1]] && (
