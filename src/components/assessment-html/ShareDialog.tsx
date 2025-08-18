@@ -18,7 +18,6 @@ import { useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import QueryBatchData from "../common/QueryBatchData";
-import useMenu from "@/utils/useMenu";
 import { VISIBILITY } from "@/utils/enumType";
 import { IGraphicalReport, IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
@@ -27,9 +26,6 @@ import showToast from "@/utils/toastError";
 import { styles } from "@styles";
 import Radio from "@mui/material/Radio";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import {
-  Link,
-} from "react-router-dom";
 
 interface IDialogProps extends IGraphicalReport {
   open: boolean;
@@ -52,7 +48,6 @@ export const ShareDialog = ({
   const { t } = useTranslation();
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-  const { open: menuOpened, openMenu, closeMenu } = useMenu();
   const [access, setAccess] = useState<VISIBILITY>(visibility);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const methods = useForm();
@@ -113,7 +108,6 @@ export const ShareDialog = ({
     }
 
     setAccess(newAccess);
-    closeMenu();
   };
 
   const grantReportAccess = useQuery({
@@ -156,7 +150,6 @@ export const ShareDialog = ({
   };
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
-  const current = accessOptionsNew[access];
 
   return (
     <CEDialog
@@ -263,7 +256,7 @@ export const ShareDialog = ({
                 alignItems="flex-start"
                 sx={{ ...styles.formGrid,mt: 0, mb: 1 ,gap  : 1 }}
               >
-                <Grid item xs={9}>
+                <Grid item flex={1}>
                   <InputFieldUC
                     name="email"
                     size="small"
@@ -274,7 +267,7 @@ export const ShareDialog = ({
                   />
                 </Grid>
                 {/*<Grid item xs={0.5}></Grid>*/}
-                <Grid item xs={1} >
+                <Grid item >
                   <LoadingButton
                     variant="outlined"
                     type="submit"
