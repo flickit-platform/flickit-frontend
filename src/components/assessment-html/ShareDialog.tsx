@@ -34,6 +34,7 @@ interface IDialogProps extends IGraphicalReport {
   fetchGraphicalReportUsers: any;
   visibility: VISIBILITY;
   permissions: IUserPermissions;
+  assessment: any;
 }
 
 export const ShareDialog = ({
@@ -44,6 +45,7 @@ export const ShareDialog = ({
   permissions,
   linkHash,
   lang,
+  assessment
 }: IDialogProps) => {
   const { t } = useTranslation();
   const { assessmentId = "" } = useParams();
@@ -52,7 +54,7 @@ export const ShareDialog = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const methods = useForm();
   const { reset, handleSubmit } = methods;
-
+  const { space: { isDefault } } = assessment
   const lng = lang?.code?.toLowerCase();
 
   const accessOptionsNew = useMemo(
@@ -149,6 +151,121 @@ export const ShareDialog = ({
     }
   };
 
+  const shareSection = () =>{
+    return (
+      isDefault ?
+        <>
+          <Divider sx={{ my: 1 }} />
+          <Typography
+            color={"surface.onVariant"}
+            variant={"bodySmall"}
+            fontFamily="inherit"
+          >
+            {t("assessmentReport.isDraftSpaceReport", { lng })}
+          </Typography>
+        </>
+      :
+       <>
+         {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
+           <>
+             <Box mt={3}>
+               <Typography
+                 variant="bodyMedium"
+                 color="rgba(61, 77, 92, 0.5)"
+                 fontFamily="inherit"
+               >
+                 {t("assessmentReport.peopleWithAccess", { lng })}
+               </Typography>
+               <Divider sx={{ my: 1 }} />
+             </Box>
+             <FormProvider {...methods}>
+               <form onSubmit={handleSubmit(onSubmit)}>
+                 <Grid
+                   container
+                   display="flex"
+                   alignItems="flex-start"
+                   sx={{ ...styles.formGrid,mt: 0, mb: 1 ,gap  : 1 }}
+                 >
+                   <Grid item flex={1}>
+                     <InputFieldUC
+                       name="email"
+                       size="small"
+                       placeholder={t("assessmentReport.shareReportViaEmail", { lng })}
+                       fullWidth
+                       required
+                       stylesProps= {{ input: { padding: "4px 12px" } }}
+                     />
+                   </Grid>
+                   {/*<Grid item xs={0.5}></Grid>*/}
+                   <Grid item >
+                     <LoadingButton
+                       variant="outlined"
+                       type="submit"
+                       sx={{ fontFamily: "inherit",minWidth: "inherit", padding: "5px", height: "100%"  }}
+                     >
+                       <PersonAddIcon fontSize={"small"} />
+                     </LoadingButton>
+                   </Grid>
+                 </Grid>
+               </form>
+             </FormProvider>
+             <QueryBatchData
+               queryBatchData={[fetchGraphicalReportUsers]}
+               renderLoading={() => {
+                 return (
+                   <>
+                     {[1, 2, 3].map((number) => {
+                       return (
+                         <Skeleton
+                           key={number}
+                           variant="rectangular"
+                           sx={{ borderRadius: 2, height: "30px", mb: 1 }}
+                         />
+                       );
+                     })}
+                   </>
+                 );
+               }}
+               render={([graphicalReportUsers]) => {
+                 return (
+                   <Box display="flex" flexDirection="column" my={1} gap={2}>
+                     {[
+                       ...graphicalReportUsers.users,
+                       ...graphicalReportUsers.invitees,
+                     ].map((member: any) => {
+                       const { displayName, id, pictureLink, email } = member;
+                       return (
+                         <Box key={id} sx={{ ...styles.centerV }} gap={1}>
+                           <Avatar
+                             {...stringAvatar(displayName?.toUpperCase())}
+                             src={pictureLink}
+                             sx={{ width: 24, height: 24, fontSize: 12 }}
+                           />
+                           {email}
+                           {graphicalReportUsers.invitees.includes(member) && (
+                             <Chip
+                               label={t("common.invited", { lng })}
+                               size="small"
+                               sx={{
+                                 ".MuiChip-label": {
+                                   fontFamily: "inherit",
+                                 },
+                               }}
+                             />
+                           )}
+                         </Box>
+                       );
+                     })}
+                   </Box>
+                 );
+               }}
+             />
+           </>
+         )}
+       </>
+    )
+  }
+
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
   return (
@@ -235,104 +352,7 @@ export const ShareDialog = ({
           );
         })}
       </Box>
-
-      {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
-        <>
-          <Box mt={3}>
-            <Typography
-              variant="bodyMedium"
-              color="rgba(61, 77, 92, 0.5)"
-              fontFamily="inherit"
-            >
-              {t("assessmentReport.peopleWithAccess", { lng })}
-            </Typography>
-            <Divider sx={{ my: 1 }} />
-          </Box>
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid
-                container
-                display="flex"
-                alignItems="flex-start"
-                sx={{ ...styles.formGrid,mt: 0, mb: 1 ,gap  : 1 }}
-              >
-                <Grid item flex={1}>
-                  <InputFieldUC
-                    name="email"
-                    size="small"
-                    placeholder={t("assessmentReport.shareReportViaEmail", { lng })}
-                    fullWidth
-                    required
-                    stylesProps= {{ input: { padding: "4px 12px" } }}
-                  />
-                </Grid>
-                {/*<Grid item xs={0.5}></Grid>*/}
-                <Grid item >
-                  <LoadingButton
-                    variant="outlined"
-                    type="submit"
-                    sx={{ fontFamily: "inherit",minWidth: "inherit", padding: "5px", height: "100%"  }}
-                  >
-                    <PersonAddIcon fontSize={"small"} />
-                  </LoadingButton>
-                </Grid>
-              </Grid>
-            </form>
-          </FormProvider>
-          <QueryBatchData
-            queryBatchData={[fetchGraphicalReportUsers]}
-            renderLoading={() => {
-              return (
-                <>
-                  {[1, 2, 3].map((number) => {
-                    return (
-                      <Skeleton
-                        key={number}
-                        variant="rectangular"
-                        sx={{ borderRadius: 2, height: "30px", mb: 1 }}
-                      />
-                    );
-                  })}
-                </>
-              );
-            }}
-            render={([graphicalReportUsers]) => {
-              return (
-                <Box display="flex" flexDirection="column" my={1} gap={2}>
-                  {[
-                    ...graphicalReportUsers.users,
-                    ...graphicalReportUsers.invitees,
-                  ].map((member: any) => {
-                    const { displayName, id, pictureLink, email } = member;
-                    return (
-                      <Box key={id} sx={{ ...styles.centerV }} gap={1}>
-                        <Avatar
-                          {...stringAvatar(displayName?.toUpperCase())}
-                          src={pictureLink}
-                          sx={{ width: 24, height: 24, fontSize: 12 }}
-                        />
-                        {email}
-                        {graphicalReportUsers.invitees.includes(member) && (
-                          <Chip
-                            label={t("common.invited", { lng })}
-                            size="small"
-                            sx={{
-                              ".MuiChip-label": {
-                                fontFamily: "inherit",
-                              },
-                            }}
-                          />
-                        )}
-                      </Box>
-                    );
-                  })}
-                </Box>
-              );
-            }}
-          />
-        </>
-      )}
-
+      {shareSection()}
       <CEDialogActions
         type="delete"
         loading={false}

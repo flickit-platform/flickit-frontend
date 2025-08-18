@@ -21,6 +21,7 @@
   "how_was_this_report_built": "How was this report built?",
   "introduction": "Introduction",
   "introductionReport": "Report introduction",
+  "isDraftSpaceReport": "To share this report, you can either make it public or move the related assessment to a space.",
   "kitWithTitle": "{{title}} kit",
   "maturityLevelsDescription": "In this assessment kit, there are {{maturityLevelCount}} different maturity levels, each defined in the table below. At the end of the assessment process, the maturity level of each indicator is determined.",
   "peopleWithAccess": "People with access",
