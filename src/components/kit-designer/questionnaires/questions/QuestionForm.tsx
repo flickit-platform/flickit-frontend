@@ -30,7 +30,7 @@ const QuestionForm = ({
     mt={1.5}
     p={1.5}
     sx={{
-      backgroundColor: "#F3F5F6",
+      backgroundColor: "background.container",
       borderRadius: "8px",
       border: "0.3px solid #73808c30",
       display: "flex",
@@ -39,7 +39,7 @@ const QuestionForm = ({
     }}
   >
     <Box
-      sx={{ ...styles.centerCVH, background: "#F3F5F6" }}
+      sx={{ ...styles.centerCVH, bgcolor: "background.container " }}
       borderRadius="0.5rem"
       mr={2}
       p={0.25}
@@ -62,7 +62,7 @@ const QuestionForm = ({
           "& .MuiInputBase-root": {
             fontSize: 14,
           },
-          background: "#fff",
+          bgcolor: "background.containerLowest",
         }}
       />
     </Box>
@@ -94,26 +94,20 @@ const QuestionForm = ({
           "& .MuiFormLabel-root": {
             fontSize: 14,
           },
-          background: "#fff",
+          bgcolor: "background.containerLowest",
         }}
       />
     </Box>
 
     {/* Check and Close Buttons */}
-    <Box
-      display="flex"
-      alignItems="center"
-      flexDirection={"column"}
-      gap={"20px"}
-    >
+    <Box gap="20px" sx={{ ...styles.centerCH }}>
       <Link
         href="#subject-header"
         sx={{
+          ...styles.centerV,
           textDecoration: "none",
           opacity: 0.9,
           fontWeight: "bold",
-          display: "flex",
-          alignItems: "center",
           gap: "20px",
         }}
       >

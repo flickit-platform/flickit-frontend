@@ -225,10 +225,8 @@ const AssessmentCard = ({
               <Typography
                 variant="titleSmall"
                 color="#243342"
-                justifyContent="center"
-                alignItems="center"
-                display="flex"
                 gap="0.125rem"
+                sx={{ ...styles.centerVH }}
               >
                 <Trans i18nKey="common.withConfidence" />:
                 <ConfidenceLevel
@@ -245,11 +243,9 @@ const AssessmentCard = ({
               item
               xs={12}
               mt={1}
-              sx={{
-                ...styles.centerCH,
-                gap: 1,
-                flexDirection: "column",
-              }}
+              flexDirection="column"
+              gap={1}
+              sx={{ ...styles.centerCH }}
             >
               {buttonTypes.map((type) => (
                 <CardButton
@@ -289,10 +285,7 @@ const Header = ({
   <Box
     sx={{
       textDecoration: "none",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
+      ...styles.centerCVH,
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}
@@ -307,10 +300,10 @@ const Header = ({
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          border: `0.5px solid #2466A8`,
+          border: (theme) => `0.5px solid ${theme.palette.primary.main}`,
           textTransform: "none",
           color: "#101c32",
-          background: "transparent",
+          bgcolor: "transparent",
           fontFamily: languageDetector(kit?.title)
             ? farsiFontFamily
             : primaryFontFamily,
@@ -320,14 +313,13 @@ const Header = ({
     </Tooltip>
     <Typography
       variant="h5"
-      color="CaptionText"
-      textTransform={"uppercase"}
+      color={color?.code ?? "#101c32"}
+      textTransform="uppercase"
       sx={{
         padding: "8px 28px",
         fontWeight: "bold",
         pb: 0,
         textAlign: "center",
-        color: color?.code ?? "#101c32",
         maxWidth: "320px",
         margin: "0 auto",
         width: "100%",
@@ -340,18 +332,16 @@ const Header = ({
       data-cy="assessment-card-title"
     >
       {!isQuickMode && (
-        <Box sx={{ flexShrink: 0, ...styles.centerVH }}>
+        <Box flexShrink={0} sx={{ ...styles.centerVH }}>
           <img alt="star" src={Star} height={24} />
         </Box>
       )}
       <Box
-        sx={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          flexShrink: 1,
-          direction: languageDetector(itemTitle) ? "rtl" : "ltr",
-        }}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+        flexShrink={1}
+        sx={{ ...styles.rtlStyle(languageDetector(itemTitle)) }}
       >
         {itemTitle}
       </Box>
@@ -359,24 +349,24 @@ const Header = ({
 
     <Box sx={{ ...styles.centerVH }}>
       <Box
+        bgcolor="background.containerLow"
+        borderRadius="4px"
+        p={0.5}
+        paddingBlock={0.25}
         sx={{
           ...styles.centerVH,
-          backgroundColor: "#F9FAFB",
-          borderRadius: "4px",
-          border: "0.5px solid #C7CCD1",
-          p: 0.5,
-          pb: 0,
+          border: `0.5px solid rgb(199, 204, 209)`,
         }}
       >
-        <Typography variant="labelSmall" color="#6C8093">
+        <Typography variant="labelSmall" color="background.onVariant">
           {language.code}
         </Typography>
       </Box>
       <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
       <Typography
         variant="labelSmall"
-        sx={{ textAlign: "center" }}
-        color="#6C8093"
+        color="background.onVariant"
+        textAlign="center"
       >
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}
@@ -446,10 +436,10 @@ const CardButton = ({
         position: "relative",
         zIndex: 1,
         ...(key === "dashboard" && {
-          background: "#01221e",
-          color: "#fff",
+          bgcolor: "#01221e",
+          color: "background.containerLowest",
           "&:hover": {
-            background: "#01221ecc",
+            bgcolor: "#01221ecc",
           },
         }),
       }}
@@ -461,20 +451,19 @@ const CardButton = ({
       }
     >
       <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          left: 0,
-          bottom: 0,
-          background: "rgba(102, 128, 153, 0.3)",
-          zIndex: -1,
-          width:
-            key === "questionnaires" && progressPercent
-              ? `${progressPercent}%`
-              : "0%",
-          transition: "all 1s ease-in-out",
-        }}
+        position="absolute"
+        top={0}
+        right={0}
+        left={0}
+        bottom={0}
+        bgcolor="rgba(102, 128, 153, 0.3)"
+        zIndex={-1}
+        width={
+          key === "questionnaires" && progressPercent
+            ? `${progressPercent}%`
+            : "0%"
+        }
+        sx={{ transition: "all 1s ease-in-out" }}
       />
       <Trans i18nKey={label} />
     </Button>
@@ -536,7 +525,7 @@ const Actions = ({
           icon: <SettingsIcon fontSize="small" />,
           text: <Trans i18nKey="common.settings" />,
           onClick: assessmentSetting,
-          id: "assessmentCard-setting-btn"
+          id: "assessmentCard-setting-btn",
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,

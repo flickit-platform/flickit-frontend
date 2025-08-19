@@ -252,9 +252,9 @@ const ItemAccordion = ({
   };
 
   const getAccordionBgColor = () => {
-    if (editMode) return '#F3F5F6';
+    if (editMode) return "background.container";
     if (item.questionsCount === 0) return alpha(theme.palette.error.main, 0.04);
-    return '#fff';
+    return "background.containerLowest";
   };
 
   return (
@@ -271,7 +271,7 @@ const ItemAccordion = ({
           {...dragHandleProps}
           mt={1.5}
           sx={{
-            backgroundColor: editMode ? '#F3F5F6' : '#fff',
+            backgroundColor: editMode ? "background.container" : "background.containerLowest",
             borderRadius: '8px',
             border: '0.3px solid #73808c30',
             display: 'flex',
@@ -296,7 +296,7 @@ const ItemAccordion = ({
                 margin: 0,
                 padding: 0,
                 '&.Mui-expanded': {
-                  backgroundColor: item.questionsCount === 0 ? alpha(theme.palette.error.main, 0.08) : '#F3F5F6',
+                  backgroundColor: item.questionsCount === 0 ? alpha(theme.palette.error.main, 0.08) : 'background.container',
                 },
                 '& .MuiAccordionSummary-content': { margin: 0 },
                 '& .MuiAccordionSummary-content.Mui-expanded': { margin: 0 },
@@ -343,7 +343,7 @@ const IndexBox = ({ index, item, theme }: { index: number; item: KitDesignListIt
   <Box
     sx={{
       ...styles.centerVH,
-      background: item.questionsCount === 0 ? alpha(theme.palette.error.main, 0.12) : '#F3F5F6',
+      background: item.questionsCount === 0 ? alpha(theme.palette.error.main, 0.12) : 'background.container',
       width: { xs: '50px', md: '64px' },
       justifyContent: 'space-around',
     }}
@@ -475,7 +475,9 @@ const QuestionsCount = ({ item, theme }: { item: KitDesignListItems; theme: any 
       textAlign: 'center',
     }}
   >
-    <Typography sx={{ ...theme.typography.labelCondensed, color: '#6C8093', width: '100%' }}>
+    <Typography
+      color="background.onVariant"
+      sx={{ ...theme.typography.labelCondensed, width: '100%' }}>
       <Trans i18nKey="common.questions" />
     </Typography>
     <Box
@@ -484,8 +486,8 @@ const QuestionsCount = ({ item, theme }: { item: KitDesignListItems; theme: any 
         width: '3.75rem',
         height: '3.75rem',
         borderRadius: '50%',
-        backgroundColor: item.questionsCount === 0 ? theme.palette.error.main : '#E2E5E9',
-        color: item.questionsCount === 0 ? '#FAD1D8' : '#2B333B',
+        backgroundColor: item.questionsCount === 0 ? "error.main" : "background.variant",
+        color: item.questionsCount === 0 ? "error.contrastText" : "text.primary",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

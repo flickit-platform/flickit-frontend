@@ -18,6 +18,7 @@ import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import EmptyState from "../../common/EmptyState";
 import { t } from "i18next";
 import showToast from "@/utils/toastError";
+import { styles } from "@styles";
 
 const OptionsSection = ({
   question,
@@ -154,13 +155,10 @@ const OptionsSection = ({
       <Box
         mt={1.5}
         p={1.5}
-        sx={{
-          borderRadius: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 2,
-        }}
+        borderRadius="8px"
+        justifyContent="space-between"
+        gap={2}
+        sx={{ ...styles.centerV }}
       >
         <Typography variant="body2">
           <Trans i18nKey="kitDesigner.answerOptions" />

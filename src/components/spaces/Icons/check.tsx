@@ -1,3 +1,4 @@
+import { v3Tokens } from "@/config/tokens";
 import React from "react";
 
 export default function Check(props: any) {
@@ -7,7 +8,7 @@ export default function Check(props: any) {
     if (type == "PREMIUM") {
       return "url(#paint0_linear_11642_19953)";
     } else if (type == "BASIC" && allowCreateBasic) {
-      return "#2B333B";
+      return v3Tokens.surface.on;
     } else if (type == "BASIC" && !allowCreateBasic) {
       return "#3D4D5C80";
     }

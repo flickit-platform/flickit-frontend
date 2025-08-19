@@ -93,6 +93,7 @@ const TitleWithTranslation = ({
   translation= "",
   ...rest
 }: TitleWithTranslationProps) => {
+  const theme = useTheme()
   const isFarsiTitle = languageDetector(title);
   const isFarsiTranslation = translation
     ? languageDetector(translation)
@@ -104,7 +105,7 @@ const TitleWithTranslation = ({
         <RenderText
           text={translation}
           isFarsi={isFarsiTranslation}
-          color={"#6C8093"}
+          color={theme.palette.background.onVariant}
           variantOverride={"body2"}
           {...rest}
         />

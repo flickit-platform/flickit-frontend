@@ -31,6 +31,7 @@ import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@utils/toastError";
+import { styles } from "@styles";
 
 interface ListOfItemsProps {
   items: any;
@@ -228,7 +229,7 @@ const ListOfItems = ({
     },
     expandedBg: (hasNoQuestions: boolean)=>{
       if (hasNoQuestions) return alpha(theme.palette.error.main, 0.08);
-      return "#F3F5F6";
+      return "background.container";
     },
     getDetailsPy: ()=>{
       if(questionData.length != 0) return "20px";
@@ -239,8 +240,8 @@ const ListOfItems = ({
       return "8px 8px 0 0";
     },
     accordionBg: (isEditing: boolean)=>{
-      if(isEditing) return "#F3F5F6";
-      return "#fff";
+      if(isEditing) return "background.container";
+      return "background.containerLowest";
     },
     fontFamilyDetect: (text: string) => {
       if(languageDetector(text)) return farsiFontFamily;
@@ -351,7 +352,7 @@ const ListOfItems = ({
               alignItems: "center",
               justifyContent: "flex-start",
               px: "1rem",
-              color: "#6C8093",
+              color: "background.onVariant",
               ...theme.typography.semiBoldMedium,
             }}
           >
@@ -547,7 +548,7 @@ const ListOfItems = ({
                           }
                           size="small"
                           sx={{
-                            backgroundColor: "#EAF2FB",
+                            backgroundColor: "primary.bg",
                             fontSize: 14,
                             py: 1.4,
                           }}

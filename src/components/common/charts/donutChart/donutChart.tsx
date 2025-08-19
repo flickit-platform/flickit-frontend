@@ -31,7 +31,7 @@ const DonutChart = (props: IGaugeProps) => {
   if (maturityLevelNumber < levelValue) return null;
 
   const colorPallet = getMaturityLevelColors(maturityLevelNumber);
-  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "gray";
+  const colorCode = colorPallet ? colorPallet[levelValue - 1] : "disabled.main";
 
   return (
     <Suspense fallback={<Trans i18nKey="common.loading" />}>
@@ -43,13 +43,7 @@ const DonutChart = (props: IGaugeProps) => {
             gap: "1rem",
           }}
         >
-          <Box
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "3px",
-            }}
-          >
+          <Box gap="3px" sx={{ ...styles.centerV }}>
             <CircleGaugeComponent
               colorCode={colorCode}
               value={levelValue}
@@ -59,12 +53,12 @@ const DonutChart = (props: IGaugeProps) => {
           {displayTitle && (
             <Typography
               variant="titleMedium"
+              color={colorCode}
               sx={{
                 display: "flex",
                 gap: "5px",
                 fontWeight: "bold",
                 fontSize: "1.37rem",
-                color: colorCode,
                 fontFamily: languageDetector(text ?? "")
                   ? farsiFontFamily
                   : primaryFontFamily,

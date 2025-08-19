@@ -197,9 +197,8 @@ const QuestionsTitle = (props: { isReview?: boolean; pathInfo: any }) => {
                       marginInlineStart: 1,
                       mt: 0.5,
                       p: 0,
-                      background: theme.palette.primary.light,
+                      bgcolor: "primary.states.selected",
                       cursor: "default",
-
                     }}
                     disabled
                   />

@@ -38,9 +38,9 @@ const RichEditorMenuItem = (props: IRichEditorMenuItemProps) => {
           m: 0.1,
           mx: 0,
           color: "GrayText",
-          background: isActive && isActive() ? "#dddddd" : undefined,
+          bgcolor: isActive && isActive() ? "#dddddd" : undefined,
           "&:hover": {
-            background: isActive && isActive() ? "#cccccc" : undefined,
+            bgcolor: isActive && isActive() ? "#cccccc" : undefined,
           },
         }}
         disabled={disable}

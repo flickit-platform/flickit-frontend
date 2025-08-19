@@ -24,7 +24,8 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
+import { v3Tokens } from "@/config/tokens";
+import { styles } from "@styles";
 
 const PremiumBox = [
   {
@@ -165,7 +166,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepOne = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" color="text.primary">
         <Trans i18nKey="spaces.selectYourSpaceType" />
       </Typography>
       <Box sx={{ py: 2, height: "82%" }}>
@@ -209,7 +210,7 @@ const CreateSpaceDialog = (props: any) => {
 
   const renderStepTwo = () => (
     <Box sx={{ pt: 4, px: 4, pb: 0, height: "100%" }}>
-      <Typography variant="semiBoldLarge" sx={{ color: "#2B333B" }}>
+      <Typography variant="semiBoldLarge" color="text.primary">
         <Trans i18nKey="spaces.setAName" />
       </Typography>
       <FormProviderWithForm formMethods={formMethods} style={{ height: "96%" }}>
@@ -285,9 +286,11 @@ const getBorderStyle = (
   isBasic: boolean,
 ) => {
   if (isSelected) {
-    return isPremium ? "1px solid #2466A8" : "1px solid #668099";
+    return isPremium
+      ? `1px solid ${v3Tokens.primary.main}`
+      : "1px solid #668099";
   }
-  return "1px solid #C7CCD1";
+  return `1px solid ${v3Tokens.outline?.variant}`;
 };
 
 const getBackgroundStyle = (
@@ -305,14 +308,14 @@ const getHoverBorderColor = (isPremium: boolean, allowCreateBasic: boolean) => {
   if (isPremium) {
     return "#2D80D2";
   } else if (!allowCreateBasic) {
-    return "#C7CCD1";
+    return v3Tokens.outline.variant;
   }
-  return "#73808C";
+  return v3Tokens.outline.outline;
 };
 
 const getTextColor = (isBasic: boolean, allowCreateBasic: boolean) => {
   if (isBasic) {
-    return !allowCreateBasic ? "#3D4D5C80" : "#2B333B";
+    return !allowCreateBasic ? "#3D4D5C80" : v3Tokens.surface.on;
   }
   return "unset";
 };
@@ -331,8 +334,6 @@ const BoxType = ({
       setSelectedType("PREMIUM");
     }
   }, []);
-  const theme = useTheme();
-
   const isSelected = selectedType === type;
   const isPremium = type === "PREMIUM";
   const isBasic = type === "BASIC";
@@ -366,17 +367,17 @@ const BoxType = ({
       onClick={handleSelect}
     >
       <Box sx={{ mb: { xs: 0.1, sm: 1 } }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        <Box gap={0.5} sx={{ ...styles.centerV }}>
           <SpaceSmallIcon type={type} allowCreateBasic={allowCreateBasic} />
           <Typography
             variant="semiBoldMedium"
+            color={textColor}
             sx={{
               WebkitBackgroundClip: isPremium ? "text" : undefined,
               WebkitTextFillColor: isPremium ? "transparent" : undefined,
               backgroundImage: isPremium
-                ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
+                ? `linear-gradient(to right, #2466A8, #2D80D2, #2466A8 )`
                 : undefined,
-              color: textColor,
             }}
           >
             <Trans i18nKey={title} />
@@ -384,8 +385,8 @@ const BoxType = ({
         </Box>
         <Typography
           variant="labelSmall"
+          color="background.onVariant"
           sx={{
-            color: "#6C8093",
             mt: { xs: 0.1, sm: 1 },
             paddingInlineStart: 3,
           }}
@@ -398,33 +399,28 @@ const BoxType = ({
         {bullets.map((text: string, index: number) => (
           <Box
             key={UniqueId()}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: { xs: 0.1, sm: 1 },
-              mb: { xs: 0.1, sm: 1 },
-            }}
+            gap={{ xs: 0.1, sm: 1 }}
+            mb={{ xs: 0.1, sm: 1 }}
+            sx={{ ...styles.centerV }}
           >
             <Check type={type} allowCreateBasic={allowCreateBasic} />
             <Typography
               variant="labelSmall"
+              color={textColor}
               sx={{
                 WebkitBackgroundClip: isPremium ? "text" : undefined,
                 WebkitTextFillColor: isPremium ? "transparent" : undefined,
                 backgroundImage: isPremium
                   ? "linear-gradient(to right, #1B4D7E, #2D80D2, #1B4D7E )"
                   : undefined,
-                color: textColor,
               }}
             >
               <Trans i18nKey={text} />
               {!allowCreateBasic && isBasic && index === 1 && (
                 <Typography
                   variant="labelSmall"
-                  sx={{
-                    color: theme.palette.error.main,
-                    display: "inline-block",
-                  }}
+                  color="error.main"
+                  sx={{ display: "inline-block" }}
                 >
                   (<Trans i18nKey="spaces.reachedLimit" />)
                 </Typography>
@@ -436,14 +432,12 @@ const BoxType = ({
 
       {isSelected && isPremium && (
         <Box
+          color="primary.main"
+          position="absolute"
+          gap="8px"
+          bottom={{ xs: "-45px", md: "-54px" }}
           sx={{
-            color: theme.palette.primary.main,
-            position: "absolute",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "8px",
-            bottom: { xs: "-45px", md: "-54px" },
+            ...styles.centerVH,
             cursor: "text",
           }}
         >

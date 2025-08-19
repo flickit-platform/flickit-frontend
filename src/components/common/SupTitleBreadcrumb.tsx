@@ -64,10 +64,10 @@ const SupTitleBreadcrumb = (
                   sx={{
                     cursor: isActive ? mouseCursor : "pointer",
                     alignSelf: "flex-start",
-                    background: isActive
+                    bgcolor: isActive
                       ? "#D0E4FF"
                       : "rgba(206, 211, 217, 0.4)",
-                    color: isActive ? "#2466A8" : "#73808C",
+                    color: isActive ? "#2466A8" : "outline.outline",
                     textTransform: "none",
                     borderRadius: "8px",
                     padding: "4px",
@@ -90,6 +90,5 @@ const SupTitleBreadcrumb = (
     </Breadcrumbs>
   );
 };
-
 
 export default SupTitleBreadcrumb;

@@ -13,7 +13,6 @@ import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
 import languageDetector from "@utils/languageDetector";
 import showToast from "@utils/toastError";
-import { useTheme } from "@mui/material";
 
 interface IUserCEFormDialogProps extends DialogProps {
   onClose: () => void;
@@ -75,8 +74,6 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
     }
   };
 
-  const theme = useTheme();
-
   return (
     <CEDialog
       {...rest}
@@ -84,10 +81,7 @@ const UserCEFormDialog = (props: IUserCEFormDialogProps) => {
       title={
         <>
           <AccountBoxRoundedIcon
-            sx={{
-              marginRight: theme.direction === "ltr" ? 1 : "unset",
-              marginLeft: theme.direction === "rtl" ? 1 : "unset",
-            }}
+            sx={{ marginInlineEnd: 1, marginInlineStart: "unset" }}
           />
           <Trans i18nKey="user.updateUser" />
         </>

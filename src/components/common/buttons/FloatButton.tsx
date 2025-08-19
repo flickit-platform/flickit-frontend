@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import ContactSupport from "@assets/svg/ContactSupport.svg";
@@ -14,7 +14,6 @@ import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import { authActions, useAuthContext } from "@providers/AuthProvider";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { useTheme } from "@mui/material";
 
 const SurveyBoxSection = (props: any) => {
   const [showFeedback, setShowFeedback] = useState(true);
@@ -34,8 +33,6 @@ const SurveyBoxSection = (props: any) => {
       service.common.dontShowSurvey({ assessmentId }, config),
     runOnMount: false,
   });
-
-  const theme = useTheme();
 
   const closeFeadbackBox = () => {
     setShowFeedback(false);
@@ -67,41 +64,44 @@ const SurveyBoxSection = (props: any) => {
 
   return (
     <Box
-      sx={{
-        position: "fixed",
-        right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
-        bottom: { xs: 0, md: "55px" },
-        display: showSurveyBox ? "flex" : "none",
-      }}
+      position="fixed"
+      right={{ xs: "2.5%", lg: "1.6%", xl: "2%" }}
+      bottom={{ xs: 0, md: "55px" }}
+      display={showSurveyBox ? "flex" : "none"}
     >
       <Box
-        sx={{
-          position: "relative",
-          background: theme.palette.primary.main,
-          bottom: "65px",
-          right: 0,
-          borderRadius: "8px",
-          px: "32px",
-          pt: "28px",
-          pb: "8px",
-          maxWidth: "320px",
-        }}
+        position="relative"
+        bgcolor="primary.main"
+        bottom="65px"
+        right={0}
+        borderRadius="8px"
+        px="32px"
+        pt="28px"
+        pb="8px"
+        maxWidth="320px"
       >
         <IconButton
           aria-label="close"
           onClick={closeFeadbackBox}
           edge="end"
           size="small"
-          sx={{ color: "#fff", position: "absolute", left: 2.5, top: 2.5 }}
+          sx={{
+            color: "background.containerLowest",
+            position: "absolute",
+            left: 2.5,
+            top: 2.5,
+          }}
           data-testid="close-btn"
         >
           <Close />
         </IconButton>
-        <Typography sx={{ ...theme.typography.semiBoldXLarge, color: "#fff" }}>
+        <Typography color="background.containerLowest" variant="semiBoldXLarge">
           <Trans i18nKey={"common.gotMinute"} />
         </Typography>
         <Typography
-          sx={{ ...theme.typography.bodyMedium, color: "#fff", mb: 2 }}
+          variant="bodyMedium"
+          color="background.containerLowest"
+          marginBottom={2}
         >
           <Trans
             i18nKey={"common.helpUsToImprove"}
@@ -110,14 +110,14 @@ const SurveyBoxSection = (props: any) => {
         </Typography>
         <Button
           onClick={goToSurvey}
-          variant={"contained"}
+          variant="contained"
           size="small"
           sx={{
-            background: "#F3F5F6",
-            color: theme.palette.primary.main,
+            bgcolor: "background.container",
+            color: "primary.main",
             width: "100%",
             "&:hover": {
-              background: "#F3F5F6",
+              bgcolor: "background.container",
             },
           }}
         >
@@ -126,7 +126,7 @@ const SurveyBoxSection = (props: any) => {
         <FormControlLabel
           sx={{
             marginInlineEnd: 0,
-            color: "#fff",
+            color: "background.containerLowest",
             display: props?.disabled ? "none" : "block",
           }}
           data-cy="automatic-submit-check"
@@ -134,18 +134,16 @@ const SurveyBoxSection = (props: any) => {
             <Checkbox
               checked={dontShowAgain}
               sx={{
-                color: "#fff",
+                color: "background.containerLowest",
                 "&.Mui-checked": {
-                  color: "#fff",
+                  color: "background.containerLowest",
                 },
               }}
               onChange={(e) => setDontShowAgain(e.target.checked)}
             />
           }
           label={
-            <Typography
-              sx={{ ...theme.typography.bodySmall, display: "inline-block" }}
-            >
+            <Typography variant="bodySmall" display="inline-block">
               <Trans i18nKey={"common.dontShowAgain"} />
             </Typography>
           }
@@ -153,7 +151,9 @@ const SurveyBoxSection = (props: any) => {
         <Box
           component={"img"}
           src={polygon}
-          sx={{ position: "absolute", bottom: "-10px", right: "20px" }}
+          position="absolute"
+          bottom="-10px"
+          right="20px"
         />
       </Box>
     </Box>
@@ -162,24 +162,21 @@ const SurveyBoxSection = (props: any) => {
 
 const FloatButton = (props: any) => {
   const { onClick, disabled } = props;
-  const theme = useTheme();
 
   return (
     <>
       <SurveyBoxSection disabled={disabled} />
       <Box
-        sx={{
-          position: "fixed",
-          right: { xs: "2.5%", lg: "1.6%", xl: "2%" },
-          bottom: { xs: 0, md: "55px" },
-        }}
+        position="fixed"
+        right={{ xs: "2.5%", lg: "1.6%", xl: "2%" }}
+        bottom={{ xs: 0, md: "55px" }}
       >
         <IconButton
           edge="start"
           sx={{
-            background: theme.palette.primary.main,
+            bgcolor: "primary.main",
             "&:hover": {
-              background: theme.palette.primary.dark,
+              bgcolor: "primary.dark",
             },
             borderRadius: "50%",
             width: "56px",

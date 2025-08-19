@@ -65,7 +65,7 @@ const OutlinedProgressButton: React.FC<OutlinedProgressButtonProps> = ({
             right: 0,
             left: 0,
             bottom: 0,
-            background: progressFill,
+            bgcolor: progressFill,
             zIndex: -1,
             width: `${percent}%`,
             transition: "all 1s ease-in-out",

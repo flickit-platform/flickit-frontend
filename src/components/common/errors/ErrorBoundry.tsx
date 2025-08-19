@@ -2,6 +2,9 @@ import { Trans } from "react-i18next";
 import ErrorImage from "@assets/img/errorBoundary.png";
 import { Component } from "react";
 import Button from "@mui/material/Button";
+import { HOME_URL } from "@/config/constants";
+import { styles } from "@styles";
+import Box from "@mui/material/Box";
 
 class ErrorBoundary extends Component {
   constructor(props: any) {
@@ -23,16 +26,11 @@ class ErrorBoundary extends Component {
     if ((this.state as any).hasError) {
       // You can render any custom fallback UI
       return (
-        <div
-          style={{
-            width: "100%",
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            textAlign: "center",
-          }}
+        <Box
+          width="100%"
+          height="100vh"
+          textAlign="center"
+          sx={{ ...styles.centerCVH }}
         >
           <div>
             <img src={ErrorImage} alt="error" width="100%" />
@@ -44,12 +42,12 @@ class ErrorBoundary extends Component {
             variant="contained"
             size="large"
             onClick={() => {
-              window.location.href = "/spaces/1";
+              window.location.href = HOME_URL;
             }}
           >
             <Trans i18nKey="common.backToHome" />
           </Button>
-        </div>
+        </Box>
       );
     }
 

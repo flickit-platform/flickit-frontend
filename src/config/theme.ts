@@ -1,5 +1,6 @@
-import createPalette from "@mui/material/styles/createPalette";
 import { createTheme } from "@mui/material/styles";
+import { v3Tokens } from "./tokens";
+import { gray, grayBlue, orange } from "./colors";
 const fontSize = ["12px", "14px", "14px", "16px", "16px"];
 export const primaryFontFamily = "NotoSans";
 export const secondaryFontFamily = "OpenSans";
@@ -7,12 +8,28 @@ export const farsiFontFamily = "'Sahel','Arial','sans-serif'";
 
 declare module "@mui/material/styles/createPalette" {
   interface TypeBackground {
-    secondary: string;
-    secondaryDark: string;
+    secondary?: string;
+    secondaryDark?: string;
+    variant: string;
+    onVariant: string;
+    inverse: string;
+    onInverse: string;
+    containerLowest: string;
+    containerLow: string;
+    container: string;
+    containerHigh: string;
+    containerHigher: string;
   }
   interface PaletteOptions {
+    md3?: any;
+    grayBlue?: any;
+    gray?: any;
+    disabled?: { main: string; on: string };
+    outline?: { outline: string; variant: string };
+    semantics?: Record<string, any>;
     ml: { primary: React.CSSProperties["color"] };
     cl: { primary: React.CSSProperties["color"] };
+    tertiary: PaletteColorOptions;
   }
 }
 
@@ -80,8 +97,44 @@ declare module "@mui/material/styles" {
   }
 
   interface Palette {
+    md3: any;
+    grayBlue: any;
+    gray: any;
+    disabled?: { main: string; on: string };
+    outline?: { outline: string; variant: string };
+    semantics?: Record<string, any>;
     ml: { primary: React.CSSProperties["color"] };
     cl: { primary: React.CSSProperties["color"] };
+    tertiary: PaletteColorOptions;
+  }
+
+  interface PaletteColor {
+    states: {
+      base: string;
+      hover: string;
+      selected: string;
+      focus: string;
+      focusVisible: string;
+      outlineBorder: string;
+    };
+    bgVariant: string;
+    bg: string;
+  }
+  interface PaletteColorOptions {
+    main: string;
+    dark?: string;
+    light: string;
+    contrastText: string;
+    bgVariant?: string;
+    bg?: string;
+    states?: {
+      base: string;
+      hover: string;
+      selected: string;
+      focus: string;
+      focusVisible: string;
+      outlineBorder: string;
+    };
   }
 }
 
@@ -113,48 +166,135 @@ declare module "@mui/material/Typography" {
     semiBoldSmall?: true;
   }
 }
+const alphaToSolid = (
+  base: string,
+  alphaValue: number,
+  bg: string = "#FFFFFF",
+) => {
+  const hexToRgb = (hex: string) => {
+    const c = hex.replace("#", "");
+    const bigint = parseInt(c, 16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+  };
 
-const palette = createPalette({
-  primary: {
-    main: "#2466A8",
-    contrastText: "#FFFFFF",
-    light: "#EDF3F8",
-    dark: "#1B4D7E",
-  },
-  secondary: {
-    main: "#B8144B",
-    contrastText: "#FFFFFF",
-    light: "#E51A5E",
-    dark: "#8A0F38",
-  },
-  background: { secondary: "#EDF4FC", secondaryDark: "#121d33" },
-  ml: { primary: "#6035A1" },
-  cl: { primary: "#3596A1" },
-  error: {
-    main: "#8A0F24",
-    contrastText: "#FAD1D8",
-    dark: "#5C0A18",
-    light: "#F6ECED",
-  },
-  success: {
-    main: "#3D8F3D",
-    contrastText: "#fff",
-    dark: "#2E6B2E",
-    light: "#EFF6EF",
-  },
-  info: {
-    main: "#6C8093",
-    contrastText: "#fff",
-    dark: "#6C8093",
-    light: "#F3F5F6",
-  },
-  warning: { main: "#CC7400", contrastText: "#fff", light: "#F4E7D7" },
-});
+  const rgbToHex = (r: number, g: number, b: number) =>
+    `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
+
+  const [r1, g1, b1] = hexToRgb(base);
+  const [r2, g2, b2] = hexToRgb(bg);
+
+  const r = Math.round(r1 * alphaValue + r2 * (1 - alphaValue));
+  const g = Math.round(g1 * alphaValue + g2 * (1 - alphaValue));
+  const b = Math.round(b1 * alphaValue + b2 * (1 - alphaValue));
+
+  return rgbToHex(r, g, b);
+};
+
+const makeStates = (base: string) => {
+  const bg = v3Tokens.surface.containerLowest;
+  return {
+    base,
+    hover: alphaToSolid(base, v3Tokens.states.hover, bg),
+    selected: alphaToSolid(base, v3Tokens.states.selected, bg),
+    focus: alphaToSolid(base, v3Tokens.states.focus, bg),
+    focusVisible: alphaToSolid(base, v3Tokens.states.focusVisible, bg),
+    outlineBorder: alphaToSolid(base, v3Tokens.states.outlineBorder, bg),
+  };
+};
+
 export const getTheme = (lang: any) => {
   const is_farsi = lang === "fa";
   return createTheme({
     direction: is_farsi ? "rtl" : "ltr",
-    palette,
+    palette: {
+      ml: { primary: "#6035A1" },
+      cl: { primary: "#3596A1" },
+      primary: {
+        main: v3Tokens.primary.main,
+        dark: v3Tokens.primary.dark,
+        light: v3Tokens.primary.light,
+        contrastText: v3Tokens.primary.on,
+        bgVariant: v3Tokens.primary.bgVar,
+        bg: v3Tokens.primary.bg,
+        states: makeStates(v3Tokens.primary.main),
+      },
+      secondary: {
+        main: v3Tokens.secondary.main,
+        dark: v3Tokens.secondary.dark,
+        light: v3Tokens.secondary.light,
+        contrastText: v3Tokens.secondary.on,
+        bgVariant: v3Tokens.secondary.bgVar,
+        bg: v3Tokens.secondary.bg,
+        states: makeStates(v3Tokens.secondary.main),
+      },
+      tertiary: {
+        main: v3Tokens.tertiary.main,
+        dark: v3Tokens.tertiary.dark,
+        light: v3Tokens.tertiary.light,
+        contrastText: v3Tokens.tertiary.on,
+        bgVariant: v3Tokens.tertiary.bgVar,
+        bg: v3Tokens.tertiary.bg,
+        states: makeStates(v3Tokens.tertiary.main),
+      },
+      error: {
+        main: v3Tokens.error.main,
+        dark: v3Tokens.error.dark,
+        light: v3Tokens.error.light,
+        contrastText: v3Tokens.error.on,
+        bgVariant: v3Tokens.error.bgVar,
+        bg: v3Tokens.error.bg,
+        states: makeStates(v3Tokens.error.main),
+      },
+      success: {
+        main: v3Tokens.success.main,
+        dark: v3Tokens.success.dark,
+        light: v3Tokens.success.light,
+        contrastText: v3Tokens.success.on,
+        bgVariant: v3Tokens.success.bgVar,
+        bg: v3Tokens.success.bg,
+        states: makeStates(v3Tokens.success.main),
+      },
+      warning: {
+        main: orange[40],
+        light: orange[95],
+        contrastText: orange[100],
+        states: makeStates(orange[40]),
+      },
+      info: {
+        main: grayBlue[50],
+        light: v3Tokens.surface.surface,
+        contrastText: grayBlue[100],
+        states: makeStates(grayBlue[50]),
+      },
+
+      background: {
+        default: v3Tokens.surface.surface,
+        paper: v3Tokens.surface.containerLowest,
+        secondary: v3Tokens.primary.bg,
+        secondaryDark: grayBlue[20],
+        variant: v3Tokens.surface.variant,
+        onVariant: v3Tokens.surface.onVariant,
+        inverse: v3Tokens.surface.inverse,
+        onInverse: v3Tokens.surface.onInverse,
+        containerLowest: v3Tokens.surface.containerLowest,
+        containerLow: v3Tokens.surface.containerLow,
+        container: v3Tokens.surface.container,
+        containerHigh: v3Tokens.surface.containerHigh,
+        containerHigher: v3Tokens.surface.containerHigher,
+      },
+
+      text: { primary: v3Tokens.surface.on, secondary: grayBlue[50] },
+
+      disabled: { main: gray[40], on: gray[60] },
+      outline: {
+        outline: v3Tokens.outline.variant,
+        variant: v3Tokens.outline.variant,
+      },
+      semantics: v3Tokens.semantics,
+      md3: v3Tokens,
+      grayBlue,
+      gray,
+    },
     breakpoints: {
       values: {
         xs: 0,
@@ -364,7 +504,7 @@ export const getTheme = (lang: any) => {
         styleOverrides: {
           root: {
             paperContainer: {
-              backgroundColor: "#fff",
+              backgroundColor: v3Tokens.surface.containerLowest,
               borderRadius: "8px",
               padding: "16px",
             },
@@ -413,13 +553,13 @@ export const getTheme = (lang: any) => {
           display: none;
         }
         .nc-layout-wrapper {
-          background: #F9FAFB;
+          background: ${v3Tokens.surface.surface};
           padding: 0;
         }
         .nc-header {
           font-family: ${is_farsi ? farsiFontFamily : primaryFontFamily};
           direction:${is_farsi ? "rtl" : "ltr"};
-          background: #E8EBEE;
+          background: ${v3Tokens.surface.containerHigher};
           border-radius: 7px 7px 0px 0px;
           box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);
         }
@@ -433,7 +573,7 @@ export const getTheme = (lang: any) => {
           stroke: rgba(0, 54, 92, 1);
         }
         .mantine-1dbkl0m {
-          background: #B8144B;
+          background: ${v3Tokens.secondary.main};
           width: 20px
         }
         ::-webkit-scrollbar {
@@ -470,8 +610,8 @@ export const getTheme = (lang: any) => {
       },
       MuiDialogTitle: {
         defaultProps: {
-          bgcolor: palette.primary.main,
-          color: palette.primary.contrastText,
+          bgcolor: "primary.main",
+          color: "primary.contrastText",
           fontFamily: is_farsi ? farsiFontFamily : secondaryFontFamily,
           marginBottom: "8px",
         },
@@ -528,7 +668,7 @@ export const getTheme = (lang: any) => {
             borderBottom: "1px solid #d3d3d3",
           },
           indicator: {
-            backgroundColor: palette.secondary.main,
+            backgroundColor: "secondary.main",
             borderRadius: 1,
           },
         },
@@ -540,11 +680,11 @@ export const getTheme = (lang: any) => {
             transition: "background-color .1s ease, color .1s ease",
             color: "rgba(0, 0, 0, 0.6)", // Default text color
             "&.Mui-selected": {
-              color: palette.secondary.main,
+              color: "secondary.main",
               fontWeight: "bold",
             },
             "&.MuiTabs-indicator": {
-              backgroundColor: "#2466A8",
+              backgroundColor: "primary.main",
             },
           },
         },
@@ -655,7 +795,7 @@ export const getTheme = (lang: any) => {
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            color: "#FFFFFF",
+            color: v3Tokens.surface.containerLowest,
             backgroundColor: "#576675E6",
           },
         },
@@ -709,7 +849,7 @@ export const getTheme = (lang: any) => {
     },
     customStyles: {
       borderLine: {
-        border: "1px solid #D5E5F6",
+        border: "1px solid primary.bgVariant",
       },
     },
   });

@@ -170,11 +170,7 @@ const AdviceItems = () => {
         <Grid container>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <Box sx={{ ...styles.centerCV }} marginTop={4} gap={2}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Box justifyContent="space-between" sx={{ ...styles.centerV }}>
                 <Typography variant="semiBoldLarge">
                   <Trans i18nKey="advice.suggestedActionItems" />
                 </Typography>
@@ -182,11 +178,10 @@ const AdviceItems = () => {
                   <Link
                     href="#new-advice-item"
                     sx={{
+                      ...styles.centerV,
                       textDecoration: "none",
                       opacity: 0.9,
                       fontWeight: "bold",
-                      display: "flex",
-                      alignItems: "center",
                     }}
                   >
                     <Button

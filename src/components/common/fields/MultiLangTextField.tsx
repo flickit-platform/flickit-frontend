@@ -30,8 +30,8 @@ interface MultiLangTextFieldProps extends Omit<TextFieldProps, "variant"> {
   setShowTranslation?: (val: boolean) => void;
   useRichEditor?: boolean;
   lang?: string;
-  handleCancelTextBox?: any
-  handleSaveEdit?: any
+  handleCancelTextBox?: any;
+  handleSaveEdit?: any;
 }
 
 const MultiLangTextField = ({
@@ -68,8 +68,6 @@ const MultiLangTextField = ({
     e.stopPropagation();
     setShowTranslation(state);
   };
-
-
 
   const renderInput = (
     val: string | undefined,
@@ -120,7 +118,7 @@ const MultiLangTextField = ({
         onClick={(e) => e.stopPropagation()}
         sx={{
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#fff",
+            bgcolor: "background.containerLowest",
             fontSize: 14,
             ...(multiline ? {} : { height: 40 }),
           },
@@ -141,7 +139,7 @@ const MultiLangTextField = ({
         <Box sx={{ flexGrow: 1, width: "100%" }}>
           {renderInput(value, onChange, label, `${name}-id`)}
         </Box>
-        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <Box sx={{ ...styles.centerCH }}>
           {!!langCode && (
             <IconButton
               onClick={(e) => handleShowTranslation(e, !showTranslation)}
@@ -160,7 +158,7 @@ const MultiLangTextField = ({
               />
             </IconButton>
           )}
-          {!!handleSaveEdit && !!handleCancelTextBox &&
+          {!!handleSaveEdit && !!handleCancelTextBox && (
             <>
               <IconButton
                 size="small"
@@ -173,7 +171,7 @@ const MultiLangTextField = ({
               </IconButton>
               <IconButton
                 size="small"
-                onClick={()=>handleCancelTextBox(name)}
+                onClick={() => handleCancelTextBox(name)}
                 color="secondary"
                 sx={{ ...styles.fixedIconButtonStyle }}
                 data-testid="close-icon-id"
@@ -181,27 +179,20 @@ const MultiLangTextField = ({
                 <CloseRoundedIcon fontSize="small" />
               </IconButton>
             </>
-          }
-
+          )}
         </Box>
-
       </Box>
 
       {/* Translation Field */}
       {!!langCode && showTranslation && (
         <Box sx={{ display: "flex", gap: 1, width: "100%" }}>
           <Box
-            sx={{
-              backgroundColor: "#F3F5F6",
-              borderRadius: 2,
-              px: 1,
-              py: 0.5,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              minWidth: 40,
-            }}
+            bgcolor="background.container"
+            borderRadius={2}
+            px={1}
+            py={0.5}
+            minWidth={40}
+            sx={{ ...styles.centerCVH }}
           >
             <LanguageIcon fontSize="small" color="info" />
             <Typography variant="caption" fontSize={10}>

@@ -30,7 +30,7 @@ import AssessmentKitListItem from "../assessment-kit/AssessmentKitListItem";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import MinimizeRoundedIcon from "@mui/icons-material/MinimizeRounded";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ICustomError } from "@utils/CustomError";
 import useDialog from "@utils/useDialog";
 import AssessmentKitCEFromDialog from "../assessment-kit/AssessmentKitCEFromDialog";
@@ -62,7 +62,7 @@ import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDial
 import uniqueId from "@/utils/uniqueId";
 import languageDetector from "@/utils/languageDetector";
 import { useConfigContext } from "@providers/ConfgProvider";
-import { FLAGS } from "@/types";
+import { FLAGS, TId } from "@/types";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import showToast from "@utils/toastError";
@@ -135,7 +135,6 @@ const ExpertGroupContainer = () => {
 
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
-  const theme = useTheme();
 
   return (
     <>
@@ -210,12 +209,10 @@ const ExpertGroupContainer = () => {
                         <Trans i18nKey="common.about" />
                       </Title>
                       <Box
-                        sx={{
-                          p: 3,
-                          mt: 1,
-                          borderRadius: 2,
-                          background: "white",
-                        }}
+                        p={3}
+                        mt={1}
+                        borderRadius={2}
+                        bgcolor="background.containerLowest"
                       >
                         <Box
                           minHeight={"160px"}
@@ -247,9 +244,7 @@ const ExpertGroupContainer = () => {
                       spacing={2}
                       sx={{
                         mt: 3,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        ...styles.centerVH,
                       }}
                     >
                       <Pagination
@@ -274,14 +269,16 @@ const ExpertGroupContainer = () => {
                 <Grid item xs={12} md={4}>
                   <Box
                     p={2}
-                    sx={{ borderRadius: 2, p: 3, background: "white", mt: 5 }}
+                    borderRadius={2}
+                    padding={3}
+                    mt={5}
+                    bgcolor="background.containerLowest"
                   >
                     <Box>
                       <Typography
                         variant="h6"
-                        display="flex"
-                        alignItems={"center"}
-                        sx={{ mb: 1.5 }}
+                        mb={1.5}
+                        sx={{ ...styles.centerV }}
                       >
                         <Trans i18nKey="expertGroups.groupSummary" />
                       </Typography>
@@ -299,14 +296,12 @@ const ExpertGroupContainer = () => {
                         </Box>
                       )}
                       {website && (
-                        <Box sx={{ ...styles.centerV, mt: 1 }}>
+                        <Box mt={1} sx={{ ...styles.centerV }}>
                           <InsertLinkRoundedIcon
                             fontSize="small"
                             sx={{
-                              marginRight:
-                                theme.direction === "ltr" ? 1 : "unset",
-                              marginLeft:
-                                theme.direction === "rtl" ? 1 : "unset",
+                              marginInlineStart: "unset",
+                              marginInlineEnd: 1,
                               transform: "rotateZ(-45deg)",
                               opacity: 0.8,
                             }}
@@ -331,9 +326,8 @@ const ExpertGroupContainer = () => {
                         <PeopleRoundedIcon
                           fontSize="small"
                           sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 1 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                            marginInlineStart: "unset",
+                            marginInlineEnd: 1,
                             opacity: 0.8,
                           }}
                         />
@@ -349,12 +343,12 @@ const ExpertGroupContainer = () => {
                         </Typography>
                       </Box>
                       <Box
+                        mt={1}
+                        fontSize="0.9rem"
+                        color="inherit"
                         sx={{
                           ...styles.centerV,
-                          mt: 1,
-                          fontSize: ".9rem",
                           textDecoration: "none",
-                          color: "inherit",
                         }}
                         component="a"
                         href="#assessment-kits"
@@ -362,9 +356,8 @@ const ExpertGroupContainer = () => {
                         <AssignmentRoundedIcon
                           fontSize="small"
                           sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 1 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                            marginInlineStart: "unset",
+                            marginInlineEnd: 1,
                             opacity: 0.8,
                           }}
                         />
@@ -385,10 +378,7 @@ const ExpertGroupContainer = () => {
                             } ${t("expertGroups.publishedAssessmentKits").toLowerCase()}`}
                         </Typography>
                         {editable && (
-                          <Box
-                            ml={theme.direction === "rtl" ? "unset" : "auto"}
-                            mr={theme.direction !== "rtl" ? "unset" : "auto"}
-                          >
+                          <Box marginInlineStart="auto" marginInlineEnd="unset">
                             <IconButton
                               size="small"
                               color="primary"
@@ -406,23 +396,21 @@ const ExpertGroupContainer = () => {
                       </Box>
                       {editable && (
                         <Box
-                          sx={{
-                            ...styles.centerV,
-                            mt: 1,
-                            fontSize: ".9rem",
-                            textDecoration: "none",
-                            color: "inherit",
-                          }}
+                          mt={1}
+                          fontSize="0.9rem"
+                          color="inherit"
                           component="a"
                           href="#assessment-kits"
+                          sx={{
+                            ...styles.centerV,
+                            textDecoration: "none",
+                          }}
                         >
                           <AssignmentLateRoundedIcon
                             fontSize="small"
                             sx={{
-                              marginRight:
-                                theme.direction === "ltr" ? 1 : "unset",
-                              marginLeft:
-                                theme.direction === "rtl" ? 1 : "unset",
+                              marginInlineStart: "unset",
+                              marginInlineEnd: 1,
                               opacity: 0.8,
                             }}
                           />
@@ -581,10 +569,8 @@ const AvatarComponent = (props: any) => {
       display="inline-block"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      sx={{
-        marginRight: theme.direction === "ltr" ? 1 : "unset",
-        marginLeft: theme.direction === "rtl" ? 1 : "unset",
-      }}
+      marginInlineStart="unset"
+      marginInlineEnd={1}
     >
       <Avatar
         sx={{
@@ -607,8 +593,8 @@ const AvatarComponent = (props: any) => {
             left: theme.direction === "ltr" ? "50%" : "unset",
             right: theme.direction === "rtl" ? "50%" : "unset",
             marginTop: "-12px",
-            marginLeft: theme.direction === "ltr" ? "-12px" : "unset",
-            marginRight: theme.direction === "rtl" ? "-12px" : "unset",
+            marginInlineStart: "-12px",
+            marginInlineEnd: "unset",
           }}
         />
       )}
@@ -619,10 +605,8 @@ const AvatarComponent = (props: any) => {
           left={0}
           width="100%"
           height="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
           borderRadius="50%"
+          sx={{ ...styles.centerVH }}
         >
           {hover && (
             <Box
@@ -632,11 +616,8 @@ const AvatarComponent = (props: any) => {
               width="100%"
               height="100%"
               bgcolor="rgba(0, 0, 0, 0.6)"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
               borderRadius="50%"
-              sx={{ cursor: "pointer" }}
+              sx={{ ...styles.centerVH, cursor: "pointer" }}
             />
           )}
           {profilePicture ? (
@@ -745,11 +726,14 @@ const ExpertGroupMembers = (props: any) => {
             <Box>
               <Typography
                 variant="h6"
-                display="flex"
-                alignItems={"center"}
                 component="a"
                 href="#members"
-                sx={{ textDecoration: "none", mb: 2, color: "inherit" }}
+                marginBottom={2}
+                color="inheir"
+                sx={{
+                  ...styles.centerV,
+                  textDecoration: "none",
+                }}
               >
                 <Trans i18nKey="expertGroups.members" />
               </Typography>
@@ -762,7 +746,7 @@ const ExpertGroupMembers = (props: any) => {
                 />
               )}
 
-              <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1.5 }}>
+              <Box display="flex" flexWrap="wrap" mt={1.5}>
                 <AvatarGroup>
                   {users.map((user: any) => {
                     return (
@@ -804,8 +788,6 @@ const ExpertGroupMembers = (props: any) => {
 };
 
 const Invitees = (props: any) => {
-  const theme = useTheme();
-
   const { users, query, inviteeQuery, setOpenInvitees, openInvitees } = props;
   const hasInvitees = users.length > 0;
   return (
@@ -813,18 +795,19 @@ const Invitees = (props: any) => {
       {hasInvitees && (
         <Typography
           variant="h6"
-          display="flex"
-          alignItems={"center"}
-          sx={{ fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
+          fontSize="0.9rem"
+          sx={{
+            ...styles.centerV,
+            opacity: 0.8,
+            cursor: "pointer",
+          }}
           onClick={() => setOpenInvitees((state: boolean) => !state)}
         >
           <Trans i18nKey="common.invited" />
           <Box
-            sx={{
-              ...styles.centerV,
-              ml: theme.direction === "rtl" ? "unset" : "auto",
-              mr: theme.direction !== "rtl" ? "unset" : "auto",
-            }}
+            marginInlineStart="auto"
+            marginInlineEnd="unset"
+            sx={{ ...styles.centerV }}
           >
             {openInvitees ? (
               <MinimizeRoundedIcon fontSize="small" />
@@ -835,21 +818,19 @@ const Invitees = (props: any) => {
         </Typography>
       )}
       <Collapse in={openInvitees}>
-        <Box sx={{ display: "flex", flexWrap: "wrap", my: 1 }}>
+        <Box display="flex" flexWrap="wrap" my={1}>
           {users.map((user: any) => {
             const { id, email, inviteExpirationDate, displayName } = user;
             return (
               <Box
                 key={user.id}
-                sx={{
-                  ...styles.centerV,
-                  boxShadow: 1,
-                  borderRadius: 2,
-                  my: 0.5,
-                  py: 0.8,
-                  px: 1.5,
-                  width: "100%",
-                }}
+                boxShadow={1}
+                borderRadius={2}
+                my={0.5}
+                py={0.8}
+                px={1.5}
+                width="100%"
+                sx={{ ...styles.centerV }}
               >
                 <Box sx={{ ...styles.centerV }}>
                   <Box>
@@ -861,8 +842,8 @@ const Invitees = (props: any) => {
                       <EventBusyRoundedIcon
                         fontSize="small"
                         sx={{
-                          marginRight: theme.direction === "ltr" ? 1 : "unset",
-                          marginLeft: theme.direction === "rtl" ? 1 : "unset",
+                          marginInlineStart: "unset",
+                          marginInlineEnd: 1,
                           opacity: 0.9,
                         }}
                       />
@@ -873,11 +854,9 @@ const Invitees = (props: any) => {
                   </Box>
                 </Box>
                 <Box
-                  sx={{
-                    ...styles.centerV,
-                    ml: theme.direction === "rtl" ? "unset" : "auto",
-                    mr: theme.direction !== "rtl" ? "unset" : "auto",
-                  }}
+                  marginInlineStart="auto"
+                  marginInlineEnd="unset"
+                  sx={{ ...styles.centerV }}
                 >
                   <MemberActions
                     query={query}
@@ -966,24 +945,25 @@ const MemberActions = (props: any) => {
 
 const AddingNewMember = (props: any) => {
   const { queryData, inviteeQuery, setOpenAddMembers, openAddMembers } = props;
-  const theme = useTheme();
 
   return (
     <Box>
       <Typography
         variant="h6"
-        display="flex"
-        alignItems={"center"}
-        sx={{ mb: 2, fontSize: ".9rem", opacity: 0.8, cursor: "pointer" }}
+        marginBottom={2}
+        fontSize="0.9rem"
+        sx={{
+          ...styles.centerV,
+          opacity: 0.8,
+          cursor: "pointer",
+        }}
         onClick={() => setOpenAddMembers((state: boolean) => !state)}
       >
         <Trans i18nKey="expertGroups.addMember" />
         <Box
-          sx={{
-            ...styles.centerV,
-            ml: theme.direction === "rtl" ? "unset" : "auto",
-            mr: theme.direction !== "rtl" ? "unset" : "auto",
-          }}
+          marginInlineStart="auto"
+          marginInlineEnd="unset"
+          sx={{ ...styles.centerV }}
         >
           {openAddMembers ? (
             <MinimizeRoundedIcon fontSize="small" />
@@ -1060,14 +1040,12 @@ const AddMember = (props: any) => {
 };
 
 const AddMemberButton = ({ loading }: { loading: boolean }) => {
-  const theme = useTheme();
-
   return (
     <InputAdornment position="end">
       <LoadingButton
         sx={{
-          ml: theme.direction === "rtl" ? "unset" : "-10px",
-          mr: theme.direction !== "rtl" ? "-10px" : "unset",
+          marginInlineStart: "-10px",
+          marginInlineEnd: "unset",
           minWidth: "10px",
           p: 0.5,
         }}
@@ -1093,12 +1071,37 @@ const AssessmentKitsList = (props: any) => {
     languages,
   } = props;
   const { expertGroupId } = useParams();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<{status: boolean, id: TId}>({ status: false, id: "" });
+  const { service } = useServiceContext();
+
   const kitDesignerDialogProps = useDialog({
     context: { type: "draft", data: { expertGroupId, dsl_id: 959, languages } },
   });
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  const deleteAssessmentKitQuery = useQuery({
+    service: (args, config) =>
+      service.assessmentKit.info.remove(args, config),
+    runOnMount: false,
+  });
+
+  const deleteItem = async () => {
+    try {
+      const id = openDeleteDialog.id
+      await deleteAssessmentKitQuery.query({id});
+      await assessmentKitQuery?.query({
+        id: expertGroupId,
+        size: 10,
+        page: 1,
+      });
+      setOpenDeleteDialog({ status: false, id: "" })
+    } catch (e) {
+      const err = e as ICustomError;
+      showToast(err);
+    }
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -1110,13 +1113,19 @@ const AssessmentKitsList = (props: any) => {
   const showGroups =
     flagsmith.hasFeature(FLAGS.display_expert_groups) || !flagsmith.initialised;
 
+  if (!assessmentKitQuery) {
+    console.warn(
+      "fetchAssessmentKits not provided. assessment kit list won't be updated on any action",
+    );
+  }
+
   return (
     <>
       <Title
         inPageLink="assessment_kits"
         size="small"
         toolbar={
-          <Box sx={{ display: "flex", gap: "8px" }}>
+          <Box display="flex" gap="8px">
             {hasAccess && showGroups && (
               <>
                 <Button
@@ -1200,7 +1209,9 @@ const AssessmentKitsList = (props: any) => {
         <QueryData
           {...assessmentKitQuery}
           emptyDataComponent={
-            <Box sx={{ background: "white", borderRadius: 2 }}>
+            <Box
+              sx={{ bgcolor: "background.containerLowest", borderRadius: 2 }}
+            >
               <ErrorEmptyData
                 emptyMessage={
                   <Trans i18nKey="assessmentKit.thereIsNoPublishedAssessmentKitYet" />
@@ -1242,10 +1253,10 @@ const AssessmentKitsList = (props: any) => {
                         }
                         key={assessment_kit?.id}
                         data={assessment_kit}
-                        fetchAssessmentKits={assessmentKitQuery}
                         hasAccess={hasAccess}
                         is_member={is_member}
                         is_active={true}
+                        setOpenDeleteDialog={setOpenDeleteDialog}
                       />
                     );
                   })}
@@ -1262,16 +1273,26 @@ const AssessmentKitsList = (props: any) => {
                           }
                           key={assessment_kit?.id}
                           data={assessment_kit}
-                          fetchAssessmentKits={assessmentKitQuery}
                           hasAccess={hasAccess}
                           is_member={is_member}
                           is_active={false}
+                          setOpenDeleteDialog={setOpenDeleteDialog}
                         />
                       );
                     })}
               </>
             );
           }}
+        />
+        <DeleteConfirmationDialog
+          open={openDeleteDialog.status}
+          onClose={() =>
+            setOpenDeleteDialog({ ...openDeleteDialog, status: false })
+          }
+          onConfirm={deleteItem}
+          title="common.warning"
+          content="assessment.areYouSureYouWantDeleteAssessmentKit"
+          confirmButtonText={t("common.continue")}
         />
       </Box>
     </>
@@ -1286,14 +1307,12 @@ const ExpertGroupMembersDetail = (props: any) => {
     setNumberOfMembers,
     setRemoveMemberDialog,
   } = props;
-  const theme = useTheme();
-
   return (
     <>
       <Title inPageLink="members" size="small">
         <Trans i18nKey="expertGroups.members" />
       </Title>
-      <Box mt={2} p={3} sx={{ borderRadius: 2, background: "white" }}>
+      <Box mt={2} p={3} borderRadius={2} bgcolor="background.containerLowest">
         {hasAccess && (
           <Box>
             <Title
@@ -1489,14 +1508,12 @@ const ExpertGroupMembersDetail = (props: any) => {
                       return (
                         <Box
                           key={id}
-                          sx={{
-                            ...styles.centerV,
-                            boxShadow: 1,
-                            borderRadius: 2,
-                            my: 1,
-                            py: 0.8,
-                            px: 1.5,
-                          }}
+                          boxShadow={1}
+                          borderRadius={2}
+                          my={1}
+                          py={0.8}
+                          px={1.5}
+                          sx={{ ...styles.centerV }}
                         >
                           <Box sx={{ ...styles.centerV }}>
                             <Box>
@@ -1507,30 +1524,24 @@ const ExpertGroupMembersDetail = (props: any) => {
                             <Box ml={2}>{displayName}</Box>
                           </Box>
                           <Box
-                            sx={{
-                              ...styles.centerV,
-                              ml: theme.direction === "rtl" ? "unset" : "auto",
-                              mr: theme.direction !== "rtl" ? "unset" : "auto",
-                            }}
+                            marginInlineStart="auto"
+                            marginInlineEnd="unset"
+                            sx={{ ...styles.centerV }}
                           >
                             <Box
+                              marginInlineStart="unset"
+                              marginInlineEnd={2}
+                              px={0.4}
                               sx={{
                                 ...styles.centerV,
                                 opacity: 0.8,
-                                px: 0.4,
-                                marginRight:
-                                  theme.direction === "ltr" ? 2 : "unset",
-                                marginLeft:
-                                  theme.direction === "rtl" ? 2 : "unset",
                               }}
                             >
                               <EventBusyRoundedIcon
                                 fontSize="small"
                                 sx={{
-                                  marginRight:
-                                    theme.direction === "ltr" ? 0.5 : "unset",
-                                  marginLeft:
-                                    theme.direction === "rtl" ? 0.5 : "unset",
+                                  marginInlineStart: "unset",
+                                  marginInlineEnd: 0.5,
                                 }}
                               />
                               <Typography variant="body2">

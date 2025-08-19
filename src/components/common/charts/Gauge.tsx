@@ -43,7 +43,7 @@ const Gauge = ({
   ...rest
 }: IGaugeProps) => {
   const colorPallet = getMaturityLevelColors(maturity_level_number);
-  const colorCode = colorPallet?.[level_value - 1] ?? "gray";
+  const colorCode = colorPallet?.[level_value - 1] ?? "disabled.main";
 
   const gaugeComponentCache = useRef<any>({});
 
@@ -155,13 +155,11 @@ const Gauge = ({
           {confidence_text && (
             <Typography
               variant={maturity_status_guide_variant}
-              color="#6C8093"
+              color="background.onVariant"
               mt={!isMobileScreen ? "1.5rem" : "unset"}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
               gap="0.125rem"
               sx={{
+                ...styles.centerVH,
                 fontFamily: languageDetector(confidence_text)
                   ? farsiFontFamily
                   : primaryFontFamily,

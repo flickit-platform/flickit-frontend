@@ -17,7 +17,6 @@ import Typography from "@mui/material/Typography";
 import AssessmentHtmlTitle from "./AssessmentHtmlTitle";
 import { AssessmentTOC } from "./TopOfContents";
 import SubjectReport from "./SubjectSection";
-import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { Gauge } from "../common/charts/Gauge";
 import TreeMapChart from "../common/charts/TreeMapChart";
 import AdviceItemsAccordion from "../dashboard/advice-tab/advice-items/AdviceItemsAccordions";
@@ -42,7 +41,7 @@ import QueryData from "../common/QueryData";
 import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
 import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
 import ReplayIcon from "@mui/icons-material/Replay";
-import { Button, useTheme } from "@mui/material";
+import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
@@ -58,7 +57,6 @@ const getBasePath = (path: string): string => {
 };
 
 const AssessmentHtmlContainer = () => {
-  const theme = useTheme();
   const { calculate, calculateConfidence } = useCalculate();
   const { isAuthenticatedUser } = useAuthContext();
 
@@ -192,7 +190,7 @@ const AssessmentHtmlContainer = () => {
           sx={{
             ...styles.box,
             ...styles.rtlStyle(language === "fa"),
-            fontWeight: 200,
+            fontWeight: "lighter",
           }}
         >
           {icon}
@@ -285,6 +283,8 @@ const AssessmentHtmlContainer = () => {
             isAdvisable,
           } = graphicalReport as IGraphicalReport;
           const lng = lang?.code?.toLowerCase();
+          const isRTL = lang?.code?.toLowerCase() === "fa";
+
           const rtlLanguage = lng === "fa";
           const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
           const currentPath = window.location.pathname;
@@ -299,28 +299,22 @@ const AssessmentHtmlContainer = () => {
             <>
               {isInvalid(subjects, advice, isAdvisable, isQuickMode) && (
                 <Box
-                  sx={{
-                    backgroundColor: theme.palette.error.main,
-                    height: 48,
-                    ...styles.centerVH,
-                  }}
+                  bgcolor="error.main"
+                  height={48}
                   gap={6}
+                  sx={{ ...styles.centerVH }}
                 >
                   <Typography
                     variant="semiBoldLarge"
                     color="error.contrastText"
-                    sx={{
-                      ...styles.centerV,
-                    }}
+                    sx={{ ...styles.centerV }}
                   >
                     {t("notification.incompleteReportDueToDelay")}
                   </Typography>
                   <Box
-                    sx={{
-                      background: "#F3F5F6",
-                      color: theme.palette.error.main,
-                      borderRadius: "4px",
-                    }}
+                    bgcolor="background.container"
+                    color="error.main"
+                    borderRadius="4px"
                   >
                     <Button
                       onClick={handleReloadReport}
@@ -338,14 +332,14 @@ const AssessmentHtmlContainer = () => {
               <Box
                 m="auto"
                 pb={3}
-                sx={{
-                  textAlign: rtlLanguage ? "right" : "left",
-                  ...styles.rtlStyle(rtlLanguage),
-                  p: isInvalid(subjects, advice, isAdvisable, isQuickMode)
+                textAlign={rtlLanguage ? "right" : "left"}
+                p={
+                  isInvalid(subjects, advice, isAdvisable, isQuickMode)
                     ? 1
-                    : { xs: 1, sm: 1, md: 4 },
-                  px: { xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 },
-                }}
+                    : { xs: 1, sm: 1, md: 4 }
+                }
+                px={{ xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 }}
+                sx={{ ...styles.rtlStyle(rtlLanguage) }}
               >
                 {isAuthenticatedUser && (
                   <QueryData
@@ -355,7 +349,7 @@ const AssessmentHtmlContainer = () => {
                       return (
                         <AssessmentHtmlTitle
                           pathInfo={pathInfo}
-                          language={lang.code.toLowerCase()}
+                          language={lang?.code?.toLowerCase()}
                         />
                       );
                     }}
@@ -363,32 +357,27 @@ const AssessmentHtmlContainer = () => {
                 )}
 
                 <Box
-                  display="flex"
                   justifyContent="space-between"
-                  alignItems="center"
                   my={2}
+                  sx={{ ...styles.centerV }}
                 >
                   <Typography
                     color="primary"
                     textAlign="left"
                     variant="headlineLarge"
-                    sx={{
-                      ...styles.rtlStyle(rtlLanguage),
-                    }}
+                    sx={{ ...styles.rtlStyle(rtlLanguage) }}
                   >
                     {isAuthenticatedUser && (
                       <IconButton color="primary" onClick={handleBack}>
                         <ArrowForward
-                          sx={{
+                          sx={(theme) => ({
                             ...theme.typography.headlineMedium,
-                            transform: `scaleX(${lang.code.toLowerCase() === "fa" ? 1 : -1})`,
-                          }}
+                            transform: `scaleX(${isRTL ? 1 : -1})`,
+                          })}
                         />
                       </IconButton>
                     )}
-                    {t("assessmentReport.assessmentReport", {
-                      lng,
-                    })}
+                    {t("assessmentReport.assessmentReport", { lng })}
                   </Typography>
                   <>
                     <LoadingButton
@@ -396,9 +385,7 @@ const AssessmentHtmlContainer = () => {
                       startIcon={
                         <Share
                           fontSize="small"
-                          sx={{
-                            ...styles.iconDirectionStyle(lng),
-                          }}
+                          sx={{ ...styles.iconDirectionStyle(lng) }}
                         />
                       }
                       size="small"
@@ -407,17 +394,12 @@ const AssessmentHtmlContainer = () => {
                         !permissions.canShareReport &&
                         !permissions.canManageVisibility
                       }
-                      sx={{
-                        ...styles.rtlStyle(rtlLanguage),
-                      }}
+                      sx={{ ...styles.rtlStyle(rtlLanguage) }}
                     >
-                      {t("assessmentReport.shareReport", {
-                        lng,
-                      })}
+                      {t("assessmentReport.shareReport", { lng })}
                     </LoadingButton>
                     <ShareDialog
                       {...dialogProps}
-                      onClose={() => dialogProps.onClose()}
                       fetchGraphicalReportUsers={fetchGraphicalReportUsers}
                       {...graphicalReport}
                       lang={lang}
@@ -432,10 +414,8 @@ const AssessmentHtmlContainer = () => {
                     <Paper
                       elevation={3}
                       sx={{
+                        ...styles.centerV,
                         position: "relative",
-                        backgroundColor: "#ffffff",
-                        display: "flex",
-                        justifyContent: "center",
                         borderStartEndRadius: 16,
                         borderStartStartRadius: 16,
                         boxShadow: "none",
@@ -444,24 +424,20 @@ const AssessmentHtmlContainer = () => {
                       }}
                     >
                       <Box
-                        sx={{
-                          position: "absolute",
-                          right: { md: "40px", xs: "12px" },
-                          top: { md: "60px", xs: "6px" },
-                          bottom: { md: "40px", xs: "4px" },
-                          width: { md: "8px", xs: "2px" },
-                          backgroundColor: "#D5E5F6",
-                        }}
+                        position="absolute"
+                        right={{ md: "40px", xs: "12px" }}
+                        top={{ md: "60px", xs: "6px" }}
+                        bottom={{ md: "40px", xs: "4px" }}
+                        width={{ md: "8px", xs: "2px" }}
+                        bgcolor="primary.bgVariant"
                       />
                       <Box
-                        sx={{
-                          position: "absolute",
-                          left: { md: "40px", xs: "12px" },
-                          top: { md: "60px", xs: "6px" },
-                          bottom: { md: "40px", xs: "4px" },
-                          width: { md: "8px", xs: "2px" },
-                          backgroundColor: "#D5E5F6",
-                        }}
+                        position="absolute"
+                        left={{ md: "40px", xs: "12px" }}
+                        top={{ md: "60px", xs: "6px" }}
+                        bottom={{ md: "40px", xs: "4px" }}
+                        width={{ md: "8px", xs: "2px" }}
+                        bgcolor="primary.bgVariant"
                       />
                       <Box padding={3} width="100%">
                         <Grid container spacing={4}>
@@ -472,11 +448,11 @@ const AssessmentHtmlContainer = () => {
                             <Box display="flex" gap={1.5}>
                               <Typography
                                 variant="headlineSmall"
+                                color="primary.main"
+                                display="flex"
+                                alignItems="center"
+                                fontWeight="bold"
                                 sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  color: theme.palette.primary.main,
-                                  fontWeight: "bold",
                                   ...styles.rtlStyle(
                                     languageDetector(assessment.title),
                                   ),
@@ -492,15 +468,13 @@ const AssessmentHtmlContainer = () => {
                                   component="div"
                                   id="introduction"
                                   variant="titleSmall"
+                                  color="background.onVariant"
                                   sx={{
-                                    color: "#6C8093",
                                     mt: 2,
                                     ...styles.rtlStyle(rtlLanguage),
                                   }}
                                 >
-                                  {t("assessmentReport.introduction", {
-                                    lng,
-                                  })}
+                                  {t("assessmentReport.introduction", { lng })}
                                 </Typography>
                                 <Typography
                                   component="div"
@@ -513,9 +487,7 @@ const AssessmentHtmlContainer = () => {
                                   dangerouslySetInnerHTML={{
                                     __html:
                                       assessment.intro ??
-                                      t("common.unavailable", {
-                                        lng,
-                                      }),
+                                      t("common.unavailable", { lng }),
                                   }}
                                   className="tiptap"
                                 />
@@ -525,15 +497,13 @@ const AssessmentHtmlContainer = () => {
                               component="div"
                               id="summary"
                               variant="titleSmall"
+                              color="background.onVariant"
                               sx={{
-                                color: "#6C8093",
                                 mt: 2,
                                 ...styles.rtlStyle(rtlLanguage),
                               }}
                             >
-                              {t("common.summary", {
-                                lng,
-                              })}
+                              {t("common.summary", { lng })}
                             </Typography>
                             <Typography
                               component="div"
@@ -546,9 +516,7 @@ const AssessmentHtmlContainer = () => {
                               dangerouslySetInnerHTML={{
                                 __html:
                                   assessment.overallInsight ??
-                                  t("common.unavailable", {
-                                    lng,
-                                  }),
+                                  t("common.unavailable", { lng }),
                               }}
                             ></Typography>
                           </Grid>
@@ -564,9 +532,7 @@ const AssessmentHtmlContainer = () => {
                               confidence_value={assessment.confidenceValue}
                               confidence_text={
                                 !isQuickMode
-                                  ? t("common.withPercentConfidence", {
-                                      lng,
-                                    })
+                                  ? t("common.withPercentConfidence", { lng })
                                   : ""
                               }
                               isMobileScreen={false}
@@ -582,27 +548,19 @@ const AssessmentHtmlContainer = () => {
                               component="div"
                               id="subjectsOverview"
                               variant="titleMedium"
-                              sx={{
-                                color: "#6C8093",
-                                mt: 2,
-                                ...styles.rtlStyle(rtlLanguage),
-                              }}
+                              color="background.onVariant"
+                              mt={2}
+                              sx={{ ...styles.rtlStyle(rtlLanguage) }}
                             >
-                              {t("assessmentReport.subjectsOverview", {
-                                lng,
-                              })}
+                              {t("assessmentReport.subjectsOverview", { lng })}
                             </Typography>
                             <Typography
                               component="div"
                               variant="bodyMedium"
                               textAlign="justify"
-                              sx={{
-                                ...styles.rtlStyle(rtlLanguage),
-                              }}
+                              sx={{ ...styles.rtlStyle(rtlLanguage) }}
                             >
-                              {t("assessmentReport.subjectGuidance", {
-                                lng,
-                              })}
+                              {t("assessmentReport.subjectGuidance", { lng })}
                             </Typography>
                             <PieChart
                               data={subjects?.map((subject: any) => ({
@@ -622,7 +580,7 @@ const AssessmentHtmlContainer = () => {
                                   true,
                                 )[subject.maturityLevel.value - 1],
                               }))}
-                              language={lang.code.toLowerCase()}
+                              language={lang?.code?.toLowerCase()}
                             />
                           </Box>
                         )}
@@ -631,26 +589,20 @@ const AssessmentHtmlContainer = () => {
                             component="div"
                             id="strengthsAndWeaknesses"
                             variant="titleMedium"
-                            sx={{
-                              color: "#6C8093",
-                              my: 1,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
+                            color="background.onVariant"
+                            my={1}
+                            sx={{ ...styles.rtlStyle(rtlLanguage) }}
                           >
                             {t(
                               "assessmentReport.maturityMapOfAssessedAttributes",
-                              {
-                                lng,
-                              },
+                              { lng },
                             )}
                           </Typography>
                           <Typography
                             component="div"
                             variant="bodyMedium"
                             textAlign="justify"
-                            sx={{
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
+                            sx={{ ...styles.rtlStyle(rtlLanguage) }}
                             dangerouslySetInnerHTML={{
                               __html: t(
                                 "assessmentReport.maturityMapOfAssessedAttributesGuidance",
@@ -676,7 +628,7 @@ const AssessmentHtmlContainer = () => {
                           />
                         </Box>
                         <Box
-                          bgcolor="#F3F5F6"
+                          bgcolor="background.container"
                           borderRadius="8px"
                           paddingX={2}
                           paddingBottom={2}
@@ -687,62 +639,46 @@ const AssessmentHtmlContainer = () => {
                               <Grid item xs={12} md={9.7}>
                                 <Typography
                                   variant="titleSmall"
+                                  color="text.primary"
+                                  display="flex"
+                                  alignItems="center"
+                                  gap="4px"
                                   sx={{
-                                    color: "#2B333B",
-                                    my: 1,
-                                    ...styles.centerV,
-                                    direction: rtlLanguage ? "rtl" : "ltr",
-                                    fontFamily: rtlLanguage
-                                      ? farsiFontFamily
-                                      : primaryFontFamily,
-                                    gap: "4px",
+                                    ...styles.rtlStyle(rtlLanguage),
                                   }}
                                 >
                                   <InfoOutlinedIcon fontSize="small" />
-                                  {t("common.treeMapChart", {
-                                    lng,
-                                  })}
+                                  {t("common.treeMapChart", { lng })}
                                 </Typography>
                                 <Typography
                                   component="div"
                                   textAlign="justify"
                                   variant="bodyMedium"
-                                  sx={{
-                                    fontWeight: "light",
-                                    mt: 1,
-                                    ...styles.rtlStyle(rtlLanguage),
-                                  }}
+                                  mt={1}
+                                  fontWeight="light"
+                                  sx={{ ...styles.rtlStyle(rtlLanguage) }}
                                   dangerouslySetInnerHTML={{
                                     __html:
                                       assessment.prosAndCons ??
-                                      t("common.unavailable", {
-                                        lng,
-                                      }),
+                                      t("common.unavailable", { lng }),
                                   }}
-                                ></Typography>
+                                />
                               </Grid>
                             )}
 
                             <Grid item xs={12} md={!isQuickMode ? 2.3 : 12}>
                               <Typography
                                 variant="titleSmall"
-                                sx={{
-                                  color: "#2B333B",
-                                  my: 1,
-                                  ...styles.centerV,
-                                  direction: rtlLanguage ? "rtl" : "ltr",
-                                  fontFamily: rtlLanguage
-                                    ? farsiFontFamily
-                                    : primaryFontFamily,
-                                }}
+                                color="text.primary"
+                                my={1}
+                                display="flex"
+                                alignItems="center"
+                                sx={{ ...styles.rtlStyle(rtlLanguage) }}
                               >
-                                {t("common.maturityLevels", {
-                                  lng,
-                                })}
+                                {t("common.maturityLevels", { lng })}
                               </Typography>
-                              <Grid
-                                item
-                                xs={12}
+                              <Box
+                                display="flex"
                                 sx={{
                                   flexDirection: !isQuickMode
                                     ? "column"
@@ -751,51 +687,38 @@ const AssessmentHtmlContainer = () => {
                                 mt={2}
                               >
                                 {assessment.assessmentKit.maturityLevels.map(
-                                  (level: any, index: number) => (
+                                  (level: any) => (
                                     <Box
                                       key={uniqueId()}
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        rowGap: 2,
-                                      }}
+                                      rowGap={2}
+                                      sx={{ ...styles.centerV }}
                                     >
                                       <Box
-                                        sx={{
-                                          backgroundColor:
-                                            getMaturityLevelColors(
-                                              assessment.assessmentKit
-                                                .maturityLevelCount,
-                                            )[level.value - 1],
-                                          height: "10px",
-                                          width: "27px",
-                                          borderRadius: "16px",
-                                          color: "#fff",
-                                          fontWeight: "bold",
-                                        }}
-                                      ></Box>
-
+                                        bgcolor={
+                                          getMaturityLevelColors(
+                                            assessment.assessmentKit
+                                              .maturityLevelCount,
+                                          )[level.value - 1]
+                                        }
+                                        height="10px"
+                                        width="27px"
+                                        borderRadius="16px"
+                                        color="background.containerLowest"
+                                      />
                                       <Typography
                                         component="span"
                                         variant="body2"
-                                        sx={{
-                                          color: "#2B333B",
-                                          direction: rtlLanguage
-                                            ? "rtl"
-                                            : "ltr",
-                                          fontFamily: rtlLanguage
-                                            ? farsiFontFamily
-                                            : primaryFontFamily,
-                                          paddingInlineEnd: 1,
-                                          paddingInlineStart: 0.25,
-                                        }}
+                                        color="text.primary"
+                                        paddingInlineStart={0.25}
+                                        paddingInlineEnd={1}
+                                        sx={{ ...styles.rtlStyle(rtlLanguage) }}
                                       >
                                         {level.title}
                                       </Typography>
                                     </Box>
                                   ),
                                 )}
-                              </Grid>
+                              </Box>
                             </Grid>
                           </Grid>
                         </Box>
@@ -805,11 +728,8 @@ const AssessmentHtmlContainer = () => {
                     <Paper
                       elevation={3}
                       sx={{
+                        ...styles.centerCV,
                         position: "relative",
-                        backgroundColor: "#ffffff",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
                         borderEndStartRadius: 16,
                         borderEndEndRadius: 16,
                         boxShadow: "none",
@@ -821,11 +741,9 @@ const AssessmentHtmlContainer = () => {
                         component="div"
                         id="recommendations"
                         variant="headlineSmall"
-                        sx={{
-                          color: theme.palette.primary.main,
-                          fontWeight: "bold",
-                          ...styles.rtlStyle(rtlLanguage),
-                        }}
+                        color="primary.main"
+                        fontWeight="bold"
+                        sx={{ ...styles.rtlStyle(rtlLanguage) }}
                       >
                         {t("assessmentReport.recommendations", {
                           lng,
@@ -837,10 +755,8 @@ const AssessmentHtmlContainer = () => {
                           <Typography
                             textAlign="justify"
                             variant="bodyMedium"
-                            sx={{
-                              my: 1,
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
+                            my={1}
+                            sx={{ ...styles.rtlStyle(rtlLanguage) }}
                             dangerouslySetInnerHTML={{
                               __html: advice?.narration,
                             }}
@@ -851,18 +767,16 @@ const AssessmentHtmlContainer = () => {
                             setDisplayedItems={() => {}}
                             query={undefined}
                             readOnly
-                            language={lang.code.toLowerCase()}
+                            language={lang?.code?.toLowerCase()}
                           />
                         </>
                       ) : (
                         <Typography
                           textAlign="justify"
                           variant="titleSmall"
-                          sx={{
-                            fontWeight: "light",
-                            my: 1,
-                            ...styles.rtlStyle(rtlLanguage),
-                          }}
+                          fontWeight="light"
+                          my={1}
+                          sx={{ ...styles.rtlStyle(rtlLanguage) }}
                         >
                           {t("common.unavailable", {
                             lng,

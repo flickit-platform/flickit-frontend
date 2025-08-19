@@ -401,17 +401,14 @@ const AutocompleteBaseField = (
               {option?.[filterFields[0]]}
             </Box>
             {!!option?.[filterFields[1]] && (
-              <Box
-                sx={{
-                  ...theme.typography.semiBoldSmall,
-                  color: "#3D4D5C80",
-                }}
-              >
-                ({
-                option?.[filterFields[1]].code ?
-                option?.languages.map((lang: {code: string, title: string}) => lang.code).join(", ") :
-                option?.[filterFields[1]]
-                })
+              <Box color="#3D4D5C80" sx={{ ...theme.typography.semiBoldSmall }}>
+                (
+                {option?.[filterFields[1]].code
+                  ? option?.languages
+                      .map((lang: { code: string; title: string }) => lang.code)
+                      .join(", ")
+                  : option?.[filterFields[1]]}
+                )
               </Box>
             )}
             {(option?.isPrivate ||
@@ -421,14 +418,14 @@ const AutocompleteBaseField = (
                 sx={{
                   marginInlineStart: "auto",
                   ...(option?.type?.code === SPACE_LEVELS.PREMIUM && {
-                    background:
-                      "linear-gradient(to right top,#1B4D7E 0%,#2D80D2 33%,#1B4D7E 100%)",
+                    background: `linear-gradient(to right top,${theme.palette.primary.dark} 0%,#2D80D2 33%,${theme.palette.primary.dark} 100%)`,
                   }),
                 }}
                 color={option?.isPrivate ? "secondary" : "default"}
                 label={
                   <Typography
-                    sx={{ ...theme.typography.semiBoldSmall, color: "#fff" }}
+                    variant="semiBoldSmall"
+                    color="background.containerLowest"
                   >
                     {option?.isPrivate ? (
                       <Trans i18nKey="common.privateTitle" />

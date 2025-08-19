@@ -81,6 +81,7 @@ import { getReadableDate } from "@utils/readableDate";
 import { useAssessmentContext } from "@providers/AssessmentProvider";
 import showToast from "@utils/toastError";
 import uniqueId from "@/utils/uniqueId";
+import { blue } from "@/config/colors";
 
 interface IQuestionCardProps {
   questionInfo: IQuestionInfo;
@@ -144,7 +145,6 @@ export const QuestionCard = (props: IQuestionCardProps) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const theme = useTheme();
 
   return (
     <Box>
@@ -169,8 +169,8 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             <Typography
               component="div"
               variant="semiBoldSmall"
+              color="background.onVariant"
               sx={{
-                color: "#6C8093",
                 opacity: 0.65,
                 textAlign: [is_farsi ? "right" : "left"],
               }}
@@ -180,11 +180,11 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             <Typography
               letterSpacing={is_farsi ? "0" : ".05em"}
               variant="semiBoldXLarge"
+              color="background.containerLow"
               sx={{
                 fontFamily: languageDetector(title)
                   ? farsiFontFamily
                   : primaryFontFamily,
-                color: "#F9FAFB",
                 pt: 0.5,
               }}
             >
@@ -221,7 +221,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              background: `${notApplicable ? "#273248" : "#000000cc"}`,
+              bgcolor: `${notApplicable ? "#273248" : "#000000cc"}`,
               flexDirection: { xs: "column", md: "row" },
               borderRadius: " 0 0 8px 8px ",
               px: { xs: 1.75, sm: 2, md: 2.5 },
@@ -246,20 +246,12 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                   const labels = data.confidenceLevels;
                   setConfidenceLebels(labels);
                   return (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
+                    <Box sx={{ ...styles.centerV }}>
                       {selcetedConfidenceLevel !== null ? (
                         <Box
-                          sx={{
-                            marginRight:
-                              theme.direction === "ltr" ? 2 : "unset",
-                            marginLeft: theme.direction === "rtl" ? 2 : "unset",
-                            color: "#fff",
-                          }}
+                          marginInlineStart="unset"
+                          marginInlineEnd={2}
+                          color="background.containerLowest"
                         >
                           <Box
                             sx={{ display: "flex", fontSize: { xs: ".85rem" } }}
@@ -287,7 +279,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                         <Box
                           sx={{
                             marginInlineEnd: 1,
-                            color: `${disabledConfidence ? "#fff" : theme.palette.secondary.light}`,
+                            color: `${disabledConfidence ? "background.containerLowest" : "secondary.light"}`,
                           }}
                         >
                           <Typography>
@@ -319,7 +311,10 @@ export const QuestionCard = (props: IQuestionCardProps) => {
                           }
                           emptyIcon={
                             <RadioButtonUncheckedRoundedIcon
-                              sx={{ mx: 0.25, color: "#fff" }}
+                              sx={{
+                                mx: 0.25,
+                                color: "background.containerLowest",
+                              }}
                               fontSize="inherit"
                             />
                           }
@@ -527,20 +522,22 @@ export const QuestionTabsTemplate = (props: any) => {
   }, [currentPage]);
 
   useEffect(() => {
-    if (counts.evidences) {
-      setValue("evidences");
-    } else if (counts.history) {
-      setValue("history");
-    } else if (counts.comments) {
-      setValue("comments");
-    } else {
-      setValue(() => {
-        if (position == "dialog") {
-          return "";
-        } else {
-          return "evidences";
-        }
-      });
+    if(position == "dialog"){
+      if (counts.evidences) {
+        setValue("evidences");
+      } else if (counts.history) {
+        setValue("history");
+      } else if (counts.comments) {
+        setValue("comments");
+      } else {
+        setValue(() => {
+          if (position == "dialog") {
+            return "";
+          } else {
+            return "evidences";
+          }
+        });
+      }
     }
   }, [counts.evidences, counts.history, counts.comments]);
   const theme = useTheme();
@@ -551,13 +548,13 @@ export const QuestionTabsTemplate = (props: any) => {
         <TabList
           scrollButtons="auto"
           variant="scrollable"
-          sx={{ display: "flex", alignItems: "center" }}
+          sx={{ ...styles.centerV }}
           key={uniqueId()}
         >
           <Tab
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
             label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ ...styles.centerV }}>
                 <Trans i18nKey="common.evidences" />
                 {` (${counts.evidences})`}
               </Box>
@@ -570,7 +567,7 @@ export const QuestionTabsTemplate = (props: any) => {
             <Tab
               sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
               label={
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={{ ...styles.centerV }}>
                   <Trans i18nKey="questions.answerHistory" />
                   {` (${counts.history})`}
                 </Box>
@@ -583,7 +580,7 @@ export const QuestionTabsTemplate = (props: any) => {
           <Tab
             sx={{ textTransform: "none", ...theme.typography.semiBoldLarge }}
             label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ ...styles.centerV }}>
                 <Trans i18nKey="questions.comments" />
                 {` (${counts.comments})`}
               </Box>
@@ -653,15 +650,7 @@ export const QuestionTabsTemplate = (props: any) => {
               />
             </Box>
           </TabPanel>
-          <Stack
-            spacing={2}
-            sx={{
-              mt: 3,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
             <Pagination
               variant="outlined"
               color="primary"
@@ -676,7 +665,7 @@ export const QuestionTabsTemplate = (props: any) => {
   );
 };
 
-const getArrowColor = (isActive: boolean) => (isActive ? "white" : "gray");
+const getArrowColor = (isActive: boolean) => (isActive ? "white" : "disabled.main");
 
 const NavigationButton = ({
   onClick,
@@ -1062,7 +1051,7 @@ const AnswerTemplate = (props: {
                   }
                   sx={{
                     ...theme.typography.titleMedium,
-                    color: "#F9FAFB",
+                    color: "background.containerLow",
                     p: { xs: 0.6, sm: 1 },
                     textAlign: "left",
                     justifyContent: "flex-start",
@@ -1070,7 +1059,7 @@ const AnswerTemplate = (props: {
                       !!answer?.approved &&
                       answer?.selectedOption?.index === defaultSelectedIndex
                         ? !answer?.approved && permissions?.approveAnswer
-                          ? "#CC7400"
+                          ? "tertiary.main"
                           : "#0acb89"
                         : "white"
                     }`,
@@ -1080,26 +1069,26 @@ const AnswerTemplate = (props: {
                       answer?.selectedOption?.index === defaultSelectedIndex &&
                       !answer?.approved &&
                       permissions?.approveAnswer
-                        ? "#CC7400"
+                        ? "tertiary.main"
                         : "transparent",
                     "&.Mui-selected": {
                       "&:hover": {
                         backgroundColor: !isSelectedValueTheSameAsAnswer
-                          ? theme.palette.success.main
+                          ? "success.main"
                           : !!answer?.approved &&
                               !answer?.approved &&
                               permissions?.approveAnswer
-                            ? "#CC7400"
-                            : theme.palette.success.main,
+                            ? "tertiary.main"
+                            : "success.main",
                       },
-                      color: "white",
+                      color: "background.containerLowest",
                       backgroundColor: !isSelectedValueTheSameAsAnswer
-                        ? theme.palette.success.main
+                        ? "success.main"
                         : !!answer?.approved &&
                             !answer?.approved &&
                             permissions?.approveAnswer
-                          ? "#CC7400"
-                          : theme.palette.success.main,
+                          ? "tertiary.main"
+                          : "success.main",
                       borderColor: "transparent",
                       zIndex: 2,
                       position: "relative",
@@ -1119,17 +1108,16 @@ const AnswerTemplate = (props: {
                     sx={{
                       position: "absoulte",
                       zIndex: 1,
-                      color: "white",
+                      color: "background.containerLowest",
                       p: 0,
-                      mr: "8px",
-                      ml: "8px",
+                      mx: "8px",
                       opacity: 0.8,
                       "& svg": { fontSize: { xs: "2.1rem", sm: "2.5rem" } },
                       "&.Mui-checked": { color: "white", opacity: 1 },
                       "&.Mui-disabled": {
                         color:
                           notApplicable || !permissions?.answerQuestion
-                            ? "gray"
+                            ? "disabled.main"
                             : "white",
                       },
                     }}
@@ -1151,13 +1139,9 @@ const AnswerTemplate = (props: {
         />
       </Box>
       {notApplicable && (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ ...styles.centerV }}>
           <WarningAmberRoundedIcon color="error" />
-          <Typography
-            variant="subtitle2"
-            color="error"
-            sx={{ ml: "4px", mt: "4px" }}
-          >
+          <Typography variant="subtitle2" color="error" mt="4px" ml="4px">
             <Trans i18nKey="questions.theOptionSelectionIsDisabled" />
           </Typography>
         </Box>
@@ -1173,19 +1157,14 @@ const AnswerTemplate = (props: {
         }}
       >
         {isAdvanceMode && (
-          <Box
-            sx={{
-              ...styles.centerVH,
-            }}
-            gap={2}
-          >
+          <Box gap={2} sx={{ ...styles.centerVH }}>
             <LoadingButton
               variant="contained"
               loading={isSubmitting}
               sx={{
                 fontSize: "1.2rem",
                 "&.Mui-disabled": {
-                  background: "#C2CCD650",
+                  bgcolor: "#C2CCD650",
                   color: "black",
                 },
               }}
@@ -1205,33 +1184,32 @@ const AnswerTemplate = (props: {
           !answer?.approved &&
           permissions?.approveAnswer && (
             <Box
-              sx={{
-                ...styles.centerVH,
-                background: "#CC74004D",
-                borderRadius: "4px",
-                p: 2,
-                gap: 4,
-                height: "40px",
-                boxSizing: "border-box",
-              }}
+              bgcolor="tertiary.main"
+              borderRadius="4px"
+              p={2}
+              gap={4}
+              height="40px"
+              boxSizing="border-box"
+              sx={{ ...styles.centerVH }}
             >
-              <Typography
-                sx={{ ...theme.typography.labelMedium, color: "#FF9000" }}
-              >
+              <Typography variant="labelMedium" color="teritary.light">
                 <Trans i18nKey="questions.answerNeedApprove" />
               </Typography>
               <Button
                 onClick={onApprove}
                 sx={{
-                  background: "#CC7400",
+                  bgcolor: "tertiary.main",
                   boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
                   "&:hover": {
                     boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
-                    background: "#CC7400",
+                    bgcolor: "tertiary.main",
                   },
                 }}
               >
-                <Typography variant="bodySmall" sx={{ color: "#fff" }}>
+                <Typography
+                  variant="bodySmall"
+                  color="background.containerLowest"
+                >
                   <Trans i18nKey="common.approve" />
                 </Typography>
               </Button>
@@ -1240,7 +1218,7 @@ const AnswerTemplate = (props: {
         {may_not_be_applicable && (
           <Box sx={styles.centerVH} gap={2}>
             <FormControlLabel
-              sx={{ color: "#fff" }}
+              sx={{ color: "background.containerLowest" }}
               data-cy="automatic-submit-check"
               id="not-applicable"
               control={
@@ -1248,9 +1226,9 @@ const AnswerTemplate = (props: {
                   checked={notApplicable}
                   onChange={(e) => notApplicableonChanhe(e)}
                   sx={{
-                    color: "#fff",
+                    color: "background.containerLowest",
                     "&.Mui-checked": {
-                      color: "#fff",
+                      color: "background.containerLowest",
                     },
                   }}
                 />
@@ -1335,13 +1313,11 @@ const AnswerDetails = ({
         </Box>
       ) : data.length > 0 ? (
         <Box
-          display="flex"
           alignItems={"baseline"}
+          overflow="auto"
+          width="100%"
           sx={{
-            overflow: "auto",
-            flexDirection: "column",
-            width: "100%",
-            alignItems: "center",
+            ...styles.centerCH,
             wordBreak: "break-word",
           }}
         >
@@ -1360,10 +1336,10 @@ const AnswerDetails = ({
         </Box>
       ) : (
         <Box sx={{ ...styles.centerCVH }} textAlign="center">
-          <Typography variant="displayMedium" color="#6C8093">
+          <Typography variant="displayMedium" color="background.onVariant">
             <Trans i18nKey="questions.emptyAnswerHistoryTitle" />
           </Typography>
-          <Typography variant="bodyLarge" color="#6C8093">
+          <Typography variant="bodyLarge" color="background.onVariant">
             <Trans i18nKey="questions.emptyAnswerHistoryDescription" />
           </Typography>
         </Box>
@@ -1384,9 +1360,8 @@ const AnswerHistoryItem = (props: any) => {
         lg={4}
         xl={4}
         gap={2}
-        display="flex"
-        alignItems="center"
         width="100%"
+        sx={{ ...styles.centerV }}
       >
         <Avatar
           src={item?.createdBy?.pictureLink ?? undefined}
@@ -1397,7 +1372,7 @@ const AnswerHistoryItem = (props: any) => {
         ></Avatar>
         <Typography
           variant="titleMedium"
-          color="#1B4D7E"
+          color="primary.dark"
           sx={{
             fontFamily: languageDetector(item?.createdBy?.displayName)
               ? farsiFontFamily
@@ -1409,7 +1384,7 @@ const AnswerHistoryItem = (props: any) => {
       </Grid>
       {item.answer.isNotApplicable ? (
         <Grid item xs={12} md={12} lg={5} xl={5}>
-          <Typography variant="titleMedium" color="#1B4D7E">
+          <Typography variant="titleMedium" color="primary.dark">
             <Trans i18nKey="questions.uestionIsMarkedAsNotApplicable" />:
           </Typography>
         </Grid>
@@ -1424,13 +1399,7 @@ const AnswerHistoryItem = (props: any) => {
           flexDirection="column"
           gap={1.5}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-            gap={1.5}
-          >
+          <Box sx={{ ...styles.centerV }} gap={1.5}>
             <Typography variant="titleSmall">
               <Trans i18nKey="common.confidence" />:
             </Typography>
@@ -1456,13 +1425,7 @@ const AnswerHistoryItem = (props: any) => {
               }
             />
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-            gap={1.5}
-          >
+          <Box sx={{ ...styles.centerV }} gap={1.5}>
             <Typography variant="titleSmall">
               <Trans i18nKey="questions.selectedOption" />:
             </Typography>
@@ -1561,7 +1524,7 @@ const Evidence = (props: any) => {
   const [evidenceBG, setEvidenceBG] = useState<any>({
     background: theme.palette.primary.main,
     borderColor: theme.palette.primary.dark,
-    borderHover: theme.palette.primary.light,
+    borderHover: theme.palette.primary.states.selected,
   });
   useEffect(() => {
     if (value === null) {
@@ -1854,24 +1817,19 @@ const Evidence = (props: any) => {
                     />
                   }
                   label={
-                    <Typography
-                      sx={{
-                        ...theme.typography.titleSmall,
-                        color: "#2B333B",
-                      }}
-                    >
+                    <Typography color="text.primary" variant="titleSmall">
                       <Trans i18nKey="questions.needsToAddAttachments" />
                     </Typography>
                   }
                 />
                 <Typography
+                  color={valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3"}
                   style={is_farsi || rtl ? { left: 10 } : { right: 10 }}
                   sx={{
                     position: "absolute",
                     top: 20,
                     fontSize: ".875rem",
                     fontWeight: 300,
-                    color: valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
                   }}
                 >
                   {valueCount.length ?? 0} / {LIMITED}
@@ -1895,9 +1853,9 @@ const Evidence = (props: any) => {
                   sx={{
                     borderRadius: "4px",
                     px: 3,
-                    background: evidenceBG.borderColor,
+                    bgcolor: evidenceBG.borderColor,
                     "&:hover": {
-                      background: evidenceBG.borderColor,
+                      bgcolor: evidenceBG.borderColor,
                     },
                     ...theme.typography.titleMedium,
                   }}
@@ -1936,9 +1894,7 @@ const Evidence = (props: any) => {
       )}
       <Box mt={3} width="100%">
         {loadingEvidence ? (
-          <Box
-            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
-          >
+          <Box width="100%" sx={{ ...styles.centerH }}>
             <CircularProgress size="3.25rem" />
           </Box>
         ) : (
@@ -1946,13 +1902,7 @@ const Evidence = (props: any) => {
           permissions?.viewEvidenceList && (
             <>
               {!evidencesData.length && permissions?.readonly ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
+                <Box width="100%" sx={{ ...styles.centerH }}>
                   <EmptyState
                     title={
                       type === "evidence"
@@ -2269,6 +2219,7 @@ const EvidenceDetail = (props: any) => {
                 <Grid container display={"flex"} justifyContent={"end"}>
                   <Grid item xs={12} position={"relative"}>
                     <Typography
+                      color={evidenceBG.borderColor}
                       sx={{
                         fontSize: "1.125rem",
                         fontWeight: "bold",
@@ -2277,7 +2228,6 @@ const EvidenceDetail = (props: any) => {
                         left: theme.direction === "ltr" ? 15 : "unset",
                         right: theme.direction === "rtl" ? 15 : "unset",
                         zIndex: 1,
-                        color: evidenceBG.borderColor,
                       }}
                     >
                       <Trans i18nKey="common.edit" />
@@ -2301,14 +2251,15 @@ const EvidenceDetail = (props: any) => {
                       isEditing={isEditing}
                     />
                     <Typography
+                      color={
+                        valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3"
+                      }
                       style={is_farsi ? { left: 20 } : { right: 20 }}
                       sx={{
                         position: "absolute",
                         top: 7,
                         fontSize: ".875rem",
                         fontWeight: 300,
-                        color:
-                          valueCount.length > LIMITED ? "#D81E5B" : "#9DA7B3",
                       }}
                     >
                       {valueCount.length ?? 0} / {LIMITED}
@@ -2335,14 +2286,7 @@ const EvidenceDetail = (props: any) => {
                 />
               </Box>
             </FormProvider>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-                justifyContent: "center",
-              }}
-            >
+            <Box gap={1} sx={{ ...styles.centerCV }}>
               <Box
                 sx={{
                   display: "flex",
@@ -2356,7 +2300,7 @@ const EvidenceDetail = (props: any) => {
                   sx={{
                     boxShadow: 2,
                     p: 1,
-                    background: evidenceBG?.background,
+                    bgcolor: evidenceBG?.background,
                   }}
                   onClick={EditEvidence}
                 >
@@ -2379,44 +2323,39 @@ const EvidenceDetail = (props: any) => {
         ) : (
           <>
             <Box
-              sx={{
-                px: { xs: "12px", sm: "32px" },
-                py: { xs: "8px", sm: "16px" },
-                height: "fit-content",
-                display: "flex",
-                flexDirection: "column",
-                background: evidenceBG?.background,
-                color: "#0A2342",
-                borderRadius:
-                  theme.direction == "ltr"
-                    ? "0 24px 24px 24px "
-                    : "24px 0px 24px 24px ",
-                gap: "16px",
-                direction: `${is_farsi ? "rtl" : "ltr"}`,
-                textAlign: `${is_farsi ? "right" : "left"}`,
-                border: `1px solid ${evidenceBG?.borderColor}`,
-              }}
+              px={{ xs: "12px", sm: "32px" }}
+              py={{ xs: "8px", sm: "16px" }}
+              height="fit-content"
+              display="flex"
+              flexDirection="column"
+              bgcolor={evidenceBG?.background}
+              color="#0A2342"
+              borderRadius={
+                theme.direction == "ltr"
+                  ? "0 24px 24px 24px "
+                  : "24px 0px 24px 24px "
+              }
+              gap="16px"
+              textAlign={is_farsi ? "right" : "left"}
+              border={`1px solid ${evidenceBG?.borderColor}`}
+              sx={{ direction: `${is_farsi ? "rtl" : "ltr"}` }}
             >
               <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: "flex-end",
-                  gap: { xs: "24px", sm: "48px" },
-                }}
+                display="flex"
+                flexDirection={{ xs: "column", sm: "row" }}
+                alignItems="flex-end"
+                gap={{ xs: "24px", sm: "48px" }}
               >
                 <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1.7rem",
-                    minWidth: { xs: "auto", sm: "320px" },
-                  }}
+                  display="flex"
+                  flexDirection="column"
+                  gap="1.7rem"
+                  minWidth={{ xs: "auto", sm: "320px" }}
                 >
                   <Typography
+                    variant="bodyLarge"
+                    fontWeight="normal"
                     sx={{
-                      ...theme?.typography?.bodyLarge,
-                      fontWeight: "normal",
                       fontFamily: languageDetector(description)
                         ? farsiFontFamily
                         : primaryFontFamily,
@@ -2424,14 +2363,8 @@ const EvidenceDetail = (props: any) => {
                     dangerouslySetInnerHTML={{
                       __html: convertLinksToClickable(description),
                     }}
-                  ></Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                    }}
-                  >
+                  />
+                  <Box display="flex" flexDirection="column" gap="10px">
                     {(!permissions.readonly || attachmentsCount) && (
                       <Box
                         onClick={() => expandedEvidenceBtm()}
@@ -2439,8 +2372,8 @@ const EvidenceDetail = (props: any) => {
                       >
                         {!attachmentsCount ? (
                           <Typography
+                            variant="titleMedium"
                             sx={{
-                              ...theme.typography?.titleMedium,
                               fontSize: { xs: "10px", sm: "unset" },
                             }}
                           >
@@ -2448,11 +2381,9 @@ const EvidenceDetail = (props: any) => {
                           </Typography>
                         ) : (
                           <Typography
-                            sx={{
-                              ...theme.typography?.titleMedium,
-                              display: "flex",
-                              gap: "5px",
-                            }}
+                            variant="titleMedium"
+                            display="flex"
+                            gap="5px"
                           >
                             {t("questions.attachmentCount", {
                               attachmentsCount,
@@ -2474,6 +2405,9 @@ const EvidenceDetail = (props: any) => {
                       </Box>
                     )}
                     <Grid
+                      display="flex"
+                      flexDirection="column"
+                      gap="0.5rem"
                       container
                       style={
                         expandedEvidenceBox
@@ -2483,16 +2417,9 @@ const EvidenceDetail = (props: any) => {
                               overflow: "hidden",
                             }
                       }
-                      sx={{
-                        transition: "all .2s ease",
-                        display: "flex",
-                        gap: ".5rem",
-                        flexDirection: "column",
-                      }}
+                      sx={{ transition: "all .2s ease" }}
                     >
-                      <Box
-                        sx={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}
-                      >
+                      <Box display="flex" gap="0.5rem" flexWrap="wrap">
                         {(permissions?.viewEvidenceAttachment ||
                           permissions.readonly) && (
                           <>
@@ -2546,22 +2473,17 @@ const EvidenceDetail = (props: any) => {
                       {attachments.length == 5 && (
                         <Box>
                           <Typography
-                            sx={{
-                              fontSize: "11px",
-                              color: "#821237",
-                              display: "flex",
-                              alignItems: "start",
-                              justifyContent: "center",
-                              textAlign: "justify",
-                              width: { xs: "150px", sm: "250px" },
-                            }}
+                            color="#821237"
+                            fontSize="11px"
+                            alignItems="start"
+                            textAlign="justify"
+                            width={{ xs: "150px", sm: "250px" }}
+                            sx={{ ...styles.centerV }}
                           >
                             <InfoOutlinedIcon
                               sx={{
-                                marginRight:
-                                  theme.direction === "ltr" ? 1 : "unset",
-                                marginLeft:
-                                  theme.direction === "rtl" ? 1 : "unset",
+                                marginInlineStart: "unset",
+                                marginInlineEnd: 1,
                                 width: "15px",
                                 height: "15px",
                               }}
@@ -2574,15 +2496,15 @@ const EvidenceDetail = (props: any) => {
                     <Typography
                       fontSize="12px"
                       variant="overline"
+                      whiteSpace="nowrap"
+                      lineHeight="12px"
+                      mt={-2}
+                      textAlign="end"
                       sx={{
-                        whiteSpace: "nowrap",
-                        lineHeight: "12px",
                         fontFamily:
                           theme.direction == "rtl"
                             ? farsiFontFamily
                             : primaryFontFamily,
-                        textAlign: "end",
-                        mt: -2,
                       }}
                     >
                       {getReadableDate(lastModificationTime)}
@@ -2591,14 +2513,7 @@ const EvidenceDetail = (props: any) => {
                 </Box>
               </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-                justifyContent: "center",
-              }}
-            >
+            <Box gap={1} sx={{ ...styles.centerCV }}>
               <Box
                 sx={{
                   display: "flex",
@@ -2725,11 +2640,8 @@ const FileIcon = (props: any): any => {
             width="40px"
             height="40px"
             bgcolor="rgba(0, 0, 0, 0.6)"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
             borderRadius="6px"
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer", ...styles.centerVH }}
           ></Box>
         )}
       </Box>

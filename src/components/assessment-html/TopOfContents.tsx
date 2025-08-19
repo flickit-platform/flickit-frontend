@@ -17,7 +17,7 @@ import { ASSESSMENT_MODE } from "@/utils/enumType";
 import { Button } from "@mui/material";
 import keycloakService from "@/service/keycloakService";
 import useDialog from "@/utils/useDialog";
-import ContactUsDialog from "../assessment-kit/ContactUsDialog";
+import ContactUsDialog from "../common/dialogs/ContactUsDialog";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
 import { useAuthContext } from "@/providers/AuthProvider";
@@ -72,9 +72,10 @@ export const AssessmentTOC = ({
     },
   });
 
-  const theme = useTheme();
 
   const [openItems, setOpenItems] = React.useState<OpenItemsState>({});
+
+  const theme = useTheme()
 
   const handleToggle = (itemKey: string) => {
     setOpenItems((prevState) => ({
@@ -139,41 +140,36 @@ export const AssessmentTOC = ({
 
   return (
     <Box
-      sx={{
-        maxHeight: "88vh",
-        position: "sticky",
-        top: 70,
-      }}
+      maxHeight="88vh"
+      position="sticky"
+      top={70}
     >
       <Box
+        bgcolor="background.containerLowest"
+        border="2px solid #2466A8"
+        borderRadius={2}
+        p={2}
+        maxHeight={isAuthenticatedUser && !isAdvanceMode ? "50vh" : "88vh"}
+        textAlign={rtlLanguage ? "right" : "left"}
         sx={{
-          backgroundColor: theme.palette.background.paper,
-          border: `1px solid ${theme.palette.primary.main}`,
-          borderRadius: 2,
-          p: 2,
           overflowY: "auto",
-          maxHeight: isAuthenticatedUser && !isAdvanceMode ? "50vh" : "88vh",
-          textAlign: rtlLanguage ? "right" : "left",
           ...styles.rtlStyle(rtlLanguage),
         }}
       >
         <Typography
-          variant="h6"
+          variant="titleMedium"
           color="primary"
-          sx={{
-            pb: 1,
-            ...theme.typography.titleMedium,
-            ...styles.rtlStyle(rtlLanguage),
-          }}
+          pb={1}
+          sx={{ ...styles.rtlStyle(rtlLanguage) }}
         >
           {t("assessmentReport.quickAccess", { lng })}
         </Typography>
         <List
           sx={{
             width: "100%",
-            borderInlineStart: `2px solid ${theme.palette.primary.main}`,
+            borderInlineStart: "2px solid #2466A8",
             padding: 0,
-            bgcolor: theme.palette.background.paper,
+            bgcolor: "background.containerLowest",
           }}
           component="nav"
         >
@@ -205,12 +201,10 @@ export const AssessmentTOC = ({
                       backgroundColor: hasSubItems
                         ? "rgba(36, 102, 168, 0.08)"
                         : "initial",
-                      color: hasSubItems
-                        ? theme.palette.primary.main
-                        : theme.palette.text.primary,
+                      color: hasSubItems ? "primary.main" : "text.primary",
                       "&:hover": {
-                        bgcolor: theme.palette.action.hover,
-                        color: theme.palette.primary.dark,
+                        bgcolor: "action.hover",
+                        color: "primary.dark",
                       },
                     }}
                   >
@@ -239,11 +233,7 @@ export const AssessmentTOC = ({
                     timeout="auto"
                     unmountOnExit
                   >
-                    <List
-                      sx={{
-                        bgcolor: "#F9FAFB",
-                      }}
-                    >
+                    <List sx={{ bgcolor: "background.containerLow" }}>
                       {item.subItems?.map((subItem: any) => (
                         <ListItem key={uniqueId()} disablePadding>
                           <ListItemButton
@@ -260,7 +250,7 @@ export const AssessmentTOC = ({
                                 marginBlock: 1,
                                 textAlign: rtlLanguage ? "right" : "left",
                                 ...styles.rtlStyle(rtlLanguage),
-                                color: theme.palette.text.secondary,
+                                color: "background.onVariant",
                                 "& .MuiTypography-root": {
                                   ...theme.typography.semiBoldSmall,
                                   textAlign: rtlLanguage ? "right" : "left",
@@ -282,23 +272,19 @@ export const AssessmentTOC = ({
 
       {isAuthenticatedUser && !isAdvanceMode && (
         <Box
-          sx={{
-            mt: 2,
-            p: 2,
-            borderRadius: 2,
-            bgcolor: "#EAF2FB",
-            boxShadow: "0px 0px 8px 0px rgba(10, 35, 66, 0.25)",
-            flexShrink: 0,
-            ...styles.rtlStyle(rtlLanguage),
-          }}
+          mt={2}
+          p={2}
+          borderRadius={2}
+          bgcolor="primary.states.selected"
+          boxShadow="0px 0px 8px 0px rgba(10, 35, 66, 0.25)"
+          flexShrink={0}
+          sx={{ ...styles.rtlStyle(rtlLanguage) }}
         >
           <Typography
             variant="bodySmall"
-            sx={{
-              textAlign: "justify",
-              fontFamily: "inherit",
-              display: "block",
-            }}
+            textAlign="justify"
+            fontFamily="inherit"
+            display="block"
           >
             <Trans
               i18nKey="assessmentReport.contactExpertBoxText.intro"
@@ -328,15 +314,11 @@ export const AssessmentTOC = ({
 
           <Typography
             variant="bodySmall"
-            sx={{
-              textAlign: "justify",
-              fontFamily: "inherit",
-              display: "block",
-            }}
+            textAlign="justify"
+            fontFamily="inherit"
+            display="block"
           >
-            {t("assessmentReport.contactExpertBoxText.outro", {
-              lng,
-            })}
+            {t("assessmentReport.contactExpertBoxText.outro", { lng })}
           </Typography>
 
           <Button
@@ -346,19 +328,17 @@ export const AssessmentTOC = ({
             sx={{
               mt: 2,
               width: "100%",
-              background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
-              color: "#fff",
+              background: `linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)`,
+              color: "background.containerLowest",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
               "&:hover": {
-                background: "linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)",
+                background: `linear-gradient(45deg, $#1B4D7E, #2D80D2, #1B4D7E)`,
                 opacity: 0.9,
               },
               fontFamily: "inherit",
             }}
           >
-            {t("assessmentReport.contactExpertGroup", {
-              lng,
-            })}
+            {t("assessmentReport.contactExpertGroup", { lng })}
           </Button>
         </Box>
       )}

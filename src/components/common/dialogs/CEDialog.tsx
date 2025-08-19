@@ -45,10 +45,9 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
     >
       {title && (
         <DialogTitle
+          justifyContent="space-between"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            ...styles.centerV,
             ...titleStyle,
           }}
         >
@@ -58,7 +57,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
             onClick={closeDialog}
             edge="end"
             size="small"
-            sx={{ ml: 2, color: "#fff" }}
+            sx={{ ml: 2, color: "primary.contrastText" }}
             data-testid="close-btn"
           >
             <Close />

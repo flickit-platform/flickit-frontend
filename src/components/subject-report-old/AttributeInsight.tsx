@@ -61,7 +61,10 @@ const AttributeInsight = ({
 
   const InitInsight = useQuery({
     service: (args, config) =>
-      service.assessments.attribute.generateAIInsight(args ?? { assessmentId, attributeId }, config),
+      service.assessments.attribute.generateAIInsight(
+        args ?? { assessmentId, attributeId },
+        config,
+      ),
     runOnMount: false,
   });
 
@@ -112,7 +115,7 @@ const AttributeInsight = ({
   });
 
   return (
-    <Box display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
+    <Box width="100%" display="flex" flexDirection="column" px={{ xs: 1, sm: 4 }}>
       <Box sx={{ ...styles.centerV, justifyContent: "space-between" }}>
         <Typography variant="semiBoldLarge">
           <Trans i18nKey="common.insight" />
@@ -129,8 +132,7 @@ const AttributeInsight = ({
             texts={texts}
             disablePrimaryButton={progress !== 100}
             disablePrimaryButtonText={
-              t("assessment.questionsArentCompleteSoAICantBeGenerated") ??
-              ""
+              t("assessment.questionsArentCompleteSoAICantBeGenerated") ?? ""
             }
           />
         )}
@@ -144,12 +146,7 @@ const AttributeInsight = ({
         mt={1}
       >
         {fetchSubjectInsight.loading ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-          >
+          <Box height="100%" sx={{ ...styles.centerV }}>
             <CircularProgress />
           </Box>
         ) : (

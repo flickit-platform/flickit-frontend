@@ -17,6 +17,7 @@ import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
+import { styles } from "@styles";
 
 interface OptionListProps {
   Options: Array<IOption>;
@@ -229,12 +230,12 @@ const OptionTitleSection = ({
   <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
     <Typography
       variant="body2"
+      color="background.container"
       sx={{
         display: "inline-flex",
         alignItems: "center",
         ml: 1,
         paddingInlineEnd: 1.5,
-        backgroundColor: "#F3F5F6",
         borderRadius: "8px",
       }}
     >

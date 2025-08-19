@@ -63,7 +63,7 @@ const QuestionsProgress = () => {
           assessmentStatus === EAssessmentStatus.DONE
             ? 100
             : (99 / (questions.length + 1)) *
-              (questions.findIndex((item) => item.index === questionIndex) + 1)
+            (questions.findIndex((item) => item.index === questionIndex) + 1)
         }
       />
     </Box>
@@ -80,10 +80,10 @@ export const QuestionProgressItem = (props: any) => {
   const hasIssue =
     ASSESSMENT_MODE.ADVANCED === assessmentInfo?.mode?.code
       ? question?.issues?.isUnanswered ||
-        question?.issues?.hasUnapprovedAnswer ||
-        question?.issues?.isAnsweredWithLowConfidence ||
-        question?.issues?.isAnsweredWithoutEvidences ||
-        question?.issues?.unresolvedCommentsCount
+      question?.issues?.hasUnapprovedAnswer ||
+      question?.issues?.isAnsweredWithLowConfidence ||
+      question?.issues?.isAnsweredWithoutEvidences ||
+      question?.issues?.unresolvedCommentsCount
       : question?.issues?.isUnanswered;
 
   return (
@@ -97,18 +97,17 @@ export const QuestionProgressItem = (props: any) => {
           hasIssue && questionsInfo.permissions.viewDashboard
             ? `${t.palette.secondary.main}`
             : question?.answer?.selectedOption ||
-                question?.answer?.isNotApplicable
+              question?.answer?.isNotApplicable
               ? `${t.palette.primary.main}`
               : "white",
         border: (t: any) => `3px solid white`,
         outline: (t: any) =>
-          `${
-            hasIssue && questionsInfo.permissions.viewDashboard
-              ? `${t.palette.secondary.main}`
-              : question?.answer?.selectedOption ||
-                  question?.answer?.isNotApplicable
-                ? t.palette.primary.main
-                : "#a7caed"
+          `${hasIssue && questionsInfo.permissions.viewDashboard
+            ? `${t.palette.secondary.main}`
+            : question?.answer?.selectedOption ||
+              question?.answer?.isNotApplicable
+              ? t.palette.primary.main
+              : "#a7caed"
           } solid 5px`,
         transition: "background-color .3s ease, transform .2s ease",
         borderRadius: "8px",
@@ -165,17 +164,16 @@ export const QuestionProgressItem = (props: any) => {
           }}
         >
           <Typography
+            color={question?.answer?.selectedOption ||
+              question?.answer?.isNotApplicable ||
+              (hasIssue && questionsInfo.permissions.viewDashboard)
+              ? `white`
+              : "disabled.main"}
             sx={{
               fontSize: question.index == questionIndex ? ".75rem" : ".7rem",
               textAlign: "center",
               lineHeight: "13px",
               opacity: question.index == questionIndex ? 1 : 0.6,
-              color:
-                question?.answer?.selectedOption ||
-                question?.answer?.isNotApplicable ||
-                (hasIssue && questionsInfo.permissions.viewDashboard)
-                  ? `white`
-                  : "gray",
               transition: "opacity .1s ease",
             }}
             className="i-p-i-n"
