@@ -25,6 +25,7 @@ interface IQuestionDetailsDialogDialogProps extends DialogProps {
   onPreviousQuestion?: () => void;
   onNextQuestion?: () => void;
   context?: any;
+  index?: number;
 }
 
 const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
@@ -182,6 +183,7 @@ const QuestionDetailsContainer = (props: IQuestionDetailsDialogDialogProps) => {
               questionId: questionInfo?.question?.id,
             }}
             position={position}
+            questionIndex={index}
           />
         )}
       </Box>

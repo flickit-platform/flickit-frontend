@@ -385,7 +385,7 @@ export const QuestionCard = (props: IQuestionCardProps) => {
 };
 
 export const QuestionTabsTemplate = (props: any) => {
-  const { value, setValue, questionsInfo, questionInfo, position } = props;
+  const { value, setValue, questionsInfo, questionInfo, position,questionIndex } = props;
   const [isExpanded, setIsExpanded] = useState(true);
   const { service } = useServiceContext();
   const { assessmentId = "" } = useParams();
@@ -524,7 +524,7 @@ export const QuestionTabsTemplate = (props: any) => {
     } else if (value == "history") {
       queryData.query();
     }
-  }, [currentPage]);
+  }, [currentPage, questionIndex]);
 
   useEffect(() => {
     if(position == "dialog"){
