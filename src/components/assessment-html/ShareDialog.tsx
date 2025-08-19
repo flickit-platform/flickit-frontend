@@ -191,6 +191,7 @@ export const ShareDialog = ({
                 cursor: "pointer",
               }}
               onClick={() => handleSelect(key)}
+              key={key}
             >
               <Box
                 display="flex"
