@@ -12,7 +12,6 @@ import { ICustomError } from "@utils/CustomError";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
@@ -208,9 +207,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 helperText={<Trans i18nKey="assessment.shortTitleInfo" />}
               />
             </Grid>
-            <Grid item xs={12}>
-              <SpaceField defaultValue={defaultValues?.space ?? data?.space} />
-            </Grid>
             <Grid item xs={12} md={7}>
               <AssessmentKitField
                 staticData={staticData?.assessment_kit}
@@ -315,43 +311,6 @@ const AssessmentKitField = ({
       label={<Trans i18nKey="assessmentKit.assessmentKit" />}
       data-cy="assessment_kit"
       filterFields={["title", "mainLanguage"]}
-    />
-  );
-};
-
-const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
-  const { service } = useServiceContext();
-  const { spaceId } = useParams();
-  const queryData = useConnectAutocompleteField({
-    service: (args?: { page?: number; size?: number }, config?: any) =>
-      service.space.getList({ page: 1, size: 20, ...args }, config),
-  });
-  const createSpaceQueryData = useQuery({
-    service: (args, config) => service.space.create(args, config),
-    runOnMount: false,
-  });
-
-  const createItemQuery = async (inputValue: any) => {
-    const response = await createSpaceQueryData.query({
-      title: inputValue,
-      type: "BASIC",
-    });
-    const newOption = { title: inputValue, id: response.id };
-    return newOption;
-  };
-
-  return (
-    <AutocompleteAsyncField
-      {...queryData}
-      name="space"
-      required={true}
-      disabled={!!spaceId}
-      defaultValue={defaultValue}
-      label={<Trans i18nKey="spaces.space" />}
-      data-cy="space"
-      hasAddBtn={true}
-      createItemQuery={createItemQuery}
-      searchable={false}
     />
   );
 };
