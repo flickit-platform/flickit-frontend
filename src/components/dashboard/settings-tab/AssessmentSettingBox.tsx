@@ -52,6 +52,7 @@ import {
   useAssessmentContext,
 } from "@/providers/AssessmentProvider";
 import showToast from "@utils/toastError";
+import { useAuthContext } from "@providers/AuthProvider";
 
 type InfoField = "creator" | "assessmentKit" | "created" | "lastModified";
 
@@ -396,7 +397,10 @@ export const AssessmentSettingMemberBox = (props: {
   handleChangeRowsPerPage: (event: any) => void;
 }) => {
   const { service } = useServiceContext();
-  const { assessmentId = "" } = useParams();
+  const { assessmentId = "", spaceId= "" } = useParams();
+  const { userInfo: { defaultSpaceId } } = useAuthContext()
+  const isGrantedRolesActive  =  `${defaultSpaceId}` === spaceId
+
   const {
     listOfRoles = [],
     listOfUser,
@@ -501,21 +505,44 @@ export const AssessmentSettingMemberBox = (props: {
           <Typography color="text.primary" variant="headlineSmall">
             <Trans i18nKey="settings.grantedRoles" />
           </Typography>
-          <Button
-            variant="contained"
-            onClick={openModal}
+          <Box
             sx={{
               marginInlineStart: "auto",
               marginInlineEnd: "unset",
-              ...styles.centerV,
+              ...styles.centerCVH,
+              gap: 1,
             }}
           >
-            <AddIcon
-              sx={{ width: "1.125rem", height: "1.125rem", color: "#EDFCFC" }}
-              fontSize="small"
-            />
-            <Trans i18nKey="dashboard.grantAccess" />
-          </Button>
+            <Button
+              variant="contained"
+              onClick={openModal}
+              disabled={isGrantedRolesActive}
+              sx={{
+                marginInlineStart: "auto",
+                marginInlineEnd: "unset",
+              }}
+            >
+              <AddIcon
+                sx={{ width: "1.125rem", height: "1.125rem", color: "#EDFCFC" }}
+                fontSize="small"
+              />
+              <Trans i18nKey="dashboard.grantAccess" />
+            </Button>
+            {isGrantedRolesActive && (
+              <Typography
+                variant={"bodySmall"}
+                sx={{
+                  width: { xs: "50%", sm: "35%" },
+                  fontFamily: "inherit",
+                  marginInlineStart: "auto",
+                  marginInlineEnd: "unset",
+                  textAlign: "justify",
+                }}
+              >
+                {t("dashboard.needMoveItToSpace")}
+              </Typography>
+            )}
+          </Box>
         </Box>
         <Divider sx={{ width: "100%", marginTop: "24px" }} />
         <TableContainer
