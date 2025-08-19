@@ -95,14 +95,19 @@ const SurveyBoxSection = (props: any) => {
         >
           <Close />
         </IconButton>
-        <Typography sx={{display: "block"}} color="background.containerLowest" variant="semiBoldXLarge">
+        <Typography
+          display="block"
+          color="background.containerLowest"
+          variant="semiBoldXLarge"
+        >
           <Trans i18nKey={"common.gotMinute"} />
         </Typography>
         <Typography
           variant="bodyMedium"
           color="background.containerLowest"
           marginBottom={1}
-          sx={{display: "block"}}
+          display="block"
+          textAlign="justify"
         >
           <Trans
             i18nKey={"common.helpUsToImprove"}
