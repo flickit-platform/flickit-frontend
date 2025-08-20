@@ -142,7 +142,9 @@ const AssessmentCard = ({
       return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
     }
     if (checkItem && permissions.canViewDashboard) {
-      return isQuickMode ? `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires` : `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/dashboard`;
+      return isQuickMode
+        ? `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires`
+        : `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/dashboard`;
     }
     if (permissions.canViewReport && hasReport) {
       return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
@@ -502,12 +504,16 @@ const Actions = ({
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
 }) => {
+  const { service } = useServiceContext();
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const moveAssessmentDialogProps = useDialog();
   const { createOrOpenDialog } = useAssessmentCreation({
     openDialog: moveAssessmentDialogProps.openDialog,
+    getSpacesArrayFetcher: async (args, config) =>
+      service.assessments.info.getTargetSpaces(args, config),
+    getSpacesAccessor: "items",
   });
 
   const deleteItem = async () => {
@@ -549,6 +555,7 @@ const Actions = ({
         title,
         languages: [],
         setLoading,
+        queryDataSpacesArgs: { assessmentId: item.id },
       });
     } else {
       setLoading(false);

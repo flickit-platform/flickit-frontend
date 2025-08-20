@@ -68,7 +68,7 @@ export const SpaceField = ({
       options={spaces}
       name={name}
       required={required}
-      disabled={disabled ?? !!spaceId}
+      disabled={disabled}
       defaultValue={computedDefault as any}
       label={label ?? <Trans i18nKey="spaces.space" />}
       createItemQuery={createItemQuery}
