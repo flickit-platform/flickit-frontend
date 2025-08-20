@@ -3,6 +3,7 @@ import { styles } from "@styles";
 import ErrorNotFoundOrAccessDeniedImage from "@assets/svg/notFoundOrAccessDenied.svg";
 import Button from "@mui/material/Button";
 import { Trans } from "react-i18next";
+import { HOME_URL } from "@/config/constants";
 
 export const ErrorNotFoundOrAccessDenied = () => {
   return (
@@ -23,7 +24,7 @@ export const ErrorNotFoundOrAccessDenied = () => {
         variant="contained"
         size="large"
         onClick={() => {
-          window.location.href = "/spaces";
+          window.location.href = HOME_URL;
         }}
       >
         <Trans i18nKey="common.backToHome" />
