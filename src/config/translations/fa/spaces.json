@@ -19,6 +19,7 @@
   "newSpace": "ایجاد فضای کاری",
   "noCommercialAssessmentKits": "<strong>عدم دسترسی</strong> به کیت‌های ارزیابی تجاری",
   "noSpaceHere": "هیچ فضای کاری ندارید.",
+  "noSpacesHereDesc": "فضاهای کاری به شما کمک می‌کنند ارزیابی‌های خود را سازمان‌دهی کرده و آن‌ها را با دیگر افراد به‌اشتراک بگذارید.",
   "paidVariesByPlan": "<strong> غیررایگان</strong> (هزینه بسته به طرح متفاوت است).",
   "premiumSpace": "فضای کاری حرفه‌ای",
   "reachedLimit": "ظرفیت شما تکمیل‌ شده‌ است",
@@ -43,5 +44,6 @@
   "unlimitedPremiumSpace": "تعداد<strong> نامحدود</strong>",
   "updateSpace": "به‌روزرسانی فضای کاری",
   "upgradeToPremiumSpace": "می‌توانید فضای کاری خود را به حرفه‌ای ارتقا دهید و به تعداد بیشتری ارزیابی دسترسی داشته باشید.",
-  "veryLimitedNumberOfSpaces": "تعداد بسیار <strong> محدود</strong> "
+  "veryLimitedNumberOfSpaces": "تعداد بسیار <strong> محدود</strong> ",
+  "workSpaces": "فضاهای کاری"
 }

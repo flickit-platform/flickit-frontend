@@ -9,4 +9,4 @@ export const CDN_DIRECTORY =
     ? "https://flickit-cdn.hectora.app/"
     : import.meta.env.VITE_LOCAL_BASE_URL;
 
-export const HOME_URL = "/spaces/1";
+export const HOME_URL = "/spaces";

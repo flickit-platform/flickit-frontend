@@ -56,6 +56,7 @@ const Title = (props: ITitle) => {
             : (borderBottom as string),
         ...(rest.sx ?? {}),
         ...wrapperProps,
+        paddingBlockEnd: borderBottom ? "32px" : 0,
       }}
       {...wrapperProps}
     >
@@ -83,7 +84,7 @@ const Title = (props: ITitle) => {
                 sx={{ textDecoration: "none" }}
               >
                 {backLink === "/" ||
-                backLink === "/spaces/1" ||
+                backLink === "/spaces" ||
                 backLink === "/assessment-kits" ? (
                   <HomeIcon
                     sx={{ fontSize: "22px", color: "#9DA7B3" }}

@@ -13,13 +13,20 @@ import {
 } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
+import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { IAssessment, TId, IQuestionnairesModel } from "@/types/index";
-import { TDialogProps } from "@utils/useDialog";
+import {
+  IAssessment,
+  TId,
+  IQuestionnairesModel,
+  TQueryFunction,
+} from "@/types/index";
+import useDialog, { TDialogProps } from "@utils/useDialog";
 import Button from "@mui/material/Button";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import QueryStatsRounded from "@mui/icons-material/QueryStatsRounded";
@@ -38,25 +45,31 @@ import Assessment from "@mui/icons-material/Assessment";
 import { getReadableDate } from "@utils/readableDate";
 import { Divider } from "@mui/material";
 import { ASSESSMENT_MODE } from "@utils/enumType";
+import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
+import MoveAssessmentDialog from "./MoveAssessmentDialog";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import keycloakService from "@/service/keycloakService";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
-  setOpenDeleteDialog: React.Dispatch<
-    React.SetStateAction<{ status: boolean; id: TId }>
-  >;
+  deleteAssessment: TQueryFunction<any, TId>;
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
-  setOpenDeleteDialog,
+  deleteAssessment,
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
   const [progressPercent, setProgressPercent] = useState<string | undefined>();
   const abortController = useRef(new AbortController());
   const { spaceId } = useParams();
+  const {
+    userInfo: { defaultSpaceId },
+  } = useAuthContext();
   const { service } = useServiceContext();
   const location = useLocation();
 
@@ -94,9 +107,8 @@ const AssessmentCard = ({
   });
 
   useEffect(() => {
-    setShow(isCalculateValid);
-
     const fetchGaugeAndProgress = async () => {
+      setShow(isCalculateValid);
       if (!isCalculateValid) {
         try {
           const data = await calculateMaturityLevelQuery.query();
@@ -112,9 +124,7 @@ const AssessmentCard = ({
         setProgressPercent(((answersCount / questionsCount) * 100).toFixed(2));
       }
     };
-    if (permissions.canViewQuestionnaires) {
-      fetchGaugeAndProgress();
-    }
+    fetchGaugeAndProgress();
     // eslint-disable-next-line
   }, [isCalculateValid]);
 
@@ -129,13 +139,13 @@ const AssessmentCard = ({
 
   const pathRoute = (checkItem: boolean): string => {
     if (permissions.canViewReport && hasReport && isQuickMode) {
-      return `/${spaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
     }
     if (checkItem && permissions.canViewDashboard) {
-      return isQuickMode ? `${id}/questionnaires` : `${id}/dashboard`;
+      return isQuickMode ? `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires` : `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/dashboard`;
     }
     if (permissions.canViewReport && hasReport) {
-      return `/${spaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
     }
     if (permissions.canViewQuestionnaires && isQuickMode) {
       return `${id}/questionnaires`;
@@ -173,7 +183,7 @@ const AssessmentCard = ({
       >
         {permissions.canManageSettings && (
           <Actions
-            setOpenDeleteDialog={setOpenDeleteDialog}
+            deleteAssessment={deleteAssessment}
             item={item}
             dialogProps={dialogProps}
             abortController={abortController}
@@ -221,12 +231,14 @@ const AssessmentCard = ({
           </Grid>
           {/* Confidence */}
           {permissions.canViewReport && !isQuickMode && (
-            <Grid item xs={12} mt="-3rem">
+            <Grid item xs={12} mt="-4rem">
               <Typography
                 variant="titleSmall"
                 color="#243342"
+                justifyContent="center"
+                alignItems="center"
+                display="flex"
                 gap="0.125rem"
-                sx={{ ...styles.centerVH }}
               >
                 <Trans i18nKey="common.withConfidence" />:
                 <ConfidenceLevel
@@ -243,9 +255,11 @@ const AssessmentCard = ({
               item
               xs={12}
               mt={1}
-              flexDirection="column"
-              gap={1}
-              sx={{ ...styles.centerCH }}
+              sx={{
+                ...styles.centerCH,
+                gap: 1,
+                flexDirection: "column",
+              }}
             >
               {buttonTypes.map((type) => (
                 <CardButton
@@ -285,7 +299,10 @@ const Header = ({
   <Box
     sx={{
       textDecoration: "none",
-      ...styles.centerCVH,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
     }}
     component={Link}
     to={pathRoute(isCalculateValid)}
@@ -300,10 +317,10 @@ const Header = ({
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          border: (theme) => `0.5px solid ${theme.palette.primary.main}`,
+          border: `0.5px solid #2466A8`,
           textTransform: "none",
           color: "#101c32",
-          bgcolor: "transparent",
+          background: "transparent",
           fontFamily: languageDetector(kit?.title)
             ? farsiFontFamily
             : primaryFontFamily,
@@ -313,35 +330,39 @@ const Header = ({
     </Tooltip>
     <Typography
       variant="h5"
-      color={color?.code ?? "#101c32"}
-      textTransform="uppercase"
+      color="CaptionText"
+      textTransform={"uppercase"}
       sx={{
         padding: "8px 28px",
         fontWeight: "bold",
         pb: 0,
         textAlign: "center",
+        color: color?.code ?? "#101c32",
         maxWidth: "320px",
         margin: "0 auto",
         width: "100%",
         fontFamily: languageDetector(itemTitle)
           ? farsiFontFamily
           : primaryFontFamily,
+        direction: languageDetector(itemTitle) ? "rtl" : "ltr",
         ...styles.centerVH,
         gap: "10px",
       }}
       data-cy="assessment-card-title"
     >
       {!isQuickMode && (
-        <Box flexShrink={0} sx={{ ...styles.centerVH }}>
+        <Box sx={{ flexShrink: 0, ...styles.centerVH }}>
           <img alt="star" src={Star} height={24} />
         </Box>
       )}
       <Box
-        overflow="hidden"
-        textOverflow="ellipsis"
-        whiteSpace="nowrap"
-        flexShrink={1}
-        sx={{ ...styles.rtlStyle(languageDetector(itemTitle)) }}
+        sx={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          flexShrink: 1,
+          direction: languageDetector(itemTitle) ? "rtl" : "ltr",
+        }}
       >
         {itemTitle}
       </Box>
@@ -349,24 +370,23 @@ const Header = ({
 
     <Box sx={{ ...styles.centerVH }}>
       <Box
-        bgcolor="background.containerLow"
-        borderRadius="4px"
-        p={0.5}
-        paddingBlock={0.25}
         sx={{
           ...styles.centerVH,
-          border: `0.5px solid rgb(199, 204, 209)`,
+          backgroundColor: "#F9FAFB",
+          borderRadius: "4px",
+          border: "0.5px solid #C7CCD1",
+          p: 0.5,
         }}
       >
-        <Typography variant="labelSmall" color="background.onVariant">
+        <Typography variant="labelSmall" color="#6C8093">
           {language.code}
         </Typography>
       </Box>
       <Divider orientation="vertical" flexItem sx={{ mx: "8px" }} />
       <Typography
         variant="labelSmall"
-        color="background.onVariant"
-        textAlign="center"
+        sx={{ textAlign: "center" }}
+        color="#6C8093"
       >
         <Trans i18nKey="common.lastUpdated" />{" "}
         {getReadableDate(lastModificationTime)}
@@ -436,10 +456,10 @@ const CardButton = ({
         position: "relative",
         zIndex: 1,
         ...(key === "dashboard" && {
-          bgcolor: "#01221e",
-          color: "background.containerLowest",
+          background: "#01221e",
+          color: "#fff",
           "&:hover": {
-            bgcolor: "#01221ecc",
+            background: "#01221ecc",
           },
         }),
       }}
@@ -451,19 +471,20 @@ const CardButton = ({
       }
     >
       <Box
-        position="absolute"
-        top={0}
-        right={0}
-        left={0}
-        bottom={0}
-        bgcolor="rgba(102, 128, 153, 0.3)"
-        zIndex={-1}
-        width={
-          key === "questionnaires" && progressPercent
-            ? `${progressPercent}%`
-            : "0%"
-        }
-        sx={{ transition: "all 1s ease-in-out" }}
+        sx={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          left: 0,
+          bottom: 0,
+          background: "rgba(102, 128, 153, 0.3)",
+          zIndex: -1,
+          width:
+            key === "questionnaires" && progressPercent
+              ? `${progressPercent}%`
+              : "0%",
+          transition: "all 1s ease-in-out",
+        }}
       />
       <Trans i18nKey={label} />
     </Button>
@@ -472,21 +493,29 @@ const CardButton = ({
 
 // --- Actions ---
 const Actions = ({
-  setOpenDeleteDialog,
+  deleteAssessment,
   item,
   abortController,
 }: {
+  deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
-  setOpenDeleteDialog: React.Dispatch<
-    React.SetStateAction<{ status: boolean; id: TId }>
-  >;
 }) => {
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const deleteItem = () => {
-    setOpenDeleteDialog({ status: true, id: item.id });
+  const navigate = useNavigate();
+  const moveAssessmentDialogProps = useDialog();
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: moveAssessmentDialogProps.openDialog,
+  });
+
+  const deleteItem = async () => {
+    try {
+      await deleteAssessment(item.id);
+    } catch (e) {
+      toastError(e as ICustomError);
+    }
   };
 
   const addToCompare = () => {
@@ -498,10 +527,34 @@ const Actions = ({
     });
   };
 
-  const assessmentSetting = () => {
-    navigate(`${item.id}/settings/`, {
+  const goToAssessmentSettings = () => {
+    const isInSpaces = location.pathname.startsWith("/spaces");
+    const targetPath = isInSpaces
+      ? `/1605/assessments/1/${item.id}/settings/`
+      : `${item.id}/settings/`;
+
+    navigate(targetPath, {
       state: item?.color ?? { code: "#073B4C", id: 6 },
     });
+  };
+
+  const handleMoveToAssessment = (e: any, id: any, title: any) => {
+    setLoading(true);
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (keycloakService.isLoggedIn()) {
+      createOrOpenDialog({
+        id,
+        title,
+        languages: [],
+        setLoading,
+      });
+    } else {
+      setLoading(false);
+      window.location.hash = `#createAssessment?id=${id}`;
+      keycloakService.doLogin();
+    }
   };
 
   const actions = hasStatus(item.status)
@@ -510,37 +563,46 @@ const Actions = ({
           icon: <CompareRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="addToCompare" />,
           onClick: addToCompare,
-          id: "assessmentCard-addToCompare-btn",
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
-          id: "assessmentCard-delete-btn",
         },
       ]
     : [
         {
+          icon: <DriveFileMoveOutlinedIcon fontSize="small" />,
+          text: <Trans i18nKey="assessment.moveAssessment" />,
+          onClick: handleMoveToAssessment,
+        },
+        {
           icon: <SettingsIcon fontSize="small" />,
           text: <Trans i18nKey="common.settings" />,
-          onClick: assessmentSetting,
-          id: "assessmentCard-setting-btn",
+          onClick: goToAssessmentSettings,
         },
         {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
           onClick: deleteItem,
           menuItemProps: { "data-cy": "delete-action-btn" },
-          id: "assessmentCard-delete-btn",
         },
       ];
 
   return (
-    <MoreActions
-      {...useMenu()}
-      boxProps={{ position: "absolute", top: "10px", right: "10px", zIndex: 2 }}
-      items={actions}
-    />
+    <>
+      <MoreActions
+        {...useMenu()}
+        boxProps={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 2,
+        }}
+        items={actions}
+      />
+      <MoveAssessmentDialog {...moveAssessmentDialogProps} />
+    </>
   );
 };

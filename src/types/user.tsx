@@ -12,6 +12,7 @@ export interface IUserInfo {
   default_space?: any;
   subscriberHash?: string;
   showSurvey?: boolean;
+  defaultSpaceId?: number;
 }
 
 export interface IMemberModel extends IDefaultModel<IMember> {}

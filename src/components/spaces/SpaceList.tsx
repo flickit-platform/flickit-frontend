@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import Chip from "@mui/material/Chip";
+import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Trans } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppRoundedIcon from "@mui/icons-material/ExitToAppRounded";
 import useMenu from "@utils/useMenu";
-import IconButton from "@mui/material/IconButton";
 import { ICustomError } from "@utils/CustomError";
+import toastError from "@utils/toastError";
 import MoreActions from "@common/MoreActions";
 import { styles } from "@styles";
 import { TDialogProps } from "@utils/useDialog";
@@ -20,19 +19,15 @@ import {
   ISpaceModel,
   ISpacesModel,
   SPACE_LEVELS,
-  TId,
   TQueryFunction,
 } from "@/types/index";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import languageDetector from "@/utils/languageDetector";
 import premium from "@/assets/svg/premium.svg";
-import peopleIcon from "@/assets/svg/peopleIcon.svg";
-import descriptionIcon from "@/assets/svg/descriptionIcon.svg";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { t } from "i18next";
-import showToast from "@utils/toastError";
-import { DeleteConfirmationDialog } from "@common/dialogs/DeleteConfirmationDialog";
+import i18next, { t } from "i18next";
+import Grid from "@mui/material/Grid";
+import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import { v3Tokens } from "@/config/tokens";
 
 interface ISpaceListProps {
@@ -43,34 +38,12 @@ interface ISpaceListProps {
 
 const SpacesList = (props: ISpaceListProps) => {
   const { dialogProps, data, fetchSpaces } = props;
-  const { service } = useServiceContext();
-
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<{
-    status: boolean;
-    id: TId;
-  }>({ status: false, id: "" });
-
-  const deleteSpace = useQuery({
-    service: (args, config) => service.space.remove(args, config),
-    runOnMount: false,
-  });
-
-  const deleteItem = async () => {
-    try {
-      const { id: spaceId } = openDeleteDialog;
-      await deleteSpace.query({ spaceId });
-      await fetchSpaces();
-    } catch (e) {
-      const err = e as ICustomError;
-      showToast(err);
-    }
-  };
 
   return (
-    <Box sx={{ overflowX: "hidden", pb: 1, px: "6px" }}>
-      <Box>
-        {data.map((item: any) => {
-          return (
+    <Grid container spacing={3}>
+      {data.map((item: any) => {
+        return (
+          <Grid item xs={12} sm={6} md={4} key={item?.id}>
             <SpaceCard
               key={item?.id}
               item={item}
@@ -78,23 +51,11 @@ const SpacesList = (props: ISpaceListProps) => {
               owner={item?.owner}
               dialogProps={dialogProps}
               fetchSpaces={fetchSpaces}
-              setOpenDeleteDialog={setOpenDeleteDialog}
-              deleteSpace={deleteSpace}
             />
-          );
-        })}
-      </Box>
-      <DeleteConfirmationDialog
-        open={openDeleteDialog.status}
-        onClose={() =>
-          setOpenDeleteDialog({ ...openDeleteDialog, status: false })
-        }
-        onConfirm={deleteItem}
-        title="common.warning"
-        content="spaces.areYouSureYouWantDeleteSpace"
-        confirmButtonText={t("common.continue")}
-      />
-    </Box>
+          </Grid>
+        );
+      })}
+    </Grid>
   );
 };
 
@@ -104,15 +65,10 @@ interface ISpaceCardProps {
   owner: any;
   dialogProps: TDialogProps;
   fetchSpaces: TQueryFunction<ISpacesModel>;
-  setOpenDeleteDialog?: React.Dispatch<
-    React.SetStateAction<{ status: boolean; id: TId }>
-  >;
-  deleteSpace?: any;
 }
 
 export const SpaceCard = (props: ISpaceCardProps) => {
-  const { item, isActiveSpace, dialogProps, fetchSpaces, owner, ...rest } =
-    props;
+  const { item, isActiveSpace, dialogProps, fetchSpaces, owner } = props;
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { service } = useServiceContext();
   const isOwner = owner?.isCurrentUserOwner;
@@ -125,8 +81,6 @@ export const SpaceCard = (props: ISpaceCardProps) => {
   const {
     title,
     id: spaceId,
-    membersCount = 0,
-    assessmentsCount = 0,
     is_default_space_for_current_user,
     type,
   } = item ?? {};
@@ -152,183 +106,80 @@ export const SpaceCard = (props: ISpaceCardProps) => {
       sx={{
         ...styles.centerV,
         justifyContent: "space-between",
-        flexDirection: { xs: "column", md: "row" },
         boxShadow: "0 0 8px 0 #0A234240",
         borderRadius: 2,
-        px: { xs: 1, sm: 2, md: 4 },
-        py: { xs: 1, md: 1.5 },
-        mb: { xs: 1, md: 2 },
+        paddingInlineStart: 3,
+        paddingInlineEnd: 1,
+        py: 1,
         bgcolor: "white",
         cursor: "pointer",
-        textDecoration: "none",
-        height: { xs: "auto", md: 56 },
-        gap: { xs: 1.5, md: 0 },
       }}
     >
       <Box
         sx={{
           ...styles.centerV,
-          gap: { xs: 1, sm: 2 },
-          width: { xs: "100%", md: "auto" },
+          gap: 2,
         }}
       >
-        <Typography
-          variant="h6"
-          color="primary.dark"
-          sx={{
-            fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
-            fontWeight: 700,
-            flexShrink: 0,
-            fontFamily: languageDetector(title)
-              ? farsiFontFamily
-              : primaryFontFamily,
-          }}
-          data-testid={"space-card-title-test"}
-        >
-          {loading ? <CircularProgress size={20} /> : title}
-        </Typography>
-
-        {type?.code === SPACE_LEVELS.PREMIUM && (
-          <Tooltip
-            title={t("spaces.premiumSpace")}
-            data-testid={"space-card-premium-test"}
+        <FolderRoundedIcon color="primary" fontSize="large" />
+        <Box>
+          <Box
+            sx={{
+              ...styles.centerV,
+              gap: 1,
+            }}
           >
-            <Box
-              component="img"
-              src={premium}
-              alt="premium"
-              sx={{ width: 32, height: 32 }}
-            />
-          </Tooltip>
-        )}
-      </Box>
+            <Typography
+              variant="semiBoldLarge"
+              color="primary.dark"
+              sx={{
+                fontFamily: languageDetector(title)
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+              }}
+              data-testid={"space-card-title-test"}
+            >
+              {loading ? <CircularProgress size={20} /> : title}
+            </Typography>
 
+            {type?.code === SPACE_LEVELS.PREMIUM && (
+              <Tooltip
+                title={t("spaces.premiumSpace")}
+                data-testid={"space-card-premium-test"}
+              >
+                <Box
+                  component="img"
+                  src={premium}
+                  alt="premium"
+                  sx={{ width: 24, height: 24 }}
+                />
+              </Tooltip>
+            )}
+          </Box>
+          <Typography
+            variant="bodyMedium"
+            color="text.primary"
+            sx={{
+              fontFamily:
+                languageDetector(owner.displayName) || i18next.language === "fa"
+                  ? farsiFontFamily
+                  : primaryFontFamily,
+            }}
+            data-testid="space-card-show-displayName"
+          >
+            {t("common.owner")}: {isOwner ? t("common.you") : owner.displayName}
+          </Typography>
+        </Box>
+      </Box>
       <Box
         sx={{
           ...styles.centerV,
           flexWrap: "wrap",
           justifyContent: { xs: "space-between", md: "flex-end" },
           gap: { xs: 0.5, sm: 2, md: 6 },
-          width: { xs: "100%", md: "auto" },
         }}
       >
-        <Box sx={{ ...styles.centerV, gap: { xs: 0.5, sm: 2, md: 2 } }}>
-          <Tooltip title={<Trans i18nKey={owner.displayName} />}>
-            <Chip
-              size="small"
-              variant="outlined"
-              color={isOwner ? "primary" : "default"}
-              label={
-                <>
-                  <Trans i18nKey="owner" />:{" "}
-                  {isOwner ? (
-                    <Trans i18nKey="common.you" />
-                  ) : (
-                    <span
-                      style={{
-                        fontFamily: languageDetector(owner?.displayName)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                      data-testid={"space-card-show-displayName"}
-                    >
-                      <Trans i18nKey={owner?.displayName} />
-                    </span>
-                  )}
-                </>
-              }
-            />
-          </Tooltip>
-
-          <Tooltip title={<Trans i18nKey="common.membersCount" />}>
-            <Box
-              gap={0.5}
-              color="initial"
-              width={{ sm: "52px" }}
-              sx={{
-                ...styles.centerV,
-                opacity: 0.8,
-                textDecoration: "none",
-              }}
-            >
-              <IconButton sx={{ padding: "5px" }} component="span">
-                <img
-                  style={{
-                    marginInlineStart: 0.5,
-                    width: "24px",
-                    height: "24px",
-                  }}
-                  src={peopleIcon}
-                  alt={"peopleIcon"}
-                />
-              </IconButton>
-              <Typography
-                data-testid="space-card-test-membersCount"
-                color="text.primary"
-                fontWeight="bold"
-              >
-                {membersCount}
-              </Typography>
-            </Box>
-          </Tooltip>
-
-          <Tooltip title={<Trans i18nKey="assessment.assessmentsCount" />}>
-            <Box
-              gap={0.5}
-              color="initial"
-              width={{ sm: "52px" }}
-              sx={{
-                ...styles.centerV,
-                opacity: 0.8,
-                textDecoration: "none",
-              }}
-            >
-              <IconButton sx={{ padding: "5px" }} component="span">
-                <img
-                  style={{
-                    marginInlineStart: 0.5,
-                    width: "24px",
-                    height: "24px",
-                  }}
-                  src={descriptionIcon}
-                  alt={"descriptionIcon"}
-                />
-              </IconButton>
-              <Typography
-                data-testid="space-card-test-assessmentsCount"
-                color="text.primary"
-                fontWeight="bold"
-              >
-                {assessmentsCount}
-              </Typography>
-            </Box>
-          </Tooltip>
-        </Box>
-
         <Box sx={{ ...styles.centerV, gap: 0.5 }}>
-          {isActiveSpace && (
-            <Chip
-              data-testid={"space-card-test-isActiveSpace"}
-              label={<Trans i18nKey="current" />}
-              color="info"
-              size="small"
-            />
-          )}
-
-          <Tooltip title={<Trans i18nKey="spaces.spaceSetting" />}>
-            <IconButton
-              size="small"
-              component={Link}
-              to={`/${spaceId}/setting`}
-              onClick={(e) => {
-                e.stopPropagation();
-                trackSeen();
-              }}
-            >
-              <SettingsOutlinedIcon />
-            </IconButton>
-          </Tooltip>
-
           <Tooltip
             open={showTooltip}
             onMouseEnter={() => setShowTooltip(true)}
@@ -341,7 +192,6 @@ export const SpaceCard = (props: ISpaceCardProps) => {
           >
             <Box>
               <Actions
-                {...rest}
                 isActiveSpace={isActiveSpace}
                 dialogProps={dialogProps}
                 space={item}
@@ -368,14 +218,18 @@ const Actions = (props: any) => {
     isOwner,
     is_default_space_for_current_user,
     setShowTooltip,
-    setOpenDeleteDialog,
-    deleteSpace,
   } = props;
   const { id: spaceId } = space;
   const { service } = useServiceContext();
   const [editLoading, setEditLoading] = useState(false);
-  const { abortController, loading } = deleteSpace;
-
+  const {
+    query: deleteSpace,
+    loading,
+    abortController,
+  } = useQuery({
+    service: (args, config) => service.space.remove({ spaceId }, config),
+    runOnMount: false,
+  });
   const leaveSpaceQuery = useQuery({
     service: (args, config) => service.space.leave({ spaceId }, config),
     runOnMount: false,
@@ -390,18 +244,27 @@ const Actions = (props: any) => {
       })
       .catch((e) => {
         const err = e as ICustomError;
-        showToast(err);
+        toastError(err);
         setEditLoading(false);
       });
   };
 
+  const deleteItem = async (e: any) => {
+    try {
+      await deleteSpace();
+      await fetchSpaces();
+    } catch (e) {
+      const err = e as ICustomError;
+      toastError(err);
+    }
+  };
   const leaveSpace = async (e: any) => {
     try {
       await leaveSpaceQuery.query();
       await fetchSpaces();
     } catch (e) {
       const err = e as ICustomError;
-      showToast(err);
+      toastError(err);
     }
   };
 
@@ -412,15 +275,14 @@ const Actions = (props: any) => {
       loading={loading || editLoading || leaveSpaceQuery.loading}
       items={[
         isOwner && {
-          icon: <EditRoundedIcon fontSize="small" />,
-          text: <Trans i18nKey="common.edit" />,
+          icon: <SettingsIcon fontSize="small" />,
+          text: <Trans i18nKey="common.settings" />,
           onClick: openEditDialog,
         },
         isOwner && {
           icon: <DeleteRoundedIcon fontSize="small" />,
           text: <Trans i18nKey="common.delete" />,
-          // onClick: deleteItem,
-          onClick: () => setOpenDeleteDialog({ status: open, id: spaceId }),
+          onClick: deleteItem,
         },
         !is_default_space_for_current_user &&
           !isOwner && {

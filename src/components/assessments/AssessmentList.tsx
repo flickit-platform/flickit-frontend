@@ -1,14 +1,13 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import AssessmentCard from "./AssessmentCard";
-import { IAssessment, TId } from "@/types/index";
+import { IAssessment, TId, TQueryFunction } from "@/types/index";
 import { TDialogProps } from "@utils/useDialog";
-import React from "react";
 interface IAssessmentListProps {
   data: IAssessment[];
   space: any;
   dialogProps: TDialogProps;
-  setOpenDeleteDialog: React.Dispatch<React.SetStateAction<{status: boolean, id: TId}>>;
+  deleteAssessment: TQueryFunction<any, TId>;
 }
 
 const AssessmentsList = (props: IAssessmentListProps) => {
@@ -16,7 +15,7 @@ const AssessmentsList = (props: IAssessmentListProps) => {
 
   return (
     <Box>
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         {data.map((item) => {
           return (
             <AssessmentCard

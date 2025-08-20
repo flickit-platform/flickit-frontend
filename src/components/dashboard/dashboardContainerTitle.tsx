@@ -16,7 +16,7 @@ const DashboardTitle = (props: any) => {
   }, [permissions]);
   return (
     <Title
-      backLink="/spaces/1"
+      backLink="/spaces"
       sup={
         <SupTitleBreadcrumb
           routes={[

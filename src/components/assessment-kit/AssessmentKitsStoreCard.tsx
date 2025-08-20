@@ -5,7 +5,7 @@ import { farsiFontFamily, secondaryFontFamily } from "@config/theme";
 import Chip from "@mui/material/Chip";
 import { styles } from "@styles";
 import { Link, useNavigate } from "react-router-dom";
-import PriceIcon from "@utils/icons/priceIcon";
+import PriceIcon from "@/assets/icons/priceIcon";
 import LanguageIcon from "@mui/icons-material/Language";
 import languageDetector from "@utils/languageDetector";
 import i18next from "i18next";
@@ -19,7 +19,7 @@ import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import { useConfigContext } from "@/providers/ConfgProvider";
 import { ILanguage } from "@/types";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
-import PurchasedIcon from "@utils/icons/purchasedIcon";
+import PurchasedIcon from "@/assets/icons/purchasedIcon";
 
 const AssessmentKitsStoreCard = (props: any) => {
   const {
