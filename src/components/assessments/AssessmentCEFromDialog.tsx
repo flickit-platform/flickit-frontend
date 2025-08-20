@@ -12,7 +12,6 @@ import { ICustomError } from "@utils/CustomError";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CEDialog, CEDialogActions } from "@common/dialogs/CEDialog";
 import FormProviderWithForm from "@common/FormProviderWithForm";
-import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField, {
   useConnectAutocompleteField,
 } from "@common/fields/AutocompleteAsyncField";
@@ -21,6 +20,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import showToast from "@utils/toastError";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -65,6 +65,10 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     };
   }, []);
 
+  const {
+    userInfo: { defaultSpaceId },
+  } = useAuthContext();
+
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, assessment_kit, title, color, shortTitle, language } = data;
     setLoading(true);
@@ -86,7 +90,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             .create(
               {
                 data: {
-                  spaceId: spaceId ?? space?.id,
+                  spaceId: spaceId ?? space?.id ?? defaultSpaceId,
                   assessmentKitId: assessment_kit?.id,
                   title: title,
                   shortTitle: shortTitle === "" ? null : (shortTitle ?? null),
@@ -108,7 +112,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       if (type === "update") {
         close();
       }
-      setCreatedKitSpaceId(spaceId ?? space?.id);
+      setCreatedKitSpaceId(spaceId ?? space?.id ?? defaultSpaceId);
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
@@ -208,9 +212,6 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
                 helperText={<Trans i18nKey="assessment.shortTitleInfo" />}
               />
             </Grid>
-            <Grid item xs={12}>
-              <SpaceField defaultValue={defaultValues?.space ?? data?.space} />
-            </Grid>
             <Grid item xs={12} md={7}>
               <AssessmentKitField
                 staticData={staticData?.assessment_kit}
@@ -273,7 +274,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
           >
             <Link
               to={`/${
-                spaceId ?? createdKitSpaceId
+                spaceId ?? createdKitSpaceId ?? defaultSpaceId
               }/assessments/1/${createdKitId}/settings/`}
               style={{ textDecoration: "none" }}
             >
@@ -315,43 +316,6 @@ const AssessmentKitField = ({
       label={<Trans i18nKey="assessmentKit.assessmentKit" />}
       data-cy="assessment_kit"
       filterFields={["title", "mainLanguage"]}
-    />
-  );
-};
-
-const SpaceField = ({ defaultValue }: { defaultValue: any }) => {
-  const { service } = useServiceContext();
-  const { spaceId } = useParams();
-  const queryData = useConnectAutocompleteField({
-    service: (args?: { page?: number; size?: number }, config?: any) =>
-      service.space.getList({ page: 1, size: 20, ...args }, config),
-  });
-  const createSpaceQueryData = useQuery({
-    service: (args, config) => service.space.create(args, config),
-    runOnMount: false,
-  });
-
-  const createItemQuery = async (inputValue: any) => {
-    const response = await createSpaceQueryData.query({
-      title: inputValue,
-      type: "BASIC",
-    });
-    const newOption = { title: inputValue, id: response.id };
-    return newOption;
-  };
-
-  return (
-    <AutocompleteAsyncField
-      {...queryData}
-      name="space"
-      required={true}
-      disabled={!!spaceId}
-      defaultValue={defaultValue}
-      label={<Trans i18nKey="spaces.space" />}
-      data-cy="space"
-      hasAddBtn={true}
-      createItemQuery={createItemQuery}
-      searchable={false}
     />
   );
 };

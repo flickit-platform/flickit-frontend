@@ -57,7 +57,7 @@ export const CEDialog = (props: PropsWithChildren<ICEDialogProps>) => {
             onClick={closeDialog}
             edge="end"
             size="small"
-            sx={{ ml: 2, color: "primary.contrastText" }}
+            sx={{ marginInlineStart: 2, color: "primary.contrastText" }}
             data-testid="close-btn"
           >
             <Close />
@@ -128,6 +128,7 @@ export const CEDialogActions = (props: ICEDialogActionsProps) => {
         marginTop: fullScreen ? "auto" : 3,
         marginLeft: 0,
         fontFamily: "inherit",
+        marginInlineEnd:"-16px"
       }}
     >
       <Grid container spacing={2} justifyContent="flex-end">

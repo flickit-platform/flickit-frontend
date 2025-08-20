@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Trans } from "react-i18next";
 import { styles } from "@styles";
 import Button from "@mui/material/Button";
+import { HOME_URL } from "@/config/constants";
 
 interface IErrorDataLoadingProps extends BoxProps {}
 
@@ -20,7 +21,7 @@ const ErrorDataLoading = (props: IErrorDataLoadingProps) => {
         variant="contained"
         size="small"
         onClick={() => {
-          window.location.href = "/spaces";
+          window.location.href = HOME_URL;
         }}
       >
         <Trans i18nKey="common.backToHome" />

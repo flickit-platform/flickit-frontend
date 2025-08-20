@@ -18,23 +18,14 @@ import { useParams } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import QueryBatchData from "../common/QueryBatchData";
-import IconButton from "@mui/material/IconButton";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import useMenu from "@/utils/useMenu";
-import { Menu, MenuItem, Tooltip } from "@mui/material";
-import {
-  ArrowDropDown,
-  ArrowDropUp,
-  Check,
-  Language,
-} from "@mui/icons-material";
 import { VISIBILITY } from "@/utils/enumType";
 import { IGraphicalReport, IUserPermissions } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import showToast from "@/utils/toastError";
 import { styles } from "@styles";
-import { v3Tokens } from "@/config/tokens";
+import Radio from "@mui/material/Radio";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 interface IDialogProps extends IGraphicalReport {
   open: boolean;
@@ -57,7 +48,6 @@ export const ShareDialog = ({
   const { t } = useTranslation();
   const { assessmentId = "" } = useParams();
   const { service } = useServiceContext();
-  const { open: menuOpened, openMenu, closeMenu, anchorEl } = useMenu();
   const [access, setAccess] = useState<VISIBILITY>(visibility);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const methods = useForm();
@@ -65,21 +55,15 @@ export const ShareDialog = ({
 
   const lng = lang?.code?.toLowerCase();
 
-  const accessOptions = useMemo(
+  const accessOptionsNew = useMemo(
     () => ({
       [VISIBILITY.RESTRICTED]: {
-        title: t("assessmentReport.accessRestricted", { lng }),
-        titleMenu: t("assessmentReport.accessRestricted", { lng }),
-        description: t("assessmentReport.accessRestrictedDescription", { lng }),
-        icon: <LockOutlinedIcon />,
-        bgColor: v3Tokens.surface.variant
+        title: t("assessmentReport.restrictedShareTitle", { lng }),
+        description: t("assessmentReport.restrictedShareDescription", { lng }),
       },
       [VISIBILITY.PUBLIC]: {
-        title: t("assessmentReport.accessAnyone", { lng }),
-        titleMenu: t("assessmentReport.accessAnyoneWithLink", { lng }),
-        description: t("assessmentReport.accessAnyoneDescription", { lng }),
-        icon: <Language />,
-        bgColor: v3Tokens.primary.bgVar
+        title: t("assessmentReport.PublicShareTitle", { lng }),
+        description: t("assessmentReport.PublicShareDescription", { lng }),
       },
     }),
     [lng],
@@ -103,10 +87,12 @@ export const ShareDialog = ({
 
   const handleSelect = async (newAccess: VISIBILITY) => {
     try {
+      setAccess(newAccess);
       const response = await PublishReportStatus.query({
         data: { visibility: newAccess },
         assessmentId,
       });
+
       const currentPath = window.location.pathname;
       const basePath = getBasePath(currentPath);
       let finalPath = basePath;
@@ -122,8 +108,6 @@ export const ShareDialog = ({
       showToast(error as ICustomError);
     }
 
-    setAccess(newAccess);
-    closeMenu();
   };
 
   const grantReportAccess = useQuery({
@@ -166,7 +150,6 @@ export const ShareDialog = ({
   };
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
-  const current = accessOptions[access];
 
   return (
     <CEDialog
@@ -180,40 +163,86 @@ export const ShareDialog = ({
       }
       maxWidth="sm"
       sx={{ ...styles.rtlStyle(lng === "fa") }}
+      contentStyle={{ p: "38px 64px 32px 64px !important", overflowX:"hidden !important" }}
+      titleStyle={{ mb: "0px !important" }}
     >
+      <Box mt={0}>
+        <Typography
+          variant="bodyMedium"
+          color="rgba(61, 77, 92, 0.5)"
+          fontFamily="inherit"
+        >
+          {t("assessmentReport.shareOptions", { lng })}
+        </Typography>
+        <Divider sx={{ my: 1 }} />
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        {Object.values(VISIBILITY).map((key) => {
+          const isSelected = access === key;
+          return (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                background: isSelected ? "#2466A814" : "inherit",
+                width: "100%",
+                height: "fit-content",
+                borderRadius: "8%",
+                cursor: "pointer",
+              }}
+              onClick={() => handleSelect(key)}
+              key={key}
+            >
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="38px"
+                height="38px"
+              >
+                <Radio
+                  checked={isSelected}
+                  color="primary"
+                  size="small"
+                  sx={{
+                    padding: "9px",
+                    "&.Mui-checked": {
+                      color: "#2466A8",
+                    },
+                  }}
+                />
+              </Box>
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                padding="8px 0"
+                gap="4px"
+                width="398px"
+                height="59px"
+              >
+                <Typography
+                  fontFamily="inherit"
+                  variant="bodyMedium"
+                  sx={{ color: "#2B333B" }}
+                >
+                  {accessOptionsNew[key].title}
+                </Typography>
+                <Typography
+                  variant="bodySmall"
+                  color="background.onVariant"
+                  fontFamily="inherit"
+                >
+                  {accessOptionsNew[key].description}{" "}
+                </Typography>
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
+
       {access === VISIBILITY.RESTRICTED && permissions.canShareReport && (
         <>
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid
-                container
-                display="flex"
-                alignItems="flex-start"
-                sx={{ ...styles.formGrid }}
-              >
-                <Grid item xs={9.7}>
-                  <InputFieldUC
-                    name="email"
-                    size="small"
-                    placeholder={t("assessmentReport.shareReportViaEmail", { lng })}
-                    fullWidth
-                    required
-                  />
-                </Grid>
-                <Grid item xs={0.5}></Grid>
-                <Grid item xs={1.8}>
-                  <LoadingButton
-                    variant="contained"
-                    type="submit"
-                    sx={{ fontFamily: "inherit" }}
-                  >
-                    {t("common.add", { lng })}
-                  </LoadingButton>
-                </Grid>
-              </Grid>
-            </form>
-          </FormProvider>
-
           <Box mt={3}>
             <Typography
               variant="bodyMedium"
@@ -224,6 +253,44 @@ export const ShareDialog = ({
             </Typography>
             <Divider sx={{ my: 1 }} />
           </Box>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid
+                container
+                display="flex"
+                alignItems="flex-start"
+                sx={{ ...styles.formGrid, mt: 0, mb: 1, gap: 1 }}
+              >
+                <Grid item flex={1}>
+                  <InputFieldUC
+                    name="email"
+                    size="small"
+                    placeholder={t("assessmentReport.shareReportViaEmail", {
+                      lng,
+                    })}
+                    fullWidth
+                    required
+                    stylesProps={{ input: { padding: "4px 12px" } }}
+                  />
+                </Grid>
+                {/*<Grid item xs={0.5}></Grid>*/}
+                <Grid item>
+                  <LoadingButton
+                    variant="outlined"
+                    type="submit"
+                    sx={{
+                      fontFamily: "inherit",
+                      minWidth: "inherit",
+                      padding: "5px",
+                      height: "100%",
+                    }}
+                  >
+                    <PersonAddIcon fontSize={"small"} />
+                  </LoadingButton>
+                </Grid>
+              </Grid>
+            </form>
+          </FormProvider>
           <QueryBatchData
             queryBatchData={[fetchGraphicalReportUsers]}
             renderLoading={() => {
@@ -243,7 +310,7 @@ export const ShareDialog = ({
             }}
             render={([graphicalReportUsers]) => {
               return (
-                <Box display="flex" flexDirection="column" gap={2}>
+                <Box display="flex" flexDirection="column" my={1} gap={2}>
                   {[
                     ...graphicalReportUsers.users,
                     ...graphicalReportUsers.invitees,
@@ -278,113 +345,6 @@ export const ShareDialog = ({
         </>
       )}
 
-      <Box mt={3}>
-        <Typography
-          variant="bodyMedium"
-          color="rgba(61, 77, 92, 0.5)"
-          fontFamily="inherit"
-        >
-          {t("assessmentReport.accessStatus", { lng })}
-        </Typography>
-        <Divider sx={{ mt: 1 }} />
-      </Box>
-      <Tooltip
-        disableHoverListener={permissions.canManageVisibility}
-        title={t("notification.youDontHavePermission", { lng })}
-        sx={{ fontFamily: "inherit" }}
-      >
-        <div>
-          <Box
-            mt={1}
-            gap={1}
-            sx={{
-              ...styles.centerV,
-              pointerEvents: permissions.canManageVisibility ? "auto" : "none",
-            }}
-          >
-            <IconButton
-              color={access === VISIBILITY.PUBLIC ? "primary" : "default"}
-              sx={{
-                backgroundColor: current?.bgColor,
-                marginInlineEnd: 1,
-              }}
-              size="small"
-              onClick={openMenu}
-            >
-              {current?.icon}
-            </IconButton>
-
-            <Box>
-              <Typography
-                onClick={openMenu}
-                color={permissions.canManageVisibility ? "unset" : "#B0B0B0"}
-                gap={1}
-                sx={{
-                  ...styles.centerV,
-                  cursor: permissions.canManageVisibility
-                    ? "pointer"
-                    : "default",
-                }}
-                variant="semiBoldMedium"
-                fontFamily="inherit"
-              >
-                {current?.title}
-                {permissions.canManageVisibility && (
-                  <>
-                    {menuOpened ? (
-                      <ArrowDropUp sx={{ color: "background.onVariant" }} />
-                    ) : (
-                      <ArrowDropDown sx={{ color: "background.onVariant" }} />
-                    )}
-                  </>
-                )}
-              </Typography>
-
-              <Typography
-                variant="bodySmall"
-                color="background.onVariant"
-                fontFamily="inherit"
-              >
-                {current?.description}
-              </Typography>
-            </Box>
-
-            <Menu
-              anchorEl={anchorEl}
-              open={menuOpened}
-              onClose={closeMenu}
-              disablePortal={!permissions.canManageVisibility}
-            >
-              {Object.values(VISIBILITY).map((key) => {
-                const isSelected = access === key;
-                return (
-                  <MenuItem
-                    key={key}
-                    selected={isSelected}
-                    onClick={() => handleSelect(key)}
-                    sx={{
-                      ...styles.centerV,
-                      justifyContent: "space-between",
-                      gap: 2,
-                    }}
-                  >
-                    <Typography
-                      variant="bodyMedium"
-                      sx={{ ...styles.rtlStyle(lng === "fa") }}
-                    >
-                      {accessOptions[key].titleMenu}
-                    </Typography>
-                    {isSelected && (
-                      <Check sx={{ color: "primary.main" }} fontSize="small" />
-                    )}
-                  </MenuItem>
-                );
-              })}
-            </Menu>
-          </Box>
-        </div>
-      </Tooltip>
-
       <CEDialogActions
         type="delete"
         loading={false}
@@ -403,7 +363,7 @@ export const ShareDialog = ({
           }
           onClick={() => handleCopyClick()}
           variant="outlined"
-          sx={{ fontFamily: "inherit" }}
+          sx={{ fontFamily: "inherit" ,}}
         >
           {t("assessmentReport.copyReportLink", { lng })}
         </LoadingButton>
@@ -411,7 +371,7 @@ export const ShareDialog = ({
         <LoadingButton
           variant="contained"
           onClick={onClose}
-          sx={{ mx: 1, fontFamily: "inherit" }}
+          sx={{ marginInlineStart: 1, fontFamily: "inherit" }}
         >
           {t("common.done", { lng })}
         </LoadingButton>
