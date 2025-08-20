@@ -26,6 +26,7 @@ import showToast from "@/utils/toastError";
 import { styles } from "@styles";
 import Radio from "@mui/material/Radio";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import uniqueId from "@utils/uniqueId";
 
 interface IDialogProps extends IGraphicalReport {
   open: boolean;
@@ -298,6 +299,7 @@ export const ShareDialog = ({
           const isSelected = access === key;
           return (
             <Box
+              key={uniqueId()}
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
