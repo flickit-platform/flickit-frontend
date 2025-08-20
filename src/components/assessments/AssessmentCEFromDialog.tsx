@@ -20,6 +20,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import showToast from "@utils/toastError";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -64,6 +65,10 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
     };
   }, []);
 
+  const {
+    userInfo: { defaultSpaceId },
+  } = useAuthContext();
+
   const onSubmit = async (data: any, event: any, shouldView?: boolean) => {
     const { space, assessment_kit, title, color, shortTitle, language } = data;
     setLoading(true);
@@ -85,7 +90,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
             .create(
               {
                 data: {
-                  spaceId: spaceId ?? space?.id,
+                  spaceId: spaceId ?? space?.id ?? defaultSpaceId,
                   assessmentKitId: assessment_kit?.id,
                   title: title,
                   shortTitle: shortTitle === "" ? null : (shortTitle ?? null),
@@ -107,7 +112,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
       if (type === "update") {
         close();
       }
-      setCreatedKitSpaceId(spaceId ?? space?.id);
+      setCreatedKitSpaceId(spaceId ?? space?.id ?? defaultSpaceId);
     } catch (e) {
       const err = e as ICustomError;
       setLoading(false);
@@ -269,7 +274,7 @@ const AssessmentCEFromDialog = (props: IAssessmentCEFromDialogProps) => {
           >
             <Link
               to={`/${
-                spaceId ?? createdKitSpaceId
+                spaceId ?? createdKitSpaceId ?? defaultSpaceId
               }/assessments/1/${createdKitId}/settings/`}
               style={{ textDecoration: "none" }}
             >

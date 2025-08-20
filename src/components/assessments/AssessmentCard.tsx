@@ -49,7 +49,7 @@ import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined
 import MoveAssessmentDialog from "./MoveAssessmentDialog";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import keycloakService from "@/service/keycloakService";
-import NewAssessmentDialog from "../common/dialogs/NewAssessmentDialog";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -67,6 +67,9 @@ const AssessmentCard = ({
   const [progressPercent, setProgressPercent] = useState<string | undefined>();
   const abortController = useRef(new AbortController());
   const { spaceId } = useParams();
+  const {
+    userInfo: { defaultSpaceId },
+  } = useAuthContext();
   const { service } = useServiceContext();
   const location = useLocation();
 
@@ -136,13 +139,13 @@ const AssessmentCard = ({
 
   const pathRoute = (checkItem: boolean): string => {
     if (permissions.canViewReport && hasReport && isQuickMode) {
-      return `/${spaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
     }
     if (checkItem && permissions.canViewDashboard) {
-      return isQuickMode ? `${id}/questionnaires` : `${id}/dashboard`;
+      return isQuickMode ? `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/questionnaires` : `/${spaceId ?? defaultSpaceId}/assessments/1/${id}/dashboard`;
     }
     if (permissions.canViewReport && hasReport) {
-      return `/${spaceId}/assessments/${id}/graphical-report/`;
+      return `/${spaceId ?? defaultSpaceId}/assessments/${id}/graphical-report/`;
     }
     if (permissions.canViewQuestionnaires && isQuickMode) {
       return `${id}/questionnaires`;

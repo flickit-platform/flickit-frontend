@@ -36,7 +36,7 @@ const SpaceContainer = () => {
   const { currentSpace } = useAuthContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const assessmentPage = Number(searchParams.get("assessmentPage") ?? 1);
-
+  const { userInfo: { defaultSpaceId } } = useAuthContext()
   const [rowsPerPage, setRowsPerPage] = useState<number>(6);
   const [page, setPage] = useState<number>(0);
 
@@ -58,7 +58,7 @@ const SpaceContainer = () => {
     errorObject: assessmentsErrorObject,
     deleteAssessment,
     fetchAssessments,
-  } = useFetchAssessments(assessmentPage - 1, 6);
+  } = useFetchAssessments(assessmentPage - 1, defaultSpaceId);
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
