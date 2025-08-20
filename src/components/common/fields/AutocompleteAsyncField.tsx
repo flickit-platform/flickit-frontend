@@ -31,7 +31,7 @@ import { useTheme } from "@mui/material";
 import premiumIcon from "@/assets/svg/premium.svg";
 import HomeIcon from "@mui/icons-material/Home";
 import { useLocation } from "react-router-dom";
-import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 type TUnionAutocompleteAndAutocompleteAsyncFieldBase = Omit<
   IAutocompleteAsyncFieldBase,
   "serviceQueryData" | "field"
@@ -166,7 +166,7 @@ const AutocompleteBaseField = (
   } = useFormContext();
   const isFirstFetchRef = useRef(true);
   const { hasError, errorMessage } = getFieldError(errors, name);
-  const {pathname} = useLocation()
+  const { pathname } = useLocation();
   const [inputValue, setInputValue] = useState(
     () => getOptionLabel(defaultValue) ?? "",
   );
@@ -380,78 +380,79 @@ const AutocompleteBaseField = (
       popupIcon={
         disabled ? <LockOutlinedIcon /> : <ArrowDropDownOutlinedIcon />
       }
-      renderOption={(props, option) =>{
-
-      return option.inputValue ? (
-        <li {...props}>
-          <LoadingButton
-            fullWidth
-            onClick={createSpaceQuery}
-            sx={{ justifyContent: "start", textTransform: "none" }}
-            ref={loadingButtonRef}
-          >
-            <Trans i18nKey="common.add" /> "{option.inputValue}"
-          </LoadingButton>
-        </li>
-      ) : (
-        <li {...props} style={{ display: "flex", gap: "8px" }}>
-          <Box
-            sx={{
-              fontFamily: languageDetector(option?.[filterFields[0]])
-                ? farsiFontFamily
-                : primaryFontFamily,
-              color: "surface.onVariant",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "4.5px",
-            }}
-          >
-            {option?.isDefault ?
-              <HomeIcon sx={{ fontSize: "20px", color: "surface.onVariant" }} />
-            :
-              <FolderOutlinedIcon sx={{ color: "surface.onVariant", fontSize: "20px", }} />
-            }
-            {option?.[filterFields[0]]}
-          </Box>
-          {!!option?.[filterFields[1]] && (
-            <Box color="#3D4D5C80" sx={{ ...theme.typography.semiBoldSmall }}>
-              (
-              {option?.[filterFields[1]].code
-                ? option?.languages
-                    .map((lang: { code: string; title: string }) => lang.code)
-                    .join(", ")
-                : option?.[filterFields[1]]}
-              )
-            </Box>
-          )}
-          {option?.isPrivate && (
-            <Chip
-              size="small"
-              sx={{
-                marginInlineStart: "auto",
-              }}
-              color={option?.isPrivate ? "secondary" : "default"}
-              label={
-                <Typography
-                  variant="semiBoldSmall"
-                  color="background.containerLowest"
-                >
-                  <Trans i18nKey="common.privateTitle" />
-                </Typography>
-              }
-            />
-          )}
-          {option?.type?.code === SPACE_LEVELS.PREMIUM && (
+      renderOption={(props, option) => {
+        return option.inputValue ? (
+          <li {...props}>
+            <LoadingButton
+              fullWidth
+              onClick={createSpaceQuery}
+              sx={{ justifyContent: "start", textTransform: "none" }}
+              ref={loadingButtonRef}
+            >
+              <Trans i18nKey="common.add" /> "{option.inputValue}"
+            </LoadingButton>
+          </li>
+        ) : (
+          <li {...props} style={{ display: "flex", gap: "8px" }}>
             <Box
-              component={"img"}
-              src={premiumIcon}
-              sx={{ height: "20px", width: "20px" }}
-            />
-          )}
-        </li>
-      );}
-      }
+              fontFamily={
+                languageDetector(option?.[filterFields[0]])
+                  ? farsiFontFamily
+                  : primaryFontFamily
+              }
+              color="surface.onVariant"
+              gap="4.5px"
+              sx={{ ...styles.centerVH }}
+            >
+              {option?.isDefault ? (
+                <HomeIcon
+                  sx={{ fontSize: "20px", color: "surface.onVariant" }}
+                />
+              ) : (
+                <FolderOutlinedIcon
+                  sx={{ color: "surface.onVariant", fontSize: "20px" }}
+                />
+              )}
+              {option?.[filterFields[0]]}
+            </Box>
+            {!!option?.[filterFields[1]] && (
+              <Box color="#3D4D5C80" sx={{ ...theme.typography.semiBoldSmall }}>
+                (
+                {option?.[filterFields[1]].code
+                  ? option?.languages
+                      .map((lang: { code: string; title: string }) => lang.code)
+                      .join(", ")
+                  : option?.[filterFields[1]]}
+                )
+              </Box>
+            )}
+            {option?.isPrivate && (
+              <Chip
+                size="small"
+                sx={{
+                  marginInlineStart: "auto",
+                }}
+                color={option?.isPrivate ? "secondary" : "default"}
+                label={
+                  <Typography
+                    variant="semiBoldSmall"
+                    color="background.containerLowest"
+                  >
+                    <Trans i18nKey="common.privateTitle" />
+                  </Typography>
+                }
+              />
+            )}
+            {option?.type?.code === SPACE_LEVELS.PREMIUM && (
+              <Box
+                component={"img"}
+                src={premiumIcon}
+                sx={{ height: "20px", width: "20px" }}
+              />
+            )}
+          </li>
+        );
+      }}
       noOptionsText={
         error ? (
           <Box sx={{ ...styles.centerVH }}>

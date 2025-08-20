@@ -42,8 +42,6 @@ import LanguageSelector from "./LangSelector";
 import i18n from "i18next";
 import { HOME_URL, MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
-import AssessmentRounded from "@mui/icons-material/AssessmentRounded";
-import FolderRounded from "@mui/icons-material/FolderRounded";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
 import { useTheme } from "@mui/material";
@@ -552,7 +550,7 @@ const Navbar = () => {
             />
           </Typography>
           <Box mx="auto" display={{ xs: "none", md: "block" }}>
-            <SpacesButton spacesQueryData={spacesQueryData} />
+            <SpacesButton  />
             {/* <Button
               component={NavLink}
               to={`/compare`}
@@ -575,11 +573,6 @@ const Navbar = () => {
             <Button
               component={NavLink}
               to={`/assessment-kits`}
-              startIcon={
-                <AssessmentRounded
-                  sx={{ opacity: 0.8, fontSize: "18px !important" }}
-                />
-              }
               sx={{
                 ...styles.activeNavbarLink,
                 textTransform: "uppercase",
@@ -667,34 +660,15 @@ const Navbar = () => {
   );
 };
 
-const SpacesButton = (props: any) => {
-  const theme = useTheme();
-  const { spacesQueryData } = props;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const { dispatch } = useAuthContext();
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleClickMenueItem = (space: any) => {
-    dispatch(authActions.setCurrentSpace(space));
-    setAnchorEl(null);
-  };
+const SpacesButton = () => {
 
   const navigate = useNavigate();
   const isActive = location.pathname.startsWith("/spaces");
 
   return (
-    <>
       <Button
         data-cy="spaces"
         onClick={() => navigate("/spaces")}
-        startIcon={
-          <FolderRounded sx={{ opacity: 0.8, fontSize: "18px !important" }} />
-        }
         sx={{
           textTransform: "uppercase",
           marginInlineStart: 0.8,
@@ -718,82 +692,9 @@ const SpacesButton = (props: any) => {
           color: "background.containerLowest",
         }}
         size="small"
-        endIcon={
-          <Box
-            minWidth="8px"
-            borderLeft="1px solid #80808000"
-            display="flex"
-            sx={{ transition: "border .1s ease" }}
-            onClick={(e: any) => {
-              e.stopPropagation();
-              handleClick(e);
-            }}
-          >
-            {open ? <ArrowDropUpRoundedIcon /> : <ArrowDropDownRoundedIcon />}
-          </Box>
-        }
       >
-        <Trans i18nKey="spaces.spaces" />
+        <Trans i18nKey="assessment.myAssessments" />
       </Button>
-
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-            marginTop: 0,
-            marginLeft: theme.direction === "rtl" ? 10 : -10,
-            minWidth: "260px",
-          },
-        }}
-      >
-        <QueryData
-          {...spacesQueryData}
-          render={(data) => {
-            const { items } = data;
-            return (
-              <Box>
-                <Typography
-                  variant="subMedium"
-                  sx={{ px: 1.2, py: 0.3, opacity: 0.8 }}
-                >
-                  <Trans i18nKey="spaces.recentSpaces" />
-                </Typography>
-                {items.slice(0, 5).map((space: any) => {
-                  return (
-                    <MenuItem
-                      key={space?.id}
-                      dense
-                      component={NavLink}
-                      to={`/${space?.id}/assessments/1`}
-                      onClick={() => handleClickMenueItem(space)}
-                      sx={{
-                        fontFamily: languageDetector(space?.title)
-                          ? farsiFontFamily
-                          : primaryFontFamily,
-                      }}
-                    >
-                      {space?.title}
-                    </MenuItem>
-                  );
-                })}
-                <Divider />
-              </Box>
-            );
-          }}
-        />
-        <MenuItem
-          dense
-          onClick={handleClose}
-          component={NavLink}
-          to={`/spaces`}
-        >
-          <Trans i18nKey="spaces.spaceDirectory" />
-        </MenuItem>
-      </Menu>
-    </>
   );
 };
 
