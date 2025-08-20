@@ -90,7 +90,7 @@ const RenderText = ({
 
 const TitleWithTranslation = ({
   title,
-  translation,
+  translation= "",
   ...rest
 }: TitleWithTranslationProps) => {
   const theme = useTheme()
