@@ -94,7 +94,9 @@ const Title = (props: ITitle) => {
                 display="flex"
                 sx={{ textDecoration: "none", color: "inherit" }}
               >
-                {backLink === "/" ? (
+                {backLink === "/" ||
+                backLink === "/spaces/1" ||
+                backLink === "/assessment-kits" ? (
                   <HomeIcon
                     sx={{ fontSize: "22px", color: "#9DA7B3" }}
                     {...backIconProps}

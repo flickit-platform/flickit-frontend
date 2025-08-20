@@ -82,7 +82,9 @@ const Title = (props: ITitle) => {
                 color="inherit"
                 sx={{ textDecoration: "none" }}
               >
-                {backLink === "/" ? (
+                {backLink === "/" ||
+                backLink === "/spaces/1" ||
+                backLink === "/assessment-kits" ? (
                   <HomeIcon
                     sx={{ fontSize: "22px", color: "#9DA7B3" }}
                     {...backIconProps}

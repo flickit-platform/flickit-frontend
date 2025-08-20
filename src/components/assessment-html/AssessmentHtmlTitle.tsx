@@ -10,7 +10,7 @@ const AssessmentHtmlTitle = (props: any) => {
 
   return (
     <Title
-      backLink="/"
+      backLink="/spaces/1"
       wrapperProps={{
         sx: {
           flexDirection: { xs: "column", md: "row" },
