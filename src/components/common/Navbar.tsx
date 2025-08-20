@@ -40,7 +40,7 @@ import NotificationEmptyState from "@/assets/svg/notificationEmptyState.svg";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import LanguageSelector from "./LangSelector";
 import i18n from "i18next";
-import { MULTILINGUALITY } from "@/config/constants";
+import { HOME_URL, MULTILINGUALITY } from "@/config/constants";
 import languageDetector from "@utils/languageDetector";
 import { getReadableDate } from "@utils/readableDate";
 import flagsmith from "flagsmith";
@@ -410,7 +410,7 @@ const Navbar = () => {
         width="100%"
         sx={{ ...styles.centerVH }}
         component={NavLink}
-        to={spaceId ? `/${spaceId}/assessments/1` : `/spaces`}
+        to={spaceId ? `/${spaceId}/assessments/1` : HOME_URL}
       >
         <img
           src={config.appLogoUrl}
@@ -541,7 +541,7 @@ const Navbar = () => {
                 width: "110px",
               },
             }}
-            to={`/spaces`}
+            to={HOME_URL}
           >
             <img
               src={config.appLogoUrl}

@@ -278,7 +278,9 @@ export const useFetchAssessments = (page: any, spaceId: any) => {
   const abortController = useRef(new AbortController());
 
   useEffect(() => {
-    fetchAssessments();
+    if (spaceId) {
+      fetchAssessments();
+    }
   }, [page, spaceId]);
   const fetchAssessments = async () => {
     setLoading(true);

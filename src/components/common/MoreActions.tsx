@@ -80,7 +80,6 @@ const MoreActions = (props: IMoreActionsProps) => {
             menuItemProps = {},
             id = "",
           } = item ?? {};
-          console.log(id, "test text");
           return (
             <MenuItem
               key={uniqueId()}

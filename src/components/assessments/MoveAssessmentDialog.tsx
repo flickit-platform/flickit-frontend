@@ -56,7 +56,11 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
         </Box>
       }
       titleStyle={{ marginBottom: 0 }}
-      style={{ padding: "16px 32px", background: "#F3F5F6" }}
+      style={{
+        padding: "16px 32px",
+        background: "#F3F5F6",
+        overflowX: "hidden",
+      }}
       sx={{
         "& .MuiPaper-root": {
           width: {
@@ -80,7 +84,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
               queryDataSpaces={queryDataSpaces}
               spaces={spaceList}
               sx={{ mt: "24px" }}
-              label={<Trans i18nKey="spaces.targetSpace"/>}
+              label={<Trans i18nKey="spaces.targetSpace" />}
             />{" "}
           </Grid>
         </Grid>
@@ -97,4 +101,3 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 };
 
 export default MoveAssessmentDialog;
-
