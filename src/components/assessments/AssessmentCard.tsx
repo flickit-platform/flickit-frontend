@@ -55,12 +55,14 @@ interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   deleteAssessment: TQueryFunction<any, TId>;
+  handleMoveToAssessment?: any
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
   deleteAssessment,
+ handleMoveToAssessment
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
@@ -189,6 +191,7 @@ const AssessmentCard = ({
             item={item}
             dialogProps={dialogProps}
             abortController={abortController}
+            handleMoveToAssessment={handleMoveToAssessment}
           />
         )}
 
@@ -496,6 +499,7 @@ const CardButton = ({
 // --- Actions ---
 const Actions = ({
   deleteAssessment,
+  handleMoveToAssessment,
   item,
   abortController,
 }: {
@@ -503,18 +507,19 @@ const Actions = ({
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
+  handleMoveToAssessment: any
 }) => {
   const { service } = useServiceContext();
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const moveAssessmentDialogProps = useDialog();
-  const { createOrOpenDialog } = useAssessmentCreation({
-    openDialog: moveAssessmentDialogProps.openDialog,
-    getSpacesArrayFetcher: async (args, config) =>
-      service.assessments.info.getTargetSpaces(args, config),
-    getSpacesAccessor: "items",
-  });
+  // const moveAssessmentDialogProps = useDialog();
+  // const { createOrOpenDialog } = useAssessmentCreation({
+  //   openDialog: moveAssessmentDialogProps.openDialog,
+  //   getSpacesArrayFetcher: async (args, config) =>
+  //     service.assessments.info.getTargetSpaces(args, config),
+  //   getSpacesAccessor: "items",
+  // });
 
   const deleteItem = async () => {
     try {
@@ -544,25 +549,25 @@ const Actions = ({
     });
   };
 
-  const handleMoveToAssessment = (e: any, id: any, title: any) => {
-    setLoading(true);
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (keycloakService.isLoggedIn()) {
-      createOrOpenDialog({
-        id,
-        title,
-        languages: [],
-        setLoading,
-        queryDataSpacesArgs: { assessmentId: item.id },
-      });
-    } else {
-      setLoading(false);
-      window.location.hash = `#createAssessment?id=${id}`;
-      keycloakService.doLogin();
-    }
-  };
+  // const handleMoveToAssessment = (e: any, id: any, title: any) => {
+  //   setLoading(true);
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //
+  //   if (keycloakService.isLoggedIn()) {
+  //     createOrOpenDialog({
+  //       id,
+  //       title,
+  //       languages: [],
+  //       setLoading,
+  //       queryDataSpacesArgs: { assessmentId: item.id },
+  //     });
+  //   } else {
+  //     setLoading(false);
+  //     window.location.hash = `#createAssessment?id=${id}`;
+  //     keycloakService.doLogin();
+  //   }
+  // };
 
   const actions = hasStatus(item.status)
     ? [
@@ -582,7 +587,7 @@ const Actions = ({
         {
           icon: <DriveFileMoveOutlinedIcon fontSize="small" />,
           text: <Trans i18nKey="assessment.moveAssessment" />,
-          onClick: handleMoveToAssessment,
+          onClick: (e: any)=> handleMoveToAssessment(e, item.id, item.title),
         },
         {
           icon: <SettingsIcon fontSize="small" />,
@@ -609,7 +614,7 @@ const Actions = ({
         }}
         items={actions}
       />
-      <MoveAssessmentDialog {...moveAssessmentDialogProps} />
+      {/*<MoveAssessmentDialog {...moveAssessmentDialogProps} />*/}
     </>
   );
 };

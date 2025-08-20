@@ -8,6 +8,7 @@ interface IAssessmentListProps {
   space: any;
   dialogProps: TDialogProps;
   deleteAssessment: TQueryFunction<any, TId>;
+  handleMoveToAssessment: any;
 }
 
 const AssessmentsList = (props: IAssessmentListProps) => {
