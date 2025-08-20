@@ -17,7 +17,6 @@ import OptionForm from "./OptionForm";
 import Add from "@mui/icons-material/Add";
 import { useKitDesignerContext } from "@providers/KitProvider";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
-import { styles } from "@styles";
 
 interface OptionListProps {
   Options: Array<IOption>;

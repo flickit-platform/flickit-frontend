@@ -267,7 +267,7 @@ const StepBox = (props: IStepBox) => {
           <Box sx={{ ...styles.centerCVH, gap: 1 }}>
             {completed && completedTag}
             {!completed && localStep === 1 && currentTag}
-            {hasIssues && issuesTag("insights")}
+            {!!hasIssues && issuesTag("insights")}
           </Box>
         </Box>
         <Box sx={{ ...styles.centerVH, gap: "4px" }}>

@@ -31,7 +31,6 @@ import { useKitDesignerContext } from "@/providers/KitProvider";
 import { useTranslationUpdater } from "@/hooks/useTranslationUpdater";
 import TitleWithTranslation from "@/components/common/fields/TranslationText";
 import showToast from "@utils/toastError";
-import { styles } from "@styles";
 
 interface ListOfItemsProps {
   items: any;
