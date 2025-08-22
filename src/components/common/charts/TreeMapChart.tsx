@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback, memo } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -22,11 +22,24 @@ interface TreeMapProps {
 }
 
 const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
-  const colorPallet = getMaturityLevelColors(levels);
-  const treeMapData = data.map((node) => ({
-    ...node,
-    color: colorPallet[Number(node.label) - 1],
-  }));
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const lightColors = getMaturityLevelColors(levels, true);
+  const darkColors = getMaturityLevelColors(levels);
+
+  const treeMapData = data.map((node) => {
+    const idx = Math.max(0, Number(node.label) - 1);
+    return {
+      ...node,
+      color: darkColors[idx],
+      bg: lightColors[idx],
+    };
+  });
+
+  const handleSelect = useCallback((id?: number | null) => {
+    if (typeof id !== "number") return;
+    setSelectedId((prev) => (prev === id ? null : id));
+  }, []);
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -35,21 +48,21 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
         dataKey="count"
         stroke={v3Tokens.surface.containerLowest}
         fill={v3Tokens.surface.containerLowest}
-        content={<CustomNode levels={levels} lang={lang} />}
-        onClick={(props) => {
-          const { id }: any = props;
-          const element = document.getElementById(id);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-          }
-        }}
+        content={
+          <CustomNode
+            levels={levels}
+            lang={lang}
+            selectedId={selectedId}
+            onSelect={handleSelect}
+          />
+        }
       >
         <Tooltip
           wrapperStyle={{ outline: "none" }}
           content={
             <ChartTooltip
               getPrimary={(d) => d.description}
-              getSecondary={(d) => ""}
+              getSecondary={() => ""}
             />
           }
         />
@@ -58,55 +71,94 @@ const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
   );
 };
 
-const CustomNode: any = (props: any) => {
+const CustomNode: React.FC<any> = memo((props) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { x, y, width, height, name, color, label, levels, lang } = props;
-  if (width <= 30 || height <= 30)
+  const {
+    x,
+    y,
+    width,
+    height,
+    name,
+    color,
+    label,
+    levels,
+    lang,
+    bg,
+    id,
+    selectedId,
+    onSelect,
+  } = props;
+
+  const isSelected = selectedId === id;
+  const dimOthers = selectedId !== null && !isSelected;
+  const groupOpacity = dimOthers ? 0.4 : 1;
+
+  if (width <= 30 || height <= 30) {
     return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={color}
+      <g
+        opacity={groupOpacity}
+        onClick={(e) => {
+          e.stopPropagation();
+          onSelect?.(id);
+        }}
         style={{ cursor: "pointer" }}
-      />
+      >
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill={bg}
+          stroke={color}
+          rx={8}
+          ry={8}
+        />
+      </g>
     );
+  }
 
   const fontSize = width / 12;
   const adjustedFontSize = fontSize > 13 ? (isSmallScreen ? 10 : 13) : fontSize;
-
   const truncatedName =
-    name?.length > 10 && fontSize < 10 ? `${name?.substring(0, 11)}...` : name;
-  const isFarsi = lang.code === "FA";
+    name?.length > 10 && fontSize < 10 ? `${name.slice(0, 11)}…` : name;
 
-  const text = isFarsi
-    ? `\u200F${label} از ${levels}` // \u200F = RLM (Right-to-Left Mark)
+  const isFarsi = (lang?.code || "").toUpperCase() === "FA";
+  const subText = isFarsi
+    ? `\u200F${label} از ${levels}`
     : `${label} out of ${levels}`;
+
   return (
-    <g>
+    <g
+      opacity={groupOpacity}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect?.(id);
+      }}
+      style={{ cursor: "pointer" }}
+    >
       <rect
         x={x}
         y={y}
-        rx={8}
-        ry={8}
         width={width}
         height={height}
-        fill={color}
-        style={{ cursor: "pointer" }}
+        fill={bg}
+        stroke={color}
+        strokeWidth={2}
       />
+
       {width > 50 && height > 20 && (
         <>
           <text
             x={x + width / 2}
             y={y + height / 2 - 10}
             textAnchor="middle"
-            fill={v3Tokens.surface.containerLowest}
             fontSize={adjustedFontSize}
-            fontWeight={5}
+            fontWeight={200}
+            strokeWidth={1}
             letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
+            stroke={color}
           >
             {truncatedName}
           </text>
@@ -114,17 +166,17 @@ const CustomNode: any = (props: any) => {
             x={x + width / 2}
             y={y + height / 2 + 10}
             textAnchor="middle"
-            fill={v3Tokens.surface.containerLowest}
             fontSize={11}
-            fontWeight={5}
+            fontWeight={200}
             alignmentBaseline="middle"
+            stroke={color}
           >
-            {text}
+            {subText}
           </text>
         </>
       )}
     </g>
   );
-};
+});
 
 export default TreeMapChart;
