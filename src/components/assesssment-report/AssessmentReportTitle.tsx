@@ -8,7 +8,7 @@ import { useAuthContext } from "@/providers/AuthProvider";
 import { ArrowForward } from "@mui/icons-material";
 
 const AssessmentReportTitle = (props: any) => {
-  const { pathInfo, rtlLanguage } = props;
+  const { pathInfo, rtlLanguage, children } = props;
   const { spaceId } = useParams();
   const { space, assessment } = pathInfo;
   const { state } = useLocation();
@@ -34,6 +34,7 @@ const AssessmentReportTitle = (props: any) => {
           alignItems: { xs: "flex-start", md: "flex-end" },
         },
       }}
+      width="100%"
       textTransform="none"
       variant="headlineLarge"
       color="primary"
@@ -51,18 +52,27 @@ const AssessmentReportTitle = (props: any) => {
         />
       }
     >
-      <Box sx={{ mt: 4 }}>
-        {isAuthenticatedUser && (
-          <IconButton color="primary" onClick={handleBack} size="small">
-            <ArrowForward
-              sx={(theme) => ({
-                ...theme.typography.headlineMedium,
-                transform: `scaleX(${rtlLanguage ? 1 : -1})`,
-              })}
-            />
-          </IconButton>
-        )}
-        {assessment?.title}
+      <Box
+        mt={4}
+        display="flex"
+        justifyContent="space-between"
+        width="100%"
+        alignItems="flex-end"
+      >
+        <Box>
+          {isAuthenticatedUser && (
+            <IconButton color="primary" onClick={handleBack} size="small">
+              <ArrowForward
+                sx={(theme) => ({
+                  ...theme.typography.headlineMedium,
+                  transform: `scaleX(${rtlLanguage ? 1 : -1})`,
+                })}
+              />
+            </IconButton>
+          )}
+          {assessment?.title}
+        </Box>
+        {children}
       </Box>
     </Title>
   );

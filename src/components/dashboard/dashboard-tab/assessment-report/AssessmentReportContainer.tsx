@@ -190,7 +190,7 @@ const AssessmentReportContainer = (props: any) => {
                     confidence_text={t("common.confidence") + ":"}
                     hideGuidance={true}
                     maxWidth="180px"
-                    maturity_status_guide_variant="bodyMedium"
+                    confidence_text_variant="bodyMedium"
                     m="auto"
                     maturity_status_guide={t("assessmentReport.overallStatus")}
                   />

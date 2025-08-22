@@ -63,7 +63,6 @@ export const ShareDialog = ({
     runOnMount: false,
   });
 
-
   const accessOptionsNew = useMemo(
     () => ({
       [VISIBILITY.RESTRICTED]: {
@@ -106,7 +105,6 @@ export const ShareDialog = ({
     } catch (error) {
       showToast(error as ICustomError);
     }
-
   };
 
   const grantReportAccess = useQuery({
@@ -162,7 +160,10 @@ export const ShareDialog = ({
       }
       maxWidth="sm"
       sx={{ ...styles.rtlStyle(lng === "fa") }}
-      contentStyle={{ p: "38px 64px 32px 64px !important", overflowX:"hidden !important" }}
+      contentStyle={{
+        p: "38px 64px 32px 64px !important",
+        overflowX: "hidden !important",
+      }}
       titleStyle={{ mb: "0px !important" }}
     >
       <Box mt={0}>
@@ -295,7 +296,7 @@ export const ShareDialog = ({
             renderLoading={() => {
               return (
                 <>
-                  {[1, 2, 3].map((number) => {
+                  {[1, 2].map((number) => {
                     return (
                       <Skeleton
                         key={number}
@@ -362,7 +363,7 @@ export const ShareDialog = ({
           }
           onClick={() => handleCopyClick()}
           variant="outlined"
-          sx={{ fontFamily: "inherit" ,}}
+          sx={{ fontFamily: "inherit" }}
         >
           {t("assessmentReport.copyReportLink", { lng })}
         </LoadingButton>

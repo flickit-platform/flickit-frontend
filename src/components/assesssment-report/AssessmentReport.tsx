@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import PermissionControl from "../common/PermissionControl";
 import { useQuery } from "@/utils/useQuery";
 import {
@@ -18,9 +18,23 @@ import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton"
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
 import AssessmentReportTitle from "./AssessmentReportTitle";
-import { Button, Typography, Box } from "@mui/material";
-import { Replay } from "@mui/icons-material";
+import { Button, Typography, Box, Paper, Grid } from "@mui/material";
+import {
+  ArrowForward,
+  CalendarMonthOutlined,
+  DesignServicesOutlined,
+  EmojiObjectsOutlined,
+  Replay,
+} from "@mui/icons-material";
 import { getBasePath, useIntersectOnce } from "@/utils/helpers";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Share from "@mui/icons-material/Share";
+import useDialog from "@/utils/useDialog";
+import { ShareDialog } from "./ShareDialog";
+import ChipsRow, { ChipItem } from "../common/fields/ChipsRow";
+import { getReadableDate } from "@/utils/readableDate";
+import { Gauge } from "../common/charts/Gauge";
+import { blue } from "@/config/colors";
 
 const InvalidReportBanner = ({ onRetry }: { onRetry: () => void }) => (
   <Box
@@ -57,6 +71,7 @@ const AssessmentReport = () => {
   const { isAuthenticatedUser } = useAuthContext();
   const { service } = useServiceContext();
   const { dispatch } = useConfigContext();
+  const dialogProps = useDialog();
 
   const location = useLocation();
 
@@ -132,14 +147,6 @@ const AssessmentReport = () => {
   // --- reload
   const handleReloadReport = () => fetchGraphicalReport.query();
 
-  // --- smart back (optional: currently unused; keep if needed elsewhere)
-  // const { state } = useLocation();  // اگر از state استفاده می‌کنی این را فعال کن
-  // const from = state?.location?.from;
-  // const handleBack = () => {
-  //   if (from) navigate(from, { replace: true });
-  //   else navigate(`/${spaceId}/assessments/${assessmentId}/`, { replace: true });
-  // };
-
   // --- helper
   const isInvalid = (
     subjects: ISubject[] = [],
@@ -187,11 +194,83 @@ const AssessmentReport = () => {
           />
         )}
         render={(graphicalReport) => {
-          const { assessment, advice, subjects, lang, isAdvisable } =
-            graphicalReport as IGraphicalReport;
-
-          const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
+          const {
+            assessment,
+            advice,
+            subjects,
+            lang,
+            isAdvisable,
+            permissions,
+          } = graphicalReport as IGraphicalReport;
           const lng = lang?.code?.toLowerCase();
+
+          const ChipItems: ChipItem[] = [
+            {
+              key: "kit",
+              label: (
+                <Box display="inline-flex" alignItems="center" gap={0.5}>
+                  <DesignServicesOutlined fontSize="small" color="primary" />
+                  {t("assessmentReport.kitWithTitle", {
+                    lng,
+                    title: graphicalReport?.assessment.assessmentKit.title,
+                  })}
+                </Box>
+              ),
+            },
+            {
+              key: "qna",
+              label: (
+                <Box display="inline-flex" alignItems="center" gap={0.5}>
+                  <EmojiObjectsOutlined fontSize="small" color="primary" />{" "}
+                  {t("assessmentReport.questionsAndAnswer", {
+                    lng,
+                    count:
+                      graphicalReport?.assessment.assessmentKit.questionsCount,
+                  })}
+                </Box>
+              ),
+            },
+            {
+              key: "date",
+              label: (
+                <Box display="inline-flex" alignItems="center" gap={0.5}>
+                  <CalendarMonthOutlined fontSize="small" color="primary" />{" "}
+                  {getReadableDate(graphicalReport?.assessment?.creationTime)}
+                </Box>
+              ),
+            },
+          ];
+
+          const GotoItems: ChipItem[] = [
+            {
+              key: "kit",
+              label: (
+                <Box display="inline-flex" alignItems="center" gap={0.5}>
+                  {t("assessmentReport.kitWithTitle", {
+                    lng,
+                    title: graphicalReport?.assessment.assessmentKit.title,
+                  })}
+                  <ArrowForward fontSize="small" color="primary" />
+                </Box>
+              ),
+              color: blue[95],
+            },
+            {
+              key: "qna",
+              label: (
+                <Box display="inline-flex" alignItems="center" gap={0.5}>
+                  {t("assessmentReport.questionsAndAnswer", {
+                    lng,
+                    count:
+                      graphicalReport?.assessment.assessmentKit.questionsCount,
+                  })}
+                  <ArrowForward fontSize="small" color="primary" />
+                </Box>
+              ),
+              color: blue[95],
+            },
+          ];
+          const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
           const rtlLanguage = lng === "fa";
 
           return (
@@ -211,6 +290,9 @@ const AssessmentReport = () => {
                 }
                 px={{ xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 }}
                 sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                display="flex"
+                flexDirection="column"
+                gap={2}
               >
                 {isAuthenticatedUser && (
                   <QueryData
@@ -219,10 +301,162 @@ const AssessmentReport = () => {
                       <AssessmentReportTitle
                         pathInfo={pathInfo}
                         rtlLanguage={rtlLanguage}
-                      />
+                      >
+                        {!isQuickMode && (
+                          <LoadingButton
+                            variant="contained"
+                            startIcon={
+                              <Share
+                                fontSize="small"
+                                sx={{ ...styles.iconDirectionStyle(lng) }}
+                              />
+                            }
+                            size="small"
+                            onClick={() => dialogProps.openDialog({})}
+                            disabled={
+                              !permissions.canShareReport &&
+                              !permissions.canManageVisibility
+                            }
+                            sx={{
+                              ...styles.rtlStyle(rtlLanguage),
+                              height: "100%",
+                              width: "290px",
+                            }}
+                          >
+                            {t("assessmentReport.shareReport", { lng })}
+                          </LoadingButton>
+                        )}
+                      </AssessmentReportTitle>
                     )}
                   />
                 )}
+                <Box display="flex" flexDirection="column" gap={4}>
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      ...styles.centerCV,
+                      borderRadius: "16px",
+                      boxShadow: "none",
+                      paddingBlock: 2,
+                      paddingInline: 2.5,
+                    }}
+                  >
+                    <Box
+                      justifyContent="space-between"
+                      width="100%"
+                      sx={{ ...styles.centerV }}
+                    >
+                      <Typography
+                        variant="headlineMedium"
+                        color="primary"
+                        sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                      >
+                        {t("assessmentReport.assessmentResult", { lng })}
+                      </Typography>
+                      <ChipsRow items={ChipItems} lng={lng} />
+                    </Box>
+                    <Grid container mt={2} columnSpacing={5}>
+                      <Grid item xs={12} sm={6} md={12} lg={8.7}>
+                        {!isQuickMode && (
+                          <>
+                            <Typography
+                              component="div"
+                              variant="titleSmall"
+                              color="background.onVariant"
+                              sx={{
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                            >
+                              {t("assessmentReport.introduction", { lng })}
+                            </Typography>
+                            <Typography
+                              component="div"
+                              textAlign="justify"
+                              variant="bodyMedium"
+                              sx={{
+                                mt: 1,
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  assessment.intro ??
+                                  t("common.unavailable", { lng }),
+                              }}
+                              className="tiptap"
+                            />
+                            <Typography
+                              component="div"
+                              variant="titleSmall"
+                              color="background.onVariant"
+                              sx={{
+                                mt: 2,
+                                ...styles.rtlStyle(rtlLanguage),
+                              }}
+                            >
+                              {t("common.summary", { lng })}
+                            </Typography>
+                          </>
+                        )}
+                        <Typography
+                          component="div"
+                          textAlign="justify"
+                          variant="bodyMedium"
+                          sx={{
+                            mt: 1,
+                            ...styles.rtlStyle(rtlLanguage),
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              assessment.overallInsight ??
+                              t("common.unavailable", { lng }),
+                          }}
+                          className="tiptap"
+                        />
+                        <Box sx={{ ...styles.centerV }} gap={2}>
+                          <Typography
+                            component="div"
+                            variant="titleSmall"
+                            color="background.onVariant"
+                            sx={{
+                              ...styles.rtlStyle(rtlLanguage),
+                            }}
+                          >
+                            {t("common.goto", { lng })}
+                          </Typography>
+                          <ChipsRow items={GotoItems} lng={lng} />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={12} lg={3.3} height="200px">
+                        <Gauge
+                          level_value={assessment.maturityLevel?.value ?? 0}
+                          maturity_level_status={
+                            assessment.maturityLevel?.title
+                          }
+                          maturity_level_number={
+                            assessment.assessmentKit?.maturityLevelCount
+                          }
+                          confidence_value={assessment.confidenceValue}
+                          confidence_text={
+                            !isQuickMode
+                              ? t("common.withPercentConfidence", { lng })
+                              : ""
+                          }
+                          isMobileScreen={false}
+                          hideGuidance={true}
+                          status_font_variant="headlineLarge"
+                          height={270}
+                          confidence_text_variant="semiBoldSmall"
+                        />
+                      </Grid>{" "}
+                    </Grid>
+                  </Paper>
+                </Box>
+
+                <ShareDialog
+                  {...dialogProps}
+                  {...graphicalReport}
+                  lang={lang}
+                />
               </Box>
             </>
           );

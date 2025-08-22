@@ -45,6 +45,9 @@ import { Button } from "@mui/material";
 import languageDetector from "@/utils/languageDetector";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
+import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
+import ChipsRow, { ChipItem } from "../common/fields/ChipsRow";
+import { CalendarMonthOutlined, DesignServicesOutlined, EmojiObjectsOutlined } from "@mui/icons-material";
 
 const getBasePath = (path: string): string => {
   const baseRegex = /^(.*\/graphical-report)(?:\/.*)?$/;
@@ -185,20 +188,19 @@ const AssessmentHtmlContainer = () => {
 
   const renderChip = (icon: any, label: any, language: string) => (
     <Chip
-      label={
-        <Box
-          sx={{
-            ...styles.box,
-            ...styles.rtlStyle(language === "fa"),
-            fontWeight: "lighter",
-          }}
-        >
-          {icon}
-          {label}
-        </Box>
-      }
+      icon={icon}
+      label={label}
       size="small"
-      sx={{ ...styles.chip }}
+      sx={{
+        ...styles.chip,
+        fontFamily: languageDetector(label)
+          ? farsiFontFamily
+          : primaryFontFamily,
+        ".MuiChip-icon": {
+          marginLeft: language === "fa" ? "-10px" : "0",
+          marginRight: language === "fa" ? "0" : "-10px",
+        },
+      }}
     />
   );
 
@@ -294,6 +296,30 @@ const AssessmentHtmlContainer = () => {
             const newPath = `${basePath}${linkHash}/`;
             window.history.replaceState({}, "", newPath);
           }
+
+          const ChipItems: ChipItem[] = [
+            {
+              key: "kit",
+              icon: <DesignServicesOutlined fontSize="small" color="primary" />,
+              label: t("assessmentReport.kitWithTitle", {
+                lng,
+                title: graphicalReport?.assessment.assessmentKit.title,
+              }),
+            },
+            {
+              key: "qna",
+              icon: <EmojiObjectsOutlined fontSize="small" color="primary" />,
+              label: t("assessmentReport.questionsAndAnswer", {
+                lng,
+                count: graphicalReport?.assessment.assessmentKit.questionsCount,
+              }),
+            },
+            {
+              key: "date",
+              icon: <CalendarMonthOutlined fontSize="small" color="primary" />,
+              label: getReadableDate(graphicalReport?.assessment?.creationTime),
+            },
+          ];
 
           return (
             <>
@@ -442,7 +468,7 @@ const AssessmentHtmlContainer = () => {
                       <Box padding={3} width="100%">
                         <Grid container spacing={4}>
                           <Grid item xs={12} sm={12}>
-                            {renderChips(graphicalReport, lng)}
+                            <ChipsRow items={ChipItems} lng={lng} />
                           </Grid>
                           <Grid item xs={12} sm={6} md={12} lg={8}>
                             <Box display="flex" gap={1.5}>

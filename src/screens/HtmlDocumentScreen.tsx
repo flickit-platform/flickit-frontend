@@ -1,6 +1,7 @@
 import { t } from "i18next";
 import useDocumentTitle from "@utils/useDocumentTitle";
 import AssessmentReport from "@components/assesssment-report/AssessmentReport";
+import AssessmentHtmlContainer from "@/components/assessment-html/AssessmentHtmlContainer";
 
 const AssessmentDocumentScreen = () => {
   useDocumentTitle(`${t("assessmentReport.assessmentReport", { title: "" })}`);
