@@ -1,186 +1,131 @@
-import { useCallback, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import PermissionControl from "../common/PermissionControl";
-import { useQuery } from "@/utils/useQuery";
-import {
-  ErrorCodes,
-  IGraphicalReport,
-  ISubject,
-  PathInfo,
-} from "@/types/index";
-import { useServiceContext } from "@/providers/ServiceProvider";
+import { useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import PermissionControl from "@/components/common/PermissionControl";
 import { styles } from "@styles";
 import { t } from "i18next";
-import useCalculate from "@/hooks/useCalculate";
-import QueryData from "../common/QueryData";
-import { ASSESSMENT_MODE, VISIBILITY } from "@/utils/enumType";
-import GraphicalReportSkeleton from "../common/loadings/GraphicalReportSkeleton";
+import QueryData from "@/components/common/QueryData";
+import GraphicalReportSkeleton from "@/components/common/loadings/GraphicalReportSkeleton";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { setSurveyBox, useConfigContext } from "@providers/ConfgProvider";
-import AssessmentReportTitle from "./AssessmentReportTitle";
-import { Button, Typography, Box, Paper, Grid } from "@mui/material";
-import {
-  ArrowForward,
-  CalendarMonthOutlined,
-  DesignServicesOutlined,
-  EmojiObjectsOutlined,
-  Replay,
-} from "@mui/icons-material";
-import { getBasePath, useIntersectOnce } from "@/utils/helpers";
+import { Button, Typography, Box, Grid, useTheme } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Share from "@mui/icons-material/Share";
 import useDialog from "@/utils/useDialog";
-import { ShareDialog } from "./ShareDialog";
-import ChipsRow, { ChipItem } from "../common/fields/ChipsRow";
-import { getReadableDate } from "@/utils/readableDate";
-import { Gauge } from "../common/charts/Gauge";
+import ChipsRow from "@/components/common/fields/ChipsRow";
+import { Gauge } from "@/components/common/charts/Gauge";
 import { blue } from "@/config/colors";
+import ContactUsDialog from "@/components/common/dialogs/ContactUsDialog";
+import keycloakService from "@/service/keycloakService";
+import uniqueId from "@/utils/uniqueId";
+import { Trans } from "react-i18next";
+import AdviceItemsAccordion from "@/components/dashboard/advice-tab/advice-items/AdviceItemsAccordions";
+import { useReportChips } from "@/hooks/useReportChips";
+import { useIntersectOnce } from "@/utils/helpers";
+import { ASSESSMENT_MODE } from "@/utils/enumType";
+import InvalidReportBanner from "./InvalidReportBanner";
+import SectionCard from "./SectionCard"; // ← نسخه‌ای که title/desc/rtl را می‌گیرد
+import { IGraphicalReport, PathInfo } from "@/types";
+import { useGraphicalReport } from "@/hooks/useGraphicalReport";
+import AssessmentReportTitle from "./AssessmentReportTitle";
+import { ShareDialog } from "./ShareDialog";
+import TreeMapChart from "../common/charts/TreeMapChart";
 
-const InvalidReportBanner = ({ onRetry }: { onRetry: () => void }) => (
-  <Box
-    bgcolor="error.main"
-    height={48}
-    gap={6}
-    sx={{ ...styles.centerVH }}
-    role="alert"
-    aria-live="polite"
-  >
-    <Typography
-      variant="semiBoldLarge"
-      color="error.contrastText"
-      sx={{ ...styles.centerV }}
+// --- باکس ستون راست را به یک جزء کوچک تبدیل کردیم
+function ContactExpertBox({
+  lng,
+  rtl,
+  onOpen,
+}: {
+  lng: string;
+  rtl: boolean;
+  onOpen: () => void;
+}) {
+  const theme = useTheme();
+  return (
+    <Box
+      p={2}
+      borderRadius={2}
+      bgcolor={blue[95]}
+      flexShrink={0}
+      sx={{ ...styles.rtlStyle(rtl) }}
+      width="100%"
     >
-      {t("notification.incompleteReportDueToDelay")}
-    </Typography>
-    <Box bgcolor="background.container" color="error.main" borderRadius="4px">
-      <Button
-        onClick={onRetry}
-        size="small"
-        variant="contained"
-        color="inherit"
-        endIcon={<Replay />}
+      <Typography
+        variant="bodySmall"
+        textAlign="justify"
+        fontFamily="inherit"
+        display="block"
       >
-        {t("common.retry")}
+        <Trans
+          i18nKey="assessmentReport.contactExpertBoxText.intro"
+          components={{ strong: <strong /> }}
+          t={(key: any, options?: any) => t(key, { lng, ...options })}
+        />
+      </Typography>
+
+      <ul
+        style={{
+          listStyle: "none",
+          paddingInline: 8,
+          ...(useTheme().typography.bodySmall as any),
+          fontFamily: "inherit",
+          textAlign: "justify",
+        }}
+      >
+        {(
+          t("assessmentReport.contactExpertBoxText.points", {
+            lng,
+            returnObjects: true,
+          }) as string[]
+        ).map((item) => (
+          <li key={uniqueId()}>• {item}</li>
+        ))}
+      </ul>
+
+      <Typography
+        variant="bodySmall"
+        textAlign="justify"
+        fontFamily="inherit"
+        display="block"
+      >
+        {t("assessmentReport.contactExpertBoxText.outro", { lng })}
+      </Typography>
+
+      <Button
+        size="medium"
+        onClick={onOpen}
+        variant="contained"
+        sx={{
+          mt: 2,
+          width: "100%",
+          background: `linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)`,
+          color: "background.containerLowest",
+          boxShadow: "0px 4px 4px 0px rgba(0,0,0,0.25)",
+          "&:hover": {
+            background: `linear-gradient(45deg, #1B4D7E, #2D80D2, #1B4D7E)`,
+            opacity: 0.9,
+          },
+          fontFamily: "inherit",
+        }}
+      >
+        {t("assessmentReport.contactExpertGroup", { lng })}
       </Button>
     </Box>
-  </Box>
-);
+  );
+}
 
-const AssessmentReport = () => {
-  const { calculate, calculateConfidence } = useCalculate();
+export default function AssessmentReport() {
+  const location = useLocation();
   const { isAuthenticatedUser } = useAuthContext();
-  const { service } = useServiceContext();
   const { dispatch } = useConfigContext();
   const dialogProps = useDialog();
 
-  const location = useLocation();
+  const { fetchPathInfo, fetchGraphicalReport, reload, computeInvalid } =
+    useGraphicalReport();
 
-  const { assessmentId = "", spaceId = "", linkHash = "" } = useParams();
-
-  const fetchPathInfo = useQuery<PathInfo>({
-    service: (args, config) =>
-      service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
-    runOnMount: isAuthenticatedUser ?? false,
-  });
-
-  const fetchGraphicalReport = useQuery({
-    service: (args, config) =>
-      isAuthenticatedUser
-        ? service.assessments.report.getGraphical(
-            { assessmentId, ...(args ?? {}) },
-            config,
-          )
-        : service.assessments.report.getPublicGraphicalReport(
-            { linkHash, ...(args ?? {}) },
-            { skipAuth: true, ...config },
-          ),
-    runOnMount: true,
-  });
-
-  // --- intersection for survey box (trigger once when recommendations appears)
   useIntersectOnce("recommendations", () => dispatch(setSurveyBox(true)));
 
-  // --- handle error codes (type-safe & optional handlers)
-  const errorActions: Partial<
-    Record<ErrorCodes | "DEPRECATED", () => Promise<boolean>>
-  > = {
-    [ErrorCodes.CalculateNotValid]: () => calculate(),
-    [ErrorCodes.ConfidenceCalculationNotValid]: () => calculateConfidence(),
-    DEPRECATED: () =>
-      service.assessments.info
-        .migrateKitVersion({ assessmentId })
-        .then(() => true)
-        .catch(() => false),
-  };
-
-  const handleErrorResponse = useCallback(
-    async (code: unknown) => {
-      if (typeof code !== "string" && typeof code !== "number") return;
-
-      const action =
-        errorActions[code as ErrorCodes | "DEPRECATED"] ??
-        errorActions[String(code) as ErrorCodes | "DEPRECATED"];
-
-      if (!action) return;
-
-      const ok = await action();
-      if (ok) fetchGraphicalReport.query();
-    },
-    [
-      assessmentId,
-      calculate,
-      calculateConfidence,
-      fetchGraphicalReport,
-      service.assessments.info,
-      errorActions,
-    ],
-  );
-
-  useEffect(() => {
-    const code = fetchGraphicalReport.errorObject?.response?.data?.code;
-    if (code != null) void handleErrorResponse(code);
-  }, [
-    fetchGraphicalReport.errorObject?.response?.data?.code,
-    handleErrorResponse,
-  ]);
-
-  // --- reload
-  const handleReloadReport = () => fetchGraphicalReport.query();
-
-  // --- helper
-  const isInvalid = (
-    subjects: ISubject[] = [],
-    advice: { narration?: string; adviceItems?: unknown[] } | null | undefined,
-    isAdvisable: boolean,
-    quickMode: boolean,
-  ) => {
-    if (!quickMode || !isAuthenticatedUser) return false;
-    const hasMissingInsight = subjects.some((s) => !s?.insight);
-    const hasMissingAdvice =
-      isAdvisable &&
-      (!advice?.narration?.trim?.() || (advice.adviceItems?.length ?? 0) === 0);
-    return hasMissingInsight || hasMissingAdvice;
-  };
-
-  useEffect(() => {
-    const data = fetchGraphicalReport.data as IGraphicalReport | undefined;
-
-    const visibility = data?.visibility;
-    const linkHashFromData = data?.linkHash;
-
-    if (visibility === VISIBILITY.PUBLIC && linkHashFromData) {
-      const basePath = getBasePath(location.pathname);
-      const newPath = `${basePath}${linkHashFromData}/`;
-      if (location.pathname !== newPath) {
-        window.history.replaceState({}, "", newPath);
-      }
-    }
-  }, [fetchGraphicalReport.data, location.pathname]);
-
-  const navState = (location.state || {}) as {
-    language?: { code?: string };
-  };
-
+  const navState = (location.state || {}) as { language?: { code?: string } };
   const langCode = navState.language?.code;
 
   return (
@@ -202,94 +147,60 @@ const AssessmentReport = () => {
             isAdvisable,
             permissions,
           } = graphicalReport as IGraphicalReport;
+
           const lng = lang?.code?.toLowerCase();
-
-          const ChipItems: ChipItem[] = [
-            {
-              key: "kit",
-              label: (
-                <Box display="inline-flex" alignItems="center" gap={0.5}>
-                  <DesignServicesOutlined fontSize="small" color="primary" />
-                  {t("assessmentReport.kitWithTitle", {
-                    lng,
-                    title: graphicalReport?.assessment.assessmentKit.title,
-                  })}
-                </Box>
-              ),
-            },
-            {
-              key: "qna",
-              label: (
-                <Box display="inline-flex" alignItems="center" gap={0.5}>
-                  <EmojiObjectsOutlined fontSize="small" color="primary" />{" "}
-                  {t("assessmentReport.questionsAndAnswer", {
-                    lng,
-                    count:
-                      graphicalReport?.assessment.assessmentKit.questionsCount,
-                  })}
-                </Box>
-              ),
-            },
-            {
-              key: "date",
-              label: (
-                <Box display="inline-flex" alignItems="center" gap={0.5}>
-                  <CalendarMonthOutlined fontSize="small" color="primary" />{" "}
-                  {getReadableDate(graphicalReport?.assessment?.creationTime)}
-                </Box>
-              ),
-            },
-          ];
-
-          const GotoItems: ChipItem[] = [
-            {
-              key: "kit",
-              label: (
-                <Box display="inline-flex" alignItems="center" gap={0.5}>
-                  {t("assessmentReport.kitWithTitle", {
-                    lng,
-                    title: graphicalReport?.assessment.assessmentKit.title,
-                  })}
-                  <ArrowForward fontSize="small" color="primary" />
-                </Box>
-              ),
-              color: blue[95],
-            },
-            {
-              key: "qna",
-              label: (
-                <Box display="inline-flex" alignItems="center" gap={0.5}>
-                  {t("assessmentReport.questionsAndAnswer", {
-                    lng,
-                    count:
-                      graphicalReport?.assessment.assessmentKit.questionsCount,
-                  })}
-                  <ArrowForward fontSize="small" color="primary" />
-                </Box>
-              ),
-              color: blue[95],
-            },
-          ];
+          const rtl = lng === "fa";
           const isQuickMode = assessment?.mode?.code === ASSESSMENT_MODE.QUICK;
-          const rtlLanguage = lng === "fa";
+
+          const hasInvalidReport = useMemo(
+            () => computeInvalid(subjects, advice, isAdvisable, isQuickMode),
+            [subjects, advice, isAdvisable, isQuickMode, computeInvalid],
+          );
+
+          // chips
+          const { infoItems, gotoItems } = useReportChips(
+            graphicalReport,
+            lng,
+            rtl,
+          );
+
+          // dialog for expert request
+          const requestAnExpertDialogProps = useDialog({
+            context: {
+              type: "requestAnExpertReview",
+              data: {
+                email:
+                  keycloakService._kc.tokenParsed?.preferred_username ??
+                  keycloakService._kc.tokenParsed?.sub,
+                dialogTitle: t("assessmentReport.contactExpertGroup", { lng }),
+                children: (
+                  <Typography
+                    textAlign="justify"
+                    variant="bodyLarge"
+                    fontFamily="inherit"
+                    dangerouslySetInnerHTML={{
+                      __html: t(
+                        "assessmentReport.requestAnExpertReviewContent",
+                        { lng },
+                      ),
+                    }}
+                  />
+                ),
+              },
+            },
+          });
 
           return (
             <>
-              {isInvalid(subjects, advice, isAdvisable, isQuickMode) && (
-                <InvalidReportBanner onRetry={handleReloadReport} />
-              )}
+              {hasInvalidReport && <InvalidReportBanner onRetry={reload} />}
 
               <Box
                 m="auto"
                 pb={3}
-                textAlign={rtlLanguage ? "right" : "left"}
-                p={
-                  isInvalid(subjects, advice, isAdvisable, isQuickMode)
-                    ? 1
-                    : { xs: 1, sm: 1, md: 4 }
-                }
+                textAlign={rtl ? "right" : "left"}
+                p={hasInvalidReport ? 1 : { xs: 1, sm: 1, md: 4 }}
                 px={{ xxl: 30, xl: 20, lg: 12, md: 8, xs: 1, sm: 3 }}
-                sx={{ ...styles.rtlStyle(rtlLanguage) }}
+                sx={{ ...styles.rtlStyle(rtl) }}
                 display="flex"
                 flexDirection="column"
                 gap={2}
@@ -297,12 +208,12 @@ const AssessmentReport = () => {
                 {isAuthenticatedUser && (
                   <QueryData
                     {...fetchPathInfo}
-                    render={(pathInfo) => (
+                    render={(pathInfo: PathInfo) => (
                       <AssessmentReportTitle
                         pathInfo={pathInfo}
-                        rtlLanguage={rtlLanguage}
+                        rtlLanguage={rtl}
                       >
-                        {!isQuickMode && (
+                        {(!isQuickMode || !isAuthenticatedUser) && (
                           <LoadingButton
                             variant="contained"
                             startIcon={
@@ -318,7 +229,7 @@ const AssessmentReport = () => {
                               !permissions.canManageVisibility
                             }
                             sx={{
-                              ...styles.rtlStyle(rtlLanguage),
+                              ...styles.rtlStyle(rtl),
                               height: "100%",
                               width: "290px",
                             }}
@@ -330,126 +241,219 @@ const AssessmentReport = () => {
                     )}
                   />
                 )}
+
                 <Box display="flex" flexDirection="column" gap={4}>
-                  <Paper
-                    elevation={3}
-                    sx={{
-                      ...styles.centerCV,
-                      borderRadius: "16px",
-                      boxShadow: "none",
-                      paddingBlock: 2,
-                      paddingInline: 2.5,
-                    }}
-                  >
-                    <Box
-                      justifyContent="space-between"
-                      width="100%"
-                      sx={{ ...styles.centerV }}
-                    >
-                      <Typography
-                        variant="headlineMedium"
-                        color="primary"
-                        sx={{ ...styles.rtlStyle(rtlLanguage) }}
-                      >
-                        {t("assessmentReport.assessmentResult", { lng })}
-                      </Typography>
-                      <ChipsRow items={ChipItems} lng={lng} />
-                    </Box>
-                    <Grid container mt={2} columnSpacing={5}>
-                      <Grid item xs={12} sm={6} md={12} lg={8.7}>
-                        {!isQuickMode && (
-                          <>
-                            <Typography
-                              component="div"
-                              variant="titleSmall"
-                              color="background.onVariant"
-                              sx={{
-                                ...styles.rtlStyle(rtlLanguage),
-                              }}
-                            >
-                              {t("assessmentReport.introduction", { lng })}
-                            </Typography>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={isQuickMode ? 9 : 12}>
+                      <SectionCard>
+                        <Box
+                          justifyContent="space-between"
+                          width="100%"
+                          sx={{ ...styles.centerV }}
+                        >
+                          <Typography
+                            variant="headlineMedium"
+                            color="primary"
+                            sx={{ ...styles.rtlStyle(rtl) }}
+                          >
+                            {t("assessmentReport.assessmentResult", { lng })}
+                          </Typography>
+                          <ChipsRow items={infoItems} lng={lng} />
+                        </Box>
+
+                        <Grid
+                          container
+                          mt={2}
+                          columnSpacing={isQuickMode ? 2 : 5}
+                        >
+                          <Grid item xs={12} md={8}>
+                            {!isQuickMode && (
+                              <>
+                                <Typography
+                                  component="div"
+                                  variant="titleSmall"
+                                  color="background.onVariant"
+                                  sx={{ ...styles.rtlStyle(rtl) }}
+                                >
+                                  {t("assessmentReport.introduction", { lng })}
+                                </Typography>
+                                <Typography
+                                  component="div"
+                                  textAlign="justify"
+                                  variant="bodyMedium"
+                                  sx={{ mt: 1, ...styles.rtlStyle(rtl) }}
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      assessment.intro ??
+                                      t("common.unavailable", { lng }),
+                                  }}
+                                  className="tiptap"
+                                />
+                                <Typography
+                                  component="div"
+                                  variant="titleSmall"
+                                  color="background.onVariant"
+                                  sx={{ mt: 2, ...styles.rtlStyle(rtl) }}
+                                >
+                                  {t("common.summary", { lng })}
+                                </Typography>
+                              </>
+                            )}
+
                             <Typography
                               component="div"
                               textAlign="justify"
                               variant="bodyMedium"
-                              sx={{
-                                mt: 1,
-                                ...styles.rtlStyle(rtlLanguage),
-                              }}
+                              sx={{ mt: 1, ...styles.rtlStyle(rtl) }}
                               dangerouslySetInnerHTML={{
                                 __html:
-                                  assessment.intro ??
+                                  assessment.overallInsight ??
                                   t("common.unavailable", { lng }),
                               }}
                               className="tiptap"
                             />
-                            <Typography
-                              component="div"
-                              variant="titleSmall"
-                              color="background.onVariant"
-                              sx={{
-                                mt: 2,
-                                ...styles.rtlStyle(rtlLanguage),
-                              }}
-                            >
-                              {t("common.summary", { lng })}
-                            </Typography>
-                          </>
-                        )}
+
+                            <Box sx={{ ...styles.centerV }} gap={2}>
+                              <Typography
+                                component="div"
+                                variant="titleSmall"
+                                color="background.onVariant"
+                                sx={{ ...styles.rtlStyle(rtl) }}
+                              >
+                                {t("common.goto", { lng })}
+                              </Typography>
+                              <ChipsRow items={gotoItems} lng={lng} />
+                            </Box>
+                          </Grid>
+
+                          <Grid item xs={12} md={4} height="220px">
+                            <Gauge
+                              level_value={assessment.maturityLevel?.value ?? 0}
+                              maturity_level_status={
+                                assessment.maturityLevel?.title
+                              }
+                              maturity_level_number={
+                                assessment.assessmentKit?.maturityLevelCount
+                              }
+                              confidence_value={assessment.confidenceValue}
+                              confidence_text={
+                                isQuickMode
+                                  ? ""
+                                  : t("common.withPercentConfidence", { lng })
+                              }
+                              isMobileScreen={false}
+                              hideGuidance
+                              status_font_variant="headlineLarge"
+                              height={300}
+                              confidence_text_variant="semiBoldSmall"
+                            />
+                          </Grid>
+                        </Grid>
+                      </SectionCard>
+                    </Grid>
+
+                    <Grid item xs={12} md={3}>
+                      {isAuthenticatedUser && isQuickMode && (
+                        <Box sx={{ ...styles.centerCV }} gap={3} width="100%">
+                          <LoadingButton
+                            variant="contained"
+                            startIcon={
+                              <Share
+                                fontSize="small"
+                                sx={{ ...styles.iconDirectionStyle(lng) }}
+                              />
+                            }
+                            size="small"
+                            onClick={() => dialogProps.openDialog({})}
+                            disabled={
+                              !permissions.canShareReport &&
+                              !permissions.canManageVisibility
+                            }
+                            sx={{ ...styles.rtlStyle(rtl) }}
+                          >
+                            {t("assessmentReport.shareReport", { lng })}
+                          </LoadingButton>
+
+                          <ContactExpertBox
+                            lng={lng}
+                            rtl={rtl}
+                            onOpen={() =>
+                              requestAnExpertDialogProps.openDialog({})
+                            }
+                          />
+                        </Box>
+                      )}
+
+                      <ContactUsDialog
+                        {...requestAnExpertDialogProps}
+                        lng={lng}
+                        sx={{ ...styles.rtlStyle(rtl) }}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <SectionCard
+                    title={t("assessmentReport.howWasThisScoreCalculated", {
+                      lng,
+                    })}
+                    desc={t("assessmentReport.howWasThisScoreCalculatedDesc", {
+                      lng,
+                    })}
+                    rtl={rtl}
+                  >
+                    <TreeMapChart
+                      data={subjects.flatMap((subject: any) =>
+                        subject.attributes.map((attribute: any) => ({
+                          name: attribute.title,
+                          description: attribute.description,
+                          id: attribute.id,
+                          count: attribute.weight,
+                          label: attribute.maturityLevel.value.toString(),
+                        })),
+                      )}
+                      levels={assessment.assessmentKit.maturityLevelCount}
+                      lang={lang}
+                    />
+                  </SectionCard>
+
+                  <SectionCard
+                    title={t(
+                      "assessmentReport.howCanTheCurrentSituationBeImproved",
+                      { lng },
+                    )}
+                    rtl={rtl}
+                  >
+                    {advice?.narration || advice?.adviceItems?.length ? (
+                      <>
                         <Typography
-                          component="div"
                           textAlign="justify"
                           variant="bodyMedium"
-                          sx={{
-                            mt: 1,
-                            ...styles.rtlStyle(rtlLanguage),
-                          }}
+                          sx={{ ...styles.rtlStyle(rtl) }}
                           dangerouslySetInnerHTML={{
-                            __html:
-                              assessment.overallInsight ??
-                              t("common.unavailable", { lng }),
+                            __html: advice?.narration,
                           }}
-                          className="tiptap"
                         />
-                        <Box sx={{ ...styles.centerV }} gap={2}>
-                          <Typography
-                            component="div"
-                            variant="titleSmall"
-                            color="background.onVariant"
-                            sx={{
-                              ...styles.rtlStyle(rtlLanguage),
-                            }}
-                          >
-                            {t("common.goto", { lng })}
-                          </Typography>
-                          <ChipsRow items={GotoItems} lng={lng} />
-                        </Box>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={12} lg={3.3} height="200px">
-                        <Gauge
-                          level_value={assessment.maturityLevel?.value ?? 0}
-                          maturity_level_status={
-                            assessment.maturityLevel?.title
-                          }
-                          maturity_level_number={
-                            assessment.assessmentKit?.maturityLevelCount
-                          }
-                          confidence_value={assessment.confidenceValue}
-                          confidence_text={
-                            !isQuickMode
-                              ? t("common.withPercentConfidence", { lng })
-                              : ""
-                          }
-                          isMobileScreen={false}
-                          hideGuidance={true}
-                          status_font_variant="headlineLarge"
-                          height={270}
-                          confidence_text_variant="semiBoldSmall"
+                        <AdviceItemsAccordion
+                          items={graphicalReport?.advice?.adviceItems}
+                          onDelete={() => {}}
+                          setDisplayedItems={() => {}}
+                          query={undefined}
+                          readOnly
+                          language={lang?.code?.toLowerCase()}
                         />
-                      </Grid>{" "}
-                    </Grid>
-                  </Paper>
+                      </>
+                    ) : (
+                      <Typography
+                        textAlign="justify"
+                        variant="titleSmall"
+                        fontWeight="light"
+                        mt={2}
+                        sx={{ ...styles.rtlStyle(rtl) }}
+                      >
+                        {t("common.unavailable", { lng })}
+                      </Typography>
+                    )}
+                  </SectionCard>
                 </Box>
 
                 <ShareDialog
@@ -464,6 +468,4 @@ const AssessmentReport = () => {
       />
     </PermissionControl>
   );
-};
-
-export default AssessmentReport;
+}
