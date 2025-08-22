@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import PermissionControl from "@/components/common/PermissionControl";
 import { styles } from "@styles";
@@ -23,14 +23,14 @@ import { useReportChips } from "@/hooks/useReportChips";
 import { useIntersectOnce } from "@/utils/helpers";
 import { ASSESSMENT_MODE } from "@/utils/enumType";
 import InvalidReportBanner from "./InvalidReportBanner";
-import SectionCard from "./SectionCard"; // ← نسخه‌ای که title/desc/rtl را می‌گیرد
-import { IGraphicalReport, PathInfo } from "@/types";
+import SectionCard from "./SectionCard";
+import { IAttribute, IGraphicalReport, PathInfo } from "@/types";
 import { useGraphicalReport } from "@/hooks/useGraphicalReport";
 import AssessmentReportTitle from "./AssessmentReportTitle";
 import { ShareDialog } from "./ShareDialog";
 import TreeMapChart from "../common/charts/TreeMapChart";
+import ManWithMagnifier from "@/assets/svg/man-with-magnifier.svg";
 
-// --- باکس ستون راست را به یک جزء کوچک تبدیل کردیم
 function ContactExpertBox({
   lng,
   rtl,
@@ -119,6 +119,7 @@ export default function AssessmentReport() {
   const { isAuthenticatedUser } = useAuthContext();
   const { dispatch } = useConfigContext();
   const dialogProps = useDialog();
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const { fetchPathInfo, fetchGraphicalReport, reload, computeInvalid } =
     useGraphicalReport();
@@ -157,6 +158,21 @@ export default function AssessmentReport() {
             [subjects, advice, isAdvisable, isQuickMode, computeInvalid],
           );
 
+          const selectedAttribut = useMemo(() => {
+            const allAttributes = subjects.flatMap((subject: any) =>
+              subject.attributes.map((attribute: any) => ({
+                title: attribute.title,
+                description: attribute.description,
+                id: attribute.id,
+                weight: attribute?.weight,
+                maturityLevel: attribute.maturityLevel,
+              })),
+            );
+
+            return allAttributes.find(
+              (attribute) => selectedId === attribute.id,
+            );
+          }, [subjects, selectedId]);
           // chips
           const { infoItems, gotoItems } = useReportChips(
             graphicalReport,
@@ -415,7 +431,79 @@ export default function AssessmentReport() {
                       )}
                       levels={assessment.assessmentKit.maturityLevelCount}
                       lang={lang}
+                      selectedId={selectedId}
+                      setSelectedId={setSelectedId}
                     />
+                    {selectedId ? (
+                      <Box
+                        bgcolor="background.container"
+                        marginInline={4}
+                        mt={4}
+                        borderRadius={1}
+                        paddingInline={4}
+                        paddingBlock={2}
+                        sx={{ ...styles.centerCVH }}
+                      >
+                        <Box
+                          bgcolor="background.default.states.outlineBorder"
+                          justifyContent="space-between"
+                          sx={{ ...styles.centerV }}
+                          width="100%"
+                        >
+                          <Box sx={{ ...styles.centerCVH }} gap={2}>
+                            <Typography
+                              variant="titleLarge"
+                              color="Background.default"
+                            >
+                              {selectedAttribut?.title}
+                            </Typography>
+                            <Typography
+                              variant="semiBoldSmall"
+                              color="Background.onVariant"
+                            >
+                              {t("common.weight", { lng })}:{" "}
+                              {selectedAttribut?.weight}
+                            </Typography>
+                          </Box>
+                          <Typography
+                            variant="bodyMedium"
+                            color="Background.default"
+                          >
+                            {selectedAttribut?.description}
+                          </Typography>
+                          <Typography
+                            variant="titleLarge"
+                            color="Background.default"
+                          >
+                            {selectedAttribut?.maturityLevel?.title}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box
+                        bgcolor="background.container"
+                        borderRadius="8px"
+                        padding={4}
+                        marginInline={6}
+                        mt={4}
+                        sx={{ ...styles.centerCVH }}
+                      >
+                        {" "}
+                        <Box
+                          component={"img"}
+                          src={ManWithMagnifier}
+                          alt="Man With Magnifier"
+                          width="100%"
+                          height="112px"
+                        />
+                        <Typography
+                          variant="semiBoldXLarge"
+                          color="disabled.on"
+                        >
+                          {t("assessmentReport.treemapEmptyState")}
+                        </Typography>
+                      </Box>
+                    )}{" "}
                   </SectionCard>
 
                   <SectionCard

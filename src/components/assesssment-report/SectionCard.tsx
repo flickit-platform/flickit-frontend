@@ -22,8 +22,7 @@ export default function SectionCard({
         ...styles.centerCV,
         borderRadius: "16px",
         boxShadow: "none",
-        paddingBlock: 2,
-        paddingInline: 2.5,
+        padding: 4,
         textAlign: rtl ? "right" : "left",
       }}
       {...rest}

@@ -16,7 +16,7 @@ const AssessmentSettingScreen = lazy(
   () => import("../screens/AssessmentSettingScreen"),
 );
 const AssessmentDocumentScreen = lazy(
-  () => import("../screens/AssessmentDocumentScreen"),
+  () => import("../screens/HtmlDocumentScreen"),
 );
 const AssessmentDashboardScreen = lazy(
   () => import("../screens/AssessmentDashboardScreen"),

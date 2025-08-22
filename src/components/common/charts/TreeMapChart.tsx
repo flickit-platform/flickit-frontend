@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo, Dispatch, SetStateAction } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -19,11 +19,17 @@ interface TreeMapProps {
   data: TreeMapNode[];
   levels: number;
   lang: { code: string };
+  selectedId: number | null;
+  setSelectedId: Dispatch<SetStateAction<number | null>>;
 }
 
-const TreeMapChart: React.FC<TreeMapProps> = ({ data, levels, lang }) => {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-
+const TreeMapChart: React.FC<TreeMapProps> = ({
+  data,
+  levels,
+  lang,
+  selectedId,
+  setSelectedId,
+}) => {
   const lightColors = getMaturityLevelColors(levels, true);
   const darkColors = getMaturityLevelColors(levels);
 
@@ -93,7 +99,8 @@ const CustomNode: React.FC<any> = memo((props) => {
 
   const isSelected = selectedId === id;
   const dimOthers = selectedId !== null && !isSelected;
-  const groupOpacity = dimOthers ? 0.4 : 1;
+  const groupOpacity = dimOthers ? 0.6 : 1;
+  const strokeWidth = dimOthers ? 0.7 : 2;
 
   if (width <= 30 || height <= 30) {
     return (
@@ -112,6 +119,7 @@ const CustomNode: React.FC<any> = memo((props) => {
           height={height}
           fill={bg}
           stroke={color}
+          strokeOpacity={groupOpacity}
           rx={8}
           ry={8}
         />
@@ -145,7 +153,8 @@ const CustomNode: React.FC<any> = memo((props) => {
         height={height}
         fill={bg}
         stroke={color}
-        strokeWidth={2}
+        strokeWidth={strokeWidth}
+        strokeOpacity={groupOpacity}
       />
 
       {width > 50 && height > 20 && (
@@ -159,6 +168,7 @@ const CustomNode: React.FC<any> = memo((props) => {
             strokeWidth={1}
             letterSpacing={languageDetector(truncatedName) ? 0 : 0.5}
             stroke={color}
+            strokeOpacity={groupOpacity}
           >
             {truncatedName}
           </text>
@@ -170,6 +180,7 @@ const CustomNode: React.FC<any> = memo((props) => {
             fontWeight={200}
             alignmentBaseline="middle"
             stroke={color}
+            strokeOpacity={groupOpacity}
           >
             {subText}
           </text>
