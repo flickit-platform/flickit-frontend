@@ -273,6 +273,7 @@ export default function AssessmentReport() {
                                   component="div"
                                   variant="titleSmall"
                                   color="background.onVariant"
+                                  textAlign={rtl ? "right" : "left"}
                                   sx={{ ...styles.rtlStyle(rtl) }}
                                 >
                                   {t("assessmentReport.introduction", { lng })}
@@ -293,6 +294,7 @@ export default function AssessmentReport() {
                                   component="div"
                                   variant="titleSmall"
                                   color="background.onVariant"
+                                  textAlign={rtl ? "right" : "left"}
                                   sx={{ mt: 2, ...styles.rtlStyle(rtl) }}
                                 >
                                   {t("common.summary", { lng })}
