@@ -89,8 +89,10 @@ const commonStyles = {
 const sharedChipStyles = {
   chip: {
     fontWeight: 200,
-    padding: 1,
-    background: "rgba(36, 102, 168, 0.04)",
+    padding: "12px 4px",
+    background: "transparent",
+    border: `0.5px solid ${v3Tokens.primary.main}`,
+    borderRadius: "8px",
   },
   box: {
     display: "flex",

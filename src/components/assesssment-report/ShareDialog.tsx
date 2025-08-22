@@ -19,7 +19,7 @@ import { useServiceContext } from "@/providers/ServiceProvider";
 import { ICustomError } from "@/utils/CustomError";
 import QueryBatchData from "../common/QueryBatchData";
 import { VISIBILITY } from "@/utils/enumType";
-import { IGraphicalReport, IUserPermissions } from "@/types";
+import { IGraphicalReport, IUserPermissions, PathInfo } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputFieldUC } from "../common/fields/InputField";
 import showToast from "@/utils/toastError";
@@ -32,7 +32,6 @@ interface IDialogProps extends IGraphicalReport {
   open: boolean;
   onClose: () => void;
   assessme: string;
-  fetchGraphicalReportUsers: any;
   visibility: VISIBILITY;
   permissions: IUserPermissions;
 }
@@ -40,7 +39,6 @@ interface IDialogProps extends IGraphicalReport {
 export const ShareDialog = ({
   open,
   onClose,
-  fetchGraphicalReportUsers,
   visibility,
   permissions,
   linkHash,
@@ -55,6 +53,16 @@ export const ShareDialog = ({
   const { reset, handleSubmit } = methods;
 
   const lng = lang?.code?.toLowerCase();
+
+  const fetchGraphicalReportUsers = useQuery({
+    service: (args, config) =>
+      service.assessments.member.getReportAccessUsers(
+        { assessmentId, ...(args ?? {}) },
+        config,
+      ),
+    runOnMount: false,
+  });
+
 
   const accessOptionsNew = useMemo(
     () => ({
