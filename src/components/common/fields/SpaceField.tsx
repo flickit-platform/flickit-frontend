@@ -4,6 +4,7 @@ import { Trans } from "react-i18next";
 import { useServiceContext } from "@providers/ServiceProvider";
 import { useQuery } from "@utils/useQuery";
 import AutocompleteAsyncField from "@common/fields/AutocompleteAsyncField";
+import { t } from "i18next";
 
 type SpaceOption = { id: number | string; title: string; selected?: boolean };
 
@@ -65,7 +66,11 @@ export const SpaceField = ({
 
   return (
     <AutocompleteAsyncField
-      options={spaces}
+      options={spaces.map((s) =>
+        s.title === "Default Space"
+          ? { ...s, title: t("assessment.myAssessments") }
+          : s,
+      )}
       name={name}
       required={required}
       disabled={disabled}
