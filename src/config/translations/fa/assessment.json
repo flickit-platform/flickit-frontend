@@ -42,7 +42,7 @@
   "regenerateViaAIDescription": "تحلیل فعلی حذف می‌شود. آیا مایل به تولید تحلیل جدید با هوش مصنوعی هستید؟",
   "learnWhyThisIsUnavailable": "چرا نمی‌توانم ارزیابی بسازم؟",
   "myAssessments": "ارزیابی‌های من",
-  "moveAssessment": "انتقال ارزیابی",
+  "move": "انتقال",
   "newAssessment": "ایجاد ارزیابی",
   "noAssesmentHere": "در این بخش هیچ ارزیابی‌ای وجود ندارد.",
   "availableLanguage": "فقط این زبان در دسترس است.",

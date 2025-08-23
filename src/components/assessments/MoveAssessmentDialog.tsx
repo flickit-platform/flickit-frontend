@@ -52,7 +52,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
       title={
         <Box sx={{ ...styles.centerVH, gap: "6px" }}>
           <DriveFileMoveOutlinedIcon />
-          <Trans i18nKey={"assessment.moveAssessment"} />
+          <Trans i18nKey={"assessment.move"} />
         </Box>
       }
       titleStyle={{ marginBottom: 0 }}
