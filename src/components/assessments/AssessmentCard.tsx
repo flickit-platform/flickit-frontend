@@ -609,7 +609,10 @@ const Actions = ({
         }}
         items={actions}
       />
-      <MoveAssessmentDialog {...moveAssessmentDialogProps} />
+      <MoveAssessmentDialog
+        {...moveAssessmentDialogProps}
+        assessmentId={item.id}
+      />
     </>
   );
 };
