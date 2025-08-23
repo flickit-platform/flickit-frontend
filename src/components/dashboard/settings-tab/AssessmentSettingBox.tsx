@@ -484,12 +484,20 @@ export const AssessmentSettingMemberBox = (props: {
   };
 
   function getLabelDisplayedRows(t: any) {
-    return ({ from, to, count }: { from: number; to: number; count: number }) => {
-      let countLabel: string | number = ""
-      if(count !== -1){
-        countLabel = count
-      }else {
-        countLabel = `${t("common.moreThan")} ${to}`
+    return ({
+      from,
+      to,
+      count,
+    }: {
+      from: number;
+      to: number;
+      count: number;
+    }) => {
+      let countLabel: string | number = "";
+      if (count !== -1) {
+        countLabel = count;
+      } else {
+        countLabel = `${t("common.moreThan")} ${to}`;
       }
       return `${from}-${to} ${t("common.of")} ${countLabel}`;
     };
@@ -692,6 +700,9 @@ export const AssessmentSettingMemberBox = (props: {
                           >
                             <Tooltip
                               disableHoverListener={row.editable}
+                              disableFocusListener={row.editable}
+                              disableInteractive={row.editable}
+                              disableTouchListener={row.editable}
                               title={
                                 <Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />
                               }
@@ -710,6 +721,9 @@ export const AssessmentSettingMemberBox = (props: {
                         </FormControl>
                         <Tooltip
                           disableHoverListener={row.editable}
+                          disableFocusListener={row.editable}
+                          disableInteractive={row.editable}
+                          disableTouchListener={row.editable}
                           title={
                             <Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />
                           }
@@ -1214,7 +1228,11 @@ const OnHoverInputTitleSetting = (props: any) => {
     }
   };
 
-  function getTextAlign(type: string, inputData: string, inputDataShortTitle: any) {
+  function getTextAlign(
+    type: string,
+    inputData: string,
+    inputDataShortTitle: any,
+  ) {
     if (type === "title") {
       return firstCharDetector(inputData) ? "right" : "left";
     }
@@ -1228,7 +1246,7 @@ const OnHoverInputTitleSetting = (props: any) => {
 
   const inputProps: React.HTMLProps<HTMLInputElement> = {
     style: {
-      textAlign
+      textAlign,
     },
   };
 
