@@ -244,6 +244,9 @@ const DeleteActionCell = ({ row, deleteEGMember }: any) => (
   >
     <Tooltip
       disableHoverListener={row.editable}
+      disableFocusListener={row.editable}
+      disableInteractive={row.editable}
+      disableTouchListener={row.editable}
       title={<Trans i18nKey="spaces.spaceOwnerRoleIsNotEditable" />}
     >
       <Box width="30%" sx={{ ...styles.centerVH }}>
