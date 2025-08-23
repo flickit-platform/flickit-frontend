@@ -581,7 +581,7 @@ const Actions = ({
     : [
         {
           icon: <DriveFileMoveOutlinedIcon fontSize="small" />,
-          text: <Trans i18nKey="assessment.moveAssessment" />,
+          text: <Trans i18nKey="assessment.move" />,
           onClick: handleMoveToAssessment,
         },
         {
