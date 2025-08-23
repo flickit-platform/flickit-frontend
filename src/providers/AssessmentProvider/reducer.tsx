@@ -20,6 +20,16 @@ const assessmentReducer = (
         ...prevState,
         pendingKitData: action.payload,
       };
+    case ASSESSMENT_ACTIONS_TYPE.TARGET_SPACE:
+      return {
+        ...prevState,
+        targetSpace: action.payload,
+      };
+      case ASSESSMENT_ACTIONS_TYPE.TOP_SPACE:
+      return {
+        ...prevState,
+        topSpace: action.payload,
+      };
     default:
       return prevState;
   }

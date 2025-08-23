@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
+import { useAssessmentContext } from "@providers/AssessmentProvider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
@@ -27,10 +28,10 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     ...rest
   } = props;
   const { type, staticData = {} } = context;
-  const { spaceList, queryDataSpaces } = staticData;
+  const { queryDataSpaces } = staticData;
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
-
+  const { targetSpace } = useAssessmentContext()
   const close = () => {
     abortController.abort();
     closeDialog();
@@ -82,7 +83,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
           <Grid item lg={6} md={6} sm={12} xs={12}>
             <SpaceField
               queryDataSpaces={queryDataSpaces}
-              spaces={spaceList}
+              spaces={targetSpace}
               sx={{ mt: "24px" }}
               label={<Trans i18nKey="spaces.targetSpace" />}
             />{" "}

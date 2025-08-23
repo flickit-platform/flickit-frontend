@@ -5,6 +5,8 @@ import { useConnectAutocompleteField } from "@/components/common/fields/Autocomp
 import { useNavigate } from "react-router-dom";
 import { useServiceContext } from "@/providers/ServiceProvider";
 import showToast from "@utils/toastError";
+import { useAssessmentDispatch } from "@providers/AssessmentProvider";
+import { t } from "i18next";
 
 type Space = { id: string; [k: string]: any };
 
@@ -33,12 +35,22 @@ export function useAssessmentCreation({
 }: UseAssessmentCreationParams) {
   const navigate = useNavigate();
   const { service } = useServiceContext();
-
+  const dispatch = useAssessmentDispatch()
   const wrapArrayFetcher = (
     fn: ArrayFetcher,
+    type: string
   ): TQueryServiceFunction<Space[]> => {
     return async (args, config) => {
       const res = await fn(args, config);
+
+      const updated = res.data.items.map((item: any) =>
+        item.isDefault ? { ...item, title: t("assessment.myAssessments") } : item
+      );
+
+      dispatch({
+        type,
+        payload:  updated
+      })
       return {
         ...res,
         data: res.data as Space[],
@@ -48,8 +60,10 @@ export function useAssessmentCreation({
 
   const spacesService: TQueryServiceFunction<Space[]> = useMemo(() => {
     if (getSpacesService) return getSpacesService;
-    if (getSpacesArrayFetcher) return wrapArrayFetcher(getSpacesArrayFetcher);
-    return (args: any, config: any) => service.space.getTopSpaces(args, config);
+    if (getSpacesArrayFetcher) return wrapArrayFetcher(getSpacesArrayFetcher,"TARGET_SPACE");
+    // const getTopSpaceFetcher = async (args: any, config: any) =>
+    //   service.space.getTopSpaces(args, config)
+    // return wrapArrayFetcher(getTopSpaceFetcher ,"TOP_SPACE")
   }, [getSpacesService, getSpacesArrayFetcher, service.space]);
 
   const queryDataSpaces = useConnectAutocompleteField({

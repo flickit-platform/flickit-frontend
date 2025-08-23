@@ -4,10 +4,13 @@ import {
   useContext,
   Dispatch,
   createContext,
-  useMemo,
+  useMemo, useEffect
 } from "react";
 import assessmentReducer from "./reducer";
 import { IAssessmentInfo } from "@/types";
+import { useServiceContext } from "@providers/ServiceProvider";
+import { ASSESSMENT_ACTIONS_TYPE } from "./actions";
+import { t } from "i18next";
 
 interface IAssessmentProviderProps {
   children?: JSX.Element | JSX.Element[];
@@ -18,12 +21,16 @@ export interface IAssessmentContext {
   assessmentInfo?: IAssessmentInfo;
   pendingKitData: { id?: string; title?: string; display?: boolean };
   dispatch: Dispatch<any>;
+  targetSpace: any[];
+  topSpace: any[];
 }
 
 export const AssessmentContext = createContext<IAssessmentContext>({
   permissions: {},
   assessmentInfo: undefined,
   pendingKitData: {},
+  targetSpace: [],
+  topSpace: [],
   dispatch: () => {},
 });
 
@@ -35,6 +42,18 @@ export const AssessmentProvider: FC<IAssessmentProviderProps> = ({
   const [state, dispatch] = useReducer(assessmentReducer, {
     permissions: {},
     assessmentInfo: {},
+  });
+  const { service } = useServiceContext();
+  useEffect(() => {
+      service?.space?.getTopSpaces(undefined).then(res =>{
+        const updated = res.data.items.map((item: any) =>
+          item.isDefault ? { ...item, title: t("assessment.myAssessments") } : item
+        );
+        dispatch({
+          type: ASSESSMENT_ACTIONS_TYPE.TOP_SPACE,
+          payload: updated
+        })
+      })
   });
 
   const contextValue = useMemo(

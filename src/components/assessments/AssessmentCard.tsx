@@ -50,6 +50,7 @@ import MoveAssessmentDialog from "./MoveAssessmentDialog";
 import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
 import keycloakService from "@/service/keycloakService";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { useAssessmentContext } from "@providers/AssessmentProvider";
 
 interface IAssessmentCardProps {
   item: IAssessment & { space: any };
@@ -509,6 +510,7 @@ const Actions = ({
 
   const navigate = useNavigate();
   const moveAssessmentDialogProps = useDialog();
+
   const { createOrOpenDialog } = useAssessmentCreation({
     openDialog: moveAssessmentDialogProps.openDialog,
     getSpacesArrayFetcher: async (args, config) =>

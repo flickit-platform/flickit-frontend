@@ -56,7 +56,7 @@ const NewAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const navigate = useNavigate();
   const langSec = langList?.length > 1;
   const spaceSec = spaceList?.length > 1;
-  const { dispatch } = useAssessmentContext();
+  const { dispatch, topSpace } = useAssessmentContext();
 
   const close = () => {
     abortController.abort();
