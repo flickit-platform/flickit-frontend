@@ -214,6 +214,7 @@ const SpaceContainer = () => {
                     dialogProps={assessmentDialogProps}
                     space={{ id: 6, title: "draft" }}
                     deleteAssessment={deleteAssessment}
+                    fetchAssessments={fetchAssessments}
                   />
                   {assessmentsTotal > 8 && (
                     <Box mt={2} display="flex" justifyContent="center">

@@ -55,12 +55,14 @@ interface IAssessmentCardProps {
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   deleteAssessment: TQueryFunction<any, TId>;
+  fetchAssessments: any;
 }
 
 const AssessmentCard = ({
   item,
   dialogProps,
   deleteAssessment,
+  fetchAssessments,
 }: IAssessmentCardProps) => {
   const [show, setShow] = useState<boolean>();
   const [gaugeResult, setGaugeResult] = useState<any>();
@@ -189,6 +191,7 @@ const AssessmentCard = ({
             item={item}
             dialogProps={dialogProps}
             abortController={abortController}
+            fetchAssessments={fetchAssessments}
           />
         )}
 
@@ -498,11 +501,13 @@ const Actions = ({
   deleteAssessment,
   item,
   abortController,
+  fetchAssessments,
 }: {
   deleteAssessment: TQueryFunction<any, TId>;
   item: IAssessment & { space: any };
   dialogProps: TDialogProps;
   abortController: React.MutableRefObject<AbortController>;
+  fetchAssessments: any;
 }) => {
   const { service } = useServiceContext();
   const [loading, setLoading] = useState(false);
@@ -609,7 +614,11 @@ const Actions = ({
         }}
         items={actions}
       />
-      <MoveAssessmentDialog {...moveAssessmentDialogProps} />
+      <MoveAssessmentDialog
+        {...moveAssessmentDialogProps}
+        assessmentId={item.id}
+        onSubmitForm={fetchAssessments}
+      />
     </>
   );
 };

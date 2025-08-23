@@ -10,12 +10,18 @@ import Typography from "@mui/material/Typography";
 import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
 import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
+import { useServiceContext } from "@/providers/ServiceProvider";
+import { useQuery } from "@/utils/useQuery";
+import { useFetchAssessments } from "./AssessmentContainer";
+import { useParams, useSearchParams } from "react-router-dom";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
   onSubmitForm?: () => void;
   openDialog?: any;
   context?: any;
+  assessmentId?: any;
 }
 
 const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
@@ -24,8 +30,12 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     onSubmitForm,
     context = {},
     openDialog,
+    assessmentId,
     ...rest
   } = props;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { service } = useServiceContext();
   const { type, staticData = {} } = context;
   const { spaceList, queryDataSpaces } = staticData;
   const formMethods = useForm({ shouldUnregister: true });
@@ -43,8 +53,26 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
     }
   };
 
-  const onSubmit = async () => {};
+  const AssessmentMoveTarget = useQuery({
+    service: (args, config) =>
+      service.assessments.info.AssessmentMoveTarget(
+        args ?? {
+          id: assessmentId,
+          targetSpaceId: formMethods?.getValues("space")?.id,
+        },
+        config,
+      ),
+    runOnMount: false,
+    toastError: true,
+  });
 
+  const onSubmit = async () => {
+    await AssessmentMoveTarget.query();
+    if (onSubmitForm !== undefined) {
+      await onSubmitForm();
+    }
+    close();
+  };
   return (
     <CEDialog
       {...rest}
