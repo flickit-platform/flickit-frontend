@@ -755,7 +755,7 @@ export const AssessmentSettingMemberBox = (props: {
               gap="10px"
             >
               <Typography color="#78818b" variant="headlineSmall">
-                <Trans i18nKey="invitees" />
+                <Trans i18nKey="common.invitees" />
               </Typography>
             </Box>
 
