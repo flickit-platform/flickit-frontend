@@ -130,4 +130,10 @@ export const info = {
       config,
     );
   },
+  AssessmentMoveTarget(
+    { id, targetSpaceId }: { id: any; targetSpaceId: any },
+    config?: AxiosRequestConfig<any>,
+  ) {
+    return axios.put(`/api/v1/assessments/${id}/move/`, { targetSpaceId }, config);
+  },
 };

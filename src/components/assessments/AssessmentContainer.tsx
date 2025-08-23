@@ -29,6 +29,9 @@ import { useQuery } from "@/utils/useQuery";
 import useScreenResize from "@utils/useScreenResize";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import { useTheme } from "@mui/material";
+import MoveAssessmentDialog from "@components/assessments/MoveAssessmentDialog";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import keycloakService from "@/service/keycloakService";
 
 const AssessmentContainer = () => {
   const { service } = useServiceContext();
@@ -37,6 +40,7 @@ const AssessmentContainer = () => {
   const { currentSpace } = useAuthContext();
   const { spaceId, page } = useParams();
   const navigate = useNavigate();
+  const [moveloading, setMoveLoading] = useState(false);
   const { fetchAssessments, ...rest } = useFetchAssessments(
     Number(page) - 1,
     Number(spaceId),
@@ -66,6 +70,35 @@ const AssessmentContainer = () => {
     fetchSpaceInfo.query();
   }, []);
   const isSmallScreen = useScreenResize("sm");
+
+  const moveAssessmentDialogProps = useDialog();
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: moveAssessmentDialogProps.openDialog,
+    getSpacesArrayFetcher: async (args, config) =>
+      service.assessments.info.getTargetSpaces(args, config),
+    getSpacesAccessor: "items",
+  });
+
+  const handleMoveToAssessment = (e: any, id: any, title: any) => {
+    setMoveLoading(true);
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (keycloakService.isLoggedIn()) {
+      createOrOpenDialog({
+        id,
+        title,
+        languages: [],
+        setLoading: setMoveLoading,
+        queryDataSpacesArgs: { assessmentId: id },
+      });
+    } else {
+      setMoveLoading(false);
+      window.location.hash = `#createAssessment?id=${id}`;
+      keycloakService.doLogin();
+    }
+  };
+
 
   const theme = useTheme();
 
@@ -237,6 +270,7 @@ const AssessmentContainer = () => {
                   data={data}
                   space={{ id: spaceId, title: currentSpace?.title }}
                   dialogProps={dialogProps}
+                  handleMoveToAssessment={handleMoveToAssessment}
                 />
                 {pageCount > 1 && !isEmpty && (
                   <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
@@ -262,6 +296,7 @@ const AssessmentContainer = () => {
           titleStyle={{ mb: 0 }}
           contentStyle={{ p: 0 }}
         />
+        <MoveAssessmentDialog {...moveAssessmentDialogProps}  onSubmitForm={fetchAssessments}  />
       </Box>
     </PermissionControl>
   );

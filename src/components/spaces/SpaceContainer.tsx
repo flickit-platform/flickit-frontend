@@ -28,6 +28,9 @@ import { AssessmentsList } from "../assessments/AssessmentList";
 import LoadingAssessmentCards from "../common/loadings/LoadingAssessmentCards";
 import EmptyState from "../kit-designer/common/EmptyState";
 import uniqueId from "@/utils/uniqueId";
+import MoveAssessmentDialog from "@components/assessments/MoveAssessmentDialog";
+import { useAssessmentCreation } from "@/hooks/useAssessmentCreation";
+import keycloakService from "@/service/keycloakService";
 
 const SpaceContainer = () => {
   const dialogProps = useDialog();
@@ -39,6 +42,7 @@ const SpaceContainer = () => {
   const { userInfo: { defaultSpaceId } } = useAuthContext()
   const [rowsPerPage, setRowsPerPage] = useState<number>(6);
   const [page, setPage] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
 
   const {
     data: spaceData,
@@ -59,6 +63,7 @@ const SpaceContainer = () => {
     deleteAssessment,
     fetchAssessments,
   } = useFetchAssessments(assessmentPage - 1, defaultSpaceId);
+  const { service } = useServiceContext();
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -110,6 +115,34 @@ const SpaceContainer = () => {
         },
       },
     });
+  };
+
+  const moveAssessmentDialogProps = useDialog();
+  const { createOrOpenDialog } = useAssessmentCreation({
+    openDialog: moveAssessmentDialogProps.openDialog,
+    getSpacesArrayFetcher: async (args, config) =>
+      service.assessments.info.getTargetSpaces(args, config),
+    getSpacesAccessor: "items",
+  });
+
+  const handleMoveToAssessment = (e: any, id: any, title: any) => {
+    setLoading(true);
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (keycloakService.isLoggedIn()) {
+      createOrOpenDialog({
+        id,
+        title,
+        languages: [],
+        setLoading,
+        queryDataSpacesArgs: { assessmentId: id },
+      });
+    } else {
+      setLoading(false);
+      window.location.hash = `#createAssessment?id=${id}`;
+      keycloakService.doLogin();
+    }
   };
 
   return (
@@ -214,6 +247,7 @@ const SpaceContainer = () => {
                     dialogProps={assessmentDialogProps}
                     space={{ id: 6, title: "draft" }}
                     deleteAssessment={deleteAssessment}
+                    handleMoveToAssessment={handleMoveToAssessment}
                   />
                   {assessmentsTotal > 8 && (
                     <Box mt={2} display="flex" justifyContent="center">
@@ -253,6 +287,7 @@ const SpaceContainer = () => {
         titleStyle={{ mb: 0 }}
         contentStyle={{ p: 0 }}
       />
+      <MoveAssessmentDialog {...moveAssessmentDialogProps}  onSubmitForm={fetchAssessments}  />
     </Box>
   );
 };
