@@ -237,6 +237,7 @@ const AssessmentContainer = () => {
                   data={data}
                   space={{ id: spaceId, title: currentSpace?.title }}
                   dialogProps={dialogProps}
+                  fetchAssessments={fetchAssessments}
                 />
                 {pageCount > 1 && !isEmpty && (
                   <Stack spacing={2} mt={3} sx={{ ...styles.centerVH }}>
