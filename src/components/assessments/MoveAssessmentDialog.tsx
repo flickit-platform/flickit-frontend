@@ -12,12 +12,10 @@ import { Grid } from "@mui/material";
 import { SpaceField } from "../common/fields/SpaceField";
 import { useQuery } from "@utils/useQuery";
 import { useServiceContext } from "@providers/ServiceProvider";
-import { useParams } from "react-router";
-import { useAuthContext } from "@providers/AuthProvider";
 
 interface IAssessmentCEFromDialogProps extends DialogProps {
   onClose: () => void;
-  onSubmitForm?: () => void;
+  onSubmitForm: () => void;
   openDialog?: any;
   context?: any;
 }
@@ -33,7 +31,6 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const { type, staticData = {} } = context;
   const { spaceList, queryDataSpaces, assessment_kit } = staticData;
-  console.log(staticData,"staticData");
   const formMethods = useForm({ shouldUnregister: true });
   const abortController = useMemo(() => new AbortController(), [rest.open]);
 
@@ -54,7 +51,7 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
   const AssessmentMoveTarget = useQuery({
     service: (args, config) =>
       service.assessments.info.AssessmentMoveTarget(
-        args ?? { id: assessment_kit.id, targetSpaceId : "1329" },
+        args ?? { id: assessment_kit.id, targetSpaceId : formMethods?.getValues("space")?.id },
         config,
       ),
     runOnMount: false,
@@ -63,6 +60,8 @@ const MoveAssessmentDialog = (props: IAssessmentCEFromDialogProps) => {
 
   const onSubmit = async () => {
     await AssessmentMoveTarget.query()
+    await onSubmitForm()
+    close()
   };
 
   return (

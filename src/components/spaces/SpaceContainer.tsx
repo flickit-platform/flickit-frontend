@@ -287,7 +287,7 @@ const SpaceContainer = () => {
         titleStyle={{ mb: 0 }}
         contentStyle={{ p: 0 }}
       />
-      <MoveAssessmentDialog {...moveAssessmentDialogProps} />
+      <MoveAssessmentDialog {...moveAssessmentDialogProps}  onSubmitForm={fetchAssessments}  />
     </Box>
   );
 };

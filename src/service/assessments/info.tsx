@@ -134,6 +134,6 @@ export const info = {
     { id, targetSpaceId }: { id: any; targetSpaceId: any },
     config?: AxiosRequestConfig<any>,
   ) {
-    return axios.put(`/api/assessments/${id}/move/`, { targetSpaceId }, config);
+    return axios.put(`/api/v1/assessments/${id}/move/`, { targetSpaceId }, config);
   },
 };
