@@ -22,7 +22,7 @@ const ReportTab = () => {
 
   const fetchReportFields = useQuery({
     service: (args, config) =>
-      service.assessments.report.getMetadata(args ?? { assessmentId }, config),
+      service.assessments.metadata.getMetadata(args ?? { assessmentId }, config),
     runOnMount: true,
   });
 
@@ -115,7 +115,7 @@ const ReportTab = () => {
                         editable={true}
                         fieldName={name}
                         onSubmit={async (payload: any, event: any) => {
-                          await service.assessments.report.updateMetadata(
+                          await service.assessments.metadata.updateMetadata(
                             {
                               assessmentId,
                               reportData: { [name]: payload[name] },
