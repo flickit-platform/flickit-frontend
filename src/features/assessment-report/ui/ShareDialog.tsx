@@ -9,61 +9,59 @@ import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import Share from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
-import { CEDialog, CEDialogActions } from "../common/dialogs/CEDialog";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import stringAvatar from "@/utils/stringAvatar";
-import { useQuery } from "@/utils/useQuery";
-import { useParams } from "react-router-dom";
-import { useServiceContext } from "@/providers/ServiceProvider";
-import { ICustomError } from "@/utils/CustomError";
-import QueryBatchData from "../common/QueryBatchData";
 import { VISIBILITY } from "@/utils/enumType";
-import { IGraphicalReport, IUserPermissions, PathInfo } from "@/types";
+import { IGraphicalReport } from "@/types";
 import { FormProvider, useForm } from "react-hook-form";
-import { InputFieldUC } from "../common/fields/InputField";
-import showToast from "@/utils/toastError";
 import { styles } from "@styles";
 import Radio from "@mui/material/Radio";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { getBasePath } from "@/utils/helpers";
+import { InviteFormData, useShareDialog } from "../model/hooks/useShareDialog";
+import {
+  CEDialog,
+  CEDialogActions,
+} from "@/components/common/dialogs/CEDialog";
+import { InputFieldUC } from "@/components/common/fields/InputField";
+import QueryBatchData from "@/components/common/QueryBatchData";
 
-interface IDialogProps extends IGraphicalReport {
+type ShareDialogProps = {
   open: boolean;
   onClose: () => void;
-  assessme: string;
-  visibility: VISIBILITY;
-  permissions: IUserPermissions;
-}
+} & Pick<IGraphicalReport, "visibility" | "permissions" | "linkHash" | "lang">;
 
-export const ShareDialog = ({
+export default function ShareDialog({
   open,
   onClose,
   visibility,
   permissions,
   linkHash,
   lang,
-}: IDialogProps) => {
+}: ShareDialogProps) {
   const { t } = useTranslation();
-  const { assessmentId = "" } = useParams();
-  const { service } = useServiceContext();
-  const [access, setAccess] = useState<VISIBILITY>(visibility);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const methods = useForm();
+  const methods = useForm<InviteFormData>();
   const { reset, handleSubmit } = methods;
 
-  const lng = lang?.code?.toLowerCase();
+  const lng = (lang?.code ?? "en").toLowerCase();
+  const isRTL = lng === "fa";
 
-  const fetchGraphicalReportUsers = useQuery({
-    service: (args, config) =>
-      service.assessments.member.getReportAccessUsers(
-        { assessmentId, ...(args ?? {}) },
-        config,
-      ),
-    runOnMount: false,
-  });
+  const {
+    access,
+    snackbarOpen,
+    closeSnackbar,
+    fetchGraphicalReportUsers,
+    handleSelect,
+    onInviteSubmit,
+    handleCopyClick,
+  } = useShareDialog({ open, visibility, linkHash });
 
-  const accessOptionsNew = useMemo(
+  type AccessOptions = Record<
+    VISIBILITY,
+    { title: string; description: string }
+  >;
+
+  const accessOptionsNew: AccessOptions = useMemo(
     () => ({
       [VISIBILITY.RESTRICTED]: {
         title: t("assessmentReport.restrictedShareTitle", { lng }),
@@ -74,79 +72,8 @@ export const ShareDialog = ({
         description: t("assessmentReport.PublicShareDescription", { lng }),
       },
     }),
-    [lng],
+    [lng, t],
   );
-
-  const PublishReportStatus = useQuery({
-    service: (args, config) =>
-      service.assessments.report.updateVisibilityStatus(args, config),
-    runOnMount: false,
-  });
-
-  const handleSelect = async (newAccess: VISIBILITY) => {
-    try {
-      setAccess(newAccess);
-      const response = await PublishReportStatus.query({
-        data: { visibility: newAccess },
-        assessmentId,
-      });
-
-      const currentPath = window.location.pathname;
-      const basePath = getBasePath(currentPath);
-      let finalPath = basePath;
-
-      if (newAccess === VISIBILITY.PUBLIC && response?.linkHash) {
-        const expectedPath = `${basePath}${response.linkHash}/`;
-        if (currentPath !== expectedPath) finalPath = expectedPath;
-      }
-
-      if (window.location.pathname !== finalPath)
-        window.history.replaceState({}, "", finalPath);
-    } catch (error) {
-      showToast(error as ICustomError);
-    }
-  };
-
-  const grantReportAccess = useQuery({
-    service: (args, config) =>
-      service.assessments.member.grantReportAccess(args, config),
-    runOnMount: false,
-  });
-
-  useEffect(() => {
-    if (open) {
-      fetchGraphicalReportUsers.query();
-      reset();
-      const currentPath = window.location.pathname;
-      const basePath = getBasePath(currentPath);
-
-      if (access === VISIBILITY.PUBLIC) {
-        const newPath = `${basePath}${linkHash}/`;
-        window.history.pushState({}, "", newPath);
-      }
-    }
-  }, [open]);
-
-  const onSubmit = async (data: any) => {
-    try {
-      await grantReportAccess.query({ email: data.email, assessmentId });
-      fetchGraphicalReportUsers.query();
-      reset();
-    } catch (error) {
-      showToast(error as ICustomError);
-    }
-  };
-
-  const handleCopyClick = async () => {
-    try {
-      navigator.clipboard.writeText(window.location.href);
-      setSnackbarOpen(true);
-    } catch (error) {
-      showToast(error as ICustomError);
-    }
-  };
-
-  const handleCloseSnackbar = () => setSnackbarOpen(false);
 
   return (
     <CEDialog
@@ -159,7 +86,7 @@ export const ShareDialog = ({
         </Box>
       }
       maxWidth="sm"
-      sx={{ ...styles.rtlStyle(lng === "fa") }}
+      sx={{ ...styles.rtlStyle(isRTL) }}
       contentStyle={{
         p: "38px 64px 32px 64px !important",
         overflowX: "hidden !important",
@@ -176,11 +103,14 @@ export const ShareDialog = ({
         </Typography>
         <Divider sx={{ my: 1 }} />
       </Box>
+
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         {Object.values(VISIBILITY).map((key) => {
-          const isSelected = access === key;
+          const k = key as VISIBILITY;
+          const isSelected = access === k;
           return (
             <Box
+              key={k}
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -190,8 +120,8 @@ export const ShareDialog = ({
                 borderRadius: "8%",
                 cursor: "pointer",
               }}
-              onClick={() => handleSelect(key)}
-              key={key}
+              onClick={() => handleSelect(k)}
+              role="button"
             >
               <Box
                 display="flex"
@@ -204,12 +134,7 @@ export const ShareDialog = ({
                   checked={isSelected}
                   color="primary"
                   size="small"
-                  sx={{
-                    padding: "9px",
-                    "&.Mui-checked": {
-                      color: "#2466A8",
-                    },
-                  }}
+                  sx={{ padding: "9px", "&.Mui-checked": { color: "#2466A8" } }}
                 />
               </Box>
               <Box
@@ -226,14 +151,14 @@ export const ShareDialog = ({
                   variant="bodyMedium"
                   sx={{ color: "#2B333B" }}
                 >
-                  {accessOptionsNew[key].title}
+                  {accessOptionsNew[k].title}
                 </Typography>
                 <Typography
                   variant="bodySmall"
                   color="background.onVariant"
                   fontFamily="inherit"
                 >
-                  {accessOptionsNew[key].description}{" "}
+                  {accessOptionsNew[k].description}
                 </Typography>
               </Box>
             </Box>
@@ -253,8 +178,11 @@ export const ShareDialog = ({
             </Typography>
             <Divider sx={{ my: 1 }} />
           </Box>
+
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form
+              onSubmit={handleSubmit((data) => onInviteSubmit(data, reset))}
+            >
               <Grid
                 container
                 display="flex"
@@ -273,7 +201,6 @@ export const ShareDialog = ({
                     stylesProps={{ input: { padding: "4px 12px" } }}
                   />
                 </Grid>
-                {/*<Grid item xs={0.5}></Grid>*/}
                 <Grid item>
                   <LoadingButton
                     variant="outlined"
@@ -285,62 +212,59 @@ export const ShareDialog = ({
                       height: "100%",
                     }}
                   >
-                    <PersonAddIcon fontSize={"small"} />
+                    <PersonAddIcon fontSize="small" />
                   </LoadingButton>
                 </Grid>
               </Grid>
             </form>
           </FormProvider>
+
           <QueryBatchData
             queryBatchData={[fetchGraphicalReportUsers]}
-            renderLoading={() => {
-              return (
-                <>
-                  {[1, 2].map((number) => {
-                    return (
-                      <Skeleton
-                        key={number}
-                        variant="rectangular"
-                        sx={{ borderRadius: 2, height: "30px", mb: 1 }}
+            renderLoading={() => (
+              <>
+                {[1, 2].map((n) => (
+                  <Skeleton
+                    key={n}
+                    variant="rectangular"
+                    sx={{ borderRadius: 2, height: "30px", mb: 1 }}
+                  />
+                ))}
+              </>
+            )}
+            render={([graphicalReportUsers]) => (
+              <Box display="flex" flexDirection="column" my={1} gap={2}>
+                {[
+                  ...(graphicalReportUsers?.users ?? []),
+                  ...(graphicalReportUsers?.invitees ?? []),
+                ].map((member) => {
+                  const { displayName, id, pictureLink, email } = member;
+                  return (
+                    <Box
+                      key={String(id ?? email)}
+                      sx={{ ...styles.centerV }}
+                      gap={1}
+                    >
+                      <Avatar
+                        {...stringAvatar((displayName ?? "").toUpperCase())}
+                        src={pictureLink ?? undefined}
+                        sx={{ width: 24, height: 24, fontSize: 12 }}
                       />
-                    );
-                  })}
-                </>
-              );
-            }}
-            render={([graphicalReportUsers]) => {
-              return (
-                <Box display="flex" flexDirection="column" my={1} gap={2}>
-                  {[
-                    ...graphicalReportUsers.users,
-                    ...graphicalReportUsers.invitees,
-                  ].map((member: any) => {
-                    const { displayName, id, pictureLink, email } = member;
-                    return (
-                      <Box key={id} sx={{ ...styles.centerV }} gap={1}>
-                        <Avatar
-                          {...stringAvatar(displayName?.toUpperCase())}
-                          src={pictureLink}
-                          sx={{ width: 24, height: 24, fontSize: 12 }}
+                      {email}
+                      {(graphicalReportUsers?.invitees ?? []).includes(
+                        member,
+                      ) && (
+                        <Chip
+                          label={t("common.invited", { lng })}
+                          size="small"
+                          sx={{ ".MuiChip-label": { fontFamily: "inherit" } }}
                         />
-                        {email}
-                        {graphicalReportUsers.invitees.includes(member) && (
-                          <Chip
-                            label={t("common.invited", { lng })}
-                            size="small"
-                            sx={{
-                              ".MuiChip-label": {
-                                fontFamily: "inherit",
-                              },
-                            }}
-                          />
-                        )}
-                      </Box>
-                    );
-                  })}
-                </Box>
-              );
-            }}
+                      )}
+                    </Box>
+                  );
+                })}
+              </Box>
+            )}
           />
         </>
       )}
@@ -356,12 +280,10 @@ export const ShareDialog = ({
           startIcon={
             <LinkIcon
               fontSize="small"
-              sx={{
-                ...styles.iconDirectionStyle(lng),
-              }}
+              sx={{ ...styles.iconDirectionStyle(lng) }}
             />
           }
-          onClick={() => handleCopyClick()}
+          onClick={handleCopyClick}
           variant="outlined"
           sx={{ fontFamily: "inherit" }}
         >
@@ -376,13 +298,14 @@ export const ShareDialog = ({
           {t("common.done", { lng })}
         </LoadingButton>
       </CEDialogActions>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
+        onClose={closeSnackbar}
         message={t("common.linkCopied", { lng })}
         sx={{ fontFamily: "inherit" }}
       />
     </CEDialog>
   );
-};
+}

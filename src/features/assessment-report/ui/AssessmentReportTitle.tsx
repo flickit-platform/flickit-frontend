@@ -1,8 +1,7 @@
 import Title from "@common/TitleComponent";
 import SupTitleBreadcrumb from "@/components/common/SupTitleBreadcrumb";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { t } from "i18next";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { styles } from "@styles";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { ArrowForward } from "@mui/icons-material";
@@ -52,13 +51,7 @@ const AssessmentReportTitle = (props: any) => {
         />
       }
     >
-      <Box
-        mt={4}
-        display="flex"
-        justifyContent="space-between"
-        width="100%"
-        alignItems="flex-end"
-      >
+      <Box mt={4} display="flex" justifyContent="space-between" width="100%" alignItems="flex-end">
         <Box>
           {isAuthenticatedUser && (
             <IconButton color="primary" onClick={handleBack} size="small">

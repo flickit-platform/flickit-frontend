@@ -43,7 +43,7 @@
   "report": "report",
   "reportTitle": "Report",
   "requestAnExpertReview": "Request an expert review",
-  "requestAnExpertReviewContent":"We can share your questionnaire responses with a team of experienced assessors who have domain-specific expertise aligned with your software. Their involvement can result in an assessment with greater accuracy, depth, and quality than the current AI-assisted report. <br/>Our specialists will be in direct contact with you throughout the process. <br/>Please note that this is a paid service. To explore a potential collaboration, please share your contact details and brief information about your software—such as business domain, brand name, and other relevant context.",
+  "requestAnExpertReviewContent": "We can share your questionnaire responses with a team of experienced assessors who have domain-specific expertise aligned with your software. Their involvement can result in an assessment with greater accuracy, depth, and quality than the current AI-assisted report. <br/>Our specialists will be in direct contact with you throughout the process. <br/>Please note that this is a paid service. To explore a potential collaboration, please share your contact details and brief information about your software—such as business domain, brand name, and other relevant context.",
   "restrictedShareTitle": "Restricted access (Only users with access) ",
   "restrictedShareDescription": "Accessible only to users who’ve been given access.",
   "shareReport": "Share report",

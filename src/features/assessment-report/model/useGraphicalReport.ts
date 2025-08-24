@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@/utils/useQuery";
 import { ErrorCodes, IGraphicalReport, PathInfo, ISubject } from "@/types";
@@ -6,7 +6,7 @@ import { VISIBILITY } from "@/utils/enumType";
 import { getBasePath } from "@/utils/helpers";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { useServiceContext } from "@/providers/ServiceProvider";
-import useCalculate from "./useCalculate";
+import useCalculate from "@/hooks/useCalculate";
 
 export const useGraphicalReport = () => {
   const location = useLocation();
@@ -14,16 +14,15 @@ export const useGraphicalReport = () => {
   const { service } = useServiceContext();
 
   const { assessmentId = "", linkHash = "" } = useParams();
-
   const { calculate, calculateConfidence } = useCalculate();
 
   const fetchPathInfo = useQuery<PathInfo>({
     service: (args, config) =>
       service.common.getPathInfo({ assessmentId, ...(args ?? {}) }, config),
-    runOnMount: isAuthenticatedUser ?? false,
+    runOnMount: !!isAuthenticatedUser,
   });
 
-  const fetchGraphicalReport = useQuery({
+  const fetchGraphicalReport = useQuery<IGraphicalReport>({
     service: (args, config) =>
       isAuthenticatedUser
         ? service.assessments.report.getGraphical(
@@ -37,7 +36,7 @@ export const useGraphicalReport = () => {
     runOnMount: true,
   });
 
-  // --- error handling
+  // --- error handling (self-heal)
   const errorActions: Partial<
     Record<ErrorCodes | "DEPRECATED", () => Promise<boolean>>
   > = {
@@ -79,7 +78,7 @@ export const useGraphicalReport = () => {
 
   const reload = () => fetchGraphicalReport.query();
 
-  // --- sync public URL
+  // --- sync public URL (only once when data changes)
   useEffect(() => {
     const data = fetchGraphicalReport.data as IGraphicalReport | undefined;
     if (data?.visibility === VISIBILITY.PUBLIC && data?.linkHash) {
@@ -91,7 +90,7 @@ export const useGraphicalReport = () => {
     }
   }, [fetchGraphicalReport.data, location.pathname]);
 
-  // --- helpers
+  // --- helpers (feature-specific)
   const computeInvalid = useCallback(
     (
       subjects: ISubject[] = [],
@@ -110,7 +109,7 @@ export const useGraphicalReport = () => {
           (advice?.adviceItems?.length ?? 0) === 0);
       return hasMissingInsight || hasMissingAdvice;
     },
-    [],
+    [isAuthenticatedUser],
   );
 
   return {

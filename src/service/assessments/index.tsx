@@ -5,5 +5,5 @@ export * from "./attribute";
 export * from "./insight";
 export * from "./member";
 export * from "./questionnaire";
-export * from "./report";
+export * from "./metadata";
 export * from "./subjects";

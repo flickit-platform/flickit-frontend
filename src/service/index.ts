@@ -12,6 +12,7 @@ import commonService from "./ commonService";
 import spaceService from "./spaceService";
 import adviceService from "./adviceService";
 import userService from "./userService";
+import { report } from "@/features/assessment-report/api/report";
 
 declare module "axios" {
   interface AxiosRequestConfig {
@@ -70,7 +71,10 @@ export const createService = (
 
   return {
     assessmentKit: assessmentKitService,
-    assessments: assessmentsService,
+    assessments: {
+      ...assessmentsService,
+      report,
+    },
     expertGroups: expertGroupsService,
     kitVersions: kitVersionsService,
     questions: questionsService,
