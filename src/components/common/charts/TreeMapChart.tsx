@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo, Dispatch, SetStateAction } from "react";
+import React, { useCallback, memo, Dispatch, SetStateAction } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import { getMaturityLevelColors } from "@styles";
 import useMediaQuery from "@mui/material/useMediaQuery";

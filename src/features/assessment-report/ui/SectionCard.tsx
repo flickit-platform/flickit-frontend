@@ -8,7 +8,13 @@ interface SectionCardProps extends PaperProps {
   rtl?: boolean;
 }
 
-export default function SectionCard({ title, desc, rtl = false, children, ...rest }: SectionCardProps) {
+export default function SectionCard({
+  title,
+  desc,
+  rtl = false,
+  children,
+  ...rest
+}: Readonly<SectionCardProps>) {
   return (
     <Paper
       elevation={3}
@@ -23,10 +29,20 @@ export default function SectionCard({ title, desc, rtl = false, children, ...res
     >
       {title && (
         <Box width="100%" display="flex" flexDirection="column" gap={2}>
-          <Typography component="div" variant="headlineSmall" color="primary.main" fontWeight="bold" sx={{ ...styles.rtlStyle(rtl) }}>
+          <Typography
+            component="div"
+            variant="headlineSmall"
+            color="primary.main"
+            fontWeight="bold"
+            sx={{ ...styles.rtlStyle(rtl) }}
+          >
             {title}
           </Typography>
-          {desc && <Typography variant="bodyMedium" sx={{ ...styles.rtlStyle(rtl) }}>{desc}</Typography>}
+          {desc && (
+            <Typography variant="bodyMedium" sx={{ ...styles.rtlStyle(rtl) }}>
+              {desc}
+            </Typography>
+          )}
         </Box>
       )}
       {children}

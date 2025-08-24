@@ -70,8 +70,8 @@ export const useGraphicalReport = () => {
 
   useEffect(() => {
     const code = fetchGraphicalReport.errorObject?.response?.data?.code;
-    if (code != null) void handleErrorResponse(code);
-  }, [
+    if (code != null) handleErrorResponse(code);
+}, [
     fetchGraphicalReport.errorObject?.response?.data?.code,
     handleErrorResponse,
   ]);

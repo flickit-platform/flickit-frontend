@@ -6,10 +6,18 @@ import { useScoreSection } from "../../model/hooks/useScoreSection";
 import ChipsRow from "@/components/common/fields/ChipsRow";
 
 export default function ScoreSection({
-  rtl, lng, isQuickMode, assessment, gotoItems,
-}: {
-  rtl: boolean; lng: string; isQuickMode: boolean; assessment: any; gotoItems: any[];
-}) {
+  rtl,
+  lng,
+  isQuickMode,
+  assessment,
+  gotoItems,
+}: Readonly<{
+  rtl: boolean;
+  lng: string;
+  isQuickMode: boolean;
+  assessment: any;
+  gotoItems: readonly any[];
+}>) {
   const { introHtml, overallInsightHtml, gaugeProps } = useScoreSection({
     assessment,
     isQuickMode,
@@ -21,22 +29,51 @@ export default function ScoreSection({
       <Grid item xs={12} md={8}>
         {!isQuickMode && (
           <>
-            <Typography component="div" variant="titleSmall" color="background.onVariant" textAlign={rtl ? "right" : "left"} sx={{ ...styles.rtlStyle(rtl) }}>
+            <Typography
+              component="div"
+              variant="titleSmall"
+              color="background.onVariant"
+              textAlign={rtl ? "right" : "left"}
+              sx={{ ...styles.rtlStyle(rtl) }}
+            >
               {t("assessmentReport.introduction", { lng })}
             </Typography>
-            <Typography component="div" textAlign="justify" variant="bodyMedium" sx={{ mt: 1, ...styles.rtlStyle(rtl) }}
-              dangerouslySetInnerHTML={{ __html: introHtml }} className="tiptap" />
-            <Typography component="div" variant="titleSmall" color="background.onVariant" textAlign={rtl ? "right" : "left"} sx={{ mt: 2, ...styles.rtlStyle(rtl) }}>
+            <Typography
+              component="div"
+              textAlign="justify"
+              variant="bodyMedium"
+              sx={{ mt: 1, ...styles.rtlStyle(rtl) }}
+              dangerouslySetInnerHTML={{ __html: introHtml }}
+              className="tiptap"
+            />
+            <Typography
+              component="div"
+              variant="titleSmall"
+              color="background.onVariant"
+              textAlign={rtl ? "right" : "left"}
+              sx={{ mt: 2, ...styles.rtlStyle(rtl) }}
+            >
               {t("common.summary", { lng })}
             </Typography>
           </>
         )}
 
-        <Typography component="div" textAlign="justify" variant="bodyMedium" sx={{ mt: 1, ...styles.rtlStyle(rtl) }}
-          dangerouslySetInnerHTML={{ __html: overallInsightHtml }} className="tiptap" />
+        <Typography
+          component="div"
+          textAlign="justify"
+          variant="bodyMedium"
+          sx={{ mt: 1, ...styles.rtlStyle(rtl) }}
+          dangerouslySetInnerHTML={{ __html: overallInsightHtml }}
+          className="tiptap"
+        />
 
         <Box sx={{ ...styles.centerV }} gap={2}>
-          <Typography component="div" variant="titleSmall" color="background.onVariant" sx={{ ...styles.rtlStyle(rtl) }}>
+          <Typography
+            component="div"
+            variant="titleSmall"
+            color="background.onVariant"
+            sx={{ ...styles.rtlStyle(rtl) }}
+          >
             {t("common.goto", { lng })}
           </Typography>
           <ChipsRow items={gotoItems} lng={lng} />

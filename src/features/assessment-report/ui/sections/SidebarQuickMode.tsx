@@ -4,6 +4,15 @@ import ShareIcon from "@mui/icons-material/Share";
 import { styles } from "@styles";
 import { t } from "i18next";
 
+type SidebarQuickModeProps = Readonly<{
+  show: boolean | null;
+  lng: string;
+  rtl: boolean;
+  canShare: boolean;
+  onShare: () => void;
+  ContactBox: React.ReactNode;
+}>;
+
 export default function SidebarQuickMode({
   show,
   lng,
@@ -11,14 +20,7 @@ export default function SidebarQuickMode({
   canShare,
   onShare,
   ContactBox,
-}: {
-  show: boolean | null;
-  lng: string;
-  rtl: boolean;
-  canShare: boolean;
-  onShare: () => void;
-  ContactBox: React.ReactNode;
-}) {
+}: SidebarQuickModeProps) {
   if (!show) return null;
   return (
     <Box sx={{ ...styles.centerCV }} gap={3} width="100%">

@@ -49,7 +49,7 @@ export default function AssessmentReportPage() {
           <GraphicalReportSkeleton lang={lng} isAuthenticatedUser={isAuthenticatedUser} />
         )}
         render={() => {
-          const { assessment, advice, subjects, lang, permissions } = report!;
+          const { assessment, advice, subjects, lang, permissions } = report;
 
           return (
             <>
@@ -139,7 +139,7 @@ export default function AssessmentReportPage() {
                   </SectionCard>
                 </Box>
 
-                <ShareDialog {...shareDialog} {...report!} lang={lang} />
+                <ShareDialog {...shareDialog} {...report} lang={lang} />
               </Box>
             </>
           );

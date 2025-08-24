@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import { farsiFontFamily, primaryFontFamily } from "@/config/theme";
 import { styles } from "@styles";
-import { JSXElementConstructor, ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 
 export type ChipItem = {
   key: string | number;
@@ -10,13 +10,12 @@ export type ChipItem = {
   color?: string;
 };
 
-export default function ChipsRow({
-  items,
-  lng,
-}: {
-  items: ChipItem[];
+type ChipsRowProps = Readonly<{
+  items: readonly ChipItem[];
   lng: string;
-}) {
+}>;
+
+export default function ChipsRow({ items, lng }: ChipsRowProps) {
   const rtl = lng === "fa";
 
   return (
