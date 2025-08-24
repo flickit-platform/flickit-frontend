@@ -123,13 +123,7 @@ export default function ShareDialog({
               onClick={() => handleSelect(k)}
               role="button"
             >
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                width="38px"
-                height="38px"
-              >
+              <Box sx={{ ...styles.centerVH }} width="38px" height="38px">
                 <Radio
                   checked={isSelected}
                   color="primary"
@@ -138,9 +132,7 @@ export default function ShareDialog({
                 />
               </Box>
               <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
+                sx={{ ...styles.centerCV }}
                 padding="8px 0"
                 gap="4px"
                 width="398px"
